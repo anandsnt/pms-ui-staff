@@ -1,12 +1,10 @@
 <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')" ng-controller="RVCompanyCardCtrl">
-	<section ng-if="searchMode== false">
-		<!-- ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" -->
+	<section ng-show="!searchMode">
 		<figure ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" class="guest-image" ng-click="switchCard('company-card')">
 			<img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
 		</figure>
 		<!-- When there's no logo use this instead of <figure>  -->
-		<!-- ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" -->
-		<div class="guest-image icons icon-company" translate ng-click="switchCard('company-card')">
+		<div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)==''" translate ng-click="switchCard('company-card')">
 			COMPANY
 		</div>                  
 		<form method="post" name="change-company-name" id="change-company-name">
@@ -28,18 +26,16 @@
 			</div>
 		</form>
 	</section>
-
-
-	<section ng-if="searchMode">
+	<section ng-show="searchMode">
 		<div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
 			Add <span>Company</span>
 		</div>
 		<form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
 			<div class="holder">
 				<div class="entry" ng-click="openGuestCard()">
-					<input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany" />
-					<input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="companyCity" delay="1000" function-to-fire="searchCompany"/>
-					<input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="companyCorpId" delay="1000" function-to-fire="searchCompany" />
+					<input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="searchData.companyCard.companyName" delay="1000" function-to-fire="searchCompany" />
+					<input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="searchData.companyCard.companyCity" delay="1000" function-to-fire="searchCompany"/>
+					<input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="searchData.companyCard.companyCorpId" delay="1000" function-to-fire="searchCompany" />
 				</div>
 			</div>
 		</form>

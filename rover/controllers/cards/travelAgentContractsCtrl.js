@@ -1,4 +1,4 @@
-sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter',
+sntRover.controller('travelAgentContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter',
 	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter) {
 		BaseCtrl.call(this, $scope);
 		$scope.highchartsNG = {};
@@ -15,7 +15,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		if (typeof $scope.reservationDetails == 'undefined') {
 			$scope.currentCard = $stateParams.id;
 		} else {
-			$scope.currentCard = $scope.reservationDetails.companyCard.id;
+			$scope.currentCard = $scope.reservationDetails.travelAgent.id;
 		}
 
 		/* Items related to ScrollBars 

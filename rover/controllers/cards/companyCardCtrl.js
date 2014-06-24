@@ -1,13 +1,26 @@
-sntRover.controller('RVCompanyCardCtrl', ['$scope',
-	function($scope) {
-
+sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVReservationAllCardsSrv',
+	function($scope, RVReservationAllCardsSrv) {
 		$scope.searchMode = true;
 		$scope.currentSelectedTab = 'cc-contact-info';
+
+		// initialize company search fields
+		$scope.companySearchIntiated = false;
+		$scope.companies = [];
+
+
 		var presentContactInfo = {};
 
+		//handle tab switching in both cards
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
+			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+				saveContactInformation($scope.contactInformation);
+				$scope.$broadcast("contractTabActive");
+			}
+			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+				$scope.$broadcast("contactTabActive");
+			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
@@ -15,7 +28,25 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope',
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.companyContactInformation;
 			presentContactInfo = $scope.contactInformation;
+			$scope.$broadcast("contactTabActive");
 		});
+
+		$scope.$on("cardDetached", function() {
+			$scope.searchMode = true;
+		});
+
+		$scope.$on("companySearchInitiated", function() {
+			$scope.companySearchIntiated = true;
+			// console.log($scope.searchedCompanies)
+			$scope.companies = $scope.searchedCompanies;
+		})
+
+		$scope.$on("companySearchStopped", function() {
+			$scope.companySearchIntiated = false;
+			// console.log($scope.searchedCompanies)
+			$scope.companies = $scope.searchedCompanies;
+		})
+
 
 		/**
 		 * function used to save the contact data, it will save only if there is any

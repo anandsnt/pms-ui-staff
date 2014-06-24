@@ -3,6 +3,14 @@ sntRover.controller('stayCardMainCtrl', ['$scope',
 
 		// BaseCtrl.call(this, $scope);
 
+		$scope.searchData={
+			companyCard : {
+				companyName : "s",
+				companyCity : "",
+				companyCorpId : ""
+			}
+		}
+
 		
 		$scope.reservationDetails={
 			companyCard:{

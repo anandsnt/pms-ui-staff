@@ -1,9 +1,12 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVContactInfoSrv', '$stateParams',
-	function($scope, $window, RVCompanyCardSrv, RVContactInfoSrv, $stateParams) {
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 		$scope.cardVisible = false;
+		//init activeCard as the companyCard
+		$scope.activeCard = "companyCard";
+
 		BaseCtrl.call(this, $scope);
 
 		// fetch reservation company card details 
@@ -31,7 +34,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			};
 			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
 		}
-		
+
 		$scope.init = function() {
 			$scope.contactInfoError = false;
 			$scope.eventTimestamp = "";
@@ -242,7 +245,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var currentCard = $scope.UICards[0];
 			$scope.UICards[0] = from;
 			$scope.UICards[newCardIndex] = currentCard;
-
+			if ($scope.UICards[0] == 'company-card' || $scope.UICards[0] == 'travel-agent-card') {
+				$scope.activeCard = $scope.UICards[0] == 'company-card' ? "companyCard" : "travelAgent";
+				$scope.$broadcast('activeCardChanged');
+			}
 		}
 
 		/**
@@ -251,7 +257,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.openGuestCard = function() {
 			$scope.cardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
+			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
+			$scope.$broadcast("contactTabActive");
 		};
+
 		/**
 		 * function to close guest card
 		 */
@@ -274,14 +283,60 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 
-		$scope.switchTabTo = function($event, tabToSwitch) {
-			$event.stopPropagation();
-			$event.stopImmediatePropagation();
-			$scope.currentSelectedTab = tabToSwitch;
-		};
+
+		$scope.detachCard = function() {
+			console.log('detachCard');
+			$scope.$emit('cardDetached');
+			$scope.$broadcast('cardDetached');
+		}
 
 		// init staycard header
+
+		$scope.searchCompany = function() {
+			var successCallBackFetchCompanies = function(data) {
+				$scope.$emit("hideLoader");
+				// $scope.refreshScroll('companyResultScroll');
+				$scope.companySearchIntiated = true;
+				$scope.searchedCompanies = [];
+				if (data.accounts.length > 0) {
+					angular.forEach(data.accounts, function(item) {
+						var companyData = {};
+						companyData.id = item.id;
+						companyData.firstName = item.account_first_name;
+						companyData.lastName = item.account_last_name;
+						companyData.logo = item.company_logo;
+						if (item.address != null) {
+							companyData.address = {};
+							companyData.address.postalCode = item.address.postal_code;
+							companyData.address.city = item.address.city;
+							companyData.address.state = item.address.state;
+						}
+						companyData.email = item.email;
+						companyData.phone = item.phone;
+						$scope.searchedCompanies.push(companyData);
+					});
+				}
+				$scope.$broadcast('companySearchInitiated');
+			}
+			if ($scope.searchData.companyCard.companyName != '' || $scope.searchData.companyCard.companyCity != '' || $scope.searchData.companyCard.companyCorpId != '') {
+				var paramDict = {
+					'name': $scope.searchData.companyCard.companyName,
+					'city': $scope.searchData.companyCard.companyCity,
+					'corporate_id': $scope.searchData.companyCard.companyCorpId
+				};
+				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
+			} else {
+				$scope.companySearchIntiated = false;
+				$scope.searchedCompanies = [];
+				$scope.$apply();
+				$scope.$broadcast('companySearchStopped');
+			}
+		}
+
+
 		$scope.init();
+
+
 
 	}
 ]);

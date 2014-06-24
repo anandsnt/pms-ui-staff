@@ -4,10 +4,6 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 		$scope.searchMode = false;
 		$scope.currentSelectedTab = 'cc-contact-info';
 
-
-		
-
-
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
