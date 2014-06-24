@@ -11,8 +11,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var defaultMaxvalue = 5;
 
         var init = function() {
-            console.log($stateParams);
-            console.log($stateParams.status);
+            
             if($stateParams.status !== 'RETAIN_RESERVATION') {
                 $scope.initReservationData();
             }
