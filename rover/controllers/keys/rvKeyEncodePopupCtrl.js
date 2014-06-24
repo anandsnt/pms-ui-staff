@@ -1,4 +1,4 @@
-sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', 'RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -7,7 +7,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 		$scope.status = status;
 	};
 	
-
+	$scope.pressedCancelStatus = false;
+	
 	$scope.init = function(){
 		console.log($scope);
 		var reservationStatus = "";
@@ -24,8 +25,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 			$scope.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 		}
 		
-    	
-    	
     	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
     	
     	that.retrieveUID = true;
@@ -48,7 +47,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 			$scope.data.colorCodeClassForClose = 'red';
 		}
 		//TODO: include late checkout scenario
-
+		
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
@@ -64,6 +63,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 		that.numOfKeys = 0;
 		that.printKeyStatus = [];
 		that.isAdditional = false;
+		
 		$scope.buttonText = "Print Key";
 	};
 	/*
@@ -328,7 +328,19 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	};
 
 	$scope.init();
-
+	/*
+	 * To handle cancel option after checkin success
+	 */
+    $scope.pressedCancel = function(){
+		$scope.$emit('hideLoader');
+		$scope.deviceConnecting = false;
+		$scope.keysPrinted = false;
+		$scope.showPrintKeyOptions = false;
+		$scope.deviceNotConnected = false;
+		$scope.pressedCancelStatus = true;
+		$scope.$apply();
+	};
+	
 	/*
 	* Show the key print success message
 	*/
@@ -351,5 +363,16 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	// Close popup
 	$scope.closeDialog = function(){
 		ngDialog.close();
+	};
+	// To handle close button click
+	$scope.goToStaycard = function(){
+		$scope.closeDialog();
+		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no});
+		
+	};
+	$scope.goToSearch = function(){
+		$scope.closeDialog();
+		$state.go('rover.search');
+		
 	};
 }]);

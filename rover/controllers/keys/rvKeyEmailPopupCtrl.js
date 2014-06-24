@@ -1,4 +1,4 @@
-sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', '$state', function($rootScope, $scope, ngDialog, RVKeyPopupSrv, $state){
 	
 	// Set up data for view
 	var setupData = function(){

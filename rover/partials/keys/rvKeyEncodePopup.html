@@ -52,7 +52,8 @@
 						</div>		
 						<div class="actions float">
 							<button type="button" id="create-key" class="button " ng-class="{'grey':numberOfKeysSelected==0 , 'green': numberOfKeysSelected>=1}" ng-disabled="numberOfKeysSelected==0" ng-click="clickedPrintKey()">{{buttonText}}</button>
-							<button type="button" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button>
+							<button type="button" ng-hide="fromView=='checkin'" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button>
+							<button type="button" ng-show="fromView=='checkin'" id="cancel" class="button blank" ng-click="pressedCancel()" translate>CANCEL</button>
 						</div>
 					</div>
 			</span>
@@ -64,6 +65,15 @@
 						<a ng-show="fromView=='checkin'" class="modal-close button brand-colors" ng-click="goToStaycard()" translate>VIEW_STAY_CARD</a>
 						<a ng-show="fromView=='checkin'" class="modal-close button blue" ng-click="goToSearch()" translate>SEARCH</a>
 						<button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CLOSE</button>
+					</div>
+			</span>
+		
+			<span ng-show="pressedCancelStatus">
+				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+					<em class="info" translate>KEY_NOT_PRINTED</em>
+					<div class="action">
+						<a ng-show="fromView=='checkin'" class="modal-close button brand-colors" ng-click="goToStaycard()" translate>VIEW_STAY_CARD</a>
+						<a ng-show="fromView=='checkin'" class="modal-close button blue" ng-click="goToSearch()" translate>SEARCH</a>
 					</div>
 			</span>
 
