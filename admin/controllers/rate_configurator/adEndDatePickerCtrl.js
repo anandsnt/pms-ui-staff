@@ -10,6 +10,7 @@ $scope.setUpData = function(){
     else{
       $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
     }
+    $scope.minDate = $rootScope.businessDate;
 };
 $scope.setUpData();
 
