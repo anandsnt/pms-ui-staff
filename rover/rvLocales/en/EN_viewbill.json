@@ -51,4 +51,6 @@
     "PHONE" : "Phone",
     "EMAIL" : "E-mail",
     "SUBMIT_AND_GOTO_CHECKIN" : "Submit and go to check in",
-    "IGNORE_AND_GOTO_CHECKIN" : "Ignore and go to check in"
+    "IGNORE_AND_GOTO_CHECKIN" : "Ignore and go to check in",
+    "ASK_GUEST_TO_PROVIDE_EMAIL" : "Ask the guest to provide email",
+    "SUBMIT": "Submit"
