@@ -173,6 +173,7 @@
       
        $scope.callback = function(response){
         $scope.isFetching = false;
+        $scope.$apply();
         if(response.status ==="ok"){     
             MLISessionId = response.session;
             $scope.goToNextStep();
@@ -182,7 +183,7 @@
         }
         
        }
-      // $scope.isFetching = true;
+       $scope.isFetching = true;
        HostedForm.updateSession(sessionDetails, $scope.callback);
 
       
