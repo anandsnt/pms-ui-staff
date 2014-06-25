@@ -27,14 +27,6 @@
 	$scope.netWorkError = false;
 
 
-
-	if($rootScope.ccPaymentSuccessForCheckoutNow){
-		$scope.posted = true;
-		$scope.success = true;
-		$scope.isCheckoutCompleted = true;
-
-	}
-
 	// prevent chekout operation if user has already checked out
 
 	if(!$scope.isCheckoutCompleted){
