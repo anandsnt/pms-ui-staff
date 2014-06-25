@@ -29,34 +29,34 @@
     
         $scope.months = [{
             'name': 'January',
-            'value': '0'
+            'value': '00'
           }, {
             'name': 'February',
-            'value': '1'
+            'value': '01'
           }, {
             'name': 'March',
-            'value': '2'
+            'value': '02'
           }, {
             'name': 'April',
-            'value': '3'
+            'value': '03'
           }, {
             'name': 'May',
-            'value': '4'
+            'value': '04'
           }, {
             'name': 'June',
-            'value': '5'
+            'value': '05'
           }, {
             'name': 'July',
-            'value': '6'
+            'value': '06'
           }, {
             'name': 'August',
-            'value': '7'
+            'value': '07'
           }, {
             'name': 'September',
-            'value': '8'
+            'value': '08'
           }, {
             'name': 'October',
-            'value': '9'
+            'value': '09'
           }, {
             'name': 'November',
             'value': '10'
@@ -163,31 +163,24 @@
       $scope.fetchMLISessionId = function(){
 
        var sessionDetails = {};
-       sessionDetails.cardNumber = '6700649826438453';
-       sessionDetails.cardSecurityCode = '123';
-       sessionDetails.cardExpiryMonth = '07';
-       sessionDetails.cardExpiryYear = '15';
       
-       // var sessionDetails = {};
-       // sessionDetails.cardNumber = $scope.cardNumber;
-       // sessionDetails.cardSecurityCode = $scope.ccv;
-       // sessionDetails.cardExpiryMonth = $scope.monthSelected;
-       // sessionDetails.cardExpiryYear = $scope.yearSelected;
-
+       sessionDetails.cardNumber = $scope.cardNumber;
+       sessionDetails.cardSecurityCode = $scope.ccv;
+       sessionDetails.cardExpiryMonth = $scope.monthSelected;
+       sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
+      
        $scope.callback = function(response){
         $scope.isFetching = false;
-  
-          if(response.status ==="ok"){     
+        if(response.status ==="ok"){     
             MLISessionId = response.session;
             $scope.goToNextStep();
-            console.log(response);
         }
         else{
-         $scope.netWorkError = false;
+         $scope.netWorkError = true;
         }
         
        }
-       //$scope.isFetching = true;
+       $scope.isFetching = true;
        HostedForm.updateSession(sessionDetails, $scope.callback);
 
       
