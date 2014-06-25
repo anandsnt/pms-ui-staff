@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce) {
 
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
@@ -89,7 +89,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			//sort the rooms by levels
-			console.log($scope.roomAvailability);
+			// console.log($scope.roomAvailability);
 
 			$scope.displayData.allRooms.sort(function(a, b) {
 				var room1 = $scope.roomAvailability[a.id];
@@ -113,13 +113,35 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//$scope.displayData.allRooms = roomRates.room_types;
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
 
+			//TODO: Handle the selected roomtype from the previous screen
+			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
+			//$scope.preferredType = 5;
+			$scope.roomTypes = roomRates.room_types;
+			$scope.filterRooms();
+			$scope.$emit('hideLoader');
+		};
 
+		$scope.setRates = function() {
 			//CICO-5253 > Rate Types Reservartion
 			//Get the rates for which rooms are available $scope.displayData.allRooms
 			$scope.ratesMaster = [];
 			$scope.displayData.availableRates = [];
-			$($scope.displayData.allRooms).each(function(i, d) {
-				var room = $scope.roomAvailability[d.id];
+
+			if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
+				$($scope.displayData.allRooms).each(function(i, d) {
+					var room = $scope.roomAvailability[d.id];
+					$(room.rates).each(function(i, rateId) {
+						if (typeof $scope.ratesMaster[rateId] == 'undefined') {
+							$scope.ratesMaster[rateId] = {
+								rooms: [],
+								rate: $scope.displayData.allRates[rateId]
+							};
+						}
+						$scope.ratesMaster[rateId].rooms.push(room);
+					})
+				});
+			} else {
+				var room = $scope.roomAvailability[$scope.preferredType];
 				$(room.rates).each(function(i, rateId) {
 					if (typeof $scope.ratesMaster[rateId] == 'undefined') {
 						$scope.ratesMaster[rateId] = {
@@ -129,8 +151,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 					$scope.ratesMaster[rateId].rooms.push(room);
 				})
-			});
-
+			}
 
 			$($scope.ratesMaster).each(function(i, d) {
 				if (typeof d != 'undefined') {
@@ -177,15 +198,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// 		return 1;
 			// 	return 0;
 			// });
-
-			//TODO: Handle the selected roomtype from the previous screen
-			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
-			//$scope.preferredType = 5;
-			$scope.roomTypes = roomRates.room_types;
-			$scope.filterRooms();
-
-			$scope.$emit('hideLoader');
-		};
+		}
 
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
@@ -305,6 +318,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.selectedRoomType = $scope.preferredType;
 			}
+			$scope.setRates();
 			$scope.refreshScroll();
 		}
 
@@ -334,7 +348,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							ratedetails: {},
 							total: [],
 							defaultRate: 0,
-							averagePerNight: 0
+							averagePerNight: 0,
+							description: roomDetails[d.id].description
 						};
 					}
 					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
@@ -497,6 +512,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 			return text.replace(new RegExp(search, 'gi'), '<span class="highlight">$&</span>');
 		};
+
+		$scope.to_trusted = function(html_code) {
+			return $sce.trustAsHtml(html_code);
+		}
+
+
 
 		init();
 	}
