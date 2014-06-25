@@ -216,7 +216,12 @@ var HotelDetailsView = function(domRef) {
 			zipcode = $.trim(that.myDom.find("#hotel-zipcode").val()),
 			numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val()),
 			roverRegistration = $("#registration-for-rover input[type='radio']:checked").val(),
-			hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
+			hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val()),
+			mliGatewayUrl = $.trim(that.myDom.find("#mli-payment-gateway-url").val()),
+			mliMerchantId = $.trim(that.myDom.find("#mli-merchant-id").val()),
+			mliApiVersion = $.trim(that.myDom.find("#mli-api-version").val()),
+			mliApiKey = $.trim(that.myDom.find("#mli-api-key").val()),
+			mliSiteCode = $.trim(that.myDom.find("#mli-site-code").val());
 
 		isPmsTokenized = false;
 		if (that.myDom.find("#div-is-pms-tokenized").hasClass("on")) {
@@ -256,7 +261,7 @@ var HotelDetailsView = function(domRef) {
 		if ($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 			var checkinToInspectedRoomsOnly = "true";
 		}
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout,mliGatewayUrl,mliMerchantId,mliApiVersion,mliApiKey,mliSiteCode);
 		var type = event.data[0];
 		if (type == "create") {
 			var url = '/admin/hotels';
@@ -300,7 +305,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout,mliGatewayUrl,mliMerchantId,mliApiVersion,mliApiKey,mliSiteCode) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -341,7 +346,12 @@ var HotelDetailsView = function(domRef) {
 				hotel_from_address: hotelFromAddress,
 				is_pms_tokenized: isPmsTokenized,
 				use_kiosk_entity_id_for_fetch_booking: isUseKioskEntityIdFetchBooking,
-				use_snt_entity_id_for_checkin_checkout: isUseKioskEntityIdCheckinCheckout
+				use_snt_entity_id_for_checkin_checkout: isUseKioskEntityIdCheckinCheckout,
+				mli_payment_gateway_url:mliGatewayUrl,
+				mli_merchant_id:mliMerchantId,
+				mli_api_version:mliApiVersion,
+				mli_api_key:mliApiKey,
+				mli_site_code:mliSiteCode 
 			};
 		} else {
 			data = {
