@@ -89,6 +89,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			//sort the rooms by levels
+			console.log($scope.roomAvailability);
+
+			$scope.displayData.allRooms.sort(function(a, b) {
+				var room1 = $scope.roomAvailability[a.id];
+				var room2 = $scope.roomAvailability[b.id];
+				if (room1.averagePerNight < room2.averagePerNight)
+					return -1;
+				if (room1.averagePerNight > room2.averagePerNight)
+					return 1;
+				return 0;
+			});
+
+
 			$scope.displayData.allRooms.sort(function(a, b) {
 				if (a.level < b.level)
 					return -1;
@@ -194,6 +207,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$state.go('rover.reservation.mainCard.addons');
 		}
 
+		$scope.showAllRooms = function() {
+			$scope.showLessRooms = false;
+			$scope.refreshScroll();
+			$scope.filterRooms();
+		}
+
 
 		$scope.setSelectedType = function(val) {
 			$scope.selectedRoomType = $scope.selectedRoomType == val.id ? -1 : val.id;
@@ -202,7 +221,45 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.filterRooms = function() {
 			if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
-				$scope.displayData.roomTypes = $scope.displayData.allRooms;
+				if ($scope.showLessRooms && $scope.displayData.allRooms.length > 1) {
+					$scope.displayData.roomTypes = $scope.displayData.allRooms.first();
+					var level = $scope.displayData.allRooms.first()[0].level;
+					var firstId = $scope.displayData.allRooms.first()[0].id;
+					if (level == 1 || level == 2) {
+						//Append rooms from the next level
+						//Get the candidate rooms of the room to be appended
+						var targetlevel = level + 1;
+						var candidateRooms = $($scope.roomAvailability).filter(function() {
+							return this.level == targetlevel;
+						});
+						//Check if candidate rooms are available
+						if (candidateRooms.length == 0) {
+							//try for candidate rooms in the same level						
+							candidateRooms = $($scope.roomAvailability).filter(function() {
+								return this.level == level && this.id != firstId;
+							});
+						}
+						//Sort the candidate rooms to get the one with the least average rate
+						candidateRooms.sort(function(a, b) {
+							if (a.averagePerNight < b.averagePerNight)
+								return -1;
+							if (a.averagePerNight > b.averagePerNight)
+								return 1;
+							return 0;
+						});
+						//append the appropriate room to the list to be displayed
+						if (candidateRooms.length > 0) {
+							var selectedRoom = $($scope.displayData.allRooms).filter(function() {
+								return this.id == candidateRooms[0].id;
+							});
+							if (selectedRoom.length > 0) {
+								$scope.displayData.roomTypes.push(selectedRoom[0]);
+							}
+						}
+					}
+				} else {
+					$scope.displayData.roomTypes = $scope.displayData.allRooms;
+				}
 				$scope.selectedRoomType = -1;
 			} else {
 				// If a room type of category Level1 is selected, show this room type plus the lowest priced room type of the level 2 category.
