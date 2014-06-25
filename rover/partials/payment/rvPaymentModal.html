@@ -31,7 +31,7 @@
 		    <label for="card-number-set1" translate>CARD_NUMBER</label>
 		    <input type="text" maxlength="16" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
 		</div>
-		<div class="entry">
+		<div class="entry" ng-hide="passData.is_swiped">
 		    <label for="cvv"><span translate="" class="ng-scope">CVV</span></label>
 		    <input type="text" ng-model="saveData.cvv" placeholder="CVV" value=""  size="6" class="ng-pristine ng-valid">
 		  
