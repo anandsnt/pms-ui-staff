@@ -657,6 +657,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 	        		template: '/assets/partials/validateCheckout/rvValidateEmail.html',
 	        		controller: 'RVValidateEmailCtrl',
+	        		className: 'ngdialog-theme-default1 calendar-single1',
 	        		scope: $scope
 	        });
 		}
