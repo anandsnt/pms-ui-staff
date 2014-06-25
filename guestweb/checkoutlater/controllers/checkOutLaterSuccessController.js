@@ -67,10 +67,10 @@
 			return charge;
 		};
 		});
-
+	}
 	var reservation_id = $scope.reservationID;
 	var url = '/guest_web/apply_late_checkout';
-	var id  = $scope.id; 
+	var id  = ($rootScope.ccPaymentSuccessForCheckoutLater)? $scope.lateCheckOut.id:$scope.id ; 
 
 	LateCheckOutChargesService.postNewCheckoutOption(url,reservation_id,id).then(function(response) {
 		$scope.success = response.status ? true : false;
@@ -87,10 +87,7 @@
 	},function(){
 		$scope.netWorkError = true;
 		$scope.posted = true;
-	});
-
-	}
-	
+	});	
 
 	}		
 };
