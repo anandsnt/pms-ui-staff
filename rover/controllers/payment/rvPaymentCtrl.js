@@ -3,7 +3,17 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	$scope.saveData = {};
 	$scope.saveData.add_to_guest_card = false;
+
 	var MLISessionId = "";
+
+	$scope.saveData.selected_payment_type = "";//Only for swipe
+	$scope.paymentTypeValues = "";
+	$scope.saveData.card_number  = "";
+	$scope.saveData.credit_card  =  "";
+	$scope.saveData.name_on_card =  "";
+	$scope.saveData.card_expiry_month = "";
+	$scope.saveData.card_expiry_year = "";
+
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
