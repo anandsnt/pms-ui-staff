@@ -135,10 +135,12 @@
           }
           else{
               $scope.isFetching = true;
-              var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId};
+              var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
+              var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId,'card_expiry':cardExpiryDate};
               ccVerificationService.verifyCC(data).then(function(response) {
               $scope.isFetching = false;
               if(response.status ==="success"){
+                  $rootScope.isCCOnFile = true;
                   if($stateParams.isFromCheckoutNow === "true"){
                     $rootScope.ccPaymentSuccessForCheckoutNow = true;
                     $state.go('checkOutStatus');
