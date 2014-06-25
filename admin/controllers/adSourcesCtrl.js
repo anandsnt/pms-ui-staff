@@ -3,6 +3,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
 	$scope.currentClickedElement = -1;
+	$scope.preveousName = "";
     /*
     * To fetch charge sources list
     */
@@ -23,6 +24,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
+		$scope.preveousName = $scope.data.sources[index].name;
 	};
 	/*
     * To get the template of edit screen
@@ -37,6 +39,11 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
     * To handle cancel click
     */	
 	$scope.clickedCancel = function(){
+		if($scope.currentClickedElement != 'new'){
+			$scope.data.sources[$scope.currentClickedElement].name = $scope.preveousName;
+			$scope.preveousName = "";
+		}
+		$scope.data.name = "";		
 		$scope.currentClickedElement = -1;
 	};
 	/*

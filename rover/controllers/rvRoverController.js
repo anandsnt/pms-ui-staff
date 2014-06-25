@@ -1,7 +1,32 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
-    //Used to add precison in amounts
     
+    // this is make sure we add an
+    // additional class 'return-back' as a
+    // parent to ui-view, so as to apply a
+    // reverse slide animation
+    var uiViewRevAnim = $scope.$on( '$stateChangeSuccess', function (event, toState, toStateData, fromState, fromStateData) {
+
+      // check this template for the applied class:
+      // app/assets/rover/partials/staycard/rvStaycard.html
+
+      // hopefully this will be the only place to toggle class
+      // as long as the current router definition stands
+
+      // FUTURE: this check can include other state name also,
+      // from which while returning we expect a reverse slide
+      if ( fromState.name === 'rover.staycard.billcard' ) {
+        $rootScope.returnBack = true;
+      } else {
+        $rootScope.returnBack = false;
+      }
+    });
+
+    // make sure you also destroy 'uiViewRevAnim'
+    // when moving away to release memory
+    $scope.$on( '$destroy', uiViewRevAnim );
+    
+    //Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
     //To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
