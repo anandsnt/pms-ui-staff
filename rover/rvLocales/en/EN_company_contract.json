@@ -35,4 +35,13 @@
     "TOTAL_NIGHTS": "Total Nights",
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
-    "AVERAGE_RATE": "Average Rate"
+    "AVERAGE_RATE": "Average Rate",
+    
+	"COMPANY_CARD": "Company Card",
+	"TA_CARD": "Travel Agent Card",
+	"CREATE_NEW": "Create New",
+	"SAVE_NEW_CARD": "Save new card",
+	"DISCARD": "Discard",
+	"SAVE_NEW": "Save new ",
+	"CARD":"card?"
+	
