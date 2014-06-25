@@ -112,7 +112,12 @@
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
-      controller: ccVerificationModalCtrl
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+          return "";
+        }
+      }
     };
 
 		
