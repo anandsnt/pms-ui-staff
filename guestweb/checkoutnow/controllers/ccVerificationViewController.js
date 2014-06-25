@@ -150,7 +150,7 @@
                   }
               }
               else{
-               $modal.open($scope.cardErrorOpts);
+               $scope.netWorkError = true;
               };        
           
             },function(){
@@ -178,11 +178,11 @@
             $scope.goToNextStep();
         }
         else{
-         $scope.netWorkError = true;
+          $modal.open($scope.cardErrorOpts);
         }
         
        }
-       $scope.isFetching = true;
+      // $scope.isFetching = true;
        HostedForm.updateSession(sessionDetails, $scope.callback);
 
       
