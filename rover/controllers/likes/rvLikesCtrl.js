@@ -31,8 +31,18 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		        	}
 		     });
 	     });
+	      angular.forEach($scope.updateData.room_features, function(value, key) {
+	         angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
+		        var userRoomFeature = value.user_selection;
+		        	if(userRoomFeature.indexOf(roomFeatureValue.id) != -1){
+		        		roomFeatureValue.isSelected = true;
+		        	} else {
+		        		roomFeatureValue.isSelected = false;
+		        	}
+		     });
+	     });
         $scope.guestCardData.likes = $scope.updateData;
-        console.log(JSON.stringify($scope.updateData.preferences));
+        console.log(JSON.stringify($scope.updateData));
         /**
 		  * storing to check if data will be updated
 		  */

@@ -31,7 +31,7 @@
                 <label class="checkbox" ng-repeat="preferenceValues in preferences.values" ng-class="{'checked': preferenceValues.isChecked}">
                     <span class="icon-form icon-checkbox"  ng-class="{'checked': preferenceValues.isChecked}"></span>
                     <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference()" ng-model="preferenceValues.isChecked"/>
-                    {{preferenceValues.details}}-- {{saveData.prefrence}}
+                    {{preferenceValues.details}}-- {{preferenceValues.isChecked}}
                 </label>
                 
             </div>
@@ -46,7 +46,7 @@
             <div class="entry radio-check" ng-repeat="roomFeatures in guestCardData.likes.room_features">
                 <label class="checkbox" ng-repeat="roomFeaturesValues in roomFeatures.values" ng-class="{'checked': saveData.roomfeature}">
                 	 <span class="icon-form icon-checkbox"  ng-class="{'checked': saveData.roomfeature}"></span>
-                    <input ng-model="saveData.roomfeature" type="checkbox" checked />
+                    <input ng-model="roomFeaturesValues.isSelected" type="checkbox" checked />
                     {{roomFeaturesValues.details}}
                 </label>
             </div>
