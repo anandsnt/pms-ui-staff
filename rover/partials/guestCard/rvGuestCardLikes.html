@@ -1,8 +1,8 @@
 <form ng-controller="RVLikesController" class="form card-tab scrollable" ng-show="current == 'guest-like'">
     <div class="wrapper">
-    	
+    	 <button class="green" ng-click="saveLikes()">SAAAAAAAAAAAAVE</button>
         <div class="holder left">
-            <strong class="h3">Preferences</strong>
+            <strong class="h3">Preferences </strong>
             
             
             <div class="entry full-width">
@@ -18,99 +18,39 @@
             
             <div class="entry full-width">
                 <label for="roomtype">Room type</label>
-                <input name="roomtype" id="roomtype" value="Executive Suite" type="text" />
+                <select>
+                	<option value=""></option>
+                	<option ng-repeat="roomtype in guestCardData.likes.roomtype" value="roomtype.id">
+                		{{roomtype.name}}
+                	</option>
+                </select>
             </div>
             
-            <div class="entry radio-check">
-                <label for="floor1">Floor</label>
-                <label class="checkbox">
-                    <input data-group="floor" name="floor" id="floor1" value="high-floor" type="checkbox" />
-                    High Floor
+            <div class="entry radio-check float" ng-repeat="preferences in guestCardData.likes.preferences">
+                <label for="floor1">{{preferences.name}}</label>
+                <label class="checkbox" ng-repeat="preferenceValues in preferences.values" ng-class="{'checked': preferenceValues.isChecked}">
+                    <span class="icon-form icon-checkbox"  ng-class="{'checked': preferenceValues.isChecked}"></span>
+                    <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference()" ng-model="preferenceValues.isChecked"/>
+                    {{preferenceValues.details}}-- {{saveData.prefrence}}
                 </label>
-                <label class="checkbox">
-                    <input data-group="floor" name="floor" id="floor2" value="low-floor" type="checkbox" />
-                    Low Floor
-                </label>
+                
             </div>
-            <div class="entry radio-check">
-                <label for="elevator1">Elevator</label>
-                <label class="checkbox">
-                    <input data-group="elevator" name="elevator" id="elevator1" value="near-elevator" type="checkbox" />
-                    Close to Elevator
-                </label>
-                <label class="checkbox">
-                    <input data-group="elevator" name="elevator" id="elevator2" value="away-from-elevator" type="checkbox" checked />
-                    Away from Elevator
-                </label>
-            </div>
-            <div class="entry radio-check">
-                <label for="smoking1">Smoking</label>
-                <label class="checkbox">
-                    <input data-group="smoking" name="smoking" id="smoking1" value="smoking-room" type="checkbox" />
-                    Smoking Room
-                </label>
-                <label class="checkbox">
-                    <input data-group="smoking" name="smoking" id="smoking2" value="non-smoking-room" type="checkbox" checked />
-                    Non-Smoking Room
-                </label>
-            </div>
+           
         </div>
         
-        
+       
         
         <div class="holder right">
             <strong class="h3">Room Features</strong>
             
-            <div class="entry radio-check">
-                <label class="checkbox">
-                    <input name="features" id="features1" value="pool-view" type="checkbox" checked />
-                    Pool View
-                </label>
-                <label class="checkbox">
-                    <input name="features" id="features2" value="street-view" type="checkbox" />
-                    Street View
+            <div class="entry radio-check" ng-repeat="roomFeatures in guestCardData.likes.room_features">
+                <label class="checkbox" ng-repeat="roomFeaturesValues in roomFeatures.values" ng-class="{'checked': saveData.roomfeature}">
+                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': saveData.roomfeature}"></span>
+                    <input ng-model="saveData.roomfeature" type="checkbox" checked />
+                    {{roomFeaturesValues.details}}
                 </label>
             </div>
-            <div class="entry radio-check">
-                <label class="checkbox">
-                    <input name="features" id="features3" value="balcony" type="checkbox" />
-                    Balcony
-                </label>
-                <label class="checkbox">
-                    <input name="features" id="features4" value="terrace" type="checkbox" checked />
-                    Terrace
-                </label>
-            </div>
-            <div class="entry radio-check">
-                <label class="checkbox">
-                    <input name="features" id="features5" value="kitchenette" type="checkbox" />
-                    Kitchenette
-                </label>
-                <label class="checkbox">
-                    <input name="features" id="features6" value="coffee-tea" type="checkbox" checked />
-                    Coffee / Tea
-                </label>
-            </div>
-            <div class="entry radio-check">
-                <label class="checkbox">
-                    <input name="features" id="features7" value="large-bathroom" type="checkbox" />
-                    Large Bathroom
-                </label>
-                <label class="checkbox">
-                    <input name="features" id="features8" value="wheelchair-access" type="checkbox" />
-                    Wheelchair Access
-                </label>
-            </div>
-            <div class="entry radio-check">
-                <label class="checkbox">
-                    <input name="features" id="features9" value="close-to-gym" type="checkbox" />
-                    Close to Gym
-                </label>
-                <label class="checkbox">
-                    <input name="features" id="features10" value="close-to-spa" type="checkbox" />
-                    Close to Spa
-                </label>
-            </div>
+            
         </div>
         
         

@@ -327,7 +327,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     
     $scope.$on('SHOWGUESTLIKES', function(event) {
-    	console.log("-----------------broadcast")
          $scope.$broadcast('SHOWGUESTLIKESINFO');
     });
     /*
