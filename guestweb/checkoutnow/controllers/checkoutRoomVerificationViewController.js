@@ -26,8 +26,6 @@
 
 		$scope.continueButtonClicked = function(){
 
-		//TO DO:
-		//
 		var url = '/guest_web/verify_room.json';
 		var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
 

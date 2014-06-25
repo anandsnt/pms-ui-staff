@@ -22,8 +22,6 @@
 		$scope.pageValid = true;
 	};
 
-	//TO DO : navigations
-
 	if($scope.pageValid){
 
 		$scope.showBackButtonImage = true;

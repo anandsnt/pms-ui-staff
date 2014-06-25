@@ -2,25 +2,23 @@
 var checkoutNowService = function($q,$rootScope,$http) {
 	var response = {};
 
-	//fetch bill details
-
 	var completeCheckout = function(url,data) {
 
-	var deferred = $q.defer();
-	$http.post(url, data).success(function(response){
-		deferred.resolve(response);
-	}).error(function(){				
-	$rootScope.netWorkError = true;
-		deferred.reject();			
-	});
-	return deferred.promise;
-	};
+		var deferred = $q.defer();
+		$http.post(url, data).success(function(response){
+			deferred.resolve(response);
+		}).error(function(){				
+		$rootScope.netWorkError = true;
+			deferred.reject();			
+		});
+		return deferred.promise;
+		};
 
-	return {
-		response:response,
-		completeCheckout:completeCheckout
+		return {
+			response:response,
+			completeCheckout:completeCheckout
 
-	}
+		}
 };
 
 var dependencies = [

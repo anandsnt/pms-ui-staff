@@ -131,8 +131,6 @@
           else{
               $scope.isFetching = true;
               var data = {'reservation_id':$rootScope.reservationID,'mli_SessionId':MLISessionId};
-              alert("fef");
-              console.log(data);
               ccVerificationService.verifyCC(data).then(function(response) {
               $scope.isFetching = false;
               if(response.status ==="success"){
@@ -157,8 +155,6 @@
 
     $scope.savePaymentDetails = function(){
       
-      
-
       $scope.fetchMLISessionId = function(){
 
        var sessionDetails = {};

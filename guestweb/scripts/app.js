@@ -28,6 +28,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.mliMerchatId = $attrs.mliMerchatId;
  	$rootScope.isRoomVerified =  false;
  	
+ 	if($attrs.accessToken != "undefined")
+		$rootScope.accessToken = $attrs.accessToken	;
+ 	
  	if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}
@@ -40,9 +43,6 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	else{
 		$location.path('/checkoutRoomVerification');
 	};
-
-	if($attrs.accessToken != "undefined")
-		$rootScope.accessToken = $attrs.accessToken	;
 
 }]);
 
