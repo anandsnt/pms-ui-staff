@@ -624,11 +624,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response){
+		console.log(response);
 		$scope.$emit('hideLoader');
-		$scope.showSuccessPopup(response.data);
+		$scope.showSuccessPopup(response);
 	};
 	// To handle failure callback of complete checkout
 	$scope.completeCheckoutFailureCallback = function(data){
+		console.log(data);
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
