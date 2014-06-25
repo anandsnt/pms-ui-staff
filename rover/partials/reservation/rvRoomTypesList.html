@@ -2,7 +2,7 @@
 <section id="rooms-and-rates" class="content reservations-inner" >
 
     <ul class="reservation-header" ng-show="rooms.length > 1">
-        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2} translate"> ROOM_LABEL {{$index + 1}}</li>
+        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2}" translate> ROOM_LABEL {{$index + 1}}</li>
     </ul>
     <div class="reservations-content-wrapper">
         <div class="reservation-filters">
