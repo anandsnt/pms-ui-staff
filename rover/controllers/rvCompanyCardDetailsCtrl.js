@@ -8,10 +8,13 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	if($stateParams.type == "COMPANY"){
 		if($scope.isAddNewCard) $scope.heading = "New Company Card";
 		else $scope.heading = "Company Card";
+		
+		$scope.dataIdHeader = "company-card-header";
 	}
 	else if($stateParams.type == "TRAVELAGENT"){
 		if($scope.isAddNewCard) $scope.heading = "New Travel Agent Card";
 		else $scope.heading = "Travel Agent Card";
+		$scope.dataIdHeader = "travel-agent-card-header";
 	}
 	
 	$scope.isContactInformationSaved = false;
@@ -134,7 +137,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-		$scope.isContactInformationSaved = true;
+		console.log(presentContactInfo);
 		//In the case of ass mode - rename the headding after saving contact info
 		if($scope.isAddNewCard){
 			//setting the heading of the screen
@@ -145,6 +148,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 				$scope.heading = "Travel Agent Card";
 			}
 		}
+		$scope.isAddNewCard = false;
 	};
 
 	/**
@@ -223,6 +227,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	// To handle click on save new card button.
 	$scope.clikedSaveNewCard = function(){
 		saveContactInformation($scope.contactInformation);
+		$scope.isContactInformationSaved = true;
 		ngDialog.close();
 	};
 	// To handle click on discard button.
