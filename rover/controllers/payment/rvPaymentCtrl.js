@@ -194,15 +194,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
 			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
-
-		
-			 console.log(sessionDetails);
 			
 			 var callback = function(response){
 			 	
 			 	$scope.$emit("hideLoader");//is not working
-			 	
-			 	console.log(response);
+			 	$scope.$apply();
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
@@ -213,7 +209,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			 	
 			 }
-			// $scope.$emit("showLoader");
+			 $scope.$emit("showLoader");
 			 HostedForm.updateSession(sessionDetails, callback);			
 		}
 		$scope.fetchMLISessionId();
