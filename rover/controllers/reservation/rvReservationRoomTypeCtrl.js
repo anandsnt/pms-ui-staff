@@ -424,7 +424,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			});
-			//console.log(rooms);
 			return rooms;
 		}
 

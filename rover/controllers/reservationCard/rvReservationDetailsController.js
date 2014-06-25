@@ -70,7 +70,13 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	 */
 	$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
 	 	if(confirmationNumber){
-	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, confirmationNumber, $scope.reservationDetailsFetchSuccessCallback);	
+	 		  console.log("reached api")
+	 		  
+	 		  var data = {
+	 		  	"confirmationNumber": confirmationNumber,
+	 		  	"isRefresh": $stateParams.isrefresh
+	 		  };
+	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);	
 	 	} else {
 	 		$scope.reservationData = {};
 	 	}
