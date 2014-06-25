@@ -54,7 +54,7 @@
 	<!-- Room Type Available -->
 	<div id="room-list" class="updates-content" ng-show="rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_TYPE_AVAILABLE'}">
 		<h4 class="available-title error">
-			Room
+			Room 
 			<span id="current-room">{{stayDetails.details.room_number}}</span>
 			is not available.
 		</h4>
@@ -67,7 +67,7 @@
 				<ul class="rooms">
 					<li ng-repeat="room in availableRooms">
 						<button type="button" ng-click="roomSelectedFromList(room.room_number)" class="button white">
-							<span id = "room-list-number" class="room-number {{getColorCode(stayDetails.calendarDetails.room_ready_status, stayDetails.calendarDetails.use_inspected)}}">{{room.room_number}}</span>
+							<span id = "room-list-number" class="room-number" ng-class="getColorCode(stayDetails.calendarDetails.room_ready_status, stayDetails.calendarDetails.use_inspected)">{{room.room_number}}</span>
 						</button>
 					</li>
 				</ul>
@@ -84,7 +84,7 @@
 		</div>
 	</div>
 
-	
+
 	<div id="room-restricted" class="updates-content no-content hidden">
 		<div class="info">
 			<strong class="h1">Minimum Length of Stay restriction exists for this booking.</strong>

@@ -78,7 +78,7 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
         that.showRoomTypeAvailable(data);
       }
       else if(data.availability_status == "not_available"){
-
+        that.showRoomNotAvailable();
       } 
       else{
 
@@ -86,6 +86,11 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
       $scope.refreshScroller();     
     }; 
 
+
+    //not available room types
+    this.showRoomNotAvailable = function(){
+      $scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE'; 
+    };
     // function to show room list
     that.showRoomTypeAvailable = function(data){
         $scope.availableRooms = data.rooms;
