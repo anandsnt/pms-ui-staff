@@ -130,7 +130,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservat
 	*/
 	$scope.cancelButtonClicked = function(){
 		$scope.initReservationData();
-		goToReservationSearch();
 		$state.go('rover.reservation.search');
 	};
 	

@@ -1,3 +1,3 @@
-sntRover.controller('topController', ['$state', function($state) {
+sntRover.controller('topController', ['$state', '$scope', function($state, $scope) {
 	$state.go('rover.dashboard');
 }]);

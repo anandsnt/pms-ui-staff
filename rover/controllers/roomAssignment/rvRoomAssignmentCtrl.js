@@ -1,71 +1,31 @@
 
-sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter){
-	console.log("room assignment");
-	// $scope.parentObj.slide = 'slide-right';
+sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout){
+		
 	BaseCtrl.call(this, $scope);
-	
-	$scope.rooms = [];
-	$scope.filteredRooms = [];
-	$scope.roomTypes = [];
-	$scope.roomFeatures = [];
-	$scope.selectedFiltersList = [];
 
-	$scope.reservationData = $scope.$parent.reservation;
-	$scope.roomType = $stateParams.room_type;
-	$scope.isFiltersVisible = false;
-
-	/**
-	* function to to get the rooms based on the selected room type
-	*/
-	$scope.getRooms = function(){
-		var successCallbackGetRooms = function(data){
-			$scope.rooms = data;
-			$scope.setRoomsListWithPredefinedFilters();
-			$scope.applyFilterToRooms();
-			$scope.$emit('hideLoader');
-			setTimeout(function(){
+		
+	setTimeout(function(){
 				$scope.$parent.myScroll['roomlist'].refresh();
+				$scope.$parent.myScroll['filterlist'].refresh();
 				}, 
 			3000);
-		};
-		var errorCallbackGetRooms = function(error){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = error;
-		};
-		var params = {};
-		params.reservation_id = $stateParams.reservation_id;
-		params.room_type = $scope.roomType;
-		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
-
-	};
-	/**
-	* function to get the room types and room features
-	*/
-	$scope.getPreferences = function(){
-		var successCallbackGetPreferences = function(data){
-			$scope.roomTypes = data.room_types;
-			$scope.roomFeatures = data.room_features;
-			$scope.addPredefinedFilters();
-			$scope.setSelectedFiltersList();
-			$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
-			$scope.getRooms();
-			$scope.$emit('hideLoader');
-		};
-		var errorCallbackGetPreferences = function(error){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = error;
-		};
-		var params = {};
-		params.reservation_id = $stateParams.reservation_id;
-		$scope.invokeApi(RVRoomAssignmentSrv.getPreferences, params, successCallbackGetPreferences, errorCallbackGetPreferences);
-
-	};
+	$timeout(function() {
+    	$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
+		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
+	});
+	
 	/**
 	* function to assign the new room for the reservation
 	*/
 	$scope.assignRoom = function(index){
 		var successCallbackAssignRoom = function(data){
-			$scope.backToStayCard();
+			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+			if($scope.clickedButton == "checkinButton"){
+				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+			} else {
+				$scope.backToStayCard();
+			}
 			$scope.$emit('hideLoader');
 		};
 		var errorCallbackAssignRoom = function(error){
@@ -75,15 +35,21 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_number = parseInt($scope.rooms[index].room_number, 10);
+		$scope.assignedRoom = params.room_number;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
-	$scope.getPreferences();
 
 	/**
 	* setting the scroll options for the room list
 	*/
 	$scope.$parent.myScrollOptions = {		
 	    'roomlist': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
+	    },
+	    'filterlist': {
 	    	scrollbars: true,
 	        snap: false,
 	        hideScrollbar: false,
@@ -97,6 +63,16 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
 			$scope.applyFilterToRooms();
+	});
+	/**
+	* Listener to update the reservation details on upgrade selection
+	*/
+	$scope.$on('upgradeSelected', function(event, data){
+			$scope.reservationData.reservation_card.room_number = data.room_no;
+			$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
+			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+			$scope.backToStayCard();
 	});
 
 	/**
@@ -138,7 +114,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.isUpsellAvailable = function(){
 		var showUpgrade = false;
-		if(($scope.reservationData.reservation_card.isUpsellAvailable == 'true') && ($scope.reservationData.reservation_card.reservationStatus == 'RESERVED' || $scope.reservationData.reservation_card.reservationStatus == 'CHECKING_IN')){
+		if(($scope.reservationData.reservation_card.is_upsell_available == 'true') && ($scope.reservationData.reservation_card.reservation_status == 'RESERVED' || $scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN')){
 			showUpgrade = true;
 		}
 		return showUpgrade;
@@ -231,5 +207,21 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 				$scope.rooms[i].room_features.push(-102);
 		}
 	}
+	$scope.init = function(){
+	$scope.roomTypes = roomPreferences.room_types;
+	$scope.roomFeatures = roomPreferences.room_features;
+	$scope.addPredefinedFilters();
+	$scope.setSelectedFiltersList();
+	$scope.rooms = roomsList;
+	$scope.setRoomsListWithPredefinedFilters();
+	$scope.applyFilterToRooms();
+	$scope.clickedButton = $stateParams.clickedButton;
+	$scope.assignedRoom = "";
+	$scope.reservationData = $scope.$parent.reservation;
+	$scope.roomType = $stateParams.room_type; 
+	$scope.isFiltersVisible = false;
+	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
+	};
+	$scope.init();
 	
 }]);
