@@ -522,20 +522,70 @@ button.icons.icon-search{
   left: 0;
   bottom: 0;
   right: 0;
+  height: 100vh;
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
 }
 
+.main-view.ng-enter, .main-view.ng-leave {
+  -webkit-transition:all 1s ease-in-out;
+    -moz-transition:all 1s ease-in-out;
+    -o-transition:all 1s ease-in-out;
+    transition:all 1s ease-in-out;
+}
+
+.main-view.ng-enter {
+  opacity: 0;
+  -webkit-transform:scale3d(0.5, 0.5, 0.5);
+  -moz-transform:scale3d(0.5, 0.5, 0.5);
+  transform:scale3d(0.5, 0.5, 0.5);
+}
+
+.main-view.ng-enter-active {
+  opacity: 1;
+  -webkit-transform:scale3d(1, 1, 1);
+  -moz-transform:scale3d(1, 1, 1);
+  transform:scale3d(1, 1, 1);
+}
+
+.main-view.ng-leave {
+  opacity: 1; 
+  -webkit-transform:translate3d(0, 0, 0);
+  -moz-transform:translate3d(0, 0, 0);
+  transform:translate3d(0, 0, 0);
+}
+
+.main-view.ng-leave-active {
+  opacity: 0;
+  -webkit-transform:translate3d(100px, 0, 0);
+  -moz-transform:translate3d(100px, 0, 0);
+  transform:translate3d(100px, 0, 0);
+}
+
 /* making sure we are not flickering */
-.main-view.ng-enter,
+/*.main-view.ng-enter,
 .main-view.ng-leave {
   -webkit-backface-visibility: hidden;
   backface-visibility:hidden;
-  /**/
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-transition:all .5s ease-in-out;
+  -moz-transition:all .5s ease-in-out;
+  -o-transition:all .5s ease-in-out;
+  transition:all .5s ease-in-out;
 }
 
-.main-view.ng-enter,
+
+.main-view.ng-enter {
+  opacity: 0;
+  -webkit-transform: translateX(50%);
+}
+
+.main-view.ng-enter-active {
+  opacity: 1;
+  -webkit-transform: translateX(50%);
+}
+
+.main-view.ng-enter
 .main-view.ng-enter-active {
   z-index: 50;
 }
@@ -543,32 +593,64 @@ button.icons.icon-search{
 .main-view.ng-leave,
 .main-view.ng-leave-active {
   z-index: 30;
+}*/
+
+/*.main-view.ng-enter,
+.main-view.ng-enter-active {
+  z-index: 50;
 }
+.main-view.ng-enter {
+  opacity: 0;
+  -webkit-transition: -webkit-transform 0s;
+  -webkit-transform: translateX(50%);
+}
+.main-view.ng-enter.ng-enter-active {
+  opacity: 1;
+  -webkit-transition: -webkit-transform 1s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  -webkit-transform: translateX(0);
+}
+
+
+.main-view.ng-leave,
+.main-view.ng-leave-active {
+  z-index: 30;
+}
+.main-view.ng-leave {
+  -webkit-transform: translateX(0);
+}
+.main-view.ng-enter.ng-enter-active {
+  -webkit-transition: -webkit-transform 1s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  -webkit-transform: translateX(-50%);
+}
+*/
+
+
+
 
 /* to remove a slight delay in applying the animations
 on a slow performaing device, keep the entering view hidden
 untill angular is ready to activate it */
-.main-view.ng-enter {
+/*.main-view.ng-enter {
   opacity: 0;
 }
 .main-view.ng-enter-active {
   opacity: 1;
-}
+}*/
 
 /* normal app state animations */
-.main-view.ng-enter {
+/*.main-view.ng-enter-active {
   #move > #ui-view > .enter;
 }
 
-.main-view.ng-leave {
+.main-view.ng-leave-active {
   #move > #ui-view > .leave;
-}
+}*/
 
 /* when returning back */
-.return-back > .main-view.ng-enter {
+/*.return-back > .main-view.ng-enter-active {
   #move > #ui-view > .enter-rev;
 }
 
-.return-back > .main-view.ng-leave {
+.return-back > .main-view.ng-leave-active {
   #move > #ui-view > .leave-rev;
-}
+}*/
