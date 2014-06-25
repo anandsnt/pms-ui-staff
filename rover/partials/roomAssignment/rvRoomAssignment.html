@@ -41,8 +41,8 @@
 					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
 					
 					<!-- Rooms list -->
-					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible}">
-						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
+						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);" ng-show = "!isRoomListEmpty()">
 							<li ng-repeat="room in filteredRooms" ng-click="assignRoom($index)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number ready">{{room.room_number}}</span></a>
 							</li>
