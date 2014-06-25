@@ -34,7 +34,7 @@ var SmartBandModal = function(reservationID) {
 		sntapp.notification.hideMessage(that.myDom);	
 	};
 	this.disableOutsideClickClosing = function(){
-        $('#modal-overlay, #modal-close, #cancel').unbind('click');
+        $('#modal-overlay').unbind('click');
         $("#modal-overlay").addClass("locked");
 	};
 
