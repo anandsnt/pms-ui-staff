@@ -13,13 +13,52 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
     	$scope.$broadcast('roomUpgradesLoaded', roomUpgrades);
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
+
+	/**
+	* function to to get the rooms based on the selected room type
+	*/
+	$scope.getRooms = function(index){
+		$scope.selectedRoomType = $scope.getCurrentRoomType();
+		var successCallbackGetRooms = function(data){
+			$scope.rooms = data;
+			$scope.setRoomsListWithPredefinedFilters();
+			$scope.applyFilterToRooms();
+			$scope.$emit('hideLoader');
+			setTimeout(function(){
+				$scope.$parent.myScroll['roomlist'].refresh();
+				}, 
+			3000);
+		};
+		var errorCallbackGetRooms = function(error){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = error;
+		};
+		var params = {};
+		params.reservation_id = $stateParams.reservation_id;
+		params.room_type = $scope.roomType;
+		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
+
+	};
+
+	$scope.getCurrentRoomType = function(){
+		for (var i = 0; i < $scope.roomTypes.length; i++) {
+			if($scope.roomTypes[i].type == $scope.roomType)
+				return $scope.roomTypes[i];
+		};
+	}
 	
 	/**
 	* function to assign the new room for the reservation
 	*/
 	$scope.assignRoom = function(index){
 		var successCallbackAssignRoom = function(data){
-			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom;
+			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
+			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
+			if(typeof $scope.selectedRoomType != 'undefined'){
+				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
+				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
+			}			
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			if($scope.clickedButton == "checkinButton"){
 				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
@@ -34,8 +73,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_number = parseInt($scope.rooms[index].room_number, 10);
-		$scope.assignedRoom = params.room_number;
+		params.room_number = parseInt($scope.filteredRooms[index].room_number, 10);
+		$scope.assignedRoom = $scope.filteredRooms[index];
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 
@@ -63,6 +102,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
 			$scope.applyFilterToRooms();
+			$scope.$parent.myScroll['roomlist'].refresh();
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
@@ -71,6 +111,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.reservationData.reservation_card.room_number = data.room_no;
 			$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
 			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
+			$scope.reservationData.reservation_card.room_status = "READY";
+			$scope.reservationData.reservation_card.fo_status = "VACANT";
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			$scope.backToStayCard();
 	});
@@ -88,6 +130,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.toggleFiltersView = function(){
 		$scope.isFiltersVisible = !$scope.isFiltersVisible;
+		$scope.$parent.myScroll['filterlist'].refresh();
 	};
 	/**
 	* function to set the color coding for the room number based on the room status
@@ -101,6 +144,18 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 				reservationRoomStatusClass = "not-ready";
 			}
 		} 
+		return reservationRoomStatusClass;
+	};
+
+	$scope.getRoomStatusClassForRoom = function(room){
+		var reservationRoomStatusClass = "";
+		
+			if(room.room_status == 'READY' && room.fo_status == 'VACANT'){
+				reservationRoomStatusClass = "ready";
+			} else {
+				reservationRoomStatusClass = "not-ready";
+			}
+		
 		return reservationRoomStatusClass;
 	};
 	/**
@@ -150,30 +205,94 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.applyFilterToRooms = function(){
 		$scope.filteredRooms = [];
-		for(var i = 0; i < $scope.rooms.length; i++){
+		var roomsWithInitialFilters = $scope.getRoomsWithInitialFilters();
+		for(var i = 0; i < roomsWithInitialFilters.length; i++){
 			var flag = true;
-			for(var j = 0; j < $scope.selectedFiltersList.length; j++){
-				if($scope.rooms[i].room_features.indexOf($scope.selectedFiltersList[j]) == -1)
-					flag = false;
-			}
+			
+				for(var j = 0; j < $scope.selectedFiltersList.length; j++){
+					if($scope.selectedFiltersList[j] != -100 && $scope.selectedFiltersList[j] != -101 && $scope.selectedFiltersList[j] != -102){
+						if(roomsWithInitialFilters[i].room_features.indexOf($scope.selectedFiltersList[j]) == -1)
+						flag = false;
+					}									
+				}
 			if(flag)
+				$scope.addToFilteredRooms(roomsWithInitialFilters[i]);
+		}
+		var includeNotReady = false;
+		var includeDueOut = false;
+		var includePreAssigned = false;
+		if($scope.selectedFiltersList.indexOf(-100) != -1){
+			includeNotReady = true;
+			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-100), 1);
+		}
+			
+			
+		if($scope.selectedFiltersList.indexOf(-101) != -1){
+			includeDueOut = true;
+			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-101), 1);
+		}
+			
+		if($scope.selectedFiltersList.indexOf(-102) != -1){
+			includePreAssigned = true;
+			$scope.selectedFiltersList.splice($scope.selectedFiltersList.indexOf(-102), 1);
+		}
+			
+		if($scope.filteredRooms.length == 0 && $scope.selectedFiltersList.length == 0)
+			$scope.filteredRooms = roomsWithInitialFilters;
+		
+		if(includeNotReady)
+			$scope.includeNotReadyRooms();
+		if(includeDueOut)
+			$scope.includeDueoutRooms();
+		if(includePreAssigned)
+			$scope.includePreAssignedRooms(); 
+	};
+
+	$scope.getRoomsWithInitialFilters = function(){
+		var roomsWithInitialFilters = [];
+		for (var i = 0; i < $scope.rooms.length; i++) {
+			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].fo_status.is_preassigned)
+				roomsWithInitialFilters.push($scope.rooms[i]);
+		};
+		return roomsWithInitialFilters;
+	}
+
+	$scope.includeNotReadyRooms = function(){
+		for(var i = 0; i < $scope.rooms.length; i++){
+			if($scope.rooms[i].room_features.indexOf(-100) != -1)
 				$scope.addToFilteredRooms($scope.rooms[i]);
 		}
-		
-		if($scope.filteredRooms.length == 0 && $scope.selectedFiltersList.length == 0)
-			$scope.filteredRooms = $scope.rooms;
 	};
+	$scope.includeDueoutRooms = function(){
+		for(var i = 0; i < $scope.rooms.length; i++){
+			if($scope.rooms[i].room_features.indexOf(-101) != -1)
+				$scope.addToFilteredRooms($scope.rooms[i]);
+		}
+	};
+	$scope.includePreAssignedRooms = function(){
+		for(var i = 0; i < $scope.rooms.length; i++){
+			if($scope.rooms[i].room_features.indexOf(-102) != -1)
+				$scope.addToFilteredRooms($scope.rooms[i]);
+		}
+	};
+
 	/**
-	* function to add the rooms to filtered list, handling the duplication
+	* function to add the rooms to filtered list with sorting, handling the duplication
 	*/
 	$scope.addToFilteredRooms = function(room){
 		var flag = false;
+		var pos = -1;
 			for(var j = 0; j < $scope.filteredRooms.length; j++){
+				if($scope.filteredRooms[j].room_number < room.room_number){
+						pos = j;
+				}					
 				if(room.room_number == $scope.filteredRooms[j].room_number)
 					flag = true;
 			}
-			if(!flag)
-				$scope.filteredRooms.push(room);
+			if(!flag){
+				$scope.filteredRooms.splice(pos + 1, 0, room);
+			}
+				
 	};
 	/**
 	* function to prepare the array of selected filters' ids

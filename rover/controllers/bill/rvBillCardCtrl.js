@@ -22,8 +22,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			lineWidth : 1
 	};
 	
-	// $scope.heading = $filter('translate')('VIEW_BILL_TITLE');
-	$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
+	if($scope.clickedButton == "checkoutButton"){
+		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
+	}
+	else{
+		$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
+	}
+	
 	$scope.init = function(reservationBillData){
 		/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
@@ -62,14 +67,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		//Variables used to calculate height of the wrapper.To do scroll refresh
-		if(reservationBillData.bills[0].total_fees.length > 0){
-			countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
-		} else {
-			countFeesElements = parseInt(5);
-		}
+		// if(reservationBillData.bills[0].total_fees.length > 0){
+			// countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
+		// } else {
+			// countFeesElements = parseInt(5);
+		// }
+// 		
+		// var totalHeight = parseInt(countFeesElements*67)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		// $scope.calculatedHeight = totalHeight;
+		setTimeout(function(){
+     		$scope.calculateHeightAndRefreshScroll();
+        }, 200);
 		
-		var totalHeight = parseInt(countFeesElements*67)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
-		$scope.calculatedHeight = totalHeight;
 	};
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
@@ -122,7 +131,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showDayRates = function(dayIndex, clickedDate, checkoutDate, numberOfNights){
 		//In this condition show the last clicked days item 
 		//OR if checkout date clicked first do not show anything
-		if(clickedDate == checkoutDate){$state
+		if(clickedDate == checkoutDate){
 			if(numberOfNights == 0){
 				$scope.dayRates = dayIndex;
 			} else {
@@ -462,9 +471,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	$scope.showBillingInfoHandle = function(){
 		$scope.showBillingInfo = !$scope.showBillingInfo;
+		$scope.calculateHeightAndRefreshScroll();
 	};
 	$scope.showIncomingBillingInfoHandle = function(){
 		$scope.showIncomingBillingInfo = !$scope.showIncomingBillingInfo ;
+		$scope.calculateHeightAndRefreshScroll();
 	};
 	
 
@@ -498,8 +509,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if( $scope.currentActiveBill === $scope.lastBillIndex && $scope.reservationBillData.required_signature_at === 'CHECKOUT'){
 			height = parseInt(height) + parseInt(200);
 		}
-		// if()
-		// var totalHeight = calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		if($scope.clickedButton == "checkinButton"){
+			if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill)
+	     		height = parseInt(height) + parseInt(550);
+	    };
+	    if($scope.showBillingInfo){
+	        var routingLength =	($scope.reservationBillData.routing_array.length*15);
+	    	height = parseInt(height) + parseInt(routingLength);
+	    }
+	     if($scope.showIncomingBillingInfo){
+	        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*15);
+	    	height = parseInt(height) + parseInt(routingLength);
+	    }
 		$scope.calculatedHeight = height;
 		setTimeout(function(){
 			$scope.$parent.myScroll['registration-content'].refresh();
@@ -537,6 +558,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
 				 controller: 'RVKeyEmailPopupController',
 				 className: 'ngdialog-theme-default1',
+				 closeByDocument: false,
 				 scope: $scope
 			});
 		}
@@ -546,6 +568,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
 				 controller: 'RVKeyQRCodePopupController',
 				 className: 'ngdialog-theme-default1',
+				 closeByDocument: false,
 				 scope: $scope
 			});
 		}
@@ -556,6 +579,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 			    controller: 'RVKeyEncodePopupCtrl',
 			    className: 'ngdialog-theme-default1',
+			    closeByDocument: false,
 			    scope: $scope
 			});
 		}
@@ -600,11 +624,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response){
+		console.log(response);
 		$scope.$emit('hideLoader');
-		$scope.showSuccessPopup(response.data);
+		$scope.showSuccessPopup(response);
 	};
 	// To handle failure callback of complete checkout
 	$scope.completeCheckoutFailureCallback = function(data){
+		console.log(data);
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
@@ -631,6 +657,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 	        		template: '/assets/partials/validateCheckout/rvValidateEmail.html',
 	        		controller: 'RVValidateEmailCtrl',
+	        		className: 'ngdialog-theme-default1 calendar-single1',
 	        		scope: $scope
 	        });
 		}
@@ -642,6 +669,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
         		template: '/assets/partials/earlyCheckout/rvEarlyCheckout.html',
         		controller: 'RVEarlyCheckoutCtrl',
+        		className: 'ngdialog-theme-default1 calendar-single1',
         		scope: $scope
 	        });
 		}
@@ -691,6 +719,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
+    		className: 'ngdialog-theme-default1 calendar-single1',
     		scope: $scope
     	});
 	};
@@ -704,6 +733,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
+    		className: 'ngdialog-theme-default1 calendar-single1',
     		scope: $scope
     	});
 	};

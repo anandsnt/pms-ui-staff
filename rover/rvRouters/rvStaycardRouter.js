@@ -16,7 +16,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         });
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {
@@ -25,8 +25,11 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
                     return RVReservationCardSrv.fetch($stateParams.id);
                 },
                 reservationDetails:function(RVReservationCardSrv, $stateParams) {
-                    
-                    return RVReservationCardSrv.fetchReservationDetails($stateParams.confirmationId);
+                     var data = {
+				 		  	"confirmationNumber": $stateParams.confirmationId,
+				 		  	"isRefresh": $stateParams.isrefresh
+				 		  }; 
+                    return RVReservationCardSrv.fetchReservationDetails(data);
                 }
             }
         }); 
