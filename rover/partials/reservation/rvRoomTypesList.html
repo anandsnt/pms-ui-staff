@@ -1,8 +1,8 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <section id="rooms-and-rates" class="content reservations-inner" >
 
-    <ul class="reservation-header">
-        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2} translate"> ROOM_LABEL {{$index + 1}}</li>
+    <ul class="reservation-header" ng-show="rooms.length > 1">
+        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2}" translate> ROOM_LABEL {{$index + 1}}</li>
     </ul>
     <div class="reservations-content-wrapper">
         <div class="reservation-filters">
@@ -22,8 +22,7 @@
             <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
         </ul>
     </div>
-    <!-- -->
-    <!-- -->
+
 
     <div class="reservation-content rooms-and-rates-content scrollable"  ng-iscroll="room_types"  ng-iscroll-delay="500"  style="height:{{containerHeight}}px">
         <div>
@@ -107,11 +106,11 @@
                 <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates">
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                         <div class="data">
-                            <h2>{{rate.rate.name}}{{rate.preferredType}}</h2>
+                            <h2>{{rate.rate.name}}</h2>
                         </div>
                         <div class="book-rate">
                             <div class="select" ng-click="$event.stopPropagation()">
-                                <select name="room-1-type" class="placeholder" ng-model="selectedRoom">
+                                <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()">
                                     <!-- <option value="-1">Select Room Type</option> -->
                                     <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.preferredType">{{room.name}}</option>
                                 </select>

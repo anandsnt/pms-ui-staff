@@ -3,7 +3,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         $scope.reservationSettingsVisible = false;
 
-        var resizableMinWidth = 10;
+        var resizableMinWidth = 30;
         var resizableMaxWidth = 260;
         $scope.reservationSettingsWidth = resizableMinWidth;
         /**

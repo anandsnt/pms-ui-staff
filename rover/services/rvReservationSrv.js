@@ -43,14 +43,18 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 		that.confirmationNumbersArray.push(confirmationNumber);
 	  
 	};
-	this.fetchReservationDetails = function(confirmationNumber){
-	
+	this.fetchReservationDetails = function(data){
+	var confirmationNumber = data.confirmationNumber;
+	var isRefresh = data.isRefresh;
 	var isConfirmationNumberAlreadyCalled = false;
 	angular.forEach(that.confirmationNumbersArray, function(value, key){
-
-		if(value === confirmationNumber )
-		  isConfirmationNumberAlreadyCalled = true;
-     });
+		if(!isRefresh){
+			if(value === confirmationNumber )
+			  isConfirmationNumberAlreadyCalled = true;
+		 }
+	});
+		
+		
 	
 		var deferred = $q.defer();
 
