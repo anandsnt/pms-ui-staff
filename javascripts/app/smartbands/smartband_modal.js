@@ -17,6 +17,17 @@ var SmartBandModal = function(reservationID) {
 		that.myDom.find('#add-new-button').on('click', that.addNewSmartBand);
 		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
 		that.myDom.on('click', that.clickedOnSmartbandModal);
+		/**
+		* To prevent the tab key causing focus out of the modal view. 
+		*/
+		that.myDom.find('#last-name').blur(function(){
+			if(!(that.myDom.find('#fixed-amound').is(':visible'))){
+				$('#first-name').focus();
+			}
+		});
+		that.myDom.find('#fixed-amound').blur(function(){
+			$('#first-name').focus();
+		});
 	};
 
 	this.clickedOnSmartbandModal = function(event){
@@ -24,10 +35,7 @@ var SmartBandModal = function(reservationID) {
 	};
 	this.disableOutsideClickClosing = function(){
         $('#modal-overlay, #modal-close, #cancel').unbind('click');
-	};
-
-	this.enableOutsideClickClosing = function(){
-		$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
+        $("#modal-overlay").addClass("locked");
 	};
 
 	this.modalDidShow = function(){
@@ -41,6 +49,7 @@ var SmartBandModal = function(reservationID) {
 			that.controllers[controller].parentController = that;
 			that.controllers[controller].initialize();		
 		}
+		that.disableOutsideClickClosing();
 		that.showPage("smartband-listing");
     };
 	
