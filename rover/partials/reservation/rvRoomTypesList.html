@@ -36,7 +36,7 @@
                     <a class="has-arrow toggle" ng-class="{active: selectedRoomType == room.id}" ng-click="setSelectedType(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
-                            <span ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 && $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell}}&nbsp;{{'RESV_MORE'|translate}}</span>
+                            <span ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 && $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell|number:0}}&nbsp;{{'RESV_MORE'|translate}}</span>
                         </div>
                         <div class="book-rate" ng-class="{hidden: selectedRoomType == room.id}">
                             <h4 translate>RESV_BEST_RATE</h4>
@@ -104,16 +104,16 @@
                 </li>          
             </ul> 
             <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'RATE'">      
-                <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.rooms[0].id" ng-hide="$index > 1 && showLessRates">
+                <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.preferredType" ng-hide="$index > 1 && showLessRates">
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                         <div class="data">
-                            <h2>{{rate.rate.name}}</h2>
+                            <h2>{{rate.rate.name}}{{rate.preferredType}}</h2>
                         </div>
                         <div class="book-rate">
                             <div class="select" ng-click="$event.stopPropagation()">
                                 <select name="room-1-type" class="placeholder" ng-model="selectedRoom">
                                     <!-- <option value="-1">Select Room Type</option> -->
-                                    <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="$index==0">{{room.name}}</option>
+                                    <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.preferredType">{{room.name}}</option>
                                 </select>
                             </div>
                             <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
@@ -122,7 +122,7 @@
                     </a>
                     <ul class="rate-details" ng-class="{hidden: !isActive}">
                         <ul class="info">
-                            <li ng-bind-html="displayData.roomTypes[selectedRoom].description" ></li>
+                            <li ng-bind-html="roomAvailability[selectedRoom].description"></li>
                             <li>{{displayData.allRates[rate.rate.id].description}}</li>
                             <li>{{displayData.allRates[rate.rate.id].deposit_policy.description}}</li>
                             <li>{{displayData.allRates[rate.rate.id].cancellation_policy.description}}</li>
