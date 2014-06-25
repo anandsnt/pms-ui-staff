@@ -107,7 +107,7 @@
                 <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.rooms[0].id" ng-hide="$index > 1 && showLessRates">
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                         <div class="data">
-                            <h2>{{rate.rate.name}}{{preferredType}}</h2>
+                            <h2>{{rate.rate.name}}</h2>
                         </div>
                         <div class="book-rate">
                             <div class="select" ng-click="$event.stopPropagation()">
