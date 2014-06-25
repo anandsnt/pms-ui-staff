@@ -1,20 +1,27 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout) {
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout','$stateParams',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
         BaseCtrl.call(this, $scope);
 
         //Setting number of nights 1
         $scope.reservationData.numNights = 1;
+        $scope.$parent.hideSidebar = false;
+
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
         var init = function() {
+            
+            if($stateParams.status !== 'RETAIN_RESERVATION') {
+                $scope.initReservationData();
+            }
             $scope.businessDate = baseSearchData.businessDate;
             if($scope.reservationData.arrivalDate == ''){
                 $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
             }
-            
-            $scope.setDepartureDate();
+            if($scope.reservationData.departureDate == ''){
+                $scope.setDepartureDate();
+            }
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
@@ -24,22 +31,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         $scope.setDepartureDate = function() {
-            console.log($scope.reservationData.numNights);
 
-            if($scope.reservationData.departureDate == ''){
-
-                var dateOffset = $scope.reservationData.numNights;
-                if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
-                    dateOffset = 1;
-                }
-                var newDate = new Date($scope.reservationData.arrivalDate);
-                newDay = newDate.getDate() + parseInt(dateOffset);
-                newDate.setDate(newDay);
-                console.log("-----")
-                console.log($scope.reservationData.departureDate);
-                console.log('inside');
-                $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+            var dateOffset = $scope.reservationData.numNights;
+            if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
+                dateOffset = 1;
             }
+            var newDate = new Date($scope.reservationData.arrivalDate);
+            newDay = newDate.getDate() + parseInt(dateOffset);
+            newDate.setDate(newDay);
+            $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
         }
 
         $scope.setNumberOfNights = function() {

@@ -28,7 +28,12 @@
             <!-- Company Card Header-->
             <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')">
                 <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
-                    Add <span>Company</span>
+                    <div ng-show="reservationData.company.name == ''">
+                        Add <span>Company</span>
+                    </div>
+                    <div ng-hide="reservationData.company.name == ''">
+                        <span>{{ reservationData.company.name }}</span>
+                    </div>
                 </div>
                 <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
                     <div class="holder">
@@ -44,7 +49,12 @@
             <!-- Travel Agent Card Header-->
             <div id="travel-agent-card-header" class="card-header" ng-class="UICardClass('travel-agent-card')">
                 <div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
-                    Add <span>Travel Agent</span>
+                    <div ng-show="reservationData.travelAgent.name == ''">
+                        Add <span>Travel Agent</span>
+                    </div>
+                    <div ng-hide="reservationData.travelAgent.name == ''">
+                        <span>{{ reservationData.travelAgent.name }}</span>
+                    </div>
                 </div>
                 <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
                     <div class="holder">
@@ -69,30 +79,6 @@
                     <!-- Guest Card Results listing -->
                     <div class="wrapper" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
                         <ul id="search-guests-results" class="search-results">
-                            <li>
-                                <a href="#">
-                                    <figure class="guest-image">
-                                        <img src="guest1.jpg" alt="" />
-                                    </figure>
-                                    <div class="data">
-                                        <h2>Smith, Aaron</h2>
-                                        <span class="confirmation">12341278</span>
-                                        <span class="icons icon-location">Dallas, TX</span>
-                                        <span class="icons icon-phone">302-555-1212</span>
-                                    </div>
-                                    <div class="stays">
-                                        <div class="count">
-                                            <span class="label">Stays</span>2
-                                        </div>
-                                        <div class="last-stay">
-                                            <span class="label">Last</span>
-                                            November 12, 2012
-                                            <strong>114</strong>
-                                            <em>Superior King</em>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
                             <li ng-repeat="guest in guests">
                                 <a ng-click="selectGuest(guest, $event)">
                                     <figure class="guest-image">

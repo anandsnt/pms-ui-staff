@@ -3,6 +3,7 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
 	$scope.currentClickedElement = -1;
+	$scope.preveousItem = "";
     /*
     * To fetch charge markets list
     */
@@ -23,6 +24,7 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
+		$scope.preveousItem = $scope.data.markets[index].name;
 	};
 	/*
     * To get the template of edit screen
@@ -37,6 +39,11 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
     * To handle cancel click
     */	
 	$scope.clickedCancel = function(){
+		if($scope.currentClickedElement != 'new'){
+			$scope.data.markets[$scope.currentClickedElement].name = $scope.preveousItem;
+			$scope.preveousItem = "";
+		}
+		$scope.data.name = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*
