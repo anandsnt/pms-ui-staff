@@ -135,6 +135,16 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 		$scope.isContactInformationSaved = true;
+		//In the case of ass mode - rename the headding after saving contact info
+		if($scope.isAddNewCard){
+			//setting the heading of the screen
+			if($stateParams.type == "COMPANY"){
+				$scope.heading = "Company Card";
+			}
+			else if($stateParams.type == "TRAVELAGENT"){
+				$scope.heading = "Travel Agent Card";
+			}
+		}
 	};
 
 	/**

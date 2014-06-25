@@ -106,6 +106,7 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 		 template: '/assets/partials/companyCard/rvSelectCardType.html',
 		 controller: 'selectCardTypeCtrl',
 		 className: 'ngdialog-theme-default',
+		 closeByDocument: false,
 		 scope: $scope
 	});
   };
