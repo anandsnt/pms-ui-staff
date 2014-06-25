@@ -28,10 +28,10 @@
 		if($scope.checked){
 	// if room upgrades are available
 	if($rootScope.upgradesAvailable){
-		$location.path('/checkinUpgrade');
+		$state.go('checkinUpgrade');
 	}
 	else{
-		$location.path('/checkinKeys');
+		$state.go('checkinKeys');
 	}			
 
 }
