@@ -1,4 +1,5 @@
 <form ng-controller="RVLikesController" class="form card-tab scrollable" ng-show="current == 'guest-like'">
+  <div ng-iscroll="likes_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
     <div class="wrapper">
     	 <button class="green" ng-click="saveLikes()">SAAAAAAAAAAAAVE</button>
         <div class="holder left">
@@ -8,9 +9,9 @@
             <div class="entry full-width">
                 <label for="newspaper">Newspaper</label>
                 <!-- <input name="newspaper" id="newspaper" value="Wall Street Journal" type="text" /> -->
-                <select>
+                <select ng-model="guestCardData.likes.user_newspaper">
                 	<option value=""></option>
-                	<option ng-repeat="newspapers in guestCardData.likes.newspapers" value="newspapers.id">
+                	<option ng-repeat="newspapers in guestCardData.likes.newspapers" value="{{newspapers.id}}">
                 		{{newspapers.name}}
                 	</option>
                 </select>
@@ -18,9 +19,9 @@
             
             <div class="entry full-width">
                 <label for="roomtype">Room type</label>
-                <select>
+                <select ng-model="guestCardData.likes.user_roomtype">
                 	<option value=""></option>
-                	<option ng-repeat="roomtype in guestCardData.likes.roomtype" value="roomtype.id">
+                	<option ng-repeat="roomtype in guestCardData.likes.roomtype" value="{{roomtype.id}}">
                 		{{roomtype.name}}
                 	</option>
                 </select>
@@ -30,8 +31,8 @@
                 <label for="floor1">{{preferences.name}}</label>
                 <label class="checkbox" ng-repeat="preferenceValues in preferences.values" ng-class="{'checked': preferenceValues.isChecked}">
                     <span class="icon-form icon-checkbox"  ng-class="{'checked': preferenceValues.isChecked}"></span>
-                    <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference()" ng-model="preferenceValues.isChecked"/>
-                    {{preferenceValues.details}}-- {{preferenceValues.isChecked}}
+                    <input type="checkbox" name="{{preferences.name}}" ng-change="changedPreference($parent.$index, $index)" ng-model="preferenceValues.isChecked"/>
+                    {{preferenceValues.details}}
                 </label>
                 
             </div>
@@ -44,9 +45,9 @@
             <strong class="h3">Room Features</strong>
             
             <div class="entry radio-check" ng-repeat="roomFeatures in guestCardData.likes.room_features">
-                <label class="checkbox" ng-repeat="roomFeaturesValues in roomFeatures.values" ng-class="{'checked': saveData.roomfeature}">
-                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': saveData.roomfeature}"></span>
-                    <input ng-model="roomFeaturesValues.isSelected" type="checkbox" checked />
+                <label class="checkbox" ng-repeat="roomFeaturesValues in roomFeatures.values" ng-class="{'checked': roomFeaturesValues.isSelected}">
+                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeaturesValues.isSelected}"></span>
+                    <input ng-model="roomFeaturesValues.isSelected" type="checkbox" />
                     {{roomFeaturesValues.details}}
                 </label>
             </div>
@@ -54,6 +55,6 @@
         </div>
         
         
-        
+        </div>
     </div>
 </form>

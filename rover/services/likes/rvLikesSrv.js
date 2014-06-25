@@ -15,7 +15,7 @@ sntRover.service('RVLikesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 	this.saveLikes = function(param){
 		var deferred = $q.defer();
 		var dataToSend = param.data;
-		var url = '/staff/guest_cards/'+params.userId+'/update_preferences';
+		var url = '/staff/guest_cards/'+param.userId+'/update_preferences';
 		RVBaseWebSrv.postJSON(url, dataToSend).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

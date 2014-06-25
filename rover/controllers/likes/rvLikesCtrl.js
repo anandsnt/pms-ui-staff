@@ -3,27 +3,26 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 
 	$scope.errorMessage = "";
 	$scope.guestCardData.likes = {};
-	$scope.updateData = {};
+	$scope.guestLikesData = {};
 	
 	$scope.init = function(){
-		
 		
 	    var fetchLikesFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
 	    };
 	    var data = { 'userId' : $scope.guestCardData.contactInfo.user_id };
-		$scope.invokeApi(RVLikesSrv.fetchLikes,data,$scope.fetchLikesSuccessCallback,fetchLikesFailureCallback);  	
+		$scope.invokeApi(RVLikesSrv.fetchLikes,data,$scope.fetchLikesSuccessCallback,fetchLikesFailureCallback, 'NONE');  	
 	};
 	$scope.fetchLikesSuccessCallback = function(data){
 		
         $scope.$emit('hideLoader');
         
-        $scope.updateData = data;
+        $scope.guestLikesData = data;
         
-        angular.forEach($scope.updateData.preferences, function(value, key) {
+        angular.forEach($scope.guestLikesData.preferences, function(value, key) {
 	         angular.forEach(value.values, function(prefValue, prefKey) {
-		        var userPreference = $scope.updateData.user_preference;
+		        	var userPreference = $scope.guestLikesData.user_preference;
 		        	if(userPreference.indexOf(prefValue.id) != -1){
 		        		prefValue.isChecked = true;
 		        	} else {
@@ -31,9 +30,9 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		        	}
 		     });
 	     });
-	      angular.forEach($scope.updateData.room_features, function(value, key) {
+	      angular.forEach($scope.guestLikesData.room_features, function(value, key) {
 	         angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
-		        var userRoomFeature = value.user_selection;
+		        	var userRoomFeature = value.user_selection;
 		        	if(userRoomFeature.indexOf(roomFeatureValue.id) != -1){
 		        		roomFeatureValue.isSelected = true;
 		        	} else {
@@ -41,12 +40,21 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		        	}
 		     });
 	     });
-        $scope.guestCardData.likes = $scope.updateData;
-        console.log(JSON.stringify($scope.updateData));
-        /**
-		  * storing to check if data will be updated
-		  */
-       // presentLikes = JSON.parse(JSON.stringify($scope.guestCardData.likes));
+        $scope.guestCardData.likes = $scope.guestLikesData;
+        $scope.$parent.myScrollOptions = {		
+		    'likes_info': {
+		    	scrollbars: true,
+		        snap: false,
+		        hideScrollbar: false,
+		        preventDefault: false
+		    },
+		};
+	
+		setTimeout(function(){
+			$scope.$parent.myScroll['likes_info'].refresh();
+			}, 
+		3000);
+
     };
 	$scope.$on('SHOWGUESTLIKESINFO', function(){
 		$scope.init();
@@ -54,37 +62,67 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	
 	
 	$scope.saveLikes = function(){
-		console.log("============SAVEDATA===============");
-		console.log($scope.saveData);
-	    // var saveUserInfoSuccessCallback = function(data){
-	        // $scope.$emit('hideLoader');
-	    // };
-	    // var saveUserInfoFailureCallback = function(data){
-	        // $scope.$emit('hideLoader');
-	        // $scope.errorMessage = data;
-	        // $scope.$emit('contactInfoError',true);
-	    // };
-// 	   
-	 // /**
-	  // * change date format for API call 
-	  // */
-	    // var dataToUpdate =  JSON.parse(JSON.stringify($scope.guestCardData.likes));
-	    // var dataUpdated = false;
-// 	
-	    // if(angular.equals(dataToUpdate, presentLikes)) {
-				// dataUpdated = true;
-		// }
-		// else{
-			// presentContactInfo = dataToUpdate;	
-			// //var unwantedKeys = ["avatar","vip"]; // remove unwanted keys for API
-			// //dataToUpdate = dclone(dataToUpdate, unwantedKeys); 
-		// };	    	
-// 	    
-	    // var data ={'data':dataToUpdate,
-	    			// 'userId':$scope.guestCardData.contactInfo.user_id
-	    		// };
-	    // if(!dataUpdated)
-	     // $scope.invokeApi(RVLikesSrv.saveLikes,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback);  	
+
+	    var saveUserInfoSuccessCallback = function(data){
+	        $scope.$emit('hideLoader');
+	    };
+	    var saveUserInfoFailureCallback = function(data){
+	        $scope.$emit('hideLoader');
+	        $scope.errorMessage = data;
+	        $scope.$emit('contactInfoError',true);
+	    };
+	   
+	   
+	    var updateData = {};
+	    
+	    updateData.guest_id = $scope.guestCardData.contactInfo.guest_id;
+	    updateData.preference = [];
+	    angular.forEach($scope.guestLikesData.newspapers, function(value, key) {
+	    	var newsPaperUpdateData = {};
+        	if(value.id == $scope.guestLikesData.user_newspaper){
+        		newsPaperUpdateData.type = "NEWSPAPER";
+        		newsPaperUpdateData.value = value.name;
+        		updateData.preference.push(newsPaperUpdateData);
+        	} 
+	     });
+	     angular.forEach($scope.guestLikesData.roomtype, function(value, key) {
+	    	var roomTypeUpdateData = {};
+        	if(value.id == $scope.guestLikesData.user_roomtype){
+        		roomTypeUpdateData.type = "ROOM TYPE";
+        		roomTypeUpdateData.value = value.name;
+        		updateData.preference.push(roomTypeUpdateData);
+        	} 
+	     });
+	     
+	     angular.forEach($scope.guestLikesData.room_features, function(value, key) {
+	         angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
+	         	var roomFeatureUpdateData = {};
+		     	if(roomFeatureValue.isSelected){
+		     		roomFeatureUpdateData.type = "ROOM FEATURE";
+		     		roomFeatureUpdateData.value = roomFeatureValue.details;
+		     		updateData.preference.push(roomFeatureUpdateData);
+		     	}
+		        	
+		     });
+	     });
+	    angular.forEach($scope.guestLikesData.preferences, function(value, key) {
+	    	 var preferenceUpdateData = {};
+	         angular.forEach(value.values, function(prefValue, prefKey) {
+	         	
+	         	if(prefValue.isChecked){
+	         		preferenceUpdateData.type = value.name;
+	         		preferenceUpdateData.value = prefValue.details;
+	         	} 
+		     });
+		     updateData.preference.push(preferenceUpdateData);
+	     });
+	     console.log(JSON.stringify(updateData));
+
+	      var saveData = {
+	      	userId: $scope.guestCardData.contactInfo.user_id,
+	      	data: updateData
+	      };
+	      $scope.invokeApi(RVLikesSrv.saveLikes,saveData,saveUserInfoSuccessCallback,saveUserInfoFailureCallback);  	
 	};
 	
 	
@@ -96,23 +134,13 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		$scope.saveLikes();
 	});	
 	
-	$scope.changedPreference = function(){
-		
+	$scope.changedPreference = function(parentIndex, index){
+		  angular.forEach($scope.guestLikesData.preferences[parentIndex].values, function(value, key) {
+		 	if(key !== index){
+		 		value.isChecked = false;
+		 	} 
+	     });
 	};
 	
-	$scope.$parent.myScrollOptions = {		
-	    'contact_info': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false
-	    },
-	};
 	
-	$scope.$on('CONTACTINFOLOADED', function(event) {
-		setTimeout(function(){
-			$scope.$parent.myScroll['contact_info'].refresh();
-			}, 
-		1500);
-		
-	});
 }]);
