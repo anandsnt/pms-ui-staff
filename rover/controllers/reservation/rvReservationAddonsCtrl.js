@@ -24,6 +24,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
     }
 
     $scope.goToSummaryAndConfirm = function(){
+        $scope.closePopup();
         $state.go('rover.reservation.mainCard.summaryAndConfirm');
     }
 
@@ -51,15 +52,20 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
             item.id = addon.id;
             item.title = addon.title;
             item.quantity = parseInt(addonQty);
+            item.price = addon.price;
             $scope.activeRoom.addons.push(item);
         }
         else{
             $scope.activeRoom.addons[elemIndex].quantity += parseInt(addonQty);
         }
+        // add selected addon amount to total stay cost
+        $scope.reservationData.totalStayCost += parseInt(addonQty) * parseInt(addon.price);
         $scope.showEnhancementsPopup();
     }
 
     $scope.removeSelectedAddons = function(index){
+        // subtract selected addon amount from total stay cost
+        $scope.reservationData.totalStayCost -= parseInt($scope.activeRoom.addons[index].quantity) * parseInt($scope.activeRoom.addons[index].price);
         $scope.activeRoom.addons.splice(index, 1);
         if( $scope.activeRoom.addons.length === 0 ){
             $scope.closePopup();
