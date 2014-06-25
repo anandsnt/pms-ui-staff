@@ -15,7 +15,7 @@ angular.module('reservationModule', []).config(function($stateProvider, $urlRout
         });
 
         $stateProvider.state('rover.reservation.search', {
-            url: '/search',
+            url: '/search/:status',
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
             resolve: {
