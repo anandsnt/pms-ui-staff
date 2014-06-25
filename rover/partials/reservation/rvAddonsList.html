@@ -12,12 +12,12 @@
                     
                     <!-- Categories -->
                     <ul class="addon-categories">
-                      <li ng-class="{'ui-state-active': addonCategory === activeAddOnCategory}">
-                        <a ng-click="selectAddonCategory('BEST SELLERS', $event)" class="button white" translate>BEST_SELLERS</a>
-                    </li>
-                      <li ng-repeat="addonCategory in addonCategories" ng-class="{'ui-state-active': addonCategory === activeAddOnCategory}">
-                        <a ng-click="selectAddonCategory(addonCategory.name, $event)" class="button white">{{ addonCategory.name }}</a>
-                    </li>
+                        <li ng-class="{'ui-state-active': -1 === activeAddonCategoryId }">
+                            <a ng-click="selectAddonCategory('', $event)" class="button white" translate>BEST_SELLERS</a>
+                        </li>
+                        <li ng-repeat="addonCategory in addonCategories" ng-class="{ 'ui-state-active': addonCategory.id === activeAddonCategoryId }">
+                            <a ng-click="selectAddonCategory(addonCategory, $event)" class="button white">{{ addonCategory.name }}</a>
+                        </li>
                     </ul>
                     
                     <!-- Items -->
@@ -30,22 +30,25 @@
                         </div>
                         <!-- FIX style="margin-top:60px; width: 100%;" -->
                         <ul id="addon-best-sellers" class="addon-tab" style="margin-top:60px; width: 100%;">
-                            <li ng-repeat="addon in addons | filter: { category: activeAddonCategory }">
+                            <li ng-repeat="addon in addons">
                                 <div class="data">
                                     <span class="categories">
-                                        <span ng-class="{current: addon.category === activeAddonCategory}">{{ addon.category }}</span> |
-                                        <span>{{ addon.category_short_desc }}</span>
+                                        <span class="current" ng-show="addon.isBestSeller" translate>BEST_SELLERS</span> |
+                                        <span>{{ addon.category }}</span>
                                     </span>
                                     <h2>{{ addon.title }}</h2>
-                                    <em>{{ addon.desc }}</em>
+                                    <em>{{ addon.description }}</em>
                                 </div>
-                                <div class="price">{{currencySymbol}}{{ addon.price }}</div>
+                                <div class="price">
+                                    {{currencySymbol}}{{ addon.price }}
+                                    <span>{{ addon.stay }}</span>
+                                </div>
                                 <div class="add-enhancement" ng-init="addonQty=1">
                                     <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
                                     <div class="select">
                                         <label class="label" for="room-1-champagne-quantity" translate>QUANTITY</label>
                                         <select name="room-1-champagne-quantity" ng-model="addonQty">
-                                            <option ng-repeat="i in [1, addon.quantity] | makeRange" value="{{i}}">{{i}}</option>
+                                            <option ng-repeat="i in [1, 3] | makeRange" value="{{i}}">{{i}}</option>
                                         </select>
                                     </div>
                                 </div>
