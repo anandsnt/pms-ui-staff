@@ -130,7 +130,7 @@
           }
           else{
               $scope.isFetching = true;
-              var data = {'reservation_id':$rootScope.reservationID,'mli_SessionId':MLISessionId};
+              var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId};
               ccVerificationService.verifyCC(data).then(function(response) {
               $scope.isFetching = false;
               if(response.status ==="success"){

@@ -2,10 +2,10 @@
 var ccVerificationService = function($q,$http) {
 	var response = {};
 
-	var verifyCC = function(url,data) {
+	var verifyCC = function(data) {
 
 			var deferred = $q.defer();
-			var url = "";
+			var url = "/staff/reservation/save_payment";
 			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
 			}).error(function(){
