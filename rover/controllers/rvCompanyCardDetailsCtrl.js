@@ -4,6 +4,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	console.log("$stateParams id --"+$stateParams.id);
 	// Flag for add new card or not
 	$scope.isAddNewCard = ($stateParams.id == "add") ? true : false ;
+	$scope.isDiscard = false;
 	//setting the heading of the screen
 	if($stateParams.type == "COMPANY"){
 		if($scope.isAddNewCard) $scope.heading = "New Company Card";
@@ -149,6 +150,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			}
 		}
 		$scope.isAddNewCard = false;
+		$scope.errorMessage = "";
 	};
 
 	/**
@@ -203,7 +205,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		event.preventDefault();
 		event.stopPropagation();
 		if($scope.isAddNewCard){
-				console.log("No action");
+			console.log("No action");
+		}
+		else if($scope.isDiscard){
+			console.log("Discarded");
 		}
 		else{
 			saveContactInformation($scope.contactInformation);
@@ -220,6 +225,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		if($scope.isAddNewCard && !$scope.isContactInformationSaved){
 			$scope.saveNewCardPrompt();
 		}
+		else if($scope.isDiscard){
+			console.log("Discarded");
+		}
 		else{
 			saveContactInformation($scope.contactInformation);
 		}
@@ -232,7 +240,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	};
 	// To handle click on discard button.
 	$scope.clikedDiscardCard = function(){
-		$state.go("rover.companycardsearch");
+		$scope.isDiscard = true;
+		$state.go('rover.companycardsearch', { 'textInQueryBox': $stateParams.firstname });
 		$scope.isAddNewCard = false;
 		ngDialog.close();
 	};
