@@ -3,6 +3,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
+	$scope.preveousItem = "";
     /*
     * To fetch charge groups list
     */
@@ -19,6 +20,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
+		$scope.preveousItem = $scope.data.charge_groups[index].name;
 	};
 	/*
     * To get the template of edit screen
@@ -34,6 +36,11 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($
     * To handle cancel click
     */	
 	$scope.clickedCancel = function(){
+		if($scope.currentClickedElement != 'new'){
+			$scope.data.charge_groups[$scope.currentClickedElement].name = $scope.preveousItem;
+			$scope.preveousItem = "";
+		}
+		$scope.data.name = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*

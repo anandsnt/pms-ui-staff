@@ -1,8 +1,8 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog',
     function($scope, $rootScope, baseData, ngDialog) {
 
-
         $scope.initReservationData = function() {
+            $scope.hideSidebar = false;
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
@@ -10,12 +10,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 checkinTime: {
                     hh: '',
                     mm: '',
-                    ampm: ''
+                    ampm: 'AM'
                 },
                 checkoutTime: {
                     hh: '',
                     mm: '',
-                    ampm: ''
+                    ampm: 'AM'
                 },
                 numNights: 1, // computed value, ensure to keep it updated
                 roomCount: 1, // Hard coded for now,
