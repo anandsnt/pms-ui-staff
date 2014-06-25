@@ -22,8 +22,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			lineWidth : 1
 	};
 	
-	// $scope.heading = $filter('translate')('VIEW_BILL_TITLE');
-	$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
+	if($scope.clickedButton == "checkoutButton"){
+		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
+	}
+	else{
+		$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
+	}
+	
 	$scope.init = function(reservationBillData){
 		/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
@@ -661,6 +666,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
         		template: '/assets/partials/earlyCheckout/rvEarlyCheckout.html',
         		controller: 'RVEarlyCheckoutCtrl',
+        		className: 'ngdialog-theme-default1 calendar-single1',
         		scope: $scope
 	        });
 		}
@@ -710,6 +716,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
+    		className: 'ngdialog-theme-default1 calendar-single1',
     		scope: $scope
     	});
 	};
@@ -723,6 +730,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
+    		className: 'ngdialog-theme-default1 calendar-single1',
     		scope: $scope
     	});
 	};
