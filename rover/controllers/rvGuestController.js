@@ -84,6 +84,9 @@ $scope.guestCardTabSwitch = function(tab){
 	if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
 		$scope.$broadcast('saveContactInfo');
 	};
+	if($scope.current ==='guest-like' && tab !== 'guest-like'){
+		$scope.$broadcast('SAVELIKES');
+	};
 	if(tab === 'guest-credit'){
 		$scope.$broadcast('PAYMENTSCROLL');
 	}
@@ -93,6 +96,9 @@ $scope.guestCardTabSwitch = function(tab){
 
 $scope.$on('contactInfoError', function(event, value) { 
     $scope.contactInfoError = value;
+});
+$scope.$on('likesInfoError', function(event, value) { 
+    $scope.likesInfoError = value;
 });
 $scope.updateContactInfo =  function(){
 	var saveUserInfoSuccessCallback = function(data){
@@ -152,22 +158,27 @@ var element = $event.target;
 			$scope.guestCardVisible = false;
 			$scope.$emit('GUESTCARDVISIBLE', false);
 		}
-}
-else{
-	if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
-		/**
+	}
+	else{
+		if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
+		   /**
 			* handle click on tab navigation bar.
 			*/
-		if($event.target.id==='guest-card-tabs-nav')
-			$scope.$broadcast('saveContactInfo');
+			if($event.target.id==='guest-card-tabs-nav'){
+				console.log("inside===")
+				$scope.$broadcast('saveContactInfo');
+				$scope.$broadcast('SAVELIKES');
+				
+			}				
+			else
+			    return;
+		}
 		else
-		    return;
+		{
+			$scope.$broadcast('SAVELIKES');
+		  	$scope.$broadcast('saveContactInfo');
+		}
 	}
-	else
-	{
-	  	$scope.$broadcast('saveContactInfo');
-	}
-}
 
 };
 

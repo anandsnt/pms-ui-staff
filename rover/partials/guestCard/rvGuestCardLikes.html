@@ -1,6 +1,9 @@
-<form ng-controller="RVLikesController" class="form card-tab scrollable" ng-show="current == 'guest-like'">
+<form outside-click-handler ng-controller="RVLikesController" class="form card-tab scrollable" ng-show="current == 'guest-like'">
   <div ng-iscroll="likes_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
     <div class="wrapper">
+    	<div class="entry full-width">
+ 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+ 		</div>
     	 <button class="green" ng-click="saveLikes()">SAAAAAAAAAAAAVE</button>
         <div class="holder left">
             <strong class="h3">Preferences </strong>

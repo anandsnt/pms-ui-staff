@@ -69,7 +69,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	    var saveUserInfoFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
-	        $scope.$emit('contactInfoError',true);
+	        $scope.$emit('likesInfoError',true);
 	    };
 	   
 	   
@@ -141,6 +141,9 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		 	} 
 	     });
 	};
-	
+	$scope.$on("OUTSIDECLICKED", function(event){
+		alert("outside likes tab card")
+		event.preventDefault();
+	});
 	
 }]);
