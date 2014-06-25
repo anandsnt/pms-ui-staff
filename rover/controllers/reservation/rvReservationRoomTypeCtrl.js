@@ -4,7 +4,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
-		$scope.containerHeight = 300;
+		$scope.containerHeight = 250;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 		$scope.activeCriteria = "ROOM_TYPE";
@@ -61,7 +61,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 0;
-			$scope.rooms = roomRates.rooms;
+			$scope.rooms = $scope.reservationData.rooms;
 			$scope.activeRoom = 0;
 
 
@@ -78,7 +78,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.displayData.allRates = rates;
 
 			//TODO : Make adjustments if multiple rooms are selected and the room selection bar is displayed
-			$scope.containerHeight = $(window).height() - 300;
+			$scope.containerHeight = $(window).height() - 250;
 
 			$scope.roomAvailability = $scope.getAvailability(roomRates);
 
