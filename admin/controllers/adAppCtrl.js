@@ -311,13 +311,16 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 * @param {object} response
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
-			if (data.language)
+			
+			if (data.language){
 				$translate.use(data.language.value);
+			}
 			else
 				$translate.use('EN');
 			//set flag if standalone PMS
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;
+			$scope.businessDate = data.business_date;
 			$scope.$emit('hideLoader');
 
 		};

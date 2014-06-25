@@ -15,9 +15,9 @@
 		<div id="key-status" class="scan-key">
 			<span class="h2 message" translate>ROOM_KEY_EMAILED</span>
 			<div class="action">
-				<em class="info"> {{ 'EMAIL_WITH_QR_CODE_SENT_TO' | translate }}  {{data.email}} </em>
-				<a ng-show="false" class="modal-close button brand-colors" ui-sref="rover.dashboard" ng-click="closeButtonClick()" translate>VIEW_STAY_CARD</a>
-				<a ng-show="false" class="modal-close button blue" ui-sref="rover.search" ng-click="closeButtonClick()" translate>SEARCH</a>
+				<em class="info"> {{ 'EMAIL_WITH_QR_CODE_SENT_TO' | translate }}  {{guestCardData.contactInfo.email}} </em>
+				<a ng-show="fromView=='checkin'" class="modal-close button brand-colors" ng-click="goToStaycard()" translate>VIEW_STAY_CARD</a>
+				<a ng-show="fromView=='checkin'" class="modal-close button blue" ng-click="goToSearch()" translate>SEARCH</a>
 			</div>
 		</div>
 	</div>

@@ -8,6 +8,7 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
+	$scope.$parent.$parent.reservation = reservationDetails;
 	$scope.reservationnote = "";
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
@@ -16,6 +17,7 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
         function() { return (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined')?$scope.reservationData.reservation_card.wake_up_time.wake_up_time:$filter('translate')('NOT_SET'); },
         function(wakeuptime) { $scope.wake_up_time = wakeuptime; }
     );
+    console.log($scope.reservationData);
 	// $scope.wake_up_time = ;
 	angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 		if($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id){
@@ -59,6 +61,7 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
 		
 		$scope.$emit('hideLoader');
+		$scope.$parent.$parent.reservation = data;
 		$scope.reservationData = data;
 	};
 	/*
@@ -67,7 +70,13 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	 */
 	$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
 	 	if(confirmationNumber){
-	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, confirmationNumber, $scope.reservationDetailsFetchSuccessCallback);	
+	 		  console.log("reached api")
+	 		  
+	 		  var data = {
+	 		  	"confirmationNumber": confirmationNumber,
+	 		  	"isRefresh": $stateParams.isrefresh
+	 		  };
+	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);	
 	 	} else {
 	 		$scope.reservationData = {};
 	 	}

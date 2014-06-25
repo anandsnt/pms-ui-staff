@@ -16,7 +16,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         });
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {
@@ -25,15 +25,18 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
                     return RVReservationCardSrv.fetch($stateParams.id);
                 },
                 reservationDetails:function(RVReservationCardSrv, $stateParams) {
-                    
-                    return RVReservationCardSrv.fetchReservationDetails($stateParams.confirmationId);
+                     var data = {
+				 		  	"confirmationNumber": $stateParams.confirmationId,
+				 		  	"isRefresh": $stateParams.isrefresh
+				 		  }; 
+                    return RVReservationCardSrv.fetchReservationDetails(data);
                 }
             }
         }); 
 
                                
         $stateProvider.state('rover.staycard.billcard', {
-			 url: '/billcard/:reservationId',
+			 url: '/billcard/:reservationId/:clickedButton',
 			 templateUrl: '/assets/partials/bill/rvBillCard.html',
              controller: 'RVbillCardController',
 	         resolve: {
@@ -42,11 +45,34 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 				}
 			}
         });
-        
          $stateProvider.state('rover.staycard.roomassignment', {
-            url: '/roomassignment',
+            url: '/roomassignment/:reservation_id/:room_type/:clickedButton',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
-            controller: 'RVroomAssignmentController'
+            controller: 'RVroomAssignmentController',
+            resolve: {
+                roomsList: function(RVRoomAssignmentSrv, $stateParams) {
+                    
+                    var params = {};
+                    params.reservation_id = $stateParams.reservation_id;
+                    params.room_type = $stateParams.room_type;
+                    return RVRoomAssignmentSrv.getRooms(params);
+                },
+                roomPreferences:function(RVRoomAssignmentSrv, $stateParams) {
+                    var params = {};
+                    params.reservation_id = $stateParams.reservation_id;
+                    return RVRoomAssignmentSrv.getPreferences(params);
+                },
+                roomUpgrades:function(RVUpgradesSrv, $stateParams) {
+                    var params = {};
+                    params.reservation_id = $stateParams.reservation_id;
+                    return RVUpgradesSrv.getAllUpgrades(params);
+                }
+            }
+        });
+         $stateProvider.state('rover.staycard.upgrades', {
+            url: '/upgrades/:reservation_id/:clickedButton',
+            templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
+            controller: 'RVUpgradesController'
         });
 
         //Change stay dates

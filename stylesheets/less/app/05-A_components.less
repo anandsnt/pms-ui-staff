@@ -6262,15 +6262,27 @@
 					> .iScrollVerticalScrollbar { top: 20px; }
 
 					.addons {
-
-						.skip {
-							font-size: 15px;
-							margin-bottom: 10px;
-							#pixel-to-percent > .width(320,2048);
-						}
-
 						.addon-items {
-							margin-top: -50px;
+							.options {
+                                text-align: right;
+                                margin-bottom: 10px;
+
+                                .float;
+
+                                .button {
+                                    display: inline-block;
+
+                                    &.white {
+                                        margin-right: 10px;
+                                    }
+
+                                    &.green {
+                                        text-align: left;
+                                        padding-right: 40px;
+                                        line-height: 42px;
+                                    }
+                                }
+                            }
 
 							.addon-tab {
 								li {
@@ -6355,6 +6367,60 @@
 
 						&.calendar-left { #pixel-to-percent > .right-margin(80, 1968); }
 					}
+
+					.update-details {
+                        padding: 15px;
+                        .float;
+                        .faux-clickable;
+                        .size(80px, 100%);
+
+                        .data {
+                            padding-right: 15px;
+                            border-right: 1px solid rgba(0,0,0,.1);
+                            height: 50px;
+                            .calc-width(100,230);
+                            .pull-left;
+
+                            li {
+                                display: inline-block;
+                                font-size: 15px;
+                                line-height: 50px;
+                                margin: 0;
+                                padding-right: 20px;
+                                width: 28%;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+
+                                .guest-status { margin: 15px 10px 0 0; }
+
+                                &:first-child { width: 16%; }
+                                &:last-child { width: 28%; }
+                            }
+                        }
+
+                        .action {
+                            overflow: hidden;
+                            .size(50px, 230px);
+                            .pull-right;
+
+                            .button { line-height: 48px; }
+                        }
+
+                        &.no-updates {
+                            background-color: transparent;
+                            padding: 0;
+                            height: auto;
+                            .box-shadow(none);
+                            #border-radius > .rounded(0px);
+                            
+                            .action { 
+                                width: 100%;
+                                float: none;
+                                text-align: center; 
+                            }
+                        }
+                    }
 				}
 			}
 
@@ -6773,6 +6839,38 @@
 						.show;
 					}
 				}
+
+				.reservation-completed {
+                    #pixel-to-percent > .side-padding(150, 1058);
+                    
+                    h2 {
+                        font-size: 28px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        text-align: center;
+                        margin: 60px 0 30px 0;
+                    }
+
+                    .button { 
+                        font-size: 18px;
+                        line-height: 24px;
+                        padding: 15px 40px;
+                        width: 100%;
+                        .show;
+                    }
+
+                    .entry {
+                        .button { margin-top: 10px; }
+                    }
+
+                    .actions {
+                        .button {
+                            margin-bottom: 10px;
+
+                            &:last-child { margin-bottom: 0; }
+                        }
+                    }
+                }
 			}
 
 			/* Multi room layouts ***/

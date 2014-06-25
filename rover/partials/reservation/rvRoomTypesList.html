@@ -36,7 +36,7 @@
                     <a class="has-arrow toggle" ng-class="{active: selectedRoomType == room.id}" ng-click="setSelectedType(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
-                            <span ng-show="displayData.roomTypes.length > 0 && $index > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0}}&nbsp;{{'RESV_MORE'|translate}}</span>
+                            <span ng-init="upsell = roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0" ng-show="displayData.roomTypes.length > 0 && $index > 0 && upsell > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{upsell}}&nbsp;{{'RESV_MORE'|translate}}</span>
                         </div>
                         <div class="book-rate" ng-class="{hidden: selectedRoomType == room.id}">
                             <h4 translate>RESV_BEST_RATE</h4>
@@ -87,7 +87,7 @@
                                     </tfoot>
                                     <tbody>           
                                         <tr ng-repeat = "day in displayData.dates">
-                                            <td>{{day.obj | date: dayAndDate }}</td>
+                                            <td>{{day.obj | date: dayAndDateCS }}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td> 
@@ -99,7 +99,7 @@
                         </li>
                     </ul>
                 </li>  
-                <li class="break" ng-show="showLessRooms && displayData.roomTypes.length > 2 && selectedRoomType == -1" ng-click="showLessRooms = false ; refreshScroll()">
+                <li class="break" ng-show="showLessRooms && displayData.allRooms.length > 2 && selectedRoomType == -1" ng-click="showAllRooms()">
                     <span translate>RESV_SEE_MORE_ROOMS</span>
                 </li>          
             </ul> 
@@ -150,7 +150,7 @@
                             </tfoot>
                             <tbody>
                                 <tr ng-repeat = "day in displayData.dates">
-                                    <td>{{day.obj | date: dayAndDate }}</td>
+                                    <td>{{day.obj | date: dayAndDateCS }}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td> 
