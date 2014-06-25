@@ -24,7 +24,7 @@ var WriteToSmartBandView = function(domRef){
 		that.parentController.getControllerObject('smartband-listing').addRow(that.data);
 		that.data = {};
 		that.parentController.showPage('smartband-listing');
-	}
+	};
 
 	/*
 	* function to execute on clicking next band button, wil show add new band button page
@@ -33,27 +33,66 @@ var WriteToSmartBandView = function(domRef){
 		that.parentController.getControllerObject('smartband-listing').addRow(that.data);
 		that.data = {};	
 		that.parentController.showPage('add-new-smartband');
-	}
+	};
 
 	/**
 	* function to handle the failure case of save API
 	*/
 	this.failureCallbackOfSaveAction = function(errorMessage){
 		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
-	}
+	};
+
+	/**
+	* Set the selected band type - fixed room/open charge to the band
+	*/
+	this.writeBandType = function(){
+		var args = [];
+		var bandType = '00000002';
+		if(that.data.is_fixed){
+			bandType = '00000001';
+		}
+		args.push(bandType);
+		args.push(that.data.account_number);
+		args.push('19');//Block Address - hardcoded
+
+		var options = {
+			//Cordova write success callback
+			'successCallBack': function(){
+				sntapp.activityIndicator.hideActivityIndicator();
+				that.myDom.find(".success").show();
+				that.myDom.find("#button-area").show();	
+				that.myDom.find("#not-ready-status").hide();
+				that.myDom.find("#cancel").hide();			
+				that.parentController.showButton('see-all-band-button');
+				that.parentController.myDom.find('#see-all-band-button').unbind('click');
+				that.parentController.myDom.find('#see-all-band-button').on('click', that.clickedOnSeeAllBands);
+				
+			},
+			'failureCallBack': function(message){
+				sntapp.activityIndicator.hideActivityIndicator();
+				if(message == undefined || message == ''){
+					message = 'Failed to write the band type';
+				}
+				that.failureCallbackOfSaveAction(message);
+				
+			},
+			arguments: args
+		};
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.setBandTypeDebug(options);
+		}
+		else{
+			sntapp.cardReader.setBandType(options);
+		}
+
+	};
 
 	/**
 	* function to handle the success case of save API, will change our data
 	*/
 	this.successCallbackOfSaveAction = function(data){		
-		that.data.id = data.id;	
-		that.myDom.find(".success").show();
-		that.myDom.find("#button-area").show();	
-		that.myDom.find("#not-ready-status").hide();
-		that.myDom.find("#cancel").hide();			
-		that.parentController.showButton('see-all-band-button');
-		that.parentController.myDom.find('#see-all-band-button').unbind('click');
-		that.parentController.myDom.find('#see-all-band-button').on('click', that.clickedOnSeeAllBands);
+		that.data.id = data.id;
+		that.writeBandType();	
 	};
 
 	/**
@@ -83,9 +122,9 @@ var WriteToSmartBandView = function(domRef){
 			loader: 'blocker',
 			async: false
 	    };
-		// we prepared, we shooted!!
+
 		var webservice = new NewWebServiceInterface();	    			
-    	webservice.postJSON(url, options);		
+    	webservice.postJSON(url, options);	
 	};
 
 	/**
