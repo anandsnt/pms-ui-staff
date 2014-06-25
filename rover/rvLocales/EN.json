@@ -65,7 +65,17 @@
     "TOTAL_NIGHTS": "Total Nights",
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
-    "AVERAGE_RATE": "Average Rate",    
+    "AVERAGE_RATE": "Average Rate",
+    
+	"COMPANY_CARD": "Company Card",
+	"TA_CARD": "Travel Agent Card",
+	"CREATE_NEW": "Create New",
+	"SAVE_NEW_CARD": "Save new card",
+	"DISCARD": "Discard",
+	"SAVE_NEW": "Save new ",
+	"CARD":"card?"
+	
+,    
     
     "GREETING_MORNING": "Good Morning",
     "GREETING_AFTERNOON": "Good Afternoon",
@@ -281,6 +291,7 @@
     "0_ITEM_SELECTED": "0 items selected",
     "POST_CHARGE": "Post Charge",
     "VIEW_BILL_TITLE": "View Bill",
+    "GUEST_BILL_TITLE": "Guest Bill",
     "PLEASE_SIGN_BELOW": "Please sign below",
     "T_AND_C_TEXT": "By Checking this box you hereby agree to the Terms & Conditions",
     "PROMO_NEWS_BY_EMAIL_TEXT": "Please send me promotions and news via email.",
