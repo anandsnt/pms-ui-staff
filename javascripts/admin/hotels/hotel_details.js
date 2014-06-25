@@ -35,6 +35,8 @@ var HotelDetailsView = function(domRef) {
 
 
 		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
+	    that.myDom.find('#test-mli-payment-gateway').on('click', that.testMLIPaymentGatewayConnectivity);
+
 	};
 
 	this.testMliConnectivity = function(event) {
@@ -56,6 +58,32 @@ var HotelDetailsView = function(domRef) {
 		};
 
 		webservice.postJSON(url, options);
+	};
+
+	this.testMLIPaymentGatewayConnectivity = function(event) {
+	
+
+		var url = 'api/test_mli_payment_gate_way';
+
+		var webservice = new WebServiceInterface();
+
+		var options = {
+			successCallBack: that.fetchCompletedOfPaymentGatewayConnectivityTest,
+			failureCallBack: that.fetchFailedOfPaymentGatewayConnectivityTest,
+			loader: 'blocker'
+		};
+
+		webservice.getJSON(url, options);
+	};
+
+	// To handle success on MLI payment gateway connection test API
+	this.fetchCompletedOfPaymentGatewayConnectivityTest = function(data, params) {
+		sntapp.notification.showSuccessMessage("Connection Valid", that.myDom, '', true);
+	};
+
+	// To handle failure on MLI payment gateway connection test API
+	this.fetchFailedOfPaymentGatewayConnectivityTest = function(errorMessage, params) {
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
 	};
 
 	// To handle success on MLI connection test API
