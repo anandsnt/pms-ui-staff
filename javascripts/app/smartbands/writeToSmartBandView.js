@@ -111,7 +111,6 @@ var WriteToSmartBandView = function(domRef){
 	*/
 	this.fetchSuccessKeyRead = function(accountNumber){
 		sntapp.activityIndicator.hideActivityIndicator();
-		that.parentController.enableOutsideClickClosing();		
 		that.data.account_number = accountNumber;
 		
 		var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
@@ -132,13 +131,11 @@ var WriteToSmartBandView = function(domRef){
 	*/
 	this.fetchFailedKeyRead = function(){
 		sntapp.activityIndicator.hideActivityIndicator();
-		that.parentController.enableOutsideClickClosing();
 		sntapp.notification.showErrorMessage('Failed to read from device', that.myDom);
 	};
 
 
   	this.pageshow = function(){
-		that.parentController.disableOutsideClickClosing();
 		that.myDom.find("#not-ready-status").show();
 		that.myDom.find("#cancel").show();	
 		that.myDom.find(".success").hide();

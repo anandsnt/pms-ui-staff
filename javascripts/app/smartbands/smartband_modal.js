@@ -38,10 +38,6 @@ var SmartBandModal = function(reservationID) {
         $("#modal-overlay").addClass("locked");
 	};
 
-	this.enableOutsideClickClosing = function(){
-		$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
-	};
-
 	this.modalDidShow = function(){
 		that.controllers = {
 			"smartband-listing" : new SmartBandListView(that.myDom.find("#smartband-listing")),
