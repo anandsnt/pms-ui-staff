@@ -391,9 +391,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 
-			for (var id in rooms) {
+			_.each(rooms, function(value) {
 				// step3: total and average calculation
-				var value = rooms[id];
+				// var value = rooms[id];
 
 				//step4 : sort the rates within each room
 				value.rates.sort(function(a, b) {
@@ -416,7 +416,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				if (typeof value.total[value.defaultRate] != 'undefined') {
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
-			}
+			});
 			//console.log(rooms);
 			return rooms;
 		}
