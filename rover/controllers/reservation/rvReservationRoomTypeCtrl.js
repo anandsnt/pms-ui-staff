@@ -127,21 +127,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.ratesMaster = [];
 			$scope.displayData.availableRates = [];
 
-			if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
-				$($scope.displayData.allRooms).each(function(i, d) {
-					var room = $scope.roomAvailability[d.id];
-					$(room.rates).each(function(i, rateId) {
-						if (typeof $scope.ratesMaster[rateId] == 'undefined') {
-							$scope.ratesMaster[rateId] = {
-								rooms: [],
-								rate: $scope.displayData.allRates[rateId]
-							};
-						}
-						$scope.ratesMaster[rateId].rooms.push(room);
-					})
-				});
-			} else {
-				var room = $scope.roomAvailability[$scope.preferredType];
+			// if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
+			$($scope.displayData.allRooms).each(function(i, d) {
+				var room = $scope.roomAvailability[d.id];
 				$(room.rates).each(function(i, rateId) {
 					if (typeof $scope.ratesMaster[rateId] == 'undefined') {
 						$scope.ratesMaster[rateId] = {
@@ -151,20 +139,39 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 					$scope.ratesMaster[rateId].rooms.push(room);
 				})
-			}
+			});
 
 			$($scope.ratesMaster).each(function(i, d) {
 				if (typeof d != 'undefined') {
 					//Sort Rooms inside the rates so that they are in asc order of avg/day
 					//TODO: Restructure the data
-					d.rooms.sort(function(a, b) {
-						if (a.total[d.rate.id].average < b.total[d.rate.id].average)
-							return -1;
-						if (a.total[d.rate.id].average > b.total[d.rate.id].average)
-							return 1;
-						return 0;
-					});
-					$scope.displayData.availableRates.push(d);
+					if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
+						d.rooms.sort(function(a, b) {
+							if (a.total[d.rate.id].average < b.total[d.rate.id].average)
+								return -1;
+							if (a.total[d.rate.id].average > b.total[d.rate.id].average)
+								return 1;
+							return 0;
+						});
+						d.preferredType = d.rooms[0].id;
+						$scope.displayData.availableRates.push(d);
+
+					} else {
+						//preferred room process
+						if (_.where(d.rooms, {
+							id: $scope.preferredType
+						}).length > 0) {
+							d.preferredType = $scope.preferredType;
+							d.rooms.sort(function(a, b) {
+								if (a.total[d.rate.id].average < b.total[d.rate.id].average)
+									return -1;
+								if (a.total[d.rate.id].average > b.total[d.rate.id].average)
+									return 1;
+								return 0;
+							});
+							$scope.displayData.availableRates.push(d);
+						}
+					}
 				}
 			});
 
@@ -504,6 +511,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.$watch('activeCriteria', function() {
 			$scope.refreshScroll();
+			$scope.rateFilterText = "";
+			$scope.filterRates();
 		});
 
 		$scope.highlight = function(text, search) {
