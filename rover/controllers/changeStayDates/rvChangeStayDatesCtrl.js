@@ -1,18 +1,20 @@
-sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$scope',  'stayDateDetails', 
-                                                    'RVChangeStayDatesSrv', 
+sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$scope',  
+                                    'stayDateDetails', 'RVChangeStayDatesSrv', 
             function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv){
 
     //inheriting some useful things
     BaseCtrl.call(this, $scope);
+    var that = this;
+    this.initialise = function(){
 
-    $scope.initialise = function(){
     	$scope.stayDetails = stayDateDetails;
     	$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
     	$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
-        $scope.showReservationUpdates = false;
-        $scope.room_selected = $scope.stayDetails.details.room_number;
+        $scope.rightSideReservationUpdates = '';
+        $scope.roomSelected = $scope.stayDetails.details.room_number;
         $scope.calendarNightDiff = '';
         $scope.avgRate = '';
+        $scope.availableRooms = [];
         /* event source that contains custom events on the scope */
         $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 
@@ -62,68 +64,114 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
 
     $scope.successCallbackCheckUpdateAvaibale = function(data){
       $scope.$emit("hideLoader");
-      $scope.showReservationUpdates = true;
+      //entire function is for right side
+  
+      /*based on the availability of room, web service will give 3 status
+          "room_available": we need to show room details, rate, total, avg...
+          "room_type_available": we need to show room list, after selecting that
+          "not_available": we need to show the not available message
+      */
+      if(data.availability_status == "room_available"){
+        that.showRoomAvailable();
+      }
+      else if(data.availability_status == "room_type_available"){
+        that.showRoomTypeAvailable(data);
+      }
+      else if(data.availability_status == "not_available"){
+
+      } 
+      else{
+
+      }
+      $scope.refreshScroller();     
+    }; 
+
+    // function to show room list
+    that.showRoomTypeAvailable = function(data){
+        $scope.availableRooms = data.rooms;
+        //we are showing the right side with updates
+        $scope.rightSideReservationUpdates = 'ROOM_TYPE_AVAILABLE'; 
+    };
+
+    //function to show room details, total, avg.. after successful checking for room available
+    this.showRoomAvailable = function(){        
+      //setting nights based on calender checking/checkout days
       var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
       $scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
 
+      //calculating the total rate / avg.rate
       $scope.totRate = 0;
       var checkinRate = '';
       $($scope.stayDetails.calendarDetails.available_dates).each(function(index){
           
-
+          //we have to add rate between the calendar checkin date & calendar checkout date only
           if(getDateObj(this.date).getTime() >= $scope.checkinDateInCalender.getTime() &&
            getDateObj(this.date).getTime() <= $scope.checkoutDateInCalender.getTime()){
               $scope.totRate += parseFloat(this.rate);
           }
-
+          //if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
           if(this.date == ($scope.stayDetails.details.arrival_date)){
               checkinRate = $scope.escapeNull(this.rate) == "" ? "" : parseInt(this.rate);
           }
          
       });
+      //calculating the avg. rate
       if($scope.calendarNightDiff > 0){
         $scope.avgRate = Math.round( ($scope.totRate / $scope.calendarNightDiff + 0.00001) );
       }
-      else{
-        $scope.avgRate = Math.round( ($scope.totRate + 0.00001) );
+      else{        
         $scope.totRate = checkinRate;
-      }      
-      
-      if(data.availability_status == "room_available"){
+        $scope.avgRate = Math.round( ($scope.totRate + 0.00001) );
+      }   
+      //we are showing the right side with updates
+      $scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';               
+    }
 
-      }
-      else if(data.availability_status == "room_type_available"){
+    //click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
+    $scope.roomSelectedFromList = function(roomNumber){
+      $scope.roomSelected = roomNumber;
+      that.showRoomAvailable();
+    }
 
-      }
-      else if(data.availability_status == "not_available"){
+    $scope.getRoomClass =  function(reservationStatus, roomStatus, foStatus){
+        var roomClass = "";
+        if(reservationStatus == "CHECKING_IN"){
+            if(roomStatus == "READY" && foStatus== "VACANT"){
+                roomClass = "ready";
+            } else {
+                roomClass = "not-ready";
+            }
+        } 
+        return roomClass;
+    };
 
-      } 
-      $scope.refreshScroller();     
-    }; 
-
-    $scope.successCallbackConfirmUpdates = function(data){
+    this.successCallbackConfirmUpdates = function(data){
       $scope.$emit("hideLoader");
       $scope.goBack();
     };
-    $scope.failureCallbackConfirmUpdates = function(errorMessage){
+    this.failureCallbackConfirmUpdates = function(errorMessage){
 
         $scope.$emit("hideLoader");
         $scope.errorMessage = errorMessage;
     };
 
     $scope.resetDates = function(){
-        $scope.initialise();
+        that.initialise();
     }
 
     $scope.goBack = function(){
-         $state.go($rootScope.previousState, $rootScope.previousStateParams);
+        $state.go($rootScope.previousState, $rootScope.previousStateParams);
     };
 
+    // function to get color class against a room based on it's status
+    $scope.getColorCode = function(roomReadyStatus, checkinInspectedOnly){
+        return get_mapped_room_ready_status_color(roomReadyStatus, checkinInspectedOnly);
+    };
     $scope.confirmUpdates = function(){
       
-      var postParams = {'room_selected': $scope.room_selected,  'arrival_date': getDateString($scope.checkinDateInCalender), 'dep_date': getDateString($scope.checkoutDateInCalender), 
+      var postParams = {'room_selected': $scope.roomSelected,  'arrival_date': getDateString($scope.checkinDateInCalender), 'dep_date': getDateString($scope.checkoutDateInCalender), 
       'reservation_id': $scope.stayDetails.calendarDetails.reservation_id};
-      $scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, $scope.successCallbackConfirmUpdates, $scope.failureCallbackConfirmUpdates);      
+      $scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);      
     }
 
     $scope.alertOnDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
@@ -249,7 +297,7 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
       return events;
   };  
 
-	$scope.initialise();
+	this.initialise();
 
 
     $scope.refreshScroller = function(){

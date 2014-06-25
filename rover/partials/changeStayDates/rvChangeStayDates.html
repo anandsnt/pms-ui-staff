@@ -1,0 +1,16 @@
+<div id="change-dates-main" >
+	<!-- data-view="ChangeStayDatesView"> -->
+	<div ng-include="'/assets/partials/common/header.html'"></div>
+	<section role="complementary" id="edit-reservation" class="content stay-card-inner check-in">
+		<!-- Room assignment header -->
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/changeStayDates/rvChangeStayDatesHeader.html'"></div>
+		<!-- Edit reservation -->
+		<div class="edit-reservation-content" ng-iscroll="edit_reservation_content" ng-iscroll-delay="100">
+			<!-- Reservation calendar -->
+			<div ng-include="'/assets/partials/changeStayDates/rvChangeStayDatesCalendar.html'"></div>
+			<!-- Reservation update -->
+			<div ng-include="'/assets/partials/changeStayDates/rvChangeStayDatesReservationUpdate.html'"></div>
+		</div>
+	</section>
+</div>

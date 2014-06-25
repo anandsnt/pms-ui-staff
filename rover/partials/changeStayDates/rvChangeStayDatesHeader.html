@@ -1,0 +1,39 @@
+<div class="reservation-header">
+	<div class="actions back">
+		<a id="changedates-back-btn" class="back-button" ng-click="goBack()">Back</a>
+	</div>
+	<div class="data">
+		<span data-room-status="{{stayDetails.details.room_status}}" data-reserv-status="{{stayDetails.details.reservation_status}}" data-fostatus="{{stayDetails.details.fo_status}}" class="room">
+			<span class="guest-status room">room</span>
+			<strong id="header-room-num" class="room-number "  ng-class="getRoomClass(stayDetails.details.reservation_status, stayDetails.details.room_status, stayDetails.details.fo_status)">
+				{{stayDetails.details.room_number}}
+			</strong>
+			<span id="room-type" data-room-type="{{stayDetails.details.room_type}}">
+				{{stayDetails.details.room_type_name}}
+			</span>
+		</span>
+		<span class="nights">
+			<span class="guest-status nights">
+																
+			</span>
+			<ng-pluralize count="stayDetails.details.total_nights"
+				  when="{'0': 'Day Use',
+         				'1': '1 night',
+         				other: '{} nights'}">
+			</ng-pluralize>	
+			
+		</span>
+		<span class="date">
+			<span class="guest-status small-icon check-in">check-in</span>
+
+			{{getSimplifiedDayName(stayDetails.details.arrival_date)}}
+			{{stayDetails.details.arrival_date|date:mmddyyyyFormat}}
+		</span>
+		<span class="date">
+			<span class="guest-status small-icon check-out">check-out</span>
+			{{getSimplifiedDayName(stayDetails.details.departure_date)}}
+			{{stayDetails.details.departure_date|date:mmddyyyyFormat}}
+		</span>
+	</div>
+
+</div>
