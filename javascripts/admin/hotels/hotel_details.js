@@ -61,7 +61,6 @@ var HotelDetailsView = function(domRef) {
 	};
 
 	this.testMLIPaymentGatewayConnectivity = function(event) {
-	
 
 		var url = 'api/test_mli_payment_gate_way';
 
