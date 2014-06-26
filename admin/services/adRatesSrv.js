@@ -1,6 +1,39 @@
 admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
     function ($http, $q, ADBaseWebSrvV2) {
 
+        /*
+         * Service function to toggle activate/de-activate rate
+         * @params {object} id
+         */
+        this.toggleRateActivate = function (params) {
+
+            var deferred = $q.defer();
+            var url = "/api/rates/enable_disable";
+
+            ADBaseWebSrvV2.putJSON(url,params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        /*
+         * Service function to delete rate
+         * @params {object} id
+         */
+        this.deleteRate = function (param) {
+
+            var deferred = $q.defer();
+            var url = "/api/rates/" + param.id;
+
+            ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchRates = function (data) {
             var deferred = $q.defer();
 
