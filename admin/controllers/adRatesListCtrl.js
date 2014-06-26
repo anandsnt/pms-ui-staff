@@ -78,7 +78,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-			console.log(data);
 			$scope.mouseEnterPopover = true; 
 		};
 
@@ -88,7 +87,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.currentHoverElement = index;
 			var params = {};
 			params[fetchKey] = id;
-			$scope.invokeApi(ADRatesSrv.fetchRates, params, rateFetchSuccess);
+			$scope.invokeApi(ADRatesSrv.fetchRates, params, rateFetchSuccess, '', 'NONE');
 		}
 	};
 
@@ -112,7 +111,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.currentHoverElement = index;
 			var params = {};
 			params[fetchKey] = id;
-			$scope.invokeApi(ADRatesSrv.fetchDateRanges, params, dateFetchSuccess);
+			$scope.invokeApi(ADRatesSrv.fetchDateRanges, params, dateFetchSuccess, '', 'NONE');
 		}
 	};
 
