@@ -22,8 +22,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			lineWidth : 1
 	};
 	
-	// $scope.heading = $filter('translate')('VIEW_BILL_TITLE');
-	$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
+	if($scope.clickedButton == "checkoutButton"){
+		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
+	}
+	else{
+		$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
+	}
+	
 	$scope.init = function(reservationBillData){
 		/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
@@ -619,11 +624,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response){
+		console.log(response);
 		$scope.$emit('hideLoader');
-		$scope.showSuccessPopup(response.data);
+		$scope.showSuccessPopup(response);
 	};
 	// To handle failure callback of complete checkout
 	$scope.completeCheckoutFailureCallback = function(data){
+		console.log(data);
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
@@ -650,6 +657,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 	        		template: '/assets/partials/validateCheckout/rvValidateEmail.html',
 	        		controller: 'RVValidateEmailCtrl',
+	        		className: 'ngdialog-theme-default1 calendar-single1',
 	        		scope: $scope
 	        });
 		}
@@ -661,6 +669,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
         		template: '/assets/partials/earlyCheckout/rvEarlyCheckout.html',
         		controller: 'RVEarlyCheckoutCtrl',
+        		className: 'ngdialog-theme-default1 calendar-single1',
         		scope: $scope
 	        });
 		}
@@ -710,6 +719,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
+    		className: 'ngdialog-theme-default1 calendar-single1',
     		scope: $scope
     	});
 	};
@@ -723,6 +733,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
+    		className: 'ngdialog-theme-default1 calendar-single1',
     		scope: $scope
     	});
 	};

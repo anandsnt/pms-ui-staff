@@ -1,0 +1,9 @@
+<div role="dialog" id="modal" class="modal-show">
+	<form class="modal-content new-card" name="message-reminder" id="message-reminder">
+	    <span class="h2 message"> {{ 'SAVE_NEW' | translate }} {{ account_type|lowercase }} {{ 'CARD' | translate }}</span>
+		<div class="actions">
+			<button class="button green" type="button" ng-click="clikedSaveNewCard()" translate>SAVE_NEW_CARD</button>
+            <button class="button blank" type="button" ng-click="clikedDiscardCard()" translate>DISCARD</button>
+		</div>
+	</form>
+</div>

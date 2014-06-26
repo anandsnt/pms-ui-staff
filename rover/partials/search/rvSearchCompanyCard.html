@@ -1,12 +1,13 @@
 <div id="page-main-second"  ng-click="clickedOnSearchArea()" class="" style="">
     <!-- Search form -->
     <div ng-include="'/assets/partials/common/header.html'"></div>
-    <form name="search-cards" id="search-cards" class="search-form card-search-form float" role="search">
+    <form name="search-cards" id="search-cards" class="search-form card-search-form float" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}">
         <div class="entry">
         	<a id="clear-query" class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
 			<button type="submit" name="submit" class="icons icon-search">Search</button>
 			<input type="text" placeholder="Name, IATA # or Corporate ID" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
         </div>
+        <a class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</a>
     </form>
 
     <section id="search-cards-wrapper" class="content scrollable">
@@ -38,8 +39,7 @@
 						<span class="icon-no-content icon-cards"></span>
 						<strong class="h1">No matches have been found</strong>
 						<span class="h2"> Do you want to create a new Company or Travel Agent card ? <br/>
-							<a class="open-modal" ui-sref="rover.companycarddetails({id:'add', type: 'COMPANY', firstname:textInQueryBox})">Add New Company Card</a> or
-							<a class="open-modal" ui-sref="rover.companycarddetails({id:'add', type: 'TRAVELAGENT', firstname:textInQueryBox})">Add New Travel Agent Card</a>
+							<a class="open-modal" ng-click="addNewCard()">Add a New Card</a>
 						</span>
 					</div>
 				</li>
