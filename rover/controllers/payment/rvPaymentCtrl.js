@@ -4,9 +4,12 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData = {};
 	$scope.saveData.add_to_guest_card = false;
 
+	
+	//Set merchant ID for MLI integration
 	var MLISessionId = "";
+	HostedForm.setMerchant($rootScope.MLImerchantId);
 
-	$scope.saveData.selected_payment_type = "";//Only for swipe
+	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
 	$scope.paymentTypeValues = "";
 	$scope.saveData.card_number  = "";
 	$scope.saveData.credit_card  =  "";
@@ -26,14 +29,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
 	$scope.errorRender = function(data){
 		$scope.$emit("hideLoader");
+		MLISessionId = "";
 		$scope.errorMessage = data;
 	};
 	$scope.successRender = function(data){
 		$scope.$emit("hideLoader");
+		MLISessionId = "";
 		$scope.data = data;
-
-		//Set merchant ID for MLI integration
-		HostedForm.setMerchant(data.merchantId);
 
 		$scope.paymentTypeValues = [];
 		if($scope.passData.is_swiped){
@@ -225,7 +227,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 $scope.$emit("showLoader");
 			 HostedForm.updateSession(sessionDetails, callback);			
 		}
-		if($scope.passData.is_swiped){
+		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0)){
 			$scope.savePayment();
 		}
 		else{

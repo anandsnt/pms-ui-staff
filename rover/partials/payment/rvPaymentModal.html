@@ -8,7 +8,7 @@
 	    <label for="payment-type" translate>PAYMENT_TYPE</label>
 	    <div class="select">
 	    	<select ng-model="saveData.selected_payment_type" class="placeholder" ng-change="renderPaymentValues()">
-				<option value="" translate> SELECT_PAYMENT_TYPE </option>
+				<option value="selectpayment" translate> SELECT_PAYMENT_TYPE </option>
 				<option ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
 			</select>
 	    	
