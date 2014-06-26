@@ -3,7 +3,6 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
-
 		// initialize company search fields
 		$scope.companySearchIntiated = false;
 		$scope.companies = [];
@@ -37,10 +36,11 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 		$scope.$on('companyCardAvailable', function() {
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.companyContactInformation;
+			$scope.contactInformation.id = $scope.reservationDetails.companyCard.id;
+			$scope.currentSelectedTab = 'cc-contact-info';
 			// object holding copy of contact information
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed
-			$scope.currentSelectedTab = 'cc-contact-info';
 			presentContactInfo = angular.copy($scope.contactInformation);
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
@@ -55,19 +55,16 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 
 		$scope.$on("companySearchInitiated", function() {
 			$scope.companySearchIntiated = true;
-			console.log($scope.searchedCompanies)
 			$scope.companies = $scope.searchedCompanies;
 			$scope.refreshScroll('companyResultScroll');
 		})
 
 		$scope.$on("companySearchStopped", function() {
 			$scope.companySearchIntiated = false;
-			// console.log($scope.searchedCompanies)
 			$scope.companies = $scope.searchedCompanies;
 		})
 
 		$scope.$on("newCardSelected", function(id, values) {
-			// console.log(values)
 			//set the contracts tab right
 			$scope.searchMode = false;
 			$scope.$emit('hideLoader');
@@ -109,7 +106,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 		 */
 		var successCallbackOfContactSaveData = function(data) {
 			$scope.$emit("hideLoader");
-			$scope.contactInformation.id = data.id;
+
+			// $scope.contactInformation.id = data.id;
 			//taking a deep copy of copy of contact info. for handling save operation
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = angular.copy($scope.contactInformation);

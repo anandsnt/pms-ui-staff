@@ -1,4 +1,4 @@
-<div id="travel-agent-card-header" ng-controller="RVTravelAgentCardCtrl" class="card-header" ng-class="UICardClass('travel-agent-card')"  ng-click="companyCardClicked($event)" outside-click-handler>
+<div id="travel-agent-card-header" ng-controller="RVTravelAgentCardCtrl" class="card-header" ng-class="UICardClass('travel-agent-card')"  ng-click="travelAgentCardClicked($event)" outside-click-handler>
 	<section ng-if="searchMode== false">
 		<figure ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" class="guest-image" ng-click="switchCard('travel-agent-card')">
 			<img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />

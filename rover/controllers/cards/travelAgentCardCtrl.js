@@ -1,5 +1,5 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
-	function($scope) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope', 'RVCompanyCardSrv',
+	function($scope, RVCompanyCardSrv) {
 
 		$scope.searchMode = false;
 		$scope.account_type = 'TRAVELAGENT';
@@ -8,12 +8,21 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
+			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+				saveContactInformation($scope.contactInformation);
+				$scope.$broadcast("contractTabActive");
+			}
+			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+				$scope.$broadcast("contactTabActive");
+			}
 			$scope.currentSelectedTab = tabToSwitch;
 		};
+
 		var presentContactInfo = {};
 
 		$scope.$on('travelAgentFetchComplete', function(){
 			$scope.contactInformation = $scope.travelAgentInformation;
+			$scope.contactInformation.id = $scope.reservationDetails.travelAgent.id;
 			// object holding copy of contact information
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed
@@ -21,15 +30,15 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 		});
 
 		/**
-		 * function to handle click operation on company card, mainly used for saving
+		 * function to handle click operation on travel agent card, mainly used for saving
 		 */
-		$scope.companyCardClicked = function($event) {
+		$scope.travelAgentCardClicked = function($event) {
 			$event.stopPropagation();
 			if (getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab == 'cc-contact-info') {
 				return;
 			} else if (getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
+			} else if (getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};
@@ -56,7 +65,6 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 		 */
 		var successCallbackOfContactSaveData = function(data) {
 			$scope.$emit("hideLoader");
-			$scope.contactInformation.id = data.id;
 			//taking a deep copy of copy of contact info. for handling save operation
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = angular.copy($scope.contactInformation);
