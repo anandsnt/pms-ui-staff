@@ -2,7 +2,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
   //define module-specific routes here
      //company card search
         $stateProvider.state('rover.companycardsearch', {
-            url: '/cardsearch',
+            url: '/cardsearch/:textInQueryBox',
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
             controller: 'searchCompanyCardController'
         }); 
