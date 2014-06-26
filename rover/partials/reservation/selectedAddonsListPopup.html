@@ -2,10 +2,8 @@
     <div class="modal-content room-enhancements">
         <span class="h2 message">Room 1 Enhancements</span>
         <!-- Initial markup -->
-        <ul id="room-1-enhancements" class="enhancements-added"></ul>
-
         <!-- Markup as you add items -->
-        <ul id="room-1-enhancements" class="confirmed">
+        <ul id="room-1-enhancements" class="enhancements-added">
             <li ng-repeat="addon in activeRoom.addons">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
