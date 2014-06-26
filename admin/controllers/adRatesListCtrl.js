@@ -77,12 +77,8 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-<<<<<<< HEAD
-			$scope.mouseEnterPopover = true; 
-=======
 			console.log(data);
 			$scope.mouseEnterPopover = true;
->>>>>>> 5dba6ece14c4ab61a3dec4935483f3fa799f376d
 		};
 
 		//Fetch the rates only when we enter the popover area.
