@@ -56,6 +56,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
+			if($scope.roomType != $scope.reservationData.reservation_card.room_type_code){
+				$scope.reservationData.reservation_card.is_upsell_available = false;
+			}
 			if(typeof $scope.selectedRoomType != 'undefined'){
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
