@@ -136,14 +136,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             return addOnsArray;
         };
 
-        /*
-         * Save Rate Details
-         */
-
-        $scope.saveRateDetails = function () {
-
+        $scope.startSave = function(){
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
-
             var addOns = setUpAddOnData();
             var data = {
                 'name': $scope.rateData.name,
@@ -195,20 +189,66 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
                 };
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
             }
+        }
+
+
+        $scope.endDateValidationPopup = function(){
+             ngDialog.open({
+                 template: '/assets/partials/rates/adRatesEndDateValidationPopup.html',
+                 controller: 'adRatesEndDateValidationPopupController',
+                 className: 'ngdialog-theme-default single-calendar-modal',
+                 scope:$scope,
+                 closeByDocument:true
+            });
+        };
+
+        /*
+         * Save Rate Details
+         */
+
+        $scope.saveRateDetails = function () {
+
+            var validateEndDateSuccessCallback = function (data) {
+       
+                $scope.$emit('hideLoader');
+                if(data.status)
+                  $scope.startSave();
+                else
+                  $scope.endDateValidationPopup();             
+
+            };
+
+            var validateEndDateFailureCallback = function (data) {
+                $scope.$emit('hideLoader');
+             
+            };
+            if($scope.rateData.end_date){
+                var data = {"id":$scope.rateData.id,"end_date":$scope.rateData.end_date}
+                $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
+            }
+            else{
+                $scope.startSave();
+            }          
         };
 
         $scope.init();
 
+        $scope.deleteEndDate =  function(){
+            $scope.rateData.end_date ="";
+        }
+
 
         $scope.popupCalendar = function(){
-        ngDialog.open({
-         template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
-         controller: 'adEndDatePickerController',
-         className: 'ngdialog-theme-default single-calendar-modal',
-         scope:$scope,
-         closeByDocument:true
-    });
-};
+            ngDialog.open({
+                 template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
+                 controller: 'adEndDatePickerController',
+                 className: 'ngdialog-theme-default single-calendar-modal',
+                 scope:$scope,
+                 closeByDocument:true
+                });
+        };
+
+
     }
 ]);
 

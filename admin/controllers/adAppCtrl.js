@@ -333,7 +333,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			//set flag if standalone PMS
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;
-			$scope.businessDate = data.business_date;
+			$rootScope.businessDate = data.business_date;
 			$scope.$emit('hideLoader');
 
 		};

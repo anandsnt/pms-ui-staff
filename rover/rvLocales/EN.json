@@ -236,7 +236,13 @@
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!",	
+    "KEY_PRINTED" : "Keys printed!",
+    
+	"PREFERENCES" : "Preferences",
+	"NEWSPAPER" : "Newspaper",
+	"ROOM_TYPE" : "Room type",
+	"ROOM_FEATURES" : "Room Features"
+,	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",
