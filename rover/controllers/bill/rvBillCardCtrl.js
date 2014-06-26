@@ -14,6 +14,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.isAllBillsReviewed = false;
 	$scope.saveData.isEarlyDepartureFlag = false;
 	$scope.saveData.isEmailPopupFlag = false;
+	$scope.calculatedWidth = 0;
 	//options fo signature plugin
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 	$scope.signaturePluginOptions = {
@@ -21,7 +22,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			width : screenWidth-60,
 			lineWidth : 1
 	};
-	
+	width = 0;
+	 width = parseInt(width)+parseInt(reservationBillData.bills[0].days.length*15)+parseInt(reservationBillData.bills[0].group_items.length*15);
+	    
+	$scope.calculatedWidth = width;
+	console.log("---"+width)
 	if($scope.clickedButton == "checkoutButton"){
 		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
 	}
@@ -347,12 +352,25 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		        preventDefault: false
 		    }
 	 };
+	 $scope.$parent.myScrollOptions = {		
+		    'billDays': {
+		    	
+		    	scrollX : true,
+				scrollbars : true,
+				interactiveScrollbars : true,
+				click : true,
+		        preventDefault: false
+		    }
+	 };
+	 
 	 /*
 	  * Refresh scroll once page is loaded.
 	  */
 	 $scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
 			$scope.$parent.myScroll['registration-content'].refresh();
+			$scope.$parent.myScroll['billDays'].refresh();
+			
 			}, 
 		3000);
      });
@@ -521,9 +539,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*15);
 	    	height = parseInt(height) + parseInt(routingLength);
 	    }
+	    width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*40)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*40);
+	    
 		$scope.calculatedHeight = height;
+		$scope.calculatedWidth = width;
+		console.log(width);
 		setTimeout(function(){
 			$scope.$parent.myScroll['registration-content'].refresh();
+			$scope.$parent.myScroll['billDays'].refresh();
 			}, 
 		600);
 		
