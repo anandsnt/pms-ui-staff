@@ -1313,20 +1313,34 @@
 
 		/* Fullscreen cards ***/
 		&.fullscreen {
-			.calc-height(100, 60);
+            .calc-height(100, 60);
 
-			.cards-wrapper {
-				.cards-header {
-					.card-header {
-						.card-actions { .show; }
-					}
-				}
+            .cards-wrapper {
+                .cards-header {
+                    .card-header {
 
-				.cards-content {
-					.card-content { .show; }
-				}
-			}
-		}
+                        form { .calc-width(100, 250); }
+
+                        .card-actions { .hide; }
+                    }
+                }
+
+                .cards-content {
+                    .card-content { .show; }
+                }
+            }
+
+            /* New Card ***/
+            &.new-card {
+                .cards-wrapper {
+                    .cards-header {
+                        .card-header {
+                            .card-actions { .show; }
+                        }
+                    }
+                }
+            }
+        }
 
 		/* Card scenarios ***/
 		&.guest-card {
