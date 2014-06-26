@@ -27,7 +27,7 @@
 
     <!-- Cards Content -->
     <div class="cards-content">
-        <div id="guest-card-content" class="card-tabs card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" style="display:block;">
+        <div id="guest-card-content" class="card-tabs card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" style="display:block;" >
 
             <!-- Guest Card tabs navigation -->
 
@@ -36,7 +36,7 @@
                     <a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
                 </li>
                 <li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
-                    <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like">Likes</a>
+                    <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like" ng-class="{'error':likesInfoError}">Likes</a>
                 </li>
                 <li aria-selected="false" aria-labelledby="guest-credit" aria-controls="cc-payment" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
                     <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-credit">Credit Cards &amp; Payment</a>
@@ -50,7 +50,7 @@
             <!-- Guest Card Tab 1 -->
             <span ng-include="'/assets/partials/guestCard/guestCardContactInfo.html'"></span> 
             <!-- Guest Card Tab 2 likes -->
-            <span ng-include="'/assets/partials/guestCard/guestCardLikes.html'"></span> 
+            <span ng-include="'/assets/partials/guestCard/rvGuestCardLikes.html'"></span> 
             <!-- Guest Card Tab 3 payment -->
             <span ng-include="'/assets/partials/guestCard/guestCardPayment.html'"></span>
             <!-- Guest Card Tab 4 loyalty-->
