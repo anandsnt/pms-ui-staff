@@ -105,7 +105,7 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 	  	ngDialog.open({
 			 template: '/assets/partials/companyCard/rvSelectCardType.html',
 			 controller: 'selectCardTypeCtrl',
-			 className: 'ngdialog-theme-default',
+			 className: 'ngdialog-theme-default1 calendar-single1',
 			 closeByDocument: false,
 			 scope: $scope
 		});
