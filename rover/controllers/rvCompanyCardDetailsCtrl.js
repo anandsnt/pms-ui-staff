@@ -5,6 +5,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	// Flag for add new card or not
 	$scope.isAddNewCard = ($stateParams.id == "add") ? true : false ;
 	$scope.isDiscard = false;
+	$scope.isPromptOpened = false;
 	//setting the heading of the screen
 	if($stateParams.type == "COMPANY"){
 		if($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
@@ -206,10 +207,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		event.preventDefault();
 		event.stopPropagation();
 		if($scope.isAddNewCard){
-			console.log("No action");
+			// On addMode - prevent save call
 		}
 		else if($scope.isDiscard){
-			console.log("Discarded");
+			// On discarded - prevent save call
 		}
 		else{
 			saveContactInformation($scope.contactInformation);
@@ -224,10 +225,12 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	$scope.$on("OUTSIDECLICKED", function(event){
 		event.preventDefault();
 		if($scope.isAddNewCard && !$scope.isContactInformationSaved){
-			$scope.saveNewCardPrompt();
+			// On addMode and contact info not yet saved 
+			// If the prompt is not already opened - show the popup for save/disacrd
+			if(!$scope.isPromptOpened) $scope.saveNewCardPrompt();
 		}
 		else if($scope.isDiscard){
-			console.log("Discarded");
+			// On discarded - prevent save call
 		}
 		else{
 			saveContactInformation($scope.contactInformation);
@@ -252,6 +255,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	};
 	// To implement a prompt for save/discard card info.
 	$scope.saveNewCardPrompt = function(){
+		$scope.isPromptOpened = true;
 	  	ngDialog.open({
 			 template: '/assets/partials/companyCard/rvSaveNewCardPrompt.html',
 			 controller: 'saveNewCardPromptCtrl',
