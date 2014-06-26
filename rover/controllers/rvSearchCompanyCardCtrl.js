@@ -51,6 +51,8 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 		else{
 	    	displayFilteredResults();  
 	   	}
+	   	var queryText = $scope.textInQueryBox;
+	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
   
 	$scope.clearResults = function(){

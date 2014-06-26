@@ -158,10 +158,13 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   * function to perform filtering/request data from service in change event of query box
   */
 	$scope.queryEntered = function(){
-    //setting the heading of the screen to "Search"
-    $scope.heading = headingListDict['']; 
-
-    displayFilteredResults();  
+		var queryText = $scope.textInQueryBox;
+		
+		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+	    //setting the heading of the screen to "Search"
+	    $scope.heading = headingListDict['']; 
+	
+	    displayFilteredResults();  
   };
   
   $scope.clearResults = function(){
