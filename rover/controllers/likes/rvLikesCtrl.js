@@ -119,7 +119,6 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		     });
 		     updateData.preference.push(preferenceUpdateData);
 	     });
-	     console.log(JSON.stringify(updateData));
 
 	      var saveData = {
 	      	userId: $scope.guestCardData.contactInfo.user_id,
@@ -149,7 +148,9 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		var out = new Array(Math.ceil(ar.length/2));
 		return out;	
 	};
-	
+	/*
+	 * If number of elements in odd, then show if value exists
+	 */
 	$scope.showLabel = function(featureName){
 		var showDiv = true;
 		if(featureName=='' || featureName == undefined)

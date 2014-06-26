@@ -42,7 +42,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    $scope.init();
    
    $scope.gotosearch = function(){
-   	alert("kkkkkkkkkkkkkkk");
    	$state.go("rover.search");
    	// rover.search({type:'DUEIN'});
    };
