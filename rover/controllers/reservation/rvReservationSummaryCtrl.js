@@ -1,6 +1,7 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
-					function($scope, $state, RVReservationSummarySrv){
+sntRover.controller('RVReservationSummaryCtrl', ['$scope','$rootScope', '$state', 'RVReservationSummarySrv', 
+					function($scope, $rootScope,$state, RVReservationSummarySrv){
 	BaseCtrl.call(this, $scope);
+	var MLISessionId =  "";
 
 	$scope.init = function(){
 		$scope.data = {};
@@ -106,11 +107,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservat
 
 	};
 
-	/**
-	* Click handler for confirm button - 
-	* Creates the reservation and on success, goes to the confirmation screen
-	*/
-	$scope.submitReservation = function(){
+	$scope.proceedCreatingReservation = function(){
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
@@ -122,6 +119,60 @@ sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservat
 		};
 
 		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+	}
+
+	/**
+	* MLI integration 
+	*
+	*/
+	$scope.fetchMLISession = function(){
+
+		 var sessionDetails = {};
+			 sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
+			 sessionDetails.cardSecurityCode = $scope.reservationData.paymentType.ccDetails.cvv;
+			 sessionDetails.cardExpiryMonth = $scope.reservationData.paymentType.ccDetails.expMonth;
+			 sessionDetails.cardExpiryYear = $scope.reservationData.paymentType.ccDetails.expYear;
+		
+		 var callback = function(response){
+		 	
+		 	$scope.$emit("hideLoader");
+		 	$scope.$apply();
+		 	if(response.status ==="ok"){
+
+		 		MLISessionId = response.session;
+		 		$scope.proceedCreatingReservation();// call save payment details WS
+		 		
+		 	}
+		 	else{
+		 		$scope.errorMessage = ["There is a problem with your credit card"];
+		 	}			 	
+		 }
+		 $scope.$emit("showLoader");
+		 HostedForm.updateSession(sessionDetails, callback);		;
+	}
+
+
+	$scope.setUpMLIConnection = function(){
+		HostedForm.setMerchant($rootScope.MLImerchantId);
+	}();
+
+
+
+
+	/**
+	* Click handler for confirm button - 
+	* Creates the reservation and on success, goes to the confirmation screen
+	*/
+	$scope.submitReservation = function(){
+
+
+		if($scope.reservationData.paymentType.type.name === "CC"){
+			$scope.fetchMLISession();
+		}
+		else{
+			$scope.proceedCreatingReservation();
+		}
+		
 	};
 
 	/**
