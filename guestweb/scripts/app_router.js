@@ -1,100 +1,89 @@
-snt.config(['$routeProvider', function($routeProvider) {
-	$routeProvider.when('/', {
-		templateUrl: '/assets/landing/landing.html',
-		controller: 'checkOutLandingController',
-		title: 'Checkout'
-	});
 
+snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
+	
+    $urlRouterProvider.otherwise("/checkoutRoomVerification");
 
-	//checkout now routings
-
-	$routeProvider.when('/checkoutBalance', {
-		templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
-		controller: 'checkOutBalanceController',
-		title: 'Balance - Checkout Now'
-	});
-
-	$routeProvider.when('/checkOutNow', {
-		templateUrl: '/assets/checkoutnow/partials/checkoutConfirmation.html',
-		controller: 'checkOutConfirmationController',
-		title: 'Confirm - Checkout Now'
-	});
-
-	$routeProvider.when('/checkOutNowSuccess', {
-		templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
-		controller: 'checkOutStatusController',
+    // checkout now states
+    
+	$stateProvider.state('checkoutBalance', {
+        url: '/checkoutBalance',
+        controller: 'checkOutBalanceController',
+       	templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
+	    title: 'Balance - Checkout Now'
+    })
+    .state('checkOutStatus', {
+        url: '/checkOutStatus',
+       	controller: 'checkOutStatusController',
+       	templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
 		title: 'Status - Checkout Now'
-	});
+    }).state('checkOutConfirmation', {
+        url: '/checkOutConfirmation',
+       	controller: 'checkOutConfirmationController',
+       	templateUrl: '/assets/checkoutnow/partials/checkoutConfirmation.html',
+		title: 'Confirm - Checkout Now'
+    });
 
-	//checkout later routings
+    // late checkout states
 
-	$routeProvider.when('/checkOutLater', {
+    $stateProvider.state('checkOutOptions', {
+    	url: '/checkOutOptions',
+	 	templateUrl: '/assets/landing/landing.html',
+	 	controller: 'checkOutLandingController',
+	 	title: 'Checkout'
+	 }).state('checkOutLaterOptions', {
+	 	url: '/checkOutLaterOptions',
 		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
-		controller: 'checkOutLaterController',
+	 	controller: 'checkOutLaterController',
 		title: 'Checkout Later'
-	});
-
-	$routeProvider.when('/checkOutLaterSuccess/:id', {
+	}).state('checkOutLaterSuccess', {
+		url: '/checkOutLaterOptions/:id',
 		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Checkout Later'
-	})
+	 });
 
+	// checkin states
 
-	// error routings
-
-	$routeProvider.when('/authFailed', {
-		templateUrl: '/assets/shared/authenticationFailedView.html',
-		title: 'Login Failed'
-	});
-	$routeProvider.when('/serverError', {
-		templateUrl: '/assets/shared/serverErrorView.html',
-		title: 'Server Unreachable'
-	});
-
-	//check in routings
-
-	$routeProvider.when('/checkinConfirmation', {
-		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
-		controller : 'checkInConfirmationViewController',
-		title: 'Check In'
-	});
-
-	// $routeProvider.when('/checkinDatePicker', {
-	// 	templateUrl: '/assets/checkin/partials/checkinDatePicker.html',
-	// 	controller : 'checkinDatePickerController',
-	// 	title: 'Pick Date - Check In'
-	// });
-
-	$routeProvider.when('/checkinKeys', {
-		templateUrl: '/assets/checkin/partials/checkInKeys.html',
-		controller : 'checkInKeysController',
-		title: 'Keys - Check In'
-	});
-
-	$routeProvider.when('/checkinReservationDetails', {
-		templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
-		controller : 'checkInReservationDetails',
-		title: 'Details - Check In'
-	});
-
-	$routeProvider.when('/checkinUpgrade', {
-		templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
-	    controller : 'checkinUpgradeRoomContorller',
+	$stateProvider.state('checkinConfirmation', {
+	 	url: '/checkinConfirmation',
+	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
+	 	controller : 'checkInConfirmationViewController',
+	 	title: 'Check In'
+	 }).state('checkinReservationDetails', {
+	 	url: '/checkinReservationDetails',
+	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
+	 	controller : 'checkInReservationDetails',
+	 	title: 'Details - Check In'
+	 }).state('checkinUpgrade', {
+	 	url: '/checkinUpgrade',
+	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
+	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check In'
-	});
+	 }).state('checkinKeys', {
+	 	url: '/checkinKeys',
+	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
+	 	controller : 'checkInKeysController',
+	 	title: 'Keys - Check In'
+	 }).state('checkinSuccess', {
+	 	url: '/checkinSuccess',
+	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	 	title: 'Status - Check In'
+	 });
 
-	$routeProvider.when('/checkinSuccess', {
-		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
-	    title: 'Status - Check In'
-	});
 
+	 //room verification
 
-	$routeProvider.otherwise({
-		redirectTo: '/'
-	});
-
-
+	 $stateProvider.state('checkoutRoomVerification', {
+	 	url: '/checkoutRoomVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/checkoutRoomVerification.html',
+	 	controller : 'checkoutRoomVerificationViewController',
+	 	title: 'Room verification'
+	 }).state('ccVerification', {
+	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
+	 	templateUrl: '/assets/checkoutnow/partials/ccVerification.html',
+	 	controller : 'ccVerificationViewController',
+	 	title: 'CC verification'
+	 });
 
 
 }]);

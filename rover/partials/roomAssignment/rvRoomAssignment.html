@@ -44,7 +44,9 @@
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
 						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);" ng-show = "!isRoomListEmpty()">
 							<li ng-repeat="room in filteredRooms" ng-click="assignRoom($index)">
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span></a>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span>
+									<span data-value="{{room.room_number}}" class="room-status room-red" ng-show="room.room_status == 'NOTREADY'">{{room.fo_status}}</span>
+									<span class="room-preassignment" ng-show="room.is_preassigned">{{room.last_name + " "+ room.guarantee_type}}</span></a>
 							</li>
 						</ul>
 						<div class="info" ng-show = "isRoomListEmpty()">
