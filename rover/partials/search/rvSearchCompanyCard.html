@@ -11,24 +11,24 @@
     </form>
 
     <section id="search-cards-wrapper" class="content scrollable">
-        
+
         <!-- Results / content -->
         <div class="wrapper1" ng-iscroll="comapany_card_scroll" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
             <ul id="search-cards-results" class="search-results" >
                  <li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type})" class="card-result company-card" data-transition="inner-page">
-                        
+
                         <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
                             <img ng-src="{{row.company_logo}}" alt="">
                         </figure>
-                        
+
                         <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
                             <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
                             <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
                         </figure>
-                        
+
                         <div class="data">
-                            <h2 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:textInQueryBox:false"></h2>
+                            <h2 ng-bind-html="'{{row.account_name}}'|highlight:textInQueryBox:false"></h2>
                         </div>
                         <div class="status company" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" >{{row.account_type}}</div>
                     </a>
@@ -43,7 +43,7 @@
 						</span>
 					</div>
 				</li>
-		
+
             </ul>
         </div>
 
@@ -55,7 +55,7 @@
             <span class="h2">Search by <strong>Name</strong>, <strong>IATA #</strong> or <strong>Corporate ID</strong></span>
             </div>
         </div>
-        
-		
+
+
     </section>
-</div>    
+</div>
