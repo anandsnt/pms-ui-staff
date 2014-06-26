@@ -34,7 +34,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="entry full-width">
+		<div class="entry full-width" ng-show="cancelPenaltiesActivated">
 			<label>cancellation penalties</label>
 			<div class="select">
 				<select class="placeholder" ng-model="rateData.cancellation_policy_id" ng-options="penalty.id as penalty.displayData for penalty in rateTypesDetails.cancelationPenalties">
