@@ -106,7 +106,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
 			$scope.applyFilterToRooms();
-			$scope.$parent.myScroll['roomlist'].refresh();
+			setTimeout(function(){				
+				$scope.$parent.myScroll['roomlist'].refresh();
+				}, 
+			1000);
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
@@ -135,7 +138,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.toggleFiltersView = function(){
 		$scope.isFiltersVisible = !$scope.isFiltersVisible;
-		$scope.$parent.myScroll['filterlist'].refresh();
+		setTimeout(function(){				
+				$scope.$parent.myScroll['filterlist'].refresh();
+				}, 
+			1000);
 	};
 	/**
 	* function to set the color coding for the room number based on the room status
