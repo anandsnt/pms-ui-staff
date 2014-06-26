@@ -1,3 +1,12 @@
+
+// Array Remove - By John Resig (MIT Licensed)
+// array remove via splice is very very costly
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
 sntRover.controller('RVPostChargeController',
 	[
 		'$rootScope',
@@ -14,6 +23,8 @@ sntRover.controller('RVPostChargeController',
 			$scope.fetchedItem = $scope.fetchedData.items;
 			$scope.chosenFetchedItem = null;
 
+			console.log( $scope.fetchedItem );
+
 			// set the default bill number
 			$scope.billNumber = $scope.fetchedData.bill_numbers[0];
 
@@ -23,13 +34,17 @@ sntRover.controller('RVPostChargeController',
 				// reset the search query
 				$scope.query === '';
 
+				// since the user input charge group will be string
+				// convert it to int, with causion
+				var chargeGroupInt = isNaN(parseInt($scope.chargeGroup)) ? $scope.chargeGroup : parseInt($scope.chargeGroup);
+
 				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
 					var item = $scope.fetchedItem[i];
 
 					if ( $scope.chargeGroup === '' ) {
 						item.show = true;
 						continue;
-					} else if ( $scope.chargeGroup === item.charge_group_value || ($scope.chargeGroup === 'FAV' && item.is_favorite) ) {
+					} else if ( chargeGroupInt === item.charge_group_value || ($scope.chargeGroup === 'FAV' && item.is_favorite) ) {
 						item.show = true;
 					} else {
 						item.show = false;
@@ -93,6 +108,15 @@ sntRover.controller('RVPostChargeController',
 			// set the default toggle to 'QTY'
 			$scope.calToggle = 'QTY';
 
+			// need to keep track of the last pressed
+			// button or number on the numberpad
+			var lastInput = null;
+
+			// need to keep track of the price
+			// entered by the user
+			var userEnteredPrice = '';
+
+
 			var calNetTotalPrice = function() {
 				var item  = '',
 					totalPrice = 0;
@@ -114,6 +138,10 @@ sntRover.controller('RVPostChargeController',
 				var hasItem = _.find($scope.chargedItems, function(each) {
 					return each.value === item.value;
 				});
+
+				// since add changed selected item
+				// set 'lastInput' to null
+				lastInput = null;
 
 				// if already added
 				if ( !!hasItem ) {
@@ -156,35 +184,40 @@ sntRover.controller('RVPostChargeController',
 			};
 
 			$scope.removeItem = function() {
-				if ( !$scope.chosenChargedItem || !$scope.chargedItems.length ) {
+				if ( ! $scope.chargedItems.length ) {
 					return;
 				};
 
-				for (var i = 0, j = $scope.chargedItems.length; i < j; i++) {
-					if ( $scope.chargedItems[i]['value'] === $scope.chosenChargedItem.value ) {
+				// testing if working on a array clone
+				// increase remove performance
+				var chargedItemsCopy = _.uniq( $scope.chargedItems );
+				var removeIndex = '';
+
+				for (var i = 0, j = chargedItemsCopy.length; i < j; i++) {
+					if ( chargedItemsCopy[i]['value'] === $scope.chosenChargedItem.value ) {
 
 						// reduce the total price from net total price
-						$scope.net_total_price -= $scope.chargedItems[i]['total_price'];
-
-						$scope.chargedItems.splice( i, 1 );
-						$scope.chosenChargedItem = null;
-
+						$scope.net_total_price -= chargedItemsCopy[i]['total_price'];
+						
+						removeIndex = i;
 						break;
 					};
 				};
 
+				chargedItemsCopy.remove( removeIndex );
+				$scope.chargedItems = chargedItemsCopy;
+
+				// remove the reference
+				$scope.chosenChargedItem = null;
+
 				// reset the count and remove reference
 				$scope.chosenFetchedItem.count = 0;
 				$scope.chosenFetchedItem = null;
+
+				// since delete unselects
+				// set 'lastInput' to null
+				lastInput = null;
 			};
-
-			// need to keep track of the last pressed
-			// button or number on the numberpad
-			var lastInput = null;
-
-			// need to keep track of the price
-			// entered by the user
-			var userEnteredPrice = '';
 
 			$scope.selectUnselect = function() {
 
@@ -193,6 +226,10 @@ sntRover.controller('RVPostChargeController',
 				if ( $scope.chosenChargedItem && $scope.chosenChargedItem.value === this.each.value ) {
 					$scope.chosenChargedItem = null;
 					$scope.chosenFetchedItem = null;
+
+					// since we are unselecting
+					// set 'lastInput' to null
+					lastInput = null;
 				} else {
 					$scope.chosenChargedItem = this.each;
 					
@@ -292,7 +329,7 @@ sntRover.controller('RVPostChargeController',
 
 					switch(input) {
 						case 1:
-							if ( $scope.chosenChargedItem.count === 1 && lastInput === 'CLR' ) {
+							if ( $scope.chosenChargedItem.count === 1 && (lastInput === 'QTY' || lastInput === 'CLR' || lastInput === null) ) {
 								// do nothing
 								// hard to explain in words
 								// try it out in rover and see

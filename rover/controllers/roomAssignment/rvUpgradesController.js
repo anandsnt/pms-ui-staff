@@ -15,36 +15,27 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	$scope.upgradesList = [];
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
+	$scope.selectedUpgrade = {};
 	/**
-	* function to get all available upgrades for the reservation
+	* Listener to set the room upgrades when loaded
 	*/
-	$scope.getAllUpgrades = function(){
-		var successCallbackgetAllUpgrades = function(data){
+	$scope.$on('roomUpgradesLoaded', function(event, data){
 			$scope.upgradesList = data.upsell_data;
 			$scope.headerData = data.header_details;
 			$scope.setUpgradesDescriptionInitialStatuses();
-			$scope.$emit('hideLoader');
-			setTimeout(function(){
-				$scope.$parent.myScroll['upgradesView'].refresh();
-				}, 
-			3000);
-		};
-		var errorCallbackgetAllUpgrades = function(error){
-			$scope.$emit('hideLoader');
-			$scope.$parent.errorMessage = error;
-		};
-		var params = {};
-		params.reservation_id = $stateParams.reservation_id;
-		$scope.invokeApi(RVUpgradesSrv.getAllUpgrades, params, successCallbackgetAllUpgrades, errorCallbackgetAllUpgrades);
-
-	};
+	});
+	
 	/**
 	* function to set the upgrade option for the reservation
 	*/
 	$scope.selectUpgrade = function(index){
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
-			$scope.$parent.backToStayCard();
+			if($scope.clickedButton == "checkinButton"){
+				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+			} else {
+				$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
+			}
 		};
 		var errorCallbackselectUpgrade = function(error){
 			$scope.$emit('hideLoader');
@@ -54,10 +45,12 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_no = parseInt($scope.upgradesList[index].upgrade_room_number, 10);
 		params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
+		$scope.selectedUpgrade.room_no = $scope.upgradesList[index].upgrade_room_number;
+		$scope.selectedUpgrade.room_type_name = $scope.upgradesList[index].upgrade_room_type_name;
+		$scope.selectedUpgrade.room_type_code = $scope.upgradesList[index].upgrade_room_type;
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
 	};
-	$scope.getAllUpgrades();
 
 	/**
 	* function to show and hide the upgrades detail view

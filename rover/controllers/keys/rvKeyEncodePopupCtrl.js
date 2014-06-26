@@ -1,17 +1,29 @@
-sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', 'RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
 	var that = this;
 
 	this.setStatusAndMessage = function(message, status){
 		$scope.statusMessage = message;
 		$scope.status = status;
-	}
-
+	};
+	
+	$scope.pressedCancelStatus = false;
+	
 	$scope.init = function(){
-		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-    	$scope.data = {};
-    	// Setup data for late checkout
-    	$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
+		var reservationStatus = "";
+		$scope.data = {};
+		if($scope.fromView == "checkin"){
+			reservationStatus = $scope.reservationBillData.reservation_status;
+			// Setup data for late checkout
+			$scope.data.is_late_checkout = false;
+			$scope.confirmNumber = $scope.reservationBillData.confirm_no;
+		} else {
+			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+			// Setup data for late checkout
+			$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
+			$scope.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
+		}
+		
     	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
     	
     	that.retrieveUID = true;
@@ -33,9 +45,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';
 		}
-
 		//TODO: include late checkout scenario
-
+		
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
@@ -51,9 +62,63 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 		that.numOfKeys = 0;
 		that.printKeyStatus = [];
 		that.isAdditional = false;
+		
 		$scope.buttonText = "Print Key";
 	};
+	/*
+	* If the device is not connected, try the connection again after 1 sec.
+	* repeat the connection check for 10 seconds. 
+	* If the connection still fails, show a device not connected status in the popup.
+	*/
+	var showDeviceNotConnected = function(){
+		//For 10 seconds, we will check the connectivity 
+		//and if still no connection found, 
+		//will display the device not connected screen
+		$scope.$emit('hideLoader');
+		var secondsAfterCalled = 0;
+		that.noOfErrorMethodCalled++;
+		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;		
+		setTimeout(function(){
+			if(secondsAfterCalled <= that.maxSecForErrorCalling){ //10seconds
+				$scope.showDeviceConnectingMessge();
+			}
+		}, 1000);
 
+		if(secondsAfterCalled > that.maxSecForErrorCalling){
+			$scope.deviceConnecting = false;
+			$scope.keysPrinted = false;
+			$scope.showPrintKeyOptions = false;
+			$scope.deviceNotConnected = true;
+			$scope.$apply();
+
+		}
+
+	};
+	/**
+	* Check if the card reader device connection is available.
+	* Display a screen having device connecting message.
+	*/
+	$scope.showDeviceConnectingMessge = function(){
+		$scope.deviceConnecting = true;
+		$scope.deviceNotConnected = false;
+		$scope.keysPrinted = false;
+		$scope.showPrintKeyOptions = false;
+
+		var callBack = {
+			'successCallBack': showPrintKeyOptions,
+			'failureCallBack': showDeviceNotConnected			
+		};
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.checkDeviceConnectedDebug(callBack);
+		}
+		else {
+			try {
+				sntapp.cardReader.checkDeviceConnected(callBack);
+			} catch(e) {
+				showDeviceNotConnected();
+			}
+		}
+	};
 	$scope.keySelected = function(index){
 		that.numOfKeys = 0;
 		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected == index) ? --$scope.numberOfKeysSelected : index;
@@ -72,7 +137,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 			elementToPut['fetched'] = false;
 			that.printKeyStatus.push(elementToPut);
 		}
-	}
+	};
 
 	$scope.clickedPrintKey = function(){		
 		if($scope.numberOfKeysSelected == 0)
@@ -87,7 +152,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 			that.callKeyFetchAPI();
 		}
 
-	}
+	};
 
 	/*
 	* Call cordova service to get the UID
@@ -173,13 +238,13 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	    var keyData = [];
 	    //Safelock key
 	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
-	    	keyData.push(that.keyData.key_info[0].base64)
+	    	keyData.push(that.keyData.key_info[0].base64);
 	    }
 	    else if(Object.keys(that.keyData.key_info[0])[0] == "image"){
-	    	keyData.push(that.keyData.key_info[0].image)
+	    	keyData.push(that.keyData.key_info[0].image);
 	    }	    
 	    else{
-	    	keyData.push(that.keyData.key_info[0].t3)
+	    	keyData.push(that.keyData.key_info[0].t3);
 	    }
 
 	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
@@ -238,62 +303,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 		}
 
 	};	
-	/**
-	* Check if the card reader device connection is available.
-	* Display a screen having device connecting message.
-	*/
-	$scope.showDeviceConnectingMessge = function(){
-		$scope.deviceConnecting = true;
-		$scope.deviceNotConnected = false;
-		$scope.keysPrinted = false;
-		$scope.showPrintKeyOptions = false;
+	
 
-		var callBack = {
-			'successCallBack': showPrintKeyOptions,
-			'failureCallBack': showDeviceNotConnected			
-		};
-		if(sntapp.cardSwipeDebug){
-			sntapp.cardReader.checkDeviceConnectedDebug(callBack);
-		}
-		else {
-			try {
-				sntapp.cardReader.checkDeviceConnected(callBack);
-			} catch(e) {
-				that.showDeviceNotConnected();
-			}
-		}
-	};
-
-	/*
-	* If the device is not connected, try the connection again after 1 sec.
-	* repeat the connection check for 10 seconds. 
-	* If the connection still fails, show a device not connected status in the popup.
-	*/
-	var showDeviceNotConnected = function(){
-		//For 10 seconds, we will check the connectivity 
-		//and if still no connection found, 
-		//will display the device not connected screen
-		var secondsAfterCalled = 0;
-		that.noOfErrorMethodCalled++;
-		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;		
-		setTimeout(function(){
-			if(secondsAfterCalled <= that.maxSecForErrorCalling){ //10seconds
-				$scope.showDeviceConnectingMessge();
-			}
-		}, 1000);
-
-		if(secondsAfterCalled > that.maxSecForErrorCalling){
-			$scope.deviceConnecting = false;
-			$scope.keysPrinted = false;
-			$scope.showPrintKeyOptions = false;
-			$scope.deviceNotConnected = true;
-			$scope.$apply();
-
-		}
-
-	};
+	
 
 	var showPrintKeyOptions = function (){
+		$scope.$emit('hideLoader');
 		$scope.deviceConnecting = false;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
@@ -303,6 +318,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	};
 
 	var showKeysPrinted = function(){
+		$scope.$emit('hideLoader');
 		$scope.deviceConnecting = false;
 		$scope.keysPrinted = true;
 		$scope.showPrintKeyOptions = false;
@@ -311,7 +327,19 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	};
 
 	$scope.init();
-
+	/*
+	 * To handle cancel option after checkin success
+	 */
+    $scope.pressedCancel = function(){
+		$scope.$emit('hideLoader');
+		$scope.deviceConnecting = false;
+		$scope.keysPrinted = false;
+		$scope.showPrintKeyOptions = false;
+		$scope.deviceNotConnected = false;
+		$scope.pressedCancelStatus = true;
+		$scope.$apply();
+	};
+	
 	/*
 	* Show the key print success message
 	*/
@@ -323,15 +351,27 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	* Show the key print failure message
 	*/
 	this.showKeyPrintFailure = function(message){
+		$scope.$emit('hideLoader');
 		if(typeof message == 'undefined'){
 			var message = 'Key creation failed!';
 		}
 		
-		that.setStatusAndMessage(message, 'error')
+		that.setStatusAndMessage(message, 'error');
 	};
 
 	// Close popup
 	$scope.closeDialog = function(){
 		ngDialog.close();
-	}
+	};
+	// To handle close button click
+	$scope.goToStaycard = function(){
+		$scope.closeDialog();
+		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
+		
+	};
+	$scope.goToSearch = function(){
+		$scope.closeDialog();
+		$state.go('rover.search');
+		
+	};
 }]);

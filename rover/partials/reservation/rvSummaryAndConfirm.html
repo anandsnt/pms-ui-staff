@@ -21,7 +21,7 @@
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
+                        {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:mmddyyyyFormat}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
@@ -52,7 +52,6 @@
                             </div>
                             <div class="select ampm">
                                 <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm">
-                                    <option value="" selected>AM/PM</option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -61,7 +60,7 @@
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
+                        {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:mmddyyyyFormat}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
@@ -92,7 +91,6 @@
                             </div>
                             <div class="select ampm">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm">
-                                    <option value="" selected>AM/PM</option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -123,12 +121,12 @@
                                 <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                             </span>
                         </li>
-                        <li ng-repeat='addon in room.addOns'>
-                            <em>{{addon.name}}</em>
+                        <li ng-repeat='addon in room.addons'>
+                            <em>{{addon.title}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{addon.avgAmount}}
+                                {{currencySymbol}}{{ addon.price }}
                                 <span translate>EACH</span>
-                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
+                                <span class="total">{{currencySymbol}}{{ addon.quantity * addon.price}}</span>
                             </span>
                         </li>
                     </ul>
