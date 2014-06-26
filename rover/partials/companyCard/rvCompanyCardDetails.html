@@ -15,10 +15,8 @@
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
                     <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" translate>
-                        COMPANY
                     </div> 
                     <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'TRAVELAGENT'" translate>
-                        TRAVELAGENT
                     </div> 
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">

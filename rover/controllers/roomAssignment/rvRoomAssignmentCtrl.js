@@ -56,6 +56,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
+			if($scope.roomType != $scope.reservationData.reservation_card.room_type_code){
+				$scope.reservationData.reservation_card.is_upsell_available = false;
+			}
 			if(typeof $scope.selectedRoomType != 'undefined'){
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
@@ -103,7 +106,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
 			$scope.applyFilterToRooms();
-			$scope.$parent.myScroll['roomlist'].refresh();
+			setTimeout(function(){				
+				$scope.$parent.myScroll['roomlist'].refresh();
+				}, 
+			1000);
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
@@ -132,7 +138,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.toggleFiltersView = function(){
 		$scope.isFiltersVisible = !$scope.isFiltersVisible;
-		$scope.$parent.myScroll['filterlist'].refresh();
+		setTimeout(function(){				
+				$scope.$parent.myScroll['filterlist'].refresh();
+				}, 
+			1000);
 	};
 	/**
 	* function to set the color coding for the room number based on the room status
@@ -320,7 +329,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.setRoomsListWithPredefinedFilters = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_status == "NOTREADY")
+			if($scope.rooms[i].room_status == "NOTREADY" && $scope.rooms[i].fo_status == "VACANT" && $scope.rooms[i].room_ready_status != "CLEAN")
 				$scope.rooms[i].room_features.push(-100);
 			if($scope.rooms[i].fo_status == "DUEOUT")
 				$scope.rooms[i].room_features.push(-101);

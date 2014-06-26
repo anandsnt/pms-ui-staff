@@ -1,119 +1,106 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService) {
+  var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
 
-    $scope.pageSuccess = true;
+  $scope.pageValid = false;
 
-    if($rootScope.isCheckedin){
-      $scope.pageSuccess = false;
-      $location.path('/checkinSuccess');
-    }
-    else if($rootScope.isCheckedout){
-      $scope.pageSuccess = false;
-      $location.path('/checkOutNowSuccess');
-    }
-    else if(!$rootScope.isCheckin){
-      $scope.pageSuccess = false;
-      $location.path('/');
-    }
-    else if(!$rootScope.upgradesAvailable){
-      $scope.pageSuccess = false;
-      $location.path('/checkinReservationDetails');      
-    }
-    
+  if($rootScope.isCheckedin){
+    $state.go('checkinSuccess');
+  }
+  else{
+    $scope.pageValid = true;
+  };
 
-    if($scope.pageSuccess){
-     $scope.slides = [];
-       //set up flags related to webservice
+  if($scope.pageValid){
+    $scope.slides = [];
+  //set up flags related to webservice
 
-       $scope.isFetching     = false;
-       $rootScope.netWorkError  = false;
-       var data = {'reservation_id':$rootScope.reservationID};
-       $scope.isFetching          = true;
-       checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
+  $scope.isFetching     = false;
+  $rootScope.netWorkError  = false;
+  var data = {'reservation_id':$rootScope.reservationID};
+  $scope.isFetching          = true;
+  checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
-        $scope.isFetching     = false;
-        if(response.status === 'failure')
-          $rootScope.netWorkError = true;
-        else
-          $scope.slides = response.data;
-      });
+    $scope.isFetching     = false;
+    if(response.status === 'failure')
+      $rootScope.netWorkError = true;
+    else
+      $scope.slides = response.data;
+  },function(){
+    $rootScope.netWorkError = true;
+    $scope.isFetching = false;
+  });
 
-       // watch for any change
+  // upgrade button clicked
 
-       $rootScope.$watch('netWorkError',function(){
-         if($rootScope.netWorkError)
-           $scope.isFetching = false;
-       });
+  $scope.upgradeClicked = function(upgradeID,roomNumber){
+
+    $scope.isFetching          = true;
+    var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber};
+    checkinRoomUpgradeService.post(data).then(function(response) {
+
+      $scope.isFetching     = false;
+      if(response.status === "failure")
+        $rootScope.netWorkError  = true;
+      else
+      {
+        $rootScope.upgradesAvailable = false;
+        $rootScope.ShowupgradedLabel = true;
+        $rootScope.roomUpgradeheading = "Your new Trip details";
+        checkinDetailsService.setResponseData(response.data);         
+        $state.go('checkinReservationDetails');
+      }
+
+    },function(){
+      $rootScope.netWorkError = true;
+      $scope.isFetching = false;
+    });
 
 
-      // upgrade button clicked
+  }
 
-      $scope.upgradeClicked = function(upgradeID,roomNumber){
-        
-       $scope.isFetching          = true;
-       var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber};
-       checkinRoomUpgradeService.post(data).then(function(response) {
+  $scope.noThanksClicked = function(){
+    $state.go('checkinKeys');
+  };
 
-        $scope.isFetching     = false;
-        if(response.status === "failure")
-          $rootScope.netWorkError  = true;
-        else
-        {
-         $rootScope.upgradesAvailable = false;
-         $rootScope.ShowupgradedLabel = true;
-         $rootScope.roomUpgradeheading = "Your new Trip details";
-         checkinDetailsService.setResponseData(response.data);         
-         $location.path('/checkinReservationDetails');
-       }
-       
-     });
-       
-       
-     }
+}
+};
 
-     $scope.noThanksClicked = function(){
-       $location.path('/checkinKeys');
-     }
+var dependencies = [
+'$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService','$state',
+checkinUpgradeRoomController
+];
 
-   }
- };
-
- var dependencies = [
- '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService',
- checkinUpgradeRoomContorller
- ];
-
- snt.controller('checkinUpgradeRoomContorller', dependencies);
+snt.controller('checkinUpgradeRoomController', dependencies);
 })();
 
-// Setup directive to compile html
+  // Setup directive to compile html
 
-snt.directive("description", function ($compile) {
-  function createList(template) {
-    templ = template;
-    return templ;
-  }
-
-  return{
-    restrict:"E",
-    scope: {},
-    link:function (scope, element, attrs) {
-      
-      element.append(createList(attrs.template));
-      $compile(element.contents())(scope);
+  snt.directive("description", function ($compile) {
+    function createList(template) {
+      templ = template;
+      return templ;
     }
-  }
-});
 
-// Setup directive to handle image not found case
+    return{
+      restrict:"E",
+      scope: {},
+      link:function (scope, element, attrs) {
 
-snt.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        element.attr('src', attrs.errSrc);
-      });
+        element.append(createList(attrs.template));
+        $compile(element.contents())(scope);
+      }
     }
-  }
-});
+  });
+
+  // Setup directive to handle image not found case
+
+  snt.directive('errSrc', function() {
+    return {
+      link: function(scope, element, attrs) {
+        element.bind('error', function() {
+          element.attr('src', attrs.errSrc);
+        });
+      }
+    }
+  });

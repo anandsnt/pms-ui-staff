@@ -1,6 +1,6 @@
-admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter',  
+admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter',
 	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter){
-	
+
 	$scope.errorMessage = '';
 	$scope.popoverRates = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -26,7 +26,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.checkPMSConnection();
 
 	$scope.fetchTableData = function($defer, params){
- 
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
@@ -37,14 +36,14 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
         	params.total(data.total_count);
             $defer.resolve($scope.data);
 		};
-		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);	
-	}	
+		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
+	}
 
 
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
-		        count: $scope.displyCount, // count per page 
+		        count: $scope.displyCount, // count per page
 		        sorting: {
 		            rate: 'asc' // initial sorting
 		        }
@@ -54,7 +53,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		    }
 		);
 	}
-		
+
 	$scope.loadTable();
 
 	/**
@@ -64,7 +63,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADRatesSrv.importRates, {}, fetchSuccessOfItemList);	
+		$scope.invokeApi(ADRatesSrv.importRates, {}, fetchSuccessOfItemList);
 	}
 
 	/**
@@ -79,7 +78,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
 			console.log(data);
-			$scope.mouseEnterPopover = true; 
+			$scope.mouseEnterPopover = true;
 		};
 
 		//Fetch the rates only when we enter the popover area.
@@ -103,7 +102,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var dateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-			$scope.mouseEnterPopover = true; 
+			$scope.mouseEnterPopover = true;
 		};
 
 		//Fetch the rates only when we enter the popover area.
@@ -121,7 +120,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	*/
 	$scope.mouseLeavePopover = function(){
 		$scope.popoverRates = "";
-		$scope.mouseEnterPopover = false; 
+		$scope.mouseEnterPopover = false;
 	}
 
 	/**
@@ -141,7 +140,56 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			if(type == 'dateRange')
 				return "/assets/partials/rates/adDateRangePopover.html";
 		}
-	}; 
+	};
+
+	/**
+	* To delete a rate
+	* @param {int} index of the selected rate type
+	*
+	*/
+
+	$scope.deleteRate = function(selectedId){
+
+		//call service for deleting
+		var params = {'id':selectedId};
+		var rateDeleteSuccess = function(){
+			$scope.reloadTable();
+			$scope.$emit('hideLoader');
+		};
+		var rateDeleteFailure = function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage =  data;
+		};
+		$scope.invokeApi(ADRatesSrv.deleteRate, params, rateDeleteSuccess,rateDeleteFailure);
+
+
+	};
+	/**
+	* To activate/deactivate a rate
+	* @param {int} index of the selected rate type
+	*
+	*/
+	$scope.toggleActive = function(selectedId,checkedStatus,activationAllowed){
+
+
+			var params = {'id': selectedId, is_active: !checkedStatus };
+			var rateToggleSuccess = function(){
+			$scope.$emit('hideLoader');
+				//on success
+			angular.forEach($scope.data, function(rate, key) {
+		      if(rate.id === selectedId){
+		      	rate.status = !rate.status;
+		      }
+		     });
+			};
+			var rateToggleFailure = function(data){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage =  data;
+			};
+
+			$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);
+
+	};
 
 }]);
 
