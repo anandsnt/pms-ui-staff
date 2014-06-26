@@ -30,6 +30,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		        	}
 		     });
 	     });
+	    
 	      angular.forEach($scope.guestLikesData.room_features, function(value, key) {
 	         angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
 		        	var userRoomFeature = value.user_selection;
@@ -59,7 +60,9 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	$scope.$on('SHOWGUESTLIKESINFO', function(){
 		$scope.init();
 	});
-	
+	$scope.$on('REFRESHLIKESSCROLL', function(){
+		$scope.$parent.myScroll['likes_info'].refresh();
+	});
 	
 	$scope.saveLikes = function(){
 
@@ -130,7 +133,6 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	  * to handle click actins outside this tab
 	 */
 	$scope.$on('SAVELIKES',function(){
-		console.log("--------------reached save likes---------");
 		$scope.saveLikes();
 	});	
 	
@@ -141,9 +143,19 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		 	} 
 	     });
 	};
-	$scope.$on("OUTSIDECLICKED", function(event){
-		alert("outside likes tab card")
-		event.preventDefault();
-	});
+	
+	$scope.getHalfArray = function(ar){
+		//TODO: Cross check math.ceil for all browsers
+		var out = new Array(Math.ceil(ar.length/2));
+		return out;	
+	};
+	
+	$scope.showLabel = function(featureName){
+		var showDiv = true;
+		if(featureName=='' || featureName == undefined)
+			showDiv = false;
+		return showDiv;
+	
+	};
 	
 }]);

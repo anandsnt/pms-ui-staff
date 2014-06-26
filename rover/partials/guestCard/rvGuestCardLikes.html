@@ -1,30 +1,29 @@
 <form outside-click-handler ng-controller="RVLikesController" class="form card-tab scrollable" ng-show="current == 'guest-like'">
-  <div ng-iscroll="likes_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
+  <div ng-iscroll="likes_info"  ng-iscroll-delay="1000" ng-iscroll-form='true'>
     <div class="wrapper">
     	<div class="entry full-width">
  			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
  		</div>
-    	 <button class="green" ng-click="saveLikes()">SAAAAAAAAAAAAVE</button>
         <div class="holder left">
-            <strong class="h3">Preferences </strong>
+            <strong class="h3" translate>PREFERENCES </strong>
             
             
             <div class="entry full-width">
-                <label for="newspaper">Newspaper</label>
+                <label for="newspaper" translate>NEWSPAPER</label>
                 <!-- <input name="newspaper" id="newspaper" value="Wall Street Journal" type="text" /> -->
                 <select ng-model="guestCardData.likes.user_newspaper">
                 	<option value=""></option>
-                	<option ng-repeat="newspapers in guestCardData.likes.newspapers" value="{{newspapers.id}}">
+                	<option ng-selected="newspapers.id == guestCardData.likes.user_newspaper" ng-repeat="newspapers in guestCardData.likes.newspapers" value="{{newspapers.id}}">
                 		{{newspapers.name}}
                 	</option>
                 </select>
             </div>
             
             <div class="entry full-width">
-                <label for="roomtype">Room type</label>
+                <label for="roomtype" translate>ROOM_TYPE</label>
                 <select ng-model="guestCardData.likes.user_roomtype">
                 	<option value=""></option>
-                	<option ng-repeat="roomtype in guestCardData.likes.roomtype" value="{{roomtype.id}}">
+                	<option ng-selected="roomtype.id == guestCardData.likes.user_roomtype" ng-repeat="roomtype in guestCardData.likes.roomtype" value="{{roomtype.id}}">
                 		{{roomtype.name}}
                 	</option>
                 </select>
@@ -45,16 +44,25 @@
        
         
         <div class="holder right">
-            <strong class="h3">Room Features</strong>
-            
-            <div class="entry radio-check" ng-repeat="roomFeatures in guestCardData.likes.room_features">
-                <label class="checkbox" ng-repeat="roomFeaturesValues in roomFeatures.values" ng-class="{'checked': roomFeaturesValues.isSelected}">
-                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeaturesValues.isSelected}"></span>
-                    <input ng-model="roomFeaturesValues.isSelected" type="checkbox" />
-                    {{roomFeaturesValues.details}}
-                </label>
-            </div>
-            
+            <strong class="h3" translate>ROOM_FEATURES</strong>
+            <span ng-repeat="roomFeatures in guestCardData.likes.room_features">
+            	 <div class="entry radio-check" ng-repeat="x in getHalfArray(roomFeatures.values) track by $index">
+                	
+                	 <label class="checkbox" ng-class="{'checked': roomFeatures.values[$index*2].isSelected}">
+	                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeatures.values[$index*2].isSelected}"></span>
+	                    <input ng-model="roomFeatures.values[$index*2].isSelected" type="checkbox" />
+	                    {{roomFeatures.values[$index*2].details}}
+	                </label >
+	            
+                	 <label class="checkbox" ng-if="showLabel(roomFeatures.values[$index*2+1].details)" ng-class="{'checked': roomFeatures.values[$index*2 +1].isSelected}">
+	                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeatures.values[$index*2 + 1].isSelected}"></span>
+	                    <input ng-model="roomFeatures.values[$index*2+1].isSelected" type="checkbox" />
+	                    {{roomFeatures.values[$index*2+1].details}}
+	                </label >
+                	
+                	
+	          </div>
+            </span>
         </div>
         
         

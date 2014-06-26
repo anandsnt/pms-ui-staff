@@ -86,11 +86,12 @@ $scope.guestCardTabSwitch = function(tab){
 	};
 	if($scope.current ==='guest-like' && tab !== 'guest-like'){
 		$scope.$broadcast('SAVELIKES');
+		
 	};
 	if(tab === 'guest-credit'){
 		$scope.$broadcast('PAYMENTSCROLL');
 	}
- 
+    $scope.$broadcast('REFRESHLIKESSCROLL');
 	 $scope.current = tab;
 };
 
