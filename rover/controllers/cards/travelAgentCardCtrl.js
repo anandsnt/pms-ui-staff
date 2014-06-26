@@ -1,7 +1,7 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
-	function($scope) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout',
+	function($scope, $timeout) {
 
-		$scope.searchMode = false;
+		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
 		$scope.currentSelectedTab = 'cc-contact-info';
 
@@ -12,12 +12,35 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 		};
 		var presentContactInfo = {};
 
-		$scope.$on('travelAgentFetchComplete', function(){
+		$scope.$on('travelAgentFetchComplete', function() {
+			$scope.searchMode = false;
 			$scope.contactInformation = $scope.travelAgentInformation;
 			// object holding copy of contact information
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed
+			$scope.currentSelectedTab = 'cc-contact-info';
 			presentContactInfo = angular.copy($scope.contactInformation);
+			$scope.$broadcast("contactTabActive");
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 1000);
+
+		});
+
+
+		$scope.$on("travelAgentSearchInitiated", function() {
+			$scope.companySearchIntiated = true;
+			$scope.travelAgents = $scope.searchedtravelAgents;
+			$scope.refreshScroll('companyResultScroll');
+		})
+
+		$scope.$on("travelAgentSearchStopped", function() {
+			$scope.companySearchIntiated = false;
+			$scope.travelAgents = [];
+		})
+
+		$scope.$on("travelAgentDetached", function() {
+			$scope.searchMode = true;
 		});
 
 		/**
@@ -29,7 +52,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 				return;
 			} else if (getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
+			} else if (getParentWithSelector($event, document.getElementById("travel-agent-card-content"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};

@@ -33,9 +33,9 @@
 		<form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
 			<div class="holder">
 				<div class="entry" ng-click="openGuestCard()">
-					<input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
-					<input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
-					<input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
+					<input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="searchData.travelAgentCard.travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
+					<input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="searchData.travelAgentCard.travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
+					<input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="searchData.travelAgentCard.travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
 				</div>
 			</div>
 		</form>

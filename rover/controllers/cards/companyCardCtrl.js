@@ -46,10 +46,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
-
 		});
 
-		$scope.$on("cardDetached", function() {
+		$scope.$on("companyCardDetached", function() {
 			$scope.searchMode = true;
 		});
 
@@ -62,8 +61,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 
 		$scope.$on("companySearchStopped", function() {
 			$scope.companySearchIntiated = false;
-			// console.log($scope.searchedCompanies)
-			$scope.companies = $scope.searchedCompanies;
+			$scope.companies = [];
 		})
 
 		$scope.$on("newCardSelected", function(id, values) {
@@ -157,8 +155,5 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 			}
 		};
-
-
-
 	}
 ]);

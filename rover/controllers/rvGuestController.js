@@ -1,5 +1,5 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams) {
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout',
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -9,40 +9,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		BaseCtrl.call(this, $scope);
 
-
-
-		// fetch reservation company card details 
-		$scope.initCompanyCard = function() {
-			var successCallbackOfInitialFetch = function(data) {
-				$scope.$emit("hideLoader");
-				$scope.companyContactInformation = data;
-				$scope.$broadcast('companyCardAvailable');
-			};
-			var param = {
-				'id': $scope.reservationDetails.companyCard.id
-			};
-			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
-		}
-
-		// fetch reservation travel agent card details
-		$scope.initTravelAgentCard = function() {
-			var successCallbackOfInitialFetch = function(data) {
-				$scope.$emit("hideLoader");
-				$scope.travelAgentInformation = data;
-				$scope.$broadcast('travelAgentFetchComplete');
-			};
-			var param = {
-				'id': $scope.reservationDetails.travelAgent.id
-			};
-			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
-		}
-
 		$scope.init = function() {
 			$scope.contactInfoError = false;
 			$scope.eventTimestamp = "";
 			var preventClicking = false;
-			$scope.initCompanyCard();
-			$scope.initTravelAgentCard();
 		};
 
 		$scope.$on('reservationCardisClicked', function() {
@@ -285,10 +255,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 
-		$scope.detachCard = function() {
-			console.log('detachCard');
-			// $scope.$emit('cardDetached');
-			$scope.$broadcast('cardDetached');
+		$scope.detachCard = function(cardType) {
+			// If no other card type has been attached, user cannot exit Stay Card without selecting another card. Upon selecting any other menu item display message 'Please enter Card details' with an 'x' to close message. If the user selects the 'Back' button in the browser, or closes the app, the original card will be retained
+			// If other card types are attached (i.e. Guest / Company / Travel Agent), allow removal of Company / Travel Agent Card without entering a new card. Only display confirmation of removal message
+			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' With choice of 'Change this reservation only' and 'Change all Reservations'.
+			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. Changing all reservations will move all stay cards to the new card. This will only apply when a new company / TA card had been selected. If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
+			if (cardType == 'travel_agent') {
+				$scope.$broadcast('travelAgentDetached');
+				$scope.removeCard('travel_agent');
+			} else if (cardType == 'company') {
+				$scope.$broadcast('companyCardDetached');
+				$scope.removeCard('company');
+			}
 		}
 
 		// init staycard header
@@ -333,6 +311,75 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		}
 
+		$scope.searchTravelAgent = function() {
+			var successCallBackFetchTravelAgents = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.travelAgentSearchIntiated = true;
+				$scope.searchedtravelAgents = [];
+				if (data.accounts.length > 0) {
+					angular.forEach(data.accounts, function(item) {
+						if (item.account_type === 'TRAVELAGENT') {
+							var travelAgentData = {};
+							travelAgentData.id = item.id;
+							travelAgentData.firstName = item.account_first_name;
+							travelAgentData.lastName = item.account_last_name;
+							travelAgentData.logo = item.company_logo;
+							if (item.address != null) {
+								travelAgentData.address = {};
+								travelAgentData.address.postalCode = item.address.postal_code;
+								travelAgentData.address.city = item.address.city;
+								travelAgentData.address.state = item.address.state;
+							}
+							if (item.current_contract != null) {
+								travelAgentData.rate = item.current_contract.name;
+							}
+							travelAgentData.email = item.email;
+							travelAgentData.phone = item.phone;
+							$scope.searchedtravelAgents.push(travelAgentData);
+						}
+					});
+				}
+				$scope.$broadcast('travelAgentSearchInitiated');
+			}
+			if ($scope.searchData.travelAgentCard.travelAgentName != '' || $scope.searchData.travelAgentCard.travelAgentCity != '' || $scope.searchData.travelAgentCard.travelAgentIATA != '') {
+				var paramDict = {
+					'name': $scope.searchData.travelAgentCard.travelAgentName,
+					'city': $scope.searchData.travelAgentCard.travelAgentCity,
+					'corporate_id': $scope.searchData.travelAgentCard.travelAgentIATA
+				};
+				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
+			} else {
+				$scope.searchedtravelAgents = [];
+				$scope.travelAgentSearchIntiated = false;
+				$scope.$broadcast('travelAgentSearchStopped');
+			}
+		}
+
+		$scope.selectCompany = function(company, $event) {
+			$event.stopPropagation();
+			// string (guest, company, travel_agent)
+			// clean search data
+			$scope.searchData.companyCard.companyName = "";
+			$scope.searchData.companyCard.companyCity = "";
+			$scope.searchData.companyCard.companyCorpId = "";
+			$scope.replaceCard('company', company.id);
+			$scope.reservationDetails.companyCard.id = company.id;
+			$scope.initCompanyCard();
+			$scope.$broadcast('companySearchStopped');
+		}
+
+		$scope.selectTravelAgent = function(travelAgent, $event) {
+			$event.stopPropagation();
+			// string (guest, company, travel_agent)
+			// clean search data
+			$scope.searchData.travelAgentCard.travelAgentName = "";
+			$scope.searchData.travelAgentCard.travelAgentCity = "";
+			$scope.searchData.travelAgentCard.travelAgentIATA = "";
+			$scope.replaceCard('travel_agent', travelAgent.id);
+			$scope.reservationDetails.travelAgent.id = travelAgent.id;
+			$scope.initTravelAgentCard();
+			$scope.$broadcast('travelAgentSearchStopped');
+		}
 
 		$scope.refreshScroll = function(elemToBeRefreshed) {
 			if (typeof $scope.$parent.myScroll != 'undefined') {
@@ -341,14 +388,5 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}, 300);
 			}
 		}
-
-		$scope.selectCompany = function(company, $event) {
-			$event.stopPropagation();
-			$scope.reservationDetails.companyCard.id = company.id;			
-			$scope.initCompanyCard();
-		}
-
-		$scope.init();
-
 	}
 ]);
