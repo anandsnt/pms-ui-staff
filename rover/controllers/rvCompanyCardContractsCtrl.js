@@ -6,6 +6,8 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 	$scope.addData = {};
 	$scope.contractList.contractSelected = "";
 	$scope.contractList.current_contracts = [];
+	$scope.contractList.future_contracts = [];
+	$scope.contractList.history_contracts = [];
 	$scope.contractList.isAddMode = false;
 	$scope.errorMessage = "";
 	var contractInfo = {};
