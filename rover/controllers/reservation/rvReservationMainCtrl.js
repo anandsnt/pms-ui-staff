@@ -31,8 +31,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateTotal: 0,
                     addons: []
                 }],
-                totalTaxAmount: '',
-                totalStayCost: '',
+                totalTaxAmount: 0,
+                totalStayCost: 0,
                 guest: {
                     id: null, // if new guest, then it is null, other wise his id
                     firstName: '',

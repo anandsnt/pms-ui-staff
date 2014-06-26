@@ -327,13 +327,14 @@ select[disabled],{
         &:after {
             content: "";
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 0;
+            right: 0;
             background: @white @selectArrow no-repeat 50% 50%;
             background-size: 6px 4px;
             pointer-events: none;
-            width: 25px;
-            height: 30px;
+            z-index: 99;
+            .size(100%, 25px);
+            #border-radius > .right();
         }
     }
     

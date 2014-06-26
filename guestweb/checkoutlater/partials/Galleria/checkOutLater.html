@@ -34,7 +34,7 @@
 							
 							<div class="rel-wrapper">
 
-								 <a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a> 
+								 <a ng-click="gotToNextStep(charge.amount,charge.id)"></a> 
 								<div class="circle-wrapper">
 									<div class="row pad-hz-24 ">
 										<div class="circle-bg">
@@ -52,8 +52,8 @@
 								</div>
 								<div class="row late-charge">
 									<span class="for">for</span><br/>
-									<span class="amount" ng-hide="charge.amount.toString().length>2">${{charge.amount| number:2}}</span>
-									<span class="amount" ng-show="charge.amount.toString().length>2">${{charge.amount| number:0}}</span>
+									<span class="amount" ng-hide="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
+									<span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
 								</div>
 							</div>
 							</div>
@@ -64,7 +64,7 @@
 
 				<div class="row no-thanks-wrap">
 					<p class="centeralign no-thanks" ng-show="optionsAvailable">
-						<a class="no-thanks-text" href="#/">no, thanks</a>
+						<a class="no-thanks-text" ui-sref="checkOutOptions">no, thanks</a>
 
 
 					</p>

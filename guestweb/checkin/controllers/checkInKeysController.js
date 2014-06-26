@@ -1,62 +1,44 @@
 
 (function() {
-	var checkInKeysController = function($scope,$rootScope,baseWebService,$location,checkinDetailsService) {
+	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
+	
+	$scope.pageValid = false;
 
-		$scope.pageSuccess = true;
-
-		// page navigatons if any of following conditions happpens
-
-		if($rootScope.isCheckedin){
-
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
-		}
-		else if($rootScope.isCheckedout){
-
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
-		}
-		else if(!$rootScope.isCheckin){
-
-			$scope.pageSuccess = false;
-			$location.path('/');
-		};
-
-		if($scope.pageSuccess){
-
-  		//set up flags related to webservice
-  		$scope.isPosting     = true;
-  		$rootScope.netWorkError  = false;
-  		$scope.responseData  = [];
-  		$scope.reservationData = checkinDetailsService.getResponseData();
-
-		// watch for any change
-		$rootScope.$watch('netWorkError',function(){
-			if($rootScope.netWorkError)
-				$scope.isPosting = false;
-		});
-
-		var url = '/guest_web/checkin.json';
-		var data = {'reservation_id':$rootScope.reservationID};
-
-		baseWebService.post(url,data).then(function(response) {
-
-			if(response.status === "failure")
-				$rootScope.netWorkError  = true;
-			else{
-				$rootScope.isCheckedin = true;
-				$scope.responseData =response.data;
-			}
-
-			$scope.isPosting = false;
-
-		});
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
 	}
+	else{
+		$scope.pageValid = true;
+	};	
+
+	if($scope.pageValid){
+
+	//set up flags related to webservice
+	$scope.isPosting     = true;
+	$rootScope.netWorkError  = false;
+	$scope.responseData  = [];
+	$scope.reservationData = checkinDetailsService.getResponseData();
+	var url = '/guest_web/checkin.json';
+	var data = {'reservation_id':$rootScope.reservationID};
+	checkinKeysService.checkin(url,data).then(function(response) {
+		if(response.status === "failure")
+			$rootScope.netWorkError  = true;
+		else{
+			$rootScope.isCheckedin = true;
+			$scope.responseData =response.data;
+		}
+		$scope.isPosting = false;
+
+	},function(){
+		$scope.isPosting = false;
+		$rootScope.netWorkError  = true;     });
+
+}
 
 };
 
 var dependencies = [
-'$scope','$rootScope','baseWebService','$location','checkinDetailsService',
+'$scope','$rootScope','$http','$location','checkinDetailsService','checkinKeysService','$state',
 checkInKeysController
 ];
 
