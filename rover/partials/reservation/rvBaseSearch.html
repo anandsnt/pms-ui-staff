@@ -1,0 +1,91 @@
+<!-- Content -->
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<section id="reservations" class="content create-reservation scrollable" role="main">
+    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+
+        <div id="dates" class="row">
+            <div id="arriving" class="entry">
+                <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
+                <!-- Styled check in date -->
+
+                <div class="entry-data">
+                    <input ui-date="arrivalDateOptions"  name="check-in-date" id="check-in-date" type="text" class="datepicker"  ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
+                    
+                    <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
+                    <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMMM'}}</span>
+                    <span id="check-in-year" class="year">{{reservationData.arrivalDate | date:'yyyy'}}</span>
+                </div>
+            </div>
+            <div id="nights" class="entry">
+                <label for="nights-number">Staying <span>for</span></label>
+                <div class="entry-data">
+                    <span class="label">Nights</span>
+                    <input name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
+                </div>
+            </div>
+
+
+            <div id="departing" class="entry"  >
+                <label id="check-out-day-label" for="check-out-date">Departing <span> {{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
+                <!-- Styled check out date -->
+                <div class="entry-data datepicker-date">
+
+                    <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
+                    <strong id="check-out-day" class="day">{{reservationData.departureDate | date:'dd'}}</strong>
+                    <span id="check-out-month" class="month">{{reservationData.departureDate | date:'MMMM'}}</span>
+                    <span id="check-out-year" class="year">{{reservationData.departureDate | date:'yyyy'}}</span>
+                </div>
+            </div>
+        </div>
+        <div id="rooms" class="row">
+            <div id="room-1" class="entry" ng-repeat="room in reservationData.rooms">
+                <label for="room-1-adults">Room <span>(s)</span></label>
+                <div class="entry-data">
+                    <div class="select adults">
+                        <label for="room-1-adults" class="label">Adults</label>
+                        <!-- Max Adults -->
+                        <select name="room-1-adults" id="room-1-adults" ng-model="room.numAdults" ng-change="validateOccupant(room, 'adult')">
+                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
+                        </select>
+                    </div>
+                    <div class="select children">
+                        <label for="room-1-children" class="label">Children</label>
+                        <!-- Max Children -->
+                        <select name="room-1-children" id="room-1-children" ng-model="room.numChildren" ng-change="validateOccupant(room, 'children')">
+                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
+                        </select>
+                    </div>
+                    <div class="select infants">
+                        <label for="room-1-infants" class="label">Infants</label>
+                        <!-- Max Infants -->
+                        <select name="room-1-infants" id="room-1-infants" ng-model="room.numInfants">
+                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i==room.numInfants">{{i}}</option>
+                        </select>
+                    </div>
+                    <div class="select room-type">
+                        <!-- Hotel Room Types -->
+                        <select ng-model="room.roomTypeId" ng-options="roomType.id as roomType.name for roomType in otherData.roomTypes">
+                          <option value="">All Room Types</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="guest" class="row">
+            <div id="first-name" class="entry">
+                <label for="guest-first-name">Guest <span>(optional)</span></label>
+                <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" ng-model="reservationData.guest.firstName" />
+            </div>
+            <div id="last-name" class="entry no-label">
+                <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" ng-model="reservationData.guest.lastName" />
+            </div>
+        </div>
+        <div id="company-agent" class="row">
+            <div id="autocomplete-search" class="entry">
+                <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
+                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText"/>
+            </div>
+        </div>
+        <button id="find-rooms-and-rates" type="button" class="button green" ng-click="navigate()">Find Rooms &amp; Rates</button>
+    </form>
+</section>

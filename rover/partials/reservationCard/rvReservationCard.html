@@ -17,10 +17,10 @@
 	<div id="current" class="reservation-list float reservation-tabs ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs ui-widget ui-corner-all ui-tabs-vertical ui-helper-clearfix" aria-labelledby="ui-id-33" role="tabpanel" aria-expanded="true" aria-hidden="false">
 		<!-- TO INCLUDE RESERVATION LISTING -->
 		<!-- <span ng-switch on="reservationCount"> -->
-			<div ng-if="reservationDisplayStatus" ng-include="'assets/partials/reservationCard/rvReservationListing.html'"></div>
+			<div ng-if="reservationDisplayStatus" ng-include="'/assets/partials/reservationCard/rvReservationListing.html'"></div>
 		<!-- </span> -->
 		<!-- TO INCLUDE RESERVATION DETAILS IN THE RIGHT SIDE-->
-		<div ui-view></div>
+		<div ui-view class="main-view"></div>
 
 	</div>
 	

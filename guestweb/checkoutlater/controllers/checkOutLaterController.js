@@ -1,65 +1,61 @@
 (function() {
-	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
+		var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$state) {
+
+	$scope.pageValid = false;
+
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else if($rootScope.isCheckin){
+		$state.go('checkinConfirmation');
+	}
+	else if($rootScope.isCheckedout ){
+		$state.go('checkOutStatus');
+	}
+	else if(!$rootScope.isRoomVerified){
+		$state.go('checkoutRoomVerification');
+	}
+	else if(!$rootScope.isLateCheckoutAvailable){
+		$state.go('checkOutConfirmation');
+	}
+	else{
+		$scope.pageValid = true;
+	};
+
+	if($scope.pageValid){
+
+		$scope.showBackButtonImage = true;
+		$scope.netWorkError = false;
+		$scope.isFetching = true;
 
 
-		$scope.pageSuccess = true;
-
-		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
+	$scope.gotToNextStep = function(fee,chargeId){
+		if(!$rootScope.isCCOnFile){
+			$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'isFromCheckoutNow':false});
+		}				
+		else{
+			$state.go('checkOutLaterSuccess',{id:chargeId});
 		}
-		else if($rootScope.isCheckin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinConfirmation');
-		}
-		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
-		}
-		else if(!$rootScope.isLateCheckoutAvailable){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNow');
-		}
+				
+	}
 
-
-
-	if($scope.pageSuccess){
-		
-			$scope.showBackButtonImage = true;
-			$rootScope.netWorkError = false;
-			$rootScope.isFetching = true;
-
-
-	//watch for any network errors
-
-	$rootScope.$watch('netWorkError',function(){
-
-		if($rootScope.netWorkError)
-			$scope.isFetching = false;
+	// fetch details
+	LateCheckOutChargesService.fetchLateCheckoutOptions().then(function(charges) {
+		$scope.charges = charges;
+		$scope.netWorkError = false;
+		$scope.isFetching = false;    	
+		if($scope.charges.length > 0)
+			$scope.optionsAvailable = true;
+	},function(){
+		$scope.netWorkError = true;
+		$scope.isFetching = false;
 	});
-
-    // fetch details
-
-    LateCheckOutChargesService.fetch().then(function(charges) {
-    	$scope.charges = charges;
-    	$rootScope.netWorkError = false;
-    	$scope.isFetching = false;
-
-
-    	if($scope.charges.length > 0)
-    		$scope.optionsAvailable = true;
-    	else
-    		$location.path('/serverError');
-
-    });
-}
-
-
-};
+	}
+	};
 
 var dependencies = [
 '$scope',
-'LateCheckOutChargesService','$rootScope','$location',
+'LateCheckOutChargesService','$rootScope','$location','$state',
 checkOutLaterController
 ];
 

@@ -16,7 +16,7 @@
 		.no-transition;
 
 		&.active{
-			 background-position: -60px 0;
+			background-position: -60px 0;
 		}
 
 		&.icon-dashboard { 
@@ -61,10 +61,7 @@
 
 		&.icon-settings {
 			background-position: 0 -360px; 
-
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -360px;}
+			&.active{ background-position: -60px -360px;}
 		}
 
 		&.icon-sign-out {
@@ -99,8 +96,104 @@
 			&:active { background-position: -60px -660px;}
 		}
 
+		&.icon-reservations {
+			background-position: 0 -720px;
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -720px;}
+		}
+
 		@media @highdpi {
 			background-image: @iconMenu2x;
+			background-size: 120px;
+		}
+	}
+
+
+	.rover-icon-menu {
+		background-image: @roverMenu;
+		background-repeat: no-repeat;		
+		.hide-text;	
+		.show;
+		.no-transition;
+
+		&.active{
+			 background-position: -60px 0;			
+		}
+
+		&.icon-dashboard { 
+			background-position: 10px 15px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -34px;}
+		}
+
+		&.icon-availability { 
+			background-position: 10px -483px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -533px;}
+		}
+		
+		&.icon-frontdesk { 
+			background-position: 10px -87px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -137px;}
+		}
+
+		&.icon-housekeeping{
+			background-position: 10px -687px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -737px;}
+
+		}
+
+		&.icon-conversations{
+			background-position: 10px -387px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -437px;}
+
+		}
+
+
+		&.icon-finance{
+			background-position: 10px -587px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -637px;}
+
+		}
+
+		&.icon-revenue{
+			background-position: 10px -187px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -237px;}
+		}
+
+		&.icon-reports{
+			background-position: 10px -287px;
+
+			//&:hover,
+			//&:active,
+			&.active { background-position: 10px -337px;}
+		}
+
+		
+
+		@media @highdpi {
+			background-image: @roverMenu2x;
 			background-size: 120px;
 		}
 	}
@@ -189,6 +282,7 @@
 			&:hover,
 			&:active { .gradient (@grey2, #d1d1d1); }
 		}
+		
 		&.yellow-btn {
 			background-color: #F8E26E;
 			text-shadow: none;

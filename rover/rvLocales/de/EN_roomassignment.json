@@ -1,0 +1,17 @@
+	
+
+	"BACK_BUTTON_LABEL":"BACK",
+    "DETAILS_LABEL":"DETAILS",
+    "UPGRADES_NOT_AVAILABLE_LABEL":"Upgrades not available",
+    "UPGRADES_AVAILABLE_LABEL":"Upgrades available",
+    "UPGRADE_FOR_ONLY_LABEL":"Upgrade for only",
+    "PER_NIGHT_LABEL":"per night",
+    "CLEAR_FILTERS_LABEL":"Clear filters",
+    "ROOMS_NOT_READY_TEXT":"Unfortunately there are no rooms ready yet.",
+    "CHANGE_FILTER_TEXT":"Try changing some of the filter criteria",
+    "INCLUDE_NOTREADY_LABEL":"Include Not Ready",
+    "INCLUDE_DUEOUT_LABEL":"Include Due Out",
+    "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
+    "NIGHT_LABEL":"night",
+    "NIGHTS_LABEL":"nights",
+    "ROOM_ASSIGNMENT_TITLE":"Room Assignment"

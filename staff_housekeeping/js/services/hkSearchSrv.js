@@ -1,7 +1,7 @@
 hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $window){
 
 	this.roomList = {};
-	
+	this.floorList = {};
 	this.initFilters = function(){
 		return {	
 				"dirty" : false,
@@ -18,7 +18,12 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 				"arrived" : false,
 				"dueout" : false,
 				"departed" : false,
-				"dayuse": false
+				"dayuse": false,
+				"queued": false,
+				"floorFilterSingle": '',
+				"floorFilterStart": '',
+				"floorFilterEnd": '',
+				'showAllFloors': true
 				};
 	}
 
@@ -68,6 +73,35 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 
 		return deferred.promise;
 	}
+	
+	// Get all floors for the current hotel. 
+	this.fetch_floors = function(){
+		var deferred = $q.defer();
+		var url = '/api/floors.json';
+		
+		$http.get(url)
+			.success(function(response, status) {
+				if(response.floors){
+				    this.floorList = response.floors;
+				    deferred.resolve(this.floorList);
+				}else{
+					console.log( 'API - Get Floor Request - Server request failed' );
+				}
+				
+				
+			}.bind(this))
+			.error(function(response, status) {
+			    if(status == 401){ 
+			    	// 401- Unauthorized
+	    			// so lets redirect to login page
+					$window.location.href = '/house/logout' ;
+	    		}else{
+	    			deferred.reject(response);
+	    		}
+			});
+
+		return deferred.promise;
+	}
 
 	this.toggleFilter = function(item) {
 		this.currentFilters[item] = !this.currentFilters[item];
@@ -85,10 +119,24 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 	// keept as msg so that it can be called from crtl if needed
 	this.setRoomStatusClass = function(room){
 
-		if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-			return 'room-clean';
+		if(this.roomList.checkin_inspected_only == "true"){
+			if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
+				return 'room-clean';
+			}
+			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
+				return 'room-pickup';
+			}
 		}
-		if((room.hk_status.value == 'DIRTY' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
+		else {
+			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
+				return 'room-clean';
+			}
+			if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
+				return 'room-pickup';
+			}
+		}
+
+		if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
 			return 'room-dirty';
 		}
 		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){

@@ -1,6 +1,7 @@
-var hkRover = angular.module('hkRover',['ui.router', 'ngTouch']);
+var hkRover = angular.module('hkRover',['ui.router', 'ngTouch', 'ngDialog']);
 
-hkRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
+hkRover.run(['$rootScope', '$state', '$stateParams', 
+	function ($rootScope, $state, $stateParams) {
 
 	// It's very handy to add references to $state and $stateParams to the $rootScope
 	// so that you can access them from any scope within your applications.For example,
@@ -9,3 +10,5 @@ hkRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $stat
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 }]);
+
+

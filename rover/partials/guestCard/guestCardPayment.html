@@ -1,34 +1,29 @@
- <form method="post" action="app/stay-card/" id="gc-payment" name="gc-payment" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
-                    <div class="wrapper">
-                        <!-- Credit cards on file -->
-                        <a href="modals/select-primary/" class="active-item item-payment primary open-modal float">
-                            <figure class="card-logo">
-                                <img src="../images/visa.png" alt="" />
-                            </figure>
-                            <span class="number">Ending with <span class="value number">6531</span></span>
-                            <span class="date">Date <span class="value date">07/15</span></span>
-                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
-                            <span class="primary"><span class="value primary">Primary</span></span>
-                        </a>
-                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
-                            <figure class="card-logo">
-                                <img src="../images/mastercard.png" alt="" />
-                            </figure>
-                            <span class="number">Ending with <span class="value number">7718</span></span>
-                            <span class="date">Date <span class="value date">04/16</span></span>
-                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
-                        </a>
-                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
-                            <figure class="card-logo">
-                                <img src="../images/amex.png" alt="" />
-                            </figure>
-                            <span class="number">Ending with <span class="value number">2757</span></span>
-                            <span class="date">Date <span class="value date">12/14</span></span>
-                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
-                        </a>
-                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
-                            <span class="value code">Cash</span>
-                        </a>
-                        <a href="modals/new-payment-method/" class="open-modal add-new-button">+ New Payment Method</a>
-                    </div>
-                </form>
+<form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
+	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='50' class="scroll-guest-tab">
+		<div class="wrapper">
+			<!-- Credit cards on file -->
+			<div class="entry full-width">
+	 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	 		</div>
+			<a ng-click="openDeleteSetAsPrimaryModal(payment.id, $index)" class="active-item item-payment primary open-modal float" ng-repeat="payment in paymentData.data">
+				<figure class="card-logo">
+					<img src="/assets/{{payment.card_code}}.png" alt="" />
+				</figure> 
+				<span class="number">Ending with 
+					<span class="value number">{{payment.mli_token}}</span>
+				</span> 
+				<span class="date">Date 
+					<span class="value date">{{payment.card_expiry}}</span>
+				</span>
+				<span class="name">Name 
+					<span class="value name">{{payment.card_name}}</span>
+				</span> 
+				<span class="primary" ng-show="payment.is_primary">
+					<span class="value primary">Primary</span>
+				</span> 
+			</a>
+			<a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
+		</div>
+	</div>
+</form>
+

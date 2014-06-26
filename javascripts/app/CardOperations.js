@@ -23,9 +23,9 @@ var CardOperation = function(){
 
 			if (typeof data != 'undefined'){ carddata = data;}
 			successCallBack(carddata, successCallBackParameters);
-		}
+		};
 
-	}
+	};
 	this.writeKeyDataDebug = function(options){
 		//Simulating the write function for easy testing. May be removed in production.
 		console.log("sucecss called in write key debug mode");
@@ -34,10 +34,10 @@ var CardOperation = function(){
 		var mechineResponse= { };
 
 		setTimeout(function(){
-			successCallBack(mechineResponse, successCallBackParameters)
-		}, 1000)
+			successCallBack(mechineResponse, successCallBackParameters);
+		}, 1000);
 
-	}	
+	};
 
 
 	this.startReader = function(options){
@@ -124,7 +124,7 @@ var CardOperation = function(){
 			console.log('Calling recursively');
 			that.callCordovaService(options);
 		}
-	}
+	};
 	
 	//function for get single swipe
 	this.listenForSingleSwipe = function(options){		
@@ -158,6 +158,27 @@ var CardOperation = function(){
 	};
 
 	/**
+	* method To set the wrist band type- fixed amount/open room charge
+	*/
+	this.setBandType = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "setBandType";		
+		that.callCordovaService(options);			
+	};
+
+	this.setBandTypeDebug = function(options){
+		console.log("sucecss called in setband type debug mode");
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
+		// we are simulating the process by calling the success call back after some time
+		setTimeout(function(){
+				successCallBack();
+		}, 1000);
+
+	};
+
+	/**
 	* method for checking the device connected status
 	* will call success call back if it is fail or connected (bit confusing?)
 	* success call back with data as false if disconnected
@@ -182,7 +203,7 @@ var CardOperation = function(){
 		// we are simulating the process by calling the success call back after some time
 		setTimeout(function(){
 				successCallBack(deviceStatus, successCallBackParameters);
-		}, 1000)		
+		}, 1000);		
 	};
 
 	/**
@@ -203,7 +224,7 @@ var CardOperation = function(){
 		// we are simulating the process by calling the success call back after some time period
 		setTimeout(function(){
 			successCallBack(retUserID);
-		}, 1000)
+		}, 1000);
 	};
 
 };

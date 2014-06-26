@@ -1,12 +1,12 @@
 <section id="replacing-div-first"
-			class="content current">
+			class="content current" ng-cloak>
 	<div data-view="GuestCardLikesView">
 		<header class="content-title float">
-			<h2>Addons</h2>
+			<h2>Add-Ons</h2>
 			<span class="count">
 				({{ totalCount }})
 			</span>
-			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+			<a id="add-new-button" class="action add" ng-click="addNew()">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -15,16 +15,16 @@
 
 		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
 			<tbody>
-				<tr ng-repeat="item in  data">
-					<td header-class="width-30"  data-title="'Name'" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
+				<tr ng-repeat="item in  data track by $index">
+					<td header-class="width-30"  data-title="'NAME' | translate" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
 						<a class="edit-data-inline">{{ item.name }}</a>
 					</td>
 
-					<td header-class="width-50"  data-title="'Description'" sortable="'description'" ng-hide="currentClickedAddon === $index" >	
+					<td header-class="width-50"  data-title="'DESCRIPTION' | translate" sortable="'description'" ng-hide="currentClickedAddon === $index" >	
 						{{ item.description }}
 					</td>
 
-					<td data-title="'Active'" header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
+					<td data-title="'ACTIVE' | translate" header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
 						<div class="entry">
 							<div class="switch-button single"
 									ng-class="{ on: item.activated }">
@@ -37,7 +37,7 @@
 						</div>
 					</td>
 
-					<td data-title="'Delete'" header-class="width-10" class="delete" ng-hide="currentClickedAddon === $index">
+					<td data-title="'DELETE' | translate" header-class="width-10" class="delete" ng-hide="currentClickedAddon === $index">
 						<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this addon</a>		
 					</td>
 

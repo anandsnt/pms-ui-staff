@@ -1,8 +1,11 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
-	BaseCtrl.call(this, $scope);
+	$scope.nightsData={}
+	$scope.nightsData.occupancy =[];
+	$scope.nightsData.allNights = "";
 	var first_date = new Date($scope.contractData.begin_date);
 	var last_date = new Date($scope.contractData.end_date);
+
 	var month_array = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 	var new_occupancy = [];
 	
@@ -23,57 +26,64 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 		my_point +=1;
 	}
 	
-	if(!$scope.isAddMode){
-		angular.forEach($scope.contractData.occupancy,function(item, index) {
-				angular.forEach(new_occupancy,function(item2, index2) {
-					if((item2.year == item.year) && (item2.month == item.month)){
-						item2.contracted_occupancy = item.contracted_occupancy;
-						item2.actual_occupancy = item.actual_occupancy;
-					}
-	    		});
-	    });
-	    $scope.contractData.occupancy = new_occupancy;
-   	}
-   	else{
-   		$scope.addData.occupancy = [];
-   		$scope.addData.occupancy = new_occupancy;
-   	}
-		
+	// Taking deep copy of current occupancy data
+	angular.forEach($scope.contractData.occupancy,function(item, index) {
+			angular.forEach(new_occupancy,function(item2, index2) {
+				if((item2.year == item.year) && (item2.month == item.month)){
+					item2.contracted_occupancy = item.contracted_occupancy;
+					item2.actual_occupancy = item.actual_occupancy;
+				}
+    		});
+    });
+    $scope.nightsData.occupancy = new_occupancy;
+   	
+	/*
+	 * To save contract Nights.
+	 */
 	$scope.saveContractedNights = function(){
 		
 		var saveContractSuccessCallback = function(data){
 	    	$scope.closeActivityIndication();
+	    	$scope.contractData.total_contracted_nights = data.total_contracted_nights;
+	    	$scope.contractData.occupancy = $scope.nightsData.occupancy;
+	    	$scope.errorMessage = "";
+	    	$scope.updateGraph();
+	    	ngDialog.close();
 	    };
 	  	var saveContractFailureCallback = function(data){
 	  		$scope.closeActivityIndication();
 	        $scope.errorMessage = data;
+	        $scope.contractData.occupancy = temp_occupancy;
 	    };
-	    if($scope.isAddMode){
-	    	var data = {"occupancy": $scope.addData.occupancy};
+	    
+	    var data = {"occupancy": $scope.nightsData.occupancy};
+	    
+	    if($stateParams.id == "add"){
+    		var account_id = $scope.contactInformation.id;
 	    }
 	    else{
-	    	var data = {"occupancy": $scope.contractData.occupancy};
+	    	var account_id = $stateParams.id;
 	    }
-		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
-		ngDialog.close();
+
+	    if(typeof $scope.contractList.contractSelected !== 'undefined'){
+			$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": account_id , "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+		}
+		else{
+			console.log("error: contractSelected undefined");
+		}
+		
 	};
 	
 	$scope.clickedCancel = function(){
 		ngDialog.close();
 	};
-	
+	/*
+	 * To update all nights contract nights.
+	 */
 	$scope.updateAllNights = function(){
-		
-		if($scope.isAddMode && $scope.addData.allNights){
-			angular.forEach($scope.addData.occupancy,function(item, index) {
-				item.contracted_occupancy = $scope.addData.allNights;
-	       	});
-       	}
-       	else if($scope.contractData.allNights){
-       		angular.forEach($scope.contractData.occupancy,function(item, index) {
-				item.contracted_occupancy = $scope.contractData.allNights;
-	       	});
-       	}
+		angular.forEach($scope.nightsData.occupancy,function(item, index) {
+			item.contracted_occupancy = $scope.nightsData.allNights;
+	   	});
 	};
 	
 }]);

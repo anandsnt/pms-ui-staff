@@ -2,55 +2,57 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 	/**
     *   An getter method to add deatils for a new hotel.
     */
+   var that = this;
    var hotelDetailsData = {};
-	this.fetchAddData = function(){
+	that.fetchAddData = function(){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/new.json';	
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
+		    // deferred.resolve(data);
+		    hotelDetailsData.data = data;
+		    that.fetchLanguages(deferred);
 		},function(data){
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
 	};	
-	
-	/**
-    *   An getter method to edit deatils for an existing hotel for SNT Admin
-    *   @param {Object} data - deatils of the hotel with hotel id.
-    */
-	this.fetchEditData = function(data){
-		var deferred = $q.defer();
-		this.fetchCountries = function(){
+
+	that.fetchLanguages = function(deferred){
 			
 			var url = '/api/reference_values.json?type=language';	
 			
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
-				hotelDetailsData.countries = data;
+				hotelDetailsData.languages = data;
 			    deferred.resolve(hotelDetailsData);
 			},function(data){
 			    deferred.reject(data);
 			});	
 			return deferred.promise;
 		};
+	/**
+    *   An getter method to edit deatils for an existing hotel for SNT Admin
+    *   @param {Object} data - deatils of the hotel with hotel id.
+    */
+	that.fetchEditData = function(data){
+		var deferred = $q.defer();
+			
+		var url = '/admin/hotels/'+data.id+'/edit.json';	
 		
-			
-			var url = '/admin/hotels/'+data.id+'/edit.json';	
-			
-			ADBaseWebSrv.getJSON(url).then(function(data) {
-				hotelDetailsData.data = data;
-				this.fetchCountries();
-			    // deferred.resolve(data);
-			},function(data){
-			    deferred.reject(data);
-			});	
-			return deferred.promise;
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+			hotelDetailsData.data = data;
+			that.fetchLanguages(deferred);
+		    // deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
 	};	
 	/**
     *   An getter method to edit deatils for an existing hotel for Hotel Admin
     *   @param {Object} data - deatils of the hotel with hotel id.
     */
-	this.hotelAdminfetchEditData = function(data){
+	that.hotelAdminfetchEditData = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/edit.json';
 		
@@ -65,7 +67,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     *   An post method to add deatils of a new hotel.
     *   @param {Object} data - deatils of the hotel.
     */
-	this.addNewHotelDeatils = function(data){
+	that.addNewHotelDeatils = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels';	
 
@@ -80,7 +82,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     *   An update method to edit deatils of a hotel.
     *   @param {Object} data - deatils of a hotel.
     */
-	this.updateHotelDeatils = function(data){
+	that.updateHotelDeatils = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/'+data.id;	
 
@@ -95,7 +97,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     *   A post method to test Mli Connectivity for a hotel.
     *   @param {Object} data for Mli Connectivity for the hotel.
     */
-	this.testMliConnectivity = function(data){
+	that.testMliConnectivity = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/test_mli_settings';	
 
