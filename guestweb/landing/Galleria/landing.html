@@ -12,9 +12,6 @@
 		<!-- top section starts here-->
 		<div class="row check-inout-wrapper">
 			<div class="col-md-6 headtext centeralign">
-				<p class="roomnumber centeralign">
-					<span>Room {{ roomNo }}</span>
-				</p>
 				Ready to check out? 
 				<p class="centeralign leadtext checkout-text">Check out time is at {{checkoutTime}}. <strong>Request a late check-out if you need more time!</strong></p>
 			</div>
@@ -23,7 +20,7 @@
 				<div class="row">
 					<div class="col-xs-6 checkoutnow">
 						<div class="rel-wrapper">
-							<a href="#/checkOutNow"></a>
+							<a ui-sref="checkOutConfirmation"></a>
 							<div class="row"> Check out<br/> now.</div>
 							<div class="row icontop checkoutnow-icon">
 								
@@ -32,7 +29,7 @@
 					</div>
 					<div class="col-xs-6 checkoutlater">
 						<div class="rel-wrapper">
-							<a href="#/checkOutLater"></a>
+							<a ui-sref="checkOutLaterOptions"></a>
 							<div class="row checkout-later-text">Check out<br/>later.</div>
 							<div class="row icontop checkoutlater-icon">
 								

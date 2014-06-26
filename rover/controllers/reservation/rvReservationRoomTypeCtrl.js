@@ -250,13 +250,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//Get the candidate rooms of the room to be appended
 						var targetlevel = level + 1;
 						var candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level == targetlevel;
+							return this.level == targetlevel && this.availability == true && this.rates.length > 0;
 						});
 						//Check if candidate rooms are available
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != firstId;
+								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0;
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
@@ -295,13 +295,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//Get the candidate rooms of the room to be appended
 						var targetlevel = level + 1;
 						var candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level == targetlevel;
+							return this.level == targetlevel && this.availability == true && this.rates.length > 0;
 						});
 						//Check if candidate rooms are available
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != $scope.preferredType;
+								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0;
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate

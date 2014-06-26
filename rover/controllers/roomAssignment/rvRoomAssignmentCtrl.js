@@ -24,10 +24,11 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.setRoomsListWithPredefinedFilters();
 			$scope.applyFilterToRooms();
 			$scope.$emit('hideLoader');
-			setTimeout(function(){
-				$scope.$parent.myScroll['roomlist'].refresh();
-				}, 
-			3000);
+			$scope.$parent.myScroll['roomlist'].refresh();
+			// setTimeout(function(){
+			// 	$scope.$parent.myScroll['roomlist'].refresh();
+			// 	}, 
+			// 3000);
 		};
 		var errorCallbackGetRooms = function(error){
 			$scope.$emit('hideLoader');
@@ -55,6 +56,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
+			if($scope.roomType != $scope.reservationData.reservation_card.room_type_code){
+				$scope.reservationData.reservation_card.is_upsell_available = false;
+			}
 			if(typeof $scope.selectedRoomType != 'undefined'){
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
@@ -113,6 +117,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
 			$scope.reservationData.reservation_card.room_status = "READY";
 			$scope.reservationData.reservation_card.fo_status = "VACANT";
+			$scope.reservationData.reservation_card.is_upsell_available = false;
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			$scope.backToStayCard();
 	});
@@ -251,7 +256,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.getRoomsWithInitialFilters = function(){
 		var roomsWithInitialFilters = [];
 		for (var i = 0; i < $scope.rooms.length; i++) {
-			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].fo_status.is_preassigned)
+			if($scope.rooms[i].room_status == "READY" && $scope.rooms[i].fo_status == "VACANT" && !$scope.rooms[i].is_preassigned)
 				roomsWithInitialFilters.push($scope.rooms[i]);
 		};
 		return roomsWithInitialFilters;
