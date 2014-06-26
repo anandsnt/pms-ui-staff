@@ -3,6 +3,11 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 
 		// BaseCtrl.call(this, $scope);
 		$scope.searchData = {
+			guestCard: {
+				guestFirstName: "",
+				guestLastName: "",
+				guestCity: ""
+			},
 			companyCard: {
 				companyName: "",
 				companyCity: "",
@@ -16,11 +21,17 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		}
 
 		$scope.reservationDetails = {
+			guestCard: {
+				id: "",
+				futureReservations: 0
+			},
 			companyCard: {
-				id: ""
+				id: "",
+				futureReservations: 0
 			},
 			travelAgent: {
-				id: ""
+				id: "",
+				futureReservations: 0
 			}
 		};
 
@@ -64,11 +75,11 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				};
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
 			}
-
 		}
 
 		$scope.$on('cardIdsFetched', function() {
 			console.log('init of guest-controller', {
+				guest: $scope.reservationDetails.guestCard.id,
 				company: $scope.reservationDetails.companyCard.id,
 				travelagent: $scope.reservationDetails.travelAgent.id
 			});

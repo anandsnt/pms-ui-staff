@@ -1,9 +1,11 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout',
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout) {
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog',
+
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 		$scope.cardVisible = false;
+		$scope.guestSearchMode = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
 
@@ -257,9 +259,36 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.detachCard = function(cardType) {
 			// If no other card type has been attached, user cannot exit Stay Card without selecting another card. Upon selecting any other menu item display message 'Please enter Card details' with an 'x' to close message. If the user selects the 'Back' button in the browser, or closes the app, the original card will be retained
+
 			// If other card types are attached (i.e. Guest / Company / Travel Agent), allow removal of Company / Travel Agent Card without entering a new card. Only display confirmation of removal message
-			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' With choice of 'Change this reservation only' and 'Change all Reservations'.
+
 			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. Changing all reservations will move all stay cards to the new card. This will only apply when a new company / TA card had been selected. If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
+
+			//If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' With choice of 'Change this reservation only' and 'Change all Reservations'.
+
+			// Upon selecting remove, a warning will be issued: 'Confirm removal of current <card type> from Stay Card?' with a 'Yes' / 'No' option for the user to confirm or cancel. Following the removal, the card header will show blank spaces for all available fields which can be entered to initiate a new card search as per current functionality.
+
+			// string (guest, company, travel_agent)
+			var cards = {
+				"guest": "Guest Card",
+				"company": "Company Card",
+				"travel_agent": "Travel Agent Card"
+			}
+
+			ngDialog.open({
+				template: '/assets/partials/cards/alerts/detachCard.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false,
+				data: JSON.stringify({
+					cardTypeText: cards[cardType],
+					cardType: cardType
+				})
+			});
+		}
+
+		$scope.deleteCard = function(cardType) {
 			if (cardType == 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
 				$scope.removeCard('travel_agent');
@@ -354,6 +383,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('travelAgentSearchStopped');
 			}
 		}
+
+		$scope.checkFuture = function() {
+			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. Changing all reservations will move all stay cards to the new card. This will only apply when a new company / TA card had been selected. If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
+
+			//If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' With choice of 'Change this reservation only' and 'Change all Reservations'.
+		}
+
+
 
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
