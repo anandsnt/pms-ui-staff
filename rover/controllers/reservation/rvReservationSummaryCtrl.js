@@ -87,11 +87,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$scope','$rootScope', '$state'
 		if(!isEmpty($scope.reservationData.paymentType.type)){
 			data.guest_detail.payment_type = {};
 			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
-			data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+			// data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
 			data.guest_detail.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
 															$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
 			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-
+			data.guest_detail.payment_type.session_id = MLISessionId;
 		}
 		
 														
