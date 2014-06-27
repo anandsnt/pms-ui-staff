@@ -40,16 +40,7 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
     */
 	$scope.backClicked = function(){
 		
-		if($rootScope.previousStateParam){
-			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-		}
-		else if($rootScope.previousState){
-			$state.go($rootScope.previousState);
-		}
-		else 
-		{
-			$state.go('admin.dashboard', {menu : 0});
-		}
+		$scope.goBack($rootScope, $state);
 	
 	};
 	
