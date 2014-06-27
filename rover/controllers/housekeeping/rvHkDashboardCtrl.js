@@ -1,17 +1,21 @@
 sntRover.controller('RVHkDashboardCtrl', [
 	'$scope',
+	'$rootScope',
 	'RVHkDashboardSrv',
-	function($scope, RVHkDashboardSrv) {
+	'dashboardData',
+	function($scope, $rootScope, RVHkDashboardSrv, dashboardData) {
 
 		BaseCtrl.call(this, $scope);
 
 		$scope.heading = "Dashboard";
 
-		//$scope.data = RVHkDashboardSrv;
+		$scope.data = dashboardData;
 
-		RVHkDashboardSrv.fetch()
-			.then(function(data) {
-				$scope.data = data;
-			});
+		// dashboardData
+
+		// RVHkDashboardSrv.fetch()
+		// 	.then(function(data) {
+		// 		$scope.data = data;
+		// 	});
 	}
 ]);

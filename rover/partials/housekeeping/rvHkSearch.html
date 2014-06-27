@@ -1,0 +1,182 @@
+<!-- Navbar -->
+<header class="nav-bar float" role="banner">
+   <!-- Title -->
+   <h1 class="h2" translate>ROOM_STATUS</h1>
+   <!-- Filter / Checkout button  -->
+   <a ng-click="showFilters()" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span translate>FILTER_ROOMS</a>
+</header>
+
+<!-- Search form -->
+<form class="search-form" role="search">
+   <div class="entry">
+    <div class="closebtn" ng-show="query != ''" ng-click = "clearSearch()" >
+      <a id="clear-query" class="icons icon-clear-search visible"  ng-click = "$emit('clearSearch()')" translate>CLEAR_QUERY</a>
+      </div>
+      
+      <button type="submit" class="icons icon-search" translate>MENU_SEARCH</button>
+      <input name="query" id="query" ng-model="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="text" autocomplete="off" ng-change = "filterByQuery()"
+>
+   </div>
+</form>
+
+<div id="pull-refresh-notify">
+  <span id="icon"></span>
+  <span id="ref-text">Pull down to refresh...</span>
+</div>
+
+<!-- Rooms list -->
+<section id="rooms" class="content scrollable">
+   <ul class="wrapper">
+      <li ng-repeat="room in rooms" ng-if="room.display_room" ng-click="roomListItemClicked(room)">
+         <a class = "{{ room.roomStatusClass }}">
+            <h2 class="room-number">{{ room.room_no }}</h2>
+            <figure class="guest-image">
+               <span ng-if="room.is_vip" class="vip" translate>VIP</span>
+               <img src="{{room.avatar_src}}">
+            </figure>
+            <p class="room-stats-wrap">
+              <span class="room-status">{{ room.description }}</span>
+              <span class="fo-status">{{ room.room_reservation_status }}</span>
+            </p>
+         </a>
+      </li>
+   </ul>
+</section>
+
+<!-- Rooms filters -->
+<section class="content" id="filter-rooms" ng-show="filterOpen">
+
+   <header role="banner" class="nav-bar float">
+       <h1 class="h2" translate>FILTER_ROOMS</h1>
+       <button id="clear-filters" class="button blank clear-selection" ng-show = "isFilterChcked()" ng-click = "clearFilters()" type="button" translate>CLEAR</button>
+       <a class="complete toggle linked-toggle" ng-click="filterDoneButtonPressed()" translate>DONE</a>
+    </header>
+    <div class="content scrollable" id="filter-options">
+       <div class="wrapper" >
+          <div class="holder">
+             <strong class="title" translate>HOUSEKEEPING_STATUS</strong>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dirty}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dirty" name="room-filters">
+                    <label translate>SHOW_DIRTY</label>
+                </label>
+             </div>
+             <div class="entry radio-check" ng-show="showPickup">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.pickup}"></span>
+                    <input type="checkbox" ng-model="currentFilters.pickup" name="room-filters">
+                    <label translate>SHOW_PICKUP</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.clean}"></span>
+                    <input type="checkbox" ng-model="currentFilters.clean" name="room-filters">
+                    <label translate>SHOW_CLEAN</label>
+                </label>
+             </div>
+             <div class="entry radio-check" ng-show="showInspected">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.inspected}"></span>
+                    <input type="checkbox" ng-model="currentFilters.inspected" name="room-filters">
+                    <label translate>SHOW_INSPECTED</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.out_of_order}"></span>
+                    <input type="checkbox" ng-model="currentFilters.out_of_order" name="room-filters">
+                    <label translate>SHOW_OOO</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.out_of_service}"></span>
+                    <input type="checkbox" ng-model="currentFilters.out_of_service" name="room-filters">
+                    <label translate>SHOW_OOS</label>
+                </label>
+             </div>
+          </div>
+          <div class="holder">
+             <strong class="title" translate>RESERVATION_STATUS</strong>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.vacant}"></span>
+                    <input type="checkbox" ng-model="currentFilters.vacant" name="room-filters">
+                    <label translate>SHOW_VACANT</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.occupied}"></span>
+                    <input type="checkbox" ng-model="currentFilters.occupied" name="room-filters">
+                    <label translate>SHOW_OCCUPIED</label>
+                </label>
+             </div>
+             <div class="entry radio-check" ng-show="showQueued">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.queued}"></span>
+                    <input type="checkbox" ng-model="currentFilters.queued" name="room-filters">
+                    <label translate>SHOW_QUEUED</label>
+                </label>
+             </div>
+          </div>
+          <div class="holder">
+             <strong class="title" translate>FRONT_OFFICE_STATUS</strong>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.stayover}"></span>
+                    <input type="checkbox" ng-model="currentFilters.stayover" name="room-filters">
+                    <label translate>SHOW_STAYOVER</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.not_reserved}"></span>
+                    <input type="checkbox" ng-model="currentFilters.not_reserved" name="room-filters">
+                    <label translate>SHOW_NOT_RESERVED</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrival}"></span>
+                    <input type="checkbox" ng-model="currentFilters.arrival" name="room-filters">
+                    <label translate>SHOW_ARRIVAL</label>
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived}"></span>
+                    <input type="checkbox" ng-model="currentFilters.arrived" name="room-filters">
+                    <label translate>SHOW_ARRIVED</label>
+                </label>
+             </div>
+
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dayuse}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dayuse" name="room-filters">
+                    <label translate>SHOW_DAY_USE</label>
+                </label>
+             </div>
+
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dueout" name="room-filters">
+                    <label translate>SHOW_DUE_OUT</label>
+                </label>
+             </div>
+
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed}"></span>
+                    <input type="checkbox" ng-model="currentFilters.departed" name="room-filters">
+                    <label translate>SHOW_DEPARTED</label>
+                </label>
+             </div>
+          </div>
+       </div>
+    </div>  
+</section>
