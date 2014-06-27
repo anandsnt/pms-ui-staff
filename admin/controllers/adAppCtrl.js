@@ -30,6 +30,19 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$scope.bookMarks = [];
 
+		$rootScope.shortDateFormat = "MM/yy"; //05/99
+		$rootScope.dayInWeek = "EEE"; //Sun
+		$rootScope.dayInMonth = "dd"; //01
+		$rootScope.monthInYear = "MMM"; //Jan
+		// Use below standard date formatter in the UI.
+		$rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
+		$rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
+		$rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
+		$rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
+		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
+		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
+
+
 		$scope.menu = [{
 			title: "MENU_DASHBOARD",
 			action: "/staff",
@@ -320,7 +333,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			//set flag if standalone PMS
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;
-			$scope.businessDate = data.business_date;
+			$rootScope.businessDate = data.business_date;
 			$scope.$emit('hideLoader');
 
 		};

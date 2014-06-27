@@ -72,6 +72,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	* function to handle click on continue button	
 	*/
 	this.continueButtonClicked = function(){
+		document.activeElement.blur();
 		if(!that.data.is_fixed){
 			return that.backToListing();
 		}

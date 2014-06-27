@@ -28,7 +28,12 @@
             <!-- Company Card Header-->
             <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')">
                 <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
-                    Add <span>Company</span>
+                    <div ng-show="reservationData.company.name == ''">
+                        Add <span>Company</span>
+                    </div>
+                    <div ng-hide="reservationData.company.name == ''">
+                        <span>{{ reservationData.company.name }}</span>
+                    </div>
                 </div>
                 <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
                     <div class="holder">
@@ -44,7 +49,12 @@
             <!-- Travel Agent Card Header-->
             <div id="travel-agent-card-header" class="card-header" ng-class="UICardClass('travel-agent-card')">
                 <div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
-                    Add <span>Travel Agent</span>
+                    <div ng-show="reservationData.travelAgent.name == ''">
+                        Add <span>Travel Agent</span>
+                    </div>
+                    <div ng-hide="reservationData.travelAgent.name == ''">
+                        <span>{{ reservationData.travelAgent.name }}</span>
+                    </div>
                 </div>
                 <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
                     <div class="holder">

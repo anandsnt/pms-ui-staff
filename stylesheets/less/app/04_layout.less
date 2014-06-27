@@ -455,6 +455,7 @@ body { overflow: hidden; }
 			position: relative;
 			height: 40px;
 			width: 100%;
+			.transition;
 			.show;
 			.pull-left;
 
@@ -561,6 +562,15 @@ body { overflow: hidden; }
 			}
 		}
 
+		.add-new-button { 
+			cursor: pointer;
+			background-color: transparent;
+			line-height: 40px;
+			.size(40px, 100px);
+			.pull-right;
+			.hide;
+		}
+
 		.filters {
 			height: 40px;
 			display: block !important;
@@ -626,6 +636,12 @@ body { overflow: hidden; }
 					li { .calc-width(20, 1); /* %, px */ }
 				}
 			}
+		}
+
+		&.enable-adding {
+			.entry { .calc-width(100, 120); }
+
+			.add-new-button { .show; }
 		}
 	}	
 

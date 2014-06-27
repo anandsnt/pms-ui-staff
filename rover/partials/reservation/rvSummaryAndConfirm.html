@@ -21,7 +21,7 @@
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
+                        {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:mmddyyyyFormat}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
@@ -43,7 +43,6 @@
                             </div>
                             <div class="select minutes">
                                 <select name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm">
-                                    <option value="" selected>MM</option>
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -52,7 +51,6 @@
                             </div>
                             <div class="select ampm">
                                 <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm">
-                                    <option value="" selected>AM/PM</option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -61,7 +59,7 @@
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
+                        {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:mmddyyyyFormat}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
@@ -83,7 +81,6 @@
                             </div>
                             <div class="select minutes">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm">
-                                    <option value="" selected>MM</option>
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -92,7 +89,6 @@
                             </div>
                             <div class="select ampm">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm">
-                                    <option value="" selected>AM/PM</option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -123,12 +119,12 @@
                                 <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                             </span>
                         </li>
-                        <li ng-repeat='addon in room.addOns'>
-                            <em>{{addon.name}}</em>
+                        <li ng-repeat='addon in room.addons'>
+                            <em>{{addon.title}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{addon.avgAmount}}
+                                {{currencySymbol}}{{ addon.price }}
                                 <span translate>EACH</span>
-                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
+                                <span class="total">{{currencySymbol}}{{ addon.quantity * addon.price}}</span>
                             </span>
                         </li>
                     </ul>
@@ -167,23 +163,23 @@
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
                     <div class="select">
                         <select class="placeholder" ng-model="reservationData.paymentType.type"
-                            ng-options="paymentMethod as paymentMethod.description for paymentMethod in data.paymentMethods" ng-change="refreshPaymentScroller()">
+                            ng-options="paymentMethod as paymentMethod.description for paymentMethod in data.paymentMethods | filter: {is_active: 'true'}"" ng-change="refreshPaymentScroller()">
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
                         </select>
                     </div>
                     <!-- Button to open billing information screen -->
                     <a class="button blue open-modal">Billing Information</a>
                 </div>
-                <div data-type="credit-card-fields" class="entry card-number-large margin" ng-show= "reservationData.paymentType.type.name == 'CC'">
+                <div data-type="credit-card-fields" class="entry card-number-large margin" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="card-number-set1" translate>CREDIT_CARD</label>
                     <input name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number"/>
                 </div>
-                <div data-type="credit-card-fields" class="entry card-number-small" ng-show= "reservationData.paymentType.type.name == 'CC'">
+                <div data-type="credit-card-fields" class="entry card-number-small" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
                     <input name="expiry-month" placeholder="" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"/>
                     <input name="expiry-year" placeholder=""  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"/>
                 </div>
-                <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.name == 'CC'">
+                <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>

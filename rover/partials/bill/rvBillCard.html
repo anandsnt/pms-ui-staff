@@ -32,7 +32,7 @@
 		<div ng-iscroll='registration-content' ng-iscroll-delay='50' class="registration-content bill_content">
 
 			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
-				<div id="notification-message" style="display: none;"></div>
+				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
 					<table>
 						<thead>
@@ -111,8 +111,8 @@
 					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
-							<div class="scrollable" >
-								<ul class="wrapper">
+							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'  >
+								<ul class="wrapper" style="width: {{calculatedWidth}}px;">
 									<li class="add-new" ng-click="openPostCharge()">
 										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
 									</li>
@@ -223,8 +223,12 @@
 
 						</div>
 						<!-- Show Total Stay Fees and Balance -->
-						<div ng-include="'/assets/partials/bill/rvTotalStayFees.html'"></div>
 
+						<div ng-include="'assets/partials/bill/rvTotalStayFees.html'" ></div>
+
+						<!-- Show Signature -->
+					
+						<div ng-include="'assets/partials/bill/rvSignature.html'"></div>
 						<!-- Review bill and Complete checkout -->
 						<!-- Checkin screen -->
 						<!-- Checkout screen -->
@@ -232,7 +236,6 @@
 					<!-- Review bill and Complete checkout -->
 					<!-- Checkin screen -->
 					<!-- Checkout screen -->
-
 				</div>
 				<!-- Show Signature -->
 				<!-- = render :partial => "staff/reservations/signature",:locals =>{:data =>data} -->
