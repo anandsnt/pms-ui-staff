@@ -14,7 +14,6 @@ $scope.$on('GUESTPAYMENT', function(event, paymentData) {
 	 $scope.paymentData = paymentData;
 });
 
-
 $scope.$on('guestCardUpdateData',function(event, data){
 	$scope.guestCardData.contactInfo = data.contactInfo;
 	$scope.guestCardData.contactInfo.avatar = data.avatar;
@@ -23,19 +22,20 @@ $scope.$on('guestCardUpdateData',function(event, data){
 	$scope.guestCardData.userId=data.userId;
 	$scope.guestCardData.guestId=data.guestId;
 });
+
 $scope.$on('staycardGuestData',function(event, data){
 	$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
-	$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;	$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
+	$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;
+	$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
 	$scope.guestCardData.contactInfo.city = data.guest_details.city;
 	$scope.guestCardData.contactInfo.state = data.guest_details.state;
 	$scope.guestCardData.contactInfo.phone = data.guest_details.phone;
 	$scope.guestCardData.contactInfo.email = data.guest_details.email;
 });
+
 $scope.$on('reservationCardClicked',function(){
 	$scope.$broadcast('reservationCardisClicked');
 });
-
-
 
 //setting the heading of the screen to "Search"
     $scope.heading = "Stay Card";

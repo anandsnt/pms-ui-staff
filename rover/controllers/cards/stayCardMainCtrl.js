@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams',
-	function($scope, RVCompanyCardSrv, $stateParams) {
+sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv',
+	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv) {
 
 		$scope.pendingRemoval = {
 			status: false,
@@ -27,8 +27,6 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		}
 
 		$scope.reservationListData = {};
-		// passData.avatar = reservationListData.guest_details.avatar;
-		// passData.vip = reservationListData.guest_details.vip;
 
 		$scope.reservationDetails = {
 			guestCard: {
@@ -51,13 +49,48 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 
 		//fetching country list
 		$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
-		//initGuestCard();// Have to go to the rvReservationCardController
+
+
 		$scope.initGuestCard = function() {
-			$scope.$broadcast('guestCardAvailable');
-			var passData = $scope.reservationListData;
-			passData.avatar = $scope.reservationListData.guest_details.avatar;
-			passData.vip = $scope.reservationListData.guest_details.vip;
-			$scope.$emit('passReservationParams', passData);
+			// passReservationParams
+			//TODO : Once this works pull it to a separate method 
+			var fetchGuestcardDataSuccessCallback = function(data) {
+				var contactInfoData = {
+					'contactInfo': data,
+					'countries': $scope.countries,
+					'userId': data.user_id,
+					'avatar': $scope.reservationListData.avatar,
+					'guestId': data.guest_id,
+					'vip': $scope.reservationListData.vip
+				};
+				// $scope.$emit('guestCardUpdateData', contactInfoData);
+				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
+				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+				$scope.countriesList = contactInfoData.countries;
+				$scope.guestCardData.userId = contactInfoData.userId;
+				$scope.guestCardData.guestId = contactInfoData.guestId;
+				var guestInfo = {
+					"user_id": contactInfoData.user_id,
+					"guest_id": contactInfoData.guest_id
+				};
+				$scope.searchData.guestCard.guestFirstName = "";
+				$scope.searchData.guestCard.guestLastName = "";
+				$scope.searchData.guestCard.guestCity = "";
+				$scope.searchData.guestCard.guestLoyaltyNumber = "";
+				$scope.$broadcast('guestSearchStopped');
+				$scope.$broadcast('guestCardAvailable');
+				// $scope.showGuestPaymentList(guestInfo);
+			};
+			var fetchGuestcardDataFailureCallback = function(data) {
+				$scope.$emit('hideLoader');
+			};
+
+			var param = {
+				'fakeDataToAvoidCache': new Date(),
+				'id': $scope.reservationListData.guest_details.reservation_id
+			};
+			$scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 		}
 
 		// fetch reservation company card details 
@@ -165,10 +198,9 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.reservationDetails.companyCard.id = id;
 				$scope.initCompanyCard();
 				//clean search data
-				$scope.searchData.guestCard.guestFirstName = "";
-				$scope.searchData.guestCard.guestLastName = "";
-				$scope.searchData.guestCard.guestCity = "";
-				$scope.searchData.guestCard.guestLoyaltyNumber = "";
+				$scope.searchData.companyCard.companyName = "";
+				$scope.searchData.companyCard.companyCity = "";
+				$scope.searchData.companyCard.companyCorpId = "";
 				$scope.$broadcast('companySearchStopped');
 			} else if (card == 'travel_agent') {
 				$scope.reservationDetails.travelAgent.id = id;
@@ -178,6 +210,9 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.searchData.travelAgentCard.travelAgentCity = "";
 				$scope.searchData.travelAgentCard.travelAgentIATA = "";
 				$scope.$broadcast('travelAgentSearchStopped');
+			} else if (card == 'guest') {
+				$scope.reservationDetails.guestCard.id = id;
+				$scope.initGuestCard();
 			}
 		}
 

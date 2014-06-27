@@ -31,7 +31,7 @@
                 <!-- <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button> -->
                 <div id="search-guests-content" class="search-cards scrollable">
                     <!-- Guest Card Results listing -->
-                    <div class="wrapper" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
+                    <div class="wrapper" ng-controller="guestResults" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
                         <ul id="search-guests-results" class="search-results">
                             <li ng-repeat="guest in guests">
                                 <a ng-click="selectGuest(guest, $event)">
