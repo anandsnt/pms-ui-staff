@@ -96,7 +96,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 			}
 		}
 		if(pos != ""){
-			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(pos, 1);
+			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram = $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(pos, 1);
 			return;
 		}
 		for(var i = 0; i < frequentFlyerPrograms.length; i++){
@@ -106,7 +106,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 			}
 		}
 		if(pos != ""){
-			$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(pos, 1);
+			$scope.loyaltyData.userMemberships.frequentFlyerProgram = $scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(pos, 1);
 			return;
 		}
 	};
