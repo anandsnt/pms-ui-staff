@@ -115,20 +115,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             };
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback, fetchRateTypesFailureCallback);
         }
-        /**
-        * Method to show/hide the based on range selection.
-        * Based on rate will not be available,
-        * if it the rate type is 'Corporate Rates', 'Consortia Rates', 'Government Rates'
-        */
-        $scope.rateTypeChanged = function(){
-            var rateTypeSelected = $scope.rateData.rate_type.name;
-            if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rateTypeSelected) >= 0){
-                $scope.hideBasedOn = true;
-            }
-            else if(rateTypeSelected === 'Specials & Promotions'){
-                $scope.isPromotional = true;
-            }
-        };
 
         /*
          * Set add on data

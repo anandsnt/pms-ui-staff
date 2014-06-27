@@ -37,9 +37,9 @@
                 </div>
             </div>
             <div class="entry">
-                <label ng-hide="isPromotional()">Based On</label>
+                <label ng-hide="isPromotional() || hideBasedOn()">Based On</label>
                 <label ng-show="isPromotional()">Copy From</label>
-                <div class="select">
+                <div class="select" ng-hide= "!isPromotional() && hideBasedOn()">
                     <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                         <option value="">select rate</option>   
                     </select>
