@@ -23,9 +23,19 @@ var AddNewSmartBandView = function(domRef) {
 	*/
 	this.pageshow = function(){		
 		that.parentController.showButton('see-all-band-button');
-    	that.parentController.hideButton('add-new-button');
-    	that.myDom.find('#first-name').val('');
-    	that.myDom.find('#last-name').val('');
+    	that.parentController.hideButton('add-new-button');    	
+    	var listingObj = that.parentController.getControllerObject('smartband-listing');
+    	if(listingObj.myDom.find('#listing-area ul li').length == 0){
+    		var firstName = $("#guest-card #card-wrapper #change-name #gc-firstname").val();
+    		var lastName = $("#guest-card #card-wrapper #change-name #gc-lastname").val();
+    		that.myDom.find('#first-name').val(firstName);
+    		that.myDom.find('#last-name').val(lastName);
+    	}
+    	else{
+    		that.myDom.find('#first-name').val('');
+    		that.myDom.find('#last-name').val('');
+    	}
+    	
     	that.myDom.find('#fixed-amound').val('');
     	that.myDom.find('#payment-type').prop('checked', false);
     	that.switchedPaymentType();
