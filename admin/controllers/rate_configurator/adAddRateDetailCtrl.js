@@ -104,10 +104,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
                 $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
                 $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-
-
                 $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
-                $scope.rateData.currency_code_symbol = getCurrencySign($scope.rateTypesDetails.hotel_settings.currency.value);
 
                 $scope.$emit('hideLoader');
             };

@@ -24,8 +24,8 @@
             </div>
             <div class="entry">
                 <label>Charge code <strong>*</strong> </label>
-                {{rateTypesDetails.charge_codes}}
                 <div class="select">
+
                     <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
                         <option value="">Select Charge Code</option>   
                     </select>
@@ -33,9 +33,10 @@
             </div>
             <div class="entry">
                 <label>currency <strong>*</strong> </label>
+                
                 <div class="select">
                     <select class="placeholder" disabled="disabled" class="styled">
-                        <option selected>{{rateData.currency_code_symbol}}</option>
+                        <option selected>{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
                     </select>
                 </div>
             </div>
