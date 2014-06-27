@@ -4,7 +4,14 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	$scope.errorMessage = "";
 	$scope.guestCardData.likes = {};
 	$scope.guestLikesData = {};
-	
+	 $scope.$parent.myScrollOptions = {		
+		    'likes_info': {
+		    	scrollbars: true,
+		        snap: false,
+		        hideScrollbar: false,
+		        preventDefault: false
+		    }
+		};
 	$scope.init = function(){
 		
 	    var fetchLikesFailureCallback = function(data){
@@ -42,17 +49,10 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		     });
 	     });
         $scope.guestCardData.likes = $scope.guestLikesData;
-        $scope.$parent.myScrollOptions = {		
-		    'likes_info': {
-		    	scrollbars: true,
-		        snap: false,
-		        hideScrollbar: false,
-		        preventDefault: false
-		    },
-		};
+       
 	
 		setTimeout(function(){
-			$scope.$parent.myScroll['likes_info'].refresh();
+			$scope.myScroll['likes_info'].refresh();
 			}, 
 		3000);
 
