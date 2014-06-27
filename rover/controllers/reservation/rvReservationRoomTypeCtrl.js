@@ -91,16 +91,16 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//sort the rooms by levels
 			// console.log($scope.roomAvailability);
 
+
 			$scope.displayData.allRooms.sort(function(a, b) {
-				var room1 = $scope.roomAvailability[a.id];
-				var room2 = $scope.roomAvailability[b.id];
-				if (room1.averagePerNight < room2.averagePerNight)
+				var room1AvgPerNight = parseInt($scope.roomAvailability[a.id].averagePerNight);
+				var room2AvgPerNight = parseInt($scope.roomAvailability[b.id].averagePerNight);
+				if (room1AvgPerNight < room2AvgPerNight)
 					return -1;
-				if (room1.averagePerNight > room2.averagePerNight)
+				if (room1AvgPerNight > room2AvgPerNight)
 					return 1;
 				return 0;
 			});
-
 
 			$scope.displayData.allRooms.sort(function(a, b) {
 				if (a.level < b.level)
@@ -256,14 +256,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != firstId && this.availability == true && this.rates.length > 0;
+								return this.level == level && this.id != firstId && this.availability == true && this.rates.length > 0 && parseInt(this.averagePerNight) >= parseInt($scope.roomAvailability[firstId].averagePerNight);
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
 						candidateRooms.sort(function(a, b) {
-							if (a.averagePerNight < b.averagePerNight)
+							if (parseInt(a.averagePerNight) < parseInt(b.averagePerNight))
 								return -1;
-							if (a.averagePerNight > b.averagePerNight)
+							if (parseInt(a.averagePerNight) > parseInt(b.averagePerNight))
 								return 1;
 							return 0;
 						});
@@ -301,7 +301,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0;
+								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0 && parseInt(this.averagePerNight) >= parseInt($scope.roomAvailability[$scope.preferredType].averagePerNight);
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
