@@ -33,6 +33,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 
 		var loyaltyPostsuccessCallback = function(data){	
 			$scope.newLoyalty.id = data.id;	
+			$scope.newLoyalty.membership_card_number = $scope.newLoyalty.membership_card_number.substr($scope.newLoyalty.membership_card_number.length - 4);
 			$scope.$emit('hideLoader');
 			$scope.cancel();
 			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);
