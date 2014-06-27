@@ -38,7 +38,8 @@ var AddNewSmartBandView = function(domRef) {
 	* function to handle click on continue button
 	* in this operation we are saving the info, on success we are redirecting writing interface
 	*/
-	this.continueButtonClicked = function(){		
+	this.continueButtonClicked = function(){
+		document.activeElement.blur();		
 		//preparing the data to write screen
 		var data = {};
 		data.first_name = $.trim(that.myDom.find('#first-name').val());

@@ -1,38 +1,37 @@
 (function() {
-	var checkinRoomUpgradeOptionsService = function($q,baseWebService,$rootScope) {
-		
-		var responseData = {};
+	var checkinRoomUpgradeOptionsService = function($q,$http) {
 
+	var responseData = {};
 
-		//fetch texts to be displayed
+	//fetch texts to be displayed
 
-		var fetch = function(data) {
-			
-			var deferred = $q.defer();
+	var fetch = function(data) {
 
-			var url = '/guest_web/upgrade_options.json';
-	
-			baseWebService.fetch(url,data).then(function(response) {
-
-				this.responseData = response;
-				deferred.resolve(this.responseData);
-			});
-			
-
-			return deferred.promise;
-		};
-
-
-		return {
-			responseData: responseData,
-			fetch : fetch
-		}
+		var deferred = $q.defer();
+		var url = '/guest_web/upgrade_options.json';
+		$http.get(url,{
+			params: data
+		}).success(function(response) {
+			this.responseData = response;
+			deferred.resolve(this.responseData);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
 	};
 
-	var dependencies = [
-	'$q','baseWebService','$rootScope',
-	checkinRoomUpgradeOptionsService
-	];
 
-	snt.factory('checkinRoomUpgradeOptionsService', dependencies);
+	return {
+		responseData: responseData,
+		fetch : fetch
+	}
+};
+
+var dependencies = [
+'$q','$http',
+checkinRoomUpgradeOptionsService
+];
+
+snt.factory('checkinRoomUpgradeOptionsService', dependencies);
 })();

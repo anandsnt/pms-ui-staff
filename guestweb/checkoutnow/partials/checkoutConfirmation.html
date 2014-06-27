@@ -1,26 +1,19 @@
 <!-- contentarea starts here-->
 
 <div class="jumbotron">
-
-
-
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>
 			</div>
 		</div>
-	
 
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="!pageSuccess">
+		<div class="container" ng-hide="!pageValid">
 			<!-- top section starts here-->
 
 			<div class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign">
-					<p class="roomnumber centeralign">
-						<span>Room {{roomNo}}</span>
-					</p>
 					Ready to check out?
 					<p class="leadtext checkout-time-container">
 						<span class="lightcontent chekout-time">{{checkoutTimessage}} {{checkoutTime}}</span>
@@ -33,7 +26,7 @@
 				<div class="row">
 						<div class="col-xs-12 checkoutnow single">
 							<div class="rel-wrapper">
-								<a href="#/checkoutBalance"></a>
+								<a ui-sref="checkoutBalance"></a>
 								<div class="row">
 									Check out<br class="hide-in-desktop"/> now.
 									<!-- {{details.buttonText}} -->
@@ -46,7 +39,6 @@
 					</div>
 
 			</div>
-
 			<div class="row clearboth">
 				<p class="foot-text centeralign" ng-show="true">
 						<em class = "base-text">{{footerMessage1}}</em>

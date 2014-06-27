@@ -3,7 +3,7 @@
 	"CONTRACTED_NIGHTS": "Contracted Nights",
 	"COPY_VALUES": "Copy values",
 	"COMPANY": "Company",
-    "TRAVELAGENT": "TRAVELAGENT",
+    "TRAVELAGENT": "Travel Agent",
     "CONTACT_INFORMATION": "Contact Information",
     "CONTRACTS": "Contracts",
     "RESERVATIONS": "Reservations",
@@ -35,4 +35,15 @@
     "TOTAL_NIGHTS": "Total Nights",
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
-    "AVERAGE_RATE": "Average Rate"
+    "AVERAGE_RATE": "Average Rate",
+    
+	"COMPANY_CARD": "Company Card",
+	"TA_CARD": "Travel Agent Card",
+	"CREATE_NEW": "Create New",
+	"SAVE_NEW_CARD": "Save new card",
+	"DISCARD": "Discard",
+	"SAVE_NEW": "Save new ",
+	"CARD":"card?",
+	"NEW_COMPANY_CARD" : "New Company Card",
+	"NEW_TA_CARD": "New Travel Agent Card"
+	

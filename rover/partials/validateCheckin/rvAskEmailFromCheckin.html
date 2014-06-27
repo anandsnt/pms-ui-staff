@@ -1,0 +1,20 @@
+<div role="dialog" id="modal" class="modal-show">
+	<form id="validate-opt-email" class="modal-content form confirmation">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<div class="entry full-width">
+			<div id="notification-message"></div>
+		</div>
+		<span class="h2 message" translate>EMAIL_MISSING</span>
+		<span class="text" translate>ASK_GUEST_TO_PROVIDE_EMAIL</span>
+		<div id="guest-opt-email-entry" class="entry full-width">
+			<label for="guest-email" translate>EMAIL</label>
+			<input type="text" ng-model="saveData.email" autocomplete="off">
+		</div>
+		<div class="actions float">
+			<a id="save" class="button green modal-close" ng-click="submitAndCheckin()" translate>SUBMIT</a>
+			<a id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</a>
+		</div>
+	</form>
+</div>
