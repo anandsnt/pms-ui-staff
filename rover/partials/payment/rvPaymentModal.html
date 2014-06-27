@@ -29,17 +29,17 @@
 	<div class="holder float">
 		<div class="entry">
 		    <label for="card-number-set1" translate>CARD_NUMBER</label>
-		    <input type="text" ng-disabled="shouldShowDisabled" maxlength="16" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
+		    <input type="text" ng-readonly="shouldShowDisabled" maxlength="16" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
 		</div>
 		<div class="entry">
 		    <label for="expiry-month" ><span translate>EXPIRATION_DATE </span>(<span>MM/YY</span>)</label>
-		    <input type="text" ng-disabled="shouldShowDisabled" size="2" maxlength="2" value="" placeholder="MM" ng-model="saveData.card_expiry_month">
-		    <input type="text" ng-disabled="shouldShowDisabled" size="2" maxlength="2" value="" placeholder="YY" ng-model="saveData.card_expiry_year">
+		    <input type="text" ng-readonly="shouldShowDisabled" size="2" maxlength="2" value="" placeholder="MM" ng-model="saveData.card_expiry_month">
+		    <input type="text" ng-readonly="shouldShowDisabled" size="2" maxlength="2" value="" placeholder="YY" ng-model="saveData.card_expiry_year">
 		</div>
 	</div>
 	<div class="entry full-width">
 	    <label for="name-on-card" translate>NAME_ON_CARD</label>
-	    <input type="text" ng-disabled="shouldShowDisabled" ng-model="saveData.name_on_card" value="{{saveData.name_on_card}}" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
+	    <input type="text" ng-readonly="shouldShowDisabled" ng-model="saveData.name_on_card" value="{{saveData.name_on_card}}" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
 	</div>	
 	<div class="entry full-width add-to-guest" ng-show="!isFromGuestCard">
         <label class="checkbox add-to-guest" ng-class="{'checked': saveData.add_to_guest_card}" >
