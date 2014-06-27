@@ -635,7 +635,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					"signature" : signatureData,
 					"reservation_id" : $scope.reservationBillData.reservation_id	
 				};
-				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinSuccessCallback);
+				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}
 		}
