@@ -73,7 +73,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
             var fetchRateTypesSuccessCallback = function (data) {
                 $scope.rateTypesDetails = data;
-                 $scope.hotelCurrency = getCurrencySign($scope.rateTypesDetails.hotel_settings.currency.value);
 
                 $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
                 $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
@@ -108,6 +107,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
 
                 $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
+                $scope.rateData.currency_code_symbol = getCurrencySign($scope.rateTypesDetails.hotel_settings.currency.value);
+
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {
