@@ -13,7 +13,7 @@
         </div>
         <fieldset class="holder left">
         <div></div>
-            <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate name" required="yes"></ad-textbox>
+            <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
             <div class="entry">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
@@ -24,15 +24,18 @@
             </div>
             <div class="entry">
                 <label>Charge code <strong>*</strong> </label>
+                {{rateTypesDetails.charge_codes}}
                 <div class="select">
                     <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
+                        <option value="">Select Charge Code</option>   
                     </select>
                 </div>
             </div>
             <div class="entry">
                 <label>currency <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="data.id as data.symbol for data in [rateTypesDetails.hotel_settings.currency]" disabled="disabled" class="styled">
+                    <select class="placeholder" disabled="disabled" class="styled">
+                        <option selected>{{rateData.currency_code_symbol}}</option>
                     </select>
                 </div>
             </div>
@@ -41,7 +44,7 @@
                 <label ng-show="isPromotional()">Copy From</label>
                 <div class="select" ng-hide= "!isPromotional() && hideBasedOn()">
                     <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
-                        <option value="">select rate</option>   
+                        <option value="">Select Rate</option>   
                     </select>
                 </div>
             </div>
@@ -67,7 +70,7 @@
         </fieldset>
 
         <fieldset class="holder right">
-              <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
+              <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label = "Description " placeholder = "Enter Rate Description" required="true"></ad-textarea>
         </fieldset>
         <fieldset class="holder left" ng-show="isPromotional()">
                 <ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
