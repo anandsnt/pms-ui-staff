@@ -30,7 +30,7 @@
 <section ng-if="searchMode">
     <div id="search-travel-agent-content" class="search-cards scrollable">
         <!-- Travel Agent Card Results listing -->
-        <div class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
+        <div ng-controller="travelAgentResults" class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
             <ul id="search-travel-agent-results" class="search-results">
                 <li ng-repeat="travelAgent in travelAgents">
                     <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">

@@ -132,6 +132,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			return selector.contains(obj);
 		};
 
+		$scope.checkOutsideClick = function(targetElement) {
+			if ($(targetElement).closest(".stay-card-alerts").length < 1) {
+				$scope.closeGuestCard();
+			}
+		}
+
 		/**
 		 * handle click outside tabs and drawer click
 		 */
@@ -269,7 +275,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 			ngDialog.open({
 				template: '/assets/partials/cards/alerts/detachCard.html',
-				className: 'ngdialog-theme-default',
+				className: 'ngdialog-theme-default stay-card-alerts',
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false,
@@ -283,22 +289,16 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.deleteCard = function(cardType) {
 			if (cardType == 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
-				$scope.pendingRemoval = {
-					status: true,
-					cardType: "travel_agent"
-				};
+				$scope.pendingRemoval.status = true;
+				$scope.pendingRemoval.cardType = "travel_agent";
 			} else if (cardType == 'company') {
 				$scope.$broadcast('companyCardDetached');
-				$scope.pendingRemoval = {
-					status: true,
-					cardType: "company"
-				};
+				$scope.pendingRemoval.status = true;
+				$scope.pendingRemoval.cardType = "company";
 			} else if (cardType == 'guest') {
 				$scope.$broadcast('guestCardDetached');
-				$scope.pendingRemoval = {
-					status: true,
-					cardType: "guest"
-				};
+				$scope.pendingRemoval.status = true;
+				$scope.pendingRemoval.cardType = "guest";
 			}
 		}
 
@@ -443,7 +443,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
 			ngDialog.open({
 				template: '/assets/partials/cards/alerts/futureReservationsAccounts.html',
-				className: 'ngdialog-theme-default',
+				className: 'ngdialog-theme-default stay-card-alerts',
 				scope: $scope,
 				closeByDocument: false,
 				closeByEscape: false,
@@ -477,11 +477,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
-			// string (guest, company, travel_agent)
-			// clean search data
-			$scope.searchData.travelAgentCard.travelAgentName = "";
-			$scope.searchData.travelAgentCard.travelAgentCity = "";
-			$scope.searchData.travelAgentCard.travelAgentIATA = "";
+
 			if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
 				$scope.replaceCardCaller('travel_agent', travelAgent.id, false);
 			} else {
@@ -493,10 +489,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$event.stopPropagation();
 			// string (guest, company, travel_agent)
 			// clean search data
-			$scope.searchData.guestCard.guestFirstName = "";
-			$scope.searchData.guestCard.guestLastName = "";
-			$scope.searchData.guestCard.guestCity = "";
-			$scope.searchData.guestCard.guestLoyaltyNumber = "";
+
 			$scope.replaceCard('guest', guest.id);
 			$scope.reservationDetails.guestCard.id = guest.id;
 			$scope.initGuestCard();

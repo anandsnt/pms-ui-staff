@@ -6,7 +6,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			cardType: ""
 		};
 
-		// BaseCtrl.call(this, $scope);
+		BaseCtrl.call(this, $scope);
 		$scope.searchData = {
 			guestCard: {
 				guestFirstName: "",
@@ -121,6 +121,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('removeCard - failure');
+				$scope.$emit('hideLoader');
 			});
 		}
 
@@ -138,6 +139,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('replaceCard -failure');
+				$scope.cardRemoved();
+				$scope.$emit('hideLoader');
 			});
 		}
 

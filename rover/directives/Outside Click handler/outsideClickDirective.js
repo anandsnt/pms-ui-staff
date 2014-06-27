@@ -1,18 +1,17 @@
-sntRover.directive('outsideClickHandler', function($window){
+sntRover.directive('outsideClickHandler', function($window) {
   return {
-    
-    link: function(scope, element){
 
-    var w = angular.element($window);
-    w.bind('click', function(e){
-      if(element[0].contains(e.target)){
+    link: function(scope, element) {
 
-      }
-      else{
-        scope.$broadcast("OUTSIDECLICKED");
-      }
-      
-    });
-  }
+      var w = angular.element($window);
+      w.bind('click', function(e) {
+        if (element[0].contains(e.target)) {
+
+        } else {
+          scope.$emit("OUTSIDECLICKED", e.target);
+        }
+
+      });
+    }
   }
 });

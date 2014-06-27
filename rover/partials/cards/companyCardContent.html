@@ -22,43 +22,43 @@
     </section>
 
     <section ng-if="searchMode">
-     <div id="search-company-content" class="search-cards scrollable">
-        <!-- Company Card Results listing -->
-        <div class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll">
-            <ul id="search-company-results" class="search-results">
-                <li ng-repeat="company in companies">
-                    <a ng-click="selectCompany(company, $event)" class="card-result">
-                        <figure class="guest-image">
-                            <img src="images/allianz-logo.jpg" alt="" />
-                        </figure>
-                        <div class="data">
-                            <div class="info">
-                                <h2 ng-bind-html="'{{ company.firstName }} {{ company.lastName }}'|highlight:companyName:false"></h2>
-                                <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+        <div id="search-company-content" class="search-cards scrollable">
+            <!-- Company Card Results listing -->
+            <div ng-controller="companyResults" class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll" ng-iscroll-delay='500'>
+                <ul id="search-company-results" class="search-results">
+                    <li ng-repeat="company in companies">
+                        <a ng-click="selectCompany(company, $event)" class="card-result">
+                            <figure class="guest-image">
+                                <img src="images/allianz-logo.jpg" alt="" />
+                            </figure>
+                            <div class="data">
+                                <div class="info">
+                                    <h2 ng-bind-html="'{{ company.firstName }} {{ company.lastName }}'|highlight:companyName:false"></h2>
+                                    <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+                                </div>
+                                <span class="confirmation">{{ company.address.postalCode }}</span>
+                                <span class="icons icon-location">{{ company.address.city }}, {{ company.address.state }}</span>
+                                <span class="icons icon-phone">{{ company.phone }}</span>
+                                <span class="icons icon-email-grey">{{ company.email }}</span>
                             </div>
-                            <span class="confirmation">{{ company.address.postalCode }}</span>
-                            <span class="icons icon-location">{{ company.address.city }}, {{ company.address.state }}</span>
-                            <span class="icons icon-phone">{{ company.phone }}</span>
-                            <span class="icons icon-email-grey">{{ company.email }}</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div id="search-company-no-results" class="search-cards no-content">
-            <!-- Company Card No Results -->
-            <div class="info" ng-show="companySearchIntiated && companies.length === 0">
-                <span class="icon-no-content icon-cards"></span>
-                <strong class="h1">No Matches</strong>
-                <span class="h2">Check that you didn't mispell the <strong>Company Name</strong>, <strong>City</strong> or <strong>Corporate ID</strong>.</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <!-- Company Card Empty -->
-            <div class="info" ng-hide='companySearchIntiated'>
-                <span class="icon-no-content icon-cards"></span>
-                <strong class="h1">Find Company</strong>
-                <span class="h2">Search by <strong>Name</strong>, <strong>City</strong> or <strong>Loyalty No.</strong></span>
+            <div id="search-company-no-results" class="search-cards no-content">
+                <!-- Company Card No Results -->
+                <div class="info" ng-show="companySearchIntiated && companies.length === 0">
+                    <span class="icon-no-content icon-cards"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">Check that you didn't mispell the <strong>Company Name</strong>, <strong>City</strong> or <strong>Corporate ID</strong>.</span>
+                </div>
+                <!-- Company Card Empty -->
+                <div class="info" ng-hide='companySearchIntiated'>
+                    <span class="icon-no-content icon-cards"></span>
+                    <strong class="h1">Find Company</strong>
+                    <span class="h2">Search by <strong>Name</strong>, <strong>City</strong> or <strong>Loyalty No.</strong></span>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </div>
