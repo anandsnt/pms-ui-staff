@@ -116,10 +116,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.reservationId = data.id;
 			$scope.reservationData.confirmNum = data.confirm_no;
 			$state.go('rover.reservation.mainCard.reservationConfirm');
+			MLISessionId = "";
 			
 		};
+		var saveFailure =  function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+			MLISessionId = "";
 
-		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+		}
+
+		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess,saveFailure);
 	}
 
 	/**
