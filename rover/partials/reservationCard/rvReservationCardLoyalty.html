@@ -20,7 +20,7 @@
 		<!-- Calculates the default selected loyalty -->
 		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty()">
 			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
-			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
+			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number.substr(selectedLoyalty.membership_card_number.length - 4)}} </span> </span>
 		</div>
 		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty()">
 			<span class="value code"> </span>
