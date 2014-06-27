@@ -4,7 +4,6 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};	
 
-	debug = $scope;
    /*
     * To fetch list of room types
     */
