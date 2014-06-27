@@ -39,6 +39,7 @@
     "0_ITEM_SELECTED": "0 items selected",
     "POST_CHARGE": "Post Charge",
     "VIEW_BILL_TITLE": "View Bill",
+    "GUEST_BILL_TITLE": "Guest Bill",
     "PLEASE_SIGN_BELOW": "Please sign below",
     "T_AND_C_TEXT": "By Checking this box you hereby agree to the Terms & Conditions",
     "PROMO_NEWS_BY_EMAIL_TEXT": "Please send me promotions and news via email.",
@@ -69,4 +70,5 @@
 	"EARLY_DEPARTURE" : "Early Departure:",
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
-	"CANCEL" : "Cancel"
+	"CANCEL" : "Cancel",
+	"REGISTRATION" : "Registration"

@@ -24,8 +24,10 @@
         </td>
         <td ng-repeat="weekDay in week">
             <div class="cellbg">
+                <span ng-show="!weekDay.is_editable">&nbsp;</span>
                 <span ng-show="weekDay.is_editable">{{ weekDay.date | date:'dd' }}</span>
-            <input ng-model="weekDay.value" ng-disabled="!weekDay.is_editable" /></div>
+                <input ng-model="weekDay.value" ng-disabled="!weekDay.is_editable" />
+            </div>
         </td>
 
     </tr>

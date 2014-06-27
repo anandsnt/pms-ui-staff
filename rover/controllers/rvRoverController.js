@@ -39,6 +39,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dayInWeek = "EEE"; //Sun
     $rootScope.dayInMonth = "dd"; //01
     $rootScope.monthInYear = "MMM"; //Jan
+    // Use below standard date formatter in the UI.
     $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
@@ -322,10 +323,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       });
     };
     /*
-     *
+     * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
       $scope.$broadcast('GUESTPAYMENT', paymentData);
+    });
+    
+    $scope.$on('SHOWGUESTLIKES', function(event) {
+         $scope.$broadcast('SHOWGUESTLIKESINFO');
     });
     /*
      * Tp close dialog box

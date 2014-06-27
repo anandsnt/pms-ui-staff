@@ -10,7 +10,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	$scope.pressedCancelStatus = false;
 	
 	$scope.init = function(){
-		console.log($scope);
 		var reservationStatus = "";
 		$scope.data = {};
 		if($scope.fromView == "checkin"){

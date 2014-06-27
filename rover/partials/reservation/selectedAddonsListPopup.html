@@ -1,17 +1,14 @@
 <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
-    <div class="modal-content rooms-and-rates">
+    <div class="modal-content room-enhancements">
         <span class="h2 message">Room 1 Enhancements</span>
         <!-- Initial markup -->
-        <ul id="room-1-enhancements" class="enhancements-added"></ul>
-
         <!-- Markup as you add items -->
-        <ul id="room-1-enhancements" class="confirmed">
+        <ul id="room-1-enhancements" class="enhancements-added">
             <li ng-repeat="addon in activeRoom.addons">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
                 <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)" translate>REMOVE</button>
             </li>
-            ...
         </ul>
         <div class="actions">
             <button type="button" ng-click="closePopup()" class="button white modal-hide" translate>ADD_MORE_TO_THIS_ROOM</button>

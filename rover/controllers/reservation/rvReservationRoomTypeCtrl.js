@@ -1,10 +1,10 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce) {
 
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
-		$scope.containerHeight = 300;
+		$scope.containerHeight = 250;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 		$scope.activeCriteria = "ROOM_TYPE";
@@ -61,7 +61,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 0;
-			$scope.rooms = roomRates.rooms;
+			$scope.rooms = $scope.reservationData.rooms;
 			$scope.activeRoom = 0;
 
 
@@ -78,7 +78,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.displayData.allRates = rates;
 
 			//TODO : Make adjustments if multiple rooms are selected and the room selection bar is displayed
-			$scope.containerHeight = $(window).height() - 300;
+			$scope.containerHeight = $(window).height() - 250;
 
 			$scope.roomAvailability = $scope.getAvailability(roomRates);
 
@@ -89,7 +89,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			//sort the rooms by levels
-			console.log($scope.roomAvailability);
+			// console.log($scope.roomAvailability);
 
 			$scope.displayData.allRooms.sort(function(a, b) {
 				var room1 = $scope.roomAvailability[a.id];
@@ -113,11 +113,21 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//$scope.displayData.allRooms = roomRates.room_types;
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
 
+			//TODO: Handle the selected roomtype from the previous screen
+			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
+			//$scope.preferredType = 5;
+			$scope.roomTypes = roomRates.room_types;
+			$scope.filterRooms();
+			$scope.$emit('hideLoader');
+		};
 
+		$scope.setRates = function() {
 			//CICO-5253 > Rate Types Reservartion
 			//Get the rates for which rooms are available $scope.displayData.allRooms
 			$scope.ratesMaster = [];
 			$scope.displayData.availableRates = [];
+
+			// if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
 			$($scope.displayData.allRooms).each(function(i, d) {
 				var room = $scope.roomAvailability[d.id];
 				$(room.rates).each(function(i, rateId) {
@@ -131,19 +141,37 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				})
 			});
 
-
 			$($scope.ratesMaster).each(function(i, d) {
 				if (typeof d != 'undefined') {
 					//Sort Rooms inside the rates so that they are in asc order of avg/day
 					//TODO: Restructure the data
-					d.rooms.sort(function(a, b) {
-						if (a.total[d.rate.id].average < b.total[d.rate.id].average)
-							return -1;
-						if (a.total[d.rate.id].average > b.total[d.rate.id].average)
-							return 1;
-						return 0;
-					});
-					$scope.displayData.availableRates.push(d);
+					if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
+						d.rooms.sort(function(a, b) {
+							if (a.total[d.rate.id].average < b.total[d.rate.id].average)
+								return -1;
+							if (a.total[d.rate.id].average > b.total[d.rate.id].average)
+								return 1;
+							return 0;
+						});
+						d.preferredType = d.rooms[0].id;
+						$scope.displayData.availableRates.push(d);
+
+					} else {
+						//preferred room process
+						if (_.where(d.rooms, {
+							id: $scope.preferredType
+						}).length > 0) {
+							d.preferredType = $scope.preferredType;
+							d.rooms.sort(function(a, b) {
+								if (a.total[d.rate.id].average < b.total[d.rate.id].average)
+									return -1;
+								if (a.total[d.rate.id].average > b.total[d.rate.id].average)
+									return 1;
+								return 0;
+							});
+							$scope.displayData.availableRates.push(d);
+						}
+					}
 				}
 			});
 
@@ -177,15 +205,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// 		return 1;
 			// 	return 0;
 			// });
-
-			//TODO: Handle the selected roomtype from the previous screen
-			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
-			//$scope.preferredType = 5;
-			$scope.roomTypes = roomRates.room_types;
-			$scope.filterRooms();
-
-			$scope.$emit('hideLoader');
-		};
+		}
 
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
@@ -230,13 +250,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//Get the candidate rooms of the room to be appended
 						var targetlevel = level + 1;
 						var candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level == targetlevel;
+							return this.level == targetlevel && this.availability == true && this.rates.length > 0;
 						});
 						//Check if candidate rooms are available
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != firstId;
+								return this.level == level && this.id != firstId && this.availability == true && this.rates.length > 0;
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
@@ -275,13 +295,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//Get the candidate rooms of the room to be appended
 						var targetlevel = level + 1;
 						var candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level == targetlevel;
+							return this.level == targetlevel && this.availability == true && this.rates.length > 0;
 						});
 						//Check if candidate rooms are available
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != $scope.preferredType;
+								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0;
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
@@ -305,6 +325,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.selectedRoomType = $scope.preferredType;
 			}
+			$scope.setRates();
 			$scope.refreshScroll();
 		}
 
@@ -334,7 +355,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							ratedetails: {},
 							total: [],
 							defaultRate: 0,
-							averagePerNight: 0
+							averagePerNight: 0,
+							description: roomDetails[d.id].description
 						};
 					}
 					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
@@ -402,8 +424,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			});
-			
-			//console.log(rooms);
 			return rooms;
 		}
 
@@ -490,6 +510,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.$watch('activeCriteria', function() {
 			$scope.refreshScroll();
+			$scope.rateFilterText = "";
+			$scope.filterRates();
 		});
 
 		$scope.highlight = function(text, search) {
@@ -498,6 +520,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 			return text.replace(new RegExp(search, 'gi'), '<span class="highlight">$&</span>');
 		};
+
+		$scope.to_trusted = function(html_code) {
+			return $sce.trustAsHtml(html_code);
+		}
+
+
 
 		init();
 	}
