@@ -70,27 +70,22 @@ sntRover.controller('RVHkAppCtrl', [
 
 // adding an OWS check Interceptor here
 // but should be moved to higher up above in root level
-sntRover.factory('owsCheckInterceptor', [
-	$rootScope,
-	$q,
-	$location,
-	function ($rootScope, $q, $location) {
-		return {
-			request: function (config) {
-				return config;
-			},
-			response: function (response) {
-	    		return response || $q.when(response);
-			},
-			responseError: function(rejection) {
-				if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
-					$rootScope.showOWSError && $rootScope.showOWSError();
-				}
-				return $q.reject(rejection);
+sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
+	return {
+		request: function (config) {
+			return config;
+		},
+		response: function (response) {
+    		return response || $q.when(response);
+		},
+		responseError: function(rejection) {
+			if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
+				$rootScope.showOWSError && $rootScope.showOWSError();
 			}
-		};
-	}
-]);
+			return $q.reject(rejection);
+		}
+	};
+});
 
 sntRover.config(function ($httpProvider) {
 	$httpProvider.interceptors.push('owsCheckInterceptor');

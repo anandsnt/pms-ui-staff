@@ -157,8 +157,6 @@ sntRover.controller('RVHkSearchCtrl', [
 		}
 
 		$scope.showFilters = function() {
-			console.log( 'damit show me the filters already!' );
-
 			$scope.filterOpen = true;
 		};
 
