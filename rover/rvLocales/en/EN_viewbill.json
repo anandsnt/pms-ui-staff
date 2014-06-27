@@ -70,4 +70,5 @@
 	"EARLY_DEPARTURE" : "Early Departure:",
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
-	"CANCEL" : "Cancel"
+	"CANCEL" : "Cancel",
+	"REGISTRATION" : "Registration"
