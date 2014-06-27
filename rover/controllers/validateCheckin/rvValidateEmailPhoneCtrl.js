@@ -69,5 +69,5 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		$scope.closeDialog();
 		$scope.goToNextView();
 	};
-	
+	$scope.$emit('hideLoader');
 }]);
