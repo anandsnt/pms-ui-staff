@@ -33,7 +33,7 @@
 	"CONTRACTED_NIGHTS": "Contracted Nights",
 	"COPY_VALUES": "Copy values",
 	"COMPANY": "Company",
-    "TRAVELAGENT": "TRAVELAGENT",
+    "TRAVELAGENT": "Travel Agent",
     "CONTACT_INFORMATION": "Contact Information",
     "CONTRACTS": "Contracts",
     "RESERVATIONS": "Reservations",
@@ -73,7 +73,9 @@
 	"SAVE_NEW_CARD": "Save new card",
 	"DISCARD": "Discard",
 	"SAVE_NEW": "Save new ",
-	"CARD":"card?"
+	"CARD":"card?",
+	"NEW_COMPANY_CARD" : "New Company Card",
+	"NEW_TA_CARD": "New Travel Agent Card"
 	
 ,    
     
@@ -234,7 +236,13 @@
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!",	
+    "KEY_PRINTED" : "Keys printed!",
+    
+	"PREFERENCES" : "Preferences",
+	"NEWSPAPER" : "Newspaper",
+	"ROOM_TYPE" : "Room type",
+	"ROOM_FEATURES" : "Room Features"
+,	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",
@@ -322,5 +330,6 @@
 	"EARLY_DEPARTURE" : "Early Departure:",
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
-	"CANCEL" : "Cancel"
+	"CANCEL" : "Cancel",
+	"REGISTRATION" : "Registration"
 }

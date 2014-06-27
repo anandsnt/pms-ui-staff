@@ -3,20 +3,20 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	$scope.saveData = {};
 	$scope.saveData.add_to_guest_card = false;
-
 	
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
 	HostedForm.setMerchant($rootScope.MLImerchantId);
 
 	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
+
 	$scope.paymentTypeValues = "";
 	$scope.saveData.card_number  = "";
 	$scope.saveData.credit_card  =  "";
 	$scope.saveData.name_on_card =  "";
 	$scope.saveData.card_expiry_month = "";
-	$scope.saveData.card_expiry_year = "";
-
+	$scope.saveData.card_expiry_year = "";	
+	$scope.shouldShowDisabled = false;
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -52,6 +52,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.name_on_card =  $scope.passData.name_on_card;
 			$scope.saveData.card_expiry_month = $scope.passData.card_expiry.slice(-2);
 			$scope.saveData.card_expiry_year = $scope.passData.card_expiry.substring(0, 2);
+			//To show fields disabled on swipe
+			$scope.shouldShowDisabled = true;
+			
 		}
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);

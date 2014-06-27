@@ -1,20 +1,22 @@
-sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams','ngDialog', function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog){
+sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams','ngDialog','$filter', function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter){
 	
 	console.log("$stateParams type --"+$stateParams.type);
 	console.log("$stateParams id --"+$stateParams.id);
 	// Flag for add new card or not
 	$scope.isAddNewCard = ($stateParams.id == "add") ? true : false ;
 	$scope.isDiscard = false;
+	$scope.isPromptOpened = false;
 	//setting the heading of the screen
 	if($stateParams.type == "COMPANY"){
-		if($scope.isAddNewCard) $scope.heading = "New Company Card";
-		else $scope.heading = "Company Card";
-		
+		if($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
+		else $scope.heading = $filter('translate')('COMPANY_CARD');
+		$scope.cardTypeText = $filter('translate')('COMPANY');
 		$scope.dataIdHeader = "company-card-header";
 	}
 	else if($stateParams.type == "TRAVELAGENT"){
-		if($scope.isAddNewCard) $scope.heading = "New Travel Agent Card";
-		else $scope.heading = "Travel Agent Card";
+		if($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_TA_CARD');
+		else $scope.heading = $filter('translate')('TA_CARD');
+		$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 		$scope.dataIdHeader = "travel-agent-card-header";
 	}
 	
@@ -39,7 +41,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		if($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info'){
 			
 			if($scope.isAddNewCard && !$scope.isContactInformationSaved){
-				$scope.errorMessage = ["Please save "+angular.lowercase($stateParams.type)+" card first"];
+				$scope.errorMessage = ["Please save "+$scope.cardTypeText+" card first"];
 				return;
 			}else{
 				saveContactInformation($scope.contactInformation);
@@ -108,7 +110,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.contactInformation = {};
 		if(typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
 			$scope.contactInformation.account_details = {};
-			$scope.contactInformation.account_details.account_first_name = $stateParams.firstname;
+			$scope.contactInformation.account_details.account_name = $stateParams.firstname;
 		}
 
 		//setting as null dictionary, will help us in saving..
@@ -143,10 +145,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		if($scope.isAddNewCard){
 			//setting the heading of the screen
 			if($stateParams.type == "COMPANY"){
-				$scope.heading = "Company Card";
+				$scope.heading = $filter('translate')('COMPANY_CARD');
 			}
 			else if($stateParams.type == "TRAVELAGENT"){
-				$scope.heading = "Travel Agent Card";
+				$scope.heading = $filter('translate')('TA_CARD');
 			}
 		}
 		$scope.isAddNewCard = false;
@@ -205,10 +207,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		event.preventDefault();
 		event.stopPropagation();
 		if($scope.isAddNewCard){
-			console.log("No action");
+			// On addMode - prevent save call
 		}
 		else if($scope.isDiscard){
-			console.log("Discarded");
+			// On discarded - prevent save call
 		}
 		else{
 			saveContactInformation($scope.contactInformation);
@@ -223,18 +225,24 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	$scope.$on("OUTSIDECLICKED", function(event){
 		event.preventDefault();
 		if($scope.isAddNewCard && !$scope.isContactInformationSaved){
-			$scope.saveNewCardPrompt();
+			// On addMode and contact info not yet saved 
+			// If the prompt is not already opened - show the popup for save/disacrd
+			if(!$scope.isPromptOpened) $scope.saveNewCardPrompt();
 		}
 		else if($scope.isDiscard){
-			console.log("Discarded");
+			// On discarded - prevent save call
 		}
 		else{
 			saveContactInformation($scope.contactInformation);
 		}
 	});
-	// To handle click on save new card button.
+	// To handle click on save new card button on screen.
 	$scope.clikedSaveNewCard = function(){
 		saveContactInformation($scope.contactInformation);
+		$scope.isContactInformationSaved = true;
+	};
+	// To handle click on save new card button on popup.
+	$scope.clikedSaveNewCardViaPopup = function(){
 		$scope.isContactInformationSaved = true;
 		ngDialog.close();
 	};
@@ -247,10 +255,12 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	};
 	// To implement a prompt for save/discard card info.
 	$scope.saveNewCardPrompt = function(){
+		$scope.isPromptOpened = true;
 	  	ngDialog.open({
 			 template: '/assets/partials/companyCard/rvSaveNewCardPrompt.html',
 			 controller: 'saveNewCardPromptCtrl',
-			 className: 'ngdialog-theme-default',
+			 className: 'ngdialog-theme-default1 calendar-single1',
+			 closeByDocument: false,
 			 scope: $scope
 		});
 	};

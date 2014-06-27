@@ -15,17 +15,14 @@
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
                     <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" translate>
-                        COMPANY
                     </div> 
                     <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'TRAVELAGENT'" translate>
-                        TRAVELAGENT
                     </div> 
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_first_name}}" ng-model="contactInformation.account_details.account_first_name" type="text" class="masked-input h1" auto-grow-field />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
 
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_last_name}}" ng-model="contactInformation.account_details.account_last_name" type="text" class="masked-input h1" auto-grow-field/>
                             </div>
                         </div>
                         <div class="holder data">

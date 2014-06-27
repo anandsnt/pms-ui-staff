@@ -51,6 +51,8 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 		else{
 	    	displayFilteredResults();  
 	   	}
+	   	var queryText = $scope.textInQueryBox;
+	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
   
 	$scope.clearResults = function(){
@@ -105,7 +107,7 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 	  	ngDialog.open({
 			 template: '/assets/partials/companyCard/rvSelectCardType.html',
 			 controller: 'selectCardTypeCtrl',
-			 className: 'ngdialog-theme-default',
+			 className: 'ngdialog-theme-default1 calendar-single1',
 			 closeByDocument: false,
 			 scope: $scope
 		});

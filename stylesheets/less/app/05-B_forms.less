@@ -113,9 +113,9 @@
 			}
 		}
 		.disable-clicks {
-      pointer-events: none;
-      opacity : 0.5;
-    }
+			pointer-events: none;
+	      	opacity : 0.5;
+	    }
 	}
 
 /* 5. COMPONENTS
@@ -295,16 +295,8 @@
 		}		
 	}
 
-	.select {
-		&:after {
-			top: 6px;
-			.calc-height(100, 10);
-		}
-	}
 	.select.multiple {
-		&:after {
-			display: none;
-		}
+		&:after { .hide; }
 	}
 
 	.form {

@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$scope','$rootScope', '$state', 'RVReservationSummarySrv', 
-					function($scope, $rootScope,$state, RVReservationSummarySrv){
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 
+					function($rootScope, $scope, $state, RVReservationSummarySrv){
+
 	BaseCtrl.call(this, $scope);
 	var MLISessionId =  "";
 
@@ -29,7 +30,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$scope','$rootScope', '$state'
 	*/
 	var fetchPaymentMethods = function(){
 		var paymentFetchSuccess = function(data) {
-			$scope.data.paymentMethods = data;
+			$scope.data.paymentMethods = data.payments;
 			$scope.$emit('hideLoader');
 		};
 		

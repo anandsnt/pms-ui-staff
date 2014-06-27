@@ -256,7 +256,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0;
+								return this.level == level && this.id != firstId && this.availability == true && this.rates.length > 0;
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
