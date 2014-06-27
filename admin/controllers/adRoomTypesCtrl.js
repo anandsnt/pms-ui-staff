@@ -4,6 +4,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};	
 
+	debug = $scope;
    /*
     * To fetch list of room types
     */
@@ -152,6 +153,14 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 				"is_suite": "",
 				"image_of_room_type": " "
 			}	
+	};
+	$scope.sortByName = function(){
+		if($scope.currentClickedElement == -1)
+		$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+	};
+	$scope.sortByCode = function(){
+		if($scope.currentClickedElement == -1)
+		$scope.tableParams.sorting({'code' : $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
 	};
 
 
