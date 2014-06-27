@@ -78,7 +78,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * @return {object} charge codes
              */
             this.fetchChargeCodes = function () {
-                var url = "/api/charge_codes";
+                var url = "/api/charge_codes?is_room_charge_code=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.charge_codes = data.results;
                     this.fetchSources();
