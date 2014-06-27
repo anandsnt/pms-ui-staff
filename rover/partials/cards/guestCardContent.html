@@ -1,5 +1,5 @@
-<div id="guest-card-content" class="card-tabs card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-class="UICardContentCls('guest-card')">
-    <section ng-if="!guestSearchMode">
+<div id="guest-card-content" class="card-tabs card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-controller="RVGuestCardCtrl" ng-class="UICardContentCls('guest-card')">
+    <section ng-if="!searchMode">
         <button id="company-new-contract" type="button" class="button green pull-right" ng-click="detachCard('guest')" translate="">Detach Card</button>
         <!-- Guest Card tabs navigation -->
 
@@ -26,9 +26,9 @@
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
     </section>
-     <section ng-if="guestSearchMode">
+     <section ng-if="searchMode">
         <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
-                <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
+                <!-- <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button> -->
                 <div id="search-guests-content" class="search-cards scrollable">
                     <!-- Guest Card Results listing -->
                     <div class="wrapper" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">

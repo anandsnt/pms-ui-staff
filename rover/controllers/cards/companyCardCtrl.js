@@ -10,16 +10,6 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 
 		var presentContactInfo = {};
 
-		$scope.$parent.myScrollOptions = {
-			'companyResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		};
-
 		//handle tab switching in both cards
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();

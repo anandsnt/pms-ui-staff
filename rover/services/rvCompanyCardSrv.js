@@ -159,7 +159,8 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 				"new": {
 					type: data.cardType,
 					id: data.id
-				}
+				},
+				"change_all_reservations": data.future
 			}
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservation + '/cards/replace';
@@ -173,7 +174,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
 		this.removeCard = function(data) {
 			var request = {
-				type : data.cardType
+				type: data.cardType
 			}
 			var deferred = $q.defer();
 			var url = '/api/reservations/' + data.reservation + '/cards/remove';

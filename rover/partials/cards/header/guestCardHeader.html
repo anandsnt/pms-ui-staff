@@ -1,5 +1,5 @@
-<div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
-  <section ng-if="!guestSearchMode">
+<div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl">
+  <section ng-if="!searchMode">
    <figure class="guest-image" ng-click="switchCard('guest-card')"> 
      <img ng-src="{{guestCardData.contactInfo.avatar}}" />
      <span class="vip" ng-show="guestCardData.contactInfo.vip==true">VIP</span>
@@ -19,7 +19,7 @@
     </div>
   </form>
 </section>
-<section ng-if="guestSearchMode">
+<section ng-if="searchMode">
   <figure class="guest-image" ng-click="switchCard('guest-card')">
     <img src="{{ cardHeaderImage }}" alt="" />
     <span class="search-indicator"></span>
@@ -33,7 +33,7 @@
         <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="searchData.guestCard.guestLastName" delay="1000" function-to-fire="searchGuest" />
         <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
         <input name="gc-city" id="gc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="searchData.guestCard.guestCity" delay="1000" function-to-fire="searchGuest" />
-        <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" type="text" class="masked-input fixed loyalty h1" rv-delay-textbox ng-model="guestLoyaltyNumber" delay="1000" function-to-fire="searchGuest" />
+        <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" type="text" class="masked-input fixed loyalty h1" rv-delay-textbox ng-model="searchData.guestCard.guestLoyaltyNumber" delay="1000" function-to-fire="searchGuest" />
       </div>
     </div>
   </form>
