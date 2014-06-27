@@ -1,6 +1,6 @@
-<div id="calendar-holder" class="reservation-calendar scrollable">
+<div id="calendar-holder" class="reservation-calendar scrollable" ng-iscroll="edit_staydate_calendar" ng-iscroll-delay="100">
 	<div class="wrapper">
-		<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources"></div>
+		<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
 		<strong id="instruction-title" class="notice">Drag &amp; drop to change stay dates</strong>
 		<ul id="reservation-calendar-legend">
 			<li><span class="check-in"></span>Arrival
