@@ -7,9 +7,12 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   $scope.$emit("updateRoverLeftMenu","search");
   var oldTerm = "";
   var oldType = "";
+  $scope.isLateCheckoutList = false;
+  $scope.searchTermPresent = false;
   if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
     $stateParams.type != null && $stateParams.type.trim() != '') {
       oldType = $stateParams.type;
+      $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
   }
 
   $scope.$parent.myScrollOptions = {
@@ -63,6 +66,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     oldType = "";
     oldTerm = $scope.textInQueryBox;
     setTimeout(function(){refreshScroller();}, 750);
+    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
 
