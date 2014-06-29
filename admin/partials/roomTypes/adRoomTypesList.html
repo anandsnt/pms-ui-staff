@@ -8,6 +8,7 @@
 			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" ng-hide="data.is_import_available">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<span class="grid" ng-show="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
 		<table id="brands" class="grid" ng-table="tableParams">

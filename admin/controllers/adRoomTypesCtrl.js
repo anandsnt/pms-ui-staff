@@ -2,7 +2,9 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	$scope.roomTypeData = {};	
+	$scope.roomTypeData = {};
+	$scope.successMessage = "";
+	$scope.errorMessage ="";	
 
    /*
     * To fetch list of room types
@@ -126,11 +128,21 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * 
     */		
 	$scope.importFromPms = function(){
+		
+		$scope.successMessage = "Collecting rooms data from PMS and adding to Rover...";
+		
 		var successCallbackImport = function(data){	
 	 		$scope.$emit('hideLoader');
 	 		$scope.listRoomTypes();
+	 		$scope.successMessage = "Completed!";
 	 		// $scope.data.departments.splice(index, 1);
 	 	};
+	 	var errorCallbackImport = function(data){
+	 		$scope.$emit('hideLoader');
+	 		$scope.errorMessage = data;	
+	 	}
+
+	 	
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
 
