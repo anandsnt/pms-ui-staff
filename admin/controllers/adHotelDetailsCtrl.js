@@ -126,7 +126,19 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   Method to go back to previous state.
     */
 	$scope.back = function(){
-		if($scope.isAdminSnt) $state.go("admin.hotels");
+		if($scope.isAdminSnt) {
+			
+		    if($rootScope.previousStateParam){
+     			 $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+    		}
+    		else if($rootScope.previousState){
+      			$state.go($rootScope.previousState);
+   			 }
+    		else 
+    		{
+      			$state.go("admin.hotels");
+    		}
+		}
 		else {
 			if($rootScope.previousStateParam){
 				$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
