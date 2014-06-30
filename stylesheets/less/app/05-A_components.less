@@ -3612,7 +3612,7 @@
 				.pull-left;
 
 				.addon-tab {
-					position: absolute;
+					position: relative;
 					top: 0;
 					left: 0;
 
@@ -3622,23 +3622,9 @@
 						.float;
 						.faux-clickable;
 
-						.addon-image {
-							background: @grey1;
-							#border-radius > .rounded();
-							.square(70px);
-							.pull-left;
-
-							img {
-								width: 100%;
-								height: auto;
-								
-								#border-radius > .rounded();
-							}
-						}
-
 						.data {
 							margin-right: 40px;
-							#pixel-to-percent > .width(1000,1680);
+							#pixel-to-percent > .width(900,1680);
 							.pull-left;
 
 							.categories {
@@ -3670,28 +3656,26 @@
 						}
 
 						.price {
-							position: relative;
-							font-size: 36px;
-							line-height: 40px;
-							vertical-align: middle;
-							font-weight: 300;
-								.show;
-							#pixel-to-percent > .width(350,1680);
-							.pull-left;
+                            font-size: 36px;
+                            line-height: 40px;
+                            vertical-align: middle;
+                            font-weight: 300;
+                            .show;
+                            .pull-left;
 
-							span {
-								position: absolute;
-								top: 0;
-								color: @grey3;
-								font-size: 12px;
-								line-height: 12px;
-								text-transform: uppercase;
-								text-align: left;
-								font-weight: 400;
-								width: 60px;
-								overflow: hidden;
-							}
-						}
+                            span {
+                                display: inline-block;
+                                color: @grey3;
+                                font-size: 12px;
+                                line-height: 12px;
+                                text-transform: uppercase;
+                                text-align: left;
+                                font-weight: 400;
+                                width: 60px;
+                                margin-left: 5px;
+                                overflow: hidden;
+                            }
+                        }
 
 						.button { 
 							width: auto;

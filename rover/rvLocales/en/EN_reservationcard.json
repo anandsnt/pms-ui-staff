@@ -36,6 +36,8 @@
     "HOTEL_LOYALTY_ADD_BUTTON":"+ Add",
     "FREQUENT_FLYER_PROGRAM": "Frequent Flyer Program",
     "HOTEL_LOYALTY_PROGRAM" : "Hotel Loyalty Program",
+    "NEW_FREQUENT_FLYER_PROGRAM": "NEW FREQUENT FLYER PROGRAM",
+    "NEW_HOTEL_LOYALTY_PROGRAM":"NEW HOTEL LOYALTY PROGRAM",
     "DEFAULT_NOTE_TOPIC":"GENERAL",
     "CLOSE": "Close",
     "PRINT_ROOM_KEY" : "Print Room Key",
@@ -43,4 +45,9 @@
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!"
+    "KEY_PRINTED" : "Keys printed!",
+    
+	"PREFERENCES" : "Preferences",
+	"NEWSPAPER" : "Newspaper",
+	"ROOM_TYPE" : "Room type",
+	"ROOM_FEATURES" : "Room Features"

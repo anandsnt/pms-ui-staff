@@ -10,7 +10,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationData = reservationDetails;
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
-		//$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
+		if ($scope.reservationData.reservation_card.currency_code != null) {
+			$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
+		}
 		$scope.selectedLoyalty = {};
 		$scope.$emit('HeaderChanged', $filter('translate')('STAY_CARD_TITLE'));
 		$scope.$watch(
@@ -50,6 +52,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			},
 		};
 
+
+
+		$scope.$on('$viewContentLoaded', function() {
+			setTimeout(function() {
+					$scope.$parent.myScroll['resultDetails'].refresh();
+				},
+				3000);
+
+		});
+
 		//CICO-7078 : Initiate company & travelagent card info
 		// console.log(reservationListData);
 		$scope.reservationDetails.guestCard.id = reservationListData.guest_details.user_id == null ? "" : reservationListData.guest_details.user_id;
@@ -60,15 +72,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.$emit('cardIdsFetched');
 		//CICO-7078
 
-		$scope.$on('$viewContentLoaded', function() {
-			setTimeout(function() {
-					$scope.$parent.myScroll['resultDetails'].refresh();
-				},
-				3000);
-		});
-
 
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
+
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
@@ -79,7 +85,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 */
 		$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber) {
 			if (confirmationNumber) {
-				console.log("reached api")
 
 				var data = {
 					"confirmationNumber": confirmationNumber,
@@ -96,6 +101,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		var passData = reservationListData;
 		passData.avatar = reservationListData.guest_details.avatar;
 		passData.vip = reservationListData.guest_details.vip;
+		passData.confirmationNumber = reservationDetails.reservation_card.confirmation_num;
+
 		$scope.$emit('passReservationParams', passData);
 
 

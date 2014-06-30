@@ -14,8 +14,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.init = function() {
 			$scope.contactInfoError = false;
 			$scope.eventTimestamp = "";
+			BaseCtrl.call(this, $scope);
 			var preventClicking = false;
 		};
+
+		$scope.init();
 
 		$scope.$on('reservationCardisClicked', function() {
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight); //against angular js practice, sorry :(
@@ -61,6 +64,73 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		/**
+		 *  API call needs only rest of keys in the data
+		 */
+		$scope.decloneUnwantedKeysFromContactInfo = function() {
+
+			var unwantedKeys = ["address", "birthday", "country",
+				"is_opted_promotion_email", "job_title",
+				"mobile", "passport_expiry",
+				"passport_number", "postal_code",
+				"reservation_id", "title", "user_id",
+				"works_at", "birthday"
+			];
+			var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+			return declonedData;
+		};
+
+		/**
+		 *  init guestcard header data
+		 */
+		var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
+		var currentGuestCardHeaderData = declonedData;
+		$scope.current = 'guest-contact';
+
+		/**
+		 * tab actions
+		 */
+		$scope.guestCardTabSwitch = function(tab) {
+			if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
+				$scope.$broadcast('saveContactInfo');
+			};
+			if ($scope.current === 'guest-like' && tab !== 'guest-like') {
+				$scope.$broadcast('SAVELIKES');
+
+			};
+			if (tab === 'guest-credit') {
+				$scope.$broadcast('PAYMENTSCROLL');
+			}
+			$scope.$broadcast('REFRESHLIKESSCROLL');
+			$scope.current = tab;
+		};
+
+		$scope.$on('contactInfoError', function(event, value) {
+			$scope.contactInfoError = value;
+		});
+		$scope.$on('likesInfoError', function(event, value) {
+			$scope.likesInfoError = value;
+		});
+
+		$scope.updateContactInfo = function() {
+			var saveUserInfoSuccessCallback = function(data) {
+				$scope.$emit('hideLoader');
+			};
+			var saveUserInfoFailureCallback = function(data) {
+				$scope.$emit('hideLoader');
+			};
+			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+			// check if there is any chage in data.if so call API for updating data
+			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)) {
+				currentGuestCardHeaderData = newUpdatedData;
+				var data = {
+					'data': currentGuestCardHeaderData,
+					'userId': $scope.guestCardData.contactInfo.user_id
+				};
+				$scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+			}
+		};
+
+		/**
 		 *   In case of a click or an event occured on child elements
 		 *	of actual targeted element, we need to change it as the event on parent element
 		 *   @param {event} is the actual event
@@ -72,6 +142,48 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var obj = $event.target,
 				matched = false;
 			return selector.contains(obj);
+		};
+
+
+		$scope.guestCardClick = function($event) {
+
+			var element = $event.target;
+			$event.stopPropagation();
+			$event.stopImmediatePropagation();
+			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
+				if (parseInt($scope.eventTimestamp)) {
+					if (($event.timeStamp - $scope.eventTimestamp) < 100) {
+						return;
+					}
+				}
+
+				if (!$scope.guestCardVisible) {
+					$("#guest-card").css("height", $scope.windowHeight - 90);
+					$scope.guestCardVisible = true;
+					$scope.$broadcast('CONTACTINFOLOADED');
+					$scope.$emit('GUESTCARDVISIBLE', true);
+				} else {
+					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
+					$scope.guestCardVisible = false;
+					$scope.$emit('GUESTCARDVISIBLE', false);
+				}
+			} else {
+				if (getParentWithSelector($event, document.getElementById("guest-card-content"))) {
+					/**
+					 * handle click on tab navigation bar.
+					 */
+					if ($event.target.id === 'guest-card-tabs-nav') {
+						console.log("inside===")
+						$scope.$broadcast('saveContactInfo');
+						$scope.$broadcast('SAVELIKES');
+
+					} else
+						return;
+				} else {
+					$scope.$broadcast('SAVELIKES');
+					$scope.$broadcast('saveContactInfo');
+				}
+			}
 		};
 
 		$scope.checkOutsideClick = function(targetElement) {
@@ -131,42 +243,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		}
 
-		$scope.guestCardClick = function($event) {
-			var element = $event.target;
-			$event.stopPropagation();
-			$event.stopImmediatePropagation();
-			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
-				if (parseInt($scope.eventTimestamp)) {
-					if (($event.timeStamp - $scope.eventTimestamp) < 100) {
-						return;
-					}
-				}
 
-				if (!$scope.guestCardVisible) {
-					$("#guest-card").css("height", $scope.windowHeight - 90);
-					$scope.guestCardVisible = true;
-					$scope.$broadcast('CONTACTINFOLOADED');
-					$scope.$emit('GUESTCARDVISIBLE', true);
-				} else {
-					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
-					$scope.guestCardVisible = false;
-					$scope.$emit('GUESTCARDVISIBLE', false);
-				}
-			} else {
-				if (getParentWithSelector($event, document.getElementById("guest-card-content"))) {
-					/**
-					 * handle click on tab navigation bar.
-					 */
-					if ($event.target.id === 'guest-card-tabs-nav')
-						$scope.$broadcast('saveContactInfo');
-					else
-						return;
-				} else {
-					$scope.$broadcast('saveContactInfo');
-				}
-			}
-
-		};
 
 		/**
 		 * function to open guest card
