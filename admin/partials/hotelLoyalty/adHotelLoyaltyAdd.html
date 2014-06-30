@@ -19,7 +19,7 @@
 					<div class="entry full-width">
 						<label for="loyalty-option1"> Levels </label>
 						<div class="entry" ng-repeat="level in hotelLoyaltyData.levels">
-							<input type="text"  placeholder="Add new level" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" ng-class="{'add-new-option': !levelEditProgress }"
+							<input type="text"  placeholder="Add new level" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" ng-class="{'add-new-option': !getEditStatusForLevel($index) }"
 							ng-model="level.name" >
 							<input type="text" ng-model="level.value" ng-hide="true">
 						</div>
