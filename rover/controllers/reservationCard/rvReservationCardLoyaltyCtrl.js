@@ -25,16 +25,19 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
             
         };
 
-        $scope.$on("loyaltyProgramAdded",function(e,data){
+        $scope.$on("loyaltyProgramAdded",function(e, data, source){
 
         	if(data.membership_class == "HLP"){
         		$scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.push(data);
         	}else{
         		$scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.push(data);
         	}
-        	$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data.id;
-            $scope.selectedLoyaltyID = data.id;
-            $scope.selectedLoyalty = data;
+            if(source == "fromReservationCard"){
+                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data.id;
+                $scope.selectedLoyaltyID = data.id;
+                $scope.selectedLoyalty = data;
+            }
+        	
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 	});
         $scope.$on("loyaltyProgramDeleted",function(e,id){
@@ -43,12 +46,12 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
             if($scope.selectedLoyaltyID == id){
                 $scope.selectedLoyaltyID = "";
                 $scope.selectedLoyalty = "";
-                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty
+                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
             }  
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);         
     });
     $scope.removeLoyaltyWithID = function(id){
-        var pos = "";
+        var pos = -1;
         var hotelLoyaltyPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
         var frequentFlyerPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram;
         for(var i = 0; i < hotelLoyaltyPrograms.length; i++){
@@ -57,7 +60,7 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
                 break;
             }
         }
-        if(pos != ""){
+        if(pos != -1){
             $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(pos, 1);
             return;
         }
@@ -67,7 +70,7 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
                 break;
             }
         }
-        if(pos != ""){
+        if(pos != -1){
             $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(pos, 1);
             return;
         }
@@ -110,6 +113,7 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         		if(!isSelectedSet){
         			$scope.selectedLoyalty = "";
         			$scope.selectedLoyaltyID = "";
+                    $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
         		}        			
         };
         $scope.callSelectLoyaltyAPI = function(id){

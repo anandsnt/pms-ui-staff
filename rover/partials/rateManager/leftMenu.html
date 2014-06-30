@@ -90,7 +90,7 @@
 						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
 					</div>
 					<div class="rates-box dark" ng-repeat="name_card in currentFilterData.name_cards">
-						<span class="rate-data">{{name_card.account_first_name + ' ' + name_card.account_last_name }}</span>
+						<span class="rate-data">{{name_card.account_name}}</span>
 						<span ng-click="deleteCards(name_card.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
 						<br clear="all">
 					</div>
@@ -110,7 +110,7 @@
 							<div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
 							<div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
 							<img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
-							<h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>
+							<h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
 						</li>
 					</ul>
 				</div>
