@@ -54,16 +54,16 @@
 
 				<div id="options" class="entry full-width" ng-hide="hideAlertOption">
 
-					<label class="radio" ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}">
+					<label class="radio" ng-class="{'checked':checkinData.is_notify_on_room_ready_flag}">
 						<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
-						<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="all" class="change-data">
+						<input type="radio" ng-model="checkinData.is_notify_on_room_ready_flag" value="all" class="change-data">
 						{{ 'ALL' | translate}}
 						
 					</label>
 
-					<label class="radio" ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}">
+					<label class="radio" ng-class="{'checked':checkinData.require_cc_for_checkin_email_flag}">
 						<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}"></span>
-						<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="not_success" class="change-data">
+						<input type="radio" ng-model="checkinData.require_cc_for_checkin_email_flag" value="not_success" class="change-data">
 						{{ 'ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL' | translate}}
 						
 					</label>
