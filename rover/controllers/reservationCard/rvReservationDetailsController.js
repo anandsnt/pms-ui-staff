@@ -69,7 +69,12 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	 */
 	$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
 	 	if(confirmationNumber){
-	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, confirmationNumber, $scope.reservationDetailsFetchSuccessCallback);	
+	 		  
+	 		  var data = {
+	 		  	"confirmationNumber": confirmationNumber,
+	 		  	"isRefresh": $stateParams.isrefresh
+	 		  };
+	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);	
 	 	} else {
 	 		$scope.reservationData = {};
 	 	}
@@ -80,6 +85,8 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
   	 var passData = reservationListData;
   	 passData.avatar=reservationListData.guest_details.avatar;
   	 passData.vip=reservationListData.guest_details.vip;
+  	 passData.confirmationNumber = reservationDetails.reservation_card.confirmation_num;
+  	 							   			
   	 $scope.$emit('passReservationParams', passData);
 
   	 

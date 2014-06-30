@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
-					function($scope, $state, RVReservationSummarySrv){
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 
+					function($rootScope, $scope, $state, RVReservationSummarySrv){
 	BaseCtrl.call(this, $scope);
 
 	$scope.init = function(){
