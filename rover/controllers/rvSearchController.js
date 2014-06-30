@@ -62,12 +62,12 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
 
-    $scope.$emit('hideLoader');
+        $scope.$emit('hideLoader');
 		$scope.results = data;
-    oldType = "";
-    oldTerm = $scope.textInQueryBox;
-    setTimeout(function(){refreshScroller();}, 750);
-    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+	    oldType = "";
+	    oldTerm = $scope.textInQueryBox;
+	    setTimeout(function(){refreshScroller();}, 750);
+	    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
 
