@@ -380,8 +380,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
 			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
 			// With choice of 'Change this reservation only' and 'Change all Reservations'.
+			var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
+			if (cardType == 'guest') {
+				var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
+			}
+
 			ngDialog.open({
-				template: '/assets/partials/cards/alerts/futureReservationsAccounts.html',
+				template: templateUrl,
 				className: 'ngdialog-theme-default stay-card-alerts',
 				scope: $scope,
 				closeByDocument: false,
@@ -419,7 +424,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
-			if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+			if ($scope.reservationListData.reservation_list.upcoming_reservations_arr.length <= 0) {
 				$scope.replaceCardCaller('guest', guest.id, false);
 			} else {
 				$scope.checkFuture('guest', guest.id);

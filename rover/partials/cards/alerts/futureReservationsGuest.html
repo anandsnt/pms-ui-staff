@@ -3,7 +3,7 @@
 		Future reservations exist for the same Guest card.
 		<br/>
 		<br/>
-		<a ng-click="closeDialog();" class="button green" style="">Change this reservation only</a>
-		<a ng-click="closeDialog()" class="button blank" style="">Change all Reservations</a>
+	<a ng-click="replaceCardCaller(ngDialogData.cardType , ngDialogData.cardId, false);closeDialog();" class="button green" style="">Change this reservation only</a>
+		<a ng-click="replaceCardCaller(ngDialogData.cardType , ngDialogData.cardId, true);closeDialog()" class="button blank" style="">Change all Reservations</a>
 	</div>
 </div>

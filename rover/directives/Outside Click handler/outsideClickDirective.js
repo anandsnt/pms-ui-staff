@@ -9,6 +9,7 @@ sntRover.directive('outsideClickHandler', function($window) {
 
         } else {
           scope.$emit("OUTSIDECLICKED", e.target);
+          scope.$broadcast("OUTSIDECLICKED", e.target);
         }
 
       });
