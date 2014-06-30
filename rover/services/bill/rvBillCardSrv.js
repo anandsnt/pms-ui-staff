@@ -29,7 +29,7 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 	
 	this.completeCheckin = function(data){
 		var deferred = $q.defer();
-		var url = '/staff/checkinfgjgh';
+		var url = '/staff/checkin';
 			RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){

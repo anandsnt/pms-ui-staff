@@ -17,7 +17,6 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
         function() { return (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined')?$scope.reservationData.reservation_card.wake_up_time.wake_up_time:$filter('translate')('NOT_SET'); },
         function(wakeuptime) { $scope.wake_up_time = wakeuptime; }
     );
-    console.log($scope.reservationData);
 	// $scope.wake_up_time = ;
 	angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 		if($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id){
@@ -70,7 +69,6 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	 */
 	$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
 	 	if(confirmationNumber){
-	 		  console.log("reached api")
 	 		  
 	 		  var data = {
 	 		  	"confirmationNumber": confirmationNumber,
@@ -87,6 +85,8 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
   	 var passData = reservationListData;
   	 passData.avatar=reservationListData.guest_details.avatar;
   	 passData.vip=reservationListData.guest_details.vip;
+  	 passData.confirmationNumber = reservationDetails.reservation_card.confirmation_num;
+  	 							   			
   	 $scope.$emit('passReservationParams', passData);
 
   	 

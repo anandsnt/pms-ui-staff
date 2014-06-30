@@ -30,7 +30,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	*/
 	var fetchPaymentMethods = function(){
 		var paymentFetchSuccess = function(data) {
-			$scope.data.paymentMethods = data.payments;
+			$scope.data.paymentMethods = data;
 			$scope.$emit('hideLoader');
 		};
 		
@@ -174,7 +174,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	$scope.submitReservation = function(){
 
 
-		if($scope.reservationData.paymentType.type.value === "CC"){
+		if($scope.reservationData.paymentType.type.name === "CC"){
 			$scope.fetchMLISession();
 		}
 		else{

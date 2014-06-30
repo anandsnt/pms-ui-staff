@@ -73,7 +73,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
             var fetchRateTypesSuccessCallback = function (data) {
                 $scope.rateTypesDetails = data;
-                 $scope.hotelCurrency = getCurrencySign($scope.rateTypesDetails.hotel_settings.currency.value);
 
                 $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
                 $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
@@ -105,9 +104,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
                 $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
                 $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-
-
                 $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
+
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {
@@ -115,20 +113,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             };
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback, fetchRateTypesFailureCallback);
         }
-        /**
-        * Method to show/hide the based on range selection.
-        * Based on rate will not be available,
-        * if it the rate type is 'Corporate Rates', 'Consortia Rates', 'Government Rates'
-        */
-        $scope.rateTypeChanged = function(){
-            var rateTypeSelected = $scope.rateData.rate_type.name;
-            if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rateTypeSelected) >= 0){
-                $scope.hideBasedOn = true;
-            }
-            else if(rateTypeSelected === 'Specials & Promotions'){
-                $scope.isPromotional = true;
-            }
-        };
 
         /*
          * Set add on data
