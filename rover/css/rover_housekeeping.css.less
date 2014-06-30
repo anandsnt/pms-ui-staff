@@ -835,6 +835,90 @@
                     }
 
                     &:first-child { padding-top: 0; }
+
+                    &.floors {
+
+                        .entry-data {
+                            margin-bottom: 10px;
+                            background-color: @grey1;
+                            .float;
+                            #border-radius > .rounded();
+                            .box-shadow();
+
+                            .left,
+                            .right {
+                                padding: 20px;
+                                .size(160px, 50%);
+                                .pull-left;
+
+                                .h4 {
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    text-align: center;
+                                    text-transform: uppercase;
+                                    margin-bottom: 10px;
+                                }
+
+                                .label {
+                                    font-size: 14px;
+                                    text-transform: uppercase;
+                                    margin-bottom: 5px;
+                                }
+
+                                .select {
+                                    position: relative;
+                                    .faux-clickable;
+
+                                    select { 
+                                        text-align: center;
+                                        vertical-align: middle;
+                                        position: relative;
+                                        background: transparent;
+                                        border: 0;
+                                        padding: 10px;
+                                        line-height: 40px; 
+                                        height: 40px;
+                                        min-height: 40px;
+                                        .box-shadow(none);
+                                    }
+
+                                    &:after {
+                                        top: 0;
+                                        right: 0;
+                                        .size(40px, 30px);
+                                    }
+                                }
+                            }
+
+                            .left {
+                                padding-right: 40px;
+                                position: relative;
+                                border-right: 1px solid rgba(0,0,0,.1);
+
+                                .select { margin-top: 30px; }
+
+                                &:after {
+                                    content: "Or";
+                                    position: absolute;
+                                    top: 50%;
+                                    right: -10px;
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    padding: 10px 0;
+                                    margin-top: -16px;
+                                    background: @background;
+                                }
+                            }
+
+                            .right { 
+                                padding-left: 40px;
+                                clear: right; 
+
+                                .select:first-of-type { margin-bottom: 10px; }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1252,6 +1336,18 @@
 	                .entry {
 	                    .radio,
 	                    .checkbox { font-size: 16px; }
+
+                        &.floors {
+                            .entry-data {
+                                .left,
+                                .right {
+
+                                    .h4 { font-size: 18px; }
+
+                                    .label { font-size: 16px; }
+                                }
+                            }
+                        }
 	                }
 	            }
 	        }
