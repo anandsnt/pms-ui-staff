@@ -20,4 +20,5 @@
     "ADD": "Add",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
-    "SELECTED" : "Selected"
+    "SELECTED" : "Selected",
+    "CVV" :"cvv"

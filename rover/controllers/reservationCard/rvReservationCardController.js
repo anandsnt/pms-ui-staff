@@ -1,11 +1,12 @@
-sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv){
+sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter', function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter){
 	BaseCtrl.call(this, $scope);
 	$scope.timeline = "";
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	$scope.reservationCount = 0;
 
-
+	var title = $filter('translate')('STAYCARD_TITLE');
+	$scope.setTitle(title);
 
 	$scope.reservationCardClick =  function(){
 		 $scope.$emit('reservationCardClicked');
