@@ -52,8 +52,8 @@ angular.module('reservationModule', []).config(function($stateProvider, $urlRout
                     var params = {};
                     params.from_date = $stateParams.from_date;
                     params.to_date = $stateParams.to_date;
-                    params.is_active = 'true';
-                    params.is_rate_only = 'true';
+                    params.is_active = true;
+                    params.is_not_rate_only = true;
                     return RVReservationAddonsSrv.fetchAddonData(params);
                 }
             }
