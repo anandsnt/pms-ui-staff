@@ -3,14 +3,19 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	$scope.saveData = {};
 	$scope.saveData.add_to_guest_card = false;
-	$scope.saveData.selected_payment_type = "";//Only for swipe
+	
+	//Set merchant ID for MLI integration
+	var MLISessionId = "";
+	HostedForm.setMerchant($rootScope.MLImerchantId);
+
+	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
+
 	$scope.paymentTypeValues = "";
 	$scope.saveData.card_number  = "";
 	$scope.saveData.credit_card  =  "";
 	$scope.saveData.name_on_card =  "";
 	$scope.saveData.card_expiry_month = "";
-	$scope.saveData.card_expiry_year = "";
-	
+	$scope.saveData.card_expiry_year = "";	
 	$scope.shouldShowDisabled = false;
 	
 	$scope.isFromGuestCard = false;
@@ -21,10 +26,17 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Render success callback
 	 * Populates API with dropdown values
 	 */
-	$scope.successRender = function(data){
-		
+
+	$scope.errorRender = function(data){
 		$scope.$emit("hideLoader");
+		MLISessionId = "";
+		$scope.errorMessage = data;
+	};
+	$scope.successRender = function(data){
+		$scope.$emit("hideLoader");
+		MLISessionId = "";
 		$scope.data = data;
+
 		$scope.paymentTypeValues = [];
 		if($scope.passData.is_swiped){
 			var selectedPaymentType = 0;
@@ -45,7 +57,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 		}
 	};
-	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
+	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	/*
 	 * On selecting payment type list corresponding payments
 	 */
@@ -143,6 +155,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.credit_card = $scope.passData.credit_card;
 			} else {
 				$scope.saveData.credit_card = $scope.saveData.credit_card;
+				
 			}
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
@@ -160,7 +173,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.pan = $scope.passData.pan;
 			$scope.saveData.mli_token = $scope.passData.token;
 		}
-		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
+		$scope.saveData.session_id = MLISessionId;
+		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_expiry","card_number","cvv"];
+		if($scope.passData.is_swiped){
+			unwantedKeys.push("session_id");
+		}
 		var data = dclone($scope.saveData, unwantedKeys);
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
 			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
@@ -182,6 +199,55 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.clickCancel = function(){
 		ngDialog.close();
 	};
-	
+
+
+	/* MLI integration starts here */
+
+     $scope.savePaymentDetails = function(){  	
+
+    	$scope.fetchMLISessionId = function(){
+
+
+
+			 var sessionDetails = {};
+			 sessionDetails.cardNumber = $scope.saveData.card_number;
+			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
+			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
+			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
+			
+			 var callback = function(response){
+			 	$scope.$emit("hideLoader");//is not working
+			 	$scope.$apply();
+			 	if(response.status ==="ok"){
+
+			 		MLISessionId = response.session;
+			 		$scope.savePayment();// call save payment details WS
+			 		
+			 	}
+			 	else{
+			 		$scope.errorMessage = ["There is a problem with your credit card"];
+			 	}			 	
+			 }
+			 $scope.$emit("showLoader");
+			 HostedForm.updateSession(sessionDetails, callback);			
+		}
+		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0)){
+			$scope.savePayment();
+		}
+		else{
+			if($scope.saveData.card_number.length>0){
+				$scope.fetchMLISessionId();
+    		}
+    		else{
+    			$scope.errorMessage = ["There is a problem with your credit card"];
+    		}
+			
+		}
+		
+
+    }
+
+
+    /* MLI integration ends here */
 	
 }]);

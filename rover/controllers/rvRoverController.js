@@ -58,7 +58,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
-   
+
+    $rootScope.MLImerchantId= hotelDetails.mli_merchant_id;
+
+    if (hotelDetails.language){
+      $translate.use(hotelDetails.language.value);
+    }
+    else{
+      $translate.use('EN');
+    };
+
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null){
        $scope.isStandAlone = true;
