@@ -71,8 +71,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     promotionCode: '',
                     promotionType: ''
                 },
-                reservationId : '',
-                confirmNum : ''
+                reservationId: '',
+                confirmNum: ''
             }
         }
 
@@ -94,6 +94,42 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             maxInfants: '',
             roomTypes: [],
             fromSearch: false
+        };
+
+        $scope.searchData = {
+            guestCard: {
+                guestFirstName: "",
+                guestLastName: "",
+                guestCity: "",
+                guestLoyaltyNumber: ""
+            },
+            companyCard: {
+                companyName: "",
+                companyCity: "",
+                companyCorpId: ""
+            },
+            travelAgentCard: {
+                travelAgentName: "",
+                travelAgentCity: "",
+                travelAgentIATA: ""
+            }
+        }
+
+        $scope.reservationListData = {};
+
+        $scope.reservationDetails = {
+            guestCard: {
+                id: "",
+                futureReservations: 0
+            },
+            companyCard: {
+                id: "",
+                futureReservations: 0
+            },
+            travelAgent: {
+                id: "",
+                futureReservations: 0
+            }
         };
 
         //setting the main header of the screen
@@ -130,8 +166,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 template: '/assets/partials/reservation/alerts/occupancy.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
-                closeByDocument : false,
-                closeByEscape : false,
+                closeByDocument: false,
+                closeByEscape: false,
                 data: JSON.stringify({
                     roomType: roomPref.name,
                     roomMax: roomPref.max

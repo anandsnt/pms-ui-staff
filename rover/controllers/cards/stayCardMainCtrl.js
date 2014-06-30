@@ -139,8 +139,13 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				travelagent: $scope.reservationDetails.travelAgent.id,
 				reservationListData: $scope.reservationListData
 			});
+
 			$scope.initCompanyCard();
 			$scope.initTravelAgentCard();
+			if ($scope.reservationDetails.guestCard.id != "" && $scope.reservationDetails.guestCard.id != null) {
+				$scope.$broadcast('guestCardAvailable');
+				$scope.$emit('guestCardAvailable');
+			}
 		});
 
 		$scope.removeCard = function(card) {

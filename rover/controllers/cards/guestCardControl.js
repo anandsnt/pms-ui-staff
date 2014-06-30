@@ -1,6 +1,10 @@
 sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv',
 	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
-		$scope.searchMode = false;
+		$scope.searchMode = true;
+
+		if ($scope.reservationDetails.guestCard.id != null && $scope.reservationDetails.guestCard.id != "") {
+			$scope.searchMode = false;
+		}
 
 		$scope.$on("guestSearchInitiated", function() {
 			$scope.guestSearchIntiated = true;
@@ -24,10 +28,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 			}, 1000);
 		});
 	}
-
 ]);
-
-
 
 sntRover.controller('guestResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
