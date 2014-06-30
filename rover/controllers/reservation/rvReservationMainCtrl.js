@@ -9,12 +9,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 departureDate: '',
                 checkinTime: {
                     hh: '',
-                    mm: '',
+                    mm: '00',
                     ampm: 'AM'
                 },
                 checkoutTime: {
                     hh: '',
-                    mm: '',
+                    mm: '00',
                     ampm: 'AM'
                 },
                 numNights: 1, // computed value, ensure to keep it updated
@@ -31,8 +31,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateTotal: 0,
                     addons: []
                 }],
-                totalTaxAmount: '',
-                totalStayCost: '',
+                totalTaxAmount: 0,
+                totalStayCost: 0,
                 guest: {
                     id: null, // if new guest, then it is null, other wise his id
                     firstName: '',

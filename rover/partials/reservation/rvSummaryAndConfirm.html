@@ -21,12 +21,11 @@
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
+                        {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:mmddyyyyFormat}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
                                     <option value="" selected>HH</option>
-                                    <option value="00">00</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
                                     <option value="03">03</option>
@@ -43,7 +42,6 @@
                             </div>
                             <div class="select minutes">
                                 <select name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm">
-                                    <option value="" selected>MM</option>
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -60,12 +58,11 @@
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
+                        {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:mmddyyyyFormat}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
                                     <option value="" selected>HH</option>
-                                    <option value="00">00</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
                                     <option value="03">03</option>
@@ -82,7 +79,6 @@
                             </div>
                             <div class="select minutes">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm">
-                                    <option value="" selected>MM</option>
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -121,12 +117,12 @@
                                 <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                             </span>
                         </li>
-                        <li ng-repeat='addon in room.addOns'>
-                            <em>{{addon.name}}</em>
+                        <li ng-repeat='addon in room.addons'>
+                            <em>{{addon.title}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{addon.avgAmount}}
+                                {{currencySymbol}}{{ addon.price }}
                                 <span translate>EACH</span>
-                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
+                                <span class="total">{{currencySymbol}}{{ addon.quantity * addon.price}}</span>
                             </span>
                         </li>
                     </ul>
@@ -169,8 +165,6 @@
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
                         </select>
                     </div>
-                    <!-- Button to open billing information screen -->
-                    <a class="button blue open-modal">Billing Information</a>
                 </div>
                 <div data-type="credit-card-fields" class="entry card-number-large margin" ng-show= "reservationData.paymentType.type.name == 'CC'">
                     <label for="card-number-set1" translate>CREDIT_CARD</label>

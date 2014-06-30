@@ -21,7 +21,7 @@
 		<button id="checkin-button" ng-click="clickedCompleteCheckin()" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green" translate>
 			COMPLETE_CHECKIN
 		</button>
-		<div class="clearButton">
+		<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
 			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()' translate>CLEAR_SIGNATURE</a>
 		</div>
 	</div>

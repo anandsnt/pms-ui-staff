@@ -11,12 +11,35 @@
 		<div id="new-form-holder"></div>
 		<span class="grid" ng-show="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
 		<table id="brands" class="grid" ng-table="tableParams">
+			<thead>
+				<tr>
+					 
+           <th  ng-class="{
+           			'sortable': currentClickedElement == -1,
+                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+                    'sort-desc': tableParams.isSortBy('name', 'desc')
+                  }"
+                  
+                    ng-click="sortByName()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Type</span></div>
+                </th>
+                <th  ng-class="{
+                	'sortable': currentClickedElement == -1,
+                    'sort-asc': tableParams.isSortBy('code', 'asc'),
+                    'sort-desc': tableParams.isSortBy('code', 'desc')
+                  }"
+                  
+                    ng-click="sortByCode()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Code</span></div>
+                </th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr ng-repeat="room_types in $data" > 
-					<td header-class="width-70"  data-title="'Room Type'" sortable="'name'" ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
+					<td header-class="width-70"   ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
 						<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
 					</td>
-					<td data-title="'Room Code'" header-class=" width-30"  sortable="'code'" class="text-left" ng-hide="currentClickedElement == $index" >
+					<td header-class=" width-30" class="text-left" ng-hide="currentClickedElement == $index" >
 						{{room_types.code}}
 					</td>
 					<td colspan="2" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedElement == $index"></td>

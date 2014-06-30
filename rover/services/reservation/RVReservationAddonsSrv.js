@@ -16,9 +16,10 @@ sntRover.service('RVReservationAddonsSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.fetchAddons = function() {
-            var url = 'api/addons?is_active=true';
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+        this.fetchAddons = function(params) {
+            var deferred = $q.defer();
+            var url = 'api/addons';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);

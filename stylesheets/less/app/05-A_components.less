@@ -2428,17 +2428,12 @@
 							}
 
 							.select {
-								position: static;
+								z-index: 1;
 
 								select {
 									padding-left: 50px;
-									.box-shadow(none);
-								}
-
-								&:after {
-									top: 15px;
-									right: 15px;
-									height: 30px;
+									z-index: 99;
+                                    .box-shadow(none);
 								}
 							}
 						}
@@ -2531,13 +2526,6 @@
 											select {
 												padding: 0 10px;
 												min-height: 30px;
-											}
-
-											&:after {
-												top: 0;
-												right: 0;
-												width: 30px;
-												height: 30px;
 											}
 										}
 									}
@@ -3624,7 +3612,7 @@
 				.pull-left;
 
 				.addon-tab {
-					position: absolute;
+					position: relative;
 					top: 0;
 					left: 0;
 
@@ -3634,23 +3622,9 @@
 						.float;
 						.faux-clickable;
 
-						.addon-image {
-							background: @grey1;
-							#border-radius > .rounded();
-							.square(70px);
-							.pull-left;
-
-							img {
-								width: 100%;
-								height: auto;
-								
-								#border-radius > .rounded();
-							}
-						}
-
 						.data {
 							margin-right: 40px;
-							#pixel-to-percent > .width(1000,1680);
+							#pixel-to-percent > .width(900,1680);
 							.pull-left;
 
 							.categories {
@@ -3682,28 +3656,26 @@
 						}
 
 						.price {
-							position: relative;
-							font-size: 36px;
-							line-height: 40px;
-							vertical-align: middle;
-							font-weight: 300;
-								.show;
-							#pixel-to-percent > .width(350,1680);
-							.pull-left;
+                            font-size: 36px;
+                            line-height: 40px;
+                            vertical-align: middle;
+                            font-weight: 300;
+                            .show;
+                            .pull-left;
 
-							span {
-								position: absolute;
-								top: 0;
-								color: @grey3;
-								font-size: 12px;
-								line-height: 12px;
-								text-transform: uppercase;
-								text-align: left;
-								font-weight: 400;
-								width: 60px;
-								overflow: hidden;
-							}
-						}
+                            span {
+                                display: inline-block;
+                                color: @grey3;
+                                font-size: 12px;
+                                line-height: 12px;
+                                text-transform: uppercase;
+                                text-align: left;
+                                font-weight: 400;
+                                width: 60px;
+                                margin-left: 5px;
+                                overflow: hidden;
+                            }
+                        }
 
 						.button { 
 							width: auto;
@@ -4848,13 +4820,13 @@
 			&:after {
 				content: "";
 				position: absolute;
-				top: 5px;
-				right: 5px;
+				top: 0;
+				right: 0;
 				background: @gcard @selectArrow no-repeat 50% 50%;
-					background-size: 6px 4px;
+				background-size: 6px 4px;
 				pointer-events: none;
-				width: 25px;
-				height: 30px;
+				.size(100%, 30px);
+                #border-radius > .right();
 			}
 		}
 
@@ -5497,6 +5469,7 @@
 
 								label { left: 15px; }
 								select { padding-left: 65px; }
+								&:after { #border-radius > .right(0px); }
 							}
 
 							&.children { 
@@ -5504,6 +5477,7 @@
 
 								label { left: 10px; }
 								select { padding-left: 75px; }
+								&:after { #border-radius > .right(0px); }
 							}
 							
 							&.infants { 
@@ -5511,6 +5485,7 @@
 
 								label { left: 10px; }
 								select { padding-left: 65px; }
+								&:after { #border-radius > .right(0px); }
 							}
 
 							&.room-type {
@@ -5692,12 +5667,8 @@
 							background: transparent;
 							border: 0;
 							width: 100%;
-							.box-shadow(none);              
-						}
-
-						&:after {
-							top: 0;
-							height: 40px;
+							z-index: 9;
+                            .box-shadow(none);             
 						}
 					}
 
@@ -5995,10 +5966,12 @@
 								.pull-left;
 
 								h2 {
-									white-space: nowrap;
-									overflow: hidden;
-									text-overflow: ellipsis;
-									.pull-left;
+									max-width: 100%;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                    margin-right: 20px;
+                                    .pull-left;
 								}
 
 								span {
@@ -6007,7 +5980,6 @@
 									text-transform: uppercase;
 									font-weight: 600;
 									color: @logoPrimary;
-									margin-left: 20px;
 									.pull-left;
 								}
 							}
@@ -6181,7 +6153,7 @@
 
 					/* Details ***/
 					.rate-details {
-						margin: 10px;
+						padding: 10px;
 						.float;
 
 						.info {
@@ -6200,7 +6172,7 @@
 
 						.room-cost {
 							clear: none;
-							table-layout: auto;
+							table-layout: fixed;
 							border-collapse: collapse; 
 							border-spacing: 0;
 							margin: 0 20px;
@@ -6217,7 +6189,15 @@
 									color: @grey3;
 									text-align: right;
 
-									&:first-child { text-align: left; }
+									&:first-child { 
+                                        text-align: left; 
+                                        #pixel-to-percent > .width(244, 668);
+                                    }
+
+                                    &:nth-of-type(2) { #pixel-to-percent > .width(100, 668); }
+                                    &:nth-of-type(3) { #pixel-to-percent > .width(100, 668); }
+                                    &:nth-of-type(4) { #pixel-to-percent > .width(140, 668); }
+                                    &.edit { #pixel-to-percent > .width(60, 668); }
 								}
 
 								td {
@@ -6300,8 +6280,9 @@
 
 							.addon-tab {
 								li {
-									overflow: hidden;
-									text-overflow: ellipsis;
+									margin-bottom: 10px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
 
 									.add-enhancement {
 										text-align: right;
@@ -6581,7 +6562,9 @@
 							}
 
 							&.hour,
-							&.minutes { margin-right: 5px; }
+                            &.minutes { 
+                                &:after { #border-radius > .right(0px); }
+                            }
 						}
 					}
 
@@ -6661,7 +6644,7 @@
 								white-space: nowrap;
 								overflow: hidden;
 								text-overflow: ellipsis;
-								#pixel-to-percent > .width(460, 780);
+								#pixel-to-percent > .width(420, 780);
 								.pull-left;
 							}
 
@@ -6669,7 +6652,7 @@
 								position: relative;
 								font-size: 16px;
 								text-align: left;
-								#pixel-to-percent > .width(320, 780);
+								#pixel-to-percent > .width(360, 780);
 								.pull-right;
 
 								span:not(.total) {
@@ -6773,7 +6756,7 @@
 
 				.total-stay-cost {
 					margin-top: -20px;
-					#pixel-to-percent > .left-padding(460, 820);
+					#pixel-to-percent > .left-padding(240, 780);
 
 					li {
 						border-top: 1px solid rgba(0,0,0,.1);
@@ -6829,14 +6812,6 @@
 						float: none;
 						clear: both;
 						width: 100%;
-						.float;
-
-						.select {
-							.pull-left;
-							#pixel-to-percent > .width(580, 1058);
-						}
-
-						.button { .pull-right; }
 					}
 				}
 
