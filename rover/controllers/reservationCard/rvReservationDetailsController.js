@@ -56,7 +56,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id == null ? "" : reservationListData.company_id;
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id == null ? "" : reservationListData.travel_agent_id;
 		angular.copy(reservationListData, $scope.reservationListData);
-		console.log($scope.reservationListData)
+		// console.log($scope.reservationListData)
 		$scope.$emit('cardIdsFetched');
 		//CICO-7078
 
