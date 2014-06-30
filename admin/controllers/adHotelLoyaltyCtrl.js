@@ -5,6 +5,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 	$scope.hotelLoyaltyData = {};
 	$scope.isAddMode = false;
 	$scope.levelEditProgress = false;
+	$scope.addEditTitle = ""; 
    /*
     * To fetch list of hotel loyalty
     */
@@ -29,6 +30,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 		$scope.hotelLoyaltyData={};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
+		$scope.addEditTitle = "Edit";
 	 	var successCallbackRender = function(data){	
 	 		$scope.hotelLoyaltyData = data;
 	 		 		if($scope.hotelLoyaltyData.levels.length === 0)
@@ -43,6 +45,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     * Render add hotel loyalty screen
     */
 	$scope.addNewHotelLoyalty = function()	{
+		$scope.addEditTitle = "Add new";
 		$scope.hotelLoyaltyData   = {};
 		$scope.hotelLoyaltyData={};
 		$scope.currentClickedElement = "new";
@@ -92,15 +95,16 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 	    	}
     		$scope.currentClickedElement = -1;
     	};
-    	var errorCallbackSave = function(data){
+    	var errorCallbackSave = function(error){
+    		$scope.errorMessage = error[0];
     		$scope.$emit('hideLoader');
 			if($scope.hotelLoyaltyData.levels.length === 0)
 				$scope.hotelLoyaltyData.levels.push({'value':'','name':''});
     	};
     	if($scope.isAddMode){
-    		$scope.invokeApi(ADHotelLoyaltySrv.saveHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave);
+    		$scope.invokeApi(ADHotelLoyaltySrv.saveHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave, errorCallbackSave);
     	} else {
-    		$scope.invokeApi(ADHotelLoyaltySrv.updateHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave);
+    		$scope.invokeApi(ADHotelLoyaltySrv.updateHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave, errorCallbackSave);
     	}
     };
    /*
@@ -160,6 +164,7 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     * To handle blur event on hotel loyalty levels
     */
 	$scope.onBlur = function(index){
+		$scope.levelEditProgress = false;
 		if($scope.hotelLoyaltyData.levels.length>1){
 			if($scope.hotelLoyaltyData.levels[index].name == "")
 				$scope.hotelLoyaltyData.levels.splice(index, 1);
