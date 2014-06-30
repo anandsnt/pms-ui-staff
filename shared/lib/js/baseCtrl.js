@@ -38,6 +38,11 @@ function BaseCtrl($scope){
 		return serviceApi(params).then(successCallback, failureCallback);
 		
 	};
-	
+	/*
+     * To set the title of each navigation
+     */
+    $scope.setTitle = function(title){
+    	document.title = title;
+    };
 
 }
