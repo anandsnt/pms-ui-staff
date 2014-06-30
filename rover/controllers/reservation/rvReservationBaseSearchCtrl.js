@@ -1,11 +1,7 @@
 sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout','$stateParams',
     function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
         BaseCtrl.call(this, $scope);
-
-        //Setting number of nights 1
-        $scope.reservationData.numNights = 1;
         $scope.$parent.hideSidebar = false;
-
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
@@ -141,8 +137,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     eachItem = {};
 
                     eachItem = {
-                        label: item.account_first_name + " " + item.account_last_name,
-                        value: item.account_first_name + " " + item.account_last_name,
+                        label: item.account_name ,
+                        value: item.account_name ,
                         image: item.company_logo,
                         
                         // only for our understanding
@@ -185,7 +181,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if ( request.term.length === 0 ) {
                 companyCardResults = [];
                 lastSearchText = "";
-            } else if ( request.term.length > 1 ) {
+            } else if ( request.term.length > 2 ) {
                 fetchData();
             }
         }

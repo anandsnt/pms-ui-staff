@@ -1,10 +1,11 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', function($scope, $state, $stateParams, RVUpgradesSrv, $sce){
+sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter){
 	
 	BaseCtrl.call(this, $scope);
-	
+	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
+	$scope.setTitle(title);
 	if(typeof $scope.$parent.myScrollOptions === "undefined")
-		$scope.$parent.myScrollOptions ={}
+		$scope.$parent.myScrollOptions ={};
 	$scope.$parent.myScrollOptions['upgradesView'] = {
 	    	scrollbars: true,
 	        hideScrollbar: false,
