@@ -4,9 +4,18 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	$scope.errorMessage = "";
 	$scope.guestCardData.likes = {};
 	$scope.guestLikesData = {};
-	
+	$scope.$parent.myScrollOptions = {		
+	    'likes_info': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false,
+	        vScroll: true
+	    }
+	};
+	$scope.calculatedHeight = 254; //height of Preferences + News paper + Room type + error message div
 	$scope.init = function(){
-		
+		BaseCtrl.call(this, $scope);
 	    var fetchLikesFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
@@ -21,47 +30,64 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
         $scope.guestLikesData = data;
         
         angular.forEach($scope.guestLikesData.preferences, function(value, key) {
-	         angular.forEach(value.values, function(prefValue, prefKey) {
+        	$scope.calculatedHeight += 34;
+        	var rowCount = 0;        	
+	        angular.forEach(value.values, function(prefValue, prefKey) {
+	        		rowCount++;	        		
+	        		if(rowCount % 2  != 0)
+	        			$scope.calculatedHeight += 40;	        		
 		        	var userPreference = $scope.guestLikesData.user_preference;
 		        	if(userPreference.indexOf(prefValue.id) != -1){
 		        		prefValue.isChecked = true;
 		        	} else {
 		        		prefValue.isChecked = false;
 		        	}
-		     });
+		    });
 	     });
-	    
-	      angular.forEach($scope.guestLikesData.room_features, function(value, key) {
-	         angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
+	    	
+	    var rowCount = 0; 
+	    angular.forEach($scope.guestLikesData.room_features, function(value, key) {
+    	
+	        angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
+			      	rowCount++;	 
+			      	if(rowCount > 6 && $scope.guestLikesData.preferences.length <= 2 ){
+			        	$scope.calculatedHeight += 40;	
+			        } 
 		        	var userRoomFeature = value.user_selection;
 		        	if(userRoomFeature.indexOf(roomFeatureValue.id) != -1){
 		        		roomFeatureValue.isSelected = true;
 		        	} else {
 		        		roomFeatureValue.isSelected = false;
 		        	}
-		     });
-	     });
+
+		    });
+
+	    });
         $scope.guestCardData.likes = $scope.guestLikesData;
-        $scope.$parent.myScrollOptions = {		
-		    'likes_info': {
-		    	scrollbars: true,
-		        snap: false,
-		        hideScrollbar: false,
-		        preventDefault: false
-		    },
-		};
+       
 	
-		setTimeout(function(){
-			$scope.$parent.myScroll['likes_info'].refresh();
+		setTimeout(function(){			
+			$scope.refreshScroller();
 			}, 
-		3000);
+		1000);
 
     };
+
 	$scope.$on('SHOWGUESTLIKESINFO', function(){
 		$scope.init();
 	});
+
+	$scope.refreshScroller = function(){
+		setTimeout(function(){
+			$scope.myScroll['likes_info'].refresh();
+		}, 300);
+	};
 	$scope.$on('REFRESHLIKESSCROLL', function(){
-		$scope.$parent.myScroll['likes_info'].refresh();
+		$scope.refreshScroller();
+		
+	});
+	$scope.$on("$viewContentLoaded", function(){
+		$scope.refreshScroller();
 	});
 	
 	$scope.saveLikes = function(){
@@ -70,7 +96,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	        $scope.$emit('hideLoader');
 	    };
 	    var saveUserInfoFailureCallback = function(data){
-	        $scope.$emit('hideLoader');
+	        $scope.$emit('hideLoader');calu
 	        $scope.errorMessage = data;
 	        $scope.$emit('likesInfoError',true);
 	    };
