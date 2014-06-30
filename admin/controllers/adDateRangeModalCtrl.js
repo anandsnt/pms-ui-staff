@@ -20,6 +20,7 @@ BaseCtrl.call(this, $scope);
       }
 };
 
+
 $scope.setUpData();
 $scope.updateClicked = function(){
  	var successUpdateRange =function(){
