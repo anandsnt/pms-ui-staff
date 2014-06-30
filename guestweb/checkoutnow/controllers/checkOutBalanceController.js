@@ -39,7 +39,7 @@
 		});
 
 		$scope.gotToNextStep = function(){
-			if($rootScope.isCCOnFile || $scope.billData.balance === 0){
+			if($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00){
 				$state.go('checkOutStatus');
 			}				
 			else{
