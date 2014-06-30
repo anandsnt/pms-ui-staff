@@ -137,8 +137,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     eachItem = {};
 
                     eachItem = {
-                        label: item.account_first_name + " " + item.account_last_name,
-                        value: item.account_first_name + " " + item.account_last_name,
+                        label: item.account_name ,
+                        value: item.account_name ,
                         image: item.company_logo,
                         
                         // only for our understanding
@@ -181,7 +181,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if ( request.term.length === 0 ) {
                 companyCardResults = [];
                 lastSearchText = "";
-            } else if ( request.term.length > 1 ) {
+            } else if ( request.term.length > 2 ) {
                 fetchData();
             }
         }
