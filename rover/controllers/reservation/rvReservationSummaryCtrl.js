@@ -28,7 +28,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	*/
 	var fetchPaymentMethods = function(){
 		var paymentFetchSuccess = function(data) {
-			$scope.data.paymentMethods = data.payments;
+			$scope.data.paymentMethods = data;
 			$scope.$emit('hideLoader');
 		};
 		

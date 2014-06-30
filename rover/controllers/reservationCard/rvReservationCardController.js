@@ -19,6 +19,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		// $scope.fetchReservationData(data.reservationId);
 		// $scope.currentReservationId = data.confirmationNumber;
+		// console.log(JSON.stringify(data))
 		$scope.$emit('staycardGuestData' , data);
 		$scope.data = data;
 		
@@ -28,7 +29,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
 		
-		$scope.currentReservationId = data.reservation_details.confirmation_num;
+		$scope.currentReservationId = data.confirmationNumber;
 		
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
