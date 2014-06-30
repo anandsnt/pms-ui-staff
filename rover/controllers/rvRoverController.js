@@ -49,7 +49,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       /*
      * hotel Details 
      */
-    
+
+    $rootScope.isLateCheckoutTurnedOn= hotelDetails.late_checkout_settings.is_late_checkout_on;    
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
     if (hotelDetails.language){
