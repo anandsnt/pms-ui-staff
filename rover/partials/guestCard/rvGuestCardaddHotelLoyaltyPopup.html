@@ -20,7 +20,7 @@
 		<div id="hlplevek" class="entry full-width" ng-show="isLevelsAvailable">
 			<label for="level" translate>LEVEL</label>
 			<div class="select">
-				<select ng-options="userMembership.membership_level as userMembership.description for userMembership  in userMembershipLevels" ng-model="userMembershipLevel">
+				<select ng-options="userMembership.membership_level as userMembership.membership_level for userMembership  in userMembershipLevels" ng-model="userMembershipLevel">
  							<option style="display:none" value=""></option>
  						</select>
 			</div>
