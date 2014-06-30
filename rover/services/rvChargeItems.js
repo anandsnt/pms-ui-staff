@@ -58,6 +58,9 @@ sntRover.service('RVChargeItems',
 
 							// to show the modified price by user
 							item.modifiedPrice = item.unit_price;
+
+							// to keep track of price entered by user
+							item.userEnteredPrice = '';
 						};
 
 						for (var i = 0, j = data.charge_groups.length; i < j; i++) {

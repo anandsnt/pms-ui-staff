@@ -405,6 +405,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// pass on the reservation id
 		$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
+		// translating this logic as such from old Rover
+		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+		$Scope.fetchTotalBal = false;
+
 		var callback = function(data) {
 		    $scope.$emit( 'hideLoader' );
 
@@ -434,6 +438,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.closeDialog = function() {
 		ngDialog.close();
 	};
+
+
+	
 	/*
 	 * Used to add class with respect to different status
 	 * @param {string} reservationStatus
