@@ -33,6 +33,7 @@ sntRover.config([
                     return RVDashboardSrv.fetchUserInfo();
                 }
             }
+
         });
 
     }

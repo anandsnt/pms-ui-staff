@@ -29,6 +29,18 @@
     "MENU_REVENUE":"Revenue",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
+    
+    "DUEIN_TITLE": "Checking In",
+    "IN_HOUSE_TITLE": "In House",
+    "CHECKING_OUT_TITLE": "Checking Out",
+    "LATE_CHECKOUT_TITLE": "Checking Out Late",
+    "SEARCH_TITLE" : "Search",
+    "STAYCARD_TITLE": "Staycard",
+    "ROOM_ASSIGNMENT_TITLE" : "Room Assignment",
+    "ROOM_UPGRADES_TITLE": "Room Upgrades",
+    "RESERVATION_TITLE": "Reservation",
+    "RATE_MANAGER_TITLE": "Rate Manager"
+,
 	
 	"CONTRACTED_NIGHTS": "Contracted Nights",
 	"COPY_VALUES": "Copy values",
@@ -91,7 +103,8 @@
     "CHECKING_IN": "Checking In",
     "INHOUSE": "Inhouse",
     "CHECKING_OUT": "Checking Out",
-    "DASHBOARD_HEADING": "Dashboard",    
+    "DASHBOARD_HEADING": "Dashboard",
+    "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",    
     
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",

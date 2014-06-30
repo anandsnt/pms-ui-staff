@@ -1,5 +1,11 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
+     if (hotelDetails.language){
+      $translate.use(hotelDetails.language.value);
+    }
+    else{
+      $translate.use('EN');
+    };
     
     // this is make sure we add an
     // additional class 'return-back' as a
@@ -52,12 +58,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
-    if (hotelDetails.language){
-      $translate.use(hotelDetails.language.value);
-    }
-    else{
-      $translate.use('EN');
-    };
+   
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null){
        $scope.isStandAlone = true;
