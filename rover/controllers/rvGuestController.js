@@ -375,8 +375,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					angular.forEach(data.accounts, function(item) {
 						var companyData = {};
 						companyData.id = item.id;
-						companyData.firstName = item.account_first_name;
-						companyData.lastName = item.account_last_name;
+						companyData.account_name = item.account_name;
+						// companyData.lastName = item.account_last_name;
 						companyData.logo = item.company_logo;
 						if (item.address != null) {
 							companyData.address = {};
@@ -416,8 +416,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						if (item.account_type === 'TRAVELAGENT') {
 							var travelAgentData = {};
 							travelAgentData.id = item.id;
-							travelAgentData.firstName = item.account_first_name;
-							travelAgentData.lastName = item.account_last_name;
+							travelAgentData.account_name = item.account_name;
+							// travelAgentData.lastName = item.account_last_name;
 							travelAgentData.logo = item.company_logo;
 							if (item.address != null) {
 								travelAgentData.address = {};
