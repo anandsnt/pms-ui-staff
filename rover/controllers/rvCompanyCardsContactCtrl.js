@@ -8,4 +8,8 @@ sntRover.controller('companyCardDetailsContactCtrl',['$scope', 'RVCompanyCardSrv
 	    }
 	};
 	
+	if($scope.contactInformation.alert_message != "")
+	{
+		$scope.errorMessage = [$scope.contactInformation.alert_message];
+	}
 }]);
