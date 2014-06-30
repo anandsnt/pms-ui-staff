@@ -1,11 +1,12 @@
-sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv){
+sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter', function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter){
 	BaseCtrl.call(this, $scope);
 	$scope.timeline = "";
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	$scope.reservationCount = 0;
 
-
+	var title = $filter('translate')('STAYCARD_TITLE');
+	$scope.setTitle(title);
 
 	$scope.reservationCardClick =  function(){
 		 $scope.$emit('reservationCardClicked');
@@ -19,6 +20,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		// $scope.fetchReservationData(data.reservationId);
 		// $scope.currentReservationId = data.confirmationNumber;
+		// console.log(JSON.stringify(data))
 		$scope.$emit('staycardGuestData' , data);
 		$scope.data = data;
 		
@@ -28,7 +30,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
 		
-		$scope.currentReservationId = data.reservation_details.confirmation_num;
+		$scope.currentReservationId = data.confirmationNumber;
 		
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 

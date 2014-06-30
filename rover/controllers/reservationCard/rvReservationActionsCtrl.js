@@ -107,6 +107,7 @@ sntRover.controller('reservationActionsController',
 			$scope.goToCheckin = function(){
 			
 				if($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null){
+					$scope.$emit('showLoader');
 					ngDialog.open({
 		        		template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
 		        		controller: 'RVValidateEmailPhoneCtrl',
@@ -115,7 +116,7 @@ sntRover.controller('reservationActionsController',
 				} else {
 					if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
 					{   
-						//TO DO:Go to rrom assignemt viw
+						//TO DO:Go to room assignemt view
 						$state.go("rover.staycard.roomassignment", {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "room_type": $scope.reservationData.reservation_card.room_type_code, "clickedButton": "checkinButton"});
 					} else if ($scope.reservationData.reservation_card.is_force_upsell=="true" && $scope.reservationData.reservation_card.is_upsell_available == "true"){
 						//TO DO : gO TO ROOM UPGRAFED VIEW

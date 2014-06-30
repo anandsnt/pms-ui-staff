@@ -7,6 +7,14 @@
         <div class="entry full-width">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
+<!-- =======
+<div ng-controller="RVLikesController" class="form card-tab scrollable"  ng-show="current == 'guest-like'"  >
+  <div id="likes_info" class="" ng-iscroll='likes_info' ng-iscroll-delay='50' >
+    <div class="wrapper " >
+    	<div class="entry full-width">
+ 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+ 		</div>
+>>>>>>> 4b7a11d578699106034587b59dc32655384b871e -->
         <div class="holder left">
             <strong class="h3" translate>PREFERENCES </strong>
             
@@ -49,6 +57,7 @@
         <div class="holder right">
             <strong class="h3" translate>ROOM_FEATURES</strong>
             <span ng-repeat="roomFeatures in guestCardData.likes.room_features">
+<<<<<<< HEAD
                <div class="entry radio-check" ng-repeat="x in getHalfArray(roomFeatures.values) track by $index">
 
                    <label class="checkbox" ng-class="{'checked': roomFeatures.values[$index*2].isSelected}">
@@ -71,3 +80,28 @@
 
    </div>
 </div></form>
+=======
+            	 <div class="entry radio-check" ng-repeat="x in getHalfArray(roomFeatures.values) track by $index">
+                	
+                	 <label class="checkbox" ng-class="{'checked': roomFeatures.values[$index*2].isSelected}">
+	                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeatures.values[$index*2].isSelected}"></span>
+	                    <input ng-model="roomFeatures.values[$index*2].isSelected" type="checkbox" />
+	                    {{roomFeatures.values[$index*2].details}}
+	                </label >
+	            
+                	 <label class="checkbox" ng-if="showLabel(roomFeatures.values[$index*2+1].details)" ng-class="{'checked': roomFeatures.values[$index*2 +1].isSelected}">
+	                	 <span class="icon-form icon-checkbox"  ng-class="{'checked': roomFeatures.values[$index*2 + 1].isSelected}"></span>
+	                    <input ng-model="roomFeatures.values[$index*2+1].isSelected" type="checkbox" />
+	                    {{roomFeatures.values[$index*2+1].details}}
+	                </label >
+                	
+                	
+	          </div>
+            </span>
+        </div>
+        
+        
+        </div>
+    </div>
+</div>
+>>>>>>> 4b7a11d578699106034587b59dc32655384b871e

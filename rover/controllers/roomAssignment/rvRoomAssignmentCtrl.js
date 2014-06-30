@@ -2,7 +2,8 @@
 sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout){
 		
 	BaseCtrl.call(this, $scope);
-
+	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
+	$scope.setTitle(title);
 		
 	setTimeout(function(){
 				$scope.$parent.myScroll['roomlist'].refresh();
@@ -106,7 +107,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
 			$scope.applyFilterToRooms();
-			$scope.$parent.myScroll['roomlist'].refresh();
+			setTimeout(function(){				
+				$scope.$parent.myScroll['roomlist'].refresh();
+				}, 
+			1000);
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
@@ -135,7 +139,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.toggleFiltersView = function(){
 		$scope.isFiltersVisible = !$scope.isFiltersVisible;
-		$scope.$parent.myScroll['filterlist'].refresh();
+		setTimeout(function(){				
+				$scope.$parent.myScroll['filterlist'].refresh();
+				}, 
+			1000);
 	};
 	/**
 	* function to set the color coding for the room number based on the room status
@@ -323,7 +330,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.setRoomsListWithPredefinedFilters = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
-			if($scope.rooms[i].room_status == "NOTREADY")
+			if($scope.rooms[i].room_status == "NOTREADY" && $scope.rooms[i].fo_status == "VACANT" && $scope.rooms[i].room_ready_status != "CLEAN")
 				$scope.rooms[i].room_features.push(-100);
 			if($scope.rooms[i].fo_status == "DUEOUT")
 				$scope.rooms[i].room_features.push(-101);

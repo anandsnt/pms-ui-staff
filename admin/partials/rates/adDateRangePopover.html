@@ -1,5 +1,5 @@
 <div class="title">{{rate.name}} - Rate date ranges</div>
 	<ul>
-		<li ng-repeat = "date in popoverRates">{{date.begin_date}} to {{date.end_date}}</li>
+		<li ng-repeat = "date in popoverRates">{{date.begin_date|date:longDateFormat}} to {{date.end_date|date:longDateFormat}}</li>
 	</ul>
 </div>
