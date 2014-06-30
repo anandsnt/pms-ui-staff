@@ -407,7 +407,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		// translating this logic as such from old Rover
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
-		$Scope.fetchTotalBal = false;
+		$scope.fetchTotalBal = false;
 
 		var callback = function(data) {
 		    $scope.$emit( 'hideLoader' );

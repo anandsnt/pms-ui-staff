@@ -75,7 +75,7 @@ sntRover.controller('reservationActionsController',
 
 				// translating this logic as such from old Rover
 				// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
-				$Scope.fetchTotalBal = true;
+				$scope.fetchTotalBal = true;
 
 				var callback = function(data) {
 				    $scope.$emit( 'hideLoader' );
