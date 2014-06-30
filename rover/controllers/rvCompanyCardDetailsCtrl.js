@@ -84,6 +84,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	var successCallbackOfInitialFetch = function(data){
 		$scope.$emit("hideLoader");
 		$scope.contactInformation = data;
+		if($scope.contactInformation.alert_message != "")
+		{
+			$scope.errorMessage = [$scope.contactInformation.alert_message];
+		};
 		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
 			$scope.contactInformation.id = $stateParams.id;			
 		}
