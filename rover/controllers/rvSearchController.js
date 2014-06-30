@@ -1,15 +1,19 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', function($scope, RVSearchSrv, $stateParams){
+sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', function($scope, RVSearchSrv, $stateParams, $filter){
 	
   BaseCtrl.call(this, $scope);
-
+  
+  
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
   $scope.$emit("updateRoverLeftMenu","search");
   var oldTerm = "";
   var oldType = "";
+  $scope.isLateCheckoutList = false;
+  $scope.searchTermPresent = false;
   if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
     $stateParams.type != null && $stateParams.type.trim() != '') {
       oldType = $stateParams.type;
+      $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
   }
 
   $scope.$parent.myScrollOptions = {
@@ -48,11 +52,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   };
 
   var headingListDict = {  
-    'DUEIN': "Checking In",
-    'INHOUSE': "In House",
-    'DUEOUT': "Checking Out",
-    'LATE_CHECKOUT': "Checking Out Late",
-    '': "Search"
+    'DUEIN':  $filter('translate')('DUEIN_TITLE'),
+    'INHOUSE': $filter('translate')('IN_HOUSE_TITLE'),
+    'DUEOUT': $filter('translate')('CHECKING_OUT_TITLE'),
+    'LATE_CHECKOUT': $filter('translate')('LATE_CHECKOUT_TITLE'),
+    '': $filter('translate')('SEARCH_TITLE')
   };
 
   //success callback of data fetching from the webservice
@@ -63,6 +67,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     oldType = "";
     oldTerm = $scope.textInQueryBox;
     setTimeout(function(){refreshScroller();}, 750);
+    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
 
@@ -128,6 +133,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   */
   var performInitialActions = function(){
       $scope.heading = headingListDict[oldType]; 
+      $scope.setTitle($scope.heading);
       //preparing for web service call
     	var dataDict = {};
     	if(oldType != '') {          

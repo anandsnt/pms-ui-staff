@@ -1,4 +1,4 @@
-admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHotelSettingsSrv', '$state', function($state, $scope, ADHotelSettingsSrv, $state){
+admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHotelSettingsSrv', '$state', function($state, $scope, $rootScope, ADHotelSettingsSrv, $state){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
@@ -34,6 +34,14 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHotelSettingsSrv',
 	       }
 	       
 	   	});
+	};
+	/**
+    *   Method to go back to previous state.
+    */
+	$scope.backClicked = function(){
+		
+		$scope.goBack($rootScope, $state);
+	
 	};
 	
    	

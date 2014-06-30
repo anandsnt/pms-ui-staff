@@ -1,8 +1,10 @@
-sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', function($scope,$window,dateFilter){
+sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter',  function($scope,$window,dateFilter, $filter){
     
     BaseCtrl.call(this, $scope);
 
-
+    var title = $filter('translate')('RATE_MANAGER_TITLE');
+	$scope.setTitle(title);
+	
     $scope.$emit("updateRoverLeftMenu","rateManager");
 
     $scope.displayMode = "CALENDAR";

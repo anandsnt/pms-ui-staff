@@ -1,6 +1,8 @@
 sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window){
 	
 	BaseCtrl.call(this, $scope);
+	
+	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(150); //Approximate height
 	var billTabHeight = parseInt(35);
@@ -29,11 +31,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// console.log("---"+width)
 	if($scope.clickedButton == "checkoutButton"){
 		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
+		$scope.setTitle($filter('translate')('GUEST_BILL_TITLE'));
 	} else if($scope.clickedButton == "checkinButton"){
 		$scope.$emit('HeaderChanged', $filter('translate')('REGISTRATION'));
+		$scope.setTitle($filter('translate')('REGISTRATION'));
 	}
 	else{
 		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
+		$scope.setTitle($filter('translate')('GUEST_BILL_TITLE'));
 	}
 	
 	$scope.init = function(reservationBillData){

@@ -1,80 +1,85 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog',
-    function($scope, $rootScope, baseData, ngDialog) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter',
+    function($scope, $rootScope, baseData, ngDialog, $filter) {
+		 	BaseCtrl.call(this, $scope);
 
-        $scope.initReservationData = function() {
+		    var title = $filter('translate')('RESERVATION_TITLE');
+			$scope.setTitle(title);
+			
+			
+	        $scope.initReservationData = function() {
             $scope.hideSidebar = false;
-            // intialize reservation object
-            $scope.reservationData = {
-                arrivalDate: '',
-                departureDate: '',
-                checkinTime: {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                },
-                checkoutTime: {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                },
-                numNights: 1, // computed value, ensure to keep it updated
-                roomCount: 1, // Hard coded for now,
-                rooms: [{
-                    numAdults: 1,
-                    numChildren: 0,
-                    numInfants: 0,
-                    roomTypeId: '',
-                    roomTypeName: '',
-                    rateId: '',
-                    rateName: '',
-                    rateAvg: 0,
-                    rateTotal: 0,
-                    addons: []
-                }],
-                totalTaxAmount: 0,
-                totalStayCost: 0,
-                guest: {
-                    id: null, // if new guest, then it is null, other wise his id
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    city: '',
-                    loyaltyNumber: '',
-                    sendConfirmMailTo: ''
-                },
-                company: {
-                    id: null, // if new company, then it is null, other wise his id
-                    name: '',
-                    corporateid: '', // Add different fields for company as in story
-                },
-                travelAgent: {
-                    id: null, // if new , then it is null, other wise his id
-                    name: '',
-                    iataNumber: '', // Add different fields for travelAgent as in story
-                },
-                paymentType: {
-                    type: {},
-                    ccDetails: { //optional - only if credit card selected
-                        number: '',
-                        expMonth: '',
-                        expYear: '',
-                        nameOnCard: ''
-                    }
-                },
-                demographics: {
-                    market: '',
-                    source: '',
-                    reservationType: '',
-                    origin: ''
-                },
-                promotion: {
-                    promotionCode: '',
-                    promotionType: ''
-                },
-                reservationId : '',
-                confirmNum : ''
-            }
-        }
+	            // intialize reservation object
+	            $scope.reservationData = {
+	                arrivalDate: '',
+	                departureDate: '',
+	                checkinTime: {
+	                    hh: '',
+	                    mm: '00',
+	                    ampm: 'AM'
+	                },
+	                checkoutTime: {
+	                    hh: '',
+	                    mm: '00',
+	                    ampm: 'AM'
+	                },
+	                numNights: 1, // computed value, ensure to keep it updated
+	                roomCount: 1, // Hard coded for now,
+	                rooms: [{
+	                    numAdults: 1,
+	                    numChildren: 0,
+	                    numInfants: 0,
+	                    roomTypeId: '',
+	                    roomTypeName: '',
+	                    rateId: '',
+	                    rateName: '',
+	                    rateAvg: 0,
+	                    rateTotal: 0,
+	                    addons: []
+	                }],
+	                totalTaxAmount: 0,
+	                totalStayCost: 0,
+	                guest: {
+	                    id: null, // if new guest, then it is null, other wise his id
+	                    firstName: '',
+	                    lastName: '',
+	                    email: '',
+	                    city: '',
+	                    loyaltyNumber: '',
+	                    sendConfirmMailTo: ''
+	                },
+	                company: {
+	                    id: null, // if new company, then it is null, other wise his id
+	                    name: '',
+	                    corporateid: '', // Add different fields for company as in story
+	                },
+	                travelAgent: {
+	                    id: null, // if new , then it is null, other wise his id
+	                    name: '',
+	                    iataNumber: '', // Add different fields for travelAgent as in story
+	                },
+	                paymentType: {
+	                    type: {},
+	                    ccDetails: { //optional - only if credit card selected
+	                        number: '',
+	                        expMonth: '',
+	                        expYear: '',
+	                        nameOnCard: ''
+	                    }
+	                },
+	                demographics: {
+	                    market: '',
+	                    source: '',
+	                    reservationType: '',
+	                    origin: ''
+	                },
+	                promotion: {
+	                    promotionCode: '',
+	                    promotionType: ''
+	                },
+	                reservationId : '',
+	                confirmNum : ''
+	            }
+        };
 
 
         $scope.otherData = {
@@ -118,7 +123,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     max: max,
                     name: name
                 };
-            }
+            };
 
             var roomPref = getMaxOccupancy(activeRoom);
 
@@ -138,7 +143,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 })
             });
             return true;
-        }
+        };
 
         $scope.initReservationData();
     }

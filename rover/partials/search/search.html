@@ -54,7 +54,7 @@
 								<strong class="room-status " ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</strong>
 							</a>
 						</li>
-						<li class="no-content" ng-show="results.length == 0 && clickedStatus!=''">
+						<li class="no-content" ng-show="results.length == 0 && clickedStatus!='' && (!isLateCheckoutList || searchTermPresent)">
 							<div class="info">
 								<span class="icon-no-content icon-search"></span>
 								<strong class="h1">No matches </strong>
@@ -62,6 +62,12 @@
 									<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
 									<strong>Confirmation</strong> number.
 								</span>
+							</div>
+						</li>
+						<li class="no-content" ng-show="results.length == 0 && clickedStatus!='' && (isLateCheckoutList && !searchTermPresent)">
+							<div class="info">
+								<span class="icon-no-content icon-search"></span>
+								<strong class="h1">No guests opted for late checkout </strong>
 							</div>
 						</li>
 						
