@@ -9,7 +9,6 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	$scope.saveData.guest_id = "";
 	$scope.saveData.user_id = "";
 
-	console.log($scope);
 	$scope.clickCancel = function(){
 		ngDialog.close();
 	};
@@ -67,7 +66,8 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
 	$scope.ignoreAndGoToCheckin = function(){
+		$scope.closeDialog();
 		$scope.goToNextView();
 	};
-	
+	$scope.$emit('hideLoader');
 }]);

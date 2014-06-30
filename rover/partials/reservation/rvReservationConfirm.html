@@ -70,12 +70,12 @@
                                 <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                             </span>
                         </li>
-                        <li ng-repeat='addon in room.addOns'>
-                            <em>{{addon.name}}</em>
+                        <li ng-repeat='addon in room.addons'>
+                            <em>{{addon.title}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{addon.avgAmount}}
+                                {{currencySymbol}}{{ addon.price }}
                                 <span translate>EACH</span>
-                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
+                                <span class="total">{{currencySymbol}}{{ addon.quantity * addon.price}}</span>
                             </span>
                         </li>
                     </ul>
