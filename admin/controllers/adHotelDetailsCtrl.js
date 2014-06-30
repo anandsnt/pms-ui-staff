@@ -141,4 +141,13 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		}
 	};
 	
+	$scope.$watch('data.hotel_chain', function() {
+		$scope.data.brands = [];
+            angular.forEach($scope.data.chains, function(item, index) {
+                if (item.id == $scope.data.hotel_chain) {
+                	$scope.data.brands = item.brands;
+                }
+        });
+    });
+	
 }]);
