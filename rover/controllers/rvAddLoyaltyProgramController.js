@@ -30,7 +30,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 		var successCallbackaddLoyaltyProgram = function(data){
 			$scope.newLoyalty.id = data.id;
 			$scope.dimissLoaderAndDialog();
-			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);
+			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty, "fromReservationCard");
 		};
 
 		var errorCallbackaddLoyaltyProgram = function(errorMessage){

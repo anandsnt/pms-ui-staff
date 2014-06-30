@@ -44,12 +44,17 @@ angular.module('reservationModule', []).config(function($stateProvider, $urlRout
         });
 
         $stateProvider.state('rover.reservation.mainCard.addons', {
-            url: '/addons',
+            url: '/addons/:from_date/:to_date',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVReservationAddonsCtrl',
             resolve: {
-                addonData: function(RVReservationAddonsSrv) {
-                    return RVReservationAddonsSrv.fetchAddonData();
+                addonData: function(RVReservationAddonsSrv, $stateParams) {
+                    var params = {};
+                    params.from_date = $stateParams.from_date;
+                    params.to_date = $stateParams.to_date;
+                    params.is_active = 'true';
+                    params.is_rate_only = 'true';
+                    return RVReservationAddonsSrv.fetchAddonData(params);
                 }
             }
         });
