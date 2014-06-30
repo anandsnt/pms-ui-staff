@@ -23,7 +23,11 @@ sntRover.service('RVHkSearchSrv', [
 					"dueout" : false,
 					"departed" : false,
 					"dayuse": false,
-					"queued": false
+					"queued": false,
+					"floorFilterSingle": '',
+					"floorFilterStart": '',
+					"floorFilterEnd": '',
+					'showAllFloors': true
 				};
 		}
 
@@ -59,6 +63,35 @@ sntRover.service('RVHkSearchSrv', [
 					}else{
 						console.log( 'Server request failed' );
 					}
+					
+				}.bind(this))
+				.error(function(response, status) {
+				    if(status == 401){ 
+				    	// 401- Unauthorized
+		    			// so lets redirect to login page
+						$window.location.href = '/house/logout' ;
+		    		}else{
+		    			deferred.reject(response);
+		    		}
+				});
+
+			return deferred.promise;
+		}
+
+		// Get all floors for the current hotel. 
+		this.fetch_floors = function(){
+			var deferred = $q.defer();
+			var url = '/api/floors.json';
+			
+			$http.get(url)
+				.success(function(response, status) {
+					if(response.floors){
+					    this.floorList = response.floors;
+					    deferred.resolve(this.floorList);
+					}else{
+						console.log( 'API - Get Floor Request - Server request failed' );
+					}
+					
 					
 				}.bind(this))
 				.error(function(response, status) {

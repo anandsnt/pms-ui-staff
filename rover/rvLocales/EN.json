@@ -75,7 +75,9 @@
 	"SAVE_NEW": "Save new ",
 	"CARD":"card?",
 	"NEW_COMPANY_CARD" : "New Company Card",
-	"NEW_TA_CARD": "New Travel Agent Card",    
+	"NEW_TA_CARD": "New Travel Agent Card"
+	
+,    
     
     "GREETING_MORNING": "Good Morning",
     "GREETING_AFTERNOON": "Good Afternoon",
@@ -131,7 +133,18 @@
 
 	"ROOM_DETAILS": "Room Details",
 	"ROOM_STATUS": "Room status",
-	"ROOM_IS_VACANT": "Room is vacant.",    
+	"ROOM_IS_VACANT": "Room is vacant.",
+
+	"HK_FLOORS": "Floors",
+	"SHOW_ALL_FLOORS": "Show All Floors",
+	"HK_SINGLE": "Single",
+	"FLOOR_#": "Floor #",
+	"HK_MULTIPLE": "Multiple",
+	"HK_FROM": "From",
+	"HK_TO": "To",
+
+	"PULL_REFRESH": "Pull down to refesh...",
+	"RELESE_REFRESH": "Release to refesh...",    
     
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
@@ -281,8 +294,8 @@
 	"PREFERENCES" : "Preferences",
 	"NEWSPAPER" : "Newspaper",
 	"ROOM_TYPE" : "Room type",
-	"ROOM_FEATURES" : "Room Features",
-	
+	"ROOM_FEATURES" : "Room Features"
+,	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",

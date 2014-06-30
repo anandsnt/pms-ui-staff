@@ -3,9 +3,10 @@ sntRover.controller('RVHkSearchCtrl', [
 	'$rootScope',
 	'$timeout',
 	'$state',
+	'$filter',
 	'RVHkSearchSrv',
 	'fetchedRoomList',
-	function($scope, $rootScope, $timeout, $state, RVHkSearchSrv, fetchedRoomList) {
+	function($scope, $rootScope, $timeout, $state, $filter, RVHkSearchSrv, fetchedRoomList) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -86,6 +87,22 @@ sntRover.controller('RVHkSearchCtrl', [
 		};
 
 		fetchRooms();
+
+		var fetchFloors = function() {
+			//Fetch the roomlist if necessary
+
+			$scope.$emit('showLoader');
+			RVHkSearchSrv.fetch_floors().then(function(data) {
+				$scope.$emit('hideLoader');
+				$scope.floors = data;
+			}, function() {
+				console.log("fetch failed");
+				$scope.$emit('hideLoader');
+			});
+		}
+
+		fetchFloors();
+		
 
 		$scope.currentFilters = RVHkSearchSrv.currentFilters;
 
@@ -185,6 +202,31 @@ sntRover.controller('RVHkSearchCtrl', [
 			for (var i = 0, j = $scope.rooms.length; i < j; i++) {
 				var room = $scope.rooms[i];
 
+				//Filter by Floors
+				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
+				if ($scope.currentFilters.floorFilterStart || $scope.currentFilters.floorFilterEnd || $scope.currentFilters.floorFilterSingle) {
+
+					if (room.floor.floor_number == null) {
+						room.display_room = false;
+						continue;
+					}
+				}
+
+				if ($scope.currentFilters.floorFilterSingle != '' && room.floor.floor_number != $scope.currentFilters.floorFilterSingle) {
+					room.display_room = false;
+					continue;
+				}
+
+				if ($scope.currentFilters.floorFilterStart != '' && room.floor.floor_number < $scope.currentFilters.floorFilterStart) {
+					room.display_room = false;
+					continue;
+				}
+
+				if ($scope.currentFilters.floorFilterEnd != '' && room.floor.floor_number > $scope.currentFilters.floorFilterEnd) {
+					room.display_room = false;
+					continue;
+				}
+
 				// filter by status in filter section, HK_STATUS
 				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service']) ) {
 					if ( !$scope.currentFilters.dirty && (room.hk_status.value === "DIRTY") ) {
@@ -233,8 +275,9 @@ sntRover.controller('RVHkSearchCtrl', [
 					}
 				}
 
-				// function() {};ilter by status in filter section, ROOM_RESERVATION_STATUS
+				// Filter by status in filter section, ROOM_RESERVATION_STATUS
 				// For this status, pass the test, if any condition applies.
+				// NOTE : This must be the last set of checks, as we make display_room = true and mark continue here.
 				if ( $scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse']) ) {
 					if ( $scope.currentFilters.stayover && room.room_reservation_status.indexOf("Stayover") >= 0 ) {
 						room.display_room = true;
@@ -364,6 +407,33 @@ sntRover.controller('RVHkSearchCtrl', [
 			$scope.refreshScroll();
 		}
 
+		/**
+		 * Click handler for floor selection drop-down
+		 * If we select a single floor option, the from-floor/to-floor should be initialised to none.
+		 * If we select the from-floor/ to-floor option, the single-floor initialized to none.
+		 */
+		$scope.validateFloorSelection = function(type) {
+			if (type == 'SINGLE_FLOOR') {
+				$scope.currentFilters.floorFilterStart = '';
+				$scope.currentFilters.floorFilterEnd = '';
+
+			}
+
+			if (type == 'FROM_FLOOR' || type == 'TO_FLOOR') {
+				$scope.currentFilters.floorFilterSingle = '';
+			}
+		};
+
+		/**
+		 * Click handler for All-Floors checkbox
+		 */
+		$scope.allFloorsClicked = function() {
+			$scope.currentFilters.showAllFloors = !$scope.currentFilters.showAllFloors;
+			$scope.currentFilters.floorFilterStart = '';
+			$scope.currentFilters.floorFilterEnd = '';
+			$scope.currentFilters.floorFilterSingle = '';
+		};
+
 
 
 
@@ -385,13 +455,17 @@ sntRover.controller('RVHkSearchCtrl', [
 				startY   = 0,
 				nowY     = 0,
 				initTop  = $rooms.scrollTop,
-				trigger  = 110; 
+				trigger  = 110;
+
+			// translate cache
+			var PULL_REFRESH = $filter('translate')('PULL_REFRESH'),
+				RELEASE_REFRESH = $filter('translate')('RELEASE_REFRESH');
 
 			// methods to modify the $notifyText and rotate $arrow
 			var loadNotify = function(diff) {
 				if ( !diff ) {
 					$arrow.className = '';
-					$notifyTxt.innerHTML = 'Pull down to refresh...';
+					$notifyTxt.innerHTML = PULL_REFRESH;
 					return;
 				};
 
@@ -402,9 +476,9 @@ sntRover.controller('RVHkSearchCtrl', [
 				}
 
 				if (diff > trigger - 30) {
-					$notifyTxt.innerHTML = 'Release to refresh...';
+					$notifyTxt.innerHTML = RELEASE_REFRESH;
 				} else {
-					$notifyTxt.innerHTML = 'Pull down to refresh...';
+					$notifyTxt.innerHTML = PULL_REFRESH;
 				}
 			};
 

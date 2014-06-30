@@ -21,7 +21,7 @@
 
 <div id="pull-refresh-notify">
   <span id="icon"></span>
-  <span id="ref-text">Pull down to refresh...</span>
+  <span id="ref-text" translate>PULL_REFRESH</span>
 </div>
 
 <!-- Rooms list -->
@@ -53,6 +53,49 @@
     </header>
     <div class="content scrollable" id="filter-options">
        <div class="wrapper" >
+
+          <!-- Floor Filters -Begin-->
+          <div class="holder">
+            <strong class="title" translate>HK_FLOORS</strong>
+            <div class="entry radio-check floors">
+              <label class="checkbox checked">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': currentFilters.showAllFloors}"></span>
+                <input name="room-allfloors" id="room-allfloors" value="room-allfloors" type="checkbox" ng-click="allFloorsClicked()">
+                <label translate>SHOW_ALL_FLOORS</label>
+              </label>
+              <div id="filter-floors" class="entry-data" ng-class="{'hidden': currentFilters.showAllFloors}">
+                <!-- For Single Floor Search -->
+                <div class="left">
+                  <span class="h4" translate>HK_SINGLE</span>
+                  <div class="select">
+                    <select name="floor-filter-single" id="floor-filter-single" class="placeholder" ng-model="currentFilters.floorFilterSingle" ng-change="validateFloorSelection('SINGLE_FLOOR')">
+                      <option value="" selected translate>FLOOR_#</option>
+                      <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterSingle"> {{floor.floor_number}}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Floor Search From -->
+                <div class="right">
+                  <span class="h4" translate>HK_MULTIPLE</span>
+                  <div class="select">
+                    <select name="floor-filter-start" id="floor-filter-start" class="placeholder" ng-model="currentFilters.floorFilterStart" ng-change="validateFloorSelection('FROM_FLOOR')">
+                      <option value="" selected translate>HK_FROM</option>
+                      <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterStart"> {{floor.floor_number}}</option>
+                    </select>
+                  </div>
+                  <!-- Floor Search To -->
+                  <div class="select">
+                    <select name="floor-filter-stop" id="floor-filter-stop" class="placeholder" ng-model='currentFilters.floorFilterEnd' ng-change="validateFloorSelection('TO_FLOOR')">
+                      <option value="" selected translate>HK_TO</option>
+                      <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterEnd"> {{floor.floor_number}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Floor Filters -END-->
+
           <div class="holder">
              <strong class="title" translate>HOUSEKEEPING_STATUS</strong>
              <div class="entry radio-check">
