@@ -104,12 +104,12 @@
 
 					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoles'}" 
 
-					style="overflow: visible !important;" data-type="target">
+					style="overflow-y: scroll !important;" data-type="target">
 
 						<li ng-repeat="role in assignedRoles" 
 						class="acceptable_roles"
 
-						data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
+						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone'}"
 						ng-model="assignedRoles" 
 
 						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
@@ -139,7 +139,7 @@
 					<label>Not Assigned Roles</label>
 					<ul data-placeholder="To remove a role for the user simply drop it here" 
 
-					class="boxes sortable short-list"  style="overflow: visible !important;" 
+					class="boxes sortable short-list"  style="overflow-y: scroll !important;" 
 					data-drop="true" ng-model='unAssignedRoles' 
 
 					data-jqyoui-options="{accept: '.acceptable_roles'}"
@@ -147,7 +147,7 @@
 					
 						<li ng-repeat="role in unAssignedRoles" 
 						class="acceptable_roles"
-						data-drag="true" data-jqyoui-options="{revert: 'invalid'}" 
+						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
 
 						ng-model="unAssignedRoles" 
 
