@@ -224,32 +224,54 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             //TODO : Once this works pull it to a separate method 
             var fetchGuestcardDataSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
-                // var contactInfoData = {
-                //     'contactInfo': data,
-                //     'countries': $scope.countries,
-                //     'userId': data.user_id,
-                //     'avatar': $scope.reservationListData.avatar,
-                //     'guestId': data.guest_id,
-                //     'vip': $scope.reservationListData.vip
-                // };
+
+                console.log("success");
+                var contactInfoData = {
+                    'contactInfo': data,
+                    'countries': $scope.countries,
+                    'userId': guestData.id,
+                    'avatar': guestData.image,
+                    'guestId': null,
+                    'vip': false //TODO: check with API or the product team
+                };
                 // // $scope.$emit('guestCardUpdateData', contactInfoData);
-                // $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
-                // $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
-                // $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
-                // $scope.countriesList = contactInfoData.countries;
-                // $scope.guestCardData.userId = contactInfoData.userId;
-                // $scope.guestCardData.guestId = contactInfoData.guestId;
-                // var guestInfo = {
-                //     "user_id": contactInfoData.user_id,
-                //     "guest_id": contactInfoData.guest_id
-                // };
-                // $scope.searchData.guestCard.guestFirstName = "";
-                // $scope.searchData.guestCard.guestLastName = "";
-                // $scope.searchData.guestCard.guestCity = "";
-                // $scope.searchData.guestCard.guestLoyaltyNumber = "";
-                // $scope.$broadcast('guestSearchStopped');
-                // $scope.$broadcast('guestCardAvailable');
+                $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+                $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
+                $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+                $scope.countriesList = contactInfoData.countries;
+                $scope.guestCardData.userId = contactInfoData.userId;
+                $scope.guestCardData.guestId = contactInfoData.guestId;
+                $scope.guestCardData.contactInfo.birthday = data.birthday;
+                var guestInfo = {
+                    "user_id": contactInfoData.user_id,
+                    "guest_id": null
+                };
+                $scope.searchData.guestCard.guestFirstName = "";
+                $scope.searchData.guestCard.guestLastName = "";
+                $scope.searchData.guestCard.guestCity = "";
+                $scope.searchData.guestCard.guestLoyaltyNumber = "";
+                $scope.$broadcast('guestSearchStopped');
+                $scope.$broadcast('guestCardAvailable');
                 // $scope.showGuestPaymentList(guestInfo);
+                $scope.decloneUnwantedKeysFromContactInfo = function() {
+
+                    var unwantedKeys = ["address", "birthday", "country",
+                        "is_opted_promotion_email", "job_title",
+                        "mobile", "passport_expiry",
+                        "passport_number", "postal_code",
+                        "reservation_id", "title", "user_id",
+                        "works_at", "birthday"
+                    ];
+                    var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+                    return declonedData;
+                };
+
+                /**
+                 *  init guestcard header data
+                 */
+                var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
+                var currentGuestCardHeaderData = declonedData;
+                $scope.current = 'guest-contact';
                 console.log(data);
             };
             var fetchGuestcardDataFailureCallback = function(data) {
@@ -261,6 +283,21 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             };
             $scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
         }
+
+        $scope.guestCardTabSwitch = function(tab) {
+            if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
+                $scope.$broadcast('saveContactInfo');
+            };
+            if ($scope.current === 'guest-like' && tab !== 'guest-like') {
+                $scope.$broadcast('SAVELIKES');
+
+            };
+            if (tab === 'guest-credit') {
+                $scope.$broadcast('PAYMENTSCROLL');
+            }
+            $scope.$broadcast('REFRESHLIKESSCROLL');
+            $scope.current = tab;
+        };
 
         $scope.selectGuest = function(guest, $event) {
             $event.stopPropagation();

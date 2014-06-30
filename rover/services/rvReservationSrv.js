@@ -1,5 +1,5 @@
-sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv',
-	function($http, $q, RVBaseWebSrv) {
+sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
+	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 		this.reservationData = {};
 		var that = this;
@@ -133,7 +133,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv',
 		this.getGuestDetails = function(guestData) {
 			var deferred = $q.defer();
 			var url = '/api/guest_details/' + guestData.id;
-			RVBaseWebSrv.getJSON(url).then(function(data) {
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);

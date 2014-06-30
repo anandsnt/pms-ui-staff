@@ -115,6 +115,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
+        $scope.guestCardData = {};
+
         $scope.reservationListData = {};
 
         $scope.reservationDetails = {
