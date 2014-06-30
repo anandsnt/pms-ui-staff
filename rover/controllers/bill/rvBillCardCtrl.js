@@ -549,7 +549,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$parent.myScroll['registration-content'].refresh();
 			$scope.$parent.myScroll['billDays'].refresh();
 			}, 
-		1100);
+		1800);
 		
 	};
 	// To enable scroll
