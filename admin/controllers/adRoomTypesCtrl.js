@@ -143,6 +143,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 	};
 	 	var errorCallbackImport = function(data){
 	 		$scope.$emit('hideLoader');
+	 		$scope.successMessage ="";
 	 		$scope.errorMessage = data;	
 	 	}
 
