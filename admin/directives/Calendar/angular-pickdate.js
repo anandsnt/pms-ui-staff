@@ -67,7 +67,6 @@
           scope.currentDate = currentDate;
 
           console.log( $locale );
-
           scope.render = function(initialDate) {
             initialDate = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1, 3);
 
@@ -89,22 +88,25 @@
 
             for (var i = 0; i < allDates.length; i++) {
               var className = "", date = allDates[i];
+              var disabled = true;
 
               if ( dateFilter(date, 'M') !== currentMonth.toString() ) {
                 className = 'pickadate-disabled pickadate-outofrange-disabled';
+
               } else if (date < scope.minDate || date > scope.maxDate) {
                 className = 'pickadate-disabled';
               } else if (indexOf.call(disabledDates, date) >= 0) {
                 className = 'pickadate-disabled pickadate-unavailable';
               } else {
                 className = 'pickadate-enabled';
+                disabled = false;
               }
 
               if (date === today) {
                 className += ' pickadate-today';
               }
 
-              dates.push({date: date, className: className});
+              dates.push({date: date, className: className,disabled: disabled});
             }
 
             scope.dates = dates;
