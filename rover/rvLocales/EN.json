@@ -333,5 +333,8 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+    "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
+    "ASSIGN_LABEL": "Assign Room",
+    "CANCEL_LABEL":"Cancel"
 }
