@@ -71,6 +71,7 @@
     }
 }
 
+#rv-housekeeping {
     .guest-status {
         background-image: @rvHkIcons;
         background-repeat: no-repeat;
@@ -87,9 +88,10 @@
             background-size: 120px;
         }
     }
+}
 
 /* Menu icons           ==================================*/
-    .icon-toggle,
+    .rvhk-icon-toggle,
     .icon-back {
         background-image: @rvHkIcons;
         background-repeat: no-repeat;
@@ -108,7 +110,7 @@
         }
     }
 
-    .icon-toggle {
+    .rvhk-icon-toggle {
         background-position: 10px 12px;
         &.active { background-position: 10px -28px;}
 
@@ -275,7 +277,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            .icon-toggle;
+            .rvhk-icon-toggle;
         }
 
         .clear-selection {
