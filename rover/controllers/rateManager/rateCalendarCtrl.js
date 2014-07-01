@@ -33,6 +33,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
         }
 	};
 
+	/**
+	* Click handler for expand button in room type calendar
+	*/
 	$scope.expandRow = function(index){
 		if($scope.currentExpandedRow == index){
 			$scope.currentExpandedRow = -1;
@@ -41,8 +44,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.currentExpandedRow = index;
 	}
 
-   /**
-    * Method to fetch calendar data
+   	/**
+    * Fetches the calendar data and update the scope variables 
     */
 	var loadTable = function(){
 		// If only one rate is selected in the filter section, the defult view is room type calendar 
@@ -179,10 +182,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		loadTable();
 	});  
 
+	/**
+	* Calendar mode set as rate type calendar
+	*/
 	$scope.$on("setCalendarModeRateType", function(){
 		$scope.calendarMode = "RATE_VIEW";
 		$scope.selectedRate = {};
-
 		loadTable();
 
 	});
@@ -227,6 +232,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
         });
    	};
 
+   	/**
+   	* Check if a date is past the current business date
+   	* @return true {boolean} if the date is history
+   	*/ 
    	$scope.isHistoryDate = function(date){
    		var currentDate = new Date(date);
    		var businessDate = new Date($rootScope.businessDate);
