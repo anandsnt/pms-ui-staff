@@ -97,6 +97,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 		 */
 		var successCallbackOfContactSaveData = function(data) {
 			$scope.$emit("hideLoader");
+			$scope.reservationDetails.companyCard.id = data.id;
 			$scope.contactInformation.id = data.id;
 			//taking a deep copy of copy of contact info. for handling save operation
 			//we are not associating with scope in order to avoid watch

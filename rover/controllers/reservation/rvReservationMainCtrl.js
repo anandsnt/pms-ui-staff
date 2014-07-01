@@ -134,6 +134,37 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         };
 
+        $scope.getEmptyAccountData = function() {
+            return {
+                "address_details": {
+                    "street1": null,
+                    "street2": null,
+                    "street3": null,
+                    "city": null,
+                    "state": null,
+                    "postal_code": null,
+                    "country_id": null,
+                    "email_address": null,
+                    "phone": null
+                },
+                "account_details": {
+                    "account_name": null,
+                    "company_logo": "",
+                    "account_number": null,
+                    "accounts_receivable_number": null,
+                    "billing_information": "Test"
+                },
+                "primary_contact_details": {
+                    "contact_first_name": null,
+                    "contact_last_name": null,
+                    "contact_job_title": null,
+                    "contact_phone": null,
+                    "contact_email": null
+                },
+                "future_reservation_count": 0
+            }
+        }
+
         //setting the main header of the screen
         $scope.heading = "Reservations";
 

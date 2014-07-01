@@ -387,7 +387,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         if (item.account_type === 'TRAVELAGENT') {
                             var travelAgentData = {};
                             travelAgentData.id = item.id;
-                            travelAgentData.firstName = item.account_name;
+                            travelAgentData.account_name = item.account_name;
                             // travelAgentData.lastName = item.account_last_name;
                             travelAgentData.logo = item.company_logo;
                             if (item.address != null) {
@@ -579,8 +579,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
         };
 
-
-
         $scope.checkOutsideClick = function(targetElement) {
             if ($(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1) {
                 // $scope.closeGuestCard();
@@ -615,6 +613,21 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.current = 'guest-contact';
         }
 
+        $scope.createNewCompany = function() {
+            console.log("New Company Card");
+            $scope.companyContactInformation = $scope.getEmptyAccountData();
+            $scope.reservationDetails.companyCard.id = "";
+            $scope.reservationDetails.companyCard.futureReservations = 0;
+            $scope.$broadcast('companyCardAvailable');
+        }
+
+        $scope.createNewTravelAgent = function() {
+            console.log("New Company Card");
+            $scope.travelAgentInformation = $scope.getEmptyAccountData();
+            $scope.reservationDetails.travelAgent.id = "";
+            $scope.reservationDetails.travelAgent.futureReservations = 0;
+            $scope.$broadcast('travelAgentFetchComplete');
+        }
 
         $scope.guestCardClick = function($event) {
             var element = $event.target;

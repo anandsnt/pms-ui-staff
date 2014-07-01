@@ -23,6 +23,7 @@
 
     <section ng-if="searchMode">
         <div id="search-company-content" class="search-cards scrollable">
+            <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">New Company</button>
             <!-- Company Card Results listing -->
             <div ng-controller="companyResults" class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll" ng-iscroll-delay='500'>
                 <ul id="search-company-results" class="search-results">

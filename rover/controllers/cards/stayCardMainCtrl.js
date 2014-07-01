@@ -98,6 +98,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
+				console.log(data);
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;

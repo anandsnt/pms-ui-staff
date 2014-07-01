@@ -186,5 +186,17 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.saveAccountContact = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/';
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 	}
 ]);
