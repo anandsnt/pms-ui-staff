@@ -362,7 +362,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.guestSearchIntiated = false;
 				$scope.searchedGuests = [];
 				$scope.$apply();
-				$scope.$broadcast('companySearchStopped');
+				$scope.$broadcast('guestSearchStopped');
 			}
 		}
 

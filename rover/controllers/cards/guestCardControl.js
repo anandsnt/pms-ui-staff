@@ -15,6 +15,7 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 		$scope.$on("guestSearchStopped", function() {
 			$scope.guestSearchIntiated = false;
 			$scope.guests = [];
+			$scope.$broadcast("refreshCompaniesScroll");
 		})
 
 		$scope.$on("guestCardDetached", function() {
@@ -27,6 +28,33 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 				$scope.$emit('hideLoader');
 			}, 1000);
 		});
+
+		$scope.createNewGuest = function() {
+			console.log('to add New Card');
+			// create an empty dataModel for the guest
+			var contactInfoData = {
+				'contactInfo': "",
+				'countries': "",
+				'userId': "",
+				'avatar': "",
+				'guestId': "",
+				'vip': "" //TODO: check with API or the product team
+			};
+			// // $scope.$emit('guestCardUpdateData', contactInfoData);
+			$scope.guestCardData.contactInfo = "";
+			$scope.guestCardData.contactInfo.avatar = "";
+			$scope.guestCardData.contactInfo.vip = "";
+			$scope.countriesList = "";
+			$scope.guestCardData.userId = "";
+			$scope.guestCardData.guestId = "";
+			$scope.guestCardData.contactInfo.birthday = null;
+			var guestInfo = {
+				"user_id": "",
+				"guest_id": ""
+			};
+			$scope.$broadcast('guestSearchStopped');
+			$scope.$broadcast('guestCardAvailable');
+		}
 	}
 ]);
 

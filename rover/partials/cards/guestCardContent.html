@@ -1,4 +1,4 @@
-<div id="guest-card-content" class="card-tabs card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-controller="RVGuestCardCtrl" ng-class="UICardContentCls('guest-card')">
+<div id="guest-card-content" class="card-tabs card-search card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-controller="RVGuestCardCtrl" ng-class="UICardContentCls('guest-card')">
     <section ng-if="!searchMode">
         <button id="company-new-contract" type="button" class="button green pull-right" ng-click="detachCard('guest')" translate="">Detach Card</button>
         <!-- Guest Card tabs navigation -->
@@ -26,63 +26,63 @@
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
     </section>
-     <section ng-if="searchMode">
+    <section ng-if="searchMode">
         <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
-                <!-- <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button> -->
-                <div id="search-guests-content" class="search-cards scrollable">
-                    <!-- Guest Card Results listing -->
-                    <div class="wrapper" ng-controller="guestResults" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
-                        <ul id="search-guests-results" class="search-results">
-                            <li ng-repeat="guest in guests">
-                                <a ng-click="selectGuest(guest, $event)">
-                                    <figure class="guest-image">
-                                        <img src="{{ guest.image }}" alt="" />
-                                    </figure>
-                                    <div class="data">
-                                        <h2>
-                                            <span class="no-right-margin" ng-bind-html="'{{ guest.firstName }}'|highlight:guestFirstName:false">
-                                            </span>,
-                                            <span ng-bind-html="' {{ guest.lastName }}'|highlight:guestLastName:false">
-                                            </span>
-                                        </h2>
-                                        <span class="confirmation">{{ guest.address.postalCode}}</span>
-                                        <span class="icons icon-location">
-                                            <span class="no-right-margin" ng-bind-html="'{{guest.address.city}}'|highlight:guestCity:false"></span>
-                                            <span class="no-right-margin comma" ng-hide="guest.address.city == null">, </span>
-                                            <span class="no-right-margin">{{ guest.address.state }}</span>
-                                        </span>
-                                        <span class="icons icon-phone">{{ guest.phone }}</span>
-                                    </div>
-                                    <div class="stays">
-                                        <div class="count">
-                                            <span class="label">Stays</span>{{ guest.stayCount }}
-                                        </div>
-                                        <div class="last-stay">
-                                            <span class="label">Last</span>
-                                            {{ guest.lastStay.date | date: 'MMMM d, yyyy'}}
-                                            <strong>{{ guest.lastStay.room }}</strong>
-                                            <em>{{ guest.lastStay.roomType }}</em>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                
-                    <div class="search-cards no-content">
-                        <!-- Guest Card No Results -->
-                        <div class="info" ng-show="guestSearchIntiated && guests.length === 0">
-                            <span class="icon-no-content icon-guest"></span>
-                            <strong class="h1">No Matches</strong>
-                            <span class="h2">Check that you didn't mispell the <strong>Name</strong>, <strong>City</strong> or <strong>Loyalty No.</strong>.</span>
-                        </div>
-                        <!-- Guest Card Empty -->
-                        <div class="info" ng-hide='guestSearchIntiated'>
-                            <span class="icon-no-content icon-guest"></span>
-                            <strong class="h1">Find Guest</strong>
-                            <span class="h2">Search by <strong>Name</strong>, <strong>Group</strong>, <strong>Room No.</strong> or <strong>Confirmation No.</strong></span>
-                        </div>
-                    </div>
+        <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
+        <div id="search-guests-content" class="search-cards scrollable">
+            <!-- Guest Card Results listing -->
+            <div class="wrapper" ng-controller="guestResults" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
+                <ul id="search-guests-results" class="search-results">
+                    <li ng-repeat="guest in guests">
+                        <a ng-click="selectGuest(guest, $event)">
+                            <figure class="guest-image">
+                                <img src="{{ guest.image }}" alt="" />
+                            </figure>
+                            <div class="data">
+                                <h2>
+                                    <span class="no-right-margin" ng-bind-html="'{{ guest.firstName }}'|highlight:guestFirstName:false">
+                                    </span>,
+                                    <span ng-bind-html="' {{ guest.lastName }}'|highlight:guestLastName:false">
+                                    </span>
+                                </h2>
+                                <span class="confirmation">{{ guest.address.postalCode}}</span>
+                                <span class="icons icon-location">
+                                    <span class="no-right-margin" ng-bind-html="'{{guest.address.city}}'|highlight:guestCity:false"></span>
+                                    <span class="no-right-margin comma" ng-hide="guest.address.city == null">, </span>
+                                    <span class="no-right-margin">{{ guest.address.state }}</span>
+                                </span>
+                                <span class="icons icon-phone">{{ guest.phone }}</span>
+                            </div>
+                            <div class="stays">
+                                <div class="count">
+                                    <span class="label">Stays</span>{{ guest.stayCount }}
+                                </div>
+                                <div class="last-stay">
+                                    <span class="label">Last</span>
+                                    {{ guest.lastStay.date | date: 'MMMM d, yyyy'}}
+                                    <strong>{{ guest.lastStay.room }}</strong>
+                                    <em>{{ guest.lastStay.roomType }}</em>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="search-cards no-content">
+                <!-- Guest Card No Results -->
+                <div class="info" ng-show="guestSearchIntiated && guests.length === 0">
+                    <span class="icon-no-content icon-guest"></span>
+                    <strong class="h1">No Matches</strong>
+                    <span class="h2">Check that you didn't mispell the <strong>Name</strong>, <strong>City</strong> or <strong>Loyalty No.</strong>.</span>
                 </div>
-     </section>
+                <!-- Guest Card Empty -->
+                <div class="info" ng-hide='guestSearchIntiated'>
+                    <span class="icon-no-content icon-guest"></span>
+                    <strong class="h1">Find Guest</strong>
+                    <span class="h2">Search by <strong>Name</strong>, <strong>Group</strong>, <strong>Room No.</strong> or <strong>Confirmation No.</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
