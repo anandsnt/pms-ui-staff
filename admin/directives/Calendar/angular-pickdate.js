@@ -49,7 +49,8 @@
           minDate: '=',
           maxDate: '=',
           disabledDates: '=',
-          isDateSelected: '='
+          isDateSelected: '=',
+          closePopupOnSelection:'='
         },
         templateUrl:'../../../assets/directives/calendar.html' ,
         
@@ -124,6 +125,7 @@
            
             if(dateObj.className != "pickadate-disabled"){
               scope.isDateSelected = true;
+              scope.closePopupOnSelection = true;
               scope.setDate(dateObj);
             }
           };
