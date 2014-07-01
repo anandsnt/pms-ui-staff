@@ -17,6 +17,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			
 			var fetchSuccess = function(data){
 				$scope.data = data.data;
+				$scope.data.brands = [];
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 					$scope.data.check_in_primetime ="AM";
@@ -140,10 +141,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			}
 		}
 	};
-	
+	/**
+    *   To handle change in hotel chain and populate brands accordingly.
+    */
 	$scope.$watch('data.hotel_chain', function() {
 		$scope.data.brands = [];
-            angular.forEach($scope.data.chains, function(item, index) {
+        angular.forEach($scope.data.chains, function(item, index) {
                 if (item.id == $scope.data.hotel_chain) {
                 	$scope.data.brands = item.brands;
                 }
