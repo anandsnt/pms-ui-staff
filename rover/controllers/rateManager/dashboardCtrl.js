@@ -86,6 +86,9 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         $scope.$broadcast("showRatesClicked");
         
     };
+    /**
+    * Click handler for back button from room type calendar view
+    */
     $scope.backButtonClicked = function(){
         $scope.backbuttonEnabled = false;
         $scope.displayMode = "CALENDAR";
