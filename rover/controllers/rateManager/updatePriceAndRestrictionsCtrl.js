@@ -14,6 +14,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             computePopUpdataForRateViewCal();
             fetchPriceDetailsForRate();
         }
+
+        $scope.updatePopupWidth();
+
     };
 
     $scope.$parent.myScrollOptions = {
@@ -109,7 +112,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     * Compute the data structure for the popup display using the 'calendarData' info 
     */
     var computePopupdataForRoomTypeCal = function(){
-
         $scope.data = {};
         $scope.data.id = '';
         $scope.data.name = '';
@@ -339,7 +341,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         if($scope.showExpandedView) {
             width = width + 270;
         }
-        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView) {
+        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView && $scope.data.hasAmountConfigured) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {
