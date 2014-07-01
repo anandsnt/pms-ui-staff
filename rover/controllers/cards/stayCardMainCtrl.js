@@ -97,6 +97,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
 				$scope.$emit("hideLoader");
+				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
 				$scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
@@ -116,6 +117,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		$scope.initTravelAgentCard = function() {
 			var successCallbackOfInitialFetch = function(data) {
 				$scope.$emit("hideLoader");
+				data.id = $scope.reservationDetails.travelAgent.id;
 				$scope.travelAgentInformation = data;
 				$scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('travelAgentFetchComplete');
