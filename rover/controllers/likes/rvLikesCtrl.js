@@ -14,16 +14,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	    }
 	};
 	$scope.calculatedHeight = 254; //height of Preferences + News paper + Room type + error message div
-// =======
-	 // $scope.$parent.myScrollOptions = {		
-		    // 'likes_info': {
-		    	// scrollbars: true,
-		        // snap: false,
-		        // hideScrollbar: false,
-		        // preventDefault: false
-		    // }
-		// };
-// >>>>>>> 4b7a11d578699106034587b59dc32655384b871e
+
 	$scope.init = function(){
 		BaseCtrl.call(this, $scope);
 	    var fetchLikesFailureCallback = function(data){
@@ -76,16 +67,11 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
         $scope.guestCardData.likes = $scope.guestLikesData;
        
 	
-// <<<<<<< HEAD
+
 		setTimeout(function(){			
 			$scope.refreshScroller();
 		});
-// =======
-		// setTimeout(function(){
-			// $scope.myScroll['likes_info'].refresh();
-// >>>>>>> 4b7a11d578699106034587b59dc32655384b871e
-			// }, 
-		// 1000);
+
 
     };
 
@@ -199,6 +185,12 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 			showDiv = false;
 		return showDiv;
 	
+	};
+	
+	$scope.getHalfArrayPref = function(ar){
+		//TODO: Cross check math.ceil for all browsers
+		var out = new Array(Math.ceil(ar.length/2));
+		return out;	
 	};
 	
 }]);
