@@ -30,7 +30,7 @@
 			</div>
 			<div id="items-listing" class="scrollable">
 				<ul id="search-item-results" class="wrapper">
-					<li id="items-list" ng-repeat="each in fetchedItem" ng-if="each.show" ng-click="addItem()">
+					<li id="items-list" ng-repeat="each in fetchedItems" ng-if="each.show" ng-click="addItem(each)">
 						<a class="button white">
 							<span ng-bind-html="'{{ each.item_name }}' | highlight:query:false"></span>
 							<span class="price">
@@ -47,36 +47,39 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 			<span class="h2 message">
-				<span translate>POST_CHARGE_TO_BILL</span> #
-				<div id="select-bill-number" class="select">
+				<span translate>POST_CHARGE_TO_BILL</span> #<span ng-show="passActiveBillNo">{{ passActiveBillNo }}</span>
+				<div id="select-bill-number" class="select" ng-hide="passActiveBillNo">
 					<select ng-model="billNumber">
 					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 					        {{ no }}
 					    </opzion>
 					</select>
 				</div> </span>
-			<div id="no-items-added" class="no-content" ng-hide="chargedItems.length">
+			<div id="no-items-added" class="no-content" ng-hide="isAnyChosen()">
 				<div class="info">
 					<strong class="h1" translate>0_ITEM_SELECTED</strong>
 				</div>
 			</div>
-			<div id="items-added" ng-show="chargedItems.length">
+			<div id="items-added" ng-show="isAnyChosen()">
 				<div id="items-summary" class="scrollable">
+					
 					<ul class="wrapper">
-						<li ng-repeat="each in chargedItems" ng-class="{'selected': each.item_name === chosenChargedItem.item_name}" ng-click="selectUnselect()">
+						<li ng-repeat="each in fetchedItems" ng-show="each.isChosen" ng-class="{'selected': each.item_name === selectedChargeItem.item_name}" ng-click="selectUnselect(each)">
 							{{ each.item_name }}
-							<span class="count" ng-if="each.count > 1">({{ each.count }})</span>
-							<span class="base">at {{ currencySymbol }}{{ each.unit_price | number : 2 }} / unit</span>
+							<span count ng-show="each.count > 1">({{ each.count }})</span>
+							<span class="base">at {{ currencySymbol }}{{ each.modifiedPrice | number : 2 }} / unit</span>
 							<span class="price">
-								{{ currencySymbol }}<span class="value">{{ each.total_price | number : 2 }}</span>
+								{{ currencySymbol }}
+								<span class="value">{{ each.total_price | number : 2 }}</span>
 							</span>
 						</li>
 					</ul>
+
 				</div>
 				<p id="total-charge" class="offset-2">
 					Total <span class="price">{{ currencySymbol }} <span class="value">{{ net_total_price | number : 2 }}</span></span>
 				</p>
-				<div id="numpad" ng-show="!!chosenChargedItem">
+				<div id="numpad" ng-show="selectedChargeItem.item_name">
 					<div id="numpad-numbers">
 						<button value="1" type="button" class="button white" ng-click="calNumAction(1)">
 							1
