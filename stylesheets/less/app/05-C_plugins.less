@@ -590,7 +590,10 @@
 									line-height: 20px;
 									font-weight: 600;
 									.show;
-									.square(20px);
+									// no width and padding will allow
+									// design to show counts more than 99
+									height: 20px;
+									padding: 0 7px;
 									#border-radius > .rounded(20px);
 								}
 

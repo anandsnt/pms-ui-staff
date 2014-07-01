@@ -1,7 +1,7 @@
 <nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen, 'invisible' : !menuOpen}">
 
 	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu
-		<span></span>
+		<span  ng-class="{'active': menuOpen}"></span>
 	</a>
 	<!-- For Hotel Admin -->
 	<ul ng-show ="isHotelAdmin">
