@@ -92,9 +92,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
 															$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
 			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-			data.guest_detail.payment_type.session_id = MLISessionId;
-		}
 		
+		}
+		if($scope.reservationData.paymentType.type.name === "CC"){
+			data.guest_detail.payment_type.session_id = MLISessionId;
+		}	
 														
 		data.company_id = $scope.reservationData.company.id;
 		data.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -173,9 +175,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	*/
 	$scope.submitReservation = function(){
 
-
-		if($scope.reservationData.paymentType.type.name === "CC"){
-			$scope.fetchMLISession();
+		
+	   if($scope.reservationData.paymentType.type.name === "CC"){
+		
+			if($scope.reservationData.paymentType.ccDetails.number.length ===0){
+				$scope.errorMessage = ["There is a problem with your credit card"];
+			}else{
+				$scope.fetchMLISession();
+			}			
 		}
 		else{
 			$scope.proceedCreatingReservation();
