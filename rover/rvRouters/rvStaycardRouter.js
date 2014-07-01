@@ -92,10 +92,4 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
             templateUrl : "/assets/partials/bill_details.html",
             controller  : 'billDetailsController'
         });
-        
-        $stateProvider.state('rover.staycard.nights', {
-            url: '/nights',
-            templateUrl: '/assets/partials/nights/rvNights.html',
-            controller: 'RVnightsController'
-        });
 });

@@ -28,24 +28,29 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
         
       };
 
-    this.initialise = function(){
+    this.dataAssign = function(){
+        //Data from Resolve method
+        $scope.stayDetails = stayDateDetails;
 
-    	$scope.stayDetails = stayDateDetails;
-    	$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
-    	$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
-      $scope.rightSideReservationUpdates = '';
-      $scope.roomSelected = $scope.stayDetails.details.room_number;
-      $scope.calendarNightDiff = '';
-      $scope.avgRate = '';
-      $scope.availableRooms = [];
+        //For future comparison / reset
+        $scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
+        $scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
 
+        //Data for rightside Pane.
+        $scope.rightSideReservationUpdates = '';
+        $scope.roomSelected = $scope.stayDetails.details.room_number;
+        $scope.calendarNightDiff = '';
+        $scope.avgRate = '';
+        $scope.availableRooms = [];
+
+
+    };
+
+    this.renderFullCalendar = function(){ 
       /* event source that contains custom events on the scope */
-      $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+      $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);      
 
-      $scope.eventSources = [$scope.events];
-      console.log(JSON.stringify($scope.checkinDateInCalender));
-      console.log(JSON.stringify($scope.checkoutDateInCalender));
-     
+      $scope.eventSources = [$scope.events];      
       //calender options used by full calender, related settings are done here
       $scope.fullCalendarOptions =  {
            height: 450,
@@ -64,7 +69,11 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
           weekMode : 'fixed',
           ignoreTimezone : false, // For ignoring timezone,
           eventDrop: $scope.changedDateOnCalendar,
-      };                
+      };     
+    }
+    this.initialise = function(){
+      that.dataAssign();
+      that.renderFullCalendar();               
     };
 
 
@@ -178,7 +187,13 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
     };
 
     $scope.resetDates = function(){
-        that.initialise();
+      that.dataAssign();
+    /* event source that contains custom events on the scope */
+      $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);      
+
+      $scope.eventSources.length = 0;
+      $scope.eventSources.push($scope.events);
+      
     }
 
     $scope.goBack = function(){
@@ -247,12 +262,13 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
       // we are re-assinging our new checkin/checkout date for calendar
       $scope.checkinDateInCalender = finalCheckin;
       $scope.checkoutDateInCalender = finalCheckout;
-      console.log(JSON.stringify($scope.checkinDateInCalender));
-      console.log(JSON.stringify($scope.checkoutDateInCalender));
 
       //$scope.myCalendar.fullCalendar.rerenderEvents();
       //changing the data for fullcalendar      
       $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+      $scope.eventSources.length = 0;
+      $scope.eventSources.push($scope.events);
+
       // checking if stay range is restricted between that days, if so we will not call webservice for availabilty
       if(that.isStayRangeRestricted($scope.checkinDateInCalender, $scope.checkoutDateInCalender )){
           that.showRestrictedStayRange();
@@ -288,7 +304,7 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
         if(thisTime < checkinTime || thisTime >= checkoutTime){
             return true;
         }
-        totalNights ++;
+        totalNights++;
     });
     if(totalNights < minNumOfStay){
         return true;  
@@ -367,7 +383,6 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
 
           events.push(calEvt);
       });
-      console.log(JSON.stringify(events));
       return events;
   };  
 
