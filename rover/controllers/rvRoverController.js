@@ -6,7 +6,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     else{
       $translate.use('EN');
     };
-    
+    $scope.hotelDetails = hotelDetails;
     // this is make sure we add an
     // additional class 'return-back' as a
     // parent to ui-view, so as to apply a
