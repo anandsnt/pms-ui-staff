@@ -8,4 +8,5 @@ sntRover.controller('companyCardDetailsContactCtrl',['$scope', 'RVCompanyCardSrv
 	    }
 	};
 	
+
 }]);

@@ -1,5 +1,11 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
+     if (hotelDetails.language){
+      $translate.use(hotelDetails.language.value);
+    }
+    else{
+      $translate.use('EN');
+    };
     
     // this is make sure we add an
     // additional class 'return-back' as a
@@ -49,15 +55,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       /*
      * hotel Details 
      */
-    
+
+    $rootScope.isLateCheckoutTurnedOn= hotelDetails.late_checkout_settings.is_late_checkout_on;    
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+
+    $rootScope.MLImerchantId= hotelDetails.mli_merchant_id;
+
     if (hotelDetails.language){
       $translate.use(hotelDetails.language.value);
     }
     else{
       $translate.use('EN');
     };
+
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null){
        $scope.isStandAlone = true;
@@ -321,10 +332,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       });
     };
     /*
-     *
+     * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
       $scope.$broadcast('GUESTPAYMENT', paymentData);
+    });
+    
+    $scope.$on('SHOWGUESTLIKES', function(event) {
+         $scope.$broadcast('SHOWGUESTLIKESINFO');
     });
     /*
      * Tp close dialog box

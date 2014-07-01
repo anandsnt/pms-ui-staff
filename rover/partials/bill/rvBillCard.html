@@ -11,7 +11,7 @@
 			</div>
 			<!-- Other header details -->
 			<div class="data">
-				<span class="room"> 
+				<span class="room" ng-show="reservationBillData.room_number != ''"> 
 					<span class="guest-status room" translate>ROOM</span>
 					<strong id="header-room-num" class="room-number" ng-class="getRoomClass(reservationBillData.reservation_status, reservationBillData.room_status, reservationBillData.fo_status)"> {{reservationBillData.room_number}} </strong> 
 					<span id="room-type"> {{reservationBillData.room_type_name}} </span> 
@@ -135,7 +135,7 @@
 									</li>
 
 									<!-- packages -->
-									<li class="active package last" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+									<li class="active package" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
 										<a class="toggle dual-toggle" ng-class="{'active': $index == showAddonIndex}"> 
 											<span class="day"> {{addons.title}} </span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 

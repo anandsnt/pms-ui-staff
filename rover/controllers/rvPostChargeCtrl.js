@@ -1,12 +1,3 @@
-
-// Array Remove - By John Resig (MIT Licensed)
-// array remove via splice is very very costly
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
-
 sntRover.controller('RVPostChargeController',
 	[
 		'$rootScope',
@@ -204,7 +195,10 @@ sntRover.controller('RVPostChargeController',
 					};
 				};
 
-				chargedItemsCopy.remove( removeIndex );
+				// chargedItemsCopy.remove( removeIndex );
+
+				chargedItemsCopy.splice( removeIndex, 1 );
+
 				$scope.chargedItems = chargedItemsCopy;
 
 				// remove the reference

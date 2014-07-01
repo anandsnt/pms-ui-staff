@@ -1,8 +1,10 @@
-sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', function($scope,$window,dateFilter){
+sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter',  function($scope,$window,dateFilter, $filter){
     
     BaseCtrl.call(this, $scope);
 
-
+    var title = $filter('translate')('RATE_MANAGER_TITLE');
+	$scope.setTitle(title);
+	
     $scope.$emit("updateRoverLeftMenu","rateManager");
 
     $scope.displayMode = "CALENDAR";
@@ -15,18 +17,19 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     
 
 	$scope.currentFilterData =	{
-           filterConfigured: false,
-           begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
-           end_date : "",//dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
-           zoom_level : [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
-           zoom_level_selected : "3",
-           is_checked_all_rates : true,
-           rate_types: [],
-           rate_type_selected_list : [],
-           rates : [],
-           rates_selected_list : [],
-           name_cards : [],
-           selected_date_range : "Select Date Range"
+            filterConfigured: false,
+            begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
+            end_date : "",//dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
+            zoom_level : [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
+            zoom_level_selected : "3",
+            is_checked_all_rates : true,
+            rate_types: [],
+            rate_type_selected_list : [],
+            rates : [],
+            rates_selected_list : [],
+            name_cards : [],
+            selected_date_range : "Select Date Range",
+            allRates: []
    	};
 
     /* UI options like column width are computed here 
