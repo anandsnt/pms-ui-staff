@@ -167,24 +167,22 @@
                         </select>
                     </div>
                 </div>
-
-                <div data-type="credit-card-fields" class="entry margin" ng-show= "reservationData.paymentType.type.name == 'CC'">
+                <div data-type="credit-card-fields" class="entry margin" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="card-number-set1" translate>CREDIT_CARD</label>
                     <input name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number"/>
                 </div>
-                <div data-type="credit-card-fields" class="entry" ng-show= "reservationData.paymentType.type.name == 'CC'">
-                <div class="reservation-card-cvv-container">
-                    <label for="cvv"><span translate>CVV</span></label>
-                    <input name="cvv" placeholder="cvv" maxlength="5" size="5" type="text" ng-model="reservationData.paymentType.ccDetails.cvv"/>
+                <div data-type="credit-card-fields" class="entry" ng-show= "reservationData.paymentType.type.value == 'CC'">
+                    <div class="reservation-card-cvv-container">
+                        <label for="cvv"><span translate>CVV</span></label>
+                        <input name="cvv" placeholder="cvv" maxlength="5" size="5" type="text" ng-model="reservationData.paymentType.ccDetails.cvv"/>
+                    </div>
+                    <div class="reservation-card-expiry-date-container">
+                        <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
+                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"/>
+                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"/>
+                    </div>
                 </div>
-                <div class="reservation-card-expiry-date-container">
-
-                    <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
-                    <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"/>
-                    <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"/>
-                </div>
-                </div>
-                <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.name == 'CC'">
+                <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>

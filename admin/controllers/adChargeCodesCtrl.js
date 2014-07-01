@@ -1,10 +1,11 @@
-admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParams', '$filter', function($scope, ADChargeCodesSrv, ngTableParams, $filter){
+admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParams', '$filter','$timeout', function($scope, ADChargeCodesSrv, ngTableParams, $filter,$timeout){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
 	$scope.isAdd = false;
 	$scope.isEdit = false;
+	$scope.successMessage = "";
 	
 	/*
     * To fetch charge code list
@@ -137,9 +138,15 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  	/*
     * To handle import from PMS button click.
     */
- 	$scope.importFromPmsClicked = function(){
+ 	$scope.importFromPmsClicked = function(event){
+ 		event.stopPropagation();		
+		$scope.successMessage = "Collecting charge codes data from PMS and adding to Rover...";
  		var importSuccessCallback = function() {
 			$scope.$emit('hideLoader');
+			$scope.successMessage = "Completed!";
+	 		$timeout(function() {
+		        $scope.successMessage = "";
+		    }, 1000);
 			$scope.fetchChargeCodes();
 		};
 		$scope.invokeApi(ADChargeCodesSrv.importData, {}, importSuccessCallback);
