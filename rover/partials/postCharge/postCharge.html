@@ -47,8 +47,8 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 			<span class="h2 message">
-				<span translate>POST_CHARGE_TO_BILL</span> #
-				<div id="select-bill-number" class="select">
+				<span translate>POST_CHARGE_TO_BILL</span> #<span ng-show="passActiveBillNo">{{ passActiveBillNo }}</span>
+				<div id="select-bill-number" class="select" ng-hide="passActiveBillNo">
 					<select ng-model="billNumber">
 					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 					        {{ no }}

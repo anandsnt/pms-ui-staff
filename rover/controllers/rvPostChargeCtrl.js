@@ -400,7 +400,7 @@ sntRover.controller('RVPostChargeController',
 				var data = {
 					reservation_id: $scope.reservation_id,
 					fetch_total_balance: $scope.fetchTotalBal,
-					bill_no: $scope.billNumber,
+					bill_no: $scope.passActiveBillNo || $scope.billNumber,
 					total: $scope.net_total_price,
 					items: items
 				};
