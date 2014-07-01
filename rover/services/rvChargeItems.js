@@ -52,6 +52,15 @@ sntRover.service('RVChargeItems',
 
 							// parse string to boolean
 							item.is_favorite = item.is_favorite === 'true' ? true : false;
+
+							// to show the item as chosen charge item
+							item.isChosen = false;
+
+							// to show the modified price by user
+							item.modifiedPrice = item.unit_price;
+
+							// to keep track of price entered by user
+							item.userEnteredPrice = '';
 						};
 
 						for (var i = 0, j = data.charge_groups.length; i < j; i++) {

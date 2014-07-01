@@ -27,7 +27,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
       // FUTURE: this check can include other state name also,
       // from which while returning we expect a reverse slide
-      if ( fromState.name === 'rover.staycard.billcard' ) {
+      if ( fromState.name === 'rover.staycard.billcard' || fromState.name === 'rover.staycard.billcard' ) {
         $rootScope.returnBack = true;
       } else {
         $rootScope.returnBack = false;
@@ -255,10 +255,23 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     /*
      * toggle action of drawer
      */
-    $scope.$on("navToggled", function() {
+    $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
       $scope.showSubMenu = false;
-    });
+    };
+    //
+    // DEPRICATED!
+    // since custom event emit and listning is breaking the
+    // ng-animation associated with ui-view change
+    //
+    // REASON: There is a limited amount of time b/w the two $scopes dies and come into existance
+    // '$emit' and '$on' somehow get more priority, by the time they are execured, $scopes have shifted
+    // thus cancelling out animation, feels like animations are never considered 
+    //
+    // $scope.$on("navToggled", function() {
+    //   $scope.menuOpen = !$scope.menuOpen;
+    //   $scope.showSubMenu = false;
+    // });
 
     //when state change start happens, we need to show the activity activator to prevent further clicking
     //this will happen when prefetch the data
@@ -271,7 +284,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
       }
-
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {

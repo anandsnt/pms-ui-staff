@@ -380,7 +380,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.addPredefinedFilters();
 	$scope.setSelectedFiltersList();
 	$scope.rooms = roomsList.rooms;
-	$scope.reservation_occupancy = roomsList.reservation_max_occupancy;
+	$scope.reservation_occupancy = roomsList.reservation_occupancy;
 	$scope.setRoomsListWithPredefinedFilters();
 	$scope.applyFilterToRooms();
 	$scope.clickedButton = $stateParams.clickedButton;
