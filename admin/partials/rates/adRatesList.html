@@ -5,7 +5,7 @@
 			<span class="count"> ({{totalCount}}) </span>
 			<a class="action add" ui-sref="admin.addRate" ng-hide="isConnectedToPMS">Add new</a>
 
-			<a class="action import" ng-click="importFromPms()" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
+			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 
 			<div class="filters">
 				<div class="filter select">
@@ -21,6 +21,7 @@
 			</div>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 		
 		
 		<span class="count-show">Show</span>

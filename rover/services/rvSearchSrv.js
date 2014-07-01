@@ -10,7 +10,6 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv)
 			for(var i = 0; i < data.length; i++){
 				data[i].is_row_visible = true;
 			}
-
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

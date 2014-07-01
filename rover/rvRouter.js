@@ -3,10 +3,11 @@ sntRover.config([
     '$urlRouterProvider',
     '$translateProvider',
     function($stateProvider, $urlRouterProvider, $translateProvider) {
-        
+        var currentTime = new Date();
+        //var avoidCacheTime = currentTime.getUTCSeconds();
         $translateProvider.useStaticFilesLoader({
           prefix: '/assets/rvLocales/',
-          suffix: '.json'
+          suffix: '.json?time='+currentTime
         });
         // default state
         $urlRouterProvider.otherwise('/');

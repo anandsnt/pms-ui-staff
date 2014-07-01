@@ -1,7 +1,8 @@
-admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter',
-	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter){
+admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout',
+	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter,$timeout){
 
 	$scope.errorMessage = '';
+	$scope.successMessage = "";
 	$scope.popoverRates = "";
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
@@ -59,9 +60,18 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	/**
 	* To import the PMS rates
 	*/
-	$scope.importFromPms = function(){
+	$scope.importFromPms = function(event){
+
+		event.stopPropagation();
+		
+		$scope.successMessage = "Collecting rates data from PMS and adding to Rover...";
+		
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
+			$scope.successMessage = "Completed!";
+	 		$timeout(function() {
+		        $scope.successMessage = "";
+		    }, 1000);
 		};
 		$scope.invokeApi(ADRatesSrv.importRates, {}, fetchSuccessOfItemList);
 	}
