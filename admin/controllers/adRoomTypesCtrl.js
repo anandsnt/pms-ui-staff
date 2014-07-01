@@ -1,8 +1,10 @@
-admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter',  function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter){
+admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$timeout', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter,$timeout){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	$scope.roomTypeData = {};	
+	$scope.roomTypeData = {};
+	$scope.successMessage = "";
+	$scope.errorMessage ="";	
 
    /*
     * To fetch list of room types
@@ -125,12 +127,27 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * To import form pms
     * 
     */		
-	$scope.importFromPms = function(){
+	$scope.importFromPms = function(event){
+		event.stopPropagation();
+		
+		$scope.successMessage = "Collecting rooms data from PMS and adding to Rover...";
+		
 		var successCallbackImport = function(data){	
 	 		$scope.$emit('hideLoader');
 	 		$scope.listRoomTypes();
+	 		$scope.successMessage = "Completed!";
+	 		$timeout(function() {
+		        $scope.successMessage = "";
+		    }, 1000);
 	 		// $scope.data.departments.splice(index, 1);
 	 	};
+	 	var errorCallbackImport = function(data){
+	 		$scope.$emit('hideLoader');
+	 		$scope.successMessage ="";
+	 		$scope.errorMessage = data;	
+	 	}
+
+	 	
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
 

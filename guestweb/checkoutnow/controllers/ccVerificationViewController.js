@@ -127,37 +127,31 @@
     }
 
     $scope.goToNextStep = function(){
-          if( ($scope.cardNumber.length === 0) || 
-          ($scope.ccv.length === 0) || 
-          ($scope.monthSelected === null) ||
-          ($scope.yearSelected === null)){
-              $modal.open($scope.errorOpts); // details modal popup
-          }
-          else{
-              $scope.isFetching = true;
-              var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
-              var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId,'card_expiry':cardExpiryDate};
-              ccVerificationService.verifyCC(data).then(function(response) {
-              $scope.isFetching = false;
-              if(response.status ==="success"){
-                  $rootScope.isCCOnFile = true;
-                  if($stateParams.isFromCheckoutNow === "true"){
-                    $rootScope.ccPaymentSuccessForCheckoutNow = true;
-                    $state.go('checkOutStatus');
-                  }else{
-                     $rootScope.ccPaymentSuccessForCheckoutLater = true;
-                     $state.go('checkOutLaterSuccess',{id:$scope.fee});
-                  }
-              }
-              else{
-               $scope.netWorkError = true;
-              };        
-          
-            },function(){
-              $scope.netWorkError = true;
-              $scope.isFetching = false;
-            });
-          }
+        
+        $scope.isFetching = true;
+        var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
+        var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId,'card_expiry':cardExpiryDate};
+        ccVerificationService.verifyCC(data).then(function(response) {
+        $scope.isFetching = false;
+        if(response.status ==="success"){
+            $rootScope.isCCOnFile = true;
+            if($stateParams.isFromCheckoutNow === "true"){
+              $rootScope.ccPaymentSuccessForCheckoutNow = true;
+              $state.go('checkOutStatus');
+            }else{
+               $rootScope.ccPaymentSuccessForCheckoutLater = true;
+               $state.go('checkOutLaterSuccess',{id:$scope.fee});
+            }
+        }
+        else{
+         $scope.netWorkError = true;
+        };        
+    
+      },function(){
+        $scope.netWorkError = true;
+        $scope.isFetching = false;
+      });
+    
     }     
 
     $scope.savePaymentDetails = function(){
@@ -165,26 +159,36 @@
       $scope.fetchMLISessionId = function(){
 
        var sessionDetails = {};
-      
-       sessionDetails.cardNumber = $scope.cardNumber;
-       sessionDetails.cardSecurityCode = $scope.ccv;
-       sessionDetails.cardExpiryMonth = $scope.monthSelected;
-       sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
-      
+            
        $scope.callback = function(response){
-        $scope.isFetching = false;
-        $scope.$apply();
-        if(response.status ==="ok"){     
-            MLISessionId = response.session;
-            $scope.goToNextStep();
-        }
-        else{
-          $modal.open($scope.cardErrorOpts);
-        }
+          $scope.isFetching = false;
+          $scope.$apply();
+          if(response.status ==="ok"){     
+              MLISessionId = response.session;
+              $scope.goToNextStep();
+          }
+          else{
+            $modal.open($scope.cardErrorOpts);
+          }
         
        }
-       $scope.isFetching = true;
-       HostedForm.updateSession(sessionDetails, $scope.callback);
+      
+      if( ($scope.cardNumber.length === 0) || 
+          ($scope.ccv.length === 0) || 
+          (!$scope.monthSelected) ||
+          (!$scope.yearSelected)){
+              $modal.open($scope.errorOpts); // details modal popup
+         }
+         else{
+
+             $scope.isFetching = true;
+             sessionDetails.cardNumber = $scope.cardNumber;
+             sessionDetails.cardSecurityCode = $scope.ccv;
+             sessionDetails.cardExpiryMonth = $scope.monthSelected;
+             sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
+             HostedForm.updateSession(sessionDetails, $scope.callback);
+         }
+      
 
       
     }
