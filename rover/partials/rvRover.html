@@ -1,5 +1,7 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
+
 <div class="container tabs" ng-class="{'menu-open': isMenuOpen()}" ng-click="closeDrawer($event)">
 	<div ui-view class="main-view" ></div>
+
 </div>
 <div ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"></div>

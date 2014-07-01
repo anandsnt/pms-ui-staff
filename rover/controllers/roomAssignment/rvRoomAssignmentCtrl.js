@@ -1,5 +1,5 @@
 
-sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout){
+sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', 'ngDialog', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog){
 		
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
@@ -48,11 +48,47 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 				return $scope.roomTypes[i];
 		};
 	}
+
+	/**
+	* function to assign the new room for the reservation
+	*/
+	$scope.showMaximumOccupancyDialog = function(index){
+		var showOccupancyMessage = false;
+		if($scope.filteredRooms[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
+				if($scope.filteredRooms[index].room_max_occupancy < $scope.reservation_occupancy){
+					showOccupancyMessage = true;
+					$scope.max_occupancy = $scope.filteredRooms[index].room_max_occupancy;
+			}
+		}else if($scope.filteredRooms[index].room_type_max_occupancy != null && $scope.reservation_occupancy != null){
+				if($scope.filteredRooms[index].room_type_max_occupancy < $scope.reservation_occupancy){
+					showOccupancyMessage = true;
+					$scope.max_occupancy = $scope.filteredRooms[index].room_type_max_occupancy;
+				} 
+		}
+		
+		$scope.assignedRoom = $scope.filteredRooms[index];
+		if(showOccupancyMessage){
+			ngDialog.open({
+                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+                  controller: 'rvMaximumOccupancyDialogController',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+		}else{
+			$scope.assignRoom();
+		}
+		
+
+	}
+
+	$scope.$on('occupancyDialogSuccess', function(event, data){
+			$scope.assignRoom();
+	});
 	
 	/**
 	* function to assign the new room for the reservation
 	*/
-	$scope.assignRoom = function(index){
+	$scope.assignRoom = function(){
 		var successCallbackAssignRoom = function(data){
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
@@ -78,8 +114,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_number = parseInt($scope.filteredRooms[index].room_number, 10);
-		$scope.assignedRoom = $scope.filteredRooms[index];
+		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
+		
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 
@@ -343,7 +379,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.roomFeatures = roomPreferences.room_features;
 	$scope.addPredefinedFilters();
 	$scope.setSelectedFiltersList();
-	$scope.rooms = roomsList;
+	$scope.rooms = roomsList.rooms;
+	$scope.reservation_occupancy = roomsList.reservation_max_occupancy;
 	$scope.setRoomsListWithPredefinedFilters();
 	$scope.applyFilterToRooms();
 	$scope.clickedButton = $stateParams.clickedButton;

@@ -131,7 +131,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-housekeeping",
 			submenu: [{
 				title: "MENU_HOUSEKEEPING",
-				action: ""
+				action: "staff#/staff/housekeeping/dashboard"
 			}, {
 				title: "MENU_TASK_MANAGEMENT",
 				action: ""
