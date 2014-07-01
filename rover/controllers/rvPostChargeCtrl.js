@@ -168,6 +168,7 @@ sntRover.controller('RVPostChargeController',
 
 				$scope.selectedChargeItem = {};
 
+				// recalculate net price
 				calNetTotalPrice();
 			};
 
