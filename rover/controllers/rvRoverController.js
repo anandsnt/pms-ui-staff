@@ -6,6 +6,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     else{
       $translate.use('EN');
     };
+    /*
+     * To close drawer on click inside pages
+     */
+    $scope.closeDrawer = function(event){
+    	 $scope.menuOpen = false;
+    };
     
     // this is make sure we add an
     // additional class 'return-back' as a

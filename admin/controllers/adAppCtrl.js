@@ -15,7 +15,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		//for preventing drag & drop operations turning into click
 		var lastDropedTime = '';
-
+		/*
+	     * To close drawer on click inside pages
+	     */
+	    $scope.closeDrawer = function(event){
+	    	 $scope.menuOpen = false;
+	    };
 		//scroller options
 		$scope.$parent.myScrollOptions = {
 			'tabs_menu': {
@@ -404,4 +409,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			});
 		};
 	}
+	
+	
 ]);
