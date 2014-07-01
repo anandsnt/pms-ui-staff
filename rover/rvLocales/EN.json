@@ -101,9 +101,10 @@
     "ROOMS_FOR_UPSELL_TITLE": "Rooms For Upsell",
     "ROOMS_UPSOLD_TITLE": "Rooms Upsold",
     "CHECKING_IN": "Checking In",
-    "INHOUSE": "In house",
+    "INHOUSE": "Inhouse",
     "CHECKING_OUT": "Checking Out",
-
+    "DASHBOARD_HEADING": "Dashboard",
+    "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",	
 	"HK_GUESTS": "Guests",
 	"HK_OCCUPIED": "Occupied",
 	"HK_VACANT_DIRTY": "Vacant (Dirty)",
@@ -156,10 +157,8 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELESE_REFRESH": "Release to refesh...", 
-
-    "DASHBOARD_HEADING": "Dashboard",
-    "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",    
+	"RELESE_REFRESH": "Release to refesh...",    
+    
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
     "SELECT_CREDIT_CARD_LABEL": "Select credit card",
