@@ -181,6 +181,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 	$scope.$on("setCalendarModeRateType", function(){
 		$scope.calendarMode = "RATE_VIEW";
+		$scope.selectedRate = {};
+
 		loadTable();
 
 	});
