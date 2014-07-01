@@ -1,6 +1,8 @@
 sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv',
 	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv) {
 
+		$scope.addNewCards = false;
+
 		$scope.pendingRemoval = {
 			status: false,
 			cardType: ""

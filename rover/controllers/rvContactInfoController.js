@@ -5,12 +5,10 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
      * storing to check if data will be updated
      */
     var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-    if (typeof $scope.guestCardData.contactInfo.birthday !== "undefined") {
-      presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
-    }
+    presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     $scope.errorMessage = "";
 
-    $scope.saveContactInfo = function() {
+    $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
       };
@@ -18,6 +16,21 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
         $scope.$emit('contactInfoError', true);
+      };
+
+      var createUserInfoSuccessCallback = function(data) {
+        $scope.$emit('hideLoader');
+        //TODO : Reduce all these places where guestId is kept and used to just ONE
+        $scope.guestCardData.contactInfo.user_id = data.id;
+        $scope.reservationDetails.guestCard.id = data.id;
+        $scope.guestCardData.userId = data.id;
+        $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
+        console.log("success", data);
+      };
+      var createUserInfoFailureCallback = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = data;
+        console.log("failure", data);
       };
 
       /**
@@ -39,23 +52,28 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         'data': dataToUpdate,
         'userId': $scope.guestCardData.contactInfo.user_id
       };
-      if (!dataUpdated)
-        $scope.invokeApi(RVContactInfoSrv.saveContactInfo, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+      if (!dataUpdated && !newGuest)
+        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+      else if (!dataUpdated && newGuest) {
+        $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, createUserInfoFailureCallback);
+      }
     };
 
     /**
      * watch and update formatted date for display
      */
     $scope.$watch('guestCardData.contactInfo.birthday', function() {
-      if (typeof $scope.guestCardData.contactInfo.birthday !== "undefined") {
-        $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
-      }
+      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     });
     /**
      * to handle click actins outside this tab
      */
     $scope.$on('saveContactInfo', function() {
-      $scope.saveContactInfo();
+      if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
+        $scope.saveContactInfo(true);
+      } else {
+        $scope.saveContactInfo();
+      }
     });
 
     $scope.popupCalendar = function() {

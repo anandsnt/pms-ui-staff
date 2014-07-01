@@ -1,9 +1,11 @@
-sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', 'RVReservationCardSrv', '$timeout', 'RVCompanyCardSrv',
-    function($scope, RVReservationAllCardsSrv, RVReservationCardSrv, $timeout, RVCompanyCardSrv) {
+sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', 'RVReservationCardSrv', '$timeout', 'RVCompanyCardSrv', 'RVGuestCardSrv',
+    function($scope, RVReservationAllCardsSrv, RVReservationCardSrv, $timeout, RVCompanyCardSrv, RVGuestCardSrv) {
 
         BaseCtrl.call(this, $scope);
         var resizableMinHeight = 90;
         var resizableMaxHeight = $(window).height() - resizableMinHeight;
+
+        $scope.addNewCards = true;
 
         var that = this;
 
@@ -149,6 +151,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         }
         $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
+
+        //INITS
         var init = function() {
             // open search list card if any of the search fields are entered on main screen
             var searchData = $scope.reservationData;
@@ -205,9 +209,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.searchData.guestCard.guestLastName = "";
                 $scope.searchData.guestCard.guestCity = "";
                 $scope.searchData.guestCard.guestLoyaltyNumber = "";
+                $scope.guestCardData.contactInfo.user_id = contactInfoData.userId;
                 $scope.$broadcast('guestSearchStopped');
                 $scope.$broadcast('guestCardAvailable');
-                // $scope.showGuestPaymentList(guestInfo);
+                $scope.showGuestPaymentList(guestInfo);
                 $scope.decloneUnwantedKeysFromContactInfo = function() {
 
                     var unwantedKeys = ["address", "birthday", "country",
@@ -416,21 +421,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
         }
 
-        $scope.guestCardTabSwitch = function(tab) {
-            if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
-                $scope.$broadcast('saveContactInfo');
-            };
-            if ($scope.current === 'guest-like' && tab !== 'guest-like') {
-                $scope.$broadcast('SAVELIKES');
-
-            };
-            if (tab === 'guest-credit') {
-                $scope.$broadcast('PAYMENTSCROLL');
-            }
-            $scope.$broadcast('REFRESHLIKESSCROLL');
-            $scope.current = tab;
-        };
-
+        // DETACH CARD
         $scope.detachCard = function(cardType) {
             if (cardType == "guest") {
                 // Update main reservation scope
@@ -473,6 +464,23 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
             console.log($scope.reservationDetails);
         }
+
+        // GUEST TABS
+        //TODO: Find a way to move this into the child controller 
+        $scope.guestCardTabSwitch = function(tab) {
+            if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
+                $scope.$broadcast('saveContactInfo');
+            };
+            if ($scope.current === 'guest-like' && tab !== 'guest-like') {
+                $scope.$broadcast('SAVELIKES');
+
+            };
+            if (tab === 'guest-credit') {
+                $scope.$broadcast('PAYMENTSCROLL');
+            }
+            $scope.$broadcast('REFRESHLIKESSCROLL');
+            $scope.current = tab;
+        };
 
         // SELECTS
 
@@ -526,6 +534,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.initTravelAgentCard();
         }
 
+        // CREATES
         $scope.createNewGuest = function() {
             // $scope.reservationData.guest.id = '';
             // $scope.reservationData.guest.firstName = $scope.guestFirstName;
@@ -577,6 +586,94 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 // $scope.closeGuestCard();
             }
         }
+
+        $scope.createNewGuest = function() {
+            console.log('to add New Card');
+            // create an empty dataModel for the guest
+            var contactInfoData = {
+                'contactInfo': {},
+                'countries': $scope.countries,
+                'userId': "",
+                'avatar': "",
+                'guestId': "",
+                'vip': "" //TODO: check with API or the product team
+            };
+            // // $scope.$emit('guestCardUpdateData', contactInfoData);
+            $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+            $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
+            $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+            $scope.countriesList = contactInfoData.countries;
+            $scope.guestCardData.userId = contactInfoData.userId;
+            $scope.guestCardData.guestId = contactInfoData.guestId;
+            $scope.guestCardData.contactInfo.birthday = null;
+            var guestInfo = {
+                "user_id": "",
+                "guest_id": ""
+            };
+            $scope.$broadcast('guestSearchStopped');
+            $scope.$broadcast('guestCardAvailable');
+            $scope.current = 'guest-contact';
+        }
+
+
+        $scope.guestCardClick = function($event) {
+            var element = $event.target;
+            $event.stopPropagation();
+            $event.stopImmediatePropagation();
+            if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
+                if (parseInt($scope.eventTimestamp)) {
+                    if (($event.timeStamp - $scope.eventTimestamp) < 100) {
+                        return;
+                    }
+                }
+                if (!$scope.guestCardVisible) {
+                    $("#guest-card").css("height", $scope.windowHeight - 90);
+                    $scope.guestCardVisible = true;
+                    $scope.$broadcast('CONTACTINFOLOADED');
+                    $scope.$emit('GUESTCARDVISIBLE', true);
+                } else {
+                    $("#guest-card").css("height", $scope.resizableOptions.minHeight);
+                    $scope.guestCardVisible = false;
+                    $scope.$emit('GUESTCARDVISIBLE', false);
+                }
+            } else {
+                if (getParentWithSelector($event, document.getElementById("guest-card-content"))) {
+                    /**
+                     * handle click on tab navigation bar.
+                     */
+                    // To make sure card gets saved on entering the last name itself
+                    $scope.$broadcast('SAVELIKES');
+                    $scope.$broadcast('saveContactInfo');
+                    // if ($event.target.id === 'guest-card-tabs-nav') {
+                    //     console.log("inside===")
+                    //     $scope.$broadcast('saveContactInfo');
+                    //     $scope.$broadcast('SAVELIKES');
+
+                    // } else
+                    //     return;
+                } else {
+                    $scope.$broadcast('SAVELIKES');
+                    $scope.$broadcast('saveContactInfo');
+                }
+            }
+        };
+
+        $scope.showGuestPaymentList = function(guestInfo) {
+            var userId = guestInfo.user_id,
+                guestId = guestInfo.guest_id;
+            var paymentSuccess = function(paymentData) {
+                $scope.$emit('hideLoader');
+
+                var paymentData = {
+                    "data": paymentData,
+                    "user_id": userId,
+                    "guest_id": guestId
+                };
+                $scope.$emit('GUESTPAYMENTDATA', paymentData);
+                $scope.$emit('SHOWGUESTLIKES');
+            };
+            $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
+        };
 
         init();
 

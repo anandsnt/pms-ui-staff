@@ -28,7 +28,7 @@
     </section>
     <section ng-if="searchMode">
         <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
-        <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
+        <button id="new-guest" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
         <div id="search-guests-content" class="search-cards scrollable">
             <!-- Guest Card Results listing -->
             <div class="wrapper" ng-controller="guestResults" ng-show="guestSearchIntiated && guests.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">

@@ -146,7 +146,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.guestCardClick = function($event) {
-
 			var element = $event.target;
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
