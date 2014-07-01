@@ -53,13 +53,13 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
-		if($scope.filteredRooms[index].room_max_occupancy != null && $scope.filteredRooms[index].reservation_max_occupancy != null){
-				if($scope.filteredRooms[index].room_max_occupancy < $scope.filteredRooms[index].reservation_max_occupancy){
+		if($scope.filteredRooms[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
+				if($scope.filteredRooms[index].room_max_occupancy < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = $scope.filteredRooms[index].room_max_occupancy;
 			}
-		}else if($scope.filteredRooms[index].room_type_max_occupancy != null && $scope.filteredRooms[index].reservation_max_occupancy != null){
-				if($scope.filteredRooms[index].room_type_max_occupancy < $scope.filteredRooms[index].reservation_max_occupancy){
+		}else if($scope.filteredRooms[index].room_type_max_occupancy != null && $scope.reservation_occupancy != null){
+				if($scope.filteredRooms[index].room_type_max_occupancy < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = $scope.filteredRooms[index].room_type_max_occupancy;
 				} 
@@ -378,7 +378,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.roomFeatures = roomPreferences.room_features;
 	$scope.addPredefinedFilters();
 	$scope.setSelectedFiltersList();
-	$scope.rooms = roomsList;
+	$scope.rooms = roomsList.rooms;
+	$scope.reservation_occupancy = roomsList.reservation_max_occupancy;
 	$scope.setRoomsListWithPredefinedFilters();
 	$scope.applyFilterToRooms();
 	$scope.clickedButton = $stateParams.clickedButton;
