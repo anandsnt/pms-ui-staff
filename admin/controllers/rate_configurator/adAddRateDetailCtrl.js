@@ -163,7 +163,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
             // Save Rate Success Callback
             var saveSuccessCallback = function (data) {
-                //$scope.manipulateData(data);
+                $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');

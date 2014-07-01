@@ -73,6 +73,10 @@ sntRover.controller('reservationActionsController',
 				// pass on the reservation id
 				$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
+				// translating this logic as such from old Rover
+				// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
+				$scope.fetchTotalBal = true;
+
 				var callback = function(data) {
 				    $scope.$emit( 'hideLoader' );
 
@@ -103,6 +107,9 @@ sntRover.controller('reservationActionsController',
 			$scope.closeDialog = function() {
 				ngDialog.close();
 			};
+			
+
+
 			
 			$scope.goToCheckin = function(){
 			
