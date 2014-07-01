@@ -28,11 +28,17 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
         
       };
 
+
     this.initialise = function(){
 
+      //Data from Resolve method
     	$scope.stayDetails = stayDateDetails;
+
+      //For future comparison / reset
     	$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
     	$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
+
+      //Data for rightside Pane.
       $scope.rightSideReservationUpdates = '';
       $scope.roomSelected = $scope.stayDetails.details.room_number;
       $scope.calendarNightDiff = '';
@@ -41,10 +47,7 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
 
       /* event source that contains custom events on the scope */
       $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-
       $scope.eventSources = [$scope.events];
-      console.log(JSON.stringify($scope.checkinDateInCalender));
-      console.log(JSON.stringify($scope.checkoutDateInCalender));
      
       //calender options used by full calender, related settings are done here
       $scope.fullCalendarOptions =  {
@@ -253,6 +256,9 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
       //$scope.myCalendar.fullCalendar.rerenderEvents();
       //changing the data for fullcalendar      
       $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+      $scope.eventSources.length =0;
+      $scope.eventSources.push($scope.events);
+
       // checking if stay range is restricted between that days, if so we will not call webservice for availabilty
       if(that.isStayRangeRestricted($scope.checkinDateInCalender, $scope.checkoutDateInCalender )){
           that.showRestrictedStayRange();
@@ -307,6 +313,7 @@ sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$sco
       var thisDate;
       var calEvt = {};
       $($scope.stayDetails.calendarDetails.available_dates).each(function(index){
+          console.log(this); //TODO: remove
           calEvt = {};
           //Fixing the timezone issue related with fullcalendar
           thisDate = getDateObj(this.date); 
