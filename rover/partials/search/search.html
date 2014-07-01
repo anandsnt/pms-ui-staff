@@ -21,7 +21,7 @@
 						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length == 0">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
 							
-							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
+							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})">
 								<figure class="guest-image" ng-show="row.images.length!=0 ">	
 									<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),'second-image':(row.images.length >1 && image.is_primary==false)}">
 									<span class="vip" ng-show="row.vip==true">VIP</span>
