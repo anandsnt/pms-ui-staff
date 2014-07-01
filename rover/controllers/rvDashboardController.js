@@ -2,13 +2,16 @@
 sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv','dashBoarddata','$rootScope', '$filter', '$state',  
                   function($scope, ngDialog, RVDashboardSrv,dashBoarddata,$rootScope, $filter, $state){
 	
-  //setting the heading of the screen
+    //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
-
+	
+	BaseCtrl.call(this, $scope);
+	
     $scope.init =  function(){
 		
-       	BaseCtrl.call(this, $scope);
-
+       
+       
+		
           //setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";
 
@@ -35,7 +38,12 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       	else{
       		$scope.greetingsMessage = 'GREETING_EVENING';
       	}
-        	
+      	//ADDED Time out since translation not working without time out
+        setTimeout(function(){
+        	var title = $filter('translate')('SHOWING_DASHBOARD_TITLE');
+			$scope.setTitle(title);
+        }, 500);
+		
         	
 
    };

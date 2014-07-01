@@ -2,7 +2,8 @@
 sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout){
 		
 	BaseCtrl.call(this, $scope);
-
+	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
+	$scope.setTitle(title);
 		
 	setTimeout(function(){
 				$scope.$parent.myScroll['roomlist'].refresh();

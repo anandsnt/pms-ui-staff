@@ -14,6 +14,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.search', {
             url: '/search/:type',
             templateUrl: '/assets/partials/search/search.html',
-            controller: 'searchController'
+            controller: 'searchController',
+            data : { pageTitle: 'Homkkkkkkkkkkkkkkkkkkke' }
         }); 
 });
