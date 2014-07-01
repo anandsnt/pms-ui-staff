@@ -15,7 +15,7 @@
 
 		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
 			<tbody>
-				<tr ng-repeat="item in  data">
+				<tr ng-repeat="item in  data track by $index">
 					<td header-class="width-30"  data-title="'NAME' | translate" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
 						<a class="edit-data-inline">{{ item.name }}</a>
 					</td>

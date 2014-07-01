@@ -1160,6 +1160,16 @@
 					}
 				}
 			}
+
+			/* New card ***/
+			&.new-card {
+				.button {
+					padding: 0 40px;
+					margin-bottom: 10px;
+
+					&.blank { margin-bottom: 0; }
+				}
+			}
 		}
 	}
 
@@ -1170,32 +1180,6 @@
 			z-index: 10;
 			right: 20px;
 			left: 20px;
-		}
-	}
-
-	#modal-overlay {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		visibility: hidden;
-		top: 0;
-		left: 0;
-		z-index: 0;
-		opacity: 0;
-		background: rgba(0,0,0,0.5);
-		.transition;
-
-		&.modal-show { 
-			opacity: 1;
-			visibility: visible;
-			z-index: 9990;
-			.actions {
-				.button {
-					margin-bottom: 10px;
-
-					&:last-child { margin-bottom: 0; }
-				}
-			}
 		}
 	}
 

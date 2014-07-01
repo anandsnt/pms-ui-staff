@@ -8,10 +8,11 @@
 				({{data.charge_codes.length}})
 			</span>
 			<a ng-click="addNewClicked()" class="action add">Add new</a>
-			<a ng-show="data.is_connected_to_pms =='true'"  ng-click="importFromPmsClicked()" class="action import">IMPORT FROM PMS</a>
+			<a ng-show="data.is_connected_to_pms =='true'"  ng-click="importFromPmsClicked($event)" class="action import">IMPORT FROM PMS</a>
 		</header>
 
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 	<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
 		<div id="new-form-holder"></div>
 		<table class="grid datatable" ng-table="tableParams">

@@ -1,5 +1,11 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
+     if (hotelDetails.language){
+      $translate.use(hotelDetails.language.value);
+    }
+    else{
+      $translate.use('EN');
+    };
     
     // this is make sure we add an
     // additional class 'return-back' as a
@@ -39,6 +45,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dayInWeek = "EEE"; //Sun
     $rootScope.dayInMonth = "dd"; //01
     $rootScope.monthInYear = "MMM"; //Jan
+    // Use below standard date formatter in the UI.
     $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
@@ -48,15 +55,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       /*
      * hotel Details 
      */
-    
+
+    $rootScope.isLateCheckoutTurnedOn= hotelDetails.late_checkout_settings.is_late_checkout_on;    
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+
+    $rootScope.MLImerchantId= hotelDetails.mli_merchant_id;
+
     if (hotelDetails.language){
       $translate.use(hotelDetails.language.value);
     }
     else{
       $translate.use('EN');
     };
+
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null){
        $scope.isStandAlone = true;
@@ -157,7 +169,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-housekeeping",
       submenu: [{
         title: "MENU_HOUSEKEEPING",
-        action: ""
+        action: "rover.housekeeping.dashboard"
       }, {
         title: "MENU_TASK_MANAGEMENT",
         action: ""
@@ -332,10 +344,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       });
     };
     /*
-     *
+     * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
       $scope.$broadcast('GUESTPAYMENT', paymentData);
+    });
+    
+    $scope.$on('SHOWGUESTLIKES', function(event) {
+         $scope.$broadcast('SHOWGUESTLIKESINFO');
     });
     /*
      * Tp close dialog box

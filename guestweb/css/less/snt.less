@@ -215,6 +215,10 @@ table-layout: fixed;
 width: 100%;
 }
 @media (max-width: 480px) {
+
+.cabin-number{
+  margin-top:7%;
+}
 .now-later-options {
 margin: 0;
 max-width: initial;
@@ -232,10 +236,13 @@ margin: 0 10px;
   }
 }
 @media (min-width: 992px) {
-.checkout-later-back-button-for-mobile{
-
+.checkout-later-back-button-for-mobile,.cabin-number-main-heading-seperator{
   display:none;
   }
+ 
+.room-error{
+  font-size:18px !important;
+}
 }
 
 .now-later-options .rel-wrapper {
@@ -249,6 +256,7 @@ position: relative;
 display: table-cell;
 float: none;
 padding: 0;
+cursor: pointer;
 }
 
 
@@ -637,7 +645,6 @@ bottom: 0;
   background-color: #fff !important;
   color: #000000 !important;
   margin : 0px 5px !important;
-  height: 250px !important;
   border-radius: 0px !important;
   border: 0px  !important;
     box-shadow:none !important;
@@ -785,6 +792,7 @@ font-size: 10px !important;
 
   margin-top: 20px !important;
   padding-top: 20px !important;
+  padding-bottom: 20px !important;
 }
 .alert-element{
   margin-top: 20px !important;
@@ -820,7 +828,11 @@ padding:5px 8px 2px 0;
 }
 
 .modal-dialog{
- margin-top: 135px !important;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(50%) !important;
+  -ms-transform: translateY(-50%) !important;
+  transform: translateY(-50%) !important;
  }
 
  .row .reservation-id{
@@ -2057,4 +2069,138 @@ border-color:#fff;
     height: 73px;
     text-align:center;
     padding-top: 20px !important;
+}
+
+/* new screens styles */
+
+
+.continue-button{
+  margin-top:20%;
+  padding: 5%;
+}
+.continue-text{
+  font-size: 26px !important;
+  font-weight: inherit !important;
+}
+.cabin_number_field{
+    margin: 0 auto !important;
+    width: 60%;
+}
+.cabin-number-text,.ccv-text{
+    color:#fff;
+    margin-bottom: 0px !important;
+}
+.ccv-popup-link{
+  margin-bottom:0px !important;
+}
+.ccv-text{
+  font-size:13px;
+   cursor: pointer;
+}
+
+.select-style {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: #fff;
+    background: #fff;
+    position: relative;
+}
+
+.select-style:after {
+    top: 50%;
+    left: 85%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #000000;
+    border-width: 5px;
+    margin-top: -2px;
+    z-index: 100;
+}
+
+.select-style select {
+    padding: 8px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+     appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+.cc-error,.room-error,.cc-number-description{
+  line-height: 1.2;
+}
+.cc-error{
+  padding: 0 22%; 
+}
+.cc-number-description{
+  padding:0 10%;
+  font-size:13px;
+  .ccv-headings{
+    font-weight:bold;
+    font-size: 15px;
+    margin-top: 10px;
+  }
+}
+
+.room-error{
+  padding: 0 10%; 
+}
+.room-error-button{
+   margin: 2% 0;
+   width: 70% !important;
+   margin-bottom: 0px !important;
+   padding: 3% !important;
+   font-size: 12px !important;
+   font-weight: bold !important;
+}
+.room-error-green-button{
+     background:#4bb716 !important;
+}
+
+.card-number-container{
+  float:left;
+  width:60%;
+}
+.ccv-container{
+  float:right;
+  width:38%;
+}
+.expiry-month-container{
+  float:left;
+  width:49%;
+}
+.expiry-year-container{
+  float:right;
+  width:49%;
+  margin-left:2%;
+}
+.cc-alert{
+  padding-top:10%;
+  padding-bottom:10%;
+
+  p{
+    margin:none;
+  }
+}
+
+.cc-close{
+  margin:5% 0;
+}
+
+.light-gray-bg{
+  background: #c7c7c7 !important;
 }

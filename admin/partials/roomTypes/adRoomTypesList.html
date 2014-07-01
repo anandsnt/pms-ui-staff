@@ -4,19 +4,43 @@
 		<header class="content-title float">
 			<h2> {{ 'ROOM_TYPES' | translate }} </h2>
 			<span class="count"> ({{data.room_types.length}}) </span>
-			<a id="import-rooms" class="action import" ng-click="importFromPms()" ng-show="data.is_import_available">{{ 'IMPORT_FROM_PMS' | translate }}</a>
+			<a id="import-rooms" class="action import" ng-click="importFromPms($event)" ng-show="data.is_import_available">{{ 'IMPORT_FROM_PMS' | translate }}</a>
 			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" ng-hide="data.is_import_available">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<span class="grid" ng-show="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
 		<table id="brands" class="grid" ng-table="tableParams">
+			<thead>
+				<tr>
+					 
+           <th  ng-class="{
+           			'sortable': currentClickedElement == -1,
+                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+                    'sort-desc': tableParams.isSortBy('name', 'desc')
+                  }"
+                  
+                    ng-click="sortByName()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Type</span></div>
+                </th>
+                <th  ng-class="{
+                	'sortable': currentClickedElement == -1,
+                    'sort-asc': tableParams.isSortBy('code', 'asc'),
+                    'sort-desc': tableParams.isSortBy('code', 'desc')
+                  }"
+                  
+                    ng-click="sortByCode()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span >Room Code</span></div>
+                </th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr ng-repeat="room_types in $data" > 
-					<td header-class="width-70"  data-title="'Room Type'" sortable="'name'" ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
+					<td header-class="width-70"   ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
 						<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
 					</td>
-					<td data-title="'Room Code'" header-class=" width-30"  sortable="'code'" class="text-left" ng-hide="currentClickedElement == $index" >
+					<td header-class=" width-30" class="text-left" ng-hide="currentClickedElement == $index" >
 						{{room_types.code}}
 					</td>
 					<td colspan="2" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedElement == $index"></td>

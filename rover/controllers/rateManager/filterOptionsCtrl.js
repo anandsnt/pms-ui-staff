@@ -170,7 +170,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
 
-            } else {
+            } else if($scope.companySearchText.length > 2){
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);

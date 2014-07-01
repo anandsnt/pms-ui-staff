@@ -96,6 +96,7 @@
             for (var i = 0; i < allDates.length; i++) {
               var className = "",
                 date = allDates[i];
+              var disabled = true;
 
               if (dateFilter(date, 'M') !== currentMonth.toString()) {
                 className = 'pickadate-disabled pickadate-outofrange-disabled';
@@ -105,6 +106,7 @@
                 className = 'pickadate-disabled pickadate-unavailable';
               } else {
                 className = 'pickadate-enabled';
+                disabled = false;
               }
 
               if (date === today) {
@@ -113,7 +115,8 @@
 
               dates.push({
                 date: date,
-                className: className
+                className: className,
+                disabled :disabled
               });
             }
 

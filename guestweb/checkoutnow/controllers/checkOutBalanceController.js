@@ -1,37 +1,31 @@
 (function() {
-	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
+	var checkOutBalanceController = function($scope, BillService,$rootScope,$state) {
 
-		$scope.pageSuccess = true;
-		
-		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
-		}
-		else if($rootScope.isCheckin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinConfirmation');
-		}
-		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
-		}
-		if($scope.pageSuccess){
+	$scope.pageValid = false;
 
-		//if checkout is already done	
-		if ($rootScope.isCheckedout) 
-			$location.path('/checkOutNowSuccess');
-
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else if($rootScope.isCheckin){
+		$state.go('checkinConfirmation');
+	}
+	else if($rootScope.isCheckedout ){
+		$state.go('checkOutStatus');
+	}
+	else if(!$rootScope.isRoomVerified){
+		$state.go('checkoutRoomVerification');
+	}
+	else{
+		$scope.pageValid = true;
+	}
+	
+	
+	if($scope.pageValid){
 		// showBill flag and its reference in $rootScope
 		$scope.showBill = false;
 		$rootScope.showBill = $scope.showBill;
-		$rootScope.netWorkError = false;	
+		$scope.netWorkError = false;	
 		$scope.isFetching = true;
-
-		//watch for any network errors
-		$rootScope.$watch('netWorkError',function(){
-			if($rootScope.netWorkError)
-				$scope.isFetching = false;
-		});
 
 		//fetch data to display
 		BillService.fetchBillData().then(function(billData) {
@@ -39,17 +33,27 @@
 			$scope.isFetching = false;
 			if($scope.billData)
 				$scope.optionsAvailable = true;
-			else
-				$location.path('/serverError');
+		},function(){
+			$scope.netWorkError = true;
+			$scope.isFetching = false;
 		});
-		
-	}
 
+		$scope.gotToNextStep = function(){
+			if($rootScope.isCCOnFile || parseInt($scope.billData.balance) === 0.00){
+				$state.go('checkOutStatus');
+			}				
+			else{
+				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
+			}
+				
+		}
+
+	}
 };
 
 var dependencies = [
 '$scope',
-'BillService','$rootScope','$location',
+'BillService','$rootScope','$state',
 checkOutBalanceController
 ];
 
