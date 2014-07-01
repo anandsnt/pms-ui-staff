@@ -1,11 +1,7 @@
 sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout','$stateParams',
     function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
         BaseCtrl.call(this, $scope);
-
-        //Setting number of nights 1
-        $scope.reservationData.numNights = 1;
         $scope.$parent.hideSidebar = false;
-
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;

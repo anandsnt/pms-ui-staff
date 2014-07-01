@@ -6,7 +6,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
         this.reservationData.demographics = {};
         this.fetchPaymentMethods = function(){
             var deferred = $q.defer();
-            var url = '/admin/hotel_payment_types.json';
+            var url = '/staff/payments/addNewPayment.json';
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             },function(data){
