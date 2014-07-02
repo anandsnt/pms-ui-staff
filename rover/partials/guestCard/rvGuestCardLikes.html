@@ -61,8 +61,7 @@
         </div>
         
 
-        
-        <div class="holder right" ng-show="guestCardData.likes.room_features.values.length >0">
+        <div class="holder right" ng-show="shouldShowRoomFeatures(guestCardData.likes.room_features)">
             <strong class="h3" translate>ROOM_FEATURES</strong>
             <span ng-repeat="roomFeatures in guestCardData.likes.room_features" >
 
