@@ -99,7 +99,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             maxChildren: '',
             maxInfants: '',
             roomTypes: [],
-            fromSearch: false
+            fromSearch: false,
+            recommendedRateDisplay: '',
+            defaultRateDisplayName: ''
         };
 
         $scope.searchData = {

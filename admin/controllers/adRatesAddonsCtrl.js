@@ -28,6 +28,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			$scope.isStartDateSelected  = false;
 			$scope.isEndDateSelected = false;
+			$scope.currentClickedAddon = -1;
 		};
 
 		$scope.init();
@@ -39,6 +40,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			var params = params;
 			var getParams = $scope.calculateGetParams(params);
+			$scope.currentClickedAddon = -1;
 
 			var fetchSuccessOfItemList = function(data) {
 				$scope.totalCount = data.total_count;	
@@ -60,6 +62,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		}	
 
 		$scope.loadTable = function() {
+			$scope.currentClickedAddon = -1;
 			$scope.tableParams = new ngTableParams({
 			        page: 1,  // show first page
 			        count: $scope.displyCount, // count per page 
@@ -316,9 +319,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.name = $scope.singleAddon.name;
 			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
+
 			// convert dates to system format yyyy-MM-dd
-			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(new Date($scope.singleAddon.begin_date), 'yyyy-MM-dd'): "";
-			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(new Date($scope.singleAddon.end_date), 'yyyy-MM-dd'):"";
+			// if not date null should be passed - read story CICO-7287
+			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(new Date($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
+			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(new Date($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 
 	
@@ -342,6 +347,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.isEditMode = false;
 					$scope.currentClickedAddon = -1;
+
+					$scope.tableParams.reload();
 				};
 
 				// include current addon id also
@@ -372,6 +379,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		// on delete addon
 		$scope.deleteAddon = function() {
 			var item = this.item;
+			$scope.currentClickedAddon = -1;
 
 			var callback = function() {
 				var withoutThis = _.without( $scope.data, item );
@@ -412,6 +420,14 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		$scope.rateOnlyChanged = function(){
 			$scope.singleAddon.is_reservation_only = $scope.singleAddon.rate_code_only ? false : $scope.singleAddon.is_reservation_only;
+		};
+		$scope.sortByName = function(){
+		if($scope.currentClickedAddon == -1)
+			$scope.tableParams.sorting({'name' : $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+		};
+		$scope.sortByDescription = function(){
+		if($scope.currentClickedAddon == -1)
+			$scope.tableParams.sorting({'description' : $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
 		};
 	}
 ]);
