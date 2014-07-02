@@ -41,7 +41,7 @@
 					<span class="red">{{currencySymbol}} {{dashboardData.actual_upsell?dashboardData.actual_upsell:0}}</span>
 				</li>
 				<li>
-					{{ 'VIP_CHECKIN_TITLE' | translate }}{{$parent.hotelDetails.upsell_settings.is_upsell_settings_on}}
+					{{ 'VIP_CHECKIN_TITLE' | translate }}
 					<span>{{dashboardData.vip_checkin_count?dashboardData.vip_checkin_count:0}}</span>
 				</li>
 				<li ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
