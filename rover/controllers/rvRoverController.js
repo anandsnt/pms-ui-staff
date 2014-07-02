@@ -6,6 +6,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     else{
       $translate.use('EN');
     };
+
     /*
      * To close drawer on click inside pages
      */
@@ -73,6 +74,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 
 
+    $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;

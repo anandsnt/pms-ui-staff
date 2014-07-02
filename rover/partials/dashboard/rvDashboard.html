@@ -26,29 +26,29 @@
 					</a>
 				</li>
 			</ul>
-			<ul id="stats-today" class="upsell_on">
+			<ul id="stats-today" ng-class="{'upsell_on':hotelDetails.upsell_settings.is_upsell_settings_on}">
 				<li>
 					{{ 'GUEST_REVIEW_SCORE_TITLE' | translate }}
 					<span ng-show="dashboardData.guest_review_score">{{dashboardData.guest_review_score}}</span>
 					<span ng-hide="dashboardData.guest_review_score" class="no-data"> No data available </span>
 				</li>
-				<li>
+				<li ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
 					{{ 'UPSELL_TARGET_TITLE' | translate }}
 					<span class="blue"> {{currencySymbol}} {{dashboardData.upsell_target?dashboardData.upsell_target:0}} </span>
 				</li>
-				<li>
+				<li ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
 					{{ 'ACTUAL_UPSELL_TITLE' | translate }}
 					<span class="red">{{currencySymbol}} {{dashboardData.actual_upsell?dashboardData.actual_upsell:0}}</span>
 				</li>
 				<li>
-					{{ 'VIP_CHECKIN_TITLE' | translate }}
+					{{ 'VIP_CHECKIN_TITLE' | translate }}{{$parent.hotelDetails.upsell_settings.is_upsell_settings_on}}
 					<span>{{dashboardData.vip_checkin_count?dashboardData.vip_checkin_count:0}}</span>
 				</li>
-				<li>
+				<li ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
 					{{ 'ROOMS_FOR_UPSELL_TITLE' | translate }}
 					<span>{{dashboardData.rooms_for_upsell?dashboardData.rooms_for_upsell:0}}</span>
 				</li>
-				<li>
+				<li ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
 					{{ 'ROOMS_UPSOLD_TITLE' | translate }}
 					<span>{{dashboardData.rooms_upsold?dashboardData.rooms_upsold:0}}</span>
 				</li>
