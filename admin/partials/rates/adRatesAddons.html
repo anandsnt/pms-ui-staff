@@ -14,19 +14,45 @@
 		<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
 
 		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
+			<thead>
+				<tr>
+					 
+           <th  ng-class="{
+           			'sortable': currentClickedAddon == -1,
+                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+                    'sort-desc': tableParams.isSortBy('name', 'desc')
+                  }"
+                  
+                    ng-click="sortByName()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>NAME</span></div>
+                </th>
+                <th  ng-class="{
+                	'sortable': currentClickedAddon == -1,
+                    'sort-asc': tableParams.isSortBy('description', 'asc'),
+                    'sort-desc': tableParams.isSortBy('description', 'desc')
+                  }"
+                  
+                    ng-click="sortByDescription()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>DESCRIPTION</span></div>
+                </th>                		
+				<th class="width-100" translate> ACTIVE</th>
+				<th  class="width-50" translate> DELETE</th>								
+					
+				</tr>
+			</thead>
 			<tbody>
 				<tr ng-repeat="item in  data track by $index">
-					<td header-class="width-30"  data-title="'NAME' | translate" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
+					<td header-class="width-30" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
 						<a class="edit-data-inline">{{ item.name }}</a>
 					</td>
 
-					<td header-class="width-50"  data-title="'DESCRIPTION' | translate" sortable="'description'" ng-hide="currentClickedAddon === $index" >	
+					<td header-class="width-50" ng-hide="currentClickedAddon === $index" >	
 						{{ item.description }}
 					</td>
 
-					<td data-title="'ACTIVE' | translate" header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
+					<td header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
 						<div class="entry">
-							<div class="switch-button single"
+							<div class="switch-button single addon-switch-button"
 									ng-class="{ on: item.activated }">
 								<input type = "checkbox"
 										id = "rates-addons"
@@ -37,7 +63,7 @@
 						</div>
 					</td>
 
-					<td data-title="'DELETE' | translate" header-class="width-10" class="delete" ng-hide="currentClickedAddon === $index">
+					<td header-class="width-10" class="delete" ng-hide="currentClickedAddon === $index">
 						<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this addon</a>		
 					</td>
 
