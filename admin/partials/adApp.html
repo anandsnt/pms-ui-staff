@@ -13,7 +13,7 @@
 		      <li ng-repeat="menu in data.menus" ng-class="{'ui-state-default ui-corner-top ui-tabs-active ui-state-active': $index==selectedIndex}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
 		   </ul>
 		</div>
-		<div ui-view></div>
+		<span ng-click="closeDrawer()"><div ui-view></div></span>
 	</div>
 
 </div>
