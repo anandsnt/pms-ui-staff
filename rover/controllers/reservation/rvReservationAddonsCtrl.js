@@ -99,7 +99,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
                             'from_date': $scope.reservationData.arrivalDate,
                             'to_date': $scope.reservationData.departureDate,
                             'is_active': true,
-                            'is_not_rate_only': true
+                            'is_not_rate_only': true,
+                            'is_reservation_only': true
                         };
         $scope.invokeApi(RVReservationAddonsSrv.fetchAddons, paramDict, successCallBackFetchAddons);
     }
