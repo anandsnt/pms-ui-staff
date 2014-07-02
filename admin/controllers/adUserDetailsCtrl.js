@@ -76,7 +76,13 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
     * @param {int} index of the clicked role
     */
 	$scope.selectAssignedRole = function($event, index){
-		if(lastDropedTime == ''){
+		
+
+		var lastSelectedItem =$scope.selectedAssignedRole;
+		if(lastSelectedItem == index){
+			$scope.selectedAssignedRole =-1;
+		}
+		else if(lastDropedTime == ''){
 			$scope.selectedAssignedRole = index;			
 		}
 		else if(typeof lastDropedTime == 'object') { //means date
@@ -96,7 +102,12 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
     * @param {int} index of the clicked role
     */
 	$scope.selectUnAssignedRole = function($event, index){
-		if(lastDropedTime == ''){
+
+		var lastSelectedItem =$scope.selectedUnassignedRole;
+		if(lastSelectedItem == index){
+			$scope.selectedUnassignedRole =-1;
+		}
+		else if(lastDropedTime == ''){
 			$scope.selectedUnassignedRole = index;			
 		}
 		else if(typeof lastDropedTime == 'object') { //means date
