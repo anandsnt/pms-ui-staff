@@ -81,8 +81,11 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		var dataToPost = {};
 		dataToPost.first_name = $.trim(that.myDom.find('#first-name').val());
 		dataToPost.last_name = $.trim(that.myDom.find('#last-name').val());
+
 		dataToPost.credit = parseFloat($.trim(that.myDom.find('#credit-to-add').val()));
-		
+		if(isNaN(dataToPost.credit)){
+			dataToPost.credit = 0.00;
+		}
 		var url = '/api/smartbands/' + that.accountID;
 	    var options = { 
 			requestParameters: JSON.stringify(dataToPost),

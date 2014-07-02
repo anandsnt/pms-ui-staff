@@ -1,6 +1,8 @@
 sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 
 					function($rootScope, $scope, $state, RVReservationSummarySrv){
+
 	BaseCtrl.call(this, $scope);
+	var MLISessionId =  "";
 
 	$scope.init = function(){
 		$scope.data = {};
@@ -86,13 +88,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		if(!isEmpty($scope.reservationData.paymentType.type)){
 			data.guest_detail.payment_type = {};
 			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
-			data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+			// data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
 			data.guest_detail.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
 															$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
 			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-
-		}
 		
+		}
+		if($scope.reservationData.paymentType.type.value === "CC"){
+			data.guest_detail.payment_type.session_id = MLISessionId;
+		}	
 														
 		data.company_id = $scope.reservationData.company.id;
 		data.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -106,11 +110,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 	};
 
-	/**
-	* Click handler for confirm button - 
-	* Creates the reservation and on success, goes to the confirmation screen
-	*/
-	$scope.submitReservation = function(){
+	$scope.proceedCreatingReservation = function(){
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
@@ -118,10 +118,76 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.reservationId = data.id;
 			$scope.reservationData.confirmNum = data.confirm_no;
 			$state.go('rover.reservation.mainCard.reservationConfirm');
+			MLISessionId = "";
 			
 		};
+		var saveFailure =  function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+			MLISessionId = "";
 
-		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+		}
+
+		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess,saveFailure);
+	}
+
+	/**
+	* MLI integration 
+	*
+	*/
+	$scope.fetchMLISession = function(){
+
+		 var sessionDetails = {};
+			 sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
+			 sessionDetails.cardSecurityCode = $scope.reservationData.paymentType.ccDetails.cvv;
+			 sessionDetails.cardExpiryMonth = $scope.reservationData.paymentType.ccDetails.expMonth;
+			 sessionDetails.cardExpiryYear = $scope.reservationData.paymentType.ccDetails.expYear;
+		
+		 var callback = function(response){
+		 	
+		 	$scope.$emit("hideLoader");
+		 	$scope.$apply();
+		 	if(response.status ==="ok"){
+
+		 		MLISessionId = response.session;
+		 		$scope.proceedCreatingReservation();// call save payment details WS
+		 		
+		 	}
+		 	else{
+		 		$scope.errorMessage = ["There is a problem with your credit card"];
+		 	}			 	
+		 }
+		 $scope.$emit("showLoader");
+		 HostedForm.updateSession(sessionDetails, callback);		;
+	}
+
+
+	$scope.setUpMLIConnection = function(){
+		HostedForm.setMerchant($rootScope.MLImerchantId);
+	}();
+
+
+
+
+	/**
+	* Click handler for confirm button - 
+	* Creates the reservation and on success, goes to the confirmation screen
+	*/
+	$scope.submitReservation = function(){
+
+		
+	   if($scope.reservationData.paymentType.type.value === "CC"){
+		
+			if($scope.reservationData.paymentType.ccDetails.number.length ===0){
+				$scope.errorMessage = ["There is a problem with your credit card"];
+			}else{
+				$scope.fetchMLISession();
+			}			
+		}
+		else{
+			$scope.proceedCreatingReservation();
+		}
+		
 	};
 
 	/**

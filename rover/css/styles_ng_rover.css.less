@@ -59,7 +59,9 @@
     @import "less/app/07_print.less"; 
 }
 
-
+#main-menu .nav-toggle.updated span.active {
+   background-image:  asset-url("image-active-drawer.png") !important;
+}
 
 //Added for animation effects
 .slide-left.ng-enter,
@@ -419,17 +421,17 @@ height: 410px;
 height: 60px;
 background: rgba(0,0,0,0.1);
 .entry{
-	width:100%;
-	 top:-20px;
+  width:100%;
+   top:-20px;
 }
 input{
 background-color:#FCFCFC;
 }
 
 button.icons.icon-search{
-	background: @icons;
+  background: @icons;
     background-repeat: no-repeat;
-	 top:15px;
+   top:15px;
 }
 
 
@@ -476,6 +478,10 @@ button.icons.icon-search{
   margin-right: 10px !important;
 }
 
+.payment-popup{
+  width:100% !important;
+}
+
 .roomListAnimation {
   width: 67% !important;
   margin-left: 200px !important;
@@ -489,6 +495,7 @@ button.icons.icon-search{
     height: 50px !important;
     vertical-align: middle;     
 }
+
 
 /* 
 * Angular UI-States Animations      
@@ -515,7 +522,7 @@ button.icons.icon-search{
   #fade > .in;
 }
 
-/* ui-view animation hook up class for root-view */
+/* ui-view animation hook up class for main-view */
 .main-view {
   position: absolute;
   top: 0;
@@ -581,4 +588,7 @@ untill angular is ready to activate it */
     border-radius: 4px 4px 4px 4px;
     position: absolute;
     width: 100%;
+}
+.occupancy-cancel{
+  margin-left: 30px;
 }

@@ -99,4 +99,76 @@ function BaseCtrl($scope){
         }
         console.log(returnText);
     }; 	
+     /*
+     * To set the title of each navigation
+     */
+    $scope.setTitle = function(title){
+    	document.title = title;
+    };
+
+    $scope.goBack = function($rootScope, $state){
+		
+		if($rootScope.previousStateParam){
+			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+		}
+		else if($rootScope.previousState){
+			$state.go($rootScope.previousState);
+		}
+		else 
+		{
+			$state.go('admin.dashboard', {menu : 0});
+		}
+	
+	};
+
+	/*
+	    this is the default scroller options used by controllers
+		this can be modified through setScroller function
+    */
+    $scope.timeOutForScrollerRefresh = 300;
+    $scope.defaultScrollerOptions = {
+    	snap: false,
+		scrollbars: 'custom',
+		hideScrollbar: false,
+		click: true,
+		tap: true,
+		scrollX: false, 
+		scrollY: true, 
+		preventDefault: true
+    };
+
+    /*
+    	function to handle scroll related things
+    	@param1: string as key 
+    	@param2: object as scroller options
+    */
+    $scope.setScroller = function (key, scrollerOptions){
+    	if(typeof scrollerOptions === 'undefined'){
+    		scrollerOptions = {};
+    	}
+    	//here is using a angular function to extend
+    	angular.extend (scrollerOptions, $scope.defaultScrollerOptions);
+    	//checking whether scroll options object is already initilised in parent controller
+    	//if so we need add a key, otherwise initialise and add
+    	var isEmptyParentScrollerOptions = isEmptyObject ($scope.$parent.myScrollOptions);
+    	
+    	if (isEmptyParentScrollerOptions) { 
+    		$scope.$parent.myScrollOptions = {}; 		
+    	}
+    	
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions;
+    	console.log($scope.$parent.myScrollOptions);
+    };
+
+    /*
+    	function to refresh the scroller 
+    	@param1: string as key 
+    */
+    $scope.refreshScroller = function (key){
+    	setTimeout(function(){
+    		console.log('in refresh method ' + key);
+    		console.log($scope.$parent.myScroll[key]);
+    		$scope.$parent.myScroll[key].refresh();
+    	}, $scope.timeOutForScrollerRefresh);   	
+    };
 }

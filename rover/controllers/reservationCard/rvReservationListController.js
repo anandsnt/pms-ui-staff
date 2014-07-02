@@ -1,18 +1,14 @@
 sntRover.controller('reservationListController',['$scope', function($scope){
-	$scope.$parent.myScrollOptions = {
-	    'resultListing': {
-	        snap: false,
-	        scrollbars: true,
-	        hideScrollbar: false
-	    },
-	};
+	BaseCtrl.call(this, $scope);
+	$scope.setScroller('resultListing');
+	
 	
 	 //update left nav bar
 	$scope.$emit("updateRoverLeftMenu","");
 	
 	$scope.$on('RESERVATIONLISTUPDATED', function(event) {
 		setTimeout(function(){
-			$scope.$parent.myScroll['resultListing'].refresh();
+			$scope.refreshScroller('resultListing');
 			}, 
 		500);
 		

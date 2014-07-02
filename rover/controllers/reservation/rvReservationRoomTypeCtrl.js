@@ -7,7 +7,16 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.containerHeight = 250;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
-		$scope.activeCriteria = "ROOM_TYPE";
+		// activate room type default view based on reservation settings
+		if($scope.otherData.defaultRateDisplayName == 'By Rate'){
+			$scope.activeCriteria = "RATE";
+		}
+		else if($scope.otherData.defaultRateDisplayName == 'By Room Type'){
+			$scope.activeCriteria = "ROOM_TYPE";
+		}
+		else{
+			$scope.activeCriteria = "RECOMMENDED";
+		}
 		//CICO-5253 Rate Types Listing
 		// 			RACK
 		// 			BAR
@@ -222,9 +231,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.totalTaxAmount = 0;
 
 			//Navigate to the next screen
-			// $state.go('rover.reservation.mainCard.summaryAndConfirm');
 			$scope.checkOccupancyLimit();
-			$state.go('rover.reservation.mainCard.addons');
+			$state.go('rover.reservation.mainCard.addons', {"from_date" : $scope.reservationData.arrivalDate, "to_date": $scope.reservationData.departureDate});
 		}
 
 		$scope.showAllRooms = function() {

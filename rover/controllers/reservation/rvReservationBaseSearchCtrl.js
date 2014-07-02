@@ -19,6 +19,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.setDepartureDate();
             }
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
+            $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
             $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
@@ -137,8 +139,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     eachItem = {};
 
                     eachItem = {
-                        label: item.account_first_name + " " + item.account_last_name,
-                        value: item.account_first_name + " " + item.account_last_name,
+                        label: item.account_name ,
+                        value: item.account_name ,
                         image: item.company_logo,
                         
                         // only for our understanding
@@ -181,7 +183,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if ( request.term.length === 0 ) {
                 companyCardResults = [];
                 lastSearchText = "";
-            } else if ( request.term.length > 1 ) {
+            } else if ( request.term.length > 2 ) {
                 fetchData();
             }
         }

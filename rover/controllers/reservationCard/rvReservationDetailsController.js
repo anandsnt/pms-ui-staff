@@ -37,22 +37,16 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 		$scope.wake_up_time = (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined')?$scope.reservationData.reservation_card.wake_up_time.wake_up_time:$filter('translate')('NOT_SET');
 	});
 	
-	$scope.$parent.myScrollOptions = {		
-	    'resultDetails': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    },
-	};
+	$scope.setScroller('resultDetails');
+
 
 	
 	
 	$scope.$on('$viewContentLoaded', function() {
-		setTimeout(function(){
-			$scope.$parent.myScroll['resultDetails'].refresh();
+		setTimeout(function(){			
+			$scope.refreshScroller('resultDetails');			
 			}, 
-		3000);
+		1000);
 		
      });
 		

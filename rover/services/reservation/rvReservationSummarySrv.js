@@ -1,13 +1,13 @@
-sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
-    function ($q, rvBaseWebSrvV2, RVBaseWebSrv) {
+sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
+    function ($q, rvBaseWebSrvV2) {
         var that = this;
 
         this.reservationData = {};
         this.reservationData.demographics = {};
         this.fetchPaymentMethods = function(){
             var deferred = $q.defer();
-            var url = '/staff/payments/addNewPayment.json';
-            RVBaseWebSrv.getJSON(url).then(function(data) {
+            var url = '/api/hotel_settings/payment_types';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             },function(data){
                 deferred.reject(data);

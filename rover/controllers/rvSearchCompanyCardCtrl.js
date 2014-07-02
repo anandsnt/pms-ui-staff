@@ -45,7 +45,7 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
   	* function to perform filtering/request data from service in change event of query box
   	*/
 	$scope.queryEntered = function(){
-		if($scope.textInQueryBox === ""){
+		if($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3){
 			$scope.results = [];
 		}
 		else{

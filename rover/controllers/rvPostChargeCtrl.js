@@ -1,12 +1,3 @@
-
-// Array Remove - By John Resig (MIT Licensed)
-// array remove via splice is very very costly
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
-
 sntRover.controller('RVPostChargeController',
 	[
 		'$rootScope',
@@ -20,10 +11,10 @@ sntRover.controller('RVPostChargeController',
 
 			// quick ref to fetched items
 			// and chosen one from the list
-			$scope.fetchedItem = $scope.fetchedData.items;
-			$scope.chosenFetchedItem = null;
+			$scope.fetchedItems = $scope.fetchedData.items;
+			$scope.selectedChargeItem = null;
 
-			console.log( $scope.fetchedItem );
+			console.log( $scope.fetchedItems );
 
 			// set the default bill number
 			$scope.billNumber = $scope.fetchedData.bill_numbers[0];
@@ -38,8 +29,8 @@ sntRover.controller('RVPostChargeController',
 				// convert it to int, with causion
 				var chargeGroupInt = isNaN(parseInt($scope.chargeGroup)) ? $scope.chargeGroup : parseInt($scope.chargeGroup);
 
-				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
-					var item = $scope.fetchedItem[i];
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					var item = $scope.fetchedItems[i];
 
 					if ( $scope.chargeGroup === '' ) {
 						item.show = true;
@@ -65,8 +56,8 @@ sntRover.controller('RVPostChargeController',
 				// reset the charge group
 				$scope.chargeGroup = '';
 
-				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
-					var item = $scope.fetchedItem[i];
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					var item = $scope.fetchedItems[i];
 
 					// let show all items
 					item.show = true;
@@ -85,8 +76,8 @@ sntRover.controller('RVPostChargeController',
 				$scope.query = '';
 
 				// show all
-				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
-					$scope.fetchedItem[i].show = true;
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					$scope.fetchedItems[i].show = true;
 				};
 			};
 
@@ -118,12 +109,12 @@ sntRover.controller('RVPostChargeController',
 
 
 			var calNetTotalPrice = function() {
-				var item  = '',
-					totalPrice = 0;
+				var totalPrice = 0;
 
-				for (var i = 0, j = $scope.chargedItems.length; i < j; i++) {
-					item = $scope.chargedItems[i];
-					totalPrice += item.total_price;
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					if ( $scope.fetchedItems[i].isChosen ) {
+						totalPrice += $scope.fetchedItems[i].total_price;
+					};
 				}
 
 				// if we changed this scope prop inside the loop
@@ -132,214 +123,111 @@ sntRover.controller('RVPostChargeController',
 				$scope.net_total_price = totalPrice;
 			};
 
-			$scope.addItem = function() {
-				var item = angular.copy( this.each );
+			/**
+			*	Method to add single charge to charged item list
+			*
+			*	Thing to do:
+			*	1. modify the count
+			*	2. track the item as selected
+			*	3. update the net total price
+			*/
+			$scope.addItem = function(item) {
+				
+				// it is already added
+				if ( item.isChosen ) {
+					item.count++;
+				}
 
-				var hasItem = _.find($scope.chargedItems, function(each) {
-					return each.value === item.value;
-				});
+				// adding to the list
+				else {
+					item.isChosen = true;
+					item.count = 1;
+				}
 
-				// since add changed selected item
-				// set 'lastInput' to null
-				lastInput = null;
+				item.total_price = item.modifiedPrice * item.count;
 
-				// if already added
-				if ( !!hasItem ) {
+				$scope.selectedChargeItem = item;
 
-					// update the charged Item
-					$scope.chosenFetchedItem = this.each;
-					$scope.chosenChargedItem = hasItem;
-
-					// update the count
-					$scope.chosenFetchedItem.count++;
-					$scope.chosenChargedItem.count++;
-
-					// update price
-					$scope.chosenChargedItem.total_price = $scope.chosenChargedItem.unit_price * $scope.chosenChargedItem.count;
-
-					// update net total price
-					calNetTotalPrice();
-
-					return;
-				};
-
-				// track the choosend from fetched
-				$scope.chosenFetchedItem = this.each;
-
-				// update chosenFetchedItem count
-				$scope.chosenFetchedItem.count = 1;
-
-				// set up initial count
-				item.count = 1;
-
-				// set up initial total price
-				item.total_price = item.unit_price * item.count;
-
-				// update net total price
-				// since single add just add the new price
-				$scope.net_total_price += item.total_price;
-
-				$scope.chargedItems.push( item );
-				$scope.chosenChargedItem = item;
+				calNetTotalPrice();
 			};
 
+			/**
+			*	Method to remove the chosen charge from charged list
+			*
+			*	Things to do:
+			*	1. mark it as not chosen
+			*	2. reset its count
+			*	3. reset its modified price
+			*	4. untrack
+			*	5. update the net total price
+			*/
 			$scope.removeItem = function() {
-				if ( ! $scope.chargedItems.length ) {
-					return;
-				};
+				$scope.selectedChargeItem.isChosen = false;
+				$scope.selectedChargeItem.count = 0;
+				$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
 
-				// testing if working on a array clone
-				// increase remove performance
-				var chargedItemsCopy = _.uniq( $scope.chargedItems );
-				var removeIndex = '';
+				$scope.selectedChargeItem = {};
 
-				for (var i = 0, j = chargedItemsCopy.length; i < j; i++) {
-					if ( chargedItemsCopy[i]['value'] === $scope.chosenChargedItem.value ) {
-
-						// reduce the total price from net total price
-						$scope.net_total_price -= chargedItemsCopy[i]['total_price'];
-						
-						removeIndex = i;
-						break;
-					};
-				};
-
-				chargedItemsCopy.remove( removeIndex );
-				$scope.chargedItems = chargedItemsCopy;
-
-				// remove the reference
-				$scope.chosenChargedItem = null;
-
-				// reset the count and remove reference
-				$scope.chosenFetchedItem.count = 0;
-				$scope.chosenFetchedItem = null;
-
-				// since delete unselects
-				// set 'lastInput' to null
-				lastInput = null;
+				// recalculate net price
+				calNetTotalPrice();
 			};
 
-			$scope.selectUnselect = function() {
+			/**
+			*	Method to select/un-select current selected item
+			*/
+			$scope.selectUnselect = function(item) {
 
-				// if already selected then unselect
-				// else selected the clicked
-				if ( $scope.chosenChargedItem && $scope.chosenChargedItem.value === this.each.value ) {
-					$scope.chosenChargedItem = null;
-					$scope.chosenFetchedItem = null;
+				// yep we have a selected item, gonna un-select
+				if ( $scope.selectedChargeItem && $scope.selectedChargeItem.item_name === item.item_name ) {
+					$scope.selectedChargeItem = null;
+				} 
 
-					// since we are unselecting
-					// set 'lastInput' to null
-					lastInput = null;
-				} else {
-					$scope.chosenChargedItem = this.each;
-					
-					// loop and update
-					for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
-						var item = $scope.fetchedItem[i];
-
-						if (item.value === $scope.chosenChargedItem.value) {
-							$scope.chosenFetchedItem = item;
-							break;
-						};
-					};
+				// nope we dont have a selected item 
+				else {
+					$scope.selectedChargeItem = item;
 				}
 
 				// since we moved reset this value
 				userEnteredPrice = '';
+
+				// since we are unselecting
+				lastInput = null;
 			};
 
-			// actions to be taken for numberpad button press
-			$scope.calBtnAction = function(input) {
-				lastInput = input;
+			$scope.isAnyChosen = function(from) {
+				var ret = false;
 
-				// toggle 'QTY' and 'PR' as required and exit
-				if ( input === 'QTY' || input === 'PR' ) {
-					$scope.calToggle = input;
-					return;
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					if ( $scope.fetchedItems[i].isChosen ) {
+						ret = true;
+						break;
+					};
 				};
 
-				// toggle total_price of 'chosenChargedItem' sign value and exit
-				if ( input === 'SIGN' ) {
-					// change
-					if ( $scope.chosenChargedItem.total_price < 0 ) {
-						$scope.chosenChargedItem.total_price = Math.abs( $scope.chosenChargedItem.total_price );
-					} else {
-						$scope.chosenChargedItem.total_price = -Math.abs( $scope.chosenChargedItem.total_price );
-					}
-
-					// update net total price
-					calNetTotalPrice();
-
-					return;
-				};
-
-				// clear input numbers
-				if ( input === 'CLR' ) {
-					var valueStr = '';
-
-					if ( $scope.calToggle === 'QTY' && $scope.chosenChargedItem.count > 1 ) {
-						valueStr = $scope.chosenChargedItem.count.toString();
-						valueStr = parseInt( valueStr.slice(0, -1) );
-
-						if ( isNaN(valueStr) || valueStr === 1 ) {
-							$scope.chosenChargedItem.count = 1;
-							$scope.chosenFetchedItem.count = 1;
-						} else {
-							$scope.chosenChargedItem.count = valueStr;
-							$scope.chosenFetchedItem.count = valueStr;
-						}
-
-						// update price of the chosenChargedItem
-						$scope.chosenChargedItem.total_price = $scope.chosenChargedItem.unit_price * $scope.chosenChargedItem.count;
-
-						// update net total price
-						calNetTotalPrice();
-					} else {
-
-						if ( userEnteredPrice.length > 1 ) {
-							userEnteredPrice = userEnteredPrice.slice(0, -1);
-							$scope.chosenChargedItem.unit_price = parseFloat( userEnteredPrice );
-
-							// if our 'userEnteredPrice' string
-							// now ends with '.' remove that too
-							if ( userEnteredPrice.indexOf('.') + 1 === userEnteredPrice.length ) {
-								userEnteredPrice = userEnteredPrice.slice(0, -1);
-							};
-						} else {
-							$scope.chosenChargedItem.unit_price = $scope.chosenFetchedItem.unit_price;
-						}
-
-						// update price of the chosenChargedItem
-						$scope.chosenChargedItem.total_price = $scope.chosenChargedItem.unit_price * $scope.chosenChargedItem.count;
-
-						// update net total price
-						calNetTotalPrice();
-					}
-
-					return;
-				};
+				return ret;
 			};
+
 
 			// actions to be taken for numberpad number press
 			$scope.calNumAction = function(input) {
 
+				//selectedChargeItem
+
 				// if user is trying to update the quantity
 				if ( $scope.calToggle === 'QTY' ) {
-					var countStr = $scope.chosenChargedItem.count.toString();
+					var countStr = $scope.selectedChargeItem.count.toString();
 
 					switch(input) {
 						case 1:
-							if ( $scope.chosenChargedItem.count === 1 && (lastInput === 'QTY' || lastInput === 'CLR' || lastInput === null) ) {
+							if ( $scope.selectedChargeItem.count === 1 && (lastInput === null || lastInput === 'CLR' || lastInput === 'QTY') ) {
 								// do nothing
 								// hard to explain in words
 								// try it out in rover and see
-							} else if ( $scope.chosenChargedItem.count === 1 && lastInput === 1 ) {
-								$scope.chosenChargedItem.count = 11;
-								$scope.chosenFetchedItem.count = 11;
+							} else if ( $scope.selectedChargeItem.count === 1 && lastInput === 1 ) {
+								$scope.selectedChargeItem.count = 11;
 							} else {
 								countStr += 1;
-								$scope.chosenChargedItem.count = parseInt( countStr );
-								$scope.chosenFetchedItem.count = parseInt( countStr );
+								$scope.selectedChargeItem.count = parseInt( countStr );
 							}
 							break;
 
@@ -349,57 +237,61 @@ sntRover.controller('RVPostChargeController',
 							break;
 
 						default:
-							if ( $scope.chosenChargedItem.count === 1 && lastInput != 1 ) {
+							if ( $scope.selectedChargeItem.count === 1 && lastInput != 1 ) {
 								if (input != '0') {
-									$scope.chosenChargedItem.count = parseInt( input );
-									$scope.chosenFetchedItem.count = parseInt( input );
+									$scope.selectedChargeItem.count = parseInt( input );
 								}
 							} else {
 								countStr += input;
-								$scope.chosenChargedItem.count = parseInt( countStr );
-								$scope.chosenFetchedItem.count = parseInt( countStr );
+								$scope.selectedChargeItem.count = parseInt( countStr );
 							}
 							break;
 					}
 
 					// update price of the chosenChargedItem
-					$scope.chosenChargedItem.total_price = $scope.chosenChargedItem.unit_price * $scope.chosenChargedItem.count;
-				} else {
+					$scope.selectedChargeItem.total_price = $scope.selectedChargeItem.modifiedPrice * $scope.selectedChargeItem.count;
+				}
+
+				// user is trying to update the price
+				else {
 					switch(input) {
 						case '.':
-							if ( userEnteredPrice.indexOf('.') === -1) {
-								userEnteredPrice += input;
+							if ( $scope.selectedChargeItem.userEnteredPrice.length && $scope.selectedChargeItem.userEnteredPrice.indexOf('.') === -1 ) {
+								$scope.selectedChargeItem.userEnteredPrice += '.';
 							};
 							break;
 
 						default:
-							if( $scope.chosenChargedItem.unit_price === $scope.chosenFetchedItem.unit_price ) {
-								if (input != '0') {
-									$scope.chosenChargedItem.unit_price = parseFloat( input );
 
-									// keep a string verison too
-									userEnteredPrice = input.toString();
-								};								
+							// normal senario user must no be allowed to make the price as 0
+							// as soon as it choosen
+							if( $scope.selectedChargeItem.modifiedPrice === $scope.selectedChargeItem.unit_price ) {
+								if ( input !== 0 ) {
+									$scope.selectedChargeItem.userEnteredPrice += input;
+									$scope.selectedChargeItem.modifiedPrice = parseFloat( $scope.selectedChargeItem.userEnteredPrice );
+								};
 							} else {
-								userEnteredPrice += input.toString();
+								$scope.selectedChargeItem.userEnteredPrice += input;
 
-								if ( userEnteredPrice.indexOf('.') === -1) {
-									$scope.chosenChargedItem.unit_price = parseFloat( userEnteredPrice );
-								} else {
-									// TODO: ignore multiple 00 press
-
-									if ( userEnteredPrice.split('.')[1].length < 3 ) {
-										$scope.chosenChargedItem.unit_price = parseFloat( userEnteredPrice );
-									} else {
-										userEnteredPrice = userEnteredPrice.slice(0, -1);
-									}
+								// additional check
+								// if there are decimals and are not limited to 2 place
+								// chop off the 3 palce decimal
+								if ( $scope.selectedChargeItem.userEnteredPrice.split('.')[1] && $scope.selectedChargeItem.userEnteredPrice.split('.')[1].length > 2 ) {
+									$scope.selectedChargeItem.userEnteredPrice = $scope.selectedChargeItem.userEnteredPrice.slice(0, -1);
 								}
+
+								$scope.selectedChargeItem.modifiedPrice = parseFloat( $scope.selectedChargeItem.userEnteredPrice );
+
+								// please note:
+								// 1. user cannot enter anymore after e.g: "65.89"
+								// 2. after this, user cant enter anymore after selecting some other charge then this "65.89" charge
+								// 3. user will have to first clear added "65.89" before adding a new value.
 							}
 							break;
 					}
 
 					// update price of the chosenChargedItem
-					$scope.chosenChargedItem.total_price = $scope.chosenChargedItem.unit_price * $scope.chosenChargedItem.count;
+					$scope.selectedChargeItem.total_price = $scope.selectedChargeItem.modifiedPrice * $scope.selectedChargeItem.count;
 				}
 
 				// update net total price
@@ -410,23 +302,105 @@ sntRover.controller('RVPostChargeController',
 				lastInput = input;
 			};
 
-			$scope.postCharges = function() {
-				var items = [];
 
-				for (var i = 0, j = $scope.chargedItems.length; i < j; i++) {
-					var each = {};
+			// actions to be taken for numberpad button press
+			$scope.calBtnAction = function(input) {
 
-					each['value'] = $scope.chargedItems[i]['value'];
-					each['amount'] = $scope.chargedItems[i]['total_price'];
-					each['quantity'] = $scope.chargedItems[i]['count'];
+				lastInput = input;
 
-					items.push( each );
+				// toggle 'QTY' and 'PR' as required and exit
+				if ( input === 'QTY' || input === 'PR' ) {
+					$scope.calToggle = input;
+					return;
 				};
+
+				// toggle total_price of 'selectedChargeItem' sign value and exit
+				if ( input === 'SIGN' ) {
+					// change
+					if ( $scope.selectedChargeItem.total_price < 0 ) {
+						$scope.selectedChargeItem.total_price = Math.abs( $scope.selectedChargeItem.total_price );
+					} else {
+						$scope.selectedChargeItem.total_price = -Math.abs( $scope.selectedChargeItem.total_price );
+					}
+
+					// update net total price
+					calNetTotalPrice();
+
+					return;
+				};
+
+				// clear input numbers
+				if ( input === 'CLR' ) {
+
+					var valueStr = '';
+
+					// user trying to clear the count
+					if ( $scope.calToggle === 'QTY' && $scope.selectedChargeItem.count > 1 ) {
+						valueStr = $scope.selectedChargeItem.count.toString();
+						valueStr = parseInt( valueStr.slice(0, -1) );
+
+						// update countStr
+						$scope.selectedChargeItem.count = isNaN(valueStr) ? 1 : valueStr;
+
+						// update price of the chosenChargedItem
+						$scope.selectedChargeItem.total_price = $scope.selectedChargeItem.modifiedPrice * $scope.selectedChargeItem.count;
+
+						// update net total price
+						calNetTotalPrice();
+					} 
+
+					// user tryin to clear price he entered
+					else {
+
+						// reduce the last char
+						$scope.selectedChargeItem.userEnteredPrice = $scope.selectedChargeItem.userEnteredPrice.slice(0, -1);
+
+						// if we are left e.g "12." remove the last "."
+						if ( $scope.selectedChargeItem.userEnteredPrice.charAt($scope.selectedChargeItem.userEnteredPrice.length - 1) === '.' ) {
+							$scope.selectedChargeItem.userEnteredPrice = $scope.selectedChargeItem.userEnteredPrice.slice(0, -1);
+						}
+
+						// if there is any char left
+						if ( $scope.selectedChargeItem.userEnteredPrice.length ) {
+							$scope.selectedChargeItem.modifiedPrice = parseFloat( $scope.selectedChargeItem.userEnteredPrice );
+						} 
+
+						// nope everything is cleared
+						else {
+							$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
+						}
+
+						// update price of the chosenChargedItem
+						$scope.selectedChargeItem.total_price = $scope.selectedChargeItem.modifiedPrice * $scope.selectedChargeItem.count;
+
+						// update net total price
+						calNetTotalPrice();
+					}
+
+					return;
+				};
+			};
+
+			$scope.postCharges = function() {
+				var items = [],
+					each = {};
+
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					if ( $scope.fetchedItems[i].isChosen ) {
+						each = {};
+
+						each['value']    = $scope.fetchedItems[i]['value'];
+						each['amount']   = $scope.fetchedItems[i]['total_price'];
+						each['quantity'] = $scope.fetchedItems[i]['count'];
+
+						items.push( each );
+					};
+				}
 
 				var data = {
 					reservation_id: $scope.reservation_id,
-					fetch_total_balance: true,
-					bill_no: $scope.billNumber,
+					fetch_total_balance: $scope.fetchTotalBal,
+					bill_no: $scope.passActiveBillNo || $scope.billNumber,
 					total: $scope.net_total_price,
 					items: items
 				};
