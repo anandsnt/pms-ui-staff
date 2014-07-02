@@ -1,18 +1,21 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', function($scope, RVSearchSrv, $stateParams, $filter){
+sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
 	
   BaseCtrl.call(this, $scope);
-  
-  
+  $scope.shouldShowLateCheckout = true;
+
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
   $scope.$emit("updateRoverLeftMenu","search");
   var oldTerm = "";
   var oldType = "";
+  var firstClickedItem = "direct";
+  $scope.currentType = "direct";
   $scope.isLateCheckoutList = false;
   $scope.searchTermPresent = false;
   if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
     $stateParams.type != null && $stateParams.type.trim() != '') {
       oldType = $stateParams.type;
+      firstClickedItem = $scope.currentType =  $stateParams.type;
       $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
   }
 
@@ -51,14 +54,22 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     
   };
 
-  var headingListDict = {  
-    'DUEIN':  $filter('translate')('DUEIN_TITLE'),
-    'INHOUSE': $filter('translate')('IN_HOUSE_TITLE'),
-    'DUEOUT': $filter('translate')('CHECKING_OUT_TITLE'),
-    'LATE_CHECKOUT': $filter('translate')('LATE_CHECKOUT_TITLE'),
-    '': $filter('translate')('SEARCH_TITLE')
-  };
-
+	  var headingListDict = {  
+	    'DUEIN':  $filter('translate')('DUEIN_TITLE'),
+	    'INHOUSE': $filter('translate')('IN_HOUSE_TITLE'),
+	    'DUEOUT': $filter('translate')('CHECKING_OUT_TITLE'),
+	    'LATE_CHECKOUT': $filter('translate')('LATE_CHECKOUT_TITLE'),
+	    '': $filter('translate')('SEARCH_TITLE')
+	  };
+	  $scope.heading = headingListDict[oldType]; 
+      $scope.setTitle($scope.heading);
+      
+  	$scope.results = searchResultdata;
+    oldType = "";
+    oldTerm = $scope.textInQueryBox;
+    setTimeout(function(){refreshScroller();}, 1000);
+    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+      
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
 
@@ -66,11 +77,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 		$scope.results = data;
 	    oldType = "";
 	    oldTerm = $scope.textInQueryBox;
-	    setTimeout(function(){refreshScroller();}, 750);
+	    setTimeout(function(){refreshScroller();}, 1000);
 	    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
-
+	
   /*
   * function used in template to map the reservation status to the view expected format
   */
@@ -151,29 +162,38 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       else{   
         $scope.results = [];
       }
-
-
-
-  };
+    };
+// 
+// 
+// 
+  // };
 
   //setting up initial things
-  performInitialActions();
+  // performInitialActions();
 
 
   /**
   * function to perform filtering/request data from service in change event of query box
   */
 	$scope.queryEntered = function(){
+
 		var queryText = $scope.textInQueryBox;
 		
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 	    //setting the heading of the screen to "Search"
 	    $scope.heading = headingListDict['']; 
-	
+		if(queryText.length <=3){
+			if(firstClickedItem == "direct"){
+				$scope.currentType = firstClickedItem;
+			} 
+		} else {
+			$scope.currentType = "";
+		}
 	    displayFilteredResults();  
   };
   
   $scope.clearResults = function(){
+
    if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
       $stateParams.type != null && $stateParams.type.trim() != '') {
         oldType = $stateParams.type;

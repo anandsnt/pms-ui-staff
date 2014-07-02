@@ -17,6 +17,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			
 			var fetchSuccess = function(data){
 				$scope.data = data.data;
+				$scope.data.brands = [];
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 					$scope.data.check_in_primetime ="AM";
@@ -126,7 +127,19 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   Method to go back to previous state.
     */
 	$scope.back = function(){
-		if($scope.isAdminSnt) $state.go("admin.hotels");
+		if($scope.isAdminSnt) {
+			
+		    if($rootScope.previousStateParam){
+     			 $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+    		}
+    		else if($rootScope.previousState){
+      			$state.go($rootScope.previousState);
+   			 }
+    		else 
+    		{
+      			$state.go("admin.hotels");
+    		}
+		}
 		else {
 			if($rootScope.previousStateParam){
 				$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
@@ -140,5 +153,16 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			}
 		}
 	};
+	/**
+    *   To handle change in hotel chain and populate brands accordingly.
+    */
+	$scope.$watch('data.hotel_chain', function() {
+		$scope.data.brands = [];
+        angular.forEach($scope.data.chains, function(item, index) {
+                if (item.id == $scope.data.hotel_chain) {
+                	$scope.data.brands = item.brands;
+                }
+        });
+    });
 	
 }]);

@@ -34,13 +34,15 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  * Failure call back of login
 	  */
 	 $scope.failureCallBack = function(errorMessage){
+	 	$scope.hasLoader = false;
 	 	$scope.errorMessage = errorMessage;
 	 };
 	 /*
 	  * Submit action of login
 	  */
 	 $scope.submit = function() {
-		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
+	 	$scope.hasLoader = true;
+ 		loginSrv.login($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 	
 

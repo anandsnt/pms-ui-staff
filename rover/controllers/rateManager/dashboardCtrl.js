@@ -83,9 +83,13 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         //$scope.filterConfigured = true;
         $scope.computeColumWidth();
         $scope.toggleLeftMenu();
-        $scope.$broadcast("showRatesClicked");
+        $scope.$broadcast("updateRateCalendar");
+        $scope.$broadcast("updateOccupancyGraph");
         
     };
+    /**
+    * Click handler for back button from room type calendar view
+    */
     $scope.backButtonClicked = function(){
         $scope.backbuttonEnabled = false;
         $scope.displayMode = "CALENDAR";

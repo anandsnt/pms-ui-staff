@@ -14,4 +14,7 @@
     "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
     "NIGHT_LABEL":"night",
     "NIGHTS_LABEL":"nights",
-    "ROOM_ASSIGNMENT_TITLE":"Room Assignment"
+    "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
+    "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
+    "ASSIGN_LABEL": "Assign Room",
+    "CANCEL_LABEL":"Cancel"

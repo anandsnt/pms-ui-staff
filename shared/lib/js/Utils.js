@@ -160,3 +160,50 @@ function getTimeFormated(hours, minutes, ampm) {
     var time = sHours + ":" + sMinutes;
     return time;
 }
+
+function getDateObj(dateString){
+    //TODO: Handle different conditions
+
+    return convertDateToUTC(new Date(dateString));
+}
+
+function convertDateToUTC(date) {
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+}
+
+function getCurrencySymbol(currenyCode){
+      var symbol = "";
+      if(currenyCode == "USD"){
+        symbol = "$";
+      }
+      return symbol;
+};
+
+var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspectedOnly) {
+	
+        mappedColor = "";
+        switch(roomReadyStatus) {
+
+            case "INSPECTED":
+                mappedColor = 'room-green';
+                break;
+            case "CLEAN":
+                if (checkinIsInspectedOnly == "true") {
+                    mappedColor = 'room-orange';
+                    break;
+                } else {
+                    mappedColor = 'room-green';
+                    break;
+                }
+                break;
+            case "PICKUP":
+                mappedColor = "room-orange";
+                break;
+
+            case "DIRTY":
+                mappedColor = "room-red";
+                break;
+
+        }
+        return mappedColor;
+};

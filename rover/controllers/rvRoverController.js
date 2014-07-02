@@ -6,6 +6,53 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     else{
       $translate.use('EN');
     };
+
+    /*
+     * To close drawer on click inside pages
+     */
+    $scope.closeDrawer = function(event){
+    	 $scope.menuOpen = false;
+    };
+
+
+
+
+    /***
+    * A method on the $rootScope to determine if the
+    * slide animation during stateChange should run in reverse or forward
+    *
+    * @param {string} fromState - name of the fromState
+    * @param {string} toState - name of the toState
+    *
+    * @return {boolean} - to indicate reverse or not
+    */
+    $rootScope.shallRevDir = function(fromState, toState) {
+      if ( fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.search' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.housekeeping.search' && toState === 'rover.housekeeping.dashboard' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch' ) {
+        return true;
+      };
+
+      return false;
+    };
     
     // this is make sure we add an
     // additional class 'return-back' as a
@@ -13,15 +60,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     // reverse slide animation
     var uiViewRevAnim = $scope.$on( '$stateChangeSuccess', function (event, toState, toStateData, fromState, fromStateData) {
 
+      // to study the current changing states
+      console.log( fromState.name + ' ===> ' + toState.name );
+
       // check this template for the applied class:
       // app/assets/rover/partials/staycard/rvStaycard.html
 
-      // hopefully this will be the only place to toggle class
-      // as long as the current router definition stands
-
       // FUTURE: this check can include other state name also,
       // from which while returning we expect a reverse slide
-      if ( fromState.name === 'rover.staycard.billcard' ) {
+      if ( $rootScope.shallRevDir(fromState.name, toState.name) ) {
         $rootScope.returnBack = true;
       } else {
         $rootScope.returnBack = false;
@@ -32,6 +79,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     // when moving away to release memory
     $scope.$on( '$destroy', uiViewRevAnim );
     
+
+
+
+    $scope.hotelDetails = hotelDetails;
+
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
@@ -169,7 +221,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-housekeeping",
       submenu: [{
         title: "MENU_HOUSEKEEPING",
-        action: ""
+        action: "rover.housekeeping.dashboard"
       }, {
         title: "MENU_TASK_MANAGEMENT",
         action: ""
@@ -249,10 +301,27 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     /*
      * toggle action of drawer
      */
-    $scope.$on("navToggled", function() {
+    $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
       $scope.showSubMenu = false;
-    });
+    };
+    $scope.closeDrawerMenu = function(){
+       $scope.menuOpen = false;
+       $scope.showSubMenu = false;
+    };
+    //
+    // DEPRICATED!
+    // since custom event emit and listning is breaking the
+    // ng-animation associated with ui-view change
+    //
+    // REASON: There is a limited amount of time b/w the two $scopes dies and come into existance
+    // '$emit' and '$on' somehow get more priority, by the time they are execured, $scopes have shifted
+    // thus cancelling out animation, feels like animations are never considered 
+    //
+    // $scope.$on("navToggled", function() {
+    //   $scope.menuOpen = !$scope.menuOpen;
+    //   $scope.showSubMenu = false;
+    // });
 
     //when state change start happens, we need to show the activity activator to prevent further clicking
     //this will happen when prefetch the data
@@ -265,12 +334,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
       }
-
     });
 
-    $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {
+    $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) { 
       // Hide loading message
       $scope.$emit('hideLoader');
+      $rootScope.previousState = from;
+      $rootScope.previousStateParams = fromParams;
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message

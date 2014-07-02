@@ -29,7 +29,7 @@
       </li>
     </ul>
     <ul class="pickadate-cell">
-      <li ng-repeat="d in dates" ng-click="dateClicked(d)" class="{{d.className}} " ng-class="{'pickadate-active': (date == d.date) && isDateSelected,'current-date': (todayDate == d.date) && !isDateSelected,'pickdate-cell-bg':!((date == d.date) && isDateSelected)}"> 
+      <li ng-repeat="d in dates" ng-click="dateClicked(d)" class="{{d.className}} " ng-class="{'pickadate-active': (date == d.date) && isDateSelected && !d.disabled,'current-date': (todayDate == d.date) && !isDateSelected && !d.disabled,'pickdate-cell-bg':!((date == d.date) && isDateSelected && !d.disabled)}"> 
       {{d.date | date:"d"}}
     </li>
   </ul>
