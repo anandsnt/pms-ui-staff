@@ -1,9 +1,11 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv',
-function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv) {
+sntRover.controller('RVchangeStayDatesController', ['$state', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
+function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 	var that = this;
+	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
+	$scope.setTitle($scope.heading);
 	//scroller options
 	$scope.$parent.myScrollOptions = {
 		'edit_staydate_updatedDetails' : {
