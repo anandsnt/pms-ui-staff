@@ -132,6 +132,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
 		postData.selected_floor = $scope.data.selected_floor;
+		postData.max_occupancy = $scope.data.max_occupancy;
 		// to get seletected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
 			if($scope.data.room_features[i].selected == true ){

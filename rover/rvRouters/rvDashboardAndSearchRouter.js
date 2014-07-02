@@ -14,6 +14,26 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.search', {
             url: '/search/:type',
             templateUrl: '/assets/partials/search/search.html',
-            controller: 'searchController'
+            controller: 'searchController',
+            resolve: {
+                searchResultdata: function(RVSearchSrv, $stateParams) {
+                	var oldType = "";
+                	var dataDict = {};
+                	oldType = $stateParams.type;
+                	if(oldType != null) {
+	                	if(oldType == "LATE_CHECKOUT"){
+				        	dataDict.is_late_checkout_only = true;
+				        }
+				        else{
+				      		dataDict.status = oldType;
+				        }
+	         			//calling the webservice
+	                    return RVSearchSrv.fetch(dataDict);
+	                } else {
+	                	var results = [];
+	                	return results;
+	                }
+                }
+            }
         }); 
 });
