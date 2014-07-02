@@ -49,6 +49,10 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         dataToUpdate = dclone(dataToUpdate, unwantedKeys);
       };
 
+      if (typeof dataToUpdate.address == "undefined") {
+        dataToUpdate.address = {};
+      }
+
       var data = {
         'data': dataToUpdate,
         'userId': $scope.guestCardData.contactInfo.user_id

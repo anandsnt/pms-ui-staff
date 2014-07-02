@@ -45,7 +45,6 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 		$scope.$on("travelAgentSearchInitiated", function() {
 			$scope.companySearchIntiated = true;
 			$scope.travelAgents = $scope.searchedtravelAgents;
-			console.log($scope.travelAgents);
 			$scope.$broadcast("refreshTravelAgentScroll");
 		})
 

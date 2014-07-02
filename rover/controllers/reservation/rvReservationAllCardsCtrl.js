@@ -45,12 +45,28 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     $scope.$apply();
                 } else if ($(this).height() <= 120 && $scope.cardVisible) {
                     $scope.cardVisible = false;
+                    $scope.checkEditMode();
                     $scope.$apply();
                 }
             },
             stop: function(event, ui) {
                 preventClicking = true;
                 $scope.eventTimestamp = event.timeStamp;
+            }
+        }
+
+        $scope.checkEditMode = function() {
+            if ($scope.isAddNewCard) {
+                console.log("Display pop up!" + $scope.UICards[0]);
+                // Discard the card Right Here
+                // 'guest-card', 'company-card', 'travel-agent-card'
+                var cards = {
+                    'guest-card': 'guest',
+                    'company-card': 'company',
+                    'travel-agent-card': 'travel_agent'
+                }
+                $scope.detachCard(cards[$scope.UICards[0]]);
+                $scope.isAddNewCard = false;
             }
         }
 
@@ -66,6 +82,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
          */
         $scope.closeGuestCard = function() {
             $scope.guestCardHeight = resizableMinHeight;
+            $scope.checkEditMode();
             $scope.cardVisible = false;
         };
 
@@ -117,8 +134,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             var currentCard = $scope.UICards[0];
             $scope.UICards[0] = from;
             $scope.UICards[newCardIndex] = currentCard;
-
         }
+
         $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
 
         //INITS
@@ -476,6 +493,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             //$scope.closeGuestCard();
             // Fetch the guest Card
             $scope.initGuestCard(guest);
+            $scope.isAddNewCard = false;
             console.log($scope.reservationData);
         }
 
@@ -492,6 +510,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             // $scope.closeGuestCard();
             $scope.reservationDetails.companyCard.id = company.id;
             $scope.initCompanyCard(company);
+            $scope.isAddNewCard = false;
             console.log($scope.reservationData);
         }
 
@@ -508,6 +527,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             // $scope.closeGuestCard();
             $scope.reservationDetails.travelAgent.id = travelAgent.id;
             $scope.initTravelAgentCard(travelAgent);
+            $scope.isAddNewCard = false;
             console.log($scope.reservationData);
         }
 
@@ -638,7 +658,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         $scope.clickedDiscardCard = function(cardType) {
             $scope.detachCard(cardType);
-            $scope.isAddNewCard = true;
+            $scope.isAddNewCard = false;
         }
 
         $scope.clickedSaveCard = function(cardType) {
