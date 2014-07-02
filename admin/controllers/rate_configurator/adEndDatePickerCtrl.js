@@ -11,14 +11,21 @@ $scope.setUpData = function(){
       $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
     }
     $scope.minDate = $rootScope.businessDate;
+    $scope.closePopupOnSelection =false;
 };
 $scope.setUpData();
 
-$scope.$watch('date',function(oldValue,newValue){
-    if(oldValue != newValue){
+
+
+$scope.updateDate = function(){
+
+    if($scope.closePopupOnSelection){
       $scope.rateData.end_date = $scope.date;
       ngDialog.close();
-  }
-});
+    };  
+
+  
+};
+
 
 }]);

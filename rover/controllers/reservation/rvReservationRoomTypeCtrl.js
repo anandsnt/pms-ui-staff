@@ -222,9 +222,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.totalTaxAmount = 0;
 
 			//Navigate to the next screen
-			// $state.go('rover.reservation.mainCard.summaryAndConfirm');
 			$scope.checkOccupancyLimit();
-			$state.go('rover.reservation.mainCard.addons');
+			$state.go('rover.reservation.mainCard.addons', {"from_date" : $scope.reservationData.arrivalDate, "to_date": $scope.reservationData.departureDate});
 		}
 
 		$scope.showAllRooms = function() {

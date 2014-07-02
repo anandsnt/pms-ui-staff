@@ -56,7 +56,6 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		};
 
 
-
 		/**
 		 * function to handle click operation on company card, mainly used for saving
 		 */
@@ -70,6 +69,28 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				$scope.$emit("saveContactInformation");
 			}
 		};
+
+	/**
+	* remaining portion will be the Controller class of company card's contact info
+	*/
+	var presentContactInfo = {};
+	/**
+	* success callback of initial fetch data
+	*/
+	var successCallbackOfInitialFetch = function(data){
+		$scope.$emit("hideLoader");
+		$scope.contactInformation = data;
+		if($scope.contactInformation.alert_message != "")
+		{
+			$scope.errorMessage = [$scope.contactInformation.alert_message];
+		};
+		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
+			$scope.contactInformation.id = $stateParams.id;
+		}
+		//taking a deep copy of copy of contact info. for handling save operation
+		//we are not associating with scope in order to avoid watch
+		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+	};
 
 		/**
 		 * remaining portion will be the Controller class of company card's contact info
@@ -101,7 +122,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 
 		//getting the contact information
 		var id = $stateParams.id;
-		// here we are following a bad practice for add screen, 
+		// here we are following a bad practice for add screen,
 		//we assumes that id will be equal to "add" in case for add, other for edit
 		if (typeof id !== "undefined" && id === "add") {
 			$scope.contactInformation = {};
@@ -175,7 +196,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 				var dataToSend = JSON.parse(JSON.stringify(data));
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] != null && data[key] != "") {
-						//in add case's first api call, presentContactInfo will be empty object					
+						//in add case's first api call, presentContactInfo will be empty object
 						if (JSON.stringify(presentContactInfo) !== '{}') {
 							for (subDictKey in dataToSend[key]) {
 								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
@@ -219,7 +240,7 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 		$scope.$on("OUTSIDECLICKED", function(event) {
 			event.preventDefault();
 			if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
-				// On addMode and contact info not yet saved 
+				// On addMode and contact info not yet saved
 				// If the prompt is not already opened - show the popup for save/disacrd
 				if (!$scope.isPromptOpened) $scope.saveNewCardPrompt();
 			} else if ($scope.isDiscard) {

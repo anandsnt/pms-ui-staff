@@ -1,8 +1,14 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog',
-    function($scope, $rootScope, baseData, ngDialog) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter',
+    function($scope, $rootScope, baseData, ngDialog, $filter) {
+		 	BaseCtrl.call(this, $scope);
 
-        $scope.initReservationData = function() {
+		    var title = $filter('translate')('RESERVATION_TITLE');
+			$scope.setTitle(title);
+
+
+	        $scope.initReservationData = function() {
             $scope.hideSidebar = false;
+
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
@@ -187,7 +193,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     max: max,
                     name: name
                 };
-            }
+            };
 
             var roomPref = getMaxOccupancy(activeRoom);
 
@@ -207,7 +213,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 })
             });
             return true;
-        }
+        };
 
         $scope.initReservationData();
     }

@@ -88,5 +88,11 @@ function BaseCtrl($scope){
         }
         console.log(returnText);
     };
+    /*
+     * To set the title of each navigation
+     */
+    $scope.setTitle = function(title){
+    	document.title = title;
+    };
 
 }
