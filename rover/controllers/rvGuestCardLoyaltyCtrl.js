@@ -86,30 +86,21 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
             $scope.errorMessage = error;
     });
 	$scope.removeLoyaltyWithID = function(id){
-		var pos = -1;
 		var hotelLoyaltyPrograms = $scope.loyaltyData.userMemberships.hotelLoyaltyProgram;
 		var frequentFlyerPrograms = $scope.loyaltyData.userMemberships.frequentFlyerProgram;
 		for(var i = 0; i < hotelLoyaltyPrograms.length; i++){
 			if(id == hotelLoyaltyPrograms[i].id){
-				pos = i;
-				break;
+				$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(i, 1);
+				$scope.$apply();
+				return;
 			}
-		}
-		if(pos != -1){
-			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(pos, 1);
-			$scope.$apply();
-			return;
-		}
+		}		
 		for(var i = 0; i < frequentFlyerPrograms.length; i++){
 			if(id == frequentFlyerPrograms[i].id){
-				pos = i;
-				break;
+				$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(i, 1);
+				$scope.$apply();
+				return;
 			}
-		}
-		if(pos != -1){
-			$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(pos, 1);
-			$scope.$apply();
-			return;
 		}
 	};
 }]);
