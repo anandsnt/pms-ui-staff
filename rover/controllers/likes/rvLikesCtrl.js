@@ -13,7 +13,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	        vScroll: true
 	    }
 	};
-	$scope.calculatedHeight = 254; //height of Preferences + News paper + Room type + error message div
+	$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
 
 	$scope.init = function(){
 		BaseCtrl.call(this, $scope);
@@ -36,7 +36,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	        angular.forEach(value.values, function(prefValue, prefKey) {
 	        		rowCount++;	        		
 	        		if(rowCount % 2  != 0)
-	        			$scope.calculatedHeight += 40;	        		
+	        			$scope.calculatedHeight += 50;	        		
 		        	var userPreference = $scope.guestLikesData.user_preference;
 		        	if(userPreference.indexOf(prefValue.id) != -1){
 		        		prefValue.isChecked = true;
@@ -52,7 +52,7 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	        angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
 			      	rowCount++;	 
 			      	if(rowCount > 6 && $scope.guestLikesData.preferences.length <= 2 ){
-			        	$scope.calculatedHeight += 40;	
+			        	$scope.calculatedHeight += 50;	
 			        } 
 		        	var userRoomFeature = value.user_selection;
 		        	if(userRoomFeature.indexOf(roomFeatureValue.id) != -1){
