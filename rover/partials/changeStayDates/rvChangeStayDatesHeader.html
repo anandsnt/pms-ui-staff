@@ -12,7 +12,7 @@
 				{{stayDetails.details.room_type_name}}
 			</span>
 		</span>
-		<span class="nights">
+		<span class="nights" ng-class="{'overlay' : stayDetails.isOverlay }">
 			<span class="guest-status nights">
 																
 			</span>
@@ -23,13 +23,13 @@
 			</ng-pluralize>	
 			
 		</span>
-		<span class="date">
+		<span class="date" ng-class="{'overlay' : stayDetails.isOverlay }">
 			<span class="guest-status small-icon check-in" translate>CHECK_IN</span>
 
 			{{getSimplifiedDayName(stayDetails.details.arrival_date)}}
 			{{stayDetails.details.arrival_date|date:mmddyyyyFormat}}
 		</span>
-		<span class="date">
+		<span class="date" ng-class="{'overlay' : stayDetails.isOverlay }">
 			<span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
 			{{getSimplifiedDayName(stayDetails.details.departure_date)}}
 			{{stayDetails.details.departure_date|date:mmddyyyyFormat}}

@@ -30,7 +30,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv) {
 	this.dataAssign = function() {
 		//Data from Resolve method
 		$scope.stayDetails = stayDateDetails;
-
+		$scope.stayDetails.isOverlay = false;
 		//For future comparison / reset
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
@@ -80,6 +80,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv) {
 	};
 
 	$scope.successCallbackCheckUpdateAvaibale = function(data) {
+		$scope.stayDetails.isOverlay = true;
 		$scope.$emit("hideLoader");
 		//entire function is for right side
 
@@ -179,6 +180,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv) {
 	};
 
 	$scope.resetDates = function() {
+		$scope.stayDetails.isOverlay = false;
 		that.dataAssign();
 		/* event source that contains custom events on the scope */
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
@@ -210,7 +212,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv) {
 	 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
 	 */
 	$scope.changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-
+		$scope.stayDetails.isOverlay = false;
 		var newDateSelected = event.start;
 		//the new date in calendar
 
