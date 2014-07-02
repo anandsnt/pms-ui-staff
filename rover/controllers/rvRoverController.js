@@ -13,23 +13,54 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawer = function(event){
     	 $scope.menuOpen = false;
     };
-    $scope.hotelDetails = hotelDetails;
 
+
+
+
+    /***
+    * A method on the $rootScope to determine if the
+    * slide animation during stateChange should run in reverse or forward
+    *
+    * @param {string} fromState - name of the fromState
+    * @param {string} toState - name of the toState
+    *
+    * @return {boolean} - to indicate reverse or not
+    */
+    $rootScope.shallRevDir = function(fromState, toState) {
+      if ( fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.search' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.housekeeping.search' && toState === 'rover.housekeeping.dashboard' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      return false;
+    };
+    
     // this is make sure we add an
     // additional class 'return-back' as a
     // parent to ui-view, so as to apply a
     // reverse slide animation
     var uiViewRevAnim = $scope.$on( '$stateChangeSuccess', function (event, toState, toStateData, fromState, fromStateData) {
 
+      // to study the current changing states
+      console.log( fromState.name + ' ===> ' + toState.name );
+
       // check this template for the applied class:
       // app/assets/rover/partials/staycard/rvStaycard.html
 
-      // hopefully this will be the only place to toggle class
-      // as long as the current router definition stands
-
       // FUTURE: this check can include other state name also,
       // from which while returning we expect a reverse slide
-      if ( fromState.name === 'rover.staycard.billcard' || fromState.name === 'rover.staycard.billcard' ) {
+      if ( $rootScope.shallRevDir(fromState.name, toState.name) ) {
         $rootScope.returnBack = true;
       } else {
         $rootScope.returnBack = false;
@@ -40,6 +71,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     // when moving away to release memory
     $scope.$on( '$destroy', uiViewRevAnim );
     
+
+
+
+    $scope.hotelDetails = hotelDetails;
+
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
@@ -260,6 +296,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
       $scope.showSubMenu = false;
+    };
+    $scope.closeDrawerMenu = function(){
+       $scope.menuOpen = false;
+       $scope.showSubMenu = false;
     };
     //
     // DEPRICATED!
