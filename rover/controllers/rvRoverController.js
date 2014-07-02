@@ -43,6 +43,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         return true;
       };
 
+      if ( fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch' ) {
+        return true;
+      };
+
       return false;
     };
     
