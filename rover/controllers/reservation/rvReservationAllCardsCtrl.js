@@ -31,38 +31,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         $scope.cardHeaderImage = '/assets/avatar-trans.png';
 
-        $scope.$parent.myScrollOptions = {
-            'guestResultScroll': {
-                snap: false,
-                scrollbars: true,
-                vScroll: true,
-                vScrollbar: true,
-                hideScrollbar: false
-            },
-            'companyResultScroll': {
-                snap: false,
-                scrollbars: true,
-                vScroll: true,
-                vScrollbar: true,
-                hideScrollbar: false
-            },
-            'travelAgentResultScroll': {
-                snap: false,
-                scrollbars: true,
-                vScroll: true,
-                vScrollbar: true,
-                hideScrollbar: false
-            }
-        };
-
-        $scope.refreshScroll = function(elemToBeRefreshed) {
-            if (typeof $scope.$parent.myScroll != 'undefined') {
-                $timeout(function() {
-                    $scope.$parent.myScroll[elemToBeRefreshed].refresh();
-                }, 300);
-            }
-        }
-
         /**
          * scroller options
          */
@@ -157,26 +125,32 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         var init = function() {
             // open search list card if any of the search fields are entered on main screen
             var searchData = $scope.reservationData;
-            if (searchData.guest.firstName != '' || searchData.guest.lastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
+            if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
                 $scope.openGuestCard();
+                // based on search values from base screen
+                // init respective search
+                if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
+                    $scope.searchGuest();
+                } else if (searchData.company.id != null) {
+                    $scope.switchCard('company-card');
+                    $scope.reservationDetails.companyCard.id = searchData.company.id;
+                    $scope.initCompanyCard({
+                        id: searchData.company.id
+                    });
+                } else if (searchData.travelAgent.id != null) {
+                    $scope.switchCard('travel-agent-card');
+                    $scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
+                    $scope.initTravelAgentCard({
+                        id: searchData.travelAgent.id
+                    });
+                }
             }
 
             if ($scope.otherData.fromSearch) {
                 $scope.otherData.fromSearch = false;
             }
 
-            // based on search values from base screen
-            // init respective search
-            if (searchData.guest.firstName != '' || searchData.guest.lastName != '') {
-                $scope.searchGuest();
-            } else if (searchData.company.id != null) {
-                $scope.switchCard('company-card');
-                $scope.searchCompany();
-            } else if (searchData.travelAgent.id != null) {
-                $scope.switchCard('travel-agent-card');
-                $scope.searchTravelAgent();
 
-            }
         }
 
         $scope.initGuestCard = function(guestData) {
@@ -231,8 +205,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var currentGuestCardHeaderData = declonedData;
                 $scope.current = 'guest-contact';
                 $scope.$broadcast("SHOWGUESTLIKESINFO");
-
-                console.log(data);
             };
             var fetchGuestcardDataFailureCallback = function(data) {
                 $scope.$emit('hideLoader');
@@ -247,7 +219,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         // fetch reservation company card details 
         $scope.initCompanyCard = function(companyData) {
             var companyCardFound = function(data) {
-                console.log('found');
                 $scope.$emit("hideLoader");
                 data.id = $scope.reservationDetails.companyCard.id;
                 $scope.companyContactInformation = data;
@@ -265,7 +236,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         }
 
         // fetch reservation travel agent card details
-        $scope.initTravelAgentCard = function() {
+        $scope.initTravelAgentCard = function(travelAgent) {
             var successCallbackOfInitialFetch = function(data) {
                 $scope.$emit("hideLoader");
                 data.id = $scope.reservationDetails.travelAgent.id;
@@ -279,7 +250,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             //  Hence, do API call only if a company card ID is returned
             if ($scope.reservationDetails.travelAgent.id != '' && $scope.reservationDetails.travelAgent.id != null) {
                 var param = {
-                    'id': $scope.reservationDetails.travelAgent.id
+                    'id': travelAgent.id
                 };
                 $scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
             }
@@ -289,7 +260,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.searchGuest = function() {
             var successCallBackFetchGuest = function(data) {
                 $scope.$emit("hideLoader");
-                $scope.refreshScroll('guestResultScroll');
                 $scope.guestSearchIntiated = true;
                 $scope.searchedGuests = [];
                 if (data.results.length > 0) {
@@ -377,7 +347,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         }
 
         $scope.searchTravelAgent = function() {
-            $scope.refreshScroll('travelAgentResultScroll');
             var successCallBackFetchTravelAgents = function(data) {
                 $scope.$emit("hideLoader");
                 $scope.travelAgentSearchIntiated = true;
@@ -507,10 +476,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             //$scope.closeGuestCard();
             // Fetch the guest Card
             $scope.initGuestCard(guest);
+            console.log($scope.reservationData);
         }
 
         $scope.selectCompany = function(company, $event) {
-            console.log(company);
             $event.stopPropagation();
             // Update main reservation scope
             $scope.reservationData.company.id = company.id;
@@ -523,6 +492,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             // $scope.closeGuestCard();
             $scope.reservationDetails.companyCard.id = company.id;
             $scope.initCompanyCard(company);
+            console.log($scope.reservationData);
         }
 
         $scope.selectTravelAgent = function(travelAgent, $event) {
@@ -537,7 +507,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.travelAgentCity = travelAgent.city;
             // $scope.closeGuestCard();
             $scope.reservationDetails.travelAgent.id = travelAgent.id;
-            $scope.initTravelAgentCard();
+            $scope.initTravelAgentCard(travelAgent);
+            console.log($scope.reservationData);
         }
 
 
@@ -649,7 +620,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         };
 
         $scope.showGuestPaymentList = function(guestInfo) {
-            console.log(guestInfo);
             var userId = guestInfo.user_id,
                 guestId = guestInfo.guest_id;
             var paymentSuccess = function(paymentData) {
@@ -674,11 +644,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.clickedSaveCard = function(cardType) {
             if (cardType == "guest") {
                 $scope.$broadcast("saveContactInfo");
-            } else if (cardType == "company") {
-                $scope.$broadcast("saveCompanyContactInformation");
-            } else if (cardType == "travel_agent") {
-                console.log('here');
-                $scope.$broadcast("saveTravelAgentContactInformation");
             }
         }
 

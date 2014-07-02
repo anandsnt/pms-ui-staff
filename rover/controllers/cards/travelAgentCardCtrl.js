@@ -68,7 +68,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
+			} else if (!$scope.isAddNewCard && document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};
@@ -122,6 +122,9 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
+		$scope.clickedSaveCard = function(cardType) {
+			saveContactInformation($scope.contactInformation);
+		}
 
 		/**
 		 * function used to save the contact data, it will save only if there is any

@@ -74,7 +74,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
+			} else if (!$scope.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};
@@ -118,6 +118,10 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			//we are not associating with scope in order to avoid watch
 			presentContactInfo = angular.copy($scope.contactInformation);
 		};
+
+		$scope.clickedSaveCard = function(cardType) {
+			saveContactInformation($scope.contactInformation);
+		}
 
 		/**
 		 * failure callback of save contact data
