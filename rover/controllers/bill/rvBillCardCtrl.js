@@ -2,7 +2,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 	
-	
+	console.log("++++++++>>>>>>>>>>>>>>>>+++++++++++++++");
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(150); //Approximate height
 	var billTabHeight = parseInt(35);
@@ -496,7 +496,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			}
 		}
 		if(dayDate == checkoutDate && dayDate != checkinDate){
-			if(businessDate <= dayDate){
+			console.log("+++++++++++++++++++++++");
+			console.log(reservationBillData.bills[$scope.currentActiveBill]);
+			if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
 				dayClass = "check-out last";
 			}
 		}
