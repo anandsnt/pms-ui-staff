@@ -41,8 +41,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       	//ADDED Time out since translation not working without time out
         setTimeout(function(){
         	var title = $filter('translate')('SHOWING_DASHBOARD_TITLE');
+        	console.log("jjjjjjjjjjjjjjjjj")
 			$scope.setTitle(title);
-        }, 500);
+        }, 2000);
 		
         	
 
