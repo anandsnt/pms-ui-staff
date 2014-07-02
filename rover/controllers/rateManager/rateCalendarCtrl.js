@@ -170,9 +170,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	}
 
 	/**
-	* Click event handler for filter menu "show rates" button
+	* Update the calendar to the 'Rate view' and refresh the calendar
 	*/
-	$scope.$on("showRatesClicked", function(){
+	$scope.$on("updateRateCalendar", function(){
 		$scope.calendarMode = "RATE_VIEW";
 		$scope.ratesDisplayed.length=0;
 		//Update the rates displayed list - show in topbar

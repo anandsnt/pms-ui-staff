@@ -83,7 +83,8 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         //$scope.filterConfigured = true;
         $scope.computeColumWidth();
         $scope.toggleLeftMenu();
-        $scope.$broadcast("showRatesClicked");
+        $scope.$broadcast("updateRateCalendar");
+        $scope.$broadcast("updateOccupancyGraph");
         
     };
     /**
