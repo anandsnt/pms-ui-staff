@@ -114,7 +114,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-revenue",
 			submenu: [{
 				title: "MENU_RATE_MANAGER",
-				action: "staff#/staff/rateManager/",
+				action: "staff#/staff/rateManager",
 				menuIndex: "rateManager"
 			}, {
 				title: "MENU_TA_CARDS",
@@ -131,7 +131,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-housekeeping",
 			submenu: [{
 				title: "MENU_HOUSEKEEPING",
-				action: "staff#/staff/housekeeping/dashboard/"
+				action: "staff#/staff/housekeeping/dashboard"
 			}, {
 				title: "MENU_TASK_MANAGEMENT",
 				action: ""
