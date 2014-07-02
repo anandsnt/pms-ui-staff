@@ -98,7 +98,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             maxChildren: '',
             maxInfants: '',
             roomTypes: [],
-            fromSearch: false
+            fromSearch: false,
+            recommendedRateDisplay: '',
+            defaultRateDisplayName: ''
         };
 
         //setting the main header of the screen

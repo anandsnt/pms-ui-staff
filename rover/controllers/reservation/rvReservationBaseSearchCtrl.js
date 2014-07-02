@@ -19,6 +19,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.setDepartureDate();
             }
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
+            $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
             $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
