@@ -25,6 +25,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         $scope.reservationDetails.guestCard.id = data.id;
         $scope.guestCardData.userId = data.id;
         $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
+        $scope.newGuestAdded(data.id);
         console.log("success", data);
       };
       var createUserInfoFailureCallback = function(data) {
@@ -54,7 +55,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       };
       if (!dataUpdated && !newGuest)
         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
-      else if (!dataUpdated && newGuest) {
+      else if (newGuest) {
         $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, createUserInfoFailureCallback);
       }
     };
@@ -69,11 +70,17 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
      * to handle click actins outside this tab
      */
     $scope.$on('saveContactInfo', function() {
+      $scope.errorMessage = "";
       if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
         $scope.saveContactInfo(true);
       } else {
         $scope.saveContactInfo();
       }
+    });
+
+    //Error popup
+    $scope.$on('showSaveMessage', function() {
+      $scope.errorMessage = ['Please save the Guest Card first'];
     });
 
     $scope.popupCalendar = function() {

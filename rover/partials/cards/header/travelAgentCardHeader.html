@@ -25,6 +25,10 @@
 				<input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
 			</div>
 		</form>
+		<div class="card-actions" ng-show="isAddNewCard">
+            <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('travel_agent')" translate="">Save new card</button>
+            <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('travel_agent')" translate="">Discard</button>
+        </div>
 	</section>
 	<section ng-if="searchMode">
 		<div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">

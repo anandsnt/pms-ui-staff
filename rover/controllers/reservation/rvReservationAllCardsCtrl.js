@@ -2,6 +2,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     function($scope, RVReservationAllCardsSrv, RVReservationCardSrv, $timeout, RVCompanyCardSrv, RVGuestCardSrv) {
 
         BaseCtrl.call(this, $scope);
+        $scope.isAddNewCard = false;
         var resizableMinHeight = 90;
         var resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -183,8 +184,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             //TODO : Once this works pull it to a separate method 
             var fetchGuestcardDataSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
-
-                console.log("success");
                 var contactInfoData = {
                     'contactInfo': data,
                     'countries': $scope.countries,
@@ -202,7 +201,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.guestCardData.guestId = contactInfoData.guestId;
                 $scope.guestCardData.contactInfo.birthday = data.birthday;
                 var guestInfo = {
-                    "user_id": contactInfoData.user_id,
+                    "user_id": contactInfoData.userId,
                     "guest_id": null
                 };
                 $scope.searchData.guestCard.guestFirstName = "";
@@ -214,7 +213,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$broadcast('guestCardAvailable');
                 $scope.showGuestPaymentList(guestInfo);
                 $scope.decloneUnwantedKeysFromContactInfo = function() {
-
                     var unwantedKeys = ["address", "birthday", "country",
                         "is_opted_promotion_email", "job_title",
                         "mobile", "passport_expiry",
@@ -232,6 +230,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
                 var currentGuestCardHeaderData = declonedData;
                 $scope.current = 'guest-contact';
+                $scope.$broadcast("SHOWGUESTLIKESINFO");
+
                 console.log(data);
             };
             var fetchGuestcardDataFailureCallback = function(data) {
@@ -469,7 +469,11 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         //TODO: Find a way to move this into the child controller 
         $scope.guestCardTabSwitch = function(tab) {
             if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
-                $scope.$broadcast('saveContactInfo');
+                if ($scope.isAddNewCard) {
+                    $scope.$broadcast("showSaveMessage");
+                } else {
+                    $scope.$broadcast('saveContactInfo');
+                }
             };
             if ($scope.current === 'guest-like' && tab !== 'guest-like') {
                 $scope.$broadcast('SAVELIKES');
@@ -479,7 +483,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$broadcast('PAYMENTSCROLL');
             }
             $scope.$broadcast('REFRESHLIKESSCROLL');
-            $scope.current = tab;
+            if (!$scope.isAddNewCard) {
+                $scope.current = tab;
+            }
         };
 
         // SELECTS
@@ -534,36 +540,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.initTravelAgentCard();
         }
 
-        // CREATES
-        $scope.createNewGuest = function() {
-            // $scope.reservationData.guest.id = '';
-            // $scope.reservationData.guest.firstName = $scope.guestFirstName;
-            // $scope.reservationData.guest.lastName = $scope.guestLastName;
-            // $scope.reservationData.guest.city = $scope.guestCity;
-            // $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
-            // $scope.closeGuestCard();
-            console.log("CREATE NEW GUEST HERE");
-            // If one selects a new guest, company, or travel agent, 
-            // the new one gets created immediately 
-            // (whether or not the reservation is confirmed), 
-            // and then the user can access its card in the header and modify it. 
-            // All updates are applied immediately to the new card
-        }
-
-        $scope.createNewCompany = function() {
-            $scope.reservationData.company.id = '';
-            $scope.reservationData.company.name = $scope.companyName;
-            $scope.reservationData.company.corporateid = $scope.companyCorpId;
-            $scope.closeGuestCard();
-        }
-
-        $scope.createNewTravelAgent = function() {
-            $scope.reservationData.travelAgent.id = '';
-            $scope.reservationData.travelAgent.name = $scope.travelAgentName;
-            $scope.reservationData.travelAgent.iataNumber = $scope.travelAgentIATA;
-            $scope.closeGuestCard();
-        }
-
 
         /**
          * function to execute click on Guest card
@@ -585,8 +561,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
         }
 
+        // CREATES
         $scope.createNewGuest = function() {
-            console.log('to add New Card');
             // create an empty dataModel for the guest
             var contactInfoData = {
                 'contactInfo': {},
@@ -611,22 +587,25 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.$broadcast('guestSearchStopped');
             $scope.$broadcast('guestCardAvailable');
             $scope.current = 'guest-contact';
+            $scope.isAddNewCard = true;
         }
 
         $scope.createNewCompany = function() {
-            console.log("New Company Card");
             $scope.companyContactInformation = $scope.getEmptyAccountData();
+            // $scope.companyContactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
             $scope.reservationDetails.companyCard.id = "";
             $scope.reservationDetails.companyCard.futureReservations = 0;
             $scope.$broadcast('companyCardAvailable');
+            $scope.isAddNewCard = true;
         }
 
         $scope.createNewTravelAgent = function() {
-            console.log("New Company Card");
             $scope.travelAgentInformation = $scope.getEmptyAccountData();
+            // $scope.travelAgentInformation.account_details.account_name = $scope.searchData.travelAgentCard.companyName;
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
             $scope.$broadcast('travelAgentFetchComplete');
+            $scope.isAddNewCard = true;
         }
 
         $scope.guestCardClick = function($event) {
@@ -654,24 +633,23 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     /**
                      * handle click on tab navigation bar.
                      */
-                    // To make sure card gets saved on entering the last name itself
-                    $scope.$broadcast('SAVELIKES');
-                    $scope.$broadcast('saveContactInfo');
-                    // if ($event.target.id === 'guest-card-tabs-nav') {
-                    //     console.log("inside===")
-                    //     $scope.$broadcast('saveContactInfo');
-                    //     $scope.$broadcast('SAVELIKES');
-
-                    // } else
-                    //     return;
+                    // // To make sure card gets saved on entering the last name itself
+                    // $scope.$broadcast('SAVELIKES');
+                    // $scope.$broadcast('saveContactInfo');
+                    if ($event.target.id === 'guest-card-tabs-nav') {
+                        $scope.$broadcast('saveContactInfo');
+                        $scope.$broadcast('SAVELIKES');
+                    } else
+                        return;
                 } else {
-                    $scope.$broadcast('SAVELIKES');
-                    $scope.$broadcast('saveContactInfo');
+                    // $scope.$broadcast('SAVELIKES');
+                    // $scope.$broadcast('saveContactInfo');
                 }
             }
         };
 
         $scope.showGuestPaymentList = function(guestInfo) {
+            console.log(guestInfo);
             var userId = guestInfo.user_id,
                 guestId = guestInfo.guest_id;
             var paymentSuccess = function(paymentData) {
@@ -686,6 +664,29 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$emit('SHOWGUESTLIKES');
             };
             $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
+        };
+
+        $scope.clickedDiscardCard = function(cardType) {
+            $scope.detachCard(cardType);
+            $scope.isAddNewCard = true;
+        }
+
+        $scope.clickedSaveCard = function(cardType) {
+            if (cardType == "guest") {
+                $scope.$broadcast("saveContactInfo");
+            } else if (cardType == "company") {
+                $scope.$broadcast("saveCompanyContactInformation");
+            } else if (cardType == "travel_agent") {
+                console.log('here');
+                $scope.$broadcast("saveTravelAgentContactInformation");
+            }
+        }
+
+        $scope.newGuestAdded = function(id) {
+            $scope.isAddNewCard = false;
+            $scope.initGuestCard({
+                id: id
+            });
         };
 
         init();
