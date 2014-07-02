@@ -112,6 +112,12 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			//New Card Handler
 			if ($scope.isAddNewCard && typeof data.id != "undefined") {
 				$scope.isAddNewCard = false;
+				$scope.cardSaved();
+				$scope.reservationDetails.companyCard.id = data.id;
+				if ($scope.reservationData && $scope.reservationData.company) {
+					$scope.reservationData.company.id = data.id;
+					$scope.reservationData.company.name = $scope.contactInformation.account_details.account_name;
+				}
 			}
 
 			//taking a deep copy of copy of contact info. for handling save operation
@@ -127,7 +133,6 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			console.log('Here');
 			$scope.$emit("hideLoader");
 			$scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';

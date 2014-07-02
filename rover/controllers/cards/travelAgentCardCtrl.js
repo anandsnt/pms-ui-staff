@@ -105,6 +105,13 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			//New Card Handler
 			if ($scope.isAddNewCard && typeof data.id != "undefined") {
 				$scope.isAddNewCard = false;
+				$scope.cardSaved();
+				$scope.reservationDetails.travelAgent.id = data.id;
+				if ($scope.reservationData && $scope.reservationData.travelAgent) {
+					$scope.reservationData.travelAgent.id = data.id;
+					$scope.reservationData.travelAgent.name = $scope.contactInformation.account_details.account_name;
+				}
+
 			}
 
 			//taking a deep copy of copy of contact info. for handling save operation
