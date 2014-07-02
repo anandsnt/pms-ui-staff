@@ -192,5 +192,14 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		var out = new Array(Math.ceil(ar.length/2));
 		return out;	
 	};
+	$scope.shouldShowRoomFeatures = function(roomFeatures){
+		var showRoomFeature = false;
+		angular.forEach(roomFeatures, function(value, key) {
+	        if(value.values.length>0){
+	        	 showRoomFeature = true;
+	        }
+	     });
+		return showRoomFeature;
+	};
 	
 }]);
