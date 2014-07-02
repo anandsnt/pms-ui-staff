@@ -89,4 +89,53 @@ function BaseCtrl($scope){
         console.log(returnText);
     };
 
+    /*
+	    this is the default scroller options used by controllers
+		this can be modified through setScroller function
+    */
+    $scope.defaultScrollerOptions = {
+    	snap: false,
+		scrollbars: 'custom',
+		vScroll: true,
+		vScrollbar: true,
+		hideScrollbar: false,
+		click: true,
+		tap: true
+    };
+
+    /*
+    	function to handle scroll related things
+    	@param1: string as key 
+    	@param2: object as scroller options
+    */
+    $scope.setScroller = function (key, scrollerOptions){
+    	//here is using a angular function to extend
+    	angular.extend (scrollerOptions, $scope.defaultScrollerOptions);
+    	//checking whether scroll options object is already initilised in parent controller
+    	//if so we need add a key, otherwise initialise and add
+    	var isScrollOptionsDefinedInParent = false;
+    	if (typeof $scope.$parent !== 'undefined' && 
+    		typeof $scope.$parent.myScrollOptions !== 'undefined') {    		    		
+    		isScrollOptionsDefinedInParent = isEmpty ($scope.$parent.myScrollOptions);
+    	}
+
+    	if (isScrollOptionsDefinedInParent) {
+    		$scope.$parent.myScrollOptions.key = scrollerOptions;
+    	}
+    	else {
+    		$scope.$parent.myScrollOptions = {
+    			key: scrollerOptions
+    		}
+    	}    	
+    }
+
+    /*
+    	function to refresh the scroller 
+    	@param1: string as key 
+    */
+    $scope.refreshScroller = function (key){
+    	$scope.$parent.myScroll[key].refresh();
+    }
+
+
 }
