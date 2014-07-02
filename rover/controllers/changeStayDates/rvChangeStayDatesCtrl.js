@@ -198,7 +198,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $fil
 
 	// function to get color class against a room based on it's status
 	$scope.getColorCode = function(roomReadyStatus, checkinInspectedOnly) {
-		return get_mapped_room_ready_status_color(roomReadyStatus, checkinInspectedOnly);
+		return getMappedRoomReadyStatusColor(roomReadyStatus, checkinInspectedOnly);
 	};
 
 	$scope.confirmUpdates = function() {

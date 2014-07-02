@@ -179,7 +179,8 @@ function getCurrencySymbol(currenyCode){
       return symbol;
 };
 
-var get_mapped_room_ready_status_color = function(roomReadyStatus, checkinIsInspectedOnly) {
+var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspectedOnly) {
+	
         mappedColor = "";
         switch(roomReadyStatus) {
 
