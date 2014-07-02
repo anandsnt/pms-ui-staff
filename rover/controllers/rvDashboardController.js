@@ -42,7 +42,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         setTimeout(function(){
         	var title = $filter('translate')('SHOWING_DASHBOARD_TITLE');
 			$scope.setTitle(title);
-        }, 500);
+        }, 1500);
 		
         	
 
