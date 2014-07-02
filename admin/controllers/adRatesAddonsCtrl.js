@@ -319,9 +319,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			singleAddonData.name = $scope.singleAddon.name;
 			singleAddonData.post_type_id = $scope.singleAddon.post_type_id;
 			singleAddonData.rate_code_only = $scope.singleAddon.rate_code_only;
+
 			// convert dates to system format yyyy-MM-dd
-			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(new Date($scope.singleAddon.begin_date), 'yyyy-MM-dd'): "";
-			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(new Date($scope.singleAddon.end_date), 'yyyy-MM-dd'):"";
+			// if not date null should be passed - read story CICO-7287
+			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(new Date($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
+			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(new Date($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 
 	
@@ -345,6 +347,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.isEditMode = false;
 					$scope.currentClickedAddon = -1;
+
+					$scope.tableParams.reload();
 				};
 
 				// include current addon id also

@@ -43,6 +43,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         return true;
       };
 
+      if ( fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch' ) {
+        return true;
+      };
+
       return false;
     };
     
@@ -328,9 +336,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
 
-    $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {
+    $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) { 
       // Hide loading message
       $scope.$emit('hideLoader');
+      $rootScope.previousState = from;
+      $rootScope.previousStateParams = fromParams;
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
