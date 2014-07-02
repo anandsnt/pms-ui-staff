@@ -3,7 +3,7 @@
 	<!-- Adding independent headers -->
 	<!-- <div ng-include="'/assets/partials/common/header.html'"></div> -->
 	
-	<div id="rv-housekeeping" class="container">
-		<div ui-view></div>
+	<div id="rv-housekeeping" class="container" ng-class="{ 'return-back': returnBack }">
+		<div ui-view class="main-view"></div>
 	</div>
 </div>

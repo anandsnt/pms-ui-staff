@@ -20,7 +20,6 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 	var oldType = "";
                 	var dataDict = {};
                 	oldType = $stateParams.type;
-                	console.log("tttttttttttttttt==="+oldType);
                 	if(oldType != null) {
 	                	if(oldType == "LATE_CHECKOUT"){
 				        	dataDict.is_late_checkout_only = true;
