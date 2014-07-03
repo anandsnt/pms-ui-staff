@@ -74,16 +74,22 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController'
         });
-        
+
+        //Change stay dates
+        $stateProvider.state('rover.staycard.changestaydates', {
+            url: '/changestaydates/:reservationId',
+            templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
+            controller: 'RVchangeStayDatesController',
+            resolve: {
+                stayDateDetails: function(RVChangeStayDatesSrv, $stateParams) {
+                    return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
+                }
+            }
+        });   
+               
         $stateProvider.state('rover.staycard.billcard.details', {
             url: '/:billNo',
             templateUrl : "/assets/partials/bill_details.html",
             controller  : 'billDetailsController'
-        });
-        
-        $stateProvider.state('rover.staycard.nights', {
-            url: '/nights',
-            templateUrl: '/assets/partials/nights/rvNights.html',
-            controller: 'RVnightsController'
         });
 });
