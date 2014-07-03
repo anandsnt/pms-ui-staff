@@ -9,7 +9,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
-				if ($scope.isAddNewCard) {
+				if ($scope.viewState.isAddNewCard) {
 					$scope.errorMessage = ["Please save Travel Agent Card first"];
 				} else {
 					saveContactInformation($scope.contactInformation);
@@ -19,7 +19,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
 			}
-			if (!$scope.isAddNewCard) {
+			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
@@ -67,7 +67,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (!$scope.isAddNewCard && document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
+			} else if (!$scope.viewState.isAddNewCard && document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};
@@ -103,8 +103,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
 			//New Card Handler
-			if ($scope.isAddNewCard && typeof data.id != "undefined") {
-				$scope.isAddNewCard = false;
+			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
+				$scope.viewState.isAddNewCard = false;
 				$scope.cardSaved();
 				$scope.reservationDetails.travelAgent.id = data.id;
 				if ($scope.reservationData && $scope.reservationData.travelAgent) {

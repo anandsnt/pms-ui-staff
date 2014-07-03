@@ -15,7 +15,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
-				if ($scope.isAddNewCard) {
+				if ($scope.viewState.isAddNewCard) {
 					$scope.errorMessage = ["Please save Company Card first"];
 				} else {
 					saveContactInformation($scope.contactInformation);
@@ -25,7 +25,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
 			}
-			if (!$scope.isAddNewCard) {
+			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
@@ -74,7 +74,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (!$scope.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
+			} else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};
@@ -110,8 +110,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			$scope.reservationDetails.companyCard.id = data.id;
 			$scope.contactInformation.id = data.id;
 			//New Card Handler
-			if ($scope.isAddNewCard && typeof data.id != "undefined") {
-				$scope.isAddNewCard = false;
+			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
+				$scope.viewState.isAddNewCard = false;
 				$scope.cardSaved();
 				$scope.reservationDetails.companyCard.id = data.id;
 				if ($scope.reservationData && $scope.reservationData.company) {
@@ -147,7 +147,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 			}
-			if (typeof data != 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
+			if (typeof data != 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 				for (key in dataToSend) {
 					if (typeof dataToSend[key] !== "undefined" && data[key] != null && data[key] != "") {

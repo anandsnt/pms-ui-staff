@@ -18,7 +18,7 @@
       <input type="email" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
     </div>
   </form>
-  <div class="card-actions" ng-show="isAddNewCard">
+  <div class="card-actions" ng-show="viewState.isAddNewCard">
       <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('guest')" translate="">Save new card</button>
       <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
   </div>

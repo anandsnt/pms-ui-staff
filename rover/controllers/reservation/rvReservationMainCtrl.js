@@ -1,12 +1,19 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter',
-    function($scope, $rootScope, baseData, ngDialog, $filter) {
-		 	BaseCtrl.call(this, $scope);
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv',
+    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv) {
+        BaseCtrl.call(this, $scope);
+        
+        var title = $filter('translate')('RESERVATION_TITLE');
+        $scope.setTitle(title);
 
-		    var title = $filter('translate')('RESERVATION_TITLE');
-			$scope.setTitle(title);
 
+        var successCallbackOfCountryListFetch = function(data) {
+            $scope.countries = data;
+        };
 
-	        $scope.initReservationData = function() {
+        //fetching country list
+        $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
+
+        $scope.initReservationData = function() {
             $scope.hideSidebar = false;
 
             // intialize reservation object

@@ -1,6 +1,6 @@
 <div ng-controller="RVTravelAgentCardCtrl" id="travel-agent-card-content" class="card-search card-tabs card-content" ng-class="UICardContentCls('travel-agent-card')">
   <section ng-if="searchMode == false">
-     <button id="company-new-contract" type="button" class="button green pull-right" ng-click="detachCard('travel_agent')" translate="" ng-hide="isAddNewCard">Detach Card</button>
+     <button id="company-new-contract" type="button" class="button green pull-right" ng-click="detachCard('travel_agent')" translate="" ng-hide="viewState.isAddNewCard">Detach Card</button>
 
      <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
