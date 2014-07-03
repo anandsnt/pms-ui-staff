@@ -15,7 +15,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		//for preventing drag & drop operations turning into click
 		var lastDropedTime = '';
-
+		/*
+	     * To close drawer on click inside pages
+	     */
+	    $scope.closeDrawer = function(event){
+	    	 $scope.menuOpen = false;
+	    };
 		//scroller options
 		$scope.$parent.myScrollOptions = {
 			'tabs_menu': {
@@ -73,7 +78,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-frontdesk",
 			submenu: [{
 				title: "MENU_CREATE_RESERVATION",
-				action: "staff#/staff/reservation/search",
+				action: "staff#/staff/reservation/search/",
 				standAlone : true
 			}, {
 				title: "MENU_ROOM_ASSIGNMENT",
@@ -113,7 +118,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				menuIndex: "rateManager"
 			}, {
 				title: "MENU_TA_CARDS",
-				action: "staff#/staff/cardsearch",
+				action: "staff#/staff/cardsearch/",
 				menuIndex: "cards"
 			}, {
 				title: "MENU_DISTRIBUTION_MANAGER",
@@ -404,4 +409,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			});
 		};
 	}
+	
+	
 ]);

@@ -163,7 +163,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
             // Save Rate Success Callback
             var saveSuccessCallback = function (data) {
-                //$scope.manipulateData(data);
+                $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');
@@ -218,9 +218,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
              
             };
             if($scope.rateData.end_date){
+                if ($scope.rateData.id) {
                 var data = {"id":$scope.rateData.id,"end_date":$scope.rateData.end_date}
                 $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
-            }
+                }
+                else{
+                    $scope.startSave();
+                } 
+           }
             else{
                 $scope.startSave();
             }          

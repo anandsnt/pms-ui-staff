@@ -94,7 +94,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 		
 		}
-		if($scope.reservationData.paymentType.type.name === "CC"){
+		if($scope.reservationData.paymentType.type.value === "CC"){
 			data.guest_detail.payment_type.session_id = MLISessionId;
 		}	
 														
@@ -176,7 +176,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	$scope.submitReservation = function(){
 
 		
-	   if($scope.reservationData.paymentType.type.name === "CC"){
+	   if($scope.reservationData.paymentType.type.value === "CC"){
 		
 			if($scope.reservationData.paymentType.ccDetails.number.length ===0){
 				$scope.errorMessage = ["There is a problem with your credit card"];
