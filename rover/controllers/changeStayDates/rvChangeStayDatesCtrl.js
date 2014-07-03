@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
-function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
+sntRover.controller('RVchangeStayDatesController', ['$state','$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
+function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
@@ -193,7 +193,8 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $fil
 	}
 
 	$scope.goBack = function() {
-		$state.go($rootScope.previousState, $rootScope.previousStateParams);
+		var stateParams = { id: $stateParams.reservationId, confirmationId: $stateParams.confirmNumber };
+		$state.go('rover.staycard.reservationcard.reservationdetails', stateParams);
 	};
 
 	// function to get color class against a room based on it's status
