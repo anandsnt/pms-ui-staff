@@ -2,7 +2,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 	
-	console.log("++++++++>>>>>>>>>>>>>>>>+++++++++++++++");
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(150); //Approximate height
 	var billTabHeight = parseInt(35);
@@ -65,7 +64,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			data.billNumber = value.bill_number;
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
-			$scope.lastBillIndex = key;
+			
 	     });
 	     if($scope.clickedButton == "checkinButton"){
 	     	setTimeout(function(){
@@ -496,7 +495,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			}
 		}
 		if(dayDate == checkoutDate && dayDate != checkinDate){
-			console.log("++++++++checkout+++++++++++++++");
 			console.log(JSON.stringify(reservationBillData.bills[$scope.currentActiveBill]));
 			if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
 				dayClass = "check-out last";
@@ -544,12 +542,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if($scope.incomingRoutingArrayCount>0){
 			height = parseInt(height) + parseInt($scope.incomingRoutingArrayCount * 25);
 		}
-		if( $scope.currentActiveBill === $scope.lastBillIndex && $scope.reservationBillData.required_signature_at === 'CHECKOUT'){
-			height = parseInt(height) + parseInt(200);
-		}
-		if($scope.clickedButton == "checkinButton"){
+		if($scope.clickedButton == "checkinButton" || $scope.clickedButton == "checkoutButton"){
 			if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill)
-	     		height = parseInt(height) + parseInt(550);
+	     		height = parseInt(height) + parseInt(500);
 	    };
 	    if($scope.showBillingInfo){
 	        var routingLength =	($scope.reservationBillData.routing_array.length*15);
