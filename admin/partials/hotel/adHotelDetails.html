@@ -145,7 +145,7 @@
 			<div class="entry">
 				<label for="hotel-chain"> Hotel chain <strong>*</strong> </label>
 				<div class="select">
-					<select ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
+					<select ng-disabled="isHotelChainEditable" ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
 						<option value=""> Hotel chain </option>
 						<option ng-repeat="chain in data.chains" value="{{chain.id}}" ng-selected="chain.id==data.hotel_chain" >{{chain.name}}</option>
 					</select>

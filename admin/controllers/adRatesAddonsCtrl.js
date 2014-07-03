@@ -347,6 +347,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.isEditMode = false;
 					$scope.currentClickedAddon = -1;
+
+					$scope.tableParams.reload();
 				};
 
 				// include current addon id also
