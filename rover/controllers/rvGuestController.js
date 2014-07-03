@@ -19,6 +19,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.init();
 
+		$scope.$on("resetGuestTab",function(){
+			$scope.guestCardTabSwitch("guest-contact");
+		});
+
 		$scope.$on('reservationCardisClicked', function() {
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight); //against angular js practice, sorry :(
 			$scope.guestCardVisible = false;
@@ -178,15 +182,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					 * handle click on tab navigation bar.
 					 */
 					if ($event.target.id === 'guest-card-tabs-nav') {
-						console.log("inside===")
 						$scope.$broadcast('saveContactInfo');
 						$scope.$broadcast('SAVELIKES');
 
-					} else
+					} else {
 						return;
-				} else {
-					// $scope.$broadcast('SAVELIKES');
-					// $scope.$broadcast('saveContactInfo');
+					}
 				}
 			}
 		};
@@ -247,8 +248,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('activeCardChanged');
 			}
 		}
-
-
 
 		/**
 		 * function to open guest card
@@ -508,8 +507,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.replaceCardCaller = function(cardType, card, future) {
 			$scope.replaceCard(cardType, card, future);
 		}
-
-
 
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();

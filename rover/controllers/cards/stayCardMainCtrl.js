@@ -1,14 +1,14 @@
 sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog',
 	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog) {
+		BaseCtrl.call(this, $scope);
 
+		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		$scope.cardHeaderImage = '/assets/avatar-trans.png';
-
 		$scope.pendingRemoval = {
 			status: false,
 			cardType: ""
 		};
-
 		$scope.viewState = {
 			isAddNewCard: false,
 			pendingRemoval: {
@@ -20,13 +20,6 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				cardType: ""
 			}
 		};
-
-		$scope.cardSaved = function() {
-			$scope.viewState.isAddNewCard = false;
-		}
-
-
-		BaseCtrl.call(this, $scope);
 		$scope.searchData = {
 			guestCard: {
 				guestFirstName: "",
@@ -45,7 +38,6 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				travelAgentIATA: ""
 			}
 		}
-
 		$scope.reservationListData = {};
 
 		$scope.reservationDetails = {
@@ -62,6 +54,9 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				futureReservations: 0
 			}
 		};
+		$scope.cardSaved = function() {
+			$scope.viewState.isAddNewCard = false;
+		}
 
 		var successCallbackOfCountryListFetch = function(data) {
 			$scope.countries = data;
@@ -85,7 +80,6 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 					'guestId': null,
 					'vip': false //TODO: check with API or the product team
 				};
-				// // $scope.$emit('guestCardUpdateData', contactInfoData);
 				$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
 				$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
 				$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
@@ -122,7 +116,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				 */
 				var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
 				var currentGuestCardHeaderData = declonedData;
-				$scope.current = 'guest-contact';
+				$scope.$broadcast("resetGuestTab");
 				$scope.$broadcast("SHOWGUESTLIKESINFO");
 			};
 
@@ -181,20 +175,9 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		}
 
 		$scope.$on('cardIdsFetched', function() {
-			console.log('init of guest-controller', {
-				guest: $scope.reservationDetails.guestCard.id,
-				company: $scope.reservationDetails.companyCard.id,
-				travelagent: $scope.reservationDetails.travelAgent.id,
-				reservationListData: $scope.reservationListData
-			});
-
 			$scope.initGuestCard();
 			$scope.initCompanyCard();
 			$scope.initTravelAgentCard();
-			// if ($scope.reservationDetails.guestCard.id != "" && $scope.reservationDetails.guestCard.id != null) {
-			// 	$scope.$broadcast('guestCardAvailable');
-			// 	$scope.$emit('guestCardAvailable');
-			// }
 		});
 
 		$scope.removeCard = function(card) {
