@@ -8,14 +8,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 		// activate room type default view based on reservation settings
-		if($scope.otherData.defaultRateDisplayName == 'By Rate'){
-			$scope.activeCriteria = "RATE";
+		if($scope.otherData.defaultRateDisplayName == 'Recommended'){
+			$scope.activeCriteria = "RECOMMENDED";
 		}
 		else if($scope.otherData.defaultRateDisplayName == 'By Room Type'){
-			$scope.activeCriteria = "ROOM_TYPE";
+			$scope.activeCriteria = "RATE";
 		}
 		else{
-			$scope.activeCriteria = "RECOMMENDED";
+			// By default RoomType
+			$scope.activeCriteria = "ROOM_TYPE";
 		}
 		//CICO-5253 Rate Types Listing
 		// 			RACK

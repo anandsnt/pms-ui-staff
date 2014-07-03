@@ -5,7 +5,6 @@
 		</figure>
 		<!-- When there's no logo use this instead of <figure>  -->
 		<div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)==''" translate ng-click="switchCard('travel-agent-card')">
-			TRAVELAGENT
 		</div>            
 		<form method="post" name="change-company-name" id="change-company-name">
 			<div class="holder">
@@ -32,7 +31,7 @@
 	</section>
 	<section ng-if="searchMode">
 		<div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
-			Add <span>Travel Agent</span>
+			Add<span>Travel Agent</span>
 		</div>
 		<form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
 			<div class="holder">

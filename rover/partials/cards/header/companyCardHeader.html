@@ -1,14 +1,11 @@
 <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')" ng-controller="RVCompanyCardCtrl" ng-click="companyCardClicked($event)" outside-click-handler>
     <section ng-if="searchMode== false">
-        <!-- ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" -->
         <figure ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" class="guest-image" ng-click="switchCard('company-card')">
             <img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
         </figure>
         <!-- When there's no logo use this instead of <figure>  -->
-        <!-- ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" -->
-        <div class="guest-image icons icon-company" translate ng-click="switchCard('company-card')">
-            COMPANY
-        </div>                  
+        <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)==''" translate ng-click="switchCard('company-card')">            
+        </div>                            
         <form method="post" name="change-company-name" id="change-company-name">
             <div class="holder">
                 <div class="entry">
@@ -36,7 +33,7 @@
 
     <section ng-if="searchMode">
         <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
-            Add <span>Company</span>
+            Add<span>Company</span>
         </div>
         <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
             <div class="holder">

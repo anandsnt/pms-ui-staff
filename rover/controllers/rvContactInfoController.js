@@ -23,8 +23,9 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         //TODO : Reduce all these places where guestId is kept and used to just ONE
         $scope.guestCardData.contactInfo.user_id = data.id;
         $scope.reservationDetails.guestCard.id = data.id;
-        $scope.reservationData.guest.id = data.id;
+        $scope.reservationDetails.guestCard.futureReservations = 0;
         if ($scope.reservationData && $scope.reservationData.guest) {
+          $scope.reservationData.guest.id = data.id;
           $scope.reservationData.guest.firstName = $scope.guestCardData.contactInfo.first_name;
           $scope.reservationData.guest.lastName = $scope.guestCardData.contactInfo.last_name;
           //TODO : Check if this is needed here

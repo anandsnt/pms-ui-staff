@@ -7,7 +7,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
-		$scope.cardHeaderImage = '/assets/avatar-trans.png';
 
 		BaseCtrl.call(this, $scope);
 
@@ -53,6 +52,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				} else if ($(this).height() <= 120 && $scope.guestCardVisible) {
 					$scope.guestCardVisible = false;
 					$scope.cardVisible = false;
+					$scope.handleDrawClosing();
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.$apply();
 				}
@@ -91,7 +91,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.guestCardTabSwitch = function(tab) {
 			if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
-				$scope.$broadcast('saveContactInfo');
+				if ($scope.viewState.isAddNewCard) {
+					$scope.$broadcast("showSaveMessage");
+				} else {
+					$scope.$broadcast('saveContactInfo');
+				}
 			};
 			if ($scope.current === 'guest-like' && tab !== 'guest-like') {
 				$scope.$broadcast('SAVELIKES');
@@ -101,7 +105,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('PAYMENTSCROLL');
 			}
 			$scope.$broadcast('REFRESHLIKESSCROLL');
-			$scope.current = tab;
+			if (!$scope.viewState.isAddNewCard) {
+				$scope.current = tab;
+			}
 		};
 
 		$scope.$on('contactInfoError', function(event, value) {
@@ -155,7 +161,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						return;
 					}
 				}
-
 				if (!$scope.guestCardVisible) {
 					$("#guest-card").css("height", $scope.windowHeight - 90);
 					$scope.guestCardVisible = true;
@@ -165,6 +170,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 					$scope.guestCardVisible = false;
 					$scope.$emit('GUESTCARDVISIBLE', false);
+					$scope.handleDrawClosing();
 				}
 			} else {
 				if (getParentWithSelector($event, document.getElementById("guest-card-content"))) {
@@ -179,8 +185,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					} else
 						return;
 				} else {
-					$scope.$broadcast('SAVELIKES');
-					$scope.$broadcast('saveContactInfo');
+					// $scope.$broadcast('SAVELIKES');
+					// $scope.$broadcast('saveContactInfo');
 				}
 			}
 		};
@@ -260,11 +266,23 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.closeGuestCard = function() {
 			$scope.guestCardHeight = resizableMinHeight;
 			//Check if pending removals - If yes remove 
-			if ($scope.pendingRemoval.status) {
-				$scope.removeCard($scope.pendingRemoval.cardType);
-			}
+			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
 		};
+
+		$scope.handleDrawClosing = function() {
+			if ($scope.viewState.isAddNewCard) {
+				var cards = {
+					'guest-card': 'guest',
+					'company-card': 'company',
+					'travel-agent-card': 'travel_agent'
+				}
+				discardCard(cards[$scope.UICards[0]]);
+			}
+			if ($scope.viewState.pendingRemoval.status) {
+				$scope.removeCard($scope.viewState.pendingRemoval.cardType);
+			}
+		}
 
 		/**
 		 * function to execute click on Guest card
@@ -279,6 +297,21 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 			}
 		};
+
+		$scope.clickedDiscardCard = function(cardType, discard) {
+			discardCard(cardType, discard);
+		}
+
+		var discardCard = function(cardType, discard) {
+			$scope.viewState.isAddNewCard = false;
+			if (cardType == 'travel_agent') {
+				$scope.$broadcast('travelAgentDetached');
+			} else if (cardType == 'company') {
+				$scope.$broadcast('companyCardDetached');
+			} else if (cardType == 'guest') {
+				$scope.$broadcast('guestCardDetached');
+			}
+		}
 
 		$scope.detachCard = function(cardType) {
 			var cards = {
@@ -303,18 +336,16 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.deleteCard = function(cardType) {
 			if (cardType == 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
-				$scope.pendingRemoval.status = true;
-				$scope.pendingRemoval.cardType = "travel_agent";
+				$scope.viewState.pendingRemoval.status = true;
+				$scope.viewState.pendingRemoval.cardType = "travel_agent";
 			} else if (cardType == 'company') {
 				$scope.$broadcast('companyCardDetached');
-				$scope.pendingRemoval.status = true;
-				$scope.pendingRemoval.cardType = "company";
+				$scope.viewState.pendingRemoval.status = true;
+				$scope.viewState.pendingRemoval.cardType = "company";
 			} else if (cardType == 'guest') {
 				$scope.$broadcast('guestCardDetached');
-				// TODO: Current deletion of cards create break something somewhere.
-				// Once that is solved, uncomment these following two lines.
-				// $scope.pendingRemoval.status = true;
-				// $scope.pendingRemoval.cardType = "guest";
+				$scope.viewState.pendingRemoval.status = true;
+				$scope.viewState.pendingRemoval.cardType = "guest";
 			}
 		}
 
@@ -449,7 +480,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		}
 
-		$scope.checkFuture = function(cardType, cardId) {
+		$scope.checkFuture = function(cardType, card) {
 			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
 			// Changing all reservations will move all stay cards to the new card. 
 			// This will only apply when a new company / TA card had been selected. 
@@ -469,13 +500,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				closeByEscape: false,
 				data: JSON.stringify({
 					cardType: cardType,
-					cardId: cardId
+					cardId: card
 				})
 			});
 		}
 
-		$scope.replaceCardCaller = function(cardType, cardId, future) {
-			$scope.replaceCard(cardType, cardId, future);
+		$scope.replaceCardCaller = function(cardType, card, future) {
+			$scope.replaceCard(cardType, card, future);
 		}
 
 
@@ -483,27 +514,27 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('company', company.id, false);
+				$scope.replaceCardCaller('company', company, false);
 			} else {
-				$scope.checkFuture('company', company.id);
+				$scope.checkFuture('company', company);
 			}
 		}
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
-				$scope.replaceCardCaller('travel_agent', travelAgent.id, false);
+				$scope.replaceCardCaller('travel_agent', travelAgent, false);
 			} else {
-				$scope.checkFuture('travel_agent', travelAgent.id);
+				$scope.checkFuture('travel_agent', travelAgent);
 			}
 		}
 
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
-			if ($scope.reservationListData.reservation_list.upcoming_reservations_arr.length <= 0) {
-				$scope.replaceCardCaller('guest', guest.id, false);
+			if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+				$scope.replaceCardCaller('guest', guest, false);
 			} else {
-				$scope.checkFuture('guest', guest.id);
+				$scope.checkFuture('guest', guest);
 			}
 		}
 
@@ -514,5 +545,68 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}, 300);
 			}
 		}
+
+		// CREATES
+		$scope.createNewGuest = function() {
+			// create an empty dataModel for the guest
+			var contactInfoData = {
+				'contactInfo': {},
+				'countries': $scope.countries,
+				'userId': "",
+				'avatar': "",
+				'guestId': "",
+				'vip': "" //TODO: check with API or the product team
+			};
+			// // $scope.$emit('guestCardUpdateData', contactInfoData);
+			$scope.guestCardData.contactInfo = contactInfoData.contactInfo;
+			$scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
+			$scope.guestCardData.contactInfo.vip = contactInfoData.vip;
+			$scope.countriesList = contactInfoData.countries;
+			$scope.guestCardData.userId = contactInfoData.userId;
+			$scope.guestCardData.guestId = contactInfoData.guestId;
+			$scope.guestCardData.contactInfo.birthday = null;
+			var guestInfo = {
+				"user_id": "",
+				"guest_id": ""
+			};
+			$scope.$broadcast('guestSearchStopped');
+			$scope.$broadcast('guestCardAvailable');
+			$scope.current = 'guest-contact';
+			$scope.viewState.isAddNewCard = true;
+		}
+
+		$scope.createNewCompany = function() {
+			$scope.companyContactInformation = $scope.getEmptyAccountData();
+			// $scope.companyContactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
+			$scope.reservationDetails.companyCard.id = "";
+			$scope.reservationDetails.companyCard.futureReservations = 0;
+			$scope.viewState.isAddNewCard = true;
+			$scope.$broadcast('companyCardAvailable');
+
+		}
+
+		$scope.createNewTravelAgent = function() {
+			$scope.travelAgentInformation = $scope.getEmptyAccountData();
+			// $scope.travelAgentInformation.account_details.account_name = $scope.searchData.travelAgentCard.companyName;
+			$scope.reservationDetails.travelAgent.id = "";
+			$scope.reservationDetails.travelAgent.futureReservations = 0;
+			$scope.viewState.isAddNewCard = true;
+			$scope.$broadcast('travelAgentFetchComplete');
+		}
+
+		$scope.clickedSaveCard = function(cardType) {
+			if (cardType == "guest") {
+				$scope.$broadcast("saveContactInfo");
+			}
+		}
+
+		$scope.newGuestAdded = function(id) {
+			$scope.viewState.isAddNewCard = false;
+			$scope.viewState.pendingRemoval.status = false;
+			$scope.viewState.pendingRemoval.cardType = "";
+			$scope.initGuestCard({
+				id: id
+			});
+		};
 	}
 ]);
