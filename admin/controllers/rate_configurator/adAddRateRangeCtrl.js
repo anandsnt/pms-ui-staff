@@ -188,6 +188,10 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
         }
 
         $scope.count = 0;
+        /**
+        * Calenar validation
+        * The from_date can not be less than the to_date. 
+        */
         $scope.$on("dateChangeEvent",function(e, value){
             if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
                 if (value.calendarId === $scope.fromCalendarID){
