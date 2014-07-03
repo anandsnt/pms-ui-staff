@@ -17,7 +17,7 @@
             <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true"  name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">           
         </div>
         <ul>
-            <li ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
+            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
             <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">{{'RESV_ROOM'|translate}}</li>
             <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
         </ul>

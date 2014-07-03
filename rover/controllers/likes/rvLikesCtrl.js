@@ -27,7 +27,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			};
 			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
 		};
-		
+
 		$scope.fetchLikesSuccessCallback = function(data) {
 
 			$scope.$emit('hideLoader');
@@ -106,7 +106,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
-
 
 			var updateData = {};
 

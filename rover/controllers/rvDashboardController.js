@@ -4,12 +4,11 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 	
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
-	
+	$scope.shouldShowLateCheckout = true;
 	BaseCtrl.call(this, $scope);
 	
     $scope.init =  function(){
-		
-       
+	
        
 		
           //setting the heading of the screen
@@ -42,7 +41,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         setTimeout(function(){
         	var title = $filter('translate')('SHOWING_DASHBOARD_TITLE');
 			$scope.setTitle(title);
-        }, 500);
+        }, 2000);
 		
         	
 

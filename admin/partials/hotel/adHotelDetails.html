@@ -180,8 +180,7 @@
 					</select>
 				</div>
 			</div>
-
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="is-pms-tokenized">PMS Tokenized</label>
 				<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
 					<input type="checkbox" value="{{data.is_pms_tokenized}}" name="is-pms-tokenized" id="is-pms-tokenized">
@@ -305,7 +304,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit" class="button green">
+			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit && data.hotel_pms_type ==='OWS'" class="button green">
 				Mappings
 			</button>
 			<button type="button" ui-sref="admin.users({id:id})" ng-show="isAdminSnt && isEdit" class="button green">
