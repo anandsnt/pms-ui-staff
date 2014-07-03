@@ -17,7 +17,7 @@ reports.config([
     '$datepickerProvider',
     function($datepickerProvider, $rootScope) {
         angular.extend($datepickerProvider.defaults, {
-            dateFormat: 'yyyy/MM/dd',
+            dateFormat: 'MM-dd-yyyy',
             startWeek: 0,
             autoclose: true,
             container: 'body'
