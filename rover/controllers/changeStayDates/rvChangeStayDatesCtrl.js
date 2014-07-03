@@ -1,5 +1,5 @@
-sntRover.controller('RVchangeStayDatesController', ['$state', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
-function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
+sntRover.controller('RVchangeStayDatesController', ['$state','$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
+function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
@@ -49,7 +49,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $fil
 	this.renderFullCalendar = function() {
 		/* event source that contains custom events on the scope */
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-
+console.log($scope.events);
 		$scope.eventSources = [$scope.events];
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -193,7 +193,7 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $fil
 	}
 
 	$scope.goBack = function() {
-		$state.go($rootScope.previousState, $rootScope.previousStateParams);
+		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $stateParams.reservationId, "confirmationId": $stateParams.confirmNumber, "isrefresh": true});
 	};
 
 	// function to get color class against a room based on it's status
@@ -369,17 +369,17 @@ function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $fil
 				//mid-stay range
 			} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 				calEvt.id = "availability";
-				calEvt.className = "mid-stay"
+				calEvt.className = "mid-stay";
 				//Event is check-out
 			} else if (thisDate.getTime() == checkoutDate.getTime()) {
 				calEvt.id = "check-out";
 				calEvt.className = "check-out";
 				calEvt.startEditable = "true";
-				calEvt.durationEditable = "false"
+				calEvt.durationEditable = "false";
 				//dates prior to check-in and dates after checkout
 			} else {
-				calEvt.id = "availability";
-				calEvt.className = "type-available"
+				//calEvt.id = "availability";
+				calEvt.className = "type-available";
 			}
 
 			events.push(calEvt);
