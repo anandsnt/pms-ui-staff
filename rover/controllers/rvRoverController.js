@@ -168,8 +168,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       action: "",
       iconClass: "icon-housekeeping",
       submenu: [{
-        title: "MENU_HOUSEKEEPING",
-        action: "rover.housekeeping.dashboard"
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.search"
       }, {
         title: "MENU_TASK_MANAGEMENT",
         action: ""
