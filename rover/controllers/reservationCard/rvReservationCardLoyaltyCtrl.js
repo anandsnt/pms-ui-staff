@@ -42,13 +42,11 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
 	});
         $scope.$on("loyaltyProgramDeleted",function(e,id){
             
-            $scope.removeLoyaltyWithID(id);
-            if($scope.selectedLoyaltyID == id){
-                $scope.selectedLoyaltyID = "";
-                $scope.selectedLoyalty = "";
-                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
+            if($scope.selectedLoyaltyID != id){
+                $scope.removeLoyaltyWithID(id);
+                $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData); 
             }  
-            $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);         
+                    
     });
     $scope.removeLoyaltyWithID = function(id){
         var hotelLoyaltyPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
