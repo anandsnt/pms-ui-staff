@@ -49,7 +49,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	this.renderFullCalendar = function() {
 		/* event source that contains custom events on the scope */
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-
+console.log($scope.events);
 		$scope.eventSources = [$scope.events];
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -193,8 +193,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	}
 
 	$scope.goBack = function() {
-		var stateParams = { id: $stateParams.reservationId, confirmationId: $stateParams.confirmNumber };
-		$state.go('rover.staycard.reservationcard.reservationdetails', stateParams);
+		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $stateParams.reservationId, "confirmationId": $stateParams.confirmNumber, "isrefresh": true});
 	};
 
 	// function to get color class against a room based on it's status
@@ -370,17 +369,17 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 				//mid-stay range
 			} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 				calEvt.id = "availability";
-				calEvt.className = "mid-stay"
+				calEvt.className = "mid-stay";
 				//Event is check-out
 			} else if (thisDate.getTime() == checkoutDate.getTime()) {
 				calEvt.id = "check-out";
 				calEvt.className = "check-out";
 				calEvt.startEditable = "true";
-				calEvt.durationEditable = "false"
+				calEvt.durationEditable = "false";
 				//dates prior to check-in and dates after checkout
 			} else {
-				calEvt.id = "availability";
-				calEvt.className = "type-available"
+				//calEvt.id = "availability";
+				calEvt.className = "type-available";
 			}
 
 			events.push(calEvt);
