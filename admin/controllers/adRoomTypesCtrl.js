@@ -17,7 +17,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
 		        page: 1,            // show first page
-		        count: $scope.data.room_types.length,    // count per page - Need to change when on pagination implemntation
+		        count: 10000,    // count per page - Need to change when on pagination implemntation
 		        sorting: {
 		            name: 'asc'     // initial sorting
 		        }
@@ -99,11 +99,11 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
     		$scope.currentClickedElement = -1;
     	};
-    	var addSuccessCallbackSave = function(){
+    	var addSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
-    		//$scope.listRoomTypes();
-    		$state.go($state.current, {}, {reload: true});// TO BE CHANGED:Work around to fix ng-table reloading issue
+    		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code});
+    		$scope.tableParams.reload();
     	};
     	var failureCallback = function(data){
     		$scope.errorMessage = data;
