@@ -100,7 +100,7 @@ var Search = function(domRef) {
 
 				//If the ETBKSN value(for infinea) is empty, use the track2KSN
 				var ksn = data.RVCardReadTrack2KSN;
-				if(data.RVCardReadETBKSN != ""){
+          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
 					ksn = data.RVCardReadETBKSN;
 				}
 
