@@ -29,14 +29,23 @@ var StayCard = function(viewDom){
           if ('dashboard' === activeMenu || 'search' === activeMenu) {
             return;
           };
+
+          //For ksn, if the ETBKSN value(for infinea) is empty, use the track2KSN
+          var ksn = data.RVCardReadTrack2KSN;
+          if(data.RVCardReadETBKSN != ""){
+            ksn = data.RVCardReadETBKSN;
+          }
+
           var swipedCardData = {
             cardType: data.RVCardReadCardType || '',
             expiry: data.RVCardReadExpDate || '',
             cardHolderName: data.RVCardReadCardName || '',
+            
             getTokenFrom: {
               'et2': data.RVCardReadTrack2,
-              'ksn': data.RVCardReadTrack2KSN,
-              'pan': data.RVCardReadMaskedPAN
+              'ksn': ksn,
+              'pan': data.RVCardReadMaskedPAN,
+              'etb' : data.RVCardReadETB
             }
           };
           that.postCardSwipData(swipedCardData);

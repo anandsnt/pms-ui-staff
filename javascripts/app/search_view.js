@@ -98,10 +98,18 @@ var Search = function(domRef) {
 					return;
 				};
 
+				//If the ETBKSN value(for infinea) is empty, use the track2KSN
+				var ksn = data.RVCardReadTrack2KSN;
+				if(data.RVCardReadETBKSN != ""){
+					ksn = data.RVCardReadETBKSN;
+				}
+
 				var url = '/staff/payments/search_by_cc';
 				var data = {
-					'et2' : data.RVCardReadTrack2,
-					'ksn' : data.RVCardReadTrack2KSN
+					'et2' : ksn,
+					'ksn' : data.RVCardReadTrack2KSN,
+					'etb' : data.RVCardReadETB
+
 				};
 				that.postCardSwipData(url, data);
 			},

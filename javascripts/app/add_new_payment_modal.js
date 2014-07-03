@@ -9,12 +9,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
   	
     //Delegate events
     this.modalDidShow = function(){
-    	console.log("upto here");
-    	console.log(that.params);
     	that.myDom.find("#setOverlay").hide();
  		if(that.params && that.should_show_overlay){
  			that.should_show_overlay = false;
- 			console.log("inside that parama here");
 			that.myDom.find("#setOverlay").show();
 			that.myDom.find("#new-payment").addClass("hidden");
 			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
@@ -70,17 +67,16 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		$('#new-payment').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
 		$('#new-payment').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
 		$('#new-payment').append('<input type="hidden" id="pan" value="' + swipedCardData.getTokenFrom.pan + '">');
+		$('#new-payment').append('<input type="hidden" id="etb" value="' + swipedCardData.getTokenFrom.etb + '">');
+
 	};
 
 	this.modalInit = function(){
-		console.log(that.should_show_overlay);
 		if((typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0)
 			||that.should_show_overlay===true){
-			console.log("swipe");
     		that.params = {"card_action": "swipe"};
 		}else{
     		that.params = {"card_action": "manual_entry"};
-			console.log('not swipe');
 		}
 	
 		
@@ -210,6 +206,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var $et2 = $('#et2').val();
 		var $ksn = $('#ksn').val();
 		var $pan = $('#pan').val();
+		var $etb = $('#etb').val();
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
@@ -240,7 +237,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			    mli_token: $card_token,
 			    et2: $et2,
 				ksn: $ksn,
-				pan: $pan
+				pan: $pan,
+				etb: $etb
 		    };
 		    sntapp.regCardData = data;
 			that.fetchCompletedOfReservationPayment('', params);
@@ -278,7 +276,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			
 		} 
 		else {
-			console.log("reservation payment payment");
 			var reservation_id = getReservationId();
 			that.save_inprogress = true;
 			var webservice = new WebServiceInterface();
@@ -299,6 +296,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 				    et2: $et2,
 					ksn: $ksn,
 					pan: $pan,
+					etb: $etb,
 				    add_to_guest_card: add_to_guest_card,
 				    bill_number : that.params["bill_number"]
 		    };		
@@ -319,7 +317,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
   // to get the payments list json to filter on change of payment type
    this.getPaymentsList = function(){
 		var webservice = new WebServiceInterface();
-	console.log("how many")
 	    var url = 'staff/payments/addNewPayment.json'; 
 	    var options = {
 				   successCallBack: that.fetchCompletedOfGetPayment,
