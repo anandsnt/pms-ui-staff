@@ -109,21 +109,17 @@ reports.controller('reporstList', [
                     $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
 
 
-                    // for managing date filters limits
-                    // use the business dates
-                    // UPDATE: depricated due to next set of comments/lines of code
-                    $scope.reportList[i].today = new Date( $rootScope.businessDate );
-                    $scope.reportList[i].allowedUntilDate = new Date( $rootScope.businessDate );
+                    // IMPORTANT used date filter with option 'medium' to avoid incorrect date due to timezone change
 
                     // set the default values for until date to business date
                     // plus calender will open in the corresponding month, rather than today
-                    $scope.reportList[i].untilDate = $rootScope.businessDate
+                    $scope.reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'medium')
 
                     // HACK: set the default value for from date to a week ago from business date
                     // so that calender will open in the corresponding month, rather than today
-                    var today = new Date( $rootScope.businessDate );
+                    var today = new Date( $scope.reportList[i].untilDate );
                     var weekAgo = today.setDate(today.getDate() - 7);
-                    $scope.reportList[i].fromDate = weekAgo;
+                    $scope.reportList[i].fromDate = $filter('date')(weekAgo, 'medium');
                 };
             });
 
