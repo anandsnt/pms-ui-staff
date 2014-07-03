@@ -9,6 +9,11 @@ $scope.errorMessage = "";
 
 $scope.saveContactInfo = function(){
     var saveUserInfoSuccessCallback = function(data){
+    	if(!dataUpdated)
+    	{
+    		var avatarImage = getAvatharUrl(dataToUpdate.title);
+    		$scope.$emit("CHANGEAVATAR", avatarImage);
+    	}
         $scope.$emit('hideLoader');
     };
     var saveUserInfoFailureCallback = function(data){
