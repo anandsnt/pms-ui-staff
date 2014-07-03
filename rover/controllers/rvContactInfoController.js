@@ -20,6 +20,15 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
 
       var createUserInfoSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
+        if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
+          if ($scope.viewState.identifier == "STAY_CARD") {
+            $scope.viewState.pendingRemoval.status = false;
+            $scope.viewState.pendingRemoval.cardType = "";
+            $scope.replaceCard('guest', {
+              id: data.id
+            }, false);
+          }
+        }
         //TODO : Reduce all these places where guestId is kept and used to just ONE
         $scope.guestCardData.contactInfo.user_id = data.id;
         $scope.reservationDetails.guestCard.id = data.id;
@@ -32,7 +41,6 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
           // $scope.reservationData.guest.city = $scope.guestCardData.contactInfo.address.city;
           $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         }
-
         $scope.guestCardData.userId = data.id;
         $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
         $scope.newGuestAdded(data.id);

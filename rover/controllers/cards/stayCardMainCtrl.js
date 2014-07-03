@@ -15,7 +15,10 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				status: false,
 				cardType: ""
 			},
-			identifier:"STAY_CARD"
+			identifier: "STAY_CARD",
+			lastCardSlot: {
+				cardType: ""
+			}
 		};
 
 		$scope.cardSaved = function() {
@@ -195,7 +198,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		});
 
 		$scope.removeCard = function(card) {
-			// Remove card
+			// This method returns the numnber of cards attached to the staycard
 			var checkNumber = function() {
 				var x = 0;
 				_.each($scope.reservationDetails, function(d, i) {
@@ -219,10 +222,13 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				});
 			} else {
 				//Bring up alert here
-				console.log("Attempt to delete last card");
 				if ($scope.viewState.pendingRemoval.status) {
 					$scope.viewState.pendingRemoval.status = false;
 					$scope.viewState.pendingRemoval.cardType = "";
+					// If user has not replaced a new card, keep this one. Else remove this card
+					// The below flag tracks the card and has to be reset once a new card has been linked, 
+					// along with a call to remove the flagged card
+					$scope.viewState.lastCardSlot = card;
 					var templateUrl = '/assets/partials/cards/alerts/cardRemoval.html';
 					ngDialog.open({
 						template: templateUrl,
@@ -246,6 +252,10 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				console.log('replaceCard - success');
 				$scope.cardRemoved(card);
 				$scope.cardReplaced(card, cardData);
+				if ($scope.viewState.lastCardSlot != "") {
+					$scope.removeCard($scope.viewState.lastCardSlot);
+					$scope.viewState.lastCardSlot = "";
+				}
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('replaceCard -failure');

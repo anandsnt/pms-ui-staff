@@ -500,7 +500,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				closeByEscape: false,
 				data: JSON.stringify({
 					cardType: cardType,
-					cardId: card
+					card: card
 				})
 			});
 		}
