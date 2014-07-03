@@ -496,10 +496,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			}
 		}
 		if(dayDate == checkoutDate && dayDate != checkinDate){
-			console.log("+++++++++++++++++++++++");
-			console.log(reservationBillData.bills[$scope.currentActiveBill]);
+			console.log("++++++++checkout+++++++++++++++");
+			console.log(JSON.stringify(reservationBillData.bills[$scope.currentActiveBill]));
 			if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
 				dayClass = "check-out last";
+			} else {
+				dayClass = "check-out";
 			}
 		}
 		return dayClass;
