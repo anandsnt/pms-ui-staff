@@ -8,8 +8,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.readOnly = "no";
 	$scope.fileName = "Choose File....";
 	$scope.certificate = "";
+	$scope.isHotelChainEditable =  true;
 	if($rootScope.adminRole == "snt-admin"){
-		
+		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
 		// SNT Admin -To add new hotel view
 		if($stateParams.action == "add"){
