@@ -1,4 +1,4 @@
-admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParams', '$filter','$timeout', function($scope, ADChargeCodesSrv, ngTableParams, $filter,$timeout){
+admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParams', '$filter','$timeout','$state', function($scope, ADChargeCodesSrv, ngTableParams, $filter,$timeout,$state){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -105,8 +105,10 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
 			} else {
-				$scope.fetchChargeCodes();
+				//$scope.fetchChargeCodes();
 				// $scope.orderedData.push(data);
+
+				$state.go($state.current, {}, {reload: true});// TO BE CHANGED:Work around to fix ng-table reloading issue
 			}
 			
     		$scope.currentClickedElement = -1;

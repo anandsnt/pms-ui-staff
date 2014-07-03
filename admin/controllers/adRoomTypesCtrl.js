@@ -102,7 +102,8 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     	var addSuccessCallbackSave = function(){
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
-    		$scope.listRoomTypes();
+    		//$scope.listRoomTypes();
+    		$state.go($state.current, {}, {reload: true});// TO BE CHANGED:Work around to fix ng-table reloading issue
     	};
     	var failureCallback = function(data){
     		$scope.errorMessage = data;
