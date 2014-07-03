@@ -106,8 +106,8 @@ var Search = function(domRef) {
 
 				var url = '/staff/payments/search_by_cc';
 				var data = {
-					'et2' : ksn,
-					'ksn' : data.RVCardReadTrack2KSN,
+					'et2' : data.RVCardReadTrack2,
+					'ksn' : ksn,
 					'etb' : data.RVCardReadETB
 
 				};
