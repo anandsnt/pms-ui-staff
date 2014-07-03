@@ -6,6 +6,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     else{
       $translate.use('EN');
     };
+    // $translate.fallbackLanguage('EN');
 
     /*
      * To close drawer on click inside pages
@@ -114,12 +115,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $rootScope.MLImerchantId= hotelDetails.mli_merchant_id;
 
-    if (hotelDetails.language){
-      $translate.use(hotelDetails.language.value);
-    }
-    else{
-      $translate.use('EN');
-    };
+   
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null){
