@@ -26,6 +26,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
             $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
+
+            $scope.$emit('hideLoader');
         };
 
         $scope.setDepartureDate = function() {
@@ -213,14 +215,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             select: autoCompleteSelectHandler
         };
 
-
-
-
-
-
-
-
-
         // init call to set data for view 
         init();
 
@@ -229,7 +223,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             showOn: 'button',
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
-            yearRange: '-0:+0',
+            yearRange: '-0:',
             minDate: new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
@@ -248,7 +242,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             showOn: 'button',
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
-            yearRange: '-0:+0',
+            yearRange: '-0:',
             minDate: new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
