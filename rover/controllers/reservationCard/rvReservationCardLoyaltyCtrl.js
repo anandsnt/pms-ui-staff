@@ -41,7 +41,7 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 	});
         $scope.$on("loyaltyProgramDeleted",function(e,id){
-
+            
             $scope.removeLoyaltyWithID(id);
             if($scope.selectedLoyaltyID == id){
                 $scope.selectedLoyaltyID = "";
@@ -51,28 +51,21 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);         
     });
     $scope.removeLoyaltyWithID = function(id){
-        var pos = -1;
         var hotelLoyaltyPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
         var frequentFlyerPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram;
         for(var i = 0; i < hotelLoyaltyPrograms.length; i++){
             if(id == hotelLoyaltyPrograms[i].id){
-                pos = i;
-                break;
+                $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(i, 1);
+                $scope.$apply();
+                return;
             }
-        }
-        if(pos != -1){
-            $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(pos, 1);
-            return;
-        }
+        }       
         for(var i = 0; i < frequentFlyerPrograms.length; i++){
             if(id == frequentFlyerPrograms[i].id){
-                pos = i;
-                break;
+                $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(i, 1);
+                $scope.$apply();
+                return;
             }
-        }
-        if(pos != -1){
-            $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(pos, 1);
-            return;
         }
     };
 
