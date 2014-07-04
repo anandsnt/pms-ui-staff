@@ -50,8 +50,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
                   scope: $scope
                 });
 	};
-	$scope.showDeleteModal =  function(id){
+	$scope.showDeleteModal =  function(id, index, loyaltyProgram){
 		$scope.loaytyID = id;
+		$scope.loyaltyIndexToDelete = index;
+		$scope.loyaltyProgramToDelete = loyaltyProgram;
 		 ngDialog.open({
                   template: '/assets/partials/guestCard/rvGuestCardDeleteLoyaltyModal.html',
                   controller: 'rvDeleteLoyaltyModalController',
@@ -72,15 +74,20 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
-	$scope.$on("loyaltyProgramDeleted",function(e,id){
+	$scope.$on("loyaltyProgramDeleted",function(e,id, index, loyaltyProgram){
 
 		if(typeof $scope.loyaltyData == 'undefined')
 			return;
-		else{
-			$scope.$apply(function(){
-				$scope.removeLoyaltyWithID(id);
-			});
-			
+		else{			
+				if(loyaltyProgram == 'FFP'){
+					console.log("guest FFP Length---" + $scope.loyaltyData.userMemberships.frequentFlyerProgram.length);
+					$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
+					console.log("guest FFP Length---" + $scope.loyaltyData.userMemberships.frequentFlyerProgram.length);
+				}else{
+					console.log("guest HLP Length---" + $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length);
+					$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
+					console.log("guest HLP Length---" + $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length);
+				}			
 		}
         	
 	});

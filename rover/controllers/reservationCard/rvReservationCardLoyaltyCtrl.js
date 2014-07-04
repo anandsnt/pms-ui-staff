@@ -40,10 +40,15 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         	
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 	});
-        $scope.$on("loyaltyProgramDeleted",function(e,id){
+        $scope.$on("loyaltyProgramDeleted",function(e,id, index, loyaltyProgram){
             
             if($scope.selectedLoyaltyID != id){
-                $scope.removeLoyaltyWithID(id);
+                // $scope.removeLoyaltyWithID(id);
+                if(loyaltyProgram == 'FFP'){
+                    $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(index, 1);
+                }else{
+                    $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(index, 1);
+                }
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData); 
             }  
                     
