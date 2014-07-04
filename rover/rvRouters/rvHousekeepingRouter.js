@@ -19,13 +19,13 @@ angular.module('housekeepingModule', [])
         }
     });
 
-    $stateProvider.state('rover.housekeeping.search', {
-        url: '/search',
-        templateUrl: '/assets/partials/housekeeping/rvHkSearch.html',
-        controller: 'RVHkSearchCtrl',
+    $stateProvider.state('rover.housekeeping.roomStatus', {
+        url: '/roomStatus',
+        templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
+        controller: 'RVHkRoomStatusCtrl',
         resolve: {
-            fetchedRoomList: function(RVHkSearchSrv) {
-                return RVHkSearchSrv.roomList;
+            fetchedRoomList: function(RVHkRoomStatusSrv) {
+                return RVHkRoomStatusSrv.roomList;
             }
         }
     });

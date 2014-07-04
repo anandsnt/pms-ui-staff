@@ -217,7 +217,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-housekeeping",
       submenu: [{
         title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.search"
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus"
       }, {
         title: "MENU_TASK_MANAGEMENT",
         action: ""
@@ -253,7 +254,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.activeSubMenu = item[1].submenu;
       } else {
         $scope.activeSubMenu = [];
-        $scope.$emit("navToggled");
+        $scope.toggleDrawerMenu();
       }
     });
 
