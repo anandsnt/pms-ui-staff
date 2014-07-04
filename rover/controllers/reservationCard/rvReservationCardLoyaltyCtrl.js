@@ -40,34 +40,19 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         	
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 	});
-        $scope.$on("loyaltyProgramDeleted",function(e,id){
+        $scope.$on("loyaltyProgramDeleted",function(e,id, index, loyaltyProgram){
             
             if($scope.selectedLoyaltyID != id){
-                $scope.removeLoyaltyWithID(id);
+                if(loyaltyProgram == 'FFP'){
+                    $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(index, 1);
+                }else{
+                    $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(index, 1);
+                }
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData); 
             }  
                     
     });
-    $scope.removeLoyaltyWithID = function(id){
-        var hotelLoyaltyPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
-        var frequentFlyerPrograms = $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram;
-        for(var i = 0; i < hotelLoyaltyPrograms.length; i++){
-            if(id == hotelLoyaltyPrograms[i].id){
-                $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(i, 1);
-                $scope.$apply();
-                return;
-            }
-        }       
-        for(var i = 0; i < frequentFlyerPrograms.length; i++){
-            if(id == frequentFlyerPrograms[i].id){
-                $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.splice(i, 1);
-                $scope.$apply();
-                return;
-            }
-        }
-    };
-
-        $scope.setSelectedLoyaltyForID = function(id){
+    $scope.setSelectedLoyaltyForID = function(id){
         	var hotelLoyaltyProgram = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
         		var freequentFlyerprogram = $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram;
         		var flag = false;
