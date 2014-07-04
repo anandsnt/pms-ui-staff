@@ -77,7 +77,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 
         //Change stay dates
         $stateProvider.state('rover.staycard.changestaydates', {
-            url: '/changestaydates/:reservationId',
+            url: '/changestaydates/:reservationId/:confirmNumber',
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
             resolve: {

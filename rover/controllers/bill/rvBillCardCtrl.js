@@ -544,7 +544,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		if($scope.clickedButton == "checkinButton" || $scope.clickedButton == "checkoutButton"){
 			if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill)
-	     		height = parseInt(height) + parseInt(550);
+	     		height = parseInt(height) + parseInt(500);
 	    };
 	    if($scope.showBillingInfo){
 	        var routingLength =	($scope.reservationBillData.routing_array.length*15);

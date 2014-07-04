@@ -8,11 +8,15 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.readOnly = "no";
 	$scope.fileName = "Choose File....";
 	$scope.certificate = "";
+	$scope.isHotelChainEditable =  true;
 	if($rootScope.adminRole == "snt-admin"){
-		
+		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
+		if($stateParams.action =="addfromSetup"){
+			$scope.previousStateIsDashBoard = true;
+		}
 		// SNT Admin -To add new hotel view
-		if($stateParams.action == "add"){
+		if($stateParams.action == "add" || $stateParams.action =="addfromSetup"){
 			$scope.title = "Add New Hotel";
 			
 			var fetchSuccess = function(data){
@@ -127,18 +131,18 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   Method to go back to previous state.
     */
 	$scope.back = function(){
+
+		console.log($rootScope.nextState);
+		console.log($rootScope.previousState);
+
 		if($scope.isAdminSnt) {
 			
-		    if($rootScope.previousStateParam){
-     			 $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+    		if($scope.previousStateIsDashBoard)
+    			$state.go("admin.dashboard",{"menu":0});
+    		else{
+    			$state.go("admin.hotels");
     		}
-    		else if($rootScope.previousState){
-      			$state.go($rootScope.previousState);
-   			 }
-    		else 
-    		{
-      			$state.go("admin.hotels");
-    		}
+  
 		}
 		else {
 			if($rootScope.previousStateParam){

@@ -41,7 +41,7 @@
                                     <em>{{ addon.description }}</em>
                                 </div>
                                 <div class="price">
-                                    {{currencySymbol}}{{ addon.price }}
+                                    {{currencySymbol}}{{ addon.price | number : 2}}
                                     <span>{{ addon.stay }}</span>
                                 </div>
                                 <div class="add-enhancement" ng-init="addonQty=1">

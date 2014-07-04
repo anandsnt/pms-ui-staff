@@ -2,6 +2,11 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	BaseCtrl.call(this, $scope);
 	
 
+	$scope.$on('clearNotifications',function(){
+    	$scope.errorMessage ="";
+    	$scope.successMessage ="";
+    });
+
 	/*
 	 * To open new payment modal screen from guest card
 	 */
