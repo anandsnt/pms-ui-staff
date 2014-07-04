@@ -96,7 +96,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		}
 		if($scope.reservationData.paymentType.type.value === "CC"){
-			data.guest_detail.payment_type.session_id = MLISessionId;
+			data.payment_type.session_id = MLISessionId;
 		}	
 														
 		data.company_id = $scope.reservationData.company.id;
