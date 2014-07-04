@@ -40,9 +40,9 @@
                             </figure>
                             <div class="data">
                                 <h2>
-                                    <span class="no-right-margin" ng-bind-html="'{{ guest.firstName }}'|highlight:guestFirstName:false">
-                                    </span>,
-                                    <span ng-bind-html="' {{ guest.lastName }}'|highlight:guestLastName:false">
+                                    <span class="no-right-margin" ng-bind-html="'{{guest.firstName}}' | highlight:searchData.guestCard.guestFirstName:false">
+                                    </span>
+                                    <span ng-bind-html="'{{ guest.lastName }}' | highlight:searchData.guestCard.guestLastName:false">
                                     </span>
                                 </h2>
                                 <span class="confirmation">{{ guest.address.postalCode}}</span>
