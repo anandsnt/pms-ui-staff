@@ -23,29 +23,30 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );
 
+		$scope.noScroll = true;
 		var afterFetch = function(data) {
+			$scope.noScroll = true;
 
 			// making unique copies of array
 			// slicing same array not good.
 			// say thanks to underscore.js
-			// var smallPart = _.compact( data.rooms );
-			// var restPart  = _.compact( data.rooms );
+			var smallPart = _.compact( data.rooms );
+			var restPart  = _.compact( data.rooms );
 
 			// smaller part consisit of enogh rooms
 			// that will fill in the screen
-			// smallPart = smallPart.slice( 0, 20 );
-			// restPart  = restPart.slice( 20 );
+			smallPart = smallPart.slice( 0, 13 );
+			restPart  = restPart.slice( 13 );
 
 			// first load the small part
-			// $scope.rooms = smallPart;
-			$scope.rooms = data.rooms
+			$scope.rooms = smallPart;
 
 			// load the rest after a small delay
 			$timeout(function() {
 
 				// push the rest of the rooms into $scope.rooms
 				// remember slicing is only happening on the Ctrl and not on Srv
-				// $scope.rooms.push.apply( $scope.rooms, restPart );
+				$scope.rooms.push.apply( $scope.rooms, restPart );
 
 				// apply the filter
 				$scope.calculateFilters();
@@ -57,6 +58,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// finally hide the loaded
 				// in almost every case this will not block UX
 				$scope.$emit( 'hideLoader' );
+
+				$scope.noScroll = false;
 
 			// execute this after this much time
 			// as the animation is in progress
