@@ -63,7 +63,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 			that.myDom.find('#float-right').hide();
 		}
 		else{
-			that.myDom.find('#credit-bal').html(that.myDom.data("currency-symbol") + " " + that.data.amount);
+			that.myDom.find('#credit-bal').html(that.myDom.data("currency-symbol") + " " + parseFloat(that.data.amount).toFixed(2));
 		}
 		that.accountID = that.data.id;
 	};
