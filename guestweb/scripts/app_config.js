@@ -45,25 +45,8 @@ snt.config(function ($httpProvider) {
 
 snt.run(function($rootScope, $location, $http){
 
-	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute){
-		//Change page title, based on Route information
-		$rootScope.title = currentRoute.title;
-	});
-
-    $rootScope.$on("$locationChangeStart", function(event, next, current) {
-		if(next === current) {
-		if($rootScope.isCheckedin)
-			$location.path('/checkinSuccess');
-		else if($rootScope.isCheckedout)
-			$location.path('/checkOutNowSuccess');
-		else if($rootScope.isCheckin && !$rootScope.isCheckedout)
-				$location.path('/checkinConfirmation');
-		else if (!$rootScope.isLateCheckoutAvailable)
-			    $location.path('/checkOutNow');
-			else{
-				$location.path('/');
-
-			}
-		}
+	$rootScope.$on('$stateChangeStart', 
+		function(event, toState, toParams, fromState, fromParams){ 
+		$rootScope.title =toState.title;
 	});
 });

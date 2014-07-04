@@ -23,9 +23,19 @@ var AddNewSmartBandView = function(domRef) {
 	*/
 	this.pageshow = function(){		
 		that.parentController.showButton('see-all-band-button');
-    	that.parentController.hideButton('add-new-button');
-    	that.myDom.find('#first-name').val('');
-    	that.myDom.find('#last-name').val('');
+    	that.parentController.hideButton('add-new-button');    	
+    	var listingObj = that.parentController.getControllerObject('smartband-listing');
+    	if(listingObj.myDom.find('#listing-area ul li').length == 0){
+    		var firstName = $("#guest-card #card-wrapper #change-name #gc-firstname").val();
+    		var lastName = $("#guest-card #card-wrapper #change-name #gc-lastname").val();
+    		that.myDom.find('#first-name').val(firstName);
+    		that.myDom.find('#last-name').val(lastName);
+    	}
+    	else{
+    		that.myDom.find('#first-name').val('');
+    		that.myDom.find('#last-name').val('');
+    	}
+    	
     	that.myDom.find('#fixed-amound').val('');
     	that.myDom.find('#payment-type').prop('checked', false);
     	that.switchedPaymentType();
@@ -38,7 +48,8 @@ var AddNewSmartBandView = function(domRef) {
 	* function to handle click on continue button
 	* in this operation we are saving the info, on success we are redirecting writing interface
 	*/
-	this.continueButtonClicked = function(){		
+	this.continueButtonClicked = function(){
+		document.activeElement.blur();		
 		//preparing the data to write screen
 		var data = {};
 		data.first_name = $.trim(that.myDom.find('#first-name').val());
@@ -46,7 +57,7 @@ var AddNewSmartBandView = function(domRef) {
 		var payment_mode = that.myDom.find('#payment-type').is(":checked");
 		data.is_fixed = payment_mode;
 		if(payment_mode){ //means fixed, then only we need to add this attribute
-			data.amount = $.trim(that.myDom.find('#fixed-amound').val());			
+			data.amount = parseFloat($.trim(that.myDom.find('#fixed-amound').val()));			
 		}
 		//validation part
 		var blankKeys = "";

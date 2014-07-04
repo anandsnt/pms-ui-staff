@@ -5,6 +5,7 @@
 //=require ../guestweb/static/lib/js/angular.min.js
 //=require ../guestweb/static/lib/js/angular-route.js
 //=require ../guestweb/static/lib/js/ui-bootstrap-tpls-0.10.0.js
+//=require ../guestweb/static/lib/js/angular-ui-router.js
 //= require ../guestweb/scripts/app.js
 //= require ../guestweb/scripts/app_router_galleria.js
 //= require ../guestweb/scripts/app_config.js

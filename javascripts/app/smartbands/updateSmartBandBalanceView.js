@@ -63,7 +63,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 			that.myDom.find('#float-right').hide();
 		}
 		else{
-			that.myDom.find('#credit-bal').html(that.myDom.data("currency-symbol") + " " + that.data.amount);
+			that.myDom.find('#credit-bal').html(that.myDom.data("currency-symbol") + " " + parseFloat(that.data.amount).toFixed(2));
 		}
 		that.accountID = that.data.id;
 	};
@@ -72,6 +72,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	* function to handle click on continue button	
 	*/
 	this.continueButtonClicked = function(){
+		document.activeElement.blur();
 		if(!that.data.is_fixed){
 			return that.backToListing();
 		}
@@ -80,12 +81,14 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		var dataToPost = {};
 		dataToPost.first_name = $.trim(that.myDom.find('#first-name').val());
 		dataToPost.last_name = $.trim(that.myDom.find('#last-name').val());
-		dataToPost.credit = $.trim(that.myDom.find('#credit-to-add').val());
 
-		
+		dataToPost.credit = parseFloat($.trim(that.myDom.find('#credit-to-add').val()));
+		if(isNaN(dataToPost.credit)){
+			dataToPost.credit = 0.00;
+		}
 		var url = '/api/smartbands/' + that.accountID;
 	    var options = { 
-			requestParameters: dataToPost,
+			requestParameters: JSON.stringify(dataToPost),
 			successCallBack: that.successCallbackOfSaveAction,
 			successCallBackParameters: { 'data': dataToPost},
 			failureCallBack: that.failureCallbackOfSaveAction,

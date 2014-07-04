@@ -77,9 +77,9 @@ var RoomAssignmentView = function(viewDom){
     if (that.myDom.find('#rooms-available').length) { createVerticalScroll('#rooms-available'); }
   };
   // Room type changed from select box.
-  this.changedRoomType = function(e){
-  	var element = $(e.target);
-  	that.selectedRoomType = element.find('option:selected').val();
+  this.changedRoomType = function(){
+ // 	var element = $(e.target);
+  	that.selectedRoomType = that.myDom.find("#room-type-selectbox").val();
   	that.fetchRoomList(that.selectedRoomType);
   };
   //Fetches the non-filtered list of rooms.
@@ -411,6 +411,10 @@ var RoomAssignmentView = function(viewDom){
   			'currentReservation': currentReservation, 
   			'roomStatusExplained': roomStatusExplained,
   			'selectedItem': $(this),
+  			'initialRoomType': that.initialRoomType,
+  			'selectedRoomType': that.selectedRoomType,
+  			'prevDom': that.myDom,
+  			'call': that.changedRoomType
   	};
     var options = { requestParameters: postParams,
     				successCallBack: that.roomAssignmentSuccess,
@@ -496,6 +500,8 @@ var RoomAssignmentView = function(viewDom){
             failureCallBack: that.fetchFailedOfSave,
            loader: "BLOCKER"
     };
+    event.stopPropagation();
+	event.stopImmediatePropagation();
     webservice.postJSON(url, options);  
 
   };

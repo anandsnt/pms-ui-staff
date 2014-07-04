@@ -98,10 +98,18 @@ var Search = function(domRef) {
 					return;
 				};
 
+				//If the ETBKSN value(for infinea) is empty, use the track2KSN
+				var ksn = data.RVCardReadTrack2KSN;
+          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+					ksn = data.RVCardReadETBKSN;
+				}
+
 				var url = '/staff/payments/search_by_cc';
 				var data = {
 					'et2' : data.RVCardReadTrack2,
-					'ksn' : data.RVCardReadTrack2KSN
+					'ksn' : ksn,
+					'etb' : data.RVCardReadETB
+
 				};
 				that.postCardSwipData(url, data);
 			},
@@ -489,10 +497,11 @@ var Search = function(domRef) {
 		var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
 		if (room_ready_status == "") {
-			var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
+			roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
 		} else {
-			var roomStatusMapped = this.getRoomReadyStatusMapped(room_ready_status, use_inspected, use_pickup, checkin_inspected_only, foStatus);
+			roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
+			var roomStatusColor = this.getRoomReadyStatusMapped(room_ready_status, use_inspected, use_pickup, checkin_inspected_only, foStatus);
 
 		}
 		var roomstatusexplained = "";
@@ -506,7 +515,7 @@ var Search = function(domRef) {
 		}
 		// Show color coding ( Red / Green - for Room status) for room only if reservation status = CHECKING-IN
 		if (reservation_status == "CHECKING_IN") {
-			roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
+			roomStatus = '<strong class="room-number ' + escapeNull(roomStatusColor) + '">' + escapeNull(room) + '</strong>';
 		} else {
 			roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
 		}
@@ -558,11 +567,11 @@ var Search = function(domRef) {
 		var resultant_mapped_room_color = "";
 
 		if (room_ready_status != "" && fo_status == "VACANT") {
-			mapped_room_color = get_mapped_room_ready_status_color(room_ready_status, checkin_is_inspected_only)
+			
+			mapped_room_color = get_mapped_room_ready_status_color(room_ready_status, checkin_is_inspected_only);
 		} else {
 			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
-		
 		return mapped_room_color;
 	};
 
