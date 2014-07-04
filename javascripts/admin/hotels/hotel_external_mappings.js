@@ -16,7 +16,7 @@ var HotelExternalMappingsView = function(domRef){
   	that.myDom.find('#go_back').on('click', that.goBack);
   	that.myDom.on('change', that.filterExternalMappings);
   	that.myDom.find('#add-new-external-mapping').on('click', that.addNewExternalMapping);
-    that.myDom.find('.edit-data-inline').on('click', that.editExternalMapping);
+    that.myDom.find('.edit-data-inline-ext').on('click', that.editExternalMapping);
   	// to get all external mappings to do internal filtering
   	//that.getAllExternalMappings();
   };
@@ -27,9 +27,10 @@ var HotelExternalMappingsView = function(domRef){
   };
   // function to get the view for edit external mapping
   this.editExternalMapping = function(event){
-  	 that.cancelFromAppendedDataInline();
+  	// event.preventDefault();
   	that.getAllExternalMappings(event);
   	that.appendInlineData(event);
+  	that.cancelFromAppendedDataInline();
   };
   //to get all external mappings data
   this.getAllExternalMappings =  function(event){
@@ -54,8 +55,9 @@ var HotelExternalMappingsView = function(domRef){
   };
   // to repopultae snt vlues drop down on selecting external mappings
   this.filterExternalMappings = function(e){
- 	if(e.target.id == "mapping-type"){
 
+ 	if(e.target.id == "mapping-type"){
+  	
  		var selectedMappingType = that.myDom.find("#mapping-type").val();
 		mappingTypeValues = '';
 		that.myDom.find("#snt-value").find('option').remove().end();
