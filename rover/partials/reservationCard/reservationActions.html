@@ -15,7 +15,7 @@
 		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
 			 {{reservationData.reservation_card.late_checkout_time}}
 		</div>
-		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
+		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !='' && !reservationData.reservation_card.is_opted_late_checkout">
 			 {{reservationData.reservation_card.departure_time}}
 		</div>
 		<!-- Reservation is checking out -->
