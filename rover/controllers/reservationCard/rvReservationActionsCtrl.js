@@ -57,7 +57,7 @@ sntRover.controller('reservationActionsController',
 				return display;
 			};
 			
-			$scope.getArrivalTimeColor = function(time){
+			$scope.getTimeColor = function(time){
 				var timeColor = "";
 				if(time!=null){
 					timeColor = "time";

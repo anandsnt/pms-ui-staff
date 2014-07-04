@@ -34,7 +34,22 @@ sntRover.controller('staycardController',['$scope','RVGuestCardSrv', 'ngDialog',
 	$scope.$on('reservationCardClicked',function(){
 		$scope.$broadcast('reservationCardisClicked');
 	});
+	$scope.$on('CHANGEAVATAR', function(event, data){
+	 	console.log("--------+++-------------");
+	 	console.log(data);
 
+	    var imageName = $scope.guestCardData.contactInfo.avatar.split('/')[$scope.guestCardData.contactInfo.avatar.split('/').length-1];
+	
+	    for (var key in avatharImgs) {
+	      if((avatharImgs[key]) == imageName){
+	         $scope.guestCardData.contactInfo.avatar  = data;
+	      }
+	    }
+	 	
+	 	
+	 	
+	 	
+	 });
 
 
 //setting the heading of the screen to "Search"

@@ -77,7 +77,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		if(typeof $scope.loyaltyData == 'undefined')
 			return;
 		else{
-			$scope.removeLoyaltyWithID(id);
+			$scope.$apply(function(){
+				$scope.removeLoyaltyWithID(id);
+			});
+			
 		}
         	
 	});
