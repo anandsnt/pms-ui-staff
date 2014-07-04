@@ -1,5 +1,5 @@
-<div id="company-card-content" ng-controller="RVCompanyCardCtrl" class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')">
-    <section ng-if="!searchMode">
+<div ng-controller="RVCompanyCardCtrl">
+    <div id="company-card-content"  class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')" ng-if="!searchMode">
         <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('company')" translate="" ng-hide="viewState.isAddNewCard">Detach Card</button>
 
         <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -19,9 +19,8 @@
         <div ng-controller="cardContractsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
         <!-- Company Card Tab 3 Resevations -->
         <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>
-    </section>
-
-    <section ng-if="searchMode">
+    </div>
+    <div id="company-card-content"  class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')" ng-if="searchMode">
         <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">Add New Card</button>
         <div id="search-company-content" class="search-cards scrollable">            
             <!-- Company Card Results listing -->
@@ -61,5 +60,5 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>
