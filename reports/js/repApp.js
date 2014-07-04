@@ -313,8 +313,10 @@ reports.controller('reportDetails', [
 
             // need to keep a separate object to show the date stats in the footer area
             $scope.displayedReport = {};
-            $scope.displayedReport.fromDate = $scope.chosenReport.fromDate;
-            $scope.displayedReport.untilDate = $scope.chosenReport.untilDate;
+
+            // dirty hack to get the val() not model value
+            $scope.displayedReport.fromDate = $('#chosenReportFrom').val();
+            $scope.displayedReport.untilDate = $('#chosenReportTo').val();
         };
 
         // we are gonna need to drop some pagination

@@ -1,4 +1,4 @@
-admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParams', '$filter','$timeout', function($scope, ADChargeCodesSrv, ngTableParams, $filter,$timeout){
+admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParams', '$filter','$timeout','$state', function($scope, ADChargeCodesSrv, ngTableParams, $filter,$timeout,$state){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -18,7 +18,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
 		        page: 1,            // show first page
-		        count: $scope.data.charge_codes.length,    // count per page - Need to change when on pagination implemntation
+		        count: 10000,    // count per page - Need to change when on pagination implemntation
 		        sorting: {
 		            name: 'asc'     // initial sorting
 		        }
@@ -81,13 +81,12 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  	$scope.deleteItem = function(value){
  		var deleteSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.fetchChargeCodes();
-			// delete data from scope
 			angular.forEach($scope.data.charge_codes,function(item, index) {
 	 			if (item.value == value) {
 	 				$scope.data.charge_codes.splice(index, 1);
 	 			}
  			});
+ 			$scope.tableParams.reload();
 		};
 		var data = {'value' : value};
 		$scope.invokeApi(ADChargeCodesSrv.deleteItem, data, deleteSuccessCallback);
@@ -105,8 +104,8 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
 			} else {
-				$scope.fetchChargeCodes();
-				// $scope.orderedData.push(data);
+				$scope.data.charge_codes.push(data);
+			    $scope.tableParams.reload();
 			}
 			
     		$scope.currentClickedElement = -1;
