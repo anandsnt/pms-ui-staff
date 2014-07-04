@@ -15,6 +15,11 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	};
 	$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
 
+    $scope.$on('clearNotifications',function(){
+    	$scope.errorMessage ="";
+    	$scope.successMessage ="";
+    });
+
 	$scope.init = function(){
 		BaseCtrl.call(this, $scope);
 	    var fetchLikesFailureCallback = function(data){

@@ -23,6 +23,12 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
         function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
         function(gustDataReady) { if(gustDataReady)$scope.init(); }
     );
+
+
+    $scope.$on('clearNotifications',function(){
+    	$scope.errorMessage ="";
+    	$scope.successMessage ="";
+    });
 	
 	$scope.$parent.myScrollOptions = {		
 	    'loyaltyList': {
