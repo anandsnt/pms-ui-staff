@@ -1,4 +1,10 @@
-admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRatesConfigureSrv','ngDialog', function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog){
+admin.controller('ADDateRangeModalCtrl',['$scope',
+                                          '$filter',
+                                          'dateFilter',
+                                          'ADRatesConfigureSrv',
+                                          'ngDialog', 
+                                          '$rootScope',
+function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog, $rootScope){
 BaseCtrl.call(this, $scope);
 
    $scope.setUpData = function(){
@@ -6,8 +12,8 @@ BaseCtrl.call(this, $scope);
       $scope.isFromDateSelected = true;
       $scope.isToDateSelected   = true;
       $scope.fromDate = $scope.data.begin_date;
-      $scope.fromMinDate =dateFilter(new Date(), 'yyyy-MM-dd');
-      currentDate   = new Date();
+      $scope.fromMinDate =dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+      currentDate   = new Date($rootScope.businessDate);
       currentDate.setDate(1);
       currentDate.setMonth(currentDate.getMonth() +1);
       $scope.toMonthDate = currentDate;

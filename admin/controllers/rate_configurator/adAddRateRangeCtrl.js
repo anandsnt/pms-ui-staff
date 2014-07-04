@@ -12,8 +12,8 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             $scope.fromCalendarID = "rateFromCalendar";
             $scope.toCalendarID = "rateToCalendar";
 
-            $scope.isFromDateSelected = true;
-            $scope.isToDateSelected = true;
+            $scope.isFromDateSelected = false;
+            $scope.isToDateSelected = false;
             $scope.Sets = []
             $scope.Sets.push(createDefaultSet("Set 1"));
             $scope.fromDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
@@ -24,7 +24,6 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             toDate.setMonth(toDate.getMonth() + 1);
             $scope.toMonthDate = toDate;
             $scope.toMonthDateFormated = dateFilter(toDate, 'yyyy-MM-dd');
-            $scope.toMonthMinDate = dateFilter(toDate, 'yyyy-MM-dd');
         };
 
         /*
