@@ -28,23 +28,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// making unique copies of array
 			// slicing same array not good.
 			// say thanks to underscore.js
-			var smallPart = _.compact( data.rooms );
-			var restPart  = _.compact( data.rooms );
+			// var smallPart = _.compact( data.rooms );
+			// var restPart  = _.compact( data.rooms );
 
 			// smaller part consisit of enogh rooms
 			// that will fill in the screen
-			smallPart = smallPart.slice( 0, 20 );
-			restPart  = restPart.slice( 20 );
+			// smallPart = smallPart.slice( 0, 20 );
+			// restPart  = restPart.slice( 20 );
 
 			// first load the small part
-			$scope.rooms = smallPart;
+			// $scope.rooms = smallPart;
+			$scope.rooms = data.rooms
 
 			// load the rest after a small delay
 			$timeout(function() {
 
 				// push the rest of the rooms into $scope.rooms
 				// remember slicing is only happening on the Ctrl and not on Srv
-				$scope.rooms.push.apply( $scope.rooms, restPart );
+				// $scope.rooms.push.apply( $scope.rooms, restPart );
 
 				// apply the filter
 				$scope.calculateFilters();
