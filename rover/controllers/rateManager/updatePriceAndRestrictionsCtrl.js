@@ -31,20 +31,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             interactiveScrollbars : true,
             click : true, 
             snap : false
-        },
-        'restictionWeekDaysScroll': {
-            scrollbars: true,
-            interactiveScrollbars: true,
-            click: true,
-            useTransform: true,
-            zoom: false,
-            snap: false,
-            onBeforeScrollStart: function(e) {
-                var target = e.target;
-                while (target.nodeType != 1) target = target.parentNode;
-                if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-                    e.preventDefault();
-            }
         }
     };
 
