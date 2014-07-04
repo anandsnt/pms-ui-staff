@@ -49,7 +49,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	this.renderFullCalendar = function() {
 		/* event source that contains custom events on the scope */
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-console.log($scope.events);
 		$scope.eventSources = [$scope.events];
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -133,7 +132,7 @@ console.log($scope.events);
 		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 
 			//we have to add rate between the calendar checkin date & calendar checkout date only
-			if (getDateObj(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && getDateObj(this.date).getTime() <= $scope.checkoutDateInCalender.getTime()) {
+			if (getDateObj(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && getDateObj(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
 				$scope.totRate += parseFloat(this.rate);
 			}
 			//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
@@ -144,7 +143,7 @@ console.log($scope.events);
 		});
 		//calculating the avg. rate
 		if ($scope.calendarNightDiff > 0) {
-			$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001));
+			$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100 );
 		} else {
 			$scope.totRate = checkinRate;
 			$scope.avgRate = Math.round(($scope.totRate + 0.00001));

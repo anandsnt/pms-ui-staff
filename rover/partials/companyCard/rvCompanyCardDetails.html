@@ -10,14 +10,15 @@
             <header class="cards-header">
                 <div id="{{dataIdHeader}}" ng-id="{'company-card-header': account_type == 'COMPANY', 'travel-agent-card-header': account_type == 'TRAVELAGENT'}" class="card-header">
                     <!-- When company logo exists -->
+                    <input class="hidden" type="file" name="company-logo" id="uplaodCompanyLogo"  ng-model="contactInformation.account_details.company_logo" accept="*" app-filereader />
                     <figure class="guest-image" ng-if="escapeNull(contactInformation.account_details.company_logo)!=''">
-                        <img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
+                        <img ng-click="clickedLogo()" ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
-                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" translate>
+                    <div ng-click="clickedLogo()" class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" translate>
                     </div> 
-                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'TRAVELAGENT'" translate>
-                    </div> 
+                    <div ng-click="clickedLogo()" class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'TRAVELAGENT'" translate>
+                    </div>
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
