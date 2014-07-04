@@ -95,9 +95,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 		
 		}
-		if($scope.reservationData.paymentType.type.value === "CC"){
-			data.payment_type.session_id = MLISessionId;
-		}	
+		// CICO - 7030 : New API definition does not have this session_id
+		// if($scope.reservationData.paymentType.type.value === "CC"){
+		// 	data.payment_type.session_id = MLISessionId;
+		// }	
 														
 		data.company_id = $scope.reservationData.company.id;
 		data.travel_agent_id = $scope.reservationData.travelAgent.id;
