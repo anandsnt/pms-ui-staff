@@ -7,6 +7,11 @@ var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactI
 presentContactInfo.birthday =JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
 $scope.errorMessage = "";
 
+$scope.$on('clearNotifications',function(){
+  $scope.errorMessage ="";
+  $scope.successMessage ="";
+});
+
 $scope.saveContactInfo = function(){
     var saveUserInfoSuccessCallback = function(data){
     	if(!dataUpdated)

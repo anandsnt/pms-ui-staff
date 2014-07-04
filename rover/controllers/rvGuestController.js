@@ -138,6 +138,8 @@ return selector.contains(obj);
 */
 $scope.guestCardClick = function($event){
 
+$scope.$broadcast('clearNotifications');
+
 var element = $event.target;
 	$event.stopPropagation();
 	$event.stopImmediatePropagation();			
