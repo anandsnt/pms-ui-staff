@@ -1,7 +1,7 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv',
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv) {
         BaseCtrl.call(this, $scope);
-        
+
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
@@ -148,6 +148,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 futureReservations: 0
             }
         };
+
+        $scope.initReservationDetails = function() {
+            // Initiate All Cards 
+            $scope.reservationDetails.guestCard.id = "";
+            $scope.reservationDetails.guestCard.futureReservations = 0;
+            $scope.reservationDetails.companyCard.id = "";
+            $scope.reservationDetails.companyCard.futureReservations = 0;
+            $scope.reservationDetails.travelAgent.id = "";
+            $scope.reservationDetails.travelAgent.futureReservations = 0;
+        }
 
         $scope.getEmptyAccountData = function() {
             return {

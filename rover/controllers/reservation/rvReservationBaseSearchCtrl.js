@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout','$stateParams',
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout', '$stateParams',
     function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
@@ -7,15 +7,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var defaultMaxvalue = 5;
 
         var init = function() {
-            
-            if($stateParams.status !== 'RETAIN_RESERVATION') {
+            if ($stateParams.status !== 'RETAIN_RESERVATION') {
                 $scope.initReservationData();
             }
             $scope.businessDate = baseSearchData.businessDate;
-            if($scope.reservationData.arrivalDate == ''){
+            if ($scope.reservationData.arrivalDate == '') {
                 $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
             }
-            if($scope.reservationData.departureDate == ''){
+            if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
             }
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
@@ -26,7 +25,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
             $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
-
+            $scope.initReservationDetails();
             $scope.$emit('hideLoader');
         };
 
@@ -52,7 +51,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
             // to make sure that the number of
             // dates the guest stays must not be less than 1
-            if ( dayDiff < 1 ) {
+            if (dayDiff < 1) {
 
                 // user tried set the departure date
                 // before the arriaval date
@@ -66,7 +65,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         }
 
         $scope.arrivalDateChanged = function() {
-            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');            
+            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
         };
@@ -118,18 +117,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
 
 
-
-
-
-
         // jquery autocomplete Souce handler
         // get two arguments - request object and response callback function
         var autoCompleteSourceHandler = function(request, response) {
 
             var companyCardResults = [],
-                lastSearchText     = '',
-                eachItem           = {},
-                hasItem            = false;
+                lastSearchText = '',
+                eachItem = {},
+                hasItem = false;
 
             // process the fetched data as per our liking
             // add make sure to call response callback function
@@ -141,10 +136,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     eachItem = {};
 
                     eachItem = {
-                        label: item.account_name ,
-                        value: item.account_name ,
+                        label: item.account_name,
+                        value: item.account_name,
                         image: item.company_logo,
-                        
+
                         // only for our understanding
                         // jq-ui autocomplete wont use it
                         type: item.account_type,
@@ -152,52 +147,54 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         corporateid: '',
                         iataNumber: ''
                     };
-                    
+
                     // making sure that the newly created 'eachItem'
                     // doesnt exist in 'companyCardResults' array
                     // so as to avoid duplicate entry
                     hasItem = _.find($scope.companyCardResults, function(item) {
                         return eachItem.id === item.id;
                     });
-                    
+
                     // yep we just witnessed an loop inside loop, its necessary
                     // worst case senario - too many results and 'eachItem' is-a-new-item
                     // will loop the entire 'companyCardResults'
-                    if ( !hasItem ) {
+                    if (!hasItem) {
                         companyCardResults.push(eachItem);
                     };
                 });
-                
+
                 // call response callback function
                 // with the processed results array
-                response( companyCardResults );
+                response(companyCardResults);
             };
 
             // fetch data from server
             var fetchData = function() {
-                if ( request.term != '' && lastSearchText != request.term ) {
-                    $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, { 'query': request.term }, processDisplay);
+                if (request.term != '' && lastSearchText != request.term) {
+                    $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, {
+                        'query': request.term
+                    }, processDisplay);
                     lastSearchText = request.term;
                 }
             }
 
             // quite simple to understand
-            if ( request.term.length === 0 ) {
+            if (request.term.length === 0) {
                 companyCardResults = [];
                 lastSearchText = "";
-            } else if ( request.term.length > 2 ) {
+            } else if (request.term.length > 2) {
                 fetchData();
             }
         }
 
         var autoCompleteSelectHandler = function(event, ui) {
-            if ( ui.item.type === 'COMPANY' ) {
-                $scope.reservationData.company.id          = ui.item.id;
-                $scope.reservationData.company.name        = ui.item.label;
+            if (ui.item.type === 'COMPANY') {
+                $scope.reservationData.company.id = ui.item.id;
+                $scope.reservationData.company.name = ui.item.label;
                 $scope.reservationData.company.corporateid = ui.item.corporateid;
             } else {
-                $scope.reservationData.travelAgent.id         = ui.item.id;
-                $scope.reservationData.travelAgent.name       = ui.item.label;
+                $scope.reservationData.travelAgent.id = ui.item.id;
+                $scope.reservationData.travelAgent.name = ui.item.label;
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             };
 
@@ -275,13 +272,13 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     .data('ui-autocomplete')
                     ._renderItem = function(ul, item) {
                         ul.addClass('find-cards');
-                            
-                        var $content = highlightFilter(item.label, scope.ngModel),
-                            $result  = $("<a></a>").html($content),
-                            defIcon  = item.type === 'COMPANY' ? 'icon-company' : 'icon-travel-agent',
-                            $image   = '';
 
-                        if ( item.image ) {
+                        var $content = highlightFilter(item.label, scope.ngModel),
+                            $result = $("<a></a>").html($content),
+                            defIcon = item.type === 'COMPANY' ? 'icon-company' : 'icon-travel-agent',
+                            $image = '';
+
+                        if (item.image) {
                             $image = '<img src="' + item.image + '">';
                         } else {
                             $image = '<span class="icons ' + defIcon + '"></span>';
