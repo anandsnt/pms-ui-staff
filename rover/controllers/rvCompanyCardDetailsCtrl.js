@@ -1,4 +1,4 @@
-sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams','ngDialog','$filter', function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter){
+sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams','ngDialog','$filter', '$timeout', function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter,$timeout){
 	
 	console.log("$stateParams type --"+$stateParams.type);
 	console.log("$stateParams id --"+$stateParams.id);
@@ -268,4 +268,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			 scope: $scope
 		});
 	};
+	
+	// To handle logo upload explicitly via clicking company logo.
+	$scope.clickedLogo = function(){
+		/*
+		 * Due to the special requirement, we need to do DOM access here.
+		 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
+		 */
+		$timeout(function(){angular.element('#uplaodCompanyLogo').trigger('click')},0,false);
+	};
+	
+	
 }]);
