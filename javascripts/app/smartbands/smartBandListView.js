@@ -81,7 +81,8 @@ var SmartBandListView = function(domRef) {
 	this.updateRow = function(rowToChange){
 		var row = that.myDom.find("#listing-area ul li[data-id=" + rowToChange.id + "]");
 		row.find('span.band-holder').html(rowToChange.first_name + " " + rowToChange.last_name);
-		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToChange.amount);
+		var amount = parseFloat(rowToChange.amount).toFixed(2);
+		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + amount);
 	}
 	this.clickedOnMyDom = function(event){
 		sntapp.notification.hideMessage(that.myDom);	
