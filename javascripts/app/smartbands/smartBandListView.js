@@ -68,7 +68,8 @@ var SmartBandListView = function(domRef) {
 		html += "<span class=smartband-icon></span>";
 		html += "<span class=band-holder>" + rowToAppend.first_name + " " + rowToAppend.last_name  + "</span>";
 		if(rowToAppend.is_fixed == true){
-			html += "<span class=charge>" + that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToAppend.amount + "</span>";
+			var amount = parseFloat(rowToAppend.amount ).toFixed(2);
+			html += "<span class=charge>" + that.myDom.find("#listing-area").data("currency-symbol") + " " + amount + "</span>";
 		}
 		else{
 			html += "<span class=charge> OPEN ROOM CHARGE </span>";
