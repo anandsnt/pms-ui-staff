@@ -28,11 +28,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     * @return {boolean} - to indicate reverse or not
     */
     $rootScope.shallRevDir = function(fromState, toState) {
-      if ( fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.search' ) {
-        return true;
-      };
-
-      if ( fromState === 'rover.housekeeping.search' && toState === 'rover.housekeeping.dashboard' ) {
+      if ( fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus' ) {
         return true;
       };
 
