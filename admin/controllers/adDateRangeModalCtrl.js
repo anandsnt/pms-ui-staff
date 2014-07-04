@@ -61,7 +61,6 @@ $scope.count = 0;
 * The from_date can not be less than the to_date. 
 */
 $scope.$on("dateChangeEvent",function(e, value){
-  console.log(value);
 
     if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
         if (value.calendarId === $scope.fromCalendarID){
