@@ -163,7 +163,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		//call service for deleting
 		var params = {'id':selectedId};
 		var rateDeleteSuccess = function(){
-			$scope.reloadTable();
+			$scope.tableParams.reload();
 			$scope.$emit('hideLoader');
 		};
 		var rateDeleteFailure = function(data){

@@ -8,12 +8,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 		// activate room type default view based on reservation settings
-		if ($scope.otherData.defaultRateDisplayName == 'By Rate') {
-			$scope.activeCriteria = "RATE";
-		} else if ($scope.otherData.defaultRateDisplayName == 'By Room Type') {
-			$scope.activeCriteria = "ROOM_TYPE";
-		} else {
+		if($scope.otherData.defaultRateDisplayName == 'Recommended'){
 			$scope.activeCriteria = "RECOMMENDED";
+		}
+		else if($scope.otherData.defaultRateDisplayName == 'By Rate'){
+			$scope.activeCriteria = "RATE";
+		}
+		else{
+			// By default RoomType
+			$scope.activeCriteria = "ROOM_TYPE";
 		}
 		//CICO-5253 Rate Types Listing
 		// 			RACK
@@ -225,16 +228,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
 			//TODO: update the Tax Amount information
-			// $scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
-			$scope.computeTotalStayCost();
+			$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
 			$scope.reservationData.totalTaxAmount = 0;
 
 			//Navigate to the next screen
 			$scope.checkOccupancyLimit();
-			$state.go('rover.reservation.mainCard.addons', {
-				"from_date": $scope.reservationData.arrivalDate,
-				"to_date": $scope.reservationData.departureDate
-			});
+			$state.go('rover.reservation.mainCard.addons', {"from_date" : $scope.reservationData.arrivalDate, "to_date": $scope.reservationData.departureDate});
 		}
 
 		$scope.showAllRooms = function() {
