@@ -86,17 +86,19 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 		data.guest_detail.email = $scope.reservationData.guest.email;
 		if(!isEmpty($scope.reservationData.paymentType.type)){
-			data.guest_detail.payment_type = {};
-			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
-			// data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
-			data.guest_detail.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
+			data.payment_type = {};
+			data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
+			//TODO: verify
+			data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+			data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
 															$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
-			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+			data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 		
 		}
-		if($scope.reservationData.paymentType.type.value === "CC"){
-			data.guest_detail.payment_type.session_id = MLISessionId;
-		}	
+		// CICO - 7030 : New API definition does not have this session_id
+		// if($scope.reservationData.paymentType.type.value === "CC"){
+		// 	data.payment_type.session_id = MLISessionId;
+		// }	
 														
 		data.company_id = $scope.reservationData.company.id;
 		data.travel_agent_id = $scope.reservationData.travelAgent.id;
