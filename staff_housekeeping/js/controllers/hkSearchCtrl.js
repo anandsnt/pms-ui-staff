@@ -395,13 +395,13 @@ hkRover.controller('HKSearchCtrl',
 				return;
 			};
 
-			if (diff > trigger - 40) {
+			if (diff > trigger - 30) {
 				$arrow.className = 'rotate';
 			} else {
 				$arrow.className = '';
 			}
 
-			if (diff > trigger - 30) {
+			if (diff > trigger - 20) {
 				$notifyTxt.innerHTML = 'Release to refresh...';
 			} else {
 				$notifyTxt.innerHTML = 'Pull down to refresh...';
@@ -511,16 +511,6 @@ hkRover.controller('HKSearchCtrl',
 	// dont move these codes outside this controller
 	// DOM node will be missing
 	pullRefresh();
-
-
-
-	$scope.$on( '$destroy', function() {
-
-		console.log( 'reset filters on HKSearchCtrl exit' );
-
-		HKSearchSrv.currentFilters = HKSearchSrv.initFilters();
-
-	});
 
 }]);
 
