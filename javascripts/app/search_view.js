@@ -3,7 +3,8 @@ var Search = function(domRef) {
 	BaseView.call(this);
 	var that = this;
 	this.myDomElement = domRef;
-
+	this.isSearchedRoomNumber = false;
+	
 	this.setDom = function(newDom){
 		//in some cases we may want to reuse the old object & also may want use new dom
     	that.myDomElement = newDom;
@@ -98,10 +99,18 @@ var Search = function(domRef) {
 					return;
 				};
 
+				//If the ETBKSN value(for infinea) is empty, use the track2KSN
+				var ksn = data.RVCardReadTrack2KSN;
+          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+					ksn = data.RVCardReadETBKSN;
+				}
+
 				var url = '/staff/payments/search_by_cc';
 				var data = {
 					'et2' : data.RVCardReadTrack2,
-					'ksn' : data.RVCardReadTrack2KSN
+					'ksn' : ksn,
+					'etb' : data.RVCardReadETB
+
 				};
 				that.postCardSwipData(url, data);
 			},
@@ -434,15 +443,22 @@ var Search = function(domRef) {
              *TODO: How do we manage this DOM detachment feature when moving to Angular? 
              */
             var searchHTML ="";
+            that.isSearchedRoomNumber = false;
 			$.each(searchResults, function(i, value) {
-
+				// To set flag while searching a room number.
+				if((escapeNull(value.room).toString()).indexOf($query) >= 0)  that.isSearchedRoomNumber = true;
 				if ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.room).toString()).indexOf($query) >= 0 || (escapeNull(value.confirmation).toString()).indexOf($query) >= 0) {
 					searchHTML += '<li>' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued, value.is_queue_rooms_on);
 				}
 
 			});
-
-			$('#search-results').removeAttr('style').html(searchHTML).highlight($query); 
+			// To handle highlight of room number seperately.
+			if(that.isSearchedRoomNumber){
+				$('#search-results').removeAttr('style').html(searchHTML);
+			}
+			else{	
+				$('#search-results').removeAttr('style').html(searchHTML).highlight($query);
+			}
 
 			sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 			// Refresh scroll
@@ -489,26 +505,35 @@ var Search = function(domRef) {
 		var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
 		if (room_ready_status == "") {
-			var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
+			roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
 		} else {
-			var roomStatusMapped = this.getRoomReadyStatusMapped(room_ready_status, use_inspected, use_pickup, checkin_inspected_only, foStatus);
+			roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
+			var roomStatusColor = this.getRoomReadyStatusMapped(room_ready_status, use_inspected, use_pickup, checkin_inspected_only, foStatus);
 
 		}
 		var roomstatusexplained = "";
 		var roomStatus = "";
 		var showRoomStatus = false;
+		var roomNumber = "";
 
 		// Display FO status only when room-status = NOT-READY and reservation status = CHECKING-IN
 		if (roomStatusMapped == "not-ready" && reservation_status == "CHECKING_IN") {
 			roomstatusexplained = foStatus;
 			showRoomStatus = true;
 		}
+		// To highlight room number if searched with room number.
+		if(that.isSearchedRoomNumber){
+			roomNumber = '<span class="highlight">'+escapeNull(room)+'</span>';
+		}
+		else{
+			roomNumber = escapeNull(room);
+		}
 		// Show color coding ( Red / Green - for Room status) for room only if reservation status = CHECKING-IN
 		if (reservation_status == "CHECKING_IN") {
-			roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
+			roomStatus = '<strong class="room-number ' + escapeNull(roomStatusColor) + '">' + roomNumber + '</strong>';
 		} else {
-			roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
+			roomStatus = '<strong class="room-number">' + roomNumber + '</strong>';
 		}
 		
 		var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '', $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '', $vip = vip ? '<span class="vip">VIP</span>' : '', $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip + '</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip + '</figure>', $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '', $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>' : '<span class="guest-status"></span>', $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status || isLateCheckoutOn == false) ? "" : '<span class="late-checkout-time">' + escapeNull(lateCheckoutTime) + '</span>', $queuedStatus = isReservationQueued == "true" && isQueueRoomsOn == "true" ? 'queued' : '' , $guestViewIcons = '<div class="status '+ $queuedStatus +' ">' + $lateCheckoutStatus + $viewStatus + '</div>';
@@ -558,11 +583,11 @@ var Search = function(domRef) {
 		var resultant_mapped_room_color = "";
 
 		if (room_ready_status != "" && fo_status == "VACANT") {
-			mapped_room_color = get_mapped_room_ready_status_color(room_ready_status, checkin_is_inspected_only)
+			
+			mapped_room_color = get_mapped_room_ready_status_color(room_ready_status, checkin_is_inspected_only);
 		} else {
 			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
-		
 		return mapped_room_color;
 	};
 
