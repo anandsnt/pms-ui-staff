@@ -41,10 +41,28 @@ var RegistrationCardView = function(viewDom) {
 			data.bill_number = $(this).attr("data-bill-number");
 			that.reviewStatus.push(data);
 		});
-	};
+		
+		
+		
+		
+	  };
 
 	this.pageshow = function(){
 		sntapp.cardSwipeCurrView = 'GuestBillView';
+		
+		var currentStatus= "";
+		var shouldShowPaymentPopUp =  false;
+        if(!($("#checkin-button").parent().parent().hasClass("hidden"))){
+      		currentStatus = $("#registrationcard_main").attr("data-current-reservation-status");
+      		if(currentStatus == "CHECKING_IN"){
+      			shouldShowPaymentPopUp = true;
+      		}
+        }
+        
+      	if(shouldShowPaymentPopUp){
+			that.addNewPaymentModal({}, {should_show_overlay: true});
+		}
+									
 	};
 	
     // To Display Guest Bill screen in detailed mode via ViewBillButton click.
@@ -244,24 +262,12 @@ var RegistrationCardView = function(viewDom) {
 			validateOptEmailModal.initialize();
 			return;
 		}
-		else if (isEmpty(sntapp.regCardData) && that.myDom.find('#payment').attr('data-payment-type') == 'CC'){
-			var message = "Please swipe the credit card before you checkin";
-			that.showErrorMessage(message);
-			return false;
-		}
+		
 		else {
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
 				"signature" : signature,
-				"reservation_id" : that.reservation_id,
-				"payment_type": sntapp.regCardData.payment_type,
-				"mli_token": sntapp.regCardData.mli_token,
-				"et2": sntapp.regCardData.et2,
-				"ksn": sntapp.regCardData.ksn,
-				"pan": sntapp.regCardData.pan,
-				"name_on_card": sntapp.regCardData.name_on_card,
-				"card_expiry": sntapp.regCardData.card_expiry,	
-				"credit_card" : sntapp.regCardData.credit_card 			
+				"reservation_id" : that.reservation_id		
 			};
 
 			var webservice = new WebServiceInterface();
@@ -398,18 +404,29 @@ var RegistrationCardView = function(viewDom) {
 	// To add new payment from bill card
 	this.addNewPaymentModal = function(event, options){
 		var domElement = $("#bill"+that.getActiveBillNumber());
+		
+		//Instance does not exist - First Time invocation.
 	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
 	      sntapp.setViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal(views.BILLCARD, domElement);
+	      	  return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
+	      if(options && options.should_show_overlay){
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
-	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
+	      sntapp.getViewInst('addNewPaymentModal').params = 
+	      				{ "bill_number" :that.getActiveBillNumber(),
+	      				  "origin":views.BILLCARD};
+	   
 	    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
 	      sntapp.updateViewInst('addNewPaymentModal', function() {
 	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
+	      if(options && options.should_show_overlay){
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
 	    }
@@ -516,6 +533,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// To get current active bill's bill-number
 	this.getActiveBillNumber =  function() {
+		
 		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
 	};
 

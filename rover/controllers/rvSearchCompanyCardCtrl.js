@@ -1,4 +1,4 @@
-sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearchSrv', '$stateParams', function($scope, RVCompanyCardSearchSrv, $stateParams){
+sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearchSrv', '$stateParams','ngDialog', function($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog){
 
 	BaseCtrl.call(this, $scope);
 	$scope.heading = "Find Cards";
@@ -45,12 +45,14 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
   	* function to perform filtering/request data from service in change event of query box
   	*/
 	$scope.queryEntered = function(){
-		if($scope.textInQueryBox === ""){
+		if($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3){
 			$scope.results = [];
 		}
 		else{
 	    	displayFilteredResults();  
 	   	}
+	   	var queryText = $scope.textInQueryBox;
+	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
   
 	$scope.clearResults = function(){
@@ -98,6 +100,22 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 	      // we have changed data, so we are refreshing the scrollerbar
 	      refreshScroller();                  
 	    }
-  };
+  	};
+  
+	// To impelement popup to select add new - COMPANY / TRAVEL AGENT CARD
+	$scope.addNewCard = function(){
+	  	ngDialog.open({
+			 template: '/assets/partials/companyCard/rvSelectCardType.html',
+			 controller: 'selectCardTypeCtrl',
+			 className: 'ngdialog-theme-default1 calendar-single1',
+			 closeByDocument: false,
+			 scope: $scope
+		});
+	};
 
+	// While coming back to search screen from DISCARD button
+	if($stateParams.textInQueryBox) {
+		$scope.textInQueryBox = $stateParams.textInQueryBox;
+		$scope.queryEntered();
+	}
 }]);

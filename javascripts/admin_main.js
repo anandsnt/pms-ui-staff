@@ -11,15 +11,17 @@
 //=require ../shared/lib/js/ng-table.js
 //=require ../shared/lib/js/fastclick.js
 //=require ../shared/lib/js/angular-dragdrop.min.js
-//=require ../admin/directives/Calendar/angular-pickdate.js
+//=require ../shared/lib/js/angular-datepicker.js
 
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.min.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
+//=require_tree ../admin/adRouter
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
 //=require ../admin/adUtils.js
 //=require_tree ../admin/controllers
 //=require_tree ../admin/directives
 //=require_tree ../admin/services
+//=require ../rover/rvSntApp.js

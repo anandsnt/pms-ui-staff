@@ -16,7 +16,6 @@
 		.ui-resizable-handle {
 			position: absolute;
 			font-size: 0.1px;
-			z-index: 9999 !important;
 			.show;
 
 			&.ui-resizable-s {
@@ -30,15 +29,21 @@
 				background-position: 8px -396px, 0 0;
 				.box-shadow(0 2px 2px rgba(0,0,0,.2));
 				#border-radius > .bottom(5px);
+			}
 
-				@media @highdpi {
-					background-image: @icons2x;
-					background-size: 120px;
-				}
+			&.ui-resizable-e {
+				cursor: e-resize;
+				height: 50px;
+				width: 25px;
+				top: 20px;
+				right: 0;
+				background-repeat: no-repeat, repeat;
+				background-position: 5px -3807px, 0 0;
+				.box-shadow(1px 1px 1px rgba(0,0,0,.1));
+				#border-radius > .right(5px);
 			}
 
 			&.ui-resizable-sn,
-			&.ui-resizable-e,
 			&.ui-resizable-w,
 			&.ui-resizable-se,
 			&.ui-resizable-sw,
@@ -56,6 +61,11 @@
 				&.ui-resizable-s {
 					background-color: @gcard;
 					background-image: @icons, @gcardTexture;
+
+					@media @highdpi {
+						background-image: @icons2x, @gcardTexture;
+						background-size: 120px, 40px;
+					}
 				}
 			}
 		}
@@ -65,6 +75,11 @@
 				&.ui-resizable-s {
 					background-color: @ccard;
 					background-image: @icons, @ccardTexture;
+
+					@media @highdpi {
+						background-image: @icons2x, @ccardTexture;
+						background-size: 120px, 40px;
+					}
 				}
 			}
 		}
@@ -74,6 +89,29 @@
 				&.ui-resizable-s {
 					background-color: @tacard;
 					background-image: @icons, @tacardTexture;
+
+					@media @highdpi {
+						background-image: @icons2x, @tacardTexture;
+						background-size: 120px, 40px;
+					}
+				}
+			}
+		}
+
+		&.sidebar-left {
+			height: 100%;
+
+			.ui-resizable-handle {
+				top: auto;
+				bottom: 170px;
+
+				&.ui-resizable-e {
+					background-image: @icons, @rcardTexture1;
+
+					@media @highdpi {
+						background-image: @icons2x, @rcardTexture1;
+						background-size: 120px, 40px;
+					}
 				}
 			}
 		}
@@ -86,110 +124,74 @@
 		}
 	}
 
-/* Modal window				==============================*/
-	#modal {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		height: auto;
-		z-index: 9999;
-		visibility: hidden;
-		.backface-visibility(hidden);
-		.transform3d(-50%, -50%, 0);
-		#border-radius > .rounded(3px);
+/* jQuery UI autocomplete	==============================*/
+.ui-autocomplete {
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: default;
+	z-index: 99999;
+	
+	&.find-cards {
+		max-height: 240px;
+		width: auto !important;
+		.faux-clickable;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	
+		li {
+			margin: 0;
+			.box-shadow(0 1px 2px rgba(0,0,0,.1));
 
-		#modal-close {
-			position: absolute;
-			top: -20px;
-			left: -20px;
-			z-index: 9995;
-			border: 0;
-			cursor: pointer;
-			.square(40px);
-			.background(@white);
-			#border-radius > .rounded(20px);
-
-			.icons {
-				position: absolute;
-				top: 8px;
-				left: 8px;
-				z-index: 9992;
-			}
-
-			&.green { background: @green; }
-			&.red { background: @red; }
-			&.blue { background: @blue; }
-			&.dark-title { background: @gcard; }
-		}
-
-		.modal-content {
-			padding: 20px;
-			z-index: 9990;
-			.background(@white);
-			#border-radius > .rounded(3px);
-			.transformScale(0.7);
-			.opacity(0);
-			.transition;
-
-			.message,
-			.text {
-				text-transform: uppercase;
-				font-weight: 600;
-				.show;
-			}
-
-			.message { 
-				margin: 10px 0 20px 0; 
-				text-align: center;
-
-				.select,
-				.select-item {
-					display: inline-block;
-					margin: -5px 0 0 10px;
-					width: 60px;
-
-					select { font-weight: 600; }
-				}
-
-				&.notice { margin-top: 0; }
-				&.solo { margin: 0; }
-			}
-
-			.text:not(.value) {
-				font-size: 14px;
-				line-height: 1em;
-				color: @grey3;
-				padding-bottom: 20px;
-				text-align: center;
-			}
-
-			.text.value {
-				font-weight: 400;
-				text-transform: none;
-			}
-
-			.button { 
+			a {
+				position: relative;
+				padding: 10px 20px 10px 50px;
 				font-size: 18px;
-				line-height: 50px;
-				width: 100%; 
-				.show; 
+				line-height: 30px;
+				font-weight: 600;
+				color: @textColor;
+				.show;
 
-				&.blank {
-					color: @textColor;
+				.highlight { color: @logoPrimary; }
 
-					&:hover,
-					&:active { color: @logoPrimary; }
-				}
-
-				&.half {
-					padding: 0 5px;
-					.pull-left;
-					.calc-width(50, 10); /* %, px */
-
-					&:first-child { margin-right: 20px; }
+				img {
+					position: absolute;
+					top: 10px;
+					left: 10px;
+					.square(30px);
+					#border-radius > .rounded();
 				}
 			}
+		}
+	}
 
+	&.find-rate {
+		.faux-clickable;
+
+		li {
+			margin: 0;
+			.box-shadow(0 1px 2px rgba(0,0,0,.1));
+
+			a {
+				padding: 10px;
+				font-size: 18px;
+				line-height: 30px;
+				font-weight: 600;
+				color: @textColor;
+				.show;
+
+				.highlight { color: @logoPrimary; }
+			}
+		}
+	}
+}
+
+.ui-helper-hidden-accessible { .hide; }
+
+/* Modal window				==============================*/
+	#modal,
+	.inline-modal {
+		.modal-content {
 			/* Confirmation modal window ***/
 			&.confirmation {
 				width: 360px;
@@ -302,7 +304,8 @@
 			}
 
 			/* Social lobby reply form ***/
-			&.lobby-form {
+			&.lobby-form,
+			&.change-rate-form {
 				padding: 0;
 				width: 740px;
 				.float;
@@ -539,11 +542,32 @@
 						position: absolute;
 						left: 20px;
 						top: 80px; 
-						.calc-width(100, 20); /* %, px */
+						.calc-width(100, 25); /* %, px */
 						.calc-height(100, 100); /* %, px */
 
+						/* custom scrollbars, cant revelage on iscroll */
+						overflow: auto;
+						-webkit-overflow-scrolling: touch;
+						/**/
+						&::-webkit-scrollbar {
+						  -webkit-appearance: scrollbarthumb-vertical;
+						  width: 7px;
+						}
+						/**/
+						&::-webkit-scrollbar-track {
+						  background: transparent none;
+						}
+						/**/
+						&::-webkit-scrollbar-thumb {
+						  width: 7px;
+						  background: rgba(0, 0, 0, 0.5);
+						  box-sizing: border-box;
+						  border: 1px solid rgba(255, 255, 255, 0.9);
+						  border-radius: 3px;
+						}
+
 						li {
-							margin: 0 20px 10px 0;
+							margin: 0 10px 10px 0;
 
 							.button {
 								position: relative;
@@ -566,7 +590,10 @@
 									line-height: 20px;
 									font-weight: 600;
 									.show;
-									.square(20px);
+									// no width and padding will allow
+									// design to show counts more than 99
+									height: 20px;
+									padding: 0 7px;
 									#border-radius > .rounded(20px);
 								}
 
@@ -604,16 +631,37 @@
 					}
 
 					.scrollable { 
-						position: absolute;
-						left: 15px;
-						top: 80px; 
-						.calc-width(100, 20); /* %, px */
-						.calc-height(100, 398); /* %, px */
+						position: relative;
+						width: 100%;
+						height: auto;
+						max-height: 190px;
 
-            > .wrapper { padding-bottom: 2px; }
+						/* custom scrollbars, cant revelage on iscroll */
+						overflow: auto;
+						-webkit-overflow-scrolling: touch;
+						/**/
+						&::-webkit-scrollbar {
+						  -webkit-appearance: scrollbarthumb-vertical;
+						  width: 7px;
+						}
+						/**/
+						&::-webkit-scrollbar-track {
+						  background: transparent none;
+						}
+						/**/
+						&::-webkit-scrollbar-thumb {
+						  width: 7px;
+						  background: rgba(0, 0, 0, 0.5);
+						  box-sizing: border-box;
+						  border: 1px solid rgba(255, 255, 255, 0.9);
+						  border-radius: 3px;
+						}
+
+            			> .wrapper { padding-bottom: 2px; }
+
 						li {
 							position: relative;
-							margin: 0 20px 0 0;
+							margin: 0 10px 0 0;
 							padding: 5px;
 							text-align: left;
 							line-height: 1.1em;
@@ -651,16 +699,14 @@
 					}
 
 					#total-charge {
-						position: absolute;
-						left: 15px;
-						top: 275px;
 						border-top: 2px solid rgba(0,0,0,.1);
 						padding-top: 10px;
+						padding-right: 15px;
 						font-weight: 600;
 						line-height: 30px;
-						.calc-width(100, 40); /* %, px */
+						width: auto;
 						.float;
-
+						
 						.price {
 							font-size: 30px;
 							font-weight: 300;
@@ -668,7 +714,7 @@
 						}
 						
 						&.offset-1 { top: 140px; }
-						&.offset-2 { top: 185px; }
+						/*&.offset-2 { top: 185px; }*/
 						&.offset-3 { top: 230px; }
 					}
 
@@ -1041,55 +1087,102 @@
 					}
 				}
 			}
-		}
+			
+			/* Reservation confirmation modals ***/
+			&.rooms-and-rates {
+				width: 360px;
 
-		/* Auto-close notice message ***/
-		.notice {
-			font-weight: 600;
-			text-transform: uppercase;
-			margin: 0;
-			text-align: center;
-		}
+				.confirmed {
+					margin: 40px 0;
 
-		&.modal-show { 
-			visibility: visible; 
- 
-			.modal-content {
-				.transformScale(1);
-				.opacity(100);
+					li {
+						font-weight: 600;
+						text-transform: uppercase;
+						margin-bottom: 10px;
+						text-align: center;
+
+						.count {
+							color: @grey3;
+							font-weight: 400;
+							margin-left: 5px;
+						}
+
+						&.booked { color: @green; }
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+
+				.actions {
+					.button {
+						margin-bottom: 10px;
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+			}
+
+			&.room-enhancements {
+				width: 420px;
+
+				.enhancements-added {
+					margin: 40px 0;
+
+					li {
+						font-weight: 600;
+						text-transform: uppercase;
+						padding-bottom: 10px;
+						margin-bottom: 10px;
+						border-bottom: 1px solid rgba(0,0,0,.1);
+						.float;
+
+						.count {
+							color: @grey3;
+							font-weight: 400;
+							margin-left: 5px;
+						}
+
+						.icon-trash {
+							cursor: pointer;
+							.pull-right;
+						}
+
+						&:last-child { 
+							margin-bottom: 0; 
+							padding-bottom: 0;
+							border: 0;
+						}
+					}
+				}
+
+				.actions {
+					.button {
+						margin-bottom: 10px;
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+			}
+
+			/* New card ***/
+			&.new-card {
+				.button {
+					padding: 0 40px;
+					margin-bottom: 10px;
+
+					&.blank { margin-bottom: 0; }
+				}
 			}
 		}
-
-		&.keyboard-lock { .transform3d(-50%, -15%, 0); }
-
-		/* Custom positioning ***/
-		&[data-position="bottom-right"]{
-			top: auto;
-			left: auto;
-			bottom: 0;
-			right: 0;
-			.transform3d(0, 0, 0);
-		}
-
-		&.ui-draggable { cursor: move; }
 	}
 
-	#modal-overlay {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		visibility: hidden;
-		top: 0;
-		left: 0;
-		z-index: 0;
-		opacity: 0;
-		background: rgba(0,0,0,0.5);
-		.transition;
-
-		&.modal-show { 
-			opacity: 1;
-			visibility: visible;
-			z-index: 9990;
+	/* SPL_CASE: Auto-close notice message inside post charge ***/
+	#modal .modal-content.post-charge .content-right {
+		.notice {
+			position: absolute;
+			z-index: 10;
+			right: 20px;
+			left: 20px;
 		}
 	}
 
@@ -1218,7 +1311,7 @@
 
 			.fc-view {
 				width: 100%;
-				overflow: hidden;
+				overflow: visible;
 			}
 
 			&.updating {
@@ -1349,6 +1442,25 @@
 				}
 			}
 
+			&.house-unavailable {
+				.fc-event-inner {
+					.background();
+
+					.fc-event-day { color: @red; }
+					.fc-event-title { color: @red; }
+
+					&:after {
+						content: ' ';
+					    position: absolute;
+					    left: 0;
+					    right: 0;
+					    top: 0;
+					    bottom: 0;
+					    background-color: rgba(230,56,56,.3);
+					}
+				}
+			}
+
 			&.split-view {
 				
 				/* Vertical split
@@ -1406,6 +1518,49 @@
 							.fc-event-day { .show; }
 						}
 					} 
+				}
+			}
+
+			&[data-tooltip]:not([data-tooltip=""]):not(.hide-tooltip) {
+
+				&:before,
+				&:after {
+					visibility: hidden;
+					pointer-events: none;
+					.transition;
+					.opacity(0);
+				}
+
+				&:before {
+					content: attr(data-tooltip);
+					position: absolute;
+					bottom: 49px;
+					right: 10px;
+					padding: 10px;
+					background-color: @white;
+					font-size: 18px;
+					font-weight: 600;
+					.show;
+					.box-shadow();
+					#border-radius > .rounded();
+				}
+
+				&:after {
+					content: "";
+					position: absolute;
+					bottom: 40px;
+					left: 20px;
+					width: 0;
+					height: 0;
+					border-top: 10px solid @white;
+					border-right: 10px solid transparent;
+					border-left: 10px solid transparent;
+				}
+
+				&:hover:before,
+				&:hover:after {
+					visibility: visible;
+					.opacity(100);
 				}
 			}
 		}		

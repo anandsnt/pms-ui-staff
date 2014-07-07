@@ -4,7 +4,7 @@
 		<div class="data-holder">
 			<form id="add-loyalty" class="form inline-form float">
 				<div class="form-title">
-					<h3><span>Add new</span> Hotel Loyalty Program </h3>
+					<h3><span>{{addEditTitle }}</span> Hotel Loyalty Program </h3>
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
 				<fieldset class="holder left float">
@@ -19,7 +19,7 @@
 					<div class="entry full-width">
 						<label for="loyalty-option1"> Levels </label>
 						<div class="entry" ng-repeat="level in hotelLoyaltyData.levels">
-							<input type="text"  placeholder="Add new option" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" class="add-new-option"
+							<input type="text"  placeholder="Add new level" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" ng-class="{'add-new-option': !getEditStatusForLevel($index) }"
 							ng-model="level.name" >
 							<input type="text" ng-model="level.value" ng-hide="true">
 						</div>

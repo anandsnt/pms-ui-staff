@@ -61,11 +61,30 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', functi
 		ADBaseWebSrv.deleteJSON(url).then(fetchSuccess, fetchFailed);
 		return deferred.promise;
 	};
+	
 	this.fetchHotelDetails = function(){
+		
+		
+		
+		var that = this;
 		var deferred = $q.defer();
+		
+		 that.fetchHotelBusinessDate = function(){
+			var url = '/api/business_dates/active';
+			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+				that.hotelDetails.business_date = data.business_date;
+				deferred.resolve(that.hotelDetails);
+			},function(errorMessage){
+				deferred.reject(errorMessage);
+			});
+			return deferred.promise;
+		};		
+		
+		
 		var url = '/api/hotel_settings.json';
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			deferred.resolve(data);
+			that.hotelDetails = data;
+			that.fetchHotelBusinessDate();
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});

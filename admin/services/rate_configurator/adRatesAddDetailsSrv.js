@@ -78,7 +78,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * @return {object} charge codes
              */
             this.fetchChargeCodes = function () {
-                var url = "/api/charge_codes";
+                var url = "/api/charge_codes?is_room_charge_code=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.charge_codes = data.results;
                     this.fetchSources();
@@ -145,6 +145,20 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
             var deferred = $q.defer();
             var url = "/api/rates";
             ADBaseWebSrvV2.postJSON(url, data).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        /*
+         * Service function to validate end date
+         * @return {object} status
+         */
+        this.validateEndDate = function (params) {
+            var deferred = $q.defer();
+            var url = "/api/rates/validate_end_date";
+            ADBaseWebSrvV2.postJSON(url,params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

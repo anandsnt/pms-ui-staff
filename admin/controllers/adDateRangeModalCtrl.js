@@ -1,13 +1,21 @@
-admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRatesConfigureSrv','ngDialog', function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog){
+admin.controller('ADDateRangeModalCtrl',['$scope',
+                                          '$filter',
+                                          'dateFilter',
+                                          'ADRatesConfigureSrv',
+                                          'ngDialog', 
+                                          '$rootScope',
+function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog, $rootScope){
 BaseCtrl.call(this, $scope);
 
    $scope.setUpData = function(){
+      $scope.fromCalendarID = "rateFromCalendar";
+      $scope.toCalendarID = "rateToCalendar";
 
       $scope.isFromDateSelected = true;
       $scope.isToDateSelected   = true;
       $scope.fromDate = $scope.data.begin_date;
-      $scope.fromMinDate =dateFilter(new Date(), 'yyyy-MM-dd');
-      currentDate   = new Date();
+      $scope.fromMinDate =dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+      currentDate   = new Date($rootScope.businessDate);
       currentDate.setDate(1);
       currentDate.setMonth(currentDate.getMonth() +1);
       $scope.toMonthDate = currentDate;
@@ -19,6 +27,7 @@ BaseCtrl.call(this, $scope);
         $scope.maxDate = dateDict.end_date;           
       }
 };
+
 
 $scope.setUpData();
 $scope.updateClicked = function(){
@@ -47,17 +56,19 @@ $scope.cancelClicked = function(){
 
 $scope.count = 0;
 
-$scope.$on("fromDateChanged", function(e,value){
-           $scope.count++;
-           if($scope.count > 2){
-              var fromScope = $scope.$$childHead;
-              var toScope = $scope.$$childHead.$$nextSibling;
-              var fromDays = (12* parseInt(fromScope.yearSelected)) + parseInt(fromScope.monthSelected.value);
-              var toDays = (12*parseInt(toScope.yearSelected)) + parseInt(toScope.monthSelected.value);
-              if(fromDays >= toDays){                
-                toScope.changeMonth(parseInt (fromDays - toDays),false);  
-              }
-           }
+/**
+* Calendar validation
+* The from_date can not be less than the to_date. 
+*/
+$scope.$on("dateChangeEvent",function(e, value){
+
+    if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
+        if (value.calendarId === $scope.fromCalendarID){
+            $scope.toMonthDateFormated = $scope.fromDate;
+        }else{
+            $scope.fromDate = $scope.toMonthDateFormated;
+        }
+    }
 });
 
 }]);

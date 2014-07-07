@@ -1,4 +1,4 @@
-<!-- Navbar -->
+<!-- Navbar --> 
 <header class="nav-bar float" role = "banner">
 	<!-- Drawer toggle -->
 	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
@@ -6,7 +6,10 @@
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
 		{{userInfo.last_name}} </strong> | <em class="date"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em></span>
 
-		<!-- Late checkout --></h1><a id="late-checkout-alert" ui-sref="rover.search({type: 'LATE_CHECKOUT'})" class="icons icon-alert late-check-out"> {{userInfo.late_checkout_count}} </a>
+		<!-- Late checkout -->
+	</h1>
+
+	<a id="late-checkout-alert" ui-sref="rover.search({type: 'LATE_CHECKOUT'})" class="icons icon-alert late-check-out" ng-show="isLateCheckoutTurnedOn && shouldShowLateCheckout"> {{userInfo.late_checkout_count}} </a>
 	<div class="logo">
 		<img alt = "" ng-src= "{{userInfo.logo}}" />
 	</div>

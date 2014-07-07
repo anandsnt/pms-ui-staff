@@ -82,11 +82,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
              */
                 angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy){
                         var symbol =  (depositPolicy.amount_type ==="amount") ? '$':'%';
-                        depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
+                        if (symbol == '%') {
+                            depositPolicy.displayData = depositPolicy.name +"   "+"("+depositPolicy.amount+symbol+")";
+                        }
+                        else {
+                            depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
+                        }
                 });
                 angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty){
                         var symbol =  (cancelationPenalty.amount_type ==="amount") ? '$':'%';
-                        cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
+                        if (symbol == '%') {
+                            cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+cancelationPenalty.amount+symbol+")";
+                        }
+                        else {
+                            cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
+                        }
                 });
             /*
              * empty the list if not activated
@@ -94,9 +104,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
                 $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
                 $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-
-
                 $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
+
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {
@@ -104,20 +113,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             };
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback, fetchRateTypesFailureCallback);
         }
-        /**
-        * Method to show/hide the based on range selection.
-        * Based on rate will not be available,
-        * if it the rate type is 'Corporate Rates', 'Consortia Rates', 'Government Rates'
-        */
-        $scope.rateTypeChanged = function(){
-            var rateTypeSelected = $scope.rateData.rate_type.name;
-            if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rateTypeSelected) >= 0){
-                $scope.hideBasedOn = true;
-            }
-            else if(rateTypeSelected === 'Specials & Promotions'){
-                $scope.isPromotional = true;
-            }
-        };
 
         /*
          * Set add on data
@@ -136,14 +131,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             return addOnsArray;
         };
 
-        /*
-         * Save Rate Details
-         */
-
-        $scope.saveRateDetails = function () {
-
+        $scope.startSave = function(){
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
-
             var addOns = setUpAddOnData();
             var data = {
                 'name': $scope.rateData.name,
@@ -195,20 +184,71 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
                 };
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, saveSuccessCallback, saveFailureCallback);
             }
+        }
+
+
+        $scope.endDateValidationPopup = function(){
+             ngDialog.open({
+                 template: '/assets/partials/rates/adRatesEndDateValidationPopup.html',
+                 controller: 'adRatesEndDateValidationPopupController',
+                 className: 'ngdialog-theme-default single-calendar-modal',
+                 scope:$scope,
+                 closeByDocument:true
+            });
+        };
+
+        /*
+         * Save Rate Details
+         */
+
+        $scope.saveRateDetails = function () {
+
+            var validateEndDateSuccessCallback = function (data) {
+       
+                $scope.$emit('hideLoader');
+                if(data.status)
+                  $scope.startSave();
+                else
+                  $scope.endDateValidationPopup();             
+
+            };
+
+            var validateEndDateFailureCallback = function (data) {
+                $scope.$emit('hideLoader');
+             
+            };
+            if($scope.rateData.end_date){
+                if ($scope.rateData.id) {
+                var data = {"id":$scope.rateData.id,"end_date":$scope.rateData.end_date}
+                $scope.invokeApi(ADRatesAddDetailsSrv.validateEndDate, data, validateEndDateSuccessCallback, validateEndDateFailureCallback);
+                }
+                else{
+                    $scope.startSave();
+                } 
+           }
+            else{
+                $scope.startSave();
+            }          
         };
 
         $scope.init();
 
+        $scope.deleteEndDate =  function(){
+            $scope.rateData.end_date ="";
+        }
+
 
         $scope.popupCalendar = function(){
-        ngDialog.open({
-         template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
-         controller: 'adEndDatePickerController',
-         className: 'ngdialog-theme-default single-calendar-modal',
-         scope:$scope,
-         closeByDocument:true
-    });
-};
+            ngDialog.open({
+                 template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
+                 controller: 'adEndDatePickerController',
+                 className: 'ngdialog-theme-default single-calendar-modal',
+                 scope:$scope,
+                 closeByDocument:true
+                });
+        };
+
+
     }
 ]);
 

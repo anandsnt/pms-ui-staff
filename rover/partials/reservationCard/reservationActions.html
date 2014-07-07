@@ -1,6 +1,6 @@
 <div class="reservation-actions" ng-controller="reservationActionsController">
 		<!-- Resevation is checking-in -->
-		<a class="button green" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
+		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
 		</a>
 		
@@ -9,13 +9,13 @@
 			{{reservationData.reservation_card.arrival_time}}
 		</div>
 		
-		<a class="button red" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+		<a class="button red" ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'checkoutButton'})" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
 		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
 			 {{reservationData.reservation_card.late_checkout_time}}
 		</div>
-		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
+		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !='' && !reservationData.reservation_card.is_opted_late_checkout">
 			 {{reservationData.reservation_card.departure_time}}
 		</div>
 		<!-- Reservation is checking out -->
@@ -25,7 +25,7 @@
 			<!-- if balance is zero, show balance in green color -->
 			<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
 				{{currencySymbol}} 
-				{{reservationData.reservation_card.balance_amount}}
+				{{ reservationData.reservation_card.balance_amount | number:2 }}
 			</span>
 		</div>
 		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
@@ -36,11 +36,11 @@
 
 		<a class="button white red-text hidden">Cancel reservation</a>
 		
-		<a  ui-sref="rover.staycard.billcard" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
+		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
 			View bill / Routing
 		</a>
 		
-		<a ui-sref="rover.staycard.billcard" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
+		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
 		
 		<!-- show add charge -->
 		

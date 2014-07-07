@@ -131,3 +131,103 @@ function removeNullKeys(dict){
     }
     return dict;
 }
+
+
+function getDateString(dateObj){
+    var yr = dateObj.getFullYear();
+    var month = dateObj.getMonth() + 1;
+    var monthFormatted = (month < 10) ? ("0"+ month) : month; 
+    var date = dateObj.getDate();
+    var dateFormatted = (date < 10) ? ("0"+ date) : date; 
+
+    var dateString = yr + '-' + monthFormatted + '-' + dateFormatted;
+
+    return dateString;
+}
+
+function getTimeFormated(hours, minutes, ampm) {
+    var time = "";
+    hours = parseInt(hours);
+    minutes = parseInt(minutes);
+    
+    if(ampm == "PM" && hours < 12) hours = hours + 12;
+    if(ampm == "AM" && hours == 12) hours = hours - 12;
+    var sHours = hours.toString();
+    var sMinutes = minutes.toString();
+    if(hours < 10) sHours = "0" + sHours;
+    if(minutes < 10) sMinutes = "0" + sMinutes;
+
+    var time = sHours + ":" + sMinutes;
+    return time;
+}
+
+function getDateObj(dateString){
+    //TODO: Handle different conditions
+
+    return convertDateToUTC(new Date(dateString));
+}
+
+function convertDateToUTC(date) {
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+}
+
+function getCurrencySymbol(currenyCode){
+      var symbol = "";
+      if(currenyCode == "USD"){
+        symbol = "$";
+      }
+      return symbol;
+};
+
+var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspectedOnly) {
+	
+        mappedColor = "";
+        switch(roomReadyStatus) {
+
+            case "INSPECTED":
+                mappedColor = 'room-green';
+                break;
+            case "CLEAN":
+                if (checkinIsInspectedOnly == "true") {
+                    mappedColor = 'room-orange';
+                    break;
+                } else {
+                    mappedColor = 'room-green';
+                    break;
+                }
+                break;
+            case "PICKUP":
+                mappedColor = "room-orange";
+                break;
+
+            case "DIRTY":
+                mappedColor = "room-red";
+                break;
+
+        }
+        return mappedColor;
+};
+
+
+var avatharImgs = {
+	'mr' : 'avatar-male.png',
+	'mrs': 'avatar-female.png',
+	'ms': 'avatar-female.png',
+	'miss': 'avatar-female.png',
+	'': 'avatar-trans.png',
+};
+
+function getAvatharUrl(title){
+	//function to get avathar image url by giving title
+	title = $.trim(title).toLowerCase().split('.')[0];
+	try{
+		if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
+			return (/assets/ + avatharImgs[title]);
+	    else
+	    	return (/assets/ + avatharImgs['']);
+	}
+	catch (e) {
+		console.log(e.message);
+		// TODO: handle exception
+	}
+}

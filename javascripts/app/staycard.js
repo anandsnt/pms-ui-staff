@@ -1,4 +1,5 @@
 var StayCard = function(viewDom){
+  console.log("test console message");
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
@@ -11,7 +12,7 @@ var StayCard = function(viewDom){
     reservationDetails.initialize();
     // ok we just entered staycard page
     sntapp.cardSwipeCurrView = 'StayCardView';
-
+  
     // Start listening to card swipes
     this.initCardSwipe();
   };
@@ -29,14 +30,23 @@ var StayCard = function(viewDom){
           if ('dashboard' === activeMenu || 'search' === activeMenu) {
             return;
           };
+
+          //For ksn, if the ETBKSN value(for infinea) is empty, use the track2KSN
+          var ksn = data.RVCardReadTrack2KSN;
+          if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+            ksn = data.RVCardReadETBKSN;
+          }
+
           var swipedCardData = {
             cardType: data.RVCardReadCardType || '',
             expiry: data.RVCardReadExpDate || '',
             cardHolderName: data.RVCardReadCardName || '',
+            
             getTokenFrom: {
               'et2': data.RVCardReadTrack2,
-              'ksn': data.RVCardReadTrack2KSN,
-              'pan': data.RVCardReadMaskedPAN
+              'ksn': ksn,
+              'pan': data.RVCardReadMaskedPAN,
+              'etb' : data.RVCardReadETB
             }
           };
           that.postCardSwipData(swipedCardData);
@@ -77,15 +87,14 @@ var StayCard = function(viewDom){
     
     /* Function for listening from swipe in staycard, guestcard, billcard */
     var respondToSwipe = function (fromPage, domElement, params){
-
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
          sntapp.setViewInst('addNewPaymentModal', function() {
-           return new AddNewPaymentModal(fromPage, domElement);
+           return new AddNewPaymentModal(fromPage, domElement, params);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
        // if addNewPaymentModal instance exist, but the dom is removed
          sntapp.updateViewInst('addNewPaymentModal', function() {
-           return new AddNewPaymentModal(fromPage, domElement);
+           return new AddNewPaymentModal(fromPage, domElement, params);
         });
       }
       sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
@@ -93,7 +102,9 @@ var StayCard = function(viewDom){
       if(typeof params != "undefined"){
         sntapp.getViewInst('addNewPaymentModal').params = params;
       }
-    }
+      sntapp.getViewInst('addNewPaymentModal').dataUpdated();
+    };
+    
 
     var successCallBackHandler = function(token) {
       // add token to card data
@@ -104,20 +115,29 @@ var StayCard = function(viewDom){
         // respond to StayCardView
         case 'StayCardView':
         var confirmationNum = getCurrentConfirmation();
+        console.log("staycard")
           respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
           break;
 
         //respond to GuestBillView
         case 'GuestBillView':
+         console.log("GuestBillView")
           //To get the current bill number we are re-using the bill card view object
           var regCardView = sntapp.getViewInst('registrationCardView');
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
-          var params = { "bill_number" : regCardView.getActiveBillNumber(), "origin":views.BILLCARD};
+          
+          var params = { 
+            "bill_number" : regCardView.getActiveBillNumber(), 
+            "origin":views.BILLCARD
+            };
+          // $("#setOverlay").hide();
           respondToSwipe(views.BILLCARD, domElement, params);
+          
           break;
 
         //respond to GuestCardView
         case 'GuestCardView':
+          console.log("GuestCardView")
           respondToSwipe("guest", $("#cc-payment"), {});
 
           break;
@@ -175,7 +195,7 @@ var StayCard = function(viewDom){
   // function for closing the drawer if is open
   this.closeGuestCardDrawer = function(){
     if($('#guest-card').height() > '90') {
-      	$('#guest-card .ui-resizable-handle').trigger('click');
+        $('#guest-card .ui-resizable-handle').trigger('click');
     }
   };
 

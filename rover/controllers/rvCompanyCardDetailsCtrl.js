@@ -1,15 +1,26 @@
-sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', function($scope, RVCompanyCardSrv, $state, $stateParams){
+sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams','ngDialog','$filter', '$timeout', function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter,$timeout){
 	
 	console.log("$stateParams type --"+$stateParams.type);
-	
+	console.log("$stateParams id --"+$stateParams.id);
+	// Flag for add new card or not
+	$scope.isAddNewCard = ($stateParams.id == "add") ? true : false ;
+	$scope.isDiscard = false;
+	$scope.isPromptOpened = false;
 	//setting the heading of the screen
 	if($stateParams.type == "COMPANY"){
-		$scope.heading = "Company Card";
+		if($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_COMPANY_CARD');
+		else $scope.heading = $filter('translate')('COMPANY_CARD');
+		$scope.cardTypeText = $filter('translate')('COMPANY');
+		$scope.dataIdHeader = "company-card-header";
 	}
 	else if($stateParams.type == "TRAVELAGENT"){
-		$scope.heading = "Travel Agent Card";
+		if($scope.isAddNewCard) $scope.heading = $filter('translate')('NEW_TA_CARD');
+		else $scope.heading = $filter('translate')('TA_CARD');
+		$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
+		$scope.dataIdHeader = "travel-agent-card-header";
 	}
 	
+	$scope.isContactInformationSaved = false;
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
@@ -28,14 +39,21 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$event.stopPropagation();
 		$event.stopImmediatePropagation();
 		if($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info'){
-			saveContactInformation($scope.contactInformation);
-			$scope.$broadcast("ContactTabActivated");
+			
+			if($scope.isAddNewCard && !$scope.isContactInformationSaved){
+				$scope.errorMessage = ["Please save "+$scope.cardTypeText+" card first"];
+				return;
+			}else{
+				saveContactInformation($scope.contactInformation);
+				$scope.$broadcast("ContactTabActivated");
+			}
+			
 		}
 		if($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts'){
 			$scope.$broadcast("saveContract");
 		}		
 		$scope.currentSelectedTab = tabToSwitch;
-	}
+	};
 	
 
 		
@@ -54,7 +72,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
 			$scope.$emit("saveContactInformation");
 		}
-	}
+	};
 
 	/**
 	* remaining portion will be the Controller class of company card's contact info
@@ -66,20 +84,24 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	var successCallbackOfInitialFetch = function(data){
 		$scope.$emit("hideLoader");
 		$scope.contactInformation = data;
+		if($scope.contactInformation.alert_message != "")
+		{
+			$scope.errorMessage = [$scope.contactInformation.alert_message];
+		};
 		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
 			$scope.contactInformation.id = $stateParams.id;			
 		}
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-	}
+	};
 
 	/**
 	* successcall back of country list fetch
 	*/
 	var successCallbackOfCountryListFetch = function(data){
 		$scope.countries = data;
-	}
+	};
 
 	//fetching country list
 	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);	
@@ -92,7 +114,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.contactInformation = {};
 		if(typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
 			$scope.contactInformation.account_details = {};
-			$scope.contactInformation.account_details.account_first_name = $stateParams.firstname;
+			$scope.contactInformation.account_details.account_name = $stateParams.firstname;
 		}
 
 		//setting as null dictionary, will help us in saving..
@@ -122,7 +144,20 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-	}
+		console.log(presentContactInfo);
+		//In the case of ass mode - rename the headding after saving contact info
+		if($scope.isAddNewCard){
+			//setting the heading of the screen
+			if($stateParams.type == "COMPANY"){
+				$scope.heading = $filter('translate')('COMPANY_CARD');
+			}
+			else if($stateParams.type == "TRAVELAGENT"){
+				$scope.heading = $filter('translate')('TA_CARD');
+			}
+		}
+		$scope.isAddNewCard = false;
+		$scope.errorMessage = "";
+	};
 
 	/**
 	* failure callback of save contact data
@@ -131,14 +166,13 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
 		$scope.currentSelectedTab = 'cc-contact-info';
-	}
+	};
 
 	/**
 	* function used to save the contact data, it will save only if there is any
 	* change found in the present contact info.
 	*/
 	var saveContactInformation = function(data){
-		
 		var dataUpdated = false;
 	    if(!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
@@ -168,7 +202,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			console.log(dataToSend);
 			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 		}
-	}
+	};
 
 	/**
 	* recieving function for save contact with data
@@ -176,7 +210,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	$scope.$on("saveContactInformation", function(event){
 		event.preventDefault();
 		event.stopPropagation();
-		saveContactInformation($scope.contactInformation);
+		if($scope.isAddNewCard){
+			// On addMode - prevent save call
+		}
+		else if($scope.isDiscard){
+			// On discarded - prevent save call
+		}
+		else{
+			saveContactInformation($scope.contactInformation);
+		}
 	});
 
 	/*** end of the contact info's controller class */
@@ -186,6 +228,55 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	*/
 	$scope.$on("OUTSIDECLICKED", function(event){
 		event.preventDefault();
-		saveContactInformation($scope.contactInformation);
+		if($scope.isAddNewCard && !$scope.isContactInformationSaved){
+			// On addMode and contact info not yet saved 
+			// If the prompt is not already opened - show the popup for save/disacrd
+			if(!$scope.isPromptOpened) $scope.saveNewCardPrompt();
+		}
+		else if($scope.isDiscard){
+			// On discarded - prevent save call
+		}
+		else{
+			saveContactInformation($scope.contactInformation);
+		}
 	});
+	// To handle click on save new card button on screen.
+	$scope.clikedSaveNewCard = function(){
+		saveContactInformation($scope.contactInformation);
+		$scope.isContactInformationSaved = true;
+	};
+	// To handle click on save new card button on popup.
+	$scope.clikedSaveNewCardViaPopup = function(){
+		$scope.isContactInformationSaved = true;
+		ngDialog.close();
+	};
+	// To handle click on discard button.
+	$scope.clikedDiscardCard = function(){
+		$scope.isDiscard = true;
+		$state.go('rover.companycardsearch', { 'textInQueryBox': $stateParams.firstname });
+		$scope.isAddNewCard = false;
+		ngDialog.close();
+	};
+	// To implement a prompt for save/discard card info.
+	$scope.saveNewCardPrompt = function(){
+		$scope.isPromptOpened = true;
+	  	ngDialog.open({
+			 template: '/assets/partials/companyCard/rvSaveNewCardPrompt.html',
+			 controller: 'saveNewCardPromptCtrl',
+			 className: 'ngdialog-theme-default1 calendar-single1',
+			 closeByDocument: false,
+			 scope: $scope
+		});
+	};
+	
+	// To handle logo upload explicitly via clicking company logo.
+	$scope.clickedLogo = function(){
+		/*
+		 * Due to the special requirement, we need to do DOM access here.
+		 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
+		 */
+		$timeout(function(){angular.element('#uplaodCompanyLogo').trigger('click')},0,false);
+	};
+	
+	
 }]);

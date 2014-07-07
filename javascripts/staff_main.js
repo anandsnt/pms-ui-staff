@@ -10,23 +10,33 @@
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/ui-utils.min.js
 
+//=require_tree ../shared/lib/js/signature
 //=require ../shared/lib/js/iscroll.js
 //=require ../shared/lib/js/ng-iscroll.js
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
-//=require ../rover/directives/calendar/angular-date-picker.js
 //=require ../shared/lib/js/Utils.js
 //=require ../shared/lib/js/ng-table.js
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 //=require_tree ../shared
+//=require ../shared/lib/js/advanced-date-picker.js
+//=require ../shared/lib/js/date.js
+//=require_tree ../rover/rvRouters/
 //=require ../rover/rvApp.js
+
+
+
+
 //=require ../rover/rvRouter.js
+//=require ../rover/rvCardOperations.js
+//=require ../rover/rvSntApp.js
 //=require ../shared/lib/js/baseCtrl.js
 //=require_tree ../rover/controllers
 //=require_tree ../rover/services
 //=require_tree ../rover/directives
+//=require_tree ../rover/filters
 
 
 

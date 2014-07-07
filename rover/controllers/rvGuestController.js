@@ -1,12 +1,12 @@
 
-sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
+sntRover.controller('guestCardController', ['$scope', '$window','RVContactInfoSrv', function($scope, $window, RVContactInfoSrv){
 
 $scope.init = function(){
 	$scope.contactInfoError = false;
 	$scope.eventTimestamp =  "";
 	BaseCtrl.call(this, $scope);
 	var preventClicking = false;
-}
+};
 
 $scope.init();
 
@@ -39,10 +39,12 @@ $scope.resizableOptions =
 	resize: function( event, ui ) {
 		if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
 			$scope.guestCardVisible = true;
+			$scope.$emit('GUESTCARDVISIBLE', true);
 			$scope.$apply();
 		}
 		else if($(this).height() <= 120 && $scope.guestCardVisible){
 			$scope.guestCardVisible = false;
+			$scope.$emit('GUESTCARDVISIBLE', false);
 			$scope.$apply();
 		}
 	},
@@ -50,7 +52,7 @@ $scope.resizableOptions =
 		preventClicking = true;
 		$scope.eventTimestamp = event.timeStamp;
 	}
-}
+};
 
 /**
 *  API call needs only rest of keys in the data
@@ -79,15 +81,25 @@ $scope.current = 'guest-contact';
 * tab actions
 */
 $scope.guestCardTabSwitch = function(tab){
-if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
-	$scope.$broadcast('saveContactInfo');
-};
- 
- $scope.current = tab;
+	if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
+		$scope.$broadcast('saveContactInfo');
+	};
+	if($scope.current ==='guest-like' && tab !== 'guest-like'){
+		$scope.$broadcast('SAVELIKES');
+		
+	};
+	if(tab === 'guest-credit'){
+		$scope.$broadcast('PAYMENTSCROLL');
+	}
+    $scope.$broadcast('REFRESHLIKESSCROLL');
+	 $scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
     $scope.contactInfoError = value;
+});
+$scope.$on('likesInfoError', function(event, value) { 
+    $scope.likesInfoError = value;
 });
 $scope.updateContactInfo =  function(){
 	var saveUserInfoSuccessCallback = function(data){
@@ -102,7 +114,7 @@ $scope.updateContactInfo =  function(){
 		currentGuestCardHeaderData =newUpdatedData; 
 		var data ={'data':currentGuestCardHeaderData,
 		'userId':$scope.guestCardData.contactInfo.user_id
-	}
+	};
 	$scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback); 
 	} 
 };
@@ -126,6 +138,8 @@ return selector.contains(obj);
 */
 $scope.guestCardClick = function($event){
 
+$scope.$broadcast('clearNotifications');
+
 var element = $event.target;
 	$event.stopPropagation();
 	$event.stopImmediatePropagation();			
@@ -140,28 +154,38 @@ var element = $event.target;
 			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
 			$scope.$broadcast('CONTACTINFOLOADED');
+			$scope.$emit('GUESTCARDVISIBLE', true);
 		}
 		else{
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 			$scope.guestCardVisible = false;
+			$scope.$emit('GUESTCARDVISIBLE', false);
 		}
-}
-else{
-	if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
-		/**
+	}
+	else{
+		if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
+		   /**
 			* handle click on tab navigation bar.
 			*/
-		if($event.target.id==='guest-card-tabs-nav')
-			$scope.$broadcast('saveContactInfo');
+			if($event.target.id==='guest-card-tabs-nav'){
+				console.log("inside===")
+				$scope.$broadcast('saveContactInfo');
+				$scope.$broadcast('SAVELIKES');
+				
+			}				
+			else
+			    return;
+		}
 		else
-		    return;
+		{
+			$scope.$broadcast('SAVELIKES');
+		  	$scope.$broadcast('saveContactInfo');
+		}
 	}
-	else
-	{
-	  	$scope.$broadcast('saveContactInfo');
-	}
-}
 
 };
+
+
+	
 
 }]);

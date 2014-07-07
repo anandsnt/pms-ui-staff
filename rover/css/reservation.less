@@ -1,0 +1,78 @@
+#createReservations{
+  // override for the edit icon in the rvSettings.html partial
+  .edit-room.icons.icon-edit-10{
+    //background-position: 0 -2141px;
+  }
+
+  .reservation-card-cvv-container{
+    width:30%;
+    float:left;
+  }
+  .reservation-card-expiry-date-container{
+    width:70%;
+    float:right;
+  }
+  .reservations-inner .reservations-content-wrapper {
+
+    ul.rooms-and-rates.wrapper{
+      padding: 0 20px 20px 20px;
+    }
+
+    .reservation-content.rooms-and-rates-content .rate-details .info{
+      ul{
+        li{
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+
+  .no-right-margin {
+    margin-right: 0px;
+    &.comma{
+      margin-left: -4px;
+    }
+  }
+}
+
+.ui-autocomplete {
+  &.find-cards {
+    li {
+      a {
+        img,
+        span.icons {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 30px;
+          height: 30px;
+          -webkit-border-radius: 2px;
+          -moz-border-radius: 2px;
+          border-radius: 2px;
+        }
+
+        span.icons {
+          margin: 0;
+          padding: 0;
+          font-size: 10px;
+        }
+
+        .icons.icon-company {
+          background-color: #566083;
+          background-position: 2px -3458px;;
+        }
+
+        .icons.icon-travel-agent {
+          background-color: #80546d;
+          background-position: 5px -3576px;
+        }
+
+        &.ui-state-focus,
+        &.ui-state-active {
+          background-color: rgba(0, 0, 0, 0.05);
+          color: #000;
+        }
+      }
+    }
+  }
+}

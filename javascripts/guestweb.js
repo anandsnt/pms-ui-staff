@@ -5,6 +5,8 @@
 //=require ../shared/lib/js/angular.min.js
 //=require ../shared/lib/js/angular-route.js
 //=require ../shared/lib/js/ui-bootstrap-tpls-0.10.0.js
+//=require ../shared/lib/js/angular-ui-router.js
+
 //= require ../guestweb/scripts/app.js
 //= require ../guestweb/scripts/app_router.js
 //= require ../guestweb/scripts/app_config.js

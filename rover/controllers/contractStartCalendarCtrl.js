@@ -1,6 +1,5 @@
 
-sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog',function($scope,dateFilter,ngDialog){
-	
+sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilter','ngDialog',function($rootScope,$scope,dateFilter,ngDialog){
 	$scope.setUpData = function(){
 	    $scope.isDateSelected = false;
 	    if($scope.contractList.isAddMode){
@@ -9,7 +8,7 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 		      $scope.isDateSelected = true;
 		    }
 		    else{
-		      $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+		      $scope.date = $rootScope.businessDate;
 		    }
 	    }
 	    else{
@@ -18,9 +17,10 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 		      $scope.isDateSelected = true;
 		    }
 		    else{
-		      $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+		      $scope.date = $rootScope.businessDate;
 		    }
 	    }
+	    $scope.minDate = $rootScope.businessDate;
 	    $scope.closePopupOnSelection = false;
 	};
 	$scope.setUpData();

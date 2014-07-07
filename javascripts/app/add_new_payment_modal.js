@@ -1,12 +1,27 @@
-var AddNewPaymentModal = function(fromPagePayment, backView){
+var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
   	BaseModal.call(this);
   	var that = this;
   	this.save_inprogess = false;
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	this.fromPagePayment = fromPagePayment;
+  	
+  	
     //Delegate events
+    this.modalDidShow = function(){
+    	that.myDom.find("#setOverlay").hide();
+ 		if(that.params && that.should_show_overlay){
+ 			that.should_show_overlay = false;
+			that.myDom.find("#setOverlay").show();
+			that.myDom.find("#new-payment").addClass("hidden");
+			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
+		};
+    	
+    };
+    
   	this.delegateEvents = function(){
+
+		
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
@@ -15,8 +30,22 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			that.myDom.find("#add-in-guest-card").parent().parent().show();
 		}
 	};
+	that.hidePaymentModal = function(){
+		that.hide();
+	};
     
+    this.dataUpdated=function(){
+    	$("#setOverlay").hide();
+    	that.myDom.find("#new-payment").removeClass("hidden");
+    	if (that.swipedCardData) {
+			that.populateSwipedCard();
+	   };
+    	
+    	
+    };
 	this.populateSwipedCard = function() {
+		
+		$('#payment-form-section').addClass('disable-clicks');
 		var swipedCardData = this.swipedCardData;
 		// inject the values to payment modal
         // inject payment type
@@ -38,16 +67,18 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		$('#new-payment').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
 		$('#new-payment').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
 		$('#new-payment').append('<input type="hidden" id="pan" value="' + swipedCardData.getTokenFrom.pan + '">');
+		$('#new-payment').append('<input type="hidden" id="etb" value="' + swipedCardData.getTokenFrom.etb + '">');
+
 	};
 
 	this.modalInit = function(){
-		if(typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0){
-			console.log("swipe");
+		if((typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0)
+			||that.should_show_overlay===true){
     		that.params = {"card_action": "swipe"};
 		}else{
     		that.params = {"card_action": "manual_entry"};
-			console.log('not swipe');
 		}
+	
 		
    	};
     //Success call back after succesful addition of payment in reservation
@@ -76,15 +107,17 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			if(that.params["origin"] == views.BILLCARD){
 				backView.find("#payment-type-text").remove();
 				backView.find("#select-card-from-list").removeClass('hidden');
+				backView.find(".item-payment h3").remove();
         		backView.find(".item-payment").append(appendHtml);
         		
         		// To update bill tab paymnt info
 	        	var billTabHtml = '<img src="/assets/'+$newImage+'" alt="">'+
 								'<span class="number">'+$endingWith+'</span>';
-								
+				$("#bills-tabs-nav #payment-"+that.params["bill_number"]).remove();			
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).addClass('card-logo');
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).removeClass('hidden');
 	        }
 	        else{			
 				backView.find(".payment_actions").append(appendHtml);
@@ -158,7 +191,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
    	};    	
    	//save new payment
    	this.saveNewPayment = function(){
-
    		if (that.save_inprogress == true) return false;
 		var $payment_type = $("#new-payment #payment-type").val();
 		var $payment_credit_type = $("#new-payment #payment-credit-type").val();
@@ -174,6 +206,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		var $et2 = $('#et2').val();
 		var $ksn = $('#ksn').val();
 		var $pan = $('#pan').val();
+		var $etb = $('#etb').val();
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
@@ -192,7 +225,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		//If it is a check-in reservation using card swipe from registration card, 
 		//do not update the server with card details. 
 		//Instead, save the details locally and pass the information while cheking in 
-		if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
+		//Commenting for now as per CICO-6389
+		/*if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
+			console.log("---------------------------------");
 			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card}
 		    var data = {
 				payment_type: $payment_type,
@@ -202,12 +237,13 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			    mli_token: $card_token,
 			    et2: $et2,
 				ksn: $ksn,
-				pan: $pan
+				pan: $pan,
+				etb: $etb
 		    };
 		    sntapp.regCardData = data;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
-		}
+		}*/
 		
 		if(fromPagePayment == "guest"){
 			
@@ -260,6 +296,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 				    et2: $et2,
 					ksn: $ksn,
 					pan: $pan,
+					etb: $etb,
 				    add_to_guest_card: add_to_guest_card,
 				    bill_number : that.params["bill_number"]
 		    };		
@@ -280,7 +317,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
   // to get the payments list json to filter on change of payment type
    this.getPaymentsList = function(){
 		var webservice = new WebServiceInterface();
-	
 	    var url = 'staff/payments/addNewPayment.json'; 
 	    var options = {
 				   successCallBack: that.fetchCompletedOfGetPayment,

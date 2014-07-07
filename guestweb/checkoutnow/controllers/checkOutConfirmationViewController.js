@@ -1,41 +1,36 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope,$rootScope,$location) {
-		
+	var checkOutConfirmationController = function($scope,$rootScope,$state) {
 
-		
-		
+	
+	$scope.pageValid = false;
 
-		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
-		}
-		else if($rootScope.isCheckin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinConfirmation');
-		}
-		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else if($rootScope.isCheckin){
+		$state.go('checkinConfirmation');
+	}
+	else if($rootScope.isCheckedout ){
+		$state.go('checkOutStatus');
+	}
+	else if(!$rootScope.isRoomVerified){
+		$state.go('checkoutRoomVerification');
+	}
+	else{
+		$scope.pageValid = true;
+	}		
 
-		}
-		else
-			$scope.pageSuccess = true;
-
-
-		if($scope.pageSuccess){
-
+	if($scope.pageValid){
 		$scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check out time is ";
-		
 		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check out is not available.' :'' ;
+	}
+};
 
-	    }
-	};
+var dependencies = [
+'$scope','$rootScope','$state',
+checkOutConfirmationController
+];
 
-	var dependencies = [
-	'$scope','$rootScope','$location',
-	checkOutConfirmationController
-	];
-
-	snt.controller('checkOutConfirmationController', dependencies);
+snt.controller('checkOutConfirmationController', dependencies);
 })();

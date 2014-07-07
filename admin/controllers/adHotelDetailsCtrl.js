@@ -8,16 +8,21 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.readOnly = "no";
 	$scope.fileName = "Choose File....";
 	$scope.certificate = "";
+	$scope.isHotelChainEditable =  true;
 	if($rootScope.adminRole == "snt-admin"){
-		
+		$scope.isHotelChainEditable = false;
 		$scope.isAdminSnt = true;
+		if($stateParams.action =="addfromSetup"){
+			$scope.previousStateIsDashBoard = true;
+		}
 		// SNT Admin -To add new hotel view
-		if($stateParams.action == "add"){
+		if($stateParams.action == "add" || $stateParams.action =="addfromSetup"){
 			$scope.title = "Add New Hotel";
 			
 			var fetchSuccess = function(data){
-			
-				$scope.data = data;
+				$scope.data = data.data;
+				$scope.data.brands = [];
+				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 					$scope.data.check_in_primetime ="AM";
 					$scope.data.check_out_primetime = "AM";
@@ -30,11 +35,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.isEdit = true;
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data){
-				console.log(JSON.stringify(data));
 				$scope.data = data.data;
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
-				console.log(data.mli_pem_certificate_loaded);
 				if(data.mli_pem_certificate_loaded){
 					$scope.fileName = "Certificate Attached";
 				}
@@ -128,7 +131,19 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   Method to go back to previous state.
     */
 	$scope.back = function(){
-		if($scope.isAdminSnt) $state.go("admin.hotels");
+
+		console.log($rootScope.nextState);
+		console.log($rootScope.previousState);
+
+		if($scope.isAdminSnt) {
+			
+    		if($scope.previousStateIsDashBoard)
+    			$state.go("admin.dashboard",{"menu":0});
+    		else{
+    			$state.go("admin.hotels");
+    		}
+  
+		}
 		else {
 			if($rootScope.previousStateParam){
 				$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
@@ -142,5 +157,16 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			}
 		}
 	};
+	/**
+    *   To handle change in hotel chain and populate brands accordingly.
+    */
+	$scope.$watch('data.hotel_chain', function() {
+		$scope.data.brands = [];
+        angular.forEach($scope.data.chains, function(item, index) {
+                if (item.id == $scope.data.hotel_chain) {
+                	$scope.data.brands = item.brands;
+                }
+        });
+    });
 	
 }]);

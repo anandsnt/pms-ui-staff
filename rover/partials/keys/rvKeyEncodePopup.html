@@ -1,0 +1,83 @@
+<div id="modal" class="modal-show">
+	
+	<form id="print-key" name="print-key" class="modal-content form key-delivery" ng-class="data.colorCodeClass">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-class="data.colorCodeClassForClose">
+			<span class="icons icon-close">
+		</button>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<!-- Left contents -->
+		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted, 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}">
+			
+			<span ng-show="data.is_late_checkout === true" class="h2 message">{{data.reservationStatusText}}<br/> {{data.late_checkout_time}}</span>
+			<span ng-show="data.is_late_checkout === false" class="h2 message">{{data.reservationStatusText}}</span>
+			<h1>
+				{{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}} 
+				<span>{{reservationData.reservation_card.room_number}}</span>
+			</h1>
+			<span class="number">{{ 'RESERVATION' | translate }} {{confirmNumber}}</span>
+		</div>
+		<!--end-->
+
+		<!-- Right contents -->
+		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}">
+			
+			<span ng-show="deviceConnecting">
+				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+				<em class="status icon-key pending" translate>CONNECTING_TO_KEY_CARD_READER</em>
+			</span>
+
+			<span ng-show="deviceNotConnected">
+				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+				<em class="status icon-key error" translate>ERROR_CONNECTING_TO_KEY_CARD_READER</em>
+				<div class="action">
+					<button type="button" id="try-again" class="button blue" ng-click="showDeviceConnectingMessge()" translate>TRY_AGAIN</button>
+					<button type="button" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button> 
+				</div>
+			</span>
+
+			<span ng-show="showPrintKeyOptions">
+				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
+					<div id="print-keys">
+						<div class="entry radio-check cols-4 float">
+							<label for="keys"> {{ 'HOW_MANY_KEYS' | translate }} </label>
+
+							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1), 'printed' :printedKeysCount>=($index+1)}" class="only-number" >
+
+								<input name="keys" id="key{{$index+1}}" value="{{$index+1}}" type="checkbox" ng-checked="numberOfKeysSelected>=($index+1)" ng-click="keySelected($index+1)" ng-disabled="writingInProgress"/> 
+								{{$index+1}}
+
+							</label>
+					
+						</div>		
+						<div class="actions float">
+							<button type="button" id="create-key" class="button " ng-class="{'grey':numberOfKeysSelected==0 , 'green': numberOfKeysSelected>=1}" ng-disabled="numberOfKeysSelected==0" ng-click="clickedPrintKey()">{{buttonText}}</button>
+							<button type="button" ng-hide="fromView=='checkin'" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button>
+							<button type="button" ng-show="fromView=='checkin'" id="cancel" class="button blank" ng-click="pressedCancel()" translate>CANCEL</button>
+						</div>
+					</div>
+			</span>
+
+			<span ng-show="keysPrinted">
+				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+					<em class="info" translate>KEY_PRINTED</em>
+					<div class="action">
+						<a ng-show="fromView=='checkin'" class="modal-close button brand-colors" ng-click="goToStaycard()" translate>VIEW_STAY_CARD</a>
+						<a ng-show="fromView=='checkin'" class="modal-close button blue" ng-click="goToSearch()" translate>SEARCH</a>
+						<button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CLOSE</button>
+					</div>
+			</span>
+		
+			<span ng-show="pressedCancelStatus">
+				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
+					<em class="info" translate>KEY_NOT_PRINTED</em>
+					<div class="action">
+						<a ng-show="fromView=='checkin'" class="modal-close button brand-colors" ng-click="goToStaycard()" translate>VIEW_STAY_CARD</a>
+						<a ng-show="fromView=='checkin'" class="modal-close button blue" ng-click="goToSearch()" translate>SEARCH</a>
+					</div>
+			</span>
+
+		</div>
+		<!-- end -->
+	</form>
+</div>

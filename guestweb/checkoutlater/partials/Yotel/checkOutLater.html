@@ -22,7 +22,7 @@
 				Our apologies, something went wrong, please complete your check out at our front desk.
 			</p>
 			<p class="msg-body">
-				You can also call the hotel at {{hotelPhone}}.
+				You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a>
 			</p>
 		</div>
 
@@ -40,7 +40,7 @@
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
 							<div class="rel-wrapper">
 
-								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
+								<a ng-click="gotToNextStep(charge.amount,charge.id)"></a>
 								<div class="hexagon-wrapper">
 									<div class="row pad-hz-24 ">
 										<div class="hex-bg">
@@ -58,8 +58,10 @@
 								</div>
 								<div class="row late-charge">
 									<span class="for">for</span><br/>
-									<span class="amount" ng-hide="charge.amount.toString().length>2">${{charge.amount| number:2}}</span>
-									<span class="amount" ng-show="charge.amount.toString().length>2">${{charge.amount| number:0}}</span>
+									<span class="amount" ng-hide="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:2}}</span>
+									<span class="amount" ng-show="charge.amount.toString().length>2">{{currencySymbol}}{{charge.amount| number:0}}</span>
+									<br/>
+									<span class="taxes" ng-show="charge.amount">+tax</span>
 								</div>
 							</div>
 						</div>
@@ -68,7 +70,7 @@
 
 				<div class="row no-thanks-wrap">
 					<p class="centeralign no-thanks" ng-show="optionsAvailable">
-						<a href="#/">no, thanks</a>
+						<a ui-sref="checkOutOptions">no, thanks</a>
 					</p>
 				</div>
 			</div>

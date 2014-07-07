@@ -5,7 +5,7 @@
 			<span class="count"> ({{totalCount}}) </span>
 			<a class="action add" ui-sref="admin.addRate" ng-hide="isConnectedToPMS">Add new</a>
 
-			<a class="action import" ng-click="importFromPms()" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
+			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 
 			<div class="filters">
 				<div class="filter select">
@@ -21,6 +21,7 @@
 			</div>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 		
 		
 		<span class="count-show">Show</span>
@@ -54,7 +55,7 @@
 							</div>
 						</span>
 					</td>
-					<td data-title="'Type'" sortable="'rate_type'" header-class="width-25">
+					<td data-title="'Type'" sortable="'rate_type'" header-class="width-10">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.rate_type.id,'rate_type_id', rate.rate_type.name)" ng-mouseleave="mouseLeavePopover()">
 							<strong>{{rate.rate_type.name}}</strong>
 							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.rate_type.id, 'rateType')">				</div>
@@ -67,7 +68,16 @@
 						</span>
 					</td>
 					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-10">
-						{{rate.status ? 'ACTIVE' : 'INACTIVE'}}
+						<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
+							<div class="switch-button single" ng-class="{'on': rate.status}">
+								<input type="checkbox"  ng-checked="rate.status">
+								<span class="switch-icon"></span>
+							</div>
+						</div>
+						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
+					</td>
+					<td header-class="width-10">
+						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)"  ng-hide="false">&nbsp;</span>
 					</td>
 				</tr>
 			</tbody>

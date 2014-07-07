@@ -152,7 +152,7 @@ var getRoomColorClass = function(reservationStatus, roomStatus, foStatus){
 	return roomColorClass;
 }
 
-function isEmpty(dict) {
+function isEmpty(dict) {	
    for(var key in dict) {
       if (dict.hasOwnProperty(key)) {
          return false;
@@ -160,3 +160,33 @@ function isEmpty(dict) {
    }
    return true;
 }
+
+
+
+var get_mapped_room_ready_status_color = function(roomReadyStatus, checkinIsInspectedOnly) {
+		mappedColor = "";
+		switch(roomReadyStatus) {
+
+			case "INSPECTED":
+				mappedColor = 'room-green';
+				break;
+			case "CLEAN":
+				if (checkinIsInspectedOnly == "true") {
+					mappedColor = 'room-orange';
+					break;
+				} else {
+					mappedColor = 'room-green';
+					break;
+				}
+				break;
+			case "PICKUP":
+				mappedColor = "room-orange";
+				break;
+
+			case "DIRTY":
+				mappedColor = "room-red";
+				break;
+
+		}
+		return mappedColor;
+};

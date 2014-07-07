@@ -26,9 +26,9 @@
 	    </thead>
 		<tbody>
 		<tr ng-repeat="addon in rateData.addOns">
-			<td>{{addon.name}}</td> 
+			<td>{{addon.name}}</td>
 			<td>
-				<span ng-show="addon.price.length>0">{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price |number:2}} <span class="rate_perstay">{{addon.post_type}}</span>
+				<span ng-show="addon.amount.length>0">{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.amount |number:2}} &nbsp;&nbsp;<span class="rate_perstay">{{addon.post_type.description}}</span>
 				</span>
 			</td> 
 			<td>
@@ -37,7 +37,7 @@
 					<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'true'}">
 						<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'true'}"></span>
 						<input type="radio" ng-model="addon.is_inclusive_in_rate" value="true" class="change-data">
-						INCLUSIVE
+						Inclusive
 						
 					</label>
 				</div>
@@ -46,7 +46,7 @@
 					<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'false'}">
 						<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'false'}"></span>
 						<input type="radio" ng-model="addon.is_inclusive_in_rate" value="false" class="change-data">
-						EXCLUSIVE
+						Exclusive
 						
 					</label>
 				</div>

@@ -17,7 +17,7 @@ reports.config([
     '$datepickerProvider',
     function($datepickerProvider, $rootScope) {
         angular.extend($datepickerProvider.defaults, {
-            dateFormat: 'yyyy/MM/dd',
+            dateFormat: 'MM-dd-yyyy',
             startWeek: 0,
             autoclose: true,
             container: 'body'
@@ -51,8 +51,10 @@ reports.controller('reporstList', [
         // lets fix the results per page to, user can't edit this for now
         // 25 is the current number set by backend server
         $rootScope.resultsPerPage = 25;
-
+        //to keep track of where the user was before clicking on print
+        $scope.returnToPage = 1;
         // fetch the reports list with the filters to be used
+
         RepFetchSrv.fetch()
             .then(function(response) {
                 sntapp.activityIndicator.hideActivityIndicator();
@@ -107,21 +109,17 @@ reports.controller('reporstList', [
                     $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
 
 
-                    // for managing date filters limits
-                    // use the business dates
-                    // UPDATE: depricated due to next set of comments/lines of code
-                    $scope.reportList[i].today = new Date( $rootScope.businessDate );
-                    $scope.reportList[i].allowedUntilDate = new Date( $rootScope.businessDate );
+                    // IMPORTANT used date filter with option 'medium' to avoid incorrect date due to timezone change
 
                     // set the default values for until date to business date
                     // plus calender will open in the corresponding month, rather than today
-                    $scope.reportList[i].untilDate = $rootScope.businessDate
+                    $scope.reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'medium')
 
                     // HACK: set the default value for from date to a week ago from business date
                     // so that calender will open in the corresponding month, rather than today
-                    var today = new Date( $rootScope.businessDate );
+                    var today = new Date( $scope.reportList[i].untilDate );
                     var weekAgo = today.setDate(today.getDate() - 7);
-                    $scope.reportList[i].fromDate = weekAgo;
+                    $scope.reportList[i].fromDate = $filter('date')(weekAgo, 'medium');
                 };
             });
 
@@ -281,10 +279,21 @@ reports.controller('reportDetails', [
             	};
             }
 
+            // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
+            // notice the text case, they are as per api response and ui
+            if ( $scope.chosenReport.title === 'Late Check Out' ) {
+                for (var i = 0, j = $scope.headers.length; i < j; i++) {
+                    if ( $scope.headers[i] === 'Late Check Out Time' ) {
+                        $scope.headers[i] = 'Selected Late Check Out Time';
+                        break;
+                    };
+                }
+            }
+
 
             // hack to set the colspan for reports details tfoot
-            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' ? 4 : 2;
-            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' ? 5 : 2;
+            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
+            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
 
             // track the total count
             $scope.totalCount = response.total_count;
@@ -301,15 +310,27 @@ reports.controller('reportDetails', [
                 reportContent.refresh();
                 reportContent.scrollTo(0, 0, 100);
             }, 100);
+
+            // need to keep a separate object to show the date stats in the footer area
+            $scope.displayedReport = {};
+
+            // dirty hack to get the val() not model value
+            $scope.displayedReport.fromDate = $('#chosenReportFrom').val();
+            $scope.displayedReport.untilDate = $('#chosenReportTo').val();
         };
 
         // we are gonna need to drop some pagination
         // this is done only once when the report details is loaded
         // and when user updated the filters
-        var calPagination = function(response) {
+        var calPagination = function(response, pageNum) {
+
+            if(typeof pageNum == "undefined"){
+                pageNum = 1;
+            }
+
             $scope.pagination = [];
             if (response.results.length < response.total_count) {
-                var pages = Math.floor( response.total_count / response.results.length );
+                var pages = Math.floor( response.total_count / $rootScope.resultsPerPage );
                 var extra = response.total_count % response.results.length;
 
                 if (extra > 0) {
@@ -319,7 +340,7 @@ reports.controller('reportDetails', [
                 for (var i = 1; i <= pages; i++) {
                     $scope.pagination.push({
                         no: i,
-                        active: i === 1 ? true : false
+                        active: i === pageNum ? true : false
                     })
                 };
             };
@@ -435,7 +456,11 @@ reports.controller('reportDetails', [
         };
 
         // fetch the updated result based on the filter changes
-        $scope.fetchUpdatedReport = function() {
+        $scope.fetchUpdatedReport = function(pageNum) {
+
+            if(typeof pageNum == "undefined"){
+                pageNum == 1;
+            }
 
             // now sice we are gonna update the filter
             // we are gonna start from page one
@@ -445,7 +470,7 @@ reports.controller('reportDetails', [
                 user_ids: $scope.chosenReport.chosenUsers,
                 checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
                 checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
-                page: 1,
+                page: pageNum,
                 per_page: $rootScope.resultsPerPage
             }
 
@@ -459,20 +484,66 @@ reports.controller('reportDetails', [
             RepFetchReportsSrv.fetch( $scope.reportID, params )
                 .then(function(response) {
                     afterFetch( response );
+                    calPagination( response , pageNum);
+                });
+        };
+
+
+        //loads the content in the existing report view in the DOM.
+        $scope.fetchFullReport = function() {
+            $scope.returnToPage = 1;
+
+            // now sice we are gonna update the filter
+            // we are gonna start from page one
+            var currPage = _.find($scope.pagination, function(page) {
+                return page.active === true
+            });
+
+            if(currPage){
+               $scope.returnToPage =  currPage.no;
+            }
+
+            var params = {
+                from_date: $filter('date')($scope.chosenReport.fromDate, 'yyyy/MM/dd'),
+                to_date: $filter('date')($scope.chosenReport.untilDate, 'yyyy/MM/dd'),
+                user_ids: $scope.chosenReport.chosenUsers,
+                checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
+                checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+                page: 1,
+                per_page: 10000
+            }
+
+            // let show the loading indicator
+            sntapp.activityIndicator.showActivityIndicator('BLOCKER');
+
+            // find back the names from chosenCico & chosenUsers values
+            findBackNames();
+
+            // and make the call
+            RepFetchReportsSrv.fetch( $scope.reportID, params )
+                .then(function(response) {
+                    afterFetch( response );
                     calPagination( response );
+                    $scope.print();
                 });
         };
 
         // print the page
         $scope.print = function() {
-            $timeout(function(){
-                reportContent.refresh();
-                reportContent.scrollTo(0, 0, 100);
-            }, 10);
-
-            setTimeout( function() {
+            $timeout(function() {
                 $window.print();
-            }, 100 );
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
+            }, 100);
+
+            $timeout(function() {
+                //go back to before print page
+                $scope.fetchUpdatedReport($scope.returnToPage);
+                // Since I destroyed
+                // I need to recreate
+                reportContent.refresh();
+            }, 500);
         };
     }
 ]);

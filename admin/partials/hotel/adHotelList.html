@@ -11,17 +11,17 @@
 			<table class="grid datatable table" ng-table="tableParams">
 				<tbody>
 					<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in $data">
-						<td data-title="'Hotel'" sortable="'hotel_name'">
+						<td data-title="'Hotel'" sortable="'hotel_name'" header-class="width-40">
 							<a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
 								 <strong> {{hotel.hotel_name}} </strong>
 								 <em> {{hotel.city}} , {{hotel.state}} </em>
 							</a>
 						</td>
-						<td data-title="'Room'" sortable="'number_of_rooms'"><span class="number"> {{hotel.number_of_rooms}} </span></td>
-						<td data-title="'Chain'" sortable="'chain_name'"> {{hotel.chain_name}} </td>
-						<td data-title="'Brand'" sortable="'brand_name'"> {{hotel.brand_name}} </td>
-						<td data-title="'Reservation Import'" class="activate long">
-							<div class="entry">
+						<td data-title="'Room'" sortable="'number_of_rooms'" header-class="width-20"><span class="number"> {{hotel.number_of_rooms}} </span></td>
+						<td data-title="'Chain'" sortable="'chain_name'" header-class="width-20"> {{hotel.chain_name}} </td>
+						<td data-title="'Brand'" sortable="'brand_name'" header-class="width-20"> {{hotel.brand_name}} </td>
+						<td data-title="'Reservation Import'" class="activate long" header-class="width-40">
+							<div class="entry" ng-show="hotel.is_external_pms_available ==='true'">
 								<label for="reservation-import-1"></label>
 								<div class="switch-button single" ng-class="{ on : hotel.is_res_import_on == 'true' }" ng-click="toggleClicked($index)">
 									<input type="checkbox" name="reservation-import" id="reservation-import-1">
