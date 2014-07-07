@@ -516,6 +516,8 @@ hkRover.controller('HKSearchCtrl',
 
 	$scope.$on( 'destroy', function() {
 
+		console.log( 'reset filters on HKSearchCtrl exit' );
+
 		HKSearchSrv.currentFilters = HKSearchSrv.initFilters();
 
 	});
