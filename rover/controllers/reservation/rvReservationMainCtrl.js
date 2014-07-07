@@ -194,6 +194,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.heading = "Reservations";
 
         $scope.checkOccupancyLimit = function() {
+            $scope.computeTotalStayCost();
             var roomIndex = 0;
             var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
             var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
@@ -233,6 +234,64 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             });
             return true;
         };
+
+        $scope.computeTotalStayCost = function() {
+            // TODO : Loop thru all rooms
+            var currentRoom = $scope.reservationData.rooms[0];
+
+            //Calculate Addon Addition for the room
+            var addOnCumulative = 0;
+            $(currentRoom.addons).each(function(i, addon) {
+                // console.log(addon.amountType.value, addon.postType.value);
+                //Amount_Types
+                // 1   ADULT   
+                // 2   CHILD   
+                // 3   PERSON  
+                // 4   FLAT
+                // The Amount Type is available in the amountType object of the selected addon
+                // ("AT", addon.amountType.value)
+
+                //Post Types
+                // 1   STAY   
+                // 2   NIGHT  
+                // The Post Type is available in the postType object of the selected addon
+                // ("PT", addon.postType.value)
+
+                //TODO: IN CASE OF DATA ERRORS MAKE FLAT STAY AS DEFAULT
+
+                var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price);
+
+                var finalRate = baseRate;
+                // Function to compute the amount per day of the selected addon 
+                var amountPerday = (function getAmountPerDay() {
+                    //TODO: calculate rate based on the amount type
+                    if (addon.amountType.value == "PERSON") {
+                        // Calculate the total number of occupants and multiply with base rate
+                        // Total number of occupants doesnt count the infants!
+                        return baseRate * parseInt(currentRoom.numAdults + currentRoom.numChildren);
+                    } else if (addon.amountType.value == "CHILD") {
+                        //TODO : Calculate the total number of occupants and multiply with base rate
+                        return baseRate * parseInt(currentRoom.numChildren);
+                    } else if (addon.amountType.value == "ADULT") {
+                        //TODO : Calculate the total number of occupants and multiply with base rate
+                        return baseRate * parseInt(currentRoom.numAdults);
+                    }
+                    //fallback should happen if amount type is flat
+                    return baseRate;
+                })();
+                if (addon.postType.value == "NIGHT") {
+                    console.log("//TODO:Got to calculate based on amount type and then mutiply with nights");
+                    finalRate = parseFloat(amountPerday) * parseInt($scope.reservationData.numNights);
+                } else {
+                    console.log("//TODO:Rate is incl of all days");
+                    finalRate = amountPerday;
+                }
+                addOnCumulative += parseInt(finalRate);
+                addon.effectivePrice = finalRate;
+            });
+            //TODO: Extend for multiple rooms
+            $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative);
+        }
 
         $scope.initReservationData();
     }

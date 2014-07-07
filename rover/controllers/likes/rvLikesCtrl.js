@@ -14,7 +14,12 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				vScroll: true
 			}
 		};
-		$scope.calculatedHeight = 254; //height of Preferences + News paper + Room type + error message div
+		$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
+
+		$scope.$on('clearNotifications', function() {
+			$scope.errorMessage = "";
+			$scope.successMessage = "";
+		});
 
 		$scope.init = function() {
 			BaseCtrl.call(this, $scope);
@@ -27,7 +32,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			};
 			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
 		};
-
 		$scope.fetchLikesSuccessCallback = function(data) {
 
 			$scope.$emit('hideLoader');
@@ -40,7 +44,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				angular.forEach(value.values, function(prefValue, prefKey) {
 					rowCount++;
 					if (rowCount % 2 != 0)
-						$scope.calculatedHeight += 40;
+						$scope.calculatedHeight += 50;
 					var userPreference = $scope.guestLikesData.user_preference;
 					if (userPreference.indexOf(prefValue.id) != -1) {
 						prefValue.isChecked = true;
@@ -56,7 +60,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
 					rowCount++;
 					if (rowCount > 6 && $scope.guestLikesData.preferences.length <= 2) {
-						$scope.calculatedHeight += 40;
+						$scope.calculatedHeight += 50;
 					}
 					var userRoomFeature = value.user_selection;
 					if (userRoomFeature.indexOf(roomFeatureValue.id) != -1) {
@@ -103,9 +107,11 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			};
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
+				calu
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
+
 
 			var updateData = {};
 
@@ -155,9 +161,12 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				userId: $scope.guestCardData.contactInfo.user_id,
 				data: updateData
 			};
-			if (typeof $scope.guestCardData.contactInfo.user_id != "undefined" && $scope.guestCardData.contactInfo.user_id != null && $scope.guestCardData.contactInfo.user_id != "")
+			
+			if (typeof $scope.guestCardData.contactInfo.user_id != "undefined" && $scope.guestCardData.contactInfo.user_id != null && $scope.guestCardData.contactInfo.user_id != "") {
 				$scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+			}
 		};
+
 
 		/**
 		 * to handle click actins outside this tab
@@ -194,6 +203,15 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			//TODO: Cross check math.ceil for all browsers
 			var out = new Array(Math.ceil(ar.length / 2));
 			return out;
+		};
+		$scope.shouldShowRoomFeatures = function(roomFeatures) {
+			var showRoomFeature = false;
+			angular.forEach(roomFeatures, function(value, key) {
+				if (value.values.length > 0) {
+					showRoomFeature = true;
+				}
+			});
+			return showRoomFeature;
 		};
 
 	}

@@ -9,6 +9,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var init = function() {
             if ($stateParams.status !== 'RETAIN_RESERVATION') {
                 $scope.initReservationData();
+                $scope.initReservationDetails();
             }
             $scope.businessDate = baseSearchData.businessDate;
             if ($scope.reservationData.arrivalDate == '') {
@@ -25,7 +26,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
             $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
-            $scope.initReservationDetails();
             $scope.$emit('hideLoader');
         };
 

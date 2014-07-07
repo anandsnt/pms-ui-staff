@@ -203,6 +203,18 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 				// actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
 				actual.push([itemDate, item.actual_occupancy]);
 			});
+			if ($scope.categories.length > 0 && $scope.categories.length < 12) {
+				var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+				while ($scope.categories.length < 12) {
+					var monthComponents = $($scope.categories).last()[0].split(" ");
+					var lastMonth = monthComponents[0];
+					var lastYear = monthComponents[1];
+					var lastMonthIdx = $.inArray(lastMonth, months);
+					var thisMonth = months[(lastMonthIdx + 1) % 12];
+					var thisYear = lastMonthIdx == 11 ? parseInt(lastYear) + 1 : lastYear;
+					$scope.categories.push(thisMonth + " " + thisYear);
+				}
+			}
 			graphData = [{
 				"name": "ACTUAL",
 				"data": actual,

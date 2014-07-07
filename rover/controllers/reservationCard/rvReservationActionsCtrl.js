@@ -1,115 +1,114 @@
-sntRover.controller('reservationActionsController', [
-	'$rootScope',
-	'$scope',
-	'ngDialog',
-	'RVChargeItems',
-	'$state',
-	'ngDialog',
-	function($rootScope, $scope, ngDialog, RVChargeItems, $state, ngDialog) {
-		BaseCtrl.call(this, $scope);
-
-		$scope.displayTime = function(status) {
-			var display = false;
-			if (status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
-				display = true;
-			}
-			return display;
-		};
-		$scope.displayBalance = function(status) {
-			var display = false;
-			if (status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
-				display = true;
-			}
-			return display;
-		};
-		$scope.getBalanceAmountColor = function(balance) {
-			var balanceClass = "";
-			if (balance == 0 || balance == 0.00 || balance == 0.0) {
-				balanceClass = "green";
-			} else {
-				balanceClass = "red";
-			}
-			return balanceClass;
-		};
-
-		$scope.displayAddon = function(status) {
-			var display = false;
-			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
-				display = true;
-			}
-			return display;
-		};
-
-		$scope.displayAddCharge = function(status) {
-			var display = false;
-
-			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'NOSHOW_CURRENT') {
-				display = true;
-			}
-			return display;
-		};
-
-		$scope.displayArrivalTime = function(status) {
-			var display = false;
-			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT') {
-				display = true;
-			}
-			return display;
-		};
-
-		$scope.getArrivalTimeColor = function(time) {
-			var timeColor = "";
-			if (time != null) {
-				timeColor = "time";
-			}
-			return timeColor;
-		};
-
-
-
-		$scope.openPostCharge = function() {
-
-			// pass on the reservation id
-			$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-
-			// translating this logic as such from old Rover
-			// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
-			$scope.fetchTotalBal = true;
-
-			var callback = function(data) {
-				$scope.$emit('hideLoader');
-
-				$scope.fetchedData = data;
-
-				ngDialog.open({
-					template: '/assets/partials/postCharge/postCharge.html',
-					controller: 'RVPostChargeController',
-					scope: $scope
-				});
+sntRover.controller('reservationActionsController', 
+	[
+		'$rootScope',
+		'$scope',
+		'ngDialog',
+		'RVChargeItems',
+		'$state',
+		function($rootScope, $scope, ngDialog, RVChargeItems, $state) {
+			BaseCtrl.call(this, $scope);
+			
+			$scope.displayTime = function(status){
+				var display = false;
+				if(status == 'CHECKEDIN' || status == 'CHECKING_OUT'){
+					display = true;
+				}
+				return display;
+			};
+			$scope.displayBalance = function(status){
+				var display = false;
+				if(status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT'){
+					display = true;
+				}
+				return display;
+			};
+			$scope.getBalanceAmountColor = function(balance){
+				var balanceClass = "";
+				if(balance == 0 || balance == 0.00 || balance == 0.0){
+					balanceClass = "green";
+				} else {
+					balanceClass = "red";
+				}
+				return balanceClass;
+			};
+			
+			$scope.displayAddon = function(status){
+				var display = false;
+				if(status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT'){
+					display = true;
+				}
+				return display;
+			};
+			
+			$scope.displayAddCharge = function(status){
+				var display = false;
+				
+				if(status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'NOSHOW_CURRENT'){
+					display = true;
+				}
+				return display;
+			};
+			
+			$scope.displayArrivalTime = function(status){
+				var display = false;
+				if(status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT' ){
+					display = true;
+				}
+				return display;
+			};
+			
+			$scope.getTimeColor = function(time){
+				var timeColor = "";
+				if(time!=null){
+					timeColor = "time";
+				}
+				return timeColor;
 			};
 
-			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
-		};
-
-		// update the price on staycard.
-		var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
-			var balance = parseFloat($scope.reservationData.reservation_card.balance_amount);
-
-			balance += netPrice;
-
-			$scope.reservationData.reservation_card.balance_amount = balance;
-		});
-
-		// the listner must be destroyed when no needed anymore
-		$scope.$on('$destroy', postchargeAdded);
-
-		$scope.closeDialog = function() {
-			ngDialog.close();
-		};
 
 
+			
+			$scope.openPostCharge = function() {
 
-		$scope.goToCheckin = function() {
+				// pass on the reservation id
+				$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+
+				// translating this logic as such from old Rover
+				// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
+				$scope.fetchTotalBal = true;
+
+				var callback = function(data) {
+				    $scope.$emit( 'hideLoader' );
+
+				    $scope.fetchedData = data;
+
+		    		ngDialog.open({
+		        		template: '/assets/partials/postCharge/postCharge.html',
+		        		controller: 'RVPostChargeController',
+		        		scope: $scope
+		        	});
+				};
+
+				$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
+			};
+
+			// update the price on staycard.
+			var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
+				var balance = parseFloat( $scope.reservationData.reservation_card.balance_amount );
+
+				balance += netPrice;
+
+				$scope.reservationData.reservation_card.balance_amount = balance;
+			});
+
+			// the listner must be destroyed when no needed anymore
+			$scope.$on( '$destroy', postchargeAdded );
+
+			$scope.closeDialog = function() {
+				ngDialog.close();
+			};
+			
+			$scope.goToCheckin = function() {
 			if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
 				if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {
 					$scope.$emit('showLoader');
@@ -153,6 +152,7 @@ sntRover.controller('reservationActionsController', [
 				});
 			}
 		};
-
-	}
-]);
+		
+		}
+	]
+);

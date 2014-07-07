@@ -57,7 +57,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 			"id": userId
 		};
 		var successCallbackActivateInactivate = function(data){
-			$scope.data.users[index].is_active = (currentStatus == "true" ? "false" : "true");
+			$scope.orderedData[index].is_active = (currentStatus == "true" ? "false" : "true");
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADUserSrv.activateInactivate, data , successCallbackActivateInactivate);

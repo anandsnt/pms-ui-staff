@@ -207,3 +207,27 @@ var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspected
         }
         return mappedColor;
 };
+
+
+var avatharImgs = {
+	'mr' : 'avatar-male.png',
+	'mrs': 'avatar-female.png',
+	'ms': 'avatar-female.png',
+	'miss': 'avatar-female.png',
+	'': 'avatar-trans.png',
+};
+
+function getAvatharUrl(title){
+	//function to get avathar image url by giving title
+	title = $.trim(title).toLowerCase().split('.')[0];
+	try{
+		if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
+			return (/assets/ + avatharImgs[title]);
+	    else
+	    	return (/assets/ + avatharImgs['']);
+	}
+	catch (e) {
+		console.log(e.message);
+		// TODO: handle exception
+	}
+}

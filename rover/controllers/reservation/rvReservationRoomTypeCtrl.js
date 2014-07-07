@@ -11,7 +11,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		if($scope.otherData.defaultRateDisplayName == 'Recommended'){
 			$scope.activeCriteria = "RECOMMENDED";
 		}
-		else if($scope.otherData.defaultRateDisplayName == 'By Room Type'){
+		else if($scope.otherData.defaultRateDisplayName == 'By Rate'){
 			$scope.activeCriteria = "RATE";
 		}
 		else{

@@ -8,6 +8,11 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
     presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     $scope.errorMessage = "";
 
+    $scope.$on('clearNotifications', function() {
+      $scope.errorMessage = "";
+      $scope.successMessage = "";
+    });
+
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
         $scope.$emit('hideLoader');

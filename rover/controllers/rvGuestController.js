@@ -19,7 +19,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.init();
 
-		$scope.$on("resetGuestTab",function(){
+		$scope.$on("resetGuestTab", function() {
 			$scope.guestCardTabSwitch("guest-contact");
 		});
 
@@ -156,6 +156,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.guestCardClick = function($event) {
+			$scope.$broadcast('clearNotifications');
 			var element = $event.target;
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
