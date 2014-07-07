@@ -10,7 +10,9 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	$scope.reservationData = reservationDetails;
 	$scope.$parent.$parent.reservation = reservationDetails;
 	$scope.reservationnote = "";
-	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
+	if ($scope.reservationData.reservation_card.currency_code != null) {
+		$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
+	}
 	$scope.selectedLoyalty = {};
 	$scope.$emit('HeaderChanged', $filter('translate')('STAY_CARD_TITLE'));
 	$scope.$watch(
