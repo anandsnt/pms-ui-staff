@@ -16,24 +16,27 @@
 		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
 			<thead>
 				<tr>
-		           <th  ng-class="{
-		           			'sortable': currentClickedAddon == -1,
-		                    'sort-asc': tableParams.isSortBy('name', 'asc'),
-		                    'sort-desc': tableParams.isSortBy('name', 'desc')
-		                  }"
-		                  ng-click="sortByName()" rowspan="2">
-	                    <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
-	                </th>
-	                <th  ng-class="{
-		                	'sortable': currentClickedAddon == -1,
-		                    'sort-asc': tableParams.isSortBy('description', 'asc'),
-		                    'sort-desc': tableParams.isSortBy('description', 'desc')
-		                  }"
-		                  ng-click="sortByDescription()" rowspan="2">
-	                    <div><i class="glyphicon glyphicon-user"></i> <span translate>DESCRIPTION</span></div>
-	                </th>                		
-					<th class="width-10" translate>ACTIVE</th>
-					<th class="width-10" translate>DELETE</th>
+					 
+           <th  ng-class="{
+           			'sortable': currentClickedAddon == -1,
+                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+                    'sort-desc': tableParams.isSortBy('name', 'desc')
+                  }"
+                  
+                    ng-click="sortByName()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>NAME</span></div>
+                </th>
+                <th  ng-class="{
+                	'sortable': currentClickedAddon == -1,
+                    'sort-asc': tableParams.isSortBy('description', 'asc'),
+                    'sort-desc': tableParams.isSortBy('description', 'desc')
+                  }"
+                  
+                    ng-click="sortByDescription()" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>DESCRIPTION</span></div>
+                </th>                		
+				<th class="" ><span class="addon-header" translate> ACTIVE </span></th>
+				<th  class=""><span class="addon-header" translate> DELETE </span> </th>								
 				</tr>
 			</thead>
 			<tbody>
@@ -48,7 +51,7 @@
 
 					<td header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
 						<div class="entry">
-							<div class="switch-button single addon-switch-button"
+							<div class="switch-button single"
 									ng-class="{ on: item.activated }">
 								<input type = "checkbox"
 										id = "rates-addons"

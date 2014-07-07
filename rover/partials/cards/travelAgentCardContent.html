@@ -1,0 +1,69 @@
+<div ng-controller="RVTravelAgentCardCtrl">
+    <div id="travel-agent-card-content" class="card-search card-tabs card-content" ng-if="searchMode == false" ng-class="UICardContentCls('travel-agent-card')">
+     <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachCard('travel_agent')" translate="" ng-hide="viewState.isAddNewCard">Detach Card</button>
+
+     <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+
+        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
+            <a translate>CONTACT_INFORMATION</a>
+        </li>
+
+        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
+            <a translate>CONTRACTS</a>
+        </li>
+
+
+        <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
+            <a translate>RESERVATIONS</a>
+        </li>
+
+    </ul>
+    <!-- Company Card Tab 1 Contact Information -->
+    <div ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></div>
+
+    <!-- Company Card Tab 2 Contract -->
+    <div ng-controller="cardContractsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
+
+    <!-- Company Card Tab 3 Resevations -->
+    <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>
+</div>
+<div id="travel-agent-card-content" class="card-search card-tabs card-content" ng-if="searchMode" ng-class="UICardContentCls('travel-agent-card')">
+    <button id="new-company" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewTravelAgent()">Add New Card</button>
+    <div id="search-travel-agent-content" class="search-cards scrollable">
+        <!-- Travel Agent Card Results listing -->
+        <div ng-controller="travelAgentResults" class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
+            <ul id="search-travel-agent-results" class="search-results">
+                <li ng-repeat="travelAgent in travelAgents">
+                    <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
+                        <div class="guest-image icons icon-travel-agent"></div>
+                        <div class="data">
+                            <div class="info">
+                                <h2 ng-bind-html="'{{ travelAgent.account_name }}'|highlight:travelAgentName:false"></h2>
+                                <div class="rate"><span class="label">Rate</span> {{ travelAgent.rate }}</div>
+                            </div>
+                            <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
+                            <span class="icons icon-location">{{ travelAgent.address.city }}, {{ travelAgent.address.state }}</span>
+                            <span class="icons icon-phone">{{ travelAgent.phone }}</span>
+                            <span class="icons icon-email-grey">{{ travelAgent.email }}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="search-travel-agent-no-results" class="search-cards no-content">
+            <!-- Travel Agent Card No Results -->
+            <div class="info" ng-show="travelAgentSearchIntiated && travelAgents.length === 0">
+                <span class="icon-no-content icon-cards"></span>
+                <strong class="h1">No Matches</strong>
+                <span class="h2">Check that you didn't mispell the <strong>Trave Agent Name</strong>, <strong>City</strong> or <strong>IATA #</strong></span>
+            </div>
+            <!-- Travel Agent Card Empty -->
+            <div class="info" ng-hide="travelAgentSearchIntiated">
+                <span class="icon-no-content icon-cards"></span>
+                <strong class="h1">Find Travel Agent</strong>
+                <span class="h2">Search by <strong>Travel Agent Name</strong>, <strong>City</strong> or <strong>IATA #</strong></span>
+            </div>
+        </div>
+    </div>
+</div>  
+</div>
