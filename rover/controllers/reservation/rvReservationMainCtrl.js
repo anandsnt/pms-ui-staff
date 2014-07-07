@@ -5,7 +5,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 		var title = $filter('translate')('RESERVATION_TITLE');
 		$scope.setTitle(title);
 
-
 		$scope.initReservationData = function() {
 			$scope.hideSidebar = false;
 			// intialize reservation object
@@ -77,7 +76,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 					promotionType: ''
 				},
 				reservationId: '',
-				confirmNum: ''
+				confirmNum: '',
+				isSameCard: false
 			}
 		};
 
