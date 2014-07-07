@@ -4,7 +4,13 @@ var HotelDetailsView = function(domRef) {
 	this.currentView = $("body").attr("id");
 	var that = this;
 	this.fileContent = "";
-
+	this.chainArray = [];
+	
+	
+	this.pageinit = function() {
+		
+		that.fetchChainData();
+	};
 	this.delegateEvents = function() {
 		that.myDom.find('#save').on('click', ["update"], that.updateOrAddHotel);
 		that.myDom.find('#save_new_hotel').on('click', ["create"], that.updateOrAddHotel);
@@ -32,7 +38,8 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#deleteTemplate').on('click', function() {
 			that.readCertificate(this, "logo-template-deleted");
 		});
-
+		
+		that.myDom.find('#hotel-chain').on('change', that.changedChain);
 
 		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
 	    that.myDom.find('#test-mli-payment-gateway').on('click', that.testMLIPaymentGatewayConnectivity);
@@ -450,5 +457,38 @@ var HotelDetailsView = function(domRef) {
 			reader.readAsDataURL(input.files[0]);
 		}
 	};
-
+	
+	this.changedChain = function(e){
+		console.log("changedChain");
+		console.log(e);
+		var elem = $(e.target);
+		console.log(elem.val());
+		
+		var id = that.myDom.find('#hotel-chain').val();
+		console.log("iddd"+id);
+		
+		
+		
+	};
+	
+	// to handle success call back
+	this.fetchCompletedOfChains = function(data) {
+		console.log(data);
+		that.chainArray = data.chain_list;
+	};
+	// to handle failure call back
+	this.fetchFailedOfChains = function(errorMessage) {
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
+	};
+	
+	this.fetchChainData = function(){
+		var url = "/admin/hotel_chains.json";
+		var webservice = new WebServiceInterface();
+		var options = {
+			requestParameters: {},
+			successCallBack: that.fetchCompletedOfChains,
+			failureCallBack: that.fetchFailedOfChains
+		};
+		webservice.getJSON(url, options);
+	};
 };
