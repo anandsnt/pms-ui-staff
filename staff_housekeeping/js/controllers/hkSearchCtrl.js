@@ -85,12 +85,13 @@ hkRover.controller('HKSearchCtrl',
 	/** The filters should be re initialized in we are navigating from dashborad to search
 	*   In back navigation (From room details to search), we would retain the filters.
 	*/
-	// $scope.$on('$locationChangeStart', function(event, next, current) {
-	// 	var currentState = current.split('/')[next.split('/').length-1]; 
-	// 	if(currentState == ROUTES.dashboard){
-	// 		$scope.currentFilters = HKSearchSrv.initFilters();	
-	// 	}
-	// });
+	$scope.$on('$locationChangeStart', function(event, next, current) {
+		var currentState = current.split('/')[next.split('/').length-1]; 
+		if(currentState == ROUTES.dashboard) {
+			HKSearchSrv.currentFilters = HKSearchSrv.initFilters();
+			$scope.currentFilters = HKSearchSrv.currentFilters;	
+		}
+	});
 
 
 	var roomsEl = document.getElementById( 'rooms' );

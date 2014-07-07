@@ -23,15 +23,6 @@ hkRover.controller('HKRoomDetailsCtrl',
 
 	$scope.data = roomDetailsData;
 
-	/** The filters should be re initialized in we are navigating from dashborad to search
-	*   In back navigation (From room details to search), we would retain the filters.
-	*/
-	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-		if ( fromState.name != 'hk.roomDetails' ) {
-			HKSearchSrv.currentFilters = HKSearchSrv.initFilters();
-		};
-	});
-
 	$scope.shouldDisable = function() {
 		var stat = $scope.data.room_details.current_hk_status;
 		return stat === 'OO' || stat === 'OS' ? true : false;
