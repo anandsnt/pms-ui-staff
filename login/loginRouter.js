@@ -1,3 +1,4 @@
+
 login.config([	
 	'$stateProvider',
 	'$urlRouterProvider',
@@ -9,19 +10,22 @@ login.config([
 		$stateProvider.state('login', {
 			url: '/login',
 			templateUrl: '/assets/partials/login.html',
-			controller: 'loginCtrl'
+			controller: 'loginCtrl',
+			title: 'Login'
 		});
 		
 		$stateProvider.state('resetpassword', {
 			url: '/reset/:token',
 			templateUrl: '/assets/partials/reset.html',
-			controller: 'resetCtrl'
+			controller: 'resetCtrl',
+			title: 'Reset Password'
 		});
 		
 		$stateProvider.state('activateuser', {
 			url: '/activate/:token/:user',
 			templateUrl: '/assets/partials/activate.html',
-			controller: 'activateCtrl'
+			controller: 'activateCtrl',
+			title: 'Activate'
 		});
 
 	}
