@@ -47,7 +47,7 @@
 
             <rv-textbox value="contactInformation.account_details.web_page" label="Web Page" placeholder = "Enter Web Page" styleclass="full-width"></rv-textbox>
 
-            <div class="entry full-width">
+            <div class="entry full-width" ng-hide="true">
                 <label for="company-logo" translate>COMAPNY_LOGO</label>
                 <div class="file-upload with-preview">
                     <input type="file" name="company-logo" id="company-logo"  ng-model="contactInformation.account_details.company_logo" accept="*" app-filereader />

@@ -436,13 +436,13 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 				return;
 			};
 
-			if (diff > trigger - 30) {
+			if (diff > trigger - 40) {
 				$arrow.className = 'rotate';
 			} else {
 				$arrow.className = '';
 			}
 
-			if (diff > trigger - 20) {
+			if (diff > trigger - 30) {
 				$notifyTxt.innerHTML = 'Release to refresh...';
 			} else {
 				$notifyTxt.innerHTML = 'Pull down to refresh...';

@@ -581,9 +581,23 @@ height: 410px;
 
     text-align: left !important;
 }
-/* style to display the 'delete' header in addons */
-#addons.grid thead tr th:last-child {
+
+
+
+.addon-switch-button{
     display: block !important;
+}
+/* style to fix the scroll overlap in change hotel pop-up */
+#content{
+    z-index:999;
+}
+
+
+
+/* style to fix draggable li resizing on dragging */
+
+.form .entry.has-sortable .boxes li{
+   min-width:100% ;
 }
 
 

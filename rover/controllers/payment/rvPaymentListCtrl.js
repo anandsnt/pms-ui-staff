@@ -4,6 +4,15 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	$scope.paymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.paymentListData = data;
+		
+		//To remove non cc payments
+		angular.forEach($scope.paymentListData.existing_payments, function(obj, index){
+			if (!obj.is_credit_card) {
+	 		 	$scope.paymentListData.existing_payments.splice(index, 1);
+	  			return;
+			};
+		});
+
 		$scope.paymentListLength = $scope.paymentListData.existing_payments.length;
 		if($scope.paymentListLength == 0){
 			$scope.showNoValues = true;

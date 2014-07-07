@@ -6,6 +6,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     else{
       $translate.use('EN');
     };
+    // $translate.fallbackLanguage('EN');
 
     /*
      * To close drawer on click inside pages
@@ -40,6 +41,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       };
 
       if ( fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+        return true;
+      };
+
+      if ( fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch' ) {
         return true;
       };
 
@@ -106,12 +115,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $rootScope.MLImerchantId= hotelDetails.mli_merchant_id;
 
-    if (hotelDetails.language){
-      $translate.use(hotelDetails.language.value);
-    }
-    else{
-      $translate.use('EN');
-    };
+   
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null){
@@ -328,9 +332,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
 
-    $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {
+    $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) { 
       // Hide loading message
       $scope.$emit('hideLoader');
+      $rootScope.previousState = from;
+      $rootScope.previousStateParams = fromParams;
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message

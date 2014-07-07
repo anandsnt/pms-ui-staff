@@ -42,7 +42,6 @@
     "GOVERNMENT_LABEL":"Government / Military",
     "PROMOTIONS_OFFERS_LABEL":"Promotions / Offers",
     "DEMOGRAPHICS_LABEL":"Demographics",
-    "MARKET_LABEL":"Market",
     "MARKET_PLACEHOLDER":"Select Market",
     "SOURCE_LABEL":"Source",
     "SOURCE_PLACEHOLDER":"Select Source",
@@ -63,7 +62,7 @@
     "RESV_FOR_ONLY" : "For only",
     "RESV_MORE" : "more per night",
 
-    "BEST_SELLERS": "BEST SELLERS",
+    "BEST_SELLER": "BESTSELLER",
     "ENHANCEMENTS": "Enhancements",
     "GO_TO_PAYMENT": "Go to Payment",
     "QUANTITY": "Quantity",
