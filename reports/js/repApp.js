@@ -17,7 +17,7 @@ reports.config([
     '$datepickerProvider',
     function($datepickerProvider, $rootScope) {
         angular.extend($datepickerProvider.defaults, {
-            dateFormat: 'yyyy/MM/dd',
+            dateFormat: 'MM-dd-yyyy',
             startWeek: 0,
             autoclose: true,
             container: 'body'
@@ -109,21 +109,17 @@ reports.controller('reporstList', [
                     $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
 
 
-                    // for managing date filters limits
-                    // use the business dates
-                    // UPDATE: depricated due to next set of comments/lines of code
-                    $scope.reportList[i].today = new Date( $rootScope.businessDate );
-                    $scope.reportList[i].allowedUntilDate = new Date( $rootScope.businessDate );
+                    // IMPORTANT used date filter with option 'medium' to avoid incorrect date due to timezone change
 
                     // set the default values for until date to business date
                     // plus calender will open in the corresponding month, rather than today
-                    $scope.reportList[i].untilDate = $rootScope.businessDate
+                    $scope.reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'medium')
 
                     // HACK: set the default value for from date to a week ago from business date
                     // so that calender will open in the corresponding month, rather than today
-                    var today = new Date( $rootScope.businessDate );
+                    var today = new Date( $scope.reportList[i].untilDate );
                     var weekAgo = today.setDate(today.getDate() - 7);
-                    $scope.reportList[i].fromDate = weekAgo;
+                    $scope.reportList[i].fromDate = $filter('date')(weekAgo, 'medium');
                 };
             });
 
@@ -251,7 +247,7 @@ reports.controller('reportDetails', [
                     // if the chosenCico is 'OUT'
                     // class must be 'red'
                     if ( $scope.chosenReport.chosenCico === 'OUT' ) {
-                    	$scope.firstHalf[0]['class'] = 'red';
+                        $scope.firstHalf[0]['class'] = 'red';
                     }
                 };
 
@@ -269,18 +265,47 @@ reports.controller('reportDetails', [
                 };
             };
 
+            
+            for (var i = 0, j = $scope.results.length; i < j; i++) {
+
+                // change date format for all
+                $scope.results[i][0] = $filter('date')($scope.results[i][0], 'MM-dd-yyyy');
+
+                // hack to add curency $ symbol in front of values
+                if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+                }
+
+                // hack to append ':00 PM' to time
+                // thus makin the value in template 'X:00 PM'
+                if ( $scope.chosenReport.title === 'Late Check Out' ) {
+                    $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+                }
+            };
+
 
             // hack to add curency $ symbol in front of values
-            if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
-            	for (var i = 0, j = $scope.results.length; i < j; i++) {
-            		$scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+            // if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+            //     for (var i = 0, j = $scope.results.length; i < j; i++) {
+            //         $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
 
-                    // hack to append ':00 PM' to time
-                    // thus makin the value in template 'X:00 PM'
-                    if ( $scope.chosenReport.title === 'Late Check Out' ) {
-                        $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
-                    }
-            	};
+            //         // hack to append ':00 PM' to time
+            //         // thus makin the value in template 'X:00 PM'
+            //         if ( $scope.chosenReport.title === 'Late Check Out' ) {
+            //             $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+            //         }
+            //     };
+            // }
+
+            // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
+            // notice the text case, they are as per api response and ui
+            if ( $scope.chosenReport.title === 'Late Check Out' ) {
+                for (var i = 0, j = $scope.headers.length; i < j; i++) {
+                    if ( $scope.headers[i] === 'Late Check Out Time' ) {
+                        $scope.headers[i] = 'Selected Late Check Out Time';
+                        break;
+                    };
+                }
             }
 
 
@@ -303,6 +328,13 @@ reports.controller('reportDetails', [
                 reportContent.refresh();
                 reportContent.scrollTo(0, 0, 100);
             }, 100);
+
+            // need to keep a separate object to show the date stats in the footer area
+            $scope.displayedReport = {};
+
+            // dirty hack to get the val() not model value
+            $scope.displayedReport.fromDate = $('#chosenReportFrom').val();
+            $scope.displayedReport.untilDate = $('#chosenReportTo').val();
         };
 
         // we are gonna need to drop some pagination
@@ -684,4 +716,3 @@ reports.factory('RepFetchReportsSrv', [
 
 // need manual bootstraping app
 angular.bootstrap( angular.element('#reports_main'), ['reports'] );
-
