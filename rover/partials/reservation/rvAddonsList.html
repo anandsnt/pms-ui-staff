@@ -13,7 +13,7 @@
                     <!-- Categories -->
                     <ul class="addon-categories">
                         <li ng-class="{'ui-state-active': -1 === activeAddonCategoryId }">
-                            <a ng-click="selectAddonCategory('', $event)" class="button white" translate>BEST_SELLERS</a>
+                            <a ng-click="selectAddonCategory('', $event)" class="button white" translate>BEST_SELLER</a>
                         </li>
                         <li ng-repeat="addonCategory in addonCategories" ng-class="{ 'ui-state-active': addonCategory.id === activeAddonCategoryId }">
                             <a ng-click="selectAddonCategory(addonCategory, $event)" class="button white">{{ addonCategory.name }}</a>
@@ -33,14 +33,15 @@
                             <li ng-repeat="addon in addons">
                                 <div class="data">
                                     <span class="categories">
-                                        <span class="current" ng-show="addon.isBestSeller" translate>BEST_SELLERS</span> |
+                                        <span ng-show="addon.isBestSeller" class="current" translate>BEST_SELLER</span>
+                                        <label ng-show="addon.isBestSeller">|</label>
                                         <span>{{ addon.category }}</span>
                                     </span>
                                     <h2>{{ addon.title }}</h2>
                                     <em>{{ addon.description }}</em>
                                 </div>
                                 <div class="price">
-                                    {{currencySymbol}}{{ addon.price }}
+                                    {{currencySymbol}}{{ addon.price | number : 2}}
                                     <span>{{ addon.stay }}</span>
                                 </div>
                                 <div class="add-enhancement" ng-init="addonQty=1">

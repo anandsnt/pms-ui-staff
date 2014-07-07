@@ -1,7 +1,9 @@
 <form outside-click-handler  ng-controller="RVLikesController" name="likes" method="post" id="likes"   class="form card-tab scrollable" ng-show="current == 'guest-like'"   >
 
-    <div id="guest_likes"  ng-iscroll='likes_info' ng-iscroll-delay="1000" class="guest-likes-scroll" ng-iscroll-form='true' >
-    <div class="wrapper" style="position:relative; height: {{calculatedHeight}}px;">
+    <div id="guest_likes"  ng-iscroll='likes_info' ng-iscroll-delay="1000" class="guest-likes-scroll" ng-iscroll-form='true' >      
+    <div class="wrapper" >
+        <div style="display: table;width:100%;border-collapse: collapse;">
+        <div style="display: table-cell; vertical-align: top;">
         <div class="entry full-width">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
@@ -61,8 +63,7 @@
         </div>
         
 
-        
-        <div class="holder right" ng-show="guestCardData.likes.room_features.values.length >0">
+        <div class="holder right" ng-show="shouldShowRoomFeatures(guestCardData.likes.room_features)">
             <strong class="h3" translate>ROOM_FEATURES</strong>
             <span ng-repeat="roomFeatures in guestCardData.likes.room_features" >
 
@@ -84,8 +85,8 @@
                </div>
            </span>
        </div>
-
-
+     </div>
+   </div>
    </div>
 </div>
 </form>

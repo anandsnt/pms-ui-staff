@@ -1,19 +1,23 @@
 sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',
     function ($q, $scope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv) {
-        $scope.init = function(){
-            $scope.showRestrictionDayUpdate = false;
-            $scope.showExpandedView = false;
+    
+    $scope.init = function(){
+        $scope.showRestrictionDayUpdate = false;
+        $scope.showExpandedView = false;
 
-            $scope.data = {};
-            $scope.data.showEditView = false;
+        $scope.data = {};
+        $scope.data.showEditView = false;
 
-            if($scope.popupData.fromRoomTypeView){
-                computePopupdateForRoomTypeCal();
-            }else{
-                computePopUpdataForRateViewCal();
-                fetchPriceDetailsForRate();
-            }
-        };
+        if($scope.popupData.fromRoomTypeView){
+            computePopupdataForRoomTypeCal();
+        }else{
+            computePopUpdataForRateViewCal();
+            fetchPriceDetailsForRate();
+        }
+
+        $scope.updatePopupWidth();
+
+    };
 
     $scope.$parent.myScrollOptions = {
         'restictionsList' : {            
@@ -27,20 +31,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             interactiveScrollbars : true,
             click : true, 
             snap : false
-        },
-        'restictionWeekDaysScroll': {
-                scrollbars: true,
-                interactiveScrollbars: true,
-                click: true,
-                useTransform: true,
-                zoom: false,
-                snap: false,
-                onBeforeScrollStart: function(e) {
-                    var target = e.target;
-                    while (target.nodeType != 1) target = target.parentNode;
-                    if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-                        e.preventDefault();
-                }
         }
     };
 
@@ -55,12 +45,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         },1000);
     }
 
-    //$scope.restictions.selectedIndex
-
     $scope.restrictionsList = {
         selectedIndex : -1
     };
 
+    //To display the day options in the popup expanded view
     $scope.daysOptions = {  "days":[ 
                             {key:"MON",day:"MONDAY",value:false},
                             {key:"TUE",day:"TUESDAY",value:false},
@@ -79,6 +68,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         ngDialog.close();
     };
 
+    /**
+    * For displaying the price in expanded view
+    * Fetch the price info and update the $scope data variable
+    */
     var fetchPriceDetailsForRate = function() {
         var data = {};
         data.id = $scope.popupData.selectedRate;
@@ -100,8 +93,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
     };
 
-    var computePopupdateForRoomTypeCal = function(){
-
+    /**
+    * If the popup is opened from room type calendar view.
+    * Compute the data structure for the popup display using the 'calendarData' info 
+    */
+    var computePopupdataForRoomTypeCal = function(){
         $scope.data = {};
         $scope.data.id = '';
         $scope.data.name = '';
@@ -121,6 +117,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.data.child_sign = '+';
         $scope.data.child_extra_amnt = '';
         $scope.data.child_amnt_diff = '$';
+
+        //Flag to check if the rate set amounts are configured for the selected date
+        $scope.data.hasAmountConfigured = true;
+
                 
                
         selectedDateInfo = {};
@@ -135,11 +135,20 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
-                    if(selectedDateInfo != undefined){
-                        $scope.data.single = selectedDateInfo.single;
-                        $scope.data.double = selectedDateInfo.double;
-                        $scope.data.extra_adult = selectedDateInfo.extra_adult;
-                        $scope.data.child = selectedDateInfo.child;
+                    if(typeof selectedDateInfo != "undefined"){
+                        //Check if the rate set amounts are configured for the selected date
+                        if(selectedDateInfo.single == undefined &&
+                            selectedDateInfo.double == undefined &&
+                            selectedDateInfo.extra_adult == undefined &&
+                            selectedDateInfo.child == undefined){
+
+                            $scope.data.hasAmountConfigured = false;
+                        } else {
+                            $scope.data.single = selectedDateInfo.single;
+                            $scope.data.double = selectedDateInfo.double;
+                            $scope.data.extra_adult = selectedDateInfo.extra_adult;
+                            $scope.data.child = selectedDateInfo.child;
+                        }
                     }
                 }
             }
@@ -181,7 +190,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     };
 
     /**
-    * Compute the restrictions data     
+    * If the popup is opened from rate type calendar view.
+    * Compute the data structure for the popup display using the 'calendarData' info 
     */
     var computePopUpdataForRateViewCal = function(){
         $scope.data = {};
@@ -317,7 +327,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         if($scope.showExpandedView) {
             width = width + 270;
         }
-        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView) {
+        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView && $scope.data.hasAmountConfigured) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {

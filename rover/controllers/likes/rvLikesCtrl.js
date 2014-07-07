@@ -4,16 +4,13 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	$scope.errorMessage = "";
 	$scope.guestCardData.likes = {};
 	$scope.guestLikesData = {};
-	$scope.$parent.myScrollOptions = {		
-	    'likes_info': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false,
-	        vScroll: true
-	    }
-	};
-	$scope.calculatedHeight = 254; //height of Preferences + News paper + Room type + error message div
+	$scope.setScroller('likes_info');
+	
+
+    $scope.$on('clearNotifications',function(){
+    	$scope.errorMessage ="";
+    	$scope.successMessage ="";
+    });
 
 	$scope.init = function(){
 		BaseCtrl.call(this, $scope);
@@ -30,13 +27,8 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
         
         $scope.guestLikesData = data;
         
-        angular.forEach($scope.guestLikesData.preferences, function(value, key) {
-        	$scope.calculatedHeight += 34;
-        	var rowCount = 0;        	
-	        angular.forEach(value.values, function(prefValue, prefKey) {
-	        		rowCount++;	        		
-	        		if(rowCount % 2  != 0)
-	        			$scope.calculatedHeight += 40;	        		
+        angular.forEach($scope.guestLikesData.preferences, function(value, key) {      	
+	        angular.forEach(value.values, function(prefValue, prefKey) {        		
 		        	var userPreference = $scope.guestLikesData.user_preference;
 		        	if(userPreference.indexOf(prefValue.id) != -1){
 		        		prefValue.isChecked = true;
@@ -45,15 +37,10 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		        	}
 		    });
 	     });
-	    	
-	    var rowCount = 0; 
+
 	    angular.forEach($scope.guestLikesData.room_features, function(value, key) {
     	
 	        angular.forEach(value.values, function(roomFeatureValue, roomFeatureKey) {
-			      	rowCount++;	 
-			      	if(rowCount > 6 && $scope.guestLikesData.preferences.length <= 2 ){
-			        	$scope.calculatedHeight += 40;	
-			        } 
 		        	var userRoomFeature = value.user_selection;
 		        	if(userRoomFeature.indexOf(roomFeatureValue.id) != -1){
 		        		roomFeatureValue.isSelected = true;
@@ -69,8 +56,8 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 	
 
 		setTimeout(function(){			
-			$scope.refreshScroller();
-		});
+			$scope.refreshScroller('likes_info');
+		}, 1000);
 
 
     };
@@ -79,17 +66,13 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		$scope.init();
 	});
 
-	$scope.refreshScroller = function(){
-		setTimeout(function(){
-			$scope.myScroll['likes_info'].refresh();
-		}, 300);
-	};
+
 	$scope.$on('REFRESHLIKESSCROLL', function(){
-		$scope.refreshScroller();
+		$scope.refreshScroller('likes_info');
 		
 	});
 	$scope.$on("$viewContentLoaded", function(){
-		$scope.refreshScroller();
+		$scope.refreshScroller('likes_info');
 	});
 	
 	$scope.saveLikes = function(){
@@ -191,6 +174,15 @@ sntRover.controller('RVLikesController',['$scope','RVLikesSrv','dateFilter',func
 		//TODO: Cross check math.ceil for all browsers
 		var out = new Array(Math.ceil(ar.length/2));
 		return out;	
+	};
+	$scope.shouldShowRoomFeatures = function(roomFeatures){
+		var showRoomFeature = false;
+		angular.forEach(roomFeatures, function(value, key) {
+	        if(value.values.length>0){
+	        	 showRoomFeature = true;
+	        }
+	     });
+		return showRoomFeature;
 	};
 	
 }]);

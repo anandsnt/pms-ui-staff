@@ -126,15 +126,15 @@ function BaseCtrl($scope){
 		this can be modified through setScroller function
     */
     $scope.timeOutForScrollerRefresh = 300;
-    $scope.defaultScrollerOptions = {
+    var defaultScrollerOptions = {
     	snap: false,
 		scrollbars: 'custom',
 		hideScrollbar: false,
-		click: true,
-		tap: true,
+		click: false,
 		scrollX: false, 
 		scrollY: true, 
-		preventDefault: true
+		preventDefault: true,
+		preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
     };
 
     /*
@@ -146,10 +146,10 @@ function BaseCtrl($scope){
     	if(typeof scrollerOptions === 'undefined'){
     		scrollerOptions = {};
     	}
-    	//here is using a angular function to extend
-    	angular.extend (scrollerOptions, $scope.defaultScrollerOptions);
+    	//we are merging the settings provided in the function call with defaults
+    	angular.extend (scrollerOptions, defaultScrollerOptions); //here is using a angular function to extend,
     	//checking whether scroll options object is already initilised in parent controller
-    	//if so we need add a key, otherwise initialise and add
+    	//if so we need add a key, otherwise initialise and add    
     	var isEmptyParentScrollerOptions = isEmptyObject ($scope.$parent.myScrollOptions);
     	
     	if (isEmptyParentScrollerOptions) { 
@@ -157,7 +157,6 @@ function BaseCtrl($scope){
     	}
     	
     	$scope.$parent.myScrollOptions[key] = scrollerOptions;
-    	console.log($scope.$parent.myScrollOptions);
     };
 
     /*
@@ -165,10 +164,10 @@ function BaseCtrl($scope){
     	@param1: string as key 
     */
     $scope.refreshScroller = function (key){
+    	console.log('key for refreshing: ' + key);
     	setTimeout(function(){
-    		console.log('in refresh method ' + key);
-    		console.log($scope.$parent.myScroll[key]);
     		$scope.$parent.myScroll[key].refresh();
     	}, $scope.timeOutForScrollerRefresh);   	
     };
+
 }

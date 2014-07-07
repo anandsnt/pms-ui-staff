@@ -7,8 +7,18 @@ var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactI
 presentContactInfo.birthday =JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
 $scope.errorMessage = "";
 
+$scope.$on('clearNotifications',function(){
+  $scope.errorMessage ="";
+  $scope.successMessage ="";
+});
+
 $scope.saveContactInfo = function(){
     var saveUserInfoSuccessCallback = function(data){
+    	if(!dataUpdated)
+    	{
+    		var avatarImage = getAvatharUrl(dataToUpdate.title);
+    		$scope.$emit("CHANGEAVATAR", avatarImage);
+    	}
         $scope.$emit('hideLoader');
     };
     var saveUserInfoFailureCallback = function(data){
@@ -63,17 +73,12 @@ $scope.popupCalendar = function(){
 	});
 };
 
-$scope.$parent.myScrollOptions = {		
-    'contact_info': {
-    	scrollbars: true,
-        snap: false,
-        hideScrollbar: false
-    },
-};
+  $scope.setScroller('contact_info', {click: false});
 
 $scope.$on('CONTACTINFOLOADED', function(event) {
 	setTimeout(function(){
-		$scope.$parent.myScroll['contact_info'].refresh();
+    $scope.refreshScroller('contact_info');
+		
 		}, 
 	1500);
 	

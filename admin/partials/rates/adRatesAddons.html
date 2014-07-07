@@ -1,5 +1,5 @@
 <section id="replacing-div-first"
-			class="content current" ng-cloak>
+			class="content current" ng-cloak ng-click="clearErrorMessage()">
 	<div data-view="GuestCardLikesView">
 		<header class="content-title float">
 			<h2>Add-Ons</h2>
@@ -16,28 +16,24 @@
 		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
 			<thead>
 				<tr>
-					 
-           <th  ng-class="{
-           			'sortable': currentClickedAddon == -1,
-                    'sort-asc': tableParams.isSortBy('name', 'asc'),
-                    'sort-desc': tableParams.isSortBy('name', 'desc')
-                  }"
-                  
-                    ng-click="sortByName()" rowspan="2">
-                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>NAME</span></div>
-                </th>
-                <th  ng-class="{
-                	'sortable': currentClickedAddon == -1,
-                    'sort-asc': tableParams.isSortBy('description', 'asc'),
-                    'sort-desc': tableParams.isSortBy('description', 'desc')
-                  }"
-                  
-                    ng-click="sortByDescription()" rowspan="2">
-                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>DESCRIPTION</span></div>
-                </th>                		
-				<th class="width-100" translate> ACTIVE</th>
-				<th  class="width-50" translate> DELETE</th>								
-					
+		           <th  ng-class="{
+		           			'sortable': currentClickedAddon == -1,
+		                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+		                    'sort-desc': tableParams.isSortBy('name', 'desc')
+		                  }"
+		                  ng-click="sortByName()" rowspan="2">
+	                    <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+	                </th>
+	                <th  ng-class="{
+		                	'sortable': currentClickedAddon == -1,
+		                    'sort-asc': tableParams.isSortBy('description', 'asc'),
+		                    'sort-desc': tableParams.isSortBy('description', 'desc')
+		                  }"
+		                  ng-click="sortByDescription()" rowspan="2">
+	                    <div><i class="glyphicon glyphicon-user"></i> <span translate>DESCRIPTION</span></div>
+	                </th>                		
+					<th class="width-10" translate>ACTIVE</th>
+					<th class="width-10" translate>DELETE</th>
 				</tr>
 			</thead>
 			<tbody>

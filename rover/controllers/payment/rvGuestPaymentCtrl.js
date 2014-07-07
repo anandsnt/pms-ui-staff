@@ -2,6 +2,11 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	BaseCtrl.call(this, $scope);
 	
 
+	$scope.$on('clearNotifications',function(){
+    	$scope.errorMessage ="";
+    	$scope.successMessage ="";
+    });
+
 	/*
 	 * To open new payment modal screen from guest card
 	 */
@@ -65,15 +70,10 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	               scope:$scope
 	          });
   	 };
-  	 
-  	 $scope.$parent.myScrollOptions = {		
-	    'paymentList': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    },
-	};
+  	 $scope.setScroller('paymentList');
+  	$scope.$on("$viewContentLoaded", function(){
+		$scope.refreshScroller('paymentList');
+	});
 
 	$scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if($scope.isGuestCardVisible){

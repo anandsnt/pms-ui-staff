@@ -115,9 +115,9 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 });
                 return deferred.promise;
               }
-
-               var url = "/api/addons?is_active=true";
-                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                var params = {"is_active":true, "is_not_reservation_only":true};
+                var url = "/api/addons";
+                ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                     that.additionalDetails.addons = data.results;
                     this.fetchRestictionDetails();
                 }, function (data) {
@@ -134,8 +134,9 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
              * @return {object} add ons
              */
             this.fetchAddons = function () {
-                var url = "/api/addons?is_active=true";
-                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                var params = {"is_active":true, "is_not_reservation_only":true};
+                var url = "/api/addons";
+                ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                     that.rateDetails.allAddOns = data.results;
                     deferred.resolve(that.rateDetails);
                 }, function (data) {
