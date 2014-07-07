@@ -475,6 +475,8 @@ var HotelDetailsView = function(domRef) {
 	this.fetchCompletedOfChains = function(data) {
 		that.chainObj = data;
 		that.changedChain();
+		var selectedBrandId = that.myDom.find("#brand-id").attr('value');
+		that.myDom.find('#hotel-brand option[value="'+selectedBrandId+'"]').attr('selected','selected');
 	};
 	// to handle failure call back.
 	this.fetchFailedOfChains = function(errorMessage) {
