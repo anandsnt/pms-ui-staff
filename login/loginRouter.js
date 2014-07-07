@@ -25,7 +25,7 @@ login.config([
 			url: '/activate/:token/:user',
 			templateUrl: '/assets/partials/activate.html',
 			controller: 'activateCtrl',
-			title: 'Activate'
+			title: 'Activate User'
 		});
 
 	}
