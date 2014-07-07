@@ -57,8 +57,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
-				var calendarData = that.calculateRateViewCalData();
-				deferred.resolve(calendarData);
+				if(data.results.rates.length == 1){
+					var roomDetailsParams = {};
+					roomDetailsParams.from_date = params.from_date;
+					roomDetailsParams.from_date = params.to_date;
+					roomDetailsParams.id = data.results.rates[0].id;
+
+					that.fetchRoomTypeCalenarData(roomDetailsParams, deferred);
+				} else{
+					var calendarData = that.calculateRateViewCalData();
+					deferred.resolve(calendarData);	
+				}
+				
 			},rejectDeferred);
 
 		};
@@ -69,9 +79,11 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	};
 
-	this.fetchRoomTypeCalenarData = function(params){
-		var deferred = $q.defer();
+	this.fetchRoomTypeCalenarData = function(params, deferred){
 
+		if(typeof deferred == 'undefined'){
+			deferred = $q.defer();
+		}
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
