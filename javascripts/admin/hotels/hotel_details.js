@@ -4,11 +4,9 @@ var HotelDetailsView = function(domRef) {
 	this.currentView = $("body").attr("id");
 	var that = this;
 	this.fileContent = "";
-	this.chainArray = [];
-	
+	this.chainObj = {};
 	
 	this.pageinit = function() {
-		
 		that.fetchChainData();
 	};
 	this.delegateEvents = function() {
@@ -457,33 +455,35 @@ var HotelDetailsView = function(domRef) {
 			reader.readAsDataURL(input.files[0]);
 		}
 	};
-	
-	this.changedChain = function(e){
-		console.log("changedChain");
-		console.log(e);
-		var elem = $(e.target);
-		console.log(elem.val());
+	//Method to check change in chain selection and populating barnds.
+	this.changedChain = function(){
+		var selectedId = that.myDom.find('#hotel-chain').val();
+		that.myDom.find("#hotel-brand").html("");
 		
-		var id = that.myDom.find('#hotel-chain').val();
-		console.log("iddd"+id);
-		
-		
-		
+		$.each(that.chainObj.chain_list, function(key, value) {
+		    if(value.value == selectedId){
+		    	var html = '<option value="">Hotel brand</option>';;
+		    	for(var i=0; i<value.brands.length;i++){
+		    		html += '<option value="'+value.brands[i].id+'">'+value.brands[i].name+'</option>';
+		    	}
+		    	that.myDom.find("#hotel-brand").append(html);
+		    }		    
+		});
 	};
 	
-	// to handle success call back
+	// to handle success call back.
 	this.fetchCompletedOfChains = function(data) {
-		console.log(data);
-		that.chainArray = data.chain_list;
+		that.chainObj = data;
+		that.changedChain();
 	};
-	// to handle failure call back
+	// to handle failure call back.
 	this.fetchFailedOfChains = function(errorMessage) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
-	
+	//To fetch chain data initially.
 	this.fetchChainData = function(){
 		var url = "/admin/hotel_chains.json";
-		var webservice = new WebServiceInterface();
+		var webservice = new NewWebServiceInterface();
 		var options = {
 			requestParameters: {},
 			successCallBack: that.fetchCompletedOfChains,
