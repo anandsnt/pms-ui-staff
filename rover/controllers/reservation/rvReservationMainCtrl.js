@@ -151,12 +151,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 		};
 
 		$scope.computeTotalStayCost = function() {
+			// TODO : Loop thru all rooms
 			var currentRoom = $scope.reservationData.rooms[0];
 
 			//Calculate Addon Addition for the room
 			var addOnCumulative = 0;
-			$($scope.reservationData.rooms[0].addons).each(function(i, addon) {
-				console.log(addon.amountType.value, addon.postType.value);
+			$(currentRoom.addons).each(function(i, addon) {
+				// console.log(addon.amountType.value, addon.postType.value);
 				//Amount_Types
 				// 1   ADULT   
 				// 2   CHILD   
