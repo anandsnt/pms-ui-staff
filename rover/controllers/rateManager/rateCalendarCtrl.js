@@ -59,7 +59,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
-				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
+				setTimeout( function(){
+				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();}, 0);
 			}
 		};
 
