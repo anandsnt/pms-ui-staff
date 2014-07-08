@@ -78,7 +78,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-frontdesk",
 			submenu: [{
 				title: "MENU_CREATE_RESERVATION",
-				action: "staff#/staff/reservation/search/",
+				action: "staff#/staff/reservation/search",
 				standAlone : true
 			}, {
 				title: "MENU_ROOM_ASSIGNMENT",
