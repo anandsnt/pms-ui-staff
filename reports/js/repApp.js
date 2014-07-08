@@ -574,6 +574,18 @@ reports.controller('reportDetails', [
                 reportContent.refresh();
             }, 500);
         };
+
+
+        // off again with another dirty hack to resolve an iPad issue
+        // when picking the date, clicking on the black mask doesnt close calendar 
+        var closeMask = function(e) {
+            $( 'body' ).find( '.datepicker-mask' )
+                .trigger( 'click' );
+        };
+        $( 'body' ).on( 'click', closeMask );
+        $scope.$on( '$destroy', function() {
+            $( 'body' ).off( closeMask );
+        } );
     }
 ]);
 
