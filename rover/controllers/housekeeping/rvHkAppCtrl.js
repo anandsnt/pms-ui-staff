@@ -5,6 +5,9 @@ sntRover.controller('RVHkAppCtrl', [
 	'ngDialog',
 	function($rootScope, $scope, $state, ngDialog) {
 
+		BaseCtrl.call(this, $scope);
+		$scope.setTitle( 'Housekeeping' );
+
 		//when state change start happens, we need to show the activity activator to prevent further clicking
 		//this will happen when prefetch the data
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) { 
