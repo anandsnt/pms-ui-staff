@@ -87,8 +87,9 @@ hkRover.controller('HKSearchCtrl',
 	*/
 	$scope.$on('$locationChangeStart', function(event, next, current) {
 		var currentState = current.split('/')[next.split('/').length-1]; 
-		if(currentState == ROUTES.dashboard){
-			$scope.currentFilters = HKSearchSrv.initFilters();	
+		if(currentState == ROUTES.dashboard) {
+			HKSearchSrv.currentFilters = HKSearchSrv.initFilters();
+			$scope.currentFilters = HKSearchSrv.currentFilters;	
 		}
 	});
 
@@ -395,13 +396,13 @@ hkRover.controller('HKSearchCtrl',
 				return;
 			};
 
-			if (diff > trigger - 40) {
+			if (diff > trigger - 30) {
 				$arrow.className = 'rotate';
 			} else {
 				$arrow.className = '';
 			}
 
-			if (diff > trigger - 30) {
+			if (diff > trigger - 20) {
 				$notifyTxt.innerHTML = 'Release to refresh...';
 			} else {
 				$notifyTxt.innerHTML = 'Pull down to refresh...';
