@@ -16,6 +16,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEarlyDepartureFlag = false;
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
+	$scope.isRefreshOnBackToStaycard = false;
 	//options fo signature plugin
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 	$scope.signaturePluginOptions = {
@@ -436,9 +437,20 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		// cos' we are gods, and this is what we wish
 		// just kidding.. :P
+		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	});
-
+    /*
+	 * Go back to staycard - Depends on changes in bill do refresh or not
+	 */
+    $scope.goBackToStayCard = function(reservationId, confirmationNumber){
+    	if($scope.isRefreshOnBackToStaycard)
+    	{
+    		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+    	} else {
+    		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
+    	}
+    };
 	// the listner must be destroyed when no needed anymore
 	$scope.$on( '$destroy', postchargeAdded );
 
