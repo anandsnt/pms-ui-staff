@@ -26,7 +26,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 
 		var presentContactInfo = {};
 
-		$scope.$on('travelAgentFetchComplete', function() {
+		$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.travelAgentInformation;
 			$scope.contactInformation.id = $scope.reservationDetails.travelAgent.id;
@@ -35,6 +35,13 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			// to check whether data changed
 			$scope.currentSelectedTab = 'cc-contact-info';
 			presentContactInfo = angular.copy($scope.contactInformation);
+
+			if (isNew === true) {
+				$scope.contactInformation.account_details.account_name = $scope.searchData.travelAgentCard.travelAgentName;
+				$scope.contactInformation.address_details.city = $scope.searchData.travelAgentCard.travelAgentCity;
+				$scope.contactInformation.account_details.corporate_id = $scope.searchData.travelAgentCard.travelAgentIATA;
+			}
+
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
