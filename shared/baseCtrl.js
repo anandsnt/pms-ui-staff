@@ -157,7 +157,7 @@ function BaseCtrl($scope){
     		$scope.$parent.myScrollOptions = {}; 		
     	}
     	
-    	$scope.$parent.myScrollOptions[key] = scrollerOptions;
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions;       	
     };
 
     /*
@@ -165,7 +165,6 @@ function BaseCtrl($scope){
     	@param1: string as key 
     */
     $scope.refreshScroller = function (key){
-    	console.log('key for refreshing: ' + key);
     	setTimeout(function(){
     		$scope.$parent.myScroll[key].refresh();
     	}, $scope.timeOutForScrollerRefresh);   	

@@ -8,24 +8,13 @@ angular.module('housekeepingModule', [])
         controller: 'RVHkAppCtrl'
     });
 
-    $stateProvider.state('rover.housekeeping.dashboard', {
-        url: '/dashboard',
-        templateUrl: '/assets/partials/housekeeping/rvHkDashboard.html',
-        controller: 'RVHkDashboardCtrl',
+    $stateProvider.state('rover.housekeeping.roomStatus', {
+        url: '/roomStatus',
+        templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
+        controller: 'RVHkRoomStatusCtrl',
         resolve: {
-            dashboardData: function(RVHkDashboardSrv) {
-                return RVHkDashboardSrv.fetch();
-            }
-        }
-    });
-
-    $stateProvider.state('rover.housekeeping.search', {
-        url: '/search',
-        templateUrl: '/assets/partials/housekeeping/rvHkSearch.html',
-        controller: 'RVHkSearchCtrl',
-        resolve: {
-            fetchedRoomList: function(RVHkSearchSrv) {
-                return RVHkSearchSrv.roomList;
+            fetchedRoomList: function(RVHkRoomStatusSrv) {
+                return RVHkRoomStatusSrv.roomList;
             }
         }
     });

@@ -46,7 +46,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
-
+		$rootScope.currencySymbol = "";
 
 		$scope.menu = [{
 			title: "MENU_DASHBOARD",
@@ -130,8 +130,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			action: "",
 			iconClass: "icon-housekeeping",
 			submenu: [{
-				title: "MENU_HOUSEKEEPING",
-				action: "staff#/staff/housekeeping/dashboard"
+				title: "MENU_ROOM_STATUS",
+				action: "staff#/staff/housekeeping/search",
+				menuIndex: "room_status"
 			}, {
 				title: "MENU_TASK_MANAGEMENT",
 				action: ""
@@ -339,6 +340,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;
 			$rootScope.businessDate = data.business_date;
+			$rootScope.currencySymbol = data.currency.symbol;
 			$scope.$emit('hideLoader');
 
 		};
