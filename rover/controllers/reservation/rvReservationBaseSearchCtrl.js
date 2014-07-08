@@ -7,7 +7,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var defaultMaxvalue = 5;
 
         var init = function() {
-            if ($stateParams.status !== 'RETAIN_RESERVATION') {
+            if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
                 $scope.initReservationDetails();
             }

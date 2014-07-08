@@ -149,26 +149,28 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         //INITS
         var init = function() {
-            // open search list card if any of the search fields are entered on main screen
-            var searchData = $scope.reservationData;
-            if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
-                $scope.openGuestCard();
-                // based on search values from base screen
-                // init respective search
-                if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
-                    $scope.searchGuest();
-                } else if (searchData.company.id != null) {
-                    $scope.switchCard('company-card');
-                    $scope.reservationDetails.companyCard.id = searchData.company.id;
-                    $scope.initCompanyCard({
-                        id: searchData.company.id
-                    });
-                } else if (searchData.travelAgent.id != null) {
-                    $scope.switchCard('travel-agent-card');
-                    $scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
-                    $scope.initTravelAgentCard({
-                        id: searchData.travelAgent.id
-                    });
+            if (!$scope.reservationData.isSameCard) {
+                // open search list card if any of the search fields are entered on main screen
+                var searchData = $scope.reservationData;
+                if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
+                    $scope.openGuestCard();
+                    // based on search values from base screen
+                    // init respective search
+                    if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
+                        $scope.searchGuest();
+                    } else if (searchData.company.id != null) {
+                        $scope.switchCard('company-card');
+                        $scope.reservationDetails.companyCard.id = searchData.company.id;
+                        $scope.initCompanyCard({
+                            id: searchData.company.id
+                        });
+                    } else if (searchData.travelAgent.id != null) {
+                        $scope.switchCard('travel-agent-card');
+                        $scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
+                        $scope.initTravelAgentCard({
+                            id: searchData.travelAgent.id
+                        });
+                    }
                 }
             }
 
