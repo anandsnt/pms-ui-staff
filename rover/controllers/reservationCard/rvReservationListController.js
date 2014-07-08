@@ -1,6 +1,7 @@
 sntRover.controller('reservationListController',['$scope', function($scope){
 	BaseCtrl.call(this, $scope);
-	$scope.setScroller('resultListing');
+	var scrollerOptions = {click: true, preventDefault: false};
+	$scope.setScroller('resultListing', scrollerOptions);
 	
 	
 	 //update left nav bar
