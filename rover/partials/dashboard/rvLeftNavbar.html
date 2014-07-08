@@ -1,6 +1,7 @@
 <nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen, 'invisible' : !menuOpen}">
 
-	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="toggleDrawerMenu()"  ng-class="{'collapse': menuOpen}">Menu
+	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="toggleDrawerMenu()"  ng-class="{'collapse': menuOpen}">
+		Menu
 		<span ng-class="{'active': menuOpen}"></span>
 	</a>
 	<!-- For Hotel Admin -->
@@ -58,7 +59,7 @@
 		</li> -->
 	</ul>
 
-	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
+	<div id="submenu" ng-show="menuOpen && showSubMenu && activeSubMenu.length > 0">
 		<ul>
 			<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-hide="menuItem.standAlone && !isStandAlone">
 				<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}">

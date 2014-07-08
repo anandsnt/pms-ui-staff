@@ -86,7 +86,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 },
                 reservationId: '',
                 confirmNum: '',
-                isSameCard: false
+                isSameCard: false // Set flag to retain the card details
             }
         }
 

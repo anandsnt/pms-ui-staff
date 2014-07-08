@@ -36,7 +36,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     
     this.dataUpdated=function(){
     	$("#setOverlay").hide();
-    	that.myDom.find("#new-payment").removeClass("hidden");
+    	$("#new-payment").removeClass("hidden");
     	if (that.swipedCardData) {
 			that.populateSwipedCard();
 	   };
@@ -84,8 +84,13 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     //Success call back after succesful addition of payment in reservation
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
 
-   			that.save_inprogress = false;
-			$newImage = that.myDom.find("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
+
+   			that.save_inprogress = false; 
+   			var creditcardType = escapeNull(that.myDom.find("#new-payment #payment-credit-type").val());
+			if(typeof creditcardType != 'undefined' && creditcardType != ''){
+				creditcardType = creditcardType.toLowerCase();
+			};
+			$newImage = creditcardType+".png";	
 			$newDate = that.myDom.find("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
 			$endingWith = requestParameters['number'];
 			$guestName = that.myDom.find("#new-payment #name-on-card").val();
@@ -191,7 +196,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
    	};    	
    	//save new payment
    	this.saveNewPayment = function(){
-   		if (that.save_inprogress == true) return false;
+   		if (that.save_inprogress == true){
+   			return false;
+   		} 
 		var $payment_type = $("#new-payment #payment-type").val();
 		var $payment_credit_type = $("#new-payment #payment-credit-type").val();
 		var $card_number_set = $("#new-payment #card-number-set1").val();
@@ -211,8 +218,13 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
 		var errorMessage = "";
-			
-		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
+
+		var creditcardType = $("#new-payment #payment-credit-type").val();
+		if(typeof creditcardType != 'undefined' && creditcardType != null){
+			creditcardType = creditcardType.toLowerCase();
+		};
+
+		var $image = "<img src='/assets/"+ creditcardType +".png' alt='"+ creditcardType +"'>";	
 		
 		$number = $card_number.substr($card_number.length - 4);
 		$expiry = $expiry_month && $expiry_year ? $expiry_month + "/" + $expiry_year : "";		
@@ -246,7 +258,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		}*/
 		
 		if(fromPagePayment == "guest"){
-			
 		    that.save_inprogress = true; // Handle clicking on Add button twice.
 		    var webservice = new WebServiceInterface();
 		    var data = {

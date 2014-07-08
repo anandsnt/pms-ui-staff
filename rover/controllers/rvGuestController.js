@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog','$rootScope',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog,$rootScope) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -156,6 +156,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.guestCardClick = function($event) {
+			$rootScope.$emit('clearErroMessages');			
 			$scope.$broadcast('clearNotifications');
 			var element = $event.target;
 			$event.stopPropagation();
@@ -567,6 +568,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				"user_id": "",
 				"guest_id": ""
 			};
+			// Retain Search Keys
+			$scope.guestCardData.contactInfo.first_name = $scope.searchData.guestCard.guestFirstName;
+			$scope.guestCardData.contactInfo.last_name = $scope.searchData.guestCard.guestLastName;
+			$scope.guestCardData.contactInfo.address = {};
+			$scope.guestCardData.contactInfo.address.city = $scope.searchData.guestCard.guestCity;
+			$scope.guestCardData.membership_no = $scope.searchData.guestCard.guestLoyaltyNumber;
+
 			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
@@ -575,21 +583,19 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.createNewCompany = function() {
 			$scope.companyContactInformation = $scope.getEmptyAccountData();
-			// $scope.companyContactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
 			$scope.reservationDetails.companyCard.id = "";
 			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
-			$scope.$broadcast('companyCardAvailable');
+			$scope.$broadcast('companyCardAvailable', true);
 
 		}
 
 		$scope.createNewTravelAgent = function() {
 			$scope.travelAgentInformation = $scope.getEmptyAccountData();
-			// $scope.travelAgentInformation.account_details.account_name = $scope.searchData.travelAgentCard.companyName;
 			$scope.reservationDetails.travelAgent.id = "";
 			$scope.reservationDetails.travelAgent.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
-			$scope.$broadcast('travelAgentFetchComplete');
+			$scope.$broadcast('travelAgentFetchComplete', true);
 		}
 
 		$scope.clickedSaveCard = function(cardType) {

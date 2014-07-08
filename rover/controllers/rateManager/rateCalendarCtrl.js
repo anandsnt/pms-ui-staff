@@ -6,8 +6,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
                 scrollX: true,
                 scrollbars: true,
                 interactiveScrollbars: true,
-                click: true
-                // snap: false,
+                click: true,
+                snap: false
             },
          
    };
