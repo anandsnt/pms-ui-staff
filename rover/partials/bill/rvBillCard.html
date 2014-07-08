@@ -158,10 +158,10 @@
 							<!-- Bill item per day -Summary -->
 							<div class="summary-expanded float" ng-class="{'hidden': $index != dayRates}" ng-repeat="billItem in billData.days">
 								<a class="toggle has-arrow" ng-click="showRoomDetails($index)" ng-class="{'active': $index == showRoomDetailsIndex}">
-									<div class="price" ng-show="billData.is_rates_suppressed">
-										{{billData.text_rates_suppressed}}<span translate>+ FEES</span>
+									<div class="price" ng-show="reservationBillData.is_rates_suppressed">
+										{{reservationBillData.text_rates_suppressed}}<span translate>+ FEES</span>
 									</div>
-									<div class="price" ng-hide="billData.is_rates_suppressed">
+									<div class="price" ng-hide="reservationBillData.is_rates_suppressed">
 										{{currencySymbol}}{{billItem.amount | number: precisonTwo}}<span translate>+ <span translate>FEES</span>
 									</div>
 									<div class="rate">
