@@ -75,8 +75,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.detachCard(cards[$scope.UICards[0]]);
                 $scope.viewState.isAddNewCard = false;
             }
-            console.log("Data", $scope.reservationData);
-            console.log("Details", $scope.reservationDetails);
         }
 
         /**
@@ -172,6 +170,25 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         });
                     }
                 }
+            } else {
+                // populate cards
+                $scope.closeGuestCard();
+                if ($scope.reservationDetails.guestCard.id != "" && $scope.reservationDetails.guestCard.id != null) {
+                    $scope.initGuestCard({
+                        id: $scope.reservationDetails.guestCard.id
+                    });
+                }
+                if ($scope.reservationDetails.companyCard.id != "" && $scope.reservationDetails.companyCard.id != null) {
+                    $scope.initCompanyCard({
+                        id: $scope.reservationDetails.companyCard.id
+                    });
+                }
+                if ($scope.reservationDetails.travelAgent.id != "" && $scope.reservationDetails.travelAgent.id != null) {
+                    $scope.initTravelAgentCard({
+                        id: $scope.reservationDetails.travelAgent.id
+                    });
+                }
+                $scope.reservationData.isSameCard = false;
             }
 
             if ($scope.otherData.fromSearch) {

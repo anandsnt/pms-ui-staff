@@ -8,9 +8,28 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         var init = function() {
             // Check flag to retain the card details
+            console.log("Data", $scope.reservationData);
+            console.log("Details", $scope.reservationDetails);
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
                 $scope.initReservationDetails();
+            } else {
+                //$scope.reservationData.isSameCard = false;
+                //TODO: 1. User gets diverted to the Search screen (correct) 
+                //but Guest Name and Company / TA cards are not copied into the respective search fields. 
+                //They are added to the reservation by default later on, 
+                //but should be copied to the Search screen as well
+                $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
+                $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
+                $scope.companySearchText = (function() {
+                    if ($scope.reservationData.company.id != null && $scope.reservationData.company.id != "") {
+                        return $scope.reservationData.company.name;
+                    } else if ($scope.reservationData.travelAgent.id != null && $scope.reservationData.travelAgent.id != "") {
+                        return $scope.reservationData.travelAgent.name;
+                    }
+                    return "";
+                })();
+
             }
             $scope.businessDate = baseSearchData.businessDate;
             if ($scope.reservationData.arrivalDate == '') {
