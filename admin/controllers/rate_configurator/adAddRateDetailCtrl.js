@@ -4,7 +4,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
             $scope.rateTypesDetails = {};
-            fetchData();
+            setRateInitialData();
             $scope.detailsMenu = '';
         };
 
@@ -69,49 +69,40 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
          * Fetch Details
          */
 
-        var fetchData = function () {
+        var setRateInitialData = function () {
+            $scope.rateTypesDetails = $scope.rateInitialData;
 
-            var fetchRateTypesSuccessCallback = function (data) {
-                $scope.rateTypesDetails = data;
-
-                $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
-                $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
-                
+            $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
+            $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
+            
             /*
              * manipulate data to display inside dropdown
              */
-                angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy){
-                        var symbol =  (depositPolicy.amount_type ==="amount") ? '$':'%';
-                        if (symbol == '%') {
-                            depositPolicy.displayData = depositPolicy.name +"   "+"("+depositPolicy.amount+symbol+")";
-                        }
-                        else {
-                            depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
-                        }
-                });
-                angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty){
-                        var symbol =  (cancelationPenalty.amount_type ==="amount") ? '$':'%';
-                        if (symbol == '%') {
-                            cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+cancelationPenalty.amount+symbol+")";
-                        }
-                        else {
-                            cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
-                        }
-                });
+            angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy){
+                var symbol =  (depositPolicy.amount_type ==="amount") ? '$':'%';
+                if (symbol == '%') {
+                    depositPolicy.displayData = depositPolicy.name +"   "+"("+depositPolicy.amount+symbol+")";
+                }
+                else {
+                    depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
+                }
+            });
+            angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty){
+                var symbol =  (cancelationPenalty.amount_type ==="amount") ? '$':'%';
+                if (symbol == '%') {
+                    cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+cancelationPenalty.amount+symbol+")";
+                }
+                else {
+                    cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
+                }
+            });
             /*
              * empty the list if not activated
              */
 
-                $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
-                $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-                $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
-
-                $scope.$emit('hideLoader');
-            };
-            var fetchRateTypesFailureCallback = function (data) {
-                $scope.$emit('hideLoader');
-            };
-            $scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback, fetchRateTypesFailureCallback);
+            $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
+            $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
+            $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
         }
 
         /*

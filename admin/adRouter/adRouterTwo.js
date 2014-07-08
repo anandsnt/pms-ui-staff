@@ -125,13 +125,23 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addRate', {
 			templateUrl: '/assets/partials/rates/adNewRate.html',
 		    controller: 'ADAddnewRate',
-			url : '/addNewRate'
+			url : '/addNewRate',
+			resolve: {
+				rateInitialData: function(ADRatesAddDetailsSrv) {
+					return ADRatesAddDetailsSrv.fetchRateTypes();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.rateDetails', {
 			templateUrl: '/assets/partials/rates/adNewRate.html',
 			controller: 'ADAddnewRate',
-			url : '/ratedetails/:rateId'
+			url : '/ratedetails/:rateId',
+			resolve: {
+				rateInitialData: function(ADRatesAddDetailsSrv) {
+					return ADRatesAddDetailsSrv.fetchRateTypes();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.rulesRestrictions', {
