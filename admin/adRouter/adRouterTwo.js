@@ -129,6 +129,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve: {
 				rateInitialData: function(ADRatesAddDetailsSrv) {
 					return ADRatesAddDetailsSrv.fetchRateTypes();
+				},
+				rateDetails: function(){
+					return {};
 				}
 			}
 		});
@@ -140,7 +143,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve: {
 				rateInitialData: function(ADRatesAddDetailsSrv) {
 					return ADRatesAddDetailsSrv.fetchRateTypes();
-				}
+				},
+				rateDetails: function(ADRatesSrv, $stateParams) {
+                 	var params = {
+			 		  	rateId: $stateParams.rateId
+		 		  	}; 
+                    return ADRatesSrv.fetchDetails(params);
+                }
 			}
 		});
 

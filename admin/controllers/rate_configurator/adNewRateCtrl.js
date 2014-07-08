@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData',
-    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails',
+    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails) {
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
             $scope.is_edit = false;
@@ -27,38 +27,38 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "date_ranges": [],
                 "addOns":[]
             }
+            // intialize rateData dictionary - END
 
             $scope.allAddOns = [];
             $scope.basedonRateData = {};
-
-            // intialize rateData dictionary - END
-            $scope.basedonRateData = {};
             $scope.errorMessage = '';
 
-            $scope.invokeApi(ADRatesSrv.fetchAdditionalDetails,{},fetchAdditionalDetailsSuccessCallback);
+            setRateAdditionalDetails();
+            // webservice call to fetch rate details for edit
+            if ($stateParams.rateId) {
+                setRateDetails(rateDetails);
+                $scope.is_edit = true;
+                // $scope.invokeApi(ADRatesSrv.fetchDetails, {
+                //     rateId: $stateParams.rateId
+                // }, rateDetailsFetchSuccess);
+            }
         };
 
         $scope.rateInitialData = rateInitialData;
 
-        var fetchAdditionalDetailsSuccessCallback  = function(data){
+        var setRateAdditionalDetails  = function(){
         //add ons
-        $scope.allAddOns = data.addons;
+        $scope.allAddOns = rateInitialData.addons;
         angular.forEach($scope.allAddOns, function(addOns){
             addOns.isSelected = false;
             addOns.is_inclusive_in_rate = "false";
         });
-        $scope.rateData.addOns =data.addons;
+        $scope.rateData.addOns = rateInitialData.addons;
 
-     // webservice call to fetch rate details for edit
-     if ($stateParams.rateId) {
-        $scope.is_edit = true;
-        $scope.invokeApi(ADRatesSrv.fetchDetails, {
-            rateId: $stateParams.rateId
-        }, rateDetailsFetchSuccess);
-    }
+        
 
         //restriction type
-        $scope.restrictionDetails = data.restrictionDetails;
+        $scope.restrictionDetails = rateInitialData.restrictionDetails;
         angular.forEach($scope.restrictionDetails, function(restrictionType){
          if(restrictionType.value == 'CANCEL_PENALTIES'){
            $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true:false;
@@ -69,7 +69,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 });
 
      //selected restrictions
-     angular.forEach(data.selectedRestrictions, function(selectedRestriction){
+     angular.forEach(rateInitialData.selectedRestrictions, function(selectedRestriction){
           if (selectedRestriction.activated) {
               if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
                   $scope.maxAdvancedBookingActivated =  true;
@@ -215,7 +215,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         // Fetch details success callback for rate edit
 
-        var rateDetailsFetchSuccess = function (data) {
+        var setRateDetails = function (data) {
 
             $scope.hotel_business_date = data.business_date;
             // set rate data for edit
