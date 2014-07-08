@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams',
-    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData',
+    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData) {
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
             $scope.is_edit = false;
@@ -37,6 +37,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
             $scope.invokeApi(ADRatesSrv.fetchAdditionalDetails,{},fetchAdditionalDetailsSuccessCallback);
         };
+
+        $scope.rateInitialData = rateInitialData;
 
         var fetchAdditionalDetailsSuccessCallback  = function(data){
         //add ons
