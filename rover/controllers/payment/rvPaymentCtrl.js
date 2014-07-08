@@ -137,7 +137,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		// console.log($scope.saveData.selected_payment_type);
 		$scope.saveData.payment_type = "";
 		if($scope.saveData.selected_payment_type != undefined){
-			$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
+			if(parseInt($scope.saveData.selected_payment_type)>=0){
+				$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
+			}
 		}
 		
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
@@ -231,17 +233,22 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 $scope.$emit("showLoader");
 			 HostedForm.updateSession(sessionDetails, callback);			
 		}
-		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0)){
+		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
 			$scope.savePayment();
 		}
 		else{
-			if($scope.saveData.card_number.length>0){
-				$scope.fetchMLISessionId();
-    		}
-    		else{
-    			$scope.errorMessage = ["There is a problem with your credit card"];
-    		}
-			
+			if(parseInt($scope.saveData.selected_payment_type) ===0){
+				if($scope.saveData.card_number.length>0){
+					$scope.fetchMLISessionId();
+	    		}
+	    		else{
+	    			// Client side validation added to eliminate a false session being retrieved in case of empty card number
+	    			$scope.errorMessage = ["There is a problem with your credit card"];
+	    		}
+			}	
+			else{
+			    $scope.savePayment();
+			}
 		}
 		
 
