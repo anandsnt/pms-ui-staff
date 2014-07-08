@@ -1,4 +1,4 @@
-sntRover.service('RVHkSearchSrv', [
+sntRover.service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
 	'$window',
