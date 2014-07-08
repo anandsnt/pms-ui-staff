@@ -30,7 +30,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			}
 		};
 
-		$scope.$on('companyCardAvailable', function() {
+		$scope.$on('companyCardAvailable', function(obj, isNew) {
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.companyContactInformation;
 			// object holding copy of contact information
@@ -38,6 +38,11 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			// to check whether data changed
 			$scope.currentSelectedTab = 'cc-contact-info';
 			presentContactInfo = angular.copy($scope.contactInformation);
+			if (isNew === true) {
+				$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
+				$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
+				$scope.contactInformation.account_details.company_corp_id = $scope.searchData.companyCard.companyCorpId;
+			}
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
