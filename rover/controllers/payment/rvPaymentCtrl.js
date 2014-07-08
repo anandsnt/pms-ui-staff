@@ -174,7 +174,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.mli_token = $scope.passData.token;
 		}
 		$scope.saveData.session_id = MLISessionId;
-		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_expiry","card_number","cvv"];
+		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
 		if($scope.passData.is_swiped){
 			unwantedKeys.push("session_id");
 		}
