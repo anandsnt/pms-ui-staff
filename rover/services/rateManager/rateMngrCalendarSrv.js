@@ -57,15 +57,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
-				if(data.results.rates.length == 1){
+
+				var calendarData = that.calculateRateViewCalData();
+				if(calendarData.data.length == 1){
 					var roomDetailsParams = {};
 					roomDetailsParams.from_date = params.from_date;
-					roomDetailsParams.from_date = params.to_date;
-					roomDetailsParams.id = data.results.rates[0].id;
+					roomDetailsParams.to_date = params.to_date;
+					roomDetailsParams.id = calendarData.data[0].id;
+					roomDetailsParams.rate = calendarData.data[0].name;
 
 					that.fetchRoomTypeCalenarData(roomDetailsParams, deferred);
-				} else{
-					var calendarData = that.calculateRateViewCalData();
+				}else{
+					calendarData.type = "RATES_LIST"
 					deferred.resolve(calendarData);	
 				}
 				
@@ -98,12 +101,22 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			};
 			
 			var url = "/api/daily_rates/" + params.id;
+
+			if(typeof params.id != "undefined" && typeof params.rate != "undefined"){
+				var selectedRate = {};
+				selectedRate.id = params.id;
+				selectedRate.name = params.rate;
+			}
 			
 			delete params['id'];
+			delete params['rate'];
+
 			//var url =  '/sample_json/rate_manager/rate_details.json';	
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.roomTypeRates = data; 
 				var calendarData = that.calculateRoomTypeViewCalData();
+				calendarData.type = "ROOM_TYPES_LIST";
+				calendarData.selectedRateDetails = selectedRate;
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 

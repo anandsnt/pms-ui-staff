@@ -55,6 +55,17 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}
 
 		var calenderDataFetchSuccess = function(data) {
+
+			if(data.type == 'ROOM_TYPES_LIST'){
+				$scope.calendarMode = "ROOM_TYPE_VIEW";
+			} else {
+				$scope.calendarMode = "RATE_VIEW";
+			}
+			if(typeof data.selectedRateDetails != 'undefined'){
+				$scope.currentSelectedRate = data.selectedRateDetails;
+				$scope.ratesDisplayed.push(data.selectedRateDetails);
+			}
+
         	$scope.currentFilterData.filterConfigured = true;
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
