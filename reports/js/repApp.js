@@ -491,14 +491,41 @@ reports.controller('reportDetails', [
                 pageNum == 1;
             }
 
+            // auto correct the CICO value;
+            var getProperCICOVal = function(type) {
+
+                // only do this for this report
+                // I know this is ugly :(
+                if ( $scope.chosenReport.title !== 'Check In / Check Out' ) {
+                    return;
+                };
+
+                // if user has not chosen anything
+                // both 'checked_in' & 'checked_out' must be true
+                if ( !$scope.chosenReport.chosenCico ) {
+                    $scope.chosenReport.chosenCico = 'BOTH'
+                    return true;
+                };
+
+                // for 'checked_in'
+                if (type === 'checked_in') {
+                    return $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH';
+                };
+
+                // for 'checked_out'
+                if (type === 'checked_out') {
+                    return $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH';
+                };
+            };
+
             // now sice we are gonna update the filter
             // we are gonna start from page one
             var params = {
                 from_date: $filter('date')($scope.chosenReport.fromDate, 'yyyy/MM/dd'),
                 to_date: $filter('date')($scope.chosenReport.untilDate, 'yyyy/MM/dd'),
                 user_ids: $scope.chosenReport.chosenUsers,
-                checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
-                checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+                checked_in: getProperCICOVal(),
+                checked_out: getProperCICOVal(),
                 page: pageNum,
                 per_page: $rootScope.resultsPerPage
             }
@@ -579,8 +606,9 @@ reports.controller('reportDetails', [
         // off again with another dirty hack to resolve an iPad issue
         // when picking the date, clicking on the black mask doesnt close calendar 
         var closeMask = function(e) {
-            $( 'body' ).find( '.datepicker-mask' )
-                .trigger( 'click' );
+            if ( $(e.target).hasClass('datepicker-mask') ) {
+                $( 'body' ).find( '.datepicker-mask' ).trigger( 'click' );
+            }
         };
         $( 'body' ).on( 'click', closeMask );
         $scope.$on( '$destroy', function() {
