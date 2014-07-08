@@ -89,16 +89,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.payment_type = {};
 			data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 			//TODO: verify
-			data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+			//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
 			data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
 															$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
 			data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 		
 		}
-		// CICO - 7030 : New API definition does not have this session_id
-		// if($scope.reservationData.paymentType.type.value === "CC"){
-		// 	data.payment_type.session_id = MLISessionId;
-		// }	
+		
+		// MLI Integration.
+		if($scope.reservationData.paymentType.type.value === "CC"){
+			data.payment_type.session_id = MLISessionId;
+		}	
 														
 		data.company_id = $scope.reservationData.company.id;
 		data.travel_agent_id = $scope.reservationData.travelAgent.id;
