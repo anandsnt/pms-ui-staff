@@ -112,24 +112,24 @@
                         <li>
                             <em>{{room.rateName}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{room.rateAvg}}
+                                {{currencySymbol}}{{room.rateAvg | number : 2}}
                                 <span translate>AVG_NIGHT</span>
-                                <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
+                                <span class="total">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                             </span>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{ addon.price }}
+                                {{currencySymbol}}{{ addon.price | number : 2}}
                                 <span translate>EACH</span>
-                                <span class="total">{{currencySymbol}}{{ addon.effectivePrice}}</span>
+                                <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
                         </li>
                     </ul>
                 </div>
                 <ul class="total-stay-cost">
-                    <li><span class="label" translate>TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount}}</li>
-                    <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost}}</strong></li>
+                    <li><span class="label" translate>TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</li>
+                    <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong></li>
                 </ul>
             </div> 
         </div>
