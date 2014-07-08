@@ -1,12 +1,12 @@
-sntRover.controller('RVHkSearchCtrl', [
+sntRover.controller('RVHkRoomStatusCtrl', [
 	'$scope',
 	'$rootScope',
 	'$timeout',
 	'$state',
 	'$filter',
-	'RVHkSearchSrv',
+	'RVHkRoomStatusSrv',
 	'fetchedRoomList',
-	function($scope, $rootScope, $timeout, $state, $filter, RVHkSearchSrv, fetchedRoomList) {
+	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, fetchedRoomList) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -18,10 +18,14 @@ sntRover.controller('RVHkSearchCtrl', [
 
 		$scope.showQueued = false;
 
+		$scope.$emit("updateRoverLeftMenu", "roomStatus");
+
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );
 
+		$scope.noScroll = true;
 		var afterFetch = function(data) {
+			$scope.noScroll = true;
 
 			// making unique copies of array
 			// slicing same array not good.
@@ -31,8 +35,8 @@ sntRover.controller('RVHkSearchCtrl', [
 
 			// smaller part consisit of enogh rooms
 			// that will fill in the screen
-			smallPart = smallPart.slice( 0, 20 );
-			restPart  = restPart.slice( 20 );
+			smallPart = smallPart.slice( 0, 13 );
+			restPart  = restPart.slice( 13 );
 
 			// first load the small part
 			$scope.rooms = smallPart;
@@ -54,17 +58,22 @@ sntRover.controller('RVHkSearchCtrl', [
 				// finally hide the loaded
 				// in almost every case this will not block UX
 				$scope.$emit( 'hideLoader' );
-			}, 100);
+
+				$scope.noScroll = false;
+
+			// execute this after this much time
+			// as the animation is in progress
+			}, 500);
 		};
 
 
 		var fetchRooms = function() {
 
 			//Fetch the roomlist if necessary
-			if ( RVHkSearchSrv.isListEmpty() || !fetchedRoomList.length) {
+			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
 				$scope.$emit('showLoader');
 
-				RVHkSearchSrv.fetch()
+				RVHkRoomStatusSrv.fetch()
 					.then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
@@ -92,7 +101,7 @@ sntRover.controller('RVHkSearchCtrl', [
 			//Fetch the roomlist if necessary
 
 			$scope.$emit('showLoader');
-			RVHkSearchSrv.fetch_floors().then(function(data) {
+			RVHkRoomStatusSrv.fetch_floors().then(function(data) {
 				$scope.$emit('hideLoader');
 				$scope.floors = data;
 			}, function() {
@@ -104,18 +113,17 @@ sntRover.controller('RVHkSearchCtrl', [
 		fetchFloors();
 		
 
-		$scope.currentFilters = RVHkSearchSrv.currentFilters;
+		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 
 		/** The filters should be re initialized in we are navigating from dashborad to search
 		*   In back navigation (From room details to search), we would retain the filters.
 		*/
-		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-			if ( fromState.name === 'rover.housekeeping.dashboard' ) {
-				RVHkSearchSrv.currentFilters = RVHkSearchSrv.initFilters();
-				$scope.currentFilters = RVHkSearchSrv.currentFilters;
+		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+			if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
+				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 			};
 		});
-
 
 
 
@@ -171,7 +179,7 @@ sntRover.controller('RVHkSearchCtrl', [
 		*  @param {string} name of the filter to be updated
 		*/
 		$scope.checkboxClicked = function(item){
-			RVHkSearchSrv.toggleFilter( item );	
+			RVHkRoomStatusSrv.toggleFilter( item );	
 		}
 
 		$scope.showFilters = function() {
@@ -190,9 +198,9 @@ sntRover.controller('RVHkSearchCtrl', [
 
 			$scope.filterOpen = false;
 
-			// save the current edited filter to RVHkSearchSrv
+			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
-			RVHkSearchSrv.currentFilters = $scope.currentFilters;
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
 
@@ -404,6 +412,9 @@ sntRover.controller('RVHkSearchCtrl', [
 			_.each($scope.currentFilters, function(value, key, list) {
 				list[key] = false;
 			});
+
+			// this is the default state
+			$scope.currentFilters['showAllFloors'] = true;
 
 			$scope.refreshScroll();
 		}
