@@ -151,6 +151,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 
+		$rootScope.$on('clearErroMessages', function() {
+    		$scope.errorMessage = "";
+     	});
+
 		$scope.openPaymentList = function() {
 			$scope.reservationData.currentView = "stayCard";
 			$scope.$emit('SHOWPAYMENTLIST', $scope.reservationData);
