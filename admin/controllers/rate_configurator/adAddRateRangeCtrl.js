@@ -9,17 +9,36 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
         * set up data to be displayed
         */
         $scope.setUpData = function () {
+
+            
+
             $scope.fromCalendarID = "rateFromCalendar";
             $scope.toCalendarID = "rateToCalendar";
 
-            $scope.isFromDateSelected = false;
+            $scope.isFromDateSelected = true;
             $scope.isToDateSelected = false;
             $scope.Sets = []
             $scope.Sets.push(createDefaultSet("Set 1"));
             $scope.fromDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
-            $scope.fromMinDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+            //For new date sets, calendar should default to the first date past the end date of the last date set created
+            var dLastSelectedDate = '';
+            var lastSelectedDate = '';
+            try{
+                lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
+            }catch(e){}
 
-            toDate = new Date($rootScope.businessDate);
+            if(typeof lastSelectedDate != "undefined" && lastSelectedDate != ""){
+
+                dLastSelectedDate = new Date(lastSelectedDate);
+                dLastSelectedDate.setDate(dLastSelectedDate.getDate() + 1);
+                $scope.fromDate = dateFilter(dLastSelectedDate, 'yyyy-MM-dd');
+                //$scope.isFromDateSelected = true;
+            }
+
+
+            $scope.fromMinDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+            //to_date is set to the month after the from_date month
+            toDate = new Date($scope.fromDate);
             toDate.setDate(1);
             toDate.setMonth(toDate.getMonth() + 1);
             $scope.toMonthDate = toDate;

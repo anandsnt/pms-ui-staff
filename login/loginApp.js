@@ -1,8 +1,21 @@
 var login = angular.module('login',['ui.router', 'ng-iscroll']);
 
+/*
+ * Set page Titles
+ */
+login.run(function($rootScope){
+
+	$rootScope.$on('$stateChangeStart', 
+		function(event, toState, toParams, fromState, fromParams){ 
+		$rootScope.title =toState.title;
+	});
+});
+
+
 login.controller('loginRootCtrl', ['$scope', function($scope){
 	$scope.hasLoader = false;
 }]);
+
 /*
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login

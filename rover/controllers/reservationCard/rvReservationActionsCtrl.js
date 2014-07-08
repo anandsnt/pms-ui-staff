@@ -108,31 +108,50 @@ sntRover.controller('reservationActionsController',
 				ngDialog.close();
 			};
 			
-
-
-			
-			$scope.goToCheckin = function(){
-			
-				if($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null){
+			$scope.goToCheckin = function() {
+			if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
+				if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {
 					$scope.$emit('showLoader');
 					ngDialog.open({
-		        		template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-		        		controller: 'RVValidateEmailPhoneCtrl',
-		        		scope: $scope
-		        	});
+						template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+						controller: 'RVValidateEmailPhoneCtrl',
+						scope: $scope
+					});
 				} else {
-					if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
-					{   
+					if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT') {
 						//TO DO:Go to room assignemt view
-						$state.go("rover.staycard.roomassignment", {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "room_type": $scope.reservationData.reservation_card.room_type_code, "clickedButton": "checkinButton"});
-					} else if ($scope.reservationData.reservation_card.is_force_upsell=="true" && $scope.reservationData.reservation_card.is_upsell_available == "true"){
+						$state.go("rover.staycard.roomassignment", {
+							"reservation_id": $scope.reservationData.reservation_card.reservation_id,
+							"room_type": $scope.reservationData.reservation_card.room_type_code,
+							"clickedButton": "checkinButton"
+						});
+					} else if ($scope.reservationData.reservation_card.is_force_upsell == "true" && $scope.reservationData.reservation_card.is_upsell_available == "true") {
 						//TO DO : gO TO ROOM UPGRAFED VIEW
-						$state.go('rover.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+						$state.go('rover.staycard.upgrades', {
+							"reservation_id": $scope.reservationData.reservation_card.reservation_id,
+							"clickedButton": "checkinButton"
+						});
 					} else {
-						$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+						$state.go('rover.staycard.billcard', {
+							"reservationId": $scope.reservationData.reservation_card.reservation_id,
+							"clickedButton": "checkinButton"
+						});
 					}
 				}
-			};
+			} else {
+				//Prompt user to add a Guest Card
+				// console.log('Prompt to select a guest card here');
+				$scope.errorMessage = ['Please select a Guest Card to check in'];
+				var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
+				ngDialog.open({
+					template: templateUrl,
+					className: 'ngdialog-theme-default stay-card-alerts',
+					scope: $scope,
+					closeByDocument: false,
+					closeByEscape: false
+				});
+			}
+		};
 		
 		}
 	]
