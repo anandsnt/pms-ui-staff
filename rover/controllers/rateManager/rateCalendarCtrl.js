@@ -55,7 +55,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}
 
 		var calenderDataFetchSuccess = function(data) {
-
+			//Set the calendar type
 			if(data.type == 'ROOM_TYPES_LIST'){
 				$scope.calendarMode = "ROOM_TYPE_VIEW";
 			} else {
