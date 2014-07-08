@@ -78,7 +78,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-frontdesk",
 			submenu: [{
 				title: "MENU_CREATE_RESERVATION",
-				action: "staff#/staff/reservation/search/",
+				action: "staff#/staff/reservation/search",
 				standAlone : true
 			}, {
 				title: "MENU_ROOM_ASSIGNMENT",
@@ -130,8 +130,9 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			action: "",
 			iconClass: "icon-housekeeping",
 			submenu: [{
-				title: "MENU_HOUSEKEEPING",
-				action: "staff#/staff/housekeeping/dashboard"
+				title: "MENU_ROOM_STATUS",
+				action: "staff#/staff/housekeeping/search",
+				menuIndex: "room_status"
 			}, {
 				title: "MENU_TASK_MANAGEMENT",
 				action: ""
