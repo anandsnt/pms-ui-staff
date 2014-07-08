@@ -7,7 +7,7 @@
 		<!-- Reservation Header -->
 		<div class="reservation-header header_position" >
 			<div class="actions back">
-				<a id="back-to-staycard" class="back-button prev-view" ui-sref="rover.staycard.reservationcard.reservationdetails({id:reservationBillData.reservation_id, confirmationId:reservationBillData.confirm_no})">BACK</a>
+				<a id="back-to-staycard" class="back-button prev-view" ng-click="goBackToStayCard(reservationBillData.reservation_id, reservationBillData.confirm_no)">BACK</a>
 			</div>
 			<!-- Other header details -->
 			<div class="data">
