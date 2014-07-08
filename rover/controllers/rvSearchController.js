@@ -19,8 +19,8 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       firstClickedItem = $scope.currentType =  $stateParams.type;
       $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
   }
-
-  $scope.setScroller('result_showing_area');
+  var scrollerOptions = {click: true, preventDefault: false};
+  $scope.setScroller('result_showing_area', scrollerOptions);
   
   /**
   * function used for refreshing the scroller

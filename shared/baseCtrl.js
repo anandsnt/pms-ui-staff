@@ -97,7 +97,6 @@ function BaseCtrl($scope){
         catch(e){
         	return date;
         }
-        console.log(returnText);
     }; 	
      /*
      * To set the title of each navigation
@@ -147,7 +146,9 @@ function BaseCtrl($scope){
     		scrollerOptions = {};
     	}
     	//we are merging the settings provided in the function call with defaults
-    	angular.extend (scrollerOptions, defaultScrollerOptions); //here is using a angular function to extend,
+    	var tempScrollerOptions = angular.copy (defaultScrollerOptions);
+    	angular.extend (tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
+    	scrollerOptions = tempScrollerOptions;
     	//checking whether scroll options object is already initilised in parent controller
     	//if so we need add a key, otherwise initialise and add    
     	var isEmptyParentScrollerOptions = isEmptyObject ($scope.$parent.myScrollOptions);

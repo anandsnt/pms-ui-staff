@@ -24,8 +24,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
         $scope.$emit("closeDrawer");
-        $scope.scrollerOptions = {click: true, preventDefault: false};
-        $scope.setScroller('dashboard_scroller', $scope.scrollerOptions);
+        var scrollerOptions = {click: true, preventDefault: false};
+        $scope.setScroller('dashboard_scroller', scrollerOptions);
        	//Display greetings message based on current time
        	var d = new Date();
       	var time = d.getHours();
