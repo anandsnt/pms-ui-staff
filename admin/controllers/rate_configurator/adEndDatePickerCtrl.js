@@ -4,11 +4,11 @@ $scope.setUpData = function(){
 
     $scope.isDateSelected = $scope.rateData.end_date ?  true:false;
     if($scope.rateData.end_date){
-      $scope.date = $scope.rateData.end_date;
-      $scope.isDateSelected = true;
+        $scope.date = $scope.rateData.end_date;
+        $scope.isDateSelected = true;
     }
     else{
-      $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+        $scope.date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
     }
     $scope.minDate = $rootScope.businessDate;
     $scope.closePopupOnSelection =false;

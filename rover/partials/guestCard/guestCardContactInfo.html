@@ -6,6 +6,7 @@
  		<div class="entry full-width">
  			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
  		</div>
+ 		
  		<div class="holder left">
 
  			<rv-textbox value="guestCardData.contactInfo.title"   label = "Title" styleclass="margin"></rv-textbox>
@@ -31,15 +32,15 @@
  			</div>
  			<div class="holder right">
  				<rv-textbox value="guestCardData.contactInfo.email"   label = "E-mail address" styleclass="full-width"></rv-textbox>
- 				<rv-textbox value="guestCardData.contactInfo.street"   label = "Address" styleclass="full-width"></rv-textbox>
- 				<rv-textbox value="guestCardData.contactInfo.city"  styleclass="margin" label = "City" ></rv-textbox>
- 				<rv-textbox value="guestCardData.contactInfo.postal_code"   label = "Postal code" ></rv-textbox>
- 				<rv-textbox value="guestCardData.contactInfo.state" styleclass="margin"  label = "State" ></rv-textbox>
+ 				<rv-textbox value="guestCardData.contactInfo.address.street1"   label = "Address" styleclass="full-width"></rv-textbox>
+ 				<rv-textbox value="guestCardData.contactInfo.address.city"  styleclass="margin" label = "City" ></rv-textbox>
+ 				<rv-textbox value="guestCardData.contactInfo.address.postal_code"   label = "Postal code" ></rv-textbox>
+ 				<rv-textbox value="guestCardData.contactInfo.address.state" styleclass="margin"  label = "State" ></rv-textbox>
 
  				<div class="entry">
  					<label for="country">Country</label>
  					<div form="contact-info" class="select">
- 						<select ng-options="country.id as country.name for country  in countriesList" ng-model="guestCardData.contactInfo.country">
+ 						<select ng-options="country.id as country.value for country  in countriesList" ng-model="guestCardData.contactInfo.address.country_id">
  							<option style="display:none" value=""></option>
  						</select>
  					</div>

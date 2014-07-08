@@ -118,17 +118,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		/** The filters should be re initialized in we are navigating from dashborad to search
 		*   In back navigation (From room details to search), we would retain the filters.
 		*/
-		var trackState = $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-			if ( !!fromState.name && fromState.name !== 'rover.housekeeping.roomDetails' ) {
-				$scope.currentFilters = RVHkRoomStatusSrv.initFilters();
+		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+			if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
+				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 			};
 		});
-
-		// you always gotta destroy the event
-		// as keeping the bind even after the $scope is destroyed
-		// causes unwanted errors
-		$scope.$on( '$destroy', trackState );
-
 
 
 
