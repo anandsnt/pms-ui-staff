@@ -85,7 +85,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     promotionType: ''
                 },
                 reservationId: '',
-                confirmNum: ''
+                confirmNum: '',
+                isSameCard: false
             }
         }
 

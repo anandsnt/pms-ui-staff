@@ -111,7 +111,8 @@ sntRover.controller('RVHkSearchCtrl', [
 		*/
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
 			if ( fromState.name === 'rover.housekeeping.dashboard' ) {
-				$scope.currentFilters = RVHkSearchSrv.initFilters();
+				RVHkSearchSrv.currentFilters = RVHkSearchSrv.initFilters();
+				$scope.currentFilters = RVHkSearchSrv.currentFilters;
 			};
 		});
 
