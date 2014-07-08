@@ -268,7 +268,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		}
 		var setTargetsSuccess = function(data) {
 			ngDialog.close();
-			fetchGraphData();
+			$scope.fetchGraphData();
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(RateMgrOccupancyGraphSrv.setTargets, params, setTargetsSuccess);
@@ -278,7 +278,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		ngDialog.close();
 	};
 
-	var fetchGraphData = function(params) {
+	$scope.fetchGraphData = function(params) {
 		var fetchGraphDataSuccess = function(data) {
 			$scope.graphData = manipulateGraphData(data);
 			drawGraph();
@@ -292,5 +292,9 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		$scope.invokeApi(RateMgrOccupancyGraphSrv.fetch, params, fetchGraphDataSuccess);
 	};
 
-	fetchGraphData();
+	$scope.$on("updateOccupancyGraph", function(){
+		$scope.fetchGraphData();
+	});
+
+	$scope.fetchGraphData();
 }]); 

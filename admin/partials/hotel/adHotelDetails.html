@@ -145,7 +145,7 @@
 			<div class="entry">
 				<label for="hotel-chain"> Hotel chain <strong>*</strong> </label>
 				<div class="select">
-					<select ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
+					<select ng-disabled="isHotelChainEditable" ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
 						<option value=""> Hotel chain </option>
 						<option ng-repeat="chain in data.chains" value="{{chain.id}}" ng-selected="chain.id==data.hotel_chain" >{{chain.name}}</option>
 					</select>
@@ -180,8 +180,7 @@
 					</select>
 				</div>
 			</div>
-
-			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
 				<label for="is-pms-tokenized">PMS Tokenized</label>
 				<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
 					<input type="checkbox" value="{{data.is_pms_tokenized}}" name="is-pms-tokenized" id="is-pms-tokenized">
@@ -305,7 +304,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit" class="button green">
+			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit && data.hotel_pms_type ==='OWS'" class="button green">
 				Mappings
 			</button>
 			<button type="button" ui-sref="admin.users({id:id})" ng-show="isAdminSnt && isEdit" class="button green">

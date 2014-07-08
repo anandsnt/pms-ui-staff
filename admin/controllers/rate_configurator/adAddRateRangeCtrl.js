@@ -1,24 +1,48 @@
-admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRatesRangeSrv',
-    function ($scope, $filter, dateFilter, ADRatesRangeSrv) {
+admin.controller('ADAddRateRangeCtrl', ['$scope', 
+                                        '$filter', 
+                                        'dateFilter', 
+                                        'ADRatesRangeSrv',
+                                        '$rootScope',
+    function ($scope, $filter, dateFilter, ADRatesRangeSrv, $rootScope) {
         
         /**
         * set up data to be displayed
         */
         $scope.setUpData = function () {
 
-            $scope.isFromDateSelected = false;
+            
+
+            $scope.fromCalendarID = "rateFromCalendar";
+            $scope.toCalendarID = "rateToCalendar";
+
+            $scope.isFromDateSelected = true;
             $scope.isToDateSelected = false;
             $scope.Sets = []
             $scope.Sets.push(createDefaultSet("Set 1"));
-            $scope.fromDate = dateFilter(new Date(), 'yyyy-MM-dd');
-            $scope.fromMinDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            $scope.fromDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+            //For new date sets, calendar should default to the first date past the end date of the last date set created
+            var dLastSelectedDate = '';
+            var lastSelectedDate = '';
+            try{
+                lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
+            }catch(e){}
 
-            currentDate = new Date();
-            currentDate.setDate(1);
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            $scope.toMonthDate = currentDate;
-            $scope.toMonthDateFormated = dateFilter(currentDate, 'yyyy-MM-dd');
-            $scope.toMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
+            if(typeof lastSelectedDate != "undefined" && lastSelectedDate != ""){
+
+                dLastSelectedDate = new Date(lastSelectedDate);
+                dLastSelectedDate.setDate(dLastSelectedDate.getDate() + 1);
+                $scope.fromDate = dateFilter(dLastSelectedDate, 'yyyy-MM-dd');
+                //$scope.isFromDateSelected = true;
+            }
+
+
+            $scope.fromMinDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+            //to_date is set to the month after the from_date month
+            toDate = new Date($scope.fromDate);
+            toDate.setDate(1);
+            toDate.setMonth(toDate.getMonth() + 1);
+            $scope.toMonthDate = toDate;
+            $scope.toMonthDateFormated = dateFilter(toDate, 'yyyy-MM-dd');
         };
 
         /*
@@ -182,20 +206,18 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
         }
 
         $scope.count = 0;
-        $scope.$on("fromDateChanged", function(e,value){
-           $scope.count++;
-           if($scope.count > 2){
-              var fromScope = $scope.$$childHead;
-              var toScope = $scope.$$childHead.$$nextSibling;
-              var fromDays = (12* parseInt(fromScope.yearSelected)) + parseInt(fromScope.monthSelected.value);
-              var toDays = (12*parseInt(toScope.yearSelected)) + parseInt(toScope.monthSelected.value);
-              if(fromDays >= toDays){                
-                //toScope.changeMonth(1);
-                toScope.changeMonth(parseInt(fromDays - toDays),false);  
-              }
-           }
-});
-
+        /**
+        * Calenar validation
+        * The from_date can not be less than the to_date. 
+        */
+        $scope.$on("dateChangeEvent",function(e, value){
+            if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
+                if (value.calendarId === $scope.fromCalendarID){
+                    $scope.toMonthDateFormated = $scope.fromDate;
+                }else{
+                    $scope.fromDate = $scope.toMonthDateFormated;
+                }
+            }
+        });
         $scope.setUpData();
-    
 }]);

@@ -23,6 +23,12 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
         function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
         function(gustDataReady) { if(gustDataReady)$scope.init(); }
     );
+
+
+    $scope.$on('clearNotifications',function(){
+    	$scope.errorMessage ="";
+    	$scope.successMessage ="";
+    });
 	
 	$scope.$parent.myScrollOptions = {		
 	    'loyaltyList': {
@@ -50,8 +56,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
                   scope: $scope
                 });
 	};
-	$scope.showDeleteModal =  function(id){
+	$scope.showDeleteModal =  function(id, index, loyaltyProgram){
 		$scope.loaytyID = id;
+		$scope.loyaltyIndexToDelete = index;
+		$scope.loyaltyProgramToDelete = loyaltyProgram;
 		 ngDialog.open({
                   template: '/assets/partials/guestCard/rvGuestCardDeleteLoyaltyModal.html',
                   controller: 'rvDeleteLoyaltyModalController',
@@ -59,6 +67,8 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
                   scope: $scope
                 });
 	};
+
+
 	$scope.$on("loyaltyProgramAdded",function(e, data, source){
 
 		if(typeof $scope.loyaltyData == 'undefined')
@@ -72,35 +82,30 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
-	$scope.$on("loyaltyProgramDeleted",function(e,id){
-
+	$scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
+		
 		if(typeof $scope.loyaltyData == 'undefined')
 			return;
-		else{
-			$scope.removeLoyaltyWithID(id);
-		}
-        	
-	});
+		/* Temperory fix. Eventhough the data is getting deleted, it is not updating the view.
+		 * Assuming that array slice does not trigger watcher properly, adding a push & pop.
+		 */
+		if(loyaltyProgram == 'FFP'){
+			
+			$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
+			$scope.loyaltyData.userMemberships.frequentFlyerProgram.push({});
+			$scope.loyaltyData.userMemberships.frequentFlyerProgram.pop();
+			
+		}else{
+			
+			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
+			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push({});
+			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.pop();
+			
+		}		
+	};
+
 	$scope.$on("loyaltyDeletionError",function(e,error){
 
             $scope.errorMessage = error;
     });
-	$scope.removeLoyaltyWithID = function(id){
-		var hotelLoyaltyPrograms = $scope.loyaltyData.userMemberships.hotelLoyaltyProgram;
-		var frequentFlyerPrograms = $scope.loyaltyData.userMemberships.frequentFlyerProgram;
-		for(var i = 0; i < hotelLoyaltyPrograms.length; i++){
-			if(id == hotelLoyaltyPrograms[i].id){
-				$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(i, 1);
-				$scope.$apply();
-				return;
-			}
-		}		
-		for(var i = 0; i < frequentFlyerPrograms.length; i++){
-			if(id == frequentFlyerPrograms[i].id){
-				$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(i, 1);
-				$scope.$apply();
-				return;
-			}
-		}
-	};
 }]);

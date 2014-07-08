@@ -200,6 +200,10 @@
             right: 0;
             top: 90px;
             z-index: 10;
+
+            &.no-scroll {
+            	overflow: hidden;
+            }
         }
 
         &#filter-rooms {
@@ -746,7 +750,7 @@
 
                 .guest-image {
                     position: relative;
-                    top: 6px;
+                    top: 10px;
                     .pull-right;
                     #border-radius > .rounded(40px);
                     .square(30px);
@@ -880,7 +884,7 @@
                                         position: relative;
                                         background: transparent;
                                         border: 0;
-                                        padding: 10px;
+                                        padding: 0 10px;
                                         line-height: 40px; 
                                         height: 40px;
                                         min-height: 40px;
@@ -1288,7 +1292,7 @@
 
                     .room-number,
                     .room-status,
-                    .fo-status { line-height: 60px; }
+                    .fo-status { line-height: 60px !important; }
 
                     .room-number { 
                         font-size: 36px;
@@ -1309,7 +1313,7 @@
                     }
 
                     .guest-image {
-                        top: 6px;
+                        top: 10px;
                         .square(40px);
                     }
 
@@ -1320,7 +1324,7 @@
 
                     &.with-image {
                         .guest-image {
-                            top: 6px;
+                            top: 10px;
                             .square(40px);
                         }
                     }
@@ -1648,6 +1652,42 @@
 
 
 .ngdialog.ngdialog-theme-default.modal-theme .ngdialog-content {
-    font-size: 16px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: auto;
+    z-index: 9999;
+    font-size: 15px;
     color: #202225;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -moz-transform: translate3d(-50%, -50%, 0);
+    -ms-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (max-width: 480px){
+
+    .ngdialog.ngdialog-theme-default.modal-theme .ngdialog-content {
+        width: 200px;
+    }
+
+    #modal .modal-content.new-content {
+        width: 200px;
+    }
+
+    #modal .modal-content .button {
+        font-size: 14px;
+        line-height: 30px;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    #modal .modal-content.new-content .actions .button {
+        padding: 0 10px;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
 }

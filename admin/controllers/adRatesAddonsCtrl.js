@@ -29,6 +29,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.isStartDateSelected  = false;
 			$scope.isEndDateSelected = false;
 			$scope.currentClickedAddon = -1;
+			$scope.errorMessage = "";
 		};
 
 		$scope.init();
@@ -336,8 +337,12 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.tableParams.reload();
 				};
+				var erroCallback = function(data){
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = data;
+				};
 
-				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback);
+				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback,erroCallback);
 			};
 
 			// if we are editing an addon
@@ -347,6 +352,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.isEditMode = false;
 					$scope.currentClickedAddon = -1;
+
+					$scope.tableParams.reload();
 				};
 
 				// include current addon id also

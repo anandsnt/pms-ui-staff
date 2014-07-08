@@ -22,6 +22,7 @@
     "MENU_TA_CARDS":"Company & TA Cards",
     "MENU_DISTRIBUTION_MANAGER":"Distribution Manager",
     "MENU_HOUSEKEEPING":"Housekeeping",
+    "MENU_ROOM_STATUS": "Room Status",
     "MENU_TASK_MANAGEMENT":"Task Management",
     "MENU_MAINTAENANCE":"Maintenance",
     "MENU_FINANCIALS":"Financials",
@@ -39,4 +40,5 @@
     "ROOM_ASSIGNMENT_TITLE" : "Room Assignment",
     "ROOM_UPGRADES_TITLE": "Room Upgrades",
     "RESERVATION_TITLE": "Reservation",
-    "RATE_MANAGER_TITLE": "Rate Manager"
+    "RATE_MANAGER_TITLE": "Rate Manager",
+    "CHANGE_STAY_DATES_TITLE": "Change Stay Dates"

@@ -1,8 +1,8 @@
 sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
 	
   BaseCtrl.call(this, $scope);
-  
-  
+  $scope.shouldShowLateCheckout = true;
+
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
   $scope.$emit("updateRoverLeftMenu","search");

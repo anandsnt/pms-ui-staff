@@ -24,7 +24,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.currentExpandedRow = -1;
 		$scope.displayMode = "CALENDAR";
 		$scope.calendarMode = "RATE_VIEW";
-		$scope.selectedRate = {};
+		$scope.currentSelectedRate = {};
 		$scope.calendarData = {};
 		$scope.popupData = {};
       
@@ -51,7 +51,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		// If only one rate is selected in the filter section, the defult view is room type calendar 
 		if($scope.currentFilterData.rates_selected_list.length == 1){
 			$scope.calendarMode = "ROOM_TYPE_VIEW";
-			$scope.selectedRate.id = $scope.currentFilterData.rates_selected_list[0].id;
+			$scope.currentSelectedRate.id = $scope.currentFilterData.rates_selected_list[0].id;
 		}
 
 		var calenderDataFetchSuccess = function(data) {
@@ -59,7 +59,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
-				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
+				setTimeout( function(){
+				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();}, 0);
 			}
 		};
 
@@ -112,7 +113,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	var calculateRoomTypeViewCalGetParams = function(){
 
 		var data = {};
-		data.id = $scope.selectedRate.id;
+		data.id = $scope.currentSelectedRate.id;
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
 		return data;
@@ -124,7 +125,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	$scope.goToRoomTypeCalendarView = function(rate){
 		$scope.ratesDisplayed.length = 0;
 		$scope.ratesDisplayed.push(rate);
-		$scope.selectedRate = rate;
+		$scope.currentSelectedRate = rate;
         $scope.$emit("enableBackbutton");
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable(rate.id);
@@ -141,8 +142,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		};
 
 		var params = {};
-		if($scope.selectedRate !== ""){
-			params.rate_id = $scope.selectedRate.id;	
+		if($scope.currentSelectedRate !== ""){
+			params.rate_id = $scope.currentSelectedRate.id;	
 		}
 		params.details = []; 
 		
@@ -170,9 +171,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	}
 
 	/**
-	* Click event handler for filter menu "show rates" button
+	* Update the calendar to the 'Rate view' and refresh the calendar
 	*/
-	$scope.$on("showRatesClicked", function(){
+	$scope.$on("updateRateCalendar", function(){
 		$scope.calendarMode = "RATE_VIEW";
 		$scope.ratesDisplayed.length=0;
 		//Update the rates displayed list - show in topbar
@@ -187,7 +188,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	*/
 	$scope.$on("setCalendarModeRateType", function(){
 		$scope.calendarMode = "RATE_VIEW";
-		$scope.selectedRate = {};
+		$scope.currentSelectedRate = {};
 		loadTable();
 
 	});
@@ -200,7 +201,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.popupData.selectedDate = date;
 		$scope.popupData.selectedRate = rate;
 		if(rate == ""){
-			$scope.popupData.selectedRate = $scope.selectedRate.id;
+			$scope.popupData.selectedRate = $scope.currentSelectedRate.id;
 		}
 		$scope.popupData.selectedRoomType = roomType;
 		$scope.popupData.fromRoomTypeView = false;
