@@ -38,8 +38,8 @@
                         <div class="guest-image icons icon-travel-agent"></div>
                         <div class="data">
                             <div class="info">
-                                <h2 ng-bind-html="'{{ travelAgent.account_name }}'|highlight:travelAgentName:false"></h2>
-                                <div class="rate"><span class="label">Rate</span> {{ travelAgent.rate }}</div>
+                                <h2 ng-bind-html="'{{ travelAgent.account_name }}'|highlight:searchData.travelAgentCard.travelAgentName:false"></h2>
+                                <div class="rate" ng-show="travelAgent.rate"><span class="label">Rate</span> {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}</div>
                             </div>
                             <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
                             <span class="icons icon-location">{{ travelAgent.address.city }}, {{ travelAgent.address.state }}</span>

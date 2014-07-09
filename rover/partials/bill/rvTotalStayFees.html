@@ -117,7 +117,7 @@
 					): </td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
 						<strong> 
-							{{currencySymbol}}{{totalFeesArray.balance_amount | number: precisonTwo}} 
+							{{currencySymbol}} {{totalFeesArray.balance_amount | number: precisonTwo}} 
 						</strong>
 					</td>
 					<td colspan="3" ng-show="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">

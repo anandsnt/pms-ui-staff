@@ -1,5 +1,6 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails',
-    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails','$filter',
+    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails,$filter) {
+
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
             $scope.is_edit = false;
@@ -25,7 +26,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "room_type_ids": [],
                 "promotion_code": "",
                 "date_ranges": [],
-                "addOns":[]
+                "addOns":[],
+                "end_date":"",
+                "end_date_for_display":""
             }
             // intialize rateData dictionary - END
 
@@ -148,6 +151,14 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
+            if($scope.rateData.end_date){
+                 $scope.rateData.end_date_for_display = ($scope.rateData.end_date.length>0)? $filter('date')(new Date($scope.rateData.end_date), 'MM-dd-yyyy'):"";
+            }
+            else{
+                $scope.rateData.end_date_for_display ="";
+            }
+           
+                      
 
             // addons -mark as activated for selected addons
             if($scope.rateData.addOns.length>0){

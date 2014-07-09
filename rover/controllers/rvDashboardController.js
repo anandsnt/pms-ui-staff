@@ -4,6 +4,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 	
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
+  var that = this;
 	$scope.shouldShowLateCheckout = true;
 	BaseCtrl.call(this, $scope);
 	
@@ -23,7 +24,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         //update left nav bar
         $scope.$emit("updateRoverLeftMenu","dashboard");
         $scope.$emit("closeDrawer");
-        
+        var scrollerOptions = {click: true, preventDefault: false};
+        $scope.setScroller('dashboard_scroller', scrollerOptions);
        	//Display greetings message based on current time
        	var d = new Date();
       	var time = d.getHours();
@@ -39,11 +41,12 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       	}
       	//ADDED Time out since translation not working without time out
         setTimeout(function(){
-        	var title = $filter('translate')('SHOWING_DASHBOARD_TITLE');
-			$scope.setTitle(title);
+        	var title = $filter('translate')('SHOWING_DASHBOARD_TITLE');        	
+           $scope.refreshScroller('dashboard_scroller');
+			     $scope.setTitle(title);
         }, 2000);
 		
-        	
+        
 
    };
    $scope.init();
@@ -52,6 +55,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    	$state.go("rover.search");
    	// rover.search({type:'DUEIN'});
    };
+   
    
    
 	

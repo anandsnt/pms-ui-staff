@@ -26,7 +26,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       var createUserInfoSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
-          if ($scope.viewState.identifier == "STAY_CARD") {
+          if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
             $scope.replaceCard('guest', {
@@ -120,20 +120,15 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       });
     };
 
-    $scope.$parent.myScrollOptions = {
-      'contact_info': {
-        scrollbars: true,
-        snap: false,
-        hideScrollbar: false
-      },
-    };
+  $scope.setScroller('contact_info', {click: false});
 
-    $scope.$on('CONTACTINFOLOADED', function(event) {
-      setTimeout(function() {
-          $scope.$parent.myScroll['contact_info'].refresh();
-        },
-        1500);
+$scope.$on('CONTACTINFOLOADED', function(event) {
+	setTimeout(function(){
+    $scope.refreshScroller('contact_info');
+		
+		}, 
+	1500);
+	
+});
+}]);
 
-    });
-  }
-]);
