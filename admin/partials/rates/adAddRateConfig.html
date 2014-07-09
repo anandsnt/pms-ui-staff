@@ -28,10 +28,11 @@
         <li class="arrow-right" ng-hide="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
         </li>
-        <li class="arrow-right" ng-show="currentClickedSet == $index">
+        <!-- <li class="arrow-right" ng-show="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
-        </li>
-        <li class="arrow-right padding-right-ten" ng-show="currentClickedSet == $index">
+        </li> -->
+      
+        <li class="arrow-right " ng-show="currentClickedSet == $index">
             <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         
@@ -44,7 +45,7 @@
             <td width="20%" align="right">&nbsp;</td>
             <td width="2%">&nbsp;</td>
             <td width="16%" align="left">Single ({{currencySymbol}})</td>
-            <td width="4%" align="center">&nbsp;</td>
+            <td width="5%" align="center">&nbsp;</td>
             <td width="16%" align="left">Double ({{currencySymbol}})</td>
             <td width="4%" align="center">&nbsp;</td>
             <td width="16%" align="left">Extra Adult (+{{currencySymbol}})</td>
@@ -56,21 +57,21 @@
             <td align="right" class="room-type">{{room_rate.name}}</td>
             <td align="center">&nbsp;</td>
             <td align="left">
-                <div class ="entry"><input type="text" ng-model="room_rate.single" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+                <div class ="rate_entry"><input type="text" ng-model="room_rate.single" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
             <td align="center" ng-hide="!is_date_range_editable(dateRange.end_date)">
                 <span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span>
             </td>
             <td align="left">
-                <div class ="entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+                <div class ="rate_entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
             <td align="center">&nbsp;</td>
             <td align="left">
-                <div class ="entry"><input type="text" ng-model="room_rate.extra_adult" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+                <div class ="rate_entry"><input type="text" ng-model="room_rate.extra_adult" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
             <td align="center">&nbsp;</td>
             <td align="left">
-                <div class ="entry"><input type="text" ng-model="room_rate.child" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+                <div class ="rate_entry"><input type="text" ng-model="room_rate.child" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
             <td align="center">&nbsp;</td>
         </tr>
