@@ -152,6 +152,9 @@ var RegistrationCardView = function(viewDom) {
 			sntapp.paymentTypeSwipe = false;
 	    	return that.addNewPaymentModal(event);
 	    }
+	    if(getParentWithSelector(event, "#bills-tabs-nav li")) {
+	    	return that.clickedBillTab(event);
+	    }
 	    
 	};
 
@@ -560,6 +563,16 @@ var RegistrationCardView = function(viewDom) {
 		};
 		webservice.postJSON('/staff/bills/transfer_transaction', options);
 	};
-
+	// To handle bill tab click
+	that.clickedBillTab = function(e){
+		var elem = $(e.target);
+		var billNo = elem.attr('data-bill-number');
+		var activeTab = that.myDom.find("#bill"+billNo+"-summary li a.active");
+		var activeTabExpandedId = activeTab.attr('href');
+		
+		if(that.myDom.find(activeTabExpandedId).hasClass('hidden')){
+			that.myDom.find(activeTab).removeClass('active');
+		}
+	};
 };
 

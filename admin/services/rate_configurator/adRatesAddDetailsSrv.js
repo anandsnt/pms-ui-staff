@@ -10,18 +10,52 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
          */
         this.fetchRateTypes = function () {
 
-             var deferred = $q.defer();
+            var deferred = $q.defer();
 
+            that.fetchSelectedRestrictions = function () {
+               var url = "api/restriction_types";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.selectedRestrictions = data.results;
+                    deferred.resolve(that.addRatesDetailsData);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+              }
+
+            that.fetchRestictionDetails = function () {
+               var url = "/api/restriction_types";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.restrictionDetails = data.results;
+                    that.fetchSelectedRestrictions();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+              }
+
+            that.fetchAddons = function () {
+                var params = {"is_active":true, "is_not_reservation_only":true};
+                var url = "/api/addons";
+                ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                    that.addRatesDetailsData.addons = data.results;
+                    that.fetchRestictionDetails();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+                
 
             /*
              * Service function to fetch cancelation penalties
              * @return {object}  cancelation penalties
              */
-            this.fetchCancelationPenalties = function () {
+            that.fetchCancelationPenalties = function () {
                 var url = "/api/policies?policy_type=CANCELLATION_POLICY";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.cancelationPenalties = data.results;
-                    deferred.resolve(that.addRatesDetailsData);
+                    that.fetchAddons();
+                    // deferred.resolve(that.addRatesDetailsData);
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -32,11 +66,11 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * Service function to fetch deposit policies
              * @return {object} deposit policies
              */
-            this.fetchDepositPolicies = function () {
+            that.fetchDepositPolicies = function () {
                 var url = "/api/policies?policy_type=DEPOSIT_REQUEST";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.depositPolicies = data.results;
-                    this.fetchCancelationPenalties();
+                    that.fetchCancelationPenalties();
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -46,12 +80,12 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * Service function to fetch markets
              * @return {object} markets
              */
-            this.fetchMarkets = function () {
+            that.fetchMarkets = function () {
                 var url = "/api/market_segments?is_active=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.markets = data.markets;
                     that.addRatesDetailsData.is_use_markets = data.is_use_markets;
-                    this.fetchDepositPolicies();
+                    that.fetchDepositPolicies();
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -62,12 +96,12 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * Service function to fetch source
              * @return {object} source
              */
-            this.fetchSources = function () {
+            that.fetchSources = function () {
                 var url = "/api/sources.json?is_active=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.sources = data.sources;
                     that.addRatesDetailsData.is_use_sources = data.is_use_sources;
-                    this.fetchMarkets();
+                    that.fetchMarkets();
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -77,11 +111,11 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * Service function to fetch charge codes
              * @return {object} charge codes
              */
-            this.fetchChargeCodes = function () {
+            that.fetchChargeCodes = function () {
                 var url = "/api/charge_codes?is_room_charge_code=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.charge_codes = data.results;
-                    this.fetchSources();
+                    that.fetchSources();
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -92,11 +126,11 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * Service function to fetch HotelSettings
              * @return {object} HotelSettings
              */
-            this.fetchHotelSettings = function () {
+            that.fetchHotelSettings = function () {
                 var url = "/api/hotel_settings";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.hotel_settings = data;
-                    this.fetchChargeCodes();
+                    that.fetchChargeCodes();
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -106,7 +140,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * Service function to rates
              * @return {object} rates
              */
-            this.fetchBasedOnTypes = function (data) {
+            that.fetchBasedOnTypes = function (data) {
                 var url = "/api/rates";
                 var data = {
                     'page': '1',
@@ -119,7 +153,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 };
                 ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                     that.addRatesDetailsData.based_on = data;
-                    this.fetchHotelSettings();
+                    that.fetchHotelSettings();
 
                 }, function (data) {
                     deferred.reject(data);
@@ -129,7 +163,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
             var url = "/api/rate_types/active";
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 that.addRatesDetailsData.rate_types = data;
-                this.fetchBasedOnTypes();
+                that.fetchBasedOnTypes();
             }, function (data) {
                 deferred.reject(data);
             });

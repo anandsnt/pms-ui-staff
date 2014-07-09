@@ -17,6 +17,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";	
 	$scope.shouldShowDisabled = false;
+
+	$scope.successMessage = "";
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -69,6 +71,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating the list payments with new data 
 	 */
 	$scope.saveSuccessGuest = function(data){
+		//To Do: to remove
+		$scope.successMessage = "Payement method saved";
+		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
@@ -92,6 +97,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccess = function(data){
 		 
 		var billIndex = parseInt($scope.passData.fromBill);
+
+		//To Do: to remove
+		$scope.successMessage = "Payement method saved";
 		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
@@ -127,6 +135,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
+		$scope.successMessage = "";
 	};
 	/*
 	 * Save new payment - GUestcard or staycard
@@ -207,8 +216,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
     	$scope.fetchMLISessionId = function(){
 
-
-
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
@@ -216,12 +223,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
 			
 			 var callback = function(response){
-			 	$scope.$emit("hideLoader");//is not working
+			 	$scope.$emit("hideLoader");
 			 	$scope.$apply();
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
 			 		$scope.savePayment();// call save payment details WS
+			 		$scope.successMessage = "MLI SessionId received";
 			 		
 			 	}
 			 	else{
