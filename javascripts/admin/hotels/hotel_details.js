@@ -4,7 +4,11 @@ var HotelDetailsView = function(domRef) {
 	this.currentView = $("body").attr("id");
 	var that = this;
 	this.fileContent = "";
-
+	this.chainObj = {};
+	
+	this.pageinit = function() {
+		that.fetchChainData();
+	};
 	this.delegateEvents = function() {
 		that.myDom.find('#save').on('click', ["update"], that.updateOrAddHotel);
 		that.myDom.find('#save_new_hotel').on('click', ["create"], that.updateOrAddHotel);
@@ -32,7 +36,8 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#deleteTemplate').on('click', function() {
 			that.readCertificate(this, "logo-template-deleted");
 		});
-
+		
+		that.myDom.find('#hotel-chain').on('change', that.changedChain);
 
 		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
 	    that.myDom.find('#test-mli-payment-gateway').on('click', that.testMLIPaymentGatewayConnectivity);
@@ -450,5 +455,42 @@ var HotelDetailsView = function(domRef) {
 			reader.readAsDataURL(input.files[0]);
 		}
 	};
-
+	//Method to check change in chain selection and populating barnds.
+	this.changedChain = function(){
+		var selectedId = that.myDom.find('#hotel-chain').val();
+		that.myDom.find("#hotel-brand").html("");
+		
+		$.each(that.chainObj.chain_list, function(key, value) {
+		    if(value.value == selectedId){
+		    	var html = '<option value="">Hotel brand</option>';;
+		    	for(var i=0; i<value.brands.length;i++){
+		    		html += '<option value="'+value.brands[i].id+'">'+value.brands[i].name+'</option>';
+		    	}
+		    	that.myDom.find("#hotel-brand").append(html);
+		    }		    
+		});
+	};
+	
+	// to handle success call back.
+	this.fetchCompletedOfChains = function(data) {
+		that.chainObj = data;
+		that.changedChain();
+		var selectedBrandId = that.myDom.find("#brand-id").attr('value');
+		that.myDom.find('#hotel-brand option[value="'+selectedBrandId+'"]').attr('selected','selected');
+	};
+	// to handle failure call back.
+	this.fetchFailedOfChains = function(errorMessage) {
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
+	};
+	//To fetch chain data initially.
+	this.fetchChainData = function(){
+		var url = "/admin/hotel_chains.json";
+		var webservice = new NewWebServiceInterface();
+		var options = {
+			requestParameters: {},
+			successCallBack: that.fetchCompletedOfChains,
+			failureCallBack: that.fetchFailedOfChains
+		};
+		webservice.getJSON(url, options);
+	};
 };

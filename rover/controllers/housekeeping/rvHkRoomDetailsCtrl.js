@@ -3,9 +3,9 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 	'$state',
 	'$stateParams',
 	'RVHkRoomDetailsSrv',
-	'RVHkSearchSrv',
+	'RVHkRoomStatusSrv',
 	'roomDetailsData',
-	function($scope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkSearchSrv, roomDetailsData) {
+	function($scope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, roomDetailsData) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -107,7 +107,7 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 				$scope.data.room_details.current_hk_status = $scope.currentHKStatus.value;
 				$scope.calculateColorCodes();
 
-				RVHkSearchSrv.updateHKStatus( $scope.data.room_details );
+				RVHkRoomStatusSrv.updateHKStatus( $scope.data.room_details );
 			}, function(){
 				$scope.$emit('hideLoader');
 			});

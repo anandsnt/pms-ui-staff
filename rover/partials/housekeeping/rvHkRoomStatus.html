@@ -25,7 +25,7 @@
 </div>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable">
+<section id="rooms" class="content scrollable" ng-class="{ 'no-scroll': noScroll }">
    <ul class="wrapper">
       <li ng-repeat="room in rooms" ng-if="room.display_room" ng-click="roomListItemClicked(room)">
          <a class = "{{ room.roomStatusClass }}">
