@@ -53,14 +53,15 @@ admin.controller('ADRatesAddonsCtrl', [
 	        	// sort the results
 	        	$scope.data = params.sorting() ?
 	        	                    $filter('orderBy')(data.results, params.orderBy()) :
-	        	                    data.results
+	        	                    data.results;
 
 	            $defer.resolve($scope.data);
 
 	            $scope.$emit('hideLoader');
+	            $scope.fetchOtherApis();
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetch, getParams, fetchSuccessOfItemList);	
-		}	
+		};	
 
 		$scope.loadTable = function() {
 			$scope.currentClickedAddon = -1;
@@ -75,7 +76,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			        getData: $scope.fetchTableData
 			    }
 			);
-		}
+		};
 
 		$scope.loadTable();
 
@@ -104,7 +105,6 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// fetch charge groups, charge codes, amount type and post type
 		$scope.fetchOtherApis = function() {
-
 			// fetch charge groups
 			var cgCallback = function(data) {
 				$scope.chargeGroups = data.results;
@@ -115,7 +115,7 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.$emit('hideLoader');
 				};
 			};
-			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback);
+			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '', 'NONE');
 
 		
 			// fetch charge codes
@@ -124,21 +124,21 @@ admin.controller('ADRatesAddonsCtrl', [
 				manipulateChargeCodeForChargeGroups();
 				$scope.$emit('hideLoader');
 			};
-			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback);
+			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '', 'NONE');
 
 			// fetch amount types
 			var atCallback = function(data) {
 				$scope.amountTypes = data;
 				$scope.$emit('hideLoader');
 			};
-			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback);
+			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback, '', 'NONE');
 
 			// fetch post types
 			var ptCallback = function(data) {
 				$scope.postTypes = data;
 				$scope.$emit('hideLoader');
 			};
-			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback);
+			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback, '', 'NONE');
 
 			// fetch the current business date
 			var bdCallback = function(data) {
@@ -147,10 +147,10 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.businessDate = data.business_date;
 				$scope.$emit('hideLoader');
 			};
-			$scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback);
+			$scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback, '', 'NONE');
 		};
 
-		$scope.fetchOtherApis();
+		
 
 		// To fetch the template for chains details add/edit screens
 		$scope.getTemplateUrl = function() {
@@ -392,12 +392,12 @@ admin.controller('ADRatesAddonsCtrl', [
 
 				$scope.$emit('hideLoader');
 
-				$scope.tableParams.reload();
+				// $scope.tableParams.reload();
 			};
 
 			var data = {
 				id: item.id
-			}
+			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.deleteAddon, data, callback);
 		};
