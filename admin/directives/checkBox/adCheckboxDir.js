@@ -9,6 +9,7 @@ admin.directive('adCheckbox', function($timeout) {
             isChecked: '=isChecked',
             parentLabelClass: '@parentLabelClass',
             divClass: '@divClass',
+            spanClass: '@spanClass',
             change: '=change',
             datagroup: '@datagroup',
             isDisabled: '=isDisabled',

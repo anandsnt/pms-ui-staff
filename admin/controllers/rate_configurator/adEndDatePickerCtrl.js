@@ -1,4 +1,4 @@
-admin.controller('adEndDatePickerController',['$scope','dateFilter','ngDialog','$rootScope',function($scope,dateFilter,ngDialog,$rootScope){
+admin.controller('adEndDatePickerController',['$scope','dateFilter','ngDialog','$rootScope','$filter',function($scope,dateFilter,ngDialog,$rootScope,$filter){
 
 $scope.setUpData = function(){
 
@@ -21,6 +21,7 @@ $scope.updateDate = function(){
 
     if($scope.closePopupOnSelection){
       $scope.rateData.end_date = $scope.date;
+      $scope.rateData.end_date_for_display = $filter('date')(new Date($scope.rateData.end_date), 'MM-dd-yyyy');
       ngDialog.close();
     };  
 

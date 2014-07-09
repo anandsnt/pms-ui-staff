@@ -68,7 +68,8 @@ var SmartBandListView = function(domRef) {
 		html += "<span class=smartband-icon></span>";
 		html += "<span class=band-holder>" + rowToAppend.first_name + " " + rowToAppend.last_name  + "</span>";
 		if(rowToAppend.is_fixed == true){
-			html += "<span class=charge>" + that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToAppend.amount + "</span>";
+			var amount = parseFloat(rowToAppend.amount ).toFixed(2);
+			html += "<span class=charge>" + that.myDom.find("#listing-area").data("currency-symbol") + " " + amount + "</span>";
 		}
 		else{
 			html += "<span class=charge> OPEN ROOM CHARGE </span>";
@@ -80,7 +81,8 @@ var SmartBandListView = function(domRef) {
 	this.updateRow = function(rowToChange){
 		var row = that.myDom.find("#listing-area ul li[data-id=" + rowToChange.id + "]");
 		row.find('span.band-holder').html(rowToChange.first_name + " " + rowToChange.last_name);
-		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToChange.amount);
+		var amount = parseFloat(rowToChange.amount).toFixed(2);
+		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + amount);
 	}
 	this.clickedOnMyDom = function(event){
 		sntapp.notification.hideMessage(that.myDom);	
