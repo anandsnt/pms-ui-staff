@@ -17,13 +17,12 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         var companyCardFetchInterval = '';
 
-        var heightOfComponents = 500;
+        //var heightOfComponents = 500;
         var headerHeight = 60;
-        var heightOfFixedComponents = 100;
-        var variableComponentHeight = 90;
+        var heightOfFixedComponents = 150;
         var maxSize = $(window).height() - headerHeight;
 
-        $scope.leftMenuDimensions.outerContainerHeight = $(window).height() > heightOfComponents ? heightOfComponents : maxSize;
+        $scope.leftMenuDimensions.outerContainerHeight = maxSize;
 
         $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;
 
