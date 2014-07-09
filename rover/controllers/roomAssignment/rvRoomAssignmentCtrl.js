@@ -54,12 +54,12 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
-		if($scope.filteredRooms[index].room_max_occupancy > 0 && $scope.reservation_occupancy > 0 ){
+		if($scope.filteredRooms[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
 				if($scope.filteredRooms[index].room_max_occupancy < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = $scope.filteredRooms[index].room_max_occupancy;
 			}
-		}else if($scope.filteredRooms[index].room_type_max_occupancy > 0 && $scope.reservation_occupancy > 0){
+		}else if($scope.filteredRooms[index].room_type_max_occupancy != null && $scope.reservation_occupancy != null){
 				if($scope.filteredRooms[index].room_type_max_occupancy < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
 					$scope.max_occupancy = $scope.filteredRooms[index].room_type_max_occupancy;
