@@ -57,8 +57,24 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
+
 				var calendarData = that.calculateRateViewCalData();
-				deferred.resolve(calendarData);
+				//If only one rate exists in the search results, 
+				//then room type calendar for that rate should be displayed.
+				//Fetch the room type details for that rate.
+				if(calendarData.data.length == 1){
+					var roomDetailsParams = {};
+					roomDetailsParams.from_date = params.from_date;
+					roomDetailsParams.to_date = params.to_date;
+					roomDetailsParams.id = calendarData.data[0].id;
+					roomDetailsParams.rate = calendarData.data[0].name;
+
+					that.fetchRoomTypeCalenarData(roomDetailsParams, deferred);
+				}else{
+					calendarData.type = "RATES_LIST"
+					deferred.resolve(calendarData);	
+				}
+				
 			},rejectDeferred);
 
 		};
@@ -69,9 +85,11 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	};
 
-	this.fetchRoomTypeCalenarData = function(params){
-		var deferred = $q.defer();
+	this.fetchRoomTypeCalenarData = function(params, deferred){
 
+		if(typeof deferred == 'undefined'){
+			deferred = $q.defer();
+		}
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
@@ -86,12 +104,25 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			};
 			
 			var url = "/api/daily_rates/" + params.id;
-			
+			//To pass the selected rate id and name to the controller.
+			//In situations where the rate is not manually selected by user, 
+			//but single rate is returned in the webservice fetch for rates list.
+			//So we fetch the room details for that rate and display the room type calendar
+			if(typeof params.id != "undefined" && typeof params.rate != "undefined"){
+				var selectedRate = {};
+				selectedRate.id = params.id;
+				selectedRate.name = params.rate;
+			}
 			delete params['id'];
+			delete params['rate'];
+
 			//var url =  '/sample_json/rate_manager/rate_details.json';	
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.roomTypeRates = data; 
 				var calendarData = that.calculateRoomTypeViewCalData();
+				calendarData.type = "ROOM_TYPES_LIST";
+				//Pass the rate details to the controller
+				calendarData.selectedRateDetails = selectedRate;
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 

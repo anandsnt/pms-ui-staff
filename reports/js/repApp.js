@@ -247,7 +247,7 @@ reports.controller('reportDetails', [
                     // if the chosenCico is 'OUT'
                     // class must be 'red'
                     if ( $scope.chosenReport.chosenCico === 'OUT' ) {
-                    	$scope.firstHalf[0]['class'] = 'red';
+                        $scope.firstHalf[0]['class'] = 'red';
                     }
                 };
 
@@ -265,18 +265,47 @@ reports.controller('reportDetails', [
                 };
             };
 
+            
+            for (var i = 0, j = $scope.results.length; i < j; i++) {
+
+                // change date format for all
+                $scope.results[i][0] = $filter('date')($scope.results[i][0], 'MM-dd-yyyy');
+
+                // hack to add curency $ symbol in front of values
+                if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+                }
+
+                // hack to append ':00 PM' to time
+                // thus makin the value in template 'X:00 PM'
+                if ( $scope.chosenReport.title === 'Late Check Out' ) {
+                    $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+                }
+            };
+
 
             // hack to add curency $ symbol in front of values
-            if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
-            	for (var i = 0, j = $scope.results.length; i < j; i++) {
-            		$scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+            // if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+            //     for (var i = 0, j = $scope.results.length; i < j; i++) {
+            //         $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
 
-                    // hack to append ':00 PM' to time
-                    // thus makin the value in template 'X:00 PM'
-                    if ( $scope.chosenReport.title === 'Late Check Out' ) {
-                        $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
-                    }
-            	};
+            //         // hack to append ':00 PM' to time
+            //         // thus makin the value in template 'X:00 PM'
+            //         if ( $scope.chosenReport.title === 'Late Check Out' ) {
+            //             $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+            //         }
+            //     };
+            // }
+
+            // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
+            // notice the text case, they are as per api response and ui
+            if ( $scope.chosenReport.title === 'Late Check Out' ) {
+                for (var i = 0, j = $scope.headers.length; i < j; i++) {
+                    if ( $scope.headers[i] === 'Late Check Out Time' ) {
+                        $scope.headers[i] = 'Selected Late Check Out Time';
+                        break;
+                    };
+                }
             }
 
             // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
@@ -698,4 +727,3 @@ reports.factory('RepFetchReportsSrv', [
 
 // need manual bootstraping app
 angular.bootstrap( angular.element('#reports_main'), ['reports'] );
-

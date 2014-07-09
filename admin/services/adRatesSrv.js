@@ -81,50 +81,9 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
         var that = this;
         this.rateDetails = {};
-
-
-        var that = this;
-        this.additionalDetails = {};
-      /*
-        * Service function to fetch add ons
-        * @return {object} add ons
-        */
-        this.fetchAdditionalDetails = function () {
-            var deferred = $q.defer();
-
-            this.fetchSelectedRestrictions = function () {
-               var url = "api/restriction_types";
-                ADBaseWebSrvV2.getJSON(url).then(function (data) {
-                    that.additionalDetails.selectedRestrictions = data.results;
-                    deferred.resolve(that.additionalDetails);
-                }, function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
-              }
-
-            this.fetchRestictionDetails = function () {
-               var url = "/api/restriction_types";
-                ADBaseWebSrvV2.getJSON(url).then(function (data) {
-                    that.additionalDetails.restrictionDetails = data.results;
-                    this.fetchSelectedRestrictions();
-                }, function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
-              }
-                var params = {"is_active":true, "is_not_reservation_only":true};
-                var url = "/api/addons";
-                ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
-                    that.additionalDetails.addons = data.results;
-                    this.fetchRestictionDetails();
-                }, function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
-        }
 
         // get rate details
         this.fetchDetails = function (params) {
@@ -133,7 +92,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
              * Service function to fetch add ons
              * @return {object} add ons
              */
-            this.fetchAddons = function () {
+            that.fetchAddons = function () {
                 var params = {"is_active":true, "is_not_reservation_only":true};
                 var url = "/api/addons";
                 ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
@@ -145,24 +104,22 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             };
 
             // fetch hotel business date
-            this.fetchHotelInfo = function () {
+            that.fetchHotelInfo = function () {
                 var url = "/api/rover_header_info";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     data = data.data;
                     that.rateDetails.business_date = data.business_date;
-                    this.fetchAddons();
+                    that.fetchAddons();
                 }, function (data) {
                     deferred.reject(data);
                 });
 
             }
 
-
-
             var url = "/api/rates/" + params.rateId;
             ADBaseWebSrvV2.getJSON(url).then(function (data) {
                 that.rateDetails = data;
-                this.fetchHotelInfo();
+                that.fetchHotelInfo();
             }, function (data) {
                 deferred.reject(data);
             });
