@@ -30,20 +30,24 @@
 		</li> 
 
 		<li >
-			<label class="icon-menu icon-sign-out"></label>
 			<a ng-click="$emit('navToggled')" href="/logout">
-				Sign Out
-			</a>
+				<label class="icon-menu icon-sign-out"></label>
+				<a>
+					Sign Out
+				</a>
+		   </a>
 		</li>
 	</ul>
 
 	<!-- For SNT Admin -->
 	<ul ng-hide ="isHotelAdmin" >
 		<li id="sign-out">
-			<label class="icon-menu icon-sign-out"></label>
-			<a ng-click="$emit('navToggled')" href= "/logout" >
-				Sign Out
-			</a>
+			<a ng-click="$emit('navToggled')" href= "/logout">
+				<label class="icon-menu icon-sign-out"></label>
+				<a>
+					Sign Out
+				</a>
+		    </a>
 		</li>
 		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />
