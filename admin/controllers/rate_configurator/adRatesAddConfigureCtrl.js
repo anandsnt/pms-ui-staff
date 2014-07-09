@@ -38,16 +38,82 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.$emit('changeMenu', id)
         };
 
+        /**
+        * @retun true {Boolean} If all the sets are saved
+        */
+        $scope.isAllSetsSaved = function(){
+            if($scope.data.sets != undefined){
+                var isSaved = true;
+                console.log($scope.data.sets);
+                console.log($scope.data.sets[$scope.data.sets.length - 1]);
+                if($scope.data.sets[$scope.data.sets.length - 1].id == null){
+                    isSaved = false;
+                }
+                return isSaved;    
+            }else{
+                return true;    
+            }
+            
+
+        };
+
         $scope.createNewSetClicked = function(){
 
-            /*var newSet = {};
+            if(!$scope.isAllSetsSaved()){
+                return false;
+            }
+            var newSet = {};
             newSet.id = null;
             newSet.name = '';
+            
+            newSet.monday = true;
+            newSet.tuesday = true;
+            newSet.wednesday = true;
+            newSet.thursday = true;
+            newSet.friday = true;
+            newSet.saturday = true;
+            newSet.sunday = true;
+
+            for(var i in $scope.data.sets){
+                if($scope.data.sets[i].monday == true){
+                    newSet.monday = false;
+                }
+                if($scope.data.sets[i].tuesday == true){
+                    newSet.tuesday = false;
+                }
+                if($scope.data.sets[i].wednesday == true){
+                    newSet.wednesday = false;
+                }
+                if($scope.data.sets[i].thursday == true){
+                    newSet.thursday = false;
+                }
+                if($scope.data.sets[i].friday == true){
+                    newSet.friday = false;
+                }
+                if($scope.data.sets[i].saturday == true){
+                    newSet.saturday = false;
+                }
+                if($scope.data.sets[i].sunday == true){
+                    newSet.sunday = false;
+                }
+            }
+
+            newSet.room_rates = [];
 
             for(var i in $scope.data.room_types){
+                var roomType = {};
+                roomType.id = $scope.data.room_types[i].id;
+                roomType.name = $scope.data.room_types[i].name;
+                roomType.child = '';
+                roomType.double = '';
+                roomType.extra_adult = '';
+                roomType.single = '';
+                newSet.room_rates.push(roomType);
+            }
 
-            }*/
-            alert("clicked");
+            $scope.data.sets.push(newSet);
+            //Expand the current set
+            $scope.setCurrentClickedSet($scope.data.sets.length - 1);
         };
 
         var fetchData = function (dateRangeId) {
@@ -91,9 +157,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.saveSet = function (index) {
 
-            var saveSetSuccessCallback = function () {
+            var saveSetSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
                 $scope.data.sets[index].isSaved = true;
+                $scope.data.sets[index].id = data.id;
             };
 
             var saveSetFailureCallback = function (errorMessage) {
@@ -105,8 +172,15 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             // API request do not require all keys except room_types
             var unwantedKeys = ["room_types"];
             var setData = dclone($scope.data.sets[index], unwantedKeys);
+            console.log(setData.id);
+            //if set id is null, then it is a new set - save it
+            if(setData.id == null){
+                $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
+            //Already existing set - update
+            }else{
+                $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
+            }
 
-            $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
 
         };
 
