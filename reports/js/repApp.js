@@ -285,8 +285,6 @@ reports.controller('reportDetails', [
                     $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
                     $scope.results[i][ $scope.results[i].length - 2 ] = '$' + $scope.results[i][ $scope.results[i].length - 2 ];
                 };
-                
-                console.log( 'applied v' );
             };
 
 
