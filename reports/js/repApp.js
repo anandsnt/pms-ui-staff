@@ -268,22 +268,41 @@ reports.controller('reportDetails', [
             // change date format for all
             for (var i = 0, j = $scope.results.length; i < j; i++) {
                 $scope.results[i][0] = $filter('date')($scope.results[i][0], 'MM-dd-yyyy');
+
+                if ( $scope.chosenReport.title === 'Late Check Out' ) {
+
+                    // hack to add curency $ symbol in front of values
+                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+
+                    // hack to append ':00 PM' to time
+                    // thus makin the value in template 'X:00 PM'
+                    $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+                }
+
+                if ( $scope.chosenReport.title === 'Upsell' ) {
+
+                    // hack to add curency $ symbol in front of values
+                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+                    $scope.results[i][ $scope.results[i].length - 2 ] = '$' + $scope.results[i][ $scope.results[i].length - 2 ];
+                };
+                
+                console.log( 'applied v' );
             };
 
 
             // hack to add curency $ symbol in front of values
             // and append pm
-            if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
-                for (var i = 0, j = $scope.results.length; i < j; i++) {
-                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+            // if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+            //     for (var i = 0, j = $scope.results.length; i < j; i++) {
+            //         $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
 
-                    // hack to append ':00 PM' to time
-                    // thus makin the value in template 'X:00 PM'
-                    if ( $scope.chosenReport.title === 'Late Check Out' ) {
-                        $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
-                    }
-                };
-            }
+            //         // hack to append ':00 PM' to time
+            //         // thus makin the value in template 'X:00 PM'
+            //         if ( $scope.chosenReport.title === 'Late Check Out' ) {
+            //             $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+            //         }
+            //     };
+            // }
 
             // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
             // notice the text case, they are as per api response and ui
