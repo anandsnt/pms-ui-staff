@@ -121,6 +121,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
+				$scope.viewState.reservationStatus.confirm = true;
+				$scope.viewState.reservationStatus.number = data.id;
 				$state.go('rover.reservation.mainCard.reservationConfirm');
 				MLISessionId = "";
 

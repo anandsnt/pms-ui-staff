@@ -19,6 +19,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 //but Guest Name and Company / TA cards are not copied into the respective search fields. 
                 //They are added to the reservation by default later on, 
                 //but should be copied to the Search screen as well
+                $scope.viewState.reservationStatus.confirm = false;
                 $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
                 $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
                 $scope.companySearchText = (function() {

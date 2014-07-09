@@ -33,7 +33,7 @@
                             </figure>
                             <div class="data">
                                 <div class="info">
-                                    <h2 ng-bind-html="'{{ company.account_name }}'|highlight:companyName:false"></h2>
+                                    <h2 ng-bind-html="'{{ company.account_name }}'|highlight:searchData.companyCard.companyName:false"></h2>
                                     <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
                                 </div>
                                 <span class="confirmation">{{ company.address.postalCode }}</span>
