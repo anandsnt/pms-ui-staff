@@ -38,6 +38,18 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.$emit('changeMenu', id)
         };
 
+        $scope.createNewSetClicked = function(){
+
+            /*var newSet = {};
+            newSet.id = null;
+            newSet.name = '';
+
+            for(var i in $scope.data.room_types){
+
+            }*/
+            alert("clicked");
+        };
+
         var fetchData = function (dateRangeId) {
 
             var fetchSetsInDateRangeSuccessCallback = function (data) {
