@@ -34,9 +34,11 @@
 		</li> 
 
 		<li >
-			<label class="icon-menu icon-sign-out"></label>
-			<a class="fill" ng-click="toggleDrawerMenu()" href="/logout">
-				Sign Out
+			<a ng-click="toggleDrawerMenu()" href="/logout">
+				<label class="icon-menu icon-sign-out"></label>
+				<a class="fill">
+					Sign Out
+				</a>
 			</a>
 		</li>
 	<!-- 	<li id="rover-info">
@@ -48,10 +50,12 @@
 	<!-- For SNT Admin -->
 	<ul ng-hide ="isHotelAdmin || isHotelStaff" >
 		<li id="sign-out">
-			<label class="icon-menu icon-sign-out"></label>
-			<a ng-click="toggleDrawerMenu()" href= "/logout" >
-				Sign Out
-			</a>
+			<a  ng-click="toggleDrawerMenu()" href="/logout">
+				<label class="icon-menu icon-sign-out"></label>
+				<a>
+					Sign Out
+				</a>
+		    </a>
 		</li>
 		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />
