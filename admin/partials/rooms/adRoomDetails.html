@@ -58,7 +58,7 @@
 
 				<div class="entry full-width">
 					<div id="room-features" class="boxes col2">
-						<ad-checkbox ng-repeat="room_feature in data.room_features" is-checked="room_feature.selected" label="{{room_feature.name}}"></ad-checkbox>
+						<ad-checkbox ng-repeat="room_feature in data.room_features" is-checked="room_feature.selected" label="{{room_feature.name}}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
 
 					</div>
 				</div>
@@ -76,7 +76,7 @@
 				<div class="entry full-width">
 					<div id="room-likes" class="boxes col2">
 						<div ng-repeat="room_likes in data.room_likes">
-							<ad-checkbox ng-repeat="option in room_likes.options" is-checked="option.selected" label="{{option.name}}" datagroup='{{room_likes.group_name}}' index="{{$index}}" change='changed'></ad-checkbox>
+							<ad-checkbox ng-repeat="option in room_likes.options" is-checked="option.selected" label="{{option.name}}" datagroup='{{room_likes.group_name}}' index="{{$index}}" change='changed' parent-label-class='room-likes' span-class="checkbox-background" ></ad-checkbox>
 						</div>						
 					</div>							
 				</div>
