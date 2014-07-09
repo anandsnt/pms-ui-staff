@@ -153,10 +153,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 // open search list card if any of the search fields are entered on main screen
                 var searchData = $scope.reservationData;
                 if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
-                    $scope.openGuestCard();
                     // based on search values from base screen
                     // init respective search
                     if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
+                        $scope.openGuestCard();
                         $scope.searchGuest();
                     } else if (searchData.company.id != null) {
                         $scope.switchCard('company-card');
