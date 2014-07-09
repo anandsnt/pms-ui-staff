@@ -1,13 +1,13 @@
 sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
   function($scope, RVContactInfoSrv, ngDialog, dateFilter) {
-
+    BaseCtrl.call(this, $scope);
     /**
      * storing to check if data will be updated
      */
     var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
     presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     $scope.errorMessage = "";
-
+    
     $scope.$on('clearNotifications', function() {
       $scope.errorMessage = "";
       $scope.successMessage = "";
@@ -119,16 +119,18 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
+    var scrollerOptions = {click: true, preventDefault: false};
+  $scope.setScroller('contact_info', scrollerOptions);
 
-  $scope.setScroller('contact_info', {click: false});
-
-$scope.$on('CONTACTINFOLOADED', function(event) {
+  $scope.$on('CONTACTINFOLOADED', function(event) {
 	setTimeout(function(){
     $scope.refreshScroller('contact_info');
 		
 		}, 
 	1500);
-	
+	$scope.$on('REFRESHLIKESSCROLL', function(){
+    $scope.refreshScroller('contact_info');
+  });
 });
 }]);
 
