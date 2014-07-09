@@ -3,7 +3,7 @@
 		<header class="content-title float">
 			<h2> Rates </h2>
 			<span class="count"> ({{totalCount}}) </span>
-			<a class="action add" ui-sref="admin.addRate" ng-hide="isConnectedToPMS">Add new</a>
+			<a class="action add" ui-sref="admin.addRate" ng-click="showLoader()" ng-hide="isConnectedToPMS">Add new</a>
 
 			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 
@@ -43,7 +43,7 @@
 			<tbody>
 				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
 					<td data-title="'Name'" sortable="'rate'" header-class="width-25">
-						<a ui-sref='admin.rateDetails({ rateId : rate.id })' class="edit-data">
+						<a ui-sref='admin.rateDetails({ rateId : rate.id })' class="edit-data" ng-click="showLoader()">
 							<strong> {{rate.name}}</strong>
 						</a>
 					</td>
