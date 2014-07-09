@@ -30,7 +30,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             if(typeof lastSelectedDate != "undefined" && lastSelectedDate != ""){
 
                 dLastSelectedDate = new Date(lastSelectedDate);
-                dLastSelectedDate.setDate(dLastSelectedDate.getDate() + 1);
+                dLastSelectedDate.setDate(dLastSelectedDate.getUTCDate() + 1);
                 $scope.fromDate = dateFilter(dLastSelectedDate, 'yyyy-MM-dd');
                 //$scope.isFromDateSelected = true;
             }
