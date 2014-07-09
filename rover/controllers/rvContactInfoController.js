@@ -26,7 +26,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       var createUserInfoSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         if (typeof $scope.guestCardData.contactInfo.user_id == "undefined" || $scope.guestCardData.userId == "" || $scope.guestCardData.userId == null || typeof $scope.guestCardData.userId == 'undefined') {
-          if ($scope.viewState.identifier == "STAY_CARD") {
+          if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
             $scope.replaceCard('guest', {

@@ -1,4 +1,4 @@
-admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2){
 	
    /**
     * To fetch the list of users
@@ -9,7 +9,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -27,7 +27,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/users/'+id+'/edit.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -44,7 +44,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/users/new.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -97,7 +97,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/users/toggle_activation';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -115,7 +115,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/users/'+data.id;
 
-		ADBaseWebSrv.deleteJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -133,7 +133,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/users/link_existing';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -150,7 +150,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var deferred = $q.defer();
 		var url = '/admin/user/send_invitation';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
