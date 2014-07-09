@@ -17,13 +17,12 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         var companyCardFetchInterval = '';
 
-        //var heightOfComponents = 500;
-        var headerHeight = 60;
-        var heightOfFixedComponents = 150;
+        var headerHeight = 60;//Top header showing Rate manager title
+        var heightOfFixedComponents = 150;// Includes 'Filter options title;, 'show rates buttons' 
+        //and little blank space between show rate button and the scolling content
         var maxSize = $(window).height() - headerHeight;
 
         $scope.leftMenuDimensions.outerContainerHeight = maxSize;
-
         $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;
 
         $scope.$parent.myScrollOptions = {
@@ -71,8 +70,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         $scope.clickedAllRates = function() {
             //If allrates option is selected, unset all rates and rate types
-            //$scope.currentFilterData.is_checked_all_rates = !$scope.currentFilterData.is_checked_all_rates;
-
             if($scope.currentFilterData.is_checked_all_rates) {
                 $scope.currentFilterData.rate_type_selected_list = [];
                 $scope.currentFilterData.rates_selected_list = [];
