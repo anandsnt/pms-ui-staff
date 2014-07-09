@@ -97,7 +97,6 @@ function BaseCtrl($scope){
         catch(e){
         	return date;
         }
-        console.log(returnText);
     }; 	
      /*
      * To set the title of each navigation
@@ -120,5 +119,55 @@ function BaseCtrl($scope){
 		}
 	
 	};
+
+	/*
+	    this is the default scroller options used by controllers
+		this can be modified through setScroller function
+    */
+    $scope.timeOutForScrollerRefresh = 300;
+    var defaultScrollerOptions = {
+    	snap: false,
+		scrollbars: 'custom',
+		hideScrollbar: false,
+		click: false,
+		scrollX: false, 
+		scrollY: true, 
+		preventDefault: true,
+		preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
+    };
+
+    /*
+    	function to handle scroll related things
+    	@param1: string as key 
+    	@param2: object as scroller options
+    */
+    $scope.setScroller = function (key, scrollerOptions){
+    	if(typeof scrollerOptions === 'undefined'){
+    		scrollerOptions = {};
+    	}
+    	//we are merging the settings provided in the function call with defaults
+    	var tempScrollerOptions = angular.copy (defaultScrollerOptions);
+    	angular.extend (tempScrollerOptions, scrollerOptions); //here is using a angular function to extend,
+    	scrollerOptions = tempScrollerOptions;
+    	//checking whether scroll options object is already initilised in parent controller
+    	//if so we need add a key, otherwise initialise and add    
+    	var isEmptyParentScrollerOptions = isEmptyObject ($scope.$parent.myScrollOptions);
+    	
+    	if (isEmptyParentScrollerOptions) { 
+    		$scope.$parent.myScrollOptions = {}; 		
+    	}
+    	
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions;       	
+    };
+
+    /*
+    	function to refresh the scroller 
+    	@param1: string as key 
+    */
+    $scope.refreshScroller = function (key){
+    	setTimeout(function(){
+    		$scope.$parent.myScroll[key].refresh();
+    	}, $scope.timeOutForScrollerRefresh);   	
+    };
 
 }
