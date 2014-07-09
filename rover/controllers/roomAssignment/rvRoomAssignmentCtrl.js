@@ -21,7 +21,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.getRooms = function(index){
 		$scope.selectedRoomType = $scope.getCurrentRoomType();
 		var successCallbackGetRooms = function(data){
-			$scope.rooms = data;
+			$scope.rooms = data.rooms;
+			$scope.reservation_occupancy = data.reservation_occupancy;
 			$scope.setRoomsListWithPredefinedFilters();
 			$scope.applyFilterToRooms();
 			$scope.$emit('hideLoader');
