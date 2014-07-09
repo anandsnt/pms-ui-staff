@@ -10,8 +10,41 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
          */
         this.fetchRateTypes = function () {
 
-             var deferred = $q.defer();
+            var deferred = $q.defer();
 
+            that.fetchSelectedRestrictions = function () {
+               var url = "api/restriction_types";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.selectedRestrictions = data.results;
+                    deferred.resolve(that.addRatesDetailsData);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+              }
+
+            that.fetchRestictionDetails = function () {
+               var url = "/api/restriction_types";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.restrictionDetails = data.results;
+                    that.fetchSelectedRestrictions();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+              }
+
+            that.fetchAddons = function () {
+                var params = {"is_active":true, "is_not_reservation_only":true};
+                var url = "/api/addons";
+                ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                    that.addRatesDetailsData.addons = data.results;
+                    that.fetchRestictionDetails();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+                
 
             /*
              * Service function to fetch cancelation penalties
@@ -21,7 +54,8 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 var url = "/api/policies?policy_type=CANCELLATION_POLICY";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.cancelationPenalties = data.results;
-                    deferred.resolve(that.addRatesDetailsData);
+                    that.fetchAddons();
+                    // deferred.resolve(that.addRatesDetailsData);
                 }, function (data) {
                     deferred.reject(data);
                 });
