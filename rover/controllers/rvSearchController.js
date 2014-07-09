@@ -1,5 +1,6 @@
 sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
 	
+  var that = this;
   BaseCtrl.call(this, $scope);
   $scope.shouldShowLateCheckout = true;
 
@@ -18,39 +19,14 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       firstClickedItem = $scope.currentType =  $stateParams.type;
       $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
   }
-
-  $scope.$parent.myScrollOptions = {
-      'result_showing_area': {
-          snap: false,
-          scrollbars: true,
-          bounce: true,
-          vScroll: true,
-          vScrollbar: true,
-          hideScrollbar: false,
-          click: true,
-          tap: true
-      }
-    };
+  var scrollerOptions = {click: true, preventDefault: false};
+  $scope.setScroller('result_showing_area', scrollerOptions);
+  
   /**
   * function used for refreshing the scroller
   */
-  var refreshScroller = function(){
-  
-    
-
-    $scope.$parent.myScroll['result_showing_area'].refresh();
-    //scroller options
-    // $scope.$parent.myScrollOptions = {
-        // snap: false,
-        // scrollbars: true,
-        // bounce: true,
-        // vScroll: true,
-        // vScrollbar: true,
-        // hideScrollbar: false
-    // };
-    
-
-    
+  var refreshScroller = function(){  
+    $scope.refreshScroller('result_showing_area');
     
   };
 

@@ -284,7 +284,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     if (addon.amountType.value == "PERSON") {
                         // Calculate the total number of occupants and multiply with base rate
                         // Total number of occupants doesnt count the infants!
-                        return baseRate * parseInt(currentRoom.numAdults + currentRoom.numChildren);
+                        return baseRate * parseInt(parseInt(currentRoom.numAdults) + parseInt(currentRoom.numChildren));
                     } else if (addon.amountType.value == "CHILD") {
                         //TODO : Calculate the total number of occupants and multiply with base rate
                         return baseRate * parseInt(currentRoom.numChildren);

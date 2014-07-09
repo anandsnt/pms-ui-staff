@@ -1,3 +1,4 @@
+
 sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 	function($scope, RVLikesSrv, dateFilter) {
 
@@ -5,15 +6,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 		$scope.errorMessage = "";
 		$scope.guestCardData.likes = {};
 		$scope.guestLikesData = {};
-		$scope.$parent.myScrollOptions = {
-			'likes_info': {
-				scrollbars: true,
-				snap: false,
-				hideScrollbar: false,
-				preventDefault: false,
-				vScroll: true
-			}
-		};
+		$scope.setScroller('likes_info');
 		$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
 
 		$scope.$on('clearNotifications', function() {
@@ -76,9 +69,9 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 
 
 
-			setTimeout(function() {
-				$scope.refreshScroller();
-			});
+			setTimeout(function(){			
+				$scope.refreshScroller('likes_info');
+			}, 1000);
 
 
 		};
@@ -86,18 +79,13 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 		$scope.$on('SHOWGUESTLIKESINFO', function() {
 			$scope.init();
 		});
-
-		$scope.refreshScroller = function() {
-			setTimeout(function() {
-				$scope.myScroll['likes_info'].refresh();
-			}, 300);
-		};
+		
 		$scope.$on('REFRESHLIKESSCROLL', function() {
-			$scope.refreshScroller();
+			$scope.refreshScroller('likes_info');
 
 		});
 		$scope.$on("$viewContentLoaded", function() {
-			$scope.refreshScroller();
+			$scope.refreshScroller('likes_info');
 		});
 
 		$scope.saveLikes = function() {
@@ -199,6 +187,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 
 		};
 
+
 		$scope.getHalfArrayPref = function(ar) {
 			//TODO: Cross check math.ceil for all browsers
 			var out = new Array(Math.ceil(ar.length / 2));
@@ -213,6 +202,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			});
 			return showRoomFeature;
 		};
+
 
 	}
 ]);

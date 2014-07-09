@@ -1,6 +1,6 @@
 <div>
  	<div ng-include="'/assets/partials/common/header.html'"></div>
-	<section id="dashboard" class="content scrollable" role = "main">
+	<section id="dashboard" class="content scrollable" role = "main" ng-iscroll='dashboard_scroller' ng-iscroll-delay="100" style="position:absolute; top:40px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 		<div class="wrapper">
 			<h2>{{greetingsMessage | translate}} {{userDetails.first_name}}! </h2>
 
