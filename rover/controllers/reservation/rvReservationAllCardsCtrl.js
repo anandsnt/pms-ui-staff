@@ -349,7 +349,18 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                                 companyData.address.state = item.address.state;
                             }
                             if (item.current_contract != null) {
-                                companyData.rate = item.current_contract.name;
+                                companyData.rate = item.current_contract;
+                                companyData.rate.difference = (function() {
+                                    if (parseInt(companyData.rate.based_on.value) < 0) {
+                                        if (companyData.rate.based_on.type == "amount") {
+                                            return "$" + (parseFloat(companyData.rate.based_on.value)) * -1 + " off ";
+                                        } else {
+                                            return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+                                        }
+
+                                    }
+                                    return "";
+                                })();
                             }
                             companyData.email = item.email;
                             companyData.phone = item.phone;
@@ -394,7 +405,18 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                                 travelAgentData.address.state = item.address.state;
                             }
                             if (item.current_contract != null) {
-                                travelAgentData.rate = item.current_contract.name;
+                                travelAgentData.rate = item.current_contract;
+                                travelAgentData.rate.difference = (function() {
+                                    if (parseInt(travelAgentData.rate.based_on.value) < 0) {
+                                        if (travelAgentData.rate.based_on.type == "amount") {
+                                            return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1) + " off ";
+                                        } else {
+                                            return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+                                        }
+
+                                    }
+                                    return "";
+                                })();
                             }
                             travelAgentData.email = item.email;
                             travelAgentData.phone = item.phone;
