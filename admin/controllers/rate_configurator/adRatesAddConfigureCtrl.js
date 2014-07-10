@@ -43,15 +43,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             var fetchSetsInDateRangeSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
 
-                $scope.data = data;
-
+                $scope.data = updateSetsForAllSelectedRoomTypes(data);
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function (value, key) {
-
-
                     room_rates = []
                     if (value.room_rates.length === 0) {
-                        angular.forEach($scope.data.room_types, function (room_type, key) {
+                        angular.forEach($scope.rateData.room_types, function (room_type, key) {
                             data = {
                                 "id": room_type.id,
                                 "name": room_type.name,
@@ -73,6 +70,42 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 {
                     "id": dateRangeId
                 }, fetchSetsInDateRangeSuccessCallback);
+        };
+
+        var updateSetsForAllSelectedRoomTypes = function(data){
+            var roomAddDetails = {};
+            //Iterate through room types
+            for(var i in $scope.rateData.room_types){
+
+                //Iterate through sets
+                for(var j in data.sets){
+                    roomAddDetails = {};
+                    var foundRoomType = false;
+
+                    //Room rates in sets
+                    for(var k in data.sets[j].room_rates){
+                        roomRate = data.sets[j].room_rates[k];
+                        if($scope.rateData.room_types[i].id == roomRate.id){
+                            foundRoomType = true;
+                            continue;
+                        }
+                    }
+
+                    //If the current room_type detail not available in the room_rates dict from server
+                    //Add the room room_type to the set with details as empty.
+                    if(!foundRoomType){
+                        roomAddDetails.child = '';
+                        roomAddDetails.double = '';
+                        roomAddDetails.extra_adult = '';
+                        roomAddDetails.single = '';
+                        roomAddDetails.id = $scope.rateData.room_types[i].id;
+                        roomAddDetails.name = $scope.rateData.room_types[i].name;
+                        data.sets[j].room_rates.push(roomAddDetails);
+                    }
+                }
+            }
+
+            return data;
         };
 
 
