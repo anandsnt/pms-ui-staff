@@ -1,5 +1,5 @@
-sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog) {
+sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
+	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
 		BaseCtrl.call(this, $scope);
 
 		//Switch to Enable the new cards addition funcitonality
@@ -199,6 +199,11 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 					console.log('removeCard - success');
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
+					$state.go('rover.staycard.reservationcard.reservationdetails', {
+						"id": $stateParams.id,
+						"confirmationId": $stateParams.confirmationId,
+						"isrefresh": true
+					});
 				}, function() {
 					console.log('removeCard - failure');
 					$scope.$emit('hideLoader');
@@ -239,6 +244,11 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
+				$state.go('rover.staycard.reservationcard.reservationdetails', {
+					"id": $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": true
+				});
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('replaceCard -failure');
@@ -280,6 +290,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
 			}
+
+
 		}
 
 		$scope.cardReplaced = function(card, cardData) {
