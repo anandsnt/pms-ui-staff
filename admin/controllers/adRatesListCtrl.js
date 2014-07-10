@@ -87,7 +87,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-			$scope.baseRatesMessage = ($scope.popoverRates.total_count > 1)? "Rates Based on": "Rate Based on"
 			console.log(data);
 			$scope.mouseEnterPopover = true;
 		};
