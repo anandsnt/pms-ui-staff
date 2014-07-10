@@ -6,7 +6,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
-	HostedForm.setMerchant($rootScope.MLImerchantId);
+	
+	try {
+			HostedForm.setMerchant($rootScope.MLImerchantId);
+		}
+		catch(err) {};
 
 	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
 
@@ -238,8 +242,15 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			 	
 			 }
-			 $scope.$emit("showLoader");
-			 HostedForm.updateSession(sessionDetails, callback);			
+
+			try {
+			    HostedForm.updateSession(sessionDetails, callback);	
+			    $scope.$emit("showLoader");
+			}
+			catch(err) {
+			   $scope.errorMessage = ["MLI Merchant ID is not set"];
+			};
+			 		
 		}
 		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
 			$scope.savePayment();
