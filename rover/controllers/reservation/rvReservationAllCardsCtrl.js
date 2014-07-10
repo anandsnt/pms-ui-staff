@@ -154,14 +154,20 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
                         $scope.openGuestCard();
                         $scope.searchGuest();
-                    } else if (searchData.company.id != null) {
-                        $scope.switchCard('company-card');
+                    }
+                    if (searchData.company.id != null) {
+                        if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
+                            $scope.switchCard('company-card');
+                        }
                         $scope.reservationDetails.companyCard.id = searchData.company.id;
                         $scope.initCompanyCard({
                             id: searchData.company.id
                         });
-                    } else if (searchData.travelAgent.id != null) {
-                        $scope.switchCard('travel-agent-card');
+                    }
+                    if (searchData.travelAgent.id != null) {
+                        if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
+                            $scope.switchCard('travel-agent-card');
+                        }
                         $scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
                         $scope.initTravelAgentCard({
                             id: searchData.travelAgent.id
