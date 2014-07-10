@@ -6,7 +6,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
-	HostedForm.setMerchant($rootScope.MLImerchantId);
+	
+	try {
+			HostedForm.setMerchant($rootScope.MLImerchantId);
+		}
+		catch(err) {};
 
 	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
 
@@ -71,8 +75,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating the list payments with new data 
 	 */
 	$scope.saveSuccessGuest = function(data){
-		//To Do: to remove
-		$scope.successMessage = "Payement method saved";
 		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
@@ -96,11 +98,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.saveSuccess = function(data){
 		 
-		var billIndex = parseInt($scope.passData.fromBill);
-
-		//To Do: to remove
-		$scope.successMessage = "Payement method saved";
-		
+		var billIndex = parseInt($scope.passData.fromBill);		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
@@ -230,16 +228,21 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
-			 		$scope.savePayment();// call save payment details WS
-			 		$scope.successMessage = "MLI SessionId received";
-			 		
+			 		$scope.savePayment();// call save payment details WS		 		
 			 	}
 			 	else{
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			 	
 			 }
-			 $scope.$emit("showLoader");
-			 HostedForm.updateSession(sessionDetails, callback);			
+
+			try {
+			    HostedForm.updateSession(sessionDetails, callback);	
+			    $scope.$emit("showLoader");
+			}
+			catch(err) {
+			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			};
+			 		
 		}
 		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
 			$scope.savePayment();
