@@ -5,6 +5,7 @@ sntRover.controller('RVDeleteSetAsPrimaryCtrl',['$rootScope', '$scope', '$state'
 	       value.is_primary = false;
 	     });
 		$scope.paymentData.data[$scope.paymentData.index].is_primary = true;
+		$scope.refreshScroller('paymentList');
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 	};
@@ -17,6 +18,7 @@ sntRover.controller('RVDeleteSetAsPrimaryCtrl',['$rootScope', '$scope', '$state'
 
 		$scope.$emit("hideLoader");
 		$scope.updateErrorMessage(errorMessage);
+		$scope.refreshScroller('paymentList');
 		$scope.closeDialog() ;
 	};
 	$scope.setAsPrimary = function(){
