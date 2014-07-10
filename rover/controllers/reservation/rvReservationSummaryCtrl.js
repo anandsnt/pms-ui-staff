@@ -166,14 +166,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.errorMessage = ["There is a problem with your credit card"];
 				}
 			}
-			$scope.$emit("showLoader");
 			
 			try {
 			    HostedForm.updateSession(sessionDetails, callback);
+			    $scope.$emit("showLoader");
 			}
 			catch(err) {
 			   $scope.errorMessage = [" MLI Merchant ID not set"];
-			   $scope.$emit("showLoader");
 			};
 		}
 
