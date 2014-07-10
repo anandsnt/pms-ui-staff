@@ -2,6 +2,7 @@ var StayCard = function(viewDom){
   console.log("test console message");
   BaseView.call(this);
   var that = this;
+  
   this.myDom = viewDom;
   
   this.pageinit = function(){
@@ -144,6 +145,17 @@ var StayCard = function(viewDom){
 
         // do nothing
         default:
+        	/*
+        	 * Temp work around. It is found that sntapp.cardSwipeCurrView is being assigned as null from many places.
+        	 * To minimise the changes & bugs caused, we check for StayCard's presence explicitly and do actions accordingly
+        	 * 
+        	 */
+        	if(that.myDom.is(':visible')){
+        		// Do as in stay card.
+        		var confirmationNum = getCurrentConfirmation();
+		        respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
+        	}
+        	  
           break;
       }
     };

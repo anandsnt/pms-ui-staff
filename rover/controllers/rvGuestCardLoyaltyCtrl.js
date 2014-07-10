@@ -29,8 +29,11 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
     	$scope.errorMessage ="";
     	$scope.successMessage ="";
     });
-	$scope.setScroller('loyaltyList');
-
+    var scrollerOptions = {click: true, preventDefault: false};
+	$scope.setScroller('loyaltyList', scrollerOptions);
+	$scope.$on('REFRESHLIKESSCROLL', function() {
+		$scope.refreshScroller('loyaltyList');
+	});
 
 	$scope.addNewFreaquentLoyality =  function(){
 		ngDialog.open({
