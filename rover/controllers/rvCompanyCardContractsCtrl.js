@@ -25,21 +25,17 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}, 500);
 		});
 
-		$scope.$parent.myScroll = [];
-
-		$scope.$parent.myScrollOptions = {
-			'companyCardContractsCtrl': {
+		$scope.setScroller('companyCardContractsCtrl', {
 				scrollbars: true,
 				scrollY: true,
 				snap: false,
 				hideScrollbar: false
-			}
-		};
+		}); 
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.
 			if ($scope.currentSelectedTab === 'cc-contracts') {
-				$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+				$scope.refreshScroller('companyCardContractsCtrl');
 			}
 		};
 
