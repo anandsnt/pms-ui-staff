@@ -51,7 +51,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	}
 
 	/**
-	* function to assign the new room for the reservation
+	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
@@ -82,9 +82,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 
 	}
 
-	$scope.$on('occupancyDialogSuccess', function(event, data){
-			$scope.assignRoom();
-	});
+	$scope.occupancyDialogSuccess = function(){
+		$scope.assignRoom();			
+	};
 	
 	/**
 	* function to assign the new room for the reservation
