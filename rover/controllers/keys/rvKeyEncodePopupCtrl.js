@@ -3,6 +3,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	var that = this;
 
 	this.setStatusAndMessage = function(message, status){
+		console.log('setStatusAndMessage');
+		console.log(message);
+
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
@@ -89,16 +92,23 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			$scope.keysPrinted = false;
 			$scope.showPrintKeyOptions = false;
 			$scope.deviceNotConnected = true;
+			console.log('this apply');
 			$scope.$apply();
 
 		}
 
+	};
+
+	$scope.tryAgainButtonPressed = function(){
+		that.noOfErrorMethodCalled = 0;
+		$scope.showDeviceConnectingMessge();
 	};
 	/**
 	* Check if the card reader device connection is available.
 	* Display a screen having device connecting message.
 	*/
 	$scope.showDeviceConnectingMessge = function(){
+		console.log('showDeviceConnectingMessge');
 		$scope.deviceConnecting = true;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
@@ -175,6 +185,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	
 	that.showUIDFetchFailedMsg = function(){
 		$scope.$emit('hideLoader');
+		//Asynchrounous action. so we need to notify angular that a change has occured. 
+		//It lets you to start the digestion cycle explicitly
+		$scope.$apply();
 		var message = 'Unable to read the key!';
 		that.showKeyPrintFailure(message);
 	};
@@ -303,9 +316,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 
 	};	
-	
-
-	
 
 	var showPrintKeyOptions = function (){
 		$scope.$emit('hideLoader');
@@ -337,6 +347,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
 		$scope.pressedCancelStatus = true;
+		//TODO:verfiy if required
 		$scope.$apply();
 	};
 	
@@ -355,7 +366,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		if(typeof message == 'undefined'){
 			var message = 'Key creation failed!';
 		}
-		
+		console.log('showKeyPrintFailure');
 		that.setStatusAndMessage(message, 'error');
 	};
 
