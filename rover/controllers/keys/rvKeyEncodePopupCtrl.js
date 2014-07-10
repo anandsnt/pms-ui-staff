@@ -4,9 +4,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	var that = this;
 
 	this.setStatusAndMessage = function(message, status){
-		console.log('setStatusAndMessage');
-		console.log(message);
-
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
@@ -366,7 +363,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		if(typeof message == 'undefined'){
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
-		console.log('showKeyPrintFailure');
 		that.setStatusAndMessage(message, 'error');
 	};
 
@@ -377,7 +373,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	// To handle close button click
 	$scope.goToStaycard = function(){
 		$scope.closeDialog();
-		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
+		$state.go('rover.staycard.reservationcard.reservationdetails', 
+				{"id": $scope.reservationBillData.reservation_id, 
+				"confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
 		
 	};
 	$scope.goToSearch = function(){

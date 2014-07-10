@@ -52,6 +52,7 @@
     "KEY_CHECKOUT_STATUS" : "Checking Out",
     "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
     "KEY_PRINT_BUTTON_TEXT_KEY1" : "Print Key 1",
+    "KEY_PRINT_BUTTON_TEXT" : "Print Key",
     "KEY_READING_STATUS" : "Reading key!",
     "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
     "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",
