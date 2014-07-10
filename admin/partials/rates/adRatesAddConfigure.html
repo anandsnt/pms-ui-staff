@@ -28,8 +28,8 @@
             </table>
         </div>
     </form>
-</div>
-<div ng-click="createNewSetClicked()" class="center_align add_new_date_range_container" style="margin-bottom: 10px;"> 
-    <span class="icons icon-add" style="display: inline;">
-    <span ng-class="{'inactive': isAllSetsSaved()}">NEW SET</span>
+    <div ng-click="createNewSetClicked()" class="center_align add_new_date_range_container" style="margin-bottom: 10px;"> 
+        <span class="icons icon-add" style="display: inline;">
+        <span ng-class="{'inactive': !isAllSetsSaved()}">NEW SET</span>
+    </div>
 </div>

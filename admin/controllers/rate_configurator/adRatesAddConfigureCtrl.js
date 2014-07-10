@@ -142,6 +142,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         value.room_rates = room_rates;
                     }
                 });
+                //Expand top set in the current date range
+                $scope.setCurrentClickedSet(0);
+
 
             };
             // $scope.dateRange.id
@@ -153,7 +156,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
 
 
-        $scope.saveSet = function (index) {
+        $scope.saveSet = function (index, dateRangeId) {
 
             var saveSetSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
@@ -171,12 +174,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             // API request do not require all keys except room_types
             var unwantedKeys = ["room_types"];
             var setData = dclone($scope.data.sets[index], unwantedKeys);
+            setData.dateRangeId = dateRangeId;
             //if set id is null, then it is a new set - save it
             if(setData.id == null){
-                $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
+                $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);
             //Already existing set - update
             }else{
-                $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
+                $scope.invokeApi(ADRatesConfigureSrv.updateSet, setData, saveSetSuccessCallback);
             }
 
 
@@ -258,9 +262,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             return enableSetUpdateButton;
         };
 
-        $scope.saveDateRange = function () {
+        $scope.saveDateRange = function (dateRangeId) {
             angular.forEach($scope.data.sets, function (value, key) {
-                $scope.saveSet(key);
+                $scope.saveSet(key, dateRangeId);
             });
         };
 
