@@ -70,16 +70,14 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	               scope:$scope
 	          });
   	 };
-  	 
-  	 $scope.$parent.myScrollOptions = {		
-	    'paymentList': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    },
-	};
-
+  	 var scrollerOptions = {click: true, preventDefault: false};
+  	 $scope.setScroller('paymentList', scrollerOptions);
+  	$scope.$on("$viewContentLoaded", function(){
+		$scope.refreshScroller('paymentList');
+	});
+   	$scope.$on("REFRESHLIKESSCROLL", function(){
+		$scope.refreshScroller('paymentList');
+	}); 	
 	$scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if($scope.isGuestCardVisible){
 	 		$scope.openAddNewPaymentModel(data);

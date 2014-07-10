@@ -151,7 +151,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
-            $scope.rateData.end_date_for_display = ($scope.rateData.end_date.length>0)? $filter('date')(new Date($scope.rateData.end_date), 'MM-dd-yyyy'):"";
+            if($scope.rateData.end_date){
+                 $scope.rateData.end_date_for_display = ($scope.rateData.end_date.length>0)? $filter('date')(new Date($scope.rateData.end_date), 'MM-dd-yyyy'):"";
+            }
+            else{
+                $scope.rateData.end_date_for_display ="";
+            }
+           
                       
 
             // addons -mark as activated for selected addons

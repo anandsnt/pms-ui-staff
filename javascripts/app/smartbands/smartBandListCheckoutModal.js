@@ -30,6 +30,9 @@ var SmartBandListForCheckoutModal = function(reservationID) {
 		else if(getParentWithSelector(event, "#credit-room")){
 			that.creditToRoom();
 		}
+		else if(getParentWithSelector(event, '#close-button')){
+			that.hide();
+		}
 	};
 
 	this.successCallbackOfKeepCredit = function(data){
