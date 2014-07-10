@@ -127,6 +127,28 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
 	};
+
+	/**
+    *   to test MLI connectivity.
+    */
+
+	$scope.testMLIPaymentGateway = function(){
+
+		var testMLIPaymentGatewaySuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.successMessage = "Connection Valid";
+		};
+
+		var testMLIPaymentGatewayError = function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+		};
+
+		$scope.invokeApi(ADHotelDetailsSrv.testMLIPaymentGateway,{}, testMLIPaymentGatewaySuccess, testMLIPaymentGatewayError);
+		
+	}
+
+
 	/**
     *   Method to go back to previous state.
     */

@@ -75,6 +75,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
+			//To move the scroller to top after rendering new data in reservation detals.
+			$scope.$parent.myScroll['resultDetails'].scrollTo(0,0);
 		};
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
