@@ -155,7 +155,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		// To fetch the template for chains details add/edit screens
 		$scope.getTemplateUrl = function() {
 			return "/assets/partials/rates/adNewAddon.html";
-		}
+		};
 
 		// to add new addon
 		$scope.addNew = function() {
@@ -186,7 +186,7 @@ admin.controller('ADRatesAddonsCtrl', [
             // the inital dates to business date
             $scope.singleAddon.begin_date = $scope.businessDate;
 			$scope.singleAddon.end_date   = $scope.businessDate;
-		}
+		};
 
 		// listen for datepicker update from ngDialog
 		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
@@ -301,7 +301,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// remove the item being edited
 			$scope.currentClickedAddon = -1;
-		}
+		};
 
 		// on save add/edit addon
 		$scope.addUpdateAddon = function() {
@@ -376,7 +376,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			var data = {
 				id: item.id,
 				status: item.activated ? false : true
-			}
+			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, callback);
 		};
