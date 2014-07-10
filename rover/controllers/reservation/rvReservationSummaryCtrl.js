@@ -33,8 +33,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.data.paymentMethods = data;
 				$scope.$emit('hideLoader');
 			};
+			var paymentFetchError = function(data){
+				$scope.errorMessage =  data;
+				$scope.$emit('hideLoader');
+			};
 
-			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess);
+			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess,paymentFetchError);
 
 		};
 
@@ -162,13 +166,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.errorMessage = ["There is a problem with your credit card"];
 				}
 			}
-			$scope.$emit("showLoader");
-			HostedForm.updateSession(sessionDetails, callback);;
+			
+			try {
+			    HostedForm.updateSession(sessionDetails, callback);
+			    $scope.$emit("showLoader");
+			}
+			catch(err) {
+			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			};
 		}
 
 
 		$scope.setUpMLIConnection = function() {
-			HostedForm.setMerchant($rootScope.MLImerchantId);
+			try {
+			    HostedForm.setMerchant($rootScope.MLImerchantId);
+			}
+			catch(err) {};
+			
 		}();
 
 
