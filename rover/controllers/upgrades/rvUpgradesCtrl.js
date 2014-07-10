@@ -50,15 +50,15 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
-		if($scope.upgradesList[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
-				if($scope.upgradesList[index].room_max_occupancy < $scope.reservation_occupancy){
+		if($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null){
+				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
-					$scope.max_occupancy = $scope.filteredRooms[index].room_max_occupancy;
+					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
 			}
-		}else if($scope.upgradesList[index].room_type_max_occupancy != null && $scope.reservation_occupancy != null){
-				if($scope.upgradesList[index].room_type_max_occupancy < $scope.reservation_occupancy){
+		}else if($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null){
+				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
 					showOccupancyMessage = true;
-					$scope.max_occupancy = $scope.filteredRooms[index].room_type_max_occupancy;
+					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
 				} 
 		}
 		
