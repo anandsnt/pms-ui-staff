@@ -44,8 +44,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         $scope.isAllSetsSaved = function(){
             if($scope.data.sets != undefined){
                 var isSaved = true;
-                console.log($scope.data.sets);
-                console.log($scope.data.sets[$scope.data.sets.length - 1]);
                 if($scope.data.sets[$scope.data.sets.length - 1].id == null){
                     isSaved = false;
                 }
@@ -160,7 +158,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             var saveSetSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
                 $scope.data.sets[index].isSaved = true;
-                $scope.data.sets[index].id = data.id;
+                if(typeof data.id != 'undefined' && data.id != '')
+                    $scope.data.sets[index].id = data.id;
             };
 
             var saveSetFailureCallback = function (errorMessage) {
@@ -172,7 +171,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             // API request do not require all keys except room_types
             var unwantedKeys = ["room_types"];
             var setData = dclone($scope.data.sets[index], unwantedKeys);
-            console.log(setData.id);
             //if set id is null, then it is a new set - save it
             if(setData.id == null){
                 $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
@@ -199,6 +197,15 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.confirmDeleteSet = function (id, index, setName) {
+
+            //if set id is null, then it is a new set - not saved, so delete directly
+            if(id == null || typeof id == 'undefined'){
+                $scope.data.sets.pop();
+                $scope.setCurrentClickedSet($scope.data.sets.length - 1);
+                return false;
+            }
+
+            //If not a new set, open a dialog to confirm the delete action    
             $scope.deleteSetId = id;
             $scope.deleteSetIndex = index;
             $scope.deleteSetName = setName;
