@@ -2,6 +2,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
      if (hotelDetails.language){
       $translate.use(hotelDetails.language.value);
+      $translate.fallbackLanguage('EN');
     }
     else{
       $translate.use('EN');
