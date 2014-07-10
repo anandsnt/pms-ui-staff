@@ -101,7 +101,9 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 					minRange : 110,
 					title : {
 						text : ''
-					}
+					},
+					min: 0,
+					max: 110
 				},
 				title : {
 					text : ''

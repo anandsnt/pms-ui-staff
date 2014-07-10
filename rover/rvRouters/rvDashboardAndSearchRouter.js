@@ -20,7 +20,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 	var oldType = "";
                 	var dataDict = {};
                 	oldType = $stateParams.type;
-                	if(oldType != null) {
+                	if(oldType != null && oldType!= '') {
 	                	if(oldType == "LATE_CHECKOUT"){
 				        	dataDict.is_late_checkout_only = true;
 				        }
@@ -30,8 +30,12 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
 	         			//calling the webservice
 	                    return RVSearchSrv.fetch(dataDict);
 	                } else {
-	                	var results = [];
-	                	return results;
+	                	
+                		console.log("to check in server");
+                		var results = [];
+                	    return results;
+	                	
+	                	
 	                }
                 }
             }

@@ -47,14 +47,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.wake_up_time = (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined') ? $scope.reservationData.reservation_card.wake_up_time.wake_up_time : $filter('translate')('NOT_SET');
 		});
 
-		$scope.$parent.myScrollOptions = {
-			'resultDetails': {
-				scrollbars: true,
-				snap: false,
-				hideScrollbar: false,
-				preventDefault: false
-			},
-		};
+		$scope.setScroller('resultDetails');
 
 		//CICO-7078 : Initiate company & travelagent card info
 		// console.log(reservationListData);
@@ -70,7 +63,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.$on('$viewContentLoaded', function() {
 			setTimeout(function() {
-					$scope.$parent.myScroll['resultDetails'].refresh();
+					$scope.refreshScroller('resultDetails');
 				},
 				3000);
 
@@ -150,6 +143,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			}
 
 		};
+
+		$rootScope.$on('clearErroMessages', function() {
+    		$scope.errorMessage = "";
+     	});
 
 		$scope.openPaymentList = function() {
 			$scope.reservationData.currentView = "stayCard";

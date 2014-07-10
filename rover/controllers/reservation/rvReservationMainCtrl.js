@@ -5,6 +5,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
+        $scope.viewState = {
+            isAddNewCard: false,
+            reservationStatus: {
+                confirm: false,
+                number: null
+            },
+            pendingRemoval: {
+                status: false,
+                cardType: ""
+            },
+            identifier: "CREATION",
+            lastCardSlot: {
+                cardType: ""
+            }
+        };
 
         var successCallbackOfCountryListFetch = function(data) {
             $scope.countries = data;
@@ -86,7 +101,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 },
                 reservationId: '',
                 confirmNum: '',
-                isSameCard: false
+                isSameCard: false // Set flag to retain the card details
             }
         }
 
@@ -269,7 +284,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     if (addon.amountType.value == "PERSON") {
                         // Calculate the total number of occupants and multiply with base rate
                         // Total number of occupants doesnt count the infants!
-                        return baseRate * parseInt(currentRoom.numAdults + currentRoom.numChildren);
+                        return baseRate * parseInt(parseInt(currentRoom.numAdults) + parseInt(currentRoom.numChildren));
                     } else if (addon.amountType.value == "CHILD") {
                         //TODO : Calculate the total number of occupants and multiply with base rate
                         return baseRate * parseInt(currentRoom.numChildren);
@@ -293,7 +308,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //TODO: Extend for multiple rooms
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative);
         }
-
         $scope.initReservationData();
     }
 ]);

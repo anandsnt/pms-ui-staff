@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -156,6 +156,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.guestCardClick = function($event) {
+			$rootScope.$emit('clearErroMessages');
 			$scope.$broadcast('clearNotifications');
 			var element = $event.target;
 			$event.stopPropagation();
@@ -414,6 +415,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.address.city = item.address.city;
 							companyData.address.state = item.address.state;
 						}
+						if (item.current_contract != null) {
+							companyData.rate = item.current_contract;
+							companyData.rate.difference = (function() {
+								if (parseInt(companyData.rate.based_on.value) < 0) {
+									if (companyData.rate.based_on.type == "amount") {
+										return "$" + (parseFloat(companyData.rate.based_on.value)) * -1 + " off ";
+									} else {
+										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+									}
+
+								}
+								return "";
+							})();
+						}
 						companyData.email = item.email;
 						companyData.phone = item.phone;
 						$scope.searchedCompanies.push(companyData);
@@ -456,7 +471,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.address.state = item.address.state;
 							}
 							if (item.current_contract != null) {
-								travelAgentData.rate = item.current_contract.name;
+								travelAgentData.rate = item.current_contract;
+								travelAgentData.rate.difference = (function() {
+									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
+										if (travelAgentData.rate.based_on.type == "amount") {
+											return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1) + " off ";
+										} else {
+											return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+										}
+
+									}
+									return "";
+								})();
 							}
 							travelAgentData.email = item.email;
 							travelAgentData.phone = item.phone;
@@ -567,6 +593,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				"user_id": "",
 				"guest_id": ""
 			};
+			// Retain Search Keys
+			$scope.guestCardData.contactInfo.first_name = $scope.searchData.guestCard.guestFirstName;
+			$scope.guestCardData.contactInfo.last_name = $scope.searchData.guestCard.guestLastName;
+			$scope.guestCardData.contactInfo.address = {};
+			$scope.guestCardData.contactInfo.address.city = $scope.searchData.guestCard.guestCity;
+			$scope.guestCardData.membership_no = $scope.searchData.guestCard.guestLoyaltyNumber;
+
 			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
@@ -575,21 +608,19 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.createNewCompany = function() {
 			$scope.companyContactInformation = $scope.getEmptyAccountData();
-			// $scope.companyContactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
 			$scope.reservationDetails.companyCard.id = "";
 			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
-			$scope.$broadcast('companyCardAvailable');
+			$scope.$broadcast('companyCardAvailable', true);
 
 		}
 
 		$scope.createNewTravelAgent = function() {
 			$scope.travelAgentInformation = $scope.getEmptyAccountData();
-			// $scope.travelAgentInformation.account_details.account_name = $scope.searchData.travelAgentCard.companyName;
 			$scope.reservationDetails.travelAgent.id = "";
 			$scope.reservationDetails.travelAgent.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
-			$scope.$broadcast('travelAgentFetchComplete');
+			$scope.$broadcast('travelAgentFetchComplete', true);
 		}
 
 		$scope.clickedSaveCard = function(cardType) {

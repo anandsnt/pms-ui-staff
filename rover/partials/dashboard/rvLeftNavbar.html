@@ -1,6 +1,7 @@
 <nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen, 'invisible' : !menuOpen}">
 
-	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="toggleDrawerMenu()"  ng-class="{'collapse': menuOpen}">Menu
+	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="toggleDrawerMenu()"  ng-class="{'collapse': menuOpen}">
+		Menu
 		<span ng-class="{'active': menuOpen}"></span>
 	</a>
 	<!-- For Hotel Admin -->
@@ -33,10 +34,12 @@
 		</li> 
 
 		<li >
-			<label class="icon-menu icon-sign-out"></label>
-			<a class="fill" ng-click="toggleDrawerMenu()" href="/logout">
-				Sign Out
+			<a ng-click="toggleDrawerMenu()" href="/logout">
+				<label class="icon-menu icon-sign-out"></label>
 			</a>
+				<a class="fill" ng-click="toggleDrawerMenu()" href="/logout">
+					Sign Out
+				</a>
 		</li>
 	<!-- 	<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
@@ -47,8 +50,10 @@
 	<!-- For SNT Admin -->
 	<ul ng-hide ="isHotelAdmin || isHotelStaff" >
 		<li id="sign-out">
-			<label class="icon-menu icon-sign-out"></label>
-			<a ng-click="toggleDrawerMenu()" href= "/logout" >
+			<a  ng-click="toggleDrawerMenu()" href="/logout">
+				<label class="icon-menu icon-sign-out"></label>
+			</a>
+			<a ng-click="toggleDrawerMenu()" href="/logout">
 				Sign Out
 			</a>
 		</li>
@@ -58,7 +63,7 @@
 		</li> -->
 	</ul>
 
-	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
+	<div id="submenu" ng-show="menuOpen && showSubMenu && activeSubMenu.length > 0">
 		<ul>
 			<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-hide="menuItem.standAlone && !isStandAlone">
 				<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}">

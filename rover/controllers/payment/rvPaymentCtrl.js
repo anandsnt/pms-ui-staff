@@ -17,6 +17,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";	
 	$scope.shouldShowDisabled = false;
+
+	$scope.successMessage = "";
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -69,6 +71,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating the list payments with new data 
 	 */
 	$scope.saveSuccessGuest = function(data){
+		//To Do: to remove
+		$scope.successMessage = "Payement method saved";
+		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
@@ -92,6 +97,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccess = function(data){
 		 
 		var billIndex = parseInt($scope.passData.fromBill);
+
+		//To Do: to remove
+		$scope.successMessage = "Payement method saved";
 		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
@@ -127,6 +135,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
+		$scope.successMessage = "";
 	};
 	/*
 	 * Save new payment - GUestcard or staycard
@@ -137,7 +146,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		// console.log($scope.saveData.selected_payment_type);
 		$scope.saveData.payment_type = "";
 		if($scope.saveData.selected_payment_type != undefined){
-			$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
+			if(parseInt($scope.saveData.selected_payment_type)>=0){
+				$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
+			}
 		}
 		
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
@@ -174,7 +185,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.mli_token = $scope.passData.token;
 		}
 		$scope.saveData.session_id = MLISessionId;
-		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_expiry","card_number","cvv"];
+		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
 		if($scope.passData.is_swiped){
 			unwantedKeys.push("session_id");
 		}
@@ -207,8 +218,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
     	$scope.fetchMLISessionId = function(){
 
-
-
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
@@ -216,12 +225,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
 			
 			 var callback = function(response){
-			 	$scope.$emit("hideLoader");//is not working
+			 	$scope.$emit("hideLoader");
 			 	$scope.$apply();
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
 			 		$scope.savePayment();// call save payment details WS
+			 		$scope.successMessage = "MLI SessionId received";
 			 		
 			 	}
 			 	else{
@@ -231,17 +241,22 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 $scope.$emit("showLoader");
 			 HostedForm.updateSession(sessionDetails, callback);			
 		}
-		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0)){
+		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
 			$scope.savePayment();
 		}
 		else{
-			if($scope.saveData.card_number.length>0){
-				$scope.fetchMLISessionId();
-    		}
-    		else{
-    			$scope.errorMessage = ["There is a problem with your credit card"];
-    		}
-			
+			if(parseInt($scope.saveData.selected_payment_type) ===0){
+				if($scope.saveData.card_number.length>0){
+					$scope.fetchMLISessionId();
+	    		}
+	    		else{
+	    			// Client side validation added to eliminate a false session being retrieved in case of empty card number
+	    			$scope.errorMessage = ["There is a problem with your credit card"];
+	    		}
+			}	
+			else{
+			    $scope.savePayment();
+			}
 		}
 		
 
