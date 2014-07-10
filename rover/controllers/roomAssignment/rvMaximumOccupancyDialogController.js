@@ -13,7 +13,7 @@ sntRover.controller('rvMaximumOccupancyDialogController',['$scope','$rootScope',
 
 	$scope.proceed = function(){
 			$scope.closeDialog();
-			$scope.$emit('occupancyDialogSuccess');
+			$scope.occupancyDialogSuccess();
 	};
 
 	$scope.validate = function(){

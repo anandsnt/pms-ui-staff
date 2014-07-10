@@ -38,7 +38,7 @@
                   <div id="room2008-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-bind-html="upgrade.upgrade_room_description">
                      
                   </div>
-                  <a id="upgrade-room-select" class="button green submit-value hover-hand" ng-click="selectUpgrade($index)">
+                  <a id="upgrade-room-select" class="button green submit-value hover-hand" ng-click="showMaximumOccupancyDialog($index)">
                   Upgrade for only
                   <sup></sup>
                   $ {{upgrade.upsell_amount}} per night
