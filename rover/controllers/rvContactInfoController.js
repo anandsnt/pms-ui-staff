@@ -9,8 +9,8 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
     $scope.errorMessage = "";
     
     $scope.$on('clearNotifications', function() {
-      $scope.errorMessage = "";
       $scope.successMessage = "";
+      $scope.$emit('contactInfoError', false);
     });
 
     $scope.saveContactInfo = function(newGuest) {
