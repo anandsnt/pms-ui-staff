@@ -167,12 +167,26 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 			}
 			$scope.$emit("showLoader");
-			HostedForm.updateSession(sessionDetails, callback);;
+			
+			try {
+			    HostedForm.updateSession(sessionDetails, callback);
+			}
+			catch(err) {
+			  console.log("MLI-------"+err);
+			   $scope.errorMessage = [" MLI Merchant ID not set"];
+			};
 		}
 
 
 		$scope.setUpMLIConnection = function() {
-			HostedForm.setMerchant($rootScope.MLImerchantId);
+			try {
+			    HostedForm.setMerchant($rootScope.MLImerchantId);
+			}
+			catch(err) {
+				console.log("MLI-------ID"+err);
+			    $scope.errorMessage = ["MLI Merchant ID not set"];
+			};
+			
 		}();
 
 
