@@ -201,5 +201,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 
 	};
 
+	$scope.showLoader = function() {
+		$scope.$emit('showLoader');
+	};
+
 }]);
 
