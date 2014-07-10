@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog','$rootScope',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog,$rootScope) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -156,7 +156,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.guestCardClick = function($event) {
-			$rootScope.$emit('clearErroMessages');			
+			$rootScope.$emit('clearErroMessages');
 			$scope.$broadcast('clearNotifications');
 			var element = $event.target;
 			$event.stopPropagation();
@@ -259,6 +259,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.guestCardHeight = resizableMaxHeight;
 			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
+			//refreshing the scroller in guestcard's tab
+			$scope.$broadcast('REFRESHLIKESSCROLL');			
 		};
 
 		/**
@@ -415,6 +417,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.address.city = item.address.city;
 							companyData.address.state = item.address.state;
 						}
+						if (item.current_contract != null) {
+							companyData.rate = item.current_contract;
+							companyData.rate.difference = (function() {
+								if (parseInt(companyData.rate.based_on.value) < 0) {
+									if (companyData.rate.based_on.type == "amount") {
+										return "$" + (parseFloat(companyData.rate.based_on.value)) * -1 + " off ";
+									} else {
+										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+									}
+
+								}
+								return "";
+							})();
+						}
 						companyData.email = item.email;
 						companyData.phone = item.phone;
 						$scope.searchedCompanies.push(companyData);
@@ -457,7 +473,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.address.state = item.address.state;
 							}
 							if (item.current_contract != null) {
-								travelAgentData.rate = item.current_contract.name;
+								travelAgentData.rate = item.current_contract;
+								travelAgentData.rate.difference = (function() {
+									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
+										if (travelAgentData.rate.based_on.type == "amount") {
+											return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1) + " off ";
+										} else {
+											return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+										}
+
+									}
+									return "";
+								})();
 							}
 							travelAgentData.email = item.email;
 							travelAgentData.phone = item.phone;

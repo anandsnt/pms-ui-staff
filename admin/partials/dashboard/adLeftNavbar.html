@@ -30,18 +30,22 @@
 		</li> 
 
 		<li >
-			<label class="icon-menu icon-sign-out"></label>
 			<a ng-click="$emit('navToggled')" href="/logout">
-				Sign Out
+				<label class="icon-menu icon-sign-out"></label>
 			</a>
+				<a ng-click="toggleDrawerMenu()" href="/logout">
+					Sign Out
+				</a>
 		</li>
 	</ul>
 
 	<!-- For SNT Admin -->
 	<ul ng-hide ="isHotelAdmin" >
 		<li id="sign-out">
-			<label class="icon-menu icon-sign-out"></label>
-			<a ng-click="$emit('navToggled')" href= "/logout" >
+			<a ng-click="$emit('navToggled')" href= "/logout">
+				<label class="icon-menu icon-sign-out"></label>
+			</a>
+			<a ng-click="toggleDrawerMenu()" href="/logout">
 				Sign Out
 			</a>
 		</li>

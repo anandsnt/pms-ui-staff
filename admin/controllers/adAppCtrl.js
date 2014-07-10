@@ -22,16 +22,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    	 $scope.menuOpen = false;
 	    };
 		//scroller options
-		$scope.$parent.myScrollOptions = {
-			'tabs_menu': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false,
-				click: true
-			}
-		};
+		var scrollerOptions = {click: true, scrollbars: true};
+		$scope.setScroller('tabs_menu', scrollerOptions);
 
 		$scope.bookMarks = [];
 
