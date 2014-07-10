@@ -17,9 +17,11 @@
     <tr ng-repeat="week in targetData">
         <td colspan="" width="11%">{{ week[0].date | date:'dd' }} . - {{ week[6].date | date:'dd.MMM' }}</td>
         <td>
-            <input type="text" ng-model=weekCommonTargets[$index] />
+         	<div class="cellbg">
+            	<input type="text" ng-model=weekCommonTargets[$index] />
+        	</div>
         </td>
-        <td width="4%">
+        <td width="5%" class="right-arrow">
             <span class="icons right-arrow-copy" ng-click="copyTargetToAllWeekDays($index)">&nbsp;</span>
         </td>
         <td ng-repeat="weekDay in week">
