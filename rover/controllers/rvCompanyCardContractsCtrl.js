@@ -25,12 +25,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}, 500);
 		});
 
-		$scope.setScroller('companyCardContractsCtrl', {
-				scrollbars: true,
-				scrollY: true,
-				snap: false,
-				hideScrollbar: false
-		}); 
+		$scope.setScroller('companyCardContractsCtrl'); 
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.
