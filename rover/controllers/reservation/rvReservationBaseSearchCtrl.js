@@ -8,13 +8,33 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         var init = function() {
             // Check flag to retain the card details
+            console.log("Data", $scope.reservationData);
+            console.log("Details", $scope.reservationDetails);
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
                 $scope.initReservationDetails();
+            } else {
+                //$scope.reservationData.isSameCard = false;
+                //TODO: 1. User gets diverted to the Search screen (correct) 
+                //but Guest Name and Company / TA cards are not copied into the respective search fields. 
+                //They are added to the reservation by default later on, 
+                //but should be copied to the Search screen as well
+                $scope.viewState.reservationStatus.confirm = false;
+                $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
+                $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
+                $scope.companySearchText = (function() {
+                    if ($scope.reservationData.company.id != null && $scope.reservationData.company.id != "") {
+                        return $scope.reservationData.company.name;
+                    } else if ($scope.reservationData.travelAgent.id != null && $scope.reservationData.travelAgent.id != "") {
+                        return $scope.reservationData.travelAgent.name;
+                    }
+                    return "";
+                })();
+
             }
             $scope.businessDate = baseSearchData.businessDate;
             if ($scope.reservationData.arrivalDate == '') {
-                $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
+                $scope.reservationData.arrivalDate = dateFilter($scope.businessDate, 'yyyy-MM-dd');
             }
             if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
@@ -219,10 +239,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.arrivalDateOptions = {
 
             showOn: 'button',
-            dateFormat: 'mm-dd-yy',
+            dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
             yearRange: '-0:',
-            minDate: new Date($scope.businessDate),
+            minDate: dateFilter($scope.businessDate, 'MM-dd-yyyy'),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -238,10 +258,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.departureDateOptions = {
 
             showOn: 'button',
-            dateFormat: 'mm-dd-yy',
+            dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
             yearRange: '-0:',
-            minDate: new Date($scope.businessDate),
+            minDate: dateFilter($scope.businessDate, 'MM-dd-yyyy'),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');

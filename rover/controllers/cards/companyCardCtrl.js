@@ -116,7 +116,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			$scope.contactInformation.id = data.id;
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
-				if ($scope.viewState.identifier == "STAY_CARD") {
+				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
 					$scope.viewState.pendingRemoval.cardType = "";
 					$scope.replaceCard('company', {
