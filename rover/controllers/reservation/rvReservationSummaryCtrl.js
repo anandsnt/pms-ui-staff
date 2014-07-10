@@ -33,8 +33,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.data.paymentMethods = data;
 				$scope.$emit('hideLoader');
 			};
+			var paymentFetchError = function(data){
+				$scope.errorMessage =  data;
+				$scope.$emit('hideLoader');
+			};
 
-			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess);
+			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess,paymentFetchError);
 
 		};
 
