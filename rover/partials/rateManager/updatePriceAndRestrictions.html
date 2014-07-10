@@ -3,8 +3,10 @@
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
                 <div class="title-wrap">
-                    <h2 class="h1">{{data.name}}</h2>
+                    <h2 ng-show="!popupData.all_data_selected" class="h1">{{data.name}}</h2>
                     <em>{{popupData.selectedDate| date:'EEEE, MMMM dd'}}</em>
+                    <span ng-show="popupData.fromRoomTypeView && popupData.all_data_selected">All room types</span>
+                    <span ng-show="!popupData.fromRoomTypeView && popupData.all_data_selected">All rates</span>
                 </div>
                 <div class="toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</div>
 
