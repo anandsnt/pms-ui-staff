@@ -55,6 +55,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         };
 
+        /**
+        * Click handler for create new set button
+        */
         $scope.createNewSetClicked = function(){
 
             if(!$scope.isAllSetsSaved()){
@@ -64,6 +67,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.id = null;
             newSet.name = '';
             
+
             newSet.monday = true;
             newSet.tuesday = true;
             newSet.wednesday = true;
@@ -71,7 +75,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.friday = true;
             newSet.saturday = true;
             newSet.sunday = true;
-
+            //The day will be enabled in current set, 
+            //only if it is not enabled in any other sets in current date range 
             for(var i in $scope.data.sets){
                 if($scope.data.sets[i].monday == true){
                     newSet.monday = false;
@@ -98,6 +103,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             newSet.room_rates = [];
 
+            //Crate the room rates array based on the available room_types 
             for(var i in $scope.data.room_types){
                 var roomType = {};
                 roomType.id = $scope.data.room_types[i].id;
