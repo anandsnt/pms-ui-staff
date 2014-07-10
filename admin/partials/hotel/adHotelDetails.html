@@ -259,7 +259,48 @@
 
 		</fieldset>
 
-		<fieldset class="holder right">
+		
+		
+		<fieldset class="holder right" ng-show="isAdminSnt">
+			<div class="form-title">
+				<h3><span>Hotel</span> MLI Settings </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<div class="entry">
+				<label for="mli-hotel-code"> MLI hotel code </label>
+				<input type="text" ng-model="data.mli_hotel_code" value="{{data.mli_hotel_code}}" placeholder="Enter MLI hotel code" name="mli-hotel-code" id="mli-hotel-code">
+			</div>
+
+			<div class="entry">
+				<label for="mli-chain-code"> MLI chain code </label>
+				<input type="text" ng-model="data.mli_chain_code" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
+			</div>
+
+			<div class="entry full-width">
+				<label for="certificate">
+					 MLI Token Certificate
+				</label>
+				<div class="file-upload">
+					<span class="input">{{fileName}}</span>
+					<input type="file" ng-model="certificate" accept="*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Attach Certificate
+					</button>
+				</div>
+			</div>
+			
+			<div class="entry full-width">
+				<label for="mli-access-url"> MLI Access URL </label>
+				<input type="text" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
+			</div>
+
+			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
+				Test MLI Connectivity
+			</button>
+
+		</fieldset>
+
+		<fieldset class="holder left" ng-show="isAdminSnt">
 			<div class="form-title">
 				<h3>
 					<span>Hotel</span>
@@ -306,45 +347,6 @@
 					TEST MLI PAYMENT GATEWAY
 				</button>
 			</div>
-
-		</fieldset>
-		
-		<fieldset class="holder right" ng-show="isAdminSnt">
-			<div class="form-title">
-				<h3><span>Hotel</span> MLI Settings </h3>
-				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-			</div>
-			<div class="entry">
-				<label for="mli-hotel-code"> MLI hotel code </label>
-				<input type="text" ng-model="data.mli_hotel_code" value="{{data.mli_hotel_code}}" placeholder="Enter MLI hotel code" name="mli-hotel-code" id="mli-hotel-code">
-			</div>
-
-			<div class="entry">
-				<label for="mli-chain-code"> MLI chain code </label>
-				<input type="text" ng-model="data.mli_chain_code" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
-			</div>
-
-			<div class="entry full-width">
-				<label for="certificate">
-					 MLI Token Certificate
-				</label>
-				<div class="file-upload">
-					<span class="input">{{fileName}}</span>
-					<input type="file" ng-model="certificate" accept="*" app-filereader />
-					<button type="button" class="button brand-colors">
-						Attach Certificate
-					</button>
-				</div>
-			</div>
-			
-			<div class="entry full-width">
-				<label for="mli-access-url"> MLI Access URL </label>
-				<input type="text" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
-			</div>
-
-			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
-				Test MLI Connectivity
-			</button>
 
 		</fieldset>
 
