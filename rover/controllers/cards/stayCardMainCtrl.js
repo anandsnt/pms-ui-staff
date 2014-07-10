@@ -161,7 +161,6 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.travelAgentInformation = data;
 				$scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('travelAgentFetchComplete');
-				console.log($scope.reservationDetails);
 
 			};
 			//	TAcard defaults to search mode 
@@ -178,9 +177,10 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			$scope.initGuestCard();
 			$scope.initCompanyCard();
 			$scope.initTravelAgentCard();
+			// console.log($scope.reservationDetails);
 		});
 
-		$scope.removeCard = function(card) {
+		$scope.removeCard = function(card, future) {
 			// This method returns the numnber of cards attached to the staycard
 			var checkNumber = function() {
 				var x = 0;
@@ -191,7 +191,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			}
 
 			//Cannot Remove the last card... Tell user not to select another card
-			if (checkNumber() > 1) {
+			if (checkNumber() > 1 && card != "") {
 				$scope.invokeApi(RVCompanyCardSrv.removeCard, {
 					'reservation': $stateParams.id,
 					'cardType': card
@@ -254,6 +254,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			// reset the id and the future reservation counts that were cached
 			if (card == 'guest') {
 				$scope.reservationDetails.guestCard.id = "";
+				// console.log('future reservation count is reset');
 				$scope.reservationDetails.guestCard.futureReservations = 0;
 				var contactInfoData = {
 					'contactInfo': {},
