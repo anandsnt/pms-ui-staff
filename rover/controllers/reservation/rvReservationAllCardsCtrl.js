@@ -49,6 +49,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 } else if ($(this).height() <= 120 && $scope.cardVisible) {
                     $scope.cardVisible = false;
                     $scope.checkEditMode();
+                    saveCards();
                     $scope.handleDrawClosing();
                     $scope.$apply();
                 }
@@ -87,6 +88,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.closeGuestCard = function() {
             $scope.guestCardHeight = resizableMinHeight;
             $scope.checkEditMode();
+            saveCards();
             $scope.handleDrawClosing();
             $scope.cardVisible = false;
         };
@@ -610,7 +612,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.initGuestCard(guest);
             $scope.viewState.isAddNewCard = false;
             $scope.reservationDetails.guestCard.id = guest.id;
-            
+
             if ($scope.viewState.reservationStatus.confirm) {
                 // Handle changes in the staycard
                 // Replace card
@@ -703,8 +705,27 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         };
 
         $scope.checkOutsideClick = function(targetElement) {
-            if ($(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1) {
-                // $scope.closeGuestCard();
+            //If this happens in the middle of a possible update
+            //check if the draw is open and check if it is in search Mode
+            if ($scope.cardVisible) {
+                // call a update routine of the respective card here
+                // possible values in $scope.UICards[0] : ['guest-card', 'company-card', 'travel-agent-card']
+                // check in the update routine if the search mode is off
+                saveCards();
+            }
+            // TODO: To check if the quest card needs to be closed
+            // $scope.closeGuestCard();
+        }
+
+        var saveCards = function() {
+            // CICO-7933
+            if ($scope.UICards[0] == 'travel-agent-card') {
+                $scope.$broadcast("saveTravelAgentContactInformation");
+            } else if ($scope.UICards[0] == 'company-card') {
+                $scope.$broadcast("saveCompanyContactInformation");
+            } else {
+                $scope.$broadcast('saveContactInfo');
+                $scope.$broadcast('SAVELIKES');
             }
         }
 
