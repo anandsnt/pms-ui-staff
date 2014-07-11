@@ -637,6 +637,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
+			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
 		}
 

@@ -71,7 +71,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			//TODO : Once this works pull it to a separate method 
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
+				// No more future reservations returned with this API call
+				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -139,7 +140,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
-				$scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
+				// No more future reservations returned with this API call
+				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
 				console.log($scope.reservationDetails);
 			};
@@ -159,7 +161,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.travelAgent.id;
 				$scope.travelAgentInformation = data;
-				$scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
+				// No more future reservations returned with this API call
+				// $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('travelAgentFetchComplete');
 
 			};
@@ -177,7 +180,26 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			$scope.initGuestCard();
 			$scope.initCompanyCard();
 			$scope.initTravelAgentCard();
-			// console.log($scope.reservationDetails);
+			// The future counts of the cards attached with the reservation
+			// will be received here!
+			// This code should be HIT everytime there is a removal or a replacement of
+			// any of the cards attached! 
+			//if cards are not attached future reservation values are coming in as null
+			var futureCounts = $scope.reservationListData.future_reservation_counts;
+
+
+			$scope.reservationDetails.guestCard.futureReservations = futureCounts.guest == null ? 0 : futureCounts.guest;
+			$scope.reservationDetails.companyCard.futureReservations = futureCounts.company == null ? 0 : futureCounts.company;
+			$scope.reservationDetails.travelAgent.futureReservations = futureCounts.travel_agent == null ? 0 : futureCounts.travel_agent;
+
+			// TODO: Remove the following commented out code!
+			// Leaving it now for further debugging if required
+			// console.log("FUTURE_COUNTER",{
+			// 	G: $scope.reservationDetails.guestCard.futureReservations,
+			// 	C: $scope.reservationDetails.companyCard.futureReservations,
+			// 	T: $scope.reservationDetails.travelAgent.futureReservations,
+			// });
+
 		});
 
 		$scope.removeCard = function(card, future) {
