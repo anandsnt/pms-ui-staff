@@ -31,11 +31,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   };
 
 	  var headingListDict = {  
-	    'DUEIN':  $filter('translate')('DUEIN_TITLE'),
-	    'INHOUSE': $filter('translate')('IN_HOUSE_TITLE'),
-	    'DUEOUT': $filter('translate')('CHECKING_OUT_TITLE'),
-	    'LATE_CHECKOUT': $filter('translate')('LATE_CHECKOUT_TITLE'),
-	    '': $filter('translate')('SEARCH_TITLE')
+	    'DUEIN':  "Checking In",
+	    'INHOUSE': "In House",
+	    'DUEOUT': "Checking Out",
+	    'LATE_CHECKOUT': "Checking Out Late",
+	    '': "Search"
 	  };
 	  $scope.heading = headingListDict[oldType]; 
       $scope.setTitle($scope.heading);

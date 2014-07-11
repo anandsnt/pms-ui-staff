@@ -15,7 +15,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     } else {
       $translate.use('EN');
     };
-    // $translate.fallbackLanguage('EN');
 
     /*
      * To close drawer on click inside pages
