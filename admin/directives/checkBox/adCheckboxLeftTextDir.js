@@ -12,7 +12,7 @@ admin.directive('adCheckboxtextLeft', function($timeout) {
             change: '=change',
             datagroup: '@datagroup',
             index: '@index',            
-            isDisabled: '@isDisabled',
+            isDisabled: '=isDisabled',
             width: '@'
 	    },
         

@@ -3,9 +3,9 @@
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
                 <div class="title-wrap">
-                    <h2 ng-show="!popupData.all_data_selected" class="h1">{{data.name}}</h2>
+                    <h2 ng-show="!popupData.all_data_selected" ng-class="{'title-expanded': showExpandedView}">{{data.name}}</h2>
                     <em ng-show="!popupData.all_data_selected">{{popupData.selectedDate| date:'EEEE, MMMM dd'}}</em>
-                    <!-- T show dates as bold for all room types and all rate types -->
+                    <!-- To show dates as bold for all room types and all rate types -->
                     <h2 ng-show="(popupData.fromRoomTypeView && popupData.all_data_selected) || (!popupData.fromRoomTypeView && popupData.all_data_selected)" class="h1">
                     	{{popupData.selectedDate| date:'EEEE, MMMM dd'}}
                 	</h2>
@@ -32,7 +32,7 @@
                         <td ng-show="popupData.fromRoomTypeView && !data.showEditView && data.hasAmountConfigured">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
                         </td>
-                         <td ng-show="showExpandedView">
+                        <td ng-show="showExpandedView">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
                         </td>
                         <td ng-show="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
