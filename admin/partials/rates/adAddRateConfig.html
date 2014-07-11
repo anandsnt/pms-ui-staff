@@ -32,7 +32,7 @@
             <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
         </li> -->
       
-        <li class="arrow-right " ng-show="currentClickedSet == $index">
+        <li class="arrow-right " ng-show="currentClickedSet == $index" style="width:38px;">
             <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         
