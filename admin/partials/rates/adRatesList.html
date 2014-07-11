@@ -48,7 +48,7 @@
 						</a>
 					</td>
 
-					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-25">
+					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-15">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.based_on.id, 'based_on_rate_id', rate.based_on.name)" ng-mouseleave="mouseLeavePopover()">
 							{{rate.based_on.name}}
 							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.based_on.id, 'basedOn')">
@@ -67,7 +67,7 @@
 							<div ng-show = "rate.date_range_count > 0" class="tooltip" ng-include="getPopoverTemplate($index, rate.id, 'dateRange')">
 						</span>
 					</td>
-					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-10">
+					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15">
 						<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
 							<div class="switch-button single" ng-class="{'on': rate.status}">
 								<input type="checkbox"  ng-checked="rate.status">
@@ -76,7 +76,7 @@
 						</div>
 						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
 					</td>
-					<td header-class="width-10">
+					<td header-class="width-15">
 						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)"  ng-hide="false">&nbsp;</span>
 					</td>
 				</tr>
