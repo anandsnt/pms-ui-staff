@@ -44,8 +44,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 * scroller options
 		 */
 		$scope.resizableOptions = {
-			minHeight: '90',
-			maxHeight: screen.height - 200,
+			minHeight: resizableMinHeight,
+			maxHeight: resizableMaxHeight,
 			handles: 's',
 			resize: function(event, ui) {
 				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
@@ -256,11 +256,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.openGuestCard = function() {
 			$scope.cardVisible = true;
+			$scope.guestCardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
 			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
 			//refreshing the scroller in guestcard's tab
-			$scope.$broadcast('REFRESHLIKESSCROLL');			
+			$scope.$broadcast('REFRESHLIKESSCROLL');
 		};
 
 		/**
@@ -271,6 +272,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			//Check if pending removals - If yes remove 
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
+			$scope.guestCardVisible = false;
 		};
 
 		$scope.handleDrawClosing = function() {

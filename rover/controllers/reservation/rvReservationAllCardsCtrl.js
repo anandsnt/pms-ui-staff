@@ -211,7 +211,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     'contactInfo': data,
                     'countries': $scope.countries,
                     'userId': guestData.id,
-                    'avatar': guestData.image,
+                    'avatar': (guestData && guestData.image) || $scope.cardHeaderImage,
                     'guestId': null,
                     'vip': false //TODO: check with API or the product team
                 };
@@ -468,12 +468,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.reservationData.guest.lastName = "";
                 $scope.reservationData.guest.city = "";
                 $scope.reservationData.guest.loyaltyNumber = "";
-
                 // update current controller scope
                 $scope.guestFirstName = "";
                 $scope.guestLastName = "";
                 $scope.guestCity = "";
-                $scope.cardHeaderImage = "";
             }
             this.resetCompanyCard = function() {
                 $scope.reservationData.company.id = "";
@@ -549,7 +547,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     'guestId': "",
                     'vip': "" //TODO: check with API or the product team
                 };
-                // // $scope.$emit('guestCardUpdateData', contactInfoData);
                 $scope.guestCardData.contactInfo = contactInfoData.contactInfo;
                 $scope.guestCardData.contactInfo.avatar = contactInfoData.avatar;
                 $scope.guestCardData.contactInfo.vip = contactInfoData.vip;
@@ -608,18 +605,15 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.guestFirstName = guest.firstName;
             $scope.guestLastName = guest.lastName;
             $scope.guestCity = guest.address.city;
-            $scope.cardHeaderImage = guest.image;
-            //$scope.closeGuestCard();
+
             // Fetch the guest Card
             $scope.initGuestCard(guest);
             $scope.viewState.isAddNewCard = false;
             $scope.reservationDetails.guestCard.id = guest.id;
-            console.log($scope.reservationData);
+            
             if ($scope.viewState.reservationStatus.confirm) {
-                // TODO : Handle changes in the staycard
-                // TODO : Replace card
-                console.log("These changes have to be communicated to the server with the reservation ID");
-                console.log("Replace Guest Card");
+                // Handle changes in the staycard
+                // Replace card
                 if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
                     $scope.replaceCardCaller('guest', guest, false);
                 } else {
@@ -658,10 +652,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.viewState.isAddNewCard = false;
             console.log($scope.reservationData);
             if ($scope.viewState.reservationStatus.confirm) {
-                // TODO : Handle changes in the staycard
-                // TODO : Replace card
-                console.log("These changes have to be communicated to the server with the reservation ID");
-                console.log("Replace Company Card");
+                // Handle changes in the staycard
+                // Replace card
                 if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
                     $scope.replaceCardCaller('company', company, false);
                 } else {
@@ -680,16 +672,13 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             // update current controller scope
             $scope.travelAgentName = travelAgent.account_name;
             $scope.travelAgentCity = travelAgent.city;
-            // $scope.closeGuestCard();
             $scope.reservationDetails.travelAgent.id = travelAgent.id;
             $scope.initTravelAgentCard(travelAgent);
             $scope.viewState.isAddNewCard = false;
-            console.log($scope.reservationData);
+
             if ($scope.viewState.reservationStatus.confirm) {
-                // TODO : Handle changes in the staycard
-                // TODO : Replace card
-                console.log("These changes have to be communicated to the server with the reservation ID");
-                console.log("Replace Travel Agent Card");
+                // Handle changes in the staycard
+                // Replace card
                 if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
                     $scope.replaceCardCaller('travel_agent', travelAgent, false);
                 } else {
