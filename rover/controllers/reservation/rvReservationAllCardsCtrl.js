@@ -273,7 +273,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$emit("hideLoader");
                 data.id = $scope.reservationDetails.companyCard.id;
                 $scope.companyContactInformation = data;
-                $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
+                // $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
                 $scope.$broadcast('companyCardAvailable');
             };
             //  companycard defaults to search mode 
@@ -292,7 +292,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$emit("hideLoader");
                 data.id = $scope.reservationDetails.travelAgent.id;
                 $scope.travelAgentInformation = data;
-                $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
+                // $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
                 $scope.$broadcast('travelAgentFetchComplete');
                 console.log($scope.reservationDetails);
 
