@@ -2,6 +2,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv) {
         BaseCtrl.call(this, $scope);
 
+        $scope.$emit("updateRoverLeftMenu","createReservation");
+
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
