@@ -285,7 +285,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				discardCard(cards[$scope.UICards[0]]);
 			}
 			if ($scope.viewState.pendingRemoval.status) {
-				processDeletion($scope.viewState.pendingRemoval.cardType);
+				// 7078 : Based on discussion with Jon, the comments werent meant
+				// for removal ... HENCE NEEDN'T PROCESS DELETION! JUST DELETE
+				// processDeletion($scope.viewState.pendingRemoval.cardType);
+				$scope.replaceCardCaller(true, $scope.viewState.pendingRemoval.cardType, null, false);
 			}
 		}
 
@@ -305,6 +308,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		// This method checks if any future reservation exists for the card to be removed and if 
 		// exists prompt user
+		// TODO : Check if this method can be resused for some other purpose later. else, discard
 		var processDeletion = function(cardType) {
 			if (cardType == 'guest') {
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
