@@ -3,7 +3,7 @@
         <li style="width:30px;">
             <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
-        <li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
+        <li style="width:25%" ng-hide="currentClickedSet == $index">{{set.name}}</li>
         <li ng-show="currentClickedSet == $index" style="width:25%">
             <ad-textbox disabled="!is_date_range_editable(dateRange.end_date)" value="set.name" style="width:150px; margin-top:10px;"></ad-textbox>
         </li>
