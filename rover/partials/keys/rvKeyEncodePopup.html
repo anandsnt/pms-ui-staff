@@ -10,7 +10,7 @@
 			
 			<span ng-show="data.is_late_checkout === true" class="h2 message">{{data.reservationStatusText}}<br/> {{data.late_checkout_time}}</span>
 			<span ng-show="data.is_late_checkout === false" class="h2 message">{{data.reservationStatusText}}</span>
-			<h1>
+			<h1 class="icon-key">
 				{{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}} 
 				<span>{{reservationData.reservation_card.room_number}}</span>
 			</h1>
@@ -30,7 +30,7 @@
 				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
 				<em class="status icon-key error" translate>ERROR_CONNECTING_TO_KEY_CARD_READER</em>
 				<div class="action">
-					<button type="button" id="try-again" class="button blue" ng-click="showDeviceConnectingMessge()" translate>TRY_AGAIN</button>
+					<button type="button" id="try-again" class="button blue" ng-click="tryAgainButtonPressed()" translate>TRY_AGAIN</button>
 					<button type="button" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button> 
 				</div>
 			</span>

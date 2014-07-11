@@ -449,7 +449,7 @@ height: 410px;
     text-transform:uppercase;
     margin: 20px 0 0 20px;
     #ratetable td input{
-        width: 155px;
+        width: 100%;
     }
     #ratetable td.room-type{
         text-align:right !important;
@@ -602,5 +602,17 @@ height: 410px;
 .form .entry.has-sortable .boxes li{
    min-width:100% ;
 }
+/*style to fix issue in rates grid */
+td{
+  .rate_entry{
+    float: left;
+    input{
+      background: none repeat scroll 0 0 #F5F5F5;
+    }
+  }
+}
 
 
+.rates-table-count{
+  width:8% !important;
+}
