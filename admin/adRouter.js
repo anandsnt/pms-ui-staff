@@ -7,6 +7,7 @@ admin.config([
 		  prefix: '/assets/adLocales/',
 		  suffix: '.json'
 		});
+		$translateProvider.fallbackLanguage('EN');
 		// dashboard state
 		$urlRouterProvider.otherwise('/admin/dashboard/0');
 

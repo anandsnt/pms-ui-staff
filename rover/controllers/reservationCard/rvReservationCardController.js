@@ -6,7 +6,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.currentReservationId = "";
 		$scope.reservationCount = 0;
 
-		var title = $filter('translate')('STAYCARD_TITLE');
+		var title = "Staycard";
 		$scope.setTitle(title);
 
 		$scope.reservationCardClick = function() {
