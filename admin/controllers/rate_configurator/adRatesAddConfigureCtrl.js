@@ -104,10 +104,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.room_rates = [];
 
             //Crate the room rates array based on the available room_types 
-            for(var i in $scope.data.room_types){
+            for(var i in $scope.rateData.room_types){
                 var roomType = {};
-                roomType.id = $scope.data.room_types[i].id;
-                roomType.name = $scope.data.room_types[i].name;
+                roomType.id = $scope.rateData.room_types[i].id;
+                roomType.name = $scope.rateData.room_types[i].name;
                 roomType.child = '';
                 roomType.double = '';
                 roomType.extra_adult = '';
@@ -157,6 +157,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
+        //The Response from server may not have 
+        //all the room_type details in in the set info.
+        //Calculate the room_rates dict for all selected room_types (from $scope.rateData.room_types)
         var updateSetsForAllSelectedRoomTypes = function(data){
             var roomAddDetails = {};
             //Iterate through room types
