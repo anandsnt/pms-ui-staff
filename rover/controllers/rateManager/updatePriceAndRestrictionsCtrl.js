@@ -137,9 +137,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
                     if(typeof selectedDateInfo != "undefined"){
-                        //Check if the rate set amount for single is configured for the selected date
-                        //If not configured, we should not display the price enter section 
-                        if(selectedDateInfo.single == undefined){
+                        //Check if the rate set amounts are configured for the selected date
+                        if(selectedDateInfo.single == undefined &&
+                            selectedDateInfo.double == undefined &&
+                            selectedDateInfo.extra_adult == undefined &&
+                            selectedDateInfo.child == undefined){
+
                             $scope.data.hasAmountConfigured = false;
                         } else {
                             $scope.data.single = selectedDateInfo.single;
