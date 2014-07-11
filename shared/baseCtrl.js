@@ -157,7 +157,8 @@ function BaseCtrl($scope){
     		$scope.$parent.myScrollOptions = {}; 		
     	}
     	
-    	$scope.$parent.myScrollOptions[key] = scrollerOptions;       	
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions; 
+
     };
 
     /*
@@ -166,7 +167,8 @@ function BaseCtrl($scope){
     */
     $scope.refreshScroller = function (key){
     	setTimeout(function(){
-    		$scope.$parent.myScroll[key].refresh();
+    		if(typeof $scope.$parent.myScroll !== 'undefined' && key in $scope.$parent.myScroll)
+    			$scope.$parent.myScroll[key].refresh();
     	}, $scope.timeOutForScrollerRefresh);   	
     };
 

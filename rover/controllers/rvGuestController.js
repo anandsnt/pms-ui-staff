@@ -259,6 +259,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.guestCardHeight = resizableMaxHeight;
 			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
+			//refreshing the scroller in guestcard's tab
+			$scope.$broadcast('REFRESHLIKESSCROLL');
 		};
 
 		/**
@@ -420,11 +422,22 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.rate.difference = (function() {
 								if (parseInt(companyData.rate.based_on.value) < 0) {
 									if (companyData.rate.based_on.type == "amount") {
-										return "$" + (parseFloat(companyData.rate.based_on.value)) * -1 + " off ";
+										return "$" + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
 									} else {
 										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
 									}
 
+								}
+								return "";
+							})();
+
+							companyData.rate.surplus = (function() {
+								if (parseInt(companyData.rate.based_on.value) > 0) {
+									if (companyData.rate.based_on.type == "amount") {
+										return " plus $" + parseFloat(companyData.rate.based_on.value).toFixed(2);
+									} else {
+										return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+									}
 								}
 								return "";
 							})();
@@ -475,11 +488,22 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.rate.difference = (function() {
 									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
 										if (travelAgentData.rate.based_on.type == "amount") {
-											return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1) + " off ";
+											return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
 										} else {
 											return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
 										}
 
+									}
+									return "";
+								})();
+
+								travelAgentData.rate.surplus = (function() {
+									if (parseInt(travelAgentData.rate.based_on.value) > 0) {
+										if (travelAgentData.rate.based_on.type == "amount") {
+											return " plus $" + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
+										} else {
+											return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
+										}
 									}
 									return "";
 								})();

@@ -72,8 +72,11 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
 
     $scope.saveRoomTypes = function(){
         var roomIdArray =[];
+        var roomTypes = [];
         angular.forEach($scope.assignedRoomTypes, function(item){
-           roomIdArray.push(item.id);
+            roomTypeItem = {"id": item.id, "name": item.name};
+            roomTypes.push(roomTypeItem);
+            roomIdArray.push(item.id);
         });
         var data = {
             'room_type_ids': roomIdArray,
@@ -81,6 +84,7 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
         };
         var saveRoomTypesSuccessCallback = function(data){
             $scope.$emit('hideLoader');
+            $scope.rateData.room_types = roomTypes;
             $scope.rateData.room_type_ids = roomIdArray;
             //Navigate to next level. If date ranges are available move to config rate screen
             //If no date range added, move to add_date_range screen

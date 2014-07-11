@@ -36,10 +36,10 @@
 		<li >
 			<a ng-click="toggleDrawerMenu()" href="/logout">
 				<label class="icon-menu icon-sign-out"></label>
-				<a class="fill">
+			</a>
+				<a class="fill" ng-click="toggleDrawerMenu()" href="/logout">
 					Sign Out
 				</a>
-			</a>
 		</li>
 	<!-- 	<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
@@ -52,10 +52,10 @@
 		<li id="sign-out">
 			<a  ng-click="toggleDrawerMenu()" href="/logout">
 				<label class="icon-menu icon-sign-out"></label>
-				<a>
-					Sign Out
-				</a>
-		    </a>
+			</a>
+			<a ng-click="toggleDrawerMenu()" href="/logout">
+				Sign Out
+			</a>
 		</li>
 		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />

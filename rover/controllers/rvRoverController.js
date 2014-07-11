@@ -1,7 +1,15 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
+  	
      if (hotelDetails.language){
       $translate.use(hotelDetails.language.value);
+      $translate.fallbackLanguage('EN');
+      /* For reason unclear, the fallback translation does not trigger
+       * unless a translation is requested explicitly, for second screen
+       * onwards. 
+       * TODO: Fix this bug in ng-translate and implement in this here.
+       */
+      setTimeout(function(){$translate('NA')},1000); //Word around.
     }
     else{
       $translate.use('EN');
