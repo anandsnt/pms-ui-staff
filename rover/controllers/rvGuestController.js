@@ -285,7 +285,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				discardCard(cards[$scope.UICards[0]]);
 			}
 			if ($scope.viewState.pendingRemoval.status) {
-				$scope.removeCard($scope.viewState.pendingRemoval.cardType);
+				// 7078 : Based on discussion with Jon, the comments werent meant
+				// for removal ... HENCE NEEDN'T PROCESS DELETION! JUST DELETE
+				// processDeletion($scope.viewState.pendingRemoval.cardType);
+				$scope.replaceCardCaller(true, $scope.viewState.pendingRemoval.cardType, null, false);
 			}
 		}
 
@@ -302,6 +305,66 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 			}
 		};
+
+		// This method checks if any future reservation exists for the card to be removed and if 
+		// exists prompt user
+		// TODO : Check if this method can be resused for some other purpose later. else, discard
+		var processDeletion = function(cardType) {
+			if (cardType == 'guest') {
+				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+					$scope.replaceCardCaller(true, 'guest', null, false);
+				} else {
+					$scope.checkFuture(true, 'guest', null);
+				}
+
+			} else if (cardType == 'company') {
+				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
+					$scope.replaceCardCaller(true, 'company', null, false);
+				} else {
+					$scope.checkFuture(true, 'company', null);
+				}
+			} else if (cardType == 'travel_agent') {
+				if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
+					$scope.replaceCardCaller(true, 'travel_agent', null, false);
+				} else {
+					$scope.checkFuture(true, 'travel_agent', null);
+				}
+			}
+		}
+
+		$scope.checkFuture = function(removal, cardType, card) {
+			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
+			// Changing all reservations will move all stay cards to the new card. 
+			// This will only apply when a new company / TA card had been selected. 
+			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
+			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
+			// With choice of 'Change this reservation only' and 'Change all Reservations'.
+			var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
+			if (cardType == 'guest') {
+				var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
+			}
+
+			ngDialog.open({
+				template: templateUrl,
+				className: 'ngdialog-theme-default stay-card-alerts',
+				scope: $scope,
+				closeByDocument: true,
+				closeByEscape: true,
+				data: JSON.stringify({
+					cardType: cardType,
+					card: card,
+					removal: removal
+				})
+			});
+		}
+
+		$scope.replaceCardCaller = function(removal, cardType, card, future) {
+			if (!removal) {
+				$scope.replaceCard(cardType, card, future);
+			} else {
+				$scope.removeCard(cardType, future);
+			}
+		}
 
 		$scope.clickedDiscardCard = function(cardType, discard) {
 			discardCard(cardType, discard);
@@ -510,59 +573,30 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		}
 
-		$scope.checkFuture = function(cardType, card) {
-			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
-			// Changing all reservations will move all stay cards to the new card. 
-			// This will only apply when a new company / TA card had been selected. 
-			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
-			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
-			// With choice of 'Change this reservation only' and 'Change all Reservations'.
-			var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
-			if (cardType == 'guest') {
-				var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
-			}
-
-			ngDialog.open({
-				template: templateUrl,
-				className: 'ngdialog-theme-default stay-card-alerts',
-				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false,
-				data: JSON.stringify({
-					cardType: cardType,
-					card: card
-				})
-			});
-		}
-
-		$scope.replaceCardCaller = function(cardType, card, future) {
-			$scope.replaceCard(cardType, card, future);
-		}
-
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('company', company, false);
+				$scope.replaceCardCaller(false, 'company', company, false);
 			} else {
-				$scope.checkFuture('company', company);
+				$scope.checkFuture(false, 'company', company);
 			}
 		}
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
-				$scope.replaceCardCaller('travel_agent', travelAgent, false);
+				$scope.replaceCardCaller(false, 'travel_agent', travelAgent, false);
 			} else {
-				$scope.checkFuture('travel_agent', travelAgent);
+				$scope.checkFuture(false, 'travel_agent', travelAgent);
 			}
 		}
 
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('guest', guest, false);
+				$scope.replaceCardCaller(false, 'guest', guest, false);
 			} else {
-				$scope.checkFuture('guest', guest);
+				$scope.checkFuture(false, 'guest', guest);
 			}
 		}
 
@@ -607,6 +641,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
+			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
 		}
 
