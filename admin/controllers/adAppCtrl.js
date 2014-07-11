@@ -325,6 +325,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			
 			if (data.language){
 				$translate.use(data.language.value);
+				$translate.fallbackLanguage('EN');
 			}
 			else
 				$translate.use('EN');

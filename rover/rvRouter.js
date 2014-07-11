@@ -9,6 +9,8 @@ sntRover.config([
           prefix: '/assets/rvLocales/',
           suffix: '.json?time='+currentTime
         });
+        $translateProvider.fallbackLanguage('EN');
+        
         // default state
         $urlRouterProvider.otherwise('/');
 		

@@ -240,7 +240,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			    $scope.$emit("showLoader");
 			}
 			catch(err) {
-			   $scope.errorMessage = ["MLI Merchant ID is not set"];
+			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
 			 		
 		}
