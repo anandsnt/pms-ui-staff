@@ -162,6 +162,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         //Calculate the room_rates dict for all selected room_types (from $scope.rateData.room_types)
         var updateSetsForAllSelectedRoomTypes = function(data){
             var roomAddDetails = {};
+            var roomRate = {};
             //Iterate through room types
             for(var i in $scope.rateData.room_types){
 
@@ -173,10 +174,18 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     //Room rates in sets
                     for(var k in data.sets[j].room_rates){
                         roomRate = data.sets[j].room_rates[k];
+                        //Round off the values to two decimal places
+                        data.sets[j].room_rates[k].single = precisionTwo(roomRate.single);
+                        data.sets[j].room_rates[k].double = precisionTwo(roomRate.double);
+                        data.sets[j].room_rates[k].extra_adult = precisionTwo(roomRate.extra_adult);
+                        data.sets[j].room_rates[k].child = precisionTwo(roomRate.child);
+
                         if($scope.rateData.room_types[i].id == roomRate.id){
                             foundRoomType = true;
                             continue;
                         }
+
+
                     }
 
                     //If the current room_type detail not available in the room_rates dict from server
