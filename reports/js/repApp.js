@@ -191,7 +191,7 @@ reports.controller('reporstList', [
         // off again with another dirty hack to resolve an iPad issue
         // when picking the date, clicking on the black mask doesnt close calendar 
         var closeMask = function(e) {
-            if ( $(e.target).hasClass('datepicker-mask') ) {
+            if ( $(e.target).hasClass('datepicker-mask') || $(e.target).is('body') ) {
                 $( 'body' ).find( '.datepicker-mask' ).trigger( 'click' );
             }
         };
@@ -611,7 +611,7 @@ reports.controller('reportDetails', [
         // off again with another dirty hack to resolve an iPad issue
         // when picking the date, clicking on the black mask doesnt close calendar 
         var closeMask = function(e) {
-            if ( $(e.target).hasClass('datepicker-mask') ) {
+            if ( $(e.target).hasClass('datepicker-mask') || $(e.target).is('body') ) {
                 $( 'body' ).find( '.datepicker-mask' ).trigger( 'click' );
             }
         };
