@@ -82,7 +82,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 		
 		$scope.$on('REFRESHLIKESSCROLL', function() {
 			$scope.refreshScroller('likes_info');
-
 		});
 		$scope.$on("$viewContentLoaded", function() {
 			$scope.refreshScroller('likes_info');

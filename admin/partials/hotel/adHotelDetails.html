@@ -5,6 +5,7 @@
 	</header>
 	<form class="form float" >
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
 		
 		<fieldset class="holder left">
 			<div class="form-title">
@@ -257,6 +258,8 @@
 			</div>
 
 		</fieldset>
+
+		
 		
 		<fieldset class="holder right" ng-show="isAdminSnt">
 			<div class="form-title">
@@ -294,6 +297,56 @@
 			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
 				Test MLI Connectivity
 			</button>
+
+		</fieldset>
+
+		<fieldset class="holder left" ng-show="isAdminSnt">
+			<div class="form-title">
+				<h3>
+					<span>Hotel</span>
+					MLI Payement Gateway Settings
+				</h3>
+			</div>
+			<div class="entry">
+				<label for="mli-payment-gateway-url">
+					MLI payment gateway url
+				</label>
+				<input type="text" ng-model="data.mli_payment_gateway_url" value="{{data.mli_payment_gateway_url}}" placeholder="Enter MLI payment gateway url">
+			</div>
+
+			<div class="entry">
+				<label for="mli-merchant-id">
+					MLI Merchant ID
+				</label>
+				<input type="text" ng-model="data.mli_merchant_id" value="{{data.mli_merchant_id}}" placeholder="Enter MLI Merchant ID">
+			</div>
+
+			<div class="entry">
+				<label for=" mli-api-version">
+					MLI api version
+				</label>
+				<input type="text" ng-model="data.mli_api_version" value="{{data.mli_api_version}}" placeholder="Enter MLI api version">
+			</div>
+
+			<div class="entry">
+				<label for="mli-api-key">
+					MLI api key
+				</label>
+				<input type="password" ng-model="data.mli_api_key" value="{{data.mli_api_key}}" placeholder="Enter MLI api key">
+			</div>
+
+			<div class="entry">
+				<label for="mli-site-code">
+					MLI site code
+				</label>
+				<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
+			</div>
+
+			<div class="entry full-width">
+				<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">
+					TEST MLI PAYMENT GATEWAY
+				</button>
+			</div>
 
 		</fieldset>
 

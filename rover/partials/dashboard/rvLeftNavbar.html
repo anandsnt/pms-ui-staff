@@ -10,14 +10,14 @@
 			MENU
 		</li>		
 
-		<li ng-if="menuItem.action != ''" ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}" ui-sref="{{menuItem.action}}" ng-hide="menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])"> 			
+		<li ng-if="menuItem.action != ''" ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}" ui-sref="{{menuItem.action}}" ng-hide="menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])"> 			
 			<a translate="{{menuItem.title}}">
 			</a>
 			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
 			</div>
 		</li>
 
-		<li ng-if="menuItem.action == ''" ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}" ng-hide="menuItem.standAlone && !isStandAlone"> 			
+		<li ng-if="menuItem.action == ''" ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex!='' &&( selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}" ng-hide="menuItem.standAlone && !isStandAlone"> 			
 			<a translate="{{menuItem.title}}">
 			</a>
 			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
@@ -36,10 +36,10 @@
 		<li >
 			<a ng-click="toggleDrawerMenu()" href="/logout">
 				<label class="icon-menu icon-sign-out"></label>
-				<a class="fill">
+			</a>
+				<a class="fill" ng-click="toggleDrawerMenu()" href="/logout">
 					Sign Out
 				</a>
-			</a>
 		</li>
 	<!-- 	<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
@@ -52,10 +52,10 @@
 		<li id="sign-out">
 			<a  ng-click="toggleDrawerMenu()" href="/logout">
 				<label class="icon-menu icon-sign-out"></label>
-				<a>
-					Sign Out
-				</a>
-		    </a>
+			</a>
+			<a ng-click="toggleDrawerMenu()" href="/logout">
+				Sign Out
+			</a>
 		</li>
 		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />

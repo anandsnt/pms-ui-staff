@@ -29,8 +29,11 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
     	$scope.errorMessage ="";
     	$scope.successMessage ="";
     });
-	$scope.setScroller('loyaltyList');
-
+    var scrollerOptions = {click: true, preventDefault: false};
+	$scope.setScroller('loyaltyList', scrollerOptions);
+	$scope.$on('REFRESHLIKESSCROLL', function() {
+		$scope.refreshScroller('loyaltyList');
+	});
 
 	$scope.addNewFreaquentLoyality =  function(){
 		ngDialog.open({
@@ -75,8 +78,8 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
+	
 	$scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
-		
 		if(typeof $scope.loyaltyData == 'undefined')
 			return;
 		/* Temperory fix. Eventhough the data is getting deleted, it is not updating the view.
@@ -96,6 +99,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 			
 		}		
 	};
+	
+	$scope.$on("loyaltyProgramDeleted",function(e,id, index, loyaltyProgram){
+		$scope.loyaltyProgramDeleted(id, index, loyaltyProgram);	
+	});
 
 	$scope.$on("loyaltyDeletionError",function(e,error){
 
