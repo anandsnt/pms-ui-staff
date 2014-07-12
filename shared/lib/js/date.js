@@ -110,20 +110,7 @@ angular.module('ui.date', [])
         // Default to ISO formatting
         modelCtrl.$formatters.push(function(value) {
           if (angular.isString(value) ) {
-            
-            // Vijay was here hacking the JS issue with showing previous date:
-            // assuming that the date is provided as for e.g: '1987-01-06'
-            // 'YYYY-MM-DD'
-
-            // get the year
-            var yy = value.split( '-' )[0];
-
-            // get the month, now since months in JS starts from 0
-            var mm = parseInt( value.split('-')[1] ) - 1;
-
-            // get the dates
-            var dd = value.split( '-' )[2];
-            return new Date( yy, mm, dd );
+            return tzIndependentDate(value);
           }
           return null;
         });

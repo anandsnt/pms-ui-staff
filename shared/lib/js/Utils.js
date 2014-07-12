@@ -251,16 +251,18 @@ function precisionTwo(value){
     return parsed;
 }
 
-tzIndependentDate = function(st){
+var tzIndependentDate = function(st){
     var d = new Date(st);
     var r = d.getTime();
-    if ((d.getHours() !=0) || (d.getMinutes() !=0)){
-        r += d.getTimezoneOffset()*60*1000;
+
+    if ( (d.getHours() != 0) || (d.getMinutes() != 0) ) {
+        r += d.getTimezoneOffset() * 60 * 1000;
     }
 
-    if (d.getTimezoneOffset() < 0){
-     r -= d.getTimezoneOffset()*60*1000;
+    if ( d.getTimezoneOffset() < 0 ) {
+        r -= d.getTimezoneOffset() * 60 * 1000;
     }
+    
     return new Date(r);
 }
 
