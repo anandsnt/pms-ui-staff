@@ -206,8 +206,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
 
-
-        $scope.saveSet = function (index, dateRangeId) {
+        //Saves the individual set
+        $scope.saveSet = function (dateRangeId, index) {
 
             var saveSetSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
@@ -311,12 +311,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.data.sets[index].isEnabled = false;
             }
             return enableSetUpdateButton;
-        };
-
-        $scope.saveDateRange = function (dateRangeId) {
-            angular.forEach($scope.data.sets, function (value, key) {
-                $scope.saveSet(key, dateRangeId);
-            });
         };
 
         $scope.popupCalendar = function () {
