@@ -206,8 +206,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
 
-
-        $scope.saveSet = function (index, dateRangeId) {
+        //Saves the individual set
+        $scope.saveSet = function (dateRangeId, index) {
 
             var saveSetSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
@@ -313,26 +313,24 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             return enableSetUpdateButton;
         };
 
-        $scope.saveDateRange = function (dateRangeId) {
-            angular.forEach($scope.data.sets, function (value, key) {
-                $scope.saveSet(key, dateRangeId);
-            });
-        };
-
         $scope.popupCalendar = function () {
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
                 className: 'ngdialog-theme-default calendar-modal',
+                closeByDocument: false,
                 scope: $scope
             });
         };
 
+        //For a rate in a date range, a day can not be selected in more than one rate sets
         $scope.toggleDays = function (index, mod) {
             angular.forEach($scope.data.sets, function (value, key) {
-                $scope.data.sets[key][mod] = false;
+                //Deselect the day in all sets other than current selected set.
+                if(key != index){
+                    $scope.data.sets[key][mod] = false;
+                }
             });
-            $scope.data.sets[index][mod] = true;
         };
 
         // check whether date range is past

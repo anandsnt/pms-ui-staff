@@ -364,6 +364,11 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
 		that.setStatusAndMessage(message, 'error');
+		//Check if digest is already in progress - if not start digest
+		if(!$scope.$$phase) {
+			$scope.$apply();
+		}
+
 	};
 
 	// Close popup

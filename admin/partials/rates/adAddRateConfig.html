@@ -62,6 +62,11 @@
             <td align="center" ng-hide="!is_date_range_editable(dateRange.end_date)">
                 <span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span>
             </td>
+            <!-- To compensate for arrows. in date range not editable case -->
+            <td align="center" ng-show="!is_date_range_editable(dateRange.end_date)">
+                &nbsp;
+            </td>
+
             <td align="left">
                 <div class ="rate_entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
@@ -85,8 +90,8 @@
         <td width="16%" align="left">&nbsp;</td>
         <td width="4%" align="center">&nbsp;</td>
         <td width="15%" style="text-align:right;" colspan="3">
-            <button type="button" class="button" ng-click="saveDateRange(dateRange.id)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
-            <button type="button" class="button" ng-click="saveDateRange(dateRange.id)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
+            <button type="button" class="button" ng-click="saveSet(dateRange.id, $index)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
+            <button type="button" class="button" ng-click="saveSet(dateRange.id, $index)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
         </td>
 
          </tr>
