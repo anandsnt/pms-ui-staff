@@ -31,7 +31,7 @@
             <div class="cellbg">
                 <span ng-show="!weekDay.is_editable">&nbsp;</span>
                 <span ng-show="weekDay.is_editable">{{ weekDay.date | date:'dd' }}</span>
-                <input ng-model="weekDay.value" ng-disabled="!weekDay.is_editable" />
+                <input ng-model="weekDay.value" ng-disabled="!weekDay.is_editable" ng-class="{'disabled-bg': !weekDay.is_editable}"/>
             </div>
         </td>
 
