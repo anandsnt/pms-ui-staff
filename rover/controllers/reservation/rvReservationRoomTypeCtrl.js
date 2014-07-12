@@ -219,11 +219,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
-
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
 			$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;
 			$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
+			$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id;
+			$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id;
 			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
 			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
