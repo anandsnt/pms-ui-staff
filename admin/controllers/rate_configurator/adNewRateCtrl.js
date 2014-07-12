@@ -6,6 +6,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
+            $scope.prevMenu = "";
             // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",
@@ -92,6 +93,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
          $scope.$on("changeMenu", function (e, value) {
+            // keep track of previous menu for switching - on Cancel button click
+            $scope.prevMenu = $scope.rateMenu;
             if (!isNaN(parseInt(value))){
                 value = "dateRange."+value;
             }
@@ -283,7 +286,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         })
 
         $scope.addNewDateRange = function(){
-            $scope.rateMenu ='ADD_NEW_DATE_RANGE';
+            $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
             // reset calendar
             $scope.$broadcast('resetCalendar');
         };
@@ -294,6 +297,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!$scope.rateData.id || $scope.rateData.room_type_ids.length == 0) { return false; }
             return true;
         };
+
+        // on click Cancel button redirect to previous active menu
+        $scope.cancelMenu = function(){
+            $scope.$emit("changeMenu", $scope.prevMenu);
+        }
 
         /*
          * init call
