@@ -242,3 +242,11 @@ function getAvatharUrl(title){
 		// TODO: handle exception
 	}
 }
+
+/**
+* utils function convert any number to number with two decimal points.
+*/
+function precisionTwo(value){
+    var parsed = value == '' || value == null || typeof value == 'undefined' ? '': parseFloat(value).toFixed(2);
+    return parsed;
+}

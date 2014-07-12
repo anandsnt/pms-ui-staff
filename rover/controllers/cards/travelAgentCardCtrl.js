@@ -113,6 +113,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
 				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
+					//if a new card has been added, reset the future count to zero
+					$scope.reservationDetails.travelAgent.futureReservations = 0;
 					$scope.viewState.pendingRemoval.cardType = "";
 					$scope.replaceCard('travel_agent', {
 						id: data.id

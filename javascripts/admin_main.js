@@ -17,6 +17,7 @@
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
+//=require ../shared/lib/js/Utils.js
 //=require_tree ../admin/adRouter
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
