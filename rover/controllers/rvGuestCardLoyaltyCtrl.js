@@ -87,18 +87,11 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		/* Temperory fix. Eventhough the data is getting deleted, it is not updating the view.
 		 * Assuming that array slice does not trigger watcher properly, adding a push & pop.
 		 */
-		if(loyaltyProgram == 'FFP'){
-			
-			$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
-			$scope.loyaltyData.userMemberships.frequentFlyerProgram.push({});
-			$scope.loyaltyData.userMemberships.frequentFlyerProgram.pop();
-			
+		if(loyaltyProgram == 'FFP'){			
+			$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);			
 		}else{
 			
 			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
-			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push({});
-			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.pop();
-			
 		}		
 
 	});
