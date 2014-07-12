@@ -75,7 +75,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
-
+		
 		setTimeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
         }, 1000);
@@ -169,8 +169,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
 		}
 		$scope.calculatedHeight = totalHeight;
-		
-		$scope.$parent.myScroll['registration-content'].refresh();
+		$scope.refreshScroller('registration-content');
 		$scope.currentActiveBill = billIndex;
 		$scope.showActiveBillFeesDetails = billIndex;
 		$scope.calculateHeightAndRefreshScroll();
@@ -349,33 +348,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 /*
 	  * To show vertical scroll
 	  */
-	 $scope.$parent.myScrollOptions = {		
-		    'registration-content': {
-		    	scrollbars: true,
-		        snap: false,
-		        hideScrollbar: false,
-		        preventDefault: false
-		    }
-	 };
-	 $scope.$parent.myScrollOptions = {		
-		    'billDays': {
-		    	
-		    	scrollX : true,
-				scrollbars : true,
-				// interactiveScrollbars : true,
-				click : true,
-		        preventDefault: false
-		    }
-	 };
+	 $scope.setScroller('registration-content');
+	 $scope.setScroller('billDays');
 	 
 	 /*
 	  * Refresh scroll once page is loaded.
 	  */
 	 $scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
-			$scope.$parent.myScroll['registration-content'].refresh();
-			$scope.$parent.myScroll['billDays'].refresh();
-			
+			$scope.refreshScroller('registration-content');
+			$scope.refreshScroller('billDays');
 			}, 
 		3000);
      });
@@ -507,7 +489,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			}
 		}
 		if(dayDate == checkoutDate && dayDate != checkinDate){
-			console.log(JSON.stringify(reservationBillData.bills[$scope.currentActiveBill]));
 			if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined && reservationBillData.bills[$scope.currentActiveBill].addons.length >0){
 				dayClass = "check-out last";
 			} else {
@@ -537,34 +518,41 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		var height = 0;
 		var width = 0;
 		if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails){
+			height = parseInt(height) + parseInt(20);//For table title
 			if(reservationBillData.bills[$scope.currentActiveBill].total_fees.length > 0){
 				countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(7);
 			}
-			
-			height = parseInt(height) + parseInt(countFeesElements*67);
+			height = parseInt(height) + parseInt(countFeesElements*45);
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
+				height = parseInt(height) + parseInt(25);
+			}
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
+				height = parseInt(height) + parseInt(25);
+			}
 		}
+		else{
+			//If Total fees toggle is closed.
+			height = parseInt(height) + parseInt(100);
+		}
+		
 		if($scope.showRoomDetailsIndex!=-1){
 			height = parseInt(height) + parseInt(billTabHeight) + parseInt(roomTypeDescriptionLength);
 		}
-		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
-		
-		if($scope.routingArrayCount>0){
-			height = parseInt(height) + parseInt($scope.routingArrayCount * 25);
-		}
-		if($scope.incomingRoutingArrayCount>0){
-			height = parseInt(height) + parseInt($scope.incomingRoutingArrayCount * 25);
-		}
 		if($scope.clickedButton == "checkinButton" || $scope.clickedButton == "checkoutButton"){
-			if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill)
-	     		height = parseInt(height) + parseInt(500);
+			height = parseInt(height) + parseInt(100);//For checkin or checkout buttons
+			if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill && $scope.reservationBillData.required_signature_at !== "NO_SIGNATURE"){
+				//For siganture Pad.
+				if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails) height = parseInt(height) + parseInt(250);
+	     		else height = parseInt(height) + parseInt(300);
+	     	}
 	    };
 	    if($scope.showBillingInfo){
-	        var routingLength =	($scope.reservationBillData.routing_array.length*15);
-	    	height = parseInt(height) + parseInt(routingLength);
+	        var routingLength =	($scope.reservationBillData.routing_array.length*32);
+	    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
 	    }
-	     if($scope.showIncomingBillingInfo){
-	        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*15);
-	    	height = parseInt(height) + parseInt(routingLength);
+	    if($scope.showIncomingBillingInfo){
+	        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*32);
+	    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
 	    }
 	    width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
 	    if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
@@ -574,13 +562,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	    	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].group_items.length*70);
 	    }
 		$scope.calculatedHeight = height;
-		console.log(">>>>>>>>>>>>>>>>"+width)
+		
 		$scope.calculatedWidth = width;
 		setTimeout(function(){
-			$scope.$parent.myScroll['registration-content'].refresh();
-			$scope.$parent.myScroll['billDays'].refresh();
+			$scope.refreshScroller('registration-content');
+			$scope.refreshScroller('billDays');
 			}, 
-		1800);
+		2000);
 		
 	};
 	// To enable scroll
@@ -679,13 +667,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response){
-		console.log(response);
 		$scope.$emit('hideLoader');
 		$scope.showSuccessPopup(response);
 	};
 	// To handle failure callback of complete checkout
 	$scope.completeCheckoutFailureCallback = function(data){
-		console.log(data);
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};

@@ -104,10 +104,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             newSet.room_rates = [];
 
             //Crate the room rates array based on the available room_types 
-            for(var i in $scope.data.room_types){
+            for(var i in $scope.rateData.room_types){
                 var roomType = {};
-                roomType.id = $scope.data.room_types[i].id;
-                roomType.name = $scope.data.room_types[i].name;
+                roomType.id = $scope.rateData.room_types[i].id;
+                roomType.name = $scope.rateData.room_types[i].name;
                 roomType.child = '';
                 roomType.double = '';
                 roomType.extra_adult = '';
@@ -157,8 +157,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
+        //The Response from server may not have 
+        //all the room_type details in in the set info.
+        //Calculate the room_rates dict for all selected room_types (from $scope.rateData.room_types)
         var updateSetsForAllSelectedRoomTypes = function(data){
             var roomAddDetails = {};
+            var roomRate = {};
             //Iterate through room types
             for(var i in $scope.rateData.room_types){
 
@@ -170,10 +174,18 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     //Room rates in sets
                     for(var k in data.sets[j].room_rates){
                         roomRate = data.sets[j].room_rates[k];
+                        //Round off the values to two decimal places
+                        data.sets[j].room_rates[k].single = precisionTwo(roomRate.single);
+                        data.sets[j].room_rates[k].double = precisionTwo(roomRate.double);
+                        data.sets[j].room_rates[k].extra_adult = precisionTwo(roomRate.extra_adult);
+                        data.sets[j].room_rates[k].child = precisionTwo(roomRate.child);
+
                         if($scope.rateData.room_types[i].id == roomRate.id){
                             foundRoomType = true;
                             continue;
                         }
+
+
                     }
 
                     //If the current room_type detail not available in the room_rates dict from server
@@ -194,8 +206,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
 
-
-        $scope.saveSet = function (index, dateRangeId) {
+        //Saves the individual set
+        $scope.saveSet = function (dateRangeId, index) {
 
             var saveSetSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
@@ -301,26 +313,24 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             return enableSetUpdateButton;
         };
 
-        $scope.saveDateRange = function (dateRangeId) {
-            angular.forEach($scope.data.sets, function (value, key) {
-                $scope.saveSet(key, dateRangeId);
-            });
-        };
-
         $scope.popupCalendar = function () {
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
                 className: 'ngdialog-theme-default calendar-modal',
+                closeByDocument: false,
                 scope: $scope
             });
         };
 
+        //For a rate in a date range, a day can not be selected in more than one rate sets
         $scope.toggleDays = function (index, mod) {
             angular.forEach($scope.data.sets, function (value, key) {
-                $scope.data.sets[key][mod] = false;
+                //Deselect the day in all sets other than current selected set.
+                if(key != index){
+                    $scope.data.sets[key][mod] = false;
+                }
             });
-            $scope.data.sets[index][mod] = true;
         };
 
         // check whether date range is past

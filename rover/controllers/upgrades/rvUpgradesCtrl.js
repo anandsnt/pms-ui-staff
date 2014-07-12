@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', '$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog){
+sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
 	
@@ -90,7 +90,14 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 			if($scope.clickedButton == "checkinButton"){
 				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 			} else {
-				$scope.backToStayCard();
+				$scope.reservationData.reservation_card.room_number = selectedRoomNumber;
+				$scope.reservationData.reservation_card.room_type_description = selectedTypeDescription;
+				$scope.reservationData.reservation_card.room_type_code = selectedTypeCode;
+				$scope.reservationData.reservation_card.room_status = "READY";
+				$scope.reservationData.reservation_card.fo_status = "VACANT";
+				$scope.reservationData.reservation_card.is_upsell_available = false;
+				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+				$scope.backToStayCard();				
 			}
 			
 		};
@@ -101,6 +108,9 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_no = parseInt($scope.upgradesList[index].upgrade_room_number, 10);
+		var selectedRoomNumber = params.room_no;
+		var selectedTypeDescription = $scope.upgradesList[index].upgrade_room_type_name;
+		var selectedTypeCode = $scope.upgradesList[index].upgrade_room_type;
 		params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
