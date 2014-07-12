@@ -79,7 +79,29 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
         	
 	});
 	
-	$scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
+	// $scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
+	// 	if(typeof $scope.loyaltyData == 'undefined')
+	// 		return;
+	// 	/* Temperory fix. Eventhough the data is getting deleted, it is not updating the view.
+	// 	 * Assuming that array slice does not trigger watcher properly, adding a push & pop.
+	// 	 */
+	// 	if(loyaltyProgram == 'FFP'){
+			
+	// 		$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(index, 1);
+	// 		$scope.loyaltyData.userMemberships.frequentFlyerProgram.push({});
+	// 		$scope.loyaltyData.userMemberships.frequentFlyerProgram.pop();
+			
+	// 	}else{
+			
+	// 		$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
+	// 		$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push({});
+	// 		$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.pop();
+			
+	// 	}		
+	// };
+
+	$scope.$on("loyaltyProgramDeleted",function(e,id, index, loyaltyProgram){
+		
 		if(typeof $scope.loyaltyData == 'undefined')
 			return;
 		/* Temperory fix. Eventhough the data is getting deleted, it is not updating the view.
@@ -98,10 +120,6 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.pop();
 			
 		}		
-	};
-	
-	$scope.$on("loyaltyProgramDeleted",function(e,id, index, loyaltyProgram){
-		$scope.loyaltyProgramDeleted(id, index, loyaltyProgram);	
 	});
 
 	$scope.$on("loyaltyDeletionError",function(e,error){
