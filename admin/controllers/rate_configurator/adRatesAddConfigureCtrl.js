@@ -324,6 +324,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
                 className: 'ngdialog-theme-default calendar-modal',
+                closeByDocument: false,
                 scope: $scope
             });
         };
