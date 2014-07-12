@@ -9,6 +9,8 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	$scope.$parent.myScrollOptions['upgradesView'] = {
 	    	scrollbars: true,
 	        hideScrollbar: false,
+	        tap:true,
+	        click:true
 	    };
 
 	$scope.upgradesList = [];
