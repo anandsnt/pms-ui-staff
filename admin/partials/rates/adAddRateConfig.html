@@ -3,12 +3,12 @@
         <li style="width:30px;">
             <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
-        <li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
-        <li ng-show="currentClickedSet == $index">
+        <li style="width:25%" ng-hide="currentClickedSet == $index">{{set.name}}</li>
+        <li ng-show="currentClickedSet == $index" style="width:25%">
             <ad-textbox disabled="!is_date_range_editable(dateRange.end_date)" value="set.name" style="width:150px; margin-top:10px;"></ad-textbox>
         </li>
 
-        <li>
+        <li style="width:65%">
             <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
             <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE"></ad-checkboxtext-left>
             <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED"></ad-checkboxtext-left>
@@ -32,7 +32,7 @@
             <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
         </li> -->
       
-        <li class="arrow-right " ng-show="currentClickedSet == $index">
+        <li class="arrow-right " ng-show="currentClickedSet == $index" style="width:38px;">
             <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         
@@ -62,6 +62,11 @@
             <td align="center" ng-hide="!is_date_range_editable(dateRange.end_date)">
                 <span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span>
             </td>
+            <!-- To compensate for arrows. in date range not editable case -->
+            <td align="center" ng-show="!is_date_range_editable(dateRange.end_date)">
+                &nbsp;
+            </td>
+
             <td align="left">
                 <div class ="rate_entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
@@ -85,8 +90,8 @@
         <td width="16%" align="left">&nbsp;</td>
         <td width="4%" align="center">&nbsp;</td>
         <td width="15%" style="text-align:right;" colspan="3">
-            <button type="button" class="button" ng-click="saveDateRange(dateRange.id)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
-            <button type="button" class="button" ng-click="saveDateRange(dateRange.id)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
+            <button type="button" class="button" ng-click="saveSet(dateRange.id, $index)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
+            <button type="button" class="button" ng-click="saveSet(dateRange.id, $index)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
         </td>
 
          </tr>

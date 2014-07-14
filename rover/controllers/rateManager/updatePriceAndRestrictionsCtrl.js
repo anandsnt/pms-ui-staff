@@ -133,6 +133,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             for(var i in $scope.calendarData.data){
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
+
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
                     if(typeof selectedDateInfo != "undefined"){

@@ -78,8 +78,8 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
+	
 	$scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram){
-		
 		if(typeof $scope.loyaltyData == 'undefined')
 			return;
 		/* Temperory fix. Eventhough the data is getting deleted, it is not updating the view.

@@ -48,13 +48,13 @@
 <tr>
 </table>
 <div class="actions float center_align">
-	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
+	<button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
 		Cancel
 	</button>
 	<button type="button" ng-click="saveStep3()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
-		Step 4 - Configure Rate
+		Configure Rate
 	</button>
-	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 4 - Configure Rate</button>
+	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Configure Rate</button>
 </div>
 </form>
 </div>

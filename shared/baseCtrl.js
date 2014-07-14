@@ -71,8 +71,10 @@ function BaseCtrl($scope){
     $scope.getSimplifiedDayName = function(date){
     	var returnText = "";  
         try{
-            var passedDate = new Date(date);
-            var currentDate = new Date($scope.businessDate);
+            // var passedDate = new Date(date);
+            // var currentDate = new Date($scope.businessDate);
+            var passedDate = tzIndependentDate(date);
+            var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(diffDays == 0){
@@ -97,7 +99,8 @@ function BaseCtrl($scope){
         catch(e){
         	return date;
         }
-    }; 	
+    };
+
      /*
      * To set the title of each navigation
      */

@@ -14,6 +14,10 @@ login.run(function($rootScope){
 
 login.controller('loginRootCtrl', ['$scope', function($scope){
 	$scope.hasLoader = false;
+	$scope.signingIn = false;
+	$scope.$on("signingIn", function(event){
+		$scope.signingIn = true;
+	})
 }]);
 
 /*
@@ -22,7 +26,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
  */
 login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
 	 $scope.data = {};
-
+	 
 	 if(localStorage.email!=""){
 	 	$scope.data.email = localStorage.email;
 	 	document.getElementById("password").focus();
@@ -36,11 +40,19 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetS
 	  * @param {object} status of login and data
 	  */
 	 $scope.successCallback = function(data){
+
 	 	localStorage.email = $scope.data.email;
 	 	if(data.token!=''){
 	 		$state.go('resetpassword', {token: data.token});
 	 	} else {
-	 		 $window.location.href = data.redirect_url;
+	 		 $scope.$emit("signingIn");
+	 		 
+	 		 $scope.hasLoader = true;
+	 		 //we need to show the animation before redirecting to the url, so introducing a timeout there
+	 		 setTimeout(function(){  
+	 		 	$window.location.href = data.redirect_url;
+	 		 }, 300);
+	 		 
 	 	}
 	 };
 	 /*

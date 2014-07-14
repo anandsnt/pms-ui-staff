@@ -323,12 +323,22 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
 			
-			if (data.language){
-				$translate.use(data.language.value);
-				$translate.fallbackLanguage('EN');
-			}
-			else
-				$translate.use('EN');
+			if (data.language) {
+		      $translate.use(data.language.value);
+		      $translate.fallbackLanguage('EN');
+		      /* For reason unclear, the fallback translation does not trigger
+		       * unless a translation is requested explicitly, for second screen
+		       * onwards.
+		       * TODO: Fix this bug in ng-translate and implement in this here.
+		       */
+		      setTimeout(function() {
+		        $translate('NA')
+		      }, 1000); //Word around.
+		    } else {
+		      $translate.use('EN');
+		    };	
+				
+				
 			//set flag if standalone PMS
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;

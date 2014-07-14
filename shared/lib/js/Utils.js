@@ -242,3 +242,31 @@ function getAvatharUrl(title){
 		// TODO: handle exception
 	}
 }
+
+/**
+* utils function convert any number to number with two decimal points.
+*/
+function precisionTwo(value){
+    var parsed = value == '' || value == null || typeof value == 'undefined' ? '': parseFloat(value).toFixed(2);
+    return parsed;
+}
+
+
+/*
+ * Please use this to get create date for a dayString.
+ */
+tzIndependentDate = function(st) {
+    var d = new Date(st);
+    var r = d.getTime();
+
+    if ( (d.getHours() != 0) || (d.getMinutes() != 0) ) {
+        r += d.getTimezoneOffset() * 60 * 1000;
+    }
+
+    if ( d.getTimezoneOffset() < 0 ) {
+        r -= d.getTimezoneOffset() * 60 * 1000;
+    }
+    
+    return new Date(r);
+}
+
