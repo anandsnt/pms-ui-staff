@@ -35,9 +35,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			
 	});
 	$scope.imageLoaded = function(){
-		console.log("inside imageLoaded controller");
 		$scope.refreshScroller('upgradesViewScroller');
-
 	};
 
 	/**
@@ -108,12 +106,12 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.toggleUpgradeDescriptionStatus = function(index){
 		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
-		setTimeout(function(){				
-				$scope.refreshScroller('upgradesViewScroller');
-				}, 
-			3000);
 	};
 	$scope.isDescriptionVisible = function(index){
+		if($scope.upgradesDescriptionStatusArray[index])
+		{
+			$scope.refreshScroller('upgradesViewScroller');
+		}
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
 

@@ -7,10 +7,11 @@ sntRover.directive('imageLoad', function () {
 
             element.bind("load" , function(e){ 
             		try{
-                        console.log("inside imageLoaded directive");
             			scope.imageLoaded();
             		}
-            		catch(err){};
+            		catch(err){
+                        
+                    };
 					
                 });
             }
