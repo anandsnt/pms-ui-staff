@@ -3,7 +3,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
-	$scope.popoverRates = "";
+	$scope.popoverRates = {};
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 	$scope.isConnectedToPMS = false;
@@ -83,17 +83,18 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showRates = function(index, id, fetchKey, baseRate){
+		$scope.popoverRates = {};
 		if(baseRate == "" || typeof baseRate == "undefined") return false;
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-			console.log(data);
 			$scope.mouseEnterPopover = true;
 		};
 
-		//Fetch the rates only when we enter the popover area.
+		//Fetch the rates only when we enter the popover area - 
+		//no need to repeat the fetch when we hover over the area.
 		if(!$scope.mouseEnterPopover){
-			$scope.popoverRates = "";
+			$scope.popoverRates = {};
 			$scope.currentHoverElement = index;
 			var params = {};
 			params[fetchKey] = id;
@@ -117,7 +118,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 
 		//Fetch the rates only when we enter the popover area.
 		if(!$scope.mouseEnterPopover){
-			$scope.popoverRates = "";
+			$scope.popoverRates = {};
 			$scope.currentHoverElement = index;
 			var params = {};
 			params[fetchKey] = id;
@@ -129,7 +130,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	* To handle the popover state. Reset the flag, rates dict while leaving the popover area
 	*/
 	$scope.mouseLeavePopover = function(){
-		$scope.popoverRates = "";
+		$scope.popoverRates = {};
 		$scope.mouseEnterPopover = false;
 	}
 
