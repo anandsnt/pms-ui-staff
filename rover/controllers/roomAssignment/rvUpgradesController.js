@@ -7,6 +7,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 
 	var scrollerOptions = {tap:true, click:true};
 	$scope.setScroller('upgradesView', scrollerOptions);
+	$scope.eventTimestamp = "";
 
 	$scope.upgradesList = [];
 	$scope.headerData = {};
@@ -97,14 +98,25 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	/**
 	* function to show and hide the upgrades detail view
 	*/
-	$scope.toggleUpgradeDescriptionStatus = function(index){
-		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+	$scope.toggleUpgradeDescriptionStatus = function($event,index){
+		$event.stopPropagation();
+		$event.stopImmediatePropagation();
+
+		if (parseInt($scope.eventTimestamp)) {
+			if (($event.timeStamp - $scope.eventTimestamp) < 500) {
+				return;
+			}
+			else{
+				$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+			}
+		}else{
+			$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+		}
+		$scope.eventTimestamp = $event.timeStamp;
+		$scope.refreshScroller('upgradesView');
+		
 	};
 	$scope.isDescriptionVisible = function(index){
-		if($scope.upgradesDescriptionStatusArray[index])
-		{
-			$scope.refreshScroller('upgradesView');
-		}
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
 
