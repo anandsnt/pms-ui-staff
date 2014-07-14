@@ -4,16 +4,9 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
 	$scope.setTitle(title);
-	if(typeof $scope.$parent.myScrollOptions === "undefined")
-		$scope.$parent.myScrollOptions ={};
-	$scope.$parent.myScrollOptions['upgradesView'] = {
-	    	scrollbars: true,
-	        hideScrollbar: false,
-	        tap:true,
-	        click:true
-	    };
 
-	$scope.setScroller('upgradesViewScroller', $scope.$parent.myScrollOptions['upgradesView']);
+	var scrollerOptions = {tap:true, click:true};
+	$scope.setScroller('upgradesView', scrollerOptions);
 
 	$scope.upgradesList = [];
 	$scope.headerData = {};
@@ -29,13 +22,13 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
 			setTimeout(function(){				
-				$scope.refreshScroller('upgradesViewScroller');
+				$scope.refreshScroller('upgradesView');
 				}, 
-			3000);
+			1000);
 			
 	});
 	$scope.imageLoaded = function(){
-		$scope.refreshScroller('upgradesViewScroller');
+		$scope.refreshScroller('upgradesView');
 	};
 
 	/**
@@ -110,15 +103,12 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	$scope.isDescriptionVisible = function(index){
 		if($scope.upgradesDescriptionStatusArray[index])
 		{
-			$scope.refreshScroller('upgradesViewScroller');
+			$scope.refreshScroller('upgradesView');
 		}
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
 
-	$('.room-details').resize(function() {
-		console.log("resized the div");
-  		$scope.refreshScroller('upgradesViewScroller');
-	});
+	
 
 	/**
 	* function to set the initial display status for the upgrade details for all the upgrades
