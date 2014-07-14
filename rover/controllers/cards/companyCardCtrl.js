@@ -119,11 +119,17 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
 					$scope.viewState.pendingRemoval.status = false;
 					//if a new card has been added, reset the future count to zero
-					$scope.reservationDetails.companyCard.futureReservations = 0;
 					$scope.viewState.pendingRemoval.cardType = "";
-					$scope.replaceCard('company', {
-						id: data.id
-					}, false);
+					if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
+						$scope.replaceCardCaller(false, 'company', {
+							id: data.id
+						}, false);
+					} else {
+						$scope.checkFuture(false, 'company', {
+							id: data.id
+						});
+					}
+					$scope.reservationDetails.companyCard.futureReservations = 0;
 				}
 				$scope.viewState.isAddNewCard = false;
 				$scope.cardSaved();

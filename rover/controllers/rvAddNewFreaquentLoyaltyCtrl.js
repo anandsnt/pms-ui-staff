@@ -33,7 +33,7 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope',
 	};
 
 	$scope.cancel = function(){
-		ngDialog.close();
+		$scope.closeDialog();
 	};
 
 }]);

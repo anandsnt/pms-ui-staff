@@ -1,7 +1,7 @@
-sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
-	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
 		BaseCtrl.call(this, $scope);
-
+		console.log($rootScope.isStandAlone);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		$scope.cardHeaderImage = '/assets/avatar-trans.png';
@@ -176,7 +176,18 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			}
 		}
 
+
 		$scope.$on('cardIdsFetched', function() {
+			// Restore view state
+			$scope.viewState.pendingRemoval.status = false;
+			$scope.viewState.pendingRemoval.cardType = "";
+
+			// Reset all cards
+			$scope.$broadcast('guestCardDetached');
+			$scope.$broadcast('travelAgentDetached');
+			$scope.$broadcast('companyCardDetached');
+
+			//init all cards with new data
 			$scope.initGuestCard();
 			$scope.initCompanyCard();
 			$scope.initTravelAgentCard();
@@ -194,7 +205,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 
 			// TODO: Remove the following commented out code!
 			// Leaving it now for further debugging if required
-			// console.log("FUTURE_COUNTER",{
+			// console.log("FUTURE_COUNTER", {
 			// 	G: $scope.reservationDetails.guestCard.futureReservations,
 			// 	C: $scope.reservationDetails.companyCard.futureReservations,
 			// 	T: $scope.reservationDetails.travelAgent.futureReservations,

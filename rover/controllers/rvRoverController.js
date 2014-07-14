@@ -94,7 +94,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = "";
     $scope.showSubMenu = false;
     $scope.activeSubMenu = [];
-    $scope.isStandAlone = false;
+    $rootScope.isStandAlone = false;
 
     $rootScope.shortDateFormat = "MM/yy"; //05/99
     $rootScope.dayInWeek = "EEE"; //Sun
@@ -121,7 +121,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
-      $scope.isStandAlone = true;
+      $rootScope.isStandAlone = true;
     };
 
     /*
@@ -415,8 +415,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-      $scope.$emit('hideLoader');
-      ngDialog.close();
+    	console.log("reached hereerrr");
+	      document.activeElement.blur();
+	      $scope.$emit('hideLoader');
+	      setTimeout(function(){
+	      	 ngDialog.close();
+	      	 window.scrollTo(0,0);
+	      	 $scope.$apply();
+	      }, 700);
     };
 
   }

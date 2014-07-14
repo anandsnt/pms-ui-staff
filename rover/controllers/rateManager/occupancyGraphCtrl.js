@@ -165,8 +165,8 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		var targetData = [];
 		var targetItem = {};
 		angular.forEach(data.results, function(item) {
-			itemDate = Date.parse(item.date);
-			target_value = item.target == null ? 0 : item.target
+			itemDate = tzIndependentDate(item.date).getTime();
+			target_value = item.target
 			targetItem = {
 				"date" : itemDate,
 				"value" : target_value,
@@ -194,20 +194,19 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		return formattedTargetData;
 	}
 	var appendRemainingWeekDays = function(targetData) {
-		from_date = new Date(targetData[0].date);
-		to_date = new Date(targetData[targetData.length - 1].date);
+		from_date = tzIndependentDate(targetData[0].date); 
+		to_date = tzIndependentDate(targetData[targetData.length - 1].date);
 		var remainingStartWeekDays = [];
 		var remainingEndWeekDays = [];
-
 		// append missing week days before from date
 		if (from_date.getDay() != 0) {
 			limit = from_date.getDay();
 			for (var i = limit; i > 0; i--) {
-				var itemDate = new Date();
+				var itemDate = angular.copy(from_date);
 				itemDate.setDate(from_date.getDate() - i);
 				remainingStartWeekDays.push({
-					"date" : Date.parse(itemDate),
-					"value" : 0,
+					"date" : itemDate.getTime(),
+					"value" : null,
 					"is_editable" : false
 				})
 			}
@@ -217,11 +216,11 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		if (to_date.getDay() != 6) {
 			limit = 6 - to_date.getDay();
 			for (var j = 1; j <= limit; j++) {
-				var itemDate = new Date();
+				var itemDate = angular.copy(to_date);
 				itemDate.setDate(to_date.getDate() + j);
 				remainingEndWeekDays.push({
-					"date" : Date.parse(itemDate),
-					"value" : 0,
+					"date" : itemDate.getTime(),
+					"value" : null,
 					"is_editable" : false
 				})
 			}
@@ -242,7 +241,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 
 	$scope.copyTargetToAllWeekDays = function(index) {
 		angular.forEach($scope.targetData[index], function(item, key) {
-			if (item.hasOwnProperty("value")) {
+			if (item.hasOwnProperty("value") && item.is_editable) {
 				item.value = $scope.weekCommonTargets[index];
 			}
 		});
@@ -255,12 +254,14 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		var formatted_date = "";
 		angular.forEach($scope.targetData, function(week) {
 			angular.forEach(week, function(weekDays) {
-				weekDate = new Date(weekDays.date)
-				formatted_date = weekDate.getFullYear() + '-' + (weekDate.getMonth() + 1) + '-' + weekDate.getDate()
-				dates.push({
-					"date" : formatted_date,
-					"target" : weekDays.value
-				});
+				if(weekDays.value != null){
+					weekDate = new Date(weekDays.date)
+					formatted_date = weekDate.getFullYear() + '-' + (weekDate.getMonth() + 1) + '-' + weekDate.getDate()
+					dates.push({
+						"date" : formatted_date,
+						"target" : weekDays.value
+					});
+				}
 			});
 		});
 		params = {
