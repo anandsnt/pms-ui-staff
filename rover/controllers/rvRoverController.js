@@ -94,7 +94,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = "";
     $scope.showSubMenu = false;
     $scope.activeSubMenu = [];
-    $scope.isStandAlone = false;
+    $rootScope.isStandAlone = false;
 
     $rootScope.shortDateFormat = "MM/yy"; //05/99
     $rootScope.dayInWeek = "EEE"; //Sun
@@ -121,7 +121,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
-      $scope.isStandAlone = true;
+      $rootScope.isStandAlone = true;
     };
 
     /*
