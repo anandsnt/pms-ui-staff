@@ -397,7 +397,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var paramDict = {
                     'name': $scope.searchData.companyCard.companyName,
                     'city': $scope.searchData.companyCard.companyCity,
-                    'corporate_id': $scope.searchData.companyCard.companyCorpId
+                    'account_number': $scope.searchData.companyCard.companyCorpId
                 };
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
             } else {
@@ -453,7 +453,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var paramDict = {
                     'name': $scope.searchData.travelAgentCard.travelAgentName,
                     'city': $scope.searchData.travelAgentCard.travelAgentCity,
-                    'corporate_id': $scope.searchData.travelAgentCard.travelAgentIATA
+                    'account_number': $scope.searchData.travelAgentCard.travelAgentIATA
                 };
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
             } else {

@@ -8,9 +8,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$fil
 	$scope.selectedLoyaltyType = "";
 	$scope.selectedLevel = "";
 	$scope.loyaltyCode = "";
-	$scope.closeDialog = function(){
-		ngDialog.close();
-	};
+	
 
 	$scope.dimissLoaderAndDialog = function(){
 			$scope.$emit('hideLoader');

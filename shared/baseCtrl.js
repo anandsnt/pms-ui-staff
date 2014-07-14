@@ -71,8 +71,10 @@ function BaseCtrl($scope){
     $scope.getSimplifiedDayName = function(date){
     	var returnText = "";  
         try{
-            var passedDate = new Date(date);
-            var currentDate = new Date($scope.businessDate);
+            // var passedDate = new Date(date);
+            // var currentDate = new Date($scope.businessDate);
+            var passedDate = tzIndependentDate(date);
+            var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(diffDays == 0){
@@ -97,20 +99,6 @@ function BaseCtrl($scope){
         catch(e){
         	return date;
         }
-    };
-
-    /**
-    *	VJ: This method will return back a proper date without the JS previous date bug
-    *	Dont Use: new Date( n )
-    *	Use: $scope.getProperDate( '1987-01-06' )
-    *	
-    *	Note: Months in JS starts with 0, thus will be subtracted here
-    *
-    *	@param {String} - dateStr, must be of this strict format: 'yyyy-MM-dd'
-    *	@return {Object} - as date object
-    */
-    $scope.getProperDate = function(dateStr) {
-    	return new Date( dateStr.split('-')[0], (parseInt(dateStr.split('-')[1] ) - 1), dateStr.split('-')[2] );
     };
 
      /*
