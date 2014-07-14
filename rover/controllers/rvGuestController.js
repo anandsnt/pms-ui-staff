@@ -641,14 +641,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
-			$scope.reservationDetails.companyCard.futureReservations = 0;
+			// $scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
 		}
 
 		$scope.createNewCompany = function() {
 			$scope.companyContactInformation = $scope.getEmptyAccountData();
-			$scope.reservationDetails.companyCard.id = "";
-			$scope.reservationDetails.companyCard.futureReservations = 0;
+			// $scope.reservationDetails.companyCard.id = "";
+			// $scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
 			$scope.$broadcast('companyCardAvailable', true);
 
@@ -656,8 +656,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.createNewTravelAgent = function() {
 			$scope.travelAgentInformation = $scope.getEmptyAccountData();
-			$scope.reservationDetails.travelAgent.id = "";
-			$scope.reservationDetails.travelAgent.futureReservations = 0;
+			// $scope.reservationDetails.travelAgent.id = "";
+			// $scope.reservationDetails.travelAgent.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
 			$scope.$broadcast('travelAgentFetchComplete', true);
 		}
