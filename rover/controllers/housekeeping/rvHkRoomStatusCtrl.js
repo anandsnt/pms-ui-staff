@@ -133,13 +133,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// stop browser bounce while swiping on rooms element
 		angular.element( roomsEl )
-			.bind( 'ontouchmove', function(e) {
+			.on( 'ontouchmove', function(e) {
 				e.stopPropagation();
 			});
 
 		// stop browser bounce while swiping on filter-options element
 		angular.element( filterOptionsEl )
-			.bind( 'ontouchmove', function(e) {
+			.on( 'ontouchmove', function(e) {
 				e.stopPropagation();
 			});
 
@@ -151,7 +151,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if ( isNaN(parseInt(toPos)) ) {
 				var toPos = 0;
 			} else {
-				localStorage.removeItem('roomListScrollTopPos');
+				localStorage.removeItem( 'roomListScrollTopPos' );
 			}
 
 			// must delay untill DOM is ready to jump
@@ -168,10 +168,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// store the current room list scroll position
 		$scope.roomListItemClicked = function(room) {
 			localStorage.setItem('roomListScrollTopPos', roomsEl.scrollTop);
-
-			$timeout( function() {
-				$state.go( 'rover.housekeeping.roomDetails', { id: room.id } );
-			}, 100 );
 		}
 
 		/**
@@ -604,6 +600,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// dont move these codes outside this controller
 		// DOM node will be reported missing
 		pullRefresh();
+
+
+		// There are a lot of bindings that need to cleared
+		$scope.$on( '$destroy', function() {
+			angular.element( roomsEl ).off( 'ontouchmove' );
+			angular.element( filterOptionsEl ).off( 'ontouchmove' );
+		});
 
 	}
 ]);
