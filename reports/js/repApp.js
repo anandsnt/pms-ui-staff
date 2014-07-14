@@ -187,7 +187,6 @@ reports.controller('reporstList', [
             // emit that the user wish to see report details
             $rootScope.$emit( 'report.submit', this.item, this.item.id, params );
         };
-
     }
 ]);
 
@@ -606,7 +605,8 @@ reports.controller('reportDetails', [
         // off again with another dirty hack to resolve an iPad issue
         // when picking the date, clicking on the black mask doesnt close calendar 
         var closeMask = function(e) {
-            if ( $(e.target).hasClass('datepicker-mask') ) {
+            if ( $(e.target).hasClass('datepicker-mask') || $(e.target).is('body') ) {
+                console.log('yes');
                 $( 'body' ).find( '.datepicker-mask' ).trigger( 'click' );
             }
         };
