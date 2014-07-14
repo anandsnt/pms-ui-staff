@@ -187,6 +187,18 @@ reports.controller('reporstList', [
             // emit that the user wish to see report details
             $rootScope.$emit( 'report.submit', this.item, this.item.id, params );
         };
+
+        // off again with another dirty hack to resolve an iPad issue
+        // when picking the date, clicking on the black mask doesnt close calendar 
+        var closeMask = function(e) {
+            if ( $(e.target).hasClass('datepicker-mask') || $(e.target).is('body') ) {
+                $( 'body' ).find( '.datepicker-mask' ).trigger( 'click' );
+            }
+        };
+        $( 'body' ).on( 'click', closeMask );
+        $scope.$on( '$destroy', function() {
+            $( 'body' ).off( closeMask );
+        } );
     }
 ]);
 
@@ -264,26 +276,31 @@ reports.controller('reportDetails', [
                 };
             };
 
-            
+            // change date format for all
             for (var i = 0, j = $scope.results.length; i < j; i++) {
-
-                // change date format for all
                 $scope.results[i][0] = $filter('date')($scope.results[i][0], 'MM-dd-yyyy');
 
-                // hack to add curency $ symbol in front of values
-                if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
-                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
-                }
-
-                // hack to append ':00 PM' to time
-                // thus makin the value in template 'X:00 PM'
                 if ( $scope.chosenReport.title === 'Late Check Out' ) {
+
+                    // hack to add curency $ symbol in front of values
+                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+
+                    // hack to append ':00 PM' to time
+                    // thus makin the value in template 'X:00 PM'
                     $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
                 }
+
+                if ( $scope.chosenReport.title === 'Upsell' ) {
+
+                    // hack to add curency $ symbol in front of values
+                    $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+                    $scope.results[i][ $scope.results[i].length - 2 ] = '$' + $scope.results[i][ $scope.results[i].length - 2 ];
+                };
             };
 
 
             // hack to add curency $ symbol in front of values
+            // and append pm
             // if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
             //     for (var i = 0, j = $scope.results.length; i < j; i++) {
             //         $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
@@ -295,17 +312,6 @@ reports.controller('reportDetails', [
             //         }
             //     };
             // }
-
-            // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
-            // notice the text case, they are as per api response and ui
-            if ( $scope.chosenReport.title === 'Late Check Out' ) {
-                for (var i = 0, j = $scope.headers.length; i < j; i++) {
-                    if ( $scope.headers[i] === 'Late Check Out Time' ) {
-                        $scope.headers[i] = 'Selected Late Check Out Time';
-                        break;
-                    };
-                }
-            }
 
             // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
             // notice the text case, they are as per api response and ui
@@ -606,7 +612,6 @@ reports.controller('reportDetails', [
         // when picking the date, clicking on the black mask doesnt close calendar 
         var closeMask = function(e) {
             if ( $(e.target).hasClass('datepicker-mask') || $(e.target).is('body') ) {
-                console.log('yes');
                 $( 'body' ).find( '.datepicker-mask' ).trigger( 'click' );
             }
         };
