@@ -39,10 +39,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	$scope.expandRow = function(index){
 		if($scope.currentExpandedRow == index){
 			$scope.currentExpandedRow = -1;
+			$scope.refreshScroller();
 			return false;
 		}
 		$scope.currentExpandedRow = index;
-	}
+		$scope.refreshScroller();
+	};
+
+	$scope.refreshScroller = function(){
+		setTimeout( function(){
+			$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
+		}, 0);
+	};
 
    	/**
     * Fetches the calendar data and update the scope variables 
@@ -70,8 +78,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
-				setTimeout( function(){
-				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();}, 0);
+				$scope.refreshScroller();
 			}
 		};
 

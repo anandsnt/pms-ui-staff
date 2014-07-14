@@ -70,7 +70,7 @@
              * check if month is present or next
              */
 
-            currentDate = new Date(scope.date);
+            currentDate = tzIndependentDate(scope.date); //Added by qburst - to fix timezone issue
           scope.dayNames = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
 

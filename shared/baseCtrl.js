@@ -97,7 +97,22 @@ function BaseCtrl($scope){
         catch(e){
         	return date;
         }
-    }; 	
+    };
+
+    /**
+    *	VJ: This method will return back a proper date without the JS previous date bug
+    *	Dont Use: new Date( n )
+    *	Use: $scope.getProperDate( '1987-01-06' )
+    *	
+    *	Note: Months in JS starts with 0, thus will be subtracted here
+    *
+    *	@param {String} - dateStr, must be of this strict format: 'yyyy-MM-dd'
+    *	@return {Object} - as date object
+    */
+    $scope.getProperDate = function(dateStr) {
+    	return new Date( dateStr.split('-')[0], (parseInt(dateStr.split('-')[1] ) - 1), dateStr.split('-')[2] );
+    };
+
      /*
      * To set the title of each navigation
      */
@@ -157,7 +172,8 @@ function BaseCtrl($scope){
     		$scope.$parent.myScrollOptions = {}; 		
     	}
     	
-    	$scope.$parent.myScrollOptions[key] = scrollerOptions;       	
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions; 
+
     };
 
     /*
@@ -166,7 +182,8 @@ function BaseCtrl($scope){
     */
     $scope.refreshScroller = function (key){
     	setTimeout(function(){
-    		$scope.$parent.myScroll[key].refresh();
+    		if(typeof $scope.$parent.myScroll !== 'undefined' && key in $scope.$parent.myScroll)
+    			$scope.$parent.myScroll[key].refresh();
     	}, $scope.timeOutForScrollerRefresh);   	
     };
 

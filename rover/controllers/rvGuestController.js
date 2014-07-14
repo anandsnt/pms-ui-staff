@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog','$rootScope',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog,$rootScope) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -44,8 +44,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 * scroller options
 		 */
 		$scope.resizableOptions = {
-			minHeight: '90',
-			maxHeight: screen.height - 200,
+			minHeight: resizableMinHeight,
+			maxHeight: resizableMaxHeight,
 			handles: 's',
 			resize: function(event, ui) {
 				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
@@ -156,7 +156,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.guestCardClick = function($event) {
-			$rootScope.$emit('clearErroMessages');			
+			$rootScope.$emit('clearErroMessages');
 			$scope.$broadcast('clearNotifications');
 			var element = $event.target;
 			$event.stopPropagation();
@@ -256,9 +256,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.openGuestCard = function() {
 			$scope.cardVisible = true;
+			$scope.guestCardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
 			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
+			//refreshing the scroller in guestcard's tab
+			$scope.$broadcast('REFRESHLIKESSCROLL');
 		};
 
 		/**
@@ -269,6 +272,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			//Check if pending removals - If yes remove 
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
+			$scope.guestCardVisible = false;
 		};
 
 		$scope.handleDrawClosing = function() {
@@ -281,7 +285,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				discardCard(cards[$scope.UICards[0]]);
 			}
 			if ($scope.viewState.pendingRemoval.status) {
-				$scope.removeCard($scope.viewState.pendingRemoval.cardType);
+				// 7078 : Based on discussion with Jon, the comments werent meant
+				// for removal ... HENCE NEEDN'T PROCESS DELETION! JUST DELETE
+				// processDeletion($scope.viewState.pendingRemoval.cardType);
+				$scope.replaceCardCaller(true, $scope.viewState.pendingRemoval.cardType, null, false);
 			}
 		}
 
@@ -298,6 +305,66 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 			}
 		};
+
+		// This method checks if any future reservation exists for the card to be removed and if 
+		// exists prompt user
+		// TODO : Check if this method can be resused for some other purpose later. else, discard
+		var processDeletion = function(cardType) {
+			if (cardType == 'guest') {
+				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+					$scope.replaceCardCaller(true, 'guest', null, false);
+				} else {
+					$scope.checkFuture(true, 'guest', null);
+				}
+
+			} else if (cardType == 'company') {
+				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
+					$scope.replaceCardCaller(true, 'company', null, false);
+				} else {
+					$scope.checkFuture(true, 'company', null);
+				}
+			} else if (cardType == 'travel_agent') {
+				if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
+					$scope.replaceCardCaller(true, 'travel_agent', null, false);
+				} else {
+					$scope.checkFuture(true, 'travel_agent', null);
+				}
+			}
+		}
+
+		$scope.checkFuture = function(removal, cardType, card) {
+			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
+			// Changing all reservations will move all stay cards to the new card. 
+			// This will only apply when a new company / TA card had been selected. 
+			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
+			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
+			// With choice of 'Change this reservation only' and 'Change all Reservations'.
+			var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
+			if (cardType == 'guest') {
+				var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
+			}
+
+			ngDialog.open({
+				template: templateUrl,
+				className: 'ngdialog-theme-default stay-card-alerts',
+				scope: $scope,
+				closeByDocument: true,
+				closeByEscape: true,
+				data: JSON.stringify({
+					cardType: cardType,
+					card: card,
+					removal: removal
+				})
+			});
+		}
+
+		$scope.replaceCardCaller = function(removal, cardType, card, future) {
+			if (!removal) {
+				$scope.replaceCard(cardType, card, future);
+			} else {
+				$scope.removeCard(cardType, future);
+			}
+		}
 
 		$scope.clickedDiscardCard = function(cardType, discard) {
 			discardCard(cardType, discard);
@@ -415,6 +482,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.address.city = item.address.city;
 							companyData.address.state = item.address.state;
 						}
+						if (item.current_contract != null) {
+							companyData.rate = item.current_contract;
+							companyData.rate.difference = (function() {
+								if (parseInt(companyData.rate.based_on.value) < 0) {
+									if (companyData.rate.based_on.type == "amount") {
+										return "$" + (parseFloat(companyData.rate.based_on.value)) * -1 + " off ";
+									} else {
+										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+									}
+
+								}
+								return "";
+							})();
+						}
 						companyData.email = item.email;
 						companyData.phone = item.phone;
 						$scope.searchedCompanies.push(companyData);
@@ -457,7 +538,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.address.state = item.address.state;
 							}
 							if (item.current_contract != null) {
-								travelAgentData.rate = item.current_contract.name;
+								travelAgentData.rate = item.current_contract;
+								travelAgentData.rate.difference = (function() {
+									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
+										if (travelAgentData.rate.based_on.type == "amount") {
+											return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1) + " off ";
+										} else {
+											return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
+										}
+
+									}
+									return "";
+								})();
 							}
 							travelAgentData.email = item.email;
 							travelAgentData.phone = item.phone;
@@ -481,59 +573,30 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		}
 
-		$scope.checkFuture = function(cardType, card) {
-			// Changing this reservation only will unlink the stay card from the previous company / travel agent card and assign it to the newly selected card. 
-			// Changing all reservations will move all stay cards to the new card. 
-			// This will only apply when a new company / TA card had been selected. 
-			// If no new card has been selected, the change will only ever just apply to the current reservation and the above message should not display.
-			// If multiple future reservations exist for the same Travel Agent / Company Card details, display message upon navigating away from the Stay Card 'Future reservations exist for the same Travel Agent / Company card.' 
-			// With choice of 'Change this reservation only' and 'Change all Reservations'.
-			var templateUrl = '/assets/partials/cards/alerts/futureReservationsAccounts.html';
-			if (cardType == 'guest') {
-				var templateUrl = '/assets/partials/cards/alerts/futureReservationsGuest.html';
-			}
-
-			ngDialog.open({
-				template: templateUrl,
-				className: 'ngdialog-theme-default stay-card-alerts',
-				scope: $scope,
-				closeByDocument: false,
-				closeByEscape: false,
-				data: JSON.stringify({
-					cardType: cardType,
-					card: card
-				})
-			});
-		}
-
-		$scope.replaceCardCaller = function(cardType, card, future) {
-			$scope.replaceCard(cardType, card, future);
-		}
-
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('company', company, false);
+				$scope.replaceCardCaller(false, 'company', company, false);
 			} else {
-				$scope.checkFuture('company', company);
+				$scope.checkFuture(false, 'company', company);
 			}
 		}
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
-				$scope.replaceCardCaller('travel_agent', travelAgent, false);
+				$scope.replaceCardCaller(false, 'travel_agent', travelAgent, false);
 			} else {
-				$scope.checkFuture('travel_agent', travelAgent);
+				$scope.checkFuture(false, 'travel_agent', travelAgent);
 			}
 		}
 
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
 			if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('guest', guest, false);
+				$scope.replaceCardCaller(false, 'guest', guest, false);
 			} else {
-				$scope.checkFuture('guest', guest);
+				$scope.checkFuture(false, 'guest', guest);
 			}
 		}
 
@@ -578,6 +641,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
+			$scope.reservationDetails.companyCard.futureReservations = 0;
 			$scope.viewState.isAddNewCard = true;
 		}
 
