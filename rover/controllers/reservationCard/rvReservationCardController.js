@@ -139,11 +139,11 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 * get reservation details on click each reservation
 		 * @param {string} current clicked confirmation number
 		 */
-		$scope.getReservationDetails = function(currentConfirmationNumber) {
+		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 
 			// $scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
 			$state.go("rover.staycard.reservationcard.reservationdetails", {
-				"id": $scope.$parent.$stateParams.id,
+				"id": currentId,
 				"confirmationId": currentConfirmationNumber
 			});
 			$scope.currentReservationId = currentConfirmationNumber;
