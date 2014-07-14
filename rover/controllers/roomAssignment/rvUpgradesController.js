@@ -13,6 +13,8 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	        click:true
 	    };
 
+	$scope.setScroller('upgradesViewScroller', $scope.$parent.myScrollOptions['upgradesView']);
+
 	$scope.upgradesList = [];
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
@@ -26,7 +28,17 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			$scope.headerData = data.header_details;
 			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
+			setTimeout(function(){				
+				$scope.refreshScroller('upgradesViewScroller');
+				}, 
+			3000);
+			
 	});
+	$scope.imageLoaded = function(){
+		console.log("inside imageLoaded controller");
+		$scope.refreshScroller('upgradesViewScroller');
+
+	};
 
 	/**
 	* function to check occupancy for the reservation
@@ -96,6 +108,10 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	*/
 	$scope.toggleUpgradeDescriptionStatus = function(index){
 		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+		setTimeout(function(){				
+				$scope.refreshScroller('upgradesViewScroller');
+				}, 
+			3000);
 	};
 	$scope.isDescriptionVisible = function(index){
 		return $scope.upgradesDescriptionStatusArray[index];
