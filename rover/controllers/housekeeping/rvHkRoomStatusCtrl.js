@@ -63,7 +63,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// execute this after this much time
 			// as the animation is in progress
-			}, 500);
+			}, 200);
 		};
 
 
@@ -157,7 +157,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// must delay untill DOM is ready to jump
 			$timeout(function() {
 				roomsEl.scrollTop = toPos;
-			}, 100);
+			}, 10);
 		};
 
 
