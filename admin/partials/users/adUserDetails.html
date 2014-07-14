@@ -97,19 +97,19 @@
 					<ul id="assigned-roles" 
 					data-placeholder="Drop a role here to assign it to the user"
 
-					data-jqyoui-options="{accept: '.non_acceptable_roles'}"
+					data-jqyoui-options="{}"
 					
 					class="boxes sortable empty short-list" data-drop="true" 
 					ng-model='assignedRoles' 
 
-					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoles',accept:'.acceptable_roles'}" 
+					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoles'}" 
 
 					style="overflow-y: scroll !important;" data-type="target">
 
 						<li ng-repeat="role in assignedRoles" 
-						class="acceptable_roles"
+						class="acceptable_roles li-dragable"
 
-						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone'}"
+						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
 						ng-model="assignedRoles" 
 
 						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
@@ -142,12 +142,12 @@
 					class="boxes sortable short-list"  style="overflow-y: scroll !important;" 
 					data-drop="true" ng-model='unAssignedRoles' 
 
-					data-jqyoui-options="{accept: '.acceptable_roles'}"
-					jqyoui-droppable="{multiple:true, onOver: 'reachedUnAssignedRoles',accept:'.acceptable_roles' }" data-type="source">
+					data-jqyoui-options="{}"
+					jqyoui-droppable="{multiple:true, onOver: 'reachedUnAssignedRoles' }" data-type="source">
 					
 						<li ng-repeat="role in unAssignedRoles" 
-						class="non_acceptable_roles"
-						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
+						class="non_acceptable_roles li-dragable"
+						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" 
 
 						ng-model="unAssignedRoles" 
 

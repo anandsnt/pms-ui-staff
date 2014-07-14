@@ -616,3 +616,24 @@ td{
 .rates-table-count{
   width:8% !important;
 }
+
+.li-dragable{
+  min-width:27% !important; /* work around to fix drag and drop in touch devices*/
+  background-color:white !important;
+  position: relative;
+  line-height: 40px;
+  padding: 0 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  .clickable;
+  .no-transition;
+
+  .icon-handle {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      .square(16px);
+      .show;
+  }
+
+}
