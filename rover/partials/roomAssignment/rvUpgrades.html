@@ -1,12 +1,13 @@
-<div id="upgradesView" ng-iscroll='upgradesView' ng-iscroll-delay='50' class="upgrades scrollable">
-   <div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+<div id="upgradesView"  class="upgrades">
+   <div class="guest-likes-scroll scrollable" ng-iscroll='upgradesView' ng-iscroll-delay='500'>
+   <div class="wrapper" >
       <h2 class="available-title" translate>UPGRADES_AVAILABLE_LABEL</h2>
-      <ul ng-repeat="upgrade in upgradesList">
+      <ul ng-repeat="upgrade in upgradesList" class="room-upgrades-list">
          <li>
             <div class="upgrade-title">
                <span class="room-number ready"> {{upgrade.upgrade_room_number}} </span>
                <h2> {{upgrade.upgrade_room_type_name}} </h2>
-               <a class="toggle has-arrow" ng-click = "toggleUpgradeDescriptionStatus($index)" translate>DETAILS_LABEL</a>
+               <a class="toggle has-arrow" ng-click = "toggleUpgradeDescriptionStatus($event,$index)" translate>DETAILS_LABEL</a>
             </div>
             <div id="room1034-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-show="isDescriptionVisible($index)" ng-bind-html="upgrade.upgrade_room_description">
                
@@ -22,7 +23,5 @@
          </li>
       </ul>
    </div>
-   <div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-      <div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-   </div>
+</div>
 </div>

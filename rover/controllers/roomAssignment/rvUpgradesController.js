@@ -4,16 +4,10 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
 	$scope.setTitle(title);
-	if(typeof $scope.$parent.myScrollOptions === "undefined")
-		$scope.$parent.myScrollOptions ={};
-	$scope.$parent.myScrollOptions['upgradesView'] = {
-	    	scrollbars: true,
-	        hideScrollbar: false,
-	        tap:true,
-	        click:true
-	    };
 
-	$scope.setScroller('upgradesViewScroller', $scope.$parent.myScrollOptions['upgradesView']);
+	var scrollerOptions = {tap:true, click:true};
+	$scope.setScroller('upgradesView', scrollerOptions);
+	$scope.eventTimestamp = "";
 
 	$scope.upgradesList = [];
 	$scope.headerData = {};
@@ -29,13 +23,13 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
 			setTimeout(function(){				
-				$scope.refreshScroller('upgradesViewScroller');
+				$scope.refreshScroller('upgradesView');
 				}, 
-			3000);
+			1000);
 			
 	});
 	$scope.imageLoaded = function(){
-		$scope.refreshScroller('upgradesViewScroller');
+		$scope.refreshScroller('upgradesView');
 	};
 
 	/**
@@ -104,16 +98,29 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	/**
 	* function to show and hide the upgrades detail view
 	*/
-	$scope.toggleUpgradeDescriptionStatus = function(index){
-		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+	$scope.toggleUpgradeDescriptionStatus = function($event,index){
+		$event.stopPropagation();
+		$event.stopImmediatePropagation();
+
+		if (parseInt($scope.eventTimestamp)) {
+			if (($event.timeStamp - $scope.eventTimestamp) < 500) {
+				return;
+			}
+			else{
+				$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+			}
+		}else{
+			$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+		}
+		$scope.eventTimestamp = $event.timeStamp;
+		$scope.refreshScroller('upgradesView');
+		
 	};
 	$scope.isDescriptionVisible = function(index){
-		if($scope.upgradesDescriptionStatusArray[index])
-		{
-			$scope.refreshScroller('upgradesViewScroller');
-		}
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
+
+	
 
 	/**
 	* function to set the initial display status for the upgrade details for all the upgrades

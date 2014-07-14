@@ -1,7 +1,7 @@
-sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
-	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
 		BaseCtrl.call(this, $scope);
-
+		console.log($rootScope.isStandAlone);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		$scope.cardHeaderImage = '/assets/avatar-trans.png';

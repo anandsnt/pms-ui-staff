@@ -165,7 +165,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		var targetData = [];
 		var targetItem = {};
 		angular.forEach(data.results, function(item) {
-			itemDate = Date.parse(item.date);
+			itemDate = tzIndependentDate(item.date).getTime();
 			target_value = item.target == null ? 0 : item.target
 			targetItem = {
 				"date" : itemDate,
@@ -194,19 +194,18 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		return formattedTargetData;
 	}
 	var appendRemainingWeekDays = function(targetData) {
-		from_date = new Date(targetData[0].date);
-		to_date = new Date(targetData[targetData.length - 1].date);
+		from_date = tzIndependentDate(targetData[0].date); 
+		to_date = tzIndependentDate(targetData[targetData.length - 1].date);
 		var remainingStartWeekDays = [];
 		var remainingEndWeekDays = [];
-
 		// append missing week days before from date
 		if (from_date.getDay() != 0) {
 			limit = from_date.getDay();
 			for (var i = limit; i > 0; i--) {
-				var itemDate = new Date();
+				var itemDate = angular.copy(from_date);
 				itemDate.setDate(from_date.getDate() - i);
 				remainingStartWeekDays.push({
-					"date" : Date.parse(itemDate),
+					"date" : itemDate.getTime(),
 					"value" : 0,
 					"is_editable" : false
 				})
@@ -217,7 +216,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		if (to_date.getDay() != 6) {
 			limit = 6 - to_date.getDay();
 			for (var j = 1; j <= limit; j++) {
-				var itemDate = new Date();
+				var itemDate = angular.copy(to_date);
 				itemDate.setDate(to_date.getDate() + j);
 				remainingEndWeekDays.push({
 					"date" : Date.parse(itemDate),
