@@ -110,7 +110,7 @@ angular.module('ui.date', [])
         // Default to ISO formatting
         modelCtrl.$formatters.push(function(value) {
           if (angular.isString(value) ) {
-            return new Date(value);
+            return tzIndependentDate(value);
           }
           return null;
         });

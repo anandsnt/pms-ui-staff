@@ -415,8 +415,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-      $scope.$emit('hideLoader');
-      ngDialog.close();
+    	console.log("reached hereerrr");
+	      document.activeElement.blur();
+	      $scope.$emit('hideLoader');
+	      setTimeout(function(){
+	      	 ngDialog.close();
+	      	 window.scrollTo(0,0);
+	      	 $scope.$apply();
+	      }, 700);
     };
 
   }
