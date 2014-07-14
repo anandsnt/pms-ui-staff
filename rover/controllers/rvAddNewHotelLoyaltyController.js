@@ -57,7 +57,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 	};
 
 	$scope.cancel = function(){
-		ngDialog.close();
+		$scope.closeDialog();
 	};
 
 }]);

@@ -104,10 +104,6 @@ sntRover.controller('reservationActionsController',
 			// the listner must be destroyed when no needed anymore
 			$scope.$on( '$destroy', postchargeAdded );
 
-			$scope.closeDialog = function() {
-				ngDialog.close();
-			};
-			
 			$scope.goToCheckin = function() {
 			if (typeof $scope.guestCardData.userId != "undefined" && $scope.guestCardData.userId != "" && $scope.guestCardData.userId != null) {
 				if ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null) {

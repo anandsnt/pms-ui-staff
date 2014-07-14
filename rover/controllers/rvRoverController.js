@@ -1,6 +1,5 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
-
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -10,7 +9,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
        * TODO: Fix this bug in ng-translate and implement in this here.
        */
       setTimeout(function() {
-        $translate('NA')
+        $translate('NA');
       }, 1000); //Word around.
     } else {
       $translate.use('EN');
@@ -415,8 +414,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
+      document.activeElement.blur();
       $scope.$emit('hideLoader');
-      ngDialog.close();
+      setTimeout(function(){
+      	 ngDialog.close();
+      	 window.scrollTo(0,0);
+      	 $scope.$apply();
+      }, 700);
+     
     };
 
   }
