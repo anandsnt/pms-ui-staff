@@ -8,13 +8,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 		// activate room type default view based on reservation settings
-		if($scope.otherData.defaultRateDisplayName == 'Recommended'){
+		if ($scope.otherData.defaultRateDisplayName == 'Recommended') {
 			$scope.activeCriteria = "RECOMMENDED";
-		}
-		else if($scope.otherData.defaultRateDisplayName == 'By Rate'){
+		} else if ($scope.otherData.defaultRateDisplayName == 'By Rate') {
 			$scope.activeCriteria = "RATE";
-		}
-		else{
+		} else {
 			// By default RoomType
 			$scope.activeCriteria = "ROOM_TYPE";
 		}
@@ -234,7 +232,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//Navigate to the next screen
 			$scope.checkOccupancyLimit();
-			$state.go('rover.reservation.mainCard.addons', {"from_date" : $scope.reservationData.arrivalDate, "to_date": $scope.reservationData.departureDate});
+			$state.go('rover.reservation.mainCard.addons', {
+				"from_date": $scope.reservationData.arrivalDate,
+				"to_date": $scope.reservationData.departureDate
+			});
 		}
 
 		$scope.showAllRooms = function() {
@@ -342,11 +343,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.getAvailability = function(roomRates) {
 			var roomDetails = [];
 			var rooms = [];
+
 			var currOccupancy = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults) +
 				parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
+
 			$(roomRates.room_types).each(function(i, d) {
 				roomDetails[d.id] = d;
 			});
+
+			// Parse through all room-rate combinations.
 			$(roomRates.results).each(function(i, d) {
 				$scope.displayData.dates.push({
 					str: d.date,
@@ -380,7 +385,36 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					var rate_id = d.id;
 					$(d.room_rates).each(function(i, d) {
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
-							rooms[d.room_type_id].rates.push(rate_id);
+							// CICO-7641
+							//TODO : Check if the rate has been configured for the requirement
+							console.log("Rate Id", rate_id);
+							var rateConfigured = false;
+							var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
+							var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
+							//TODO: Check the occupancy wise restriction logic
+							console.log({
+								"single": d.single,
+								"double": d.double,
+								"extra": d.extra_adult,
+								"child": d.child
+							});
+							//step 1 : If no rate is configured > Ignore 
+							if (d.single == null && d.double == null && d.extra_adult == null && d.child == null) {
+								// No action needs to be taken
+							} else {
+								// Step 2: Check for the other constraints here
+								// Step 2 A : Children
+								if (numChildren > 0 && d.child == null) {
+									rateConfigured = false;
+								} else {
+									rateConfigured = true;
+								}
+							}
+
+
+							if (rateConfigured) {
+								rooms[d.room_type_id].rates.push(rate_id);
+							}
 						}
 						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
 							rooms[d.room_type_id].ratedetails[for_date] = [];
