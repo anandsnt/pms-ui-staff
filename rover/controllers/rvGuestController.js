@@ -422,7 +422,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.rate.difference = (function() {
 								if (parseInt(companyData.rate.based_on.value) < 0) {
 									if (companyData.rate.based_on.type == "amount") {
-										return "$" + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+										return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
 									} else {
 										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
 									}
@@ -434,7 +434,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 							companyData.rate.surplus = (function() {
 								if (parseInt(companyData.rate.based_on.value) > 0) {
 									if (companyData.rate.based_on.type == "amount") {
-										return " plus $" + parseFloat(companyData.rate.based_on.value).toFixed(2);
+										return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
 									} else {
 										return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
 									}
@@ -490,7 +490,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.rate.difference = (function() {
 									if (parseInt(travelAgentData.rate.based_on.value) < 0) {
 										if (travelAgentData.rate.based_on.type == "amount") {
-											return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
+											return $scope.currencySymbol + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
 										} else {
 											return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
 										}
@@ -502,7 +502,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 								travelAgentData.rate.surplus = (function() {
 									if (parseInt(travelAgentData.rate.based_on.value) > 0) {
 										if (travelAgentData.rate.based_on.type == "amount") {
-											return " plus $" + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
+											return " plus " + $scope.currencySymbol + parseFloat(travelAgentData.rate.based_on.value).toFixed(2);
 										} else {
 											return " plus " + parseFloat(travelAgentData.rate.based_on.value) + "%";
 										}

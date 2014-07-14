@@ -374,7 +374,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                                 companyData.rate.difference = (function() {
                                     if (parseInt(companyData.rate.based_on.value) < 0) {
                                         if (companyData.rate.based_on.type == "amount") {
-                                            return "$" + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+                                            return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
                                         } else {
                                             return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
                                         }
@@ -386,7 +386,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                                 companyData.rate.surplus = (function() {
                                     if (parseInt(companyData.rate.based_on.value) > 0) {
                                         if (companyData.rate.based_on.type == "amount") {
-                                            return " plus $" + parseFloat(companyData.rate.based_on.value).toFixed(2);
+                                            return " plus "+ $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
                                         } else {
                                             return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
                                         }
