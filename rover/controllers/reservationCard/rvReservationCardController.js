@@ -1,5 +1,5 @@
-sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter',
-	function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter) {
+sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter', '$state', '$stateParams',
+	function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter, $state, $stateParams) {
 		BaseCtrl.call(this, $scope);
 		$scope.timeline = "";
 		$scope.reservationList = [];
@@ -141,7 +141,11 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 */
 		$scope.getReservationDetails = function(currentConfirmationNumber) {
 
-			$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
+			// $scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
+			$state.go("rover.staycard.reservationcard.reservationdetails", {
+				"id": $scope.$parent.$stateParams.id,
+				"confirmationId": currentConfirmationNumber
+			});
 			$scope.currentReservationId = currentConfirmationNumber;
 		};
 		/*
