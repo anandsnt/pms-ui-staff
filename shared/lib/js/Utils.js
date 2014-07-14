@@ -251,6 +251,9 @@ function precisionTwo(value){
     return parsed;
 }
 
+/*
+ * Please use this to get create date for a dayString.
+ */
 tzIndependentDate = function(st){
     var d = new Date(st);
     var r = d.getTime();
