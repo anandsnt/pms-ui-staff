@@ -10,38 +10,45 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
         */
         $scope.setUpData = function () {
 
-            
-
             $scope.fromCalendarID = "rateFromCalendar";
             $scope.toCalendarID = "rateToCalendar";
 
             $scope.isFromDateSelected = true;
             $scope.isToDateSelected = false;
-            $scope.Sets = []
+            $scope.Sets = [];
             $scope.Sets.push(createDefaultSet("Set 1"));
-            $scope.fromDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
-            //For new date sets, calendar should default to the first date past the end date of the last date set created
+            $scope.fromDate = dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+         
             var dLastSelectedDate = '';
             var lastSelectedDate = '';
-            try{
+
+            try{ //Handle exception, in case of NaN, initially.
                 lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
             }catch(e){}
 
+            
+            /* For new dateranges, fromdate should default 
+             * to one day past the enddate of the last daterange
+             * TODO: Only if lastDate > businessDate
+             */
             if(typeof lastSelectedDate != "undefined" && lastSelectedDate != ""){
 
-                dLastSelectedDate = new Date(lastSelectedDate);
-                dLastSelectedDate.setDate(dLastSelectedDate.getUTCDate() + 1);
+                dLastSelectedDate = tzIndependentDate(lastSelectedDate);
+                // Get next Day
+                dLastSelectedDate = new Date(dLastSelectedDate.getTime() + 24*60*60*1000);
                 $scope.fromDate = dateFilter(dLastSelectedDate, 'yyyy-MM-dd');
-                //$scope.isFromDateSelected = true;
             }
 
+            // Disable all days before current business Date
+            $scope.fromMinDate = dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
 
-            $scope.fromMinDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
-            //to_date is set to the month after the from_date month
-            toDate = new Date($scope.fromDate);
-            toDate.setDate(1);
+            /*Calander for todate should show next month ( from from date), by default.
+             * However, no date is selected by default.
+             */
+            var toDate = tzIndependentDate($scope.fromDate);
+            toDate.setDate(1); // Just to avoid invalid dates.
             toDate.setMonth(toDate.getMonth() + 1);
-            $scope.toMonthDate = toDate;
+            $scope.toMonthDate = toDate; //TODO: Check
             $scope.toMonthDateFormated = dateFilter(toDate, 'yyyy-MM-dd');
         };
 
@@ -218,6 +225,6 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                     $scope.fromDate = $scope.toMonthDateFormated;
                 }
             }
-        });
+        }); 
         $scope.setUpData();
 }]);

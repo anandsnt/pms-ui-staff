@@ -74,6 +74,8 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.reservationData.rooms[roomIdx].roomTypeName = '';
             $scope.reservationData.rooms[roomIdx].rateId = '';
             $scope.reservationData.rooms[roomIdx].rateName = '';
+            $scope.reservationData.demographics.market = '';
+            $scope.reservationData.demographics.source = '';
 
             var successCallBack = function() {
                 $state.go('rover.reservation.mainCard.roomType');
