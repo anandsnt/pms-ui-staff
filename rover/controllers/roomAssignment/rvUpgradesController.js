@@ -115,6 +115,11 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
 
+	$('.room-details').resize(function() {
+		console.log("resized the div");
+  		$scope.refreshScroller('upgradesViewScroller');
+	});
+
 	/**
 	* function to set the initial display status for the upgrade details for all the upgrades
 	  And also to set the upgrade description text as html
