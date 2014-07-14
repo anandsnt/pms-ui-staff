@@ -407,7 +407,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var paramDict = {
                     'name': $scope.searchData.companyCard.companyName,
                     'city': $scope.searchData.companyCard.companyCity,
-                    'corporate_id': $scope.searchData.companyCard.companyCorpId
+                    'corporate_id': $scope.searchData.companyCard.companyCorpId,
+                    'from_date': $scope.reservationData.arrivalDate,
+                    'to_date': $scope.reservationData.departureDate
                 };
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
             } else {
@@ -442,8 +444,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                                 travelAgentData.rate.difference = (function() {
                                     if (parseInt(travelAgentData.rate.based_on.value) < 0) {
                                         if (travelAgentData.rate.based_on.type == "amount") {
-                                            console.log("travelAgentData.rate.based_on.value",travelAgentData.rate.based_on.value);
-                                            console.log("parseFloat(travelAgentData.rate.based_on.value).toFixed(2)",parseFloat(travelAgentData.rate.based_on.value).toFixed(2));
                                             return "$" + (parseFloat(travelAgentData.rate.based_on.value) * -1).toFixed(2) + " off ";
                                         } else {
                                             return (parseFloat(travelAgentData.rate.based_on.value) * -1) + "%" + " off ";
@@ -476,7 +476,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var paramDict = {
                     'name': $scope.searchData.travelAgentCard.travelAgentName,
                     'city': $scope.searchData.travelAgentCard.travelAgentCity,
-                    'corporate_id': $scope.searchData.travelAgentCard.travelAgentIATA
+                    'corporate_id': $scope.searchData.travelAgentCard.travelAgentIATA,
+                    'from_date': $scope.reservationData.arrivalDate,
+                    'to_date': $scope.reservationData.departureDate
                 };
                 $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
             } else {

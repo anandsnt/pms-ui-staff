@@ -453,7 +453,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				var paramDict = {
 					'name': $scope.searchData.companyCard.companyName,
 					'city': $scope.searchData.companyCard.companyCity,
-					'corporate_id': $scope.searchData.companyCard.companyCorpId
+					'corporate_id': $scope.searchData.companyCard.companyCorpId,
+					'from_date': new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+					'to_date': new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
 				};
 				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
 			} else {
@@ -520,7 +522,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				var paramDict = {
 					'name': $scope.searchData.travelAgentCard.travelAgentName,
 					'city': $scope.searchData.travelAgentCard.travelAgentCity,
-					'corporate_id': $scope.searchData.travelAgentCard.travelAgentIATA
+					'corporate_id': $scope.searchData.travelAgentCard.travelAgentIATA,
+					'from_date': new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+					'to_date': new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
 				};
 				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
 			} else {
