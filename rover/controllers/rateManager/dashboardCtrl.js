@@ -44,7 +44,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         tableWidth : DEFAULT_TABLE_WIDTH,
         
     };
-$scope.$on("computeColumWidth", function(){
+    $scope.$on("computeColumWidth", function(){
         console.log($scope.uiOptions.tableWidth);
 
         var FILTER_OPTIONS_WIDTH = 5;
