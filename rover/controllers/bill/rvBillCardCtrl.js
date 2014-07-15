@@ -3,7 +3,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	BaseCtrl.call(this, $scope);
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
-	var roomTypeDescriptionLength = parseInt(150); //Approximate height
+	var roomTypeDescriptionLength = parseInt(100); //Approximate height
 	var billTabHeight = parseInt(35);
 	var calenderDaysHeight = parseInt(35);
 	var totalHeight = 0;
@@ -80,7 +80,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		setTimeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
-        }, 1000);
+        }, 500);
 		
 	};
 	$scope.init(reservationBillData);
@@ -188,7 +188,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * Show Group Items
 	 * @param {int} group index
 	 */
-	$krish = $scope;
 	$scope.showGroupItems = function(groupIndex){
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = ($scope.showGroupItemIndex != groupIndex)?groupIndex:-1;
@@ -537,7 +536,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			//If Total fees toggle is closed.
 			height = parseInt(height) + parseInt(150);
 		}
-		
+		if($scope.dayRates!=-1){
+			height = parseInt(height) + parseInt(50);
+		}
 		if($scope.showRoomDetailsIndex!=-1){
 			height = parseInt(height) + parseInt(roomTypeDescriptionLength);
 		}
