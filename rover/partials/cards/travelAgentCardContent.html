@@ -42,7 +42,7 @@
                         <div class="data">
                             <div class="info">
                                 <h2 ng-bind-html="'{{ travelAgent.account_name }}'|highlight:searchData.travelAgentCard.travelAgentName:false"></h2>
-                                <div class="rate" ng-show="travelAgent.rate"><span class="label">Rate</span> {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}</div>
+                                <div class="rate" ng-show="travelAgent.rate"><span class="label">Rate</span> {{travelAgent.rate.difference}}{{ travelAgent.rate.based_on.name }}{{travelAgent.rate.surplus}}</div>
                             </div>
                             <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
                             <span class="icons icon-location"> <span class="no-right-margin" ng-bind-html="'{{ travelAgent.address.city }}'|highlight:searchData.travelAgentCard.travelAgentCity:false"></span><span ng-show="travelAgent.address.state" class="no-right-margin">,&nbsp;</span>{{ travelAgent.address.state }}</span>

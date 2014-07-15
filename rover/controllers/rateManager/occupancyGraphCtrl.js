@@ -166,7 +166,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		var targetItem = {};
 		angular.forEach(data.results, function(item) {
 			itemDate = tzIndependentDate(item.date).getTime();
-			target_value = item.target == null ? 0 : item.target
+			target_value = item.target
 			targetItem = {
 				"date" : itemDate,
 				"value" : target_value,
@@ -206,7 +206,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 				itemDate.setDate(from_date.getDate() - i);
 				remainingStartWeekDays.push({
 					"date" : itemDate.getTime(),
-					"value" : 0,
+					"value" : null,
 					"is_editable" : false
 				})
 			}
@@ -219,8 +219,8 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 				var itemDate = angular.copy(to_date);
 				itemDate.setDate(to_date.getDate() + j);
 				remainingEndWeekDays.push({
-					"date" : Date.parse(itemDate),
-					"value" : 0,
+					"date" : itemDate.getTime(),
+					"value" : null,
 					"is_editable" : false
 				})
 			}
@@ -241,7 +241,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 
 	$scope.copyTargetToAllWeekDays = function(index) {
 		angular.forEach($scope.targetData[index], function(item, key) {
-			if (item.hasOwnProperty("value")) {
+			if (item.hasOwnProperty("value") && item.is_editable) {
 				item.value = $scope.weekCommonTargets[index];
 			}
 		});
@@ -254,12 +254,14 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 		var formatted_date = "";
 		angular.forEach($scope.targetData, function(week) {
 			angular.forEach(week, function(weekDays) {
-				weekDate = new Date(weekDays.date)
-				formatted_date = weekDate.getFullYear() + '-' + (weekDate.getMonth() + 1) + '-' + weekDate.getDate()
-				dates.push({
-					"date" : formatted_date,
-					"target" : weekDays.value
-				});
+				if(weekDays.value != null){
+					weekDate = new Date(weekDays.date)
+					formatted_date = weekDate.getFullYear() + '-' + (weekDate.getMonth() + 1) + '-' + weekDate.getDate()
+					dates.push({
+						"date" : formatted_date,
+						"target" : weekDays.value
+					});
+				}
 			});
 		});
 		params = {
