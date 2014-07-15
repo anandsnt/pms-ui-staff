@@ -415,7 +415,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-    	console.log("reached hereerrr");
+    	console.log("reached hereerrreee");
+    	console.log(document.activeElement);
 	      document.activeElement.blur();
 	      $scope.$emit('hideLoader');
 	      setTimeout(function(){
@@ -423,6 +424,17 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	      	 window.scrollTo(0,0);
 	      	 $scope.$apply();
 	      }, 700);
+    };
+    $scope.setPosition = function(){
+    	console.log('set position');
+        console.log(document.activeElement.nodeName);
+    	if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
+    		console.log("text field");
+    		 document.activeElement.blur();
+    		  setTimeout(function(){
+		      	 window.scrollTo(0,0);
+		      }, 700);
+    	}
     };
 
   }
