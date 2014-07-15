@@ -40,7 +40,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     var DEFAULT_TABLE_WIDTH = 400;
     $scope.uiOptions={
         tableHeight : DEFAULT_TABLE_WIDTH,
-        columWidth : DEFAULT_COLUMN_WIDTH,
+        columnWidth : DEFAULT_COLUMN_WIDTH,
         tableWidth : DEFAULT_TABLE_WIDTH,
         
     };
@@ -65,7 +65,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
-        $scope.uiOptions.columWidth = parseInt(mywidth);
+        $scope.uiOptions.columnWidth = parseInt(mywidth);
         
     };
 
