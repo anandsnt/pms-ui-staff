@@ -9,7 +9,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         $scope.cardSaved = function() {
             $scope.viewState.isAddNewCard = false;
-        }
+        };
 
         var that = this;
 
@@ -57,7 +57,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 preventClicking = true;
                 $scope.eventTimestamp = event.timeStamp;
             }
-        }
+        };
 
         $scope.checkEditMode = function() {
             if ($scope.viewState.isAddNewCard) {
@@ -68,11 +68,11 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     'guest-card': 'guest',
                     'company-card': 'company',
                     'travel-agent-card': 'travel_agent'
-                }
+                };
                 $scope.detachCard(cards[$scope.UICards[0]]);
                 $scope.viewState.isAddNewCard = false;
             }
-        }
+        };
 
         /**
          * function to open guest card
@@ -110,7 +110,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 cls = subCls[0];
             };
             return cls;
-        }
+        };
 
         $scope.UICardContentCls = function(from) {
             // evaluate UICards return card conten className(s) as string
@@ -121,7 +121,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 cls = 'visible';
             };
             return cls;
-        }
+        };
 
         $scope.cardCls = function() {
             // evaluate 
@@ -130,7 +130,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 cls += " open";
             }
             return cls;
-        }
+        };
 
         $scope.switchCard = function(from) {
             //  based on from
@@ -139,7 +139,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             var currentCard = $scope.UICards[0];
             $scope.UICards[0] = from;
             $scope.UICards[newCardIndex] = currentCard;
-        }
+        };
 
         $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
 
@@ -200,7 +200,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
 
 
-        }
+        };
 
         $scope.initGuestCard = function(guestData) {
             // passReservationParams
@@ -263,7 +263,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 'id': guestData.id
             };
             $scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
-        }
+        };
 
         // fetch reservation company card details 
         $scope.initCompanyCard = function(companyData) {
@@ -282,7 +282,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 };
                 $scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, companyCardFound);
             }
-        }
+        };
 
         // fetch reservation travel agent card details
         $scope.initTravelAgentCard = function(travelAgent) {
@@ -303,7 +303,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 };
                 $scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
             }
-        }
+        };
 
         // SEARCHES
         $scope.searchGuest = function() {
@@ -334,7 +334,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     });
                 }
                 $scope.$broadcast('guestSearchInitiated');
-            }
+            };
             if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || $scope.searchData.guestCard.guestCity != '' || $scope.searchData.guestCard.guestLoyaltyNumber != '') {
                 var paramDict = {
                     'first_name': $scope.searchData.guestCard.guestFirstName,
@@ -349,7 +349,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$apply();
                 $scope.$broadcast('guestSearchStopped');
             }
-        }
+        };
 
         $scope.searchCompany = function() {
             var successCallBackFetchCompanies = function(data) {
@@ -402,7 +402,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     });
                 }
                 $scope.$broadcast('companySearchInitiated');
-            }
+            };
             if ($scope.searchData.companyCard.companyName != '' || $scope.searchData.companyCard.companyCity != '' || $scope.searchData.companyCard.companyCorpId != '') {
                 var paramDict = {
                     'name': $scope.searchData.companyCard.companyName,
@@ -418,7 +418,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.$apply();
                 $scope.$broadcast('companySearchStopped');
             }
-        }
+        };
 
         $scope.searchTravelAgent = function() {
             var successCallBackFetchTravelAgents = function(data) {
@@ -471,7 +471,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     });
                 }
                 $scope.$broadcast('travelAgentSearchInitiated');
-            }
+            };
             if ($scope.searchData.travelAgentCard.travelAgentName != '' || $scope.searchData.travelAgentCard.travelAgentCity != '' || $scope.searchData.travelAgentCard.travelAgentIATA != '') {
                 var paramDict = {
                     'name': $scope.searchData.travelAgentCard.travelAgentName,
@@ -486,7 +486,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.travelAgentSearchIntiated = false;
                 $scope.$broadcast('travelAgentSearchStopped');
             }
-        }
+        };
 
         var resetReservationData = (function() {
             this.resetGuest = function() {
@@ -501,7 +501,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.guestLastName = "";
                 $scope.guestCity = "";
                 $scope.cardHeaderImage = "";
-            }
+            };
             this.resetCompanyCard = function() {
                 $scope.reservationData.company.id = "";
                 $scope.reservationData.company.name = "";
@@ -509,7 +509,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.companyName = "";
                 $scope.companyCity = "";
                 $scope.reservationDetails.companyCard.id = "";
-            }
+            };
             this.resetTravelAgent = function() {
                 $scope.reservationData.travelAgent.id = "";
                 $scope.reservationData.travelAgent.name = "";
@@ -517,13 +517,13 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.travelAgentName = "";
                 $scope.travelAgentCity = "";
                 $scope.reservationDetails.travelAgent.id = "";
-            }
+            };
 
             return {
                 resetGuest: this.resetGuest,
                 resetCompanyCard: this.resetCompanyCard,
                 resetTravelAgent: this.resetTravelAgent
-            }
+            };
         })();
 
         // DETACH CARD
@@ -558,7 +558,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 }
             }
             console.log($scope.reservationDetails);
-        }
+        };
 
         $scope.cardRemoved = function(card) {
             //reset Pending Flag
@@ -595,7 +595,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.reservationDetails.travelAgent.futureReservations = 0;
                 resetReservationData.resetTravelAgent();
             }
-        }
+        };
 
         // GUEST TABS
         //TODO: Find a way to move this into the child controller 
@@ -653,7 +653,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     $scope.checkFuture('guest', guest);
                 }
             }
-        }
+        };
 
         $scope.handleDrawClosing = function() {
             if ($scope.viewState.isAddNewCard) {
@@ -667,7 +667,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             if ($scope.viewState.reservationStatus.confirm && $scope.viewState.pendingRemoval.status) {
                 $scope.removeCard($scope.viewState.pendingRemoval.cardType);
             }
-        }
+        };
 
         $scope.selectCompany = function(company, $event) {
             $event.stopPropagation();
@@ -695,7 +695,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     $scope.checkFuture('company', company);
                 }
             }
-        }
+        };
 
         $scope.selectTravelAgent = function(travelAgent, $event) {
             $event.stopPropagation();
@@ -723,7 +723,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     $scope.checkFuture('travel_agent', travelAgent);
                 }
             }
-        }
+        };
 
 
         /**
@@ -741,10 +741,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         };
 
         $scope.checkOutsideClick = function(targetElement) {
-            if ($(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1) {
+            if ($(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
                 // $scope.closeGuestCard();
             }
-        }
+        };
 
         $scope.removeCard = function(card) {
             // This method returns the numnber of cards attached to the staycard
@@ -752,9 +752,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 var x = 0;
                 _.each($scope.reservationDetails, function(d, i) {
                     if (typeof d.id != 'undefined' && d.id != '' && d.id != null) x++;
-                })
+                });
                 return x;
-            }
+            };
 
             //Cannot Remove the last card... Tell user not to select another card
             if (checkNumber() > 1) {
@@ -788,7 +788,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     });
                 }
             }
-        }
+        };
 
         // CREATES
         $scope.createNewGuest = function() {
@@ -826,7 +826,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.$broadcast('guestCardAvailable');
             $scope.current = 'guest-contact';
             $scope.viewState.isAddNewCard = true;
-        }
+        };
 
         $scope.createNewCompany = function() {
             $scope.companyContactInformation = $scope.getEmptyAccountData();
@@ -835,7 +835,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.viewState.isAddNewCard = true;
             $scope.$broadcast('companyCardAvailable', true);
 
-        }
+        };
 
         $scope.createNewTravelAgent = function() {
             $scope.travelAgentInformation = $scope.getEmptyAccountData();
@@ -843,7 +843,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.reservationDetails.travelAgent.futureReservations = 0;
             $scope.viewState.isAddNewCard = true;
             $scope.$broadcast('travelAgentFetchComplete', true);
-        }
+        };
 
         $scope.guestCardClick = function($event) {
             var element = $event.target;
@@ -1014,12 +1014,11 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     }
                     $scope.$emit('hideLoader');
                 }, function() {
-                    console.log('replaceCard -failure');
                     $scope.cardRemoved();
                     $scope.$emit('hideLoader');
                 });
             }
-        }
+        };
 
         init();
 
