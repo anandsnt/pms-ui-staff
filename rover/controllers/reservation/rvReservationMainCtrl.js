@@ -1,8 +1,8 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state',
+    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state) {
         BaseCtrl.call(this, $scope);
 
-        $scope.$emit("updateRoverLeftMenu","createReservation");
+        $scope.$emit("updateRoverLeftMenu", "createReservation");
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
@@ -103,7 +103,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 },
                 reservationId: '',
                 confirmNum: '',
-                isSameCard: false // Set flag to retain the card details
+                isSameCard: false, // Set flag to retain the card details,
+                rateDetails: [] // This array would hold the configuration information of rates selected for each room
             }
         }
 
@@ -211,47 +212,96 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
-        $scope.checkOccupancyLimit = function() {
-            $scope.computeTotalStayCost();
-            var roomIndex = 0;
-            var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
-            var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
-                parseInt($scope.reservationData.rooms[roomIndex].numAdults);
+        //CICO-7641
+        var isOccupancyConfigured = function(roomIndex) {
+            var rateConfigured = true;
+            if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
+                _.each($scope.reservationData.rateDetails[roomIndex], function(d, i) {
+                    var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
 
-            var getMaxOccupancy = function(roomId) {
-                var max = -1;
-                var name = "";
-                $($scope.otherData.roomTypes).each(function(i, d) {
-                    if (roomId == d.id) {
-                        max = d.max_occupancy;
-                        name = d.name;
+                    var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
+                    var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
+
+                    if (rateToday.single == null && rateToday.double == null && rateToday.extra_adult == null && rateToday.child == null) {
+                        rateConfigured = false;
+                    } else {
+                        // Step 2: Check for the other constraints here
+                        // Step 2 A : Children
+                        if (numChildren > 0 && rateToday.child == null) {
+                            rateConfigured = false;
+                        } else if (numAdults == 1 && rateToday.single == null) { // Step 2 B: one adult - single needs to be configured
+                            rateConfigured = false;
+                        } else if (numAdults >= 2 && rateToday.double == null) { // Step 2 C: more than one adult - double needs to be configured
+                            rateConfigured = false;
+                        } else if (numAdults > 2 && rateToday.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
+                            rateConfigured = false;
+                        }
                     }
                 });
-                return {
-                    max: max,
-                    name: name
-                };
-            };
-
-            var roomPref = getMaxOccupancy(activeRoom);
-
-            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max == null || roomPref.max >= currOccupancy) {
-                return true;
             }
+            return rateConfigured;
+        }
 
-            ngDialog.open({
-                template: '/assets/partials/reservation/alerts/occupancy.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false,
-                data: JSON.stringify({
-                    roomType: roomPref.name,
-                    roomMax: roomPref.max
-                })
-            });
-            return true;
+        $scope.checkOccupancyLimit = function() {
+            var roomIndex = 0;
+            if (isOccupancyConfigured(roomIndex)) {
+                $scope.computeTotalStayCost();
+                var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
+                var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
+                    parseInt($scope.reservationData.rooms[roomIndex].numAdults);
+
+                var getMaxOccupancy = function(roomId) {
+                    var max = -1;
+                    var name = "";
+                    $($scope.otherData.roomTypes).each(function(i, d) {
+                        if (roomId == d.id) {
+                            max = d.max_occupancy;
+                            name = d.name;
+                        }
+                    });
+                    return {
+                        max: max,
+                        name: name
+                    };
+                };
+
+                var roomPref = getMaxOccupancy(activeRoom);
+
+                if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max == null || roomPref.max >= currOccupancy) {
+                    return true;
+                }
+
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/occupancy.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    data: JSON.stringify({
+                        roomType: roomPref.name,
+                        roomMax: roomPref.max
+                    })
+                });
+                return true;
+            } else {
+                // TODO: 7641
+                // prompt user that the room doesn't have a rate configured for the current availability
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/notConfiguredOccupancy.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    closeByDocument: false,
+                    closeByEscape: false,
+                });
+            }
         };
+
+        $scope.resetRoomSelection = function(roomIndex) {
+            console.log('Go back to the room');
+            //TODO : pass the roomIndex from the dialog box
+            $scope.editRoomRates(0);
+            $scope.closeDialog();
+        }
 
         $scope.computeTotalStayCost = function() {
             // TODO : Loop thru all rooms
@@ -310,6 +360,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //TODO: Extend for multiple rooms
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative);
         }
+
+
+        $scope.editRoomRates = function(roomIdx) {
+            // console.log($scope.reservationData.rooms[roomIdx]);
+            //TODO: Navigate back to roomtype selection screen after resetting the current room options
+            $scope.reservationData.rooms[roomIdx].roomTypeId = '';
+            $scope.reservationData.rooms[roomIdx].roomTypeName = '';
+            $scope.reservationData.rooms[roomIdx].rateId = '';
+            $scope.reservationData.rooms[roomIdx].rateName = '';
+            $scope.reservationData.demographics.market = '';
+            $scope.reservationData.demographics.source = '';
+
+            var successCallBack = function() {
+                $state.go('rover.reservation.mainCard.roomType');
+            };
+
+            $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
+                fromDate: $scope.reservationData.arrivalDate,
+                toDate: $scope.reservationData.departureDate
+            }, successCallBack);
+        }
+
         $scope.initReservationData();
     }
 ]);

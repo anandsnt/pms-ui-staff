@@ -230,8 +230,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
 			$scope.reservationData.totalTaxAmount = 0;
 
+			//TODO : 7641 - Update the rateDetails array in the reservationData
+			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
+
 			//Navigate to the next screen
-			$scope.checkOccupancyLimit();
+			$scope.checkOccupancyLimit();	
 			$state.go('rover.reservation.mainCard.addons', {
 				"from_date": $scope.reservationData.arrivalDate,
 				"to_date": $scope.reservationData.departureDate
@@ -386,31 +389,34 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$(d.room_rates).each(function(i, d) {
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
 							// CICO-7641
-							//TODO : Check if the rate has been configured for the requirement
-							console.log("Rate Id", rate_id);
+							// Check if the rate has been configured for the requirement
 							var rateConfigured = false;
 							var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
 							var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
-							//TODO: Check the occupancy wise restriction logic
-							console.log({
-								"single": d.single,
-								"double": d.double,
-								"extra": d.extra_adult,
-								"child": d.child
-							});
+							
+							//Check the occupancy wise restriction logic
+					
 							//step 1 : If no rate is configured > Ignore 
 							if (d.single == null && d.double == null && d.extra_adult == null && d.child == null) {
 								// No action needs to be taken
+								rateConfigured = false;
+							} else if (d.single != null && d.double != null && d.extra_adult != null && d.child != null) {
+								rateConfigured = true;
 							} else {
 								// Step 2: Check for the other constraints here
 								// Step 2 A : Children
 								if (numChildren > 0 && d.child == null) {
 									rateConfigured = false;
+								} else if (numAdults == 1 && d.single == null) { // Step 2 B: one adult - single needs to be configured
+									rateConfigured = false;
+								} else if (numAdults >= 2 && d.double == null) { // Step 2 C: more than one adult - double needs to be configured
+									rateConfigured = false;
+								} else if (numAdults > 2 && d.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
+									rateConfigured = false;
 								} else {
 									rateConfigured = true;
 								}
 							}
-
 
 							if (rateConfigured) {
 								rooms[d.room_type_id].rates.push(rate_id);
