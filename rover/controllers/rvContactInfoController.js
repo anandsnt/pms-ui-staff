@@ -7,7 +7,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
     var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
     presentContactInfo.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
     $scope.errorMessage = "";
-    
+
     $scope.$on('clearNotifications', function() {
       $scope.successMessage = "";
       $scope.$emit('contactInfoError', false);
@@ -29,9 +29,18 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
           if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
-            $scope.replaceCard('guest', {
-              id: data.id
-            }, false);
+            if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+              $scope.replaceCardCaller(false, 'guest', {
+                id: data.id
+              }, false);
+            } else {
+              $scope.checkFuture(false, 'guest', {
+                id: data.id
+              });
+            }
+            // $scope.replaceCard('guest', {
+            //   id: data.id
+            // }, false);
           }
         }
         //TODO : Reduce all these places where guestId is kept and used to just ONE
@@ -119,18 +128,21 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
-    var scrollerOptions = {click: true, preventDefault: false};
-  $scope.setScroller('contact_info', scrollerOptions);
+    var scrollerOptions = {
+      click: true,
+      preventDefault: false
+    };
+    $scope.setScroller('contact_info', scrollerOptions);
 
-  $scope.$on('CONTACTINFOLOADED', function(event) {
-	setTimeout(function(){
-    $scope.refreshScroller('contact_info');
-		
-		}, 
-	1500);
-	$scope.$on('REFRESHLIKESSCROLL', function(){
-    $scope.refreshScroller('contact_info');
-  });
-});
-}]);
+    $scope.$on('CONTACTINFOLOADED', function(event) {
+      setTimeout(function() {
+          $scope.refreshScroller('contact_info');
 
+        },
+        1500);
+      $scope.$on('REFRESHLIKESSCROLL', function() {
+        $scope.refreshScroller('contact_info');
+      });
+    });
+  }
+]);

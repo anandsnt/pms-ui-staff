@@ -139,7 +139,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Save new payment - GUestcard or staycard
 	 */
 	$scope.savePayment = function(){
-		 window.scrollTo(0,0);
+		  document.activeElement.blur();
+	      setTimeout(function(){
+	      	 window.scrollTo(0,0);
+	      }, 700);
 		// console.log(JSON.stringify($scope.data));
 		// console.log($scope.saveData.selected_payment_type);
 		$scope.saveData.payment_type = "";

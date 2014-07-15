@@ -556,7 +556,7 @@ height: 410px;
 }
 
 .rate_end_delete{
-  margin-left:239px;
+  margin-left:51%;
   margin-top:30px;
 }
 .rate_additional_details_pointers{
@@ -615,4 +615,25 @@ td{
 
 .rates-table-count{
   width:8% !important;
+}
+
+
+.li-draggable{
+   min-width:22% !important; /* work around to fix drag and drop in touch devices*/
+  background-color:white !important;
+  position: relative;
+  line-height: 40px;
+  padding: 0 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  .clickable;
+  .no-transition;
+
+  .icon-handle {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      .square(16px);
+      .show;
+  }
 }
