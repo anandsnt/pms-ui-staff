@@ -44,8 +44,8 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         tableWidth : DEFAULT_TABLE_WIDTH,
         
     };
-
-    $scope.computeColumWidth = function(){
+$scope.$on("computeColumWidth", function(){
+        console.log($scope.uiOptions.tableWidth);
 
         var FILTER_OPTIONS_WIDTH = 5;
         var FIRST_COLUMN_WIDTH = 220;
@@ -67,7 +67,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
         
-    };
+    });
 
     $scope.ratesDisplayed = [];
 
@@ -81,7 +81,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
 
     $scope.showRatesBtnClicked = function(){
         //$scope.filterConfigured = true;
-        $scope.computeColumWidth();
+        //$scope.computeColumWidth();
         $scope.toggleLeftMenu();
         $scope.$broadcast("updateRateCalendar");
         $scope.$broadcast("updateOccupancyGraph");
