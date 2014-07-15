@@ -234,7 +234,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 
 			//Navigate to the next screen
-			$scope.checkOccupancyLimit();	
+			$scope.checkOccupancyLimit();
 			$state.go('rover.reservation.mainCard.addons', {
 				"from_date": $scope.reservationData.arrivalDate,
 				"to_date": $scope.reservationData.departureDate
@@ -343,6 +343,29 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.refreshScroll();
 		}
 
+
+		var restrictionCheck = function(room) {
+			console.log(room);
+			//[TODO] Step 1 : Check if the rates are configured for all the days of stay
+
+			//[TODO]Step 2 : Check if the rates are configured for the selected occupancy
+
+			//[TODO]Step 3 : Check if the rates are configured for the selected restrictions
+			// 1 CLOSED
+			// 2 CLOSED_ARRIVAL
+			// 3 CLOSED_DEPARTURE
+			// 4 MIN_STAY_LENGTH
+			// 5 MAX_STAY_LENGTH
+			// 6 MIN_STAY_THROUGH
+			// 7 MIN_ADV_BOOKING
+			// 8 MAX_ADV_BOOKING
+			// 9 DEPOSIT_REQUESTED
+			// 10 CANCEL_PENALTIES
+			// 11 LEVELS
+
+
+		}
+
 		$scope.getAvailability = function(roomRates) {
 			var roomDetails = [];
 			var rooms = [];
@@ -383,6 +406,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				});
 
+				restrictionCheck(d);
 				//step2: extract rooms with rate information
 				$(d.rates).each(function(i, d) {
 					var rate_id = d.id;
@@ -393,9 +417,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							var rateConfigured = false;
 							var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
 							var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
-							
+
 							//Check the occupancy wise restriction logic
-					
+
 							//step 1 : If no rate is configured > Ignore 
 							if (d.single == null && d.double == null && d.extra_adult == null && d.child == null) {
 								// No action needs to be taken

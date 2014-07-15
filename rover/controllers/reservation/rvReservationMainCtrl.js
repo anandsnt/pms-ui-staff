@@ -292,14 +292,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     scope: $scope,
                     closeByDocument: false,
                     closeByEscape: false,
+                    data: JSON.stringify({
+                        roomIndex: roomIndex
+                    })
                 });
             }
         };
 
         $scope.resetRoomSelection = function(roomIndex) {
-            console.log('Go back to the room');
-            //TODO : pass the roomIndex from the dialog box
-            $scope.editRoomRates(0);
+            $scope.editRoomRates(roomIndex);
             $scope.closeDialog();
         }
 
