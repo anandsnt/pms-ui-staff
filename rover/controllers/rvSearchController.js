@@ -101,6 +101,18 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       }
   	 return mappedStatus;
   };
+
+  //Map the room status to the view expected format
+  $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
+    var mappedStatus = "";
+    if (roomstatus == "READY" && fostatus == "VACANT") {
+    mappedStatus = 'ready';
+    } else {
+    mappedStatus = "not-ready";
+    }
+    return mappedStatus;
+  };
+
   //function that converts a null value to a desired string.
 
    //if no replace value is passed, it returns an empty string
