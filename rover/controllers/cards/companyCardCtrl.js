@@ -121,11 +121,11 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 					//if a new card has been added, reset the future count to zero
 					$scope.viewState.pendingRemoval.cardType = "";
 					if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
-						$scope.replaceCardCaller(false, 'company', {
+						$scope.replaceCardCaller('company', {
 							id: data.id
 						}, false);
 					} else {
-						$scope.checkFuture(false, 'company', {
+						$scope.checkFuture('company', {
 							id: data.id
 						});
 					}
