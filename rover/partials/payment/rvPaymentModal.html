@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show"><form class="modal-content form new-content payment-popup" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
+<div role="dialog" id="modal" class="modal-show"><form ng-click="setPosition()" class="modal-content form new-content payment-popup" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
 	<button class="dark-title modal-close" type="button" id="modal-close" ng-click="closeDialog()">
 		<span class="icons icon-close"></span>
 	</button>
@@ -56,7 +56,7 @@
 		</label>
 	</div>
 	<div class="actions float">
-		<button class="button blank modal-close" id="cancel" type="button" ng-click="closeDialog()" translate>CANCEL</button>
+		<button class="button green modal-close" id="cancel" type="button" ng-click="closeDialog()" translate>CANCEL</button>
 		<button class="button green modal-close" id="save" type="button" ng-click="savePaymentDetails()" translate>ADD</button>  
 	</div>
 </form></div>
