@@ -97,7 +97,7 @@
 					<ul id="assigned-roles" 
 					data-placeholder="Drop a role here to assign it to the user"
 
-					data-jqyoui-options="{accept: '.acceptable_roles'}"
+					data-jqyoui-options="{accept:'.unassigned-user-roles'}"
 					
 					class="boxes sortable empty short-list" data-drop="true" 
 					ng-model='assignedRoles' 
@@ -107,12 +107,12 @@
 					style="overflow-y: scroll !important;" data-type="target">
 
 						<li ng-repeat="role in assignedRoles" 
-						class="acceptable_roles"
+						class="assigned-user-roles li-draggable"
 
-						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone'}"
+						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
 						ng-model="assignedRoles" 
 
-						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
 						ng-hide="!role.name" 
 
 						ng-class="{selected: selectedAssignedRole == $index, justDropped: justDropped == $index}" 
@@ -142,16 +142,16 @@
 					class="boxes sortable short-list"  style="overflow-y: scroll !important;" 
 					data-drop="true" ng-model='unAssignedRoles' 
 
-					data-jqyoui-options="{accept: '.acceptable_roles'}"
+					data-jqyoui-options="{accept:'.assigned-user-roles'}"
 					jqyoui-droppable="{multiple:true, onOver: 'reachedUnAssignedRoles' }" data-type="source">
 					
 						<li ng-repeat="role in unAssignedRoles" 
-						class="acceptable_roles"
-						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone'}" 
+						class="unassigned-user-roles li-draggable"
+						data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" 
 
 						ng-model="unAssignedRoles" 
 
-						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+						jqyoui-draggable="{index: {{$index}}, placeholder:false,animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
 
 						ng-hide="!role.name" ng-class="{selected: selectedUnassignedRole == $index}" 
 

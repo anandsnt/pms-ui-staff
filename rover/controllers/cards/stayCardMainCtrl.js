@@ -176,7 +176,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		}
 
+
 		$scope.$on('cardIdsFetched', function() {
+			// Restore view state
+			$scope.viewState.pendingRemoval.status = false;
+			$scope.viewState.pendingRemoval.cardType = "";
+
+			// Reset all cards
+			$scope.$broadcast('guestCardDetached');
+			$scope.$broadcast('travelAgentDetached');
+			$scope.$broadcast('companyCardDetached');
+
+			//init all cards with new data
 			$scope.initGuestCard();
 			$scope.initCompanyCard();
 			$scope.initTravelAgentCard();
@@ -194,7 +205,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			// TODO: Remove the following commented out code!
 			// Leaving it now for further debugging if required
-			// console.log("FUTURE_COUNTER",{
+			// console.log("FUTURE_COUNTER", {
 			// 	G: $scope.reservationDetails.guestCard.futureReservations,
 			// 	C: $scope.reservationDetails.companyCard.futureReservations,
 			// 	T: $scope.reservationDetails.travelAgent.futureReservations,
