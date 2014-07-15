@@ -63,7 +63,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.arrival_date = $scope.reservationData.arrivalDate;
 			data.arrival_time = '';
 			//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
-			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm != '') {
+			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' 
+				&& $scope.reservationData.checkinTime.ampm != '') {
 				data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh,
 					$scope.reservationData.checkinTime.mm,
 					$scope.reservationData.checkinTime.ampm);
@@ -71,8 +72,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.departure_date = $scope.reservationData.departureDate;
 			data.departure_time = '';
 			//Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
-			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkinTime.ampm != '') {
-				data.arrival_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
+			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' 
+				&& $scope.reservationData.checkoutTime.ampm != '') {
+				data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
 					$scope.reservationData.checkoutTime.mm,
 					$scope.reservationData.checkoutTime.ampm);
 			}
