@@ -334,6 +334,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
       }
+       if ((typeof sntapp === 'undefined') || (sntapp.enableURLChange != true )){
+
+          window.history.pushState("Dashboard", "Showing Dashboard", "/staff");
+       }   
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -341,6 +345,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('hideLoader');
       $rootScope.previousState = from;
       $rootScope.previousStateParams = fromParams;
+   
+      
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
