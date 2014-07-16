@@ -363,7 +363,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Depends on $scope.guestCardVisible in rvguestcardcontroller.js
     $scope.isGuestCardVisible = false;
     $scope.$on('GUESTCARDVISIBLE', function(event, data) {
-    	console.log("jjjjjjjjjjjjjjjjjjjjjj")
       $scope.isGuestCardVisible = false;
       if (data) {
         $scope.isGuestCardVisible = true;
