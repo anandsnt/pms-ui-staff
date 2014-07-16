@@ -462,6 +462,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// flags and variables necessary
 			var touching = false,
+				pulling  = false,
 				startY   = 0,
 				nowY     = 0,
 				initTop  = $rooms.scrollTop,
@@ -505,9 +506,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				nowY = touch.y || touch.pageY;
 
 				// again a precaution
+				// that the user has started pull down
 				if ( startY > nowY ) {
+					pulling: false;
 					return;
-				};
+				} else {
+					pulling: true;
+				}
 
 				// only when everything checks out
 				// prevent default to block the scrolling
@@ -533,10 +538,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// if we are not on top of scroll area
 				if ( this.scrollTop > initTop ) {
-				return;
+					return;
 				};
 
 				touching = true;
+				pulling = false;
 				startY = touch.y || touch.pageY;
 
 				$rooms.style.WebkitTransition = '';
@@ -557,10 +563,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					return;
 				};
 
-				// gotta prevent since the user has already pulled down
-				e.preventDefault();
+				// gotta prevent only when
+				// user has already pulled down
+				if ( pulling ) {
+					e.preventDefault();	
+				};
 
 				touching = false;
+				pulling = false;
 				nowY = touch ? (touch.y || touch.pageY) : nowY;
 
 				var diff = (nowY - startY);
@@ -577,7 +587,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.webkitTransform = 'translateY(0)';
 				$notify.style.webkitTransform = 'translateY(0)';
 
-				// 'touchmove' handler is not more necessary
+				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener( touchMoveHandler );
 
 				loadNotify();
@@ -586,15 +596,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// bind the 'touchstart' handler
 			$rooms.addEventListener( 'touchstart', touchStartHandler, false );
 
-			// bind the 'touchstart' handler
-			// TODO: need a similar for 'touchcancel'
+			// bind the 'touchend' handler
 			$rooms.addEventListener( 'touchend', touchEndHandler, false );
 
+			// bind the 'touchcancel' handler
+			$rooms.addEventListener( 'touchcancel', touchEndHandler, false );
 
 			// remove the DOM binds when this scope is distroyed
 			$scope.$on( '$destroy', function() {
 				$rooms.removeEventListener( 'touchstart' );
 				$rooms.removeEventListener( 'touchend' );
+				$rooms.removeEventListener( 'touchcancel' );
 			});
 		};
 
