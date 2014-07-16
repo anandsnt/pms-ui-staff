@@ -183,9 +183,11 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.viewState.pendingRemoval.cardType = "";
 
 			// Reset all cards
-			$scope.$broadcast('guestCardDetached');
-			$scope.$broadcast('travelAgentDetached');
-			$scope.$broadcast('companyCardDetached');
+			if ($stateParams.isrefresh == "true" ) {
+				$scope.$broadcast('guestCardDetached');
+				$scope.$broadcast('travelAgentDetached');
+				$scope.$broadcast('companyCardDetached');
+			}
 
 			//init all cards with new data
 			$scope.initGuestCard();
@@ -235,7 +237,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$state.go('rover.staycard.reservationcard.reservationdetails', {
 						"id": $stateParams.id,
 						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": true
+						"isrefresh": false
 					});
 				}, function() {
 					console.log('removeCard - failure');
@@ -280,7 +282,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$state.go('rover.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id,
 					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": true
+					"isrefresh": false
 				});
 				$scope.$emit('hideLoader');
 			}, function() {

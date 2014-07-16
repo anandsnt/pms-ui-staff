@@ -1,6 +1,5 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
-
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -370,6 +369,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Depends on $scope.guestCardVisible in rvguestcardcontroller.js
     $scope.isGuestCardVisible = false;
     $scope.$on('GUESTCARDVISIBLE', function(event, data) {
+    	console.log("jjjjjjjjjjjjjjjjjjjjjj")
       $scope.isGuestCardVisible = false;
       if (data) {
         $scope.isGuestCardVisible = true;
@@ -431,11 +431,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	      	 $scope.$apply();
 	      }, 700);
     };
+    /*
+     * To fix issue with ipad keypad - 7702
+     */
     $scope.setPosition = function(){
-    	console.log('set position');
-        console.log(document.activeElement.nodeName);
     	if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
-    		console.log("text field");
     		 document.activeElement.blur();
     		  setTimeout(function(){
 		      	 window.scrollTo(0,0);
