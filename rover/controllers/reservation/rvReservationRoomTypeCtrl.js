@@ -42,6 +42,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		};
 
 		var init = function() {
+			BaseCtrl.call(this, $scope);
+
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
 			$scope.displayData.dates = [];
@@ -343,27 +345,131 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.refreshScroll();
 		}
 
+		$scope.restrictionsMapping = {
+			1: 'CLOSED',
+			2: 'CLOSED_ARRIVAL',
+			3: 'CLOSED_DEPARTURE',
+			4: 'MIN_STAY_LENGTH',
+			5: 'MAX_STAY_LENGTH',
+			6: 'MIN_STAY_THROUGH',
+			7: 'MIN_ADV_BOOKING',
+			8: 'MAX_ADV_BOOKING',
+			9: 'DEPOSIT_REQUESTED',
+			10: 'CANCEL_PENALTIES',
+			11: 'LEVELS'
+		}
 
-		var restrictionCheck = function(room) {
-			console.log(room);
-			//[TODO] Step 1 : Check if the rates are configured for all the days of stay
+		// This method does a restriction check on the rates!
+		var restrictionCheck = function(roomsIn) {
+			var rooms = roomsIn;
+			_.each(rooms, function(room, idx) {
+				var roomId = room.id;
+				if (room.rates.length > 0) {
+					_.each(room.rates, function(rateId) {
+						/*("now processing", {
+							roomId: roomId,
+							rateId: rateId
+						})*/
+						var validRate = true;
+						_.each(room.ratedetails, function(today, key) {
+							var currDate = key;
+							//Step 1 : Check if the rates are configured for all the days of stay
+							if (typeof today[rateId] == 'undefined') {
+								// ("The rate " + rateId + " is not available for " + roomId + " on " + key);
+								validRate = false;
+							} else {
+								var rateConfiguration = today[rateId].rateBreakUp;
+								var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
+								var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
+								var stayLength = parseInt($scope.reservationData.numNights);
+								// The below variable stores the days till the arrival date
+								var daysTillArrival = Math.round((new Date($scope.reservationData.arrivalDate) - new Date($rootScope.businessDate)) / (1000 * 60 * 60 * 24));
 
-			//[TODO]Step 2 : Check if the rates are configured for the selected occupancy
+								//Step 2 : Check if the rates are configured for the selected occupancy
+								if (rateConfiguration.single == null && rateConfiguration.double == null && rateConfiguration.extra_adult == null && rateConfiguration.child == null) {
+									// ("This rate has to be removed as no rates are confugured for " + key);
+									validRate = false;
+								} else {
+									// Step 2: Check for the other constraints here
+									// Step 2 A : Children
+									if (numChildren > 0 && rateConfiguration.child == null) {
+										// ("This rate has to be removed as no children are configured for " + key);
+										validRate = false;
+									} else if (numAdults == 1 && rateConfiguration.single == null) { // Step 2 B: one adult - single needs to be configured
+										// ("This rate has to be removed as no single are configured for " + key);
+										validRate = false;
+									} else if (numAdults >= 2 && rateConfiguration.double == null) { // Step 2 C: more than one adult - double needs to be configured
+										// ("This rate has to be removed as no double are configured for " + key);
+										validRate = false;
+									} else if (numAdults > 2 && rateConfiguration.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
+										// ("This rate has to be removed as no adults are configured for " + key);
+										validRate = false;
+									}
+								}
+								//[TODO]Step 3 : Check if the rates are configured for the selected restrictions
+								if (rateConfiguration.restrictions.length > 0) {
+									_.each(rateConfiguration.restrictions, function(restriction) {
+										switch ($scope.restrictionsMapping[restriction.restriction_type_id]) {
+											case 'CLOSED': // 1 CLOSED
+												// Cannot book a closed room
+												validRate = false;
+												break;
+											case 'CLOSED_ARRIVAL': // 2 CLOSED_ARRIVAL
+												if (new Date(currDate) - new Date($scope.reservationData.arrivalDate) == 0) {
+													validRate = false;
+												}
+												break;
+											case 'CLOSED_DEPARTURE': // 3 CLOSED_DEPARTURE
+												if (new Date(currDate) - new Date($scope.reservationData.departureDate) == 0) {
+													validRate = false;
+												}
+												break;
+											case 'MIN_STAY_LENGTH': // 4 MIN_STAY_LENGTH
+												if (restriction.days != null && stayLength < restriction.days) {
+													validRate = false;
+												}
+												break;
+											case 'MAX_STAY_LENGTH': // 5 MAX_STAY_LENGTH
+												if (restriction.days != null && stayLength > restriction.days) {
+													validRate = false;
+												}
+												break;
+											case 'MIN_STAY_THROUGH': // 6 MIN_STAY_THROUGH
+												break;
+											case 'MIN_ADV_BOOKING': // 7 MIN_ADV_BOOKING
+												if (restriction.days != null && daysTillArrival < restriction.days) {
+													validRate = false;
+												}
+												break;
+											case 'MAX_ADV_BOOKING': // 8 MAX_ADV_BOOKING
+												if (restriction.days != null && daysTillArrival > restriction.days) {
+													validRate = false;
+												}
+												break;
+											case 'DEPOSIT_REQUESTED': // 9 DEPOSIT_REQUESTED
+												break;
+											case 'CANCEL_PENALTIES': // 10 CANCEL_PENALTIES
+												break;
+											case 'LEVELS': // 11 LEVELS
+												break;
 
-			//[TODO]Step 3 : Check if the rates are configured for the selected restrictions
-			// 1 CLOSED
-			// 2 CLOSED_ARRIVAL
-			// 3 CLOSED_DEPARTURE
-			// 4 MIN_STAY_LENGTH
-			// 5 MAX_STAY_LENGTH
-			// 6 MIN_STAY_THROUGH
-			// 7 MIN_ADV_BOOKING
-			// 8 MAX_ADV_BOOKING
-			// 9 DEPOSIT_REQUESTED
-			// 10 CANCEL_PENALTIES
-			// 11 LEVELS
+										}
+									})
 
+								}
+							}
 
+						});
+						//Remove rate from the room's list here if flag failed
+						if (!validRate) {
+							var existingRates = roomsIn[roomId].rates;
+							var afterRemoval = _.without(existingRates, rateId);
+							roomsIn[roomId].rates = afterRemoval;
+						}
+					});
+				}
+			});
+			return roomsIn;
 		}
 
 		$scope.getAvailability = function(roomRates) {
@@ -406,45 +512,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				});
 
-				restrictionCheck(d);
 				//step2: extract rooms with rate information
 				$(d.rates).each(function(i, d) {
 					var rate_id = d.id;
 					$(d.room_rates).each(function(i, d) {
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
-							// CICO-7641
-							// Check if the rate has been configured for the requirement
-							var rateConfigured = false;
-							var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
-							var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
-
-							//Check the occupancy wise restriction logic
-
-							//step 1 : If no rate is configured > Ignore 
-							if (d.single == null && d.double == null && d.extra_adult == null && d.child == null) {
-								// No action needs to be taken
-								rateConfigured = false;
-							} else if (d.single != null && d.double != null && d.extra_adult != null && d.child != null) {
-								rateConfigured = true;
-							} else {
-								// Step 2: Check for the other constraints here
-								// Step 2 A : Children
-								if (numChildren > 0 && d.child == null) {
-									rateConfigured = false;
-								} else if (numAdults == 1 && d.single == null) { // Step 2 B: one adult - single needs to be configured
-									rateConfigured = false;
-								} else if (numAdults >= 2 && d.double == null) { // Step 2 C: more than one adult - double needs to be configured
-									rateConfigured = false;
-								} else if (numAdults > 2 && d.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
-									rateConfigured = false;
-								} else {
-									rateConfigured = true;
-								}
-							}
-
-							if (rateConfigured) {
-								rooms[d.room_type_id].rates.push(rate_id);
-							}
+							rooms[d.room_type_id].rates.push(rate_id);
 						}
 						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
 							rooms[d.room_type_id].ratedetails[for_date] = [];
@@ -471,6 +544,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			});
 
+			rooms = restrictionCheck(rooms);
 
 			_.each(rooms, function(value) {
 				// step3: total and average calculation
@@ -498,6 +572,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			});
+
 			return rooms;
 		}
 

@@ -304,9 +304,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.closeDialog();
         }
 
+
         $scope.computeTotalStayCost = function() {
             // TODO : Loop thru all rooms
-            var currentRoom = $scope.reservationData.rooms[0];
+            var roomIndex = 0;
+            var currentRoom = $scope.reservationData.rooms[roomIndex];
+
+            //compute stay cost for the current room
+            var adults = currentRoom.numAdults;
+            var children = currentRoom.numChildren;
+            var roomTotal = 0;
+            var roomAvg = 0;
+
+            _.each($scope.reservationData.rateDetails[roomIndex], function(d) {
+                var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
+                var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+                var extraAdults = adults >= 2 ? adults - 2 : 0;
+                roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
+            });
+
+            currentRoom.rateTotal = roomTotal;
+            
+            currentRoom.rateAvg = roomTotal / $scope.reservationData.numNights;
 
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
