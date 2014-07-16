@@ -184,7 +184,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					/**
 					 * handle click on tab navigation bar.
 					 */
-					if ($event.target.id === 'guest-card-tabs-nav') {
+					if ($event.target.id === 'guest-card-tabs-nav' || $event.target.id === 'cards-header') {
 						$scope.$broadcast('saveContactInfo');
 						$scope.$broadcast('SAVELIKES');
 
@@ -194,11 +194,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 			}
 		};
+		
 
 		$scope.checkOutsideClick = function(targetElement) {
-			if ($(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
+			 if($scope.cardVisible){
+				$scope.$broadcast('saveContactInfo');
+				$scope.$broadcast('SAVELIKES');
+
+			}
+			
+			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
 				$scope.closeGuestCard();
 			}
+			
+		
 		};
 
 
@@ -268,7 +277,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 * function to close guest card
 		 */
 		$scope.closeGuestCard = function() {
-			console.log("close guest card")
 			$scope.guestCardHeight = resizableMinHeight;
 			//Check if pending removals - If yes remove 
 			$scope.handleDrawClosing();

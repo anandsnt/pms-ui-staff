@@ -34,8 +34,6 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		});
 
 		$scope.$on('CHANGEAVATAR', function(event, data) {
-			console.log("--------+++-------------");
-			console.log(data);
 
 			var imageName = $scope.guestCardData.contactInfo.avatar.split('/')[$scope.guestCardData.contactInfo.avatar.split('/').length - 1];
 

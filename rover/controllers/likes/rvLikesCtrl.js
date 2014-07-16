@@ -94,7 +94,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			};
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
-				calu
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
