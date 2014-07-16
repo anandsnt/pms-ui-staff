@@ -30,11 +30,11 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
             if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
-              $scope.replaceCardCaller(false, 'guest', {
+              $scope.replaceCardCaller('guest', {
                 id: data.id
               }, false);
             } else {
-              $scope.checkFuture(false, 'guest', {
+              $scope.checkFuture('guest', {
                 id: data.id
               });
             }

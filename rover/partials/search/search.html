@@ -51,7 +51,7 @@
 								</span>
 
 
-								<strong class="room-status " ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</strong>
+								<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
 							</a>
 						</li>
 						<li class="no-content" ng-show="results.length == 0 && currentType!='direct' && (!isLateCheckoutList || searchTermPresent)">

@@ -27,6 +27,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var afterFetch = function(data) {
 			$scope.noScroll = true;
 
+			// apply the filter first
+			$scope.calculateFilters(data.rooms);
+
 			// making unique copies of array
 			// slicing same array not good.
 			// say thanks to underscore.js
@@ -47,9 +50,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// push the rest of the rooms into $scope.rooms
 				// remember slicing is only happening on the Ctrl and not on Srv
 				$scope.rooms.push.apply( $scope.rooms, restPart );
-
-				// apply the filter
-				$scope.calculateFilters();
 
 				// scroll to the previous room list scroll position
 				var toPos = localStorage.getItem( 'roomListScrollTopPos' );
@@ -203,9 +203,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		/**
 		*  A method which checks the filter option status and see if the room should be displayed
 		*/
-		$scope.calculateFilters = function() {
-			for (var i = 0, j = $scope.rooms.length; i < j; i++) {
-				var room = $scope.rooms[i];
+		$scope.calculateFilters = function(source) {
+			var source = source || $scope.rooms;
+
+			for (var i = 0, j = source.length; i < j; i++) {
+				var room = source[i];
 
 				//Filter by Floors
 				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
