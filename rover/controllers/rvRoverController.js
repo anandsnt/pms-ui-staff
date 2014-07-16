@@ -427,26 +427,26 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-    	console.log("reached hereerrreee");
-    	console.log(document.activeElement);
-	      document.activeElement.blur();
-	      $scope.$emit('hideLoader');
-	      setTimeout(function(){
-	      	 ngDialog.close();
-	      	 window.scrollTo(0,0);
-	      	 $scope.$apply();
-	      }, 700);
+      console.log("reached hereerrreee");
+      console.log(document.activeElement);
+        document.activeElement.blur();
+        $scope.$emit('hideLoader');
+        setTimeout(function(){
+           ngDialog.close();
+           window.scrollTo(0,0);
+           $scope.$apply();
+        }, 700);
     };
     /*
      * To fix issue with ipad keypad - 7702
      */
     $scope.setPosition = function(){
-    	if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
-    		 document.activeElement.blur();
-    		  setTimeout(function(){
-		      	 window.scrollTo(0,0);
-		      }, 700);
-    	}
+      if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
+         document.activeElement.blur();
+          setTimeout(function(){
+             window.scrollTo(0,0);
+          }, 700);
+      }
     };
 
   }
