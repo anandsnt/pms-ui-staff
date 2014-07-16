@@ -8,8 +8,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         var init = function() {
             // Check flag to retain the card details
-            console.log("Data", $scope.reservationData);
-            console.log("Details", $scope.reservationDetails);
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
                 $scope.initReservationDetails();

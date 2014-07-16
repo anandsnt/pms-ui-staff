@@ -24,7 +24,7 @@ sntRover.service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 
 		this.updateGuest = function(param) {
@@ -38,7 +38,7 @@ sntRover.service('RVContactInfoSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 
 	}

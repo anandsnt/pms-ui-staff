@@ -106,67 +106,71 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [] // This array would hold the configuration information of rates selected for each room
             }
+
+            $scope.searchData = {
+                guestCard: {
+                    guestFirstName: "",
+                    guestLastName: "",
+                    guestCity: "",
+                    guestLoyaltyNumber: ""
+                },
+                companyCard: {
+                    companyName: "",
+                    companyCity: "",
+                    companyCorpId: ""
+                },
+                travelAgentCard: {
+                    travelAgentName: "",
+                    travelAgentCity: "",
+                    travelAgentIATA: ""
+                }
+            }
+
+            $scope.otherData = {
+                markets: baseData.demographics.markets,
+                sources: baseData.demographics.sources,
+                origins: baseData.demographics.origins,
+                reservationTypes: baseData.demographics.reservationTypes,
+                promotionTypes: [{
+                    value: "v1",
+                    description: "The first"
+                }, {
+                    value: "v2",
+                    description: "The Second"
+                }],
+                maxAdults: '',
+                maxChildren: '',
+                maxInfants: '',
+                roomTypes: [],
+                fromSearch: false,
+                recommendedRateDisplay: '',
+                defaultRateDisplayName: ''
+            };
+
+            $scope.guestCardData = {};
+
+            $scope.reservationListData = {};
+
+            $scope.reservationDetails = {
+                guestCard: {
+                    id: "",
+                    futureReservations: 0
+                },
+                companyCard: {
+                    id: "",
+                    futureReservations: 0
+                },
+                travelAgent: {
+                    id: "",
+                    futureReservations: 0
+                }
+            };
         }
 
 
-        $scope.otherData = {
-            markets: baseData.demographics.markets,
-            sources: baseData.demographics.sources,
-            origins: baseData.demographics.origins,
-            reservationTypes: baseData.demographics.reservationTypes,
-            promotionTypes: [{
-                value: "v1",
-                description: "The first"
-            }, {
-                value: "v2",
-                description: "The Second"
-            }],
-            maxAdults: '',
-            maxChildren: '',
-            maxInfants: '',
-            roomTypes: [],
-            fromSearch: false,
-            recommendedRateDisplay: '',
-            defaultRateDisplayName: ''
-        };
+        
 
-        $scope.searchData = {
-            guestCard: {
-                guestFirstName: "",
-                guestLastName: "",
-                guestCity: "",
-                guestLoyaltyNumber: ""
-            },
-            companyCard: {
-                companyName: "",
-                companyCity: "",
-                companyCorpId: ""
-            },
-            travelAgentCard: {
-                travelAgentName: "",
-                travelAgentCity: "",
-                travelAgentIATA: ""
-            }
-        }
-
-        $scope.guestCardData = {};
-
-        $scope.reservationListData = {};
-
-        $scope.reservationDetails = {
-            guestCard: {
-                id: "",
-                futureReservations: 0
-            },
-            companyCard: {
-                id: "",
-                futureReservations: 0
-            },
-            travelAgent: {
-                id: "",
-                futureReservations: 0
-            }
-        };
+        
 
         $scope.initReservationDetails = function() {
             // Initiate All Cards 

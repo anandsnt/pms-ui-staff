@@ -301,12 +301,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	 return showGuestBalance;
 	 };
 	 $scope.addNewPaymentModal = function(data){
-	 	
+	 	//Current active bill is index - adding 1 to get billnumber
+	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
 	 	if(data === undefined){
+	 		   
   	 			var passData = {
 			 		"reservationId": $scope.reservationBillData.reservation_id,
 			 		"fromView": "billcard",
-			 		"fromBill" : $scope.currentActiveBill,
+			 		"fromBill" : billNumber,
 			 		"is_swiped": false 
 			 	};
 			 	var paymentData = $scope.reservationBillData;
@@ -335,7 +337,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	             	 'ksn': data.RVCardReadTrack2KSN,
 	              	'pan': data.RVCardReadMaskedPAN,
 	              	'token': tokenData,
-	              	"fromBill" : $scope.currentActiveBill,
+	              	"fromBill" : billNumber,
 		  	 		"is_swiped": true   // Commenting for now
 		  	 	};
 	         	var paymentData = $scope.reservationBillData;
