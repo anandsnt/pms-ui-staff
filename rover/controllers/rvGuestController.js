@@ -27,11 +27,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight); //against angular js practice, sorry :(
 			$scope.guestCardVisible = false;
+			$scope.cardVisible = false;
 		});
 		/**
 		 * for dragging of guest card
 		 */
-		$scope.guestCardVisible = false; //varibale used to determine whether to show guest card's different tabs
+		$scope.guestCardVisible = false;
+		//varibale used to determine whether to show guest card's different tabs
 		$scope.guestCardHeight = 90;
 
 		/**
@@ -45,8 +47,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 * scroller options
 		 */
 		$scope.resizableOptions = {
-			minHeight: '90',
-			maxHeight: screen.height - 200,
+			minHeight: resizableMinHeight,
+			maxHeight: resizableMaxHeight,
 			handles: 's',
 			resize: function(event, ui) {
 				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
@@ -171,11 +173,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if (!$scope.guestCardVisible) {
 					$("#guest-card").css("height", $scope.windowHeight - 90);
 					$scope.guestCardVisible = true;
+					$scope.cardVisible = true;
 					$scope.$broadcast('CONTACTINFOLOADED');
 					$scope.$emit('GUESTCARDVISIBLE', true);
 				} else {
 					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 					$scope.guestCardVisible = false;
+					$scope.cardVisible = false;
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.handleDrawClosing();
 				}
@@ -184,7 +188,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					/**
 					 * handle click on tab navigation bar.
 					 */
-					if ($event.target.id === 'guest-card-tabs-nav') {
+					if ($event.target.id === 'guest-card-tabs-nav' || $event.target.id === 'cards-header') {
 						$scope.$broadcast('saveContactInfo');
 						$scope.$broadcast('SAVELIKES');
 
@@ -194,11 +198,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 			}
 		};
+		
 
 		$scope.checkOutsideClick = function(targetElement) {
-			if ($(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
+			 if($scope.cardVisible){
+				$scope.$broadcast('saveContactInfo');
+				$scope.$broadcast('SAVELIKES');
+
+			}
+			
+			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
 				$scope.closeGuestCard();
 			}
+			
+		
 		};
 
 
@@ -257,6 +270,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 */
 		$scope.openGuestCard = function() {
 			$scope.cardVisible = true;
+			$scope.guestCardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
 			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
 			$scope.$broadcast("contactTabActive");
@@ -268,11 +282,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		 * function to close guest card
 		 */
 		$scope.closeGuestCard = function() {
-			console.log("close guest card")
 			$scope.guestCardHeight = resizableMinHeight;
 			//Check if pending removals - If yes remove 
 			$scope.handleDrawClosing();
 			$scope.cardVisible = false;
+			$scope.guestCardVisible = false;
 		};
 
 		$scope.handleDrawClosing = function() {
@@ -289,19 +303,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 
-		/**
-		 * function to execute click on Guest card
-		 */
-		$scope.clickedOnGuestCard = function($event) {
-			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-s")[0])) {
-				if ($scope.cardVisible) {
-					$scope.closeGuestCard();
-				} else {
-					$scope.openGuestCard();
-				}
-
-			}
-		};
 
 		$scope.clickedDiscardCard = function(cardType, discard) {
 			discardCard(cardType, discard);
