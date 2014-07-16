@@ -45,8 +45,6 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         
     };
     $scope.$on("computeColumWidth", function(){
-        console.log($scope.uiOptions.tableWidth);
-
         var FILTER_OPTIONS_WIDTH = 5;
         var FIRST_COLUMN_WIDTH = 220;
         var COLUMN_BORDER_WIDTH = 20;
@@ -80,8 +78,6 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     };
 
     $scope.showRatesBtnClicked = function(){
-        //$scope.filterConfigured = true;
-        //$scope.computeColumWidth();
         $scope.toggleLeftMenu();
         $scope.$broadcast("updateRateCalendar");
         $scope.$broadcast("updateOccupancyGraph");
