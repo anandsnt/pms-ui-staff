@@ -123,8 +123,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-housekeeping",
 			submenu: [{
 				title: "MENU_ROOM_STATUS",
-				action: "staff#/staff/housekeeping/search",
-				menuIndex: "room_status"
+				action: "staff#/staff/housekeeping/roomStatus",
+				menuIndex: "roomStatus"
 			}, {
 				title: "MENU_TASK_MANAGEMENT",
 				action: ""

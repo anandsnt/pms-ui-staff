@@ -47,7 +47,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.wake_up_time = (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined') ? $scope.reservationData.reservation_card.wake_up_time.wake_up_time : $filter('translate')('NOT_SET');
 		});
 
-		$scope.setScroller('resultDetails');
+		// since CICO-7766 is breaking for desktops
+		$scope.setScroller('resultDetails', {
+			disableMouse: true
+		});
 
 		//CICO-7078 : Initiate company & travelagent card info
 		// console.log(reservationListData);

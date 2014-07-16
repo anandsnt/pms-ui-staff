@@ -1,6 +1,5 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
-
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -309,6 +308,17 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.menuOpen = false;
       $scope.showSubMenu = false;
     };
+
+    //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    var routeChange = function(event, newURL){
+       event.preventDefault();
+       return;
+    };
+
+    $rootScope.$on('$locationChangeStart', routeChange);                   
+    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
@@ -333,7 +343,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
-      }
+      }         
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -341,6 +351,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('hideLoader');
       $rootScope.previousState = from;
       $rootScope.previousStateParams = fromParams;
+   
+      
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
@@ -415,26 +427,26 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-    	console.log("reached hereerrreee");
-    	console.log(document.activeElement);
-	      document.activeElement.blur();
-	      $scope.$emit('hideLoader');
-	      setTimeout(function(){
-	      	 ngDialog.close();
-	      	 window.scrollTo(0,0);
-	      	 $scope.$apply();
-	      }, 700);
+      console.log("reached hereerrreee");
+      console.log(document.activeElement);
+        document.activeElement.blur();
+        $scope.$emit('hideLoader');
+        setTimeout(function(){
+           ngDialog.close();
+           window.scrollTo(0,0);
+           $scope.$apply();
+        }, 700);
     };
+    /*
+     * To fix issue with ipad keypad - 7702
+     */
     $scope.setPosition = function(){
-    	console.log('set position');
-        console.log(document.activeElement.nodeName);
-    	if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
-    		console.log("text field");
-    		 document.activeElement.blur();
-    		  setTimeout(function(){
-		      	 window.scrollTo(0,0);
-		      }, 700);
-    	}
+      if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
+         document.activeElement.blur();
+          setTimeout(function(){
+             window.scrollTo(0,0);
+          }, 700);
+      }
     };
 
   }

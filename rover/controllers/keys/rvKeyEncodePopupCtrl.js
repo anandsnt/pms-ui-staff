@@ -8,21 +8,24 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.status = status;
 	};
 	
-	$scope.pressedCancelStatus = false;
-	
 	$scope.init = function(){
 		var reservationStatus = "";
 		$scope.data = {};
+		//If the keypopup inviked from check-in flow - registration card)
 		if($scope.fromView == "checkin"){
 			reservationStatus = $scope.reservationBillData.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = false;
-			$scope.confirmNumber = $scope.reservationBillData.confirm_no;
+			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
+			$scope.data.roomNumber = $scope.reservationBillData.room_number;
+		//If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
-			$scope.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
+			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
+			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
+
 		}
 		
     	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
@@ -49,14 +52,15 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 		//TODO: include late checkout scenario
 		
+		//Based on different status, we switch between the views
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
+		$scope.pressedCancelStatus = false;
 
 		that.noOfErrorMethodCalled = 0;
-		that.maxSecForErrorCalling = 1000;
-		$scope.showDeviceConnectingMessge();
+		that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK = 10000;
 
 		$scope.numberOfKeysSelected = 0;
 		$scope.printedKeysCount = 0;
@@ -66,6 +70,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.isAdditional = false;
 		
 		$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+		//Initally we check if the device is connected
+		$scope.showDeviceConnectingMessge();
+
 	};
 	/*
 	* If the device is not connected, try the connection again after 1 sec.
@@ -81,12 +88,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;		
 		setTimeout(function(){
-			if(secondsAfterCalled <= that.maxSecForErrorCalling){ //10seconds
+			if(secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK){ //10seconds
 				$scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
 
-		if(secondsAfterCalled > that.maxSecForErrorCalling){
+		if(secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK){
 			$scope.deviceConnecting = false;
 			$scope.keysPrinted = false;
 			$scope.showPrintKeyOptions = false;
