@@ -308,6 +308,17 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.menuOpen = false;
       $scope.showSubMenu = false;
     };
+
+    //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    var routeChange = function(event, newURL){
+       event.preventDefault();
+       return;
+    };
+
+    $rootScope.$on('$locationChangeStart', routeChange);                   
+    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
@@ -332,7 +343,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
-      }
+      }         
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -340,6 +351,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('hideLoader');
       $rootScope.previousState = from;
       $rootScope.previousStateParams = fromParams;
+   
+      
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
@@ -363,7 +376,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Depends on $scope.guestCardVisible in rvguestcardcontroller.js
     $scope.isGuestCardVisible = false;
     $scope.$on('GUESTCARDVISIBLE', function(event, data) {
-    	console.log("jjjjjjjjjjjjjjjjjjjjjj")
       $scope.isGuestCardVisible = false;
       if (data) {
         $scope.isGuestCardVisible = true;

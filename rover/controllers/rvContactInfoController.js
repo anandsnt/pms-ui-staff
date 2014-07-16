@@ -15,7 +15,10 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
 
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
+      	var avatarImage = getAvatharUrl(dataToUpdate.title);
+ 	    $scope.$emit("CHANGEAVATAR", avatarImage);
         $scope.$emit('hideLoader');
+        
       };
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
@@ -58,12 +61,10 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         $scope.guestCardData.userId = data.id;
         $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
         $scope.newGuestAdded(data.id);
-        console.log("success", data);
       };
       var createUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
-        console.log("failure", data);
       };
 
       /**
@@ -72,7 +73,6 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
       dataToUpdate.birthday = $scope.birthdayText;
       var dataUpdated = false;
-
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
       } else {
