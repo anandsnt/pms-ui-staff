@@ -67,5 +67,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url : '/ffp'
 		});
 		
+		$stateProvider.state('admin.icare', {
+			templateUrl: '/assets/partials/icare/adIcareServices.html',
+			controller: 'ADIcareServicesCtrl',
+			url : '/icare'
+		});
+		
         
 });
