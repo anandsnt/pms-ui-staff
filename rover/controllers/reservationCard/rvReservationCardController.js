@@ -38,7 +38,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				console.log("+++++++++++++++")
 				console.log($scope.data.countries);
-				data.country = '';
+				
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.data.countries,
