@@ -6,6 +6,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		$scope.countriesList = [];
 		$scope.guestCardData.userId = '';
 		$scope.guestCardData.contactInfo.birthday = '';
+		$scope.guestCardData.address.country_id = '';
 		$scope.paymentData = {};
 		/*
 		 * To get the payment tab payments list
