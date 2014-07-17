@@ -1,4 +1,4 @@
-admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2){
+admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADBaseWebSrv){
 	
    /**
     * To fetch the list of users
@@ -133,7 +133,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', funct
 		var deferred = $q.defer();
 		var url = '/admin/users/link_existing';
 
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
