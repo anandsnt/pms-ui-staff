@@ -248,6 +248,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				}
 			}
 		});
+
+
+		$stateProvider.state('admin.ibeaconSettings', {
+			templateUrl: '/assets/partials/iBeaconSettings/adibeaconSettings.html',
+			controller: 'ADiBeaconSettingsCtrl',
+			url : '/ibeaconSettings'
+		});
 		
         
 });

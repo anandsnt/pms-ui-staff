@@ -1,0 +1,79 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<div>
+		<header class="content-title float">
+			<h2> iBeacon Setup </h2>
+			<span class="count"> ({{totalCount}}) </span>
+			<a class="action add" ui-sref="admin.addRate" ng-click="showLoader()" ng-show="isIpad">Add new</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+		<div id="new-form-holder"></div>
+		<!--ng-table component -->
+		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+			<tbody>
+				<tr ng-repeat="ibeacon in $data" ng-class = "{'inactive': !ibeacon.status}"> 
+					<td data-title="'Location'" sortable="'location'" header-class="width-15">
+						<a ui-sref='admin.rateDetails({ rateId : rate.id })' class="edit-data" ng-click="showLoader()">
+							<strong> {{ibeacon.location}}</strong>
+						</a>
+					</td>
+
+					<td data-title="'ID'"  sortable="'beacon_id'" header-class="width-10">
+						
+							{{ibeacon.id}}
+					</td>
+					<td data-title="'Type'" sortable="'beacon_type'" header-class="width-15">
+
+				    <div class="entry">
+	                <div class="select">
+	                    <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+	                        <option value="" disabled> Select Type</option>
+	                    </select>
+	                </div>
+	                </div>
+					</td>
+					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': ibeacon.status}" header-class="width-15">
+						<div class="entry" ng-click="toggleActive(ibeacon.id,ibeacon.status)">
+							<div class="switch-button single" ng-class="{'on': ibeacon.status}">
+								<input type="checkbox"  ng-checked="ibeacon.status">
+								<span class="switch-icon"></span>
+							</div>
+						</div>
+						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
+					</td>
+					<td header-class="width-15">
+						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(ibeacon.id)"  ng-hide="false">&nbsp;</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!--end -->
+
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
+	</div>
+</section>
+
+<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
+
