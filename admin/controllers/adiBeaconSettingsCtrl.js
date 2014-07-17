@@ -19,15 +19,15 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams',
 			$scope.totalCount = data.total_count = 2;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			//$scope.data = data.results;
-			$scope.ibeacons = [{"type":"type1","id":"0"},{"type":"type2","id":"1"},{"type":"type3","id":"3"}];
+			// $scope.ibeacons = [{"type":"type1"},{"type":"type2"},{"type":"type3"}];
 
 			$scope.data = [{"location":"bar",
 							"id":"000",
-							"selectedType":"0",
+							"selectedType":"type1",
 							"status":false},
 							{"location":"spa",
 							"id":"001",
-							"selectedType":"1",
+							"selectedType":"type2",
 							"status":true}]
 			
 			$scope.currentPage = params.page();
