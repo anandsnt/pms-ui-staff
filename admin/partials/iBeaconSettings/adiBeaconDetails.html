@@ -1,0 +1,63 @@
+
+	<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
+		<header class="content-title float">
+			<h2>Add new iBeacon</h2>
+			<a ng-click="backClicked()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+		<form style="overflow-y:auto;" class="form float inline-form" >
+			<fieldset class="holder left">
+				 <ad-textbox inputtype="text" value="rateData.name" label = "Location" placeholder = "Enter Location" required="yes"></ad-textbox>
+				 
+
+	          <div class="entry">
+                <label>Type <strong>*</strong> </label>
+                <div class="select">
+                   <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+	                        <option value="" disabled> Select Type</option>
+	             </select>
+                </div>
+            </div>
+            
+			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "Guest Message" placeholder = ""></ad-textarea>
+
+				
+			
+
+			</fieldset>
+			<fieldset class="holder right">
+				
+			<div class="entry">
+				<label>Beacon id <strong>*</strong></label>
+				<input type="text"  placeholder="enter Id" ng-disabled="!isIpad"
+				ng-model="data.id">
+							
+			</div>
+
+
+			<div class="entry">
+				 <label>&nbsp;&nbsp;</label>
+				<button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="data.id.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.id.length>0 }" >
+				Link</button>
+			</div> 
+				
+
+			 <div class="entry">
+                <label>Trigger <strong>*</strong> </label>
+                <div class="select">
+                   <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+	                        <option value="" disabled> Select Type</option>
+	             </select>
+                </div>
+            </div>
+            <ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="Status"></ad-toggle-button>
+				
+			</fieldset>
+
+			<div class="actions float">
+				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline actions_margin_top">{{ 'CANCEL' | translate}}</button>
+				<button type="button" ng-click="saveCheckin()" class="button green actions_margin_top">{{ 'SAVE_CHANGES' | translate}}</button>
+			</div>
+		</form>
+	</div>
+	</section>

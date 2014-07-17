@@ -255,6 +255,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADiBeaconSettingsCtrl',
 			url : '/ibeaconSettings'
 		});
+
+		$stateProvider.state('admin.iBeaconDetails', {
+			templateUrl: '/assets/partials/iBeaconSettings/adiBeaconDetails.html',
+			controller: 'ADiBeaconDetailsCtrl',
+			url : '/iBeaconDetails/:action'
+		});
 		
         
 });
