@@ -33,54 +33,54 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      *
      * @return {boolean} - to indicate reverse or not
      */
-    $rootScope.shallRevDir = function(fromState, toState) {
-      if (fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus') {
-        return true;
-      };
+    // $rootScope.shallRevDir = function(fromState, toState) {
+    //   if (fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus') {
+    //     return true;
+    //   };
 
-      if (fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
-        return true;
-      };
+    //   if (fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
+    //     return true;
+    //   };
 
-      if (fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails') {
-        return true;
-      };
+    //   if (fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+    //     return true;
+    //   };
 
-      if (fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails') {
-        return true;
-      };
+    //   if (fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+    //     return true;
+    //   };
 
-      if (fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch') {
-        return true;
-      };
+    //   if (fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch') {
+    //     return true;
+    //   };
 
-      return false;
-    };
+    //   return false;
+    // };
 
     // this is make sure we add an
     // additional class 'return-back' as a
     // parent to ui-view, so as to apply a
     // reverse slide animation
-    var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
+    // var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
 
-      // to study the current changing states
-      console.log(fromState.name + ' ===> ' + toState.name);
+    //   // to study the current changing states
+    //   console.log(fromState.name + ' ===> ' + toState.name);
 
-      // check this template for the applied class:
-      // app/assets/rover/partials/staycard/rvStaycard.html
+    //   // check this template for the applied class:
+    //   // app/assets/rover/partials/staycard/rvStaycard.html
 
-      // FUTURE: this check can include other state name also,
-      // from which while returning we expect a reverse slide
-      if ($rootScope.shallRevDir(fromState.name, toState.name)) {
-        $rootScope.returnBack = true;
-      } else {
-        $rootScope.returnBack = false;
-      }
-    });
+    //   // FUTURE: this check can include other state name also,
+    //   // from which while returning we expect a reverse slide
+    //   if ($rootScope.shallRevDir(fromState.name, toState.name)) {
+    //     $rootScope.returnBack = true;
+    //   } else {
+    //     $rootScope.returnBack = false;
+    //   }
+    // });
 
     // make sure you also destroy 'uiViewRevAnim'
     // when moving away to release memory
-    $scope.$on('$destroy', uiViewRevAnim);
+    // $scope.$on('$destroy', uiViewRevAnim);
 
 
 
