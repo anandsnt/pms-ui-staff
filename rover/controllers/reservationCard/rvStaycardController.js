@@ -11,7 +11,9 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		 * To get the payment tab payments list
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
-			$scope.paymentData = paymentData;
+			if(paymentData.guest_id){
+				$scope.paymentData = paymentData;
+			}
 		});
 
 
