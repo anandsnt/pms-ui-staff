@@ -40,12 +40,12 @@
  				<div class="entry">
  					<label for="country">Country</label>
  					<div form="contact-info" class="select">
- 						<select ng-options="country.id as country.value for country  in countriesList" ng-model="guestCardData.contactInfo.address.country_id">
+ 						<select ng-options="country.id as country.value for country  in countriesListForGuest" ng-model="guestCardData.contactInfo.address.country_id">
  							<option style="display:none" value=""></option>
  						</select>
  					</div>
  				</div>
- 				<div class="hidden">>>>{{countriesList}}</div> 
+ 				<div class="hidden">>>>{{countriesListForGuest}}</div> 
  				<rv-textbox value="guestCardData.contactInfo.phone"  styleclass="margin" label = "Phone" ></rv-textbox>
  				<rv-textbox value="guestCardData.contactInfo.mobile"   label = "Mobile" ></rv-textbox>
  			</div>
