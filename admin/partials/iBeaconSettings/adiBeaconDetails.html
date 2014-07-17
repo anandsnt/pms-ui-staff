@@ -1,7 +1,7 @@
 
 	<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
 		<header class="content-title float">
-			<h2>Add new iBeacon</h2>
+			<h2>{{displayMessage}}</h2>
 			<a ng-click="backClicked()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
