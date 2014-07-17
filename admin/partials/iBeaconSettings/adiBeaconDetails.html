@@ -19,7 +19,7 @@
                 </div>
             </div>
             
-			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "Guest Message" placeholder = ""></ad-textarea>
+			
 
 				
 			
@@ -52,6 +52,34 @@
             </div>
             <ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="Status"></ad-toggle-button>
 				
+			</fieldset>
+
+			<fieldset class="holder left">
+			<div class="entry full-width">
+				<label for="room-type-picture"> Choose icon </label>
+				<div class="file-upload with-preview">
+					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						{{ 'PICTURE' | translate }}
+					</button> 
+				</div>
+				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
+			</div> 
+			 <div class="entry full-width">
+				<label for="room-type-picture">  Choose picture </label>
+				<div class="file-upload with-preview">
+					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						{{ 'PICTURE' | translate }}
+					</button> 
+				</div>
+				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
+			</div> 
+			 
+			</fieldset>
+			<fieldset class="holder right">
+				<ad-textbox inputtype="text" value="rateData.name" label = "Title" placeholder = "Enter Location" required="yes"></ad-textbox>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "Guest Message" placeholder = ""></ad-textarea>
 			</fieldset>
 
 			<div class="actions float">
