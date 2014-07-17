@@ -77,7 +77,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccessGuest = function(data){
 		
 		$scope.$emit("hideLoader");
-		ngDialog.close();
+		$scope.closeDialog();
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
@@ -100,7 +100,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		 
 		var billIndex = parseInt($scope.passData.fromBill);		
 		$scope.$emit("hideLoader");
-		ngDialog.close();
+		$scope.closeDialog();
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
@@ -209,7 +209,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 	};
 	$scope.clickCancel = function(){
-		ngDialog.close();
+		$scope.closeDialog();
 	};
 
 
@@ -236,7 +236,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 	else{
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			 	
-			 }
+			 };
 
 			try {
 			    HostedForm.updateSession(sessionDetails, callback);	
@@ -246,7 +246,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
 			 		
-		}
+		};
 		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
 			$scope.savePayment();
 		}
@@ -266,7 +266,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		
 
-    }
+    };
 
 
     /* MLI integration ends here */
