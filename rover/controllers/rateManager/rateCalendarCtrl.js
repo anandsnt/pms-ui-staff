@@ -52,6 +52,17 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}, 0);
 	};
 
+
+	/**
+	* @returns totalnumber of dates {Number} to be displayed
+	*/
+	var getNumOfCalendarColumns = function(){
+		var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
+        numColumns = numColumns/(24*60*60*1000) + 1;
+
+        return parseInt(numColumns);
+	};
+
    	/**
     * Fetches the calendar data and update the scope variables 
     */
@@ -80,6 +91,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
 				$scope.refreshScroller();
 			}
+			$scope.$emit('computeColumWidth');
+			
 		};
 
 		//Set the current business date value to the service. Done for calculating the history dates
@@ -98,10 +111,11 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	* Calcultes the get params for fetching calendar.
 	*/
 	var calculateRateViewCalGetParams = function(){
-
 		var data = {};
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
+		//Total number of dates to be displayed
+        data.per_page = getNumOfCalendarColumns();
 
 		data.name_card_ids = [];
 		for(var i in $scope.currentFilterData.name_cards){
@@ -125,6 +139,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		return data;
 	};
 
+
 	/**
 	* Calcultes the get params for fetching calendar.
 	*/
@@ -134,8 +149,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		data.id = $scope.currentSelectedRate.id;
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
+
+		//Total number of dates to be displayed
+        data.per_page = getNumOfCalendarColumns();
 		return data;
 	};
+
 
 	/**
 	* Click handler for up-arrows in rate_view_calendar

@@ -40,13 +40,11 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     var DEFAULT_TABLE_WIDTH = 400;
     $scope.uiOptions={
         tableHeight : DEFAULT_TABLE_WIDTH,
-        columWidth : DEFAULT_COLUMN_WIDTH,
+        columnWidth : DEFAULT_COLUMN_WIDTH,
         tableWidth : DEFAULT_TABLE_WIDTH,
         
     };
-
-    $scope.computeColumWidth = function(){
-
+    $scope.$on("computeColumWidth", function(){
         var FILTER_OPTIONS_WIDTH = 5;
         var FIRST_COLUMN_WIDTH = 220;
         var COLUMN_BORDER_WIDTH = 20;
@@ -65,9 +63,9 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
-        $scope.uiOptions.columWidth = parseInt(mywidth);
+        $scope.uiOptions.columnWidth = parseInt(mywidth);
         
-    };
+    });
 
     $scope.ratesDisplayed = [];
 
@@ -80,8 +78,6 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     };
 
     $scope.showRatesBtnClicked = function(){
-        //$scope.filterConfigured = true;
-        $scope.computeColumWidth();
         $scope.toggleLeftMenu();
         $scope.$broadcast("updateRateCalendar");
         $scope.$broadcast("updateOccupancyGraph");
