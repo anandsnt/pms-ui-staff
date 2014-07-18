@@ -15,7 +15,8 @@
 			</span> 
 			<span class="date" > <span translate>DATE </span>
 				<span class="value date"> {{reservationData.reservation_card.payment_details.card_expiry}} </span> 
-			</span> 
+			</span>
+		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped" class="icons icon-swiped">Credit card swiped</span> 
 		</a>
 		<div  ng-click="openAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'CC'">
 			<a class="button with-icon green" > 
