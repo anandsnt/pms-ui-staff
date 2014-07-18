@@ -2,7 +2,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 
-	$rootScope.prevStateName = 'Go back to Staycard';
+	$rootScope.customPrevState = {
+		title: 'Go back to Staycard',
+		name: '',
+		param: {},
+		reverse: ''
+	}
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height

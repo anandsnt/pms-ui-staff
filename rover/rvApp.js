@@ -67,13 +67,21 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 
 	/**
-	*	A very simple methods to
-	*	go back to the previous state
+	*	A very simple methods to go back to the previous state
+	*	By default it will use the just previous state - '$_prevStateName', '$_prevStateParam'
+	*	But can be passed state name and param to jump to any state
+	*
+	*	@param {string} onFlyStateName - on the fly state name sent in from callee
+	*	@param {Object} onFlyStateParam - on the fly state param sent in from callee
+	*	@param {Boolean} onFlyReverse - on the fly animation direction sent in from callee
 	*/
-	$rootScope.loadPrevState = function() {
-		if ( !!$_prevStateName ) {
-			$_mustRevAnim = true;
-			$state.go( $_prevStateName, $_prevStateParam );
+	$rootScope.loadPrevState = function(onFlyStateName, onFlyStateParam, onFlyReverse) {
+		var name = onFlyStateName || $_prevStateName,
+			param = onFlyStateParam || $_prevStateParam;
+
+		if ( !!onFlyStateName || !!$_prevStateName ) {
+			$_mustRevAnim = onFlyReverse ? onFlyReverse : true;
+			$state.go( name, param );
 		};
 	};
 
@@ -93,11 +101,12 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// this must be reset with every state change
 		// invidual controllers can then set with 
 		// its own desired name (not necessarily the actual name)
-		$rootScope.prevStateName = '';
+		$rootScope.customPrevState = {};
 
 		// check this template to see how this class is applied:
 		// app/assets/rover/partials/staycard/rvStaycard.html
 
+		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
 			$_mustRevAnim = false;
 			$rootScope.returnBack = true;
