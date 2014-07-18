@@ -436,7 +436,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     /*
 	 * Go back to staycard - Depends on changes in bill do refresh or not
 	 */
-    $scope.goBackToStayCard = function(reservationId, confirmationNumber){
+    $scope.goBackToStayCard = function(reservationId, confirmationNumber) {
     	if($scope.isRefreshOnBackToStaycard)
     	{
     		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
