@@ -1,0 +1,26 @@
+<div id='add-new-smartband'>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div class='smartband-image'></div>
+	<br clear='all'>
+
+	<rv-textbox value="" label="First Name" placeholder = "Enter First Name" ></rv-textbox>
+
+	<rv-textbox value="" label="Last Name" placeholder = "Enter Last Name" ></rv-textbox>
+
+
+	<div class='entry margin only-switch full-width'>
+		<div class='payment-type-parent'>
+			<label for='payment-type'>Payment Type</label>
+			<div class='on switch-button'>
+				<input id='payment-type' name='payment-type' type='checkbox' value='1'>
+				<label class='data-on'> <span class='value'>Open Room Charge</span> <span class='switch-icon'>Fixed Amount</span> </label>
+				<label class='data-off'> <span class='switch-icon'>Open Room Charge</span> <span class='value'>Fixed Amount</span> </label>
+			</div>
+		</div>
+		<rv-textbox value="" label="Amount" placeholder = "Enter Amount" styleclass="payment-type-associated-div"></rv-textbox>
+
+		<br clear='all'>
+	</div>
+	<a class='continue-button button green'>Continue</a>
+	<a class='cancel-link' ng-click="closeDialog()">cancel</a>
+</div>

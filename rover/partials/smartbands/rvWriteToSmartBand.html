@@ -1,0 +1,20 @@
+<div id='write-to-band'>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div class='heading'>
+		Hold Band To Encoder Until Ready
+	</div>
+	<div class='smartband-large-writing-icon'>
+		<img src='/assets/smartband-hold-writing.png'>
+		<div class='success'>
+			<img src='/assets/smartband-success.png'>
+		</div>
+	</div>
+	
+	<a class='not-ready-status'>Not Ready</a>
+	<a class='cancel' ng-click="closeDialog()">cancel</a>
+	
+	<div id='button-area'>
+		<a class='button' >Done</a>
+		<a class='green button' >Next band</a>
+	</div>
+</div>

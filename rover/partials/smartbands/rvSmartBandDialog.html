@@ -1,0 +1,16 @@
+<div role="dialog" id="modal" class="modal-show">
+
+	<form class='modal-content form new-content' id='smartband'>
+		<div class='header'>
+			<span class='heading'> Smartbands </span>
+			<a class='button green' id='add-new-button'>Add New</a>
+			<a class='button white' id='see-all-band-button'>See All Bands</a> 
+		</div>
+    <div ng-include="'/assets/partials/smartbands/rvSmartbandList.html'"></div>
+    <div ng-include="'/assets/partials/smartbands/rvAddNewSmartBand.html'"></div>
+    <div ng-include="'/assets/partials/smartbands/rvModifyAddCreditSmartband.html'"></div>
+    <div ng-include="'/assets/partials/smartbands/rvWriteToSmartBand.html'"></div>
+
+	
+	</form>
+</div>
