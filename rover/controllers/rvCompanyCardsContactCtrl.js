@@ -2,10 +2,7 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 	function($scope, RVCompanyCardSrv, $state, $stateParams) {
 		BaseCtrl.call(this, $scope);
 		
-		// since CICO-7766 is breaking for desktops
-		$scope.setScroller('companyCardDetailsContactCtrl', {
-			disableMouse: true
-		});
+		$scope.setScroller('companyCardDetailsContactCtrl');
 
 		$scope.$on("contactTabActive", function() {
 			setTimeout(function() {
