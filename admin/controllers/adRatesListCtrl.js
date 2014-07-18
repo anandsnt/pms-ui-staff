@@ -30,6 +30,8 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
+			//No expanded rate view
+			$scope.currentClickedElement = -1;
 			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			$scope.data = data.results;
@@ -153,6 +155,38 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		}
 	};
 
+	/*
+    * To get the template of edit screen
+    * @param {int} index of the selected rate
+    * @param {string} id of the rate
+    */
+	$scope.getTemplateUrl = function(index, id){
+		if(typeof index === "undefined" || typeof id === "undefined") return "";
+		if($scope.currentClickedElement == index){ 
+			return "/assets/partials/rates/adRateInlineEdit.html";
+		}
+	};
+
+	/*
+   	* To update rate details for non-standalone PMS
+   	*/
+   	$scope.saveRateForNonStandalone = function(){
+    	var successCallbackSave = function(data){
+    		$scope.$emit('hideLoader');
+    		//To update data with new value
+    		$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateDetailsForNonStandalone.name;
+    		$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateDetailsForNonStandalone.description;
+    		$scope.currentClickedElement = -1;
+    	};
+   		$scope.invokeApi(ADRatesSrv.updateRateForNonStandalone, $scope.rateDetailsForNonStandalone , successCallbackSave);
+    };
+   /*
+    * To handle click event
+    */	
+	$scope.clickCancelForInlineEdit = function(){
+		$scope.currentClickedElement = -1;
+	};
+
 	/**
 	* To delete a rate
 	* @param {int} index of the selected rate type
@@ -181,29 +215,48 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	*
 	*/
 	$scope.toggleActive = function(selectedId,checkedStatus,activationAllowed){
-
-
-			var params = {'id': selectedId, is_active: !checkedStatus };
-			var rateToggleSuccess = function(){
+		var params = {'id': selectedId, is_active: !checkedStatus };
+		var rateToggleSuccess = function(){
+		$scope.$emit('hideLoader');
+			//on success
+		angular.forEach($scope.data, function(rate, key) {
+	      if(rate.id === selectedId){
+	      	rate.status = !rate.status;
+	      }
+	     });
+		};
+		var rateToggleFailure = function(data){
 			$scope.$emit('hideLoader');
-				//on success
-			angular.forEach($scope.data, function(rate, key) {
-		      if(rate.id === selectedId){
-		      	rate.status = !rate.status;
-		      }
-		     });
-			};
-			var rateToggleFailure = function(data){
-				$scope.$emit('hideLoader');
-				$scope.errorMessage =  data;
-			};
+			$scope.errorMessage =  data;
+		};
 
-			$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);
+		$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);
 
 	};
 
 	$scope.showLoader = function() {
 		$scope.$emit('showLoader');
+	};
+
+	$scope.editRatesClicked = function(rateId, index) {
+		//If PMS connected, we show an inline edit screen for rates.
+		//Only rate name and description should be editable.
+		if($scope.isConnectedToPMS){
+			$scope.rateDetailsForNonStandalone = {};
+			$scope.currentClickedElement = index;
+
+		 	var successCallbackRender = function(data){	
+		 		$scope.rateDetailsForNonStandalone = data;
+		 		$scope.$emit('hideLoader');
+		 	};
+		 	var data = {"id": rateId };
+	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data , successCallbackRender);    
+		//If standalone PMS, then the rate configurator wizard should be appeared.
+		}else{
+			$scope.showLoader();
+			$state.go('admin.rateDetails', {rateId : rateId});
+		}
+
 	};
 
 }]);
