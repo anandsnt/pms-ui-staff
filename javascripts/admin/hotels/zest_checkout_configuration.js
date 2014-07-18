@@ -38,12 +38,39 @@ var ZestCheckOutConfiguration = function(domRef){
 
 	 var alert_time_hour = that.myDom.find("#sent-checkout-notification-hour").val();
 	 var alert_time_minute =  that.myDom.find("#sent-checkout-notification-minute").val();
+	
+	 var alternate_checkout_email_alert_time_hour = that.myDom.find("#alternate_checkout_email_alert_time_hour").val();
+	 var alternate_checkout_email_alert_time_minute =  that.myDom.find("#alternate_checkout_email_alert_time_minute").val();
+	 var sent_weekends_checkout_notification_hour = that.myDom.find("#sent-weekends-checkout-notification-hour").val();
+	 var sent_weekends_checkout_notification_minute =  that.myDom.find("#sent-weekends-checkout-notification-minute").val();
+	 var alternate_weekends_checkout_email_alert_time_hour = that.myDom.find("#alternate_weekends_checkout_email_alert_time_hour").val();
+	 var alternate_weekends_checkout_email_alert_time_minute =  that.myDom.find("#alternate_weekends_checkout_email_alert_time_minute").val();
+	 
+	 
+	 
+	 
+	 
 	 var require_cc_for_checkout_email =  that.myDom.find("#require_cc").is(":checked");
      var include_cash_reservations =  that.myDom.find("#include_cash").is(":checked");
 	 var checkout_email_alert_time = "";
 	 if (alert_time_hour != "" && alert_time_minute != ""){
 	  checkout_email_alert_time = alert_time_hour+":"+alert_time_minute;
 	 }
+	 var alternate_checkout_email_alert_time = "";
+	 if (alternate_checkout_email_alert_time_hour != "" && alternate_checkout_email_alert_time_minute != ""){
+	  alternate_checkout_email_alert_time = alternate_checkout_email_alert_time_hour+":"+alternate_checkout_email_alert_time_minute;
+	 }
+	 var weekends_checkout_email_alert_time = "";
+	 if (sent_weekends_checkout_notification_hour != "" && sent_weekends_checkout_notification_minute != ""){
+	  weekends_checkout_email_alert_time = sent_weekends_checkout_notification_hour+":"+sent_weekends_checkout_notification_minute;
+	 }
+	 var alternate_weekends_checkout_email_alert_time = "";
+	 if (alternate_weekends_checkout_email_alert_time_hour != "" && alternate_weekends_checkout_email_alert_time_minute != ""){
+	  alternate_weekends_checkout_email_alert_time = alternate_weekends_checkout_email_alert_time_hour+":"+alternate_weekends_checkout_email_alert_time_minute;
+	 }
+	 
+	 
+	 
 	 var is_send_checkout_staff_alert = "false";
 	 if(that.myDom.find('#send-checkout-staff-alert').parent().hasClass("on")){
 	     is_send_checkout_staff_alert = "true";
@@ -59,6 +86,9 @@ var ZestCheckOutConfiguration = function(domRef){
 	 var lateCheckoutStaffEmail = that.myDom.find('#staff-late-checkout-email-accounts').val();
 	 var data = {
 		    "checkout_email_alert_time": checkout_email_alert_time,
+		    "alternate_checkout_email_alert_time": alternate_checkout_email_alert_time,
+		    "weekends_checkout_email_alert_time": weekends_checkout_email_alert_time,
+		    "alternate_weekends_checkout_email_alert_time": alternate_weekends_checkout_email_alert_time,
 		    "require_cc_for_checkout_email" : require_cc_for_checkout_email,
         	"include_cash_reservations": include_cash_reservations,
 		    "is_send_checkout_staff_alert": is_send_checkout_staff_alert,
