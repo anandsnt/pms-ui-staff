@@ -25,7 +25,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}, 500);
 		});
 
-		$scope.setScroller('companyCardContractsCtrl'); 
+		// since CICO-7766 is breaking for desktops
+		$scope.setScroller('companyCardContractsCtrl', {
+			disableMouse: true
+		}); 
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.
@@ -37,8 +40,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		/**** Scroll related code ends here. ****/
 
 
-		clientWidth = $(window).width();
-		clientHeight = $(window).height();
+		var clientWidth = $(window).width();
+		var clientHeight = $(window).height();
 		var drawGraph = function() {
 			console.log('reached::drawGraph');
 			$scope.highchartsNG = {
