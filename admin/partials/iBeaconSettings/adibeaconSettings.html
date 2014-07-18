@@ -18,22 +18,20 @@
 							<strong> {{ibeacon.location}}</strong>
 						</a>
 					</td>
-
 					<td data-title="'ID'"  sortable="'beacon_id'" header-class="width-10">
 						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data" ng-click="showLoader()">
 							{{ibeacon.id}}
 						</a>
 					</td>
 					<td data-title="'Type'" sortable="'beacon_type'" header-class="width-15">
-
-				    <div class="entry">
-	                <div class="select">
-	                  <!--   <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
-	                        <option value="" disabled> Select Type</option>
-	                    </select> -->
-	                    <strong>{{ibeacon.selectedType}}</strong>	                    
-	                </div>
-	                </div>
+				    	<div class="entry">
+			                 <!--   <div class="select">
+			                 <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+			                        <option value="" disabled> Select Type</option>
+			                    </select>                     
+			                </div>-->	
+			                <strong>{{ibeacon.selectedType}}</strong>
+	              		</div>
 					</td>
 					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': ibeacon.status}" header-class="width-15">
 						<div class="entry" ng-click="toggleActive(ibeacon.id,ibeacon.status)">
@@ -76,6 +74,4 @@
 		<!--end-->
 	</div>
 </section>
-
-<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
 
