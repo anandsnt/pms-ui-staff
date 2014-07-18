@@ -25,7 +25,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            $state.go('rover.reservation.mainCard.summaryAndConfirm');
+            $state.go('rover.staycard.reservation.mainCard.summaryAndConfirm');
         }
 
         $scope.selectAddonCategory = function(category, event) {

@@ -15,11 +15,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				status: false,
 				cardType: ""
 			},
-			identifier: "STAY_CARD",
+			identifier: "CREATION",
 			lastCardSlot: {
 				cardType: ""
-			}
+			},
+			searching: false
 		};
+
 		$scope.searchData = {
 			guestCard: {
 				guestFirstName: "",
@@ -183,7 +185,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.viewState.pendingRemoval.cardType = "";
 
 			// Reset all cards
-			if ($stateParams.isrefresh == "true" ) {
+			if ($stateParams.isrefresh == "true") {
 				$scope.$broadcast('guestCardDetached');
 				$scope.$broadcast('travelAgentDetached');
 				$scope.$broadcast('companyCardDetached');

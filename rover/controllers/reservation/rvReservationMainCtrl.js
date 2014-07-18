@@ -7,21 +7,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
-        $scope.viewState = {
-            isAddNewCard: false,
-            reservationStatus: {
-                confirm: false,
-                number: null
-            },
-            pendingRemoval: {
-                status: false,
-                cardType: ""
-            },
-            identifier: "CREATION",
-            lastCardSlot: {
-                cardType: ""
-            }
-        };
+        // $scope.viewState = {
+        //     isAddNewCard: false,
+        //     reservationStatus: {
+        //         confirm: false,
+        //         number: null
+        //     },
+        //     pendingRemoval: {
+        //         status: false,
+        //         cardType: ""
+        //     },
+        //     identifier: "CREATION",
+        //     lastCardSlot: {
+        //         cardType: ""
+        //     }
+        // };
 
         var successCallbackOfCountryListFetch = function(data) {
             $scope.countries = data;

@@ -24,7 +24,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 
 		$scope.$on('reservationCardisClicked', function() {
-			
+
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight); //against angular js practice, sorry :(
 			$scope.guestCardVisible = false;
 			$scope.cardVisible = false;
@@ -198,21 +198,21 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				}
 			}
 		};
-		
+
 
 		$scope.checkOutsideClick = function(targetElement) {
-			 console.log("outside")
-			 if($scope.cardVisible){
+			console.log("outside")
+			if ($scope.cardVisible) {
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');
 
 			}
-			
+
 			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
 				$scope.closeGuestCard();
 			}
-			
-		
+
+
 		};
 
 
@@ -338,8 +338,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					cardType: cardType
 				})
 			});
-		}
-;
+		};
 		$scope.deleteCard = function(cardType) {
 			if (cardType == 'travel_agent') {
 				$scope.$broadcast('travelAgentDetached');
@@ -599,8 +598,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$scope.$parent.myScroll[elemToBeRefreshed].refresh();
 				}, 300);
 			}
-		}
-;
+		};
 		// CREATES
 		$scope.createNewGuest = function() {
 			// create an empty dataModel for the guest

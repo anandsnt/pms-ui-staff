@@ -7,6 +7,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var defaultMaxvalue = 5;
 
         var init = function() {
+            $scope.viewState.searching = true;
             // Check flag to retain the card details
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
@@ -104,31 +105,31 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
              *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
              *  stay at this state.
              *  The rates for these days have to be popuplated in the subsequent states appropriately
-            */
+             */
             var initStayDates = function(roomNumber) {
-                for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                    $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
-                        guests: {
-                            adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
-                            children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
-                            infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
-                        },
-                        rate: {
-                            id: "",
-                            name: ""
+                    for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                        $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
+                            guests: {
+                                adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
+                                children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
+                                infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
+                            },
+                            rate: {
+                                id: "",
+                                name: ""
+                            }
                         }
                     }
                 }
-            }
-            /*  For every room initate the stayDates object 
-            *   The total room count is taken from the roomCount value in the reservationData object
-            */
+                /*  For every room initate the stayDates object 
+                 *   The total room count is taken from the roomCount value in the reservationData object
+                 */
             for (var roomNumber = 0; roomNumber < $scope.reservationData.roomCount; roomNumber++) {
                 initStayDates(roomNumber);
             }
 
             var successCallBack = function() {
-                $state.go('rover.reservation.mainCard.roomType');
+                $state.go('rover.reservation.staycard.mainCard.roomType');
             };
             if ($scope.checkOccupancyLimit()) {
                 $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
