@@ -8,7 +8,7 @@
 	<form style="overflow-y:auto;" class="form float inline-form" >
 		<fieldset class="holder left">				
 			<div class="entry">
-				<label>Beacon id <strong>*</strong></label>
+				<label>Beacon id</label>
 				<input type="text"  placeholder="enter Id" ng-disabled="!isIpad" ng-model="data.id">							
 			</div>
 			<div class="entry">
@@ -18,9 +18,9 @@
 				</div> 	
 		</fieldset>
 		<fieldset class="holder right">
-			<ad-textbox inputtype="text" value="rateData.name" label = "Location" placeholder = "Enter Location" required="yes"></ad-textbox>			 
+			<ad-textbox inputtype="text" value="rateData.name" label = "Location" placeholder = "Enter Location" required="no"></ad-textbox>			 
 			<div class="entry">
-				<label>Type <strong>*</strong> </label>
+				<label>Type</label>
 				<div class="select">
 					<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
 						<option value="" disabled> Select Type</option>
@@ -28,14 +28,21 @@
 				</div>
 			</div>  
 			<div class="entry">
-					<label>Trigger <strong>*</strong> </label>
+					<label>Trigger</label>
 					<div class="select">
 						<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
 							<option value="" disabled> Select Type</option>
 						</select>
 					</div>
 				</div>
-				<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="Status"></ad-toggle-button>
+				<div class="entry">
+					<label ng-hide="label.length ==0" for="">Status</label>
+					<div class="switch-button single" ng-class="{'on': isActive}">
+						<input type="checkbox"  ng-click="toggleStatus()">
+						<span class="switch-icon"></span>
+
+					</div>
+				</div>				
 		</fieldset>
 			<div class="form-title" style="margin-bottom:32px;">
 				<h3><span>Guest message</span></h3>
@@ -54,8 +61,8 @@
 				</div> 
 			</fieldset>
 			<fieldset class="holder right">
-				<ad-textbox inputtype="text" styleclass="full-width" value="rateData.name" label = "Title" placeholder = "Enter Location" required="yes"></ad-textbox>
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="description" label = "Description" maxlength="200" placeholder = "Enter Description"></ad-textarea>
+				<ad-textbox inputtype="text" styleclass="full-width" value="message.title" label = "Title" placeholder = "Enter Location" required="no"></ad-textbox>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="message.description" label = "Description" maxlength="200" placeholder = "Enter Description"></ad-textarea>
 			</fieldset>
 			<div class="actions float">
 				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline actions_margin_top">{{ 'CANCEL' | translate}}</button>
