@@ -3,7 +3,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 
 		$scope.guestCardData = {};
 		$scope.guestCardData.contactInfo = {};
-		$scope.countriesList = [];
+		$scope.countriesListForGuest = [];
 		$scope.guestCardData.userId = '';
 		$scope.guestCardData.contactInfo.birthday = '';
 		$scope.paymentData = {};
@@ -18,9 +18,13 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 
 
 		$scope.$on('guestCardUpdateData', function(event, data) {
+			console.log("===data=====");
+			console.log(data);
 			$scope.guestCardData.contactInfo.avatar = data.avatar;
 			$scope.guestCardData.contactInfo.vip = data.vip;
-			$scope.countriesList = data.countries;
+			
+			$scope.countriesListForGuest = data.countries;
+			
 			$scope.guestCardData.userId = data.userId;
 			$scope.guestCardData.guestId = data.guestId;
 		});
