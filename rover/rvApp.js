@@ -6,43 +6,27 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	//BaseCtrl.call(this, $scope);
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
-	
+
+
+	// a simple flag to set the 
+	// slide animation in reverse mode
+	var $_mustRevAnim = false;
+
+
+	// keep track of the previous state and its params
+	// saving the prevState name and params
+	var $_prevStateName = null,
+		$_prevStateParam = null; 
+
 
 	/**
-	*	For certain state transitions
-	*	the transition animation must be reversed
-	*
-	*	This is achived by adding class 'return-back'
-	*	to the imediate parent of 'ui-view'
-	*/
-	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-
-		// spiting state names so as to add them to 'revList', if needed
-		console.log(fromState.name + ' ===> ' + toState.name);
-
-		// check this template to see how this class is applied:
-		// app/assets/rover/partials/staycard/rvStaycard.html
-
-		if ( $rootScope.shallRevDir(fromState.name, toState.name) ) {
-			$rootScope.returnBack = true;
-		} else {
-			$rootScope.returnBack = false;
-		}
-
-		// saving the prevState name and params
-		// for quick 'goBack' method
-		$rootScope.prevStateName  = fromState.name;
-		$rootScope.prevStateParam = fromParams;
-	});
-
-	/**
-	*	revList is an array that holds
+	*	revAnimList is an array that holds
 	*	state name sets that when transitioning
 	*	the transition animation should be reversed 
 	*	
 	*	@private
 	*/
-	var revList = [{
+	var $_revAnimList = [{
 		fromState: 'rover.housekeeping.roomDetails',
 		toState  : 'rover.housekeeping.roomStatus'
 	}, {
@@ -59,36 +43,20 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		toState  : 'rover.companycardsearch'
 	}];
 
-	/**
-	*	
-	*	
-	*	@param {String} fromState - name of the from state
-	*	@param {Sting} toState - name of the to state
-	*/
-	$rootScope.addToRevList = function(fromState, toState) {
-		var notAdded = true;
-		for (var i = 0; i < revList.length; i++) {
-			if ( revList[i].fromState === fromState && revList[i].toState === toState ) {
-				notAdded = false;
-				break;
-			};
-		};
-
-		notAdded && hasAddedrevList.push({ 'fromState': fromState, 'toState'  : toState });
-	};
 
 	/**
 	*	A method on the $rootScope to determine if the
 	*	slide animation during stateChange should run in reverse or forward
 	*
+	*	@private
 	*	@param {string} fromState - name of the fromState
 	*	@param {string} toState - name of the toState
 	*
 	*	@return {boolean} - to indicate reverse or not
 	*/
-	$rootScope.shallRevDir = function(fromState, toState) {
-		for (var i = 0; i < revList.length; i++) {
-			if ( revList[i].fromState === fromState && revList[i].toState === toState ) {
+	var $_shouldRevDir = function(fromState, toState) {
+		for (var i = 0, j = $_revAnimList.length; i < j; i++) {
+			if ( $_revAnimList[i].fromState === fromState && $_revAnimList[i].toState === toState ) {
 				return true;
 				break;
 			};
@@ -102,8 +70,45 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*	A very simple methods to
 	*	go back to the previous state
 	*/
-	$rootScope.goBack = function() {
-		!!$rootScope.prevStateName && $state.go( $rootScope.prevStateName, $rootScope.prevStateParam );
+	$rootScope.loadPrevState = function() {
+		if ( !!$_prevStateName ) {
+			$_mustRevAnim = true;
+			$state.go( $_prevStateName, $_prevStateParam );
+		};
 	};
+
+
+	/**
+	*	For certain state transitions
+	*	the transition animation must be reversed
+	*
+	*	This is achived by adding class 'return-back'
+	*	to the imediate parent of 'ui-view'
+	*/
+	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+
+		// spiting state names so as to add them to '$_revAnimList', if needed
+		console.log(fromState.name + ' ===> ' + toState.name);
+
+		// this must be reset with every state change
+		// invidual controllers can then set with 
+		// its own desired name (not necessarily the actual name)
+		$rootScope.prevStateName = '';
+
+		// check this template to see how this class is applied:
+		// app/assets/rover/partials/staycard/rvStaycard.html
+
+		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
+			$_mustRevAnim = false;
+			$rootScope.returnBack = true;
+		} else {
+			$rootScope.returnBack = false;
+		}
+
+		// saving the prevState name and params
+		// for quick 'loadPrevState' method
+		$_prevStateName  = fromState.name;
+		$_prevStateParam = fromParams;
+	});
 }]);
 
