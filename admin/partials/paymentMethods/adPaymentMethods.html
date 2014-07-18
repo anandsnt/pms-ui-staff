@@ -5,19 +5,23 @@
 			<span class="count"> (
 				{{data.payments.length}}
 				) </span>
+			<a class='action add' ng-click="addNew()">Add new</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/paymentMethods/adAddPaymentMethod.html'"></div>		
+
 		<table id="likes" class="grid">
 			<tbody ng-repeat="payment in data.payments">
+				
 				<tr>
-					<td>
+					<td ng-click="editPaymentMethod($index,payment.value)" ng-hide="currentClickedElement == $index">
 						<strong>{{payment.description}}</strong>
 						<em>(System defined)</em>
 					</td>
-					<td class="activate">
+					<td class="activate" ng-hide="currentClickedElement == $index">
 						<div class="entry">
-							<td class="activate">
+							<td class="activate" ng-hide="currentClickedElement == $index">
 								<div class="entry" >
 									<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index)">
 										<input type="checkbox">
@@ -27,7 +31,9 @@
 							</td>
 						</div>
 					</td>
+					<td colspan="3" ng-include="getTemplateUrl($index,payment.value)"></td>
 				</tr>
+				
 				<tr ng-show="payment.description == 'Credit Card' && payment.is_active == 'true'">
 					<td colspan="3" class="nested-table">
 						<table id="credit_cards_types" class="grid">
@@ -50,6 +56,7 @@
 						</table>
 					</td>
 				</tr>
+				
 			</tbody>
 		</table>
 	</div>

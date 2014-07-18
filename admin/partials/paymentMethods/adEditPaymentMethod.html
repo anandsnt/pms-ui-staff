@@ -1,0 +1,28 @@
+<div class='data-holder move50'>
+	<!-- Edit payment type -->
+	<form class='form float inline-form'>
+
+		<div class='entry'>
+			<label for='payment-description'> Description <strong>*</strong> </label>
+			<input id='payment-description' name='payment-description' placeholder='Enter payment description' required='yes' type='text' value='Wallet Cash'>
+		</div>
+
+		<div class='entry'>
+			<label for='payment-code'> Code <strong>*</strong> </label>
+			<input id='payment-code' name='payment-code' placeholder='Enter payment code' required='yes' type='text' value='WC001'>
+		</div>
+
+		<div class='actions float'>
+			<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()">
+				Cancel
+			</button>
+			<button class='button green edit-data-inline' id='update' type='button' ng-click="savePaymentMethod()">
+				Save changes
+			</button>
+			<button class='button red edit-data-inline' id='delete' type='button' ng-click="deletePaymentMethod()">
+				Delete
+			</button>
+		</div>
+
+	</form>
+</div>
