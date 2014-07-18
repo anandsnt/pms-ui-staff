@@ -217,8 +217,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// });
 		}
 
+		var populateStayDates = function(rateId) {
+			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(details, date) {
+				details.rate.id = rateId,
+				details.rate.name = $scope.displayData.allRates[rateId].name;
+			});
+		}
+
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
+			/*	Using the populateStayDates method, the stayDates object for the active room are 
+			*	are updated with the rate and rateName information
+			*/
+			populateStayDates(rateId);
+
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
 			$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;

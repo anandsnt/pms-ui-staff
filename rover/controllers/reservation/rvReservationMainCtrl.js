@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state', 'dateFilter',
+    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state, dateFilter) {
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
@@ -59,7 +59,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateName: '',
                     rateAvg: 0,
                     rateTotal: 0,
-                    addons: []
+                    addons: [],
+                    stayDates: {}
                 }],
                 totalTaxAmount: 0,
                 totalStayCost: 0,
@@ -167,11 +168,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
         }
 
-
-        
-
-        
-
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -181,6 +177,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
         }
+
 
         $scope.getEmptyAccountData = function() {
             return {
@@ -320,15 +317,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var roomTotal = 0;
             var roomAvg = 0;
 
-            _.each($scope.reservationData.rateDetails[roomIndex], function(d) {
-                var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
+            _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
+                var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                 var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                 var extraAdults = adults >= 2 ? adults - 2 : 0;
                 roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
             });
 
             currentRoom.rateTotal = roomTotal;
-            
+
             currentRoom.rateAvg = roomTotal / $scope.reservationData.numNights;
 
             //Calculate Addon Addition for the room
