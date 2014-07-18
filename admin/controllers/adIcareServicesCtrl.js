@@ -9,7 +9,6 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     * @param {object} icare service details
     */    
     $scope.successCallbackRender = function(data){
-    	console.log(data);
     	$scope.$emit('hideLoader');
     	$scope.icare = data;
     };
@@ -25,17 +24,27 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     * To handle save button action
     *
     */ 
+    var successCallbackSave = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = "";
+			$scope.goBack();
+	};
+	var failureCallbackSave = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+	};
     $scope.saveClick = function(){
-    	console.log($scope.icare);
-    	var data = { "icare" : $scope.icare };
-    	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data , $scope.successCallbackSave);
+    	var unwantedKeys = ["charge_codes"];
+        var newData = dclone($scope.icare, unwantedKeys);
+    	var data = { "icare" : newData };
+    	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data , successCallbackSave, failureCallbackSave);
 
     };
 	/**
     * To handle cancel/back button action
     *
     */ 
-    $scope.cancelClick = function(){
+    $scope.goBack = function(){
         
     	if($rootScope.previousStateParam){
             $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam });
