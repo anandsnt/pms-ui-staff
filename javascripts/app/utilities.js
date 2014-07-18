@@ -58,6 +58,12 @@ function getReservationId(){
 	return reservation_id;
 }
 
+function getReservationStatus(){
+	var currentFetchDom = getCurrentReservationDiv();
+	var reservationStatus = $("#"+currentFetchDom).attr("data-reservation-status");
+	return reservationStatus;
+}
+
 var avatharImgs = {
 	'mr' : 'avatar-male.png',
 	'mrs': 'avatar-female.png',
