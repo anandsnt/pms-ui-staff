@@ -32,10 +32,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 hideScrollbar: false,
                 click: true,
                 bounce: false,
-                scrollbars: 'custom',
-
-                // since CICO-7766 is breaking for desktops
-                disableMouse: true
+                scrollbars: 'custom'
             }
         };
 
