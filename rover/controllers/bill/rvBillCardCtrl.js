@@ -2,11 +2,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 
-	$rootScope.customPrevState = {
+	$rootScope.setPrevState = {
 		title: 'Go back to Staycard',
-		name: '',
-		param: {},
-		reverse: ''
+		callback: 'goBackToStayCard',
+		scope: $scope,
+		reverse: true
 	}
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -436,12 +436,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     /*
 	 * Go back to staycard - Depends on changes in bill do refresh or not
 	 */
-    $scope.goBackToStayCard = function(reservationId, confirmationNumber) {
+    $scope.goBackToStayCard = function() {
     	if($scope.isRefreshOnBackToStaycard)
     	{
-    		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+    		$state.go("rover.staycard.reservationcard.reservationdetails", {
+    			"id" : $scope.reservationBillData.reservation_id,
+    			"confirmationId": $scope.reservationBillData.confirm_no,
+    			"isrefresh": true
+    		});
     	} else {
-    		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
+    		$state.go("rover.staycard.reservationcard.reservationdetails", {
+    			"id" : $scope.reservationBillData.reservation_id,
+    			"confirmationId": $scope.reservationBillData.confirm_no
+    		});
     	}
     };
 	// the listner must be destroyed when no needed anymore

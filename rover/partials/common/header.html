@@ -4,7 +4,7 @@
 	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
 
 	<!-- back to prev -->
-	<button ng-show="customPrevState.title" ng-click="loadPrevState(customPrevState.name, customPrevState.param, customPrevState.reverse)">{{ customPrevState.title }}</button>
+	<button ng-show="setPrevState.title" ng-click="loadPrevState()">{{ setPrevState.title }}</button>
 
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}

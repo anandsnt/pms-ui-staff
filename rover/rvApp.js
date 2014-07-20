@@ -47,6 +47,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	/**
 	*	A method on the $rootScope to determine if the
 	*	slide animation during stateChange should run in reverse or forward
+	*	Note: if yeah we will fill this out later
 	*
 	*	@private
 	*	@param {string} fromState - name of the fromState
@@ -68,19 +69,35 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 	/**
 	*	A very simple methods to go back to the previous state
-	*	By default it will use the just previous state - '$_prevStateName', '$_prevStateParam'
-	*	But can be passed state name and param to jump to any state
+	*	
+	*	By default it will use the (saved) just previous state - '$_prevStateName', '$_prevStateParam'
+	*	and always slide-in states in reverse animation, unless overridden.
 	*
-	*	@param {string} onFlyStateName - on the fly state name sent in from callee
-	*	@param {Object} onFlyStateParam - on the fly state param sent in from callee
-	*	@param {Boolean} onFlyReverse - on the fly animation direction sent in from callee
+	*	Default behaviour can be overridden in two ways:
+	*	1. Pass in a callback with its scope - This callback will be responsible for the state change (total control)
+	*	2. Pass in the state name and param - This will load the passed in state with its param
 	*/
-	$rootScope.loadPrevState = function(onFlyStateName, onFlyStateParam, onFlyReverse) {
-		var name = onFlyStateName || $_prevStateName,
-			param = onFlyStateParam || $_prevStateParam;
+	$rootScope.loadPrevState = function() {
 
-		if ( !!onFlyStateName || !!$_prevStateName ) {
-			$_mustRevAnim = onFlyReverse ? onFlyReverse : true;
+		// since these folks will be created anyway
+		// so what the hell, put them here
+		var options = $rootScope.setPrevState,
+			name    = options.stateName || $_prevStateName,
+			param   = options.stateName ? options.stateParam || $_prevStateParam : $_prevStateParam,
+			reverse = typeof options.reverse === 'boolean' ? true : false;
+
+		// ok boys we are gonna sit this one out
+		// 'scope.callback' is on the floor
+		if ( !!options.scope ) {
+			$_mustRevAnim = reverse ? options.reverse : true;
+			options.scope[options.callback]();
+			return;
+		};
+
+		// necessary for a case where there isn't
+		// a passed in stateName or prevStateName
+		if ( !!options.stateName || !!$_prevStateName ) {
+			$_mustRevAnim = reverse ? options.reverse : true;
 			$state.go( name, param );
 		};
 	};
@@ -92,6 +109,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*
 	*	This is achived by adding class 'return-back'
 	*	to the imediate parent of 'ui-view'
+	*	check this template to see how this class is applied:
+	*	app/assets/rover/partials/staycard/rvStaycard.html
 	*/
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
@@ -100,11 +119,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// this must be reset with every state change
 		// invidual controllers can then set with 
-		// its own desired name (not necessarily the actual name)
-		$rootScope.customPrevState = {};
-
-		// check this template to see how this class is applied:
-		// app/assets/rover/partials/staycard/rvStaycard.html
+		// its own desired values
+		$rootScope.setPrevState = {};
 
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
