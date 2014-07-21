@@ -133,9 +133,6 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
     };
     var scrollerOptions = {
       click: true,
-     
-      // since CICO-7766 is breaking for desktops
-     // disableMouse: true
     };
     $scope.setScroller('contact_info', scrollerOptions);
 
