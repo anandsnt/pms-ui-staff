@@ -24,11 +24,7 @@
 						</a>
 					</td>
 					<td data-title="'Type'" sortable="'beacon_type'" header-class="width-15">
-				    	<div class="entry">
-			                 <!--   <div class="select">
-			                 <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
-			                        <option value="" disabled> Select Type</option>
-			                    </select>                     
+				    	<div class="entry">                     
 			                </div>-->	
 			                <strong>{{ibeacon.selectedType}}</strong>
 	              		</div>
@@ -40,7 +36,6 @@
 								<span class="switch-icon"></span>
 							</div>
 						</div>
-						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
 					</td>
 					<td header-class="width-15">
 						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(ibeacon.id)"  ng-hide="false">&nbsp;</span>

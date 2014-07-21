@@ -9,19 +9,19 @@
 		<fieldset class="holder left">				
 			<div class="entry">
 				<label translate="BEACON_ID"></label>
-				<input type="text"  placeholder="enter Id" ng-disabled="!isIpad" ng-model="data.id">							
+				<input type="text"  placeholder="{{'ENTER_BEACON_ID'|translate}}" ng-disabled="!isIpad" ng-model="data.id">							
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="data.id.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.id.length>0 }" translate="LINK_BEACON"></button>
-				</div> 	
+				<button type="button" ng-click="saveRateDetails()" ng-disabled="data.id.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.id.length>0 }" translate="LINK_BEACON"></button>
+			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
-			<ad-textbox inputtype="text" value="rateData.name" label = "{{ 'LOCATION' | translate }}" placeholder = "Enter Location" required="no"></ad-textbox>			 
+			<ad-textbox inputtype="text" value="data.location" label = "{{ 'LOCATION' | translate }}" placeholder = "{{'ENTER_LOCATION'|translate}}" required="no"></ad-textbox>			 
 			<div class="entry">
 				<label translate="TYPE"></label>
 				<div class="select">
-					<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+					<select class="placeholder" ng-model="data.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
 						<option value="" disabled translate="SELECT_TYPE"></option>
 					</select>
 				</div>
@@ -29,14 +29,14 @@
 			<div class="entry">
 					<label translate="TRIGGER"></label>
 					<div class="select">
-						<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+						<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="trigger.id as trigger.type for ibeacon in triggers">
 							<option value="" disabled translate="SELECT_TRIGGER"></option>
 						</select>
 					</div>
 				</div>
 				<div class="entry">
 					<label ng-hide="label.length ==0" for="" translate="STATUS"></label>
-					<div class="switch-button single" ng-class="{'on': isActive}">
+					<div class="switch-button single" ng-class="{'on': data.status}">
 						<input type="checkbox"  ng-click="toggleStatus()">
 						<span class="switch-icon"></span>
 
@@ -59,8 +59,8 @@
 				</div> 
 			</fieldset>
 			<fieldset class="holder right">
-				<ad-textbox inputtype="text" styleclass="full-width" value="message.title" label = "{{ 'TITLE' | translate }}" placeholder = "Enter Location" required="no"></ad-textbox>
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="message.description" label = "{{ 'DESCRIPTION' | translate }}" maxlength="200" placeholder = "Enter Description"></ad-textarea>
+				<ad-textbox inputtype="text" styleclass="full-width" value="data.title" label = "{{ 'TITLE' | translate }}" placeholder = "{{'ENTER_TITLE'|translate}}" required="no"></ad-textbox>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.description" label = "{{ 'DESCRIPTION' | translate }}" maxlength="200" placeholder = "{{'ENTER_DESCRIPTION'|translate}}"></ad-textarea>
 			</fieldset>
 			<div class="actions float">
 				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline actions_margin_top" translate="CANCEL"></button>

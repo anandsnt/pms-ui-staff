@@ -5,10 +5,11 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.addmode = ($stateParams.action === "add")? true : false;
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit"+" "+$stateParams.action;
     $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
-    $scope.isIpad = true;
-    $scope.message ={};
-    $scope.message.description ="";
-    $scope.message.title ="";
+    $scope.isIpad = true;  
+    $scope.data ={};
+    $scope.data.status = false;
+    $scope.data.description ="";
+    $scope.data.title ="";
   };
   $scope.init();
 
@@ -36,11 +37,11 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
   $scope.toggleStatus = function(){
 
-    if($scope.isActive){
-      $scope.isActive = false;
+    if($scope.data.status){
+      $scope.data.status = false;
     }
-    else if($scope.message.description.length>0 && $scope.message.title.length>0){
-      $scope.isActive = ! $scope.isActive;
+    else if($scope.data.description.length>0 && $scope.data.title.length>0){
+      $scope.data.status = ! $scope.data.status;
     }
       
   };

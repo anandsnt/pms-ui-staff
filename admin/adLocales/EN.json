@@ -166,5 +166,9 @@
     "CHOOSE_FILE":"Choose file ...",
     "LOCATION":"Location",
     "TITLE":"Title",
-    "DESCRIPTION":"Description"
+    "DESCRIPTION":"Description",
+    "ENTER_LOCATION":"Enter Location",
+    "ENTER_BEACON_ID":"Enter Beacon ID",
+    "ENTER_TITLE":"Enter title",
+    "ENTER_DESCRIPTION": "Enter Description"
 }
