@@ -31,9 +31,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
                 snap: false,
                 preventDefault: false,
                 interactiveScrollbars: true,
-
-                // since CICO-7766 is breaking for desktops
-                disableMouse: true
             },
             'nameOnCard': {
                 scrollbars: true,
