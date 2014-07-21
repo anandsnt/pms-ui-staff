@@ -31,7 +31,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       $scope.errorMessage = data;
     };
 
-    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDetails, {}, fetchSuccessBeaconDetails,fetchBeaconDetails);
+    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDetails, {"id":$stateParams.action}, fetchSuccessBeaconDetails,fetchBeaconDetails);
   }
 
 	/**
@@ -65,6 +65,23 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       $scope.data.status = ! $scope.data.status;
     }
       
+  };
+
+  $scope.linkiBeacon =  function(){
+    alert("before");
+    var successfullyLinked = function(){
+      alert("success");
+    };
+    var failedLinkage = function(){
+      alert("FAILURE");
+    };
+    var options = {
+      'successCallBack': successfullyLinked,
+      'failureCallBack': failedLinkage
+    };
+    alert(" just before");
+    sntapp.iBeaconLinker.linkiBeacon(options);
+    alert("after");
   };
 
 }]);

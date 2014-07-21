@@ -21,7 +21,7 @@ this.fetchBeaconList = function(){
 */	
 this.toggleBeacon = function(data){
 	var deferred = $q.defer();
-	var url = '/api/beacon_details/toggle_status';	
+	var url = '/api/beacon_details/status_toggle';	
 	ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -78,9 +78,9 @@ this.fetchBeaconTriggerTypes= function(){
 * To fetch beacon details
 * @return {object}
 */	
-this.fetchBeaconDetails = function(){
+this.fetchBeaconDetails = function(data){
 	var deferred = $q.defer();
-	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeaconDetails.json';	
+	var url='/api/beacon_details/'+data.id+'/edit';
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){

@@ -52,7 +52,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.$emit('hideLoader');
 			angular.forEach($scope.data, function(ibeacon, key) {
 		      if(ibeacon.id === id){
-		      	ibeacon.status = !ibeacon.status;
+		      	ibeacon.beacon_status = !ibeacon.beacon_status;
 		      }
 		     });
 		};
@@ -60,7 +60,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
-		var toggleData = {"id":id,"beacon_status":status};
+		var toggleData = {"id":id,"beacon_status":!status};
 
 		$scope.invokeApi(adiBeaconSettingsSrv.toggleBeacon, toggleData, toggleBeaconSuccess,toggleBeaconFailed);
 
