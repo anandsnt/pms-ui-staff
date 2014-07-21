@@ -1,13 +1,8 @@
 <div class='data-holder move50'>
 	<!-- Edit payment type -->
 	<form class='form float inline-form'>
-{{currentClickedElement}}
-{{editData.description = data.payments[currentClickedElement].description}}
-{{editData.code = data.payments[currentClickedElement].value}}
-		{{editData.description}}
-		<ad-textbox value="editData.description = data.payments[currentClickedElement].description" name = "payment-description" label = "Description" placeholder = "Enter payment description" required = "yes"></ad-textbox>
-		{{editData.code}}
-		<ad-textbox value="editData.code = data.payments[currentClickedElement].value" name = "payment-code" label = "Code" placeholder = "Enter payment code" required = "yes"></ad-textbox>
+		<ad-textbox value="editData.description" name = "payment-description" label = "Description" placeholder = "Enter payment description" required = "yes"></ad-textbox>
+		<ad-textbox value="editData.value" name = "payment-code" label = "Code" placeholder = "Enter payment code" required = "yes"></ad-textbox>
 
 		<div class='actions float'>
 			<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()">
@@ -16,7 +11,7 @@
 			<button class='button green edit-data-inline' id='update' type='button' ng-click="savePaymentMethod()">
 				Save changes
 			</button>
-			<button class='button red edit-data-inline' id='delete' type='button' ng-click="deletePaymentMethod()">
+			<button class='button red edit-data-inline' id='delete' type='button' ng-click="deletePaymentMethod(editData.id)">
 				Delete
 			</button>
 		</div>

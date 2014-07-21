@@ -42,4 +42,36 @@ function($q, ADBaseWebSrv) {
 		});
 		return deferred.promise;
 	};
+	/*
+    * To save/update payment type
+    * @param {array} data of the payment type
+    * @return {object} status of new/updated payment type
+    */
+	this.savePaymentMethod = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/hotel_payment_types.json';
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+	/*
+    * To delete the seleceted payment type
+    * @param {int} id of the selected payment type
+    * @return {object} status of delete
+    */
+	this.deletePaymentMethod = function(id){
+		var deferred = $q.defer();
+		var url = '/admin/hotel_payment_types/'+id;
+
+		ADBaseWebSrv.deleteJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 }]); 

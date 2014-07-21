@@ -2,8 +2,6 @@ admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsS
 function($scope, $state, ADPaymentMethodsSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
-	$scope.paymentData = {};
-	$scope.isAddMode = false;
 	$scope.editData = {};
 	
 	var fetchSuccess = function(data) {
@@ -51,9 +49,8 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	 * Render add payment method screen
 	 */
 	$scope.addNew = function() {
-		//$scope.paymentData={};
+		$scope.addData = {};
 		$scope.currentClickedElement = "new";
-		//$scope.isAddMode = true;
 	};
 
 	/*
@@ -64,50 +61,63 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	};
 
 	/*
-	 * To save/update payment method details
+	 * To save/Update payment method details
 	 */
 	$scope.savePaymentMethod = function() {
-
+		
+		var successCallbackSave = function(data){
+			if($scope.currentClickedElement === "new"){
+				$scope.addData.id = data.id;
+				$scope.data.payments.push($scope.addData);
+			}
+			else{
+				//To update data with new value
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].description = $scope.editData.description;
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].value = $scope.editData.value;
+	    	}	
+    		$scope.$emit('hideLoader');
+    		$scope.currentClickedElement = -1;
+    	};
+    	if($scope.currentClickedElement === "new"){
+			var data = $scope.addData;
+		}
+		else{
+			var data = $scope.editData;
+		}
+		$scope.invokeApi(ADPaymentMethodsSrv.savePaymentMethod, data , successCallbackSave);
 	};
-
 	/*
 	 * To render edit payment method screen
 	 * @param {index} index of selected payment method
-	 * @param {id} id of the payment method
 	 */
-	$scope.editPaymentMethod = function(index, id) {
-		$scope.paymentData = {};
+	$scope.editPaymentMethod = function(index) {
 		$scope.currentClickedElement = index;
-		$scope.isAddMode = false;
+		$scope.editData = dclone($scope.data.payments[index],["is_active","is_system_defined"]);
 	};
 
 	/*
 	 * To get the template of edit screen
 	 * @param {int} index of the selected payment method
-	 * @param {string} id of the payment method
 	 */
-	$scope.getTemplateUrl = function(index, id) {
-		if ( typeof index === "undefined" || typeof id === "undefined")
+	$scope.getTemplateUrl = function(index) {
+		if ( typeof index === "undefined")
 			return "";
 		if ($scope.currentClickedElement == index) {
-			console.log($scope.data.payments[index]);
-			$scope.editData = $scope.data.payments[index];
-			//$scope.editData = {};
-			//$scope.editData = {"code": "asd","description":"ssssss"};
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};
 
 	/*
 	 * To delete payment method
-	 * @param {int} index of the selected payment method
 	 * @param {string} id of the selected payment method
 	 */
-	$scope.deletePaymentMethod = function(index, id) {
+	$scope.deletePaymentMethod = function(id) {
+		console.log("delete id"+id);
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.data.departments.splice(index, 1);
+			$scope.data.payments.splice($scope.currentClickedElement, 1);
 			$scope.currentClickedElement = -1;
 		};
+		$scope.invokeApi(ADPaymentMethodsSrv.deletePaymentMethod, id , successCallbackDelete);
 	};
 }]);

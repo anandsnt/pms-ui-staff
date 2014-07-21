@@ -11,16 +11,16 @@
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/paymentMethods/adAddPaymentMethod.html'"></div>		
 
-		<table id="likes" class="grid">
+		<table class="grid">
 			<tbody ng-repeat="payment in data.payments">
 				
 				<tr>
-					<td ng-if="!payment.is_system_defined">
+					<td ng-if="payment.is_system_defined">
 						<strong>{{payment.description}}</strong>
 						<em ng-if="payment.is_system_defined">(System defined)</em>
 					</td>
-					<td ng-if="payment.is_system_defined" ng-click="editPaymentMethod($index,payment.value)" ng-hide="currentClickedElement == $index">
-						<strong>{{payment.description}}</strong>
+					<td ng-if="!payment.is_system_defined" ng-click="editPaymentMethod($index)" ng-hide="currentClickedElement == $index">
+						<a><strong>{{payment.description}}</strong></a>
 					</td>
 					
 					<td class="activate" ng-hide="currentClickedElement == $index">
@@ -35,9 +35,9 @@
 							</td>
 						</div>
 					</td>
-					<td colspan="3" ng-include="getTemplateUrl($index,payment.value)"></td>
+					<td colspan="3" ng-include="getTemplateUrl($index)"></td>
 				</tr>
-				
+				<!--- Sub list for Payment type Credit card ---->
 				<tr ng-show="payment.description == 'Credit Card' && payment.is_active == 'true'">
 					<td colspan="3" class="nested-table">
 						<table id="credit_cards_types" class="grid">
