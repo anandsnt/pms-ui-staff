@@ -780,8 +780,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.guestCardData.contactInfo.address = {};
 			$scope.guestCardData.contactInfo.address.city = $scope.searchData.guestCard.guestCity;
 			$scope.guestCardData.membership_no = $scope.searchData.guestCard.guestLoyaltyNumber;
-
-			$scope.$broadcast('guestSearchStopped');
 			$scope.$broadcast('guestCardAvailable');
 			$scope.current = 'guest-contact';
 			$scope.viewState.isAddNewCard = true;
