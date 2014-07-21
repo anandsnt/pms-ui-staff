@@ -6,7 +6,8 @@ admin.service('adiBeaconSettingsSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 */	
 this.fetchBeaconList = function(){
 	var deferred = $q.defer();
-	var url = '/admin/get_checkout_settings.json';		
+	//var url = '/admin/get_checkout_settings.json';	
+	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeaconList.json'	
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -51,7 +52,7 @@ this.deleteBeacon = function(data){
 */	
 this.fetchBeaconTypes = function(){
 	var deferred = $q.defer();
-	var url = '/admin/get_checkout_settings.json';		
+	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeacontypes.json';	
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -66,7 +67,7 @@ this.fetchBeaconTypes = function(){
 */	
 this.fetchBeaconTriggerTypes= function(){
 	var deferred = $q.defer();
-	var url = '/admin/get_checkout_settings.json';	
+	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeaconTriggers.json';		
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -80,7 +81,7 @@ this.fetchBeaconTriggerTypes= function(){
 */	
 this.fetchBeaconDetails = function(){
 	var deferred = $q.defer();
-	var url = '/admin/get_checkout_settings.json';	
+	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeaconDetails.json';	
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){

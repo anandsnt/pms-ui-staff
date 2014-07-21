@@ -8,7 +8,7 @@
 	<form style="overflow-y:auto;" class="form float inline-form" >
 		<fieldset class="holder left">				
 			<div class="entry">
-				<label translate="BEACON_ID"></label>
+				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
 				<input type="text"  placeholder="{{'ENTER_BEACON_ID'|translate}}" ng-disabled="!isIpad" ng-model="data.id">							
 			</div>
 			<div class="entry">
@@ -17,19 +17,19 @@
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
-			<ad-textbox inputtype="text" value="data.location" label = "{{ 'LOCATION' | translate }}" placeholder = "{{'ENTER_LOCATION'|translate}}" required="no"></ad-textbox>			 
+			<ad-textbox inputtype="text" value="data.location" label = "{{ 'LOCATION' | translate }}" placeholder = "{{'ENTER_LOCATION'|translate}}" required="yes"></ad-textbox>			 
 			<div class="entry">
-				<label translate="TYPE"></label>
+				<label>{{'TYPE'|translate}} <strong>*</strong></label>
 				<div class="select">
-					<select class="placeholder" ng-model="data.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+					<select class="placeholder" ng-model="data.type" ng-options="ibeacon.value as ibeacon.name for ibeacon in beaconTypes">
 						<option value="" disabled translate="SELECT_TYPE"></option>
 					</select>
 				</div>
 			</div>  
 			<div class="entry">
-					<label translate="TRIGGER"></label>
+					<label>{{'TRIGGER'|translate}} <strong>*</strong></label>
 					<div class="select">
-						<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="trigger.id as trigger.type for ibeacon in triggers">
+						<select class="placeholder" ng-model="data.trigger" ng-options="trigger.value as trigger.name for trigger in triggerTypes">
 							<option value="" disabled translate="SELECT_TRIGGER"></option>
 						</select>
 					</div>

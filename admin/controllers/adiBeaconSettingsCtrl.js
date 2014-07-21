@@ -1,43 +1,34 @@
-admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams',
-	function($scope, $state, ngTableParams){
+admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','adiBeaconSettingsSrv',
+	function($scope, $state, ngTableParams,adiBeaconSettingsSrv){
 
 	$scope.init = function(){
-		$scope.errorMessage = '';
+		$scope.errorMessage = "";
 		$scope.successMessage = "";
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+		$scope.data = [];
+		////////////////////
 		$scope.isIpad = true;
+		////////////////////
 	};
 	$scope.init();
 
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
-		// var fetchSuccessOfItemList = function(data){
-		// 	$scope.$emit('hideLoader');
-		//
-		data= {};
-		//
-			$scope.totalCount = data.total_count = 2;
+		var fetchSuccessOfItemList = function(data){
+			$scope.$emit('hideLoader');
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
-			//$scope.data = data.results;
-			// $scope.ibeacons = [{"type":"type1"},{"type":"type2"},{"type":"type3"}];
-
-			$scope.data = [{"location":"bar",
-							"id":"000",
-							"selectedType":"type1",
-							"status":false},
-							{"location":"spa",
-							"id":"001",
-							"selectedType":"type2",
-							"status":true}]
-			
+			$scope.data = data.results;			
 			$scope.currentPage = params.page();
-        	params.total(data.total_count);
-            $defer.resolve($scope.data);
-		// };
-		// $scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
+	        params.total(data.total_count);
+	        $defer.resolve($scope.data);
+		};
+		var fetchFailedOfItemList = function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+		};
+		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, {}, fetchSuccessOfItemList,fetchFailedOfItemList);
 	}
-
 
 	$scope.loadTable = function(){
 		$scope.tableParams = new ngTableParams({
