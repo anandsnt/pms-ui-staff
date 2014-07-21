@@ -160,7 +160,7 @@ sntRover.controller('reservationActionsController',
 			
 			return displayPutInQueue;
 		};
-		$scope.showRemoveFromQueue  = function(isQueueRoomsOn, isReservationQueued){
+		$scope.showRemoveFromQueue  = function(isQueueRoomsOn, isReservationQueued, reservationStatus){
 			var displayPutInQueue = false;
 			if(reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT'){
 				if(isQueueRoomsOn == "true" && isReservationQueued == "true"){
