@@ -1,0 +1,23 @@
+<div class="data-holder">
+	<form class="form inline-form float" id="edit-rates" rate_id="5">
+	   <div class="form-title">
+	      <h3>
+	         <span>Edit</span>
+	         {{rateDetailsForNonStandalone.name}}
+	      </h3>
+	      <em class="status">
+	      Fields marked with
+	      <strong>*</strong>
+	      are mandatory!
+	      </em>
+	   </div>
+	   <fieldset class="holder left float">
+	   		<ad-textbox value="rateDetailsForNonStandalone.name" name = "rate-name" id = "rate-name" label = "Name" placeholder = "Enter rate name" required = "yes" ></ad-textbox>
+	   		<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="rateDetailsForNonStandalone.description" label = "Description" placeholder = "Enter Rate Description"></ad-textarea>
+	   </fieldset>
+	   <div class="actions float">
+	      <button class="button blank add-data-inline" id="cancel" type="button" ng-click="clickCancelForInlineEdit()">Cancel</button>
+	      <button class="button green add-data-inline" id="update" type="button" ng-click="saveRateForNonStandalone()">Save changes</button>
+	   </div>
+	</form>
+</div>
