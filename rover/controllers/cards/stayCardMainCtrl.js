@@ -10,41 +10,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			cardType: ""
 		};
 
-
-		$scope.searchData = {
-			guestCard: {
-				guestFirstName: "",
-				guestLastName: "",
-				guestCity: "",
-				guestLoyaltyNumber: ""
-			},
-			companyCard: {
-				companyName: "",
-				companyCity: "",
-				companyCorpId: ""
-			},
-			travelAgentCard: {
-				travelAgentName: "",
-				travelAgentCity: "",
-				travelAgentIATA: ""
-			}
-		}
-		$scope.reservationListData = {};
-
-		$scope.reservationDetails = {
-			guestCard: {
-				id: "",
-				futureReservations: 0
-			},
-			companyCard: {
-				id: "",
-				futureReservations: 0
-			},
-			travelAgent: {
-				id: "",
-				futureReservations: 0
-			}
-		};
 		$scope.cardSaved = function() {
 			$scope.viewState.isAddNewCard = false;
 		}

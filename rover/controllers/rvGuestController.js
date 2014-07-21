@@ -215,7 +215,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			return selector.contains(obj);
 		};
 
-
 		$scope.guestCardClick = function($event) {
 			$rootScope.$emit('clearErroMessages');
 			$scope.$broadcast('clearNotifications');
@@ -259,18 +258,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 
 		$scope.checkOutsideClick = function(targetElement) {
-			console.log("outside")
 			if ($scope.cardVisible) {
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');
-
 			}
-
 			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
 				$scope.closeGuestCard();
 			}
-
-
 		};
 
 

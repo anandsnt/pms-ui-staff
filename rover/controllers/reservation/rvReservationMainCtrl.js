@@ -32,7 +32,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
-
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
