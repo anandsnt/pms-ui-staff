@@ -25,10 +25,6 @@ var CardOperation = function(){
 
 			if (typeof data != 'undefined'){ carddata = data;}
 			successCallBack(carddata, successCallBackParameters);
-			
-			
-			
-			
 		};
 
 	};
@@ -165,7 +161,26 @@ var CardOperation = function(){
 		options['action'] = "cancelWriteOperation";		
 		that.callCordovaService(options);			
 	};
+	/**
+	* method To set the wrist band type- fixed amount/open room charge
+	*/
+	this.setBandType = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "setBandType";		
+		that.callCordovaService(options);			
+	};
 
+	this.setBandTypeDebug = function(options){
+		console.log("sucecss called in setband type debug mode");
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
+		// we are simulating the process by calling the success call back after some time
+		setTimeout(function(){
+				successCallBack();
+		}, 1000);
+
+	};
 	/**
 	* method for checking the device connected status
 	* will call success call back if it is fail or connected (bit confusing?)
