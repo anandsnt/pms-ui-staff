@@ -40,7 +40,7 @@
  				<div class="entry">
  					<label for="country">Country</label>
  					<div form="contact-info" class="select">
- 						<select ng-options="country.id as country.value for country  in countriesList" ng-model="guestCardData.contactInfo.address.country_id">
+ 						<select iscroll-stop-propagation ng-options="country.id as country.name for country  in countriesListForGuest" ng-model="guestCardData.contactInfo.address.country_id">
  							<option style="display:none" value=""></option>
  						</select>
  					</div>

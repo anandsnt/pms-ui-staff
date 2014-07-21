@@ -15,10 +15,10 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
 
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
-      	var avatarImage = getAvatharUrl(dataToUpdate.title);
- 	    $scope.$emit("CHANGEAVATAR", avatarImage);
+        var avatarImage = getAvatharUrl(dataToUpdate.title);
+        $scope.$emit("CHANGEAVATAR", avatarImage);
         $scope.$emit('hideLoader');
-        
+
       };
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
@@ -92,6 +92,9 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       if (!dataUpdated && !newGuest)
         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
       else if (newGuest) {
+        if (typeof data.data.is_opted_promotion_email == 'undefined') {
+          data.data.is_opted_promotion_email = false;
+        }
         $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, createUserInfoFailureCallback);
       }
     };
@@ -130,7 +133,6 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
     };
     var scrollerOptions = {
       click: true,
-      preventDefault: false
     };
     $scope.setScroller('contact_info', scrollerOptions);
 
