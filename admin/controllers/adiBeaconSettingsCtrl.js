@@ -1,13 +1,14 @@
 admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams',
 	function($scope, $state, ngTableParams){
 
-	$scope.errorMessage = '';
-	$scope.successMessage = "";
-	ADBaseTableCtrl.call(this, $scope, ngTableParams);
-	
-
-	$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
-	$scope.isIpad = true;
+	$scope.init = function(){
+		$scope.errorMessage = '';
+		$scope.successMessage = "";
+		ADBaseTableCtrl.call(this, $scope, ngTableParams);
+		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+		$scope.isIpad = true;
+	};
+	$scope.init();
 
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
@@ -53,7 +54,6 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams',
 	}
 
 	$scope.loadTable();
-
 
 	$scope.toggleActive = function(id,status){
 

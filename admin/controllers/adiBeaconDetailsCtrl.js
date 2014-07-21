@@ -1,14 +1,16 @@
 admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$state',function($scope,$stateParams,$rootScope,$state){
 
-	BaseCtrl.call(this, $scope);
-	$scope.addmode = ($stateParams.action === "add")? true : false;
-  $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit"+" "+$stateParams.action;
-	$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
-	$scope.isIpad = true;
-  $scope.message ={};
-  $scope.message.description ="";
-  $scope.message.title ="";
-
+  $scope.init = function(){
+    BaseCtrl.call(this, $scope);
+    $scope.addmode = ($stateParams.action === "add")? true : false;
+    $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit"+" "+$stateParams.action;
+    $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+    $scope.isIpad = true;
+    $scope.message ={};
+    $scope.message.description ="";
+    $scope.message.title ="";
+  };
+  $scope.init();
 
 	/**
     *   Method to go back to previous state.
@@ -27,6 +29,10 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     }
   
   };
+
+  /**
+    *   Activate option is only available when description and title are filled.
+    */
 
   $scope.toggleStatus = function(){
 
