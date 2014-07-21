@@ -449,5 +449,44 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     };
 
+    /**
+    * Handles the OWS error - Shows a popup having OWS connection test option
+    */
+    $rootScope.showOWSError = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        ngDialog.open({
+            template: '/assets/partials/hkOWSError.html',
+            className: 'ngdialog-theme-default modal-theme',
+            controller: 'RVHKOWSErrorCtrl',
+            closeByDocument: false,
+            scope: $scope
+        });
+    };
+
   }
 ]);
+
+// adding an OWS check Interceptor here
+// but should be moved to higher up above in root level
+sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
+  return {
+    request: function (config) {
+      return config;
+    },
+    response: function (response) {
+        return response || $q.when(response);
+    },
+    responseError: function(rejection) {
+      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
+        $rootScope.showOWSError && $rootScope.showOWSError();
+      }
+      return $q.reject(rejection);
+    }
+  };
+});
+
+sntRover.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('owsCheckInterceptor');
+});
