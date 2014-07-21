@@ -48,13 +48,42 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 
 	$scope.toggleActive = function(id,status){
 
-		angular.forEach($scope.data, function(ibeacon, key) {
+		var toggleBeaconSuccess = function(){
+			$scope.$emit('hideLoader');
+			angular.forEach($scope.data, function(ibeacon, key) {
 		      if(ibeacon.id === id){
 		      	ibeacon.status = !ibeacon.status;
 		      }
 		     });
+		};
+		var toggleBeaconFailed = function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+		};
+		var toggleData = {"id":id,"beacon_status":status};
+
+		$scope.invokeApi(adiBeaconSettingsSrv.toggleBeacon, toggleData, toggleBeaconSuccess,toggleBeaconFailed);
 
 	};
+
+	$scope.deleteBeacon = function(id){
+
+		var deleteBeaconSuccess = function(){
+			$scope.$emit('hideLoader');
+			// angular.forEach($scope.data, function(ibeacon, key) {
+		 //      if(ibeacon.id === id){
+		 //      	$scope.data.splice(key,1);
+		 //      }
+		 //     });
+			$scope.tableParams.reload();
+		};
+		var deleteBeaconFailed = function(data){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = data;
+		};
+
+		$scope.invokeApi(adiBeaconSettingsSrv.deleteBeacon, {"id":id}, deleteBeaconSuccess,deleteBeaconFailed);
+	}
 
 
 }]);
