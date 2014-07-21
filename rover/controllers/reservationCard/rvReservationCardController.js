@@ -143,7 +143,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 
 			// $scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
-			$state.go("rover.staycard.reservationcard.reservationdetails", {
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				"id": currentId,
 				"confirmationId": currentConfirmationNumber,
 				"isrefresh": true

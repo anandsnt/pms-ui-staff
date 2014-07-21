@@ -228,7 +228,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					console.log('removeCard - success');
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
-					$state.go('rover.staycard.reservationcard.reservationdetails', {
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": $stateParams.id,
 						"confirmationId": $stateParams.confirmationId,
 						"isrefresh": false
@@ -273,7 +273,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
-				$state.go('rover.staycard.reservationcard.reservationdetails', {
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id,
 					"confirmationId": $stateParams.confirmationId,
 					"isrefresh": false
