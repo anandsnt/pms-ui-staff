@@ -6,8 +6,9 @@
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
 			<fieldset class="holder left">
-				<ad-toggle-button label="Use Inspected room status" is-checked="data.use_inspected" div-class="full-width"></ad-toggle-button>
-				<ad-toggle-button label="Use Pick-up room status" is-checked="data.use_pickup" div-class="full-width"></ad-toggle-button>
+				<ad-toggle-button label="Use Inspected room status" is-checked="data.use_inspected" div-class=""></ad-toggle-button>
+				<ad-toggle-button label="Use Pick-up room status" is-checked="data.use_pickup" div-class=""></ad-toggle-button>
+				<ad-toggle-button label="Enable Queue Rooms" is-checked="data.is_queue_rooms_on" div-class=""></ad-toggle-button>
 				<ad-checkbox is-disabled="!data.use_inspected" is-checked="data.checkin_inspected_only" label="Check in to inspected rooms only" div-class="full-width"></ad-checkbox>
 			</fieldset>
 			
