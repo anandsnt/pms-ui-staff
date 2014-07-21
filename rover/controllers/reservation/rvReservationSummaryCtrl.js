@@ -33,12 +33,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.data.paymentMethods = data;
 				$scope.$emit('hideLoader');
 			};
-			var paymentFetchError = function(data){
-				$scope.errorMessage =  data;
+			var paymentFetchError = function(data) {
+				$scope.errorMessage = data;
 				$scope.$emit('hideLoader');
 			};
 
-			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess,paymentFetchError);
+			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess, paymentFetchError);
 
 		};
 
@@ -63,8 +63,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.arrival_date = $scope.reservationData.arrivalDate;
 			data.arrival_time = '';
 			//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
-			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' 
-				&& $scope.reservationData.checkinTime.ampm != '') {
+			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm != '') {
 				data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh,
 					$scope.reservationData.checkinTime.mm,
 					$scope.reservationData.checkinTime.ampm);
@@ -72,8 +71,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.departure_date = $scope.reservationData.departureDate;
 			data.departure_time = '';
 			//Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
-			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' 
-				&& $scope.reservationData.checkoutTime.ampm != '') {
+			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkoutTime.ampm != '') {
 				data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
 					$scope.reservationData.checkoutTime.mm,
 					$scope.reservationData.checkoutTime.ampm);
@@ -129,7 +127,22 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.viewState.reservationStatus.number = data.id;
-				$state.go('rover.reservation.staycard.mainCard.reservationConfirm');
+				// Change mode to stay card as the reservation has been made!
+				$scope.viewState.identifier = "CONFIRM";
+
+				$scope.reservation = {
+					reservation_card: {}
+				};
+
+				$scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
+				$scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+
+
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+					"id": data.id,
+					"confirmationId": data.confirm_no
+				});
+
 				MLISessionId = "";
 
 			};
@@ -168,23 +181,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.errorMessage = ["There is a problem with your credit card"];
 				}
 			}
-			
+
 			try {
-			    HostedForm.updateSession(sessionDetails, callback);
-			    $scope.$emit("showLoader");
-			}
-			catch(err) {
-			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+				HostedForm.updateSession(sessionDetails, callback);
+				$scope.$emit("showLoader");
+			} catch (err) {
+				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
 		}
 
 
 		$scope.setUpMLIConnection = function() {
 			try {
-			    HostedForm.setMerchant($rootScope.MLImerchantId);
-			}
-			catch(err) {};
-			
+				HostedForm.setMerchant($rootScope.MLImerchantId);
+			} catch (err) {};
+
 		}();
 
 
