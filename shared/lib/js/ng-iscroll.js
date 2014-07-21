@@ -96,6 +96,11 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                 setTimeout(setScroll, ngiScroll_timeout);
             });
 
+            scope.$on('$destroy', function() {
+                console.log( 'destorying ' + scroll_key );
+
+                scope.$parent.myScroll[scroll_key].length && scope.$parent.myScroll[scroll_key].destroy();
+            });
         }
     };
 });

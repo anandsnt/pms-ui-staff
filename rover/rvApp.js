@@ -7,7 +7,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 
-
 	/**
 	*	if this is true animation will be revesed, no more checks
 	* 	keep track of the previous state and params
@@ -16,7 +15,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*/
 	var $_mustRevAnim = false,
 		$_prevStateName = null,
-		$_prevStateParam = null; 
+		$_prevStateParam = null;
 
 	/**
 	*	revAnimList is an array of objects that holds
@@ -87,6 +86,11 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			param   = options.stateName ? options.stateParam || $_prevStateParam : $_prevStateParam,
 			reverse = typeof options.reverse === 'boolean' ? true : false;
 
+		// if currently disabled, return
+		if ( options.disable ) {
+			return;
+		};
+
 		// ok boys we are gonna sit this one out
 		// 'scope.callback' is will be running the show
 		if ( !!options.scope ) {
@@ -100,6 +104,49 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			$_mustRevAnim = reverse ? options.reverse : true;
 			$state.go( name, param );
 		};
+	};
+
+	var $_thatStateData = [];
+
+	$rootScope.setStateData = function(data) {
+		var index = null;
+
+		if ( !data && !data.id ) {
+			return;
+		};
+
+		for (var i = 0, j = $_thatStateData.length; i < j; i++) {
+			if ( data.id === $_thatStateData[i].id ) {
+				index = i;
+				break;
+			};
+		};
+
+		if ( index ) {
+			$_thatStateData[index] = data;
+		} else {
+			$_thatStateData.push( data );
+		}
+	};
+
+	$rootScope.getStateData = function(ctrlName) {
+		if ( !ctrlName ) {
+			return false;
+		};
+
+		for (var i = 0, j = $_thatStateData.length; i < j; i++) {
+			if ( ctrlName === $_thatStateData[i].id ) {
+				return $_thatStateData[i];
+				break;
+			};
+		};
+
+		return false;
+	};
+
+	$rootScope.returnBack = false;
+	$rootScope.isReturning = function() {
+		return $rootScope.returnBack;
 	};
 
 
