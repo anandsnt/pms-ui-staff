@@ -259,7 +259,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.iBeaconDetails', {
 			templateUrl: '/assets/partials/iBeaconSettings/adiBeaconDetails.html',
 			controller: 'ADiBeaconDetailsCtrl',
-			url : '/iBeaconDetails/:action'
+			url : '/iBeaconDetails/:action',
+			resolve: {
+				beaconTypes: function(adiBeaconSettingsSrv) {
+					return adiBeaconSettingsSrv.fetchBeaconTypes();
+				},
+				triggerTypes: function(adiBeaconSettingsSrv) {
+					return adiBeaconSettingsSrv.fetchBeaconTriggerTypes();
+				}
+			}
 		});
 		
         
