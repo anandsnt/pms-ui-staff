@@ -7,22 +7,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
-        // $scope.viewState = {
-        //     isAddNewCard: false,
-        //     reservationStatus: {
-        //         confirm: false,
-        //         number: null
-        //     },
-        //     pendingRemoval: {
-        //         status: false,
-        //         cardType: ""
-        //     },
-        //     identifier: "CREATION",
-        //     lastCardSlot: {
-        //         cardType: ""
-        //     }
-        // };
-
         $scope.viewState = {
             isAddNewCard: false,
             pendingRemoval: {
@@ -239,7 +223,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, i) {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
-
                     var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
                     var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
 
