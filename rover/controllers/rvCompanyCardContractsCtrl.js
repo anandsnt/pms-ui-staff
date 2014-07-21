@@ -25,10 +25,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}, 500);
 		});
 
-		// since CICO-7766 is breaking for desktops
-		$scope.setScroller('companyCardContractsCtrl', {
-			disableMouse: true
-		}); 
+		$scope.setScroller('companyCardContractsCtrl'); 
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.

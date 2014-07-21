@@ -1,0 +1,43 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+	<div id="selected_hotel" data-view="ICareServicesView">
+		<section>
+			<header class="content-title float">
+				<h2 translate>ICARE_SERVICES</h2>
+				<a class="action back"  ng-click="goBack()" translate>BACK</a>
+			</header>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form name="icare-services" method="post" class="form float" action="">
+
+				<fieldset class="holder full-width">
+					<ad-toggle-button is-checked="icare.icare_enabled" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
+				</fieldset>
+
+				<fieldset class="holder left">
+					<ad-textbox value="icare.icare_url" name = "access-url" label = "ACCESS URL" placeholder = "Enter access url" required = "yes" styleclass="full-width"></ad-textbox>
+		
+					<ad-textbox value="icare.icare_username" name = "icare-username" label = "iCARE USERNAME" placeholder = "Enter icare username" required = "yes" styleclass="full-width"></ad-textbox>
+		
+					<ad-textbox value="icare.icare_password" name = "icare-password" label = "iCARE PASSWORD" placeholder = "Enter icare password" required = "yes" styleclass="full-width" inputtype="password"></ad-textbox>
+		
+					<ad-textbox value="icare.icare_account_preamble" name = "account-prefix" label = "ACCOUNT PRE-FIX" placeholder = "Enter account pre-fix" required = "yes" styleclass="full-width"></ad-textbox>
+		
+					<ad-textbox value="icare.icare_account_length" name = "account-length" label = "ACCOUNT LENGTH" placeholder = "Enter account length" required = "yes" styleclass="full-width"></ad-textbox>
+				</fieldset>
+				
+				<fieldset class="holder right">
+					<ad-dropdown label="Debit Charge Code" div-class="full-width" label-in-drop-down="Debit Charge Code" list="icare.charge_codes" selected-Id="icare.icare_debit_charge_code_id"  required='yes' ></ad-dropdown>
+					<ad-dropdown label="Credit Charge Code" div-class="full-width" label-in-drop-down="Credit Charge Code" list="icare.charge_codes" selected-Id="icare.icare_credit_charge_code_id"  required='yes' ></ad-dropdown>
+				</fieldset>
+					
+				<div class="actions float">
+					<button type="button" class="button blank" ng-click="goBack()" translate>
+						CANCEL
+					</button>
+					<button type="button" class="button green" ng-click="saveClick()" translate>
+						SAVE_CHANGES
+					</button>
+				</div>
+			</form>
+		</section>
+	</div>
+</section>
