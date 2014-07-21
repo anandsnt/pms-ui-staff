@@ -1,4 +1,4 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
+sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter',  function($scope, RVSearchSrv, $stateParams, $filter){
 	
   var that = this;
   BaseCtrl.call(this, $scope);
@@ -21,7 +21,29 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   }
   var scrollerOptions = {click: true, preventDefault: false};
   $scope.setScroller('result_showing_area', scrollerOptions);
-  
+ 
+  /**
+  * function to execute on focusing on search box
+  */
+  $scope.focusOnSearchText = function(){
+    //we are showing the search area, hiding the daashboard area
+    $scope.$emit("showHideSearch", true);
+    refreshScroller();
+  };
+
+  $scope.$on("updateDataFromOutside", function(event, data){
+    event.stopPropagation();
+    $scope.results = data;
+  });
+  /**
+  * function to execute on focusing on search box
+  */
+  $scope.focusOutOnSearchText = function(){
+    //we are showing the search area, hiding the daashboard area
+    $scope.$emit("showHideSearch", false);
+    refreshScroller();
+  };
+
   /**
   * function used for refreshing the scroller
   */
@@ -40,7 +62,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 	  $scope.heading = headingListDict[oldType]; 
       $scope.setTitle($scope.heading);
       
-  	$scope.results = searchResultdata;
+  	$scope.results = [];
     oldType = "";
     oldTerm = $scope.textInQueryBox;
     setTimeout(function(){refreshScroller();}, 1000);

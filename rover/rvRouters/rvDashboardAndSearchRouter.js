@@ -41,11 +41,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             }
         }); */
         $stateProvider.state('rover.dashboard', {
-            url: '/dashboard',
-            templateUrl: '/assets/partials/dashboard/rvDashboard.html',
-            controller: 'RVrootDashboardController',
-            abstract : true
-            
+            url: '/dashboard',   
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            controller: 'RVrootDashboardController'          
         });
         $stateProvider.state('rover.dashboard.manager', {
             url: '/dashboard/manager',
