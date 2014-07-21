@@ -26,7 +26,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// passReservationParams
 			//TODO : Once this works pull it to a separate method 
 			var fetchGuestcardDataSuccessCallback = function(data) {
-				console.log("success",data);
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
@@ -95,7 +94,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
-				console.log(data);
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
@@ -193,11 +191,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					console.log('removeCard - success');
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $stateParams.id,
-						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": false
-					});
+					if ($scope.viewState.identifier == "STAY_CARD") {
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": $stateParams.id,
+							"confirmationId": $stateParams.confirmationId,
+							"isrefresh": false
+						});
+					}
 				}, function() {
 					console.log('removeCard - failure');
 					$scope.$emit('hideLoader');
@@ -238,11 +238,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": false
-				});
+				if ($scope.viewState.identifier == "STAY_CARD") {
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": $stateParams.id,
+						"confirmationId": $stateParams.confirmationId,
+						"isrefresh": false
+					});
+				}
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('replaceCard -failure');

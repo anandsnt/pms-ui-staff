@@ -2,7 +2,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 	function($scope, $state, RVReservationSummarySrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.init = function() {
+		$scope.init = function() {			
 			$scope.$parent.hideSidebar = true;
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {
