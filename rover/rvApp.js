@@ -8,19 +8,18 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$stateParams = $stateParams;
 
 
-	// a simple flag to set the 
-	// slide animation in reverse mode
-	var $_mustRevAnim = false;
-
-
-	// keep track of the previous state and its params
-	// saving the prevState name and params
-	var $_prevStateName = null,
+	/**
+	*	if this is true animation will be revesed, no more checks
+	* 	keep track of the previous state and params
+	* 
+	*	@private
+	*/
+	var $_mustRevAnim = false,
+		$_prevStateName = null,
 		$_prevStateParam = null; 
 
-
 	/**
-	*	revAnimList is an array that holds
+	*	revAnimList is an array of objects that holds
 	*	state name sets that when transitioning
 	*	the transition animation should be reversed 
 	*	
@@ -47,7 +46,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	/**
 	*	A method on the $rootScope to determine if the
 	*	slide animation during stateChange should run in reverse or forward
-	*	Note: if yeah we will fill this out later
+	*	Note: this is overridden when state change is via pressing back button action
 	*
 	*	@private
 	*	@param {string} fromState - name of the fromState
@@ -71,11 +70,13 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	*	A very simple methods to go back to the previous state
 	*	
 	*	By default it will use the (saved) just previous state - '$_prevStateName', '$_prevStateParam'
-	*	and always slide-in states in reverse animation, unless overridden.
+	*	and always do the slide animation in reverse, unless overridden by callee.
 	*
-	*	Default behaviour can be overridden in two ways:
+	*	Default behaviour can be overridden in two ways, by setting values to '$rootScope.setPrevState' in ctrl`:
 	*	1. Pass in a callback with its scope - This callback will be responsible for the state change (total control)
 	*	2. Pass in the state name and param - This will load the passed in state with its param
+	* 
+	* 	@param {Object} $rootScope.setPrevState - Uses this object as param which is set by the current state contoller
 	*/
 	$rootScope.loadPrevState = function() {
 
@@ -87,15 +88,14 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			reverse = typeof options.reverse === 'boolean' ? true : false;
 
 		// ok boys we are gonna sit this one out
-		// 'scope.callback' is on the floor
+		// 'scope.callback' is will be running the show
 		if ( !!options.scope ) {
 			$_mustRevAnim = reverse ? options.reverse : true;
 			options.scope[options.callback]();
 			return;
 		};
 
-		// necessary for a case where there isn't
-		// a passed in stateName or prevStateName
+		// check necessary as we can have a case where both can be null
 		if ( !!options.stateName || !!$_prevStateName ) {
 			$_mustRevAnim = reverse ? options.reverse : true;
 			$state.go( name, param );
@@ -118,8 +118,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		console.log(fromState.name + ' ===> ' + toState.name);
 
 		// this must be reset with every state change
-		// invidual controllers can then set with 
-		// its own desired values
+		// invidual controllers can then set it  
+		// with its own desired values
 		$rootScope.setPrevState = {};
 
 		// choose slide animation direction
@@ -131,7 +131,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		}
 
 		// saving the prevState name and params
-		// for quick 'loadPrevState' method
 		$_prevStateName  = fromState.name;
 		$_prevStateParam = fromParams;
 	});
