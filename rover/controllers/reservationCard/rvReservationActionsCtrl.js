@@ -5,7 +5,8 @@ sntRover.controller('reservationActionsController',
 		'ngDialog',
 		'RVChargeItems',
 		'$state',
-		function($rootScope, $scope, ngDialog, RVChargeItems, $state) {
+		'RVReservationCardSrv',
+		function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv) {
 			BaseCtrl.call(this, $scope);
 			
 			$scope.displayTime = function(status){
@@ -148,6 +149,49 @@ sntRover.controller('reservationActionsController',
 					closeByEscape: false
 				});
 			}
+		};
+		$scope.showPutInQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus){
+			var displayPutInQueue = false;
+			if(reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT'){
+				if(isQueueRoomsOn == "true" && isReservationQueued == "false"){
+					displayPutInQueue = true;
+				}
+			}
+			
+			return displayPutInQueue;
+		};
+		$scope.showRemoveFromQueue  = function(isQueueRoomsOn, isReservationQueued){
+			var displayPutInQueue = false;
+			if(reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT'){
+				if(isQueueRoomsOn == "true" && isReservationQueued == "true"){
+					displayPutInQueue = true;
+				}
+			}
+			return displayPutInQueue;
+		};
+		$scope.successPutInQueueCallBack = function(){
+			  $scope.$emit( 'hideLoader' );
+			  $scope.reservationData.reservation_card.is_reservation_queued = "true";
+			   RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+		};
+		$scope.successRemoveFromQueueCallBack = function(){
+			  $scope.$emit( 'hideLoader' );
+			  $scope.reservationData.reservation_card.is_reservation_queued = "false";
+			  RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
+		};
+		$scope.putInQueue = function(reservationId){
+			var data = {
+				"reservationId": reservationId,
+				"status": "true"
+			};
+			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successPutInQueueCallBack);
+		};
+		$scope.removeFromQueue = function(reservationId){
+			var data = {
+				"reservationId": reservationId,
+				"status": false
+			};
+			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 		
 		}
