@@ -10,14 +10,72 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.init = function() {
-			$scope.contactInfoError = false;
-			$scope.eventTimestamp = "";
-			BaseCtrl.call(this, $scope);
-			var preventClicking = false;
+
+		var initReservation = function() {
+			if (!$scope.reservationData.isSameCard) {
+				// open search list card if any of the search fields are entered on main screen
+				var searchData = $scope.reservationData;
+				if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
+					// based on search values from base screen
+					// init respective search
+					if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
+						$scope.openGuestCard();
+						$scope.searchGuest();
+					}
+					if (searchData.company.id != null) {
+						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
+							$scope.switchCard('company-card');
+						}
+						$scope.reservationDetails.companyCard.id = searchData.company.id;
+						$scope.initCompanyCard({
+							id: searchData.company.id
+						});
+					}
+					if (searchData.travelAgent.id != null) {
+						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
+							$scope.switchCard('travel-agent-card');
+						}
+						$scope.reservationDetails.travelAgent.id = searchData.travelAgent.id;
+						$scope.initTravelAgentCard({
+							id: searchData.travelAgent.id
+						});
+					}
+				}
+			} else {
+				// populate cards
+				$scope.closeGuestCard();
+				if ($scope.reservationDetails.guestCard.id != "" && $scope.reservationDetails.guestCard.id != null) {
+					$scope.initGuestCard({
+						id: $scope.reservationDetails.guestCard.id
+					});
+				}
+				if ($scope.reservationDetails.companyCard.id != "" && $scope.reservationDetails.companyCard.id != null) {
+					$scope.initCompanyCard({
+						id: $scope.reservationDetails.companyCard.id
+					});
+				}
+				if ($scope.reservationDetails.travelAgent.id != "" && $scope.reservationDetails.travelAgent.id != null) {
+					$scope.initTravelAgentCard({
+						id: $scope.reservationDetails.travelAgent.id
+					});
+				}
+				$scope.reservationData.isSameCard = false;
+			}
+
+			if ($scope.otherData.fromSearch) {
+				$scope.otherData.fromSearch = false;
+			}
 		};
 
-		$scope.init();
+		$scope.init = function() {
+			if ($scope.viewState.identifier == "CREATION") {
+				initReservation();
+			} else {
+				$scope.contactInfoError = false;
+				$scope.eventTimestamp = "";
+				var preventClicking = false;
+			}
+		};
 
 		$scope.$on("resetGuestTab", function() {
 			$scope.guestCardTabSwitch("guest-contact");
@@ -766,5 +824,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				id: id
 			});
 		};
+
+	$scope.init();
+		
 	}
 ]);
