@@ -567,11 +567,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
-			if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('company', company, false);
-			} else {
-				$scope.checkFuture('company', company);
+			if ($scope.viewState.identifier == "CREATION") {} else {
+				if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
+					$scope.replaceCardCaller('company', company, false);
+				} else {
+					$scope.checkFuture('company', company);
+				}
 			}
+
 		};
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
@@ -585,10 +588,28 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
-			if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
-				$scope.replaceCardCaller('guest', guest, false);
+			if ($scope.viewState.identifier == "CREATION") {
+				$scope.reservationData.guest.id = guest.id;
+				$scope.reservationData.guest.firstName = guest.firstName;
+				$scope.reservationData.guest.lastName = guest.lastName;
+				$scope.reservationData.guest.city = guest.address.city;
+				$scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+
+				// update current controller scope
+				$scope.guestFirstName = guest.firstName;
+				$scope.guestLastName = guest.lastName;
+				$scope.guestCity = guest.address.city;
+				$scope.cardHeaderImage = guest.image;
+				$scope.viewState.isAddNewCard = false;
+				$scope.reservationDetails.guestCard.id = guest.id;
+
+				$scope.initGuestCard(guest);
 			} else {
-				$scope.checkFuture('guest', guest);
+				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+					$scope.replaceCardCaller('guest', guest, false);
+				} else {
+					$scope.checkFuture('guest', guest);
+				}
 			}
 		};
 

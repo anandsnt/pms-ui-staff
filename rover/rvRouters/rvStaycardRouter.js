@@ -88,7 +88,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'RVReservationSummaryCtrl'
     });
 
-    $stateProvider.state('rover.staycard.reservation.mainCard.reservationConfirm', {
+    $stateProvider.state('rover.reservation.staycard.mainCard.reservationConfirm', {
         url: '/reservationConfirm',
         templateUrl: '/assets/partials/reservation/rvReservationConfirm.html',
         controller: 'RVReservationConfirmCtrl'

@@ -23,6 +23,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         //     }
         // };
 
+        $scope.viewState = {
+            isAddNewCard: false,
+            pendingRemoval: {
+                status: false,
+                cardType: ""
+            },
+            identifier: "CREATION",
+            lastCardSlot: {
+                cardType: ""
+            },
+            reservationStatus: {
+                confirm: false,
+                number: null
+            }
+        };
+
         var successCallbackOfCountryListFetch = function(data) {
             $scope.countries = data;
         };
@@ -149,6 +165,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
 
             $scope.guestCardData = {};
+            $scope.guestCardData.contactInfo = {};
+            $scope.guestCardData.userId = '';
+
+            $scope.guestCardData.contactInfo.birthday = '';
 
             $scope.reservationListData = {};
 

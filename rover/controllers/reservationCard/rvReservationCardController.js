@@ -6,6 +6,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.currentReservationId = "";
 		$scope.reservationCount = 0;
 
+		$scope.viewState.identifier = "STAY_CARD";
+
 		var title = "Staycard";
 		$scope.setTitle(title);
 

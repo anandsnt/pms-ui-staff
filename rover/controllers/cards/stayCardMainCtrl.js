@@ -9,18 +9,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			status: false,
 			cardType: ""
 		};
-		$scope.viewState = {
-			isAddNewCard: false,
-			pendingRemoval: {
-				status: false,
-				cardType: ""
-			},
-			identifier: "CREATION",
-			lastCardSlot: {
-				cardType: ""
-			},
-			searching: false
-		};
+
 
 		$scope.searchData = {
 			guestCard: {
@@ -72,6 +61,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// passReservationParams
 			//TODO : Once this works pull it to a separate method 
 			var fetchGuestcardDataSuccessCallback = function(data) {
+				console.log("success",data);
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
@@ -126,6 +116,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			var fetchGuestcardDataFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 			};
+
+			console.log($scope.reservationDetails.guestCard);
 
 			if ($scope.reservationDetails.guestCard.id != '' && $scope.reservationDetails.guestCard.id != null) {
 				var param = {

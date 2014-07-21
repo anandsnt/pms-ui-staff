@@ -129,7 +129,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.viewState.reservationStatus.number = data.id;
-				$state.go('rover.staycard.reservation.mainCard.reservationConfirm');
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm');
 				MLISessionId = "";
 
 			};

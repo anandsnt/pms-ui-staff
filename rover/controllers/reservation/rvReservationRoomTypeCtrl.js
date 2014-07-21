@@ -249,7 +249,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//Navigate to the next screen
 			$scope.checkOccupancyLimit();
-			$state.go('rover.staycard.reservation.mainCard.addons', {
+			$state.go('rover.reservation.staycard.mainCard.addons', {
 				"from_date": $scope.reservationData.arrivalDate,
 				"to_date": $scope.reservationData.departureDate
 			});
