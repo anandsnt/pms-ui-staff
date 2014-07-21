@@ -1,11 +1,11 @@
 <section  class="content current">
 	<div data-view="PaymentMethodsView">
 		<header class="content-title float">
-			<h2> Payment Methods </h2>
+			<h2 translate> PAYMENT_METHODS </h2>
 			<span class="count"> (
 				{{data.payments.length}}
 				) </span>
-			<a class='action add' ng-click="addNew()">Add new</a>
+			<a class='action add' ng-click="addNew()" translate>ADD_NEW</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -17,7 +17,7 @@
 				<tr>
 					<td ng-if="payment.is_system_defined">
 						<strong>{{payment.description}}</strong>
-						<em ng-if="payment.is_system_defined">(System defined)</em>
+						<em ng-if="payment.is_system_defined" translate>SYSTEM_DEFINED</em>
 					</td>
 					<td ng-if="!payment.is_system_defined" ng-click="editPaymentMethod($index)" ng-hide="currentClickedElement == $index">
 						<a><strong>{{payment.description}}</strong></a>
@@ -45,7 +45,7 @@
 								<tr data-credit-card-id="1" ng-repeat="cc in data.credit_card_types">
 									<td>
 										<strong>{{cc.description}}</strong>
-										<em>(System defined)</em>
+										<em translate>SYSTEM_DEFINED</em>
 									</td>
 									<td class="activate">
 										<div class="entry" >
