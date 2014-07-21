@@ -1,5 +1,6 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
+    $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -456,13 +457,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
         // Hide loading message
         $scope.$emit('hideLoader');
-        ngDialog.open({
-            template: '/assets/partials/hkOWSError.html',
-            className: 'ngdialog-theme-default modal-theme',
-            controller: 'RVHKOWSErrorCtrl',
-            closeByDocument: false,
-            scope: $scope
-        });
+        if(!$rootScope.isOWSErrorShowing){
+            $rootScope.isOWSErrorShowing = true;
+            ngDialog.open({
+              template: '/assets/partials/hkOWSError.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'RVHKOWSErrorCtrl',
+              closeByDocument: false,
+              scope: $scope
+          });
+        }        
     };
 
   }

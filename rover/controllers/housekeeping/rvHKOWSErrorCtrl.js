@@ -1,4 +1,4 @@
-sntRover.controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv',function($scope, RVHKOWSTestSrv) {
+sntRover.controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope', 'ngDialog',function($scope, RVHKOWSTestSrv, $rootScope, ngDialog) {
 
 	/**
 	* Call API to test the OWS connection
@@ -13,6 +13,11 @@ sntRover.controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv',function($sc
 		}, function(){
 			$scope.$parent.$emit('hideLoader');
 		});
+	};
+	$scope.closeThisDialog = function(){
+			$rootScope.isOWSErrorShowing = false;
+			ngDialog.close();
+			console.log("RVHKOWSErrorCtrl close overriden");
 	};
 
 }]);
