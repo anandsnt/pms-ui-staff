@@ -4,7 +4,8 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.paymentData = {};
 	$scope.isAddMode = false;
-
+	$scope.editData = {};
+	
 	var fetchSuccess = function(data) {
 		$scope.data = data;
 		$scope.$emit('hideLoader');
@@ -89,6 +90,10 @@ function($scope, $state, ADPaymentMethodsSrv) {
 		if ( typeof index === "undefined" || typeof id === "undefined")
 			return "";
 		if ($scope.currentClickedElement == index) {
+			console.log($scope.data.payments[index]);
+			$scope.editData = $scope.data.payments[index];
+			//$scope.editData = {};
+			//$scope.editData = {"code": "asd","description":"ssssss"};
 			return "/assets/partials/paymentMethods/adEditPaymentMethod.html";
 		}
 	};

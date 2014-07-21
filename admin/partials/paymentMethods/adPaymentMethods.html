@@ -15,10 +15,14 @@
 			<tbody ng-repeat="payment in data.payments">
 				
 				<tr>
-					<td ng-click="editPaymentMethod($index,payment.value)" ng-hide="currentClickedElement == $index">
+					<td ng-if="!payment.is_system_defined">
 						<strong>{{payment.description}}</strong>
-						<em>(System defined)</em>
+						<em ng-if="payment.is_system_defined">(System defined)</em>
 					</td>
+					<td ng-if="payment.is_system_defined" ng-click="editPaymentMethod($index,payment.value)" ng-hide="currentClickedElement == $index">
+						<strong>{{payment.description}}</strong>
+					</td>
+					
 					<td class="activate" ng-hide="currentClickedElement == $index">
 						<div class="entry">
 							<td class="activate" ng-hide="currentClickedElement == $index">
