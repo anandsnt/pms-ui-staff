@@ -88,7 +88,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
 			if($scope.clickedButton == "checkinButton"){
-				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 			} else {
 				$scope.reservationData.reservation_card.room_number = selectedRoomNumber;
 				$scope.reservationData.reservation_card.room_type_description = selectedTypeDescription;
@@ -171,7 +171,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 			return 465*$scope.upgradesList.length;
 	};
 	$scope.goToCheckinScreen = function(){
-		$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 	};
 	
 }]);

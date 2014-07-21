@@ -117,19 +117,19 @@ sntRover.controller('reservationActionsController',
 				} else {
 					if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT') {
 						//TO DO:Go to room assignemt view
-						$state.go("rover.staycard.roomassignment", {
+						$state.go("rover.reservation.staycard.roomassignment", {
 							"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 							"room_type": $scope.reservationData.reservation_card.room_type_code,
 							"clickedButton": "checkinButton"
 						});
 					} else if ($scope.reservationData.reservation_card.is_force_upsell == "true" && $scope.reservationData.reservation_card.is_upsell_available == "true") {
 						//TO DO : gO TO ROOM UPGRAFED VIEW
-						$state.go('rover.staycard.upgrades', {
+						$state.go('rover.reservation.staycard.upgrades', {
 							"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 							"clickedButton": "checkinButton"
 						});
 					} else {
-						$state.go('rover.staycard.billcard', {
+						$state.go('rover.reservation.staycard.billcard', {
 							"reservationId": $scope.reservationData.reservation_card.reservation_id,
 							"clickedButton": "checkinButton"
 						});
