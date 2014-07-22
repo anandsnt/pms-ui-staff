@@ -33,12 +33,12 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			return deferred.promise;
 		};
 
-		var reservationDetails = {};
+		this.reservationDetails = {};
 		this.confirmationNumbersArray = [];
 		var that = this;
 		this.emptyConfirmationNumbers = function() {
 			that.confirmationNumbersArray = [];
-			reservationDetails = {};
+			that.reservationDetails = {};
 		};
 		this.storeConfirmationNumbers = function(confirmationNumber) {
 			that.confirmationNumbersArray.push(confirmationNumber);
@@ -64,19 +64,19 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				var url = '/staff/staycards/reservation_details.json?reservation=' + confirmationNumber;
 
 				RVBaseWebSrv.getJSON(url).then(function(data) {
-					reservationDetails[confirmationNumber] = data;
+					that.reservationDetails[confirmationNumber] = data;
 					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
 				});
 			} else {
-				deferred.resolve(reservationDetails[confirmationNumber]);
+				deferred.resolve(that.reservationDetails[confirmationNumber]);
 			}
 
 			return deferred.promise;
 		};
 		this.updateResrvationForConfirmationNumber = function(confirmationNumber, reservationData) {
-			reservationDetails[confirmationNumber] = reservationData;
+			that.reservationDetails[confirmationNumber] = reservationData;
 		};
 		this.guestData = "";
 		this.setGuestData = function(data) {
@@ -139,7 +139,21 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
+		this.modifyRoomQueueStatus = function(data){
+			var deferred = $q.defer();
+			var postData = {
+				"status": data.status
+			};
+			
+			var url = '/api/reservations/'+data.reservationId+'/queue';
+			rvBaseWebSrvV2.postJSON(url, postData).then(function(postData) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
 	}
 ]);
