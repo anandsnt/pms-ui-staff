@@ -58,7 +58,7 @@
 					<label for="room-type-picture" translate="PICTURE"></label>
 					<div class="file-upload with-preview">
 						<span class="input" translate="CHOOSE_FILE"></span>
-						<input type="file" ng-model="data.picture" accept="image/*" app-filereader />
+						<input type="file" ng-model="data.picture" accept="image/*" app-filereader ng-disabled="data.type!='PROMOTION'"/>
 						<button type="button" class="button brand-colors" translate="PICTURE">
 						</button> 
 					</div>
