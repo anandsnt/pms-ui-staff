@@ -4565,7 +4565,7 @@
 				font-size: 14px;
 				line-height: 21px;
 				text-transform: uppercase;
-				table-layout: fixed;
+				table-layout: auto;
 				border-collapse: separate;
 				border-spacing: 0 10px;
 				margin: 0;
@@ -4587,6 +4587,13 @@
 							font-weight: bold;
 						}
 					}
+
+					&.bottom-row {
+                        th {
+                            color: @grey4;
+                            font-weight: 400;
+                        }
+                    }
 				}
 
 				tfoot {
@@ -4635,6 +4642,19 @@
 								}
 							}
 						}
+
+						&.totals {
+                            td {
+                                padding: 10px;
+                                background: rgba(0,0,0,.05);
+                                color: @textColor;
+                                font-size: 16px;
+                                line-height: 1em;
+                                font-weight: 600;
+
+                                &:last-child { text-align: left; }
+                            }
+                        }
 					}
 				}
 			}
