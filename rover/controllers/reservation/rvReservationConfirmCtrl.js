@@ -2,7 +2,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 	function($scope, $state, RVReservationSummarySrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.init = function() {			
+		$scope.init = function() {
+			$scope.$emit('setHeading', 'Reservations');
 			$scope.$parent.hideSidebar = true;
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {
@@ -83,7 +84,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		$scope.goToStaycardClicked = function() {
 			var stateParams = {
 				id: $scope.reservationData.reservationId,
-				confirmationId: $scope.reservationData.confirmNum
+				confirmationId: $scope.reservationData.confirmNum,
+				isRefresh: false
 			}
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 

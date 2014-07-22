@@ -38,15 +38,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         return true;
       };
 
-      if (fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
+      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
         return true;
       };
 
-      if (fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
-      if (fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 

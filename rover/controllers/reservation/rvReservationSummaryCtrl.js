@@ -9,6 +9,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.data.isConfirmationEmailSameAsGuestEmail = true;
 			$scope.data.paymentMethods = [];
 			$scope.heading = "Guest Details & Payment";
+			$scope.$emit('setHeading', 'Guest Details & Payment');
 
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {

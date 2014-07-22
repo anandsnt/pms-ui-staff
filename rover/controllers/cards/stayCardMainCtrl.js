@@ -1,7 +1,6 @@
 sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
 	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
 		BaseCtrl.call(this, $scope);
-		console.log($rootScope.isStandAlone);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		$scope.cardHeaderImage = '/assets/avatar-trans.png';
@@ -134,22 +133,25 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		}
 
 
-		$scope.$on('cardIdsFetched', function() {
+		$scope.$on('cardIdsFetched', function(event, isCardSame) {
 			// Restore view state
 			$scope.viewState.pendingRemoval.status = false;
 			$scope.viewState.pendingRemoval.cardType = "";
 
-			// Reset all cards
-			if ($stateParams.isrefresh == "true") {
+			//init all cards with new data
+			if (!isCardSame.guest) {
 				$scope.$broadcast('guestCardDetached');
-				$scope.$broadcast('travelAgentDetached');
+				$scope.initGuestCard();
+			}
+			if (!isCardSame.company) {
 				$scope.$broadcast('companyCardDetached');
+				$scope.initCompanyCard();
+			}
+			if (!isCardSame.agent) {
+				$scope.$broadcast('travelAgentDetached');
+				$scope.initTravelAgentCard();
 			}
 
-			//init all cards with new data
-			$scope.initGuestCard();
-			$scope.initCompanyCard();
-			$scope.initTravelAgentCard();
 			// The future counts of the cards attached with the reservation
 			// will be received here!
 			// This code should be HIT everytime there is a removal or a replacement of

@@ -46,6 +46,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
+			$scope.$emit('setHeading', $scope.heading);
+			
 			$scope.displayData.dates = [];
 			$scope.rateFilterText = '';
 			$scope.filteredRates = [];
@@ -227,8 +229,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
-			*	are updated with the rate and rateName information
-			*/
+			 *	are updated with the rate and rateName information
+			 */
 			populateStayDates(rateId);
 
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;

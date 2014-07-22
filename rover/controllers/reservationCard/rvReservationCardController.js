@@ -8,6 +8,9 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 		$scope.viewState.identifier = "STAY_CARD";
 
+		$scope.heading = 'Staycard';
+		$scope.$emit('setHeading', $scope.heading);
+
 		var title = "Staycard";
 		$scope.setTitle(title);
 
