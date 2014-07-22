@@ -1,10 +1,10 @@
 <div id="dashboard-occupancy" class="dashboard-block data">
     <h3>Occupancy</h3>
     <ul>
-        <li>Today<span>53%</span></li>
-        <li>July 17<span>72%</span></li>
-        <li>July 16<span>83%</span></li>
-        <li>July<span>77%</span></li>
-        <li>2014<span>71%</span></li>
+        <li>Today<span>{{statisticsData.occupancy.today}}%</span></li>
+        <li>{{tomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.tomorrow}}%</span></li>
+        <li>{{dayAfterTomorrow|date:monthAndDate}}<span>{{statisticsData.occupancy.day_after_tomorrow}}%</span></li>
+        <li ng-show="statisticsData.occupancy.fullMonth!=''">{{userInfo.business_date|date:fullMonth}}<span>{{statisticsData.occupancy.current_month}}%</span></li>
+        <li ng-show="statisticsData.occupancy.current_year!=''">{{userInfo.business_date|date:fullYear}}<span>{{statisticsData.occupancy.current_year}}%</span></li>
     </ul>
 </div>

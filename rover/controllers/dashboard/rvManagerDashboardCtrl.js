@@ -1,39 +1,53 @@
-sntRover.controller('RVmanagerDashboardController',['$scope', 'RVSearchSrv', function($scope, RVSearchSrv){
-	
+sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', function($scope, $rootScope){
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
-
+    var that = this;
 	//scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
 
-  	$scope.showSearch = false; //variable used to hide/show search area
-  	
+  	$scope.showDashboard = true; //variable used to hide/show dabshboard
+
+    // we are hiding the search results area
+    $scope.$broadcast("showSearchResultsArea", false);     
+
+    $scope.tomorrow = tzIndependentDate ($rootScope.businessDate);
+    $scope.tomorrow.setDate ($scope.tomorrow.getDate() + 1); 
+    $scope.dayAfterTomorrow = tzIndependentDate ($rootScope.businessDate);
+    $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1); 
+
   	/*
-  	* a recievable function hide/show search area.
-  	* when showing the search bar, we will hide dashboard & vice versa
-  	* param1 {event}, javascript event
-  	* param2 {boolean}, value to determine whether search should be visible
+  	*    a recievable function hide/show search area.
+  	*    when showing the search bar, we will hide dashboard & vice versa
+  	*    param1 {event}, javascript event
+  	*    param2 {boolean}, value to determine whether dashboard should be visible
   	*/
-  	$scope.$on("showHideSearch", function(event, showSearch){
-  		event.stopPropagation();
-  		$scope.showSearch = showSearch;
+  	$scope.$on("showDashboardArea", function(event, showDashboard){
+        event.stopPropagation();
+  		$scope.showDashboard = showDashboard;
   		$scope.refreshScroller('dashboard_scroller');
   	});
 
+    /**
+    *   recievalble function to update dashboard reservatin search results
+    *   intended for checkin, inhouse, checkout (departed), vip buttons handling.
+    *   @param {Object} javascript event
+    *   @param {array of Objects} data search results
+    */
+    $scope.$on("updateDashboardSearchDataFromExternal", function(event, data){
+        event.stopPropagation();
+        $scope.$broadcast("updateDataFromOutside", data);  
+        $scope.$broadcast("showSearchResultsArea", true);        
+    });
 
-  	/*
-  	* function to exceute on clicking the guest today buttons
-  	* we will call the webservice with given type and
-  	* will update search results and show search area
-  	*/
-  	$scope.clickedOnGuestsToday = function(event, type) {
-  		if(type == "LATE_CHECKOUT"){
-        	dataDict.is_late_checkout_only = true;
-        }
-        else{
-      		dataDict.status = type;
-        }
-  	}
-
+    /**
+    *   recievalble function to update dashboard reservatin search result's type
+    *   intended for checkin, inhouse, checkout (departed), vip buttons search result handling.
+    *   @param {Object} javascript event
+    *   @param {array of Objects} data search results
+    */
+    $scope.$on("updateDashboardSearchTypeFromExternal", function(event, type){
+        event.stopPropagation();
+        $scope.$broadcast("updateReservationTypeFromOutside", type);      
+    });    
 }]);

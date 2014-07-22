@@ -2,6 +2,11 @@
 <header class="nav-bar float rover-header" role = "banner">
 	<!-- Drawer toggle -->
 	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
+
+	<!--Backbutton> -->
+		<a class="" ng-class="{'back-button': backButtonCaption!=''}" ng-show="backButtonCaption!=''" ng-click="headerBackButtonClicked()">{{backButtonCaption}}</a>
+	<!-- end of backbutton -->
+
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
 		{{userInfo.last_name}} </strong> | <em class="date"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em></span>

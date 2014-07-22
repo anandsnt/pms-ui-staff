@@ -1,10 +1,10 @@
 <div id="dashboard-adr" class="dashboard-block data">
     <h3>ADR</h3>
     <ul>
-        <li>Today<span>$109</span></li>
-        <li>July 17<span>$109</span></li>
-        <li>July 18<span>$155</span></li>
-        <li>July<span>$140</span></li>
-        <li>2014<span>$142</span></li>
+        <li>Today<span>{{currencySymbol}}{{statisticsData.adr.today}}</span></li>
+        <li>{{tomorrow|date:monthAndDate}}<span>{{currencySymbol}}{{statisticsData.adr.tomorrow}}</span></li>
+        <li>{{dayAfterTomorrow|date:monthAndDate}}<span>{{currencySymbol}}{{statisticsData.adr.day_after_tommorow}}</span></li>
+        <li>{{userInfo.business_date|date:fullMonth}}<span>{{currencySymbol}}{{statisticsData.adr.current_month}}</span></li>
+        <li>{{userInfo.business_date|date:fullYear}}<span>{{currencySymbol}}{{statisticsData.adr.current_year}}</span></li>
     </ul>
 </div>

@@ -1,15 +1,15 @@
-<div id="dashboard-guests" class="dashboard-block buttons">
+<div id="dashboard-guests" class="dashboard-block buttons" ng-controller="rvDashboardGuestWidgetController">
     <h3>Guests</h3>
     <ul class="actions">
-        <li><a  class="button green"><strong>7</strong> Arrivals</a></li>
-        <li><a class="button red"><strong>15</strong>Departures</a></li>
-        <li><a  class="button blue"><strong>7</strong> In-house</a></li>
-        <li><a  class="button yellow"><strong>5</strong> VIPs</a></li>
+        <li ><a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN')"><strong>{{statisticsData.guests.checking_in}}</strong> Arrivals</a></li>
+        <li><a class="button red" ng-click="clickedOnGuestsToday($event, 'INHOUSE')"><strong>{{statisticsData.guests.checking_out}}</strong>Departures</a></li>
+        <li><a class="button blue" ng-click="clickedOnGuestsToday($event, 'DUEOUT')"><strong>{{statisticsData.guests.in_house}}</strong> In-house</a></li>
+        <li><a class="button yellow"><strong>{{statisticsData.guests.vip}}</strong> VIPs</a></li>
     </ul>
     <ul class="data">
-        <li>Arrivals <strong class="green">7</strong></li>
-        <li>Departures <strong class="red">15</strong></li>
-        <li>In-house <strong class="blue">7</strong></li>
-        <li>VIPs <strong class="yellow">3</strong></li>
+        <li>Arrivals <strong class="green">{{statisticsData.guests.checking_in}}</strong></li>
+        <li>Departures <strong class="red">{{statisticsData.guests.checking_out}}</strong></li>
+        <li>In-house <strong class="blue">{{statisticsData.guests.in_house}}</strong></li>
+        <li>VIPs <strong class="yellow">{{statisticsData.guests.vip}}</strong></li>
     </ul>
 </div>
