@@ -75,12 +75,29 @@ this.fetchBeaconTriggerTypes= function(){
 	return deferred.promise;
 };
 /*
+* To fetch beacon neighbours 
+* @return {object}
+*/	
+this.fetchBeaconNeighbours= function(){
+	var deferred = $q.defer();
+	var url = '/ui/show?format=json&json_input=iBeaconSetup/iBeaconNeighbours.json';		
+	ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		deferred.resolve(data);
+	},function(data){
+		deferred.reject(data);
+	});
+	return deferred.promise;
+};
+
+
+
+/*
 * To fetch beacon details
 * @return {object}
 */	
 this.fetchBeaconDetails = function(data){
 	var deferred = $q.defer();
-	var url='/api/beacon_details/'+data.id+'/edit';
+	var url='/api/beacon_details/'+data.id;
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){

@@ -9,7 +9,7 @@
 		<fieldset class="holder left">				
 			<div class="entry">
 				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
-				<input type="text"  placeholder="{{'ENTER_BEACON_ID'|translate}}" ng-disabled="!isIpad" ng-model="data.id">							
+				<input type="text"  placeholder="{{'ENTER_BEACON_ID'|translate}}" ng-disabled="!isIpad" ng-model="data.beacon_uuid">							
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
@@ -21,7 +21,7 @@
 			<div class="entry">
 				<label>{{'TYPE'|translate}} <strong>*</strong></label>
 				<div class="select">
-					<select class="placeholder" ng-model="data.type" ng-options="ibeacon.value as ibeacon.name for ibeacon in beaconTypes">
+					<select class="placeholder" ng-model="data.beacon_type" ng-options="ibeacon.name as ibeacon.name for ibeacon in beaconTypes">
 						<option value="" disabled translate="SELECT_TYPE"></option>
 					</select>
 				</div>
@@ -29,7 +29,7 @@
 			<div class="entry">
 					<label>{{'TRIGGER'|translate}} <strong>*</strong></label>
 					<div class="select">
-						<select class="placeholder" ng-model="data.trigger" ng-options="trigger.value as trigger.name for trigger in triggerTypes">
+						<select class="placeholder" ng-model="data.trigger_range" ng-options="trigger.name as trigger.name for trigger in triggerTypes">
 							<option value="" disabled translate="SELECT_TRIGGER"></option>
 						</select>
 					</div>
@@ -43,6 +43,13 @@
 					</div>
 				</div>				
 		</fieldset>
+		<fieldset class="holder left">
+			<div class="entry">
+				<label>NEIGHBOURS <strong>*</strong></label>
+			</div>
+			<select multiple ng:model="data.neighbours" ng-options="beaconNeighbour.value as beaconNeighbour.name for beaconNeighbour in beaconNeighbours" >
+	 		 </select>
+ 	</fieldset>
 			<div class="form-title" style="margin-bottom:32px;">
 				<h3><span translate="GUEST_MESSAGE"></span></h3>
 			</div>
@@ -51,7 +58,7 @@
 					<label for="room-type-picture" translate="PICTURE"></label>
 					<div class="file-upload with-preview">
 						<span class="input" translate="CHOOSE_FILE"></span>
-						<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
+						<input type="file" ng-model="data.picture" accept="image/*" app-filereader />
 						<button type="button" class="button brand-colors" translate="PICTURE">
 						</button> 
 					</div>

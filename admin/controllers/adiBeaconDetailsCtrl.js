@@ -1,4 +1,4 @@
-admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$state','beaconTypes','triggerTypes','adiBeaconSettingsSrv',function($scope,$stateParams,$rootScope,$state,beaconTypes,triggerTypes,adiBeaconSettingsSrv){
+admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$state','beaconTypes','triggerTypes','beaconNeighbours','adiBeaconSettingsSrv',function($scope,$stateParams,$rootScope,$state,beaconTypes,triggerTypes,beaconNeighbours,adiBeaconSettingsSrv){
 
   $scope.init = function(){
     BaseCtrl.call(this, $scope);
@@ -9,6 +9,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
     $scope.beaconTypes = beaconTypes.results;
     $scope.triggerTypes = triggerTypes.results;
+    $scope.beaconNeighbours = beaconNeighbours.results;
     ////////////////////
     $scope.isIpad = true;
     ////////////////////  
@@ -24,6 +25,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     var fetchSuccessBeaconDetails = function(data){
       $scope.$emit('hideLoader');
       $scope.data = data;
+      $scope.data.neighbours = ["0","2"];
     };
 
     var fetchBeaconDetails = function(data){
