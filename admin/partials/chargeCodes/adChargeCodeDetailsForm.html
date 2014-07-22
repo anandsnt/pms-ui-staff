@@ -9,9 +9,9 @@
 				
 				<ad-textbox value="prefetchData.charge_code" label = "Charge Code" placeholder = "Enter charge code" required = "yes" styleclass="full-width" ></ad-textbox>
 
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "Description " placeholder = "Enter Description"></ad-textarea>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "Description " placeholder = "Enter Description" required="true"></ad-textarea>
 
-				<ad-dropdown label="Charge Group" label-in-drop-down="Charge Group" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "" div-class="full-width"></ad-dropdown>
+				<ad-dropdown label="Charge Group" label-in-drop-down="Charge Group" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "yes" div-class="full-width"></ad-dropdown>
 
 				<ad-dropdown label="Charge Code type" label-in-drop-down="Charge Code type" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
 
