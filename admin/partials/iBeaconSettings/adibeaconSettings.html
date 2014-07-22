@@ -20,19 +20,19 @@
 					</td>
 					<td data-title="'ID'"  sortable="'beacon_id'" header-class="width-10">
 						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data" ng-click="showLoader()">
-							{{ibeacon.beacon_uuid}}
+							{{ibeacon.uuid}}
 						</a>
 					</td>
 					<td data-title="'Type'" sortable="'beacon_type'" header-class="width-15">
 				    	<div class="entry">                     
 			                </div>	
-			                <strong>{{ibeacon.beacon_type}}</strong>
+			                <strong>{{ibeacon.type}}</strong>
 	              		</div>
 					</td>
 					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': ibeacon.beacon_status}" header-class="width-15">
-						<div class="entry" ng-click="toggleActive(ibeacon.id,ibeacon.beacon_status)">
-							<div class="switch-button single" ng-class="{'on': ibeacon.beacon_status}">
-								<input type="checkbox"  ng-checked="ibeacon.beacon_status">
+						<div class="entry" ng-click="toggleActive(ibeacon.id,ibeacon.status)">
+							<div class="switch-button single" ng-class="{'on': ibeacon.status}">
+								<input type="checkbox"  ng-checked="ibeacon.status">
 								<span class="switch-icon"></span>
 							</div>
 						</div>
