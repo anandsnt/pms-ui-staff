@@ -32,11 +32,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 hideScrollbar: false,
                 click: true,
                 bounce: false,
-                scrollbars: 'custom',
-
-                // since CICO-7766 is breaking for desktops
-                // CICO-8320 commenting the below line as the edit room selection is not clickable
-                // disableMouse: true
+                scrollbars: 'custom'
             }
         };
 

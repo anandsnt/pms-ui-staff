@@ -48,9 +48,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 
 		// since CICO-7766 is breaking for desktops
-		$scope.setScroller('resultDetails', {
-			disableMouse: true
-		});
+		$scope.setScroller('resultDetails');
 
 		//CICO-7078 : Initiate company & travelagent card info
 

@@ -1,5 +1,5 @@
-admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
-    function ($http, $q, ADBaseWebSrvV2) {
+admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
+    function ($http, $q, ADBaseWebSrvV2, ADBaseWebSrv) {
 
         /*
          * Service function to toggle activate/de-activate rate
@@ -80,6 +80,33 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.getRateDetailsForNonstandalone = function (params) {
+            var deferred = $q.defer();
+
+            var url = "/admin/rates/"+ params.id +"/edit.json";
+
+            ADBaseWebSrv.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateRateForNonStandalone = function(data){
+            var deferred = $q.defer();
+
+            var url = "/admin/rates/" + data.id;
+            delete data['id'];
+            ADBaseWebSrv.putJSON(url, data).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+
         };
 
         var that = this;

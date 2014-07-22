@@ -3,6 +3,9 @@
 		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
 		</a>
+		<button type="button" ng-click="putInQueue(reservationData.reservation_card.reservation_id)" class="button white blue-text" ng-show="showPutInQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Put in Queue</button>
+		
+		<button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button white red-text" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
 		
 		<!-- Show checkin time -->
 		<div class="icons check-in" ng-show="displayArrivalTime(reservationData.reservation_card.reservation_status)" ng-class="getTimeColor(reservationData.reservation_card.arrival_time)"> 
