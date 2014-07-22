@@ -13,7 +13,7 @@
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-disabled="data.id.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.id.length>0 }" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+				<button type="button" ng-disabled="data.beacon_uuid.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.beacon_uuid.length>0 }" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
@@ -45,7 +45,7 @@
 		</fieldset>
 		<fieldset class="holder left">
 			<div class="entry">
-				<label>NEIGHBOURS <strong>*</strong></label>
+				<label>{{'NEARBY_BEACONS'|translate}}<strong>*</strong></label>
 			</div>
 			<select multiple ng:model="data.neighbours" ng-options="beaconNeighbour.value as beaconNeighbour.name for beaconNeighbour in beaconNeighbours" >
 	 		 </select>

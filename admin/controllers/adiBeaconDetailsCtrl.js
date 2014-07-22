@@ -70,7 +70,6 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
   };
 
   $scope.linkiBeacon =  function(){
-    alert("before");
     var successfullyLinked = function(){
       alert("success");
     };
@@ -78,12 +77,14 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       alert("FAILURE");
     };
     var options = {
-      'successCallBack': successfullyLinked,
-      'failureCallBack': failedLinkage
+      "successCallBack": successfullyLinked,
+      "failureCallBack": failedLinkage
     };
-    alert(" just before");
-    adminapp.iBeaconLinker.linkiBeacon(options);
-    alert("after");
+
+    try{
+      sntapp.iBeaconLinker.linkiBeacon(options);
+    }
+    catch(er){};
   };
 
 }]);

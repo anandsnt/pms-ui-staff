@@ -170,5 +170,6 @@
     "ENTER_LOCATION":"Enter Location",
     "ENTER_BEACON_ID":"Enter Beacon ID",
     "ENTER_TITLE":"Enter title",
-    "ENTER_DESCRIPTION": "Enter Description"
+    "ENTER_DESCRIPTION": "Enter Description",
+    "NEARBY_BEACONS":"Nearby Beacons"
 }
