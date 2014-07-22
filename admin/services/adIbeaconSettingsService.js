@@ -52,7 +52,7 @@ this.deleteBeacon = function(data){
 */	
 this.fetchBeaconTypes = function(){
 	var deferred = $q.defer();
-	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeacontypes.json';	
+	var url = '/api/beacons/types';	
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -67,7 +67,7 @@ this.fetchBeaconTypes = function(){
 */	
 this.fetchBeaconTriggerTypes= function(){
 	var deferred = $q.defer();
-	var url = '/ui/show?format=json&json_input=iBeaconSetup/ibeaconTriggers.json';		
+	var url = '/api/beacons/ranges';		
 	ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
@@ -75,21 +75,6 @@ this.fetchBeaconTriggerTypes= function(){
 	});
 	return deferred.promise;
 };
-/*
-* To fetch beacon neighbours 
-* @return {object}
-*/	
-this.fetchBeaconNeighbours= function(){
-	var deferred = $q.defer();
-	var url = '/ui/show?format=json&json_input=iBeaconSetup/iBeaconNeighbours.json';		
-	ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		deferred.resolve(data);
-	},function(data){
-		deferred.reject(data);
-	});
-	return deferred.promise;
-};
-
 
 
 /*

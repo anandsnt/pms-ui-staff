@@ -14,12 +14,12 @@
 			<tbody>
 				<tr ng-repeat="ibeacon in $data" ng-class = "{'inactive': !ibeacon.status}"> 
 					<td data-title="'Location'" sortable="'location'" header-class="width-15">
-						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data" ng-click="showLoader()">
+						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data beacon-id" ng-click="showLoader()">
 							<strong> {{ibeacon.location}}</strong>
 						</a>
 					</td>
 					<td data-title="'ID'"  sortable="'beacon_id'" header-class="width-10">
-						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data" ng-click="showLoader()">
+						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data beacon-id" ng-click="showLoader()">
 							{{ibeacon.uuid}}
 						</a>
 					</td>

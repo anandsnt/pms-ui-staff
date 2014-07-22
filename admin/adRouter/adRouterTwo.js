@@ -262,7 +262,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/iBeaconDetails/:action',
 			resolve: {
 				beaconNeighbours: function(adiBeaconSettingsSrv){
-					return adiBeaconSettingsSrv.fetchBeaconNeighbours();
+					return adiBeaconSettingsSrv.fetchBeaconList();
 				},
 				triggerTypes: function(adiBeaconSettingsSrv) {
 					return adiBeaconSettingsSrv.fetchBeaconTriggerTypes();
