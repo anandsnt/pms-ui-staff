@@ -165,6 +165,13 @@ sntRover.controller('reservationActionsController',
 			
 
 			};
+		$scope.showSmartBandsButton = function(reservationStatus){
+			var showSmartBand = false;
+			if(reservationStatus == 'RESERVED' ||  reservationStatus == 'CHECKING_IN' || reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' || reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'CHECKEDOUT'){
+				showSmartBand = true;
+			}
+			return showSmartBand;
+		};
 
 		}
 	]

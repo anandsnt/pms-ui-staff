@@ -1,11 +1,13 @@
 sntRover.controller('RVSmartBandsController', ['$scope', '$state', '$stateParams', 'RVSmartBandSrv',
 function($scope, $state, $stateParams, RVSmartBandSrv) {
 	BaseCtrl.call(this, $scope);
+	console.log($scope)
 	$scope.smartBandData = {};
 	$scope.bandData = {};
+	$scope.selectedReservationStatus = $scope.reservationData.reservation_card;
 	$scope.smartBandData.firstName = JSON.parse(JSON.stringify($scope.data.guest_details.first_name));
 	$scope.smartBandData.lastName = JSON.parse(JSON.stringify($scope.data.guest_details.last_name));
-
+	$scope.smartBandLength = 0;
 	$scope.showAddNewSmartBandScreen = false;
 	$scope.isFixedAmount = false;
 	$scope.showWriteToBand = false;
@@ -15,9 +17,19 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.firstTimeClick = true;
 	$scope.showBandEditScreen = false;
 	$scope.addNewSmartband = function(){
-		$scope.errorMessage = '';
-		$scope.showSmartBandListView = false;
-		$scope.showAddNewSmartBandScreen = true;
+		if($scope.selectedReservationStatus != 'CHECKED_OUT'){
+			$scope.errorMessage = '';
+			$scope.showSmartBandListView = false;
+			$scope.showAddNewSmartBandScreen = true;
+			$scope.showSuccess = false;
+			$scope.showWriteToBand = false;
+			if($scope.smartBandLength > 0){
+				$scope.smartBandData.firstName = "";
+				$scope.smartBandData.lastName = "";
+			}
+			$scope.smartBandData.fixedAmount = "";
+		}
+		
 	};
 	$scope.setPaymentType = function(){
 		$scope.isFixedAmount = !$scope.isFixedAmount;
@@ -111,6 +123,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		} else {
 			$scope.smartBands = data;
 		}
+		$scope.smartBandLength = $scope.smartBands.length;
+		
 		
 	};
 	$scope.seeAllBands = function(){
@@ -139,8 +153,11 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		
 	};
 	$scope.editBandDetails = function(id){
-		$scope.bandEditId = id;
-		$scope.invokeApi(RVSmartBandSrv.getSmartBandDetails, id, $scope.getSmartBandSuccess);
+		if($scope.selectedReservationStatus != 'CHECKED_OUT'){
+			$scope.bandEditId = id;
+			$scope.invokeApi(RVSmartBandSrv.getSmartBandDetails, id, $scope.getSmartBandSuccess);
+		}
+		
 	};
 	$scope.updateSmartBandSuccess = function(){
 		$scope.$emit( 'hideLoader' );

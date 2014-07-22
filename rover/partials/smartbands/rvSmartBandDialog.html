@@ -10,7 +10,7 @@
 		<div ng-include="'/assets/partials/smartbands/rvAddNewSmartBand.html'" ng-show="showAddNewSmartBandScreen"></div>
 		<div ng-include="'/assets/partials/smartbands/rvModifyAddCreditSmartband.html'" ng-if="showBandEditScreen"></div>
 		<div ng-include="'/assets/partials/smartbands/rvWriteToSmartBand.html'" ng-show="showWriteToBand"></div>
-		<div class="footer" ng-show="!showAddNewSmartBandScreen">
+		<div class="footer" ng-show="showSmartBandListView">
 			<a id="close-popup" ng-click="closeDialog()">Close</a>
 		</div>
 
