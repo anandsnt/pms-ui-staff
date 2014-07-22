@@ -35,4 +35,6 @@
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_REVENUE":"Revenue",
     "MENU_COMMISIONS":"Commissions",
-    "MENU_REPORTS":"Reports"
+    "MENU_REPORTS":"Reports",
+    
+	"ICARE_SERVICES": "iCare Services"

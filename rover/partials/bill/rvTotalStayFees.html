@@ -49,7 +49,8 @@
 			<span class="date"> 
 				<span translate>DATE</span>  
 				<span class="value date"> {{billData.credit_card_details.card_expiry | date:'MM/yy'}} </span> 
-				</span> 
+			</span> 
+		    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped">Credit card swiped</span>
 			</a>
 		<a class="button with-icon green" ng-click='addNewPaymentModal()' ng-show="billData.credit_card_details.payment_type == 'CC' && $index == '0'"> 
 			<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}</span>  
