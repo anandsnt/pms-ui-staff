@@ -3,7 +3,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
   $scope.init = function(){
     BaseCtrl.call(this, $scope);
     $scope.addmode = ($stateParams.action === "add")? true : false;
-    $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit"+" "+$stateParams.action;
+    $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
     $scope.errorMessage = "";
 
@@ -73,10 +73,10 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
   $scope.linkiBeacon =  function(){
     var successfullyLinked = function(){
-      alert("success");
+      alert("successfullyLinked");
     };
     var failedLinkage = function(){
-      alert("FAILURE");
+      alert("failedLinkage");
     };
     var options = {
       "successCallBack": successfullyLinked,
@@ -87,6 +87,28 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
     catch(er){};
+  };
+
+  $scope.saveBeacon = function(){
+
+      var updateData ={};
+      var updateBeaconSuccess = function(){
+        $scope.$emit('hideLoader');
+        $state.go('admin.ibeaconSettings');
+      };
+      var updateBeaconFailure = function(data){
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = data;
+      };
+      if($scope.addmode){
+        updateData = $scope.data;
+        $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
+      }
+      else{
+        updateData.id = $stateParams.action;
+        updateData.data = $scope.data; 
+        $scope.invokeApi(adiBeaconSettingsSrv.updateBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
+      }
   };
 
 }]);

@@ -113,8 +113,8 @@ this.fetchBeaconDetails = function(data){
 */	
 this.updateBeaconDetails = function(data){
 	var deferred = $q.defer();
-	var url = '/admin/save_checkout_settings';		
-	ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+	var url = '/api/beacons/'+data.id;		
+	ADBaseWebSrvV2.putJSON(url,data.data).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
 		deferred.reject(data);
@@ -128,7 +128,7 @@ this.updateBeaconDetails = function(data){
 */	
 this.addBeaconDetails = function(data){
 	var deferred = $q.defer();
-	var url = '/admin/save_checkout_settings';		
+	var url = '/api/beacons';		
 	ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
