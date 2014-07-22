@@ -14,7 +14,7 @@
 	<a class='cancel' ng-click="closeDialog()" ng-show="!showSuccess">cancel</a>
 	
 	<div id='button-area' ng-show="showSuccess">
-		<a class='button' id='done-button' >Done</a>
-		<a class='green button'  id='next-band-button'>Next band</a>
+		<a class='button' id='done-button' ng-click="seeAllBands()">Done</a>
+		<a class='green button'  id='next-band-button' ng-click="addNewSmartband()">Next band</a>
 	</div>
 </div>

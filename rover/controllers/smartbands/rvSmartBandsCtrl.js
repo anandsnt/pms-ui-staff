@@ -82,4 +82,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			}
 		}
 	};
+	$scope.seeAllBands = function(){
+		var dataToApi = {
+			'reservationId':$scope.reservation.reservation_card.reservation_id
+		};
+		 $scope.invokeApi(RVSmartBandSrv.listSmartBands, dataToApi, $scope.listSmartBandSuccess);
+	};
 }]);
