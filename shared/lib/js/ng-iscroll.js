@@ -97,9 +97,12 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
             });
 
             scope.$on('$destroy', function() {
-                console.log( 'destorying ' + scroll_key );
+                console.log( 'destorying iscroll instance: ' + scroll_key );
 
-                scope.$parent.myScroll[scroll_key].length && scope.$parent.myScroll[scroll_key].destroy();
+                if ( !!scope.$parent.myScroll[scroll_key] ) {
+                    scope.$parent.myScroll[scroll_key].destroy();
+                    delete scope.$parent.myScroll[scroll_key];
+                };
             });
         }
     };

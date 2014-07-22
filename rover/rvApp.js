@@ -106,37 +106,41 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		};
 	};
 
-	var $_thatStateData = [];
+	var $_ctrlData = [];
 
-	$rootScope.setStateData = function(data) {
-		var index = null;
+	$rootScope.setCtrlData = function(id, key, value) {
+		var index = null,
+			item = {};
 
 		if ( !data && !data.id ) {
 			return;
 		};
 
-		for (var i = 0, j = $_thatStateData.length; i < j; i++) {
-			if ( data.id === $_thatStateData[i].id ) {
+		for (var i = 0, j = $ctrlData.length; i < j; i++) {
+			if ( id === $ctrlData[i].id ) {
 				index = i;
 				break;
 			};
 		};
 
 		if ( index ) {
-			$_thatStateData[index] = data;
+			$ctrlData[index][key] = value;
 		} else {
-			$_thatStateData.push( data );
+			item[id] = id;
+			item[key] = value;
+
+			$ctrlData.push( item );
 		}
 	};
 
-	$rootScope.getStateData = function(ctrlName) {
-		if ( !ctrlName ) {
+	$rootScope.getCtrlData = function(ctrlId) {
+		if ( !ctrlId ) {
 			return false;
 		};
 
-		for (var i = 0, j = $_thatStateData.length; i < j; i++) {
-			if ( ctrlName === $_thatStateData[i].id ) {
-				return $_thatStateData[i];
+		for (var i = 0, j = $ctrlData.length; i < j; i++) {
+			if ( ctrlId === $ctrlData[i].id ) {
+				return $ctrlData[i];
 				break;
 			};
 		};
@@ -162,7 +166,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		console.log(fromState.name + ' ===> ' + toState.name);
+		// console.log(fromState.name + ' ===> ' + toState.name);
+		console.log( $_ctrlData );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
@@ -180,6 +185,10 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// saving the prevState name and params
 		$_prevStateName  = fromState.name;
 		$_prevStateParam = fromParams;
+	});
+
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+		console.log( 'going away from: ' + fromState.name );
 	});
 }]);
 
