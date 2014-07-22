@@ -226,7 +226,9 @@ reports.controller('reportDetails', [
             // fill in data into seperate props
             $scope.totals = response.totals;
             $scope.headers = response.headers;
+            $scope.subHeaders = response.sub_headers;
             $scope.results = response.results;
+            $scope.resultsTotalRow = response.results_total_row;
 
             // for hard coding styles for report headers
             // if the header count is greater than 4
@@ -244,8 +246,15 @@ reports.controller('reportDetails', [
             $scope.restHalf  = _.compact( $scope.totals );
 
             // now lets slice it half and half in order that each have atmost 4
-            $scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
-            $scope.restHalf  = $scope.restHalf.slice( 4 );
+            // since "Web Check Out Conversion" this check is required
+            if ( $scope.chosenReport.title === 'Web Check Out Conversion' ) {
+            	$scope.firstHalf = $scope.firstHalf.slice( 0, 3 );
+            	$scope.restHalf  = $scope.restHalf.slice( 3 );
+            } else {
+            	$scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
+            	$scope.restHalf  = $scope.restHalf.slice( 4 );
+            }
+            
 
             // now applying some very special and bizzare
             // cosmetic effects for reprots only
@@ -274,6 +283,11 @@ reports.controller('reportDetails', [
                     // hack to add $ currency in front
                     $scope.firstHalf[1]['value'] = '$' + $scope.firstHalf[1]['value'];
                 };
+
+                // additional condition for "Web Check Out Conversion"
+                if ( $scope.chosenReport.title === 'Web Check Out Conversion' ) {
+                	$scope.restHalf[$scope.restHalf.length - 1]['class'] = 'orange';
+                };
             };
 
             // change date format for all
@@ -299,20 +313,6 @@ reports.controller('reportDetails', [
             };
 
 
-            // hack to add curency $ symbol in front of values
-            // and append pm
-            // if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
-            //     for (var i = 0, j = $scope.results.length; i < j; i++) {
-            //         $scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
-
-            //         // hack to append ':00 PM' to time
-            //         // thus makin the value in template 'X:00 PM'
-            //         if ( $scope.chosenReport.title === 'Late Check Out' ) {
-            //             $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
-            //         }
-            //     };
-            // }
-
             // hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
             // notice the text case, they are as per api response and ui
             if ( $scope.chosenReport.title === 'Late Check Out' ) {
@@ -324,10 +324,14 @@ reports.controller('reportDetails', [
                 }
             }
 
-
-            // hack to set the colspan for reports details tfoot
+            
+            // hack to set the colspan for reports details tfoot  
             $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
             $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
+
+            $scope.leftColSpan  = $scope.chosenReport.title === 'Web Check Out Conversion' ? 6 : $scope.leftColSpan;
+            $scope.rightColSpan = $scope.chosenReport.title === 'Web Check Out Conversion' ? 6 : $scope.rightColSpan;
+
 
             // track the total count
             $scope.totalCount = response.total_count;
