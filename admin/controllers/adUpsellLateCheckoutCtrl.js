@@ -1,8 +1,9 @@
 admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
 
     BaseCtrl.call(this, $scope);
+    $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
-
+	
 /**
 * To fetch upsell details
 *
@@ -11,6 +12,8 @@ $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.$emit('hideLoader');
        $scope.upsellData = data;
+       $scope.upsellData.deleted_room_types = [];
+       isRoomTypesSelected();
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);   		
        $scope.startWatching();
    };
@@ -157,8 +160,9 @@ $scope.saveClick = function(){
        'is_exclude_guests':$scope.upsellData.is_exclude_guests,
        'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
        'extended_checkout_charge':$scope.chekoutchargesArray,
-       'charge_code':$scope.upsellData.selected_charge_code
-
+       'charge_code':$scope.upsellData.selected_charge_code,
+	   'room_types' :$scope.upsellData.room_types,
+	   'deleted_room_types':$scope.upsellData.deleted_room_types
    };
 
    var updateChainSuccessCallback = function(data) {
@@ -168,5 +172,40 @@ $scope.saveClick = function(){
 
 };
 
+$scope.clickAddRoomType = function(){
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.id == $scope.upsellData.selected_room_type){
+			 item.max_late_checkouts = 0;
+		}
+    });
+    angular.forEach($scope.upsellData.room_types_list,function(item, index) {
+		if(item.value == $scope.upsellData.selected_room_type){
+			 $scope.upsellData.room_types_list.splice(index,1);
+		}
+    });
+    isRoomTypesSelected();
+    $scope.upsellData.selected_room_type = "";
+};
+
+var isRoomTypesSelected = function(){
+	$scope.upsellData.isRoomTypesSelectedFlag = false;
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.max_late_checkouts !== '') $scope.upsellData.isRoomTypesSelectedFlag = true;
+    });
+};
+
+$scope.deleteRoomType = function(value,name){
+	
+	var data = { "value": value , "name": name };
+	$scope.upsellData.room_types_list.push(data);
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.id == value){
+			item.max_late_checkouts = '';
+		}
+    });
+    $scope.upsellData.deleted_room_types.push(value);
+    isRoomTypesSelected();
+    $scope.upsellData.selected_room_type = "";
+};
 
 }]);
