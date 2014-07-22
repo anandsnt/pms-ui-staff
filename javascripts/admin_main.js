@@ -13,13 +13,11 @@
 //=require ../shared/lib/js/angular-dragdrop.min.js
 //=require ../shared/lib/js/angular-datepicker.js
 //=require ../shared/baseCtrl.js
-//=require ../shared/iBeaconOperations.js
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/Utils.js
-//=require ../admin/adSntApp.js
 //=require_tree ../admin/adRouter
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
@@ -27,4 +25,5 @@
 //=require_tree ../admin/controllers
 //=require_tree ../admin/directives
 //=require_tree ../admin/services
+//=require ../shared/iBeaconOperations.js
 //=require ../rover/rvSntApp.js

@@ -3,6 +3,7 @@ var GlobalApp = function(){
     this.browser = "other";
     this.cordovaLoaded = false;
     this.cardReader = null;
+    this.iBeaconLinker = null;
     this.enableURLChange = true;
 
     this.DEBUG = false;
@@ -47,7 +48,14 @@ var GlobalApp = function(){
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
-    	that.cardReader = new CardOperation();
+        try{
+    	   that.cardReader = new CardOperation();
+        }
+        catch(er){};
+        try{
+            that.iBeaconLinker = new iBeaconOperation();
+        }
+        catch(er){};
     	that.cordovaLoaded = true;
     };
     

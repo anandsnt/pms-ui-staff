@@ -1,13 +1,10 @@
 var iBeaconOperation = function(){
 	// class for handling operations with payment device
-	
-	var that = this;
-	
+	var that = this;	
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
 		
-		alert("callCordovaService");
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -91,7 +88,7 @@ var iBeaconOperation = function(){
 	//function for linking iBeacon
 	this.linkiBeacon = function(options){
 		alert("linkiBeacon");
-		options['service'] = "RVCardPlugin";
+		options['service'] = "RVBeaconPlugin";
 		options['action'] = "writeBeaconID";
 		that.callCordovaService(options);
 	};
