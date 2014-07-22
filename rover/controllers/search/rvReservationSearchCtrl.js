@@ -10,8 +10,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
 
-  	// variables used track the text entered in search box & type if pre-loaded search results (nhouse, checkingin..)
-	var oldTerm = "";
+  	// variables used track the & type if pre-loaded search results (nhouse, checkingin..)
 	var oldType = "";
 
 	//results
@@ -25,9 +24,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
         $scope.$emit('hideLoader');
 		$scope.results = data;
 	    oldType = "";
-	    oldTerm = $scope.textInQueryBox;
 	    setTimeout(function(){refreshScroller();}, 1000);
-	    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
 	/**
@@ -46,29 +43,6 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 	});
 
   	/**
-  	* function to perform initial actions like setting heading, call webservice..
-  	*/
-  	var resetData = function(){
-      //preparing for web service call
-    	var dataDict = {};
-    	if(oldType != '') {          
-          //LATE_CHECKOUT is a special case, parameter is diff. here (is_late_checkout_only)
-          if(oldType == "LATE_CHECKOUT"){
-            dataDict.is_late_checkout_only = true;
-          }
-          else{
-      		  dataDict.status = oldType;
-          }
-          //calling the webservice
-          $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch); 
-    	}
-      
-	    else{   
-	       $scope.results = [];
-	    }
-    };
-
-  	/**
   	* reciever function to show/hide the search result area.
   	*/
   	$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus){
@@ -81,18 +55,16 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 	$scope.queryEntered = function(){
 
 		var queryText = $scope.textInQueryBox;
+
+		//setting first letter as captial: soumya
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
-		/*if(queryText.length <=3){
-			if(firstClickedItem == "direct"){
-				$scope.currentType = firstClickedItem;
-			} 
-		} else {
-			$scope.currentType = "";
-		}*/
 		if($scope.textInQueryBox.length == 0 && oldType == ''){
 			$scope.$emit("SearchResultsCleared");
 			return;
+		}
+		if(!$scope.showSearchResultsArea ){
+			$scope.showSearchResultsArea = true;
 		}
 	    displayFilteredResults();  
 	}; //end of query entered
@@ -108,25 +80,11 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 	      	for(var i = 0; i < $scope.results.length; i++){
 	          $scope.results[i].is_row_visible = true;
 	      	}     
-			//the following code is for a special case
-			/*
-			after not found any data in a webservice call, user will clear the entered data
-			then there is a functionality found in pms that, it is showing the old data
-			that is here
-			*/ 
-			/*if($scope.textInQueryBox.length == 0 && oldType == ''){        
-			if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
-			    $stateParams.type != null && $stateParams.type.trim() != '') {
-			      oldType = $stateParams.type;
-			  }
-			performInitialActions();
-			}*/
-			// we have changed data, so we are refreshing the scrollerbar
 			refreshScroller();    
 	    }
 	    else{
 
-		    if(oldType == "" && oldTerm != "" && $scope.textInQueryBox.indexOf(oldTerm) == 0 && $scope.results.length > 0){
+		    if(oldType == "" &&  $scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.length > 0){
 		        var value = ""; 
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
@@ -250,17 +208,13 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
    		if(reservationStatus.toUpperCase() in classes){
    			return classes[reservationStatus.toUpperCase()];
    		}
-   };
-
+   	};
+   	/**
+   	* function to execute on clicking clear icon button
+   	*/
     $scope.clearResults = function(){
-
-	   /*if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
-	      $stateParams.type != null && $stateParams.type.trim() != '') {
-	        oldType = $stateParams.type;
-	    }   
-	  	performInitialActions();*/
 	  	$scope.textInQueryBox = "";
-
+	  	$scope.$emit("SearchResultsCleared");
   	};
 
 }]);

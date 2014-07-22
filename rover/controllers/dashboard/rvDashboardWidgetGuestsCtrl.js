@@ -14,7 +14,7 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     	$scope.$emit('hideLoader');
         $scope.$emit("updateDashboardSearchDataFromExternal", data);
 
-        // we are showing the seach results area
+        // we have to show the seach results area
         $scope.$emit("showSearchResultsArea", true);
 		// we are hiding the dashboard
 		$scope.$emit("showDashboardArea", false);
@@ -33,12 +33,7 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     */
     $scope.clickedOnGuestsToday = function(event, type) {
         var data = {};
-        if(type == "LATE_CHECKOUT"){
-            data.is_late_checkout_only = true;
-        }
-        else{
-            data.status = type;
-        }
+        data.status = type;        
         that.clickedType = type;
         $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfSearchDetailsFetch);
     }  	

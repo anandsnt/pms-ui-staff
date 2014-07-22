@@ -63,9 +63,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     // reverse slide animation
     var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
 
-      // to study the current changing states
-      console.log(fromState.name + ' ===> ' + toState.name);
-
       // check this template for the applied class:
       // app/assets/rover/partials/staycard/rvStaycard.html
 
