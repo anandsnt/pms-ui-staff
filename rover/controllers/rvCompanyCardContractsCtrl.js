@@ -37,8 +37,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		/**** Scroll related code ends here. ****/
 
 
-		clientWidth = $(window).width();
-		clientHeight = $(window).height();
+		var clientWidth = $(window).width();
+		var clientHeight = $(window).height();
 		var drawGraph = function() {
 			console.log('reached::drawGraph');
 			$scope.highchartsNG = {
