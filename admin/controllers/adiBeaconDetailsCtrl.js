@@ -63,8 +63,10 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     if($scope.data.status){
       $scope.data.status = false;
     }
-    else if($scope.data.description.length>0 && $scope.data.title.length>0){
-      $scope.data.status = ! $scope.data.status;
+    else if($scope.data.description && $scope.data.title){
+      if($scope.data.description.length>0 && $scope.data.title.length>0){
+          $scope.data.status = ! $scope.data.status;
+      }
     }
       
   };
