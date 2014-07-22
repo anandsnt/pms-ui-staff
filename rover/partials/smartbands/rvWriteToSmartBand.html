@@ -5,16 +5,16 @@
 	</div>
 	<div class='smartband-large-writing-icon'>
 		<img src='/assets/smartband-hold-writing.png'>
-		<div class='success'>
+		<div class='success' ng-show="showSuccess">
 			<img src='/assets/smartband-success.png'>
 		</div>
 	</div>
 	
-	<a class='not-ready-status'>Not Ready</a>
-	<a class='cancel' ng-click="closeDialog()">cancel</a>
+	<a class='not-ready-status' ng-show="!showSuccess">Not Ready</a>
+	<a class='cancel' ng-click="closeDialog()" ng-show="!showSuccess">cancel</a>
 	
-	<div id='button-area'>
-		<a class='button' id='done-button'>Done</a>
+	<div id='button-area' ng-show="showSuccess">
+		<a class='button' id='done-button' >Done</a>
 		<a class='green button'  id='next-band-button'>Next band</a>
 	</div>
 </div>

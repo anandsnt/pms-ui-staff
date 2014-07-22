@@ -1,7 +1,6 @@
-sntRover.controller('RVSmartBandsController', ['$scope', '$state', '$stateParams',
-function($scope, $state, $stateParams) {
+sntRover.controller('RVSmartBandsController', ['$scope', '$state', '$stateParams', 'RVSmartBandSrv',
+function($scope, $state, $stateParams, RVSmartBandSrv) {
 	BaseCtrl.call(this, $scope);
-		// console.log($scope.data.guest_details.first_name)
 	$scope.smartBandData = {};
 	$scope.smartBandData.firstName = JSON.parse(JSON.stringify($scope.data.guest_details.first_name));
 	$scope.smartBandData.lastName = JSON.parse(JSON.stringify($scope.data.guest_details.last_name));
@@ -9,17 +8,41 @@ function($scope, $state, $stateParams) {
 	$scope.showAddNewSmartBandScreen = false;
 	$scope.isFixedAmount = false;
 	$scope.showWriteToBand = false;
+	$scope.showSuccess = false;
 	$scope.addNewSmartband = function(){
 		$scope.showAddNewSmartBandScreen = true;
 	};
 	$scope.setPaymentType = function(){
 		$scope.isFixedAmount = !$scope.isFixedAmount;
 	};
-	$scope.fetchSuccessKeyRead = function(){
-		console.log("sucessss")
+	$scope.createSmartBandFailure = function(errorMessage){
+		$scope.$emit( 'hideLoader' );
+		$scope.errorMessage = errorMessage;
+	}; 
+	$scope.createSmartBandSuccess = function(){
+		$scope.$emit( 'hideLoader' );
+		$scope.showSuccess = true;
+	};
+	
+	$scope.fetchSuccessKeyRead = function(accountNumber){
+		$scope.$emit( 'hideLoader' );
+		var postData = {
+			'first_name': $scope.smartBandData.firstName,
+			'last_name': $scope.smartBandData.lastName,
+			'account_number': accountNumber,
+			'is_fixed': $scope.isFixedAmount
+		};
+		if($scope.isFixedAmount){
+			postData.amount = $scope.smartBandData.fixedAmount;
+		};
+		var dataToApi = {
+			'postData': postData,
+			'reservationId':$scope.reservation.reservation_card.reservation_id,
+		};
+		 $scope.invokeApi(RVSmartBandSrv.createSmartBand, dataToApi, $scope.createSmartBandSuccess, $scope.createSmartBandFailure);
 	};
 	$scope.fetchFailedKeyRead = function(){
-		console.log("failure")
+		$scope.$emit( 'hideLoader' );
 	};
 	$scope.clickContinueButton = function(){
 		var blankKeys = "";
@@ -48,10 +71,9 @@ function($scope, $state, $stateParams) {
 				'successCallBack': $scope.fetchSuccessKeyRead,
 				'failureCallBack': $scope.fetchFailedKeyRead			
 			};
-			
+			$scope.$emit( 'showLoader' );
 			$scope.isFixedAmount = false;
 			$scope.showWriteToBand = true;
-			console.log("debug----"+sntapp.cardSwipeDebug);
 			if(sntapp.cardSwipeDebug){
 				sntapp.cardReader.retrieveUserIDDebug(options);
 			}
