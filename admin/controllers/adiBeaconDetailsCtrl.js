@@ -80,7 +80,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       'failureCallBack': failedLinkage
     };
     alert(" just before");
-    sntapp.iBeaconLinker.linkiBeacon(options);
+    adminapp.iBeaconLinker.linkiBeacon(options);
     alert("after");
   };
 

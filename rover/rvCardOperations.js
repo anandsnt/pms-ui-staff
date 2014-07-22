@@ -215,4 +215,13 @@ var CardOperation = function(){
 		}, 1000);
 	};
 
+
+	//function for linking iBeacon
+	this.linkiBeacon = function(options){	
+		alert("gtfgh");
+		options['service'] = "RVCardPlugin";
+		options['action'] = "writeBeaconID";
+		that.callCordovaService(options);
+	};
+
 };
