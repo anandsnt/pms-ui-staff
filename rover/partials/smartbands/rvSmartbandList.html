@@ -3,16 +3,13 @@
 
 	<div class='middle scrollable' data-currency-symbol='$' id='listing-area'>
 		<ul>
-			<li>
+			<li ng-repeat="bands in smartBands" ng-click="editBandDetails(bands.id)">
 				<span class='smartband-icon'></span>
-				<span class='band-holder'> Shaun Alex </span>
-				<span class='charge'> $ 0.00 </span>
+				<span class='band-holder' >  {{bands.first_name}} {{bands.last_name}}</span>
+				<span class='charge' ng-show="bands.is_fixed"> {{currencySymbol}}  {{bands.amount}} </span>
+				<span class='charge' ng-show="!bands.is_fixed">OPEN ROOM CHARGE </span>
 			</li>
-			<li>
-				<span class='smartband-icon'></span>
-				<span class='band-holder'> Test Name </span>
-				<span class='charge'> $ 0.00 </span>
-			</li>
+			
 		</ul>
 	</div>
 

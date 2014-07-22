@@ -36,8 +36,6 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 			var fetchGuestcardDataSuccessCallback = function(data) {
-				console.log("+++++++++++++++")
-				console.log($scope.data.countries);
 				
 				var contactInfoData = {
 					'contactInfo': data,
@@ -65,7 +63,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					'fakeDataToAvoidCache': new Date(),
 					'id': $scope.data.guest_details.reservation_id
 				};
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
+			//	$scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
 
 			if ($scope.timeline == "current") {

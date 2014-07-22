@@ -2,6 +2,7 @@ sntRover.controller('RVSmartBandsController', ['$scope', '$state', '$stateParams
 function($scope, $state, $stateParams, RVSmartBandSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.smartBandData = {};
+	$scope.bandData = {};
 	$scope.smartBandData.firstName = JSON.parse(JSON.stringify($scope.data.guest_details.first_name));
 	$scope.smartBandData.lastName = JSON.parse(JSON.stringify($scope.data.guest_details.last_name));
 
@@ -9,7 +10,13 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.isFixedAmount = false;
 	$scope.showWriteToBand = false;
 	$scope.showSuccess = false;
+	$scope.showSmartBandListView = false;
+	//Used to not to call list API again
+	$scope.firstTimeClick = true;
+	$scope.showBandEditScreen = false;
 	$scope.addNewSmartband = function(){
+		$scope.errorMessage = '';
+		$scope.showSmartBandListView = false;
 		$scope.showAddNewSmartBandScreen = true;
 	};
 	$scope.setPaymentType = function(){
@@ -18,10 +25,19 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.createSmartBandFailure = function(errorMessage){
 		$scope.$emit( 'hideLoader' );
 		$scope.errorMessage = errorMessage;
+		$scope.showSmartBandListView = false;
 	}; 
-	$scope.createSmartBandSuccess = function(){
+	$scope.createSmartBandSuccess = function(bandId){
 		$scope.$emit( 'hideLoader' );
 		$scope.showSuccess = true;
+		var newData = {
+            "id": bandId,
+            "first_name": $scope.smartBandData.firstName,
+            "last_name": $scope.smartBandData.lastName,
+            "is_fixed": $scope.isFixedAmount,
+            "amount": $scope.smartBandData.fixedAmount
+       };
+       $scope.smartBands.push(newData);
 	};
 	
 	$scope.fetchSuccessKeyRead = function(accountNumber){
@@ -72,7 +88,6 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				'failureCallBack': $scope.fetchFailedKeyRead			
 			};
 			$scope.$emit( 'showLoader' );
-			$scope.isFixedAmount = false;
 			$scope.showWriteToBand = true;
 			if(sntapp.cardSwipeDebug){
 				sntapp.cardReader.retrieveUserIDDebug(options);
@@ -82,10 +97,75 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			}
 		}
 	};
+	$scope.listSmartBandSuccess = function(data){
+		$scope.showAddNewSmartBandScreen = false;
+	    $scope.isFixedAmount = false;
+		$scope.showWriteToBand = false;
+		$scope.showSuccess = false;
+		$scope.showSmartBandListView = true;
+		$scope.showBandEditScreen = false;
+		$scope.$emit( 'hideLoader' );
+		if($scope.firstTimeClick){
+			$scope.firstTimeClick = false;
+			$scope.smartBands = data.results;
+		} else {
+			$scope.smartBands = data;
+		}
+		
+	};
 	$scope.seeAllBands = function(){
-		var dataToApi = {
-			'reservationId':$scope.reservation.reservation_card.reservation_id
-		};
-		 $scope.invokeApi(RVSmartBandSrv.listSmartBands, dataToApi, $scope.listSmartBandSuccess);
+		$scope.errorMessage = '';
+		
+		if($scope.firstTimeClick){
+			var dataToApi = {
+				'reservationId':$scope.reservation.reservation_card.reservation_id
+			};
+			$scope.invokeApi(RVSmartBandSrv.listSmartBands, dataToApi, $scope.listSmartBandSuccess);
+		} else {
+			$scope.listSmartBandSuccess($scope.smartBands);
+		}
+		 
+	};
+	$scope.seeAllBands();
+	$scope.getSmartBandSuccess = function(data){
+		$scope.bandData = data;
+		$scope.$emit( 'hideLoader' );
+		$scope.showBandEditScreen = true;
+		$scope.showAddNewSmartBandScreen = false;
+	    $scope.isFixedAmount = false;
+		$scope.showWriteToBand = false;
+		$scope.showSuccess = false;
+		$scope.showSmartBandListView = false;
+		
+	};
+	$scope.editBandDetails = function(id){
+		$scope.bandEditId = id;
+		$scope.invokeApi(RVSmartBandSrv.getSmartBandDetails, id, $scope.getSmartBandSuccess);
+	};
+	$scope.updateSmartBandSuccess = function(){
+		$scope.$emit( 'hideLoader' );
+		angular.forEach($scope.smartBands, function(value, key) {
+			if(value.id == $scope.bandEditId){
+				value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
+			}
+		});
+		$scope.seeAllBands();
+	};
+	$scope.clickContinueEdit = function(isFixed){
+		if(isFixed){
+
+			var dataToApi = {
+				"postData": {
+					"credit": parseInt($scope.bandData.additionalCredit),
+					"first_name": $scope.bandData.first_name,
+					"last_name": $scope.bandData.last_name
+				},
+				"bandId": $scope.bandEditId
+			};
+			$scope.invokeApi(RVSmartBandSrv.updateSmartBandDetails, dataToApi, $scope.updateSmartBandSuccess);
+		} else {
+			$scope.seeAllBands();
+		}
+		
 	};
 }]);

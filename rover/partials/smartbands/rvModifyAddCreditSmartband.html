@@ -1,28 +1,28 @@
 <div data-currency-symbol='$' id='update-card-info'>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div class='smartband-image'></div>
-	<div id='smartband-id'></div>
+	<div id='smartband-id'>{{bandData.account_number}}</div>
 	<br clear='all'>
-	<div id='area-of-details'>
-		<rv-textbox value="" label="First Name" placeholder = "Enter First Name" ></rv-textbox>
+	<div id='area-of-details' ng-class="{'showDisabled':!bandData.is_fixed }">
+		<rv-textbox value="bandData.first_name" ng-model="bandData.first_name" label="First Name" placeholder = "Enter First Name" ></rv-textbox>
 
-		<rv-textbox value="" label="Last Name" placeholder = "Enter Last Name" ></rv-textbox>
+		<rv-textbox value="bandData.last_name" ng-model="bandData.last_name" label="Last Name" placeholder = "Enter Last Name" ></rv-textbox>
 
-		<div class='entry' id='float-right'>
+		<div class='entry' id='float-right' ng-show="bandData.is_fixed">
 			<div>
 				<label> available credit </label>
-				<label id='credit-bal'> $ </label>
+				<label id='credit-bal'> {{currencySymbol}} {{bandData.amount}}</label>
 			</div>
 		</div>
 
-		<div class='entry' id='credit-adding-div'>
+		<div class='entry' id='credit-adding-div' ng-show="bandData.is_fixed">
 			<label> Add Credit </label>
 			<div>
-				<label> $ </label>
-				<input id='credit-to-add' name='credit-to-add' type='text'>
+				<label>{{currencySymbol}} </label>
+				<input id='credit-to-add' name='credit-to-add' type='text' ng-model="bandData.additionalCredit">
 			</div>
 		</div>
-		<div class='entry margin only-switch full-width' id='payment-type-div'>
+		<div class='entry margin only-switch full-width' id='payment-type-div' ng-show="!bandData.is_fixed">
 			<div class='payment-type-parent'>
 				<label for='payment-type'>Payment Type</label>
 				<div class='on switch-button'>
@@ -32,8 +32,8 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> 
 	<br clear='all'>
-	<a class='continue-button button green' id='continue-button'>Continue</a>
-	<a class='cancel-link' id='cancel-link'>cancel</a>
+	<a class='continue-button button green' id='continue-button' ng-click="clickContinueEdit(bandData.is_fixed)">Continue</a>
+	<a class='cancel-link' id='cancel-link' ng-click="closeDialog()">cancel</a>
 </div>

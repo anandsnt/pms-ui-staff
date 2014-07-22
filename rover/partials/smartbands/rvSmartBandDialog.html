@@ -3,12 +3,12 @@
 	<form class='modal-content form new-content' id='smartband'>
 		<div class='header'>
 			<span class='heading'> Smartbands </span>
-			<a class='button green' ng-click="addNewSmartband()" id='add-new-button'>Add New</a>
-			<a class='button white' id='see-all-band-button'>See All Bands</a>
+			<a class='button green' ng-click="addNewSmartband()" ng-show="showSmartBandListView" id='add-new-button'>Add New</a>
+			<a class='button white' id='see-all-band-button' ng-show="showAddNewSmartBandScreen" ng-click="seeAllBands()">See All Bands</a>
 		</div>
-		<!-- <div ng-include="'/assets/partials/smartbands/rvSmartbandList.html'"></div> -->
+		<div ng-include="'/assets/partials/smartbands/rvSmartbandList.html'" ng-show="showSmartBandListView"></div>
 		<div ng-include="'/assets/partials/smartbands/rvAddNewSmartBand.html'" ng-show="showAddNewSmartBandScreen"></div>
-		<!-- <div ng-include="'/assets/partials/smartbands/rvModifyAddCreditSmartband.html'"></div> -->
+		<div ng-include="'/assets/partials/smartbands/rvModifyAddCreditSmartband.html'" ng-if="showBandEditScreen"></div>
 		<div ng-include="'/assets/partials/smartbands/rvWriteToSmartBand.html'" ng-show="showWriteToBand"></div>
 		<div class="footer" ng-show="!showAddNewSmartBandScreen">
 			<a id="close-popup" ng-click="closeDialog()">Close</a>
