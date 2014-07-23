@@ -4,19 +4,19 @@
 	<div id='smartband-id'>{{bandData.account_number}}</div>
 	<br clear='all'>
 	<div id='area-of-details' ng-class="{'showDisabled':!bandData.is_fixed }">
-		<rv-textbox value="bandData.first_name" ng-model="bandData.first_name" label="First Name" placeholder = "Enter First Name" ></rv-textbox>
+		<rv-textbox value="bandData.first_name" ng-model="bandData.first_name" label="{{'FIRST_NAME' | translate}}" placeholder = "{{ 'ENTER_FIRST_NAME' | translate}}" ></rv-textbox>
 
-		<rv-textbox value="bandData.last_name" ng-model="bandData.last_name" label="Last Name" placeholder = "Enter Last Name" ></rv-textbox>
+		<rv-textbox value="bandData.last_name" ng-model="bandData.last_name" label="{{'LAST_NAME' | translate}}" placeholder = "{{ 'ENTER_LAST_NAME' | translate}}" ></rv-textbox>
 
 		<div class='entry' id='float-right' ng-show="bandData.is_fixed">
 			<div>
-				<label> available credit </label>
+				<label translate> AVAILABLE_CREDIT </label>
 				<label id='credit-bal'> {{currencySymbol}} {{bandData.amount}}</label>
 			</div>
 		</div>
 
 		<div class='entry' id='credit-adding-div' ng-show="bandData.is_fixed">
-			<label> Add Credit </label>
+			<label translate> ADD_CREDIT </label>
 			<div>
 				<label>{{currencySymbol}} </label>
 				<input id='credit-to-add' name='credit-to-add' type='text' ng-model="bandData.additionalCredit">
@@ -24,16 +24,16 @@
 		</div>
 		<div class='entry margin only-switch full-width' id='payment-type-div' ng-show="!bandData.is_fixed">
 			<div class='payment-type-parent'>
-				<label for='payment-type'>Payment Type</label>
+				<label for='payment-type' translate>PAYMENT_TYPE</label>
 				<div class='on switch-button'>
 					<input id='payment-type' name='payment-type' type='checkbox' value='1'>
-					<label class='data-on'> <span class='value'>Open Room Charge</span> <span class='switch-icon'>Fixed Amount</span> </label>
-					<label class='data-off'> <span class='switch-icon'>Open Room Charge</span> <span class='value'>Fixed Amount</span> </label>
+					<label class='data-on'> <span class='value' translate>OPEN_ROOM_CHARGE</span> <span class='switch-icon' translate>FIXED_AMOUNT</span> </label>
+					<label class='data-off'> <span class='switch-icon' translate>OPEN_ROOM_CHARGE</span> <span class='value' translate>FIXED_AMOUNT</span> </label>
 				</div>
 			</div>
 		</div>
 	</div> 
 	<br clear='all'>
-	<a class='continue-button button green' id='continue-button' ng-click="clickContinueEdit(bandData.is_fixed)">Continue</a>
-	<a class='cancel-link' id='cancel-link' ng-click="clickContinueEdit(false)">cancel</a>
+	<a class='continue-button button green' id='continue-button' ng-click="clickContinueEdit(bandData.is_fixed)" translate>CONTINUE</a>
+	<a class='cancel-link' id='cancel-link' ng-click="clickContinueEdit(false)" translate>CANCEL</a>
 </div>

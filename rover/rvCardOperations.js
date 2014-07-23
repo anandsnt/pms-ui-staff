@@ -222,7 +222,7 @@ var CardOperation = function(){
 	// debug mode of retrieving the user id	
 	// please check above method (retrieveUserID) for further description
 	this.retrieveUserIDDebug = function(options){
-		var retUserID = "CB94C49m"; //Sample ID
+		var retUserID = "CB94C49q"; //Sample ID
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time period
 		setTimeout(function(){

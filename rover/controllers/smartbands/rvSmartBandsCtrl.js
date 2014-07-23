@@ -1,7 +1,6 @@
 sntRover.controller('RVSmartBandsController', ['$scope', '$state', '$stateParams', 'RVSmartBandSrv',
 function($scope, $state, $stateParams, RVSmartBandSrv) {
 	BaseCtrl.call(this, $scope);
-	console.log($scope)
 	$scope.smartBandData = {};
 	$scope.bandData = {};
 	$scope.selectedReservationStatus = $scope.reservationData.reservation_card;
@@ -39,11 +38,11 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.errorMessage = errorMessage;
 		$scope.showSmartBandListView = false;
 	}; 
-	$scope.createSmartBandSuccess = function(bandId){
+	$scope.createSmartBandSuccess = function(data){
 		$scope.$emit( 'hideLoader' );
 		$scope.showSuccess = true;
 		var newData = {
-            "id": bandId,
+            "id": data.id,
             "first_name": $scope.smartBandData.firstName,
             "last_name": $scope.smartBandData.lastName,
             "is_fixed": $scope.isFixedAmount,

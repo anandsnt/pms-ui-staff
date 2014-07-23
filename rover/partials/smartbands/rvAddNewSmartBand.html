@@ -3,24 +3,24 @@
 	<div class='smartband-image'></div>
 	<br clear='all'>
 
-	<rv-textbox value="smartBandData.firstName" ng-model="smartBandData.firstName" label="First Name" placeholder = "Enter First Name" ></rv-textbox>
+	<rv-textbox value="smartBandData.firstName" ng-model="smartBandData.firstName" label="{{'FIRST_NAME' | translate}}" placeholder = "{{ 'ENTER_FIRST_NAME' | translate}}" ></rv-textbox>
 
-	<rv-textbox value="smartBandData.lastName" ng-model="smartBandData.lastName"  label="Last Name" placeholder = "Enter Last Name" ></rv-textbox>
+	<rv-textbox value="smartBandData.lastName" ng-model="smartBandData.lastName"  label="{{'LAST_NAME' | translate}}" placeholder = "{{ 'ENTER_LAST_NAME' | translate}}" ></rv-textbox>
 
 
 	<div class='entry margin only-switch full-width'>
 		<div class='payment-type-parent'>
-			<label for='payment-type'>Payment Type</label>
+			<label for='payment-type' translate>PAYMENT_TYPE</label>
 			<div class='switch-button' ng-class="{'on': isFixedAmount}" ng-click="setPaymentType()">
 				<input id='payment-type' name='payment-type' type='checkbox' value='1'>
-				<label class='data-on'> <span class='value'>Open Room Charge</span> <span class='switch-icon'>Fixed Amount</span> </label>
-				<label class='data-off'> <span class='switch-icon'>Open Room Charge</span> <span class='value'>Fixed Amount</span> </label>
+				<label class='data-on'> <span class='value' translate>OPEN_ROOM_CHARGE</span> <span class='switch-icon' translate>FIXED_AMOUNT</span> </label>
+				<label class='data-off'> <span class='switch-icon' translate>OPEN_ROOM_CHARGE</span> <span class='value' translate>FIXED_AMOUNT</span> </label>
 			</div>
 		</div>
 		<rv-textbox value="smartBandData.fixedAmount" ng-show="isFixedAmount" ng-model="smartBandData.fixedAmount" label="Amount" placeholder = "Enter Amount" styleclass="payment-type-associated-div"></rv-textbox>
 
 		<br clear='all'>
 	</div>
-	<a class='continue-button button green' ng-click="clickContinueButton()">Continue</a>
-	<a class='cancel-link' ng-click="clickContinueEdit(false)">cancel</a>
+	<a class='continue-button button green' ng-click="clickContinueButton()" translate>CONTINUE</a>
+	<a class='cancel-link' ng-click="clickContinueEdit(false)" translate>CANCEL</a>
 </div>

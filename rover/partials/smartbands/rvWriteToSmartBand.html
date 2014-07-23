@@ -1,7 +1,7 @@
 <div id='write-to-band'>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div class='heading'>
-		Hold Band To Encoder Until Ready
+	<div class='heading' translate>
+		HOLD_BAND_TO_ENCODE_UNTIL_READY
 	</div>
 	<div class='smartband-large-writing-icon'>
 		<img src='/assets/smartband-hold-writing.png'>
@@ -10,11 +10,11 @@
 		</div>
 	</div>
 	
-	<a class='not-ready-status' ng-show="!showSuccess">Not Ready</a>
-	<a class='cancel' ng-click="closeDialog()" ng-show="!showSuccess">cancel</a>
+	<a class='not-ready-status' ng-show="!showSuccess" translate>NOT_READY</a>
+	<a class='cancel' ng-click="closeDialog()" ng-show="!showSuccess" translate>CANCEL</a>
 	
 	<div id='button-area' ng-show="showSuccess">
-		<a class='button' id='done-button' ng-click="seeAllBands()">Done</a>
-		<a class='green button'  id='next-band-button' ng-click="addNewSmartband()">Next band</a>
+		<a class='button' id='done-button' ng-click="seeAllBands()" translate>DONE</a>
+		<a class='green button'  id='next-band-button' ng-click="addNewSmartband()" translate>NEXT_BAND</a>
 	</div>
 </div>
