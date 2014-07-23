@@ -41,9 +41,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
             $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
             var guestMaxSettings = baseSearchData.settings.max_guests;
-            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
-            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
-            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
+            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null 
+                                            || guestMaxSettings.max_adults === '' 
+                                            || typeof guestMaxSettings.max_adults === 'string') ? defaultMaxvalue : guestMaxSettings.max_adults;
+            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null 
+                                            || guestMaxSettings.max_children === '' 
+                                            || typeof guestMaxSettings.max_children === 'string') ? defaultMaxvalue : guestMaxSettings.max_children;
+            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null 
+                                            || guestMaxSettings.max_infants === ''
+                                            || typeof guestMaxSettings.max_infants === 'string') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
             $scope.$emit('hideLoader');
         };
