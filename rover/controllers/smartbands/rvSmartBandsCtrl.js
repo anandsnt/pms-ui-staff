@@ -151,6 +151,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.showSmartBandListView = false;
 		
 	};
+	/*
+	 * Edit bands
+	 * @param {int} id of the band
+	 */
 	$scope.editBandDetails = function(id){
 		if($scope.selectedReservationStatus != 'CHECKED_OUT'){
 			$scope.bandEditId = id;
@@ -158,6 +162,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		}
 		
 	};
+	/*
+	 * Success call back on updating smart band
+	 * updating new amount to the band data
+	 */
 	$scope.updateSmartBandSuccess = function(){
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
@@ -167,6 +175,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		});
 		$scope.seeAllBands();
 	};
+	/*
+	 * Handle continue button on edit screen
+	 * @param {bool} isFixed
+	 */
 	$scope.clickContinueEdit = function(isFixed){
 		if(isFixed){
 
