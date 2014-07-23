@@ -2,7 +2,7 @@
 	<div class="block-title">
 		<h3> ADR / <strong>Total Room Charge</strong></h3>
 	</div>
-	<a id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})"> 
+	<a id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})"> 
 		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
 			{{reservationData.reservation_card.text_rates_suppressed}} / 
 			<strong> {{reservationData.reservation_card.text_rates_suppressed}}</strong>
