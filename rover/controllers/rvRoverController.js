@@ -135,18 +135,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.isHotelAdmin = true;
 
 
-    if(!$rootScope.isStandAlone){
+    if($rootScope.isStandAlone){
       // OBJECT WITH THE MENU STRUCTURE
         $scope.menu = [{
           title: "MENU_DASHBOARD",
           action: "rover.dashboard",
           menuIndex: "dashboard",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_SEARCH",
-          action: "rover.search",
-          menuIndex: "search",
           submenu: [],
           iconClass: "icon-dashboard"
         }, {
@@ -165,7 +159,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           //hidden: true,
           action: "",
           iconClass: "icon-frontdesk",
-          submenu: [{
+          submenu: [ {
+          title: "MENU_SEARCH",
+          action: "rover.search"},{
             title: "MENU_CREATE_RESERVATION",
             action: "rover.reservation.search",
             standAlone: true,

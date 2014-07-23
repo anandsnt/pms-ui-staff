@@ -42,17 +42,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 
 		var setupLeftMenu = function(){
-			if(!$scope.isStandAlone){
+			if($scope.isStandAlone){
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
 					action: "/staff",
 					menuIndex: "dashboard",
-					submenu: [],
-					iconClass: "icon-dashboard"
-				}, {
-					title: "MENU_SEARCH",
-					action: "staff#/staff/search/",
-					menuIndex: "search",
 					submenu: [],
 					iconClass: "icon-dashboard"
 				}, {
@@ -71,7 +65,12 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					//hidden: true,
 					action: "",
 					iconClass: "icon-frontdesk",
-					submenu: [{
+					submenu: [
+					{
+						title: "MENU_SEARCH",
+						action: "staff#/staff/search/"
+					},
+					{
 						title: "MENU_CREATE_RESERVATION",
 						action: "staff#/staff/reservation/search",
 						standAlone : true
