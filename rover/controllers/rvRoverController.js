@@ -1,5 +1,6 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
+    $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
       $translate.fallbackLanguage('EN');
@@ -491,5 +492,47 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     };
 
+    /**
+    * Handles the OWS error - Shows a popup having OWS connection test option
+    */
+    $rootScope.showOWSError = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        if(!$rootScope.isOWSErrorShowing){
+            $rootScope.isOWSErrorShowing = true;
+            ngDialog.open({
+              template: '/assets/partials/hkOWSError.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'RVHKOWSErrorCtrl',
+              closeByDocument: false,
+              scope: $scope
+          });
+        }        
+    };
+
   }
 ]);
+
+// adding an OWS check Interceptor here
+// but should be moved to higher up above in root level
+sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
+  return {
+    request: function (config) {
+      return config;
+    },
+    response: function (response) {
+        return response || $q.when(response);
+    },
+    responseError: function(rejection) {
+      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
+        $rootScope.showOWSError && $rootScope.showOWSError();
+      }
+      return $q.reject(rejection);
+    }
+  };
+});
+
+sntRover.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('owsCheckInterceptor');
+});

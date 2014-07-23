@@ -57,6 +57,9 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
+	"PAYMENT_METHODS": "Payment Methods",
+	"SYSTEM_DEFINED": "(System defined)"
+,
 
     "ROOMS":"Rooms",
     "OF":"of",
