@@ -153,31 +153,40 @@ else
 */ 
 $scope.saveClick = function(){   	
     $scope.setUpLateCheckoutArray();
-    var updateData = 
-    {
-       'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
-       'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
-       'is_exclude_guests':$scope.upsellData.is_exclude_guests,
-       'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
-       'extended_checkout_charge':$scope.chekoutchargesArray,
-       'charge_code':$scope.upsellData.selected_charge_code,
-	   'room_types' :$scope.upsellData.room_types,
-	   'deleted_room_types':$scope.upsellData.deleted_room_types
-   };
-
-   var updateChainSuccessCallback = function(data) {
-       $scope.$emit('hideLoader');
-   };
-   $scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
+    var updateData = {};
+    
+    updateData.is_late_checkout_set = $scope.upsellData.is_late_checkout_set;
+    updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
+    updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
+    updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
+    updateData.extended_checkout_charge = $scope.chekoutchargesArray;
+    updateData.charge_code = $scope.upsellData.selected_charge_code;
+	updateData.room_types = [];
+	updateData.deleted_room_types = [];
+	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
+	//Creating room type array with available max_late_checkouts data
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.max_late_checkouts !== ''){
+			 var obj = { "id": item.id , "max_late_checkouts": item.max_late_checkouts };
+			 updateData.room_types.push(obj);
+		}
+	});
+	console.log(updateData);
+   	var updateChainSuccessCallback = function(data) {
+       	$scope.$emit('hideLoader');
+   	};
+   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
 
 };
 
 $scope.clickAddRoomType = function(){
+	//While addig a room type, making its max_late_checkouts defaults to 0.
 	angular.forEach($scope.upsellData.room_types,function(item, index) {
 		if(item.id == $scope.upsellData.selected_room_type){
 			 item.max_late_checkouts = 0;
 		}
     });
+    //Removing the selected room type from dropdown of room type list.
     angular.forEach($scope.upsellData.room_types_list,function(item, index) {
 		if(item.value == $scope.upsellData.selected_room_type){
 			 $scope.upsellData.room_types_list.splice(index,1);
@@ -186,14 +195,19 @@ $scope.clickAddRoomType = function(){
     isRoomTypesSelected();
     $scope.upsellData.selected_room_type = "";
 };
-
+/**
+ * Method to check if max_late_checkouts of all elements are blank or not.
+ * Configured room type will have valid max_late_checkouts value.
+ */
 var isRoomTypesSelected = function(){
 	$scope.upsellData.isRoomTypesSelectedFlag = false;
 	angular.forEach($scope.upsellData.room_types,function(item, index) {
 		if(item.max_late_checkouts !== '') $scope.upsellData.isRoomTypesSelectedFlag = true;
     });
 };
-
+/*
+ * Method to delete the room type.
+ */
 $scope.deleteRoomType = function(value,name){
 	
 	var data = { "value": value , "name": name };
