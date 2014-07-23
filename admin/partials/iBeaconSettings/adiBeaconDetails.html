@@ -2,6 +2,17 @@
 	<header class="content-title float">
 		<h2>{{displayMessage}}</h2>
 		<a ng-click="backClicked()" data-type="load-details" class="action back" translate="BACK"></a>
+		<style>
+		.proximity-field{
+			width:50% !important;
+			float:left;
+		}
+		.majorid-field{
+			width:22% !important;
+			float:left;
+			margin-left:5px;
+		}
+		</style>
 	</header>
 	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 	<!--- form starts here -->
@@ -9,9 +20,9 @@
 		<fieldset class="holder left">				
 			<div class="entry full-width">
 				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
-				<input type="text" style="width:50%;float:left;" class="ng-valid ng-dirty" placeholder="Enter proximity ID" ng-disabled="!isIpad" ng-model="data.uuid">					
-				<input type="text" style="width:22%;float:left;margin-left:5px;" class="ng-valid ng-dirty" placeholder="Major id" ng-disabled="!isIpad" ng-model="data.majorid">
-				<input type="text" style="width:22%;float:left;margin-left:5px;" class="ng-valid ng-dirty" placeholder="Minor ID" ng-disabled="!isIpad" ng-model="data.minorid">					
+				<input type="text"  class="proximity-field" placeholder="Enter proximity ID" ng-disabled="!isIpad" ng-model="data.uuid">					
+				<input type="text" class="majorid-field" placeholder="Major id" ng-disabled="!isIpad" ng-model="data.majorid">
+				<input type="text" class="majorid-field" placeholder="Minor ID" ng-disabled="!isIpad" ng-model="data.minorid">					
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
