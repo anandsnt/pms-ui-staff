@@ -281,7 +281,9 @@ reports.controller('reportDetails', [
                     $scope.firstHalf[1]['class'] = 'orange';
 
                     // hack to add $ currency in front
-                    $scope.firstHalf[1]['value'] = '$' + $scope.firstHalf[1]['value'];
+                    if ( $scope.chosenReport.title === 'Upsell' || $scope.chosenReport.title === 'Late Check Out' ) {
+                        $scope.firstHalf[1]['value'] = '$' + $scope.firstHalf[1]['value'];
+                    };
                 };
 
                 // additional condition for "Web Check Out Conversion"
