@@ -167,7 +167,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
 		// console.log(fromState.name + ' ===> ' + toState.name);
-		console.log( $_ctrlData );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
@@ -188,7 +187,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	});
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		console.log( 'going away from: ' + fromState.name );
+		$rootScope.returnBack && console.log( 'return back to: ' + toState.name );
 	});
 }]);
 
