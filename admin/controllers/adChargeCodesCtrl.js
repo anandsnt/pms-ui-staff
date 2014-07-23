@@ -4,6 +4,8 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
 	$scope.isAdd = false;
+	$scope.isAddTax = false;
+	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
 	
@@ -41,9 +43,9 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
     * To fetch the charge code details for add screen.
     */
  	$scope.addNewClicked = function(){
-
+		
  		$scope.isAdd = true;
-
+		$scope.isAddTax = false;
 	 	var fetchNewDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
@@ -55,7 +57,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
     * To fetch the charge code details for edit screen.
     */
  	$scope.editSelected = function(index,value){
- 		
+ 		$scope.isAddTax = false;
 		$scope.currentClickedElement = index;
 		$scope.editId = value;
 		var data = { 'editId' : value }
@@ -73,6 +75,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
     * To fetch the template for charge code details add/edit screens
     */
  	$scope.getTemplateUrl = function(){
+ 		
  		return "/assets/partials/chargeCodes/adChargeCodeDetailsForm.html";
  	};
  	/*
@@ -150,6 +153,24 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 		};
 		$scope.invokeApi(ADChargeCodesSrv.importData, {}, importSuccessCallback);
  	};
-   
+   	/*
+    * To fetch the tax details for add screen.
+    */
+ 	$scope.addTaxClicked = function(){
+		console.log("addTaxClicked")
+ 		$scope.isAddTax = true;
+
+	 };
+	 $scope.clickedCancelTax = function(){
+	 	$scope.isAddTax = false;
+	 	$scope.isEditTax = false;
+	 	
+	 };
+	 
+ 	 $scope.editSelectedTax = function(){
+ 	 	console.log("editSelectedTax")
+	 	$scope.isEditTax = true;
+	 	
+	 };
 }]);
 

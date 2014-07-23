@@ -1,0 +1,36 @@
+<!-- EDITABLE WHEN 'ADD TAX' IS CLICKED -->
+
+<div ng-show="isAddTax || isEditTax">
+	<div class="form-title" >
+		<h3>TAX 1</h3>
+	</div>
+
+	<div class="entry full-width">
+		<div class="center_align">
+			<div class="float_left">
+				<label class="radio"> <span class="icon-form icon-radio "></span>
+					<input type="radio" name="dilna" >
+					Inclusive </label>
+			</div>
+			<div class="float_left rates_exclusive">
+				<label class="radio" > <span class="icon-form icon-radio checked" ></span>
+					<input type="radio" name="dilna" >
+					Exclusive </label>
+			</div>
+		</div>
+	</div>
+	<ad-dropdown label="Charge Code" selbox-class= "placeholder" label-in-drop-down="Charge Code" list="" selected-Id='' div-class="full-width"  ></ad-dropdown>
+	<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="" label = "Description " placeholder = "Enter Description"></ad-textarea>
+
+	<!-- Show from TAX 2 onwards. -->
+	<ad-dropdown label="Calculation Rule" selbox-class= "placeholder" label-in-drop-down="Calculation Rule" list="" selected-Id='' div-class="full-width"  ></ad-dropdown>
+
+	<div class="actions float" style=" padding-top: 0px; height: 73px;">
+		<button type="button" ng-click="clickedCancelTax()" class="button blank edit-data-inline">
+			Cancel
+		</button>
+		<button type="button" ng-click="clickedSaveTax()" class="button green edit-data-inline">
+			Ok
+		</button>
+	</div>
+</div>

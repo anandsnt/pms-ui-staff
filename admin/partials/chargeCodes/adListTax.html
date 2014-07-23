@@ -1,0 +1,20 @@
+<!--for charge code type other than PAYMENT or TAX -->
+<div class="content-title form-title">
+	<h3>Tax Setup </h3>
+	<a ng-click="addTaxClicked()" class=" action add" style="float:right;">Add Tax</a>
+</div>
+<!--for charge code type other than PAYMENT or TAX -->
+
+<!-- EDITABLE WHEN 'ADD TAX' IS CLICKED -->
+<div id="new-form-holder" ng-show="isAddTax" ng-include="'/assets/partials/chargeCodes/adTaxForm.html'"></div>
+<div id="new-form-holder"></div>
+<!-- EDITABLE WHEN 'ADD TAX' IS CLICKED -->
+<table class="grid datatable">
+	<tbody>
+		<tr >
+			<td ng-hide="isEditTax" ><a data-colspan="1" class="edit-data-inline" ng-click="editSelectedTax()"> TAX 1</a></td>
+			<td data-colspan="1" ng-include="'/assets/partials/chargeCodes/adTaxForm.html'" ng-show="isEditTax"></td>
+
+		</tr>
+		</tbody>
+</table>
