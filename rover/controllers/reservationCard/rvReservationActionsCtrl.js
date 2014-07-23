@@ -92,6 +92,7 @@ sntRover.controller('reservationActionsController',
 
 				$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 			};
+			
 
 			// update the price on staycard.
 			var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
@@ -194,6 +195,30 @@ sntRover.controller('reservationActionsController',
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 		
+		
+		$scope.openSmartBands = function() {
+	 		ngDialog.open({
+        		template: '/assets/partials/smartbands/rvSmartBandDialog.html',
+        		controller: 'RVSmartBandsController',
+        		className: 'ngdialog-theme-default1',
+        		closeByDocument: false,
+        		closeByEscape: false,
+        		scope: $scope
+        	});
+
+			
+
+			};
+		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled){
+			var showSmartBand = false;
+			if(icareEnabled){
+				if(reservationStatus == 'RESERVED' ||  reservationStatus == 'CHECKING_IN' || reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' || reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'CHECKEDOUT'){
+					showSmartBand = true;
+				}
+			}
+			return showSmartBand;
+		};
+
 		}
 	]
 );

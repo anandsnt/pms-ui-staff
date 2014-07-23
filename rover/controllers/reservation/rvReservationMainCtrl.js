@@ -420,6 +420,41 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
+        $scope.populateDataModel = function(reservationDetails, reservationListData) {
+            /*
+                CICO-8320 parse the reservation Details and store the data in the
+                $scope.reservationData model
+            */
+            console.log('reservationDetails', reservationDetails);
+            console.log('reservationListData', reservationListData);
+            // id
+            $scope.reservationData.confirmNum = reservationListData.confirmationNumber;
+            $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
+
+            // stay
+            $scope.reservationData.arrivalDate = new Date(reservationDetails.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-");
+            $scope.reservationData.departureDate = new Date(reservationDetails.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-");
+            $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
+
+            // cards
+            $scope.reservationData.company.id = reservationListData.company_id;
+            $scope.reservationData.travelAgent.id = reservationListData.travel_agent_id;
+            $scope.reservationData.guest.id = reservationListData.guest_details.user_id;
+
+            // TODO : This following LOC has to change if the room number changes to an array
+            // to handle multiple rooms in future
+            $scope.reservationData.rooms[0].roomNumber = reservationDetails.reservation_card.room_number;
+            $scope.reservationData.rooms[0].roomTypeDescription = reservationDetails.reservation_card.room_type_description;
+
+            //cost
+            $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
+
+            //TODO : populate the staydates object with the stay information
+
+            console.log('$scope.reservationData model', $scope.reservationData);
+
+        };
+
         $scope.initReservationData();
     }
 ]);
