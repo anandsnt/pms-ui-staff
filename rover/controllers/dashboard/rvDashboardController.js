@@ -1,6 +1,6 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'dashBoarddata','$rootScope', '$filter', '$state',  
-                  function($scope, ngDialog, RVDashboardSrv, dashBoarddata,$rootScope, $filter, $state){
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',  
+                  function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state){
 	
     console.log('in dashboard controlelr');
     //setting the heading of the screen
@@ -93,9 +93,41 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     * function to handle click on backbutton in the header section
     * will broadcast an event, the logic of backbutto should be handled there
     */              
-	$scope.headerBackButtonClicked = function(){
+	 $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
     }
+
+
+    /**
+    * successcall back of late checkout click button's webserive call
+    */
+    var successCallbackOfLateCheckoutFetch = function(data){
+        $scope.$emit('hideLoader');
+        $scope.$broadcast("updateDashboardSearchDataFromExternal", data);
+
+        // we have to show the seach results area
+        $scope.$broadcast("showSearchResultsArea", true);
+        // we are hiding the dashboard
+        $scope.$broadcast("showDashboardArea", false);
+
+        //setting the backbutton & showing the caption
+        $scope.$emit("UpdateBackbuttonCaption", "Dashboard");
+
+        //updating type
+        var lateCheckoutType = "LATE_CHECKOUT";
+        $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
+    };
+
+
+    /**
+    * function to execute on clicking latecheckout button
+    */
+    $scope.clickedOnHeaderLateCheckoutIcon = function(event){
+        event.preventDefault();
+        var data = {};
+        data.is_late_checkout_only = true;      
+        $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
+    };    
 }]);
 
     

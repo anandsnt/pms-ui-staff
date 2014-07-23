@@ -19,7 +19,12 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
   	//click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event){
         $scope.$emit("closeDrawer");
-        if(getParentWithSelector($event, document.getElementsByClassName("no-content")[0])){
+        // if the click occured on find reservation, no result found, no one opted to late checkout,
+        // need to back to dashboard
+        if(getParentWithSelector($event, document.getElementsByClassName("no-content")[0])
+            || getParentWithSelector($event, document.getElementsByClassName("no-content")[1])
+            || getParentWithSelector($event, document.getElementsByClassName("no-content")[2])) {
+            
             backToDashboard();
         }
   	};
@@ -34,7 +39,7 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
         $scope.$emit("showDashboardArea", true);
         $scope.$broadcast("showSearchResultsArea", false);
         //also need to clear results present in that & type 
-        $scope.$broadcast("updateReservationTypeFromOutside", '');
+        $scope.$broadcast("updateReservationTypeFromOutside", 'default');
         $scope.$broadcast("updateDataFromOutside", []);  
     }
 

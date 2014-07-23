@@ -23,7 +23,6 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
   	*    param2 {boolean}, value to determine whether dashboard should be visible
   	*/
   	$scope.$on("showDashboardArea", function(event, showDashboard){
-        event.stopPropagation();
   		$scope.showDashboard = showDashboard;
   		$scope.refreshScroller('dashboard_scroller');
   	});
@@ -35,7 +34,6 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
     *   @param {array of Objects} data search results
     */
     $scope.$on("updateDashboardSearchDataFromExternal", function(event, data){
-        event.stopPropagation();
         $scope.$broadcast("updateDataFromOutside", data);  
         $scope.$broadcast("showSearchResultsArea", true);        
     });
@@ -47,43 +45,10 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
     *   @param {array of Objects} data search results
     */
     $scope.$on("updateDashboardSearchTypeFromExternal", function(event, type){
-        event.stopPropagation();
         $scope.$broadcast("updateReservationTypeFromOutside", type);      
     }); 
 
     //show Latecheckout icon
     $scope.shouldShowLateCheckout = true; 
-
-
-    /**
-    * successcall back of late checkout click button's webserive call
-    */
-    var successCallbackOfLateCheckoutFetch = function(data){
-        $scope.$emit('hideLoader');
-        $scope.$emit("updateDashboardSearchDataFromExternal", data);
-
-        // we have to show the seach results area
-        $scope.$emit("showSearchResultsArea", true);
-        // we are hiding the dashboard
-        $scope.$emit("showDashboardArea", false);
-
-        //setting the backbutton & showing the caption
-        $scope.$emit("UpdateBackbuttonCaption", "Dashboard");
-
-        //updating type
-        var lateCheckoutType = "LATE_CHECKOUT";
-        $scope.$emit("updateDashboardSearchTypeFromExternal", lateCheckoutType);
-    };
-
-    /**
-    * function to execute on clicking latecheckout button
-    */
-    $scope.clickedOnLateCheckoutIcon = function(event){
-        console.log('here');
-        event.preventDefault();
-        var data = {};
-        data.is_late_checkout_only = true;      
-        $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    };
 
 }]);

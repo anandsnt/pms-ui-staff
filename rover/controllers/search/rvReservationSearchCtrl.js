@@ -10,8 +10,11 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
 
-  	// variables used track the & type if pre-loaded search results (nhouse, checkingin..)
-	var oldType = "";
+  	// variable used track the & type if pre-loaded search results (nhouse, checkingin..)
+	$scope.searchType = "default";
+
+	// these varibales will be used to various conditiopns for ui rendering
+	$scope.isLateCheckoutList = false;
 
 	//results
 	$scope.results = [];
@@ -23,7 +26,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 
         $scope.$emit('hideLoader');
 		$scope.results = data;
-	    oldType = "";
+	    $scope.searchType = "default";
 	    setTimeout(function(){refreshScroller();}, 1000);
 	};
 
@@ -38,8 +41,9 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 	/**
 	* a reciever function to update data from outside
 	*/
-	$scope.$on("updateReservationTypeFromOutside", function(event, data){
-	    oldType = data;
+	$scope.$on("updateReservationTypeFromOutside", function(event, type){
+	    $scope.searchType = type;
+	    $scope.isLateCheckoutList = (type === 'LATE_CHECKOUT') ? true:false;
 	});
 
   	/**
@@ -59,7 +63,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 		//setting first letter as captial: soumya
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
-		if($scope.textInQueryBox.length == 0 && oldType == ''){
+		if($scope.textInQueryBox.length == 0 && $scope.searchType == "default"){
 			$scope.$emit("SearchResultsCleared");
 			return;
 		}
@@ -84,7 +88,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 	    }
 	    else{
 
-		    if(oldType == "" &&  $scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.length > 0){
+		    if($scope.searchType == "default" &&  $scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.length > 0){
 		        var value = ""; 
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
