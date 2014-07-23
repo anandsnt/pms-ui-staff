@@ -420,6 +420,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
+        $scope.populateDataModel = function(reservationDetails) {
+            /*
+                CICO-8320 parse the reservation Details and store the data in the
+                $scope.reservationData model
+            */
+            console.log('$scope.reservationData model', reservationDetails);
+            $scope.reservationData.arrivalDate = new Date(reservationDetails.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-")
+            $scope.reservationData.departureDate = new Date(reservationDetails.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+        };
+
         $scope.initReservationData();
     }
 ]);
