@@ -6,6 +6,11 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.currentReservationId = "";
 		$scope.reservationCount = 0;
 
+		$scope.viewState.identifier = "STAY_CARD";
+
+		$scope.heading = 'Staycard';
+		$scope.$emit('setHeading', $scope.heading);
+
 		var title = "Staycard";
 		$scope.setTitle(title);
 
@@ -36,9 +41,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 			RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 			var fetchGuestcardDataSuccessCallback = function(data) {
-				console.log("+++++++++++++++")
-				console.log($scope.data.countries);
-				
+
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.data.countries,
@@ -65,7 +68,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					'fakeDataToAvoidCache': new Date(),
 					'id': $scope.data.guest_details.reservation_id
 				};
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
+				// $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
 
 			if ($scope.timeline == "current") {
@@ -144,7 +147,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 
 			// $scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
-			$state.go("rover.staycard.reservationcard.reservationdetails", {
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				"id": currentId,
 				"confirmationId": currentConfirmationNumber,
 				"isrefresh": true

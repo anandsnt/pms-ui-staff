@@ -1,17 +1,19 @@
 sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog',
 	function($scope, RVGuestCardSrv, ngDialog) {
 
-		$scope.guestCardData = {};
-		$scope.guestCardData.contactInfo = {};
+		// $scope.guestCardData = {};
+		// $scope.guestCardData.contactInfo = {};
 		$scope.countriesListForGuest = [];
-		$scope.guestCardData.userId = '';
-		$scope.guestCardData.contactInfo.birthday = '';
+		// $scope.guestCardData.userId = '';
+		// $scope.guestCardData.contactInfo.birthday = '';
 		$scope.paymentData = {};
 		/*
 		 * To get the payment tab payments list
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
-			$scope.paymentData = paymentData;
+			if(paymentData.guest_id){
+				$scope.paymentData = paymentData;
+			}
 		});
 
 

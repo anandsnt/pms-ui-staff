@@ -48,18 +48,29 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 
 		// since CICO-7766 is breaking for desktops
-		$scope.setScroller('resultDetails', {
-			disableMouse: true
-		});
+		$scope.setScroller('resultDetails');
 
 		//CICO-7078 : Initiate company & travelagent card info
-		// console.log(reservationListData);
+
+
+		//temporarily store the exiting card ids
+		var existingCards = {
+			guest: $scope.reservationDetails.guestCard.id,
+			company: $scope.reservationDetails.companyCard.id,
+			agent: $scope.reservationDetails.travelAgent.id
+		}
+
 		$scope.reservationDetails.guestCard.id = reservationListData.guest_details.user_id == null ? "" : reservationListData.guest_details.user_id;
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id == null ? "" : reservationListData.company_id;
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id == null ? "" : reservationListData.travel_agent_id;
+
 		angular.copy(reservationListData, $scope.reservationListData);
 		// console.log($scope.reservationListData)
-		$scope.$emit('cardIdsFetched');
+		$scope.$emit('cardIdsFetched', {
+			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
+			company: $scope.reservationDetails.companyCard.id == existingCards.company,
+			agent: $scope.reservationDetails.travelAgent.id == existingCards.agent
+		});
 		//CICO-7078
 
 
@@ -79,7 +90,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
-			$scope.$parent.myScroll['resultDetails'].scrollTo(0,0);
+			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 		};
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
@@ -150,8 +161,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$rootScope.$on('clearErroMessages', function() {
-    		$scope.errorMessage = "";
-     	});
+			$scope.errorMessage = "";
+		});
 
 		$scope.openPaymentList = function() {
 			$scope.reservationData.currentView = "stayCard";

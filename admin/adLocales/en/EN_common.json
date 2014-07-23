@@ -11,6 +11,7 @@
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
+    "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
     "MENU_AVAILABILITY":"Availability",
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
@@ -35,4 +36,6 @@
     "MENU_ACCOUNTING":"Accounting Interface",
     "MENU_REVENUE":"Revenue",
     "MENU_COMMISIONS":"Commissions",
-    "MENU_REPORTS":"Reports"
+    "MENU_REPORTS":"Reports",
+    
+	"ICARE_SERVICES": "iCare Services"
