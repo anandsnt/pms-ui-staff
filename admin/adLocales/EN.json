@@ -10,7 +10,7 @@
     "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
    
     "MENU_DASHBOARD" : "Dashboard",
-    "MENU_SEARCH" : "Search",
+    "MENU_SEARCH" : "Search Reservations",
     "MENU_AVAILABILITY":"Availability",
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
@@ -57,6 +57,9 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
+	"PAYMENT_METHODS": "Payment Methods",
+	"SYSTEM_DEFINED": "(System defined)"
+,
 
     "ROOMS":"Rooms",
     "OF":"of",
