@@ -159,9 +159,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           //hidden: true,
           action: "",
           iconClass: "icon-frontdesk",
-          submenu: [ {
-          title: "MENU_SEARCH_RESERVATIONS",
-          action: "rover.search"},{
+          submenu: [{
+            title: "MENU_SEARCH_RESERVATIONS",
+            action: "rover.search",
+            menuIndex:"search"
+          },{
             title: "MENU_CREATE_RESERVATION",
             action: "rover.reservation.search",
             standAlone: true,
