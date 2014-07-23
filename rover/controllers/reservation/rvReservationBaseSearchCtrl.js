@@ -131,14 +131,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 initStayDates(roomNumber);
             }
 
-            var successCallBack = function() {
-                $state.go('rover.reservation.staycard.mainCard.roomType');
-            };
             if ($scope.checkOccupancyLimit()) {
-                $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
-                    fromDate: $scope.reservationData.arrivalDate,
-                    toDate: $scope.reservationData.departureDate
-                }, successCallBack);
+                $state.go('rover.reservation.staycard.mainCard.roomType', {
+                    from_date: $scope.reservationData.arrivalDate,
+                    to_date: $scope.reservationData.departureDate
+                });
             }
         };
 

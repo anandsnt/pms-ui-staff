@@ -404,14 +404,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.demographics.market = '';
             $scope.reservationData.demographics.source = '';
 
-            var successCallBack = function() {
-                $state.go('rover.reservation.mainCard.roomType');
-            };
-
-            $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
-                fromDate: $scope.reservationData.arrivalDate,
-                toDate: $scope.reservationData.departureDate
-            }, successCallBack);
+            $state.go('rover.reservation.staycard.mainCard.roomType', {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate
+            });
         }
 
         $scope.updateOccupancy = function(roomIdx) {
