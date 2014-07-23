@@ -10,7 +10,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationData = reservationDetails;
 		$scope.$parent.$parent.reservation = reservationDetails;
 
-		$scope.populateDataModel(reservationDetails);
+		$scope.populateDataModel(reservationDetails, reservationListData);
 
 		$scope.reservationnote = "";
 		if ($scope.reservationData.reservation_card.currency_code != null) {
