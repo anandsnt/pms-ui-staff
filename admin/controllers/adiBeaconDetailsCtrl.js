@@ -106,7 +106,13 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       }
       else{
         updateData.id = $stateParams.action;
-        updateData.data = $scope.data; 
+        var unwantedKeys = ["picture"];
+        updateData.data= dclone($scope.data, unwantedKeys);
+        // Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
+        if($scope.data.picture.indexOf("data:")!= -1){
+          updateData.data.picture = $scope.data.picture;
+        }
+
         $scope.invokeApi(adiBeaconSettingsSrv.updateBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
       }
   };

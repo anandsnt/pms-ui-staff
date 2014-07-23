@@ -7,9 +7,11 @@
 	<!--- form starts here -->
 	<form style="overflow-y:auto;" class="form float inline-form" >
 		<fieldset class="holder left">				
-			<div class="entry">
+			<div class="entry full-width">
 				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
-				<input type="text"  placeholder="{{'ENTER_BEACON_ID'|translate}}" ng-disabled="!isIpad" ng-model="data.uuid">							
+				<input type="text" style="width:50%;float:left;" class="ng-valid ng-dirty" placeholder="Enter proximity ID" ng-disabled="!isIpad" ng-model="data.uuid">					
+				<input type="text" style="width:22%;float:left;margin-left:5px;" class="ng-valid ng-dirty" placeholder="Major id" ng-disabled="!isIpad" ng-model="data.majorid">
+				<input type="text" style="width:22%;float:left;margin-left:5px;" class="ng-valid ng-dirty" placeholder="Minor ID" ng-disabled="!isIpad" ng-model="data.minorid">					
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
@@ -21,7 +23,7 @@
 			<div class="entry">
 				<label>{{'TYPE'|translate}} <strong>*</strong></label>
 				<div class="select">
-					<select class="placeholder" ng-model="data.type" ng-options="ibeacon.id as ibeacon.value for ibeacon in beaconTypes">
+					<select class="placeholder" ng-model="data.type" ng-options="ibeacon.value as ibeacon.value for ibeacon in beaconTypes">
 						<option value="" disabled translate="SELECT_TYPE"></option>
 					</select>
 				</div>
@@ -29,7 +31,7 @@
 			<div class="entry">
 					<label>{{'TRIGGER'|translate}} <strong>*</strong></label>
 					<div class="select">
-						<select class="placeholder" ng-model="data.trigger_range" ng-options="trigger.id as trigger.value for trigger in triggerTypes">
+						<select class="placeholder" ng-model="data.trigger_range" ng-options="trigger.value as trigger.value for trigger in triggerTypes">
 							<option value="" disabled translate="SELECT_TRIGGER"></option>
 						</select>
 					</div>
@@ -53,13 +55,12 @@
 			<div class="form-title" style="margin-bottom:32px;">
 				<h3><span translate="GUEST_MESSAGE"></span></h3>
 			</div>
-			{{data.type!='PROMOTION'}}
 			<fieldset class="holder left">
 				<div class="entry full-width">
 					<label for="room-type-picture" translate="PICTURE"></label>
 					<div class="file-upload with-preview">
 						<span class="input" translate="CHOOSE_FILE"></span>
-						<input type="file" ng-model="data.picture" accept="image/*" app-filereader ng-disabled="data.type!='PROMOTION'"/>
+						<input type="file" ng-model="data.picture" accept="image/*" app-filereader ng-disabled="data.type !='PROMOTION'"/>
 						<button type="button" class="button brand-colors" translate="PICTURE">
 						</button> 
 					</div>
