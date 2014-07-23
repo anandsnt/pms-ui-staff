@@ -40,6 +40,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 }
             }
         }); */
+        $stateProvider.state('rover.search', {
+            url: '/search/',
+            templateUrl: '/assets/partials/search/rvSearchReservation.html', 
+            controller: 'rvReservationSearchController'           
+        });
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',   
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         

@@ -1,4 +1,4 @@
-<div ng-controller = "rvReservationSearchController">
+<div ng-controller = "rvReservationSearchWidgetController">
 	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form" role="search">	
 	    <div class="entry">
 
@@ -14,7 +14,6 @@
 	</form>
 
 	<section id="dashboard-search" class="content scrollable scroll-guest-tab" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="top:120px;">
-		<div 
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->

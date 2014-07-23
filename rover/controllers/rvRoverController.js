@@ -129,6 +129,22 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+
+
+    $scope.searchBackButtonCaption = '';
+
+    /**
+    * reciever function used to change the heading according to the current page
+    * if there is any trnslation, please use that
+    * param1 {object}, javascript event
+    * param2 {String}, Backbutton's caption
+    */
+    $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption){
+      event.stopPropagation();
+      //chnaging the heading of the page
+      $scope.backButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
+    });
+
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
 

@@ -20,7 +20,7 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
 		$scope.$emit("showDashboardArea", false);
 
         //setting the backbutton & showing the caption
-        $scope.$emit("UpdateBackbuttonCaption", "Dashboard");
+        $scope.$emit("UpdateSearchBackbuttonCaption", "Dashboard");
 
         //updating type
         $scope.$emit("updateDashboardSearchTypeFromExternal", this.clickedType);

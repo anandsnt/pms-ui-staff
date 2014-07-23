@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$filter',  function($scope, RVSearchSrv, $filter){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter',  function($scope, RVSearchSrv, $filter){
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
@@ -15,6 +15,9 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 
 	// these varibales will be used to various conditiopns for ui rendering
 	$scope.isLateCheckoutList = false;
+
+	//showSearchResultsAre
+	$scope.showSearchResultsArea = false;
 
 	//results
 	$scope.results = [];
@@ -51,6 +54,10 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
   	*/
   	$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus){
   		$scope.showSearchResultsArea = searchAreaVisibilityStatus;  
+  		// if it is hiding, we need to clear the search text
+  		if(!searchAreaVisibilityStatus) {
+  			$scope.textInQueryBox = '';
+  		}
   	});
 
 	/**
@@ -64,7 +71,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
 		if($scope.textInQueryBox.length == 0 && $scope.searchType == "default"){
-			$scope.$emit("SearchResultsCleared");
+			$scope.clearResults();
 			return;
 		}
 		if(!$scope.showSearchResultsArea ){
@@ -217,6 +224,7 @@ sntRover.controller('rvReservationSearchController',['$scope', 'RVSearchSrv', '$
    	* function to execute on clicking clear icon button
    	*/
     $scope.clearResults = function(){
+    	$scope.results = [];
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
   	};

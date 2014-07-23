@@ -2,7 +2,6 @@
 sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata','$rootScope', '$filter', '$state',  
                   function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,$rootScope, $filter, $state){
 	
-    console.log('in dashboard controlelr');
     //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
 
@@ -77,17 +76,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
       $scope.heading = data;
    });
 
-  /**
-   * reciever function used to change the heading according to the current page
-   * if there is any trnslation, please use that
-   * param1 {object}, javascript event
-   * param2 {String}, Backbutton's caption
-   */
-   $scope.$on("UpdateBackbuttonCaption", function(event, caption){
-      event.stopPropagation();
-      //chnaging the heading of the page
-      $scope.backButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
-   });
       
     /**
     * function to handle click on backbutton in the header section
@@ -111,7 +99,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.$broadcast("showDashboardArea", false);
 
         //setting the backbutton & showing the caption
-        $scope.$emit("UpdateBackbuttonCaption", "Dashboard");
+        $scope.$emit("UpdateSearchBackbuttonCaption", "Dashboard");
 
         //updating type
         var lateCheckoutType = "LATE_CHECKOUT";

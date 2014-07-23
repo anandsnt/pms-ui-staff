@@ -14,7 +14,7 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
 	//setting the scroller for view
 	var scrollerOptions = { click: true, preventDefault: false };
   	$scope.setScroller('result_showing_area', scrollerOptions);
-
+    $scope.$broadcast("showSearchResultsArea", false);
 
   	//click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event){
@@ -34,7 +34,7 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
     */
     var backToDashboard = function(){
         //setting the backbutton & showing the caption
-        $scope.$emit("UpdateBackbuttonCaption", "");
+        $scope.$emit("UpdateSearchBackbuttonCaption", "");
         //we need to show the dashboard & hide search area
         $scope.$emit("showDashboardArea", true);
         $scope.$broadcast("showSearchResultsArea", false);
@@ -57,7 +57,7 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
     */
     $scope.$on('$stateChangeSuccess', function(event){
         //setting the backbutton & showing the caption
-        $scope.$emit("UpdateBackbuttonCaption", "");        
+        $scope.$emit("UpdateSearchBackbuttonCaption", "");        
     });   
 
     /**
