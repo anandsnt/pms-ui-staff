@@ -435,6 +435,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 												}
 												break;
 											case 'MIN_STAY_THROUGH': // 6 MIN_STAY_THROUGH
+												if (Math.round((new Date($scope.reservationData.departureDate) - new Date(currDate)) / (1000 * 60 * 60 * 24)) < restriction.days) {
+													validRate = false;
+												}
 												break;
 											case 'MIN_ADV_BOOKING': // 7 MIN_ADV_BOOKING
 												if (restriction.days != null && daysTillArrival < restriction.days) {
