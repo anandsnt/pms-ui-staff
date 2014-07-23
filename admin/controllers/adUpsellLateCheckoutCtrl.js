@@ -167,7 +167,7 @@ $scope.saveClick = function(){
 	//Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types,function(item, index) {
 		if(item.max_late_checkouts !== ''){
-			 var obj = { "id": item.id , "max_late_checkouts": item.max_late_checkouts };
+			 var obj = { "id": item.id.toString() , "max_late_checkouts": item.max_late_checkouts.toString() };
 			 updateData.room_types.push(obj);
 		}
 	});
