@@ -52,7 +52,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 			     $scope.setTitle(title);
         }, 2000);
 		
-        $state.go('rover.dashboard.manager');
+        //TODO: Add conditionally redirecting from API results
+        $state.go('rover.dashboard.frontoffice');
 
    };
 

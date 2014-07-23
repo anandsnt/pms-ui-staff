@@ -60,10 +60,10 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
             controller: 'RVmanagerDashboardController',                       
         });
-        $stateProvider.state('rover.dashboard.staff', {
-            url: '/dashboard/staff',
-            templateUrl: '/assets/partials/dashboard/rvStaffDashboard.html',
-            controller: 'RVstaffDashboardController',                       
+        $stateProvider.state('rover.dashboard.frontoffice', {
+            url: '/dashboard/frontoffice',
+            templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
+            controller: 'RVfrontDeskDashboardController',                       
         }); 
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/dashboard/housekeeping',  //TODO: check can we reduced it to hk?

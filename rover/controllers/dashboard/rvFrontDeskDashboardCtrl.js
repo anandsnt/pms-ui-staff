@@ -1,14 +1,14 @@
-sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', function($scope, $rootScope){
+sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', function($scope, $rootScope){
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
 	//scroller related settings
 	var scrollerOptions = {click: true, preventDefault: false};
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
-    
-    //changing the header
-    $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
+
   	$scope.showDashboard = true; //variable used to hide/show dabshboard
+    //changing the header
+    $scope.$emit("UpdateHeading", 'DASHBOARD_FRONTDESK_HEADING');
 
     // we are hiding the search results area
     $scope.$broadcast("showSearchResultsArea", false);     
