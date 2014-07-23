@@ -12,7 +12,6 @@ var CardOperation = function(){
 		coinstance = this; // Global instance to test from console.
 		that.callSuccess = function(data)
 		{
-			console.log("sucecss called===");
 			var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 			var carddata= { 'RVCardReadCardType': 'AX',
