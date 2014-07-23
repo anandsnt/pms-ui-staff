@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.reservationCardSrv = RVReservationCardSrv;
@@ -224,6 +224,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 
 		};
+
+		$scope.extendNights = function() {
+			var isRoomAssigned = false;
+			if (isRoomAssigned) {
+				$state.go('rover.reservation.staycard.changestaydates', {
+					reservationId: $scope.reservationData.reservation_card.reservation_id,
+					confirmNumber: $scope.reservationData.reservation_card.confirmation_num
+				});
+			} else {
+				$state.go('rover.reservation.staycard.mainCard.roomType', {
+					from_date: $scope.reservationData.arrivalDate,
+					to_date: $scope.reservationData.departureDate
+				});
+			}
+		}
 
 	}
 ]);
