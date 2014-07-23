@@ -38,8 +38,8 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
         };
 
         this.checkUpdateAvaibale = function (data){
-            //var url = '/staff/change_stay_dates/' + data.reservation_id + '/update.json';
-            var url = '/ui/show?format=json&json_input=change_staydates/reservation_updates.json';
+            var url = '/staff/change_stay_dates/' + data.reservation_id + '/update.json';
+            //var url = '/ui/show?format=json&json_input=change_staydates/reservation_updates.json';
             var data = {'arrival_date': data.arrival_date, 'dep_date': data.dep_date};            
             var deferred = $q.defer ();
             RVBaseWebSrv.getJSON(url, data).then(function(data) {  
