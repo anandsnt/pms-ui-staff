@@ -15,5 +15,20 @@
 	"RESERVATION_UPDATES" : "Reservation updates",
 	"CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES" : "Change stay dates to see room and rate changes.",
 	"VALIDATION_MSG_DATE" : "Room cannot be made available past the guest's current departure date.",
-	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking."
+	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking.",
+	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
+	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
+	"OF": "of",
+	"APPLIES_TO_RESERVATION": "applies to this reservation",
+	"NO": "No",
+	"ROOM": "Room",
+	"NOT_AVAILABLE_FOR_DATE_RANGE": "not available for selected dates",
+	"UNASSIGN_ROOM_FROM": "Un-assign room from",
+	"ARRIVING": "arriving",
+	"YES": "Yes",
+	"UNABLE_TO_EXTEND_STAY": "Unable to extend stay",
+	"NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE": "There are no rooms available for the booked room type. Change room type or rate to extend the stay",
+	"FIND_ROOMS_AND_RATE_BUTTON_TEXT": "Find rooms &amp; rate"
+
+
 	
