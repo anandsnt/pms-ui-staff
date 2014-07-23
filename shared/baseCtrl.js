@@ -1,4 +1,4 @@
-function BaseCtrl($scope){	
+function BaseCtrl($scope, $vault, returnBack){	
 
 	$scope.businessDate = "";
 
@@ -162,6 +162,21 @@ function BaseCtrl($scope){
     	
     	$scope.$parent.myScrollOptions[key] = scrollerOptions; 
 
+    	// set up handler to save scroller position
+    	setTimeout(function() {
+
+    		// if this state is loaded via 'Go back'
+    		if ( returnBack && !!$vault.get(key) ) {
+    			$scope.$parent.myScroll[key].scrollTo( 0, $vault.get(key), 250 );
+    		};
+
+    		// if $vault is provided and probeType is 2, setup scrollEnd listner
+    		if ( $vault && $scope.$parent.myScrollOptions[key].probeType === 2 ) {
+	    		$scope.$parent.myScroll[key].on('scrollEnd', function() {
+	    			$vault.set( key, this.y );
+	    		});
+	    	};
+    	}, 1100);
     };
 
     /*
@@ -170,7 +185,7 @@ function BaseCtrl($scope){
     */
     $scope.refreshScroller = function (key){
     	setTimeout(function(){
-    		if(typeof $scope.$parent.myScroll !== 'undefined' && key in $scope.$parent.myScroll)
+    		if( !!$scope.$parent.myScroll && key in $scope.$parent.myScroll )
     			$scope.$parent.myScroll[key].refresh();
     	}, $scope.timeOutForScrollerRefresh);   	
     };

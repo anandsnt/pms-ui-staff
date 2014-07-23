@@ -201,7 +201,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		
 
 		$scope.checkOutsideClick = function(targetElement) {
-			 console.log("outside")
 			 if($scope.cardVisible){
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');

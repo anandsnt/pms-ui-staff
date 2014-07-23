@@ -1,8 +1,6 @@
+var sntRover = angular.module('sntRover', ['ui.router', 'ui.utils','pickadate', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','advanced-pickadate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'reservationModule', 'housekeepingModule', 'cacheVaultModule']);
 
-
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils','pickadate', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','advanced-pickadate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'reservationModule', 'housekeepingModule']);
-
-sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
+sntRover.run(['$rootScope', '$state', '$stateParams', '$vault', function ($rootScope, $state, $stateParams, $vault) {
 	//BaseCtrl.call(this, $scope);
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
@@ -106,47 +104,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		};
 	};
 
-	var $_ctrlData = [];
-
-	$rootScope.setCtrlData = function(id, key, value) {
-		var index = null,
-			item = {};
-
-		if ( !data && !data.id ) {
-			return;
-		};
-
-		for (var i = 0, j = $ctrlData.length; i < j; i++) {
-			if ( id === $ctrlData[i].id ) {
-				index = i;
-				break;
-			};
-		};
-
-		if ( index ) {
-			$ctrlData[index][key] = value;
-		} else {
-			item[id] = id;
-			item[key] = value;
-
-			$ctrlData.push( item );
-		}
-	};
-
-	$rootScope.getCtrlData = function(ctrlId) {
-		if ( !ctrlId ) {
-			return false;
-		};
-
-		for (var i = 0, j = $ctrlData.length; i < j; i++) {
-			if ( ctrlId === $ctrlData[i].id ) {
-				return $ctrlData[i];
-				break;
-			};
-		};
-
-		return false;
-	};
 
 	$rootScope.returnBack = false;
 	$rootScope.isReturning = function() {
@@ -166,12 +123,16 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		// console.log(fromState.name + ' ===> ' + toState.name);
+		console.log(fromState.name + ' ===> ' + toState.name);
+		console.log(toParams);
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
 		// with its own desired values
 		$rootScope.setPrevState = {};
+
+		// reset this flag
+		$rootScope.returnBack = false;
 
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
@@ -187,7 +148,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	});
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		$rootScope.returnBack && console.log( 'return back to: ' + toState.name );
+		if ( $_mustRevAnim /* && upto this much time has elapsed */ ) {
+			toParams.useCache = true;
+		};
 	});
 }]);
 

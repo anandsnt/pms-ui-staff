@@ -30,12 +30,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
 	         			//calling the webservice
 	                    return RVSearchSrv.fetch(dataDict);
 	                } else {
-	                	
                 		console.log("to check in server");
                 		var results = [];
                 	    return results;
-	                	
-	                	
 	                }
                 }
             }

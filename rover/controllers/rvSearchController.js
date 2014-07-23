@@ -1,60 +1,80 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
+sntRover.controller('searchController', [
+  '$scope',
+  '$rootScope',
+  'RVSearchSrv',
+  '$stateParams',
+  '$filter',
+  'searchResultdata',
+  '$timeout',
+  '$vault',
+  function($scope, $rootScope, RVSearchSrv, $stateParams, $filter, searchResultdata, $timeout, $vault) {
 	
   var that = this;
-  BaseCtrl.call(this, $scope);
+
+  // passing in $vault too as params
+  BaseCtrl.call(this, $scope, $vault, $rootScope.isReturning);
+
   $scope.shouldShowLateCheckout = true;
+
+  $scope.$emit("updateRoverLeftMenu","search");
 
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
-  $scope.$emit("updateRoverLeftMenu","search");
+  
   var oldTerm = "";
   var oldType = "";
   var firstClickedItem = "direct";
   $scope.currentType = "direct";
   $scope.isLateCheckoutList = false;
   $scope.searchTermPresent = false;
-  if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
-    $stateParams.type != null && $stateParams.type.trim() != '') {
+  if( !!$stateParams && !!$stateParams.type && $stateParams.type.trim() != '' ) {
       oldType = $stateParams.type;
-      firstClickedItem = $scope.currentType =  $stateParams.type;
+      firstClickedItem = $scope.currentType = $stateParams.type;
       $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
   }
-  var scrollerOptions = {click: true, preventDefault: false};
-  $scope.setScroller('result_showing_area', scrollerOptions);
+
+  // setup scroller with probeType
+  var scrollerOptions = {
+    click: true,
+    preventDefault: false,
+    probeType: 2
+  };
+
+  $scope.setScroller( 'result_showing_area', scrollerOptions );
+
+
   
   /**
   * function used for refreshing the scroller
   */
   var refreshScroller = function(){  
     $scope.refreshScroller('result_showing_area');
-    
   };
 
-	  var headingListDict = {  
-	    'DUEIN':  "Checking In",
-	    'INHOUSE': "In House",
-	    'DUEOUT': "Checking Out",
-	    'LATE_CHECKOUT': "Checking Out Late",
-	    '': "Search"
-	  };
-	  $scope.heading = headingListDict[oldType]; 
-      $scope.setTitle($scope.heading);
-      
-  	$scope.results = searchResultdata;
-    oldType = "";
-    oldTerm = $scope.textInQueryBox;
-    setTimeout(function(){refreshScroller();}, 1000);
-    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+  var headingListDict = {  
+    'DUEIN':  "Checking In",
+    'INHOUSE': "In House",
+    'DUEOUT': "Checking Out",
+    'LATE_CHECKOUT': "Checking Out Late",
+    '': "Search"
+  };
+  $scope.heading = headingListDict[oldType]; 
+  $scope.setTitle($scope.heading);
+    
+	$scope.results = searchResultdata;
+  oldType = "";
+  oldTerm = $scope.textInQueryBox;
+  setTimeout(refreshScroller, 1000);
+  $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
       
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
-
-        $scope.$emit('hideLoader');
-		$scope.results = data;
-	    oldType = "";
-	    oldTerm = $scope.textInQueryBox;
-	    setTimeout(function(){refreshScroller();}, 1000);
-	    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+    $scope.$emit('hideLoader');
+    $scope.results = data;
+    oldType = "";
+    oldTerm = $scope.textInQueryBox;
+    setTimeout(refreshScroller, 1000);
+    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
 	
@@ -151,13 +171,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
         $scope.results = [];
       }
     };
-// 
-// 
-// 
-  // };
 
-  //setting up initial things
-  // performInitialActions();
 
 
   /**
@@ -177,11 +191,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 		} else {
 			$scope.currentType = "";
 		}
-	    displayFilteredResults();  
+	 
+    displayFilteredResults();  
   };
   
   $scope.clearResults = function(){
-
    if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
       $stateParams.type != null && $stateParams.type.trim() != '') {
         oldType = $stateParams.type;

@@ -96,9 +96,8 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                 setTimeout(setScroll, ngiScroll_timeout);
             });
 
+            // destroy the the instance when the $scope is destroyed
             scope.$on('$destroy', function() {
-                console.log( 'destorying iscroll instance: ' + scroll_key );
-
                 if ( !!scope.$parent.myScroll[scroll_key] ) {
                     scope.$parent.myScroll[scroll_key].destroy();
                     delete scope.$parent.myScroll[scroll_key];

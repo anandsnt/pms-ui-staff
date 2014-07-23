@@ -21,14 +21,13 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
             controller: 'reservationDetailsController',
             resolve: {
                 reservationListData: function(RVReservationCardSrv, $stateParams) {
-                    
                     return RVReservationCardSrv.fetch($stateParams.id);
                 },
                 reservationDetails:function(RVReservationCardSrv, $stateParams) {
-                     var data = {
-				 		  	"confirmationNumber": $stateParams.confirmationId,
-				 		  	"isRefresh": $stateParams.isrefresh
-				 		  }; 
+                    var data = {
+                        confirmationNumber: $stateParams.confirmationId,
+                        isRefresh: $stateParams.isrefresh
+                    }; 
                     return RVReservationCardSrv.fetchReservationDetails(data);
                 }
             }
