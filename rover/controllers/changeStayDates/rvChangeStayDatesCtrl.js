@@ -73,7 +73,42 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	this.initialise = function() {
 		that.dataAssign();
 		that.renderFullCalendar();
+		if($rootScope.isStandAlone){
+			if(!that.checkIfStaydatesCanBeExtended()){
+				$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
+				$scope.refreshScroller();
+			}
+		}
 	};
+	//Stay dates can be extended only if dates are available prior to checkin date
+	//or after checkout date.
+	this.checkIfStaydatesCanBeExtended = function(){
+		var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
+		var checkinTime = checkinDate.setHours(00, 00, 00);
+		var checkoutTime = checkoutDate.setHours(00, 00, 00);
+		var thisTime = "";
+		var canExtendStay = false;
+
+		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
+			//Put time correction 
+			thisTime = getDateObj(this.date).setHours(00, 00, 00);
+			//Check if a day available for extending prior to the checkin day
+            if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
+				if (thisTime < checkinTime) {
+					canExtendStay = true;
+					return false;
+				}
+            }
+            //Check if a day is available to extend after the departure date
+			if (thisTime > checkoutTime) {
+				canExtendStay = true;
+				return false;
+			}
+		});
+
+		return canExtendStay;
+
+	}
 
 	$scope.errorCallbackCheckUpdateAvaibale = function(errorMessage) {
 		$scope.$emit("hideLoader");
@@ -85,22 +120,51 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		$scope.$emit("hideLoader");
 		//entire function is for right side
 
-		/*based on the availability of room, web service will give 3 status
-		 "room_available": we need to show room details, rate, total, avg...
-		 "room_type_available": we need to show room list, after selecting that
-		 "not_available": we need to show the not available message
-		 */
+		/**
+		*based on the availability of room, web service will give 6 status
+		* "room_available": we need to show room details, rate, total, avg...
+		* "room_type_available": we need to show room list, after selecting that
+		* "not_available": we need to show the not available message
+		* "has_restriction": restrictions exist for the rate / room / date combination
+		* 					display the existing restriction 
+		* "to_be_unassigned": Room can be unassigned from another guest 
+		* 					and the guest can continue on same room
+		* "do_not_move": Do Not Move flag on reservation with the assigned room
+		* "maintenance": Room under maintenance
+		*/
 		if (data.availability_status == "room_available") {
-			that.showRoomAvailable();
-		} else if (data.availability_status == "room_type_available") {
+			$scope.showRoomAvailable();
+		}
+
+		else if (data.availability_status == "room_type_available") {
 			that.showRoomTypeAvailable(data);
-		} else if (data.availability_status == "not_available") {
+		}
+
+		else if (data.availability_status == "not_available") {
 			that.showRoomNotAvailable();
 		}
-		$scope.refreshScroller();
+
+		else if (data.availability_status == "has_restriction") {
+			$scope.rightSideReservationUpdates = 'RESTRICTION_EXISTS';
+			$scope.stayDetails.restrictions = data.restrictions;
+		}
+
+		else if (data.availability_status == "to_be_unassigned") {
+			$scope.rightSideReservationUpdates = 'PREASSIGNED';
+			$scope.stayDetails.preassignedGuest = data.preassigned_guest;
+		}
+
+		else if (data.availability_status == "maintenance") {
+			$scope.rightSideReservationUpdates = 'MAINTENANCE';
+		}
+
+		else if (data.availability_status == "do_not_move") {
+			$scope.rightSideReservationUpdates = "ROOM_CANNOT_UNASSIGN";
+		}
+		$scope.refreshScroller(); 
 	};
 
-	//function to show restricted stay range div.
+	//function to show restricted stay range div- only available for non-standalone PMS
 	this.showRestrictedStayRange = function() {
 		$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
 		$scope.refreshScroller();
@@ -121,7 +185,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	};
 
 	//function to show room details, total, avg.. after successful checking for room available
-	this.showRoomAvailable = function() {
+	$scope.showRoomAvailable = function() {
 		//setting nights based on calender checking/checkout days
 		var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
 		$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -155,7 +219,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 	$scope.roomSelectedFromList = function(roomNumber) {
 		$scope.roomSelected = roomNumber;
-		that.showRoomAvailable();
+		$scope.showRoomAvailable();
 	}
 
 	$scope.getRoomClass = function(reservationStatus, roomStatus, foStatus) {
@@ -267,11 +331,19 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		$scope.eventSources.length = 0;
 		$scope.eventSources.push($scope.events);
 
-		// checking if stay range is restricted between that days, if so we will not call webservice for availabilty
-		if (that.isStayRangeRestricted($scope.checkinDateInCalender, $scope.checkoutDateInCalender)) {
-			that.showRestrictedStayRange();
-			return false;
+		//For stand-alone PMS, the restrictions are calculated from the server
+		//We call the API when dates are changed to get the status
+		if($rootScope.isStandAlone){
+			// checking if stay range is restricted between that days, 
+			//if so we will not call webservice for availabilty
+			if (that.isStayRangeRestricted($scope.checkinDateInCalender, 
+											$scope.checkoutDateInCalender)) {
+				that.showRestrictedStayRange();
+				return false;
+			}
+
 		}
+		
 		//calling the webservice for to check the availablity of rooms on these days
 		var getParams = {
 			'arrival_date' : getDateString($scope.checkinDateInCalender),
@@ -293,7 +365,10 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		var totalNights = 0;
 		var minNumOfStay = "";
 		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
+			//Put time correction 
 			thisTime = getDateObj(this.date).setHours(00, 00, 00);
+			//We calculate the minimum length of stay restriction 
+			//by reffering to the checkin day
 			if (this.date == getDateString(checkinDate)) {
 				$(this.restriction_list).each(function(index) {
 					if (this.restriction_type == "MINIMUM_LENGTH_OF_STAY") {
@@ -301,7 +376,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 					}
 				});
 			}
-
+			//Get the number of nights of stay. 
 			if (thisTime < checkinTime || thisTime >= checkoutTime) {
 				return true;
 			}
