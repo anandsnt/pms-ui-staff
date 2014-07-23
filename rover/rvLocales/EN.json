@@ -24,6 +24,7 @@
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
+    "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
     "MENU_AVAILABILITY":"Availability",
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
