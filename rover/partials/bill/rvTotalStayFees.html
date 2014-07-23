@@ -51,14 +51,15 @@
 				<span class="value date"> {{billData.credit_card_details.card_expiry | date:'MM/yy'}} </span> 
 			</span> 
 		    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped">Credit card swiped</span>
-			</a>
+		</a>
 		<a class="button with-icon green" ng-click='addNewPaymentModal()' ng-show="billData.credit_card_details.payment_type == 'CC' && $index == '0'"> 
 			<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}</span>  
 		</a>
 		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> {{billData.guest_or_company_name}} </h3>
-		<h3 ng-show="billData.credit_card_details.payment_type == 'CA'"> {{billData.credit_card_details.payment_type_description}}<a class="add-new-button" ng-click='addNewPaymentModal()'>+ {{'ADD' | translate}}</a></h3>
-		<h3 ng-show="billData.credit_card_details.payment_type == 'CK'">  {{billData.credit_card_details.payment_type_description}} <a class="add-new-button" ng-click='addNewPaymentModal()'>+ {{'ADD' | translate}}</a></h3>
-		<h3 ng-show="showNotDefined(billData.credit_card_details.payment_type)"> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='addNewPaymentModal()'>+ {{'ADD' | translate}}</a></h3>
+		
+		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''"> {{billData.credit_card_details.payment_type_description}}<a class="add-new-button" ng-click='addNewPaymentModal()'>+ {{'ADD' | translate}}</a></h3>
+		
+		<h3 ng-show="billData.credit_card_details.payment_type ==''"> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='addNewPaymentModal()'>+ {{'ADD' | translate}}</a></h3>
 	</div>
 	<!-- Show signed signature -->
 	<div class="details signature-wrapper" ng-show="showSignedSignature">

@@ -11,7 +11,7 @@
 	</a>
 	
 	<div class="actions" ng-show="showUpgradeButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
-  		<a id="upgrade-btn" class="button with-icon brand-colors" ui-sref="rover.staycard.upgrades({reservation_id:reservationData.reservation_card.reservation_id, clickedButton : 'upgradeButton'})">
+  		<a id="upgrade-btn" class="button with-icon brand-colors" ui-sref="rover.reservation.staycard.upgrades({reservation_id:reservationData.reservation_card.reservation_id, clickedButton : 'upgradeButton'})">
     		<span class="icons icon-upgrade"></span>
     		Upgrade
   		</a>

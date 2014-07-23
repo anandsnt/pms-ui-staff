@@ -39,15 +39,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         return true;
       };
 
-      if (fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
+      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
         return true;
       };
 
-      if (fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
-      if (fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
@@ -135,121 +135,161 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.isHotelAdmin = true;
 
 
-    // OBJECT WITH THE MENU STRUCTURE
-    $scope.menu = [{
-      title: "MENU_DASHBOARD",
-      action: "rover.dashboard",
-      menuIndex: "dashboard",
-      submenu: [],
-      iconClass: "icon-dashboard"
-    }, {
-      title: "MENU_SEARCH",
-      action: "rover.search",
-      menuIndex: "search",
-      submenu: [],
-      iconClass: "icon-dashboard"
-    }, {
-      title: "MENU_AVAILABILITY",
-      action: "",
-      iconClass: "icon-availability",
-      submenu: [{
-        title: "MENU_HOUSE_STATUS",
-        action: ""
-      }, {
-        title: "MENU_AVAILABILITY",
-        action: ""
-      }]
-    }, {
-      title: "MENU_FRONT_DESK",
-      //hidden: true,
-      action: "",
-      iconClass: "icon-frontdesk",
-      submenu: [{
-        title: "MENU_CREATE_RESERVATION",
-        action: "rover.reservation.search",
-        standAlone: true,
-        menuIndex: "createReservation"
-      }, {
-        title: "MENU_ROOM_ASSIGNMENT",
-        action: ""
-      }, {
-        title: "MENU_POST_CHARGES",
-        action: ""
-      }, {
-        title: "MENU_CASHIER",
-        action: ""
-      }, {
-        title: "MENU_END_OF_DAY",
-        action: ""
-      }]
-    }, {
-      title: "MENU_CONVERSATIONS",
-      hidden: true,
-      action: "",
-      iconClass: "icon-conversations",
-      submenu: [{
-        title: "MENU_SOCIAL_LOBBY",
-        action: ""
-      }, {
-        title: "MENU_MESSAGES",
-        action: ""
-      }, {
-        title: "MENU_REVIEWS",
-        action: ""
-      }]
-    }, {
-      title: "MENU_REV_MAN",
-      action: "",
-      iconClass: "icon-revenue",
-      submenu: [{
-        title: "MENU_RATE_MANAGER",
-        action: "rover.ratemanager",
-        menuIndex: "rateManager"
-      }, {
-        title: "MENU_TA_CARDS",
-        action: "rover.companycardsearch",
-        menuIndex: "cards"
-      }, {
-        title: "MENU_DISTRIBUTION_MANAGER",
-        action: ""
-      }]
-    }, {
-      title: "MENU_HOUSEKEEPING",
-      //hidden: true,
-      action: "",
-      iconClass: "icon-housekeeping",
-      submenu: [{
-        title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.roomStatus",
-        menuIndex: "roomStatus"
-      }, {
-        title: "MENU_TASK_MANAGEMENT",
-        action: ""
-      }, {
-        title: "MENU_MAINTAENANCE",
-        action: ""
-      }]
-    }, {
-      title: "MENU_FINANCIALS",
-      //hidden: true,
-      action: "",
-      iconClass: "icon-finance",
-      submenu: [{
-        title: "MENU_REVENUE",
-        action: ""
-      }, {
-        title: "MENU_ACCOUNTING",
-        action: ""
-      }, {
-        title: "MENU_COMMISIONS",
-        action: ""
-      }]
-    }, {
-      title: "MENU_REPORTS",
-      action: "",
-      iconClass: "icon-reports",
-      submenu: []
-    }];
+    if($rootScope.isStandAlone){
+      // OBJECT WITH THE MENU STRUCTURE
+        $scope.menu = [{
+          title: "MENU_DASHBOARD",
+          action: "rover.dashboard",
+          menuIndex: "dashboard",
+          submenu: [],
+          iconClass: "icon-dashboard"
+        }, {
+          title: "MENU_AVAILABILITY",
+          action: "",
+          iconClass: "icon-availability",
+          submenu: [{
+            title: "MENU_HOUSE_STATUS",
+            action: ""
+          }, {
+            title: "MENU_AVAILABILITY",
+            action: ""
+          }]
+        }, {
+          title: "MENU_FRONT_DESK",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-frontdesk",
+          submenu: [{
+            title: "MENU_SEARCH_RESERVATIONS",
+            action: "rover.search",
+            menuIndex:"search"
+          },{
+            title: "MENU_CREATE_RESERVATION",
+            action: "rover.reservation.search",
+            standAlone: true,
+            menuIndex: "createReservation"
+          }, {
+            title: "MENU_ROOM_ASSIGNMENT",
+            action: ""
+          }, {
+            title: "MENU_POST_CHARGES",
+            action: ""
+          }, {
+            title: "MENU_CASHIER",
+            action: ""
+          }, {
+            title: "MENU_END_OF_DAY",
+            action: ""
+          }]
+        }, {
+          title: "MENU_CONVERSATIONS",
+          hidden: true,
+          action: "",
+          iconClass: "icon-conversations",
+          submenu: [{
+            title: "MENU_SOCIAL_LOBBY",
+            action: ""
+          }, {
+            title: "MENU_MESSAGES",
+            action: ""
+          }, {
+            title: "MENU_REVIEWS",
+            action: ""
+          }]
+        }, {
+          title: "MENU_REV_MAN",
+          action: "",
+          iconClass: "icon-revenue",
+          submenu: [{
+            title: "MENU_RATE_MANAGER",
+            action: "rover.ratemanager",
+            menuIndex: "rateManager"
+          }, {
+            title: "MENU_TA_CARDS",
+            action: "rover.companycardsearch",
+            menuIndex: "cards"
+          }, {
+            title: "MENU_DISTRIBUTION_MANAGER",
+            action: ""
+          }]
+        }, {
+          title: "MENU_HOUSEKEEPING",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-housekeeping",
+          submenu: [{
+            title: "MENU_ROOM_STATUS",
+            action: "rover.housekeeping.roomStatus",
+            menuIndex: "roomStatus"
+          }, {
+            title: "MENU_TASK_MANAGEMENT",
+            action: ""
+          }, {
+            title: "MENU_MAINTAENANCE",
+            action: ""
+          }]
+        }, {
+          title: "MENU_FINANCIALS",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-finance",
+          submenu: [{
+            title: "MENU_REVENUE",
+            action: ""
+          }, {
+            title: "MENU_ACCOUNTING",
+            action: ""
+          }, {
+            title: "MENU_COMMISIONS",
+            action: ""
+          }]
+        }, {
+          title: "MENU_REPORTS",
+          action: "",
+          iconClass: "icon-reports",
+          submenu: []
+        }];
+    }
+    else{
+      // OBJECT WITH THE MENU STRUCTURE
+        $scope.menu = [{
+          title: "MENU_DASHBOARD",
+          action: "rover.dashboard",
+          menuIndex: "dashboard",
+          submenu: [],
+          iconClass: "icon-dashboard"
+        }, {
+          title: "MENU_SEARCH",
+          action: "rover.search",
+          menuIndex: "search",
+          submenu: [],
+          iconClass: "icon-dashboard"
+        }, 
+         {
+          title: "MENU_HOUSEKEEPING",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-housekeeping",
+          submenu: [{
+            title: "MENU_ROOM_STATUS",
+            action: "rover.housekeeping.roomStatus",
+            menuIndex: "roomStatus"
+          }, {
+            title: "MENU_TASK_MANAGEMENT",
+            action: ""
+          }, {
+            title: "MENU_MAINTAENANCE",
+            action: ""
+          }]
+        },{
+          title: "MENU_REPORTS",
+          action: "",
+          iconClass: "icon-reports",
+          submenu: []
+        }];
+
+    }
+    
 
     $scope.$on("updateSubMenu", function(idx, item) {
       if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
@@ -312,6 +352,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    
     var routeChange = function(event, newURL){
        event.preventDefault();
        return;
@@ -319,7 +360,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $rootScope.$on('$locationChangeStart', routeChange);                   
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-
+    
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
