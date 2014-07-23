@@ -53,7 +53,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
   	* reciever function to show/hide the search result area.
   	*/
   	$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus){
-  		$scope.showSearchResultsArea = searchAreaVisibilityStatus;  
+  		$scope.showSearchResultsArea = searchAreaVisibilityStatus; 
   		// if it is hiding, we need to clear the search text
   		if(!searchAreaVisibilityStatus) {
   			$scope.textInQueryBox = '';

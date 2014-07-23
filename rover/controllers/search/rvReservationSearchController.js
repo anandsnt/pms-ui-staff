@@ -30,10 +30,12 @@ sntRover.controller('rvReservationSearchController',['$scope', '$state', '$state
 
   	$scope.$on("$viewContentLoaded", function(event){
   		setTimeout(function(){
-
-  			//we are showing the search results area
-			$scope.$broadcast("showSearchResultsArea", true); 
-  		}, 3000);
+  			$scope.$apply(function(){
+	  			//we are showing the search results area
+				$scope.$broadcast("showSearchResultsArea", true);
+  			});
+ 
+  		}, 100);
  		
   	});	
 }]);
