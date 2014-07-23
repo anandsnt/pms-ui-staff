@@ -1,6 +1,12 @@
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv',
 	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv) {
 
+		// setup a back button
+		$rootScope.setPrevState = {
+			title: 'Go back to Search',
+			name: 'rover.search'
+		}
+
 		BaseCtrl.call(this, $scope);
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		/*
