@@ -414,6 +414,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }, successCallBack);
         }
 
+        $scope.updateOccupancy = function(roomIdx) {
+            for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')].guests = {
+                    adults: parseInt($scope.reservationData.rooms[roomIdx].numAdults),
+                    children: parseInt($scope.reservationData.rooms[roomIdx].numChildren),
+                    infants: parseInt($scope.reservationData.rooms[roomIdx].numInfants)
+                }
+            }
+        }
+
         $scope.initReservationData();
     }
 ]);
