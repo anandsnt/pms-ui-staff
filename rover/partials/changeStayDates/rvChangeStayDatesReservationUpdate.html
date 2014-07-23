@@ -113,8 +113,8 @@
 
 					<h3 class="unnasign-from-guest">
 						<span ng-repeat="restriction in stayDetails.restrictions">{{restriction.name}} <span ng-show="restriction.days!= null" translate>OF</span><strong> {{restriction.days}}{{$last ? '' : ', '}}</strong>
-						</span> 
-						APPLIES_TO_RESERVATION
+						</span>
+						<span translate>APPLIES_TO_RESERVATION</span>
 					</h3>
 					<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();">continue</button>
 					<button type="button" class="button blank" ng-click="resetDates()"><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
@@ -123,12 +123,12 @@
 		</div>
 		<!-- If room is pre-assigned to another guest -->
 		<div id="room-assigned-to-another" class="updates-content" ng-show="rightSideReservationUpdates=='PREASSIGNED'" ng-class="{'hidden': rightSideReservationUpdates!='PREASSIGNED'}">
-			<h4 class="available-title error"><span translate>ROOM</span> 104 <span>NOT_AVAILABLE_FOR_DATE_RANGE</span></h4>
+			<h4 class="available-title error"><span translate>ROOM</span> 104 <span translate>NOT_AVAILABLE_FOR_DATE_RANGE</span></h4>
 			<div id="unassign-room" class="details scrollable">
 				<div class="wrapper">
 					<h3 class="unnasign-from-guest" translate>UNASSIGN_ROOM_FROM<strong>{{stayDetails.preassignedGuest}}</strong>, <span translate>ARRIVING </span><strong>{{stayDetails.preassignedGuest.arrival_date}}</strong>?</h3>
 					<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();" translate>YES</button>
-					<button type="button" class="button blank" ng-click="resetDates()" translate><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
+					<button type="button" class="button blank" ng-click="resetDates()"><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
 				</div>
 			</div>
 		</div>
