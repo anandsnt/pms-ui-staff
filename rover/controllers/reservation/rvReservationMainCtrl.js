@@ -46,6 +46,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
+                stayDays: [],
                 checkinTime: {
                     hh: '',
                     mm: '00',
