@@ -42,7 +42,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                  yearRange: "0:+10",
                  onSelect: function() {
 
-                    if(new Date($scope.begin_date) > new Date($scope.end_date)){
+                    if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)){
                       $scope.end_date = $scope.begin_date;
                     }
                  }
@@ -55,7 +55,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                  yearRange: "0:+10",
                  onSelect: function() {
 
-                    if(new Date($scope.begin_date) > new Date($scope.end_date)){
+                    if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)){
                       $scope.begin_date = $scope.end_date;
                     }
                  }

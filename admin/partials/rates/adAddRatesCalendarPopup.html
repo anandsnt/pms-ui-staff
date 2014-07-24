@@ -7,25 +7,13 @@
 	</fieldset>
 <fieldset class="holder left grey-texture-bg-color">
 <div class="center_align grey-texture-bg-color"><em>From</em>&nbsp;
-	<span ng-show="isFromDateSelected" class="italic_text">{{fromDate | date:'MMMM dd, y'}}</span></div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="fromDate" min-date="fromMinDate" max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected" calendar-id="fromCalendarID" close-popup-on-selection="true"></div>
-	   </div>
-	</div>
-</div>
+	<span class="italic_text">{{data.begin_date | date:'MMMM dd, y'}}</span></div>
+	<div ui-date="fromDateOptions" ng-model="data.begin_date" ui-date-format="yy-mm-dd"></div>
 </fieldset>
 <fieldset class="holder right grey-texture-bg-color">
 <div class="center_align grey-texture-bg-color"><em>To </em>&nbsp;
-	<span ng-show="isToDateSelected" class="italic_text">{{toMonthDateFormated | date:'MMMM dd, y'}}</span></div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="toMonthDateFormated" min-date="fromMinDate" max-date="maxDate" date="toMonthDate" is-current-month="false" is-date-selected="isToDateSelected" calendar-id="toCalendarID" close-popup-on-selection="true"></div>
-	   </div>
-	</div>
-</div>
+	<span class="italic_text">{{data.end_date | date:'MMMM dd, y'}}</span></div>
+	<div ui-date="toDateOptions" ng-model="data.end_date" ui-date-format="yy-mm-dd"></div>
 </fieldset>
 <div class="actions float">
 				<button class="button blank add-data-inline" type="button" ng-click="cancelClicked()">Cancel</button>
