@@ -426,8 +426,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 $scope.reservationData model
             */
             console.log('reservationDetails', reservationDetails);
+            console.log('reached');
             console.log('reservationListData', reservationListData);
+            console.log('shit happens')
+            console.log(reservationListData.confirmationNumber);
             // id
+            // $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.confirmNum = reservationListData.confirmationNumber;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 

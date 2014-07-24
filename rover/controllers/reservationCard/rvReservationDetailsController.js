@@ -7,6 +7,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * success call back of fetch reservation details
 		 */
 		//Data fetched using resolve in router
+		var reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
 		$scope.$parent.$parent.reservation = reservationDetails;
 
@@ -229,16 +230,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.extendNights = function() {
-			var isRoomAssigned = false;
-			if (isRoomAssigned) {
+            // TODO : This following LOC has to change if the room number changes to an array
+            // to handle multiple rooms in future
+
+			if (reservationMainData.rooms[0].roomNumber != "") {
 				$state.go('rover.reservation.staycard.changestaydates', {
-					reservationId: $scope.reservationData.reservation_card.reservation_id,
-					confirmNumber: $scope.reservationData.reservation_card.confirmation_num
+					reservationId: reservationMainData.reservationId,
+					confirmNumber: reservationMainData.confirmNum
 				});
 			} else {
 				$state.go('rover.reservation.staycard.mainCard.roomType', {
-					from_date: $scope.reservationData.arrivalDate,
-					to_date: $scope.reservationData.departureDate
+					from_date: reservationMainData.arrivalDate,
+					to_date: reservationMainData.departureDate
 				});
 			}
 		}
