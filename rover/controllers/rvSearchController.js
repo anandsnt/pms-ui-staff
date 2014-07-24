@@ -93,12 +93,6 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
     	var mappedStatus = "room-number";
       if(reservation_status == 'CHECKING_IN'){
-      	// if(roomstatus == "READY" && fostatus == "VACANT"){
-        	// mappedStatus +=  " ready";
-      	// }else{
-        	// mappedStatus += " not-ready";
-      	// }
-      
       	switch(roomReadyStatus) {
 
 			case "INSPECTED":

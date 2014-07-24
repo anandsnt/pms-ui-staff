@@ -13,11 +13,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
 		var reservationRoomStatusClass = "";
 		if(reservationStatus == 'CHECKING_IN'){
-			// if(roomStatus == 'READY' && foStatus == 'VACANT'){
-				// reservationRoomStatusClass = "ready";
-			// } else {
-				// reservationRoomStatusClass = "not-ready";
-			// }
+			
 			if(roomReadyStatus!=''){
 				if(foStatus == 'VACANT'){
 					switch(roomReadyStatus) {
@@ -42,7 +38,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 							reservationRoomStatusClass = " room-red";
 							break;
 
-		}
+		        }
 				
 				} else {
 					reservationRoomStatusClass = "room-red";
