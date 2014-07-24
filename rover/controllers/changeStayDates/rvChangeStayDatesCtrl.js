@@ -192,7 +192,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	}
 
 	$scope.goBack = function() {
-		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $stateParams.reservationId, "confirmationId": $stateParams.confirmNumber, "isrefresh": true});
+		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": $stateParams.reservationId, "confirmationId": $stateParams.confirmNumber, "isrefresh": true});
 	};
 
 	// function to get color class against a room based on it's status

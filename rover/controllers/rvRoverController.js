@@ -39,15 +39,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         return true;
       };
 
-      if (fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
+      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
         return true;
       };
 
-      if (fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
-      if (fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails') {
+      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
@@ -352,6 +352,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    
     var routeChange = function(event, newURL){
        event.preventDefault();
        return;
@@ -359,7 +360,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $rootScope.$on('$locationChangeStart', routeChange);                   
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-
+    
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
