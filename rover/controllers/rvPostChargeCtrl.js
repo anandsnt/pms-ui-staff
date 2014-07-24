@@ -161,6 +161,11 @@ sntRover.controller('RVPostChargeController',
 						totalPrice += $scope.fetchedItems[i].total_price;
 					};
 				}
+				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					if ( $scope.fetchedChargeCodes[i].isChosen ) {
+						totalPrice += $scope.fetchedChargeCodes[i].total_price;
+					};
+				}
 
 				// if we changed this scope prop inside the loop
 				// every addition will trigger a digest loop
@@ -450,10 +455,10 @@ sntRover.controller('RVPostChargeController',
 					if ( $scope.fetchedChargeCodes[i].isChosen ) {
 						each = {};
 
-						each['value']    = $scope.fetchedItems[i]['value'];
+						each['value']    = $scope.fetchedChargeCodes[i]['value'].toString();
 						each['is_item']  = false;
-						each['amount']   = $scope.fetchedItems[i]['total_price'];
-						each['quantity'] = $scope.fetchedItems[i]['count'];
+						each['amount']   = $scope.fetchedChargeCodes[i]['total_price'];
+						each['quantity'] = $scope.fetchedChargeCodes[i]['count'];
 
 						items.push( each );
 					};
