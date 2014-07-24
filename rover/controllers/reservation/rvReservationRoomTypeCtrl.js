@@ -8,8 +8,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 
-		$scope.activeMode = "ROOM_RATE";
-		// $scope.activeMode = "CALENDAR";
+		// $scope.activeMode = "ROOM_RATE";
+		$scope.activeMode = "CALENDAR";
 
 
 		// activate room type default view based on reservation settings

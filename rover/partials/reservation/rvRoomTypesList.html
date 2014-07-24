@@ -24,6 +24,49 @@
         </label>
     </div>   
 
+    <!-- Stay Dates: visible only when checked -->
+    <div id="stay-days" class="stay-days open">
+        <div id="stay-days-listing" class="days scrollable">
+            <ul class="wrapper">
+                <!-- Check in date, booked -->
+                <li class="check-in booked">
+                    <span class="day">Wed</span>
+                    <span class="date">23</span>
+                    <span class="guest-status check-in small-icon">check-in</span>
+                    <span class="price">$149</span>
+                </li>
+                <!-- Mid Stay, booked -->
+                <li class="booked">
+                    <span class="day">Thu</span>
+                    <span class="date">24</span>
+                    <span class="price">$149</span>
+                </li>
+                <!-- Currently active -->
+                <li class="active">
+                    <span class="day">Fri</span>
+                    <span class="date">25</span>
+                    <span class="price">$149</span>
+                </li>
+                <!-- Not yet booked -->
+                <li class="locked">
+                    <span class="day">Sat</span>
+                    <span class="date">26</span>
+                    <span class="price">$149</span>
+                </li>
+                <!-- Check out date -->
+                <li class="check-out">
+                    <span class="day">Sun</span>
+                    <span class="date">27</span>
+                    <span class="guest-status check-out small-icon">check-out</span>
+                </li>
+            </ul>
+        </div>
+        <!-- When not all booked -->
+        <button type="button" class="button grey">Done</button>
+        <!-- When all booked -->
+        <!-- <button type="button" class="button green">Done</button>-->
+    </div>
+
     <div ng-if="activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRates.html'"></div>
     <div ng-if="activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvRateCalendar.html'"></div>
 
