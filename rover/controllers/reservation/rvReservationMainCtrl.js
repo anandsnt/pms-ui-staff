@@ -457,7 +457,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
 
             //TODO : replace below mock up data with actual API response once API changes are done
+            $scope.reservationData.stayDays = [];
             for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                $scope.reservationData.stayDays.push({
+                    date: dateFilter(new Date(ms), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new Date(ms), 'EEE'),
+                    day: dateFilter(new Date(ms), 'dd')
+                });
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
                     guests: {
                         adults: Math.floor((Math.random() * 5) + 1),
