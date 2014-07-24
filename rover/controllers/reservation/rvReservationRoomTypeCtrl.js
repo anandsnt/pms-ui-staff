@@ -7,6 +7,16 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.containerHeight = 250;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
+
+		// $scope.activeMode = "ROOM_RATE";
+		$scope.stateCheck = {
+			activeMode: "CALENDAR",
+			stayDatesMode: false
+		};
+
+		$scope.showingStayDates = false;
+
+
 		// activate room type default view based on reservation settings
 		if ($scope.otherData.defaultRateDisplayName == 'Recommended') {
 			$scope.activeCriteria = "RECOMMENDED";
@@ -47,7 +57,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
 			$scope.$emit('setHeading', $scope.heading);
-			
+
 			$scope.displayData.dates = [];
 			$scope.rateFilterText = '';
 			$scope.filteredRates = [];
@@ -689,6 +699,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.to_trusted = function(html_code) {
 			return $sce.trustAsHtml(html_code);
+		}
+
+		$scope.toggleCalendar = function() {
+			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			$(".data-off span").toggleClass("value switch-icon");
 		}
 
 
