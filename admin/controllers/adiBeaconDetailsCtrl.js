@@ -72,24 +72,27 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
   };
 
   $scope.linkiBeacon =  function(){
-    var successfullyLinked = function(){
+    var successfullyLinked = function(data){
       alert("successfullyLinked");
+      alert(data);
     };
-    var failedLinkage = function(){
+    var failedLinkage = function(data){
       alert("failedLinkage");
+      alert(data);
     };
     var args = [];
     args.push({
-      "current_details":{"proximity_id":"XXXXXXXXX",
-      "minor_id":"YYYYY",
-      "major_id":"ZZZZZ"}
+      "CurrentEstimoteID":{
+      "proximityUUID":"XXXXXXXXX",
+      "majorID":"YYYYY",
+      "minorID":"ZZZZZ"}
       
     });
     args.push({
-      "new_details":{
-      "proximity_id":"AAAAAAAA",
-      "minor_id":"BBBBBB",
-      "major_id":"CCCCC"
+      "NewEstimoteID":{
+      "proximityUUID":"AAAAAAAA",
+      "majorID":"BBBBBB",
+      "minorID":"CCCCC"
       }
      
     });
