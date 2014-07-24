@@ -408,7 +408,7 @@ admin.controller('ADRatesAddonsCtrl', [
 	    	ngDialog.open({
 	    		 template: '/assets/partials/rates/addonsDateRangeCalenderPopup.html',
 	    		 controller: 'addonsDatesRangeCtrl',
-				 className: 'ngdialog-theme-default addon-calendar-modal single-date-picker',
+				 className: 'ngdialog-theme-default single-date-picker',
 				 closeByDocument: true,
 				 scope: $scope
 	    	});

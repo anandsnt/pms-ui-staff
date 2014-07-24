@@ -3,9 +3,8 @@ admin.controller('addonsDatesRangeCtrl',
         '$scope',
         '$rootScope',
         '$filter',
-        'dateFilter',
         'ngDialog',
-        function($scope, $rootScope, $filter, dateFilter, ngDialog) {
+        function($scope, $rootScope, $filter, ngDialog) {
 
             // quick reference to the underlaying page $scope
             $scope.parentScope = $scope.$parent.$parent;
@@ -16,23 +15,25 @@ admin.controller('addonsDatesRangeCtrl',
             $scope.dateNeeded = $scope.parentScope.dateNeeded;
 
             if ( $scope.parentScope.dateNeeded === 'From' ) {
-                $scope.datePickerDate = dateFilter( new Date($scope.parentScope.singleAddon.begin_date), 'yyyy-MM-dd' );
-
+                $scope.datePickerDate = $scope.parentScope.singleAddon.begin_date
                 // from date should be from business date
-                // and must be of the format 'yyyy-MM-dd'
-                $scope.fromDate = dateFilter( new Date($scope.parentScope.businessDate), 'yyyy-MM-dd' );
+                $scope.minDate = $rootScope.businessDate;
             } else {
-                $scope.datePickerDate = dateFilter( new Date($scope.parentScope.singleAddon.end_date), 'yyyy-MM-dd' );
-
-                $scope.fromDate = dateFilter(new Date($scope.parentScope.singleAddon.begin_date), 'yyyy-MM-dd');
+                $scope.datePickerDate = $scope.parentScope.singleAddon.end_date;
+                $scope.minDate = $scope.parentScope.singleAddon.begin_date;
             }
 
-            $scope.updateClicked = function() {
+            $scope.dateOptions = {
+                changeYear: true,
+                changeMonth: true,
+                minDate: tzIndependentDate($scope.minDate),
+                onSelect: function(dateText, inst) {
+                     // emit choosen date back
+                    $scope.$emit('datepicker.update', $scope.datePickerDate);
+                    ngDialog.close();
+             }
+            }
 
-                // emit choosen date back
-                $scope.$emit('datepicker.update', $scope.datePickerDate);
-                ngDialog.close();
-           };
 
             $scope.cancelClicked = function() {
                 ngDialog.close();
