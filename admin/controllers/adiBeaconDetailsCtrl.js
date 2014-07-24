@@ -3,6 +3,9 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
   $scope.init = function(){
     BaseCtrl.call(this, $scope);
     $scope.addmode = ($stateParams.action === "add")? true : false;
+    if(!$scope.addmode){
+      $scope.beaconId = $stateParams.action;
+    };
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
     $scope.errorMessage = "";
@@ -25,7 +28,12 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     var fetchSuccessBeaconDetails = function(data){
       $scope.$emit('hideLoader');
       $scope.data = data;
-      $scope.data.neighbours = ["0","2"];
+      //remove the editing beacon
+      angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
+                if (beaconNeighbour.id ==$scope.beaconId) {
+                  $scope.beaconNeighbours.splice(index,1);
+                }
+        });
     };
 
     var fetchBeaconDetails = function(data){
@@ -119,14 +127,18 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
       };
+      var BeaconId = $scope.data.uuid+"-"+$scope.data.majorid+"-"+$scope.data.minorid;
       if($scope.addmode){
-        updateData = $scope.data;
+        var unwantedKeys = ["majorid","minorid"];
+        updateData= dclone($scope.data, unwantedKeys);
+        updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
       }
       else{
         updateData.id = $stateParams.action;
-        var unwantedKeys = ["picture"];
+        var unwantedKeys = ["picture","majorid","minorid"];
         updateData.data= dclone($scope.data, unwantedKeys);
+        updateData.data.uuid = BeaconId;
         // Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
         if($scope.data.picture.indexOf("data:")!= -1){
           updateData.data.picture = $scope.data.picture;
