@@ -420,19 +420,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
-        $scope.populateDataModel = function(reservationDetails, reservationListData) {
+        $scope.populateDataModel = function(reservationDetails) {
             /*
                 CICO-8320 parse the reservation Details and store the data in the
                 $scope.reservationData model
             */
-            console.log('reservationDetails', reservationDetails);
-            console.log('reached');
-            console.log('reservationListData', reservationListData);
-            console.log('shit happens')
-            console.log(reservationListData.confirmationNumber);
             // id
-            // $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
-            $scope.reservationData.confirmNum = reservationListData.confirmationNumber;
+            $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
             // stay
@@ -441,9 +435,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
-            $scope.reservationData.company.id = reservationListData.company_id;
-            $scope.reservationData.travelAgent.id = reservationListData.travel_agent_id;
-            $scope.reservationData.guest.id = reservationListData.guest_details.user_id;
+            $scope.reservationData.company.id = $scope.reservationListData.company_id;
+            $scope.reservationData.travelAgent.id = $scope.reservationListData.travel_agent_id;
+            $scope.reservationData.guest.id = $scope.reservationListData.guest_details.user_id;
 
             // TODO : This following LOC has to change if the room number changes to an array
             // to handle multiple rooms in future

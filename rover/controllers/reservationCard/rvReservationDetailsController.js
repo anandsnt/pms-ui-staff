@@ -7,12 +7,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * success call back of fetch reservation details
 		 */
 		//Data fetched using resolve in router
-		var reservationMainData = $scope.$parent.reservationData;
+		reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
 		$scope.$parent.$parent.reservation = reservationDetails;
-
-		$scope.populateDataModel(reservationDetails, reservationListData);
-
 		$scope.reservationnote = "";
 		if ($scope.reservationData.reservation_card.currency_code != null) {
 			$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
@@ -69,6 +66,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id == null ? "" : reservationListData.travel_agent_id;
 
 		angular.copy(reservationListData, $scope.reservationListData);
+		$scope.populateDataModel(reservationDetails);
 		// console.log($scope.reservationListData)
 		$scope.$emit('cardIdsFetched', {
 			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
@@ -230,8 +228,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.extendNights = function() {
-            // TODO : This following LOC has to change if the room number changes to an array
-            // to handle multiple rooms in future
+			// TODO : This following LOC has to change if the room number changes to an array
+			// to handle multiple rooms in future
 
 			if (reservationMainData.rooms[0].roomNumber != "") {
 				$state.go('rover.reservation.staycard.changestaydates', {
@@ -239,11 +237,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					confirmNumber: reservationMainData.confirmNum
 				});
 			} else {
-				$state.go('rover.reservation.staycard.mainCard.roomType', {
-					from_date: reservationMainData.arrivalDate,
-					to_date: reservationMainData.departureDate
-				});
+				$scope.goToRoomAndRates();
 			}
+		}
+
+		$scope.goToRoomAndRates = function() {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: reservationMainData.arrivalDate,
+				to_date: reservationMainData.departureDate
+			});
 		}
 
 	}
