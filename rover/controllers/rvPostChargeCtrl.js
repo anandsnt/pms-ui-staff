@@ -12,10 +12,10 @@ sntRover.controller('RVPostChargeController',
 			// quick ref to fetched items
 			// and chosen one from the list
 			$scope.fetchedItems = $scope.fetchedData.items;
+			$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
 			$scope.selectedChargeItem = null;
-
-			console.log( $scope.fetchedItems );
-
+			//$scope.isResultOnFetchedChargecode = false;
+			
 			// set the default bill number
 			$scope.billNumber = $scope.fetchedData.bill_numbers[0];
 
@@ -47,7 +47,10 @@ sntRover.controller('RVPostChargeController',
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
 				var query = $scope.query ? $scope.query.toLowerCase() : '';
-
+				//$scope.foundItemWithName = false;
+				//$scope.foundItemWithChargecode = false;
+				var isFoundInFetchedItems = false;
+				$scope.isResultOnFetchedChargecode = false;
 				if (query === '') {
 					$scope.clearQuery();
 					return;
@@ -65,19 +68,61 @@ sntRover.controller('RVPostChargeController',
 					// find
 					if( item.item_name.toLowerCase().indexOf(query) >= 0 ) {
 						item.show = true;
-					} else {
+						//$scope.foundItemWithName = true;
+						isFoundInFetchedItems = true;
+					}
+					else if( item.charge_code_name.toLowerCase().indexOf(query) >= 0 ) {
+						item.show = true;
+						//$scope.foundItemWithChargecode = true;
+						isFoundInFetchedItems = true;
+					}
+					else {
 						item.show = false;
 					}
 				};
+				/*
+				 *  When searched by charge code, if the charge code has no item configured, 
+				 * 	show charge code and the description but no price
+				 * 	Searching on fetchedChargeCodes array with charge_code or description.
+				 */
+				if(!isFoundInFetchedItems){
+					console.log("not found item with name or charge codes");
+					for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+						var item = $scope.fetchedChargeCodes[i];
+						// find
+						if( item.charge_code.toLowerCase().indexOf(query) >= 0 ) {
+							console.log("found item on fetchedChargeCodes code");
+							item.show = true;
+							console.log(item);
+							$scope.isResultOnFetchedChargecode = true;
+						}
+						else if( item.description.toLowerCase().indexOf(query) >= 0 ) {
+							console.log("found item on fetchedChargeCodes desc");
+							item.show = true;
+							console.log(item);
+							$scope.isResultOnFetchedChargecode = true;
+						}
+						else {
+							item.show = false;
+						}
+							
+					}
+					
+				}
 			};
 
 			// clear the filter query
 			$scope.clearQuery = function() {
+				
 				$scope.query = '';
-
+				
 				// show all
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					$scope.fetchedItems[i].show = true;
+				};
+				// show all
+				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					$scope.fetchedChargeCodes[i].show = true;
 				};
 			};
 
@@ -132,12 +177,10 @@ sntRover.controller('RVPostChargeController',
 			*	3. update the net total price
 			*/
 			$scope.addItem = function(item) {
-				
 				// it is already added
 				if ( item.isChosen ) {
 					item.count++;
 				}
-
 				// adding to the list
 				else {
 					item.isChosen = true;
@@ -199,6 +242,12 @@ sntRover.controller('RVPostChargeController',
 
 				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
 					if ( $scope.fetchedItems[i].isChosen ) {
+						ret = true;
+						break;
+					};
+				};
+				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					if ( $scope.fetchedChargeCodes[i].isChosen ) {
 						ret = true;
 						break;
 					};
@@ -390,6 +439,19 @@ sntRover.controller('RVPostChargeController',
 						each = {};
 
 						each['value']    = $scope.fetchedItems[i]['value'];
+						each['is_item']  = true;
+						each['amount']   = $scope.fetchedItems[i]['total_price'];
+						each['quantity'] = $scope.fetchedItems[i]['count'];
+
+						items.push( each );
+					};
+				}
+				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					if ( $scope.fetchedChargeCodes[i].isChosen ) {
+						each = {};
+
+						each['value']    = $scope.fetchedItems[i]['value'];
+						each['is_item']  = false;
 						each['amount']   = $scope.fetchedItems[i]['total_price'];
 						each['quantity'] = $scope.fetchedItems[i]['count'];
 
