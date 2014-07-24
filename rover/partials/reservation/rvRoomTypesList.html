@@ -7,7 +7,7 @@
 
      <!-- Reservation header -->
     <div id="rooms-and-rates-header" class="reservation-header">
-        <div class="switch-button">
+        <div class="switch-button" ng-click="toggleCalendar()">
             <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" />
             <label class="data-off">
                 <span class="value">Calendar</span>
@@ -18,47 +18,22 @@
                 <span class="value">Rooms &amp; Rates</span>
             </label>
         </div>
-        <label class="checkbox inline dates-toggle">
+        <label class="checkbox inline dates-toggle" ng-class="{'checked': stateCheck.stayDatesMode}" ng-click="stateCheck.stayDatesMode = !stateCheck.stayDatesMode">
             <input name="showing-stay-dates" id="showing-stay-dates" value="stay-dates" type="checkbox" />
             Showing Stay Dates
         </label>
     </div>   
 
     <!-- Stay Dates: visible only when checked -->
-    <div id="stay-days" class="stay-days open">
+    <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}">
         <div id="stay-days-listing" class="days scrollable">
             <ul class="wrapper">
-                <!-- Check in date, booked -->
-                <li class="check-in booked">
-                    <span class="day">Wed</span>
+                <li class="check-in booked" ng-repeat="day in reservationData.rooms[0].stayDates" ng-show="day">
+                    <span class="day">{{day}}</span>
                     <span class="date">23</span>
                     <span class="guest-status check-in small-icon">check-in</span>
                     <span class="price">$149</span>
-                </li>
-                <!-- Mid Stay, booked -->
-                <li class="booked">
-                    <span class="day">Thu</span>
-                    <span class="date">24</span>
-                    <span class="price">$149</span>
-                </li>
-                <!-- Currently active -->
-                <li class="active">
-                    <span class="day">Fri</span>
-                    <span class="date">25</span>
-                    <span class="price">$149</span>
-                </li>
-                <!-- Not yet booked -->
-                <li class="locked">
-                    <span class="day">Sat</span>
-                    <span class="date">26</span>
-                    <span class="price">$149</span>
-                </li>
-                <!-- Check out date -->
-                <li class="check-out">
-                    <span class="day">Sun</span>
-                    <span class="date">27</span>
-                    <span class="guest-status check-out small-icon">check-out</span>
-                </li>
+                <li>                
             </ul>
         </div>
         <!-- When not all booked -->
@@ -67,8 +42,8 @@
         <!-- <button type="button" class="button green">Done</button>-->
     </div>
 
-    <div ng-if="activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRates.html'"></div>
-    <div ng-if="activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvRateCalendar.html'"></div>
+    <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'assets/partials/reservation/rvRoomRates.html'"></div>
+    <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvRateCalendar.html'"></div>
 
 </section>
 <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
