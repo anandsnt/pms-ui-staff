@@ -1,37 +1,17 @@
-
-sntRover.controller('RVContactInfoDatePickerController',['$scope','dateFilter','ngDialog',function($scope,dateFilter,ngDialog){
+sntRover.controller('RVContactInfoDatePickerController',['$scope','$rootScope','ngDialog','dateFilter',function($scope,$rootScope,ngDialog,dateFilter){
 
 $scope.setUpData = function(){
+   $scope.dateOptions = {
+     changeYear: true,
+     changeMonth: true,
+     maxDate: tzIndependentDate($rootScope.businessDate),
+     yearRange: "-100:+0",
+      onSelect: function(dateText, inst) {
+        ngDialog.close();
+      }
 
-    $scope.isDateSelected = false;
-    $scope.birthday = $scope.guestCardData.contactInfo.birthday;
-
-    if($scope.birthday!= null){
-      $scope.date = $scope.birthday;
-      $scope.isDateSelected = true;
     }
-    else{
-      $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
-    }
-  
-    $scope.maxDate =dateFilter(new Date(), 'yyyy-MM-dd');
-//data for the year dropdown
-    var presentDate = new Date();
-    $scope.endYear = presentDate.getFullYear();
-    $scope.startYear = $scope.endYear-100;
-    $scope.closePopupOnSelection = false;
 };
 $scope.setUpData();
-
-
-$scope.updateDate = function(){
-
-    if($scope.closePopupOnSelection){
-      $scope.guestCardData.contactInfo.birthday = $scope.date;
-       ngDialog.close();
-    };  
-
-  
-};
 
 }]);
