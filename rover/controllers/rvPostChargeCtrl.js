@@ -86,20 +86,15 @@ sntRover.controller('RVPostChargeController',
 				 * 	Searching on fetchedChargeCodes array with charge_code or description.
 				 */
 				if(!isFoundInFetchedItems){
-					console.log("not found item with name or charge codes");
 					for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 						var item = $scope.fetchedChargeCodes[i];
 						// find
 						if( item.charge_code.toLowerCase().indexOf(query) >= 0 ) {
-							console.log("found item on fetchedChargeCodes code");
 							item.show = true;
-							console.log(item);
 							$scope.isResultOnFetchedChargecode = true;
 						}
 						else if( item.description.toLowerCase().indexOf(query) >= 0 ) {
-							console.log("found item on fetchedChargeCodes desc");
 							item.show = true;
-							console.log(item);
 							$scope.isResultOnFetchedChargecode = true;
 						}
 						else {
