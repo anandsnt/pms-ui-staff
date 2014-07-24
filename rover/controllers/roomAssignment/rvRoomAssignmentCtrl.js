@@ -190,12 +190,48 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
+
 		var reservationRoomStatusClass = "";
 		
-			if(room.room_status == 'READY' && room.fo_status == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+			// if(room.room_status == 'READY' && room.fo_status == 'VACANT'){
+				// reservationRoomStatusClass = "ready";
+			// } else {
+				// reservationRoomStatusClass = "not-ready";
+			// }
+			
+		var roomReadyStatus = room.room_ready_status;
+		var foStatus = room.fo_status;
+		var checkinInspectedOnly = room.checkin_inspected_only;
+	    if(roomReadyStatus!=''){
+				if(foStatus == 'VACANT'){
+					switch(roomReadyStatus) {
+
+						case "INSPECTED":
+							reservationRoomStatusClass = ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								reservationRoomStatusClass = ' room-orange';
+								break;
+							} else {
+								reservationRoomStatusClass = ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							reservationRoomStatusClass = " room-orange";
+							break;
+			
+						case "DIRTY":
+							reservationRoomStatusClass = " room-red";
+							break;
+
+		        }
+				
+				} else {
+					reservationRoomStatusClass = "room-red";
+				}
+				
 			}
 		
 		return reservationRoomStatusClass;
