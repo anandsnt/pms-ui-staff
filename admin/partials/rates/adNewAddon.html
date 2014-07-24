@@ -64,14 +64,16 @@
 					<label>
 						{{'FROM_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" ng-click="popupCalendar('From')">
+					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date">
+					<span class="trash-icon" ng-click="resetDate('From')"></span>
 					<span class="icons icon-calendar" ng-click="popupCalendar('From')"></span>
 				</div>
 				<div class="entry rel">
 					<label>
 						{{'TO_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" ng-click="popupCalendar('To')">
+					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date">
+					<span class="trash-icon" ng-click="resetDate('To')"></span>
 					<span class="icons icon-calendar" ng-click="popupCalendar('To')"></span>
 				</div>
 
