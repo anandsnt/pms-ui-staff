@@ -420,6 +420,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
+        /*
+            This function is called once the stay card loads and 
+            populates the $scope.reservationData object with the current reservation's data.
+
+            This is done to enable use of the $scope.reservationData object in the subsequent screens in 
+            the flow from the staycards 
+        */
+
         $scope.populateDataModel = function(reservationDetails) {
             /*
                 CICO-8320 parse the reservation Details and store the data in the
@@ -447,10 +455,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //cost
             $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
 
-            //TODO : populate the staydates object with the stay information
-
+            //TODO : replace below mock up data with actual API response once API changes are done
+            for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
+                    guests: {
+                        adults: Math.floor((Math.random() * 5) + 1),
+                        children: Math.floor((Math.random() * 5) + 1),
+                        infants: Math.floor((Math.random() * 5) + 1)
+                    },
+                    rate: {
+                        id: Math.floor((Math.random() * 100) + 1),
+                        name: "Rate name"
+                    }
+                }
+            }
             console.log('$scope.reservationData model', $scope.reservationData);
-
         };
 
         $scope.initReservationData();
