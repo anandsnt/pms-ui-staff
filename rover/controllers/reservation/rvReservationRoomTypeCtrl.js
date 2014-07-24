@@ -258,13 +258,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//TODO : 7641 - Update the rateDetails array in the reservationData
 			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
-
-			//Navigate to the next screen
 			$scope.checkOccupancyLimit();
-			$state.go('rover.reservation.staycard.mainCard.addons', {
-				"from_date": $scope.reservationData.arrivalDate,
-				"to_date": $scope.reservationData.departureDate
-			});
 		}
 
 		$scope.showAllRooms = function() {
