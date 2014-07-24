@@ -71,7 +71,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.isRateFilterActive = true;
 			$scope.rateFiltered = false;
 
-
 			//interim check on page reload if the page is refreshed
 			if ($scope.reservationData.arrivalDate == '' || $scope.reservationData.departureDate == '') {
 				//defaulting to today's and tommorow's dates
@@ -86,14 +85,45 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			}
 
-			//console.log("RESVOBJ", $scope.reservationData);
-
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 0;
 			$scope.rooms = $scope.reservationData.rooms;
 			$scope.activeRoom = 0;
 
+			// CICO - 6081 ! 
+			/*
+				Need to check the room type availability adn the house availability
 
+				if (room type available || house available) then
+					goto ROOM_RATE
+				else
+					goto CALENDAR
+				endif
+			*/
+
+			// .. do the availabilty check here
+			// TODO : This section might have to be redone when there are more than one room in a reservation
+
+			var isRoomAvailable = true;
+			var isHouseAvailable = true;
+
+			_.each(roomRates.results, function(dayInfo, index) {
+				if (isHouseAvailable && dayInfo.house.availability < 1) {
+					isHouseAvailable = false;
+				}
+				if (isRoomAvailable && $scope.reservationData.rooms[$scope.activeRoom].roomTypeId != "") {
+					var roomStatus = _.findWhere(dayInfo.room_types, {
+						"id": $scope.reservationData.rooms[$scope.activeRoom].roomTypeId
+					});
+					if (typeof roomStatus != "undefined" && roomStatus.availability < 1) {
+						isRoomAvailable = false;
+					};
+				}
+			});
+
+			if (!isRoomAvailable && !isHouseAvailable) {
+				$scope.toggleCalendar();
+			}
 
 			//Restructure rates for easy selection
 			var rates = [];
@@ -706,7 +736,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$(".data-off span").toggleClass("value switch-icon");
 		}
-		
+
 		init();
 	}
 ]);
