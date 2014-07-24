@@ -78,9 +78,25 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     var failedLinkage = function(){
       alert("failedLinkage");
     };
+    var args = [];
+    args.push({
+      "current_details":{"proximity_id":"XXXXXXXXX",
+      "minor_id":"YYYYY",
+      "major_id":"ZZZZZ"}
+      
+    });
+    args.push({
+      "new_details":{
+      "proximity_id":"AAAAAAAA",
+      "minor_id":"BBBBBB",
+      "major_id":"CCCCC"
+      }
+     
+    });
     var options = {
       "successCallBack": successfullyLinked,
-      "failureCallBack": failedLinkage
+      "failureCallBack": failedLinkage,
+      "arguments": args
     };
 
     try{
