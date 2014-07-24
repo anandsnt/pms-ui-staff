@@ -46,6 +46,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
+                stayDays: [],
                 checkinTime: {
                     hh: '',
                     mm: '00',
@@ -419,6 +420,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
             }
         }
+
+        /*
+            This function is called once the stay card loads and 
+            populates the $scope.reservationData object with the current reservation's data.
+
+            This is done to enable use of the $scope.reservationData object in the subsequent screens in 
+            the flow from the staycards 
+        */
 
         $scope.populateDataModel = function(reservationDetails) {
             /*
