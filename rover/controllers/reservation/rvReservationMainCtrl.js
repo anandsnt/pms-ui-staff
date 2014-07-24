@@ -471,7 +471,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         infants: Math.floor((Math.random() * 5) + 1)
                     },
                     rate: {
-                        id: Math.floor((Math.random() * 100) + 1),
+                        id: Math.floor((Math.random() * 2) + 1),
                         name: "Rate name"
                     }
                 }

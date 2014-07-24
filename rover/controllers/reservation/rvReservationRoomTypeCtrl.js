@@ -11,7 +11,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		// $scope.activeMode = "ROOM_RATE";
 		$scope.stateCheck = {
 			activeMode: "ROOM_RATE",
-			stayDatesMode: false
+			stayDatesMode: false,
+			selectedStayDate: ""
 		};
 
 		$scope.showingStayDates = false;
@@ -248,24 +249,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
 			 *	are updated with the rate and rateName information
 			 */
-			populateStayDates(rateId);
 
-			$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
-			$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
-			$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;
-			$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
-			$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id;
-			$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id;
-			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
-			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
+			if ($scope.stateCheck.stayDatesMode) {
+				$scope.stateCheck.selectedStayDate.rate.id = rateId;
+			} else {
+				populateStayDates(rateId);
+				$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
+				$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
+				$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;
+				$scope.reservationData.rooms[$scope.activeRoom].rateName = $scope.displayData.allRates[rateId].name;
+				$scope.reservationData.demographics.market = $scope.displayData.allRates[rateId].market_segment.id;
+				$scope.reservationData.demographics.source = $scope.displayData.allRates[rateId].source.id;
+				$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
+				$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
-			//TODO: update the Tax Amount information
-			$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
-			$scope.reservationData.totalTaxAmount = 0;
+				//TODO: update the Tax Amount information
+				$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
+				$scope.reservationData.totalTaxAmount = 0;
 
-			//TODO : 7641 - Update the rateDetails array in the reservationData
-			$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
-			$scope.checkOccupancyLimit();
+				//TODO : 7641 - Update the rateDetails array in the reservationData
+				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
+				$scope.checkOccupancyLimit();
+			}
 		}
 
 		$scope.showAllRooms = function() {
@@ -706,7 +711,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
 			$(".data-off span").toggleClass("value switch-icon");
 		}
-		
+
+		$scope.showStayDateDetails = function(selectedDate) {
+			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
+			console.log($scope.stateCheck.selectedStayDate.rate.id);
+		}
+
 		init();
 	}
 ]);

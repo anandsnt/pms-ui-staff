@@ -28,10 +28,10 @@
     <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}">
         <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates" style="height:70px">
             <ul class="wrapper" style="width:{{reservationData.stayDays.length * 65}}px">
-                <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last}">
+                <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last}" ng-click="showStayDateDetails(stayday.date)">
                     <span class="day">{{stayday.dayOfWeek}}</span>
                     <span class="date">{{stayday.day}}</span>
-                    <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}">check-in</span>
+                    <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
                     <!-- <span class="price">$149</span> -->
                 </li>                
             </ul>
