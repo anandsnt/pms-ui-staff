@@ -6,7 +6,7 @@ var GlobalApp = function(){
     this.iBeaconLinker = null;
     this.enableURLChange = true;
 
-    this.DEBUG = false;
+    this.DEBUG = true;
 
 
     

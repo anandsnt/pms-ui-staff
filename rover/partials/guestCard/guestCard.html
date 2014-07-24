@@ -1,4 +1,4 @@
-<div id="guest-card" class="guest-card cards"  ng-class="cardCls()" ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event);clickedOnGuestCard($event)" resize>
+<div id="guest-card" class="guest-card cards"  ng-class="cardCls()" ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event);clickedOnGuestCard($event)" resize ng-if="!viewState.searching">
     <div class="cards-wrapper">
         <!-- Cards Header -->
         <header class="cards-header">

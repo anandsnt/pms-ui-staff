@@ -1,23 +1,31 @@
 <section  class="content current">
 	<div data-view="PaymentMethodsView">
 		<header class="content-title float">
-			<h2> Payment Methods </h2>
+			<h2 translate> PAYMENT_METHODS </h2>
 			<span class="count"> (
 				{{data.payments.length}}
 				) </span>
+			<a class='action add' ng-click="addNew()" translate>ADD_NEW</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<table id="likes" class="grid">
+		<div ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/paymentMethods/adAddPaymentMethod.html'"></div>		
+
+		<table class="grid">
 			<tbody ng-repeat="payment in data.payments">
+				
 				<tr>
-					<td>
+					<td ng-if="payment.is_system_defined">
 						<strong>{{payment.description}}</strong>
-						<em>(System defined)</em>
+						<em ng-if="payment.is_system_defined" translate>SYSTEM_DEFINED</em>
 					</td>
-					<td class="activate">
+					<td ng-if="!payment.is_system_defined" ng-click="editPaymentMethod($index)" ng-hide="currentClickedElement == $index">
+						<a><strong>{{payment.description}}</strong></a>
+					</td>
+					
+					<td class="activate" ng-hide="currentClickedElement == $index">
 						<div class="entry">
-							<td class="activate">
+							<td class="activate" ng-hide="currentClickedElement == $index">
 								<div class="entry" >
 									<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index)">
 										<input type="checkbox">
@@ -27,7 +35,9 @@
 							</td>
 						</div>
 					</td>
+					<td colspan="3" ng-include="getTemplateUrl($index)"></td>
 				</tr>
+				<!--- Sub list for Payment type Credit card ---->
 				<tr ng-show="payment.description == 'Credit Card' && payment.is_active == 'true'">
 					<td colspan="3" class="nested-table">
 						<table id="credit_cards_types" class="grid">
@@ -35,7 +45,7 @@
 								<tr data-credit-card-id="1" ng-repeat="cc in data.credit_card_types">
 									<td>
 										<strong>{{cc.description}}</strong>
-										<em>(System defined)</em>
+										<em translate>SYSTEM_DEFINED</em>
 									</td>
 									<td class="activate">
 										<div class="entry" >
@@ -50,6 +60,7 @@
 						</table>
 					</td>
 				</tr>
+				
 			</tbody>
 		</table>
 	</div>
