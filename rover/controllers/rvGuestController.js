@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -65,6 +65,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			if ($scope.otherData.fromSearch) {
 				$scope.otherData.fromSearch = false;
 			}
+		};
+
+		// update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
+		var updateSearchCache = function() {
+		    var data = {
+		        'firstname': $scope.guestCardData.contactInfo.first_name,
+		        'lastname':  $scope.guestCardData.contactInfo.last_name,
+		        'location':  $scope.guestCardData.contactInfo.address.city,
+		        'vip':       $scope.guestCardData.contactInfo.vip
+		    };
+
+		    RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
 		};
 
 		$scope.init = function() {
@@ -184,6 +196,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.updateContactInfo = function() {
 			var saveUserInfoSuccessCallback = function(data) {
+				// update few of the details to searchSrv
+				updateSearchCache();
 				$scope.$emit('hideLoader');
 			};
 			var saveUserInfoFailureCallback = function(data) {

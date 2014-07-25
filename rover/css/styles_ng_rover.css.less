@@ -58,6 +58,24 @@
 
 @import "less/app/08_smartband.less"; 
 
+// back button
+.actions-back {
+  position: absolute;
+  left: 55px;
+  top: 10px;
+  padding: 0;
+
+  .back-button:not(.button):not(.switch) {
+    padding: 4px 20px 6px 45px;
+    display:block;
+    background-position: 15px -1588px;
+
+    &:hover {
+      background-position: 15px -1528px;
+    }
+  }
+}
+
 
 #main-menu .nav-toggle.updated span.active {
    background-image:  asset-url("image-active-drawer.png") !important;

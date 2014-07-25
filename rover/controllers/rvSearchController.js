@@ -1,6 +1,6 @@
 sntRover.controller('searchController', [
   '$scope',
-  '$state'
+  '$state',
   '$rootScope',
   'RVSearchSrv',
   '$stateParams',

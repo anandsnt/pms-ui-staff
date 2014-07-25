@@ -18,9 +18,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		//Data fetched using resolve in router
 		$scope.reservationData = reservationDetails;
 
-		// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
+		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		var updateSearchCache = function() {
-			RVSearchSrv.updateCache($scope.reservationData.reservation_card.confirmation_num, {
+
+			// room related details
+			var data = {
 				'room':                   $scope.reservationData.reservation_card.room_number,
 				'reservation_status':     $scope.reservationData.reservation_card.reservation_status,
 				'roomstatus':             $scope.reservationData.reservation_card.room_status,
@@ -28,8 +30,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'is_reservation_queued':  $scope.reservationData.reservation_card.is_reservation_queued,
 				'is_queue_rooms_on':      $scope.reservationData.reservation_card.is_queue_rooms_on,
 				'late_checkout_time':     $scope.reservationData.reservation_card.late_checkout_time,
-				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout
-			});
+				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
+			};
+
+			RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
 		};
 
 		// update any room related data to search service also
