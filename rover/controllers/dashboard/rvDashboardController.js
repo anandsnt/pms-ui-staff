@@ -51,13 +51,39 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
            $scope.refreshScroller('dashboard_scroller');
 			     $scope.setTitle(title);
         }, 2000);
-		
+
+        //TODO: delete the code below and use the function
         $state.go('rover.dashboard.manager');
+
+        //reddirectToDefaultDashboard();
+
+   };
+
+   $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
+        $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
+   });
+
+   var reddirectToDefaultDashboard = function(){
+        
+        var defaultDashboardMappedWithStates = {
+          'admin': 'rover.dashboard.frontdesk',
+          'manager': 'rover.dashboard.manager',
+        }
+        if($rootScope.default_dashboard in defaultDashboardMappedWithStates){
+            $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
+        }
+        else{
+
+        }
+
 
    };
 
    init();
    
+
+
+
    $scope.gotosearch = function(){
    	$state.go("rover.search");
    	// rover.search({type:'DUEIN'});
