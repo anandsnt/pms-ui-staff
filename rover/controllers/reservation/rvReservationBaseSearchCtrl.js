@@ -110,7 +110,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
              *  The rates for these days have to be popuplated in the subsequent states appropriately
              */
             var initStayDates = function(roomNumber) {
+                    if (roomNumber == 0) {
+                        $scope.reservationData.stayDays = [];
+                    }
                     for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                        if (roomNumber == 0) {
+                            $scope.reservationData.stayDays.push({
+                                date: dateFilter(new Date(ms), 'yyyy-MM-dd'),
+                                dayOfWeek: dateFilter(new Date(ms), 'EEE'),
+                                day: dateFilter(new Date(ms), 'dd')
+                            });
+                        }
                         $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
                             guests: {
                                 adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),

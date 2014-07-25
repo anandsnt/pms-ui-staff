@@ -46,6 +46,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
+                stayDays: [],
                 checkinTime: {
                     hh: '',
                     mm: '00',
@@ -420,6 +421,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
+        /*
+            This function is called once the stay card loads and 
+            populates the $scope.reservationData object with the current reservation's data.
+
+            This is done to enable use of the $scope.reservationData object in the subsequent screens in 
+            the flow from the staycards 
+        */
+
         $scope.populateDataModel = function(reservationDetails) {
             /*
                 CICO-8320 parse the reservation Details and store the data in the
@@ -430,8 +439,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
             // stay
-            $scope.reservationData.arrivalDate = new Date(reservationDetails.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-");
-            $scope.reservationData.departureDate = new Date(reservationDetails.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-");
+            console.log('from backend', reservationDetails.reservation_card.arrival_date);
+            console.log('from UI - 1', new Date(reservationDetails.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"));
+            console.log('from UI - 2', dateFilter(new Date(reservationDetails.reservation_card.arrival_date), 'yyyy-MM-dd'));
+            $scope.reservationData.arrivalDate = dateFilter(new Date(reservationDetails.reservation_card.arrival_date), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new Date(reservationDetails.reservation_card.departure_date), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
@@ -443,14 +455,52 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // to handle multiple rooms in future
             $scope.reservationData.rooms[0].roomNumber = reservationDetails.reservation_card.room_number;
             $scope.reservationData.rooms[0].roomTypeDescription = reservationDetails.reservation_card.room_type_description;
-
             //cost
             $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
+            /*
+            reservation stay dates manipulation
+            */
 
-            //TODO : populate the staydates object with the stay information
+            $scope.reservationData.stayDays = [];
+            angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
+                $scope.reservationData.stayDays.push({
+                    date: dateFilter(new Date(item.date), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new Date(item.date), 'EEE'),
+                    day: dateFilter(new Date(item.date), 'dd')
+                });
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new Date(item.date), 'yyyy-MM-dd')] = {
+                    guests: {
+                        adults: item.adults,
+                        children: item.children,
+                        infants: item.infants
+                    },
+                    rate: {
+                        id: item.rate_id
+                    }
+                }
+                // TODO : Extend for each stay dates
+                if (index == 0) {
+                    $scope.reservationData.rooms[0].roomTypeId = item.room_type_id;
+                }
 
-            console.log('$scope.reservationData model', $scope.reservationData);
-
+            });
+            // appending departure date for UI handling since its not in API response
+            $scope.reservationData.stayDays.push({
+                date: dateFilter(new Date($scope.reservationData.departureDate), 'yyyy-MM-dd'),
+                dayOfWeek: dateFilter(new Date($scope.reservationData.departureDate), 'EEE'),
+                day: dateFilter(new Date($scope.reservationData.departureDate), 'dd')
+            });
+            $scope.reservationData.rooms[0].stayDates[dateFilter(new Date($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
+                guests: {
+                    adults: "",
+                    children: "",
+                    infants: ""
+                },
+                rate: {
+                    id: ""
+                }
+            }
+            console.log('$scope.reservationData model - 2', $scope.reservationData);
         };
 
         $scope.initReservationData();
