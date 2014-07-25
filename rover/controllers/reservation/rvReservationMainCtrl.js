@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state', 'dateFilter',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state, dateFilter) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state', 'dateFilter', 'baseSearchData',
+    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state, dateFilter, baseSearchData) {
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
@@ -136,7 +136,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     travelAgentIATA: ""
                 }
             }
-
+            // default max value if max_adults, max_children, max_infants is not configured
+            var defaultMaxvalue = 5;
+            var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData = {
                 markets: baseData.demographics.markets,
                 sources: baseData.demographics.sources,
@@ -149,13 +151,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     value: "v2",
                     description: "The Second"
                 }],
-                maxAdults: '',
-                maxChildren: '',
-                maxInfants: '',
+                maxAdults: (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults,
+                maxChildren: (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children,
+                maxInfants: (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants,
                 roomTypes: [],
                 fromSearch: false,
                 recommendedRateDisplay: '',
-                defaultRateDisplayName: ''
+                defaultRateDisplayName: '',
+                businessDate: baseSearchData.businessDate
             };
 
             $scope.guestCardData = {};

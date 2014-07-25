@@ -23,6 +23,9 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         resolve: {
             baseData: function(RVReservationSummarySrv) {
                 return RVReservationSummarySrv.fetchInitialData();
+            },
+            baseSearchData: function(RVReservationBaseSearchSrv) {
+                return RVReservationBaseSearchSrv.fetchBaseSearchData();
             }
         }
     });

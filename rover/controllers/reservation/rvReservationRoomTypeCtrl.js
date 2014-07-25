@@ -12,7 +12,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.stateCheck = {
 			activeMode: "ROOM_RATE",
 			stayDatesMode: false,
-			selectedStayDate: ""
+			selectedStayDate: "",
+			guestOptionsIsEditable: false
 		};
 
 		$scope.showingStayDates = false;
@@ -754,7 +755,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				return false;
 			}
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
-			console.log($scope.stateCheck.selectedStayDate.rate.id);
+		}
+
+		$scope.toggleEditGuestOptions = function(){
+			$scope.stateCheck.guestOptionsIsEditable = !$scope.stateCheck.guestOptionsIsEditable;
 		}
 
 		init();
