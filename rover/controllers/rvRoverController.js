@@ -23,6 +23,68 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.menuOpen = false;
     };
 
+
+
+    /***
+     * A method on the $rootScope to determine if the
+     * slide animation during stateChange should run in reverse or forward
+     *
+     * @param {string} fromState - name of the fromState
+     * @param {string} toState - name of the toState
+     *
+     * @return {boolean} - to indicate reverse or not
+     */
+    $rootScope.shallRevDir = function(fromState, toState) {
+      if (fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus') {
+        return true;
+      };
+
+      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
+        return true;
+      };
+
+      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+        return true;
+      };
+
+      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+        return true;
+      };
+
+      if (fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch') {
+        return true;
+      };
+
+      return false;
+    };
+
+    // this is make sure we add an
+    // additional class 'return-back' as a
+    // parent to ui-view, so as to apply a
+    // reverse slide animation
+    var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
+
+      // to study the current changing states
+      console.log(fromState.name + ' ===> ' + toState.name);
+
+      // check this template for the applied class:
+      // app/assets/rover/partials/staycard/rvStaycard.html
+
+      // FUTURE: this check can include other state name also,
+      // from which while returning we expect a reverse slide
+      if ($rootScope.shallRevDir(fromState.name, toState.name)) {
+        $rootScope.returnBack = true;
+      } else {
+        $rootScope.returnBack = false;
+      }
+    });
+
+    // make sure you also destroy 'uiViewRevAnim'
+    // when moving away to release memory
+    $scope.$on('$destroy', uiViewRevAnim);
+
+
+
     $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
@@ -97,9 +159,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           //hidden: true,
           action: "",
           iconClass: "icon-frontdesk",
-          submenu: [ {
-          title: "MENU_SEARCH",
-          action: "rover.search"},{
+          submenu: [{
+            title: "MENU_SEARCH_RESERVATIONS",
+            action: "rover.search",
+            menuIndex:"search"
+          },{
             title: "MENU_CREATE_RESERVATION",
             action: "rover.reservation.search",
             standAlone: true,
@@ -288,6 +352,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    
     var routeChange = function(event, newURL){
        event.preventDefault();
        return;
@@ -295,7 +360,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $rootScope.$on('$locationChangeStart', routeChange);                   
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-
+    
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the

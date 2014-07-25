@@ -1,5 +1,6 @@
 sntRover.controller('searchController', [
   '$scope',
+  '$state'
   '$rootScope',
   'RVSearchSrv',
   '$stateParams',
@@ -7,7 +8,7 @@ sntRover.controller('searchController', [
   'searchResultdata',
   '$timeout',
   '$vault',
-  function($scope, $rootScope, RVSearchSrv, $stateParams, $filter, searchResultdata, $timeout, $vault) {
+  function($scope, $state, $rootScope, RVSearchSrv, $stateParams, $filter, searchResultdata, $timeout, $vault) {
 	
   var that = this;
 
@@ -283,5 +284,17 @@ sntRover.controller('searchController', [
   		}
   		return queueClass;
   };
+
+  $scope.goToReservationDetails = function(reservationID, confirmationID){
+      $scope.currentReservationID = reservationID;
+      $scope.currentConfirmationID = confirmationID;
+      $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:reservationID, confirmationId:confirmationID, isrefresh: true});
+  };
+
+  //Relaunch the reservation details screen when the ows connection retry succeeds
+  $scope.$on('OWSConnectionRetrySuccesss', function(event){
+      $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
+  });
+
   //end of controller
 }]);

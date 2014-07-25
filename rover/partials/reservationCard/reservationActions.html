@@ -12,7 +12,7 @@
 			{{reservationData.reservation_card.arrival_time}}
 		</div>
 		
-		<a class="button red" ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'checkoutButton'})" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
 		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
@@ -39,13 +39,20 @@
 
 		<a class="button white red-text hidden">Cancel reservation</a>
 		
-		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
 			View bill / Routing
 		</a>
 		
-		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
 		
 		<!-- show add charge -->
 		
 		<a class="button white green-text" ng-click="openPostCharge()" ng-show="displayAddCharge(reservationData.reservation_card.reservation_status)">Add Charge</a>
+		
+		<!-- show smartbands -->
+		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled)">SmartBands</a>
+
+	
+	
+	
 	</div>

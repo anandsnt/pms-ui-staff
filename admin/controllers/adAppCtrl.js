@@ -67,7 +67,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-frontdesk",
 					submenu: [
 					{
-						title: "MENU_SEARCH",
+						title: "MENU_SEARCH_RESERVATIONS",
 						action: "staff#/staff/search/"
 					},
 					{

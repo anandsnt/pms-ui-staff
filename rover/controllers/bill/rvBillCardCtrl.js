@@ -436,19 +436,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     /*
 	 * Go back to staycard - Depends on changes in bill do refresh or not
 	 */
-    $scope.goBackToStayCard = function() {
+    $scope.goBackToStayCard = function(reservationId, confirmationNumber){
     	if($scope.isRefreshOnBackToStaycard)
     	{
-    		$state.go("rover.staycard.reservationcard.reservationdetails", {
-    			"id" : $scope.reservationBillData.reservation_id,
-    			"confirmationId": $scope.reservationBillData.confirm_no,
-    			"isrefresh": true
-    		});
+    		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
     	} else {
-    		$state.go("rover.staycard.reservationcard.reservationdetails", {
-    			"id" : $scope.reservationBillData.reservation_id,
-    			"confirmationId": $scope.reservationBillData.confirm_no
-    		});
+    		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
     	}
     };
 	// the listner must be destroyed when no needed anymore
