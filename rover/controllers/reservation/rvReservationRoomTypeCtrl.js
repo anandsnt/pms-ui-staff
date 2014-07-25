@@ -12,7 +12,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.stateCheck = {
 			activeMode: "ROOM_RATE",
 			stayDatesMode: false,
-			selectedStayDate: ""
+			selectedStayDate: "",
+			preferredType: "",
+			rateFilterText: ""
 		};
 
 		$scope.showingStayDates = false;
@@ -67,7 +69,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.$emit('setHeading', $scope.heading);
 
 			$scope.displayData.dates = [];
-			$scope.rateFilterText = '';
 			$scope.filteredRates = [];
 			$scope.isRateFilterActive = true;
 			$scope.rateFiltered = false;
@@ -180,7 +181,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
 
 			//TODO: Handle the selected roomtype from the previous screen
-			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
+			$scope.stateCheck.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
 			//$scope.preferredType = 5;
 			$scope.roomTypes = roomRates.room_types;
 			$scope.filterRooms();
@@ -211,7 +212,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				if (typeof d != 'undefined') {
 					//Sort Rooms inside the rates so that they are in asc order of avg/day
 					//TODO: Restructure the data
-					if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
+					if ($scope.stateCheck.preferredType == null || $scope.stateCheck.preferredType == '' || typeof $scope.stateCheck.preferredType == 'undefined') {
 						d.rooms.sort(function(a, b) {
 							if (a.total[d.rate.id].average < b.total[d.rate.id].average)
 								return -1;
@@ -225,9 +226,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					} else {
 						//preferred room process
 						if (_.where(d.rooms, {
-							id: $scope.preferredType
+							id: $scope.stateCheck.preferredType
 						}).length > 0) {
-							d.preferredType = $scope.preferredType;
+							d.preferredType = $scope.stateCheck.preferredType;
 							d.rooms.sort(function(a, b) {
 								if (a.total[d.rate.id].average < b.total[d.rate.id].average)
 									return -1;
@@ -322,7 +323,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		$scope.filterRooms = function() {
-			if ($scope.preferredType == null || $scope.preferredType == '' || typeof $scope.preferredType == 'undefined') {
+			if ($scope.stateCheck.preferredType == null || $scope.stateCheck.preferredType == '' || typeof $scope.stateCheck.preferredType == 'undefined') {
 				if ($scope.showLessRooms && $scope.displayData.allRooms.length > 1) {
 					$scope.displayData.roomTypes = $scope.displayData.allRooms.first();
 					var level = $scope.displayData.allRooms.first()[0].level;
@@ -368,7 +369,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				// If a room type of category Level2 is selected, show this room type plus the lowest priced room type of the level 3 category.
 				// If a room type of category Level3 is selected, only show the selected room type.
 				$scope.displayData.roomTypes = $($scope.displayData.allRooms).filter(function() {
-					return this.id == $scope.preferredType;
+					return this.id == $scope.stateCheck.preferredType;
 				});
 				if ($scope.displayData.roomTypes.length > 0) {
 					var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
@@ -383,7 +384,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
-								return this.level == level && this.id != $scope.preferredType && this.availability == true && this.rates.length > 0 && parseInt(this.averagePerNight) >= parseInt($scope.roomAvailability[$scope.preferredType].averagePerNight);
+								return this.level == level && this.id != $scope.stateCheck.preferredType && this.availability == true && this.rates.length > 0 && parseInt(this.averagePerNight) >= parseInt($scope.roomAvailability[$scope.stateCheck.preferredType].averagePerNight);
 							});
 						}
 						//Sort the candidate rooms to get the one with the least average rate
@@ -405,7 +406,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						}
 					}
 				}
-				$scope.selectedRoomType = $scope.preferredType;
+				$scope.selectedRoomType = $scope.stateCheck.preferredType;
 			}
 			$scope.setRates();
 			$scope.refreshScroll();
@@ -701,7 +702,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		});
 
 		$scope.selectRate = function(selectedRate) {
-			$scope.rateFilterText = selectedRate.rate.name;
+			$scope.stateCheck.rateFilterText = selectedRate.rate.name;
 			$scope.filterRates();
 			$scope.rateFiltered = true;
 			$scope.refreshScroll();
@@ -715,8 +716,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 		$scope.filterRates = function() {
 			$scope.rateFiltered = false;
-			if ($scope.rateFilterText.length > 0) {
-				var re = new RegExp($scope.rateFilterText, "gi");
+			if ($scope.stateCheck.rateFilterText.length > 0) {
+				var re = new RegExp($scope.stateCheck.rateFilterText, "gi");
 				$scope.filteredRates = $($scope.displayData.availableRates).filter(function() {
 					return this.rate.name.match(re);
 				})
@@ -728,7 +729,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.$watch('activeCriteria', function() {
 			$scope.refreshScroll();
-			$scope.rateFilterText = "";
+			$scope.stateCheck.rateFilterText = "";
 			$scope.filterRates();
 		});
 
@@ -750,7 +751,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.showStayDateDetails = function(selectedDate) {
 			// by pass departure stay date from stay dates manipulation 
-			if(selectedDate == $scope.reservationData.departureDate){
+			if (selectedDate == $scope.reservationData.departureDate) {
 				return false;
 			}
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
