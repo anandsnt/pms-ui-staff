@@ -116,7 +116,7 @@
 						</span>
 						<span translate>APPLIES_TO_RESERVATION</span>
 					</h3>
-					<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();">continue</button>
+					<button id="extend-stay" type="button" class="button green" ng-click="checkAvailabilityStatus();" translate>CONTINUE</button>
 					<button type="button" class="button blank" ng-click="resetDates()"><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
 				</div>
 			</div>
@@ -124,13 +124,20 @@
 		<!-- If room is pre-assigned to another guest -->
 		<div id="room-assigned-to-another" class="updates-content" ng-show="rightSideReservationUpdates=='PREASSIGNED'" ng-class="{'hidden': rightSideReservationUpdates!='PREASSIGNED'}">
 			<h4 class="available-title error"><span translate>ROOM</span> 
-				<span id="room-number" class="room-number" ng-class="getColorCode(stayDetails.calendarDetails.room_ready_status, stayDetails.calendarDetails.use_inspected)">{{roomSelected}}
-				</span> 
+				{{roomSelected}}
 				<span translate>NOT_AVAILABLE_FOR_DATE_RANGE</span>
 			</h4>
 			<div id="unassign-room" class="details scrollable">
 				<div class="wrapper">
-					<h3 class="unnasign-from-guest" translate>UNASSIGN_ROOM_FROM<strong>{{stayDetails.preassignedGuest}}</strong>, <span translate>ARRIVING </span><strong>{{stayDetails.preassignedGuest.arrival_date}}</strong>?</h3>
+					<h3 class="unnasign-from-guest">
+						<span translate>
+							UNASSIGN_ROOM_FROM
+						</span>
+						<strong>{{stayDetails.preassignedGuest.name}}</strong>, 
+						<span translate>ARRIVING </span>
+						<strong>{{stayDetails.preassignedGuest.arrival_date|date:mmddyyyyFormat}}</strong>
+						?
+					</h3>
 					<button id="extend-stay" type="button" class="button green" ng-click="showRoomAvailable();" translate>YES</button>
 					<button type="button" class="button blank" ng-click="resetDates()"><span translate>NO</span> (<span translate>RESET_DATES </span>)</button>
 				</div>
@@ -154,11 +161,21 @@
 				<button type="button" class="button green" ng-click="goToRoomAndRatesCalendar()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 			</div>
 		</div>
+		<!--Multiple rates available for the reseration. User will be provided with an option to go to the find room and rates screen -->
+		<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='HAS_MULTIPLE_RATES'" ng-class="{'hidden': rightSideReservationUpdates!='HAS_MULTIPLE_RATES'}">
+			<div class="info">
+				<span class="h1 error" translate>UNABLE_TO_EXTEND_STAY</span>
+				<span class="h2" translate>MULTIPLE_RATES_EXISTS</span>
+				<button type="button" class="button green" ng-click="goToRoomAndRatesCalendar()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
+			</div>
+		</div>
 
 		</div>
 		<!-- Find rooms and rates option is not available for non-standalone PMS (ROOM_TYPE_AVAILABLE, ROOM_NOT_AVAILABLE) -->
-		<div class="room-rates-btn" ng-hide="rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE'">
+		<div class="room-rates-btn" ng-hide="rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
+		rightSideReservationUpdates=='HAS_MULTIPLE_RATES'">
 			<button type="button" class="button green" ng-click="goToRoomAndRatesCalendar()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 		</div>
 	</div>
 </div>
+
