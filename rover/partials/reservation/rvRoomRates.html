@@ -35,8 +35,9 @@
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
             <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="stateCheck.rateFilterText" ng-change="filterRates();">
         </div>
+        <!-- ng-hide="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms()">
+            <select ng-model="stateCheck.preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event)">
                 <option value="" translate>RESV_ALL_ROOMS</option>
             </select>
         </div>
