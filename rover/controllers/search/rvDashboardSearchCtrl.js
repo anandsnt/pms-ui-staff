@@ -1,4 +1,5 @@
-sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$stateParams', '$filter',  function($scope, $state, $stateParams, $filter){
+sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$rootScope', '$stateParams', '$filter',  
+    function($scope, $state, $rootScope, $stateParams, $filter){
 
 	/*
 	* Controller class for dashboard search,
@@ -12,6 +13,14 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
 	var scrollerOptions = { click: true, preventDefault: false };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
+
+    $scope.$on("$includeContentLoaded", function(){
+        //we are showing the add new guest button in searhc only if it is standalone & search result is empty
+        if($rootScope.isStandAlone){
+            $scope.$broadcast("showAddNewGuestButton", true);
+        }        
+    });
+
 
   	//click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event){

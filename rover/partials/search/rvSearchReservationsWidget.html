@@ -9,11 +9,12 @@
 	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
 	        ng-keyup="queryEntered()" ng-focus="focusOnSearchText()"
 	        ng-model="textInQueryBox" >
-	        
+	    	<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="results.length==0 && showAddNewGuestButton && textInQueryBox.trim().length>=3 && showSearchResultsArea">+ Add new </a>		      	
 	    </div>
+
 	</form>
 
-	<section id="dashboard-search" class="content scrollable scroll-guest-tab" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="top:120px;">
+	<section id="dashboard-search" class="content scrollable dashboard-scroll-div" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
@@ -65,14 +66,16 @@
 							<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
 						</a>
 					</li>
-					<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length>=3">
+					<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length>=3 && !isTyping">
 						<div class="info">
 							<span class="icon-no-content icon-search"></span>
 							<strong class="h1">No matches </strong>
 							<span class="h2">Check that you didn't mispell the <strong>Name</strong> or 
 								<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
-								<strong>Confirmation</strong> number.
+								<strong>Confirmation</strong> number
 							</span>
+							<span ng-show="results.length==0 && showAddNewGuestButton"> or  <a>Add a New Guest <a/> </span>
+							.
 						</div>
 					</li>
 					<li class="no-content" ng-show="results.length == 0 && searchType != 'default' && (isLateCheckoutList && textInQueryBox=='')">
