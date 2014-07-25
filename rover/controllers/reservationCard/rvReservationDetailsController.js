@@ -1,19 +1,40 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', 'RVSearchSrv', '$vault',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, RVSearchSrv, $vault) {
 
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: 'Go back to Search',
-			name: 'rover.search'
+			title: 'Search results',
+			name: 'rover.search',
+			param: JSON.parse( $vault.get('lastSearchParam') )
 		}
 
 		BaseCtrl.call(this, $scope);
+
+
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		/*
 		 * success call back of fetch reservation details
 		 */
 		//Data fetched using resolve in router
 		$scope.reservationData = reservationDetails;
+
+		// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
+		var updateSearchCache = function() {
+			RVSearchSrv.updateCache($scope.reservationData.reservation_card.confirmation_num, {
+				'room':                   $scope.reservationData.reservation_card.room_number,
+				'reservation_status':     $scope.reservationData.reservation_card.reservation_status,
+				'roomstatus':             $scope.reservationData.reservation_card.room_status,
+				'fostatus':               $scope.reservationData.reservation_card.fo_status,
+				'is_reservation_queued':  $scope.reservationData.reservation_card.is_reservation_queued,
+				'is_queue_rooms_on':      $scope.reservationData.reservation_card.is_queue_rooms_on,
+				'late_checkout_time':     $scope.reservationData.reservation_card.late_checkout_time,
+				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout
+			});
+		};
+
+		// update any room related data to search service also
+		updateSearchCache();
+
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
 		if ($scope.reservationData.reservation_card.currency_code != null) {
@@ -76,6 +97,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 
 
+		
+
+
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
 
 			$scope.$emit('hideLoader');
@@ -83,6 +107,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0,0);
+
+			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
+			updateSearchCache();
 		};
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
@@ -176,6 +203,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 		$scope.successCallback = function() {
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+
+			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
+			updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
 		$scope.isNewsPaperPreferenceAndWakeupCallAvailable = function() {
@@ -214,8 +244,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
-
 		};
-
 	}
 ]);

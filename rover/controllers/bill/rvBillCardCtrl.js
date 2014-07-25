@@ -2,11 +2,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 
+	// set a back button on header
 	$rootScope.setPrevState = {
-		title: 'Go back to Staycard',
+		title: 'Staycard',
 		callback: 'goBackToStayCard',
-		scope: $scope,
-		reverse: true
+		scope: $scope
 	}
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard

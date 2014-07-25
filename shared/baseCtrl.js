@@ -176,7 +176,7 @@ function BaseCtrl($scope, $vault, returnBack){
 	    			$vault.set( key, this.y );
 	    		});
 	    	};
-    	}, 1100);
+    	}, 1300);
     };
 
     /*

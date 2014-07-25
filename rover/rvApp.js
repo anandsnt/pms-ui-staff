@@ -12,6 +12,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', '$vault', function ($rootS
 	*	@private
 	*/
 	var $_mustRevAnim = false,
+		$_userReqBack = false,
 		$_prevStateName = null,
 		$_prevStateParam = null;
 
@@ -37,6 +38,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', '$vault', function ($rootS
 	}, {
 		fromState: 'rover.companycarddetails',
 		toState  : 'rover.companycardsearch'
+	}, {
+		fromState: 'rover.staycard.roomassignment',
+		toState  : 'rover.staycard.reservationcard.reservationdetails'
 	}];
 
 
@@ -77,11 +81,14 @@ sntRover.run(['$rootScope', '$state', '$stateParams', '$vault', function ($rootS
 	*/
 	$rootScope.loadPrevState = function() {
 
+		// flag $_userReqBack as true
+		$_userReqBack = true;
+
 		// since these folks will be created anyway
 		// so what the hell, put them here
 		var options = $rootScope.setPrevState,
-			name    = options.stateName || $_prevStateName,
-			param   = options.stateName ? options.stateParam || $_prevStateParam : $_prevStateParam,
+			name    = !!options.name ? options.name : $_prevStateName,
+			param   = !!options.name && !!options.param ? options.param : $_prevStateParam,
 			reverse = typeof options.reverse === 'boolean' ? true : false;
 
 		// if currently disabled, return
@@ -124,7 +131,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', '$vault', function ($rootS
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
 		console.log(fromState.name + ' ===> ' + toState.name);
-		console.log(toParams);
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
@@ -147,9 +153,18 @@ sntRover.run(['$rootScope', '$state', '$stateParams', '$vault', function ($rootS
 		$_prevStateParam = fromParams;
 	});
 
+
+	/**
+	*	before the state can change, we need to inform the assiciated service that we are returning back
+	*	based on this info the service will return the previously cached data, rather than requesting the server
+
+	*	on such request the service will look for certain values in $vault, 
+	*	if they are avaliable the cached data will be updated before returning the data
+	*/
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		if ( $_mustRevAnim /* && upto this much time has elapsed */ ) {
+		if ( $_userReqBack ) {
 			toParams.useCache = true;
+			$_userReqBack = false;
 		};
 	});
 }]);

@@ -12,14 +12,23 @@ sntRover.controller('searchController', [
   var that = this;
 
   // passing in $vault too as params
-  BaseCtrl.call(this, $scope, $vault, $rootScope.isReturning);
+  BaseCtrl.call( this, $scope, $vault, $rootScope.isReturning() );
 
   $scope.shouldShowLateCheckout = true;
 
-  $scope.$emit("updateRoverLeftMenu","search");
+  $scope.$emit("updateRoverLeftMenu", "search");
 
-  //model used in query textbox, we will be using this across
-  $scope.textInQueryBox = "";
+  // save the current search param to $vault
+  $vault.set( 'lastSearchParam', JSON.stringify($stateParams) );
+
+  // model used in query textbox, we will be using this across
+  if ( $rootScope.isReturning() ) {
+    $scope.textInQueryBox = $vault.get( 'lastSearchQuery' );
+    $vault.remove( 'lastSearchQuery' );
+  } else {
+    $scope.textInQueryBox = '';
+  }
+  
   
   var oldTerm = "";
   var oldType = "";
@@ -30,7 +39,9 @@ sntRover.controller('searchController', [
   if( !!$stateParams && !!$stateParams.type && $stateParams.type.trim() != '' ) {
       oldType = $stateParams.type;
       firstClickedItem = $scope.currentType = $stateParams.type;
-      $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
+      $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT') ? true : false;
+  } else {
+    // TODO: check if there was a search term present
   }
 
   // setup scroller with probeType
@@ -65,7 +76,7 @@ sntRover.controller('searchController', [
   oldType = "";
   oldTerm = $scope.textInQueryBox;
   setTimeout(refreshScroller, 1000);
-  $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+  $scope.searchTermPresent = !!oldTerm ? true : false;
       
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
@@ -180,6 +191,9 @@ sntRover.controller('searchController', [
 	$scope.queryEntered = function(){
 
 		var queryText = $scope.textInQueryBox;
+
+    // write this to the $vault
+    $vault.set( 'lastSearchQuery', angular.copy($scope.textInQueryBox) );
 		
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 	    //setting the heading of the screen to "Search"
