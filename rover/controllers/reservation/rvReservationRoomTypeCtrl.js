@@ -17,6 +17,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			activeMode: "ROOM_RATE",
 			stayDatesMode: false,
 			selectedStayDate: "",
+			guestOptionsIsEditable: false,
 			preferredType: "",
 			rateFilterText: "",
 			dateModeActiveDate: ""
@@ -782,7 +783,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
-			console.log($scope.stateCheck.selectedStayDate.rate.id);
+		}
+
+		$scope.toggleEditGuestOptions = function(){
+			$scope.stateCheck.guestOptionsIsEditable = !$scope.stateCheck.guestOptionsIsEditable;
 		}
 		/*
 			The below method toggles the staydates view.

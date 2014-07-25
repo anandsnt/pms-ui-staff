@@ -34,6 +34,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 })();
 
             }
+
+            /* TODO :: baseSearchData - its been populated in ResevationMainCtrl, so reuse everthing from ReservationMainCtrl
+                changes to be done
+                1. remove baseSearchData resolve from (rover.reservation.search) rvStayCardRouter.js router file
+                2. replace $scope.businessDate with $scope.otherData.businessDate
+                3. remove $scope.otherData.maxAdults, $scope.otherData.maxChildren, $scope.otherData.maxInfants manipulation from this controller
+            */
+
             $scope.businessDate = baseSearchData.businessDate;
             if ($scope.reservationData.arrivalDate == '') {
                 $scope.reservationData.arrivalDate = dateFilter($scope.businessDate, 'yyyy-MM-dd');
