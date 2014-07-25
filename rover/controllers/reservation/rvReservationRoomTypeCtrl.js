@@ -10,13 +10,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		// $scope.activeMode = "ROOM_RATE";
 		$scope.stateCheck = {
+			rateSelected: {
+				allDays: false,
+				oneDay: false,
+			},
 			activeMode: "ROOM_RATE",
 			stayDatesMode: false,
 			selectedStayDate: "",
 			guestOptionsIsEditable: false,
 			preferredType: "",
 			rateFilterText: "",
-			activeStayDate: ""
+			dateModeActiveDate: ""
 		};
 
 		$scope.showingStayDates = false;
@@ -283,6 +287,23 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 		}
 
+		var isRateSelected = function() {
+			// Have to check if all the days have rates and enable the DONE button
+			var allSelected = {
+				allDays: true,
+				oneDay: false
+			};
+			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(staydateconfig, date) {
+				if (!allSelected.oneDay && (date != $scope.reservationData.departureDate) && (staydateconfig.rate.id != null || staydateconfig.rate.id != "")) {
+					allSelected.oneDay = true;
+				}
+				if (allSelected.allDays && (date != $scope.reservationData.departureDate) && (staydateconfig.rate.id == null || staydateconfig.rate.id == "")) {
+					allSelected.allDays = false;
+				}
+			});
+			return allSelected;
+		}
+
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
@@ -291,6 +312,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
+				// see if the done button has to be enabled
+				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
+				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
+				$scope.stateCheck.preferredType = roomId;
 			} else {
 				populateStayDates(rateId);
 				$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
@@ -752,16 +777,32 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		$scope.showStayDateDetails = function(selectedDate) {
-			// by pass departure stay date from stay dates manipulation 
+			// by pass departure stay date from stay dates manipulation
 			if (selectedDate == $scope.reservationData.departureDate) {
 				return false;
 			}
-			$scope.stateCheck.activeStayDate = selectedDate;
+			$scope.stateCheck.dateModeActiveDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
 		}
 
 		$scope.toggleEditGuestOptions = function(){
 			$scope.stateCheck.guestOptionsIsEditable = !$scope.stateCheck.guestOptionsIsEditable;
+		}
+		/*
+			The below method toggles the staydates view.
+			Also, if the user is coming in this view for the first time, the first date is auto-selected
+		*/
+		$scope.toggleStayDaysMode = function() {
+			if ($scope.stateCheck.dateModeActiveDate == '') {
+				$scope.stateCheck.dateModeActiveDate = $scope.reservationData.arrivalDate;
+				$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate];
+			}
+			$scope.stateCheck.stayDatesMode = !$scope.stateCheck.stayDatesMode;
+			// see if the done button has to be enabled
+			if ($scope.stateCheck.stayDatesMode) {
+				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
+				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
+			}
 		}
 
 		init();

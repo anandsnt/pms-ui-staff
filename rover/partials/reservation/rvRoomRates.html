@@ -2,7 +2,7 @@
     <div class="reservation-filters" ng-class="{'with-guests': stateCheck.stayDatesMode}">
         <div class="edit-guests" ng-show="stateCheck.stayDatesMode">
             <a ng-click="toggleEditGuestOptions()" class="button has-arrow toggle">
-                <span class="label">Guests <em ng-hide="stateCheck.guestOptionsIsEditable">({{ stateCheck.activeStayDate | date : 'EEE dd'}})</em></span>{{(stateCheck.selectedStayDate.guests.adults*1 + stateCheck.selectedStayDate.guests.children*1 + stateCheck.selectedStayDate.guests.infants*1)}}
+                <span class="label">Guests <em ng-hide="stateCheck.guestOptionsIsEditable">({{ stateCheck.dateModeActiveDate | date : 'EEE dd'}})</em></span>{{(stateCheck.selectedStayDate.guests.adults*1 + stateCheck.selectedStayDate.guests.children*1 + stateCheck.selectedStayDate.guests.infants*1)}}
             </a>
 
             <div id="guest-options" class="reservation-guests" ng-show="stateCheck.guestOptionsIsEditable">
