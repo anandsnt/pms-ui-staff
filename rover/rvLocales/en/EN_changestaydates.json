@@ -28,7 +28,9 @@
 	"YES": "Yes",
 	"UNABLE_TO_EXTEND_STAY": "Unable to extend stay",
 	"NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE": "There are no rooms available for the booked room type. Change room type or rate to extend the stay",
-	"FIND_ROOMS_AND_RATE_BUTTON_TEXT": "Find rooms &amp; rate"
+	"MULTIPLE_RATES_EXISTS": "Multiple rates exist on reservation, select rate to extend the reservation",
+	"FIND_ROOMS_AND_RATE_BUTTON_TEXT": "Find rooms &amp; rate",
+	"CONTINUE": "continue"
 
 
 	
