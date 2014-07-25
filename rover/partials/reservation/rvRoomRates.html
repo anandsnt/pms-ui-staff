@@ -33,11 +33,10 @@
         </ul>
         <div class="find-rates" ng-show="activeCriteria == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-
-            <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">
+            <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="stateCheck.rateFilterText" ng-change="filterRates();">
         </div>
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms()">
+            <select ng-model="stateCheck.preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms()">
                 <option value="" translate>RESV_ALL_ROOMS</option>
             </select>
         </div>

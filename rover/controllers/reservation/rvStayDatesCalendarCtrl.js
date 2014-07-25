@@ -1,4 +1,4 @@
-sntRover.controller('RVchangeStayDatesController', ['$state','$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
+sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
 function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 
 	//inheriting some useful things
@@ -84,27 +84,25 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	//or after checkout date.
 	this.checkIfStaydatesCanBeExtended = function(){
 		var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
-		var checkinTime = $scope.checkinDateInCalender.setHours(00, 00, 00);
-		var checkoutTime = $scope.checkoutDateInCalender.setHours(00, 00, 00);
+		var checkinTime = checkinDate.setHours(00, 00, 00);
+		var checkoutTime = checkoutDate.setHours(00, 00, 00);
 		var thisTime = "";
 		var canExtendStay = false;
-		console.log($scope.stayDetails.calendarDetails.available_dates);
 
 		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-			console.log("inside");
 			//Put time correction 
 			thisTime = getDateObj(this.date).setHours(00, 00, 00);
 			//Check if a day available for extending prior to the checkin day
             if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
 				if (thisTime < checkinTime) {
 					canExtendStay = true;
-					return false;//break out of for loop
+					return false;
 				}
             }
             //Check if a day is available to extend after the departure date
 			if (thisTime > checkoutTime) {
 				canExtendStay = true;
-				return false;//break out of for loop
+				return false;
 			}
 		});
 
@@ -463,7 +461,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		return events;
 	};
 
-	this.initialise();
+	//this.initialise();
 
 	$scope.refreshScroller = function() {
 		setTimeout(function() {
@@ -471,14 +469,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			$scope.myScroll['edit_staydate_calendar'].refresh();
 		}, 300);
 	};
-
-	$scope.goToRoomAndRatesCalendar = function() {
-		$state.go('rover.reservation.staycard.mainCard.roomType', {
-			from_date: $scope.confirmedCheckinDate,
-			to_date: $scope.confirmedCheckoutDate,
-			view: "CALENDAR"
-		});
-	}
 
 	$scope.$on('$viewContentLoaded', function() {
 
