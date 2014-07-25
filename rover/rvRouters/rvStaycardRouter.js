@@ -56,9 +56,14 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     });
 
     $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
-        url: '/roomType/:from_date/:to_date',
+        url: '/roomType/:from_date/:to_date/:view',
         templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
         controller: 'RVReservationRoomTypeCtrl',
+        onEnter: function($stateParams) {
+            if (typeof $stateParams.view == "undefined" || $stateParams.view == null) {
+                $stateParams.view = "DEFAULT";
+            }
+        },
         resolve: {
             roomRates: function(RVReservationBaseSearchSrv, $stateParams) {
                 var params = {};

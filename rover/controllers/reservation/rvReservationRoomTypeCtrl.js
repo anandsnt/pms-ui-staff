@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams) {
 
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
@@ -104,26 +104,32 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// .. do the availabilty check here
 			// TODO : This section might have to be redone when there are more than one room in a reservation
 
-			var isRoomAvailable = true;
-			var isHouseAvailable = true;
+			if ($stateParams.view == "DEFAULT") {
+				var isRoomAvailable = true;
+				var isHouseAvailable = true;
 
-			_.each(roomRates.results, function(dayInfo, index) {
-				if (isHouseAvailable && dayInfo.house.availability < 1) {
-					isHouseAvailable = false;
-				}
-				if (isRoomAvailable && $scope.reservationData.rooms[$scope.activeRoom].roomTypeId != "") {
-					var roomStatus = _.findWhere(dayInfo.room_types, {
-						"id": $scope.reservationData.rooms[$scope.activeRoom].roomTypeId
-					});
-					if (typeof roomStatus != "undefined" && roomStatus.availability < 1) {
-						isRoomAvailable = false;
-					};
-				}
-			});
+				_.each(roomRates.results, function(dayInfo, index) {
+					if (isHouseAvailable && dayInfo.house.availability < 1) {
+						isHouseAvailable = false;
+					}
+					if (isRoomAvailable && $scope.reservationData.rooms[$scope.activeRoom].roomTypeId != "") {
+						var roomStatus = _.findWhere(dayInfo.room_types, {
+							"id": $scope.reservationData.rooms[$scope.activeRoom].roomTypeId
+						});
+						if (typeof roomStatus != "undefined" && roomStatus.availability < 1) {
+							isRoomAvailable = false;
+						};
+					}
+				});
 
-			if (!isRoomAvailable && !isHouseAvailable) {
+				if (!isRoomAvailable && !isHouseAvailable) {
+					$scope.toggleCalendar();
+				}
+			} else if ($stateParams.view == "CALENDAR") {
 				$scope.toggleCalendar();
 			}
+
+
 
 			//Restructure rates for easy selection
 			var rates = [];
