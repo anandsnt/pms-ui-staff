@@ -237,14 +237,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					confirmNumber: reservationMainData.confirmNum
 				});
 			} else {
-				$scope.goToRoomAndRates();
+				$scope.goToRoomAndRates("CALENDAR");
 			}
 		}
 
-		$scope.goToRoomAndRates = function() {
+		$scope.goToRoomAndRates = function(state) {
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: reservationMainData.arrivalDate,
-				to_date: reservationMainData.departureDate
+				to_date: reservationMainData.departureDate,
+				view: state
 			});
 		}
 
