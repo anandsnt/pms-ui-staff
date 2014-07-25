@@ -49,6 +49,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
             "amount": $scope.smartBandData.fixedAmount
        };
        $scope.smartBands.push(newData);
+       $scope.smartBandLength = $scope.smartBands.length;
+       
 	};
 	
 	$scope.fetchSuccessKeyRead = function(accountNumber){
