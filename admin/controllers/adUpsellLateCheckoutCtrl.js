@@ -62,7 +62,7 @@ $scope.setUpLateCheckoutArray = function(){
    }
    else
        $scope.chekoutchargesArray = [];
-}
+};
 
 /**
 * To watch Upsell data
@@ -80,7 +80,7 @@ $scope.startWatching = function(){
        $scope.startWatchingCheckoutcharge0();            
        $scope.startWatchingCheckoutcharge1();
    });
-}
+};
 $scope.startWatchingCheckoutcharge0 = function(){
 
 /**
@@ -106,7 +106,7 @@ $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldVal
   else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
     $scope.disableSecondOption = false;
 }, true);  
-}
+};
 $scope.startWatchingCheckoutcharge1 = function(){
 
 /**
@@ -159,7 +159,10 @@ $scope.saveClick = function(){
     updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
     updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
     updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
-    updateData.extended_checkout_charge = $scope.chekoutchargesArray;
+    angular.forEach($scope.chekoutchargesArray,function(value, key) {
+		value.time = value.time+" PM";
+	});
+    updateData.extended_checkout = $scope.chekoutchargesArray;
     updateData.charge_code = $scope.upsellData.selected_charge_code;
 	updateData.room_types = [];
 	updateData.deleted_room_types = [];
@@ -175,6 +178,7 @@ $scope.saveClick = function(){
    	var updateChainSuccessCallback = function(data) {
        	$scope.$emit('hideLoader');
    	};
+   	console.log(JSON.stringify(updateData));
    	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
 
 };
