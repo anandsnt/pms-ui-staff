@@ -15,7 +15,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			selectedStayDate: "",
 			guestOptionsIsEditable: false,
 			preferredType: "",
-			rateFilterText: ""
+			rateFilterText: "",
+			activeStayDate: ""
 		};
 
 		$scope.showingStayDates = false;
@@ -755,6 +756,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			if (selectedDate == $scope.reservationData.departureDate) {
 				return false;
 			}
+			$scope.stateCheck.activeStayDate = selectedDate;
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
 		}
 
