@@ -1,20 +1,57 @@
 <div class="reservations-content-wrapper">
-    <div class="reservation-filters">
-        <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms()">
-                <option value="" translate>RESV_ALL_ROOMS</option>
-            </select>
-        </div>
-        <div class="find-rates" ng-show="activeCriteria == 'RATE'">
-            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-
-            <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">
+    <div class="reservation-filters" ng-class="{'with-guests': stateCheck.stayDatesMode}">
+        <div class="edit-guests" ng-show="stateCheck.stayDatesMode">
+            <a ng-click="showEditGuestOptions()" class="button has-arrow toggle">
+                <span class="label">Guests <em>(Wed 23)</em></span> 2
+            </a>
+            <div id="guest-options" class="reservation-guests hidden">
+                <div class="select adults">
+                    <label for="room-adults" class="label">Adults</label>
+                    <select name="room-adults" id="room-adults">
+                        <option value="1">1</option>
+                        <option value="2" selected="">2</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="select children">
+                    <label for="room-children" class="label">Children</label>
+                    <select name="room-children" id="room-children">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="select infants">
+                    <label for="room-infants" class="label">Infants</label>
+                    <select name="room-infants" id="room-infants">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <ul>
             <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
             <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">{{'RESV_ROOM'|translate}}</li>
             <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
         </ul>
+        <div class="find-rates" ng-show="activeCriteria == 'RATE'">
+            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+
+            <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true" name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">
+        </div>
+        <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
+            <select ng-model="preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms()">
+                <option value="" translate>RESV_ALL_ROOMS</option>
+            </select>
+        </div>
     </div>
     <div class="reservation-content rooms-and-rates-content scrollable" ng-iscroll="room_types" ng-iscroll-delay="500" style="height:{{containerHeight}}px">
         <div>
