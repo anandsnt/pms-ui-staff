@@ -439,8 +439,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
             // stay
-            $scope.reservationData.arrivalDate = new Date(reservationDetails.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-");
-            $scope.reservationData.departureDate = new Date(reservationDetails.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-");
+            $scope.reservationData.arrivalDate = dateFilter(new Date(reservationDetails.reservation_card.arrival_date), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new Date(reservationDetails.reservation_card.departure_date), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
@@ -452,31 +452,52 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // to handle multiple rooms in future
             $scope.reservationData.rooms[0].roomNumber = reservationDetails.reservation_card.room_number;
             $scope.reservationData.rooms[0].roomTypeDescription = reservationDetails.reservation_card.room_type_description;
-
             //cost
             $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
+            /*
+            reservation stay dates manipulation
+            */
 
-            //TODO : replace below mock up data with actual API response once API changes are done
             $scope.reservationData.stayDays = [];
-            for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+            angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
                 $scope.reservationData.stayDays.push({
-                    date: dateFilter(new Date(ms), 'yyyy-MM-dd'),
-                    dayOfWeek: dateFilter(new Date(ms), 'EEE'),
-                    day: dateFilter(new Date(ms), 'dd')
+                    date: dateFilter(new Date(item.date), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new Date(item.date), 'EEE'),
+                    day: dateFilter(new Date(item.date), 'dd')
                 });
-                $scope.reservationData.rooms[0].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new Date(item.date), 'yyyy-MM-dd')] = {
                     guests: {
-                        adults: Math.floor((Math.random() * 5) + 1),
-                        children: Math.floor((Math.random() * 5) + 1),
-                        infants: Math.floor((Math.random() * 5) + 1)
+                        adults: item.adults,
+                        children: item.children,
+                        infants: item.infants
                     },
                     rate: {
-                        id: Math.floor((Math.random() * 100) + 1),
-                        name: "Rate name"
+                        id: item.rate_id
                     }
                 }
+                // TODO : Extend for each stay dates
+                if (index == 0) {
+                    $scope.reservationData.rooms[0].roomTypeId = item.room_type_id;
+                }
+
+            });
+            // appending departure date for UI handling since its not in API response
+            $scope.reservationData.stayDays.push({
+                date: dateFilter(new Date($scope.reservationData.departureDate), 'yyyy-MM-dd'),
+                dayOfWeek: dateFilter(new Date($scope.reservationData.departureDate), 'EEE'),
+                day: dateFilter(new Date($scope.reservationData.departureDate), 'dd')
+            });
+            $scope.reservationData.rooms[0].stayDates[dateFilter(new Date($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
+                guests: {
+                    adults: "",
+                    children: "",
+                    infants: ""
+                },
+                rate: {
+                    id: ""
+                }
             }
-            console.log('$scope.reservationData model', $scope.reservationData);
+            console.log('$scope.reservationData model - 2', $scope.reservationData);
         };
 
         $scope.initReservationData();
