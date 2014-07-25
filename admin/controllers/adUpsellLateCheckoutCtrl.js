@@ -160,7 +160,8 @@ $scope.saveClick = function(){
     updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
     updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
     angular.forEach($scope.chekoutchargesArray,function(value, key) {
-		value.time = value.time+" PM";
+    	var timeValue = value.time;
+		value.time = timeValue.replace(" PM", "")+" PM";// To fix the issue more than one PM appending on clicks save button. Issue occurs on 2nd, 3rd.... clicks
 	});
     updateData.extended_checkout = $scope.chekoutchargesArray;
     updateData.charge_code = $scope.upsellData.selected_charge_code;
