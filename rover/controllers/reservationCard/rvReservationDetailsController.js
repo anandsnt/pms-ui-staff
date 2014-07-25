@@ -101,7 +101,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 				var data = {
 					"confirmationNumber": confirmationNumber,
-					"isRefresh": $stateParams.isrefresh
+					"isRefresh": false
 				};
 				$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);
 			} else {

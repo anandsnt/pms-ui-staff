@@ -8,7 +8,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		 * To fetch the list of users
 		 * @return {object} users list json
 		 */
-		this.fetch = function(reservationId) {
+		this.fetch = function(data) {
 
 			var deferred = $q.defer();
 			//Commented. Since we are using another API to get country list
@@ -23,19 +23,36 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 // 
 			// };
 
-			var url = 'api/reservations/' + reservationId + '.json';
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.reservationData = data;
-				deferred.resolve(that.reservationData);
-				//fetchCountryList();
-			}, function(data) {
-				deferred.reject(data);
+			var reservationId = data.reservationId;
+			var isRefresh = data.isRefresh;
+			var isReservationIdAlreadyCalled = false;
+			angular.forEach(that.reservationIdsArray, function(value, key) {
+				if (!isRefresh) {
+					if (value === reservationId)
+						isReservationIdAlreadyCalled = true;
+				}
 			});
+			if (!isReservationIdAlreadyCalled) {
+				that.storeReservationIds(reservationId);
+				var url = 'api/reservations/' +reservationId + '.json';
+
+				RVBaseWebSrv.getJSON(url).then(function(data) {
+					that.reservationData[reservationId] = data;
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			} else {
+				deferred.resolve(that.reservationData[reservationId]);
+			}
+
 			return deferred.promise;
+
 		};
 
 		this.reservationDetails = {};
 		this.confirmationNumbersArray = [];
+		this.reservationIdsArray = [];
 		var that = this;
 		this.emptyConfirmationNumbers = function() {
 			that.confirmationNumbersArray = [];
@@ -43,6 +60,10 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		};
 		this.storeConfirmationNumbers = function(confirmationNumber) {
 			that.confirmationNumbersArray.push(confirmationNumber);
+
+		};
+		this.storeReservationIds = function(reservationID) {
+			that.reservationIdsArray.push(reservationID);
 
 		};
 		this.fetchReservationDetails = function(data) {

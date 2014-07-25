@@ -108,7 +108,11 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'reservationDetailsController',
         resolve: {
             reservationListData: function(RVReservationCardSrv, $stateParams) {
-                return RVReservationCardSrv.fetch($stateParams.id);
+            	 var data = {
+                    "reservationId": $stateParams.id,
+                    "isRefresh": $stateParams.isrefresh
+                };
+                return RVReservationCardSrv.fetch(data);
             },
             reservationDetails: function(RVReservationCardSrv, $stateParams) {
                 var data = {
