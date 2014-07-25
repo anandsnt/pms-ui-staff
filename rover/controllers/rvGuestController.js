@@ -201,6 +201,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 			};
 			var saveUserInfoFailureCallback = function(data) {
+				// seems like it is also updated even when this error
+				// callback is called. need to test
+				updateSearchCache();
 				$scope.$emit('hideLoader');
 			};
 			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
