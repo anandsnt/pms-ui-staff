@@ -161,7 +161,7 @@ $scope.saveClick = function(){
     updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
     angular.forEach($scope.chekoutchargesArray,function(value, key) {
     	var timeValue = value.time;
-		value.time = timeValue.replace(" PM", "")+" PM";// To fix the issue more than one PM appending on clicks save button. Issue occurs on 2nd, 3rd.... clicks
+		value.time = value.time+" PM";
 	});
     updateData.extended_checkout = $scope.chekoutchargesArray;
     updateData.charge_code = $scope.upsellData.selected_charge_code;
@@ -178,9 +178,25 @@ $scope.saveClick = function(){
 	console.log(updateData);
    	var updateChainSuccessCallback = function(data) {
        	$scope.$emit('hideLoader');
+       	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
+	    	var timeValue = value.time;
+			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
+
+		});
+       	
+   	};
+   	var updateChainFailureCallback =  function(errorMessage) {
+       	$scope.$emit('hideLoader');
+       	$scope.errorMessage = errorMessage;
+       	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
+	    	var timeValue = value.time;
+			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
+
+		});
+       	
    	};
    	console.log(JSON.stringify(updateData));
-   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
+   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback, updateChainFailureCallback);
 
 };
 
