@@ -743,10 +743,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		$scope.showStayDateDetails = function(selectedDate) {
+			// by pass departure stay date from stay dates manipulation 
+			if(selectedDate == $scope.reservationData.departureDate){
+				return false;
+			}
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
 			console.log($scope.stateCheck.selectedStayDate.rate.id);
 		}
-		
+
 		init();
 	}
 ]);

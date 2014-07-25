@@ -439,9 +439,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
             // stay
-            console.log('from backend', reservationDetails.reservation_card.arrival_date);
-            console.log('from UI - 1', new Date(reservationDetails.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"));
-            console.log('from UI - 2', dateFilter(new Date(reservationDetails.reservation_card.arrival_date), 'yyyy-MM-dd'));
             $scope.reservationData.arrivalDate = dateFilter(new Date(reservationDetails.reservation_card.arrival_date), 'yyyy-MM-dd');
             $scope.reservationData.departureDate = dateFilter(new Date(reservationDetails.reservation_card.departure_date), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;

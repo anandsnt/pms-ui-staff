@@ -105,7 +105,8 @@
                             </select>
                         </div>
                         <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
-                        <button type="button" class="button green"ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
+                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id" class="button white green-text">CURRENT RATE</button>
+                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
                     </div>
                 </a>
 
