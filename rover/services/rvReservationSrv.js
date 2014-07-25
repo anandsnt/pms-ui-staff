@@ -11,22 +11,23 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.fetch = function(reservationId) {
 
 			var deferred = $q.defer();
-
-			var fetchCountryList = function(data) {
-				var url = 'api/countries.json';
-				RVBaseWebSrv.getJSON(url).then(function(data) {
-					that.reservationData.countries = data;
-					deferred.resolve(that.reservationData);
-				}, function(data) {
-					deferred.reject(data);
-				});
-
-			};
+			//Commented. Since we are using another API to get country list
+			// var fetchCountryList = function(data) {
+				// var url = 'api/countries.json';
+				// RVBaseWebSrv.getJSON(url).then(function(data) {
+					// that.reservationData.countries = data;
+					// deferred.resolve(that.reservationData);
+				// }, function(data) {
+					// deferred.reject(data);
+				// });
+// 
+			// };
 
 			var url = 'api/reservations/' + reservationId + '.json';
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.reservationData = data;
-				fetchCountryList();
+				deferred.resolve(that.reservationData);
+				//fetchCountryList();
 			}, function(data) {
 				deferred.reject(data);
 			});
