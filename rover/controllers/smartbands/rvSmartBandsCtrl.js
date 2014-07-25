@@ -74,6 +74,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.$emit( 'hideLoader' );
 	};
 	$scope.clickContinueButton = function(){
+		document.activeElement.blur();
+        setTimeout(function(){
+      	   window.scrollTo(0,0);
+        }, 700);
 		var blankKeys = "";
 		if($scope.smartBandData.firstName == '' || $scope.smartBandData.firstName == null){
 			blankKeys = "First Name";		
@@ -172,7 +176,11 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
 			if(value.id == $scope.bandEditId){
-				value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
+				if($scope.bandData.additionalCredit != undefined){
+					value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
+				}
+				value.first_name = $scope.bandData.first_name;
+				value.last_name = $scope.bandData.last_name;
 			}
 		});
 		$scope.seeAllBands();
@@ -182,6 +190,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	 * @param {bool} isFixed
 	 */
 	$scope.clickContinueEdit = function(isFixed){
+	    document.activeElement.blur();
+        setTimeout(function(){
+      	   window.scrollTo(0,0);
+        }, 700);
 		if(isFixed){
 
 			var dataToApi = {
