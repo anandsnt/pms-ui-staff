@@ -143,7 +143,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption){
       event.stopPropagation();
       //chnaging the heading of the page
-      $scope.backButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
+      $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
     });
 
     if ($rootScope.adminRole == "Hotel Admin")

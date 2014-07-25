@@ -6,10 +6,7 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
 	*/
 
 	var that = this;
-  	BaseCtrl.call(this, $scope);
-
-  	//changing the header
-	$scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
+  	BaseCtrl.call(this, $scope)
 
 	//setting the scroller for view
 	var scrollerOptions = { click: true, preventDefault: false };
@@ -41,6 +38,10 @@ sntRover.controller('rvDashboardSearchController',['$scope', '$state', '$statePa
         //also need to clear results present in that & type 
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
         $scope.$broadcast("updateDataFromOutside", []);  
+
+
+        //changing the header's heading
+        $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
     }
 
     /**
