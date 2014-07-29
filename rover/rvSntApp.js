@@ -5,7 +5,7 @@ var GlobalApp = function(){
     this.cardReader = null;
     this.enableURLChange = true;
 
-    this.DEBUG = false;
+    this.DEBUG = true;
 
 
     

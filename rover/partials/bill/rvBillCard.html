@@ -6,9 +6,6 @@
 	<section role="complementary" id="registration-details" class="content stay-card-inner check-in">
 		<!-- Reservation Header -->
 		<div class="reservation-header header_position" >
-			<div class="actions back">
-				<a id="back-to-staycard" class="back-button prev-view" ng-click="goBackToStayCard(reservationBillData.reservation_id, reservationBillData.confirm_no)">BACK</a>
-			</div>
 			<!-- Other header details -->
 			<div class="data">
 				<span class="room" ng-show="reservationBillData.room_number != ''"> 
@@ -96,7 +93,7 @@
 									<span translate>BILL #{{billTab.bill_number}}</span>
 									{{billTab.total_amount}}
 								</div>
-								<div class="payment" ng-show="billTab.credit_card_details.payment_type == 'DB' || billTab.credit_card_details.payment_type == 'CA' || billTab.credit_card_details.payment_type == 'CK'">
+								<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC'">
 									{{billTab.credit_card_details.payment_type_description}}
 								</div>
 								<figure id="payment-info-1" class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">

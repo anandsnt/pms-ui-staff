@@ -7,6 +7,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
         $scope.activeAddonCategoryId = -1;
         $scope.activeRoom = $scope.reservationData.rooms[0];
 
+        $scope.$emit('setHeading', 'Enhance Stay');
+
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.activeRoom.addons;
             if (selectedAddons.length > 0) {
@@ -25,7 +27,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
 
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
-            $state.go('rover.reservation.mainCard.summaryAndConfirm');
+            $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
         }
 
         $scope.selectAddonCategory = function(category, event) {
@@ -95,7 +97,16 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
                         addonItem.title = item.name;
                         addonItem.description = item.description;
                         addonItem.price = item.amount;
-                        addonItem.stay = item.post_type.description;
+                        addonItem.stay = "";
+                        if(item.amount_type != ""){ addonItem.stay = item.amount_type.description; }
+                        if(item.post_type != ""){ 
+                            if(addonItem.stay != "") { 
+                                addonItem.stay += " / "+item.post_type.description 
+                            }
+                            else{
+                                addonItem.stay = item.post_type.description 
+                            }
+                        }
                         addonItem.amountType = item.amount_type;
                         addonItem.postType = item.post_type;
                         $scope.addons.push(addonItem);

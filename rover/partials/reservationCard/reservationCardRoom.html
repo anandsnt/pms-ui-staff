@@ -5,13 +5,13 @@
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
 	<a class="next-view no-auto-bind hover-hand" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
-		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status)" >
+		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status,  reservationData.reservation_card.checkin_inspected_only)" >
 		 	 {{reservationData.reservation_card.room_number}} 
 		 </strong>{{reservationData.reservation_card.room_type_description}} 
 	</a>
 	
 	<div class="actions" ng-show="showUpgradeButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
-  		<a id="upgrade-btn" class="button with-icon brand-colors" ui-sref="rover.staycard.upgrades({reservation_id:reservationData.reservation_card.reservation_id, clickedButton : 'upgradeButton'})">
+  		<a id="upgrade-btn" class="button with-icon brand-colors" ui-sref="rover.reservation.staycard.upgrades({reservation_id:reservationData.reservation_card.reservation_id, clickedButton : 'upgradeButton'})">
     		<span class="icons icon-upgrade"></span>
     		Upgrade
   		</a>
