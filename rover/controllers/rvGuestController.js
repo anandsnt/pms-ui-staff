@@ -72,7 +72,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		    var data = {
 		        'firstname': $scope.guestCardData.contactInfo.first_name,
 		        'lastname':  $scope.guestCardData.contactInfo.last_name,
-		        'location':  $scope.guestCardData.contactInfo.address.city,
+		        'location':  $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
 		        'vip':       $scope.guestCardData.contactInfo.vip
 		    };
 
@@ -150,7 +150,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				"mobile", "passport_expiry",
 				"passport_number", "postal_code",
 				"reservation_id", "title", "user_id",
-				"works_at", "birthday"
+				"works_at", "birthday", "avatar"
 			];
 			var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 			return declonedData;
@@ -201,9 +201,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 			};
 			var saveUserInfoFailureCallback = function(data) {
-				// seems like it is also updated even when this error
-				// callback is called. need to test
-				updateSearchCache();
 				$scope.$emit('hideLoader');
 			};
 			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();

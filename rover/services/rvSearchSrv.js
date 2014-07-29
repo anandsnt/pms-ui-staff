@@ -90,7 +90,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 					self.data[i]['location'] = data['location'];
 				};
 
-				if ( typeof data['vip'] == 'boolean' ) {
+				if ( typeof data['vip'] === 'boolean' ) {
 					self.data[i]['vip'] = data['vip'];
 				};
 			};
