@@ -128,7 +128,28 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     * 
     */		
 	$scope.selectChargeCode = function(index){
-		$scope.billingGroupData.selected_charge_codes.push($scope.billingGroupData.available_charge_codes[index]);
+		if($scope.isChecked($scope.billingGroupData.available_charge_codes[index].id)){
+			$scope.removeChargeCode($scope.billingGroupData.available_charge_codes[index].id);
+		}else{
+			$scope.billingGroupData.selected_charge_codes.push($scope.billingGroupData.available_charge_codes[index]);
+		}
+		
+
+	};
+	/*
+    * To remove the selected charge code with id
+    * 
+    */		
+	$scope.removeChargeCode = function(id){
+		var pos;
+		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++){
+			if($scope.billingGroupData.selected_charge_codes[i].id == id){
+				pos = i;
+				break;
+			}
+				
+		}
+		$scope.billingGroupData.selected_charge_codes.splice(pos, 1);
 
 	};
 	/*
