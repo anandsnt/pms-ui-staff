@@ -81,7 +81,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.adults_count = parseInt($scope.reservationData.rooms[0].numAdults);
 			data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
 			data.infants_count = parseInt($scope.reservationData.rooms[0].numInfants);
-			data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
+			// CICO - 8320 Rate to be handled in room level
+			// data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 			data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
 
 			//Guest details
@@ -112,14 +113,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var stay = [];
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
-				stay.push({
-					date: date,
-					rate_id: staydata.rate.id,
-					room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-					adults_count: staydata.guests.adults,
-					children_count: staydata.guests.children,
-					infants_count: staydata.guests.infants
-				});
+				if (date != $scope.reservationData.departureDate) {
+					stay.push({
+						date: date,
+						rate_id: staydata.rate.id,
+						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+						adults_count: parseInt(staydata.guests.adults),
+						children_count: parseInt(staydata.guests.children),
+						infants_count: parseInt(staydata.guests.infants)
+					});
+				}
 			});
 
 			//	end of payload changes
@@ -158,6 +161,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
 
 
+
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": data.id,
 					"confirmationId": data.confirm_no
@@ -173,7 +177,22 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			}
 
-			$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+			var updateSuccess = function(data) {
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+					"id": $scope.reservationData.reservationId,
+					"confirmationId": $scope.reservationData.confirmNum
+				});
+			}
+
+			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
+				//creating reservation
+				postData.reservationId = $scope.reservationData.reservationId;
+				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+			} else {
+				//updating reservation
+				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+			}
+
 		}
 
 		/**
