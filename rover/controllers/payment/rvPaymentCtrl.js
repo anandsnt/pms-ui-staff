@@ -28,6 +28,34 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	if($scope.passData.fromView == "guestcard"){
 		$scope.isFromGuestCard = true;
 	}
+	
+	var scrollerOptions = {click: true, preventDefault: false};
+	$scope.setScroller('addPayment',scrollerOptions);
+	
+	$scope.refreshScroll = function(){
+		setTimeout(function() {
+			$scope.refreshScroller('addPayment');
+		}, 500);
+	};
+	/*
+	$scope.$parent.myScrollOptions = {		
+	    'payment': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
+	    }
+	};
+
+	
+	
+	$scope.$on('$viewContentLoaded', function() {
+		setTimeout(function(){
+			$scope.$parent.myScroll['payment'].refresh();
+			}, 
+		3000);
+		
+     });*/
 	/*
 	 * Render success callback
 	 * Populates API with dropdown values
@@ -42,7 +70,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.$emit("hideLoader");
 		MLISessionId = "";
 		$scope.data = data;
-
+		
 		$scope.paymentTypeValues = [];
 		if($scope.passData.is_swiped){
 			var selectedPaymentType = 0;
@@ -60,8 +88,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.card_expiry_year = $scope.passData.card_expiry.substring(0, 2);
 			//To show fields disabled on swipe
 			$scope.shouldShowDisabled = true;
-			
 		}
+		$scope.refreshScroll();
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	/*
@@ -270,5 +298,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
 
     /* MLI integration ends here */
+   
+   
+
 	
 }]);
