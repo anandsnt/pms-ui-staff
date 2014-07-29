@@ -22,20 +22,7 @@
 	<!-- Calendar -->
 	<div id="stay-dates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="stay-dates-calendar">
 		<div class="wrapper">
-			
-			<div class="calendar-left">
-				<button type="button" id="calendar-prev" class="fc-button-prev">Prev</button>
-				<div id="calendar1">
-					<two-month-calendar event-sources='eventSources' full-calendar-options='fullCalendarOptions' ></two-month-calendar>
-				</div>
-			</div>
-			
-			<!-- <div class="calendar-right">
-				<button type="button" id="calendar-next" class="fc-button-next">Next</button>
-				<div id="calendar2">
-					<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
-				</div>
-			</div> -->
+			<two-month-calendar event-sources='eventSources' full-calendar-options='fullCalendarOptions' ></two-month-calendar>
 
 			<div id="stay-dates-chage" class="update-details">
 				<ul class="data">

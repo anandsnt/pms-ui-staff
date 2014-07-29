@@ -8,8 +8,6 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 	$scope.setTitle($scope.heading);
 	//scroller options
 	$scope.setScroller('stay-dates-calendar'); 
-	$scope.t2 = ['test', 'items'];
-	$scope.eventsources =["One", "Two"];
 
 	this.dataAssign = function(data) {
 		//Data from Resolve method
@@ -21,15 +19,8 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 	};
 
 	this.renderFullCalendar = function() {
-		console.log('renderFullCalendar');
-		/* event source that contains custom events on the scope */
-		$scope.events = $scope.stayDetails.available_dates;
 
-		//$scope.eventSources = [$scope.events];
-
-		$scope.eventSources.length = 0;
-		$scope.eventSources.push($scope.events);
-		
+		refreshCalendarEvents();
 
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -47,8 +38,8 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 			disableResizing : false,
 			contentHeight : 320,
 			weekMode : 'fixed',
-			ignoreTimezone : false//, // For ignoring timezone,
-			//eventDrop : $scope.changedDateOnCalendar,
+			ignoreTimezone : false, // For ignoring timezone,
+			eventDrop : $scope.changedDateOnCalendar
 		};
 	}
 	this.initialise = function() {
@@ -59,9 +50,28 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 			that.dataAssign(data);
 			$scope.stayDetails = data;
 			that.renderFullCalendar();
+			$scope.refreshScroller();
 		};
 		$scope.invokeApi(RVRoomRateCalendarSrv.fetchStayDateDetails, {},fetchSuccessCallback);
 		
+	};
+
+	$scope.changedDateOnCalendar = function(){
+		console.log('changedDateOnCalendar');
+		//refreshCalendarEvents();
+		
+	};
+
+	var refreshCalendarEvents = function(){
+		var events = dclone($scope.stayDetails.available_dates);
+		$scope.eventSources.length = 0;
+		$scope.eventSources.push(events);
+	};
+
+	$scope.refreshScroller = function() {
+		setTimeout(function() {
+			$scope.myScroll['stay-dates-calendar'].refresh();
+		}, 0);
 	};
 
 	this.initialise();

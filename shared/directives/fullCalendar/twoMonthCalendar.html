@@ -1,1 +1,13 @@
-<div> {{fullCalendarOptions.height}} AFTER</div>
+<div class="calendar-left">
+	<button type="button" id="calendar-prev" class="fc-button-prev">Prev</button>
+	<div id="calendar1">
+		<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
+	</div>
+</div>
+
+<div class="calendar-right">
+	<button type="button" id="calendar-next" class="fc-button-next">Next</button>
+	<div id="calendar2">
+		<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
+	</div>
+</div>
