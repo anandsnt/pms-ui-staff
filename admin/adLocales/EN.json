@@ -1,4 +1,9 @@
-{ 
+{
+
+
+"BILLING_GROUPS": "Billing Groups",
+"BILLING_GROUP_NAME": "Name",
+"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name", 
     "EDIT": "Edit",
     "ALL": "All",
     "ADD":"Add",
