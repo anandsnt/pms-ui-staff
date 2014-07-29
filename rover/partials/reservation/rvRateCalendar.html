@@ -1,5 +1,5 @@
 <!-- Rooms & Rates -->
-<div id="stay-dates-content" class="reservations-content-wrapper" ng-controller="RVRoomRateCalendarCtrl">
+<div id="stay-dates-content" class="reservations-content-wrapper" ng-controller="RVStayDatesCalendarCtrl">
 	
 	<!-- Filters -->
 	<div class="reservation-filters">
@@ -26,16 +26,17 @@
 			<div class="calendar-left">
 				<button type="button" id="calendar-prev" class="fc-button-prev">Prev</button>
 				<div id="calendar1">
-					<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
+					<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar">
+					</div>
 				</div>
 			</div>
 			
-			<div class="calendar-right">
+			<!-- <div class="calendar-right">
 				<button type="button" id="calendar-next" class="fc-button-next">Next</button>
 				<div id="calendar2">
 					<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
 				</div>
-			</div>
+			</div> -->
 
 			<div id="stay-dates-chage" class="update-details">
 				<ul class="data">
