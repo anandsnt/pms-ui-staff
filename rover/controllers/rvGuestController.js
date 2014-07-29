@@ -228,15 +228,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					}
 				}
 				if (!$scope.guestCardVisible) {
-					$("#guest-card").css("height", $scope.windowHeight - 90);
-					$scope.guestCardVisible = true;
-					$scope.cardVisible = true;
+					$scope.openGuestCard();
 					$scope.$broadcast('CONTACTINFOLOADED');
 					$scope.$emit('GUESTCARDVISIBLE', true);
 				} else {
-					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
-					$scope.guestCardVisible = false;
-					$scope.cardVisible = false;
+					$scope.closeGuestCard();
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.handleDrawClosing();
 				}
