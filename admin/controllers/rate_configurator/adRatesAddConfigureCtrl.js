@@ -65,7 +65,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
             var newSet = {};
             newSet.id = null;
-            newSet.name = '';
+            newSet.name = 'Set '+($scope.data.sets.length + 1);
             
 
             newSet.monday = true;
