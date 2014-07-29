@@ -245,15 +245,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					}
 				}
 				if (!$scope.guestCardVisible) {
-					$("#guest-card").css("height", $scope.windowHeight - 90);
-					$scope.guestCardVisible = true;
-					$scope.cardVisible = true;
+					$scope.openGuestCard();
 					$scope.$broadcast('CONTACTINFOLOADED');
 					$scope.$emit('GUESTCARDVISIBLE', true);
 				} else {
-					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
-					$scope.guestCardVisible = false;
-					$scope.cardVisible = false;
+					$scope.closeGuestCard();
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.handleDrawClosing();
 				}
@@ -696,7 +692,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				// update current controller scopehandleDrawClosing
 				$scope.companyName = company.account_name;
 				$scope.companyCity = company.city;
-				// $scope.closeGuestCard();
+				$scope.closeGuestCard();
 				$scope.reservationDetails.companyCard.id = company.id;
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
@@ -721,7 +717,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				// update current controller scope
 				$scope.travelAgentName = travelAgent.account_name;
 				$scope.travelAgentCity = travelAgent.city;
-				// $scope.closeGuestCard();
+				$scope.closeGuestCard();
 				$scope.reservationDetails.travelAgent.id = travelAgent.id;
 				$scope.initTravelAgentCard(travelAgent);
 				$scope.viewState.isAddNewCard = false;
@@ -750,8 +746,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.cardHeaderImage = guest.image;
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
-
 				$scope.initGuestCard(guest);
+				$scope.closeGuestCard();
 			} else {
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);

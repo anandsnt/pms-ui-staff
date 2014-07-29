@@ -122,14 +122,32 @@ sntRover.controller('searchController', [
     $scope.$emit("closeDrawer");
   };
   //Map the room status to the view expected format
-  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
+  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
     	var mappedStatus = "room-number";
       if(reservation_status == 'CHECKING_IN'){
-      	if(roomstatus == "READY" && fostatus == "VACANT"){
-        	mappedStatus +=  " ready";
-      	}else{
-        	mappedStatus += " not-ready";
-      	}
+      	switch(roomReadyStatus) {
+
+			case "INSPECTED":
+				mappedStatus += ' room-green';
+				break;
+			case "CLEAN":
+				if (checkinInspectedOnly == "true") {
+					mappedStatus += ' room-orange';
+					break;
+				} else {
+					mappedStatus += ' room-green';
+					break;
+				}
+				break;
+			case "PICKUP":
+				mappedStatus += " room-orange";
+				break;
+
+			case "DIRTY":
+				mappedStatus += " room-red";
+				break;
+
+		}
       }
   	 return mappedStatus;
   };
