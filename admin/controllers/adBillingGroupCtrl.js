@@ -1,4 +1,4 @@
-admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngTableParams','$filter',  function($scope, $state, ADFloorSetupSrv, ngTableParams, $filter){
+admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 'ngTableParams','$filter',  function($scope, $state, ADBillingGroupSrv, ngTableParams, $filter){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -12,13 +12,13 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'n
 		
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
-			$scope.data = data;
+			$scope.billingGroupList = data.results;
 			$scope.currentClickedElement = -1;
 			
 		};
-	   $scope.invokeApi(ADFloorSetupSrv.fetch, {} , successCallbackFetch);	
+	   $scope.invokeApi(ADBillingGroupSrv.fetch, {} , successCallbackFetch);	
 	};
-	//To list billing groups
+	// To list billing groups
 	// $scope.listBillingGroups(); 
    /*
     * To render edit room types screen
@@ -27,10 +27,15 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'n
     */	
 	$scope.editBillingGroup = function(index, id)	{
 		
+		var successCallbackFetch = function(data){
+			$scope.$emit('hideLoader');
+			$scope.billingGroupList = data.results;
+			$scope.currentClickedElement = -1;
+			
+		};
+	   $scope.invokeApi(ADBillingGroupSrv.getBillingGroupDetails, id , successCallbackFetch);
 		$scope.currentClickedElement = index;
-	 	$scope.floorListData = $scope.orderedData[index]; 
-	 	$scope.floorListData.floortitle = $scope.floorListData.description ;
-	 	$scope.floorListData.floor_number_old = $scope.floorListData.floor_number ;
+	 	
 	};
    
    /*
@@ -71,7 +76,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'n
     		}		
     		
     	};
-    	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params , successCallbackSave);
+    	$scope.invokeApi(ADBillingGroupSrv.updateBillingGroup, params , successCallbackSave);
     };
 
     /*
@@ -96,34 +101,34 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'n
     * 
     */		
 	$scope.addBillingGroup = function(){
-		$scope.currentClickedElement = -1;
-		$scope.isAddMode = $scope.isAddMode ? false : true;
-		//reset data
-		$scope.floorListData = {
-				"floor_number":"",
-				"description":"",
-				"floortitle":""
-			};	
+		
+
+			var successCallbackSave = function(data){
+    		$scope.$emit('hideLoader');
+    		//Since the list is ordered. Update the ordered data
+    		$scope.currentClickedElement = -1;
+			$scope.isAddMode = $scope.isAddMode ? false : true;
+			$scope.billingGroupData = {
+				"name":"",
+				"id":"",
+				"selected_charge_codes" : []
+			};		
+    		$scope.billingGroupData.available_charge_codes = data;
+    	};
+    	$scope.invokeApi(ADBillingGroupSrv.getChargeCodes, {}, successCallbackSave);
 	};
 
 	/*
     * To handle click event
     */	
 	$scope.clickCancel = function(){
-		$scope.floorListData.description = $scope.floorListData.floortitle;
-		$scope.floorListData.floor_number = $scope.floorListData.floor_number_old;
+		// $scope.floorListData.description = $scope.floorListData.floortitle;
+		// $scope.floorListData.floor_number = $scope.floorListData.floor_number_old;
 		if($scope.isAddMode)
 			$scope.isAddMode =false;
 		else
 		    $scope.currentClickedElement = -1;
 	};	
-
-	$scope.validate = function(){
-		if ($scope.floorListData.floor_number == "" || typeof $scope.floorListData.floor_number == "undefined" || $scope.floorListData.description == " ") 
-			return false;
-		else
-			return true;
-	};
 
 }]);
 
