@@ -733,8 +733,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.cardHeaderImage = guest.image;
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
-
 				$scope.initGuestCard(guest);
+				$scope.closeGuestCard();
 			} else {
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);
