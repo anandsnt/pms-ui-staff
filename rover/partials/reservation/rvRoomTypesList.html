@@ -27,17 +27,17 @@
     <!-- Stay Dates: visible only when checked -->
     <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}">
         <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates">
-            <ul class="wrapper" style="width:{{reservationData.stayDays.length * 65}}px">
+            <ul class="wrapper" style="width:{{reservationData.stayDays.length * 70}}px">
                 <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last, 'active' : (!$last && stateCheck.dateModeActiveDate == stayday.date)}" ng-click="showStayDateDetails(stayday.date)">
                     <span class="day">{{stayday.dayOfWeek}}</span>
                     <span class="date">{{stayday.day}}</span>
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
-                    <!-- <span class="price">$149</span> -->
+                    <span class="price" ng-show="!$last">{{currencySymbol}}{{roomAvailability[stateCheck.preferredType].ratedetails[stayday.date][reservationData.rooms[0].stayDates[stayday.date].rate.id].rate | number: 0}}</span>
                 </li>                
             </ul>
         </div>
         <!-- When not all booked -->
-        <button type="button" class="button" ng-class="{'grey' : !stateCheck.rateSelected.allDays, 'green': stateCheck.rateSelected.allDays}" ui-sref="rover.reservation.staycard.mainCard.addons({from_date: reservationData.arrivalDate, to_date: reservationData.departureDate})">Done</button>
+        <button type="button" class="button" ng-class="{'grey' : !stateCheck.rateSelected.allDays, 'green': stateCheck.rateSelected.allDays}" ng-click="handleDaysBooking($event)">Done</button>
         <!-- When all booked -->
         <!-- <button type="button" class="button green">Done</button>-->
     </div>

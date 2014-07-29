@@ -294,7 +294,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				oneDay: false
 			};
 			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(staydateconfig, date) {
-				if (!allSelected.oneDay && (date != $scope.reservationData.departureDate) && (staydateconfig.rate.id != null || staydateconfig.rate.id != "")) {
+				if (staydateconfig.rate.id != null && staydateconfig.rate.id != "") {
 					allSelected.oneDay = true;
 				}
 				if (allSelected.allDays && (date != $scope.reservationData.departureDate) && (staydateconfig.rate.id == null || staydateconfig.rate.id == "")) {
@@ -304,6 +304,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			return allSelected;
 		}
 
+		$scope.handleDaysBooking = function(event) {
+			event.stopPropagation();
+			if (!$scope.stateCheck.rateSelected.allDays) {
+				//if the dates are not all set with rates
+				return false;
+			} else {
+				$state.go('rover.reservation.staycard.mainCard.addons', {
+					"from_date": $scope.reservationData.arrivalDate,
+					"to_date": $scope.reservationData.departureDate
+				});
+			}
+		}
+
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
@@ -311,11 +324,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			 */
 
 			if ($scope.stateCheck.stayDatesMode) {
+				if (!$scope.stateCheck.rateSelected.oneDay) {
+					// The first selected day must be taken as the preferredType
+					// No more selection of rooms must be allowed here
+					$scope.stateCheck.preferredType = roomId;
+					$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
+					$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
+					$scope.filterRooms();
+				}
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
+				$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
+				$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.departureDate].rate.id = rateId;
+
+
 				// see if the done button has to be enabled
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
-				$scope.stateCheck.preferredType = roomId;
 			} else {
 				populateStayDates(rateId);
 				$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
@@ -334,6 +358,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//TODO : 7641 - Update the rateDetails array in the reservationData
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 				$scope.checkOccupancyLimit();
+
+				$state.go('rover.reservation.staycard.mainCard.addons', {
+					"from_date": $scope.reservationData.arrivalDate,
+					"to_date": $scope.reservationData.departureDate
+				});
 			}
 		}
 
@@ -785,7 +814,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[selectedDate];
 		}
 
-		$scope.toggleEditGuestOptions = function(){
+		$scope.toggleEditGuestOptions = function() {
 			$scope.stateCheck.guestOptionsIsEditable = !$scope.stateCheck.guestOptionsIsEditable;
 		}
 		/*
@@ -802,6 +831,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
+				console.log($scope.stateCheck.rateSelected.oneDay);
 			}
 		}
 
