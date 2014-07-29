@@ -421,6 +421,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.selectedRoomType = -1;
 			} else {
+				$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = $scope.stateCheck.preferredType;
+				$scope.checkOccupancyLimit();
 				// If a room type of category Level1 is selected, show this room type plus the lowest priced room type of the level 2 category.
 				// If a room type of category Level2 is selected, show this room type plus the lowest priced room type of the level 3 category.
 				// If a room type of category Level3 is selected, only show the selected room type.
@@ -499,11 +501,23 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							//Step 1 : Check if the rates are configured for all the days of stay
 							if (typeof today[rateId] == 'undefined') {
 								// ("The rate " + rateId + " is not available for " + roomId + " on " + key);
-								validRate = false;
+								if ($scope.stateCheck.stayDatesMode) {
+									if (currDate == $scope.stateCheck.dateModeActiveDate) {
+										validRate = false;
+									}
+								} else {
+									validRate = false;
+								}
 							} else {
 								var rateConfiguration = today[rateId].rateBreakUp;
 								var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);
 								var numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
+								// In case of stayDatesMode the occupancy has to be considered only for the single day
+								if ($scope.stateCheck.stayDatesMode) {
+									numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.adults);
+									numChildren = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.children);
+								}
+
 								var stayLength = parseInt($scope.reservationData.numNights);
 								// The below variable stores the days till the arrival date
 								var daysTillArrival = Math.round((new Date($scope.reservationData.arrivalDate) - new Date($rootScope.businessDate)) / (1000 * 60 * 60 * 24));
@@ -827,12 +841,24 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate];
 			}
 			$scope.stateCheck.stayDatesMode = !$scope.stateCheck.stayDatesMode;
+
+			init();
+
 			// see if the done button has to be enabled
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 				console.log($scope.stateCheck.rateSelected.oneDay);
 			}
+		}
+
+		$scope.updateDayOccupancy = function(occupants) {
+			$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests[occupants] = parseInt($scope.stateCheck.selectedStayDate.guests[occupants]);
+			if ($scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
+				//repopulate the room and rates to suit the current day
+				init();
+			}
+
 		}
 
 		init();

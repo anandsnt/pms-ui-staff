@@ -258,13 +258,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             return rateConfigured;
         }
 
-        $scope.checkOccupancyLimit = function() {
+        $scope.checkOccupancyLimit = function(date) {
             var roomIndex = 0;
             if (isOccupancyConfigured(roomIndex)) {
                 $scope.computeTotalStayCost();
                 var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
                 var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
                     parseInt($scope.reservationData.rooms[roomIndex].numAdults);
+                if (date) {
+                    // If there is an date sent as a param the occupancy check has to be done for the particular day
+                    currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].stayDates[date].guests.adults) + parseInt($scope.reservationData.rooms[roomIndex].stayDates[date].guests.children);
+                }
 
                 var getMaxOccupancy = function(roomId) {
                     var max = -1;
