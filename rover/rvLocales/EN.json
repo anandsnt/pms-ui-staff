@@ -201,7 +201,8 @@
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",
-    "CVV" :"cvv",    
+    "CVV" :"cvv",
+    "PAY" : "Pay",    
     
     "RESERVATION_SUMMARY": "Reservation summary",
     "ROOMS": "rooms",
