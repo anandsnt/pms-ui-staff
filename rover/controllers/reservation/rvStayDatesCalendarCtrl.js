@@ -8,6 +8,8 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 	$scope.setTitle($scope.heading);
 	//scroller options
 	$scope.setScroller('stay-dates-calendar'); 
+	$scope.t2 = ['test', 'items'];
+	$scope.eventsources =["One", "Two"];
 
 	this.dataAssign = function(data) {
 		//Data from Resolve method
@@ -27,6 +29,7 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 
 		$scope.eventSources.length = 0;
 		$scope.eventSources.push($scope.events);
+		
 
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
