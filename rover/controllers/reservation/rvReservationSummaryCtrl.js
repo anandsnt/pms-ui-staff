@@ -143,7 +143,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.proceedCreatingReservation = function() {
 			var postData = computeReservationDataToSave();
-
+			
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.reservationData.reservationId = data.id;
@@ -273,6 +273,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$parent.myScroll['paymentInfo'].refresh();
 			}, 0);
 		};
+
+		$scope.$on("checkinCheckoutTimeUpdated", function(event) {
+			$scope.proceedCreatingReservation();
+		});
 
 		$scope.init();
 

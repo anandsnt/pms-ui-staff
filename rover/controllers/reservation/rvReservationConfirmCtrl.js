@@ -148,6 +148,12 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$state.go('rover.reservation.search');
 		};
 
+		$scope.modifyCheckinCheckoutTime = function(){
+			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkoutTime.hh != '') {
+				$scope.$emit("checkinCheckoutTimeUpdated");
+			}
+		}
+
 		$scope.init();
 
 
