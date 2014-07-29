@@ -679,7 +679,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				// update current controller scopehandleDrawClosing
 				$scope.companyName = company.account_name;
 				$scope.companyCity = company.city;
-				// $scope.closeGuestCard();
+				$scope.closeGuestCard();
 				$scope.reservationDetails.companyCard.id = company.id;
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
@@ -704,7 +704,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				// update current controller scope
 				$scope.travelAgentName = travelAgent.account_name;
 				$scope.travelAgentCity = travelAgent.city;
-				// $scope.closeGuestCard();
+				$scope.closeGuestCard();
 				$scope.reservationDetails.travelAgent.id = travelAgent.id;
 				$scope.initTravelAgentCard(travelAgent);
 				$scope.viewState.isAddNewCard = false;
