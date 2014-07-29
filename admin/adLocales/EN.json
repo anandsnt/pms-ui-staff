@@ -102,7 +102,9 @@
     "ROLE_DASHBOARD": "Role Dashboard",
     "SELECT_DASHBOARD":"Select Dashboard",
     "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
-    "DEFAULT_DASHBOARD":"Default Dashboard",    
+    "DEFAULT_DASHBOARD":"Default Dashboard",
+
+    "BILLING_GROUPS": "Billing Groups",    
     
     "NAME":"Name",
     "DESCRIPTION":"Description",

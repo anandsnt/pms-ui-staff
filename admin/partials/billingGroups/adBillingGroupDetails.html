@@ -1,0 +1,30 @@
+<div class="data-holder">
+	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+		<div class="form-title">
+			<h3 ng-show="!isAddMode"><span translate>EDIT</span> {{floorListData.floortitle}} </h3>
+			<h3 ng-show="isAddMode"><span translate>ADD</span> </h3>
+			<em class="status"> <span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong> <span translate>MANDATORY_FIELDS_MESSAGE2</span> </em>
+		</div>
+		
+		<fieldset class="holder left float">
+			
+			<!-- <ad-textbox value="floorListData.floor_number" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox> -->
+
+			<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_CHARGE_CODES' | translate }}"label="{{ 'CHARGE_CODE' | translate }}" sel-class='placeholder'  list='billingGr' required='yes' selected-Id='floorListData.floor_number'></ad-dropdown>
+			
+		</fieldset>
+		<fieldset class="holder right float">
+			
+            <ad-textbox styleclass="full-width" value="billingDetails.name" name = "room-type-name" id = "room-type-name" label = "{{ 'BILLING_GROUP_NAME' | translate }}" placeholder = "Enter Name" ></ad-textbox>
+		</fieldset> 
+		
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>
+				CANCEL
+			</button>
+			<button type="button" like-type="common" id="update" ng-class="{ 'green' : validate() }" class="button  ng-binding" ng-disabled="!validate()" ng-click="saveFloor()" translate>
+				SAVE_CHANGES
+			</button>
+		</div>
+	</form>
+</div>
