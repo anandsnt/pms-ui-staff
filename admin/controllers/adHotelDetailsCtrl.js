@@ -7,6 +7,8 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	BaseCtrl.call(this, $scope);
 	$scope.readOnly = "no";
 	$scope.fileName = "Choose File....";
+	$scope.hotel_logo_file = $scope.fileName;
+	$scope.hotel_template_logo_file = $scope.fileName;
 	$scope.certificate = "";
 	$scope.isHotelChainEditable =  true;
 	if($rootScope.adminRole == "snt-admin"){
@@ -74,6 +76,25 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		};
 		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
 	}
+
+	$scope.$watch(
+		function(){
+		return $scope.data.hotel_template_logo;
+	}, function(logo) {
+				if(logo == 'false')
+					$scope.fileName = "Choose File....";
+				$scope.hotel_template_logo_file = $scope.fileName;
+			}
+		);
+	$scope.$watch(function(){
+		return $scope.data.hotel_logo;
+	}, function(logo) {
+				if(logo == 'false')
+					$scope.fileName = "Choose File....";
+				$scope.hotel_logo_file = $scope.fileName;
+			}
+		);
+
 	/**
     *   A post method for Test MliConnectivity for a hotel
     */
