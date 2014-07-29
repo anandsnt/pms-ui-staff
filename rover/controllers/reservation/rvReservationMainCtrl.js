@@ -154,10 +154,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 maxAdults: (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults,
                 maxChildren: (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children,
                 maxInfants: (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants,
-                roomTypes: [],
+                roomTypes: baseSearchData.roomTypes,
                 fromSearch: false,
-                recommendedRateDisplay: '',
-                defaultRateDisplayName: '',
+                recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
+                defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
                 businessDate: baseSearchData.businessDate
             };
 
