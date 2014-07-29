@@ -113,7 +113,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var stay = [];
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
-				if (date != $scope.reservationData.departureDate) {
+				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
+					stay.push({
+						date: date,
+						rate_id: staydata.rate.id,
+						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+						adults_count: parseInt(staydata.guests.adults),
+						children_count: parseInt(staydata.guests.children),
+						infants_count: parseInt(staydata.guests.infants)
+					});
+				} else if (date != $scope.reservationData.departureDate) {
 					stay.push({
 						date: date,
 						rate_id: staydata.rate.id,
@@ -143,7 +152,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.proceedCreatingReservation = function() {
 			var postData = computeReservationDataToSave();
-			
+
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.reservationData.reservationId = data.id;
