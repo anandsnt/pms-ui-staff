@@ -19,6 +19,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
 	$scope.isRefreshOnBackToStaycard = false;
+	//This value changes when clicks on pay button
+	$scope.fromViewToPaymentPopup = "billcard";
 	//options fo signature plugin
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 	$scope.signaturePluginOptions = {
@@ -307,7 +309,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 		   
   	 			var passData = {
 			 		"reservationId": $scope.reservationBillData.reservation_id,
-			 		"fromView": "billcard",
+			 		"fromView": $scope.fromViewToPaymentPopup,
 			 		"fromBill" : billNumber,
 			 		"is_swiped": false 
 			 	};
@@ -328,7 +330,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
          		data.token = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationBillData.reservation_id,
-		  	 		"fromView": "billcard",
+		  	 		"fromView": $scope.fromViewToPaymentPopup,
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
@@ -372,9 +374,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){
+	 		$scope.fromViewToPaymentPopup = "billcard";
 	 		$scope.addNewPaymentModal(data);
 	 	}
 	 });
+	 /*
+	  * Clicked pay button function
+	  */
+	 $scope.clickedPayButton = function(){
+	 	$scope.fromViewToPaymentPopup = "paybutton";
+	 	$scope.addNewPaymentModal();
+	 };
 	 /*
 	  * Toggle signature display
 	  */
