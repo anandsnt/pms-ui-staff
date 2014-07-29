@@ -187,6 +187,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			var updateSuccess = function(data) {
+				$scope.viewState.identifier = "UPDATED";
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
