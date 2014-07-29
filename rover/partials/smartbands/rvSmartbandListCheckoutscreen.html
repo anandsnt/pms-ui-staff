@@ -1,25 +1,22 @@
 <div role="dialog" id="modal" class="modal-show">
 	<form class='modal-content form new-content' id='smartband'>
 		<div class='header'>
-			<span class='heading'> Smartbands with Remaining Balances </span>
+			<span class='heading' translate> SMARTBANDS_WITH_REMAINING_BALANCE </span>
 		</div>
 		<div class='middle scrollable' id='listing-area'>
 			<ul>
-				<li>
+				<li ng-repeat="remainingBands in remainingSmartBands">
 					<span class='smartband-icon'></span>
-					<span class='band-holder'> Shaun Alex </span>
-					<span class='charge'> $ 0.00 </span>
+					<span class='band-holder'> {{remainingBands.first_name}} {{remainingBands.last_name}}</span>
+					<span class='charge'> {{currencySymbol}} {{remainingBands.amount}} </span>
 				</li>
-				<li>
-					<span class='smartband-icon'></span>
-					<span class='band-holder'> Test Name </span>
-					<span class='charge'> $ 0.00 </span>
-				</li>
+				
 			</ul>
 		</div>
 		<div class="footer" style=" text-align: center;">
-			<a class='button brand-colors' id='keep-credit'>KEEP CREDIT</a>
-			<a class='button green' id='credit-room'>CREDIT TO ROOM</a>
+			<a id="close-button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</a>
+			<a class='button brand-colors' id='keep-credit' ng-click="cashOutSmartBandSuccess()" translate>KEEP_CREDIT</a>
+			<a class='button green' id='credit-room' ng-click="clickCreditToRoom()" translate>CREDIT_TO_ROOM</a>
 		</div>
 
 	</form>
