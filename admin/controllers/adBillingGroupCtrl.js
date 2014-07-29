@@ -42,7 +42,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'n
 		// if(typeof index === "undefined" || typeof id === "undefined") return "";
 		if(typeof index === "undefined" ) return "";
 		if($scope.currentClickedElement == index){ 
-			 	return "/assets/partials/floorSetups/adFloorDetails.html";
+			 	return "/assets/partials/billingGroups/adBillingGroupDetails.html";
 		}
 	};
   /*
