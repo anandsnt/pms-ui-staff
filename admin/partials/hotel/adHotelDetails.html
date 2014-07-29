@@ -219,15 +219,29 @@
 			</div> -->
 
 			<div class="entry full-width" ng-hide="isAdminSnt">
-				<label for="hotel-logo"> Hotel Logo Image </label>
+				<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)  </label>
 				<div class="file-upload with-preview">
-					<span class="input">Choose file ...</span>
+					<span class="input">{{hotel_logo_file}}</span>
+					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.hotel_logo)" ng-click = "data.hotel_logo = 'false'"></a>
 					<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Choose file
 					</button>
 				</div>
 				<span class="file-preview"> <img src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+			</div>
+
+			<div class="entry full-width" ng-hide="isAdminSnt">
+				<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)  </label>
+				<div class="file-upload with-preview">
+					<span class="input">{{hotel_template_logo_file}}</span>
+					<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.hotel_template_logo)" ng-click = "data.hotel_template_logo = 'false'"></a>
+					<input type="file" ng-model="data.hotel_template_logo" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button>
+				</div>
+				<span class="file-preview"> <img src="{{data.hotel_template_logo}}" alt="" height="112" width="auto"> </span>
 			</div>
 			
 		</fieldset>

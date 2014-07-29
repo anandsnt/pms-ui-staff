@@ -1,0 +1,20 @@
+<div id='smartband-listing'>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+	<div class='middle scrollable' data-currency-symbol='$' id='listing-area'>
+		<ul>
+			<li ng-repeat="bands in smartBands" ng-click="editBandDetails(bands.id)">
+				<span class='smartband-icon'></span>
+				<span class='band-holder' >  {{bands.first_name}} {{bands.last_name}}</span>
+				<span class='charge' ng-show="bands.is_fixed"> {{currencySymbol}}  {{bands.amount}} </span>
+				<span class='charge' ng-show="!bands.is_fixed">OPEN ROOM CHARGE </span>
+			</li>
+			
+		</ul>
+	</div>
+
+	<div class="footer">
+		<a id="close-popup" ng-click="closeDialog()" translate>CLOSE</a>
+	</div>
+	
+</div>

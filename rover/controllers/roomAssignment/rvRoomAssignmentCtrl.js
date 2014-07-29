@@ -105,7 +105,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			if($scope.clickedButton == "checkinButton"){
 				$scope.$emit('hideLoader');
-				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 			} else {
 				$scope.$emit('hideLoader');
 				$scope.backToStayCard();
@@ -161,7 +161,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.backToStayCard = function(){
 		
-		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
 	};
 	/**
@@ -178,24 +178,88 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	* function to set the color coding for the room number based on the room status
 	*/
 	$scope.getRoomStatusClass = function(){
+		
 		var reservationRoomStatusClass = "";
+		
+		var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
+		var foStatus = $scope.reservationData.reservation_card.fo_status;
+		var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
 		if($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN'){
-			if($scope.reservationData.reservation_card.room_status == 'READY' && $scope.reservationData.reservation_card.fo_status == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+		    if(roomReadyStatus!=''){
+					if(foStatus == 'VACANT'){
+						switch(roomReadyStatus) {
+	
+							case "INSPECTED":
+								reservationRoomStatusClass = ' room-green';
+								break;
+							case "CLEAN":
+								if (checkinInspectedOnly == "true") {
+									reservationRoomStatusClass = ' room-orange';
+									break;
+								} else {
+									reservationRoomStatusClass = ' room-green';
+									break;
+								}
+								break;
+							case "PICKUP":
+								reservationRoomStatusClass = " room-orange";
+								break;
+				
+							case "DIRTY":
+								reservationRoomStatusClass = " room-red";
+								break;
+	
+			        }
+					
+					} else {
+						reservationRoomStatusClass = "room-red";
+					}
+					
+				}
 			}
-		} 
+		
+		
 		return reservationRoomStatusClass;
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
+
 		var reservationRoomStatusClass = "";
 		
-			if(room.room_status == 'READY' && room.fo_status == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+			
+		var roomReadyStatus = room.room_ready_status;
+		var foStatus = room.fo_status;
+		var checkinInspectedOnly = room.checkin_inspected_only;
+	    if(roomReadyStatus!=''){
+				if(foStatus == 'VACANT'){
+					switch(roomReadyStatus) {
+
+						case "INSPECTED":
+							reservationRoomStatusClass = ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								reservationRoomStatusClass = ' room-orange';
+								break;
+							} else {
+								reservationRoomStatusClass = ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							reservationRoomStatusClass = " room-orange";
+							break;
+			
+						case "DIRTY":
+							reservationRoomStatusClass = " room-red";
+							break;
+
+		        }
+				
+				} else {
+					reservationRoomStatusClass = "room-red";
+				}
+				
 			}
 		
 		return reservationRoomStatusClass;
