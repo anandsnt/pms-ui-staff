@@ -131,7 +131,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 		if($scope.isChecked($scope.billingGroupData.available_charge_codes[index].id)){
 			$scope.removeChargeCode($scope.billingGroupData.available_charge_codes[index].id);
 		}else{
-			$scope.billingGroupData.selected_charge_codes.push($scope.billingGroupData.available_charge_codes[index]);
+			$scope.billingGroupData.selected_charge_codes.push($scope.billingGroupData.available_charge_codes[index].id);
 		}
 		
 
@@ -143,7 +143,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 	$scope.removeChargeCode = function(id){
 		var pos;
 		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++){
-			if($scope.billingGroupData.selected_charge_codes[i].id == id){
+			if($scope.billingGroupData.selected_charge_codes[i] == id){
 				pos = i;
 				break;
 			}
@@ -158,7 +158,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     */		
 	$scope.isChecked = function(id){
 		for(var i = 0; i < $scope.billingGroupData.selected_charge_codes.length; i++){
-			if($scope.billingGroupData.selected_charge_codes[i].id == id)
+			if($scope.billingGroupData.selected_charge_codes[i] == id)
 				return true;
 		}
 		return false;
