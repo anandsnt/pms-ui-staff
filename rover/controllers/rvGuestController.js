@@ -138,7 +138,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				"mobile", "passport_expiry",
 				"passport_number", "postal_code",
 				"reservation_id", "title", "user_id",
-				"works_at", "birthday"
+				"works_at", "birthday","avatar"
 			];
 			var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 			return declonedData;
@@ -183,16 +183,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 
 		$scope.updateContactInfo = function() {
+			var that = this;
+			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				$scope.$emit('hideLoader');
 			};
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 			};
-			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			// check if there is any chage in data.if so call API for updating data
-			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)) {
-				currentGuestCardHeaderData = newUpdatedData;
+			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
+				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
@@ -729,7 +731,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.cardHeaderImage = guest.image;
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
-
 				$scope.initGuestCard(guest);
 			} else {
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {

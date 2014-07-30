@@ -6,7 +6,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.init = function() {
 			$scope.data = {};
-			$scope.data.isConfirmationEmailSameAsGuestEmail = true;
+			$scope.data.isGuestPrimaryEmailChecked = $scope.reservationData.guest.email != "" ? true : false;
+			$scope.data.isGuestAdditionalEmailChecked = false;
 			$scope.data.paymentMethods = [];
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
@@ -102,6 +103,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 
 			}
+
+			// guest emails to which confirmation emails should send
+			data.confirmation_emails = [];
+			if($scope.data.isGuestPrimaryEmailChecked) { data.confirmation_emails.push($scope.reservationData.guest.email); }
+			if($scope.data.isGuestAdditionalEmailChecked) { data.confirmation_emails.push($scope.otherData.additionalEmail); }
 
 			// MLI Integration.
 			if ($scope.reservationData.paymentType.type.value === "CC") {
