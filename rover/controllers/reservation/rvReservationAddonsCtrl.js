@@ -97,7 +97,16 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
                         addonItem.title = item.name;
                         addonItem.description = item.description;
                         addonItem.price = item.amount;
-                        addonItem.stay = item.post_type.description;
+                        addonItem.stay = "";
+                        if(item.amount_type != ""){ addonItem.stay = item.amount_type.description; }
+                        if(item.post_type != ""){ 
+                            if(addonItem.stay != "") { 
+                                addonItem.stay += " / "+item.post_type.description 
+                            }
+                            else{
+                                addonItem.stay = item.post_type.description 
+                            }
+                        }
                         addonItem.amountType = item.amount_type;
                         addonItem.postType = item.post_type;
                         $scope.addons.push(addonItem);
