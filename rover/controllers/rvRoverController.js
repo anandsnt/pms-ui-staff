@@ -25,6 +25,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 
 
+
     /***
      * A method on the $rootScope to determine if the
      * slide animation during stateChange should run in reverse or forward
