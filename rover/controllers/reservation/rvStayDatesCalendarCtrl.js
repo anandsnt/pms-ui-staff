@@ -11,16 +11,21 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	this.dataAssign = function(data) {
 		//Data from Resolve method
-		$scope.stayDetails = data;
+		//$scope.stayDetails = data;
+		$scope.availabilityDetails = data;
 
-		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.arrival_date);
-		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.departure_date);
+		//TODO: Use actual dates
+		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj('2014-06-23');
+		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj('2014-06-25');
 
 	};
 
 	this.renderFullCalendar = function() {
 
 		refreshCalendarEvents();
+		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+		$scope.eventSources = [$scope.events];
+
 
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -59,6 +64,82 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 				
 	};
+
+    var computeEventSourceObject = function(checkinDate, checkoutDate){
+        $scope.roomTypeForCalendar = {}; 
+        $scope.roomTypeForCalendar.id = 55;
+
+        var events = [];
+        //var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
+
+        var thisDate;
+        var calEvt = {};
+        angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
+        
+            calEvt = {};
+            //Fixing the timezone issue related with fullcalendar
+            thisDate = getDateObj(date);
+            
+            calEvt.title = $rootScope.currencySymbol + 
+                            dateDetails[$scope.roomTypeForCalendar.id].rate_available.room_rates.single;
+            calEvt.start = thisDate;
+            calEvt.end = thisDate;
+            calEvt.day = thisDate.getDate().toString();
+            console.log(thisDate);
+            console.log(checkinDate);
+            
+
+            //Event is check-in
+            if (thisDate.getTime() === checkinDate.getTime()) {
+                calEvt.id = "check-in";
+                calEvt.className = "check-in";
+                //if (reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT") {
+                calEvt.startEditable = "true";
+                //}
+                calEvt.durationEditable = "false";
+
+                //If check-in date and check-out dates are the same, show split view.
+                /*if (checkinDate.getTime() == checkoutDate.getTime()) {
+                    calEvt.className = "check-in split-view";
+                    events.push(calEvt);
+                    //checkout-event
+                    calEvt = {};
+                    if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
+                        calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
+                    } else {
+                        calEvt.title = getCurrencySymbol(currencyCode) + $scope.escapeNull(this.rate).split('.')[0];
+                    }
+                    calEvt.start = thisDate;
+                    calEvt.end = thisDate;
+                    calEvt.day = thisDate.getDate().toString();
+                    calEvt.id = "check-out";
+                    calEvt.className = "check-out split-view";
+                    calEvt.startEditable = "true";
+                    calEvt.durationEditable = "false"
+                }*/
+
+                //mid-stay range
+            } else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
+                calEvt.id = "availability";
+                calEvt.className = "mid-stay";
+                //Event is check-out
+            } else if (thisDate.getTime() == checkoutDate.getTime()) {
+                calEvt.id = "check-out";
+                calEvt.className = "check-out";
+                calEvt.startEditable = "true";
+                calEvt.durationEditable = "false";
+                //dates prior to check-in and dates after checkout
+            } else {
+                //calEvt.id = "availability";
+                calEvt.className = "type-available";
+            }
+
+            events.push(calEvt);
+        });
+        return events;
+
+
+    };
 	
 	/**
 	* Event handler for the room type dropdown in top 
@@ -71,8 +152,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	var fetchAvailabilityDetails = function(){
 		var availabilityFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
-			$scope.availabilityDetails = data;
-			console.log(data);
+			that.dataAssign(data);
+			that.renderFullCalendar();
 		};
 
 		var params = {};
@@ -88,9 +169,9 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	};
 
 	var refreshCalendarEvents = function(){
-		var events = dclone($scope.stayDetails.available_dates);
+		//var events = dclone($scope.stayDetails.available_dates);
 		$scope.eventSources.length = 0;
-		$scope.eventSources.push(events);
+		//$scope.eventSources.push(events);
 	};
 
 	$scope.refreshScroller = function() {

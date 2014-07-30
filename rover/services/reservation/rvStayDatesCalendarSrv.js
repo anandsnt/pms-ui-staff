@@ -41,14 +41,15 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 angular.forEach(dayDetails.room_types, function(roomType, i) {
                     dayInfo[roomType.id] = {};
                     //Get the room type availability for a day
-                    dayInfo[roomType.id].room_type_availability = roomType;
-                    dayInfo[roomType.id].rate_availability = that.getTheAvailableRate(roomType, dayDetails.rates);
+                    dayInfo[roomType.id].room_type_available = roomType;
+                    dayInfo[roomType.id].rate_available = that.getTheAvailableRate(roomType, dayDetails.rates);
                 });
                 availability[dayDetails.date] = dayInfo;
             });
             data.results = availability;
             return data;
-        }
+        };
+
 
         this.getTheAvailableRate = function(roomType, ratesForDay){
             var singleRoomRate = null;
