@@ -1,5 +1,5 @@
-sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'RVRoomRateCalendarSrv','$filter', 'RVReservationBaseSearchSrv',
-function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filter, RVReservationBaseSearchSrv) {
+sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'RVStayDatesCalendarSrv','$filter',
+function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
@@ -78,7 +78,7 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 		var params = {};
         params.from_date = $scope.reservationData.arrivalDate;
         params.to_date = $scope.reservationData.departureDate;
-		$scope.invokeApi(RVReservationBaseSearchSrv.fetchAvailability, params, availabilityFetchSuccess);
+		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
 	$scope.changedDateOnCalendar = function(){
