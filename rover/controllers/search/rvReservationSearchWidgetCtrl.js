@@ -25,6 +25,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	//prevent unwanted result whoing while typeing
 	$scope.isTyping = false;
 
+
 	$scope.showAddNewGuestButton = false; //read cooment below :(
 	/**
 	*	should we show ADD Guest Button
@@ -275,12 +276,12 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	$scope.goToReservationDetails = function(reservationID, confirmationID){
 		$scope.currentReservationID = reservationID;
 		$scope.currentConfirmationID = confirmationID;
+		//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:reservationID, confirmationId:confirmationID, isrefresh: true});
   	};
 
 	//Relaunch the reservation details screen when the ows connection retry succeeds
 	$scope.$on('OWSConnectionRetrySuccesss', function(event){
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
-	});
-
+	});	
 }]);

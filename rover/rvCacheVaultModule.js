@@ -21,7 +21,7 @@ angular.module('cacheVaultModule', [])
 		};
 
 		factory.get = function(key) {
-			return $_store.get( key );
+			return  !!$_store.get( key ) ? $_store.get( key ) : "";
 		};
 
 		factory.remove = function(key) {
