@@ -35,31 +35,14 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	var scrollerOptions = {click: true, preventDefault: false};
 	$scope.setScroller('addPayment',scrollerOptions);
-	
+	//$scope.refreshScroll();
+
 	$scope.refreshScroll = function(){
 		setTimeout(function() {
 			$scope.refreshScroller('addPayment');
 		}, 500);
 	};
-	/*
-	$scope.$parent.myScrollOptions = {		
-	    'payment': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    }
-	};
 
-	
-	
-	$scope.$on('$viewContentLoaded', function() {
-		setTimeout(function(){
-			$scope.$parent.myScroll['payment'].refresh();
-			}, 
-		3000);
-		
-     });*/
 	/*
 	 * Render success callback
 	 * Populates API with dropdown values
@@ -95,7 +78,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			//To show fields disabled on swipe
 			$scope.shouldShowDisabled = true;
 		}
-
+		
+		$scope.refreshScroll();
 		$scope.renderPayButtonDefaultValues();
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
@@ -104,26 +88,34 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.guestPaymentList = data;
 	};
 	$scope.renderPayButtonDefaultValues = function(){
+		console.log("++++++++++++++++++++++++++++++++++")
+		console.log($scope.paymentData.bills)
 		if($scope.passData.fromView == "paybutton"){
 	 		//console.log($scope.paymentData.bills[billIndex]);
 			$scope.showPaymentAmount = true;
 			var billIndex = parseInt($scope.passData.fromBill) - parseInt(1);
-			$scope.showCreditCardDetails = false;
-			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){
-				$scope.showCreditCardDetails = false;
-			}
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInformationsToPaymentModal.user_id, $scope.guestPaymentListSuccess);
 			angular.forEach($scope.paymentTypeList, function(value, key) {
 				if(value.name == $scope.paymentData.bills[billIndex].credit_card_details.payment_type){
 					$scope.saveData.selected_payment_type = key; 
 				}
 			});
-			
-			
-			$scope.saveData.card_number = "xxxx-xxxx-xxxx-"+$scope.paymentData.bills[billIndex].credit_card_details.card_number;
-			$scope.saveData.card_expiry_year = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.slice(-2);
-			$scope.saveData.card_expiry_month = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.substring(0, 2);
-			$scope.saveData.name_on_card = $scope.paymentData.bills[billIndex].credit_card_details.card_name;
+			$scope.billsArray = $scope.paymentData.bills;
+			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){
+				$scope.showCreditCardDetails = false;
+				
+				
+				
+			} else {
+				$scope.showCreditCardDetails = true;
+				
+				$scope.paymentTypeValues = $scope.paymentTypeList[$scope.saveData.selected_payment_type].values;
+				$scope.saveData.credit_card = $scope.paymentData.bills[billIndex].credit_card_details.card_code.toUpperCase();
+				$scope.saveData.card_number = "xxxx-xxxx-xxxx-"+$scope.paymentData.bills[billIndex].credit_card_details.card_number;
+				$scope.saveData.card_expiry_year = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.slice(-2);
+				$scope.saveData.card_expiry_month = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.substring(0, 2);
+				$scope.saveData.name_on_card = $scope.paymentData.bills[billIndex].credit_card_details.card_name;
+			}
 		}
 	}
 	
@@ -133,6 +125,14 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.renderPaymentValues = function(){
 		$scope.paymentTypeValues = $scope.data[$scope.saveData.selected_payment_type].values;
+		if($scope.passData.fromView == "paybutton"){
+			if($scope.saveData.selected_payment_type == 0){
+				$scope.showCreditCardDetails = true;
+			} else {
+				$scope.showCreditCardDetails = false;
+			}
+		}
+		
 	};
 	/*
 	 * Success callback of save payment in guest card
