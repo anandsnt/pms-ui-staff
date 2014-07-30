@@ -14,6 +14,14 @@ BaseCtrl.call(this, $scope);
         $scope.data.begin_date = dateDict.begin_date;
         $scope.data.end_date = dateDict.end_date;           
       }
+      $scope.fromDate ="";
+      $scope.toDate = "";
+      if($scope.data.begin_date.length>0){
+        $scope.fromDate = $scope.data.begin_date;
+      };
+      if($scope.data.end_date.length>0){
+        $scope.toDate = $scope.data.end_date;
+      };
 
 
       $scope.fromDateOptions = {
@@ -23,8 +31,8 @@ BaseCtrl.call(this, $scope);
          yearRange: "0:+10",
          onSelect: function() {
 
-            if(tzIndependentDate($scope.data.begin_date) > tzIndependentDate($scope.data.end_date)){
-              $scope.data.end_date = $scope.data.begin_date;
+            if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
+              $scope.toDate = $scope.fromDate;
             }
          }
          }
@@ -36,8 +44,8 @@ BaseCtrl.call(this, $scope);
          yearRange: "0:+10",
          onSelect: function() {
 
-            if(tzIndependentDate($scope.data.begin_date) > tzIndependentDate($scope.data.end_date)){
-              $scope.data.begin_date = $scope.data.end_date;
+            if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
+              $scope.fromDate = $scope.toDate;
             }
          }
        }
@@ -49,8 +57,8 @@ $scope.setUpData();
 $scope.updateClicked = function(){
   var successUpdateRange =function(){
     $scope.$emit('hideLoader');
-    $scope.dateRange.begin_date=$scope.data.begin_date;
-    $scope.dateRange.end_date = $scope.data.end_date;
+    $scope.dateRange.begin_date=$scope.data.begin_date = $scope.fromDate;
+    $scope.dateRange.end_date = $scope.data.end_date = $scope.toDate;
     ngDialog.close();
  };
 
