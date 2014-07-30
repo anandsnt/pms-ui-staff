@@ -150,6 +150,20 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	};
 
 	/**
+    *   Method to toggle data for 'use_kiosk_entity_id_for_fetch_booking' as true/false.
+    */
+	$scope.kioskEntityToggleClicked = function(){
+		$scope.data.use_kiosk_entity_id_for_fetch_booking = ($scope.data.use_kiosk_entity_id_for_fetch_booking == 'true') ? 'false' : 'true';
+	};
+
+	/**
+    *   Method to toggle data for 'use_snt_entity_id_for_checkin_checkout' as true/false.
+    */
+	$scope.sntEntityToggleClicked = function(){
+		$scope.data.use_snt_entity_id_for_checkin_checkout = ($scope.data.use_snt_entity_id_for_checkin_checkout == 'true') ? 'false' : 'true';
+	};
+
+	/**
     *   to test MLI connectivity.
     */
 
