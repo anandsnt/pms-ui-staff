@@ -9,12 +9,14 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	//scroller options
 	$scope.setScroller('stay-dates-calendar'); 
 
-	this.dataAssign = function(data) {
+	this.dataAssign = function() {
 		//Data from Resolve method
 		//$scope.stayDetails = data;
-		$scope.availabilityDetails = data;
+		
 
 		//TODO: Use actual dates
+		//$scope.reservationData.arrivalDate;
+		//$scope.reservationData.departureDate;
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj('2014-06-23');
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj('2014-06-25');
 
@@ -23,8 +25,9 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	this.renderFullCalendar = function() {
 
 		refreshCalendarEvents();
-		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-		$scope.eventSources = [$scope.events];
+		var events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+		console.log(JSON.stringify(events));
+		$scope.eventSources.push(events);
 
 
 		//calender options used by full calender, related settings are done here
@@ -49,6 +52,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	}
 	this.initialise = function() {
 		$scope.eventSources = [];
+		that.dataAssign();
 
 		fetchAvailabilityDetails();
 
@@ -66,6 +70,9 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	};
 
     var computeEventSourceObject = function(checkinDate, checkoutDate){
+    	/*checkinDate = getDateObj(checkinDate);
+    	checkoutDate = getDateObj(checkoutDate);*/
+
         $scope.roomTypeForCalendar = {}; 
         $scope.roomTypeForCalendar.id = 55;
 
@@ -152,13 +159,14 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	var fetchAvailabilityDetails = function(){
 		var availabilityFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
-			that.dataAssign(data);
+			$scope.availabilityDetails = data;
+			
 			that.renderFullCalendar();
 		};
 
 		var params = {};
-        params.from_date = $scope.reservationData.arrivalDate;
-        params.to_date = $scope.reservationData.departureDate;
+        params.from_date = '2014-06-23';
+        params.to_date = '2014-06-25';
 		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
