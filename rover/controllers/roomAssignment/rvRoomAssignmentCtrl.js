@@ -1,5 +1,26 @@
 
-sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', 'ngDialog', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog){
+sntRover.controller('RVroomAssignmentController',[
+	'$scope',
+	'$rootScope',
+	'$state',
+	'$stateParams', 
+	'RVRoomAssignmentSrv', 
+	'$filter', 
+	'RVReservationCardSrv', 
+	'roomsList', 
+	'roomPreferences', 
+	'roomUpgrades', 
+	'$timeout', 
+	'ngDialog',
+	'RVSearchSrv',
+	function($scope, $rootScope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog, RVSearchSrv){
+
+	// set a back button on header
+	$rootScope.setPrevState = {
+		title: 'Staycard',
+		callback: 'backToStayCard',
+		scope: $scope
+	}
 		
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
@@ -90,7 +111,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	/**
 	* function to assign the new room for the reservation
 	*/
-	$scope.assignRoom = function(){
+	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
@@ -110,7 +131,6 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 				$scope.$emit('hideLoader');
 				$scope.backToStayCard();
 			}
-			
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
@@ -178,24 +198,88 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	* function to set the color coding for the room number based on the room status
 	*/
 	$scope.getRoomStatusClass = function(){
+		
 		var reservationRoomStatusClass = "";
+		
+		var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
+		var foStatus = $scope.reservationData.reservation_card.fo_status;
+		var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
 		if($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN'){
-			if($scope.reservationData.reservation_card.room_status == 'READY' && $scope.reservationData.reservation_card.fo_status == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+		    if(roomReadyStatus!=''){
+					if(foStatus == 'VACANT'){
+						switch(roomReadyStatus) {
+	
+							case "INSPECTED":
+								reservationRoomStatusClass = ' room-green';
+								break;
+							case "CLEAN":
+								if (checkinInspectedOnly == "true") {
+									reservationRoomStatusClass = ' room-orange';
+									break;
+								} else {
+									reservationRoomStatusClass = ' room-green';
+									break;
+								}
+								break;
+							case "PICKUP":
+								reservationRoomStatusClass = " room-orange";
+								break;
+				
+							case "DIRTY":
+								reservationRoomStatusClass = " room-red";
+								break;
+	
+			        }
+					
+					} else {
+						reservationRoomStatusClass = "room-red";
+					}
+					
+				}
 			}
-		} 
+		
+		
 		return reservationRoomStatusClass;
 	};
 
 	$scope.getRoomStatusClassForRoom = function(room){
+
 		var reservationRoomStatusClass = "";
 		
-			if(room.room_status == 'READY' && room.fo_status == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+			
+		var roomReadyStatus = room.room_ready_status;
+		var foStatus = room.fo_status;
+		var checkinInspectedOnly = room.checkin_inspected_only;
+	    if(roomReadyStatus!=''){
+				if(foStatus == 'VACANT'){
+					switch(roomReadyStatus) {
+
+						case "INSPECTED":
+							reservationRoomStatusClass = ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								reservationRoomStatusClass = ' room-orange';
+								break;
+							} else {
+								reservationRoomStatusClass = ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							reservationRoomStatusClass = " room-orange";
+							break;
+			
+						case "DIRTY":
+							reservationRoomStatusClass = " room-red";
+							break;
+
+		        }
+				
+				} else {
+					reservationRoomStatusClass = "room-red";
+				}
+				
 			}
 		
 		return reservationRoomStatusClass;
