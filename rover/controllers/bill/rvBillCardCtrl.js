@@ -382,6 +382,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Clicked pay button function
 	  */
 	 $scope.clickedPayButton = function(){
+	 	console.log(JSON.stringify($scope.reservationBillData.bills[$scope.currentActiveBill]));
 	 	$scope.fromViewToPaymentPopup = "paybutton";
 	 	$scope.addNewPaymentModal();
 	 };
@@ -442,9 +443,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     $scope.goBackToStayCard = function(reservationId, confirmationNumber){
     	if($scope.isRefreshOnBackToStaycard)
     	{
-    		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
+    		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
     	} else {
-    		$state.go("rover.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
+    		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
     	}
     };
 	// the listner must be destroyed when no needed anymore

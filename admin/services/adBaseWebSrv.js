@@ -44,8 +44,10 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
 
 				deferred.reject(['Internal server error occured']);
 			}
-			else if(status == 404){ // 500- Internal Server Error
-				deferred.reject(['Sorry, Requested page not found. [404]']);
+			else if(status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
+				$window.location.href = '/500' ;
+			}else if(status == 404){ // 500- Internal Server Error
+				$window.location.href = '/500' ;
 			}			
 			else if(status == 401){ // 401- Unauthorized
 				console.log('lets redirect');

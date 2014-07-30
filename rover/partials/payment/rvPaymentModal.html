@@ -17,6 +17,25 @@
 	
 		</div>
 	</div>
+	<div class="entry full-width scroll-payment-list" ng-show="false">
+		<div>
+			<a class="active-item existing_payments float item-payment" ng-repeat="paymentlist in guestPaymentList" >
+						<figure class="card-logo">
+							<img src="/assets/{{paymentlist.card_code}}.png" alt="">
+						</figure> 
+						<span class="number"> <span translate>ENDING_WITH </span>
+							<span class="value number"> {{paymentlist.mli_token}} </span> 
+						</span> 
+						<span class="date"> <span translate>DATE </span>
+							<span class="value date"> {{paymentlist.card_expiry}}  </span> 
+						</span> 
+						<span class="name"> <span translate>NAME </span>
+							<span class="value name"> {{paymentlist.card_name}} </span> 
+						</span> 
+						<br clear="all">
+			 </a>
+		 </div>
+	</div>	
 	<div class="entry full-width">
 	    <label for="credit-card" translate>SELECT_CREDIT_CARD_LABEL</label>
 	    <div class="select">
@@ -47,6 +66,10 @@
 	<div class="entry full-width">
 	    <label for="name-on-card" translate>NAME_ON_CARD</label>
 	    <input type="text" ng-readonly="shouldShowDisabled" ng-model="saveData.name_on_card" value="{{saveData.name_on_card}}" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
+	</div>	
+	<div class="entry full-width" ng-show="showPaymentAmount">
+	    <label for="name-on-card" translate>AMOUNT</label>
+	    <input type="text" ng-model="saveData.amount" value="{{saveData.amount}}" placeholder="Enter amount" >
 	</div>	
 	<div class="entry full-width add-to-guest" ng-show="!isFromGuestCard">
         <label class="checkbox add-to-guest" ng-class="{'checked': saveData.add_to_guest_card}" >

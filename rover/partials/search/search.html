@@ -20,8 +20,9 @@
 					<ul id="search-results" class="search-results" style="width: 100%;">
 						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length == 0">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
-							
-							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})">
+						
+							<a data-transition="inner-page" class="guest-check-in link-item float" ng-click="goToReservationDetails(row.id, row.confirmation)">
+
 								<figure class="guest-image" ng-show="row.images.length!=0 ">	
 									<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),'second-image':(row.images.length >1 && image.is_primary==false)}">
 									<span class="vip" ng-show="row.vip==true">VIP</span>
@@ -44,7 +45,7 @@
 									</span>
 								</div>	
 
-								<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus)" >
+								<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
 									<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
 										{{row.room}}
 									</span>			
