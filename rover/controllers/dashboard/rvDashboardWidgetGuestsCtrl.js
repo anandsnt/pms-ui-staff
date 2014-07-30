@@ -50,7 +50,17 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     */
     $scope.clickedOnGuestsToday = function(event, type) {
         var data = {};
-        data.status = type;        
+        /* if the type is 'VIP', then we are changing the key inorder to ease API side.
+        * there is some mapping in db side & code assocaited with previous status we are giving
+        * like DUEIN, DUEOUT,INHOUSE...
+        * VIP is a flag and not reservation type. These are the cooments from Shiju PC
+        */
+        if(type == 'VIP'){
+            data.vip = true;
+        }
+        else{
+            data.status = type;        
+        }
         that.clickedType = type;
         $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfSearchDetailsFetch);
     }  	
