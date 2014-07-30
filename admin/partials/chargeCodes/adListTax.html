@@ -6,15 +6,14 @@
 <!--for charge code type other than PAYMENT or TAX -->
 
 <!-- EDITABLE WHEN 'ADD TAX' IS CLICKED -->
-<div id="new-form-holder" ng-show="isAddTax" ng-include="'/assets/partials/chargeCodes/adTaxForm.html'"></div>
+<div id="new-form-holder" ng-show="isAddTax" ng-include="'/assets/partials/chargeCodes/adTaxFormAdd.html'"></div>
 <div id="new-form-holder"></div>
 <!-- EDITABLE WHEN 'ADD TAX' IS CLICKED -->
 <table class="grid datatable">
 	<tbody>
-		<tr >
-			<td ng-hide="isEditTax" ><a data-colspan="1" class="edit-data-inline" ng-click="editSelectedTax()"> TAX 1</a></td>
-			<td data-colspan="1" ng-include="'/assets/partials/chargeCodes/adTaxForm.html'" ng-show="isEditTax"></td>
-
+		<tr ng-repeat="row in prefetchData.tax_details">
+			<td ng-hide="isEditTax && currentClickedTaxElement === $index" ><a data-colspan="1" class="edit-data-inline" ng-click="editSelectedTax($index)"> TAX {{row.id}}</a></td>
+			<td data-colspan="1" ng-include="'/assets/partials/chargeCodes/adTaxFormEdit.html'" ng-show="isEditTax && currentClickedTaxElement === $index"></td>
 		</tr>
 		</tbody>
 </table>

@@ -3,6 +3,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
+	$scope.currentClickedTaxElement = -1;
 	$scope.isAdd = false;
 	$scope.isAddTax = false;
 	$scope.isEditTax = false;
@@ -68,6 +69,94 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 			$scope.prefetchData = data;
 			$scope.isEdit = true;
 			$scope.isAdd = false;
+			
+			// TODO : To be removed static data , after API integartion.
+			$scope.prefetchData = {
+				
+				"value": data.value,
+			    "code": data.code,
+			    "description": data.description,
+			    "selected_charge_group": data.selected_charge_group,
+			    "selected_charge_code_type": data.selected_charge_code_type,
+			    "selected_link_with": data.selected_link_with,
+			    "charge_groups": data.charge_groups,
+			    "charge_code_types": data.charge_code_types,
+			    "link_with": data.link_with,
+
+
+			    "selected_amount_sign": "+",
+			    "selected_amount_symbol": "$",
+			    "amount": "100",
+			    "amount_type": [
+			        {
+			            "value": "1",
+			            "name": "PerAdult"
+			        },
+			        {
+			            "value": "2",
+			            "name": "PerChild"
+			        },
+			        {
+			            "value": "3",
+			            "name": "Per Person"
+			        },
+			        {
+			            "value": "4",
+			            "name": "Flat"
+			        }
+			    ],
+			    "selected_amount_type": "1",
+			    "post_type": [
+			        {
+			            "value": "1",
+			            "name": "PerNight"
+			        },
+			        {
+			            "value": "2",
+			            "name": "PerStay"
+			        }
+			    ],
+			    "selected_post_type": "2",
+			    "charge_codes_has_tax": [
+			        {
+			            "value": "1",
+			            "name": "sample1"
+			        },
+			        {
+			            "value": "2",
+			            "name": "sample2"
+			        }
+			    ],
+			    "tax_details": [],
+			    "tax_details1": [
+			        {
+			            "id": "1",
+			            "is_exclusive": true,
+			            "selected_charge_code": "2",
+			            "calculation_rule": [],
+			            "selected_calculation_rule": ""
+			        },
+			        {
+			            "id": "2",
+			            "is_exclusive": false,
+			            "selected_charge_code": "2",
+			            "calculation_rule": [
+			                {
+			                    "value": "1",
+			                    "name": "ChargeCodeBaseAmount"
+			                },
+			                {
+			                    "value": "2",
+			                    "name": "ChargeCodeplusTax 1"
+			                }
+			            ],
+			            "selected_calculation_rule": "1"
+			        }
+			    ]
+			};
+			
+			console.log($scope.prefetchData);
+			
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback );
  	};
@@ -159,18 +248,89 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  	$scope.addTaxClicked = function(){
 		console.log("addTaxClicked")
  		$scope.isAddTax = true;
-
-	 };
-	 $scope.clickedCancelTax = function(){
+ 		// To find the count of prefetched tax details already there in UI.
+ 		var taxCount = $scope.prefetchData.tax_details.length;
+ 		console.log("taxCount"+taxCount);
+ 		if(taxCount === 0){
+ 			$scope.addData = {
+	 			"id": "1",
+	            "is_exclusive": true,
+	            "calculation_rule": [],
+	 		};
+ 		}
+ 		else if(taxCount === 1){
+ 			$scope.addData ={
+	            "id": "2",
+	            "is_exclusive": true,
+	            "calculation_rule": [
+	                {
+	                    "value": "1",
+	                    "name": "ChargeCodeBaseAmount"
+	                },
+	                {
+	                    "value": "2",
+	                    "name": "ChargeCodeplusTax 1"
+	                }
+	            ],
+			 };
+ 		}
+ 		else if(taxCount > 1){
+	 		$scope.addData = {
+	 			"id": taxCount+1,
+	            "is_exclusive": true,
+	            "calculation_rule": [
+	                {
+	                    "value": "1",
+	                    "name": "ChargeCodeBaseAmount"
+	                },
+	                {
+	                    "value": "2",
+	                    "name": "ChargeCodeplusTax 1"
+	                }
+	            ],
+	 		};
+	 		/*
+	 		 * Generating 3rd calculation rule manually in UI.
+	 		 */
+	 		var name = "ChargeCodeplusTax 1";
+	 		for( var i=2; i<=$scope.prefetchData.tax_details.length; i++ ){
+	 			var name = name +" & " + i;
+	 		}
+	 		var obj = { "value": "3", "name": name };
+	 		$scope.addData.calculation_rule.push(obj);
+ 		}
+	};
+	/*
+	 * To handle cancel button click on tax creation.
+	 */
+	$scope.clickedCancelTax = function(){
 	 	$scope.isAddTax = false;
 	 	$scope.isEditTax = false;
-	 	
-	 };
-	 
- 	 $scope.editSelectedTax = function(){
- 	 	console.log("editSelectedTax")
+	};
+	/*
+	 * To handle click on tax list to show inline edit screen.
+	 */
+ 	$scope.editSelectedTax = function(index){
+ 	 	console.log("editSelectedTax"+index);
 	 	$scope.isEditTax = true;
-	 	
-	 };
+	 	$scope.currentClickedTaxElement = index;
+	};
+	/*
+	 * To handle save button click on tax creation while edit.
+	 */
+	$scope.clickedUpdateTax = function(index){
+		console.log("update tax"+index);
+	};
+	/*
+	 * To handle save button click on tax creation while add new.
+	 */
+	$scope.clickedSaveAddNewTax = function(){
+		console.log("add new tax success");
+		
+		console.log($scope.addData);
+		$scope.prefetchData.tax_details.push($scope.addData);
+		$scope.addData = {};
+		$scope.isAddTax = false;
+	};
 }]);
 
