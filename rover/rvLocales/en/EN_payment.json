@@ -23,4 +23,6 @@
     "SELECTED" : "Selected",
     "CVV" :"cvv",
     "PAY" : "Pay",
-    "AMOUNT": "Amount"
+    "AMOUNT": "Amount",
+    "WINDOW": "Window",
+    "SELECT_WINDOW": "Select Bill"
