@@ -38,7 +38,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             $scope.fromDateOptions = {
                  changeYear: true,
                  changeMonth: true,
-                //inDate:tzIndependentDate(businessDate),
+                 minDate: tzIndependentDate($rootScope.businessDate),
                  yearRange: "0:+10",
                  onSelect: function() {
 
@@ -51,7 +51,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             $scope.toDateOptions = {
                  changeYear: true,
                  changeMonth: true,
-               //minDate: tzIndependentDate(businessDate),
+                 minDate: tzIndependentDate($rootScope.businessDate),
                  yearRange: "0:+10",
                  onSelect: function() {
 

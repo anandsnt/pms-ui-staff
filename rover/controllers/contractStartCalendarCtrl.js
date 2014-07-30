@@ -16,12 +16,12 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 	    $scope.dateOptions = {
 		     changeYear: true,
 		     changeMonth: true,
-		     minDate:dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+		     minDate:tzIndependentDate($rootScope.businessDate),
 		     yearRange: "0:+10",
 		     onSelect: function() {
 		     
 			     if($scope.contractList.isAddMode){
-
+			     	//set end date as one day next to begin date
 			     	$scope.addData.begin_date = $scope.date;	     	
 		     		var myDate = tzIndependentDate($scope.date);
 					myDate.setDate(myDate.getDate() + 1);
@@ -32,13 +32,14 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 
 			    	$scope.contractData.begin_date = $scope.date;   
 			    	if(!($scope.contractData.begin_date < $scope.contractData.end_date)){
+			     		//set end date as one day next to begin date
 			     		var myDate = tzIndependentDate($scope.date);
 						myDate.setDate(myDate.getDate() + 1);
 			     		$scope.contractData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
 			     	}	
 			     }
 
-			        ngDialog.close();
+			     ngDialog.close();
 	     }
 
     	}

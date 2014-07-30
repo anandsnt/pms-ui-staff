@@ -9,6 +9,7 @@ sntRover.controller('contractEndCalendarCtrl',['$rootScope','$scope','dateFilter
 	 	      	$scope.date = $scope.contractData.end_date;
 		    }
 		    else{
+		    	//set end date as one day next to bussiness date
 		    	var myDate = tzIndependentDate($rootScope.businessDate);
 				myDate.setDate(myDate.getDate() + 1);
 	     		$scope.date = dateFilter(myDate, 'yyyy-MM-dd'); 
@@ -20,7 +21,7 @@ sntRover.controller('contractEndCalendarCtrl',['$rootScope','$scope','dateFilter
 	  	$scope.dateOptions = {
 		     changeYear: true,
 		     changeMonth: true,
-		    // minDate:  dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+		     minDate: tzIndependentDate($rootScope.businessDate),
 		     yearRange: "0:+10",
 		     onSelect: function() {
 		     	
