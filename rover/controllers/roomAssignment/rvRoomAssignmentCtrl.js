@@ -1,5 +1,26 @@
 
-sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', 'roomsList', 'roomPreferences', 'roomUpgrades', '$timeout', 'ngDialog', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog){
+sntRover.controller('RVroomAssignmentController',[
+	'$scope',
+	'$rootScope',
+	'$state',
+	'$stateParams', 
+	'RVRoomAssignmentSrv', 
+	'$filter', 
+	'RVReservationCardSrv', 
+	'roomsList', 
+	'roomPreferences', 
+	'roomUpgrades', 
+	'$timeout', 
+	'ngDialog',
+	'RVSearchSrv',
+	function($scope, $rootScope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv, roomsList, roomPreferences, roomUpgrades, $timeout, ngDialog, RVSearchSrv){
+
+	// set a back button on header
+	$rootScope.setPrevState = {
+		title: 'Staycard',
+		callback: 'backToStayCard',
+		scope: $scope
+	}
 		
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
@@ -90,7 +111,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	/**
 	* function to assign the new room for the reservation
 	*/
-	$scope.assignRoom = function(){
+	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
@@ -110,7 +131,6 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 				$scope.$emit('hideLoader');
 				$scope.backToStayCard();
 			}
-			
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');

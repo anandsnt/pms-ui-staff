@@ -2,7 +2,7 @@
   <section ng-if="!searchMode">
    <figure class="guest-image" ng-click="switchCard('guest-card')"> 
      <img ng-src="{{guestCardData.contactInfo.avatar}}" />
-     <span class="vip" ng-show="guestCardData.contactInfo.vip==true">VIP</span>
+     <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
    </figure>
    <form name="change-name" id="change-name">
     <div class="holder">
