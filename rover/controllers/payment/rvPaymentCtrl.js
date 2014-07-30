@@ -67,6 +67,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.shouldShowDisabled = true;
 			
 		}
+		//Same popup is used to do the payment - View bill screen pay button
 		$scope.renderPayButtonDefaultValues();
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
@@ -74,9 +75,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.$emit("hideLoader");
 		$scope.guestPaymentList = data;
 	};
+	/*
+	 * If the current bill has any payment attached show details populated
+	 */
 	$scope.renderPayButtonDefaultValues = function(){
-		console.log("++++++++++++++++++++++++++++++++++")
-		console.log($scope.paymentData.bills)
 		if($scope.passData.fromView == "paybutton"){
 	 		//console.log($scope.paymentData.bills[billIndex]);
 			$scope.showPaymentAmount = true;
@@ -88,14 +90,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				}
 			});
 			$scope.billsArray = $scope.paymentData.bills;
-			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){
+			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){//NOT Credit card only show amount and window
 				$scope.showCreditCardDetails = false;
-				
-				
 				
 			} else {
 				$scope.showCreditCardDetails = true;
-				
 				$scope.paymentTypeValues = $scope.paymentTypeList[$scope.saveData.selected_payment_type].values;
 				$scope.saveData.credit_card = $scope.paymentData.bills[billIndex].credit_card_details.card_code.toUpperCase();
 				$scope.saveData.card_number = "xxxx-xxxx-xxxx-"+$scope.paymentData.bills[billIndex].credit_card_details.card_number;
@@ -318,8 +317,20 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		
 
     };
-
-
     /* MLI integration ends here */
+   $scope.renderSelectedPaymentDetails = function(index){
+   		$scope.showCreditCardDetails = true;
+		angular.forEach($scope.paymentTypeList, function(value, key) {
+			if(value.name == "CC"){
+				$scope.saveData.selected_payment_type = key; 
+			}
+		});
+		$scope.paymentTypeValues = $scope.paymentTypeList[$scope.saveData.selected_payment_type].values;
+		$scope.saveData.credit_card = $scope.guestPaymentList[index].card_code.toUpperCase();
+		$scope.saveData.card_number = "xxxx-xxxx-xxxx-"+$scope.guestPaymentList[index].mli_token;
+		$scope.saveData.card_expiry_year = $scope.guestPaymentList[index].card_expiry.slice(-2);
+		$scope.saveData.card_expiry_month = $scope.guestPaymentList[index].card_expiry.substring(0, 2);
+		$scope.saveData.name_on_card = $scope.guestPaymentList[index].card_name;
+   };
 	
 }]);

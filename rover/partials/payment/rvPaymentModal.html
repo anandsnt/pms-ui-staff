@@ -17,9 +17,9 @@
 	
 		</div>
 	</div>
-	<div class="entry full-width scroll-payment-list" ng-show="false">
+	<div class="entry full-width scroll-payment-list" ng-show="true">
 		<div>
-			<a class="active-item existing_payments float item-payment" ng-repeat="paymentlist in guestPaymentList" >
+			<a class="active-item existing_payments float item-payment" ng-click="renderSelectedPaymentDetails($index)" ng-repeat="paymentlist in guestPaymentList" >
 						<figure class="card-logo">
 							<img src="/assets/{{paymentlist.card_code}}.png" alt="">
 						</figure> 
