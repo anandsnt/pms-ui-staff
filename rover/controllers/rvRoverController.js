@@ -25,6 +25,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 
 
+
     /***
      * A method on the $rootScope to determine if the
      * slide animation during stateChange should run in reverse or forward
@@ -131,6 +132,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
+    //Default Dashboard
+    $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
 
     $scope.searchBackButtonCaption = '';
 
@@ -143,7 +146,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption){
       event.stopPropagation();
       //chnaging the heading of the page
-      $scope.backButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
+      $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
     });
 
     if ($rootScope.adminRole == "Hotel Admin")

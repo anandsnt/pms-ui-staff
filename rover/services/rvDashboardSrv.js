@@ -22,8 +22,8 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 	var that = this;
 
 	this.fetchDashboardStatisticData = function(deferred){
-		var url = '/ui/show?format=json&json_input=dashboard/dashboard.json';
-		//var url = '/ui/show?format=json&json_input=change_staydates/reservation_updates.json';
+		//var url = '/ui/show?format=json&json_input=dashboard/dashboard.json';
+		var url = '/api/dashboards';
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			that.dashBoardDetails.dashboardStatistics = data;
 			deferred.resolve(that.dashBoardDetails);

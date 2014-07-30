@@ -1,4 +1,4 @@
-sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', '$stateParams', '$filter',  function($scope, $state, $stateParams, $filter){
+sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', '$stateParams', '$filter', '$rootScope',function($scope, $state, $stateParams, $filter, $rootScope){
 
 	/*
 	* Controller class for dashboard search,
@@ -13,6 +13,14 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
 	var scrollerOptions = { click: true, preventDefault: false };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
+
+    $scope.$on("$includeContentLoaded", function(){
+        //we are showing the add new guest button in searhc only if it is standalone & search result is empty
+        if($rootScope.isStandAlone){
+            $scope.$broadcast("showAddNewGuestButton", true);
+        }        
+    });
+
 
   	//click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event){
@@ -39,6 +47,10 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
         //also need to clear results present in that & type 
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
         $scope.$broadcast("updateDataFromOutside", []);  
+
+
+        //changing the header's heading
+        $scope.$emit("UpdateHeading", 'DASHBOARD_FRONTDESK_HEADING');
     }
 
     /**

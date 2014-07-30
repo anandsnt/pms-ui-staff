@@ -1,10 +1,11 @@
 <div id="dashboard-guests" class="dashboard-block buttons" ng-controller="rvDashboardGuestWidgetController">
-    <h3>Guests</h3>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <h3>Guests</h3>    
     <ul class="actions">
-        <li ><a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN')"><strong>{{statisticsData.guests.checking_in}}</strong> Arrivals</a></li>
+        <li ><a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN')" ><strong>{{statisticsData.guests.checking_in}}</strong> Arrivals</a></li>
         <li><a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT')"><strong>{{statisticsData.guests.checking_out}}</strong>Departures</a></li>
         <li><a class="button blue" ng-click="clickedOnGuestsToday($event, 'INHOUSE')"><strong>{{statisticsData.guests.in_house}}</strong> In-house</a></li>
-        <li><a class="button yellow"><strong>{{statisticsData.guests.vip}}</strong> VIPs</a></li>
+        <li><a class="button yellow" ng-click="clickedOnGuestsToday($event, 'VIP')"><strong>{{statisticsData.guests.vip}}</strong> VIPs</a></li>
     </ul>
     <ul class="data">
         <li>Arrivals <strong class="green">{{statisticsData.guests.checking_in}}</strong></li>

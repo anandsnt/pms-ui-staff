@@ -18,6 +18,10 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
     $scope.dayAfterTomorrow = tzIndependentDate ($rootScope.businessDate);
     $scope.dayAfterTomorrow.setDate ($scope.tomorrow.getDate() + 1); 
 
+
+    //we are setting the header accrdoing to manager's dashboard
+    $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
+
   	/*
   	*    a recievable function hide/show search area.
   	*    when showing the search bar, we will hide dashboard & vice versa
@@ -52,5 +56,15 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
 
     //show Latecheckout icon
     $scope.shouldShowLateCheckout = true; 
+
+    /**
+    *   a recievder function to show erorr message in the dashboard
+    *   @param {Object} Angular event
+    *   @param {String} error message to display
+    */
+
+    $scope.$on("showErrorMessage", function(event, errorMessage){
+        $scope.errorMessage = errorMessage;        
+    });
 
 }]);

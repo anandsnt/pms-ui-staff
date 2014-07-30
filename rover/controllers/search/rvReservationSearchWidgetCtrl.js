@@ -1,8 +1,8 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter',  function($scope, RVSearchSrv, $filter){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter', '$state', function($scope, RVSearchSrv, $filter, $state){
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
-	* you wanted to add.
+	* you wrapping this.
 	*/
 	var that = this;
   	BaseCtrl.call(this, $scope);	
@@ -22,6 +22,21 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	//results
 	$scope.results = [];
 
+	//prevent unwanted result whoing while typeing
+	$scope.isTyping = false;
+
+
+	$scope.showAddNewGuestButton = false; //read cooment below :(
+	/**
+	*	should we show ADD Guest Button
+	*	we can determine this from wrapper class
+	*	will be helpful if the requirement changed from only for stand alone pms to other
+	* 	and also also we can handle it inside
+	*/
+	$scope.$on("showAddNewGuestButton", function(event, showAddNewGuestButton){
+		$scope.showAddNewGuestButton = showAddNewGuestButton;
+	});
+
 	/**
 	* Success call back of data fetch from webservice
 	*/
@@ -30,7 +45,24 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
         $scope.$emit('hideLoader');
 		$scope.results = data;
 	    $scope.searchType = "default";
-	    setTimeout(function(){refreshScroller();}, 1000);
+	    setTimeout(function(){
+	    	refreshScroller();
+	      	$scope.$apply(function(){$scope.isTyping = false;});
+	    }, 100);
+	};
+
+
+	/**
+	* failure call back of search result fetch	
+	*/
+	var failureCallBackofDataFetch= function(errorMessage){
+		scope.$emit('hideLoader');
+		$scope.searchType = "default";
+		$scope.errorMessage = errorMessage;
+		setTimeout(function(){
+	    	refreshScroller();
+	      	$scope.$apply(function(){$scope.isTyping = false;});
+	    }, 100);
 	};
 
 	/**
@@ -67,6 +99,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 
 		var queryText = $scope.textInQueryBox;
 
+		//inoreder to prevent unwanted results showing while tyeping..
+		if(!$scope.isTyping){
+			$scope.isTyping = true;
+		}
+
 		//setting first letter as captial: soumya
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 
@@ -78,6 +115,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 			$scope.showSearchResultsArea = true;
 		}
 	    displayFilteredResults();  
+
 	}; //end of query entered
 
 	/**
@@ -91,6 +129,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	      	for(var i = 0; i < $scope.results.length; i++){
 	          $scope.results[i].is_row_visible = true;
 	      	}     
+	      	setTimeout(function(){
+	      		$scope.isTyping = false;
+	      	}, 200);
 			refreshScroller();    
 	    }
 	    else{
@@ -116,7 +157,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 		      }
 		    else{
 		        var dataDict = {'query': $scope.textInQueryBox.trim()};
-		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch);         
+		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);         
 		    }
 	      	// we have changed data, so we are refreshing the scrollerbar
 	      	refreshScroller();                  
@@ -228,5 +269,19 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
   	};
+  	
+  	/**
+  	* function to execute on clicking on each result
+  	*/
+	$scope.goToReservationDetails = function(reservationID, confirmationID){
+		$scope.currentReservationID = reservationID;
+		$scope.currentConfirmationID = confirmationID;
+		//$scope.$emit("UpdateSearchBackbuttonCaption", "");
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:reservationID, confirmationId:confirmationID, isrefresh: true});
+  	};
 
+	//Relaunch the reservation details screen when the ows connection retry succeeds
+	$scope.$on('OWSConnectionRetrySuccesss', function(event){
+	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
+	});	
 }]);

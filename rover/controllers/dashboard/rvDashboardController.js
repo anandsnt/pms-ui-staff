@@ -55,10 +55,35 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         //TODO: Add conditionally redirecting from API results
         $state.go('rover.dashboard.frontoffice');
 
+        //TODO: delete the code below and use the function
+        //$state.go('rover.dashboard.manager');
+
+        //reddirectToDefaultDashboard();
+
+   };
+
+   $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error){
+        $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
+   });
+
+   var reddirectToDefaultDashboard = function(){
+        var defaultDashboardMappedWithStates = {
+          'FRONT_DESK': 'rover.dashboard.frontdesk',
+          'MANAGER': 'rover.dashboard.manager',
+        }
+        if($rootScope.default_dashboard in defaultDashboardMappedWithStates){
+            $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
+        }
+        else{
+
+        }
    };
 
    init();
    
+
+
+
    $scope.gotosearch = function(){
    	$state.go("rover.search");
    	// rover.search({type:'DUEIN'});
@@ -105,6 +130,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         //updating type
         var lateCheckoutType = "LATE_CHECKOUT";
         $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
+
+        //updating the heading
+        $scope.$emit( "UpdateHeading", "DASHBOARD_SEARCH_LATECHECKOUT");
     };
 
 

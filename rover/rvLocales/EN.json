@@ -24,6 +24,7 @@
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
+    "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
     "MENU_AVAILABILITY":"Availability",
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
@@ -380,6 +381,36 @@
     "ASSIGN_LABEL": "Assign Room",
     "CANCEL_LABEL":"Cancel",    
     
+    "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
+    "DASHBOARD_SEARCH_CHECKINGOUT": "Departues",
+    "DASHBOARD_SEARCH_INHOUSE": "In-House",
+    "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
+    "DASHBOARD_SEARCH_VIP": "VIP's",
+    "SEARCH_NORMAL": "Find Reservation"
+,
+
+
+    "SMARTBANDS": "Smartbands",
+    "ADD_NEW_SMART": "Add New",
+    "SEE_ALL_BANDS" : "See All Bands",
+    "CLOSE": "Close",
+    "AVAILABLE_CREDIT" : "Available credit",
+    "ADD_CREDIT" : "Add Credit",
+    "PAYMENT_TYPE" : "Payment Type",
+    "OPEN_ROOM_CHARGE": "Open Room Charge",
+    "FIXED_AMOUNT": "Fixed Amount",
+    "CONTINUE": "Continue",
+    "CANCEL" : "cancel",
+    "HOLD_BAND_TO_ENCODE_UNTIL_READY" : "Hold Band To Encoder Until Ready",
+    "NOT_READY" : "Not Ready",
+    "DONE" : "Done",
+    "NEXT_BAND" : "Next band",
+    "ENTER_FIRST_NAME" : "Enter First Name",
+    "ENTER_LAST_NAME" : "Enter Last Name",
+    "FIRST_NAME" : "First Name",
+    "LAST_NAME" : "Last Name"
+,    
+    
     "ROOM": "room",
     "NIGHTS": "nights",
     "NIGHT": "night",
@@ -453,4 +484,3 @@
 	"CANCEL" : "Cancel",
 	"REGISTRATION" : "Registration"
 }
-
