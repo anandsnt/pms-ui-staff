@@ -127,6 +127,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 					$scope.viewState.pendingRemoval.cardType = "";
 				}
 				$scope.viewState.isAddNewCard = false;
+				$scope.closeGuestCard();
 				$scope.cardSaved();
 				$scope.reservationDetails.travelAgent.id = data.id;
 				if ($scope.reservationData && $scope.reservationData.travelAgent) {

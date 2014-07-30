@@ -811,6 +811,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.initGuestCard({
 				id: id
 			});
+			$scope.closeGuestCard();
 		};
 
 	$scope.init();
