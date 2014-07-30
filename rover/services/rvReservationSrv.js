@@ -35,7 +35,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		this.reservationDetails = {};
 		this.confirmationNumbersArray = [];
-		var that = this;
+
 		this.emptyConfirmationNumbers = function() {
 			that.confirmationNumbersArray = [];
 			that.reservationDetails = {};
@@ -44,6 +44,8 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			that.confirmationNumbersArray.push(confirmationNumber);
 
 		};
+
+
 		this.fetchReservationDetails = function(data) {
 			var confirmationNumber = data.confirmationNumber;
 			var isRefresh = data.isRefresh;
@@ -54,8 +56,6 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 						isConfirmationNumberAlreadyCalled = true;
 				}
 			});
-
-
 
 			var deferred = $q.defer();
 
@@ -75,6 +75,8 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 			return deferred.promise;
 		};
+
+
 		this.updateResrvationForConfirmationNumber = function(confirmationNumber, reservationData) {
 			that.reservationDetails[confirmationNumber] = reservationData;
 		};
