@@ -304,12 +304,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			return allSelected;
 		}
 
+		/*
+		 *	The below method is to advance to the enhancements page from
+		 *	the room & rates screen in the STAY_DATES mode
+		 */
 		$scope.handleDaysBooking = function(event) {
 			event.stopPropagation();
 			if (!$scope.stateCheck.rateSelected.allDays) {
 				//if the dates are not all set with rates
 				return false;
 			} else {
+				// TODO : Handle multiple rates selected
+				$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected";
+				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
+				$scope.computeTotalStayCost();
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					"from_date": $scope.reservationData.arrivalDate,
 					"to_date": $scope.reservationData.departureDate
@@ -329,13 +337,16 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					// No more selection of rooms must be allowed here
 					$scope.stateCheck.preferredType = roomId;
 					$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
+					$scope.reservationData.rooms[$scope.activeRoom].rateId = [];
+					$scope.reservationData.rooms[$scope.activeRoom].rateId.push(rateId);
+					$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
 					$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
+					$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
 					$scope.filterRooms();
 				}
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
 				$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
-				$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.departureDate].rate.id = rateId;
-
+				$scope.reservationData.rooms[$scope.activeRoom].rateId.push(rateId);
 
 				// see if the done button has to be enabled
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
@@ -391,7 +402,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						var candidateRooms = $($scope.roomAvailability).filter(function() {
 							return this.level == targetlevel && this.availability == true && this.rates.length > 0;
 						});
-						//Check if candidate rooms are available
+						//Check if candidate rooms are available IFF not in stayDatesMode
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
 							candidateRooms = $($scope.roomAvailability).filter(function() {
@@ -415,6 +426,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								$scope.displayData.roomTypes.push(selectedRoom[0]);
 							}
 						}
+
 					}
 				} else {
 					$scope.displayData.roomTypes = $scope.displayData.allRooms;
@@ -429,7 +441,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.displayData.roomTypes = $($scope.displayData.allRooms).filter(function() {
 					return this.id == $scope.stateCheck.preferredType;
 				});
-				if ($scope.displayData.roomTypes.length > 0) {
+				if ($scope.displayData.roomTypes.length > 0 && !$scope.stateCheck.stayDatesMode) {
 					var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
 					if (level == 1 || level == 2) {
 						//Append rooms from the next level
@@ -438,6 +450,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						var candidateRooms = $($scope.roomAvailability).filter(function() {
 							return this.level == targetlevel && this.availability == true && this.rates.length > 0;
 						});
+
 						//Check if candidate rooms are available
 						if (candidateRooms.length == 0) {
 							//try for candidate rooms in the same level						
@@ -501,13 +514,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							//Step 1 : Check if the rates are configured for all the days of stay
 							if (typeof today[rateId] == 'undefined') {
 								// ("The rate " + rateId + " is not available for " + roomId + " on " + key);
-								if ($scope.stateCheck.stayDatesMode) {
+								// TODO: Uncomment the following code block and comment the line after the block to show rates configured for just that day in the room and rates section under the staydates mode
+								/*if ($scope.stateCheck.stayDatesMode) {
 									if (currDate == $scope.stateCheck.dateModeActiveDate) {
 										validRate = false;
 									}
 								} else {
 									validRate = false;
-								}
+								}*/
+								validRate = false;
 							} else {
 								var rateConfiguration = today[rateId].rateBreakUp;
 								var numAdults = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults);

@@ -234,24 +234,26 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var isOccupancyConfigured = function(roomIndex) {
             var rateConfigured = true;
             if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
-                _.each($scope.reservationData.rateDetails[roomIndex], function(d, i) {
-                    var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
-                    var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
-                    var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
+                _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
+                    if (dateIter != $scope.reservationData.departureDate && d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id] != '') {
+                        var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
+                        var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
+                        var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
 
-                    if (rateToday.single == null && rateToday.double == null && rateToday.extra_adult == null && rateToday.child == null) {
-                        rateConfigured = false;
-                    } else {
-                        // Step 2: Check for the other constraints here
-                        // Step 2 A : Children
-                        if (numChildren > 0 && rateToday.child == null) {
+                        if (rateToday.single == null && rateToday.double == null && rateToday.extra_adult == null && rateToday.child == null) {
                             rateConfigured = false;
-                        } else if (numAdults == 1 && rateToday.single == null) { // Step 2 B: one adult - single needs to be configured
-                            rateConfigured = false;
-                        } else if (numAdults >= 2 && rateToday.double == null) { // Step 2 C: more than one adult - double needs to be configured
-                            rateConfigured = false;
-                        } else if (numAdults > 2 && rateToday.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
-                            rateConfigured = false;
+                        } else {
+                            // Step 2: Check for the other constraints here
+                            // Step 2 A : Children
+                            if (numChildren > 0 && rateToday.child == null) {
+                                rateConfigured = false;
+                            } else if (numAdults == 1 && rateToday.single == null) { // Step 2 B: one adult - single needs to be configured
+                                rateConfigured = false;
+                            } else if (numAdults >= 2 && rateToday.double == null) { // Step 2 C: more than one adult - double needs to be configured
+                                rateConfigured = false;
+                            } else if (numAdults > 2 && rateToday.extra_adult == null) { // Step 2 D: more than two adults - need extra_adult to be configured
+                                rateConfigured = false;
+                            }
                         }
                     }
                 });
@@ -414,6 +416,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.rooms[roomIdx].rateName = '';
             $scope.reservationData.demographics.market = '';
             $scope.reservationData.demographics.source = '';
+
+            // Redo the staydates array
+            for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')].rate = {
+                    id: ''
+                }
+            }
+
 
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,

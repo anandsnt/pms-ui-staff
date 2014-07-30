@@ -188,7 +188,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			//Cannot Remove the last card... Tell user not to select another card
 			if (checkNumber() > 1 && card != "") {
 				$scope.invokeApi(RVCompanyCardSrv.removeCard, {
-					'reservation': $stateParams.id,
+					'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card
 				}, function() {
 					console.log('removeCard - success');
@@ -196,7 +196,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.$emit('hideLoader');
 					if ($scope.viewState.identifier == "STAY_CARD") {
 						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-							"id": $stateParams.id,
+							"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 							"confirmationId": $stateParams.confirmationId,
 							"isrefresh": false
 						});
@@ -229,7 +229,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		$scope.replaceCard = function(card, cardData, future) {
 			//Replace card with the selected one
 			$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
-				'reservation': $stateParams.id,
+				'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 				'cardType': card,
 				'id': cardData.id,
 				'future': typeof future == 'undefined' ? false : future
@@ -243,7 +243,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}
 				if ($scope.viewState.identifier == "STAY_CARD") {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $stateParams.id,
+						"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 						"confirmationId": $stateParams.confirmationId,
 						"isrefresh": false
 					});
