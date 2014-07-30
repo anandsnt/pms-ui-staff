@@ -1,5 +1,5 @@
-sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'RVRoomRateCalendarSrv','$filter',
-function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filter) {
+sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'RVRoomRateCalendarSrv','$filter', 'RVReservationBaseSearchSrv',
+function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filter, RVReservationBaseSearchSrv) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
@@ -45,15 +45,40 @@ function($state, $stateParams, $rootScope, $scope, RVRoomRateCalendarSrv, $filte
 	this.initialise = function() {
 		$scope.eventSources = [];
 
-		var fetchSuccessCallback = function(data) {
+		fetchAvailabilityDetails();
+
+		/*var fetchSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			that.dataAssign(data);
 			$scope.stayDetails = data;
 			that.renderFullCalendar();
 			$scope.refreshScroller();
+		};*/
+		//$scope.invokeApi(RVRoomRateCalendarSrv.fetchStayDateDetails, {},fetchSuccessCallback);
+
+
+				
+	};
+	
+	/**
+	* Event handler for the room type dropdown in top 
+	* - the dropdown which defines the data for calendar.
+	*/
+	$scope.roomTypeForCalendarChanged = function(){
+		$scope.finalRoomType = $scope.roomTypeForCalendar;
+	};
+
+	var fetchAvailabilityDetails = function(){
+		var availabilityFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.availabilityDetails = data;
+			console.log(data);
 		};
-		$scope.invokeApi(RVRoomRateCalendarSrv.fetchStayDateDetails, {},fetchSuccessCallback);
-		
+
+		var params = {};
+        params.from_date = $scope.reservationData.arrivalDate;
+        params.to_date = $scope.reservationData.departureDate;
+		$scope.invokeApi(RVReservationBaseSearchSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
 	$scope.changedDateOnCalendar = function(){

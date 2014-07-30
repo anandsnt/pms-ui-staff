@@ -1,0 +1,57 @@
+<!-- Rooms & Rates -->
+<div id="stay-dates-content" class="reservations-content-wrapper" ng-controller="RVStayDatesCalendarCtrl">
+	
+	<!-- Filters -->
+	<div class="reservation-filters">
+		<!-- Change room type visible for the calendar -->
+		<div id="change-room-type" class="select">
+			<select ng-model="roomTypeForCalendar"
+                ng-options="roomType as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
+                <option value="" disabled selected>All Room Types</option>
+            </select>
+		</div>
+		<ul id="filter-calendar">
+			<li id="show-types">Room Types</li>
+			<li id="show-bar">Best Available</li>
+		</ul>
+	</div>
+
+	<!-- Calendar -->
+	<div id="stay-dates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="stay-dates-calendar">
+		<div class="wrapper">
+			<two-month-calendar event-sources='eventSources' full-calendar-options='fullCalendarOptions' ></two-month-calendar>
+
+			<div id="stay-dates-chage" class="update-details">
+				<ul class="data">
+					<li class="nights"><span class="guest-status nights">nights</span><span id="new-nights">4 nights</span></li>
+					<li class="date"><span class="guest-status small-icon check-in">check-in</span><span id="new-check-in">Wednesday 07-23-2014</span></li>
+					<li class="date"><span class="guest-status small-icon check-out">check-out</span><span id="new-check-out">Monday 07-28-2014</span></li>
+					<li class="room-type">
+						<div class="select">
+							<select ng-model="finalRoomType"
+				                ng-options="roomType as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
+				            </select>
+						</div>
+					</li>
+				</ul>
+				<div class="action">
+					<button id="cancel-stay-dates-change" type="button" class="button blank">Cancel</button>
+					<button id="set-stay-dates" type="button" class="button green">Set Dates</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Legend -->
+	<div id="stay-dates-legend" class="stay-dates-legend">
+		<strong class="notice">Drag &amp; drop to change stay dates</strong>
+		<ul>
+			<li><span class="check-in"></span>Arrival</li>
+			<li><span class="mid-stay"></span>Mid stay</li>
+			<li><span class="check-out"></span>Departure</li>
+			<li><span class="availability"></span>Room Type available</li>
+			<li><span class="no-type-availability"></span>No Type availability</li>
+			<li><span class="no-house-availability"></span>No House availability</li>
+		</ul>
+	</div>
+</div>
