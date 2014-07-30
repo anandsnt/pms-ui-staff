@@ -89,6 +89,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail = {};
 			// Send null if no guest card is attached, empty string causes server internal error
 			data.guest_detail.id = $scope.reservationData.guest.id == "" ? null : $scope.reservationData.guest.id;
+			// New API changes
+			data.guest_detail_id = data.guest_detail.id;
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
@@ -116,7 +118,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
 					stay.push({
 						date: date,
-						rate_id: staydata.rate.id,
+						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id,// In case of the last day, send the first day's occupancy
 						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
 						adults_count: parseInt(staydata.guests.adults),
 						children_count: parseInt(staydata.guests.children),
