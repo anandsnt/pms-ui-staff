@@ -1,7 +1,11 @@
 
-sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog){
+sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
+
+	$rootScope.setPrevState = {
+		title: 'Stay Card'
+	}
 	
 	$scope.$parent.myScrollOptions = {		
 	    'upgradesView': {
