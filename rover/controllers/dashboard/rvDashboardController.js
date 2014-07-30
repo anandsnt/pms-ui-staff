@@ -130,6 +130,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         //updating type
         var lateCheckoutType = "LATE_CHECKOUT";
         $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
+
+        //updating the heading
+        $scope.$emit( "UpdateHeading", "DASHBOARD_SEARCH_LATECHECKOUT");
     };
 
 
