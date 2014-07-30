@@ -31,6 +31,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 				var successCallbackFetchChargeCodes = function(data){
 				$scope.$emit('hideLoader');
 				$scope.billingGroupData.available_charge_codes = data.available_charge_codes;
+				$scope.billingGroupData.title = $scope.billingGroupData.name;
 				$scope.currentClickedElement = index;
 			};
 			$scope.billingGroupData = data.results;
@@ -69,10 +70,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
     		if($scope.isAddMode){
-    			var newBillingGroup = {};
-    			newBillingGroup.name = $scope.billingGroupData.name;
-    			newBillingGroup.id = data.id;
-    			$scope.billingGroupList.push($scope.billingGroupData);
+    			$scope.billingGroupList.push(data);
     			$scope.isAddMode = false;
     		}else{
     			$scope.billingGroupList[$scope.currentClickedElement].name = $scope.billingGroupData.name;
@@ -115,6 +113,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     		$scope.currentClickedElement = -1;
 			$scope.isAddMode = $scope.isAddMode ? false : true;
 			$scope.billingGroupData = {
+				"title":"",
 				"name":"",
 				"selected_charge_codes" : []
 			};		
@@ -170,8 +169,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
     * To handle click event
     */	
 	$scope.clickCancel = function(){
-		// $scope.floorListData.description = $scope.floorListData.floortitle;
-		// $scope.floorListData.floor_number = $scope.floorListData.floor_number_old;
+		$scope.billingGroupData.name = $scope.billingGroupData.title;
 		if($scope.isAddMode)
 			$scope.isAddMode =false;
 		else
