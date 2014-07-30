@@ -14,14 +14,18 @@
 						<select ng-disabled="shouldShowDisabled" ng-model="saveData.selected_payment_type" class="placeholder" ng-change="renderPaymentValues()">
 							<option value="" translate> SELECT_PAYMENT_TYPE </option>
 
+
 							<option ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
 						</select>
 
 					</div>
 				</div>
-				<div class="entry full-width scroll-payment-list payment-list" ng-show="true">
-					<div>
-						<a class="active-item existing_payments float item-payment" ng-repeat="paymentlist in guestPaymentList" >
+	    	
+	
+
+	<div class="entry full-width scroll-payment-list payment-list" ng-show="true">
+		<div>
+			<a class="active-item existing_payments float item-payment" ng-click="renderSelectedPaymentDetails($index)" ng-repeat="paymentlist in guestPaymentList" >
 						<figure class="card-logo">
 							<img src="/assets/{{paymentlist.card_code}}.png" alt="">
 						</figure> <span class="number"> <span translate>ENDING_WITH </span> <span class="value number"> {{paymentlist.mli_token}} </span> </span> <span class="date"> <span translate>DATE </span> <span class="value date"> {{paymentlist.card_expiry}} </span> </span> <span class="name"> <span translate>NAME </span> <span class="value name"> {{paymentlist.card_name}} </span> </span>
