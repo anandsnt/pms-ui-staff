@@ -1,16 +1,16 @@
 <form ng-cloak class="form grey-texture-bg-color">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<fieldset class="holder full-width grey-texture-bg-color" style="margin-bottom:0px;">
+		<fieldset class="holder full-width grey-texture-bg-color">
 		<div class="form-title">
 			<h3><span>Date</span>&nbsp;Range Update</h3>
 		</div>
 	</fieldset>
-<fieldset class="holder left grey-texture-bg-color">
+<fieldset class="from-calendar left grey-texture-bg-color">
 <div class="center_align grey-texture-bg-color"><em>From</em>&nbsp;
 	<span class="italic_text">{{fromDate | date:'MMMM dd, y'}}</span></div>
 	<div ui-date="fromDateOptions" ng-model="fromDate" ui-date-format="yy-mm-dd"></div>
 </fieldset>
-<fieldset class="holder right grey-texture-bg-color">
+<fieldset class="to-calendar right grey-texture-bg-color">
 <div class="center_align grey-texture-bg-color"><em>To </em>&nbsp;
 	<span class="italic_text">{{toDate | date:'MMMM dd, y'}}</span></div>
 	<div ui-date="toDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd"></div>
