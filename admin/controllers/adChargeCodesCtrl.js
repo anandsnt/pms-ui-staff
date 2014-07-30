@@ -98,7 +98,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  		var saveSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			if($scope.isEdit){
-				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
+				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.code;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
