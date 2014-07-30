@@ -1,4 +1,4 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
+sntRover.controller('searchController',['$scope', '$state', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, $state, RVSearchSrv, $stateParams, $filter, searchResultdata){
 	
   var that = this;
   BaseCtrl.call(this, $scope);
@@ -90,14 +90,32 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     $scope.$emit("closeDrawer");
   };
   //Map the room status to the view expected format
-  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
+  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
     	var mappedStatus = "room-number";
       if(reservation_status == 'CHECKING_IN'){
-      	if(roomstatus == "READY" && fostatus == "VACANT"){
-        	mappedStatus +=  " ready";
-      	}else{
-        	mappedStatus += " not-ready";
-      	}
+      	switch(roomReadyStatus) {
+
+			case "INSPECTED":
+				mappedStatus += ' room-green';
+				break;
+			case "CLEAN":
+				if (checkinInspectedOnly == "true") {
+					mappedStatus += ' room-orange';
+					break;
+				} else {
+					mappedStatus += ' room-green';
+					break;
+				}
+				break;
+			case "PICKUP":
+				mappedStatus += " room-orange";
+				break;
+
+			case "DIRTY":
+				mappedStatus += " room-red";
+				break;
+
+		}
       }
   	 return mappedStatus;
   };
@@ -255,5 +273,17 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   		}
   		return queueClass;
   };
+
+  $scope.goToReservationDetails = function(reservationID, confirmationID){
+      $scope.currentReservationID = reservationID;
+      $scope.currentConfirmationID = confirmationID;
+      $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:reservationID, confirmationId:confirmationID, isrefresh: true});
+  };
+
+  //Relaunch the reservation details screen when the ows connection retry succeeds
+  $scope.$on('OWSConnectionRetrySuccesss', function(event){
+      $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
+  });
+
   //end of controller
 }]);

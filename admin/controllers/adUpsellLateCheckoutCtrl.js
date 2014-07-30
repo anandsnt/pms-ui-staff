@@ -1,8 +1,9 @@
 admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
 
     BaseCtrl.call(this, $scope);
+    $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
-
+	
 /**
 * To fetch upsell details
 *
@@ -11,6 +12,8 @@ $scope.fetchUpsellDetails = function(){
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.$emit('hideLoader');
        $scope.upsellData = data;
+       $scope.upsellData.deleted_room_types = [];
+       isRoomTypesSelected();
        $scope.currency_code = getCurrencySign($scope.upsellData.currency_code);   		
        $scope.startWatching();
    };
@@ -59,7 +62,7 @@ $scope.setUpLateCheckoutArray = function(){
    }
    else
        $scope.chekoutchargesArray = [];
-}
+};
 
 /**
 * To watch Upsell data
@@ -77,7 +80,7 @@ $scope.startWatching = function(){
        $scope.startWatchingCheckoutcharge0();            
        $scope.startWatchingCheckoutcharge1();
    });
-}
+};
 $scope.startWatchingCheckoutcharge0 = function(){
 
 /**
@@ -103,7 +106,7 @@ $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldVal
   else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
     $scope.disableSecondOption = false;
 }, true);  
-}
+};
 $scope.startWatchingCheckoutcharge1 = function(){
 
 /**
@@ -150,23 +153,94 @@ else
 */ 
 $scope.saveClick = function(){   	
     $scope.setUpLateCheckoutArray();
-    var updateData = 
-    {
-       'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
-       'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
-       'is_exclude_guests':$scope.upsellData.is_exclude_guests,
-       'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
-       'extended_checkout_charge':$scope.chekoutchargesArray,
-       'charge_code':$scope.upsellData.selected_charge_code
+    var updateData = {};
+    
+    updateData.is_late_checkout_set = $scope.upsellData.is_late_checkout_set;
+    updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
+    updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
+    updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
+    angular.forEach($scope.chekoutchargesArray,function(value, key) {
+    	var timeValue = value.time;
+		value.time = value.time+" PM";
+	});
+    updateData.extended_checkout = $scope.chekoutchargesArray;
+    updateData.charge_code = $scope.upsellData.selected_charge_code;
+	updateData.room_types = [];
+	updateData.deleted_room_types = [];
+	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
+	//Creating room type array with available max_late_checkouts data
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.max_late_checkouts !== ''){
+			 var obj = { "id": item.id.toString() , "max_late_checkouts": item.max_late_checkouts.toString() };
+			 updateData.room_types.push(obj);
+		}
+	});
+	console.log(updateData);
+   	var updateChainSuccessCallback = function(data) {
+       	$scope.$emit('hideLoader');
+       	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
+	    	var timeValue = value.time;
+			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
-   };
+		});
+       	
+   	};
+   	var updateChainFailureCallback =  function(errorMessage) {
+       	$scope.$emit('hideLoader');
+       	$scope.errorMessage = errorMessage;
+       	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
+	    	var timeValue = value.time;
+			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
-   var updateChainSuccessCallback = function(data) {
-       $scope.$emit('hideLoader');
-   };
-   $scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
+		});
+       	
+   	};
+   	console.log(JSON.stringify(updateData));
+   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback, updateChainFailureCallback);
 
 };
 
+$scope.clickAddRoomType = function(){
+	//While addig a room type, making its max_late_checkouts defaults to 0.
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.id == $scope.upsellData.selected_room_type){
+			 item.max_late_checkouts = 0;
+		}
+    });
+    //Removing the selected room type from dropdown of room type list.
+    angular.forEach($scope.upsellData.room_types_list,function(item, index) {
+		if(item.value == $scope.upsellData.selected_room_type){
+			 $scope.upsellData.room_types_list.splice(index,1);
+		}
+    });
+    isRoomTypesSelected();
+    $scope.upsellData.selected_room_type = "";
+};
+/**
+ * Method to check if max_late_checkouts of all elements are blank or not.
+ * Configured room type will have valid max_late_checkouts value.
+ */
+var isRoomTypesSelected = function(){
+	$scope.upsellData.isRoomTypesSelectedFlag = false;
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.max_late_checkouts !== '') $scope.upsellData.isRoomTypesSelectedFlag = true;
+    });
+};
+/*
+ * Method to delete the room type.
+ */
+$scope.deleteRoomType = function(value,name){
+	
+	var data = { "value": value , "name": name };
+	$scope.upsellData.room_types_list.push(data);
+	angular.forEach($scope.upsellData.room_types,function(item, index) {
+		if(item.id == value){
+			item.max_late_checkouts = '';
+		}
+    });
+    $scope.upsellData.deleted_room_types.push(value);
+    isRoomTypesSelected();
+    $scope.upsellData.selected_room_type = "";
+};
 
 }]);

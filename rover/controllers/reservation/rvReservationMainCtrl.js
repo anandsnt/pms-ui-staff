@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state', 'dateFilter',
+    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state, dateFilter) {
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
@@ -7,12 +7,18 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
+
+        //setting the main header of the screen
+        $scope.heading = "Reservations";
+
+        // This is a temporary fix, has to be revisited as to why the heading is not changeable from the 
+        // inner controllers
+        $scope.$on("setHeading", function(e, value) {
+            $scope.heading = value;
+        })
+
         $scope.viewState = {
             isAddNewCard: false,
-            reservationStatus: {
-                confirm: false,
-                number: null
-            },
             pendingRemoval: {
                 status: false,
                 cardType: ""
@@ -20,6 +26,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             identifier: "CREATION",
             lastCardSlot: {
                 cardType: ""
+            },
+            reservationStatus: {
+                confirm: false,
+                number: null
             }
         };
 
@@ -32,7 +42,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
-
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
@@ -59,7 +68,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateName: '',
                     rateAvg: 0,
                     rateTotal: 0,
-                    addons: []
+                    addons: [],
+                    stayDates: {}
                 }],
                 totalTaxAmount: 0,
                 totalStayCost: 0,
@@ -148,6 +158,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
 
             $scope.guestCardData = {};
+            $scope.guestCardData.contactInfo = {};
+            $scope.guestCardData.userId = '';
+
+            $scope.guestCardData.contactInfo.birthday = '';
 
             $scope.reservationListData = {};
 
@@ -167,11 +181,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
         }
 
-
-        
-
-        
-
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -181,6 +190,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
         }
+
 
         $scope.getEmptyAccountData = function() {
             return {
@@ -213,8 +223,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
         }
 
-        //setting the main header of the screen
-        $scope.heading = "Reservations";
+
 
         //CICO-7641
         var isOccupancyConfigured = function(roomIndex) {
@@ -222,7 +231,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, i) {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
-
                     var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
                     var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
 
@@ -320,15 +328,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var roomTotal = 0;
             var roomAvg = 0;
 
-            _.each($scope.reservationData.rateDetails[roomIndex], function(d) {
-                var rateToday = d[$scope.reservationData.rooms[roomIndex].rateId].rateBreakUp;
+            _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
+                var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                 var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                 var extraAdults = adults >= 2 ? adults - 2 : 0;
                 roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
             });
 
             currentRoom.rateTotal = roomTotal;
-            
+
             currentRoom.rateAvg = roomTotal / $scope.reservationData.numNights;
 
             //Calculate Addon Addition for the room

@@ -1,7 +1,6 @@
 sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
 	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
 		BaseCtrl.call(this, $scope);
-		console.log($rootScope.isStandAlone);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		$scope.cardHeaderImage = '/assets/avatar-trans.png';
@@ -9,51 +8,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			status: false,
 			cardType: ""
 		};
-		$scope.viewState = {
-			isAddNewCard: false,
-			pendingRemoval: {
-				status: false,
-				cardType: ""
-			},
-			identifier: "STAY_CARD",
-			lastCardSlot: {
-				cardType: ""
-			}
-		};
-		$scope.searchData = {
-			guestCard: {
-				guestFirstName: "",
-				guestLastName: "",
-				guestCity: "",
-				guestLoyaltyNumber: ""
-			},
-			companyCard: {
-				companyName: "",
-				companyCity: "",
-				companyCorpId: ""
-			},
-			travelAgentCard: {
-				travelAgentName: "",
-				travelAgentCity: "",
-				travelAgentIATA: ""
-			}
-		}
-		$scope.reservationListData = {};
 
-		$scope.reservationDetails = {
-			guestCard: {
-				id: "",
-				futureReservations: 0
-			},
-			companyCard: {
-				id: "",
-				futureReservations: 0
-			},
-			travelAgent: {
-				id: "",
-				futureReservations: 0
-			}
-		};
 		$scope.cardSaved = function() {
 			$scope.viewState.isAddNewCard = false;
 		}
@@ -125,6 +80,8 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 			};
 
+			console.log($scope.reservationDetails.guestCard);
+
 			if ($scope.reservationDetails.guestCard.id != '' && $scope.reservationDetails.guestCard.id != null) {
 				var param = {
 					'id': $scope.reservationDetails.guestCard.id
@@ -136,7 +93,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
-				console.log(data);
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
@@ -177,22 +133,25 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		}
 
 
-		$scope.$on('cardIdsFetched', function() {
+		$scope.$on('cardIdsFetched', function(event, isCardSame) {
 			// Restore view state
 			$scope.viewState.pendingRemoval.status = false;
 			$scope.viewState.pendingRemoval.cardType = "";
 
-			// Reset all cards
-			if ($stateParams.isrefresh == "true" ) {
+			//init all cards with new data
+			if (!isCardSame.guest) {
 				$scope.$broadcast('guestCardDetached');
-				$scope.$broadcast('travelAgentDetached');
+				$scope.initGuestCard();
+			}
+			if (!isCardSame.company) {
 				$scope.$broadcast('companyCardDetached');
+				$scope.initCompanyCard();
+			}
+			if (!isCardSame.agent) {
+				$scope.$broadcast('travelAgentDetached');
+				$scope.initTravelAgentCard();
 			}
 
-			//init all cards with new data
-			$scope.initGuestCard();
-			$scope.initCompanyCard();
-			$scope.initTravelAgentCard();
 			// The future counts of the cards attached with the reservation
 			// will be received here!
 			// This code should be HIT everytime there is a removal or a replacement of
@@ -234,11 +193,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					console.log('removeCard - success');
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
-					$state.go('rover.staycard.reservationcard.reservationdetails', {
-						"id": $stateParams.id,
-						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": false
-					});
+					if ($scope.viewState.identifier == "STAY_CARD") {
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": $stateParams.id,
+							"confirmationId": $stateParams.confirmationId,
+							"isrefresh": false
+						});
+					}
 				}, function() {
 					console.log('removeCard - failure');
 					$scope.$emit('hideLoader');
@@ -279,11 +240,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
-				$state.go('rover.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id,
-					"confirmationId": $stateParams.confirmationId,
-					"isrefresh": false
-				});
+				if ($scope.viewState.identifier == "STAY_CARD") {
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": $stateParams.id,
+						"confirmationId": $stateParams.confirmationId,
+						"isrefresh": false
+					});
+				}
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('replaceCard -failure');

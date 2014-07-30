@@ -1,167 +1,184 @@
-<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="UpsellLateCheckoutView">
-	<section>
-		<header class="content-title float">
-			<h2>Late Checkout Upsell</h2>
-			<a id="go_back" data-type="load-details" class="action back" ng-click="cancelClick()">Back</a>
-		</header>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
-		</div>
-		<form name="upsell-late-checkout" method="post" id="upsell-late-checkout" class="form float" action="">
-			<div class="form-title full-width">
-				<h3>
-					<span>Late Checkout</span>
-					Upsell
-				</h3>
-			</div>
-			<fieldset class="holder left">
-				<div></div>
-
-				<!-- Switch -->
-				<div class="entry">
-					<label for="late-checkout-upsell">Late Checkout Upsell</label>
-					<div id="div-late-checkout-upsell" class="switch-button single" ng-class="{ on : upsellData.is_late_checkout_set === 'true' }"  ng-click="switchClicked()">
-						<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell">
-						<span class="switch-icon"></span>
-
-					</div>
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+	<div data-view="UpsellLateCheckoutView">
+		<section>
+			<header class="content-title float">
+				<h2>Late Checkout Upsell</h2>
+				<a id="go_back" data-type="load-details" class="action back" ng-click="cancelClick()">Back</a>
+			</header>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()"></div>
+			<form name="upsell-late-checkout" method="post" id="upsell-late-checkout" class="form float" action="">
+				<div class="form-title full-width">
+					<h3><span>Late Checkout</span> Upsell </h3>
 				</div>
+				<fieldset class="holder left">
+					<div></div>
 
-				<!-- Checkbox -->
-				<div class="entry radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.is_exclude_guests === 'true' }"></span>
-						<label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
-						<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room" ng-click="checkBoxClicked()">
+					<!-- Switch -->
+					<div class="entry">
+						<label for="late-checkout-upsell">Late Checkout Upsell</label>
+						<div id="div-late-checkout-upsell" class="switch-button single" ng-class="{ on : upsellData.is_late_checkout_set === 'true' }"  ng-click="switchClicked()">
+							<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell">
+							<span class="switch-icon"></span>
 
-					</label>
-				</div>
-
-				<ad-textbox value="upsellData.allowed_late_checkout"   label = "Number of Late Check Out's Allowed" placeholder = "Type number" ></ad-textbox>
-
-
-				<div class="entry">
-					<label>
-						Send Upsell alert to all guests [AM]
-					</label>
-					<div class="entry full-width float">
-
-						<!-- alert hour -->
-						<div class="select select-col col1-3">
-
-							<select ng-options="hour for hour  in hours" ng-model="upsellData.alert_hour">
-								<option style="display:none" value="">HH</option>
-							</select>
-
-
-						</div>
-						<!-- alert minute -->
-						<div class="select select-col col1-3">
-							<select ng-options="minute for minute  in minutes" ng-model="upsellData.alert_minute">
-								<option style="display:none" value="">HH</option>
-							</select>
-
-						</div>
-						<div class="select select-col col1-3">
-							<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-								<option value="AM" selected="">AM</option>
-								<option value="PM">PM</option>
-							</select>
 						</div>
 					</div>
 
-				</div>
-				
-				<!-- charge code -->
-				<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
+					<!-- Checkbox -->
+					<div class="entry radio-check">
+						<label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.is_exclude_guests === 'true' }"></span> <label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
+							<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room" ng-click="checkBoxClicked()">
+						</label>
+					</div>
+					<!-- charge code -->
+					<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes' selbox-class='placeholder'></ad-dropdown>
 
-			</fieldset>
-			<fieldset class="holder right">
-				<div></div>
-				<div class="entry">
-					<label>
-						CheckOut Time extended to [PM]
-					</label>
-					<div class="entry full-width float">
-						<div class="select select-col col1-3">
+					<div class="entry">
+						<label> Send Upsell alert to all guests [AM] </label>
+						<div class="entry full-width float">
 
-							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_0.time">
-								<option style="display:none" value="">HH</option>
-							</select>
+							<!-- alert hour -->
+							<div class="select select-col col1-3">
 
+								<select ng-options="hour for hour  in hours" ng-model="upsellData.alert_hour">
+									<option style="display:none" value="">HH</option>
+								</select>
 
+							</div>
+							<!-- alert minute -->
+							<div class="select select-col col1-3">
+								<select ng-options="minute for minute  in minutes" ng-model="upsellData.alert_minute">
+									<option style="display:none" value="">HH</option>
+								</select>
+
+							</div>
+							<div class="select select-col col1-3">
+								<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+									<option value="AM" selected="">AM</option>
+									<option value="PM">PM</option>
+								</select>
+							</div>
 						</div>
-						<div class="select select-col col1-3">
-							<select name="primetime" disabled="disabled" class="styled">
-								<option value="AM">AM</option>
-								<option value="PM" selected="">PM</option>
-							</select>
+
+					</div>
+					<ad-textbox value="upsellData.allowed_late_checkout"   label = "NUMBER OF LATE CHECK OUT'S PER DAY" placeholder = "Type number" ></ad-textbox>
+
+				</fieldset>
+				<fieldset class="holder right">
+					<div></div>
+					<div class="entry">
+						<label> CheckOut Time extended to [PM] </label>
+						<div class="entry full-width float">
+							<div class="select select-col col1-3">
+
+								<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_0.time">
+									<option style="display:none" value="">HH</option>
+								</select>
+
+							</div>
+							<div class="select select-col col1-3">
+								<select name="primetime" disabled="disabled" class="styled">
+									<option value="AM">AM</option>
+									<option value="PM" selected="">PM</option>
+								</select>
+							</div>
 						</div>
+
 					</div>
 
-				</div>
+					<ad-textbox value="upsellData.extended_checkout_charge_0.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge"  ></ad-textbox>
 
+					<div class="entry">
+						<label> CheckOut Time extended to [PM] </label>
+						<div class="entry full-width float">
+							<div class="select select-col col1-3">
 
-				<ad-textbox value="upsellData.extended_checkout_charge_0.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge"  ></ad-textbox>
+								<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_1.time" ng-disabled="disableSecondOption">
+									<option style="display:none" value="">HH</option>
+								</select>
 
-
-				<div class="entry">
-					<label>
-						CheckOut Time extended to [PM]
-					</label>
-					<div class="entry full-width float">
-						<div class="select select-col col1-3">
-
-							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_1.time" ng-disabled="disableSecondOption">
-								<option style="display:none" value="">HH</option>
-							</select>
-
+							</div>
+							<div class="select select-col col1-3">
+								<select name="primetime" disabled="disabled" class="styled">
+									<option value="AM">AM</option>
+									<option value="PM" selected="">PM</option>
+								</select>
+							</div>
 						</div>
-						<div class="select select-col col1-3">
-							<select name="primetime" disabled="disabled" class="styled">
-								<option value="AM">AM</option>
-								<option value="PM" selected="">PM</option>
-							</select>
+
+					</div>
+					<ad-textbox value="upsellData.extended_checkout_charge_1.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" disabled="disableSecondOption" ></ad-textbox>
+
+					<div class="entry">
+						<label> CheckOut Time extended to [PM] </label>
+						<div class="entry full-width float">
+							<div class="select select-col col1-3">
+								<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_2.time" ng-disabled="disableThirdOption">
+									<option style="display:none" value="">HH</option>
+								</select>
+
+							</div>
+							<div class="select select-col col1-3">
+								<select name="primetime" disabled="disabled" class="styled">
+									<option value="AM">AM</option>
+									<option value="PM" selected="">PM</option>
+								</select>
+							</div>
 						</div>
+
 					</div>
 
-				</div>
-				<ad-textbox value="upsellData.extended_checkout_charge_1.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" disabled="disableSecondOption" ></ad-textbox>
+					<ad-textbox value="upsellData.extended_checkout_charge_2.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" disabled="disableThirdOption" ></ad-textbox>
 
+				</fieldset>
 
-				<div class="entry">
-					<label>
-						CheckOut Time extended to [PM]
-					</label>
-					<div class="entry full-width float">
-						<div class="select select-col col1-3">
-							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_2.time" ng-disabled="disableThirdOption">
-								<option style="display:none" value="">HH</option>
-							</select>
-
-						</div>
-						<div class="select select-col col1-3">
-							<select name="primetime" disabled="disabled" class="styled">
-								<option value="AM">AM</option>
-								<option value="PM" selected="">PM</option>
-							</select>
-						</div>
-					</div>
-
-				</div>
-
-
-				<ad-textbox value="upsellData.extended_checkout_charge_2.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" disabled="disableThirdOption" >
-				</ad-textbox>
-
+				<fieldset class='holder column full-width'>
+					
+					<ad-dropdown label="LIMITED LATE CHECK OUT'S BY ROOM TYPE" label-in-drop-down="Select room type" list="upsellData.room_types_list" selected-Id='upsellData.selected_room_type' selbox-class="placeholder"></ad-dropdown>
 	
-
-			</fieldset>
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank" ng-click="cancelClick()">Cancel</button>
-				<button type="button" id="save" class="button green" ng-click="saveClick()">Save changes</button>
-			</div>
-		</form>
-	</section>
-</div>
+					<div class='entry'>
+						<div class='add-room-type'>
+							<button class='button green' id='add-room-type' ng-click="clickAddRoomType()">
+								Add room type
+							</button>
+						</div>
+					</div>
+					<div class='entry full-width' id='room-type-header'>
+						<div class='entry' ng-show="upsellData.isRoomTypesSelectedFlag">
+							<label> <h4> Room Type </h4> </label>
+						</div>
+						<div class='entry' ng-show="upsellData.isRoomTypesSelectedFlag">
+							<label> <h4> Max per day </h4> </label>
+						</div>
+						<div id='room-type-details' ng-repeat="roomType in upsellData.room_types">
+							
+							<div class="entry full-width room-type-details" ng-show="roomType.max_late_checkouts !==''">
+								<div class="entry">
+									<span class="align-text-center"> {{roomType.name}} </span>
+								</div>
+								<div class="entry">
+									<span class="entry">
+										<ad-textbox value="roomType.max_late_checkouts" inputtype="number"></ad-textbox>
+									</span>
+									<span class="entry">
+										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRoomType(roomType.id,roomType.name)"></a>
+									</span>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</fieldset>
+				
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank" ng-click="cancelClick()">
+						Cancel
+					</button>
+					<button type="button" id="save" class="button green" ng-click="saveClick()">
+						Save changes
+					</button>
+				</div>
+			</form>
+		</section>
+	</div>
 </section>

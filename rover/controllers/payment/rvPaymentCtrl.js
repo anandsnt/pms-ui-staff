@@ -1,7 +1,8 @@
-sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog){
+sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.saveData = {};
+	$scope.guestPaymentList = {};
 	$scope.saveData.add_to_guest_card = false;
 	
 	//Set merchant ID for MLI integration
@@ -23,6 +24,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.shouldShowDisabled = false;
 
 	$scope.successMessage = "";
+	//To show/hide payment amount
+	$scope.showPaymentAmount = false;
+	$scope.showCreditCardDetails = true;
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -70,7 +74,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.$emit("hideLoader");
 		MLISessionId = "";
 		$scope.data = data;
-		
+
+		$scope.paymentTypeList = data;
+
 		$scope.paymentTypeValues = [];
 		if($scope.passData.is_swiped){
 			var selectedPaymentType = 0;
@@ -89,9 +95,39 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			//To show fields disabled on swipe
 			$scope.shouldShowDisabled = true;
 		}
-		$scope.refreshScroll();
+
+		$scope.renderPayButtonDefaultValues();
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
+	$scope.guestPaymentListSuccess = function(data){
+		$scope.$emit("hideLoader");
+		$scope.guestPaymentList = data;
+	};
+	$scope.renderPayButtonDefaultValues = function(){
+		if($scope.passData.fromView == "paybutton"){
+	 		//console.log($scope.paymentData.bills[billIndex]);
+			$scope.showPaymentAmount = true;
+			var billIndex = parseInt($scope.passData.fromBill) - parseInt(1);
+			$scope.showCreditCardDetails = false;
+			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){
+				$scope.showCreditCardDetails = false;
+			}
+			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInformationsToPaymentModal.user_id, $scope.guestPaymentListSuccess);
+			angular.forEach($scope.paymentTypeList, function(value, key) {
+				if(value.name == $scope.paymentData.bills[billIndex].credit_card_details.payment_type){
+					$scope.saveData.selected_payment_type = key; 
+				}
+			});
+			
+			
+			$scope.saveData.card_number = "xxxx-xxxx-xxxx-"+$scope.paymentData.bills[billIndex].credit_card_details.card_number;
+			$scope.saveData.card_expiry_year = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.slice(-2);
+			$scope.saveData.card_expiry_month = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.substring(0, 2);
+			$scope.saveData.name_on_card = $scope.paymentData.bills[billIndex].credit_card_details.card_name;
+		}
+	}
+	
+	
 	/*
 	 * On selecting payment type list corresponding payments
 	 */

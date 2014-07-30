@@ -22,4 +22,5 @@
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",
     "CVV" :"cvv",
-    "PAY" : "Pay"
+    "PAY" : "Pay",
+    "AMOUNT": "Amount"

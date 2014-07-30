@@ -46,6 +46,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
+			$scope.$emit('setHeading', $scope.heading);
+			
 			$scope.displayData.dates = [];
 			$scope.rateFilterText = '';
 			$scope.filteredRates = [];
@@ -217,8 +219,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// });
 		}
 
+		var populateStayDates = function(rateId) {
+			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(details, date) {
+				details.rate.id = rateId,
+				details.rate.name = $scope.displayData.allRates[rateId].name;
+			});
+		}
+
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
+			/*	Using the populateStayDates method, the stayDates object for the active room are 
+			 *	are updated with the rate and rateName information
+			 */
+			populateStayDates(rateId);
+
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
 			$scope.reservationData.rooms[$scope.activeRoom].roomTypeName = $scope.roomAvailability[roomId].name;
 			$scope.reservationData.rooms[$scope.activeRoom].rateId = rateId;
@@ -237,7 +251,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//Navigate to the next screen
 			$scope.checkOccupancyLimit();
-			$state.go('rover.reservation.mainCard.addons', {
+			$state.go('rover.reservation.staycard.mainCard.addons', {
 				"from_date": $scope.reservationData.arrivalDate,
 				"to_date": $scope.reservationData.departureDate
 			});
@@ -435,6 +449,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 												}
 												break;
 											case 'MIN_STAY_THROUGH': // 6 MIN_STAY_THROUGH
+												if (Math.round((new Date($scope.reservationData.departureDate) - new Date(currDate)) / (1000 * 60 * 60 * 24)) < restriction.days) {
+													validRate = false;
+												}
 												break;
 											case 'MIN_ADV_BOOKING': // 7 MIN_ADV_BOOKING
 												if (restriction.days != null && daysTillArrival < restriction.days) {
