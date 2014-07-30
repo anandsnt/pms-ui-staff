@@ -3,9 +3,15 @@
 	<!-- Drawer toggle -->
 	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
 
-	<!--Backbutton> -->
+
+	<!--search Backbutton> -->
 		<a class="" ng-class="{'back-button': searchBackButtonCaption!=''}" ng-show="searchBackButtonCaption!=''" ng-click="headerBackButtonClicked()">{{searchBackButtonCaption}}</a>
-	<!-- end of backbutton -->
+	<!-- end of search backbutton -->
+
+	<!-- back to prev -->
+	<div class="actions-back button white">
+		<a class="back-button" href="" ng-if="setPrevState.title" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
+	</div>
 
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}

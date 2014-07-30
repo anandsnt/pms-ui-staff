@@ -23,8 +23,8 @@
 						
 						<a data-transition="inner-page" class="link-item float" 
 
-						ng-class="getReservationClass(row.reservation_status)"
-						ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})">
+						ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails(row.id, row.confirmation)" 
+						> <!--ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})" -->
 
 							<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
 								<img ng-repeat="image in row.images" 

@@ -20,7 +20,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 	var oldType = "";
                 	var dataDict = {};
                 	oldType = $stateParams.type;
-                	if(oldType != null && oldType!= '') {
+                	if( oldType != null && oldType!= '' ) {
 	                	if(oldType == "LATE_CHECKOUT"){
 				        	dataDict.is_late_checkout_only = true;
 				        }
@@ -28,15 +28,14 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
 				      		dataDict.status = oldType;
 				        }
 	         			//calling the webservice
-	                    return RVSearchSrv.fetch(dataDict);
+	                    return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
+	                } else if ( !!$stateParams.useCache ) {
+                		return RVSearchSrv.fetch({}, $stateParams.useCache);
 	                } else {
-	                	
-                		console.log("to check in server");
-                		var results = [];
-                	    return results;
-	                	
-	                	
-	                }
+                        console.log( 'to check in server' );
+                        var results = [];
+                        return results;
+                    }
                 }
             }
         }); */

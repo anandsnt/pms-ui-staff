@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter',  function($scope, RVSearchSrv, $filter){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter', '$state', function($scope, RVSearchSrv, $filter, $state){
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
@@ -268,5 +268,19 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
   	};
+  	
+  	/**
+  	* function to execute on clicking on each result
+  	*/
+	$scope.goToReservationDetails = function(reservationID, confirmationID){
+		$scope.currentReservationID = reservationID;
+		$scope.currentConfirmationID = confirmationID;
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:reservationID, confirmationId:confirmationID, isrefresh: true});
+  	};
+
+	//Relaunch the reservation details screen when the ows connection retry succeeds
+	$scope.$on('OWSConnectionRetrySuccesss', function(event){
+	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
+	});
 
 }]);
