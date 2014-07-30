@@ -167,7 +167,7 @@ function BaseCtrl($scope, $vault, returnBack){
 
     		// if this state is loaded via 'Go back'
     		if ( returnBack && !!$vault.get(key) ) {
-    			$scope.$parent.myScroll[key].scrollTo( 0, $vault.get(key), 250 );
+    			$scope.$parent.myScroll[key].scrollTo( 0, $vault.get(key), 0 );
     		};
 
     		// if $vault is provided and probeType is 2, setup scrollEnd listner
