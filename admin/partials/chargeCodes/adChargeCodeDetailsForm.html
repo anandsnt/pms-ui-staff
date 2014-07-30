@@ -16,7 +16,7 @@
 				<ad-dropdown label="Charge Code type" label-in-drop-down="Charge Code type" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
 
 				<!-- show For charge codes of the code type TAX-->
-				<div >
+				<div ng-hide="isPmsConfigured">
 					<div class="entry full-width" >
 						<label> Amount </label>
 						<div class="select select-col col1-3 ">
@@ -44,7 +44,7 @@
 			</fieldset>
 			
 			<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
-			<fieldset ng-hide="prefetchData.selected_charge_code_type == '1'" class="holder right">
+			<fieldset ng-hide="prefetchData.selected_charge_code_type == '1' " class="holder right">
 				<div class="form-title">
 					<h3><span>Charge code</span> Link with </h3>
 				</div>
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<!--for charge code type other than PAYMENT or TAX -->
-				<div ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
+				<div ng-hide="isPmsConfigured" ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
 
 			</fieldset>
 

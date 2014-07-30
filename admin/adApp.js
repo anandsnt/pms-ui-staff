@@ -74,11 +74,10 @@ admin.filter('makeRange', function() {
 
 admin.controller('rootController', ['$rootScope', '$scope', '$attrs', '$location',
 function($rootScope, $scope, $attrs, $location) {
-
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
 	$rootScope.hotelId = $attrs.hotelId;
-	$rootScope.isPmsConfigured = $attrs.isPmsConfigured;
+	$rootScope.isPmsConfigured = ($attrs.isPmsConfigured == 'true') ? true : false;
 
 }]);
 

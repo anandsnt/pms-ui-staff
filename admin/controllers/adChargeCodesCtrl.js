@@ -8,7 +8,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
-	
+	console.log($scope.isPmsConfigured);
 	/*
     * To fetch charge code list
     */
