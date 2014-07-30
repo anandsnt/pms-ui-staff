@@ -458,8 +458,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
             // stay
-            $scope.reservationData.arrivalDate = dateFilter(new Date(reservationDetails.reservation_card.arrival_date), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new Date(reservationDetails.reservation_card.departure_date), 'yyyy-MM-dd');
+            var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
+            var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
+            $scope.reservationData.arrivalDate = dateFilter(new Date(arrivalDateParts[2]+"-"+arrivalDateParts[0]+"-"+arrivalDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new Date(departureDateParts[2]+"-"+departureDateParts[0]+"-"+departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
