@@ -11,6 +11,7 @@
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
+    "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
     "MENU_AVAILABILITY":"Availability",
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
@@ -28,6 +29,7 @@
     "MENU_TA_CARDS":"Company & TA Cards",
     "MENU_DISTRIBUTION_MANAGER":"Distribution Manager",
     "MENU_HOUSEKEEPING":"Housekeeping",
+    "MENU_ROOM_STATUS": "Room Status",
     "MENU_TASK_MANAGEMENT":"Task Management",
     "MENU_MAINTAENANCE":"Maintenance",
     "MENU_FINANCIALS":"Financials",

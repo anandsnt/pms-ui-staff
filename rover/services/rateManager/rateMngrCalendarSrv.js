@@ -38,7 +38,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		};
 		var getDailyRates = function(d){
 			var url = "/api/daily_rates";
-			var dateString = url + '?from_date=' + params.from_date + '&to_date=' + params.to_date;
+			var dateString = url + '?from_date=' + params.from_date 
+								+ '&to_date=' + params.to_date
+								+ '&per_page=' + params.per_page;
 			var rateString = "";
 			for(var i in params.rate_ids){
 				rateString = rateString + "&rate_ids[]=" + params.rate_ids[i];
@@ -107,7 +109,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			//To pass the selected rate id and name to the controller.
 			//In situations where the rate is not manually selected by user, 
 			//but single rate is returned in the webservice fetch for rates list.
-			//So we fetch the room details for that rate and display the room type calendar
+			//So we fetch the room details for that rate id and display the room type calendar
 			if(typeof params.id != "undefined" && typeof params.rate != "undefined"){
 				var selectedRate = {};
 				selectedRate.id = params.id;

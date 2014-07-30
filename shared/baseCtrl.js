@@ -71,8 +71,10 @@ function BaseCtrl($scope){
     $scope.getSimplifiedDayName = function(date){
     	var returnText = "";  
         try{
-            var passedDate = new Date(date);
-            var currentDate = new Date($scope.businessDate);
+            // var passedDate = new Date(date);
+            // var currentDate = new Date($scope.businessDate);
+            var passedDate = tzIndependentDate(date);
+            var currentDate = tzIndependentDate($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(diffDays == 0){
@@ -97,7 +99,8 @@ function BaseCtrl($scope){
         catch(e){
         	return date;
         }
-    }; 	
+    };
+
      /*
      * To set the title of each navigation
      */
@@ -157,7 +160,8 @@ function BaseCtrl($scope){
     		$scope.$parent.myScrollOptions = {}; 		
     	}
     	
-    	$scope.$parent.myScrollOptions[key] = scrollerOptions;       	
+    	$scope.$parent.myScrollOptions[key] = scrollerOptions; 
+
     };
 
     /*
@@ -166,7 +170,8 @@ function BaseCtrl($scope){
     */
     $scope.refreshScroller = function (key){
     	setTimeout(function(){
-    		$scope.$parent.myScroll[key].refresh();
+    		if(typeof $scope.$parent.myScroll !== 'undefined' && key in $scope.$parent.myScroll)
+    			$scope.$parent.myScroll[key].refresh();
     	}, $scope.timeOutForScrollerRefresh);   	
     };
 

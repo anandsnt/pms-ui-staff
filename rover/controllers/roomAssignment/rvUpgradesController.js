@@ -1,37 +1,81 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter){
+sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce','$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_UPGRADES_TITLE');
 	$scope.setTitle(title);
-	if(typeof $scope.$parent.myScrollOptions === "undefined")
-		$scope.$parent.myScrollOptions ={};
-	$scope.$parent.myScrollOptions['upgradesView'] = {
-	    	scrollbars: true,
-	        hideScrollbar: false,
-	    };
+
+	var scrollerOptions = {tap:true, click:true};
+	$scope.setScroller('upgradesView', scrollerOptions);
+	$scope.eventTimestamp = "";
 
 	$scope.upgradesList = [];
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
 	$scope.selectedUpgrade = {};
+	$scope.selectedUpgradeIndex = "";
 	/**
 	* Listener to set the room upgrades when loaded
 	*/
 	$scope.$on('roomUpgradesLoaded', function(event, data){
 			$scope.upgradesList = data.upsell_data;
 			$scope.headerData = data.header_details;
+			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
+			setTimeout(function(){				
+				$scope.refreshScroller('upgradesView');
+				}, 
+			1000);
+			
 	});
-	
+	$scope.imageLoaded = function(){
+		$scope.refreshScroller('upgradesView');
+	};
+
+	/**
+	* function to check occupancy for the reservation
+	*/
+	$scope.showMaximumOccupancyDialog = function(index){
+		var showOccupancyMessage = false;
+		if($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null){
+				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
+					showOccupancyMessage = true;
+					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
+			}
+		}else if($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null){
+				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
+					showOccupancyMessage = true;
+					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
+				} 
+		}
+		
+		$scope.selectedUpgradeIndex = index;
+		if(showOccupancyMessage){
+			ngDialog.open({
+                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+                  controller: 'rvMaximumOccupancyDialogController',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+		}else{
+			$scope.selectUpgrade();
+		}
+		
+
+	}
+	$scope.occupancyDialogSuccess = function(){
+		$scope.selectUpgrade();			
+	};
+		
 	/**
 	* function to set the upgrade option for the reservation
 	*/
 	$scope.selectUpgrade = function(index){
+		index = $scope.selectedUpgradeIndex;
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
 			if($scope.clickedButton == "checkinButton"){
-				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 			} else {
 				$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
 			}
@@ -54,12 +98,29 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	/**
 	* function to show and hide the upgrades detail view
 	*/
-	$scope.toggleUpgradeDescriptionStatus = function(index){
-		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+	$scope.toggleUpgradeDescriptionStatus = function($event,index){
+		$event.stopPropagation();
+		$event.stopImmediatePropagation();
+
+		if (parseInt($scope.eventTimestamp)) {
+			if (($event.timeStamp - $scope.eventTimestamp) < 500) {
+				return;
+			}
+			else{
+				$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+			}
+		}else{
+			$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
+		}
+		$scope.eventTimestamp = $event.timeStamp;
+		$scope.refreshScroller('upgradesView');
+		
 	};
 	$scope.isDescriptionVisible = function(index){
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
+
+	
 
 	/**
 	* function to set the initial display status for the upgrade details for all the upgrades

@@ -1,7 +1,6 @@
-sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog',
-	function($scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog) {
+sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'RVReservationCardSrv', 'RVGuestCardSrv', 'ngDialog', '$state',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, RVReservationCardSrv, RVGuestCardSrv, ngDialog, $state) {
 		BaseCtrl.call(this, $scope);
-
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
 		$scope.cardHeaderImage = '/assets/avatar-trans.png';
@@ -9,51 +8,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			status: false,
 			cardType: ""
 		};
-		$scope.viewState = {
-			isAddNewCard: false,
-			pendingRemoval: {
-				status: false,
-				cardType: ""
-			},
-			identifier: "STAY_CARD",
-			lastCardSlot: {
-				cardType: ""
-			}
-		};
-		$scope.searchData = {
-			guestCard: {
-				guestFirstName: "",
-				guestLastName: "",
-				guestCity: "",
-				guestLoyaltyNumber: ""
-			},
-			companyCard: {
-				companyName: "",
-				companyCity: "",
-				companyCorpId: ""
-			},
-			travelAgentCard: {
-				travelAgentName: "",
-				travelAgentCity: "",
-				travelAgentIATA: ""
-			}
-		}
-		$scope.reservationListData = {};
 
-		$scope.reservationDetails = {
-			guestCard: {
-				id: "",
-				futureReservations: 0
-			},
-			companyCard: {
-				id: "",
-				futureReservations: 0
-			},
-			travelAgent: {
-				id: "",
-				futureReservations: 0
-			}
-		};
 		$scope.cardSaved = function() {
 			$scope.viewState.isAddNewCard = false;
 		}
@@ -71,7 +26,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			//TODO : Once this works pull it to a separate method 
 			var fetchGuestcardDataSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
+				// No more future reservations returned with this API call
+				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -124,6 +80,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.$emit('hideLoader');
 			};
 
+			console.log($scope.reservationDetails.guestCard);
+
 			if ($scope.reservationDetails.guestCard.id != '' && $scope.reservationDetails.guestCard.id != null) {
 				var param = {
 					'id': $scope.reservationDetails.guestCard.id
@@ -135,11 +93,11 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
-				console.log(data);
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.companyCard.id;
 				$scope.companyContactInformation = data;
-				$scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
+				// No more future reservations returned with this API call
+				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
 				console.log($scope.reservationDetails);
 			};
@@ -159,9 +117,9 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.$emit("hideLoader");
 				data.id = $scope.reservationDetails.travelAgent.id;
 				$scope.travelAgentInformation = data;
-				$scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
+				// No more future reservations returned with this API call
+				// $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('travelAgentFetchComplete');
-				console.log($scope.reservationDetails);
 
 			};
 			//	TAcard defaults to search mode 
@@ -174,13 +132,49 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			}
 		}
 
-		$scope.$on('cardIdsFetched', function() {
-			$scope.initGuestCard();
-			$scope.initCompanyCard();
-			$scope.initTravelAgentCard();
+
+		$scope.$on('cardIdsFetched', function(event, isCardSame) {
+			// Restore view state
+			$scope.viewState.pendingRemoval.status = false;
+			$scope.viewState.pendingRemoval.cardType = "";
+
+			//init all cards with new data
+			if (!isCardSame.guest) {
+				$scope.$broadcast('guestCardDetached');
+				$scope.initGuestCard();
+			}
+			if (!isCardSame.company) {
+				$scope.$broadcast('companyCardDetached');
+				$scope.initCompanyCard();
+			}
+			if (!isCardSame.agent) {
+				$scope.$broadcast('travelAgentDetached');
+				$scope.initTravelAgentCard();
+			}
+
+			// The future counts of the cards attached with the reservation
+			// will be received here!
+			// This code should be HIT everytime there is a removal or a replacement of
+			// any of the cards attached! 
+			//if cards are not attached future reservation values are coming in as null
+			var futureCounts = $scope.reservationListData.future_reservation_counts;
+
+
+			$scope.reservationDetails.guestCard.futureReservations = futureCounts.guest == null ? 0 : futureCounts.guest;
+			$scope.reservationDetails.companyCard.futureReservations = futureCounts.company == null ? 0 : futureCounts.company;
+			$scope.reservationDetails.travelAgent.futureReservations = futureCounts.travel_agent == null ? 0 : futureCounts.travel_agent;
+
+			// TODO: Remove the following commented out code!
+			// Leaving it now for further debugging if required
+			// console.log("FUTURE_COUNTER", {
+			// 	G: $scope.reservationDetails.guestCard.futureReservations,
+			// 	C: $scope.reservationDetails.companyCard.futureReservations,
+			// 	T: $scope.reservationDetails.travelAgent.futureReservations,
+			// });
+
 		});
 
-		$scope.removeCard = function(card) {
+		$scope.removeCard = function(card, future) {
 			// This method returns the numnber of cards attached to the staycard
 			var checkNumber = function() {
 				var x = 0;
@@ -191,7 +185,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			}
 
 			//Cannot Remove the last card... Tell user not to select another card
-			if (checkNumber() > 1) {
+			if (checkNumber() > 1 && card != "") {
 				$scope.invokeApi(RVCompanyCardSrv.removeCard, {
 					'reservation': $stateParams.id,
 					'cardType': card
@@ -199,6 +193,13 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 					console.log('removeCard - success');
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
+					if ($scope.viewState.identifier == "STAY_CARD") {
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": $stateParams.id,
+							"confirmationId": $stateParams.confirmationId,
+							"isrefresh": false
+						});
+					}
 				}, function() {
 					console.log('removeCard - failure');
 					$scope.$emit('hideLoader');
@@ -239,6 +240,13 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
+				if ($scope.viewState.identifier == "STAY_CARD") {
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": $stateParams.id,
+						"confirmationId": $stateParams.confirmationId,
+						"isrefresh": false
+					});
+				}
 				$scope.$emit('hideLoader');
 			}, function() {
 				console.log('replaceCard -failure');
@@ -254,6 +262,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 			// reset the id and the future reservation counts that were cached
 			if (card == 'guest') {
 				$scope.reservationDetails.guestCard.id = "";
+				// console.log('future reservation count is reset');
 				$scope.reservationDetails.guestCard.futureReservations = 0;
 				var contactInfoData = {
 					'contactInfo': {},
@@ -279,6 +288,8 @@ sntRover.controller('stayCardMainCtrl', ['$scope', 'RVCompanyCardSrv', '$statePa
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
 			}
+
+
 		}
 
 		$scope.cardReplaced = function(card, cardData) {

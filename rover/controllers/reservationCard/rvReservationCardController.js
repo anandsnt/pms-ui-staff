@@ -1,12 +1,17 @@
-sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter',
-	function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter) {
+sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', '$filter', '$state', '$stateParams',
+	function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv, $filter, $state, $stateParams) {
 		BaseCtrl.call(this, $scope);
 		$scope.timeline = "";
 		$scope.reservationList = [];
 		$scope.currentReservationId = "";
 		$scope.reservationCount = 0;
 
-		var title = $filter('translate')('STAYCARD_TITLE');
+		$scope.viewState.identifier = "STAY_CARD";
+
+		$scope.heading = 'Staycard';
+		$scope.$emit('setHeading', $scope.heading);
+
+		var title = "Staycard";
 		$scope.setTitle(title);
 
 		$scope.reservationCardClick = function() {
@@ -63,7 +68,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					'fakeDataToAvoidCache': new Date(),
 					'id': $scope.data.guest_details.reservation_id
 				};
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
+				// $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
 
 			if ($scope.timeline == "current") {
@@ -139,9 +144,14 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 * get reservation details on click each reservation
 		 * @param {string} current clicked confirmation number
 		 */
-		$scope.getReservationDetails = function(currentConfirmationNumber) {
+		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 
-			$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
+			// $scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+				"id": currentId,
+				"confirmationId": currentConfirmationNumber,
+				"isrefresh": true
+			});
 			$scope.currentReservationId = currentConfirmationNumber;
 		};
 		/*

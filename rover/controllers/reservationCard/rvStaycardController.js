@@ -1,24 +1,30 @@
 sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog',
 	function($scope, RVGuestCardSrv, ngDialog) {
 
-		$scope.guestCardData = {};
-		$scope.guestCardData.contactInfo = {};
-		$scope.countriesList = [];
-		$scope.guestCardData.userId = '';
-		$scope.guestCardData.contactInfo.birthday = '';
+		// $scope.guestCardData = {};
+		// $scope.guestCardData.contactInfo = {};
+		$scope.countriesListForGuest = [];
+		// $scope.guestCardData.userId = '';
+		// $scope.guestCardData.contactInfo.birthday = '';
 		$scope.paymentData = {};
 		/*
 		 * To get the payment tab payments list
 		 */
 		$scope.$on('GUESTPAYMENT', function(event, paymentData) {
-			$scope.paymentData = paymentData;
+			if(paymentData.guest_id){
+				$scope.paymentData = paymentData;
+			}
 		});
 
 
 		$scope.$on('guestCardUpdateData', function(event, data) {
+			console.log("===data=====");
+			console.log(data);
 			$scope.guestCardData.contactInfo.avatar = data.avatar;
 			$scope.guestCardData.contactInfo.vip = data.vip;
-			$scope.countriesList = data.countries;
+			
+			$scope.countriesListForGuest = data.countries;
+			
 			$scope.guestCardData.userId = data.userId;
 			$scope.guestCardData.guestId = data.guestId;
 		});
@@ -34,8 +40,6 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 		});
 
 		$scope.$on('CHANGEAVATAR', function(event, data) {
-			console.log("--------+++-------------");
-			console.log(data);
 
 			var imageName = $scope.guestCardData.contactInfo.avatar.split('/')[$scope.guestCardData.contactInfo.avatar.split('/').length - 1];
 

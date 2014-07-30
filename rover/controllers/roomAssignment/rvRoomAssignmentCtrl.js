@@ -4,10 +4,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 	$scope.setTitle(title);
-		
+
 	setTimeout(function(){
-				$scope.$parent.myScroll['roomlist'].refresh();
-				$scope.$parent.myScroll['filterlist'].refresh();
+				$scope.refreshScroller('roomlist');	
+				$scope.refreshScroller('filterlist');	
 				}, 
 			3000);
 	$timeout(function() {
@@ -21,11 +21,13 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.getRooms = function(index){
 		$scope.selectedRoomType = $scope.getCurrentRoomType();
 		var successCallbackGetRooms = function(data){
-			$scope.rooms = data;
+			$scope.rooms = data.rooms;
+			$scope.reservation_occupancy = data.reservation_occupancy;
+			$scope.setSelectedFiltersList();
 			$scope.setRoomsListWithPredefinedFilters();
 			$scope.applyFilterToRooms();
 			$scope.$emit('hideLoader');
-			$scope.$parent.myScroll['roomlist'].refresh();
+			$scope.refreshScroller('roomlist');	
 			// setTimeout(function(){
 			// 	$scope.$parent.myScroll['roomlist'].refresh();
 			// 	}, 
@@ -50,7 +52,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	}
 
 	/**
-	* function to assign the new room for the reservation
+	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
 		var showOccupancyMessage = false;
@@ -81,9 +83,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 
 	}
 
-	$scope.$on('occupancyDialogSuccess', function(event, data){
-			$scope.assignRoom();
-	});
+	$scope.occupancyDialogSuccess = function(){
+		$scope.assignRoom();			
+	};
 	
 	/**
 	* function to assign the new room for the reservation
@@ -102,11 +104,13 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			}			
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			if($scope.clickedButton == "checkinButton"){
-				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				$scope.$emit('hideLoader');
+				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 			} else {
+				$scope.$emit('hideLoader');
 				$scope.backToStayCard();
 			}
-			$scope.$emit('hideLoader');
+			
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
@@ -122,20 +126,10 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	/**
 	* setting the scroll options for the room list
 	*/
-	$scope.$parent.myScrollOptions = {		
-	    'roomlist': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    },
-	    'filterlist': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    }
-	};	
+	var scrollerOptions = { preventDefault: false};
+  	$scope.setScroller('roomlist', scrollerOptions);
+  	$scope.setScroller('filterlist', scrollerOptions);
+
 	/**
 	* Listener to update the room list when the filters changes
 	*/
@@ -143,8 +137,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
 			$scope.applyFilterToRooms();
-			setTimeout(function(){				
-				$scope.$parent.myScroll['roomlist'].refresh();
+			setTimeout(function(){		
+				$scope.refreshScroller('roomlist');	
 				}, 
 			1000);
 	});
@@ -167,7 +161,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.backToStayCard = function(){
 		
-		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
 	};
 	/**
@@ -175,8 +169,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.toggleFiltersView = function(){
 		$scope.isFiltersVisible = !$scope.isFiltersVisible;
-		setTimeout(function(){				
-				$scope.$parent.myScroll['filterlist'].refresh();
+		setTimeout(function(){	
+				$scope.refreshScroller('filterlist');				
 				}, 
 			1000);
 	};

@@ -9,6 +9,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.data.isConfirmationEmailSameAsGuestEmail = true;
 			$scope.data.paymentMethods = [];
 			$scope.heading = "Guest Details & Payment";
+			$scope.$emit('setHeading', 'Guest Details & Payment');
 
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {
@@ -33,8 +34,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.data.paymentMethods = data;
 				$scope.$emit('hideLoader');
 			};
+			var paymentFetchError = function(data) {
+				$scope.errorMessage = data;
+				$scope.$emit('hideLoader');
+			};
 
-			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess);
+			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess, paymentFetchError);
 
 		};
 
@@ -67,8 +72,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.departure_date = $scope.reservationData.departureDate;
 			data.departure_time = '';
 			//Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
-			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkinTime.ampm != '') {
-				data.arrival_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
+			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkoutTime.ampm != '') {
+				data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
 					$scope.reservationData.checkoutTime.mm,
 					$scope.reservationData.checkoutTime.ampm);
 			}
@@ -76,7 +81,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.adults_count = parseInt($scope.reservationData.rooms[0].numAdults);
 			data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
 			data.infants_count = parseInt($scope.reservationData.rooms[0].numInfants);
-			data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
+			// CICO - 8320 Rate to be handled in room level
+			// data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 			data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
 
 			//Guest details
@@ -102,6 +108,36 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				data.payment_type.session_id = MLISessionId;
 			}
 
+			//	CICO-8320
+			// 	The API request payload changes
+
+			var stay = [];
+			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
+				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
+					stay.push({
+						date: date,
+						rate_id: staydata.rate.id,
+						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+						adults_count: parseInt(staydata.guests.adults),
+						children_count: parseInt(staydata.guests.children),
+						infants_count: parseInt(staydata.guests.infants)
+					});
+				} else if (date != $scope.reservationData.departureDate) {
+					stay.push({
+						date: date,
+						rate_id: staydata.rate.id,
+						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+						adults_count: parseInt(staydata.guests.adults),
+						children_count: parseInt(staydata.guests.children),
+						infants_count: parseInt(staydata.guests.infants)
+					});
+				}
+			});
+
+			//	end of payload changes
+
+			data.stay_dates = stay;
+
 			data.company_id = $scope.reservationData.company.id;
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;
 			data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
@@ -123,7 +159,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.viewState.reservationStatus.number = data.id;
-				$state.go('rover.reservation.mainCard.reservationConfirm');
+				// Change mode to stay card as the reservation has been made!
+				$scope.viewState.identifier = "CONFIRM";
+
+				$scope.reservation = {
+					reservation_card: {}
+				};
+
+				$scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
+				$scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
+
+
+
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+					"id": data.id,
+					"confirmationId": data.confirm_no
+				});
+
 				MLISessionId = "";
 
 			};
@@ -134,7 +186,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			}
 
-			$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+			var updateSuccess = function(data) {
+				$scope.viewState.identifier = "UPDATED";
+				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
+					"id": $scope.reservationData.reservationId,
+					"confirmationId": $scope.reservationData.confirmNum
+				});
+			}
+
+			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
+				//creating reservation
+				postData.reservationId = $scope.reservationData.reservationId;
+				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
+			} else {
+				//updating reservation
+				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
+			}
+
 		}
 
 		/**
@@ -162,13 +230,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.errorMessage = ["There is a problem with your credit card"];
 				}
 			}
-			$scope.$emit("showLoader");
-			HostedForm.updateSession(sessionDetails, callback);;
+
+			try {
+				HostedForm.updateSession(sessionDetails, callback);
+				$scope.$emit("showLoader");
+			} catch (err) {
+				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			};
 		}
 
 
 		$scope.setUpMLIConnection = function() {
-			HostedForm.setMerchant($rootScope.MLImerchantId);
+			try {
+				HostedForm.setMerchant($rootScope.MLImerchantId);
+			} catch (err) {};
+
 		}();
 
 
@@ -199,7 +275,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		$scope.cancelButtonClicked = function() {
 			$scope.initReservationData();
-			$state.go('rover.reservation.search');
+			$state.go('rover.staycard.reservation.search');
 		};
 
 		$scope.refreshPaymentScroller = function() {
@@ -207,6 +283,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$parent.myScroll['paymentInfo'].refresh();
 			}, 0);
 		};
+
+		$scope.$on("checkinCheckoutTimeUpdated", function(event) {
+			$scope.proceedCreatingReservation();
+		});
 
 		$scope.init();
 

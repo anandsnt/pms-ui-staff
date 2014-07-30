@@ -1,4 +1,5 @@
-sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv){
+sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', '$filter',
+		function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv, $filter){
 	BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -7,54 +8,59 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.status = status;
 	};
 	
-	$scope.pressedCancelStatus = false;
-	
 	$scope.init = function(){
 		var reservationStatus = "";
 		$scope.data = {};
+		//If the keypopup inviked from check-in flow - registration card)
 		if($scope.fromView == "checkin"){
 			reservationStatus = $scope.reservationBillData.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = false;
-			$scope.confirmNumber = $scope.reservationBillData.confirm_no;
+			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
+			$scope.data.roomNumber = $scope.reservationBillData.room_number;
+		//If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 			// Setup data for late checkout
 			$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
-			$scope.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
+			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
+			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
+
 		}
 		
     	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
     	
     	that.retrieveUID = true;
     	that.UID = '';
-    	that.setStatusAndMessage('Connected to Key Card Reader!', 'success');	
+		var statusMessage = $filter('translate')('KEY_CONNECTED_STATUS');
+    	that.setStatusAndMessage(statusMessage, 'success');	
     	// To check reservation status and select corresponding texts and classes.
     	if(reservationStatus == 'CHECKING_IN' ){
-			$scope.data.reservationStatusText = 'Check in Complete';
+			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 			$scope.data.colorCodeClass = 'check-in';
 			$scope.data.colorCodeClassForClose = 'hidden';
 		}
 		else if(reservationStatus == 'CHECKEDIN' ){
-			$scope.data.reservationStatusText = 'In House';
+			$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 			$scope.data.colorCodeClass = 'inhouse';
 			$scope.data.colorCodeClassForClose = 'blue';
 		}
 		else if(reservationStatus == 'CHECKING_OUT'){
-			$scope.data.reservationStatusText = 'Checking Out';
+			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 			$scope.data.colorCodeClass = 'check-out';
 			$scope.data.colorCodeClassForClose = 'red';
 		}
 		//TODO: include late checkout scenario
 		
+		//Based on different status, we switch between the views
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
+		$scope.pressedCancelStatus = false;
 
 		that.noOfErrorMethodCalled = 0;
-		that.maxSecForErrorCalling = 1000;
-		$scope.showDeviceConnectingMessge();
+		that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK = 10000;
 
 		$scope.numberOfKeysSelected = 0;
 		$scope.printedKeysCount = 0;
@@ -63,7 +69,10 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.printKeyStatus = [];
 		that.isAdditional = false;
 		
-		$scope.buttonText = "Print Key";
+		$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
+		//Initally we check if the device is connected
+		$scope.showDeviceConnectingMessge();
+
 	};
 	/*
 	* If the device is not connected, try the connection again after 1 sec.
@@ -79,12 +88,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;		
 		setTimeout(function(){
-			if(secondsAfterCalled <= that.maxSecForErrorCalling){ //10seconds
+			if(secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK){ //10seconds
 				$scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
 
-		if(secondsAfterCalled > that.maxSecForErrorCalling){
+		if(secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK){
 			$scope.deviceConnecting = false;
 			$scope.keysPrinted = false;
 			$scope.showPrintKeyOptions = false;
@@ -93,6 +102,11 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 
 		}
 
+	};
+
+	$scope.tryAgainButtonPressed = function(){
+		that.noOfErrorMethodCalled = 0;
+		$scope.showDeviceConnectingMessge();
 	};
 	/**
 	* Check if the card reader device connection is available.
@@ -125,7 +139,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.numOfKeys = $scope.numberOfKeysSelected;
 		$scope.printedKeysCount = 0;
 		if(that.numOfKeys > 0){
-			$scope.buttonText = "Print Key 1";
+			$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT_KEY1');
 		}
 		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
@@ -158,7 +172,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
-		that.setStatusAndMessage('Reading key!', 'pending');	
+		that.setStatusAndMessage($filter('translate')('KEY_READING_STATUS'), 'pending');	
 		$scope.$emit('showLoader');
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
@@ -175,15 +189,18 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	
 	that.showUIDFetchFailedMsg = function(){
 		$scope.$emit('hideLoader');
-		var message = 'Unable to read the key!';
+		//Asynchrounous action. so we need to notify angular that a change has occured. 
+		//It lets you to start the digestion cycle explicitly
+		$scope.$apply();
+		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS');
 		that.showKeyPrintFailure(message);
 	};
 	/*
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(uID){
-		$scope.$emit('hideLoader');
-		that.setStatusAndMessage('Getting key image!', 'pending');
+		$scope.$emit('hideLoader'); 
+		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 	    var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
@@ -218,7 +235,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	this.keyFetchFailed = function(errorMessage){
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
-		var message = 'Key creation failed!';
+		var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		that.showKeyPrintFailure(message);
 
 	};
@@ -259,14 +276,14 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	*/
 	this.writeKey = function(keyWriteData, index){
 		$scope.$emit('showLoader');
-		that.setStatusAndMessage('Writing key!', 'pending');
+		that.setStatusAndMessage($filter('translate')('KEY_WRITING_PROGRESS_STATUS'), 'pending');
 
 		var options = {
 			//Cordova write success callback. If all the keys were written sucessfully, show key success message
 			//If keys left to print, call the cordova write key function to write the pending key
 			'successCallBack': function(data){
 				$scope.$emit('hideLoader');
-				that.setStatusAndMessage('Key created!', 'success');							
+				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');							
 
 				that.numOfKeys--;
 				that.printKeyStatus[index-1].printed = true;
@@ -284,10 +301,10 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			'failureCallBack': function(){
 				$scope.$emit('hideLoader');
 				if(that.numOfKeys > 0){
-					that.setStatusAndMessage('Print key failed, Please try again', 'error');					
+					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG'), 'error');					
 				}
 				else {
-					var message = 'Key creation failed!';
+					var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 					that.showKeyPrintFailure(message);
 				}
 				$scope.$apply(); 
@@ -303,9 +320,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 
 	};	
-	
-
-	
 
 	var showPrintKeyOptions = function (){
 		$scope.$emit('hideLoader');
@@ -337,6 +351,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
 		$scope.pressedCancelStatus = true;
+		//TODO:verfiy if required
 		$scope.$apply();
 	};
 	
@@ -353,10 +368,14 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	this.showKeyPrintFailure = function(message){
 		$scope.$emit('hideLoader');
 		if(typeof message == 'undefined'){
-			var message = 'Key creation failed!';
+			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
-		
 		that.setStatusAndMessage(message, 'error');
+		//Check if digest is already in progress - if not start digest
+		if(!$scope.$$phase) {
+			$scope.$apply();
+		}
+
 	};
 
 	// Close popup
@@ -366,7 +385,9 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	// To handle close button click
 	$scope.goToStaycard = function(){
 		$scope.closeDialog();
-		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
+		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', 
+				{"id": $scope.reservationBillData.reservation_id, 
+				"confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
 		
 	};
 	$scope.goToSearch = function(){

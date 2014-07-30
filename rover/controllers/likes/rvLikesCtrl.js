@@ -82,7 +82,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 		
 		$scope.$on('REFRESHLIKESSCROLL', function() {
 			$scope.refreshScroller('likes_info');
-
 		});
 		$scope.$on("$viewContentLoaded", function() {
 			$scope.refreshScroller('likes_info');
@@ -95,7 +94,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 			};
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
-				calu
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};

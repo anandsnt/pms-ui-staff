@@ -1,0 +1,30 @@
+<div class='edit-data' id='add-new' style='display: block;'>
+	<div class='data-holder'>
+		<!-- Add payment type -->
+		<form class='form inline-form float'>
+			<div class='form-title'>
+				<h3 translate>ADD</h3>
+				<em class='status'>{{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }} </em>
+			</div>
+			<fieldset class='holder left float'>
+				<ad-textbox inputtype="text" value="addData.description"
+				label = "Description" placeholder = "Enter payment description"
+				required="yes"></ad-textbox>
+
+				<ad-textbox inputtype="text" value="addData.value"
+				label = "Code" placeholder = "Enter code"
+				required="yes"></ad-textbox>
+			</fieldset>
+
+			<div class='actions float'>
+				<button class='button blank edit-data-inline' id='cancel' type='button' ng-click="clickCancel()" translate>
+					CANCEL
+				</button>
+				<button class='button green edit-data-inline' id='save' type='button' ng-click="savePaymentMethod()" translate>
+					SAVE_CHANGES
+				</button>
+			</div>
+
+		</form>
+	</div>
+</div>

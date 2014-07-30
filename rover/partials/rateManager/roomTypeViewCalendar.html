@@ -20,7 +20,7 @@
 		<tbody>
 			<tr ng-show="calendarData.data.length > 1">
 				<td class="first-row">
-					<span class="bolder">All Rooms</span>
+					<span class="bolder">All room types</span>
 					<span>&nbsp;</span>
 				</td>
 				<td ng-repeat="date in calendarData.dates" class="cell"> 
@@ -55,7 +55,10 @@
 				<div class="cell-container">
 					<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
 						<div>
-							<span class="left rate-single">{{rate[date].single | number : 2}}</span>
+							<span class="left rate-single">
+								<span ng-if ="rate[date].single == null">{{rate[date].single}}</span>
+								<span ng-if ="rate[date].single != null">{{rate[date].single | number : 2}}</span>
+							</span>
 							<div class="limit-width">
 								<span ng-repeat="restriction in rate[date].restrictions" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" >
 									{{restriction.days}}
@@ -76,10 +79,25 @@
 										{{restriction.days}}
 									</span>
 								</div>
-								<div>Single <span>{{rate[date].single | number : 2}}</span></div>
-								<div>Double <span>{{rate[date].double | number : 2}}</span></div>
-								<div>Extra Adult <span>{{rate[date].extra_adult | number : 2}}</span></div>
-								<div>Child <span>{{rate[date].child | number : 2}}</span></div>
+								<div>Single 
+									<span ng-if ="rate[date].single == null">{{rate[date].single}}</span>
+									<span ng-if ="rate[date].single !== null">{{rate[date].single | number : 2}}</span>
+								</div>
+								<div>Double 
+									<span ng-if ="rate[date].double == null">{{rate[date].double}}</span>
+									<span ng-if ="rate[date].double !== null">{{rate[date].double | number : 2}}</span>
+
+								</div>
+								<div>Extra Adult 
+									<span ng-if ="rate[date].extra_adult == null">{{rate[date].extra_adult}}</span>
+									<span ng-if ="rate[date].extra_adult !== null">{{rate[date].extra_adult | number : 2}}</span>
+
+								</div>
+								<div>Child 
+									<span ng-if ="rate[date].child == null">{{rate[date].child}}</span>
+									<span ng-if ="rate[date].child !== null">{{rate[date].child | number : 2}}</span>
+
+								</div>
 							</div>
 						</div>
 					</div>

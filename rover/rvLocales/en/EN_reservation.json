@@ -75,4 +75,5 @@
     "SEND_CONFIRMATION_EMAIL": "Send Confirmation Email",
     "GO_TO_STAYCARD": "Go To Stay Card",
     "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
-    "SEARCH_RESERVATIONS": "Search Reservations"
+    "SEARCH_RESERVATIONS": "Search Reservations",
+    "RESERVATION_CHANGED": "Reservation changed"

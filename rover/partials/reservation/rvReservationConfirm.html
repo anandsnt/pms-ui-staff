@@ -22,28 +22,80 @@
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
-                        <!-- If set -->
-                        <span class="check-data-set icons icon-time time-in" ng-if="isCheckoutTimeSet()">
-                           {{reservationData.checkinTime.hh}}:{{reservationData.checkinTime.mm}}&nbsp;{{reservationData.checkinTime.ampm}}
-                        </span>
-                        <!-- If not set -->
-                        <em class="check-data-not-set icons icon-time time-in" ng-if="!isCheckoutTimeSet()">
-                            Not Set
-                        </em>
+                        {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:mmddyyyyFormat}}
+                        <div class="check-data icons icon-time time-in">
+                            <div class="select hour">
+                                <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()">
+                                    <option value="" selected>HH</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="select minutes">
+                                <select name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
+                            <div class="select ampm">
+                                <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
-                         <span class="check-data-set icons icon-time time-out" ng-show="isCheckoutTimeSet()">
-                            {{reservationData.checkoutTime.hh}}:{{reservationData.checkoutTime.mm}}&nbsp;{{reservationData.checkoutTime.ampm}}
-                        </span>
-                        <!-- If not set -->
-                        <em class="check-data-not-set icons icon-time time-out" ng-show="!isCheckoutTimeSet()">
-                            Not Set
-                        </em>
+                        {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:mmddyyyyFormat}}
+                        <div class="check-data icons icon-time time-out">
+                            <div class="select hour">
+                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh" ng-change="modifyCheckinCheckoutTime()">
+                                    <option value="" selected>HH</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="select minutes">
+                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm" ng-change="modifyCheckinCheckoutTime()">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
+                            <div class="select ampm">
+                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm" ng-change="modifyCheckinCheckoutTime()">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 <!-- This here is dynamic content, depending on number of rooms booked -->
                 <div class="rooms" ng-repeat="room in reservationData.rooms">
                     <div class="title">
@@ -96,8 +148,9 @@
         <form class="form payment-info scrollable" id="payment-info" name="payment_info" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div class="reservation-completed">
-                    <h2 translate>RESERVATION_CREATED</h2>
-                    <div class="entry full-width">
+                    <h2 ng-hide="viewState.identifier == 'UPDATED'" translate>RESERVATION_CREATED</h2>
+                    <h2 ng-show="viewState.identifier == 'UPDATED'" translate>RESERVATION_CHANGED</h2>
+                    <div class="entry full-width" ng-hide="viewState.identifier == 'UPDATED'">
                         <label for="email" translate>CONFIRM_EMAIL_LABEL</label>
                         <input name="email" id="email" type="email" ng-model="reservationData.guest.sendConfirmMailTo">
                         <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>SEND_CONFIRMATION_EMAIL</button>

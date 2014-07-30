@@ -1,71 +1,78 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
-     if (hotelDetails.language){
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
+    $rootScope.isOWSErrorShowing = false;
+    if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
-    }
-    else{
+      $translate.fallbackLanguage('EN');
+      /* For reason unclear, the fallback translation does not trigger
+       * unless a translation is requested explicitly, for second screen
+       * onwards.
+       * TODO: Fix this bug in ng-translate and implement in this here.
+       */
+      setTimeout(function() {
+        $translate('NA')
+      }, 1000); //Word around.
+    } else {
       $translate.use('EN');
     };
-    // $translate.fallbackLanguage('EN');
 
     /*
      * To close drawer on click inside pages
      */
-    $scope.closeDrawer = function(event){
-    	 $scope.menuOpen = false;
+    $scope.closeDrawer = function(event) {
+      $scope.menuOpen = false;
     };
 
 
 
-
     /***
-    * A method on the $rootScope to determine if the
-    * slide animation during stateChange should run in reverse or forward
-    *
-    * @param {string} fromState - name of the fromState
-    * @param {string} toState - name of the toState
-    *
-    * @return {boolean} - to indicate reverse or not
-    */
+     * A method on the $rootScope to determine if the
+     * slide animation during stateChange should run in reverse or forward
+     *
+     * @param {string} fromState - name of the fromState
+     * @param {string} toState - name of the toState
+     *
+     * @return {boolean} - to indicate reverse or not
+     */
     $rootScope.shallRevDir = function(fromState, toState) {
-      if ( fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus' ) {
+      if (fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus') {
         return true;
       };
 
-      if ( fromState === 'rover.staycard.reservationcard.reservationdetails' && toState === 'rover.search' ) {
+      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
         return true;
       };
 
-      if ( fromState === 'rover.staycard.billcard' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
-      if ( fromState === 'rover.staycard.nights' && toState === 'rover.staycard.reservationcard.reservationdetails' ) {
+      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
         return true;
       };
 
-      if ( fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch' ) {
+      if (fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch') {
         return true;
       };
 
       return false;
     };
-    
+
     // this is make sure we add an
     // additional class 'return-back' as a
     // parent to ui-view, so as to apply a
     // reverse slide animation
-    var uiViewRevAnim = $scope.$on( '$stateChangeSuccess', function (event, toState, toStateData, fromState, fromStateData) {
+    var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
 
       // to study the current changing states
-      console.log( fromState.name + ' ===> ' + toState.name );
+      console.log(fromState.name + ' ===> ' + toState.name);
 
       // check this template for the applied class:
       // app/assets/rover/partials/staycard/rvStaycard.html
 
       // FUTURE: this check can include other state name also,
       // from which while returning we expect a reverse slide
-      if ( $rootScope.shallRevDir(fromState.name, toState.name) ) {
+      if ($rootScope.shallRevDir(fromState.name, toState.name)) {
         $rootScope.returnBack = true;
       } else {
         $rootScope.returnBack = false;
@@ -74,8 +81,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     // make sure you also destroy 'uiViewRevAnim'
     // when moving away to release memory
-    $scope.$on( '$destroy', uiViewRevAnim );
-    
+    $scope.$on('$destroy', uiViewRevAnim);
 
 
 
@@ -88,7 +94,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = "";
     $scope.showSubMenu = false;
     $scope.activeSubMenu = [];
-    $scope.isStandAlone = false;
+    $rootScope.isStandAlone = false;
 
     $rootScope.shortDateFormat = "MM/yy"; //05/99
     $rootScope.dayInWeek = "EEE"; //Sun
@@ -99,150 +105,191 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
-    $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
+    $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
 
-      /*
-     * hotel Details 
+    /*
+     * hotel Details
      */
 
-    $rootScope.isLateCheckoutTurnedOn= hotelDetails.late_checkout_settings.is_late_checkout_on;    
+    $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
 
-    $rootScope.MLImerchantId= hotelDetails.mli_merchant_id;
+    $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
 
-   
+
 
     //set flag if standalone PMS
-    if (hotelDetails.pms_type === null){
-       $scope.isStandAlone = true;
+    if (hotelDetails.pms_type === null) {
+      $rootScope.isStandAlone = true;
     };
 
- /*
- * retrieve user info
- */
+    /*
+     * retrieve user info
+     */
     $scope.userInfo = userInfoDetails;
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
-  
 
-    // OBJECT WITH THE MENU STRUCTURE
-    $scope.menu = [{
-      title: "MENU_DASHBOARD",
-      action: "rover.dashboard",
-      menuIndex: "dashboard",
-      submenu: [],
-      iconClass: "icon-dashboard"
-    }, {
-      title: "MENU_SEARCH",
-      action: "rover.search",
-      menuIndex: "search",
-      submenu: [],
-      iconClass: "icon-dashboard"
-    }, {
-      title: "MENU_AVAILABILITY",
-      action: "",
-      iconClass: "icon-availability",
-      submenu: [{
-        title: "MENU_HOUSE_STATUS",
-        action: ""
-      }, {
-        title: "MENU_AVAILABILITY",
-        action: ""
-      }]
-    }, {
-      title: "MENU_FRONT_DESK",
-      //hidden: true,
-      action: "",
-      iconClass: "icon-frontdesk",
-      submenu: [{
-        title: "MENU_CREATE_RESERVATION",
-        action: "rover.reservation.search",
-        standAlone : true
-      }, {
-        title: "MENU_ROOM_ASSIGNMENT",
-        action: ""
-      }, {
-        title: "MENU_POST_CHARGES",
-        action: ""
-      }, {
-        title: "MENU_CASHIER",
-        action: ""
-      }, {
-        title: "MENU_END_OF_DAY",
-        action: ""
-      }]
-    }, {
-      title: "MENU_CONVERSATIONS",
-      hidden: true,
-      action: "",
-      iconClass: "icon-conversations",
-      submenu: [{
-        title: "MENU_SOCIAL_LOBBY",
-        action: ""
-      }, {
-        title: "MENU_MESSAGES",
-        action: ""
-      }, {
-        title: "MENU_REVIEWS",
-        action: ""
-      }]
-    }, {
-      title: "MENU_REV_MAN",
-      action: "",
-      iconClass: "icon-revenue",
-      submenu: [{
-        title: "MENU_RATE_MANAGER",
-        action: "rover.ratemanager",
-        menuIndex: "rateManager"
-      }, {
-        title: "MENU_TA_CARDS",
-        action: "rover.companycardsearch",
-        menuIndex: "cards"
-      }, {
-        title: "MENU_DISTRIBUTION_MANAGER",
-        action: ""
-      }]
-    }, {
-      title: "MENU_HOUSEKEEPING",
-      //hidden: true,
-      action: "",
-      iconClass: "icon-housekeeping",
-      submenu: [{
-        title: "MENU_ROOM_STATUS",
-        action: "rover.housekeeping.roomStatus",
-        menuIndex: "roomStatus"
-      }, {
-        title: "MENU_TASK_MANAGEMENT",
-        action: ""
-      }, {
-        title: "MENU_MAINTAENANCE",
-        action: ""
-      }]
-    }, {
-      title: "MENU_FINANCIALS",
-      //hidden: true,
-      action: "",
-      iconClass: "icon-finance",
-      submenu: [{
-        title: "MENU_REVENUE",
-        action: ""
-      }, {
-        title: "MENU_ACCOUNTING",
-        action: ""
-      }, {
-        title: "MENU_COMMISIONS",
-        action: ""
-      }]
-    }, {
-      title: "MENU_REPORTS",
-      action: "",
-      iconClass: "icon-reports",
-      submenu: []
-    }];
+
+    if($rootScope.isStandAlone){
+      // OBJECT WITH THE MENU STRUCTURE
+        $scope.menu = [{
+          title: "MENU_DASHBOARD",
+          action: "rover.dashboard",
+          menuIndex: "dashboard",
+          submenu: [],
+          iconClass: "icon-dashboard"
+        }, {
+          title: "MENU_AVAILABILITY",
+          action: "",
+          iconClass: "icon-availability",
+          submenu: [{
+            title: "MENU_HOUSE_STATUS",
+            action: ""
+          }, {
+            title: "MENU_AVAILABILITY",
+            action: ""
+          }]
+        }, {
+          title: "MENU_FRONT_DESK",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-frontdesk",
+          submenu: [{
+            title: "MENU_SEARCH_RESERVATIONS",
+            action: "rover.search",
+            menuIndex:"search"
+          },{
+            title: "MENU_CREATE_RESERVATION",
+            action: "rover.reservation.search",
+            standAlone: true,
+            menuIndex: "createReservation"
+          }, {
+            title: "MENU_ROOM_ASSIGNMENT",
+            action: ""
+          }, {
+            title: "MENU_POST_CHARGES",
+            action: ""
+          }, {
+            title: "MENU_CASHIER",
+            action: ""
+          }, {
+            title: "MENU_END_OF_DAY",
+            action: ""
+          }]
+        }, {
+          title: "MENU_CONVERSATIONS",
+          hidden: true,
+          action: "",
+          iconClass: "icon-conversations",
+          submenu: [{
+            title: "MENU_SOCIAL_LOBBY",
+            action: ""
+          }, {
+            title: "MENU_MESSAGES",
+            action: ""
+          }, {
+            title: "MENU_REVIEWS",
+            action: ""
+          }]
+        }, {
+          title: "MENU_REV_MAN",
+          action: "",
+          iconClass: "icon-revenue",
+          submenu: [{
+            title: "MENU_RATE_MANAGER",
+            action: "rover.ratemanager",
+            menuIndex: "rateManager"
+          }, {
+            title: "MENU_TA_CARDS",
+            action: "rover.companycardsearch",
+            menuIndex: "cards"
+          }, {
+            title: "MENU_DISTRIBUTION_MANAGER",
+            action: ""
+          }]
+        }, {
+          title: "MENU_HOUSEKEEPING",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-housekeeping",
+          submenu: [{
+            title: "MENU_ROOM_STATUS",
+            action: "rover.housekeeping.roomStatus",
+            menuIndex: "roomStatus"
+          }, {
+            title: "MENU_TASK_MANAGEMENT",
+            action: ""
+          }, {
+            title: "MENU_MAINTAENANCE",
+            action: ""
+          }]
+        }, {
+          title: "MENU_FINANCIALS",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-finance",
+          submenu: [{
+            title: "MENU_REVENUE",
+            action: ""
+          }, {
+            title: "MENU_ACCOUNTING",
+            action: ""
+          }, {
+            title: "MENU_COMMISIONS",
+            action: ""
+          }]
+        }, {
+          title: "MENU_REPORTS",
+          action: "",
+          iconClass: "icon-reports",
+          submenu: []
+        }];
+    }
+    else{
+      // OBJECT WITH THE MENU STRUCTURE
+        $scope.menu = [{
+          title: "MENU_DASHBOARD",
+          action: "rover.dashboard",
+          menuIndex: "dashboard",
+          submenu: [],
+          iconClass: "icon-dashboard"
+        }, {
+          title: "MENU_SEARCH",
+          action: "rover.search",
+          menuIndex: "search",
+          submenu: [],
+          iconClass: "icon-dashboard"
+        }, 
+         {
+          title: "MENU_HOUSEKEEPING",
+          //hidden: true,
+          action: "",
+          iconClass: "icon-housekeeping",
+          submenu: [{
+            title: "MENU_ROOM_STATUS",
+            action: "rover.housekeeping.roomStatus",
+            menuIndex: "roomStatus"
+          }, {
+            title: "MENU_TASK_MANAGEMENT",
+            action: ""
+          }, {
+            title: "MENU_MAINTAENANCE",
+            action: ""
+          }]
+        },{
+          title: "MENU_REPORTS",
+          action: "",
+          iconClass: "icon-reports",
+          submenu: []
+        }];
+
+    }
+    
 
     $scope.$on("updateSubMenu", function(idx, item) {
       if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
@@ -276,14 +323,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       BaseCtrl.call(this, $scope);
       $rootScope.adminRole = '';
       $scope.selectedMenuIndex = 0;
-     
+
       // if menu is open, close it
       $scope.isMenuOpen();
       $scope.menuOpen = false;
     };
     $scope.init();
 
-     /*
+    /*
      * update selected menu class
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
@@ -298,10 +345,22 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.menuOpen = !$scope.menuOpen;
       $scope.showSubMenu = false;
     };
-    $scope.closeDrawerMenu = function(){
-       $scope.menuOpen = false;
-       $scope.showSubMenu = false;
+    $scope.closeDrawerMenu = function() {
+      $scope.menuOpen = false;
+      $scope.showSubMenu = false;
     };
+
+    //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+    
+    var routeChange = function(event, newURL){
+       event.preventDefault();
+       return;
+    };
+
+    $rootScope.$on('$locationChangeStart', routeChange);                   
+    window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+    
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
@@ -326,14 +385,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
-      }
+      }         
     });
 
-    $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) { 
+    $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
       // Hide loading message
       $scope.$emit('hideLoader');
       $rootScope.previousState = from;
       $rootScope.previousStateParams = fromParams;
+   
+      
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
@@ -371,7 +432,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     var options = [];
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
-    
+
     setTimeout(function() {
       if (sntapp.cardSwipeDebug === true) {
         sntapp.cardReader.startReaderDebug(options);
@@ -400,17 +461,77 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
       $scope.$broadcast('GUESTPAYMENT', paymentData);
     });
-    
+
     $scope.$on('SHOWGUESTLIKES', function(event) {
-         $scope.$broadcast('SHOWGUESTLIKESINFO');
+      $scope.$broadcast('SHOWGUESTLIKESINFO');
     });
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-      $scope.$emit('hideLoader');
-      ngDialog.close();
+      console.log("reached hereerrreee");
+      console.log(document.activeElement);
+        document.activeElement.blur();
+        $scope.$emit('hideLoader');
+        setTimeout(function(){
+           ngDialog.close();
+           window.scrollTo(0,0);
+           $scope.$apply();
+        }, 700);
+    };
+    /*
+     * To fix issue with ipad keypad - 7702
+     */
+    $scope.setPosition = function(){
+      if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
+         document.activeElement.blur();
+          setTimeout(function(){
+             window.scrollTo(0,0);
+          }, 700);
+      }
+    };
+
+    /**
+    * Handles the OWS error - Shows a popup having OWS connection test option
+    */
+    $rootScope.showOWSError = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        if(!$rootScope.isOWSErrorShowing){
+            $rootScope.isOWSErrorShowing = true;
+            ngDialog.open({
+              template: '/assets/partials/hkOWSError.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'RVHKOWSErrorCtrl',
+              closeByDocument: false,
+              scope: $scope
+          });
+        }        
     };
 
   }
 ]);
+
+// adding an OWS check Interceptor here
+// but should be moved to higher up above in root level
+sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
+  return {
+    request: function (config) {
+      return config;
+    },
+    response: function (response) {
+        return response || $q.when(response);
+    },
+    responseError: function(rejection) {
+      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
+        $rootScope.showOWSError && $rootScope.showOWSError();
+      }
+      return $q.reject(rejection);
+    }
+  };
+});
+
+sntRover.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('owsCheckInterceptor');
+});

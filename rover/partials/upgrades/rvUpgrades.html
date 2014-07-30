@@ -2,7 +2,7 @@
    <input id="roomassignment-ref-id" type="hidden">
    <div class="reservation-header">
       <div class="actions back">
-         <a id="upgrade-back-button" class="back-button" ui-sref="rover.staycard.reservationcard.reservationdetails({id:reservationData.reservation_card.reservation_id, confirmationId:reservationData.reservation_card.confirmation_num})" class="back-button" translate> BACK_BUTTON_LABEL </a>
+         <a id="upgrade-back-button" class="back-button" ui-sref="rover.reservation.staycard.reservationcard.reservationdetails({id:reservationData.reservation_card.reservation_id, confirmationId:reservationData.reservation_card.confirmation_num})" class="back-button" translate> BACK_BUTTON_LABEL </a>
       </div>
       <div class="data">
          <span class="room" >
@@ -38,7 +38,7 @@
                   <div id="room2008-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-bind-html="upgrade.upgrade_room_description">
                      
                   </div>
-                  <a id="upgrade-room-select" class="button green submit-value hover-hand" ng-click="selectUpgrade($index)">
+                  <a id="upgrade-room-select" class="button green submit-value hover-hand" ng-click="showMaximumOccupancyDialog($index)">
                   Upgrade for only
                   <sup></sup>
                   $ {{upgrade.upsell_amount}} per night

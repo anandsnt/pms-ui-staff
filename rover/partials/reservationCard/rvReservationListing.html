@@ -6,7 +6,7 @@
 		
 		<li class="icons-tabs no-icon reservation-tab ui-state-default 
 					ui-corner-top" 
-					ng-click="getReservationDetails(list.confirmation_num)" 
+					ng-click="getReservationDetails(list.confirmation_num,list.id)" 
 					ng-repeat="list in reservationList" ng-class="{'ui-tabs-active': currentReservationId == list.confirmation_num}">
 			<a> 
 				<span class="guest-status small-icon" ng-class="{'arrival': list.reservation_status == 'RESERVED', 'check-in': list.reservation_status == 'CHECKING_IN', 'no-show':  list.reservation_status == 'NOSHOW' || list.reservation_status == 'NOSHOW_CURRENT', 'departed':  list.reservation_status == 'CHECKEDOUT', 'check-out': list.reservation_status == 'CHECKING_OUT', 'inhouse': list.reservation_status == 'CHECKEDIN', 'cancel': list.reservation_status == 'CANCELED'}" ></span>

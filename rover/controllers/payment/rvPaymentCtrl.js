@@ -6,7 +6,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
-	HostedForm.setMerchant($rootScope.MLImerchantId);
+	
+	try {
+			HostedForm.setMerchant($rootScope.MLImerchantId);
+		}
+		catch(err) {};
 
 	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
 
@@ -71,11 +75,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating the list payments with new data 
 	 */
 	$scope.saveSuccessGuest = function(data){
-		//To Do: to remove
-		$scope.successMessage = "Payement method saved";
 		
 		$scope.$emit("hideLoader");
-		ngDialog.close();
+		$scope.closeDialog();
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
@@ -96,13 +98,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.saveSuccess = function(data){
 		 
-		var billIndex = parseInt($scope.passData.fromBill);
-
-		//To Do: to remove
-		$scope.successMessage = "Payement method saved";
-		
+		var billIndex = parseInt($scope.passData.fromBill);		
 		$scope.$emit("hideLoader");
-		ngDialog.close();
+		$scope.closeDialog();
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
@@ -141,7 +139,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Save new payment - GUestcard or staycard
 	 */
 	$scope.savePayment = function(){
-	
+		  document.activeElement.blur();
+	      setTimeout(function(){
+	      	 window.scrollTo(0,0);
+	      }, 700);
 		// console.log(JSON.stringify($scope.data));
 		// console.log($scope.saveData.selected_payment_type);
 		$scope.saveData.payment_type = "";
@@ -208,7 +209,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 	};
 	$scope.clickCancel = function(){
-		ngDialog.close();
+		$scope.closeDialog();
 	};
 
 
@@ -230,17 +231,22 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
-			 		$scope.savePayment();// call save payment details WS
-			 		$scope.successMessage = "MLI SessionId received";
-			 		
+			 		$scope.savePayment();// call save payment details WS		 		
 			 	}
 			 	else{
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			 	
-			 }
-			 $scope.$emit("showLoader");
-			 HostedForm.updateSession(sessionDetails, callback);			
-		}
+			 };
+
+			try {
+			    HostedForm.updateSession(sessionDetails, callback);	
+			    $scope.$emit("showLoader");
+			}
+			catch(err) {
+			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			};
+			 		
+		};
 		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
 			$scope.savePayment();
 		}
@@ -260,7 +266,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		
 
-    }
+    };
 
 
     /* MLI integration ends here */

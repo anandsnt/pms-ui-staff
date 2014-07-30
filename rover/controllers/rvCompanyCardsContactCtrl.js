@@ -1,13 +1,8 @@
 sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams',
 	function($scope, RVCompanyCardSrv, $state, $stateParams) {
-		$scope.$parent.myScrollOptions = {
-			'companyCardDetailsContactCtrl': {
-				scrollbars: true,
-				scrollY: true,
-				snap: false,
-				hideScrollbar: false
-			}
-		};
+		BaseCtrl.call(this, $scope);
+		
+		$scope.setScroller('companyCardDetailsContactCtrl');
 
 		$scope.$on("contactTabActive", function() {
 			setTimeout(function() {
@@ -15,9 +10,8 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			}, 500);
 		});
 
-
 		var refreshScroller = function() {
-			$scope.$parent.myScroll['companyCardDetailsContactCtrl'].refresh();
+			$scope.refreshScroller('companyCardDetailsContactCtrl');
 		};
 
 	}

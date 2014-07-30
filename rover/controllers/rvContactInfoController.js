@@ -1,6 +1,6 @@
 sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
   function($scope, RVContactInfoSrv, ngDialog, dateFilter) {
-
+    BaseCtrl.call(this, $scope);
     /**
      * storing to check if data will be updated
      */
@@ -9,13 +9,16 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
     $scope.errorMessage = "";
 
     $scope.$on('clearNotifications', function() {
-      $scope.errorMessage = "";
       $scope.successMessage = "";
+      $scope.$emit('contactInfoError', false);
     });
 
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
+        var avatarImage = getAvatharUrl(dataToUpdate.title);
+        $scope.$emit("CHANGEAVATAR", avatarImage);
         $scope.$emit('hideLoader');
+
       };
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
@@ -29,9 +32,18 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
           if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
             $scope.viewState.pendingRemoval.status = false;
             $scope.viewState.pendingRemoval.cardType = "";
-            $scope.replaceCard('guest', {
-              id: data.id
-            }, false);
+            if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
+              $scope.replaceCardCaller('guest', {
+                id: data.id
+              }, false);
+            } else {
+              $scope.checkFuture('guest', {
+                id: data.id
+              });
+            }
+            // $scope.replaceCard('guest', {
+            //   id: data.id
+            // }, false);
           }
         }
         //TODO : Reduce all these places where guestId is kept and used to just ONE
@@ -49,12 +61,10 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         $scope.guestCardData.userId = data.id;
         $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
         $scope.newGuestAdded(data.id);
-        console.log("success", data);
       };
       var createUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
-        console.log("failure", data);
       };
 
       /**
@@ -63,7 +73,6 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
       dataToUpdate.birthday = $scope.birthdayText;
       var dataUpdated = false;
-
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
       } else {
@@ -83,6 +92,9 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
       if (!dataUpdated && !newGuest)
         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
       else if (newGuest) {
+        if (typeof data.data.is_opted_promotion_email == 'undefined') {
+          data.data.is_opted_promotion_email = false;
+        }
         $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, createUserInfoFailureCallback);
       }
     };
@@ -119,16 +131,20 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
+    var scrollerOptions = {
+      click: true,
+    };
+    $scope.setScroller('contact_info', scrollerOptions);
 
-  $scope.setScroller('contact_info', {click: false});
+    $scope.$on('CONTACTINFOLOADED', function(event) {
+      setTimeout(function() {
+          $scope.refreshScroller('contact_info');
 
-$scope.$on('CONTACTINFOLOADED', function(event) {
-	setTimeout(function(){
-    $scope.refreshScroller('contact_info');
-		
-		}, 
-	1500);
-	
-});
-}]);
-
+        },
+        1500);
+      $scope.$on('REFRESHLIKESSCROLL', function() {
+        $scope.refreshScroller('contact_info');
+      });
+    });
+  }
+]);

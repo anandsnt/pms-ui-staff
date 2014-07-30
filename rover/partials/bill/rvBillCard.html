@@ -29,7 +29,7 @@
 		</div>
 		<!-- Registration Content -->
 		
-		<div ng-iscroll='registration-content' ng-iscroll-delay='50' class="registration-content bill_content">
+		<div ng-iscroll='registration-content' ng-iscroll-delay='1000' class="registration-content bill_content">
 
 			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -96,7 +96,7 @@
 									<span translate>BILL #{{billTab.bill_number}}</span>
 									{{billTab.total_amount}}
 								</div>
-								<div class="payment" ng-show="billTab.credit_card_details.payment_type == 'DB' || billTab.credit_card_details.payment_type == 'CA' || billTab.credit_card_details.payment_type == 'CK'">
+								<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC'">
 									{{billTab.credit_card_details.payment_type_description}}
 								</div>
 								<figure id="payment-info-1" class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">

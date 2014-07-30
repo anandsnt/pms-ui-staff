@@ -15,7 +15,24 @@
 	"RESERVATION_UPDATES" : "Reservation updates",
 	"CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES" : "Change stay dates to see room and rate changes.",
 	"VALIDATION_MSG_DATE" : "Room cannot be made available past the guest's current departure date.",
-	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking."
+	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking.",
+	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
+	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
+	"OF": "of",
+	"APPLIES_TO_RESERVATION": "applies to this reservation",
+	"NO": "No",
+	"ROOM": "Room",
+	"NOT_AVAILABLE_FOR_DATE_RANGE": "not available for selected dates",
+	"UNASSIGN_ROOM_FROM": "Un-assign room from",
+	"ARRIVING": "arriving",
+	"YES": "Yes",
+	"UNABLE_TO_EXTEND_STAY": "Unable to extend stay",
+	"NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE": "There are no rooms available for the booked room type. Change room type or rate to extend the stay",
+	"MULTIPLE_RATES_EXISTS": "Multiple rates exist on reservation, select rate to extend the reservation",
+	"FIND_ROOMS_AND_RATE_BUTTON_TEXT": "Find rooms &amp; rate",
+	"CONTINUE": "continue"
+
+
 	
 ,    
     "ALL": "All",
@@ -24,6 +41,7 @@
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
+    "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
     "MENU_AVAILABILITY":"Availability",
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
@@ -326,6 +344,31 @@
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
     "KEY_PRINTED" : "Keys printed!",
+    "KEY_CONNECTED_STATUS" : "Connected to Key Card Reader!",
+    "KEY_CHECKIN_STATUS" : "Check in Complete",
+    "KEY_INHOUSE_STATUS" : "In House",
+    "KEY_CHECKOUT_STATUS" : "Checking Out",
+    "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
+    "KEY_PRINT_BUTTON_TEXT_KEY1" : "Print Key 1",
+    "KEY_PRINT_BUTTON_TEXT" : "Print Key",
+    "KEY_READING_STATUS" : "Reading key!",
+    "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
+    "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",
+    "KEY_WRITING_PROGRESS_STATUS" : "Writing key!",
+
+    "KEY_CREATED_STATUS" : "Key created!",
+    "KEY_CREATION_FAILED_STATUS" : "Key creation failed!",
+    "KEY_CREATION_FAILED_STATUS_LONG" : "Print key failed, Please try again",
+
+
+
+
+
+
+
+
+
+
     
 	"PREFERENCES" : "Preferences",
 	"NEWSPAPER" : "Newspaper",
@@ -350,7 +393,29 @@
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
     "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
     "ASSIGN_LABEL": "Assign Room",
-    "CANCEL_LABEL":"Cancel",    
+    "CANCEL_LABEL":"Cancel",
+
+
+    "SMARTBANDS": "Smartbands",
+    "ADD_NEW_SMART": "Add New",
+    "SEE_ALL_BANDS" : "See All Bands",
+    "CLOSE": "Close",
+    "AVAILABLE_CREDIT" : "Available credit",
+    "ADD_CREDIT" : "Add Credit",
+    "PAYMENT_TYPE" : "Payment Type",
+    "OPEN_ROOM_CHARGE": "Open Room Charge",
+    "FIXED_AMOUNT": "Fixed Amount",
+    "CONTINUE": "Continue",
+    "CANCEL" : "cancel",
+    "HOLD_BAND_TO_ENCODE_UNTIL_READY" : "Hold Band To Encoder Until Ready",
+    "NOT_READY" : "Not Ready",
+    "DONE" : "Done",
+    "NEXT_BAND" : "Next band",
+    "ENTER_FIRST_NAME" : "Enter First Name",
+    "ENTER_LAST_NAME" : "Enter Last Name",
+    "FIRST_NAME" : "First Name",
+    "LAST_NAME" : "Last Name"
+,    
     
     "ROOM": "room",
     "NIGHTS": "nights",

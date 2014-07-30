@@ -22,16 +22,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 	    	 $scope.menuOpen = false;
 	    };
 		//scroller options
-		$scope.$parent.myScrollOptions = {
-			'tabs_menu': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false,
-				click: true
-			}
-		};
+		var scrollerOptions = {click: true, scrollbars: true};
+		$scope.setScroller('tabs_menu', scrollerOptions);
 
 		$scope.bookMarks = [];
 
@@ -48,118 +40,160 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
 		$rootScope.currencySymbol = "";
 
-		$scope.menu = [{
-			title: "MENU_DASHBOARD",
-			action: "/staff",
-			menuIndex: "dashboard",
-			submenu: [],
-			iconClass: "icon-dashboard"
-		}, {
-			title: "MENU_SEARCH",
-			action: "staff#/staff/search/",
-			menuIndex: "search",
-			submenu: [],
-			iconClass: "icon-dashboard"
-		}, {
-			title: "MENU_AVAILABILITY",
-			action: "",
-			iconClass: "icon-availability",
-			submenu: [{
-				title: "MENU_HOUSE_STATUS",
-				action: ""
-			}, {
-				title: "MENU_AVAILABILITY",
-				action: ""
-			}]
-		}, {
-			title: "MENU_FRONT_DESK",
-			//hidden: true,
-			action: "",
-			iconClass: "icon-frontdesk",
-			submenu: [{
-				title: "MENU_CREATE_RESERVATION",
-				action: "staff#/staff/reservation/search",
-				standAlone : true
-			}, {
-				title: "MENU_ROOM_ASSIGNMENT",
-				action: ""
-			}, {
-				title: "MENU_POST_CHARGES",
-				action: ""
-			}, {
-				title: "MENU_CASHIER",
-				action: ""
-			}, {
-				title: "MENU_END_OF_DAY",
-				action: ""
-			}]
-		}, {
-			title: "MENU_CONVERSATIONS",
-			hidden: true,
-			action: "",
-			iconClass: "icon-conversations",
-			submenu: [{
-				title: "MENU_SOCIAL_LOBBY",
-				action: ""
-			}, {
-				title: "MENU_MESSAGES",
-				action: ""
-			}, {
-				title: "MENU_REVIEWS",
-				action: ""
-			}]
-		}, {
-			title: "MENU_REV_MAN",
-			action: "",
-			iconClass: "icon-revenue",
-			submenu: [{
-				title: "MENU_RATE_MANAGER",
-				action: "staff#/staff/rateManager",
-				menuIndex: "rateManager"
-			}, {
-				title: "MENU_TA_CARDS",
-				action: "staff#/staff/cardsearch/",
-				menuIndex: "cards"
-			}, {
-				title: "MENU_DISTRIBUTION_MANAGER",
-				action: ""
-			}]
-		}, {
-			title: "MENU_HOUSEKEEPING",
-			//hidden: true,
-			action: "",
-			iconClass: "icon-housekeeping",
-			submenu: [{
-				title: "MENU_ROOM_STATUS",
-				action: "staff#/staff/housekeeping/search",
-				menuIndex: "room_status"
-			}, {
-				title: "MENU_TASK_MANAGEMENT",
-				action: ""
-			}, {
-				title: "MENU_MAINTAENANCE",
-				action: ""
-			}]
-		}, {
-			title: "MENU_FINANCIALS",
-			action: "#",
-			iconClass: "icon-finance",
-			submenu: [{
-				title: "MENU_REVENUE",
-				action: ""
-			}, {
-				title: "MENU_ACCOUNTING",
-				action: ""
-			}, {
-				title: "MENU_COMMISIONS",
-				action: ""
-			}]
-		}, {
-			title: "MENU_REPORTS",
-			action: "",
-			iconClass: "icon-reports",
-			submenu: []
-		}];
+
+		var setupLeftMenu = function(){
+			if($scope.isStandAlone){
+					$scope.menu = [{
+					title: "MENU_DASHBOARD",
+					action: "/staff",
+					menuIndex: "dashboard",
+					submenu: [],
+					iconClass: "icon-dashboard"
+				}, {
+					title: "MENU_AVAILABILITY",
+					action: "",
+					iconClass: "icon-availability",
+					submenu: [{
+						title: "MENU_HOUSE_STATUS",
+						action: ""
+					}, {
+						title: "MENU_AVAILABILITY",
+						action: ""
+					}]
+				}, {
+					title: "MENU_FRONT_DESK",
+					//hidden: true,
+					action: "",
+					iconClass: "icon-frontdesk",
+					submenu: [
+					{
+						title: "MENU_SEARCH_RESERVATIONS",
+						action: "staff#/staff/search/"
+					},
+					{
+						title: "MENU_CREATE_RESERVATION",
+						action: "staff#/staff/reservation/search",
+						standAlone : true
+					}, {
+						title: "MENU_ROOM_ASSIGNMENT",
+						action: ""
+					}, {
+						title: "MENU_POST_CHARGES",
+						action: ""
+					}, {
+						title: "MENU_CASHIER",
+						action: ""
+					}, {
+						title: "MENU_END_OF_DAY",
+						action: ""
+					}]
+				}, {
+					title: "MENU_CONVERSATIONS",
+					hidden: true,
+					action: "",
+					iconClass: "icon-conversations",
+					submenu: [{
+						title: "MENU_SOCIAL_LOBBY",
+						action: ""
+					}, {
+						title: "MENU_MESSAGES",
+						action: ""
+					}, {
+						title: "MENU_REVIEWS",
+						action: ""
+					}]
+				}, {
+					title: "MENU_REV_MAN",
+					action: "",
+					iconClass: "icon-revenue",
+					submenu: [{
+						title: "MENU_RATE_MANAGER",
+						action: "staff#/staff/rateManager",
+						menuIndex: "rateManager"
+					}, {
+						title: "MENU_TA_CARDS",
+						action: "staff#/staff/cardsearch/",
+						menuIndex: "cards"
+					}, {
+						title: "MENU_DISTRIBUTION_MANAGER",
+						action: ""
+					}]
+				}, {
+					title: "MENU_HOUSEKEEPING",
+					//hidden: true,
+					action: "",
+					iconClass: "icon-housekeeping",
+					submenu: [{
+						title: "MENU_ROOM_STATUS",
+						action: "staff#/staff/housekeeping/roomStatus",
+						menuIndex: "roomStatus"
+					}, {
+						title: "MENU_TASK_MANAGEMENT",
+						action: ""
+					}, {
+						title: "MENU_MAINTAENANCE",
+						action: ""
+					}]
+				}, {
+					title: "MENU_FINANCIALS",
+					action: "#",
+					iconClass: "icon-finance",
+					submenu: [{
+						title: "MENU_REVENUE",
+						action: ""
+					}, {
+						title: "MENU_ACCOUNTING",
+						action: ""
+					}, {
+						title: "MENU_COMMISIONS",
+						action: ""
+					}]
+				}, {
+					title: "MENU_REPORTS",
+					action: "",
+					iconClass: "icon-reports",
+					submenu: []
+				}];
+			}
+			else{
+					$scope.menu = [{
+					title: "MENU_DASHBOARD",
+					action: "/staff",
+					menuIndex: "dashboard",
+					submenu: [],
+					iconClass: "icon-dashboard"
+				}, {
+					title: "MENU_SEARCH",
+					action: "staff#/staff/search/",
+					menuIndex: "search",
+					submenu: [],
+					iconClass: "icon-dashboard"
+				}, {
+					title: "MENU_HOUSEKEEPING",
+					//hidden: true,
+					action: "",
+					iconClass: "icon-housekeeping",
+					submenu: [{
+						title: "MENU_ROOM_STATUS",
+						action: "staff#/staff/housekeeping/roomStatus",
+						menuIndex: "roomStatus"
+					}, {
+						title: "MENU_TASK_MANAGEMENT",
+						action: ""
+					}, {
+						title: "MENU_MAINTAENANCE",
+						action: ""
+					}]
+				},{
+					title: "MENU_REPORTS",
+					action: "",
+					iconClass: "icon-reports",
+					submenu: []
+				}];
+		}
+		}
+		
+		
 
 		$scope.$on("updateSubMenu", function(idx, item) {
 			if (item && item[1] && item[1].submenu) {
@@ -331,14 +365,26 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
 			
-			if (data.language){
-				$translate.use(data.language.value);
-			}
-			else
-				$translate.use('EN');
+			if (data.language) {
+		      $translate.use(data.language.value);
+		      $translate.fallbackLanguage('EN');
+		      /* For reason unclear, the fallback translation does not trigger
+		       * unless a translation is requested explicitly, for second screen
+		       * onwards.
+		       * TODO: Fix this bug in ng-translate and implement in this here.
+		       */
+		      setTimeout(function() {
+		        $translate('NA')
+		      }, 1000); //Word around.
+		    } else {
+		      $translate.use('EN');
+		    };	
+				
+				
 			//set flag if standalone PMS
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;
+			setupLeftMenu();
 			$rootScope.businessDate = data.business_date;
 			$rootScope.currencySymbol = data.currency.symbol;
 			$scope.$emit('hideLoader');

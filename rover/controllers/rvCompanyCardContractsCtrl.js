@@ -25,29 +25,20 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}, 500);
 		});
 
-		$scope.$parent.myScroll = [];
-
-		$scope.$parent.myScrollOptions = {
-			'companyCardContractsCtrl': {
-				scrollbars: true,
-				scrollY: true,
-				snap: false,
-				hideScrollbar: false
-			}
-		};
+		$scope.setScroller('companyCardContractsCtrl'); 
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.
 			if ($scope.currentSelectedTab === 'cc-contracts') {
-				$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+				$scope.refreshScroller('companyCardContractsCtrl');
 			}
 		};
 
 		/**** Scroll related code ends here. ****/
 
 
-		clientWidth = $(window).width();
-		clientHeight = $(window).height();
+		var clientWidth = $(window).width();
+		var clientHeight = $(window).height();
 		var drawGraph = function() {
 			console.log('reached::drawGraph');
 			$scope.highchartsNG = {

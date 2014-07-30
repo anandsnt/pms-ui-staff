@@ -31,11 +31,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   };
 
 	  var headingListDict = {  
-	    'DUEIN':  $filter('translate')('DUEIN_TITLE'),
-	    'INHOUSE': $filter('translate')('IN_HOUSE_TITLE'),
-	    'DUEOUT': $filter('translate')('CHECKING_OUT_TITLE'),
-	    'LATE_CHECKOUT': $filter('translate')('LATE_CHECKOUT_TITLE'),
-	    '': $filter('translate')('SEARCH_TITLE')
+	    'DUEIN':  "Checking In",
+	    'INHOUSE': "In House",
+	    'DUEOUT': "Checking Out",
+	    'LATE_CHECKOUT': "Checking Out Late",
+	    '': "Search"
 	  };
 	  $scope.heading = headingListDict[oldType]; 
       $scope.setTitle($scope.heading);
@@ -101,6 +101,18 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       }
   	 return mappedStatus;
   };
+
+  //Map the room status to the view expected format
+  $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
+    var mappedStatus = "";
+    if (roomstatus == "READY" && fostatus == "VACANT") {
+    mappedStatus = 'ready';
+    } else {
+    mappedStatus = "not-ready";
+    }
+    return mappedStatus;
+  };
+
   //function that converts a null value to a desired string.
 
    //if no replace value is passed, it returns an empty string
@@ -236,6 +248,12 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       refreshScroller();                  
     }
   };
-
+  $scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
+  	    var queueClass = '';
+  		if(isReservationQueued=="true" && isQueueRoomsOn == "true"){
+  			queueClass = 'queued';
+  		}
+  		return queueClass;
+  };
   //end of controller
 }]);

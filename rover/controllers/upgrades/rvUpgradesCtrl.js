@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', '$filter', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter){
+sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
 	
@@ -19,6 +19,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
 	$scope.clickedButton = $stateParams.clickedButton;
+	$scope.selectedUpgradeIndex = "";
 	/**
 	* function to get all available upgrades for the reservation
 	*/
@@ -26,6 +27,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		var successCallbackgetAllUpgrades = function(data){
 			$scope.upgradesList = data.upsell_data;
 			$scope.headerData = data.header_details;
+			$scope.reservation_occupancy = $scope.headerData.reservation_occupancy;
 			$scope.setUpgradesDescriptionInitialStatuses();
 			$scope.$emit('hideLoader');
 			setTimeout(function(){
@@ -44,15 +46,58 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	};
 	$scope.getAllUpgrades();
 	/**
+	* function to check occupancy for the reservation
+	*/
+	$scope.showMaximumOccupancyDialog = function(index){
+		var showOccupancyMessage = false;
+		if($scope.upgradesList[index].room_max_occupancy != "" && $scope.reservation_occupancy != null){
+				if(parseInt($scope.upgradesList[index].room_max_occupancy) < $scope.reservation_occupancy){
+					showOccupancyMessage = true;
+					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_max_occupancy);
+			}
+		}else if($scope.upgradesList[index].room_type_max_occupancy != "" && $scope.reservation_occupancy != null){
+				if(parseInt($scope.upgradesList[index].room_type_max_occupancy) < $scope.reservation_occupancy){
+					showOccupancyMessage = true;
+					$scope.max_occupancy = parseInt($scope.upgradesList[index].room_type_max_occupancy);
+				} 
+		}
+		
+		$scope.selectedUpgradeIndex = index;
+		if(showOccupancyMessage){
+			ngDialog.open({
+                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+                  controller: 'rvMaximumOccupancyDialogController',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+		}else{
+			$scope.selectUpgrade();
+		}
+		
+
+	}
+	$scope.occupancyDialogSuccess = function(){
+		$scope.selectUpgrade();			
+	};
+	
+	/**
 	* function to set the upgrade option for the reservation
 	*/
-	$scope.selectUpgrade = function(index){
+	$scope.selectUpgrade = function(){
+		index = $scope.selectedUpgradeIndex;
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
 			if($scope.clickedButton == "checkinButton"){
-				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 			} else {
-				$scope.backToStayCard();
+				$scope.reservationData.reservation_card.room_number = selectedRoomNumber;
+				$scope.reservationData.reservation_card.room_type_description = selectedTypeDescription;
+				$scope.reservationData.reservation_card.room_type_code = selectedTypeCode;
+				$scope.reservationData.reservation_card.room_status = "READY";
+				$scope.reservationData.reservation_card.fo_status = "VACANT";
+				$scope.reservationData.reservation_card.is_upsell_available = false;
+				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+				$scope.backToStayCard();				
 			}
 			
 		};
@@ -63,6 +108,9 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_no = parseInt($scope.upgradesList[index].upgrade_room_number, 10);
+		var selectedRoomNumber = params.room_no;
+		var selectedTypeDescription = $scope.upgradesList[index].upgrade_room_type_name;
+		var selectedTypeCode = $scope.upgradesList[index].upgrade_room_type;
 		params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
@@ -93,7 +141,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	*/
 	$scope.backToStayCard = function(){
 		
-		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
+		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
 	};
 	/**
@@ -123,7 +171,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 			return 465*$scope.upgradesList.length;
 	};
 	$scope.goToCheckinScreen = function(){
-		$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
 	};
 	
 }]);

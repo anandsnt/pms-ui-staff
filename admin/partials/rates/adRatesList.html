@@ -3,7 +3,7 @@
 		<header class="content-title float">
 			<h2> Rates </h2>
 			<span class="count"> ({{totalCount}}) </span>
-			<a class="action add" ui-sref="admin.addRate" ng-hide="isConnectedToPMS">Add new</a>
+			<a class="action add" ui-sref="admin.addRate" ng-click="showLoader()" ng-hide="isConnectedToPMS">Add new</a>
 
 			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 
@@ -25,7 +25,7 @@
 		
 		
 		<span class="count-show">Show</span>
-		<div class="select table-count">
+		<div class="select table-count rates-table-count">
 			<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 		</div>
 		<span class="count-entries">entries</span>
@@ -39,35 +39,35 @@
 
 		<div id="new-form-holder"></div>
 		<!--ng-table component -->
-		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+		<table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
 			<tbody>
 				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
-					<td data-title="'Name'" sortable="'rate'" header-class="width-25">
-						<a ui-sref='admin.rateDetails({ rateId : rate.id })' class="edit-data">
+					<td data-title="'Name'" sortable="'rate'" header-class="width-25" ng-hide="currentClickedElement == $index">
+						<a class="edit-data" ng-click="editRatesClicked(rate.id, $index)" >
 							<strong> {{rate.name}}</strong>
 						</a>
 					</td>
 
-					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-25">
+					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-20" ng-hide="currentClickedElement == $index">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.based_on.id, 'based_on_rate_id', rate.based_on.name)" ng-mouseleave="mouseLeavePopover()">
 							{{rate.based_on.name}}
 							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.based_on.id, 'basedOn')">
 							</div>
 						</span>
 					</td>
-					<td data-title="'Type'" sortable="'rate_type'" header-class="width-10">
+					<td data-title="'Type'" sortable="'rate_type'" header-class="width-15" ng-hide="currentClickedElement == $index">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.rate_type.id,'rate_type_id', rate.rate_type.name)" ng-mouseleave="mouseLeavePopover()">
 							<strong>{{rate.rate_type.name}}</strong>
 							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.rate_type.id, 'rateType')">				</div>
 						</span>
 					</td>
-					<td data-title="'Date Ranges'" header-class="width-15" class = "center_align">
+					<td data-title="'Date Ranges'" header-class="width-15" class = "center_align" ng-hide="currentClickedElement == $index">
 						<span class= "tooltip-wrapper " ng-mouseenter="showDateRanges($index, rate.id,'rate_id', rate.date_range_count)" ng-mouseleave="mouseLeavePopover()">
 						{{rate.date_range_count}}
 							<div ng-show = "rate.date_range_count > 0" class="tooltip" ng-include="getPopoverTemplate($index, rate.id, 'dateRange')">
 						</span>
 					</td>
-					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-10">
+					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
 						<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
 							<div class="switch-button single" ng-class="{'on': rate.status}">
 								<input type="checkbox"  ng-checked="rate.status">
@@ -76,9 +76,10 @@
 						</div>
 						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
 					</td>
-					<td header-class="width-10">
+					<td header-class="width-10" ng-hide="currentClickedElement == $index">
 						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)"  ng-hide="false">&nbsp;</span>
 					</td>
+					<td colspan="6" header-class="width-0" ng-include="getTemplateUrl($index, rate.id)"></td> 
 				</tr>
 			</tbody>
 		</table>

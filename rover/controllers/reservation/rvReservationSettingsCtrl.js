@@ -67,24 +67,6 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         };
 
-        $scope.editRoomRates = function(roomIdx) {
-            // console.log($scope.reservationData.rooms[roomIdx]);
-            //TODO: Navigate back to roomtype selection screen after resetting the current room options
-            $scope.reservationData.rooms[roomIdx].roomTypeId = '';
-            $scope.reservationData.rooms[roomIdx].roomTypeName = '';
-            $scope.reservationData.rooms[roomIdx].rateId = '';
-            $scope.reservationData.rooms[roomIdx].rateName = '';
-
-            var successCallBack = function() {
-                $state.go('rover.reservation.mainCard.roomType');
-            };
-
-            $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
-                fromDate: $scope.reservationData.arrivalDate,
-                toDate: $scope.reservationData.departureDate
-            }, successCallBack);
-        }
-
         /**
          * function to execute click on Guest card
          */

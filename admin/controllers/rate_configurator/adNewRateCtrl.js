@@ -6,6 +6,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
+            $scope.prevMenu = "";
             // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",
@@ -41,9 +42,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
-                // $scope.invokeApi(ADRatesSrv.fetchDetails, {
-                //     rateId: $stateParams.rateId
-                // }, rateDetailsFetchSuccess);
             }
         };
 
@@ -95,6 +93,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
          $scope.$on("changeMenu", function (e, value) {
+            // keep track of previous menu for switching - on Cancel button click
+            $scope.prevMenu = $scope.rateMenu;
             if (!isNaN(parseInt(value))){
                 value = "dateRange."+value;
             }
@@ -124,6 +124,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             var fetchBasedonSuccess = function(data){
                 // set basedon data
                 $scope.basedonRateData = data;
+                $scope.basedonRateData.room_type_ids = [];
+                angular.forEach(data.room_types, function(room_type){
+                    $scope.basedonRateData.room_type_ids.push(room_type.id);
+                });
                 $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
                 $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
                 //Broadcast an event to child classed to notify that the based on rates are changed.
@@ -197,7 +201,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.rateData.name= data.name;
         $scope.rateData.description = data.description;
         $scope.rateData.promotion_code = data.promotion_code;
-        $scope.rateData.room_type_ids = data.room_type_ids;
+        $scope.rateData.room_types = data.room_types;
+        $scope.rateData.room_type_ids = [];
+        angular.forEach(data.room_types, function(room_type){
+            $scope.rateData.room_type_ids.push(room_type.id);
+        });
         $scope.rateData.date_ranges= data.date_ranges;
         $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
         $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
@@ -278,7 +286,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         })
 
         $scope.addNewDateRange = function(){
-            $scope.rateMenu ='ADD_NEW_DATE_RANGE';
+            $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
             // reset calendar
             $scope.$broadcast('resetCalendar');
         };
@@ -289,6 +297,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!$scope.rateData.id || $scope.rateData.room_type_ids.length == 0) { return false; }
             return true;
         };
+
+        // on click Cancel button redirect to previous active menu
+        $scope.cancelMenu = function(){
+            $scope.$emit("changeMenu", $scope.prevMenu);
+        }
 
         /*
          * init call

@@ -47,7 +47,7 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$stat
 	// To handle close button click
 	$scope.goToStaycard = function(){
 		$scope.closeDialog();
-		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
+		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no, "isrefresh": true});
 		
 	};
 	$scope.goToSearch = function(){
