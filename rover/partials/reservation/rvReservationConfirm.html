@@ -150,7 +150,12 @@
                 <div class="reservation-completed">
                     <h2 ng-hide="viewState.identifier == 'UPDATED'" translate>RESERVATION_CREATED</h2>
                     <h2 ng-show="viewState.identifier == 'UPDATED'" translate>RESERVATION_CHANGED</h2>
-                    <div class="entry full-width" ng-hide="viewState.identifier == 'UPDATED'">
+                    <div class="entry full-width" ng-show="isConfirmationEmailSent">
+                        <label>Email confirmation has been sent to {{reservationData.guest.email}}</label>
+                        <label ng-if="reservationData.guest.email != '' && otherData.additionalEmail !=''">(and {{otherData.additionalEmail}}).</label>
+                        <label ng-if="otherData.additionalEmail != ''">{{otherData.additionalEmail}}.</label>
+                    </div>
+                    <div class="entry full-width" ng-hide="isConfirmationEmailSent">
                         <label for="email" translate>CONFIRM_EMAIL_LABEL</label>
                         <input name="email" id="email" type="email" ng-model="reservationData.guest.sendConfirmMailTo">
                         <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>SEND_CONFIRMATION_EMAIL</button>

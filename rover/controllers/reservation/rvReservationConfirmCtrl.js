@@ -5,6 +5,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		$scope.init = function() {
 			$scope.$emit('setHeading', 'Reservations');
 			$scope.$parent.hideSidebar = true;
+			$scope.isConfirmationEmailSent = ($scope.reservationData.guest.email || $scope.otherData.additionalEmail) ? true : false;
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {
 					scrollbars: true,
