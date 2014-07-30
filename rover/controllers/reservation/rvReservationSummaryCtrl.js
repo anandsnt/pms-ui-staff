@@ -118,7 +118,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
 					stay.push({
 						date: date,
-						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id,// In case of the last day, send the first day's occupancy
+						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
 						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
 						adults_count: parseInt(staydata.guests.adults),
 						children_count: parseInt(staydata.guests.children),
@@ -170,8 +170,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 				$scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
 				$scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
-
-
 
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": data.id,
@@ -276,8 +274,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Does not save the reservation
 		 */
 		$scope.cancelButtonClicked = function() {
-			$scope.initReservationData();
-			$state.go('rover.staycard.reservation.search');
+			if ($scope.viewState.identifier == "STAY_CARD") {
+				var stateParams = {
+					id: $scope.reservationData.reservationId,
+					confirmationId: $scope.reservationData.confirmNum,
+					isrefresh: false
+				}
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
+			} else {
+				$scope.initReservationData();
+				$state.go('rover.staycard.reservation.search');
+			}
 		};
 
 		$scope.refreshPaymentScroller = function() {
