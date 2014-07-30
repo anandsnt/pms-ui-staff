@@ -53,9 +53,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         }, 2000);
 
         //TODO: delete the code below and use the function
-        $state.go('rover.dashboard.manager');
+        //$state.go('rover.dashboard.manager');
 
-        //reddirectToDefaultDashboard();
+        reddirectToDefaultDashboard();
 
    };
 
@@ -64,10 +64,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    });
 
    var reddirectToDefaultDashboard = function(){
-        
         var defaultDashboardMappedWithStates = {
-          'admin': 'rover.dashboard.frontdesk',
-          'manager': 'rover.dashboard.manager',
+          'FRONT_DESK': 'rover.dashboard.frontdesk',
+          'MANAGER': 'rover.dashboard.manager',
         }
         if($rootScope.default_dashboard in defaultDashboardMappedWithStates){
             $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
