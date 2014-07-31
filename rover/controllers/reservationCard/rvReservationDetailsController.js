@@ -16,6 +16,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * success call back of fetch reservation details
 		 */
 		//Data fetched using resolve in router
+		reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
