@@ -100,6 +100,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.renderPayButtonDefaultValues = function(){
 		if($scope.passData.fromView == "paybutton"){
 	 		//console.log($scope.paymentData.bills[billIndex]);
+	 		$scope.selected_bill = $scope.passData.fromBill;
 			$scope.showPaymentAmount = true;
 			var billIndex = parseInt($scope.passData.fromBill) - parseInt(1);
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInformationsToPaymentModal.user_id, $scope.guestPaymentListSuccess);
@@ -134,10 +135,16 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.renderPaymentValues = function(){
 		$scope.paymentTypeValues = $scope.data[$scope.saveData.selected_payment_type].values;
 		if($scope.passData.fromView == "paybutton"){
-			if($scope.saveData.selected_payment_type == 0){
+			if($scope.saveData.selected_payment_type == 0){//cc
 				$scope.showCreditCardDetails = true;
 			} else {
 				$scope.showCreditCardDetails = false;
+				$scope.saveData.credit_card = "";
+				$scope.saveData.card_number = "";
+				$scope.saveData.card_expiry_year = "";
+				$scope.saveData.card_expiry_month = "";
+				$scope.saveData.name_on_card = "";
+				$scope.saveData.id = "";
 			}
 		}
 		setTimeout(function(){
@@ -244,6 +251,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.credit_card = $scope.saveData.credit_card;
 				
 			}
+			console.log("----------------SAVE--------------"+$scope.saveData.selected_bill+">>>>"+$scope.passData.fromView)
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
 			} else if($scope.passData.fromView == "paybutton"){
@@ -358,7 +366,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
     };
     /* MLI integration ends here */
-
+   /*
+    * Render selected paymnet details - when clicks on guest card credit cards
+    */
    $scope.renderSelectedPaymentDetails = function(index){
    		$scope.showCreditCardDetails = true;
 		angular.forEach($scope.paymentTypeList, function(value, key) {
