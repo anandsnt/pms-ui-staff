@@ -20,7 +20,8 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			$scope.proximityId = data.proximity_id;
 			$scope.majorId = data.major_id;
-			$scope.data = data.details;			
+			$scope.data = data.details;	
+			$scope.totalCount = $scope.data.length;		
 			$scope.currentPage = params.page();
 	        params.total(data.total_count);
 	        $defer.resolve($scope.data);

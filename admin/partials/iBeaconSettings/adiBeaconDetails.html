@@ -29,7 +29,7 @@
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || !addmode" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
