@@ -13,20 +13,16 @@ admin.controller('addonsDatesRangeCtrl',
 
             // link everthing
             $scope.dateNeeded = $scope.parentScope.dateNeeded;
-
             if ( $scope.parentScope.dateNeeded === 'From' ) {
-                $scope.datePickerDate = $scope.parentScope.singleAddon.begin_date
-                // from date should be from business date
-                $scope.minDate = $rootScope.businessDate;
+                $scope.datePickerDate = $scope.parentScope.singleAddon.begin_date;
             } else {
                 $scope.datePickerDate = $scope.parentScope.singleAddon.end_date;
-                $scope.minDate = $scope.parentScope.singleAddon.begin_date;
             }
 
             $scope.dateOptions = {
                 changeYear: true,
                 changeMonth: true,
-                minDate: tzIndependentDate($scope.minDate),
+                minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(dateText, inst) {
                      // emit choosen date back
                     $scope.$emit('datepicker.update', $scope.datePickerDate);
