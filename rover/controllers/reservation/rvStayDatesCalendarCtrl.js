@@ -15,11 +15,13 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	this.init = function() {
 		$scope.eventSources = [];
 
+		$scope.calendarType = "BEST_AVAILABLE"
+
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.reservationData.arrivalDate);
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.reservationData.departureDate);
-    	//TODO: Remove the hardcoding
-        $scope.roomTypeForCalendar = {}; 
-        $scope.roomTypeForCalendar.id = $scope.reservationData.rooms[0].roomTypeId;
+        $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
+        $scope.nights = getNumOfStayNights();
+
 		fetchAvailabilityDetails();
 
 		/*var fetchSuccessCallback = function(data) {
@@ -39,16 +41,25 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		var availabilityFetchSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.availabilityDetails = data;
-			
+			//Display Calendar
 			that.renderFullCalendar();
 		};
 
+		//TODO: verify if the date calculation is correct
+
+		//We are fetching the calendar data for one year. 
+		//Starting from the current business date
 		var params = {};
-        params.from_date = $scope.reservationData.arrivalDate;
-        params.to_date = $scope.reservationData.departureDate;
+        params.from_date = $rootScope.businessDate;
+        var businessDateParsed = getDateObj($rootScope.businessDate);
+        var toDate = businessDateParsed.setDate(businessDateParsed.getDate() + 365) ;
+        params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
+	/**
+	* Set the calendar options to display the calendar
+	*/
 	this.renderFullCalendar = function() {
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -71,25 +82,49 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		};
 
 		//Refresh the calendar with the arrival, departure dates
-		refreshCalendarEvents($scope.checkinDateInCalender, $scope.checkoutDateInCalender)
+		$scope.refreshCalendarEvents()
 	}
+
+	/**
+	* return the rate for a given date
+	*/
+	var getRateForTheDay = function(availabilityDetails){
+		//If no room type is selected for the room type calendar, 
+		//then no need to display the price
+		var rate
+		if($scope.roomTypeForCalendar == "" && $scope.calendarType == "ROOM_TYPE"){
+			rate = "";
+		} else {
+			rate = $rootScope.currencySymbol + 
+		                availabilityDetails.room_rates.single;
+		}
+		return rate;
+
+	}; 
 
 	/**
 	* Compute the fullcalendar events object from the availability details
 	*/
     var computeEventSourceObject = function(checkinDate, checkoutDate){
+
+        var availabilityKey;
+        if($scope.calendarType == "BEST_AVAILABLE"){
+        	availabilityKey = 'BAR';
+        } else {
+			availabilityKey = $scope.roomTypeForCalendar;
+        }
         var events = [];
 
         var thisDate;
         var calEvt = {};
+
+        console.log(availabilityKey);
+
         angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
-        
             calEvt = {};
             //instead of new Date(), Fixing the timezone issue related with fullcalendar
             thisDate = getDateObj(date);
-            
-            calEvt.title = $rootScope.currencySymbol + 
-                            dateDetails[$scope.roomTypeForCalendar.id].rate_available.room_rates.single;
+            calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
             calEvt.start = thisDate;
             calEvt.end = thisDate;
             calEvt.day = thisDate.getDate().toString();
@@ -107,8 +142,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
                     events.push(calEvt);
                     //checkout-event
                     calEvt = {};
-                    calEvt.title = $rootScope.currencySymbol + 
-                            dateDetails[$scope.roomTypeForCalendar.id].rate_available.room_rates.single;
+                    calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
+                                               	
                     calEvt.start = thisDate;
                     calEvt.end = thisDate;
                     calEvt.day = thisDate.getDate().toString();
@@ -128,9 +163,20 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
                 calEvt.className = "check-out";
                 calEvt.startEditable = "true";
                 calEvt.durationEditable = "false";
-            //dates prior to check-in and dates after checkout
-            } else {
-                calEvt.className = "type-available";
+            /**dates prior to check-in and dates after checkout*/
+            
+
+
+            //room type available - If no room type is being selected, only show house availability.
+            } else if($scope.roomTypeForCalendar != "" && 
+            	dateDetails[availabilityKey].room_type_availability > 0) { 
+                calEvt.className = "availability"; //TODO: verify class name
+            //room type not available but house available   
+            } else if(dateDetails["house"].availability > 0) {
+            	calEvt.className = "no-type-availability"; //TODO: verify class name
+            //house not available(no room available in the hotel for any room type)
+            } else{
+				calEvt.className = "no-house-availability";
             }
 
             events.push(calEvt);
@@ -144,6 +190,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	*/
 	$scope.roomTypeForCalendarChanged = function(){
 		$scope.finalRoomType = $scope.roomTypeForCalendar;
+		$scope.resetCalendarDates();
+		$scope.refreshCalendarEvents();
 	};
 
 	/**
@@ -188,12 +236,12 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		$scope.checkoutDateInCalender = finalCheckout;
 
 		//Reload the calendar with new arrival, departure dates
-		refreshCalendarEvents($scope.checkinDateInCalender, $scope.checkoutDateInCalender)
+		$scope.refreshCalendarEvents()
 	};
 
-	var refreshCalendarEvents = function(checkinDate, checkoutDate){
+	$scope.refreshCalendarEvents = function(){
 		$scope.eventSources.length = 0;
-		$scope.events = computeEventSourceObject(checkinDate, checkoutDate);
+		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 		$scope.eventSources.length = 0;
 		$scope.eventSources.push($scope.events);
 	};
@@ -203,6 +251,31 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			$scope.myScroll['stay-dates-calendar'].refresh();
 		}, 0);
 	};
+
+	var getNumOfStayNights = function(){
+		//setting nights based on calender checking/checkout days
+		var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
+		return Math.ceil(timeDiff / (1000 * 3600 * 24));
+	}
+
+	$scope.resetCalendarDates = function(){
+		$scope.checkinDateInCalender = $scope.confirmedCheckinDate;
+		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate;
+	};
+
+	$scope.selectedBestAvailableRatesCalOption = function(){
+		$scope.calendarType= 'BEST_AVAILABLE'; 
+		$scope.refreshCalendarEvents(); 
+		$scope.resetCalendarDates();
+
+	};
+	$scope.selectedRoomTypesCalOption = function(){
+		$scope.calendarType ='ROOM_TYPE'; 
+		$scope.refreshCalendarEvents(); 
+		$scope.resetCalendarDates();
+	};
+
+
 
 	this.init();
 

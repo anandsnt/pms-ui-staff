@@ -42,13 +42,13 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 var dayInfo = {};
                 dayInfo.date = dayDetails.date;
                 dayInfo.house = dayDetails.house;
-                dayInfo.BAR = that.getBestAvailableRateForTheDay(dayDetails.rates);
+                dayInfo.BAR = that.getBestAvailableRateForTheDay(dayDetails.rates, dayDetails.room_types);
                 //loop2
                 angular.forEach(dayDetails.room_types, function(roomType, i) {
-                    dayInfo[roomType.id] = {};
+                    dayInfo[roomType.id] = that.getLowestRateForRoomType(roomType, dayDetails.rates);
                     //Get the room type availability for a day
-                    dayInfo[roomType.id].room_type_details = roomType;
-                    dayInfo[roomType.id].rate_available = that.getLowestRateForRoomType(roomType, dayDetails.rates);
+                    //dayInfo[roomType.id].room_type_details = roomType;
+                    //dayInfo[roomType.id].availability = that.getLowestRateForRoomType(roomType, dayDetails.rates);
                 });
                 availability[dayDetails.date] = dayInfo;
             });
@@ -60,7 +60,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
         * @return {hash} The rate_id and the lowest roomrate for the rate 
         * irrespective of the room type
         */
-        this.getBestAvailableRateForTheDay = function(ratesForTheDay){
+        this.getBestAvailableRateForTheDay = function(ratesForTheDay, allRoomTypes){
             var rateForSingleRoom = null;
             var lowestRate = {};
             var rateId = "";
@@ -83,7 +83,15 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
             });
 
             var dict = {};
-            dict.id = rateId;
+            dict.rate_id = rateId;
+            //Get the room type availability details looping through all room types. 
+            angular.forEach(allRoomTypes, function(roomType, roomTypeIndex) {
+                if(roomType.id == lowestRate.room_type_id){
+                    dict.room_type_availability = roomType;
+                    return false;//exit from the loop
+                }
+            });
+
             dict.room_rates = lowestRate;
             return dict;
         };
@@ -116,7 +124,8 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
             });
 
             var dict = {};
-            dict.id = rateId;
+            dict.rate_id = rateId;
+            dict.room_type_availability = roomType;
             dict.room_rates = lowestRate;
             return dict;
         };

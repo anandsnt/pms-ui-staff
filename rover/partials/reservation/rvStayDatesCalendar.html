@@ -4,15 +4,15 @@
 	<!-- Filters -->
 	<div class="reservation-filters">
 		<!-- Change room type visible for the calendar -->
-		<div id="change-room-type" class="select">
+		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
 			<select ng-model="roomTypeForCalendar"
-                ng-options="roomType as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
+                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
                 <option value="" disabled selected>All Room Types</option>
             </select>
 		</div>
 		<ul id="filter-calendar">
-			<li id="show-types">Room Types</li>
-			<li id="show-bar">Best Available</li>
+			<li id="show-types" ng-class="{'active': calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()">Room Types</li>
+			<li id="show-bar" ng-class="{'active': calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()">Best Available</li>
 		</ul>
 	</div>
 
@@ -23,13 +23,13 @@
 
 			<div id="stay-dates-chage" class="update-details">
 				<ul class="data">
-					<li class="nights"><span class="guest-status nights">nights</span><span id="new-nights">4 nights</span></li>
-					<li class="date"><span class="guest-status small-icon check-in">check-in</span><span id="new-check-in">Wednesday 07-23-2014</span></li>
-					<li class="date"><span class="guest-status small-icon check-out">check-out</span><span id="new-check-out">Monday 07-28-2014</span></li>
+					<li class="nights"><span class="guest-status nights">nights</span><span id="new-nights">{{nights}} nights</span></li>
+					<li class="date"><span class="guest-status small-icon check-in">check-in</span><span id="new-check-in">{{checkinDateInCalender| date:dayAndDate}}</span></li>
+					<li class="date"><span class="guest-status small-icon check-out">check-out</span><span id="new-check-out">{{checkoutDateInCalender| date:dayAndDate}}</span></li>
 					<li class="room-type">
 						<div class="select">
 							<select ng-model="finalRoomType"
-				                ng-options="roomType as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
+				                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
 				            </select>
 						</div>
 					</li>
