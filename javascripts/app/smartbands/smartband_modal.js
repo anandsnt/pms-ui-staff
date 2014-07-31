@@ -69,6 +69,11 @@ var SmartBandModal = function(reservationID) {
 	* function to handle click on add new button screen
 	*/
 	this.addNewSmartBand = function(){
+		var reservationStatus = getReservationStatus();
+		//In checked out reservations, we can not add new smartbands
+		if(reservationStatus == 'CHECKEDOUT'){
+			return false;
+		}
 		that.showPage('add-new-smartband');
 	}    
 
