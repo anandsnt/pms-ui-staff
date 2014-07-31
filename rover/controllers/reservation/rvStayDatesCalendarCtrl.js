@@ -15,7 +15,10 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	this.init = function() {
 		$scope.eventSources = [];
 
-		$scope.calendarType = "BEST_AVAILABLE"
+		$scope.calendarType = "ROOM_TYPE";
+		if($scope.reservationData.rooms[0].roomTypeId == ""){
+			$scope.calendarType = "BEST_AVAILABLE";
+		}
 
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.reservationData.arrivalDate);
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.reservationData.departureDate);
@@ -265,14 +268,16 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	$scope.selectedBestAvailableRatesCalOption = function(){
 		$scope.calendarType= 'BEST_AVAILABLE'; 
-		$scope.refreshCalendarEvents(); 
 		$scope.resetCalendarDates();
+		$scope.refreshCalendarEvents(); 
+
 
 	};
 	$scope.selectedRoomTypesCalOption = function(){
 		$scope.calendarType ='ROOM_TYPE'; 
-		$scope.refreshCalendarEvents(); 
 		$scope.resetCalendarDates();
+		$scope.refreshCalendarEvents(); 
+
 	};
 
 
