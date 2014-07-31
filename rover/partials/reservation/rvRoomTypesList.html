@@ -1,4 +1,4 @@
-<!-- <div ng-include="'/assets/partials/common/header.html'"></div> -->
+<div ng-include="'/assets/partials/common/header.html'"></div>
 <section id="rooms-and-rates" class="content reservations-inner" >
 
     <ul class="reservation-header" ng-show="rooms.length > 1">
@@ -9,7 +9,7 @@
     <div id="rooms-and-rates-header" class="reservation-header">
         <div class="switch-button" ng-click="toggleCalendar()">
             <input name="rooms-availability-toggle" id="rooms-availability-toggle" value="rooms-availability" type="checkbox" />
-            <label class="data-off">
+            <label class="data-off" ng-class="{'calendar': stateCheck.activeMode=='CALENDAR'}">
                 <span class="value">Calendar</span>
                 <span class="switch-icon">Rooms &amp; Rates</span>
             </label>
@@ -18,26 +18,26 @@
                 <span class="value">Rooms &amp; Rates</span>
             </label>
         </div>
-        <label class="checkbox inline dates-toggle" ng-class="{'checked': stateCheck.stayDatesMode}" ng-click="stateCheck.stayDatesMode = !stateCheck.stayDatesMode">
-            <input name="showing-stay-dates" id="showing-stay-dates" value="stay-dates" type="checkbox" />
+        <label class="checkbox inline dates-toggle" ng-click="toggleStayDaysMode()">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': stateCheck.stayDatesMode}"></span>
             Showing Stay Dates
         </label>
     </div>   
 
     <!-- Stay Dates: visible only when checked -->
     <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}">
-        <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates" style="height:70px">
-            <ul class="wrapper" style="width:{{reservationData.stayDays.length * 65}}px">
-                <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last}" ng-click="showStayDateDetails(stayday.date)">
+        <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates">
+            <ul class="wrapper" style="width:{{reservationData.stayDays.length * 70}}px">
+                <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last, 'active' : (!$last && stateCheck.dateModeActiveDate == stayday.date)}" ng-click="showStayDateDetails(stayday.date)">
                     <span class="day">{{stayday.dayOfWeek}}</span>
                     <span class="date">{{stayday.day}}</span>
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
-                    <!-- <span class="price">$149</span> -->
+                    <span class="price" ng-show="!$last && roomAvailability[stateCheck.preferredType].ratedetails[stayday.date][reservationData.rooms[0].stayDates[stayday.date].rate.id].rate">{{currencySymbol}}{{roomAvailability[stateCheck.preferredType].ratedetails[stayday.date][reservationData.rooms[0].stayDates[stayday.date].rate.id].rate | number: 0}}</span>
                 </li>                
             </ul>
         </div>
         <!-- When not all booked -->
-        <button type="button" class="button grey" ui-sref="rover.reservation.staycard.mainCard.addons({from_date: reservationData.arrivalDate, to_date: reservationData.departureDate})">Done</button>
+        <button type="button" class="button" ng-class="{'grey' : !stateCheck.rateSelected.allDays, 'green': stateCheck.rateSelected.allDays}" ng-click="handleDaysBooking($event)">Done</button>
         <!-- When all booked -->
         <!-- <button type="button" class="button green">Done</button>-->
     </div>

@@ -49,6 +49,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
             "amount": $scope.smartBandData.fixedAmount
        };
        $scope.smartBands.push(newData);
+       $scope.smartBandLength = $scope.smartBands.length;
+       
 	};
 	
 	$scope.fetchSuccessKeyRead = function(accountNumber){
@@ -72,6 +74,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.$emit( 'hideLoader' );
 	};
 	$scope.clickContinueButton = function(){
+		document.activeElement.blur();
+        setTimeout(function(){
+      	   window.scrollTo(0,0);
+        }, 700);
 		var blankKeys = "";
 		if($scope.smartBandData.firstName == '' || $scope.smartBandData.firstName == null){
 			blankKeys = "First Name";		
@@ -151,6 +157,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.showSmartBandListView = false;
 		
 	};
+	/*
+	 * Edit bands
+	 * @param {int} id of the band
+	 */
 	$scope.editBandDetails = function(id){
 		if($scope.selectedReservationStatus != 'CHECKED_OUT'){
 			$scope.bandEditId = id;
@@ -158,16 +168,32 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		}
 		
 	};
+	/*
+	 * Success call back on updating smart band
+	 * updating new amount to the band data
+	 */
 	$scope.updateSmartBandSuccess = function(){
 		$scope.$emit( 'hideLoader' );
 		angular.forEach($scope.smartBands, function(value, key) {
 			if(value.id == $scope.bandEditId){
-				value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
+				if($scope.bandData.additionalCredit != undefined){
+					value.amount = parseInt(value.amount) + parseInt($scope.bandData.additionalCredit);
+				}
+				value.first_name = $scope.bandData.first_name;
+				value.last_name = $scope.bandData.last_name;
 			}
 		});
 		$scope.seeAllBands();
 	};
+	/*
+	 * Handle continue button on edit screen
+	 * @param {bool} isFixed
+	 */
 	$scope.clickContinueEdit = function(isFixed){
+	    document.activeElement.blur();
+        setTimeout(function(){
+      	   window.scrollTo(0,0);
+        }, 700);
 		if(isFixed){
 
 			var dataToApi = {

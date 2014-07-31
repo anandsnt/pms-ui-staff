@@ -48,6 +48,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/floorsetups'
 		});
 
+		$stateProvider.state('admin.billingGroups', {
+			templateUrl: '/assets/partials/billingGroups/adBillingGroupList.html',
+			controller: 'ADBillingGroupCtrl',
+			url : '/billingGroups'
+		});
+
 		$stateProvider.state('admin.reservationTypes', {
 			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',
 			controller: 'ADReservationTypeListController',
@@ -247,6 +253,19 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 					return ADReservationSettingsSrv.fetchReservationSettingsData();
 				}
 			}
+		});
+
+
+		$stateProvider.state('admin.ibeaconSettings', {
+			templateUrl: '/assets/partials/iBeaconSettings/adibeaconSettings.html',
+			controller: 'ADiBeaconSettingsCtrl',
+			url : '/ibeaconSettings'
+		});
+
+		$stateProvider.state('admin.iBeaconDetails', {
+			templateUrl: '/assets/partials/iBeaconSettings/adiBeaconDetails.html',
+			controller: 'ADiBeaconDetailsCtrl',
+			url : '/iBeaconDetails/:action'
 		});
 		
         

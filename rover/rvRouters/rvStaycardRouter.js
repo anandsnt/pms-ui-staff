@@ -23,6 +23,9 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         resolve: {
             baseData: function(RVReservationSummarySrv) {
                 return RVReservationSummarySrv.fetchInitialData();
+            },
+            baseSearchData: function(RVReservationBaseSearchSrv) {
+                return RVReservationBaseSearchSrv.fetchBaseSearchData();
             }
         }
     });
@@ -31,12 +34,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     $stateProvider.state('rover.reservation.search', {
         url: '/search',
         templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
-        controller: 'RVReservationBaseSearchCtrl',
-        resolve: {
-            baseSearchData: function(RVReservationBaseSearchSrv) {
-                return RVReservationBaseSearchSrv.fetchBaseSearchData();
-            }
-        }
+        controller: 'RVReservationBaseSearchCtrl'
     });
 
     $stateProvider.state('rover.reservation.staycard', {
