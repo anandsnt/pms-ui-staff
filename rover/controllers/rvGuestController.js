@@ -195,7 +195,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 
 		$scope.updateContactInfo = function() {
+			var that = this;
+			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
 				$scope.$emit('hideLoader');
@@ -203,10 +206,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 			};
-			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			// check if there is any chage in data.if so call API for updating data
-			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)) {
-				currentGuestCardHeaderData = newUpdatedData;
+			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
+				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id

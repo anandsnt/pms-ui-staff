@@ -1,13 +1,15 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv',
-	function($rootScope, $scope, $state, RVReservationSummarySrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv) {
 
 		BaseCtrl.call(this, $scope);
 		var MLISessionId = "";
 
 		$scope.init = function() {
 			$scope.data = {};
-			$scope.data.isConfirmationEmailSameAsGuestEmail = true;
+			$scope.data.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
+			$scope.data.isGuestAdditionalEmailChecked = false;
 			$scope.data.paymentMethods = [];
+			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
 
@@ -103,6 +105,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
 				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 
+			}
+
+			// guest emails to which confirmation emails should send
+			data.confirmation_emails = [];
+			if ($scope.data.isGuestPrimaryEmailChecked) {
+				data.confirmation_emails.push($scope.reservationData.guest.email);
+			}
+			if ($scope.data.isGuestAdditionalEmailChecked) {
+				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
 
 			// MLI Integration.
@@ -296,6 +307,37 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.$on("checkinCheckoutTimeUpdated", function(event) {
 			$scope.proceedCreatingReservation();
 		});
+
+		/*
+			If email address does not exists on Guest Card,
+		    and user decides to update via the Email field on the summary screen,
+		    this email should be linked to the guest card. 
+		 */
+		$scope.primaryEmailEntered = function() {
+			if ($scope.isGuestEmailAlreadyExists) {
+				return false;
+			}
+			var dataToUpdate = {
+				"email": $scope.reservationData.guest.email
+			};
+
+			var data = {
+				'data': dataToUpdate,
+				'userId': $scope.reservationData.guest.id
+			};
+
+			var updateGuestEmailSuccessCallback = function(data) {
+				// console.log('reached success');
+				$scope.$emit("hideLoader");
+			}
+
+			var updateGuestEmailFailureCallback = function(data) {
+				// console.log('reached failure');
+				$scope.$emit("hideLoader");
+			}
+
+			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
+		}
 
 		$scope.init();
 

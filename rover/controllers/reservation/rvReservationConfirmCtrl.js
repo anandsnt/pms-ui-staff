@@ -5,6 +5,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		$scope.init = function() {
 			$scope.$emit('setHeading', 'Reservations');
 			$scope.$parent.hideSidebar = true;
+			$scope.isConfirmationEmailSent = ($scope.reservationData.guest.email || $scope.otherData.additionalEmail) ? true : false;
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {
 					scrollbars: true,
@@ -70,7 +71,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			}
 			var postData = {};
 			postData.reservationId = $scope.reservationData.reservationId;
-			postData.email = $scope.reservationData.guest.sendConfirmMailTo;
+			postData.emails = [];
+			postData.emails.push($scope.reservationData.guest.sendConfirmMailTo);
 
 			var emailSentSuccess = function(data) {
 				$scope.$emit('hideLoader');

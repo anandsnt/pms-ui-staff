@@ -52,6 +52,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.searchData.guestCard.guestCity = "";
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
 				$scope.guestCardData.contactInfo.user_id = contactInfoData.userId;
+				$scope.reservationData.guest.email = data.email;
 				$scope.$broadcast('guestSearchStopped');
 				$scope.$broadcast('guestCardAvailable');
 				$scope.showGuestPaymentList(guestInfo);

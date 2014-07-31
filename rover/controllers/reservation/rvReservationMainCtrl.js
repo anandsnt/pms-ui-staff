@@ -158,7 +158,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 fromSearch: false,
                 recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
                 defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
-                businessDate: baseSearchData.businessDate
+                businessDate: baseSearchData.businessDate,
+                additionalEmail: ""
             };
 
             $scope.guestCardData = {};
