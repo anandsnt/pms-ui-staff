@@ -67,6 +67,6 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         $stateProvider.state('rover.dashboard.housekeeping', {
             url: '/dashboard/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
-            controller: 'RVstaffDashboardController',                       
+            controller: 'RVhouseKeepingDashboardController',                       
         });           
 });
