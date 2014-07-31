@@ -50,28 +50,13 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
 			$scope.prefetchData = data;
+			$scope.getPrefetchData(data);
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
 	};
-	/*
-	 * To fetch the charge code details for edit screen.
-	 */
-	$scope.editSelected = function(index, value) {
-		$scope.isAddTax = false;
-		$scope.currentClickedElement = index;
-		$scope.editId = value;
-		var data = {
-			'editId' : value
-		}
-
-		var editSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.prefetchData = {};
-			$scope.prefetchData = data;
-			$scope.isEdit = true;
-			$scope.isAdd = false;
-
-			// TODO : To be removed static data , after API integartion.
+	
+	$scope.getPrefetchData = function(data){
+		// TODO : To be removed static data , after API integartion.
 			$scope.prefetchData = {
 
 				"value" : data.value,
@@ -116,8 +101,8 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 					"value" : "2",
 					"name" : "sample2"
 				}],
-				"tax_details" : [],
-				"tax_details1" : [{
+				"tax_details1" : [],
+				"tax_details" : [{
 					"id" : "1",
 					"is_exclusive" : true,
 					"selected_charge_code" : "2",
@@ -138,7 +123,48 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				}]
 			};
 
+			var taxCount = $scope.prefetchData.tax_details.length;
+			/*
+			 * Creating array for calculation_rule_inclusive.
+			 * Calculation rules for inclusive settings.
+			 */
+			if(taxCount > 1){
+				
+				for( var i=1 ; i < taxCount ; i++ ){
+					
+					if(!$scope.prefetchData.tax_details[i].is_exclusive){
+						$scope.prefetchData.tax_details[i].calculation_rule_inclusive = [];
+						
+						var inclusiveArray = dclone($scope.prefetchData.tax_details[i].calculation_rule,[]);
+						inclusiveArray = inclusiveArray.slice(0, -1);
+						
+						$scope.prefetchData.tax_details[i].calculation_rule_inclusive = inclusiveArray;
+					}
+				}
+			}
+
 			console.log($scope.prefetchData);
+		
+	};
+	/*
+	 * To fetch the charge code details for edit screen.
+	 */
+	$scope.editSelected = function(index, value) {
+		$scope.isAddTax = false;
+		$scope.currentClickedElement = index;
+		$scope.editId = value;
+		var data = {
+			'editId' : value
+		}
+
+		var editSuccessCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.prefetchData = {};
+			$scope.prefetchData = data;
+			$scope.isEdit = true;
+			$scope.isAdd = false;
+		
+			$scope.getPrefetchData(data);
 
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
@@ -198,13 +224,16 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				selected_link_with.push(item.value);
 			}
 		});
-		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
+		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
+		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_type", "charge_codes_has_tax", "post_type"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
 		if ($scope.prefetchData.selected_charge_code_type != "1") {
 			postData.selected_link_with = selected_link_with;
 		}
 		$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
+		
+		console.log(postData);
 	};
 	/*
 	 * To handle cancel button click.
@@ -236,6 +265,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 */
 	$scope.addTaxClicked = function() {
 		$scope.isAddTax = true;
+		$scope.isEditTax = false;
 		// To find the count of prefetched tax details already there in UI.
 		var taxCount = $scope.prefetchData.tax_details.length;
 		if (taxCount === 0) {
@@ -255,12 +285,23 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 					"value" : "2",
 					"name" : "ChargeCodeplusTax 1"
 				}],
+				"calculation_rule_inclusive" : [{
+					"value" : "1",
+					"name" : "ChargeCodeBaseAmount"
+				}],
 			};
 		} else if (taxCount > 1) {
 			$scope.addData = {
 				"id" : taxCount + 1,
 				"is_exclusive" : true,
 				"calculation_rule" : [{
+					"value" : "1",
+					"name" : "ChargeCodeBaseAmount"
+				}, {
+					"value" : "2",
+					"name" : "ChargeCodeplusTax 1"
+				}],
+				"calculation_rule_inclusive" : [{
 					"value" : "1",
 					"name" : "ChargeCodeBaseAmount"
 				}, {
@@ -285,9 +326,8 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	/*
 	 * To handle cancel button click on tax creation.
 	 */
-	$scope.clickedCancelTax = function() {
+	$scope.clickedCancelAddNewTax = function() {
 		$scope.isAddTax = false;
-		$scope.isEditTax = false;
 	};
 	/*
 	 * To handle click on tax list to show inline edit screen.
@@ -325,7 +365,12 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 * To handle inclusive/exclusive radio button click.
 	 */
 	$scope.toggleExclusive = function(index,value) {
-		$scope.prefetchData.tax_details[index].is_exclusive = value;
+		if($scope.isAddTax){
+			$scope.addData.is_exclusive = value;
+		}
+		else if($scope.isEditTax){
+			$scope.prefetchData.tax_details[index].is_exclusive = value;
+		}
 	};
 }]);
 
