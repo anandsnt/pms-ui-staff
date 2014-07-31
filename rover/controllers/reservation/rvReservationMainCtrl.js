@@ -329,10 +329,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var roomAvg = 0;
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
-                var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
-                var extraAdults = adults >= 2 ? adults - 2 : 0;
-                roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
+                if (date != $scope.reservationData.departureDate) {
+                    var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
+                    var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
+                    var extraAdults = adults >= 2 ? adults - 2 : 0;
+                    roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
+                }
             });
 
             currentRoom.rateTotal = roomTotal;

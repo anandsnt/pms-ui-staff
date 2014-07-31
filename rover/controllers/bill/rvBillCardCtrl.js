@@ -4,7 +4,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	// set a back button on header
 	$rootScope.setPrevState = {
-		title: 'Staycard',
+		title: 'Stay Card',
 		callback: 'goBackToStayCard',
 		scope: $scope
 	}
@@ -432,18 +432,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// just kidding.. :P
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
-	});
+	}); 
+    
     /*
 	 * Go back to staycard - Depends on changes in bill do refresh or not
 	 */
-    $scope.goBackToStayCard = function(reservationId, confirmationNumber){
-    	if($scope.isRefreshOnBackToStaycard)
-    	{
+    $scope.goBackToStayCard = function() {
+    	var reservationId = $scope.reservationBillData.reservation_id,
+    		confirmationNumber = $scope.reservationBillData.confirm_no;
+
+    	if( $scope.isRefreshOnBackToStaycard ) {
     		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
     	} else {
     		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
     	}
     };
+
 	// the listner must be destroyed when no needed anymore
 	$scope.$on( '$destroy', postchargeAdded );
 
