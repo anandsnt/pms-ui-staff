@@ -9,27 +9,47 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	//scroller options
 	$scope.setScroller('stay-dates-calendar'); 
 
-	this.dataAssign = function() {
-		//Data from Resolve method
-		//$scope.stayDetails = data;
-		
 
-		//TODO: Use actual dates
-		//$scope.reservationData.arrivalDate;
-		//$scope.reservationData.departureDate;
-		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj('2014-06-23');
-		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj('2014-06-25');
 
+	
+	this.init = function() {
+		$scope.eventSources = [];
+
+		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.reservationData.arrivalDate);
+		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.reservationData.departureDate);
+    	//TODO: Remove the hardcoding
+        $scope.roomTypeForCalendar = {}; 
+        $scope.roomTypeForCalendar.id = $scope.reservationData.rooms[0].roomTypeId;
+		fetchAvailabilityDetails();
+
+		/*var fetchSuccessCallback = function(data) {
+			$scope.$emit('hideLoader');
+			that.dataAssign(data);
+			$scope.stayDetails = data;
+			that.renderFullCalendar();
+			$scope.refreshScroller();
+		};*/
+		//$scope.invokeApi(RVRoomRateCalendarSrv.fetchStayDateDetails, {},fetchSuccessCallback);
+
+
+				
+	};
+
+	var fetchAvailabilityDetails = function(){
+		var availabilityFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.availabilityDetails = data;
+			
+			that.renderFullCalendar();
+		};
+
+		var params = {};
+        params.from_date = $scope.reservationData.arrivalDate;
+        params.to_date = $scope.reservationData.departureDate;
+		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
 	this.renderFullCalendar = function() {
-
-		refreshCalendarEvents();
-		var events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-		console.log(JSON.stringify(events));
-		$scope.eventSources.push(events);
-
-
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
 			height : 450,
@@ -47,44 +67,25 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			contentHeight : 320,
 			weekMode : 'fixed',
 			ignoreTimezone : false, // For ignoring timezone,
-			eventDrop : $scope.changedDateOnCalendar
+			eventDrop : changedDateOnCalendar
 		};
+
+		//Refresh the calendar with the arrival, departure dates
+		refreshCalendarEvents($scope.checkinDateInCalender, $scope.checkoutDateInCalender)
 	}
-	this.initialise = function() {
-		$scope.eventSources = [];
-		that.dataAssign();
 
-		fetchAvailabilityDetails();
-
-		/*var fetchSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			that.dataAssign(data);
-			$scope.stayDetails = data;
-			that.renderFullCalendar();
-			$scope.refreshScroller();
-		};*/
-		//$scope.invokeApi(RVRoomRateCalendarSrv.fetchStayDateDetails, {},fetchSuccessCallback);
-
-
-				
-	};
-
+	/**
+	* Compute the fullcalendar events object from the availability details
+	*/
     var computeEventSourceObject = function(checkinDate, checkoutDate){
-    	/*checkinDate = getDateObj(checkinDate);
-    	checkoutDate = getDateObj(checkoutDate);*/
-
-        $scope.roomTypeForCalendar = {}; 
-        $scope.roomTypeForCalendar.id = 55;
-
         var events = [];
-        //var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
 
         var thisDate;
         var calEvt = {};
         angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
         
             calEvt = {};
-            //Fixing the timezone issue related with fullcalendar
+            //instead of new Date(), Fixing the timezone issue related with fullcalendar
             thisDate = getDateObj(date);
             
             calEvt.title = $rootScope.currencySymbol + 
@@ -92,30 +93,22 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
             calEvt.start = thisDate;
             calEvt.end = thisDate;
             calEvt.day = thisDate.getDate().toString();
-            console.log(thisDate);
-            console.log(checkinDate);
-            
 
             //Event is check-in
             if (thisDate.getTime() === checkinDate.getTime()) {
                 calEvt.id = "check-in";
                 calEvt.className = "check-in";
-                //if (reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT") {
                 calEvt.startEditable = "true";
-                //}
                 calEvt.durationEditable = "false";
 
                 //If check-in date and check-out dates are the same, show split view.
-                /*if (checkinDate.getTime() == checkoutDate.getTime()) {
+                if (checkinDate.getTime() == checkoutDate.getTime()) {
                     calEvt.className = "check-in split-view";
                     events.push(calEvt);
                     //checkout-event
                     calEvt = {};
-                    if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-                        calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
-                    } else {
-                        calEvt.title = getCurrencySymbol(currencyCode) + $scope.escapeNull(this.rate).split('.')[0];
-                    }
+                    calEvt.title = $rootScope.currencySymbol + 
+                            dateDetails[$scope.roomTypeForCalendar.id].rate_available.room_rates.single;
                     calEvt.start = thisDate;
                     calEvt.end = thisDate;
                     calEvt.day = thisDate.getDate().toString();
@@ -123,29 +116,26 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
                     calEvt.className = "check-out split-view";
                     calEvt.startEditable = "true";
                     calEvt.durationEditable = "false"
-                }*/
+                }
 
-                //mid-stay range
+            //mid-stay range
             } else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
                 calEvt.id = "availability";
                 calEvt.className = "mid-stay";
-                //Event is check-out
+            //Event is check-out
             } else if (thisDate.getTime() == checkoutDate.getTime()) {
                 calEvt.id = "check-out";
                 calEvt.className = "check-out";
                 calEvt.startEditable = "true";
                 calEvt.durationEditable = "false";
-                //dates prior to check-in and dates after checkout
+            //dates prior to check-in and dates after checkout
             } else {
-                //calEvt.id = "availability";
                 calEvt.className = "type-available";
             }
 
             events.push(calEvt);
         });
         return events;
-
-
     };
 	
 	/**
@@ -156,30 +146,56 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		$scope.finalRoomType = $scope.roomTypeForCalendar;
 	};
 
-	var fetchAvailabilityDetails = function(){
-		var availabilityFetchSuccess = function(data){
-			$scope.$emit('hideLoader');
-			$scope.availabilityDetails = data;
-			
-			that.renderFullCalendar();
-		};
+	/**
+	* This function is used to check the whether the movement of dates is valid 
+	* accoriding to our reqmt.
+	*/
+	var changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+		var newDateSelected = event.start;//the new date in calendar
 
-		var params = {};
-        params.from_date = '2014-06-23';
-        params.to_date = '2014-06-25';
-		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
+		// also we are storing the current business date for easiness of the following code
+		var currentBusinessDate = getDateObj($rootScope.businessDate);
+
+		var finalCheckin = "";
+		var finalCheckout = "";
+
+		// checkin date/ checkout date can not be moved prior to current business date
+		if (newDateSelected.getTime() < currentBusinessDate.getTime()) {
+			revertFunc();
+			return false;
+		}
+
+		if (event.id == 'check-in') {
+			//checkin type date draging after checkout date wil not be allowed
+			if (newDateSelected > $scope.checkoutDateInCalender) {
+				revertFunc();
+				return false;
+			}
+			finalCheckin = newDateSelected;
+			finalCheckout = $scope.checkoutDateInCalender;
+		} else if (event.id == "check-out") {
+			//checkout date draging before checkin date wil not be allowed
+			if (newDateSelected < $scope.checkinDateInCalender) {
+				revertFunc();
+				return false;
+			}
+
+			finalCheckin = $scope.checkinDateInCalender;
+			finalCheckout = newDateSelected;
+		}
+		// we are re-assinging our new checkin/checkout date for calendar
+		$scope.checkinDateInCalender = finalCheckin;
+		$scope.checkoutDateInCalender = finalCheckout;
+
+		//Reload the calendar with new arrival, departure dates
+		refreshCalendarEvents($scope.checkinDateInCalender, $scope.checkoutDateInCalender)
 	};
 
-	$scope.changedDateOnCalendar = function(){
-		console.log('changedDateOnCalendar');
-		//refreshCalendarEvents();
-		
-	};
-
-	var refreshCalendarEvents = function(){
-		//var events = dclone($scope.stayDetails.available_dates);
+	var refreshCalendarEvents = function(checkinDate, checkoutDate){
 		$scope.eventSources.length = 0;
-		//$scope.eventSources.push(events);
+		$scope.events = computeEventSourceObject(checkinDate, checkoutDate);
+		$scope.eventSources.length = 0;
+		$scope.eventSources.push($scope.events);
 	};
 
 	$scope.refreshScroller = function() {
@@ -188,6 +204,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		}, 0);
 	};
 
-	this.initialise();
+	this.init();
 
 }]); 
