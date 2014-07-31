@@ -18,9 +18,11 @@
                 <div class="entry rel">
                     <label for="endDate"> end date &nbsp;<span  class="rate_end_date_desc">(overrides date range)</span>
                     </label>
-                    <input type="text" ng-model="rateData.end_date_for_display" readonly="" maxlength="8"  placeholder="Set end date" >
-                    <span class="trash-icon" ng-click="deleteEndDate()"></span>
-                    <span class="icons icon-calendar" ng-click="popupCalendar()"></span>
+                    <input type="text" ng-model="rateData.end_date_for_display" readonly="" maxlength="8"  placeholder="Set end date" class="date-picker-input-small">
+                    <span class="icons icon-calendar date-picker-small" ng-click="popupCalendar()"></span>
+                  <div class="date-delete-wrapper">
+                    <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="deleteEndDate()">&nbsp;</span>
+                 </div>
                 </div>
 	 		   <div class="entry full-width">
 	 		   	<div class="entry" ng-hide="!rateTypesDetails.is_use_markets">

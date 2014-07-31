@@ -64,17 +64,21 @@
 					<label>
 						{{'FROM_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date">
-					<span class="trash-icon" ng-click="resetDate('From')"></span>
-					<span class="icons icon-calendar" ng-click="popupCalendar('From')"></span>
+					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+					<span class="icons icon-calendar date-picker-small" ng-click="popupCalendar('From')"></span>
+					<div class="date-delete-wrapper">
+                    	<span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('From')">&nbsp;</span>
+                 	</div>
 				</div>
 				<div class="entry rel">
 					<label>
 						{{'TO_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date">
-					<span class="trash-icon" ng-click="resetDate('To')"></span>
-					<span class="icons icon-calendar" ng-click="popupCalendar('To')"></span>
+					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
+					<span class="icons icon-calendar date-picker-small" ng-click="popupCalendar('To')"></span>
+					<div class="date-delete-wrapper">
+                    	<span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('To')">&nbsp;</span>
+                 </div>
 				</div>
 
 				<div class="entry">
