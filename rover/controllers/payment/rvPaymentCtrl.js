@@ -296,7 +296,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
      $scope.savePaymentDetails = function(){  	
 
     	$scope.fetchMLISessionId = function(){
-console.log("FETCHMLI SESSS")
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
@@ -344,7 +343,6 @@ console.log("FETCHMLI SESSS")
 		else{
 			if(parseInt($scope.saveData.selected_payment_type) ===0){
 				if($scope.saveData.card_number.length>0){
-					console.log("---------MLI SESSSION--------------")
 					$scope.fetchMLISessionId();
 	    		}
 	    		else{
