@@ -141,41 +141,50 @@ body { overflow: hidden; }
 	}
 
 /* App screen positioning 	==============================*/
-	.content:not(#login) {
+	.content {
 		top: 60px;
-		.calc-height(100, 60); /* %, px */
+		.calc-height(100, 60);
+	}
 
-		/** Search screen ***/
-		&#search,
-		&#search-cards-wrapper {
-			top: 120px;
-			.calc-height(100, 120); /* %, px */
-		}
+	/* 768px+		 		==============================*/
+	@media only screen and (min-width: 768px) {
+		.content {
+			
+			/* With search bar ***/
+			&#dashboard,
+			&#dashboard-search,
+			&#search,
+			&#find-cards,
+			&#search-cards-wrapper {
+				top: 120px;
+				.calc-height(100, 120);
+			}
 
-		/* Stay Card / Reservations ***/
-		&.stay-card-inner,
-		&.reservations-inner {
-			top: 150px;
-			.calc-height(100, 150); /* %, px */
-		}
+			/* Stay Card / Reservations ***/
+			&.stay-card-inner,
+			&.reservations-inner {
+				top: 150px;
+				.calc-height(100, 150); /* %, px */
+			}
 
-		/* Social Lobby ***/
-		&.social-lobby-content {
-			top: 120px;
-			.calc-height(100, 180); /* %, px */
-		}
+			/* Social Lobby ***/
+			&.social-lobby-content {
+				top: 120px;
+				.calc-height(100, 180); /* %, px */
+			}
 
-		/* Messages ***/
-		&.messages-content {
-			top: 60px;
-			.calc-height(100, 120); /* %, px */
-		}
+			/* Messages ***/
+			&.messages-content {
+				top: 60px;
+				.calc-height(100, 120); /* %, px */
+			}
 
-		/* Reviews ***/
-		&.reviews-content {
-			top: 60px;
-			.calc-height(100, 60); /* %, px */
-		}
+			/* Reviews ***/
+			&.reviews-content {
+				top: 60px;
+				.calc-height(100, 60); /* %, px */
+			}
+		}	
 	}
 
 /* App screen transitions 	==============================*/
@@ -444,206 +453,225 @@ body { overflow: hidden; }
 	}
 
 /* Search bar				==============================*/
-	.search-form {
-		text-align: center;
-		height: 60px;
-		padding: 10px 20px;
-		background: rgba(0,0,0,.1);
-		overflow: hidden;
+	.search-form { .hide; }
 
-		.entry {
-			position: relative;
-			height: 40px;
-			width: 100%;
-			.transition;
+	/* 768px+		 		==============================*/
+	@media only screen and (min-width: 768px) {
+		.search-form {
+			text-align: center;
+			height: 60px;
+			padding: 10px 20px;
+			background: rgba(0,0,0,.1);
+			overflow: hidden;
 			.show;
-			.pull-left;
 
-			.icon-search {
-				position: absolute;
-				top: 10px;
-				left: 10px;
-				z-index: 99;
-			}
-
-			#query,
-			.query {
-				position: absolute;
-				top: 0;
-				left: 0;
+			.entry {
+				position: relative;
+				height: 40px;
 				width: 100%;
-				padding-left: 30px;
-				font-size: 24px;
-				font-weight: 700;
-				color: @logoPrimary; 
-				z-index: 9;
-				.box-shadow();
-				#border-radius > .rounded();
-
-				&:focus,
-				&:active { .box-shadow(~"inset 1px 1px 0 rgba(0,0,0,.3)"); }
-			}
-
-			#clear-query {
-				position: absolute;
-				top: 12.5px;
-				right: 12.5px;
-				z-index: 99;
-				background-color: @grey2; 
-				visibility: hidden;
-				.hide-text;
-				.square(15px);
-				.opacity(0);
+				.transition;
 				.show;
-				#fade > .out(); 
-				#border-radius > .rounded(15px);
+				.pull-left;
 
-				&.visible { 
-					visibility: visible;
-					.opacity(100); 
-					#fade > .in(); 
+				.icon-search {
+					position: absolute;
+					top: 10px;
+					left: 10px;
+					z-index: 99;
 				}
 
-				&:hover,
-				&.active { background-color: @logoPrimary; }
-			}
-
-			&#lobby-search,
-			&#messages-search {
-				padding-left: 10px;
-				border-left: 1px solid rgba(0,0,0,.1);
-				
-				.icon-search { left: 20px }
-				#query { position: static; }
-			}
-
-			&#lobby-search { .calc-width(100, 60); /* %, px */ }
-			&#messages-search { .calc-width(100, 110); /* %, px */ }
-
-			&.has-datepicker {
-				width: 60px;
-				padding: 0 10px;
-				border-left: 1px solid rgba(0,0,0,.1);
-
-				input {
+				#query,
+				.query {
 					position: absolute;
 					top: 0;
-					left: 10px;
-					width: 40px;
+					left: 0;
+					width: 100%;
+					padding-left: 30px;
+					font-size: 24px;
+					font-weight: 700;
+					color: @logoPrimary; 
+					z-index: 9;
+					.box-shadow();
+					#border-radius > .rounded();
+
+					&:focus,
+					&:active { .box-shadow(~"inset 1px 1px 0 rgba(0,0,0,.3)"); }
 				}
 
-				.ui-datepicker-trigger { 
-					top: 0; 
-					width: 40px;
-					left: 10px;
-					background-position: 50% 11px;
+				#clear-query,
+				.clear-query {
+					position: absolute;
+					top: 0;
+					right: 0;
+					z-index: 99;
+					visibility: hidden;
+					.square(40px);
+
+					.icons {
+						position: absolute;
+						top: 12.5px;
+						right: 12.5px;
+						background-color: @grey2;
+						.hide-text;
+						.square(15px);
+						.opacity(0);
+						.show;
+						#fade > .out(); 
+						#border-radius > .rounded(15px);
+					}
+
+					&.visible { 
+						.icons {
+							visibility: visible;
+							.opacity(100); 
+							#fade > .in(); 
+						}
+					}
 
 					&:hover,
-					&.active {
-						background-position: 50% -39px; 
+					&.active { 
+						.icons { background-color: @logoPrimary; }
 					}
 				}
-			}
-		}
 
-		.button { 
-			padding: 0; 
+				&#lobby-search,
+				&#messages-search {
+					padding-left: 10px;
+					border-left: 1px solid rgba(0,0,0,.1);
+					
+					.icon-search { left: 20px }
+					#query { position: static; }
+				}
 
-			&.only-icon {
-				padding: 0;
-	 			margin-right: 10px;
-	 			.square(40px);
-	 			.pull-left; 
+				&#lobby-search { .calc-width(100, 60); /* %, px */ }
+				&#messages-search { .calc-width(100, 110); /* %, px */ }
 
-	 			&.active {
-	 				.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
-	 				.gradient (@logoGradientEnd, @logoGradientStart);
-	 			}
-			}
-		}
+				&.has-datepicker {
+					width: 60px;
+					padding: 0 10px;
+					border-left: 1px solid rgba(0,0,0,.1);
 
-		.add-new-button { 
-			cursor: pointer;
-			background-color: transparent;
-			line-height: 40px;
-			.size(40px, 100px);
-			.pull-right;
-			.hide;
-		}
+					input {
+						position: absolute;
+						top: 0;
+						left: 10px;
+						width: 40px;
+					}
 
-		.filters {
-			height: 40px;
-			display: block !important;
-			clear: both;
-
-			em { 
-				line-height: 50px;
-				vertical-align: middle;
-				color: @grey3;
-				.show;
-			}
-
-			ul {
-				padding-top: 10px;
-				.float;
-
-				li { 
-					margin: 0 0 0 1px;
-					font-size: 14px;
-					line-height: 40px;
-					text-align: center;
-					.pull-left;
-
-					a {
-						color: @textColor;
-						font-weight: 600;
-						text-transform: uppercase;
-						.clickable;
-						#border-radius > .rounded(0);
+					.ui-datepicker-trigger { 
+						top: 0; 
+						width: 40px;
+						left: 10px;
+						background-position: 50% 11px;
 
 						&:hover,
-						&:active { 
-							color: @logoPrimary; 
-							.box-shadow();
+						&.active {
+							background-position: 50% -39px; 
 						}
 					}
+				}
+			}
 
-					&.active {
+			.button { 
+				padding: 0; 
+
+				&.only-icon {
+					padding: 0;
+		 			margin-right: 10px;
+		 			.square(40px);
+		 			.pull-left; 
+
+		 			&.active {
+		 				.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+		 				.gradient (@logoGradientEnd, @logoGradientStart);
+		 			}
+				}
+			}
+
+			.add-new-button { 
+				cursor: pointer;
+				background-color: transparent;
+				line-height: 40px;
+				.size(40px, 100px);
+				.pull-right;
+				.hide;
+			}
+
+			.filters {
+				height: 40px;
+				display: block !important;
+				clear: both;
+
+				em { 
+					line-height: 50px;
+					vertical-align: middle;
+					color: @grey3;
+					.show;
+				}
+
+				ul {
+					padding-top: 10px;
+					.float;
+
+					li { 
+						margin: 0 0 0 1px;
+						font-size: 14px;
+						line-height: 40px;
+						text-align: center;
+						.pull-left;
+
 						a {
-							color: @white;
-							text-shadow: 1px 1px 0 rgba(0,0,0,.1);
-							.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
-	 						.gradient (@logoGradientEnd, @logoGradientStart);
+							color: @textColor;
+							font-weight: 600;
+							text-transform: uppercase;
+							.clickable;
+							#border-radius > .rounded(0);
 
 							&:hover,
-							&:active { color: @white; }
+							&:active { 
+								color: @logoPrimary; 
+								.box-shadow();
+							}
 						}
+
+						&.active {
+							a {
+								color: @white;
+								text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+								.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+		 						.gradient (@logoGradientEnd, @logoGradientStart);
+
+								&:hover,
+								&:active { color: @white; }
+							}
+						}
+
+						&:first-child a { #border-radius > .left(); }
+						&:last-child a { #border-radius > .right(); }
 					}
+				}
 
-					&:first-child a { #border-radius > .left(); }
-					&:last-child a { #border-radius > .right(); }
+				&#filter-lobby {
+					ul {
+						li { .calc-width(16.66666666666667, 1); /* %, px */ }
+					}
+				}
+
+				&#filter-messages {
+					ul {
+						li { .calc-width(20, 1); /* %, px */ }
+					}
 				}
 			}
 
-			&#filter-lobby {
-				ul {
-					li { .calc-width(16.66666666666667, 1); /* %, px */ }
-				}
+			&.enable-adding {
+				.entry { .calc-width(100, 120); }
+
+				.add-new-button { .show; }
 			}
+		}	
+	}
 
-			&#filter-messages {
-				ul {
-					li { .calc-width(20, 1); /* %, px */ }
-				}
-			}
-		}
-
-		&.enable-adding {
-			.entry { .calc-width(100, 120); }
-
-			.add-new-button { .show; }
-		}
-	}	
 
 /* Post bar					==============================*/
 	.post-form {

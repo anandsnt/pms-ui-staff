@@ -19,6 +19,16 @@
 	.hide { display: none; }
 	.show { display: block; }
 
+	.flex(@align) { /* stretch|center|flex-start|flex-end|baseline|initial|inherit */
+		display: -webkit-box;
+	    display: -moz-box;
+	    display: -ms-flexbox;
+	    display: -webkit-flex;
+	    display: flex;
+	    -webkit-align-items: @align;
+    	align-items: @align;
+	}
+
 	.hide-text {
 		text-indent: -9999px;
 		&:focus { overflow: hidden; }
