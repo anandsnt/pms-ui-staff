@@ -1,6 +1,6 @@
 <div id="reservation-details" class="reservation-updates scrollable" >
 	<div class="wrapper">
-		<div style="height: 90%;">
+		<div class="updates-wrapper">
 		<div id="no-reservation-updates" class="updates-content no-content" ng-show="rightSideReservationUpdates==''">
 			<div class="info">
 				<strong class="h1" translate>CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES</strong>
@@ -172,7 +172,7 @@
 
 		</div>
 		<!-- Find rooms and rates option is not available for non-standalone PMS (ROOM_TYPE_AVAILABLE, ROOM_NOT_AVAILABLE) -->
-		<div class="room-rates-btn" ng-hide="rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
+		<div class="room-rates-btn" ng-hide="!isStandAlone || rightSideReservationUpdates=='ROOM_TYPE_AVAILABLE' || rightSideReservationUpdates=='ROOM_NOT_AVAILABLE' || rightSideReservationUpdates=='NO_HOUSE_AVAILABLE' ||
 		rightSideReservationUpdates=='HAS_MULTIPLE_RATES'">
 			<button type="button" class="button green" ng-click="goToRoomAndRatesCalendar()" translate>FIND_ROOMS_AND_RATE_BUTTON_TEXT</button>
 		</div>
