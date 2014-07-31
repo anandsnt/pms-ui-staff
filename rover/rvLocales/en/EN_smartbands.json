@@ -19,4 +19,7 @@
     "ENTER_FIRST_NAME" : "Enter First Name",
     "ENTER_LAST_NAME" : "Enter Last Name",
     "FIRST_NAME" : "First Name",
-    "LAST_NAME" : "Last Name"
+    "LAST_NAME" : "Last Name",
+    "SMARTBANDS_WITH_REMAINING_BALANCE" : "Smartbands with Remaining Balances",
+    "KEEP_CREDIT" : "KEEP CREDIT",
+	"CREDIT_TO_ROOM" : "CREDIT TO ROOM"

@@ -1,7 +1,11 @@
 
-sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', function($scope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog){
+sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$stateParams', 'RVUpgradesSrv', 'RVReservationCardSrv', '$sce', '$filter', 'ngDialog', function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
+
+	$rootScope.setPrevState = {
+		title: 'Stay Card'
+	}
 	
 	$scope.$parent.myScrollOptions = {		
 	    'upgradesView': {
@@ -148,14 +152,46 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	* function to set the color coding for the room number based on the room status
 	*/
 	$scope.getRoomStatusClass = function(){
+		
 		var reservationRoomStatusClass = "";
-		if($scope.headerData.reservation_status == 'CHECKING_IN'){
-			if($scope.headerData.room_status == 'READY' && $scope.headerData.fo_status == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+		
+		var roomReadyStatus = $scope.reservationData.reservation_card.room_ready_status;
+		var foStatus = $scope.reservationData.reservation_card.fo_status;
+		var checkinInspectedOnly = $scope.reservationData.reservation_card.checkin_inspected_only;
+		if($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN'){
+		    if(roomReadyStatus!=''){
+					if(foStatus == 'VACANT'){
+						switch(roomReadyStatus) {
+	
+							case "INSPECTED":
+								reservationRoomStatusClass = ' room-green';
+								break;
+							case "CLEAN":
+								if (checkinInspectedOnly == "true") {
+									reservationRoomStatusClass = ' room-orange';
+									break;
+								} else {
+									reservationRoomStatusClass = ' room-green';
+									break;
+								}
+								break;
+							case "PICKUP":
+								reservationRoomStatusClass = " room-orange";
+								break;
+				
+							case "DIRTY":
+								reservationRoomStatusClass = " room-red";
+								break;
+	
+			        }
+					
+					} else {
+						reservationRoomStatusClass = "room-red";
+					}
+					
+				}
 			}
-		} 
+		
 		return reservationRoomStatusClass;
 	};
 	/**

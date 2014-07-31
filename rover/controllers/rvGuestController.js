@@ -1,6 +1,6 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope',
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv',
 
-	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope) {
+	function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
@@ -65,6 +65,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			if ($scope.otherData.fromSearch) {
 				$scope.otherData.fromSearch = false;
 			}
+		};
+
+		// update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
+		var updateSearchCache = function() {
+		    var data = {
+		        'firstname': $scope.guestCardData.contactInfo.first_name,
+		        'lastname':  $scope.guestCardData.contactInfo.last_name,
+		        'location':  $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
+		        'vip':       $scope.guestCardData.contactInfo.vip
+		    };
+
+		    RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
 		};
 
 		$scope.init = function() {
@@ -138,7 +150,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				"mobile", "passport_expiry",
 				"passport_number", "postal_code",
 				"reservation_id", "title", "user_id",
-				"works_at", "birthday"
+				"works_at", "birthday", "avatar"
 			];
 			var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 			return declonedData;
@@ -183,16 +195,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 
 		$scope.updateContactInfo = function() {
+			var that = this;
+			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				$scope.reservationData.guest.email = that.newUpdatedData.email;
+				// update few of the details to searchSrv
+				updateSearchCache();
 				$scope.$emit('hideLoader');
 			};
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 			};
-			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			// check if there is any chage in data.if so call API for updating data
-			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)) {
-				currentGuestCardHeaderData = newUpdatedData;
+			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
+				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
@@ -228,15 +244,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					}
 				}
 				if (!$scope.guestCardVisible) {
-					$("#guest-card").css("height", $scope.windowHeight - 90);
-					$scope.guestCardVisible = true;
-					$scope.cardVisible = true;
+					$scope.openGuestCard();
 					$scope.$broadcast('CONTACTINFOLOADED');
 					$scope.$emit('GUESTCARDVISIBLE', true);
 				} else {
-					$("#guest-card").css("height", $scope.resizableOptions.minHeight);
-					$scope.guestCardVisible = false;
-					$scope.cardVisible = false;
+					$scope.closeGuestCard();
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.handleDrawClosing();
 				}
@@ -325,10 +337,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.cardVisible = true;
 			$scope.guestCardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
-			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
-			$scope.$broadcast("contactTabActive");
-			//refreshing the scroller in guestcard's tab
-			$scope.$broadcast('REFRESHLIKESSCROLL');
+			// //refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
+			// $scope.$broadcast("contactTabActive");
+			// //refreshing the scroller in guestcard's tab
+			// $scope.$broadcast('REFRESHLIKESSCROLL');
 		};
 
 		/**
@@ -679,7 +691,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				// update current controller scopehandleDrawClosing
 				$scope.companyName = company.account_name;
 				$scope.companyCity = company.city;
-				// $scope.closeGuestCard();
+				$scope.closeGuestCard();
 				$scope.reservationDetails.companyCard.id = company.id;
 				$scope.initCompanyCard(company);
 				$scope.viewState.isAddNewCard = false;
@@ -704,7 +716,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				// update current controller scope
 				$scope.travelAgentName = travelAgent.account_name;
 				$scope.travelAgentCity = travelAgent.city;
-				// $scope.closeGuestCard();
+				$scope.closeGuestCard();
 				$scope.reservationDetails.travelAgent.id = travelAgent.id;
 				$scope.initTravelAgentCard(travelAgent);
 				$scope.viewState.isAddNewCard = false;
@@ -733,8 +745,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.cardHeaderImage = guest.image;
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
-
 				$scope.initGuestCard(guest);
+				$scope.closeGuestCard();
 			} else {
 				if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);
@@ -815,6 +827,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.initGuestCard({
 				id: id
 			});
+			$scope.closeGuestCard();
 		};
 
 	$scope.init();

@@ -132,6 +132,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 					$scope.reservationDetails.companyCard.futureReservations = 0;
 				}
 				$scope.viewState.isAddNewCard = false;
+				$scope.closeGuestCard();
 				$scope.cardSaved();
 				$scope.reservationDetails.companyCard.id = data.id;
 				if ($scope.reservationData && $scope.reservationData.company) {
