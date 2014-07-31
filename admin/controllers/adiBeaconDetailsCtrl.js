@@ -98,18 +98,18 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       alert(data);
     };
     var args = [];
-    args.push({
+/*    args.push({
       "CurrentEstimoteID":{
-      "proximityUUID":"XXXXXXXXX",
-      "majorID":"YYYYY",
-      "minorID":"ZZZZZ"}
+      "proximityUUID":"B9407F30-F5F8-466E-AFF9-25556B57FE6D",
+      "majorID":"",
+      "minorID":""}
       
-    });
+    });*/
     args.push({
       "NewEstimoteID":{
-      "proximityUUID":"AAAAAAAA",
-      "majorID":"BBBBBB",
-      "minorID":"CCCCC"
+      "proximityUUID":"d8d038ae-7eba-46bb-bca0-4cbc30b67590",
+      "majorID":"29454",
+      "minorID":"49790"
       }
      
     });
