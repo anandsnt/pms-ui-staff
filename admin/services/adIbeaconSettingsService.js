@@ -75,6 +75,35 @@ this.fetchBeaconTriggerTypes= function(){
 	});
 	return deferred.promise;
 };
+/*
+* To fetch beacon uuids
+* @return {object}
+*/	
+this.fetchBeaconDeafultDetails  = function(){
+	var deferred = $q.defer();
+	var url='/api/beacons/uuid_values';
+	ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		deferred.resolve(data);
+	},function(data){
+		deferred.reject(data);
+	});
+	return deferred.promise;
+};
+
+/*
+* To fetch beacon details
+* @return {object}
+*/	
+this.fetchBeaconDetails = function(data){
+	var deferred = $q.defer();
+	var url='/api/beacons/'+data.id;
+	ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		deferred.resolve(data);
+	},function(data){
+		deferred.reject(data);
+	});
+	return deferred.promise;
+};
 
 
 /*

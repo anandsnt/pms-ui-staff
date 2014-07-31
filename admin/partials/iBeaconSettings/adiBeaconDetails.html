@@ -20,13 +20,13 @@
 		<fieldset class="holder left">				
 			<div class="entry full-width">
 				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
-				<input type="text"  class="proximity-field" placeholder="Enter proximity ID" ng-disabled="!isIpad" ng-model="data.uuid">					
-				<input type="text" class="majorid-field" placeholder="Major id" ng-disabled="!isIpad" ng-model="data.majorid">
-				<input type="text" class="majorid-field" placeholder="Minor ID" ng-disabled="!isIpad" ng-model="data.minorid">					
+				<input type="text"  class="proximity-field" placeholder="Enter proximity ID" ng-disabled="!isIpad || !addmode" ng-model="data.proximity_id">
+				<input type="text" class="majorid-field" placeholder="Major id" ng-disabled="!isIpad || !addmode" ng-model="data.major_id">
+				<input type="text" class="majorid-field" placeholder="Minor ID" ng-disabled="!isIpad || !addmode" ng-model="data.minor_id">					
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.uuid.length>0 && isIpad}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
@@ -66,12 +66,12 @@
 			<div class="form-title" style="margin-bottom:32px;">
 				<h3><span translate="GUEST_MESSAGE"></span></h3>
 			</div>
-			<fieldset class="holder left">
+			<fieldset class="holder left" ng-hide="data.type !='PROMOTION'">
 				<div class="entry full-width">
 					<label for="room-type-picture" translate="PICTURE"></label>
 					<div class="file-upload with-preview">
 						<span class="input" translate="CHOOSE_FILE"></span>
-						<input type="file" ng-model="data.picture" accept="image/*" app-filereader ng-disabled="data.type !='PROMOTION'"/>
+						<input type="file" ng-model="data.picture" accept="image/*" app-filereader />
 						<button type="button" class="button brand-colors" translate="PICTURE">
 						</button> 
 					</div>

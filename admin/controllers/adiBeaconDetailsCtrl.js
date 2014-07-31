@@ -23,12 +23,16 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
   };
   $scope.init();
 
+ var fetchFailedBeaconDetails = function(data){
+    $scope.$emit('hideLoader');
+    $scope.errorMessage = data;
+  };
 
-  if(!$scope.addmode){
+ if(!$scope.addmode){
     var fetchSuccessBeaconDetails = function(data){
       $scope.$emit('hideLoader');
       $scope.data = data;
-      //remove the editing beacon
+      //remove the beacon being edited
       angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
                 if (beaconNeighbour.id ==$scope.beaconId) {
                   $scope.beaconNeighbours.splice(index,1);
@@ -36,12 +40,17 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
         });
     };
 
-    var fetchBeaconDetails = function(data){
+    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDetails, {"id":$stateParams.action}, fetchSuccessBeaconDetails,fetchFailedBeaconDetails);
+  }
+  else{
+    var fetchSuccessBeaconDeafultDetails = function(data){
       $scope.$emit('hideLoader');
-      $scope.errorMessage = data;
+      $scope.data.proximity_id = data.proximity_id;
+      $scope.data.major_id = data.major_id;
+      $scope.data.minor_id = data.minor_id;
+ 
     };
-
-    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDetails, {"id":$stateParams.action}, fetchSuccessBeaconDetails,fetchBeaconDetails);
+    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDeafultDetails, {}, fetchSuccessBeaconDeafultDetails,fetchFailedBeaconDetails);
   }
 
 	/**
@@ -127,9 +136,9 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
       };
-      var BeaconId = $scope.data.uuid+"-"+$scope.data.majorid+"-"+$scope.data.minorid;
+      var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
       if($scope.addmode){
-        var unwantedKeys = ["majorid","minorid"];
+        var unwantedKeys = ["major_id","minor_id","proximity_id"];
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
