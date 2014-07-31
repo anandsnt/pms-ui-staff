@@ -13,7 +13,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
     $scope.beaconTypes = beaconTypes.results;
     $scope.triggerTypes = triggerTypes.results;
-    $scope.beaconNeighbours = beaconNeighbours.results;
+    $scope.beaconNeighbours = beaconNeighbours.details;
     ////////////////////
     $scope.isIpad = true;
     ////////////////////  
@@ -35,7 +35,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       $scope.data = data;
       //remove the beacon being edited
       angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
-                if (beaconNeighbour.id ==$scope.beaconId) {
+                if (beaconNeighbour.beacon_id ==$scope.beaconId) {
                   $scope.beaconNeighbours.splice(index,1);
                 }
         });

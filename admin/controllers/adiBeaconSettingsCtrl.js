@@ -18,7 +18,9 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
-			$scope.data = data.results;			
+			$scope.proximityId = data.proximity_id;
+			$scope.majorId = data.major_id;
+			$scope.data = data.details;			
 			$scope.currentPage = params.page();
 	        params.total(data.total_count);
 	        $defer.resolve($scope.data);
@@ -51,7 +53,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		var toggleBeaconSuccess = function(){
 			$scope.$emit('hideLoader');
 			angular.forEach($scope.data, function(ibeacon, key) {
-		      if(ibeacon.id === id){
+		      if(ibeacon.beacon_id === id){
 		      	ibeacon.status = !ibeacon.status;
 		      }
 		     });

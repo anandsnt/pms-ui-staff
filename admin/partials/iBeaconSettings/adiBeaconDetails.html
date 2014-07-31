@@ -63,7 +63,7 @@
 			<div class="entry">
 				<label>{{'NEARBY_BEACONS'|translate}}</label>
 			</div>
-			<select multiple ng:model="data.neighbours" ng-options="beaconNeighbour.id as beaconNeighbour.location for beaconNeighbour in beaconNeighbours" >
+			<select multiple ng:model="data.neighbours" ng-options="beaconNeighbour.beacon_id as beaconNeighbour.location for beaconNeighbour in beaconNeighbours" >
 	 		 </select>
  	</fieldset>
 			<div class="form-title" style="margin-bottom:32px;">
