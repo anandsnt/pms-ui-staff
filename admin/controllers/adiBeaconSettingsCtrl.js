@@ -7,7 +7,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
 		$scope.data = [];
-		////////////////////
+		 //TO DO : Delete below code
 		$scope.isIpad = true;
 		////////////////////
 	};
@@ -20,7 +20,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
 			$scope.proximityId = data.proximity_id;
 			$scope.majorId = data.major_id;
-			$scope.data = data.details;	
+			$scope.data = data.results;	
 			$scope.totalCount = data.total_count;		
 			$scope.currentPage = params.page();
 	        params.total(data.total_count);
@@ -73,11 +73,6 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 
 		var deleteBeaconSuccess = function(){
 			$scope.$emit('hideLoader');
-			// angular.forEach($scope.data, function(ibeacon, key) {
-		 //      if(ibeacon.id === id){
-		 //      	$scope.data.splice(key,1);
-		 //      }
-		 //     });
 			$scope.tableParams.reload();
 		};
 		var deleteBeaconFailed = function(data){

@@ -13,8 +13,8 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
     $scope.beaconTypes = beaconTypes.results;
     $scope.triggerTypes = triggerTypes.results;
-    $scope.beaconNeighbours = beaconNeighbours.details;
-    ////////////////////
+    $scope.beaconNeighbours = beaconNeighbours.results;
+    //TO DO : Delete below code
     $scope.isIpad = true;
     ////////////////////  
     $scope.data ={};
@@ -91,44 +91,23 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
   $scope.linkiBeacon =  function(){
     var successfullyLinked = function(data){
-      // alert("successfullyLinked");
-      // alert(data);
       $scope.$emit('hideLoader');
-      $scope.$apply();
-         for (i in data) {
-    alert("Name: " + i + " Value: " + data[i]);
-}
       $scope.successMessage = data.RVSuccess;
+      $scope.$apply();
     };
     var failedLinkage = function(data){
-      // alert("failedLinkage");
-      // alert(data);
       $scope.$emit('hideLoader');
-      
-//         for (i in data) {
-//     alert("Name: " + i + " Value: " + data[i]);
-// }
-  
-      $scope.errorMessage = [data.RVErrorDesc];
-      // alert($scope.errorMessage);
-      // alert($scope.errorMessage[0]);
-      // $scope.errorMessage = ["wwwww"]
+      $scope.errorMessage = [data.RVError];
       $scope.$apply();
 
     };
     var args = [];
-/*    args.push({
-      "CurrentEstimoteID":{
-      "proximityUUID":"B9407F30-F5F8-466E-AFF9-25556B57FE6D",
-      "majorID":"",
-      "minorID":""}
-      
-    });*/
+
     args.push({
       "NewEstimoteID":{
-      "proximityUUID":"d8d038ae-7eba-46bb-bca0-4cbc30b67590",
-      "majorID":"29454",
-      "minorID":"49790"
+      "proximityUUID": $scope.data.proximity_id,
+      "majorID":$scope.data.major_id,
+      "minorID":$scope.data.minor_id
       }
      
     });
