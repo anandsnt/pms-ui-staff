@@ -1,60 +1,92 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', '$filter', 'searchResultdata', function($scope, RVSearchSrv, $stateParams, $filter, searchResultdata){
+sntRover.controller('searchController', [
+  '$scope',
+  '$state',
+  '$rootScope',
+  'RVSearchSrv',
+  '$stateParams',
+  '$filter',
+  'searchResultdata',
+  '$timeout',
+  '$vault',
+  function($scope, $state, $rootScope, RVSearchSrv, $stateParams, $filter, searchResultdata, $timeout, $vault) {
 	
   var that = this;
-  BaseCtrl.call(this, $scope);
+
+  // passing in $vault too as params
+  BaseCtrl.call( this, $scope, $vault, $rootScope.isReturning() );
+
   $scope.shouldShowLateCheckout = true;
 
-  //model used in query textbox, we will be using this across
-  $scope.textInQueryBox = "";
-  $scope.$emit("updateRoverLeftMenu","search");
+  $scope.$emit("updateRoverLeftMenu", "search");
+
+  // save the current search param to $vault
+  $vault.set( 'lastSearchParam', JSON.stringify($stateParams) );
+
+  // model used in query textbox, we will be using this across
+  if ( $rootScope.isReturning() ) {
+    $scope.textInQueryBox = $vault.get( 'lastSearchQuery' );
+    $vault.remove( 'lastSearchQuery' );
+  } else {
+    $scope.textInQueryBox = '';
+  }
+  
+  
   var oldTerm = "";
   var oldType = "";
   var firstClickedItem = "direct";
   $scope.currentType = "direct";
   $scope.isLateCheckoutList = false;
   $scope.searchTermPresent = false;
-  if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
-    $stateParams.type != null && $stateParams.type.trim() != '') {
+  if( !!$stateParams && !!$stateParams.type && $stateParams.type.trim() != '' ) {
       oldType = $stateParams.type;
-      firstClickedItem = $scope.currentType =  $stateParams.type;
-      $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT')?true:false;
+      firstClickedItem = $scope.currentType = $stateParams.type;
+      $scope.isLateCheckoutList = (oldType === 'LATE_CHECKOUT') ? true : false;
+  } else {
+    // TODO: check if there was a search term present
   }
-  var scrollerOptions = {click: true, preventDefault: false};
-  $scope.setScroller('result_showing_area', scrollerOptions);
+
+  // setup scroller with probeType
+  var scrollerOptions = {
+    click: true,
+    preventDefault: false,
+    probeType: 2
+  };
+
+  $scope.setScroller( 'result_showing_area', scrollerOptions );
+
+
   
   /**
   * function used for refreshing the scroller
   */
   var refreshScroller = function(){  
     $scope.refreshScroller('result_showing_area');
-    
   };
 
-	  var headingListDict = {  
-	    'DUEIN':  "Checking In",
-	    'INHOUSE': "In House",
-	    'DUEOUT': "Checking Out",
-	    'LATE_CHECKOUT': "Checking Out Late",
-	    '': "Search"
-	  };
-	  $scope.heading = headingListDict[oldType]; 
-      $scope.setTitle($scope.heading);
-      
-  	$scope.results = searchResultdata;
-    oldType = "";
-    oldTerm = $scope.textInQueryBox;
-    setTimeout(function(){refreshScroller();}, 1000);
-    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+  var headingListDict = {  
+    'DUEIN':  "Checking In",
+    'INHOUSE': "In House",
+    'DUEOUT': "Checking Out",
+    'LATE_CHECKOUT': "Checking Out Late",
+    '': "Search"
+  };
+  $scope.heading = headingListDict[oldType]; 
+  $scope.setTitle($scope.heading);
+    
+	$scope.results = searchResultdata;
+  oldType = "";
+  oldTerm = $scope.textInQueryBox;
+  setTimeout(refreshScroller, 1000);
+  $scope.searchTermPresent = !!oldTerm ? true : false;
       
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
-
-        $scope.$emit('hideLoader');
-		$scope.results = data;
-	    oldType = "";
-	    oldTerm = $scope.textInQueryBox;
-	    setTimeout(function(){refreshScroller();}, 1000);
-	    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
+    $scope.$emit('hideLoader');
+    $scope.results = data;
+    oldType = "";
+    oldTerm = $scope.textInQueryBox;
+    setTimeout(refreshScroller, 1000);
+    $scope.searchTermPresent = (oldTerm.length>0) ? true : false;
 	};
 
 	
@@ -90,14 +122,32 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     $scope.$emit("closeDrawer");
   };
   //Map the room status to the view expected format
-  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
+  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
     	var mappedStatus = "room-number";
       if(reservation_status == 'CHECKING_IN'){
-      	if(roomstatus == "READY" && fostatus == "VACANT"){
-        	mappedStatus +=  " ready";
-      	}else{
-        	mappedStatus += " not-ready";
-      	}
+      	switch(roomReadyStatus) {
+
+			case "INSPECTED":
+				mappedStatus += ' room-green';
+				break;
+			case "CLEAN":
+				if (checkinInspectedOnly == "true") {
+					mappedStatus += ' room-orange';
+					break;
+				} else {
+					mappedStatus += ' room-green';
+					break;
+				}
+				break;
+			case "PICKUP":
+				mappedStatus += " room-orange";
+				break;
+
+			case "DIRTY":
+				mappedStatus += " room-red";
+				break;
+
+		}
       }
   	 return mappedStatus;
   };
@@ -151,13 +201,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
         $scope.results = [];
       }
     };
-// 
-// 
-// 
-  // };
 
-  //setting up initial things
-  // performInitialActions();
 
 
   /**
@@ -166,6 +210,9 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 	$scope.queryEntered = function(){
 
 		var queryText = $scope.textInQueryBox;
+
+    // write this to the $vault
+    $vault.set( 'lastSearchQuery', angular.copy($scope.textInQueryBox) );
 		
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 	    //setting the heading of the screen to "Search"
@@ -177,11 +224,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 		} else {
 			$scope.currentType = "";
 		}
-	    displayFilteredResults();  
+	 
+    displayFilteredResults();  
   };
   
   $scope.clearResults = function(){
-
    if(typeof $stateParams !== 'undefined' && typeof $stateParams.type !== 'undefined' && 
       $stateParams.type != null && $stateParams.type.trim() != '') {
         oldType = $stateParams.type;
@@ -255,5 +302,17 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   		}
   		return queueClass;
   };
+
+  $scope.goToReservationDetails = function(reservationID, confirmationID){
+      $scope.currentReservationID = reservationID;
+      $scope.currentConfirmationID = confirmationID;
+      $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id:reservationID, confirmationId:confirmationID, isrefresh: true});
+  };
+
+  //Relaunch the reservation details screen when the ows connection retry succeeds
+  $scope.$on('OWSConnectionRetrySuccesss', function(event){
+      $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
+  });
+
   //end of controller
 }]);

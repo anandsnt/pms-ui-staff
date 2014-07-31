@@ -3,6 +3,14 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
+
+	// set a back button on header
+	$rootScope.setPrevState = {
+		title: 'Stay Card',
+		callback: 'goBack',
+		scope: $scope
+	}
+	
 	var that = this;
 	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 	$scope.setTitle($scope.heading);

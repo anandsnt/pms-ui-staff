@@ -10,6 +10,7 @@ sntRover.controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope
 		RVHKOWSTestSrv.checkOWSConnection().then(function(data) {
 			$scope.$parent.$emit('hideLoader');
 			$scope.closeThisDialog();
+			$rootScope.$broadcast('OWSConnectionRetrySuccesss');
 		}, function(){
 			$scope.$parent.$emit('hideLoader');
 		});
@@ -17,7 +18,6 @@ sntRover.controller('RVHKOWSErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope
 	$scope.closeThisDialog = function(){
 			$rootScope.isOWSErrorShowing = false;
 			ngDialog.close();
-			console.log("RVHKOWSErrorCtrl close overriden");
 	};
 
 }]);

@@ -1,7 +1,16 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault) {
+
+		// setup a back button
+		$rootScope.setPrevState = {
+			title: 'Search results',
+			name: 'rover.search',
+			param: JSON.parse($vault.get('lastSearchParam'))
+		}
 
 		BaseCtrl.call(this, $scope);
+
+
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		/*
 		 * success call back of fetch reservation details
@@ -9,6 +18,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		//Data fetched using resolve in router
 		reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
+
+		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
+		var updateSearchCache = function() {
+
+			// room related details
+			var data = {
+				'room': $scope.reservationData.reservation_card.room_number,
+				'reservation_status': $scope.reservationData.reservation_card.reservation_status,
+				'roomstatus': $scope.reservationData.reservation_card.room_status,
+				'fostatus': $scope.reservationData.reservation_card.fo_status,
+				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
+				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
+				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
+				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
+			};
+
+			RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
+		};
+
+		// update any room related data to search service also
+		updateSearchCache();
+
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
 		if ($scope.reservationData.reservation_card.currency_code != null) {
@@ -48,7 +79,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.wake_up_time = (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined') ? $scope.reservationData.reservation_card.wake_up_time.wake_up_time : $filter('translate')('NOT_SET');
 		});
 
-		// since CICO-7766 is breaking for desktops
 		$scope.setScroller('resultDetails');
 
 		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
@@ -100,6 +130,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
+
+			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
+			updateSearchCache();
 		};
 
 		/*
@@ -194,6 +227,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 		$scope.successCallback = function() {
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+
+			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
+			updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
 		$scope.isNewsPaperPreferenceAndWakeupCallAvailable = function() {
@@ -232,7 +268,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
-
 		};
 
 		$scope.extendNights = function() {
@@ -256,6 +291,5 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				view: state
 			});
 		}
-
 	}
 ]);
