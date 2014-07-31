@@ -200,12 +200,12 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.clickedSave = function() {
 		var saveSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			if ($scope.isEdit) {
-				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.code;
-				$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
-				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
-				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
-				$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+			if($scope.isEdit){
+				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
 			} else {
 				$scope.data.charge_codes.push(data);
 				$scope.tableParams.reload();
