@@ -1,0 +1,29 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	
+	<div data-view="HotelRoomTypesView">
+		<header class="content-title float">
+			<h2 translate> BILLING_GROUPS </h2>
+			<span class="count"> ({{billingGroupList.length}}) </span>
+			<a id="import-rooms" class="action add" ng-click="addBillingGroup()"  translate>ADD_NEW</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder"></div>
+		<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl(-1)"></span>
+		<table id="brands" class="grid" ng-table="tableParams">
+			
+			<tbody>
+				<tr ng-repeat="billingGroup in billingGroupList" > 
+					<td  colspan="2" class="text-left" ng-hide="currentClickedElement == $index" >
+						<a  class="edit-data-inline" ng-click="editBillingGroup($index, billingGroup.id)">{{billingGroup.name}} </a>
+						
+					</td>
+					<td colspan="1" header-class=" width-10"  class="text-left" ng-hide="currentClickedElement == $index" >
+						<span ng-click="deleteBillingGroup($index)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>
+					</td>
+					
+					<td colspan="3" ng-include="getTemplateUrl($index)" ng-show="currentClickedElement == $index"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

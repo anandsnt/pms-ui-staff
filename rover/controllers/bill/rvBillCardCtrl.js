@@ -1,6 +1,13 @@
 sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window){
 	
 	BaseCtrl.call(this, $scope);
+
+	// set a back button on header
+	$rootScope.setPrevState = {
+		title: 'Stay Card',
+		callback: 'goBackToStayCard',
+		scope: $scope
+	}
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height
@@ -439,18 +446,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// just kidding.. :P
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
-	});
+	}); 
+    
     /*
 	 * Go back to staycard - Depends on changes in bill do refresh or not
 	 */
-    $scope.goBackToStayCard = function(reservationId, confirmationNumber){
-    	if($scope.isRefreshOnBackToStaycard)
-    	{
+    $scope.goBackToStayCard = function() {
+    	var reservationId = $scope.reservationBillData.reservation_id,
+    		confirmationNumber = $scope.reservationBillData.confirm_no;
+
+    	if( $scope.isRefreshOnBackToStaycard ) {
     		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber, "isrefresh": true});
     	} else {
     		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {"id" : reservationId, "confirmationId": confirmationNumber});
     	}
     };
+
 	// the listner must be destroyed when no needed anymore
 	$scope.$on( '$destroy', postchargeAdded );
 

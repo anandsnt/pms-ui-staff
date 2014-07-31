@@ -48,6 +48,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/floorsetups'
 		});
 
+		$stateProvider.state('admin.billingGroups', {
+			templateUrl: '/assets/partials/billingGroups/adBillingGroupList.html',
+			controller: 'ADBillingGroupCtrl',
+			url : '/billingGroups'
+		});
+
 		$stateProvider.state('admin.reservationTypes', {
 			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',
 			controller: 'ADReservationTypeListController',
