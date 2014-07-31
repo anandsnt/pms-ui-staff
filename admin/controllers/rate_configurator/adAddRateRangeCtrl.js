@@ -112,6 +112,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             if ($scope.Sets.length < 7) {
                 var newSet = {};
 
+                var setName = "Set "+($scope.Sets.length+1);
                 var checkedDays = [];
                 /*
                  * check if any day has already been checked,if else check it in new set
@@ -124,7 +125,8 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                     });
 
                 });
-                newSet = createDefaultSet(" ");
+
+                newSet = createDefaultSet(setName);
                 angular.forEach(checkedDays, function (uncheckedDay, key) {
                     angular.forEach(newSet.days, function (day, key) {
                         if (uncheckedDay === day.name) {

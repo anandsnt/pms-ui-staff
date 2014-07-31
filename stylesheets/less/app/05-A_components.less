@@ -4820,13 +4820,13 @@
 			&:after {
 				content: "";
 				position: absolute;
-				top: 0;
-				right: 0;
+				top: 5px;
+				right: 5px;
 				background: @gcard @selectArrow no-repeat 50% 50%;
 				background-size: 6px 4px;
 				pointer-events: none;
-				.size(100%, 30px);
-                #border-radius > .right();
+				width: 25px;
+				height: 30px;
 			}
 		}
 
@@ -4956,6 +4956,15 @@
 		}*/
 	}
 
+	@media (max-width: 999px) {
+  	#report-update {
+          position: static;
+          height: auto;
+      }
+  }
+
+
+
 	#report-details {
 		background-color: #fcfcfc;
 		background-image: @textureImage;
@@ -5078,7 +5087,7 @@
 				font-size: 14px;
 				line-height: 21px;
 				text-transform: uppercase;
-				table-layout: auto;
+				table-layout: fixed;
 				border-collapse: separate; 
 				border-spacing: 0 10px;
 				margin: 0;
@@ -5087,6 +5096,9 @@
 					th {
 						padding: 0 10px;
 						font-weight: 600;
+						min-width: 15%;
+            max-width: 30%;
+            width: 30%;
 					}
 
 					td {
@@ -5097,6 +5109,12 @@
 							font-weight: bold;
 						}
 					}
+					&.bottom-row {
+            th {
+              color: @grey4;
+              font-weight: 400;
+            }
+          }
 				}
 
 				tfoot {
@@ -5146,11 +5164,27 @@
 							}
 						}
 					}
+					&.totals {
+	  	      td {
+	  	        padding: 10px;
+	  	        background: rgba(0,0,0,.05);
+	  	        color: @textColor;
+	  	        font-size: 16px;
+	  	        line-height: 1em;
+	  	        font-weight: 600;
+	   	        &:last-child { text-align: left; }
+        	  }
+        	}
 				}
 			}
 		}
 	}
 
+	@media (max-width: 999px) {
+       #report-details.content.stay-card-inner {
+           position: static;
+       }
+   }
 	
 	/* reports details animation */
 	#reports-details.ng-hide-add,

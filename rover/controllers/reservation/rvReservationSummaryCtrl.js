@@ -182,8 +182,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservation.reservation_card.arrival_date = $scope.reservationData.arrivalDate;
 				$scope.reservation.reservation_card.departure_date = $scope.reservationData.departure_time;
 
-
-
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": data.id,
 					"confirmationId": data.confirm_no
@@ -287,8 +285,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Does not save the reservation
 		 */
 		$scope.cancelButtonClicked = function() {
-			$scope.initReservationData();
-			$state.go('rover.staycard.reservation.search');
+			if ($scope.viewState.identifier == "STAY_CARD") {
+				var stateParams = {
+					id: $scope.reservationData.reservationId,
+					confirmationId: $scope.reservationData.confirmNum,
+					isrefresh: false
+				}
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
+			} else {
+				$scope.initReservationData();
+				$state.go('rover.staycard.reservation.search');
+			}
 		};
 
 		$scope.refreshPaymentScroller = function() {
@@ -311,9 +318,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				return false;
 			}
 			var dataToUpdate = {
-				"email": $scope.reservationData.guest.email,
-				"last_name": $scope.reservationData.guest.lastName,
-				"first_name": $scope.reservationData.guest.firstName
+				"email": $scope.reservationData.guest.email
 			};
 
 			var data = {
@@ -322,12 +327,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			var updateGuestEmailSuccessCallback = function(data) {
-				console.log('reached', data);
+				// console.log('reached success');
 				$scope.$emit("hideLoader");
 			}
 
 			var updateGuestEmailFailureCallback = function(data) {
-				console.log('reached', data);
+				// console.log('reached failure');
 				$scope.$emit("hideLoader");
 			}
 

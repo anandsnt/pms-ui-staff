@@ -10,13 +10,40 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 		return reservationRoomClass;
 	};
 	
-	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus){
+	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
 		var reservationRoomStatusClass = "";
 		if(reservationStatus == 'CHECKING_IN'){
-			if(roomStatus == 'READY' && foStatus == 'VACANT'){
-				reservationRoomStatusClass = "ready";
-			} else {
-				reservationRoomStatusClass = "not-ready";
+			
+			if(roomReadyStatus!=''){
+				if(foStatus == 'VACANT'){
+					switch(roomReadyStatus) {
+
+						case "INSPECTED":
+							reservationRoomStatusClass = ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								reservationRoomStatusClass = ' room-orange';
+								break;
+							} else {
+								reservationRoomStatusClass = ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							reservationRoomStatusClass = " room-orange";
+							break;
+			
+						case "DIRTY":
+							reservationRoomStatusClass = " room-red";
+							break;
+
+		        }
+				
+				} else {
+					reservationRoomStatusClass = "room-red";
+				}
+				
 			}
 		} 
 		return reservationRoomStatusClass;

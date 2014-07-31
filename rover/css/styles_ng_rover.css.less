@@ -58,6 +58,24 @@
 
 @import "less/app/08_smartband.less"; 
 
+// back button
+.actions-back {
+  position: absolute;
+  left: 55px;
+  top: 10px;
+  padding: 0;
+
+  .back-button:not(.button):not(.switch) {
+    padding: 6px 20px 4px 45px;
+    display:block;
+    background-position: 15px -1588px;
+
+    &:hover {
+      background-position: 15px -1528px;
+    }
+  }
+}
+
 
 #main-menu .nav-toggle.updated span.active {
    background-image:  asset-url("image-active-drawer.png") !important;
@@ -556,10 +574,12 @@ button.icons.icon-search{
 on a slow performaing device, keep the entering view hidden
 untill angular is ready to activate it */
 .main-view.ng-enter {
-  opacity: 0;
+  /*opacity: 0;*/
+  display: none;
 }
 .main-view.ng-enter-active {
-  opacity: 1;
+  /*opacity: 1;*/
+  display: block;
 }
 
 /* normal app state animations */
@@ -572,13 +592,19 @@ untill angular is ready to activate it */
 }
 
 /* when returning back */
-.return-back > .main-view.ng-enter {
+.return-back .main-view.ng-enter {
   #move > #ui-view > .enter-rev;
 }
 
-.return-back > .main-view.ng-leave {
+.return-back .main-view.ng-leave {
   #move > #ui-view > .leave-rev;
 }
+
+/* 
+* The End     
+* ==================================
+* Angular UI-States Animations
+*/
 
 .room-number {    
     line-height: initial !important;
@@ -611,16 +637,19 @@ Padding for the ows error popup
 }
 
 #edit-reservation .edit-reservation-content .reservation-updates {
-  .updates-content {
-    &#unable-to-extend{
-      padding-left: 90px; 
-      padding-right: 90px;
-      .h2{
-        margin:0 80px 0 80px;
-      }
-      .button {
-        width: 200px; 
-        margin:13px 200px 0 200px;
+  .updates-wrapper {
+    height: 90%;
+    .updates-content {
+      &#unable-to-extend{
+        padding-left: 90px; 
+        padding-right: 90px;
+        .h2{
+          margin:0 80px 0 80px;
+        }
+        .button {
+          width: 200px; 
+          margin:13px 200px 0 200px;
+        }
       }
     }
   }

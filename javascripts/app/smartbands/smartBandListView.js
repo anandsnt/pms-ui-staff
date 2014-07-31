@@ -42,6 +42,13 @@ var SmartBandListView = function(domRef) {
 	* function to handle on each smarband click, which means on li
 	*/
 	this.clickedOnSmartband = function(event){	
+		var reservationStatus = getReservationStatus();
+		//In checked out reservations, we can not add edit smartbands
+		//can only view them
+		if(reservationStatus == 'CHECKEDOUT'){
+			return false;
+		}
+
 		if(getParentWithSelector(event, "li")){
 			var target = $(event.target);
 			var id = target.data("id");

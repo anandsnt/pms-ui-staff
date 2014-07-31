@@ -32,7 +32,7 @@
                     <span class="day">{{stayday.dayOfWeek}}</span>
                     <span class="date">{{stayday.day}}</span>
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>
-                    <span class="price" ng-show="!$last">{{currencySymbol}}{{roomAvailability[stateCheck.preferredType].ratedetails[stayday.date][reservationData.rooms[0].stayDates[stayday.date].rate.id].rate | number: 0}}</span>
+                    <span class="price" ng-show="!$last && roomAvailability[stateCheck.preferredType].ratedetails[stayday.date][reservationData.rooms[0].stayDates[stayday.date].rate.id].rate">{{currencySymbol}}{{roomAvailability[stateCheck.preferredType].ratedetails[stayday.date][reservationData.rooms[0].stayDates[stayday.date].rate.id].rate | number: 0}}</span>
                 </li>                
             </ul>
         </div>

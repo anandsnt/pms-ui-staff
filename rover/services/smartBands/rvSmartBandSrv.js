@@ -42,6 +42,29 @@ sntRover.service('RVSmartBandSrv',['$q', 'BaseWebSrvV2', function($q, BaseWebSrv
 		return deferred.promise;
 	};
 	
+	this.getBalanceSmartBands = function(data){
+		var deferred = $q.defer();
+		var url = 'api/reservations/'+data.reservationId+'/smartbands/with_balance.json' ;
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	
+	this.cashOutSmartBalance = function(id){
+		var deferred = $q.defer();
+		var url = '/api/reservations/'+id+'/smartbands/cash_out' ;
+		var postData = {};
+		BaseWebSrvV2.postJSON(url, postData).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	
 
 
 }]);

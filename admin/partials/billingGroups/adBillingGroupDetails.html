@@ -1,0 +1,26 @@
+<div class="data-holder">
+	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+		<div class="form-title">
+			<h3 ng-show="!isAddMode"><span translate>EDIT</span> {{billingGroupData.title}} </h3>
+			<h3 ng-show="isAddMode"><span translate>ADD</span> </h3>
+			
+		</div>
+		
+		<ad-textbox styleclass="full-width" value="billingGroupData.name" name = "billing-group-name" id = "billing-group-name" label = "{{ 'BILLING_GROUP_NAME' | translate }}" placeholder = "{{ 'BILLING_GROUP_NAME_PLACEHOLDER' | translate }}" ></ad-textbox>
+		<div class="entry full-width">
+					<div id="available-charge-codes" class="boxes col2">
+						<ad-checkbox ng-repeat="chargeCode in billingGroupData.available_charge_codes" is-checked="isChecked(chargeCode.id)" label="{{chargeCode.charge_code +' - ' + chargeCode.description}}" parent-label-class="room-likes" span-class="checkbox-background" ng-click="selectChargeCode($index)"></ad-checkbox>
+
+					</div>
+				</div>
+		
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>
+				CANCEL
+			</button>
+			<button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveBillingGroup()" translate>
+				SAVE_CHANGES
+			</button>
+		</div>
+	</form>
+</div>
