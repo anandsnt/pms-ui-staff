@@ -51,11 +51,14 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
            $scope.refreshScroller('dashboard_scroller');
 			     $scope.setTitle(title);
         }, 2000);
+		
+        //TODO: Add conditionally redirecting from API results
+        $state.go('rover.dashboard.frontoffice');
 
         //TODO: delete the code below and use the function
         //$state.go('rover.dashboard.manager');
 
-        reddirectToDefaultDashboard();
+        //reddirectToDefaultDashboard();
 
    };
 
@@ -74,8 +77,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         else{
 
         }
-
-
    };
 
    init();
