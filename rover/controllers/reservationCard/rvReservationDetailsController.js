@@ -51,9 +51,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// since CICO-7766 is breaking for desktops
 		$scope.setScroller('resultDetails');
 
+		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
+		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.package_description;
+		var multipleRatesPresent = false;
+		var multipleRates = [];
+		angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+			multipleRates.push(item.rate_id);
+		});
+
+		if (multipleRates.reduce(function(a, b) {
+			return (a === b) ? false : true;
+		})) {
+			$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
+		};
+
+
 		//CICO-7078 : Initiate company & travelagent card info
-
-
 		//temporarily store the exiting card ids
 		var existingCards = {
 			guest: $scope.reservationDetails.guestCard.id,
@@ -67,7 +80,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		angular.copy(reservationListData, $scope.reservationListData);
 		$scope.populateDataModel(reservationDetails);
-		// console.log($scope.reservationListData)
 		$scope.$emit('cardIdsFetched', {
 			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
 			company: $scope.reservationDetails.companyCard.id == existingCards.company,
@@ -75,25 +87,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
-
-
 		$scope.$on('$viewContentLoaded', function() {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
 				3000);
-
 		});
 
-
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
-
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 		};
+
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
 		 * @param {int} confirmationNumber => confirmationNumber of reservation
@@ -109,8 +117,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			} else {
 				$scope.reservationData = {};
 			}
-
 		});
+
 		//To pass confirmation number and resrvation id to reservation Card controller.
 		// var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
 		var passData = reservationListData;

@@ -234,7 +234,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var rateConfigured = true;
             if (typeof $scope.reservationData.rateDetails[roomIndex] != "undefined") {
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
-                    if (dateIter != $scope.reservationData.departureDate && d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id] != '') {
+                    if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '') {
                         var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
                         var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
                         var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
@@ -339,7 +339,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var roomAvg = 0;
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if (date != $scope.reservationData.departureDate) {
+                if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                     var extraAdults = adults >= 2 ? adults - 2 : 0;

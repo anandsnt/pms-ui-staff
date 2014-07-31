@@ -67,8 +67,8 @@
                                     {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 0}}
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate" class="button white green-text">CURRENT RATE</button>
-                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate" class="button green" ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.stayDatesMode" class="button white green-text">CURRENT RATE</button>
+                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.stayDatesMode" class="button green" ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
 
                             <!-- Rate Details -->
@@ -131,8 +131,8 @@
                             </select>
                         </div>
                         <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
-                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id" class="button white green-text">CURRENT RATE</button>
-                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
+                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.stayDatesMode" class="button white green-text">CURRENT RATE</button>
+                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.stayDatesMode" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
                     </div>
                 </a>
 
