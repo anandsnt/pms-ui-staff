@@ -115,7 +115,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.clickedSave = function(){
 		// SNT Admin - To save Add/Edit data
 		if($scope.isAdminSnt){
-			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo", "languages"];
+			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo", "languages", "hotel_template_logo"];
 			var data = dclone($scope.data, unwantedKeys);
 			data.mli_certificate = $scope.certificate;
 			var postSuccess = function(){
