@@ -1,0 +1,65 @@
+<div class="nested-view view-current">
+	<div ng-include="'/assets/partials/common/header.html'"></div>
+	
+	<div id="reports-list">
+		<section class="content scrollable" id="reports" role="main">
+			<div class="wrapper" ng-controller="RVReportListCrl">
+				<ul class="reports-list">
+					<li ng-repeat="item in reportList">
+						<a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
+							<span class="icon-report" ng-class="item.reportIconCls"></span>
+							<div class="data">
+								<h2>
+									{{ item.title }}
+									<span>{{ item.sub_title }}</span>
+								</h2>
+								<em>{{ item.description }}</em>
+							</div>
+						</a>
+						<div class="configure-report" ng-show="item.show_filter">
+							<div class="date-range" ng-if="item.hasDateFilter">
+								<label>Date range</label>
+								<div class="has-datepicker">
+									<input type="text" class="range-datepicker hasDatepicker" ng-model="item.fromDate">
+								</div>	
+								<span class="span-to"> To </span>
+								<div class="has-datepicker">
+									<input type="text" class="range-datepicker hasDatepicker" ng-model="item.untilDate">
+								</div>
+							</div>
+
+							<div class="filter" ng-if="item.hasCicoFilter">
+								<label>Transaction Type</label>
+								<div class="select">
+									<select name="" id="" ng-model="item.chosenCico" ng-options="cico.value as cico.label for cico in item.cicoOptions">
+										<option value="">Transaction Type</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="filter" ng-if="HIDE_THIS_FEATURE">
+								<label>User</label>
+								<div class="select">
+									<select name="" id="" ng-model="item.chosenUsers" ng-options="user.id as user.full_name for user in userList">
+										<option value="">User</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="sort" ng-if="item.sortByOptions">
+								<label>Sort By</label>
+								<div class="select">
+									<select name="" id="" ng-model="item.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in item.sortByOptions">
+										<option value="">Sort By</option>
+									</select>
+								</div>
+							</div>
+
+							<a class="button green" ng-click="genReport()">Show Report</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</section>
+	</div>
+</div>
