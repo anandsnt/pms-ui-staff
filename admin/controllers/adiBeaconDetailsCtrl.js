@@ -9,6 +9,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
     $scope.errorMessage = "";
+    $scope.successMessage = "";
 
     $scope.beaconTypes = beaconTypes.results;
     $scope.triggerTypes = triggerTypes.results;
@@ -90,12 +91,30 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
 
   $scope.linkiBeacon =  function(){
     var successfullyLinked = function(data){
-      alert("successfullyLinked");
-      alert(data);
+      // alert("successfullyLinked");
+      // alert(data);
+      $scope.$emit('hideLoader');
+      $scope.$apply();
+         for (i in data) {
+    alert("Name: " + i + " Value: " + data[i]);
+}
+      $scope.successMessage = data.RVSuccess;
     };
     var failedLinkage = function(data){
-      alert("failedLinkage");
-      alert(data);
+      // alert("failedLinkage");
+      // alert(data);
+      $scope.$emit('hideLoader');
+      
+//         for (i in data) {
+//     alert("Name: " + i + " Value: " + data[i]);
+// }
+  
+      $scope.errorMessage = [data.RVErrorDesc];
+      // alert($scope.errorMessage);
+      // alert($scope.errorMessage[0]);
+      // $scope.errorMessage = ["wwwww"]
+      $scope.$apply();
+
     };
     var args = [];
 /*    args.push({
@@ -118,7 +137,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       "failureCallBack": failedLinkage,
       "arguments": args
     };
-
+    $scope.$emit('showLoader');
     try{
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
