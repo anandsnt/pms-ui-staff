@@ -145,7 +145,7 @@
                         <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isGuestPrimaryEmailChecked"/>
                         <span>&nbsp;</span>
                     </label>
-                    <input class="summary_email" ng-model="reservationData.guest.email">
+                    <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()">
 
                     <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
                     <label class="checkbox inline">
