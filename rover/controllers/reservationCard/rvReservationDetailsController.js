@@ -103,22 +103,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
-
-
 		$scope.$on('$viewContentLoaded', function() {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
 				3000);
-
 		});
 
-
-		
-
-
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
-
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;

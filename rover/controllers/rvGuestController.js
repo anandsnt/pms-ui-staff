@@ -681,6 +681,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
+			//CICO-7792
+			$scope.showContractedRates();
 			if ($scope.viewState.identifier == "CREATION") {
 				$scope.reservationData.company.id = company.id;
 				$scope.reservationData.company.name = company.account_name;
@@ -705,6 +707,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
+			//CICO-7792
+			$scope.showContractedRates();
 			if ($scope.viewState.identifier == "CREATION") {
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;

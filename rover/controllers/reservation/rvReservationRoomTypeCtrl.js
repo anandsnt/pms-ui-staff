@@ -691,6 +691,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			return $sce.trustAsHtml(html_code);
 		}
 
+		// 	CICO-7792 BEGIN
+		$scope.$on("cardChanged",function(event,data){
+			console.log('Rerun the init method');
+		});
+		// 	CICO-7792 END
+
 
 
 		init();
