@@ -10,13 +10,13 @@
 			<div class="float_left">
 				<label class="radio">
 					<span ng-class="{'checked': !row.is_exclusive}" class="icon-form icon-radio "></span>
-					<input type="radio" ng-click="row.is_exclusive = !row.is_exclusive" >
+					<input type="radio" ng-click="toggleExclusive($index,false)" >
 					Inclusive </label>
 			</div>
 			<div class="float_left rates_exclusive">
 				<label class="radio" >
 					<span ng-class="{'checked':row.is_exclusive}" class="icon-form icon-radio" ></span>
-					<input type="radio" ng-click="row.is_exclusive = !row.is_exclusive" >
+					<input type="radio" ng-click="toggleExclusive($index,true)" >
 					Exclusive </label>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 	<ad-dropdown ng-if="row.calculation_rule" label="Calculation Rule" selbox-class= "placeholder" label-in-drop-down="Select Calculation Rule" list="row.calculation_rule" selected-Id="row.selected_calculation_rule" div-class="full-width"  ></ad-dropdown>
 
 	<div class="actions float" style=" padding-top: 0px; height: 73px;">
-		<button type="button" ng-click="clickedCancelTax()" class="button blank edit-data-inline">
+		<button type="button" ng-click="clickedCancelEditTax($index)" class="button blank edit-data-inline">
 			Cancel
 		</button>
 		<button type="button" ng-click="clickedUpdateTax($index)" class="button green edit-data-inline">
