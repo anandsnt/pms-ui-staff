@@ -17,7 +17,7 @@ sntRover.controller('RVroomAssignmentController',[
 
 	// set a back button on header
 	$rootScope.setPrevState = {
-		title: 'Staycard',
+		title: 'Stay Card',
 		callback: 'backToStayCard',
 		scope: $scope
 	}
