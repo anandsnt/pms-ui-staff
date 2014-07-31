@@ -6,7 +6,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 
 	// set a back button on header
 	$rootScope.setPrevState = {
-		title: 'Staycard',
+		title: 'Stay Card',
 		callback: 'goBack',
 		scope: $scope
 	}

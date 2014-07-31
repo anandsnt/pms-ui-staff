@@ -1,4 +1,9 @@
-{ 
+{
+
+
+"BILLING_GROUPS": "Billing Groups",
+"BILLING_GROUP_NAME": "Name",
+"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name", 
     "EDIT": "Edit",
     "ALL": "All",
     "ADD":"Add",
@@ -102,7 +107,9 @@
     "ROLE_DASHBOARD": "Role Dashboard",
     "SELECT_DASHBOARD":"Select Dashboard",
     "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
-    "DEFAULT_DASHBOARD":"Default Dashboard",    
+    "DEFAULT_DASHBOARD":"Default Dashboard",
+
+    "BILLING_GROUPS": "Billing Groups",    
     
     "NAME":"Name",
     "DESCRIPTION":"Description",
