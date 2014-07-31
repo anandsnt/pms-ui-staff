@@ -4,18 +4,25 @@
     <ul>
         <li>
         	Today
-        	<span class="rate">{{statisticsData.rate_of_the_day.today.rate_name}}</span>
-        	<span class="value">{{currencySymbol}}{{statisticsData.rate_of_the_day.today.rate_amount}}</span>
+        	<span class="rate">{{statisticsData.rate_of_day.today.name}}</span>
+        	<span class="value" ng-show="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
+                {{currencySymbol}}{{statisticsData.rate_of_day.today.amount}}
+            </span>          
         </li>
         <li>
         	{{tomorrow|date:monthAndDate}}
-        	<span class="rate">{{statisticsData.rate_of_the_day.tomorrow.rate_name}}</span>
-        	<span class="value">{{currencySymbol}}{{statisticsData.rate_of_the_day.tomorrow.rate_amount}}</span>
+        	<span class="rate">{{statisticsData.rate_of_day.tomorrow.name}}</span>
+            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.tomorrow.amount)!==''">
+                {{currencySymbol}}{{statisticsData.rate_of_day.tomorrow.amount}}
+            </span>            
         </li>
         <li>
         	{{dayAfterTomorrow|date:monthAndDate}}
-        	<span class="rate">{{statisticsData.rate_of_the_day.day_after_tomorrow.rate_name}}</span>
-        	<span class="value">{{currencySymbol}}{{statisticsData.rate_of_the_day.day_after_tomorrow.rate_amount}}</span>
+        	<span class="rate">{{statisticsData.rate_of_day.day_after_tomorrow.name}}</span>
+
+            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount)!==''">
+                {{currencySymbol}}{{statisticsData.rate_of_day.day_after_tomorrow.amount}}
+            </span>            
         </li>      
     </ul>
 </div>

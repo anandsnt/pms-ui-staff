@@ -65,4 +65,16 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
         $scope.errorMessage = errorMessage;        
     });
 
+    /**
+    * function used to check null values, especially api response from templates
+    */
+    $scope.escapeNull = function(value, replaceWith){
+        var newValue = "";
+        if((typeof replaceWith != "undefined") && (replaceWith != null)){
+            newValue = replaceWith;
+        }
+        var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+        return valueToReturn;
+   };  
+
 }]);
