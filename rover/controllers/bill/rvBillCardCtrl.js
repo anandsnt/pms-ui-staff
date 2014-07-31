@@ -382,8 +382,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Clicked pay button function
 	  */
 	 $scope.clickedPayButton = function(){
-	 	console.log(JSON.stringify($scope.reservationBillData.bills[$scope.currentActiveBill]));
 	 	$scope.fromViewToPaymentPopup = "paybutton";
+	 	$scope.addNewPaymentModal();
+	 };
+	 $scope.clickedAddUpdateCCButton = function(){
+	 	$scope.fromViewToPaymentPopup = "billcard";
 	 	$scope.addNewPaymentModal();
 	 };
 	 /*

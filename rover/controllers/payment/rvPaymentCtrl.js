@@ -42,7 +42,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.refreshScroller('addPayment');
 		}, 500);
 	};
-
+	
 	/*
 	 * Render success callback
 	 * Populates API with dropdown values
@@ -80,10 +80,14 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 
 		
-		$scope.refreshScroll();
+		
 
 		//Same popup is used to do the payment - View bill screen pay button
-		$scope.renderPayButtonDefaultValues();
+		if($scope.passData.fromView == "paybutton"){
+			$scope.renderPayButtonDefaultValues();
+		} else {
+			$scope.showPaymentAmount = false;
+		}
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){
@@ -116,9 +120,12 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.card_expiry_year = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.slice(-2);
 				$scope.saveData.card_expiry_month = $scope.paymentData.bills[billIndex].credit_card_details.card_expiry.substring(0, 2);
 				$scope.saveData.name_on_card = $scope.paymentData.bills[billIndex].credit_card_details.card_name;
+				$scope.saveData.is_from_bill = true;
+				$scope.saveData.id = $scope.paymentData.bills[billIndex].credit_card_details.payment_id;
 			}
+			$scope.refreshScroll();
 		}
-	}
+	};
 	
 	
 	/*
@@ -133,6 +140,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.showCreditCardDetails = false;
 			}
 		}
+		setTimeout(function(){
+			$scope.refreshScroller('addPayment');
+		}, 1000);
 		
 	};
 	/*
@@ -220,7 +230,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
 		//$scope.passData  => Gives information from which view popup opened 
 		//get reservation id if it is from staycard
-		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
+		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard" || $scope.passData.fromView == "paybutton"){
 			
 			$scope.saveData.reservation_id = $scope.passData.reservationId;
 			$scope.saveData.et2 = $scope.passData.et2;
@@ -236,6 +246,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			}
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
+			} else if($scope.passData.fromView == "paybutton"){
+				$scope.saveData.bill_number = $scope.saveData.selected_bill;
+				$scope.saveData.amount = $scope.saveData.amount;
 			}
 			$scope.saveData.add_to_guest_card = $scope.saveData.add_to_guest_card;
 			
@@ -256,7 +269,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			unwantedKeys.push("session_id");
 		}
 		var data = dclone($scope.saveData, unwantedKeys);
-		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
+		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"  || $scope.passData.fromView == "paybutton"){
 			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
 			//Used to update the list with new value
@@ -283,7 +296,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
      $scope.savePaymentDetails = function(){  	
 
     	$scope.fetchMLISessionId = function(){
-
+console.log("FETCHMLI SESSS")
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
@@ -312,12 +325,26 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			};
 			 		
 		};
-		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 )){
+		$scope.directPayment = false;//To check direct save or MLI fetch save from paybutton
+		if($scope.passData.fromView == "paybutton"){
+			$scope.directPayment = true;
+			var creditCardNumber = $scope.saveData.card_number;
+			//Handling if user typed new credit cards after selecting or the data from  guest bill
+			if(creditCardNumber.indexOf("xxxx") == -1){
+				$scope.saveData.is_from_bill = false;
+				$scope.saveData.id = "";
+				$scope.saveData.is_from_guest_card = false;
+				$scope.directPayment = false;
+			}
+		}
+		 
+		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 || $scope.directPayment)){
 			$scope.savePayment();
 		}
 		else{
 			if(parseInt($scope.saveData.selected_payment_type) ===0){
 				if($scope.saveData.card_number.length>0){
+					console.log("---------MLI SESSSION--------------")
 					$scope.fetchMLISessionId();
 	    		}
 	    		else{
@@ -347,6 +374,12 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.saveData.card_expiry_year = $scope.guestPaymentList[index].card_expiry.slice(-2);
 		$scope.saveData.card_expiry_month = $scope.guestPaymentList[index].card_expiry.substring(0, 2);
 		$scope.saveData.name_on_card = $scope.guestPaymentList[index].card_name;
+		$scope.saveData.is_from_guest_card = true;
+		$scope.saveData.is_from_bill = false;
+		$scope.saveData.id = $scope.guestPaymentList[index].id;
+		setTimeout(function(){
+			$scope.refreshScroller('addPayment');
+		}, 1000);
    };
 	
 }]);
