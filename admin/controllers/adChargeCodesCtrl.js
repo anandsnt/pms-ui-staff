@@ -10,7 +10,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
-	console.log($scope.isPmsConfigured);
+	
 	/*
 	 * To fetch charge code list
 	 */
@@ -101,7 +101,6 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 					"value" : "2",
 					"name" : "sample2"
 				}],
-				"tax_details1" : [],
 				"tax_details" : [{
 					"id" : "1",
 					"is_exclusive" : true,
