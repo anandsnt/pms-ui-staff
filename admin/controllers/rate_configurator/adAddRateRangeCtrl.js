@@ -1,9 +1,8 @@
 admin.controller('ADAddRateRangeCtrl', ['$scope', 
-                                        '$filter', 
-                                        'dateFilter', 
+                                        '$filter',  
                                         'ADRatesRangeSrv',
                                         '$rootScope',
-    function ($scope, $filter, dateFilter, ADRatesRangeSrv, $rootScope) {
+    function ($scope, $filter, ADRatesRangeSrv, $rootScope) {
         
         /**
         * set up data to be displayed
@@ -31,7 +30,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                 dLastSelectedDate = tzIndependentDate(lastSelectedDate);
                 // Get next Day
                 dLastSelectedDate = new Date(dLastSelectedDate.getTime() + 24*60*60*1000);
-                $scope.begin_date =dLastSelectedDate;
+                $scope.begin_date =$filter('date')(dLastSelectedDate, 'yyyy-MM-dd');
             }
 
             var businessDate = $rootScope.businessDate;

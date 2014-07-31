@@ -3,10 +3,9 @@ admin.controller('ADRatesAddonsCtrl', [
 	'$rootScope',
 	'ADRatesAddonsSrv',
 	'$filter',
-	'dateFilter',
 	'ngTableParams',
 	'ngDialog',
-	function($scope, $rootScope, ADRatesAddonsSrv, $filter, dateFilter, ngTableParams, ngDialog) {
+	function($scope, $rootScope, ADRatesAddonsSrv, $filter, ngTableParams, ngDialog) {
 
 		
 

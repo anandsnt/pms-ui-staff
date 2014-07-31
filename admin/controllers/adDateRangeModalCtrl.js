@@ -1,10 +1,9 @@
 admin.controller('ADDateRangeModalCtrl',['$scope',
                                           '$filter',
-                                          'dateFilter',
                                           'ADRatesConfigureSrv',
                                           'ngDialog', 
                                           '$rootScope',
-function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog, $rootScope){
+function($scope,$filter,ADRatesConfigureSrv,ngDialog, $rootScope){
 BaseCtrl.call(this, $scope);
 
  $scope.setUpData = function(){
