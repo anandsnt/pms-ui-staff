@@ -32,7 +32,7 @@ function BaseCtrl($scope, $vault, returnBack){
 			$scope.errorMessage = errorMessage;
 			$scope.successMessage = '';
 		}
-		else {
+		else {			
 			$scope.$emit("showErrorMessage", errorMessage);
 		}
 	};
