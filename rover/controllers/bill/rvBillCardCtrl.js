@@ -7,7 +7,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		title: 'Stay Card',
 		callback: 'goBackToStayCard',
 		scope: $scope
-	}
+	};
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height
