@@ -67,7 +67,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		};
 
-		var init = function() {
+		var init = function(isCallingFirstTime) {
 			BaseCtrl.call(this, $scope);
 
 			$scope.$emit('showLoader');
@@ -111,7 +111,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// .. do the availabilty check here
 			// TODO : This section might have to be redone when there are more than one room in a reservation
-
 			if ($stateParams.view == "DEFAULT") {
 				var isRoomAvailable = true;
 				var isHouseAvailable = true;
@@ -130,10 +129,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				});
 
-				if (!isRoomAvailable && !isHouseAvailable) {
+				if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
 					$scope.toggleCalendar();
 				}
-			} else if ($stateParams.view == "CALENDAR") {
+			} else if ($stateParams.view == "CALENDAR" && isCallingFirstTime) {
 				$scope.toggleCalendar();
 			}
 
@@ -876,6 +875,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		}
 
-		init();
+		init(true);
 	}
 ]);
