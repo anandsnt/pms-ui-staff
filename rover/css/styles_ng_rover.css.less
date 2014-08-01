@@ -606,6 +606,7 @@ untill angular is ready to activate it */
 * Angular UI-States Animations
 */
 
+
 .room-number {    
     line-height: initial !important;
 }
@@ -632,4 +633,40 @@ Padding for the ows error popup
 */
 #modal .modal-content.new-content.warning {
     padding: 20px 20px 10px;
+}
+
+/* 
+* Reports screen change animations  
+* ==================================
+* DO NOT change the numeric values
+*/
+
+/* ui-view animation hook up class for main-view */
+.reports-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+}
+
+/* making sure we are not flickering */
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add {
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  z-index: 50;
+}
+
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  z-index: 30;
 }
