@@ -209,6 +209,22 @@
 				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
+
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+				<label for="use-kiosk-entity-id-for-fetch-booking">Use KIOSK entity id in FetchBooking</label>
+				<div class="switch-button single" ng-class="{ on : data.use_kiosk_entity_id_for_fetch_booking == 'true' }" ng-click="kioskEntityToggleClicked()">
+					<input type="checkbox" value="{{data.use_kiosk_entity_id_for_fetch_booking}}" name="use-kiosk-entity-id-for-fetch-booking" id="use-kiosk-entity-id-for-fetch-booking">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt && data.hotel_pms_type ==='OWS'">
+				<label for="use-snt-entity-id-for-checkin-checkout">Use SNT entity id in Check In/Out</label>
+				<div class="switch-button single" ng-class="{ on : data.use_snt_entity_id_for_checkin_checkout == 'true' }" ng-click="sntEntityToggleClicked()">
+					<input type="checkbox" value="{{data.use_snt_entity_id_for_checkin_checkout}}" name="use-snt-entity-id-for-checkin-checkout" id="use-snt-entity-id-for-checkin-checkout">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
 			
 			<!-- <div class="entry">
 				<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
