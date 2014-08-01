@@ -53,10 +53,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         }, 2000);
 		
         //TODO: Add conditionally redirecting from API results
-        //$state.go('rover.dashboard.housekeeping');
-
-        //TODO: delete the code below and use the function
-        //$state.go('rover.dashboard.manager');
 
         reddirectToDefaultDashboard();
 
