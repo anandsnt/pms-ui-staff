@@ -36,7 +36,7 @@ function BaseCtrl($scope, $vault, returnBack){
 			$scope.errorMessage = errorMessage;
 			$scope.successMessage = '';
 		}
-		else {
+		else {			
 			$scope.$emit("showErrorMessage", errorMessage);
 		}
 		// if needed ,to be handled as per requirements in controllers (scroll to top,empty fields)
