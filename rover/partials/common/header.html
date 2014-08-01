@@ -2,6 +2,12 @@
 <header class="nav-bar float rover-header" role = "banner">
 	<!-- Drawer toggle -->
 	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
+
+	<!-- back to prev -->
+	<div class="actions-back button white">
+		<a class="back-button" href="" ng-if="setPrevState.title" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
+	</div>
+
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
 		{{userInfo.last_name}} </strong> | <em class="date"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em></span>

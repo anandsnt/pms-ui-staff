@@ -47,6 +47,9 @@
     "SOURCE_PLACEHOLDER":"Select Source",
     "ORIGIN_BOOKING_LABEL":"Origin of Booking",
     "ORIGIN_BOOKING_PLACEHOLDER":"Select Origin of Booking",
+    "SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES": "Send confirmation to the following email address(es)",
+    "GUEST_EMAIL_ADDRESS": "Guest Email Address",
+    "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
     "RESV_RECOMMENDED" : "Recommended",
@@ -75,4 +78,5 @@
     "SEND_CONFIRMATION_EMAIL": "Send Confirmation Email",
     "GO_TO_STAYCARD": "Go To Stay Card",
     "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
-    "SEARCH_RESERVATIONS": "Search Reservations"
+    "SEARCH_RESERVATIONS": "Search Reservations",
+    "RESERVATION_CHANGED": "Reservation changed"

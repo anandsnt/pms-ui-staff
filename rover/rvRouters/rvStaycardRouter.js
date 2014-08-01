@@ -23,6 +23,9 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         resolve: {
             baseData: function(RVReservationSummarySrv) {
                 return RVReservationSummarySrv.fetchInitialData();
+            },
+            baseSearchData: function(RVReservationBaseSearchSrv) {
+                return RVReservationBaseSearchSrv.fetchBaseSearchData();
             }
         }
     });
@@ -31,12 +34,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     $stateProvider.state('rover.reservation.search', {
         url: '/search',
         templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
-        controller: 'RVReservationBaseSearchCtrl',
-        resolve: {
-            baseSearchData: function(RVReservationBaseSearchSrv) {
-                return RVReservationBaseSearchSrv.fetchBaseSearchData();
-            }
-        }
+        controller: 'RVReservationBaseSearchCtrl'
     });
 
     $stateProvider.state('rover.reservation.staycard', {
@@ -56,12 +54,20 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     });
 
     $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
-        url: '/roomType',
+        url: '/roomType/:from_date/:to_date/:view',
         templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
         controller: 'RVReservationRoomTypeCtrl',
+        onEnter: function($stateParams) {
+            if (typeof $stateParams.view == "undefined" || $stateParams.view == null) {
+                $stateParams.view = "DEFAULT";
+            }
+        },
         resolve: {
-            roomRates: function(RVReservationBaseSearchSrv) {
-                return RVReservationBaseSearchSrv.fetchRoomRates();
+            roomRates: function(RVReservationBaseSearchSrv, $stateParams) {
+                var params = {};
+                params.from_date = $stateParams.from_date;
+                params.to_date = $stateParams.to_date;
+                return RVReservationBaseSearchSrv.fetchAvailability(params);
             }
         }
     });

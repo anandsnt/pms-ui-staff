@@ -43,7 +43,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		var setupLeftMenu = function(){
 			if($scope.isStandAlone){
-					$scope.menu = [{
+				$scope.menu = [{
 					title: "MENU_DASHBOARD",
 					action: "/staff",
 					menuIndex: "dashboard",
@@ -154,8 +154,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-reports",
 					submenu: []
 				}];
-			}
-			else{
+			} else {
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
 					action: "/staff",
@@ -190,7 +189,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-reports",
 					submenu: []
 				}];
-		}
+			}
 		}
 		
 		

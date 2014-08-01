@@ -1,56 +1,57 @@
-sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','dateFilter', function($scope,  ngDialog, $filter, dateFilter){
-	
+sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','dateFilter','$rootScope', function($scope,  ngDialog, $filter, dateFilter,$rootScope){
+
 	$scope.setUpData = function(){
 
-		$scope.isFromDateSelected = true;
-		$scope.isToDateSelected   = true;
+		if($scope.currentFilterData.begin_date.length > 0){
+			$scope.fromDate = $scope.currentFilterData.begin_date;
+		}else{
+			$scope.fromDate =tzIndependentDate($rootScope.businessDate);
+		};
+		if($scope.currentFilterData.end_date.length > 0){
+			$scope.toDate = $scope.currentFilterData.end_date
+		}
+		else{
+			$scope.toDate = tzIndependentDate($rootScope.businessDate);
+		};
+		
 
-		$scope.fromCalendarID = "RateManagerDateRangeFrom";
-		$scope.toCalendarID = "RateManagerDateRangeTo";
+		$scope.fromDateOptions = {
+			changeYear: true,
+			changeMonth: true,
+			minDate: tzIndependentDate($rootScope.businessDate),
+			yearRange: "0:+10",
+			onSelect: function() {
 
-
-				if($scope.currentFilterData.begin_date.length > 0){
-					$scope.fromDate = $scope.currentFilterData.begin_date;
-				}else{
-					$scope.fromDate = dateFilter(new Date(), 'yyyy-MM-dd');
+				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
+					$scope.toDate = $scope.fromDate;
 				}
+			}
+		};
 
-				$scope.fromMinDate = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.toDateOptions = {
+			changeYear: true,
+			changeMonth: true,
+			minDate: tzIndependentDate($rootScope.businessDate),
+			yearRange: "0:+10",
+			onSelect: function() {
 
-				currentDate   = new Date();
-				currentDate.setDate(1);
-				currentDate.setMonth(currentDate.getMonth() +1);
-				$scope.toMonthDate = currentDate;
-				
-				if($scope.currentFilterData.end_date.length > 0){
-					$scope.toMonthDateFormated = $scope.currentFilterData.end_date;
-				}else{
-					$scope.toMonthDateFormated = dateFilter(new Date(), 'yyyy-MM-dd');
+				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
+					$scope.fromDate = $scope.toDate;
 				}
+			}
+		};
 
-				
-				$scope.toMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
-				$scope.errorMessage='';
-			};
+		$scope.errorMessage='';
+	};
 
-			$scope.setUpData();
-			$scope.okClicked = function(){
-				$scope.currentFilterData.begin_date = $scope.fromDate;
-				$scope.currentFilterData.end_date = $scope.toMonthDateFormated;
-				$scope.currentFilterData.selected_date_range = dateFilter($scope.currentFilterData.begin_date, 'MM-dd-yyyy') + " to " + dateFilter($scope.currentFilterData.end_date, 'MM-dd-yyyy');
-				ngDialog.close();
-			};
-			$scope.cancelClicked = function(){
-				ngDialog.close();
-			};
-
-			$scope.$on("dateChangeEvent",function(e, value){
-				if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
-					if (value.calendarId === $scope.fromCalendarID){
-						$scope.toMonthDateFormated = $scope.fromDate;
-					}else{
-						$scope.fromDate = $scope.toMonthDateFormated;
-					}
-				}
-			});
-		}]);
+	$scope.setUpData();
+	$scope.updateClicked = function(){
+		$scope.currentFilterData.begin_date = $scope.fromDate;
+		$scope.currentFilterData.end_date = $scope.toDate;
+		$scope.currentFilterData.selected_date_range = dateFilter($scope.currentFilterData.begin_date, 'MM-dd-yyyy') + " to " + dateFilter($scope.currentFilterData.end_date, 'MM-dd-yyyy');
+		ngDialog.close();
+	};
+	$scope.cancelClicked = function(){
+		ngDialog.close();
+	};
+}]);

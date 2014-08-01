@@ -3,10 +3,9 @@ admin.controller('ADRatesAddonsCtrl', [
 	'$rootScope',
 	'ADRatesAddonsSrv',
 	'$filter',
-	'dateFilter',
 	'ngTableParams',
 	'ngDialog',
-	function($scope, $rootScope, ADRatesAddonsSrv, $filter, dateFilter, ngTableParams, ngDialog) {
+	function($scope, $rootScope, ADRatesAddonsSrv, $filter, ngTableParams, ngDialog) {
 
 		
 
@@ -25,9 +24,6 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.apiLoadCount = 0;
 			$scope.chargeCodesForChargeGrp = [];
 			$scope.singleAddon.charge_group_id = "";
-
-			$scope.isStartDateSelected  = false;
-			$scope.isEndDateSelected = false;
 			$scope.currentClickedAddon = -1;
 			$scope.errorMessage = "";
 		};
@@ -161,8 +157,6 @@ admin.controller('ADRatesAddonsCtrl', [
 		$scope.addNew = function() {
 
 			$scope.singleAddon.charge_group_id ="";
-			$scope.isStartDateSelected  = false;
-			$scope.isEndDateSelected = false;
 			manipulateChargeCodeForChargeGroups();
 
 			$scope.isAddMode   = true;
@@ -180,7 +174,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.singleAddon.activated  = true;
 
 			// today should be business date, currently not avaliable
-			var today = new Date();
+			var today = tzIndependentDate();
             var weekAfter = today.setDate(today.getDate() + 7);
 
             // the inital dates to business date
@@ -193,40 +187,35 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// covert the date back to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
-				$scope.isStartDateSelected  = true;
 	            $scope.singleAddon.begin_date = chosenDate;
 	            // convert system date to MM-dd-yyyy format
-				$scope.singleAddon.begin_date_for_display = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
+				$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate(chosenDate), 'MM-dd-yyyy');
 				
 
 	            // if user moved begin_date in a way
 	            // that the end_date is before begin_date
 	            // we must set the end_date to begin_date
 	            // so that user may not submit invalid dates
-	            if ( new Date($scope.singleAddon.begin_date) - new Date($scope.singleAddon.end_date) > 0 ) {
+	            if ( tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0 ) {
 	                $scope.singleAddon.end_date = chosenDate
-	                $scope.singleAddon.end_date_for_display   = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
+	                $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), 'MM-dd-yyyy');
 	            }
 			} else {
-				  $scope.isEndDateSelected = true;
 				  $scope.singleAddon.end_date = chosenDate
-	              $scope.singleAddon.end_date_for_display   = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
+	              $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), 'MM-dd-yyyy');
 			}
 		});
 
-	// listen for datepicker reset from ngDialog
-		var resetDate = $rootScope.$on('datepicker.reset', function(event, chosenDate) {
+		$scope.resetDate = function(pickerId) {
 
-			if ( $scope.dateNeeded === 'From' ) {
+			if ( pickerId === 'From' ) {
 				$scope.singleAddon.begin_date_for_display = "";
-				$scope.isStartDateSelected  = false;
 			}
 			else{
 				$scope.singleAddon.end_date_for_display   = "";
-				$scope.isEndDateSelected  = false;
 			};
 
-		});
+		};
 
 		// the listner must be destroyed when no needed anymore
 		$scope.$on( '$destroy', updateBind );
@@ -267,19 +256,15 @@ admin.controller('ADRatesAddonsCtrl', [
 				// set the date to current business date
 				if ( !$scope.singleAddon.begin_date ) {
 					$scope.singleAddon.begin_date = $scope.businessDate;
-					$scope.isStartDateSelected  = false;
 					$scope.singleAddon.begin_date_for_display = "";
 				}else{
-					$scope.isStartDateSelected  = true;
-					$scope.singleAddon.begin_date_for_display = $filter('date')(new Date($scope.singleAddon.begin_date), 'MM-dd-yyyy');
+					$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'MM-dd-yyyy');
 				}
 				if ( !$scope.singleAddon.end_date ) {
 					$scope.singleAddon.end_date = $scope.businessDate;
-					$scope.isEndDateSelected  = false;
 					$scope.singleAddon.end_date_for_display = "";
 				}else{
-					$scope.isEndDateSelected  = true;
-					$scope.singleAddon.end_date_for_display   = $filter('date')(new Date($scope.singleAddon.end_date), 'MM-dd-yyyy');
+					$scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'MM-dd-yyyy');
 				};
 
 				// convert system date to MM-dd-yyyy format
@@ -323,8 +308,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
-			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(new Date($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
-			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(new Date($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
+			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
+			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 
 	
@@ -408,7 +393,7 @@ admin.controller('ADRatesAddonsCtrl', [
 	    	ngDialog.open({
 	    		 template: '/assets/partials/rates/addonsDateRangeCalenderPopup.html',
 	    		 controller: 'addonsDatesRangeCtrl',
-				 className: 'ngdialog-theme-default addon-calendar-modal single-date-picker',
+				 className: 'ngdialog-theme-default single-date-picker',
 				 closeByDocument: true,
 				 scope: $scope
 	    	});

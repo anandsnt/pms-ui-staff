@@ -37,7 +37,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			if($scope.editData.lov.length === 0)
 				$scope.editData.lov.push({'value':'','name':''});
 			$scope.isEditmode = true;
-			$scope.uploadPlaceholder = ($scope.editDataca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
+			$scope.fileName = ($scope.editData.ca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
 		};		
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
@@ -51,7 +51,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
-		$scope.uploadPlaceholder = 'Choose file ...';
+		$scope.fileName = 'Choose file ...';
 	};
    /*
     * To fetch the template for chains details add/edit screens
@@ -92,7 +92,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			else{
  				$scope.editData.lov = [{'value':'','name':''}];
  			}
- 		}
+ 		};
  		$scope.invokeApi(adChainsSrv.post, $scope.editData, addChainSuccessCallback, addChainFailureCallback);
 
  	};
