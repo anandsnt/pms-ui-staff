@@ -1,0 +1,18 @@
+<div ng-include="'/assets/partials/search/rvDashboardSearchReservations.html'"></div>	
+
+<section id="dashboard" class="content scrollable dashboard-scroll-div" role = "main" 
+ng-iscroll='dashboard_scroller' ng-iscroll-delay="100" 
+ng-show="showDashboard">
+	<div class="wrapper">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbOccupancySection.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbAvgDailyRateSection.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbRoomSection.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbUpSellSection.html'"></div>
+		<div ng-include="'/assets/partials/dashboard/rvDbRateOfTheDaySection.html'"></div>
+	</div>
+</section>
+
+

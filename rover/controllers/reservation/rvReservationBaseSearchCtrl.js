@@ -41,6 +41,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
             }
+
             $scope.otherData.fromSearch = true;
             $scope.$emit('hideLoader');
         };
