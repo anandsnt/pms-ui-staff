@@ -136,27 +136,26 @@
         <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <div class="entry margin">
-                    <label for="firstname" translate>FIRST_NAME</label>
-                    <input name="firstname" type="text" ng-model="reservationData.guest.firstName">
-                </div>
-                <div class="entry">
-                    <label for="lastname" translate>LAST_NAME</label>
-                    <input name="lastname" type="text" ng-model="reservationData.guest.lastName">
-                </div>
                 <div class="entry full-width">
-                    <label for="email" translate>EMAIL_ADDRESS</label>
-                    <input name="email" type="email" ng-model="reservationData.guest.email">
+                    <label translate>SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES</label>
+                    
+                    <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
                     <label class="checkbox inline">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : data.isConfirmationEmailSameAsGuestEmail}"></span>
-                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isConfirmationEmailSameAsGuestEmail" ng-change="confirmEmailCheckboxClicked()"/>
-                        <span translate>SEND_CONFIRM_EMAIL_TO_ADDRESS</span>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : data.isGuestPrimaryEmailChecked}"></span>
+                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isGuestPrimaryEmailChecked"/>
+                        <span>&nbsp;</span>
                     </label>
+                    <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()">
+
+                    <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
+                    <label class="checkbox inline">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : data.isGuestAdditionalEmailChecked}"></span>
+                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isGuestAdditionalEmailChecked"/>
+                        <span>&nbsp;</span>
+                    </label>
+                    <input class="summary_email" ng-model="otherData.additionalEmail">
                 </div>
-                <div class="entry full-width" ng-class="{'hidden' : data.isConfirmationEmailSameAsGuestEmail}">
-                    <label for="email-secondary" translate>RECEIVE_CONFIRM_EMAIL_TO_ADDRESS</label>
-                    <input name="email-secondary" type="email" ng-model="reservationData.guest.sendConfirmMailTo">
-                </div>
+                
                 <div class="entry full-width">
                     <label for="payment-type" translate>PAYMENT_TYPE</label>
                     <div class="select">
