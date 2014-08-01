@@ -1,58 +1,48 @@
 <form class="form" ng-controller="ADAddRateRangeCtrl">
-	<fieldset class="holder full-width" style="margin-bottom:20px;">
-		<div class="form-title">
-			<h3><span>Date</span>&nbsp;Range</h3>
-		</div>
-	</fieldset>
+	<div class="grey-texture-bg-color" style="padding:2%;">
+		<fieldset class="holder full-width">
+			<div class="form-title">
+				<h3><span>Date</span>&nbsp;Range</h3>
+			</div>
+		</fieldset>
 
-<fieldset class="holder left">
-<div class="center_align"><em>From</em>&nbsp;
-	<span ng-show="isFromDateSelected" class="italic_text">{{fromDate | date:'MMMM dd, y'}}</span></div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	   		<div pickadate="" ng-model="fromDate" max-date="maxDate" date="date" is-date-selected="isFromDateSelected" calendar-id="fromCalendarID" close-popup-on-selection="true" min-date="fromMinDate"></div>
-	   </div>
-	</div>
-</div>
-</fieldset>
-<fieldset class="holder right">
-<div class="center_align"><em>To </em>&nbsp;
-	<span ng-show="isToDateSelected" class="italic_text">{{toMonthDateFormated | date:'MMMM dd, y'}}</span></div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="toMonthDateFormated" max-date="maxDate" date="date" is-date-selected="isToDateSelected" calendar-id="toCalendarID" close-popup-on-selection="true" min-date="fromMinDate"></div>
-	   </div>
-	</div>
-</div>
-</fieldset>
-<table class="date_range_set_table">
-<tr ng-repeat="set in Sets">
-	<td width="6%">
-		<a class="icons icon-delete  delete_item" ng-hide="($index === 0) && !($index ==6)"ng-click="deleteSet($index)"></a>
-	</td>
-	<td width="15%">
-		<ad-textbox value="set.setName" style="width:150px;"></ad-textbox>
-	</td>
-	<td width="8%">
-		&nbsp;
-	</td>
-	<td width="74%" class="date_range_checkbox_td">
-		 <ad-checkboxtext-left class="rate_range_checkbox" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)" width="70px"></ad-checkboxtext-left>	
-		 <a class="icons icon-add" ng-show="($index === Sets.length-1) && !($index ==6)" ng-click="addNewSet($index)" style="float:right;margin-top:15px;"></a>
-	</td>
-<tr>
-</table>
-<div class="actions float center_align">
-	<button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
-		Cancel
-	</button>
-	<button type="button" ng-click="saveDateRange()" ng-hide="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="!allFieldsFilled()">
-		Configure Rate
-	</button>
-	<button type="button" ng-click="saveDateRange()" ng-show="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="allFieldsFilled()">	Save
-	</button>
+		<fieldset class="from-calendar left">
+			<div class="center_align"><em>From</em>&nbsp;
+				<span class="italic_text" ng-show="begin_date.length>0">{{begin_date | date:'MMMM dd, y'}}</span></div>
+				<div ui-date="fromDateOptions" ng-model="begin_date" ui-date-format="yy-mm-dd"></div>
+			</fieldset>
+			<fieldset class="to-calendar right">
+				<div class="center_align"><em>To </em>&nbsp;
+					<span  class="italic_text">{{end_date | date:'MMMM dd, y'}}</span></div>
+					<div ui-date="toDateOptions" ng-model="end_date" ui-date-format="yy-mm-dd"></div>
+				</fieldset>
+				<table class="date_range_set_table">
+					<tr ng-repeat="set in Sets">
+						<td width="5%">
+							<a class="icons icon-delete  delete_item" ng-hide="($index === 0) && !($index ==6)"ng-click="deleteSet($index)"></a>
+						</td>
+						<td width="20%">
+							<ad-textbox value="set.setName" style="width:150px;"></ad-textbox>
+						</td>
+						<td width="70%" class="date_range_checkbox_td">
+							<ad-checkboxtext-left class="rate_range_checkbox" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)" width="70px"></ad-checkboxtext-left>	
+						</td>
+						<td>
+							<a class="icons icon-add" ng-show="($index === Sets.length-1) && !($index ==6)" ng-click="addNewSet($index)"></a>
 
-</div>
-</form>
+						</td>
+						<tr>
+						</table>
+						<div class="actions float center_align">
+							<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
+								Cancel
+							</button>
+							<button type="button" ng-click="saveDateRange()" ng-hide="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="!allFieldsFilled()">
+								Configure Rate
+							</button>
+							<button type="button" ng-click="saveDateRange()" ng-show="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="allFieldsFilled()">	Save
+							</button>
+
+						</div>
+					</div>
+				</form>

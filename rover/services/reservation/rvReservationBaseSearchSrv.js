@@ -49,33 +49,9 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.chosenDates = function(data) {
+        this.fetchAvailability = function(param) {
             var deferred = $q.defer();
-
-            var arr = new Date(typeof data.fromdate == 'string' ? Date.parse(data.fromDate) : data.fromDate);
-            var dep = new Date(typeof data.todate == 'string' ? Date.parse(data.toDate) : data.toDate);
-
-            that.dates = {
-                from: (arr.toISOString().slice(0, 10).replace(/-/g, "-")),
-                to: (dep.toISOString().slice(0, 10).replace(/-/g, "-"))
-            }
-
-            deferred.resolve(true);
-            return deferred.promise;
-        }
-
-        this.fetchRoomRates = function(data) {
-            var deferred = $q.defer();
-            if (typeof that.dates != 'undefined') {
-                var url = '/api/availability?from_date=' + that.dates.from + '&to_date=' + that.dates.to;
-            } else {
-                var dates = {
-                    from: (new Date().toISOString().slice(0, 10).replace(/-/g, "-")),
-                    to: (new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10).replace(/-/g, "-"))
-                }
-                var url = '/api/availability?from_date=' + dates.from + '&to_date=' + dates.to;
-            }
-
+            var url = '/api/availability?from_date=' + param.from_date + '&to_date=' + param.to_date;
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {

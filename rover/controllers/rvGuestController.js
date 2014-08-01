@@ -195,7 +195,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		});
 
 		$scope.updateContactInfo = function() {
+			var that = this;
+			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			var saveUserInfoSuccessCallback = function(data) {
+				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
 				$scope.$emit('hideLoader');
@@ -203,10 +206,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var saveUserInfoFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 			};
-			var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 			// check if there is any chage in data.if so call API for updating data
-			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)) {
-				currentGuestCardHeaderData = newUpdatedData;
+			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
+				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,
 					'userId': $scope.guestCardData.contactInfo.user_id
@@ -335,10 +337,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.cardVisible = true;
 			$scope.guestCardVisible = true;
 			$scope.guestCardHeight = resizableMaxHeight;
-			//refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
-			$scope.$broadcast("contactTabActive");
-			//refreshing the scroller in guestcard's tab
-			$scope.$broadcast('REFRESHLIKESSCROLL');
+			// //refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
+			// $scope.$broadcast("contactTabActive");
+			// //refreshing the scroller in guestcard's tab
+			// $scope.$broadcast('REFRESHLIKESSCROLL');
 		};
 
 		/**
@@ -825,6 +827,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.initGuestCard({
 				id: id
 			});
+			$scope.closeGuestCard();
 		};
 
 	$scope.init();

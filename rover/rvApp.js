@@ -1,4 +1,4 @@
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils','pickadate', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','advanced-pickadate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', , 'cacheVaultModule']);
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', , 'cacheVaultModule']);
 
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;
@@ -29,8 +29,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		fromState: 'rover.staycard.reservationcard.reservationdetails',
 		toState  : 'rover.search'
 	}, {
-		fromState: 'rover.staycard.billcard',
-		toState  : 'rover.staycard.reservationcard.reservationdetails'
+		fromState: 'rover.reservation.staycard.billcard',
+		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}, {
 		fromState: 'rover.staycard.nights',
 		toState  : 'rover.staycard.reservationcard.reservationdetails'
