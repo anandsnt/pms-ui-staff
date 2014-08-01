@@ -81,21 +81,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
 		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.package_description;
-		var multipleRatesPresent = false;
-		var multipleRates = [];
-		angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
-			multipleRates.push(item.rate_id);
-		});
+		// var multipleRatesPresent = false;
+		// var multipleRates = [];
+		// angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+		// 	multipleRates.push(item.rate_id);
+		// });
 
-		if (multipleRates.reduce(function(a, b) {
-			return (a === b) ? false : true;
-		})) {
-			$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
-		};
+		// if (multipleRates.reduce(function(a, b) {
+		// 	return (a === b) ? true : false;
+		// })) {
+		// 	$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
+		// };
 
 		//CICO-7078 : Initiate company & travelagent card info
-
-
 		//temporarily store the exiting card ids
 		var existingCards = {
 			guest: $scope.reservationDetails.guestCard.id,
