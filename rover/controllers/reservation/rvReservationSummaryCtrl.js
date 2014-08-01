@@ -8,6 +8,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.data = {};
 			$scope.data.isConfirmationEmailSameAsGuestEmail = true;
 			$scope.data.paymentMethods = [];
+			$scope.data.MLISessionId = "";
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
 
@@ -144,13 +145,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"confirmationId": data.confirm_no
 				});
 
-				MLISessionId = "";
+				$scope.data.MLISessionId = "";
 
 			};
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
-				MLISessionId = "";
+				$scope.data.MLISessionId = "";
 
 			}
 
@@ -161,7 +162,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * MLI integration
 		 *
 		 */
-		$scope.fetchMLISession = function() {
+		var fetchMLISession = function() {
+
+			if ($scope.data.MLISessionId != "") {
+				return false;
+			}
 
 			var sessionDetails = {};
 			sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
@@ -174,8 +179,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit("hideLoader");
 				$scope.$apply();
 				if (response.status === "ok") {
-
-					MLISessionId = response.session;
+					console.log(response);
+					$scope.data.MLISessionId = response.session;
 					$scope.proceedCreatingReservation(); // call save payment details WS
 
 				} else {
@@ -189,6 +194,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			} catch (err) {
 				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
+		}
+
+		$scope.initFetchMLI = function() {
+			if ($scope.reservationData.paymentType.ccDetails.number == "" ||
+				$scope.reservationData.paymentType.ccDetails.cvv == "" ||
+				$scope.reservationData.paymentType.ccDetails.expMonth == "" ||
+				$scope.reservationData.paymentType.ccDetails.expYear == "") {
+				return false;
+			}
+			fetchMLISession();
 		}
 
 
@@ -213,7 +228,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				if ($scope.reservationData.paymentType.ccDetails.number.length === 0) {
 					$scope.errorMessage = ["There is a problem with your credit card"];
 				} else {
-					$scope.fetchMLISession();
+					if ($scope.data.MLISessionId == "") {
+						fetchMLISession();
+					}
 				}
 			} else {
 				$scope.proceedCreatingReservation();
