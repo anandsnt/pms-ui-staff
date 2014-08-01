@@ -6,8 +6,7 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 	var scrollerOptions = {click: true, preventDefault: false};
   	$scope.setScroller('dashboard_scroller', scrollerOptions);
     
-    //changing the header
-    $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING');
+
   	$scope.showDashboard = true; //variable used to hide/show dabshboard
 
     // we are hiding the search results area
