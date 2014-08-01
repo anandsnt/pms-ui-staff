@@ -7,6 +7,8 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	BaseCtrl.call(this, $scope);
 	$scope.readOnly = "no";
 	$scope.fileName = "Choose File....";
+	$scope.hotel_logo_file = $scope.fileName;
+	$scope.hotel_template_logo_file = $scope.fileName;
 	$scope.certificate = "";
 	$scope.isHotelChainEditable =  true;
 	if($rootScope.adminRole == "snt-admin"){
@@ -74,6 +76,25 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		};
 		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
 	}
+
+	$scope.$watch(
+		function(){
+		return $scope.data.hotel_template_logo;
+	}, function(logo) {
+				if(logo == 'false')
+					$scope.fileName = "Choose File....";
+				$scope.hotel_template_logo_file = $scope.fileName;
+			}
+		);
+	$scope.$watch(function(){
+		return $scope.data.hotel_logo;
+	}, function(logo) {
+				if(logo == 'false')
+					$scope.fileName = "Choose File....";
+				$scope.hotel_logo_file = $scope.fileName;
+			}
+		);
+
 	/**
     *   A post method for Test MliConnectivity for a hotel
     */
@@ -94,7 +115,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.clickedSave = function(){
 		// SNT Admin - To save Add/Edit data
 		if($scope.isAdminSnt){
-			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo", "languages"];
+			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo", "languages", "hotel_template_logo"];
 			var data = dclone($scope.data, unwantedKeys);
 			data.mli_certificate = $scope.certificate;
 			var postSuccess = function(){
@@ -126,6 +147,20 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     */
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
+	};
+
+	/**
+    *   Method to toggle data for 'use_kiosk_entity_id_for_fetch_booking' as true/false.
+    */
+	$scope.kioskEntityToggleClicked = function(){
+		$scope.data.use_kiosk_entity_id_for_fetch_booking = ($scope.data.use_kiosk_entity_id_for_fetch_booking == 'true') ? 'false' : 'true';
+	};
+
+	/**
+    *   Method to toggle data for 'use_snt_entity_id_for_checkin_checkout' as true/false.
+    */
+	$scope.sntEntityToggleClicked = function(){
+		$scope.data.use_snt_entity_id_for_checkin_checkout = ($scope.data.use_snt_entity_id_for_checkin_checkout == 'true') ? 'false' : 'true';
 	};
 
 	/**
@@ -190,5 +225,13 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
                 }
         });
     });
+	/**
+    *   To handle show hide status for the logo delete button
+    */
+    $scope.isLogoAvailable = function(logo){
+    	if(logo != '/assets/logo.png' && logo != 'false')
+    		return true;
+    	else return false;
+    };
 	
 }]);

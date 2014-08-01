@@ -226,6 +226,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
         $scope.deleteEndDate =  function(){
             $scope.rateData.end_date ="";
+            $scope.rateData.end_date_for_display = "";
         }
 
 

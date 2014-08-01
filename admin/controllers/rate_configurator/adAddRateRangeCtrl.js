@@ -1,23 +1,17 @@
 admin.controller('ADAddRateRangeCtrl', ['$scope', 
-                                        '$filter', 
-                                        'dateFilter', 
+                                        '$filter',  
                                         'ADRatesRangeSrv',
                                         '$rootScope',
-    function ($scope, $filter, dateFilter, ADRatesRangeSrv, $rootScope) {
+    function ($scope, $filter, ADRatesRangeSrv, $rootScope) {
         
         /**
         * set up data to be displayed
         */
         $scope.setUpData = function () {
 
-            $scope.fromCalendarID = "rateFromCalendar";
-            $scope.toCalendarID = "rateToCalendar";
-
-            $scope.isFromDateSelected = true;
-            $scope.isToDateSelected = false;
             $scope.Sets = [];
             $scope.Sets.push(createDefaultSet("Set 1"));
-            $scope.fromDate = dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            $scope.begin_date= tzIndependentDate($rootScope.businessDate);
          
             var dLastSelectedDate = '';
             var lastSelectedDate = '';
@@ -36,20 +30,35 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                 dLastSelectedDate = tzIndependentDate(lastSelectedDate);
                 // Get next Day
                 dLastSelectedDate = new Date(dLastSelectedDate.getTime() + 24*60*60*1000);
-                $scope.fromDate = dateFilter(dLastSelectedDate, 'yyyy-MM-dd');
+                $scope.begin_date =$filter('date')(dLastSelectedDate, 'yyyy-MM-dd');
             }
 
-            // Disable all days before current business Date
-            $scope.fromMinDate = dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            var businessDate = $rootScope.businessDate;
+            $scope.fromDateOptions = {
+                 changeYear: true,
+                 changeMonth: true,
+                 minDate: tzIndependentDate($scope.businessDate),
+                 yearRange: "0:+10",
+                 onSelect: function() {
 
-            /*Calander for todate should show next month ( from from date), by default.
-             * However, no date is selected by default.
-             */
-            var toDate = tzIndependentDate($scope.fromDate);
-            toDate.setDate(1); // Just to avoid invalid dates.
-            toDate.setMonth(toDate.getMonth() + 1);
-            $scope.toMonthDate = toDate; //TODO: Check
-            $scope.toMonthDateFormated = dateFilter(toDate, 'yyyy-MM-dd');
+                    if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)){
+                      $scope.end_date = $scope.begin_date;
+                    }
+                 }
+             }
+
+            $scope.toDateOptions = {
+                 changeYear: true,
+                 changeMonth: true,
+                 minDate: tzIndependentDate($scope.businessDate),
+                 yearRange: "0:+10",
+                 onSelect: function() {
+
+                    if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)){
+                      $scope.begin_date = $scope.end_date;
+                    }
+                 }
+            }
         };
 
         /*
@@ -80,8 +89,8 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             var dateRangeData = {
                 'id': $scope.rateData.id,
                 'data': {
-                    'begin_date': $scope.fromDate,
-                    'end_date': $scope.toMonthDateFormated,
+                    'begin_date': $scope.begin_date,
+                    'end_date': $scope.end_date ,
                     'sets': setData
                 }
             };
@@ -112,6 +121,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
             if ($scope.Sets.length < 7) {
                 var newSet = {};
 
+                var setName = "Set "+($scope.Sets.length+1);
                 var checkedDays = [];
                 /*
                  * check if any day has already been checked,if else check it in new set
@@ -124,7 +134,8 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                     });
 
                 });
-                newSet = createDefaultSet(" ");
+
+                newSet = createDefaultSet(setName);
                 angular.forEach(checkedDays, function (uncheckedDay, key) {
                     angular.forEach(newSet.days, function (day, key) {
                         if (uncheckedDay === day.name) {
@@ -170,7 +181,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
                 });
             });
 
-            if ($scope.isFromDateSelected && $scope.isToDateSelected && anyOneDayisChecked) {
+            if ($scope.begin_date && $scope.end_date && anyOneDayisChecked) {
                 return true;
             } else
                 return false;
@@ -213,18 +224,6 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
         }
 
         $scope.count = 0;
-        /**
-        * Calenar validation
-        * The from_date can not be less than the to_date. 
-        */
-        $scope.$on("dateChangeEvent",function(e, value){
-            if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
-                if (value.calendarId === $scope.fromCalendarID){
-                    $scope.toMonthDateFormated = $scope.fromDate;
-                }else{
-                    $scope.fromDate = $scope.toMonthDateFormated;
-                }
-            }
-        }); 
+     
         $scope.setUpData();
 }]);

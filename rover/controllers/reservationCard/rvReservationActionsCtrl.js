@@ -218,7 +218,21 @@ sntRover.controller('reservationActionsController',
 			}
 			return showSmartBand;
 		};
+		//({reservationId:, clickedButton: 'checkoutButton'})
+	//	goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton');
+		$scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance){
+			if(smartbandHasBalance == "true"){
+				$scope.clickedButton = clickedButton;
+				ngDialog.open({
+	        		template: '/assets/partials/smartbands/rvSmartbandListCheckoutscreen.html',
+	        		controller: 'RVSmartBandsCheckoutController',
+	        		className: 'ngdialog-theme-default1',
+	        		scope: $scope
+	        	});
+			} else {
+				$state.go("rover.reservation.staycard.billcard", {"reservationId" : reservationId, "clickedButton": clickedButton});
+			}
+		};
 
-		}
-	]
+	}]
 );

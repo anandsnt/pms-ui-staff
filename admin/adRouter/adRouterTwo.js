@@ -254,6 +254,19 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				}
 			}
 		});
+
+
+		$stateProvider.state('admin.ibeaconSettings', {
+			templateUrl: '/assets/partials/iBeaconSettings/adibeaconSettings.html',
+			controller: 'ADiBeaconSettingsCtrl',
+			url : '/ibeaconSettings'
+		});
+
+		$stateProvider.state('admin.iBeaconDetails', {
+			templateUrl: '/assets/partials/iBeaconSettings/adiBeaconDetails.html',
+			controller: 'ADiBeaconDetailsCtrl',
+			url : '/iBeaconDetails/:action'
+		});
 		
         
 });
