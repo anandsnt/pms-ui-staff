@@ -107,6 +107,20 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             }); 
             return deferred.promise;
         };
+
+        /**
+        * Call API to Update the reservation
+        */
+        this.updateReservation = function(data){
+            var deferred = $q.defer();
+            var url = '/api/reservations/'+ data.reservationId;
+            rvBaseWebSrvV2.putJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            },function(data){
+                deferred.reject(data);
+            }); 
+            return deferred.promise;
+        };
         
 
     }

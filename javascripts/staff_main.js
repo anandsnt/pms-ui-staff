@@ -21,7 +21,6 @@
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 //=require_tree ../shared
-//=require ../shared/lib/js/advanced-date-picker.js
 //=require ../shared/lib/js/date.js
 //=require_tree ../rover/rvRouters/
 //=require ../rover/rvApp.js
