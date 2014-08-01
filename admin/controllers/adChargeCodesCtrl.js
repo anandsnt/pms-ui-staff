@@ -72,7 +72,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				"selected_amount_sign" : "+",
 				"selected_amount_symbol" : "$",
 				"amount" : "100",
-				"amount_type" : [{
+				"amount_types" : [{
 					"value" : "1",
 					"name" : "PerAdult"
 				}, {
@@ -86,7 +86,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 					"name" : "Flat"
 				}],
 				"selected_amount_type" : "1",
-				"post_type" : [{
+				"post_types" : [{
 					"value" : "1",
 					"name" : "PerNight"
 				}, {
@@ -103,15 +103,15 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				}],
 				"tax_details" : [{
 					"id" : "1",
-					"is_exclusive" : true,
+					"is_inclusive" : true,
 					"selected_charge_code" : "2",
-					"calculation_rule" : [],
+					"calculation_rule_list" : [],
 					"selected_calculation_rule" : ""
 				}, {
 					"id" : "2",
-					"is_exclusive" : false,
+					"is_inclusive" : false,
 					"selected_charge_code" : "2",
-					"calculation_rule" : [{
+					"calculation_rule_list" : [{
 						"value" : "1",
 						"name" : "ChargeCodeBaseAmount"
 					}, {
@@ -122,26 +122,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				}]
 			};
 
-			var taxCount = $scope.prefetchData.tax_details.length;
-			/*
-			 * Creating array for calculation_rule_inclusive.
-			 * Calculation rules for inclusive settings.
-			 */
-			if(taxCount > 1){
-				
-				for( var i=1 ; i < taxCount ; i++ ){
-					
-					if(!$scope.prefetchData.tax_details[i].is_exclusive){
-						$scope.prefetchData.tax_details[i].calculation_rule_inclusive = [];
-						
-						var inclusiveArray = dclone($scope.prefetchData.tax_details[i].calculation_rule,[]);
-						inclusiveArray = inclusiveArray.slice(0, -1);
-						
-						$scope.prefetchData.tax_details[i].calculation_rule_inclusive = inclusiveArray;
-					}
-				}
-			}
-
+			
 			console.log($scope.prefetchData);
 		
 	};
@@ -163,7 +144,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.isEdit = true;
 			$scope.isAdd = false;
 		
-			$scope.getPrefetchData(data);
+			//$scope.getPrefetchData(data);
 
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
@@ -224,7 +205,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			}
 		});
 		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
-		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_type", "charge_codes_has_tax", "post_type"];
+		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
 		if ($scope.prefetchData.selected_charge_code_type != "1") {
@@ -266,60 +247,49 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		$scope.isAddTax = true;
 		$scope.isEditTax = false;
 		// To find the count of prefetched tax details already there in UI.
-		var taxCount = $scope.prefetchData.tax_details.length;
+		var taxCount = $scope.prefetchData.linked_charge_codes.length;
 		if (taxCount === 0) {
 			$scope.addData = {
 				"id" : "1",
-				"is_exclusive" : true,
-				"calculation_rule" : [],
+				"is_inclusive" : true,
+				"calculation_rule_list" : [],
 			};
 		} else if (taxCount === 1) {
 			$scope.addData = {
 				"id" : "2",
-				"is_exclusive" : true,
-				"calculation_rule" : [{
+				"is_inclusive" : true,
+				"calculation_rule_list" : [{
 					"value" : "1",
 					"name" : "ChargeCodeBaseAmount"
 				}, {
 					"value" : "2",
 					"name" : "ChargeCodeplusTax 1"
-				}],
-				"calculation_rule_inclusive" : [{
-					"value" : "1",
-					"name" : "ChargeCodeBaseAmount"
-				}],
+				}]
 			};
 		} else if (taxCount > 1) {
 			$scope.addData = {
 				"id" : taxCount + 1,
-				"is_exclusive" : true,
-				"calculation_rule" : [{
+				"is_inclusive" : true,
+				"calculation_rule_list" : [{
 					"value" : "1",
 					"name" : "ChargeCodeBaseAmount"
 				}, {
 					"value" : "2",
 					"name" : "ChargeCodeplusTax 1"
-				}],
-				"calculation_rule_inclusive" : [{
-					"value" : "1",
-					"name" : "ChargeCodeBaseAmount"
-				}, {
-					"value" : "2",
-					"name" : "ChargeCodeplusTax 1"
-				}],
+				}]
 			};
 			/*
 			 * Generating 3rd calculation rule manually in UI.
 			 */
 			var name = "ChargeCodeplusTax 1";
-			for (var i = 2; i <= $scope.prefetchData.tax_details.length; i++) {
+			for (var i = 2; i <= $scope.prefetchData.linked_charge_codes.length; i++) {
 				var name = name + " & " + i;
 			}
 			var obj = {
 				"value" : "3",
 				"name" : name
 			};
-			$scope.addData.calculation_rule.push(obj);
+			$scope.addData.calculation_rule_list.push(obj);
 		}
 	};
 	/*
@@ -336,7 +306,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		$scope.isEditTax = true;
 		$scope.currentClickedTaxElement = index;
 		// Taking a deep copy edit data , need when we cancel out edit screen.
-		tempEditData = dclone($scope.prefetchData.tax_details[index],[]);
+		tempEditData = dclone($scope.prefetchData.linked_charge_codes[index],[]);
 	};
 	/*
 	 * To handle save button click on tax creation while edit.
@@ -350,13 +320,13 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.clickedCancelEditTax = function(index) {
 		$scope.isEditTax = false;
 		// Restore edit data.
-		$scope.prefetchData.tax_details[index] = tempEditData; 
+		$scope.prefetchData.linked_charge_codes[index] = tempEditData; 
 	};
 	/*
 	 * To handle save button click on tax creation while add new.
 	 */
 	$scope.clickedSaveAddNewTax = function() {
-		$scope.prefetchData.tax_details.push($scope.addData);
+		$scope.prefetchData.linked_charge_codes.push($scope.addData);
 		$scope.addData = {};
 		$scope.isAddTax = false;
 	};
@@ -365,10 +335,10 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 */
 	$scope.toggleExclusive = function(index,value) {
 		if($scope.isAddTax){
-			$scope.addData.is_exclusive = value;
+			$scope.addData.is_inclusive = value;
 		}
 		else if($scope.isEditTax){
-			$scope.prefetchData.tax_details[index].is_exclusive = value;
+			$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
 		}
 	};
 }]);

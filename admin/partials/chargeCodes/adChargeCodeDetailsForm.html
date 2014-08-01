@@ -34,8 +34,8 @@
 	                        </select>
 						</div>
 					</div>
-					<ad-dropdown label="Amount Type" div-class="full-width" selbox-class= "placeholder" label-in-drop-down="Select Amount Type" list="prefetchData.amount_type" selected-Id="prefetchData.selected_amount_type" ></ad-dropdown>
-					<ad-dropdown label="Post Type" div-class="full-width" selbox-class= "placeholder" label-in-drop-down="Select Post Type" list="prefetchData.post_type" selected-Id="prefetchData.selected_post_type" ></ad-dropdown>
+					<ad-dropdown label="Amount Type" div-class="full-width"  label-in-drop-down="Select Amount Type" list="prefetchData.amount_types" selected-Id="prefetchData.selected_amount_type" ></ad-dropdown>
+					<ad-dropdown label="Post Type" div-class="full-width"  label-in-drop-down="Select Post Type" list="prefetchData.post_types" selected-Id="prefetchData.selected_post_type" ></ad-dropdown>
 				</div>
 				<!-- show For charge codes of the code type TAX-->
 
@@ -43,7 +43,7 @@
 			
 			<fieldset class="holder right">
 				<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
-				<div ng-hide="prefetchData.selected_charge_code_type == '1' || (!isPmsConfigured && prefetchData.selected_charge_code_type != '2')">
+				<div ng-hide="prefetchData.selected_charge_code_type == '1' || !isPmsConfigured ">
 					<div class="form-title">
 						<h3><span>Charge code</span> Link with </h3>
 					</div>

@@ -11,8 +11,8 @@
 <!-- EDITABLE WHEN 'ADD TAX' IS CLICKED -->
 <table class="grid datatable">
 	<tbody>
-		<tr ng-repeat="row in prefetchData.tax_details">
-			<td ng-hide="isEditTax && currentClickedTaxElement === $index" ><a data-colspan="1" class="edit-data-inline" ng-click="editSelectedTax($index)"> TAX {{row.id}}</a></td>
+		<tr ng-repeat="row in prefetchData.linked_charge_codes">
+			<td ng-hide="isEditTax && currentClickedTaxElement === $index" ><a data-colspan="1" class="edit-data-inline" ng-click="editSelectedTax($index)"> TAX {{$index+1}}</a></td>
 			<td data-colspan="1" ng-include="'/assets/partials/chargeCodes/adTaxFormEdit.html'" ng-show="isEditTax && currentClickedTaxElement === $index"></td>
 		</tr>
 		</tbody>
