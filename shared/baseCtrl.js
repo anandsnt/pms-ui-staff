@@ -39,7 +39,7 @@ function BaseCtrl($scope, $vault, returnBack){
 		else {
 			$scope.$emit("showErrorMessage", errorMessage);
 		}
-		// if needed to be handled as per requirements in controllers (scroll to top,empty fields)
+		// if needed ,to be handled as per requirements in controllers (scroll to top,empty fields)
 		$scope.$broadcast("scrollToErrorMessage");
 	};
 
