@@ -251,7 +251,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.credit_card = $scope.saveData.credit_card;
 				
 			}
-			console.log("----------------SAVE--------------"+$scope.saveData.selected_bill+">>>>"+$scope.passData.fromView)
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
 			} else if($scope.passData.fromView == "paybutton"){
@@ -312,15 +311,17 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 			 var callback = function(response){
 			 	$scope.$emit("hideLoader");
-			 	$scope.$apply();
+			 	
 			 	if(response.status ==="ok"){
 
 			 		MLISessionId = response.session;
 			 		$scope.savePayment();// call save payment details WS		 		
 			 	}
 			 	else{
+			 			console.log("error");
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
-			 	}			 	
+			 	}			
+			 	$scope.$apply(); 	
 			 };
 
 			try {
