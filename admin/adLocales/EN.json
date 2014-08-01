@@ -163,25 +163,5 @@
     "MAX_ADULTS":"Max Adults",
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
-    
-    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
-
-    "IBEACON_SETUP":"iBeacon Setup",
-    "BEACON_ID":"Beacon id",
-    "LINK_BEACON":"Link Beacon",
-    "TYPE":"Type",
-    "SELECT_TYPE":"Select Type",
-    "TRIGGER":"Trigger",
-    "SELECT_TRIGGER":"Select Trigger",
-    "STATUS":"Status",
-    "GUEST_MESSAGE":"Guest message",
-    "CHOOSE_FILE":"Choose file ...",
-    "LOCATION":"Location",
-    "TITLE":"Title",
-    "DESCRIPTION":"Description",
-    "ENTER_LOCATION":"Enter Location",
-    "ENTER_BEACON_ID":"Enter Beacon ID",
-    "ENTER_TITLE":"Enter title",
-    "ENTER_DESCRIPTION": "Enter Description",
-    "NEARBY_BEACONS":"Nearby Beacons"
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
 }
