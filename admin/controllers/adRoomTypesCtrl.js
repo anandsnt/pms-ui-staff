@@ -105,15 +105,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code});
     		$scope.tableParams.reload();
     	};
-    	var failureCallback = function(data){
-    		$scope.errorMessage = data;
-    		$scope.$emit('hideLoader');
-    	};
+    	
 
     	if($scope.isAddMode)
-    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave,failureCallback);
+    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave);
       	else
-    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave,failureCallback);
+    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave);
     };
    /*
     * To handle click event
