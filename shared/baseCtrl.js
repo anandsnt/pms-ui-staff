@@ -39,6 +39,7 @@ function BaseCtrl($scope, $vault, returnBack){
 		else {
 			$scope.$emit("showErrorMessage", errorMessage);
 		}
+		$scope.$broadcast("scrollToErrorMessage");
 	};
 
 
