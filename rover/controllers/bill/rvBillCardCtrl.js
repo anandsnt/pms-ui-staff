@@ -7,7 +7,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		title: 'Stay Card',
 		callback: 'goBackToStayCard',
 		scope: $scope
-	}
+	};
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height
@@ -26,6 +26,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
 	$scope.isRefreshOnBackToStaycard = false;
+	
+	$scope.showPayButton = false;
+	if($rootScope.isStandAlone){
+		$scope.showPayButton = true;
+	}
 	//This value changes when clicks on pay button
 	$scope.fromViewToPaymentPopup = "billcard";
 	//options fo signature plugin

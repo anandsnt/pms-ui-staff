@@ -87,8 +87,11 @@
 						<button class="button blank modal-close" id="cancel" type="button" ng-click="closeDialog()" translate>
 							CANCEL
 						</button>
-						<button class="button green modal-close" id="save" type="button" ng-click="savePaymentDetails()" translate>
+						<button class="button green modal-close" id="save" type="button" ng-click="savePaymentDetails()" ng-hide="showPaymentAmount" translate>
 							ADD
+						</button>
+						<button class="button green modal-close" id="save" type="button" ng-click="savePaymentDetails()" ng-show="showPaymentAmount" translate>
+							SUBMIT PAYMENT
 						</button>
 					</div>
 				</div>
