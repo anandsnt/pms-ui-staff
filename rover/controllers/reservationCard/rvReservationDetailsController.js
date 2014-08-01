@@ -1,11 +1,11 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', 'RVSearchSrv', '$vault',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, RVSearchSrv, $vault) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv','$state','RVSearchSrv', '$vault',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state , RVSearchSrv, $vault) {
 
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: 'Search results',
 			name: 'rover.search',
-			param: JSON.parse( $vault.get('lastSearchParam') )
+			param: !!$vault.get('lastSearchParam') ? JSON.parse( $vault.get('lastSearchParam') ) : {}
 		}
 
 		BaseCtrl.call(this, $scope);
@@ -16,6 +16,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * success call back of fetch reservation details
 		 */
 		//Data fetched using resolve in router
+		reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
@@ -95,6 +96,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id == null ? "" : reservationListData.travel_agent_id;
 
 		angular.copy(reservationListData, $scope.reservationListData);
+		$scope.populateDataModel(reservationDetails);
+
 		// console.log($scope.reservationListData)
 		$scope.$emit('cardIdsFetched', {
 			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
@@ -254,5 +257,27 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				scope: $scope
 			});
 		};
+
+		$scope.extendNights = function() {
+			// TODO : This following LOC has to change if the room number changes to an array
+			// to handle multiple rooms in future
+
+			if (reservationMainData.rooms[0].roomNumber != "") {
+				$state.go('rover.reservation.staycard.changestaydates', {
+					reservationId: reservationMainData.reservationId,
+					confirmNumber: reservationMainData.confirmNum
+				});
+			} else {
+				$scope.goToRoomAndRates("CALENDAR");
+			}
+		}
+
+		$scope.goToRoomAndRates = function(state) {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: reservationMainData.arrivalDate,
+				to_date: reservationMainData.departureDate,
+				view: state
+			});
+		}
 	}
 ]);
