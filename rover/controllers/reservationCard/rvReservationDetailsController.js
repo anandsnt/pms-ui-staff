@@ -1,9 +1,9 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv','$state','RVSearchSrv', '$vault',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state , RVSearchSrv, $vault) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault) {
 
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: 'Search results'			
+			title: 'Search results'
 		}
 
 		BaseCtrl.call(this, $scope);
@@ -22,13 +22,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 			// room related details
 			var data = {
-				'room':                   $scope.reservationData.reservation_card.room_number,
-				'reservation_status':     $scope.reservationData.reservation_card.reservation_status,
-				'roomstatus':             $scope.reservationData.reservation_card.room_status,
-				'fostatus':               $scope.reservationData.reservation_card.fo_status,
-				'is_reservation_queued':  $scope.reservationData.reservation_card.is_reservation_queued,
-				'is_queue_rooms_on':      $scope.reservationData.reservation_card.is_queue_rooms_on,
-				'late_checkout_time':     $scope.reservationData.reservation_card.late_checkout_time,
+				'room': $scope.reservationData.reservation_card.room_number,
+				'reservation_status': $scope.reservationData.reservation_card.reservation_status,
+				'roomstatus': $scope.reservationData.reservation_card.room_status,
+				'fostatus': $scope.reservationData.reservation_card.fo_status,
+				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
+				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
+				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
 				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
 			};
 
@@ -79,9 +79,21 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.setScroller('resultDetails');
 
+		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
+		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.package_description;
+		// var multipleRatesPresent = false;
+		// var multipleRates = [];
+		// angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+		// 	multipleRates.push(item.rate_id);
+		// });
+
+		// if (multipleRates.reduce(function(a, b) {
+		// 	return (a === b) ? true : false;
+		// })) {
+		// 	$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
+		// };
+
 		//CICO-7078 : Initiate company & travelagent card info
-
-
 		//temporarily store the exiting card ids
 		var existingCards = {
 			guest: $scope.reservationDetails.guestCard.id,
@@ -115,8 +127,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 
 
-		
-
 
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
 
@@ -124,7 +134,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
-			$scope.$parent.myScroll['resultDetails'].scrollTo(0,0);
+			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			updateSearchCache();
