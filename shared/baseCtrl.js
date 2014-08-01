@@ -29,7 +29,9 @@ function BaseCtrl($scope, $vault, returnBack){
 	$scope.fetchedFailed = function(errorMessage){
 		$scope.$emit('hideLoader');
 		//scroll to top of the page where error message is shown
-		angular.element( document.querySelector('.content')).scrollTop(0);
+		if(angular.element( document.querySelector('.content')).find(".error_message").length) {
+  			angular.element( document.querySelector('.content')).scrollTop(0);
+		}; 
 		if($scope.hasOwnProperty("errorMessage")){ 	
 			$scope.errorMessage = errorMessage;
 			$scope.successMessage = '';
