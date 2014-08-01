@@ -15,7 +15,24 @@
 	"RESERVATION_UPDATES" : "Reservation updates",
 	"CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES" : "Change stay dates to see room and rate changes.",
 	"VALIDATION_MSG_DATE" : "Room cannot be made available past the guest's current departure date.",
-	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking."
+	"VALIDATION_MSG_MIN_LENGTH" : "Minimum Length of Stay restriction exists for this booking.",
+	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
+	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
+	"OF": "of",
+	"APPLIES_TO_RESERVATION": "applies to this reservation",
+	"NO": "No",
+	"ROOM": "Room",
+	"NOT_AVAILABLE_FOR_DATE_RANGE": "not available for selected dates",
+	"UNASSIGN_ROOM_FROM": "Un-assign room from",
+	"ARRIVING": "arriving",
+	"YES": "Yes",
+	"UNABLE_TO_EXTEND_STAY": "Unable to extend stay",
+	"NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE": "There are no rooms available for the booked room type. Change room type or rate to extend the stay",
+	"MULTIPLE_RATES_EXISTS": "Multiple rates exist on reservation, select rate to extend the reservation",
+	"FIND_ROOMS_AND_RATE_BUTTON_TEXT": "Find rooms &amp; rate",
+	"CONTINUE": "continue"
+
+
 	
 ,    
     "ALL": "All",
@@ -256,6 +273,9 @@
     "SOURCE_PLACEHOLDER":"Select Source",
     "ORIGIN_BOOKING_LABEL":"Origin of Booking",
     "ORIGIN_BOOKING_PLACEHOLDER":"Select Origin of Booking",
+    "SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES": "Send confirmation to the following email address(es)",
+    "GUEST_EMAIL_ADDRESS": "Guest Email Address",
+    "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
     "RESV_RECOMMENDED" : "Recommended",
@@ -284,7 +304,8 @@
     "SEND_CONFIRMATION_EMAIL": "Send Confirmation Email",
     "GO_TO_STAYCARD": "Go To Stay Card",
     "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
-    "SEARCH_RESERVATIONS": "Search Reservations",    
+    "SEARCH_RESERVATIONS": "Search Reservations",
+    "RESERVATION_CHANGED": "Reservation changed",    
     
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper",
@@ -376,6 +397,7 @@
     "INCLUDE_NOTREADY_LABEL":"Include Not Ready",
     "INCLUDE_DUEOUT_LABEL":"Include Due Out",
     "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
+    "INCLUDE_CLEAN_LABEL":"Include Clean",
     "NIGHT_LABEL":"night",
     "NIGHTS_LABEL":"nights",
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
@@ -412,8 +434,10 @@
     "ENTER_FIRST_NAME" : "Enter First Name",
     "ENTER_LAST_NAME" : "Enter Last Name",
     "FIRST_NAME" : "First Name",
-    "LAST_NAME" : "Last Name"
-,    
+    "LAST_NAME" : "Last Name",
+    "SMARTBANDS_WITH_REMAINING_BALANCE" : "Smartbands with Remaining Balances",
+    "KEEP_CREDIT" : "KEEP CREDIT",
+	"CREDIT_TO_ROOM" : "CREDIT TO ROOM",    
     
     "ROOM": "room",
     "NIGHTS": "nights",

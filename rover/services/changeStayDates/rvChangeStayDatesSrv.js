@@ -18,6 +18,8 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
     	//function to fetch calender details against a reservation id
     	this.fetchCalenderDetails = function (reservationId, deferred){
             var url = '/staff/change_stay_dates/' + reservationId + '/calendar.json';
+            //var url = '/ui/show?format=json&json_input=change_staydates/rooms_available.json';
+
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 that.changeStayDetails.calendarDetails = data;
                 deferred.resolve(that.changeStayDetails);

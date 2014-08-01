@@ -1,5 +1,5 @@
 <div ng-controller = "rvReservationSearchWidgetController">
-	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form" role="search">	
+	<form method="get" action="" name="dashboard-search-form" id="dashboard-search-form" class="search-form" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea}">	
 	    <div class="entry">
 
 	        <a href="#" id="dashboard-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox!=''}" ng-click="clearResults()"> 
@@ -9,9 +9,9 @@
 	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
 	        ng-keyup="queryEntered()" ng-focus="focusOnSearchText()"
 	        ng-model="textInQueryBox" >
-	    	<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="results.length==0 && showAddNewGuestButton && textInQueryBox.trim().length>=3 && showSearchResultsArea">+ Add new </a>		      	
+	      	
 	    </div>
-
+		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
 	</form>
 
 	<section id="dashboard-search" class="content scrollable dashboard-scroll-div" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">

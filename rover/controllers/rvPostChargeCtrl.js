@@ -14,6 +14,7 @@ sntRover.controller('RVPostChargeController',
 			$scope.fetchedItems = $scope.fetchedData.items;
 			$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
 			$scope.selectedChargeItem = null;
+			$scope.isResultOnFetchedItems = true;
 			//$scope.isResultOnFetchedChargecode = false;
 			
 			// set the default bill number
@@ -47,8 +48,6 @@ sntRover.controller('RVPostChargeController',
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
 				var query = $scope.query ? $scope.query.toLowerCase() : '';
-				//$scope.foundItemWithName = false;
-				//$scope.foundItemWithChargecode = false;
 				var isFoundInFetchedItems = false;
 				$scope.isResultOnFetchedChargecode = false;
 				if (query === '') {
@@ -68,12 +67,10 @@ sntRover.controller('RVPostChargeController',
 					// find
 					if( item.item_name.toLowerCase().indexOf(query) >= 0 ) {
 						item.show = true;
-						//$scope.foundItemWithName = true;
 						isFoundInFetchedItems = true;
 					}
 					else if( item.charge_code_name.toLowerCase().indexOf(query) >= 0 ) {
 						item.show = true;
-						//$scope.foundItemWithChargecode = true;
 						isFoundInFetchedItems = true;
 					}
 					else {
@@ -85,7 +82,7 @@ sntRover.controller('RVPostChargeController',
 				 * 	show charge code and the description but no price
 				 * 	Searching on fetchedChargeCodes array with charge_code or description.
 				 */
-				if(!isFoundInFetchedItems){
+				//if(!isFoundInFetchedItems){
 					for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 						var item = $scope.fetchedChargeCodes[i];
 						// find
@@ -103,7 +100,7 @@ sntRover.controller('RVPostChargeController',
 							
 					}
 					
-				}
+				//}
 			};
 
 			// clear the filter query
