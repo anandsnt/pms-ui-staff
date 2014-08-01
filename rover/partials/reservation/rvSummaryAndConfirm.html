@@ -168,7 +168,7 @@
                 </div>
                 <div data-type="credit-card-fields" class="entry margin" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="card-number-set1" translate>CREDIT_CARD</label>
-                    <input name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number" ng-blur="initFetchMLI()" />
+                    <input class="card" ng-class="data.MLIData.cardScheme" name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number" ng-blur="initFetchMLI()" />
                 </div>
                 <div data-type="credit-card-fields" class="entry" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <div class="reservation-card-cvv-container">

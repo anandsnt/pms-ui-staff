@@ -28,6 +28,35 @@
     .summary_email{
       width: 94%;
     }
+
+    @creditCard:    asset-url("cc-icons.png");
+    @creditCard2x:  asset-url("cc-icons@2x.png");
+
+    .card{
+      background-image: @creditCard;
+      background-repeat: no-repeat;
+      background-position: 0px 50px;
+      text-indent: 50px;
+      &.mastercard{
+        background-position: 0px 8px;
+      }
+      &.diners_club{
+        background-position: 0px -76px;
+      }
+      &.visa{
+        background-position: 0px -160px;
+      }
+      &.jcb{
+        background-position: 0px -118px;
+      }
+      &.discover{
+        background-position: 10px -202px;
+      }
+      &.amex{
+        background-position: 0px -33px;
+      }
+    }
+
   }
 
   .no-right-margin {

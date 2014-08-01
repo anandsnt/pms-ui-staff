@@ -221,10 +221,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		var fetchMLISession = function() {
 
-			if ($scope.data.MLIData.session != "" && $scope.data.MLIData.session != undefined) {
-				return false;
-			}
-
 			var sessionDetails = {};
 			sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
 			sessionDetails.cardSecurityCode = $scope.reservationData.paymentType.ccDetails.cvv;
@@ -237,11 +233,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$apply();
 				if (response.status === "ok") {
 					$scope.data.MLIData = response;
-					$scope.proceedCreatingReservation(); // call save payment details WS
-
 				} else {
 					$scope.errorMessage = ["There is a problem with your credit card"];
+					$scope.data.MLIData = {};
 				}
+				$scope.$apply();
 			}
 
 			try {
@@ -278,19 +274,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		$scope.submitReservation = function() {
 
-
-			if ($scope.reservationData.paymentType.type.value === "CC") {
-
-				if ($scope.reservationData.paymentType.ccDetails.number.length === 0) {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-				} else {
-					if ($scope.data.MLIData.session == "") {
-						fetchMLISession();
-					}
-				}
-			} else {
-				$scope.proceedCreatingReservation();
+			if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
+				$scope.errorMessage = ["There is a problem with your credit card"];
+				return false;
 			}
+			$scope.proceedCreatingReservation();
 
 		};
 
