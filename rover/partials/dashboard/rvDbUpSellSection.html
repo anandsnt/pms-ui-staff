@@ -1,7 +1,17 @@
-<div id="dashboard-upsell" class="dashboard-block data">
+<div id="dashboard-upsell" class="dashboard-block data" ng-show= "hotelDetails.upsell_settings.is_upsell_settings_on">
     <h3>Upsell</h3>
     <ul>
-        <li>Target<span>{{currencySymbol}}{{statisticsData.upsell.target}}</span></li>
-        <li>Actual<span>{{currencySymbol}}{{statisticsData.upsell.amount}}</span></li>
+        <li>
+        	Target
+        	<span ng-show="escapeNull(statisticsData.upsell.target)!==''">
+            	{{currencySymbol}}{{statisticsData.upsell.target}}
+        	</span>      	
+        </li>
+        <li>
+            Actual
+            <span ng-show="escapeNull(statisticsData.upsell.amount)!==''">
+                {{currencySymbol}}{{statisticsData.upsell.amount}}
+            </span>            
+        </li>
     </ul>
 </div>
