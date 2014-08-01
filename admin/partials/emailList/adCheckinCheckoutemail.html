@@ -10,7 +10,7 @@
 			
 			<table id="guests" class="grid datatable table" ng-table="tableParams">
 				<tr ng-repeat="emailData in $data">
-					<td header-class="width-10" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+					<td header-class="width-5 padding-checkbox" style="text-align: left; " header="'ng-table/headers/checkbox.html'">
 						<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
 					</td>
 					<td header-class="width-30" data-title="'Name'" sortable="'first_name'"><a class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>

@@ -96,6 +96,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 		var param = $scope.billingGroupList[index].id;
     	var successCallbackSave = function(){
     		$scope.$emit('hideLoader');
+    		$scope.currentClickedElement = -1;
     		$scope.billingGroupList.splice(index, 1);
     	};
     	$scope.invokeApi(ADBillingGroupSrv.deleteBillingGroup, param, successCallbackSave);
