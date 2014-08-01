@@ -5,6 +5,9 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.addmode = ($stateParams.action === "add")? true : false;
     if(!$scope.addmode){
       $scope.beaconId = $stateParams.action;
+    }
+    else{
+      $scope.isBeaconLinked = false;
     };
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
@@ -14,9 +17,6 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.beaconTypes = beaconTypes.results;
     $scope.triggerTypes = triggerTypes.results;
     $scope.beaconNeighbours = beaconNeighbours.results;
-    //TO DO : Delete below code
-    $scope.isIpad = true;
-    ////////////////////  
     $scope.data ={};
     $scope.data.status = false;
     $scope.data.description ="";
@@ -93,6 +93,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     var successfullyLinked = function(data){
       $scope.$emit('hideLoader');
       $scope.successMessage = data.RVSuccess;
+      $scope.isBeaconLinked = true;
       $scope.$apply();
     };
     var failedLinkage = function(data){

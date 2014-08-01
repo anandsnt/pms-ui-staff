@@ -2,17 +2,6 @@
 	<header class="content-title float">
 		<h2>{{displayMessage}}</h2>
 		<a ng-click="backClicked()" data-type="load-details" class="action back" translate="BACK"></a>
-		<style>
-		.proximity-field{
-			width:50% !important;
-			float:left;
-		}
-		.majorid-field{
-			width:22% !important;
-			float:left;
-			margin-left:5px;
-		}
-		</style>
 	</header>
 	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"  ></div>
@@ -23,13 +12,13 @@
 		<fieldset class="holder left">				
 			<div class="entry full-width">
 				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
-				<input type="text"  class="proximity-field" placeholder="Enter proximity ID" ng-disabled="!isIpad || !addmode" ng-model="data.proximity_id">
-				<input type="text" class="majorid-field" placeholder="Major id" ng-disabled="!isIpad || !addmode" ng-model="data.major_id">
-				<input type="text" class="majorid-field" placeholder="Minor ID" ng-disabled="!isIpad || !addmode" ng-model="data.minor_id">					
+				<input type="text"  class="proximity-field" placeholder="Enter proximity ID" ng-disabled="!isIpad || !addmode || isBeaconLinked" ng-model="data.proximity_id">
+				<input type="text" class="majorid-field" placeholder="Major id" ng-disabled="!isIpad || !addmode || isBeaconLinked" ng-model="data.major_id">
+				<input type="text" class="majorid-field" placeholder="Minor ID" ng-disabled="!isIpad || !addmode || isBeaconLinked" ng-model="data.minor_id">					
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || !addmode" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || !addmode || isBeaconLinked" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode &&  !isBeaconLinked}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
