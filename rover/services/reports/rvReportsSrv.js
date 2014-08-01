@@ -15,33 +15,35 @@ sntRover.service('RVreportsSrv', [
 		this.cacheReportList = {};
 
 		this.fetchReportList = function(backToList) {
-			var deferred = $q.defer();
-			var url = '/api/reports';
+			var deferred = $q.defer(),
+				url = '/api/reports';
 
 			if ( backToList ) {
 				deferred.resolve( this.cacheReportList );
 			} else {
-				rvBaseWebSrvV2.getJSON(url).then(function(data) {
-					this.cacheReportList = data;
-					deferred.resolve(data);
-				}.bind(this), function(data){
-					deferred.reject(data);
-				});
+				rvBaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						this.cacheReportList = data;
+						deferred.resolve(data);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
 			}
 
 			return deferred.promise;
 		};
 
-		this.fetchReportDetails = function(id, param) {
-			var deferred = $q.defer();
-			var url = '/api/reports/' + id + 'submit';
+		this.fetchReportDetails = function(params) {
+			var deferred = $q.defer(),
+				url = '/api/reports/' + params.id + '/submit',
+				params = _.omit(params, 'id');
 
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
-				this.cacheReportList = data;
-				deferred.resolve(data);
-			}.bind(this), function(data){
-				deferred.reject(data);
-			});
+			rvBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data){
+					deferred.reject(data);
+				});
 
 			return deferred.promise;
 		};

@@ -5,13 +5,15 @@ sntRover.controller('RVReportListCrl', [
     'RVreportsSrv',
 	function($scope, $rootScope, $filter, RVreportsSrv) {
 
+        $scope.setScroller( 'report-list-scroll', {click: true, preventDefault: false} );
+
 		/**
 		*	Post processing fetched data to modify and add additional data
 		*	Note: This is a self executing function
         *   
         *   @param {Array} - reportList: which points to $scope.$parent.reportList, see end of this function
 		*/
-		var v = function(reportList) {
+		var postProcess = function(reportList) {
 			var hasDateFilter,
 				hasCicoFilter,
 				hasUserFilter,
@@ -67,13 +69,13 @@ sntRover.controller('RVReportListCrl', [
                 reportList[i].sortByOptions = reportList[i]['sort_fields']
 
                 // set the untilDate to current businessDate
-                reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'medium');
+                reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
 
                 // HACK: set the default value for from date to a week ago from business date
                 // so that calender will open in the corresponding month, rather than today
                 var today = new Date( reportList[i].untilDate );
                 var weekAgo = today.setDate(today.getDate() - 7);
-                reportList[i].fromDate = $filter('date')(weekAgo, 'medium');
+                reportList[i].fromDate = $filter('date')(weekAgo, 'MM-dd-yyyy');
 			}
 		}( $scope.$parent.reportList );
 
@@ -82,21 +84,10 @@ sntRover.controller('RVReportListCrl', [
 		    this.item.show_filter = this.item.show_filter ? false : true;
 		};
 
-        var vv = tzIndependentDate($scope.businessDate);
-
-        // generate reports
-        $scope.genReport = function() {
-            if ( !this.item.fromDate || !this.item.untilDate ) {
-                return;
-            };
-
-            $rootScope.setPrevState.hide = false;
-
-            $scope.$parent.showReportDetails = true;
-
+        $scope.setnGenReport = function() {
             RVreportsSrv.setChoosenReport( this.item );
+
+            $scope.genReport();
         };
-
-
 	}
 ]);

@@ -1,8 +1,8 @@
-<div class="nested-view view-current">
+<div class="nested-view view-current" ng-class="{ 'return-back': !showReportDetails }">
 	<div ng-include="'/assets/partials/common/header.html'"></div>
 	
 	<section id="reports" class="content scrollable reports-wrapper" role="main" ng-hide="showReportDetails">
-		<div class="wrapper" ng-controller="RVReportListCrl">
+		<div class="wrapper" ng-controller="RVReportListCrl" ng-iscroll="report-list-scroll" >
 			<ul class="reports-list">
 				<li ng-repeat="item in reportList">
 					<a href="" class="toggle-filter has-arrow" ng-class="{'active': item.show_filter}" ng-click="toggleFilter()">
@@ -19,11 +19,11 @@
 						<div class="date-range" ng-if="item.hasDateFilter">
 							<label>Date range</label>
 							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date ui-date-format="" ui-max-date="{{ item.untilDate }}" ng-model="item.fromDate" readonly>
+								<input type="text" class="range-datepicker" ui-date="getFromOptions(item)" ng-model="item.fromDate" ui-date-format readonly>
 							</div>	
 							<span class="span-to"> To </span>
 							<div class="has-datepicker">
-								<input ui-date type="text" class="range-datepicker" ui-date-format="" ui-min-date="{{ item.fromDate }}" ng-model="item.untilDate" readonly>
+								<input type="text" class="range-datepicker" ui-date="getUntilOptions(item)" ng-model="item.untilDate" ui-date-format readonly>
 							</div>
 						</div>
 
@@ -54,7 +54,7 @@
 							</div>
 						</div>
 
-						<a class="button green" ng-click="genReport()">Show Report</a>
+						<a class="button green" ng-click="setnGenReport()">Show Report</a>
 					</div>
 				</li>
 			</ul>
@@ -63,22 +63,22 @@
 
 	<section id="reports-details" class="content scrollable reports-wrapper" role="main" ng-show="showReportDetails">
 		<div ng-controller="RVReportDetailsCtrl">
-			<div id="report-update" style="top:100px;">
+			<div id="report-update" style="top:1px;">
 				<div class="date-range" ng-if="chosenReport.hasDateFilter">
 					<label>Date range</label>
 					<div class="has-datepicker">
-						<input type="text" ng-model="chosenReport.fromDate" readonly>
+						<input id="chosenReportFrom" type="text" class="range-datepicker" ui-date="getFromOptions(chosenReport)" ng-model="chosenReport.fromDate" ui-date-format readonly>
 					</div>
 					<span class="span-to">To</span>
 					<div class="has-datepicker">
-						<input type="text" ng-model="chosenReport.untilDate" readonly>
+						<input id="chosenReportTo" type="text" class="range-datepicker" ui-date="getUntilOptions(chosenReport)" ng-model="chosenReport.untilDate" ui-date-format readonly>
 					</div>
 				</div>
 
 				<div class="filter" ng-if="chosenReport.hasCicoFilter">
 					<label>Transaction Type</label>
 					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenCico," ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
+						<select name="" id="" ng-model="chosenReport.chosenCico" ng-options="cico.value as cico.label for cico in chosenReport.cicoOptions">
 							<option value="">Transaction Type</option>
 						</select>
 					</div>
@@ -87,7 +87,7 @@
 				<div class="filter" ng-if="HIDE_THIS_FEATURE">
 					<label>User</label>
 					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenUsers," ng-options="user.id as user.full_name for user in userList">
+						<select name="" id="" ng-model="chosenReport.chosenUsers" ng-options="user.id as user.full_name for user in userList">
 							<option value="">User</option>
 						</select>
 					</div>
@@ -96,7 +96,7 @@
 				<div class="sort" ng-if="chosenReport.sortByOptions">
 					<label>Sort by</label>
 					<div class="select">
-						<select name="" id="" ng-model="chosenReport.chosenSortBy," ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
+						<select name="" id="" ng-model="chosenReport.chosenSortBy" ng-options="sortBy.value as sortBy.description for sortBy in chosenReport.sortByOptions">
 							<option value="">Sort By</option>
 						</select>
 					</div>
@@ -105,7 +105,7 @@
 				<a class="button green" ng-click="fetchUpdatedReport()">Update Report</a>
 			</div>
 
-			<section id="report-details" class="content stay-card-inner">
+			<section id="report-details" class="content stay-card-inner" style="padding-top: 92px;">
 				<div class="report-header">
 					<div class="actions">
 						<div class="select" ng-if="HIDE_THIS_FEATURE">
@@ -114,10 +114,10 @@
 								<option value="word">Save/E-mail as Word</option>
 								<option value="excel">Save/E-mail as Excel</option>
 							</select>
-							<button class="button with-icon only-icon blue" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span></button>
-							<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
-							<button class="button with-icon only-icon purple" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span></button>
 						</div>
+						<button class="button with-icon only-icon blue" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span></button>
+						<button class="button with-icon only-icon blue" button="button" ng-click="fetchFullReport()"><span class="icons icon-print"></span></button>
+						<button class="button with-icon only-icon purple" button="button" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span></button>
 					</div>
 				</div>
 
@@ -130,15 +130,15 @@
 					</ul>
 					
 					<ul class="col2 right-align" ng-if="restHalf">
-						<li ng-repeat="item restHalf">
+						<li ng-repeat="item in restHalf">
 							{{ item.label }}
 							<span ng-class="item.class">{{ item.value }}</span>
 						</li>
 					</ul>
 				</div>
 	
-				<div id="report-content" class="report-content scrollable">
-					<div class="wrapper">
+				<div id="report-content" class="report-content scrollable" ng-iscroll="report-details-scroll" style="height:calc(100% - 90px);">
+					<div class="wrapper" height>
 						<table>
 
 							<!-- Reports table header -->
@@ -175,13 +175,13 @@
 									</td>
 									<td colspan="{{ rightColSpan }}">
 										Business date
-										<span>{{ userInfo.business_date }}</span>
+										<span>{{ userInfo.business_date | date:'MM-dd-yyyy' }}</span>
 										<br>
 										User
 										<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
 										<br>
 										<ul class="pagination" ng-if="pagination.length">
-											<li class="little">
+											<li class="title">
 												Pages:
 												<li ng-repeat="page in pagination" ng-class="{'active': page.active}" ng-click="fetchNextPage()">
 													{{ page.no }}

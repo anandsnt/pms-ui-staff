@@ -1,4 +1,3 @@
-//angular.module('reportsModule', ['mgcrea.ngStrap.datepicker'])
 angular.module('reportsModule', [])
 	.config(function($stateProvider, $urlRouterProvider, $translateProvider){
 
@@ -12,12 +11,4 @@ angular.module('reportsModule', [])
             }
         }
     });
-
-    // set update date settings
-    // angular.extend($datepickerProvider.defaults, {
-    //     dateFormat: 'MM-dd-yyyy',
-    //     startWeek: 0,
-    //     autoclose: true,
-    //     container: 'body'
-    // });
 });
