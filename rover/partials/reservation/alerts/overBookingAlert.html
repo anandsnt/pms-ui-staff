@@ -1,0 +1,7 @@
+<div>
+	No <span ng-if="houseNotAvailableForBooking">House</span><span ng-if="roomTypeNotAvailableForBooking">Room Type</span> availability on one or more of the selected dates. Overbook?
+	
+</div>
+
+<button type="button" class="button green" ng-click="updateDataModel(); closeThisDialog();">yes</button>
+<button type="button" class="button blank" ng-click="closeThisDialog()">No</button>

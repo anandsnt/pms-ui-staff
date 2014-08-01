@@ -1,5 +1,11 @@
-sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'RVStayDatesCalendarSrv','$filter',
-function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter) {
+sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
+												'$stateParams', 
+												'$rootScope', 
+												'$scope', 
+												'RVStayDatesCalendarSrv',
+												'$filter',
+												'ngDialog',
+function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, ngDialog) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
@@ -51,7 +57,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	//We have to update the staydetails in 'reservationData' hash data modal
 	//for each day of reservation
-	var updateDataModel = function(dates){
+	$scope.updateDataModel = function(){
 
 		var availabilityDetails = dclone($scope.availabilityDetails);
 
@@ -85,8 +91,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		*    }
 		*/
 		var date;
-		for(var i in dates){
-			date = dates[i];
+		for(var i in $scope.dates){
+			date = $scope.dates[i];
 			
 			stayDates[date] = {};
 			//Guests hash
@@ -115,19 +121,64 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		$scope.reservationData.rooms[0].stayDates = stayDates;
 
 	};
-
+	/**
+	* Event handler for set dates button
+	* Confirms the staydates in calendar
+	*/
 	$scope.setDatesClicked = function(){
-		
-		var dates = getDatesOfTheStayRange();
-		/*if(isOverBooking(dates)){
-			console.log("yes - overbooking")
-		}*/
-		updateDataModel(dates);
+
+		//Get the staydates from the calendar
+		$scope.houseNotAvailableForBooking = false;
+		$scope.roomTypeNotAvailableForBooking = false;
+		$scope.dates = getDatesOfTheStayRange();
+
+		//Check if the staydates has overbooking. if yes display a popup
+		if(isOverBooking()){
+	        ngDialog.open({
+	            template: '/assets/partials/reservation/alerts/overBookingAlert.html',
+	            className: 'ngdialog-theme-default restriction-popup',
+	            closeByDocument: false,
+	            scope: $scope
+	        });
+
+	        return false;
+		} 
+		//If not overbooking, update the datamodals
+		$scope.updateDataModel();
 
 	};
-
+	/**
+	* Check if the stayrange has house & room type available
+	* If for any of the staydates, house or room type not available, then it is overbooking
+	*/
 	var isOverBooking = function(dates){
+		var dateDetails;
+		var roomTypeAvailbilityForTheDay;
+		var isOverBooking = false;
+		var date;
+		//Check for each stayday, whether it is overbooking
+		for(var i in $scope.dates){
+			date = $scope.dates[i];
+			dateDetails = $scope.availabilityDetails.results[date];
+			
+			//Check if houe available for the day 
+			houseAvailabilityForTheDay = dateDetails['house'].availability;
+			if(houseAvailabilityForTheDay <=0){
+				$scope.houseNotAvailableForBooking = true;
+				isOverBooking = true;
+				break;
+			}
+			//check if selected room type available for the day
+			roomTypeAvailbilityForTheDay = dateDetails[$scope.finalRoomType].room_type_availability.availability;
+			if(roomTypeAvailbilityForTheDay <= 0){
+				$scope.roomTypeNotAvailableForBooking = true;
+				isOverBooking = true;
+				break;
+			}
 
+		}
+
+		return isOverBooking;
 	}
 
 	var fetchAvailabilityDetails = function(){
@@ -147,6 +198,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
         var businessDateParsed = getDateObj($rootScope.businessDate);
         var toDate = businessDateParsed.setDate(businessDateParsed.getDate() + 365) ;
         params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
+		
 		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
@@ -292,6 +344,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	* accoriding to our reqmt.
 	*/
 	var changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+
+
 		var newDateSelected = event.start;//the new date in calendar
 
 		// also we are storing the current business date for easiness of the following code
