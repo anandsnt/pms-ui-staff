@@ -6,8 +6,8 @@
 			
 		</div>
 		
-		<ad-textbox styleclass="full-width" value="billingGroupData.name" name = "billing-group-name" id = "billing-group-name" label = "{{ 'BILLING_GROUP_NAME' | translate }}" placeholder = "{{ 'BILLING_GROUP_NAME_PLACEHOLDER' | translate }}" ></ad-textbox>
-		<div class="entry full-width">
+		<ad-textbox styleclass="full-width actions_margin_top" value="billingGroupData.name" name = "billing-group-name" id = "billing-group-name" label = "{{ 'BILLING_GROUP_NAME' | translate }}" placeholder = "{{ 'BILLING_GROUP_NAME_PLACEHOLDER' | translate }}" ></ad-textbox>
+		<div class="entry full-width actions_margin_top">
 					<div id="available-charge-codes" class="boxes col2">
 						<ad-checkbox ng-repeat="chargeCode in billingGroupData.available_charge_codes" is-checked="isChecked(chargeCode.id)" label="{{chargeCode.charge_code +' - ' + chargeCode.description}}" parent-label-class="room-likes" span-class="checkbox-background" ng-click="selectChargeCode($index)"></ad-checkbox>
 
