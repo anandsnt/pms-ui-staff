@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout', '$stateParams',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout', '$stateParams',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -34,20 +34,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 })();
 
             }
-            $scope.businessDate = baseSearchData.businessDate;
+
             if ($scope.reservationData.arrivalDate == '') {
-                $scope.reservationData.arrivalDate = dateFilter($scope.businessDate, 'yyyy-MM-dd');
+                $scope.reservationData.arrivalDate = dateFilter($scope.otherData.businessDate, 'yyyy-MM-dd');
             }
             if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
             }
-            $scope.otherData.roomTypes = baseSearchData.roomTypes;
-            $scope.otherData.recommendedRateDisplay = baseSearchData.settings.recommended_rate_display;
-            $scope.otherData.defaultRateDisplayName = baseSearchData.settings.default_rate_display_name;
-            var guestMaxSettings = baseSearchData.settings.max_guests;
-            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
-            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
-            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
             $scope.$emit('hideLoader');
         };
@@ -110,7 +103,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
              *  The rates for these days have to be popuplated in the subsequent states appropriately
              */
             var initStayDates = function(roomNumber) {
+                    if (roomNumber == 0) {
+                        $scope.reservationData.stayDays = [];
+                    }
                     for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                        if (roomNumber == 0) {
+                            $scope.reservationData.stayDays.push({
+                                date: dateFilter(new Date(ms), 'yyyy-MM-dd'),
+                                dayOfWeek: dateFilter(new Date(ms), 'EEE'),
+                                day: dateFilter(new Date(ms), 'dd')
+                            });
+                        }
                         $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
                             guests: {
                                 adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
@@ -131,14 +134,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 initStayDates(roomNumber);
             }
 
-            var successCallBack = function() {
-                $state.go('rover.reservation.staycard.mainCard.roomType');
-            };
             if ($scope.checkOccupancyLimit()) {
-                $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
-                    fromDate: $scope.reservationData.arrivalDate,
-                    toDate: $scope.reservationData.departureDate
-                }, successCallBack);
+                $state.go('rover.reservation.staycard.mainCard.roomType', {
+                    from_date: $scope.reservationData.arrivalDate,
+                    to_date: $scope.reservationData.departureDate
+                });
             }
         };
 
@@ -275,7 +275,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
             yearRange: '-0:',
-            minDate: tzIndependentDate($scope.businessDate),
+            minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -291,7 +291,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'MM-dd-yyyy',
             numberOfMonths: 2,
             yearRange: '-0:',
-            minDate: tzIndependentDate($scope.businessDate),
+            minDate: tzIndependentDate($scope.otherData.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
