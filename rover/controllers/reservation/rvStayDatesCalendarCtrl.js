@@ -22,23 +22,113 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.reservationData.arrivalDate);
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.reservationData.departureDate);
-        $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
+		
+		//finalRoomType - Room type finally selected by the user. corresponds to the bottom select box
+		//roomTypeForCalendar - Room type which specifies the calendar data
+		$scope.finalRoomType = $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
+        //Stay nights in calendar
         $scope.nights = getNumOfStayNights();
 
 		fetchAvailabilityDetails();
-
-		/*var fetchSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			that.dataAssign(data);
-			$scope.stayDetails = data;
-			that.renderFullCalendar();
-			$scope.refreshScroller();
-		};*/
-		//$scope.invokeApi(RVRoomRateCalendarSrv.fetchStayDateDetails, {},fetchSuccessCallback);
-
-
-				
+	
 	};
+
+	/**
+	* @Return {Array} Dates of the stayrange - excludes the departure date
+	*/
+	var getDatesOfTheStayRange = function() {
+		var startDate = $scope.checkinDateInCalender;
+		var stopDate = $scope.checkoutDateInCalender;
+
+	    var dateArray = new Array();
+	    var currentDate = startDate;
+	    while (currentDate < stopDate) {
+	        dateArray.push($filter('date')(currentDate, $rootScope.dateFormatForAPI))
+	        currentDate = currentDate.addDays(1);
+	    }
+	   return dateArray;
+	}
+
+	//We have to update the staydetails in 'reservationData' hash data modal
+	//for each day of reservation
+	var updateDataModel = function(dates){
+
+		var availabilityDetails = dclone($scope.availabilityDetails);
+
+		//Update the room type details
+		$scope.reservationData.rooms[0].roomTypeId = $scope.finalRoomType;
+		var roomTypeName = "";
+		for(var i in availabilityDetails.room_types){
+			if(availabilityDetails.room_types[i].id == $scope.finalRoomType){
+				roomTypeName = availabilityDetails.room_types[i].name;
+				break;
+			}
+		}
+		$scope.reservationData.rooms[0].roomTypeName = roomTypeName;
+		
+		//Update the rate details - we need to update for each stay day
+		var stayDates = {};
+		/** stayDates hash format *** /
+		*
+		*	{
+		*        "2014-05-15": {
+		*            "rate": {
+		*                "id": 5,
+		*               "name": "rate_name"
+		*            },
+		*            "guests": {
+		*                "adults": 0,
+		*                "children": 0,
+		*                "infants": 5
+		*            }
+		*        }
+		*    }
+		*/
+		var date;
+		for(var i in dates){
+			date = dates[i];
+			
+			stayDates[date] = {};
+			//Guests hash
+			stayDates[date].guests = {};
+			stayDates[date].guests.adults = $scope.reservationData.rooms[0].numAdults;
+			stayDates[date].guests.children = $scope.reservationData.rooms[0].numChildren;
+			stayDates[date].guests.infants = $scope.reservationData.rooms[0].numInfants;
+
+			//rate details
+			stayDates[date].rate = {};
+
+			//We need to get the lowest rate for that room type from the availability details
+			//Even if we are in BAR calendar. we have to select a room type to make the reservation
+			var rateIdForTheDate = availabilityDetails.results[date][$scope.finalRoomType].rate_id;
+			stayDates[date].rate.id = rateIdForTheDate;
+			var rateName = "";
+			for(var j in availabilityDetails.rates){
+				if(availabilityDetails.rates[j].id == rateIdForTheDate){
+					rateName = availabilityDetails.rates[j].name;
+					break;
+				}
+			}
+			stayDates[date].rate.name = rateName;
+		}
+
+		$scope.reservationData.rooms[0].stayDates = stayDates;
+
+	};
+
+	$scope.setDatesClicked = function(){
+		
+		var dates = getDatesOfTheStayRange();
+		/*if(isOverBooking(dates)){
+			console.log("yes - overbooking")
+		}*/
+		updateDataModel(dates);
+
+	};
+
+	var isOverBooking = function(dates){
+
+	}
 
 	var fetchAvailabilityDetails = function(){
 		var availabilityFetchSuccess = function(data){

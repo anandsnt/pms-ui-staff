@@ -29,14 +29,15 @@
 					<li class="room-type">
 						<div class="select">
 							<select ng-model="finalRoomType"
-				                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()">
+				                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types">
+				                <option value="" disabled selected>Select Room Type</option>
 				            </select>
 						</div>
 					</li>
 				</ul>
 				<div class="action">
 					<button id="cancel-stay-dates-change" type="button" class="button blank">Cancel</button>
-					<button id="set-stay-dates" type="button" class="button green">Set Dates</button>
+					<button id="set-stay-dates" type="button" class="button green" ng-class="{'grey': finalRoomType == ''}" ng-disabled="finalRoomType == ''" ng-click="setDatesClicked()">Set Dates</button>
 				</div>
 			</div>
 		</div>
