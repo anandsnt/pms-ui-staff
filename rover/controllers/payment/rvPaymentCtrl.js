@@ -42,6 +42,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.refreshScroller('addPayment');
 		}, 500);
 	};
+
 	
 	/*
 	 * Render success callback
@@ -187,6 +188,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
 		var cardHolderName = $scope.saveData.name_on_card;
+		
 		if($scope.passData.fromView == "staycard"){
 			$scope.paymentData.reservation_card.payment_method_used = 'CC';
 			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
@@ -196,6 +198,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
 			$scope.paymentData.bills[billIndex].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billIndex].credit_card_details.card_expiry = expiryDate;
+			$scope.paymentData.bills[billIndex].total_amount = data.bill_balance;
 		}
 		if($scope.saveData.add_to_guest_card){ 
 			if(!data.is_already_on_guest_card){
