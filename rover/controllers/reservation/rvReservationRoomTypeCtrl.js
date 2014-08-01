@@ -700,7 +700,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			rooms = restrictionCheck(rooms);
-
+			//$scope.displayData.allRates[118].account_id
 			_.each(rooms, function(value) {
 				// step3: total and average calculation
 				// var value = rooms[id];
@@ -831,8 +831,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 
 		// 	CICO-7792 BEGIN
-		$scope.$on("cardChanged", function(event, data) {
-			console.log('Rerun the init method');
+		$scope.$on("cardChanged", function(event, cardIds) {
+			// Call the availability API and rerun the init method
+			var fetchSuccess = function(data) {
+				roomRates = data;
+				init();
+			}
+			var params = {};
+
+			params.from_date = $scope.reservationData.arrivalDate;
+			params.to_date = $scope.reservationData.departureDate;
+			params.company_id = cardIds.companyCard;
+			params.travel_agent_id = cardIds.travelAgent;
+
+			$scope.invokeApi(RVReservationBaseSearchSrv.fetchAvailability, params, fetchSuccess);
 		});
 		// 	CICO-7792 END
 
@@ -871,7 +883,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
-				console.log($scope.stateCheck.rateSelected.oneDay);
 			}
 		}
 

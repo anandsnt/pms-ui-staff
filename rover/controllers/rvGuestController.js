@@ -69,14 +69,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		// update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
 		var updateSearchCache = function() {
-		    var data = {
-		        'firstname': $scope.guestCardData.contactInfo.first_name,
-		        'lastname':  $scope.guestCardData.contactInfo.last_name,
-		        'location':  $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
-		        'vip':       $scope.guestCardData.contactInfo.vip
-		    };
+			var data = {
+				'firstname': $scope.guestCardData.contactInfo.first_name,
+				'lastname': $scope.guestCardData.contactInfo.last_name,
+				'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
+				'vip': $scope.guestCardData.contactInfo.vip
+			};
 
-		    RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
 		};
 
 		$scope.init = function() {
@@ -684,9 +684,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
 			//CICO-7792
-			$scope.showContractedRates();
 			if ($scope.viewState.identifier == "CREATION") {
 				$scope.reservationData.company.id = company.id;
+				$scope.showContractedRates({
+					companyCard: company.id,
+					travelAgent: $scope.reservationData.travelAgent.id
+				});
 				$scope.reservationData.company.name = company.account_name;
 				$scope.reservationData.company.corporateid = $scope.companyCorpId;
 
@@ -710,10 +713,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
 			//CICO-7792
-			$scope.showContractedRates();
 			if ($scope.viewState.identifier == "CREATION") {
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;
+				$scope.showContractedRates({
+					companyCard: $scope.reservationData.company.id,
+					travelAgent: travelAgent.id
+				});
 				$scope.reservationData.travelAgent.name = travelAgent.account_name;
 				$scope.reservationData.travelAgent.iataNumber = $scope.travelAgentIATA;
 
@@ -834,7 +840,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.closeGuestCard();
 		};
 
-	$scope.init();
-		
+		$scope.init();
+
 	}
 ]);
