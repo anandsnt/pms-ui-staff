@@ -64,24 +64,7 @@ $scope.forceUpsellcheckBoxClicked = function() {
 	$scope.upsellData.upsell_setup.is_force_upsell = ($scope.upsellData.upsell_setup.is_force_upsell === 'true') ? 'false' : 'true';
 };
 
-/**
-* To handle cancel button action
-*
-*/
 
-$scope.cancelClick = function() {
-
-if($rootScope.previousStateParam){
-	$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-}
-else if($rootScope.previousState){
-	$state.go($rootScope.previousState);
-}
-else 
- {
- 	 $state.go('admin.dashboard', {	menu : 0 });
- }
-};
 /**
 * To handle save button action
 *
