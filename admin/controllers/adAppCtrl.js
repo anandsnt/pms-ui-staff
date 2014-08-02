@@ -396,6 +396,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
 		};
 
+		/*
+		 * Function to change hotel name on updation in hotel details page
+		 */
+		$scope.$on('hotelNameChanged',function(e,data){
+			$scope.data.current_hotel = data.new_name;
+		});
+
 
         /*
          * Admin menu data

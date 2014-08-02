@@ -137,6 +137,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go('admin.dashboard', {menu: 0});
+				$scope.$emit('hotelNameChanged',{"new_name":$scope.data.hotel_name});
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
