@@ -68,14 +68,14 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
    var reddirectToDefaultDashboard = function(){
         var defaultDashboardMappedWithStates = {
-          'FRONT_DESK': 'rover.dashboard.frontdesk',
+          'FRONT_DESK': 'rover.dashboard.frontoffice',
           'MANAGER': 'rover.dashboard.manager',
         }
         if($rootScope.default_dashboard in defaultDashboardMappedWithStates){
             $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
         }
         else{
-
+            $scope.errorMessage = 'We arr unable to redirect to dashboard, Please set Dashboard against this user and try again!!';
         }
    };
 
