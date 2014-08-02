@@ -2,7 +2,7 @@
 	<div>
 		<header class="content-title float">
 			<h2>Social Lobby Setup</h2>
-			<a id="go_back" data-type="load-details" class="action back" ng-click="goBack()"> Back</a>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"> Back</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
@@ -20,7 +20,7 @@
 				
 			</fieldset>
 			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()">Cancel</button>
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()">Cancel</button>
 				<button type="button" id="save_social_lobby" class="button green" ng-click="save()">Save changes</button>
 			</div>
 		</form>

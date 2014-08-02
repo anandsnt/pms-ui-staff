@@ -190,9 +190,6 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     */
 	$scope.back = function(){
 
-		console.log($rootScope.nextState);
-		console.log($rootScope.previousState);
-
 		if($scope.isAdminSnt) {
 			
     		if($scope.previousStateIsDashBoard)
