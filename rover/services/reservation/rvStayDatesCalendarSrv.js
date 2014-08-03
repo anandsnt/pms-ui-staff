@@ -19,8 +19,8 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
 
         this.fetchAvailability = function(param) {
             var deferred = $q.defer();
-            var url = '/api/availability?from_date=' + param.from_date + '&to_date=' + param.to_date;
-            RVBaseWebSrvV2.getJSON(url).then(function(response) {
+            var url = '/api/availability';
+            RVBaseWebSrvV2.getJSON(url, param).then(function(response) {
                 var data = that.manipulateAvailabilityForEasyLookup(response);
                 deferred.resolve(data);
             }, function(errorMessage) {

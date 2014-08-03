@@ -112,6 +112,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     promotionCode: '',
                     promotionType: ''
                 },
+                status: '', //reservation status
                 reservationId: '',
                 confirmNum: '',
                 isSameCard: false, // Set flag to retain the card details,
@@ -454,6 +455,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 CICO-8320 parse the reservation Details and store the data in the
                 $scope.reservationData model
             */
+            //status
+            $scope.reservationData.status = reservationDetails.reservation_card.reservation_status;
+
             // id
             $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;

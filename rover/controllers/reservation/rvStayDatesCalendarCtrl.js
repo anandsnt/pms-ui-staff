@@ -19,6 +19,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	
 	this.init = function() {
+		this.CALENDAR_PAGINATION_COUNT = 75;
 		$scope.eventSources = [];
 
 		$scope.calendarType = "ROOM_TYPE";
@@ -136,7 +137,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		if(isOverBooking()){
 	        ngDialog.open({
 	            template: '/assets/partials/reservation/alerts/overBookingAlert.html',
-	            className: 'ngdialog-theme-default restriction-popup',
+	            className: 'ngdialog-theme-default',
 	            closeByDocument: false,
 	            scope: $scope
 	        });
@@ -196,7 +197,9 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		var params = {};
         params.from_date = $rootScope.businessDate;
         var businessDateParsed = getDateObj($rootScope.businessDate);
-        var toDate = businessDateParsed.setDate(businessDateParsed.getDate() + 365) ;
+        var toDate = businessDateParsed.setDate(businessDateParsed.getDate() + that.CALENDAR_PAGINATION_COUNT) ;
+
+        params.per_page = that.CALENDAR_PAGINATION_COUNT;
         params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 		
 		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
@@ -263,8 +266,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
         var thisDate;
         var calEvt = {};
 
-        console.log(availabilityKey);
-
         angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
             calEvt = {};
             //instead of new Date(), Fixing the timezone issue related with fullcalendar
@@ -278,7 +279,10 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
             if (thisDate.getTime() === checkinDate.getTime()) {
                 calEvt.id = "check-in";
                 calEvt.className = "check-in";
-                calEvt.startEditable = "true";
+                //For inhouse reservations, we can not move the arrival date
+				if ($scope.reservationData.status != "CHECKEDIN" && $scope.reservationData.status != "CHECKING_OUT") {
+                	calEvt.startEditable = "true";
+                }
                 calEvt.durationEditable = "false";
 
                 //If check-in date and check-out dates are the same, show split view.
@@ -314,14 +318,17 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
             //room type available - If no room type is being selected, only show house availability.
             } else if($scope.roomTypeForCalendar != "" && 
-            	dateDetails[availabilityKey].room_type_availability > 0) { 
-                calEvt.className = "availability"; //TODO: verify class name
+            	dateDetails[availabilityKey].room_type_availability.availability > 0) { 
+                calEvt.className = "type-available"; //TODO: verify class name
+                console.log("room type available----" + date);
             //room type not available but house available   
             } else if(dateDetails["house"].availability > 0) {
-            	calEvt.className = "no-type-availability"; //TODO: verify class name
+            	console.log("room type not available----" + date)
+            	//calEvt.className = ""; //TODO: verify class name from stjepan
             //house not available(no room available in the hotel for any room type)
             } else{
-				calEvt.className = "no-house-availability";
+            	console.log("house not available----" + date)
+				calEvt.className = "house-unavailable";
             }
 
             events.push(calEvt);
@@ -424,7 +431,14 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	};
 
-
+	$scope.isRoomTypeChangeAllowed = function(){
+		var ret = true;
+		if($scope.reservationData.status == "CHECKEDIN" || 
+			$scope.reservationData.status == "CHECKING_OUT") {
+			ret = false;
+		}
+		return ret;
+	};
 
 	this.init();
 
