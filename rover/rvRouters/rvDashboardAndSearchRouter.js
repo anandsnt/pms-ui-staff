@@ -1,6 +1,6 @@
 angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
   //define module-specific routes here
-     $stateProvider.state('rover.dashboard', {
+     /*$stateProvider.state('rover.dashboard', {
             url: '/dashboard',
             templateUrl: '/assets/partials/dashboard/rvDashboard.html',
             controller: 'RVdashboardController',
@@ -38,5 +38,35 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     }
                 }
             }
+        }); */
+        $stateProvider.state('rover.search', {
+            url: '/search/',
+            templateUrl: '/assets/partials/search/rvSearchReservation.html', 
+            controller: 'rvReservationSearchController'           
+        });
+        $stateProvider.state('rover.dashboard', {
+            url: '/dashboard',   
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            controller: 'RVdashboardController',
+            resolve: {
+                dashBoarddata: function(RVDashboardSrv) {
+                    return RVDashboardSrv.fetchDashboardDetails();
+                }
+            }          
+        });
+        $stateProvider.state('rover.dashboard.manager', {
+            url: '/dashboard/manager',
+            templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
+            controller: 'RVmanagerDashboardController',                       
+        });
+        $stateProvider.state('rover.dashboard.frontoffice', {
+            url: '/dashboard/frontoffice',
+            templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
+            controller: 'RVfrontDeskDashboardController',                       
         }); 
+        $stateProvider.state('rover.dashboard.housekeeping', {
+            url: '/dashboard/housekeeping',  //TODO: check can we reduced it to hk?
+            templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
+            controller: 'RVstaffDashboardController',                       
+        });           
 });

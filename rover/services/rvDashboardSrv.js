@@ -1,4 +1,4 @@
-sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, RVBaseWebSrvV2){
+sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, rvBaseWebSrvV2){
 
  /*
   * To fetch user details
@@ -19,14 +19,23 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 
 
 	this.dashBoardDetails = {};
-		var that = this;
+	var that = this;
 
+	this.fetchDashboardStatisticData = function(deferred){
+		//var url = '/ui/show?format=json&json_input=dashboard/dashboard.json';
+		var url = '/api/dashboards';
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			that.dashBoardDetails.dashboardStatistics = data;
+			deferred.resolve(that.dashBoardDetails);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;		
+	};
    /*
     * To fetch dashboard details
     * @return {object} dashboard details
     */	
-
-
    	this.fetchDashboardDetails = function(){
 		var deferred = $q.defer();
 		var self = this;
@@ -39,7 +48,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 			var url = '/api/rover_header_info.json';
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.dashBoardDetails.userDetails = data;
-				deferred.resolve(that.dashBoardDetails);
+				that.fetchDashboardStatisticData(deferred);
 			},function(errorMessage){
 				deferred.reject(errorMessage);
 			});
@@ -57,6 +66,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		});
 		return deferred.promise;
 	};
+
 	this.fetchHotelDetails = function(){
 		var deferred = $q.defer();
 		var url = '/api/hotel_settings.json';
