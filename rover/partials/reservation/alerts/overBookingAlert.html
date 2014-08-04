@@ -1,9 +1,17 @@
-<div style="padding: 20px;text-align: center;" class="modal-content modal-vertical-centered">
-	<div class="centeralign alert-box ng-binding ">
-		<span>
-		No <span ng-if="houseNotAvailableForBooking">House</span><span ng-if="roomTypeNotAvailableForBooking">Room Type</span> availability on one or more of the selected dates. Overbook?</span>
-		<br><br>
-		<button type="button" class="button green" ng-click="updateDataModel(); closeThisDialog();">yes</button>
-		<button type="button" class="button blank" ng-click="closeThisDialog()">No</button>
+<div role="dialog" id="modal" class="modal-show">
+	<div class="modal-content new-content form warning">
+		<div>
+			<span> No <span ng-if="houseNotAvailableForBooking">House</span><span ng-if="roomTypeNotAvailableForBooking">Room Type</span> availability on one or more of the selected dates. Overbook?</span>
+
+		</div>
+		<div class="actions float small-button">
+			<button class="button green" ng-click="updateDataModel(); closeThisDialog();">
+				yes
+			</button>
+			<button  class="button white" ng-click="closeThisDialog()">
+				no
+			</button>
+		</div>
 	</div>
 </div>
+
