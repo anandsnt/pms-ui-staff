@@ -295,6 +295,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$rootScope.$on('report.updated', function() {
 			afterFetch();
+			findBackNames();
 			calPagination();
 		});
 

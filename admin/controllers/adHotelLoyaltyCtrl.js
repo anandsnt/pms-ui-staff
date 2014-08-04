@@ -107,6 +107,8 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
     	var errorCallbackSave = function(error){
     		$scope.errorMessage = error[0];
     		$scope.$emit('hideLoader');
+    		//scroll to top of the page where error message is shown
+			angular.element( document.querySelector('.content')).scrollTop(0);
 			if($scope.hotelLoyaltyData.levels.length === 0)
 				$scope.hotelLoyaltyData.levels.push({'value':'','name':'', 'editProgress':false});
     	};

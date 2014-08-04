@@ -21,17 +21,20 @@ sntRover.controller('rvReservationCardNotesController',['$scope', '$filter', fun
         		
 
         	};
-        	var errorCallBackReservationNote = function(errorMessage){
-        		$scope.reservationnote ="";
-        		$scope.$parent.$emit('hideLoader');
-        		$scope.$parent.errorMessage = errorMessage; 
-        	};
+
         	var params = {};
         	params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
         	params.text = $scope.reservationnote;
         	params.note_topic = 1;
-        	$scope.invokeApi($scope.$parent.reservationCardSrv.saveReservationNote, params, successCallBackReservationNote, errorCallBackReservationNote);
+        	$scope.invokeApi($scope.$parent.reservationCardSrv.saveReservationNote, params, successCallBackReservationNote);
         };
+
+        $scope.$on('scrollToErrorMessage',function(){
+             //scroll to top of the page where error message is shown
+             $scope.$parent.myScroll['resultDetails'].scrollTo(0,0);
+             $scope.reservationnote =""; 
+        });
+
         /*
 	 	*To delete the reservation note and update the ui accordingly
 	 	*/
@@ -45,13 +48,8 @@ sntRover.controller('rvReservationCardNotesController',['$scope', '$filter', fun
         			$scope.$parent.myScroll['resultDetails'].refresh();
         		}, 700);
         	};
-        	var errorCallBackDeleteReservationNote = function(errorMessage){
-        		$scope.reservationnote ="";
-        		$scope.$parent.$emit('hideLoader');
-        		$scope.$parent.errorMessage = errorMessage;
-
-        	};
+        
         	var note_id = $scope.$parent.reservationData.reservation_card.notes.reservation_notes[index].note_id;        	
-        	$scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote, errorCallBackDeleteReservationNote);
+        	$scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote);
         };
 }]);

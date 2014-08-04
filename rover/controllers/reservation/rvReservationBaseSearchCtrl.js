@@ -41,6 +41,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
             }
+
             $scope.otherData.fromSearch = true;
             $scope.$emit('hideLoader');
         };
@@ -51,20 +52,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
                 dateOffset = 1;
             }
-            // var newDate = new Date($scope.reservationData.arrivalDate);
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
-            // $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
         }
 
         $scope.setNumberOfNights = function() {
-
-            // var arrivalDate = new Date($scope.reservationData.arrivalDate);
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
             arrivalDay = arrivalDate.getDate();
-            // var departureDate = new Date($scope.reservationData.departureDate);
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
             departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
@@ -106,15 +102,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                     if (roomNumber == 0) {
                         $scope.reservationData.stayDays = [];
                     }
-                    for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                    for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                         if (roomNumber == 0) {
                             $scope.reservationData.stayDays.push({
-                                date: dateFilter(new Date(ms), 'yyyy-MM-dd'),
-                                dayOfWeek: dateFilter(new Date(ms), 'EEE'),
-                                day: dateFilter(new Date(ms), 'dd')
+                                date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+                                dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+                                day: dateFilter(new tzIndependentDate(ms), 'dd')
                             });
                         }
-                        $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')] = {
+                        $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
                             guests: {
                                 adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
                                 children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),

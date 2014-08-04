@@ -40,22 +40,6 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     	$scope.invokeApi(ADICareServicesSrv.saveIcareServices, data , successCallbackSave, failureCallbackSave);
 
     };
-	/**
-    * To handle cancel/back button action
-    *
-    */ 
-    $scope.goBack = function(){
-        
-    	if($rootScope.previousStateParam){
-            $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam });
-        }
-        else if($rootScope.previousState){
-            $state.go($rootScope.previousState);
-        }
-        else{
-            $state.go('admin.dashboard', {menu : 0});
-        }
-    };
 	
 }]);
 
