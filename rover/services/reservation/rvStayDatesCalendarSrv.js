@@ -1,28 +1,32 @@
-sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
-    function ($q, RVBaseWebSrvV2, RVBaseWebSrv) {
+sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv', '$filter',
+    function ($q, RVBaseWebSrvV2, RVBaseWebSrv, $filter) {
 
     	var that = this;
-        this.changeStayDetails = {};
+        this.availabilityData = {};
+        this.lastFetchedDate = "";
 
-
-        /*this.fetchStayDateDetails = function (data) {
-            var deferred = $q.defer();
-
-            var url = "/ui/show?format=json&json_input=change_staydates/rooms_available.json";
-            RVBaseWebSrv.getJSON(url, data).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };*/
-
-        this.fetchAvailability = function(param) {
+        this.fetchAvailability = function(params) {
+            //If its a request to fetch the additional, then fetch the next set of availability data 
+            //based on the last_fetched date
+            if(params.status == 'FETCH_ADDITIONAL'){
+                var fromDate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + 1) ;
+                params.from_date = $filter('date')(fromDate, 'yyyy-MM-dd');
+                var todate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + params.per_page) ;
+                params.to_date = $filter('date')(todate, 'yyyy-MM-dd');
+            }
             var deferred = $q.defer();
             var url = '/api/availability';
-            RVBaseWebSrvV2.getJSON(url, param).then(function(response) {
-                var data = that.manipulateAvailabilityForEasyLookup(response);
-                deferred.resolve(data);
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                //We save the last fetched date info to enable caching.
+                //For every subsequent fetch requensts we fetch next set of dates
+                that.lastFetchedDate = tzIndependentDate(params.to_date);
+                if(params.status !== 'FETCH_ADDITIONAL'){
+                    that.availabilityData = dclone(response);
+                    //response.results is an array. We would keep it as a hash indexed with date
+                    that.availabilityData.results = {};
+                }
+                that.manipulateAvailabilityForEasyLookup(response);
+                deferred.resolve(that.availabilityData);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
@@ -30,7 +34,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
         };
 
         /**
-        * Manipulate the availability API response for the availablility calendar screen
+        * Manipulate the availability API response for the availablility
         * Instead of arrays, we create hash with date as index.
         * Also the rates are grouped for each room type - again a hash with room_type_id as index
         * Also we calculate the best available rate - the lowest rate for a day
@@ -45,15 +49,13 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 dayInfo.BAR = that.getBestAvailableRateForTheDay(dayDetails.rates, dayDetails.room_types);
                 //loop2
                 angular.forEach(dayDetails.room_types, function(roomType, i) {
+                    //Get the lowest rate for the room type
                     dayInfo[roomType.id] = that.getLowestRateForRoomType(roomType, dayDetails.rates);
-                    //Get the room type availability for a day
-                    //dayInfo[roomType.id].room_type_details = roomType;
-                    //dayInfo[roomType.id].availability = that.getLowestRateForRoomType(roomType, dayDetails.rates);
                 });
-                availability[dayDetails.date] = dayInfo;
+                that.availabilityData.results[dayDetails.date] = dayInfo;
+
             });
-            data.results = availability;
-            return data;
+            
         };
 
         /**

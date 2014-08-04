@@ -19,7 +19,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	
 	this.init = function() {
-		this.CALENDAR_PAGINATION_COUNT = 75;
+		this.CALENDAR_PAGINATION_COUNT = 10;
 		$scope.eventSources = [];
 
 		$scope.calendarType = "ROOM_TYPE";
@@ -195,6 +195,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			that.renderFullCalendar();
 		};
 
+
+
 		//TODO: verify if the date calculation is correct
 
 		//We are fetching the calendar data for one year. 
@@ -206,7 +208,9 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
         params.per_page = that.CALENDAR_PAGINATION_COUNT;
         params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
-		
+        params.status = "";
+		//Initialise data
+		RVStayDatesCalendarSrv.availabilityData = {};
 		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
 	};
 
@@ -215,13 +219,14 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	*/
 	this.renderFullCalendar = function() {
 		//calender options used by full calender, related settings are done here
-		$scope.fullCalendarOptions = {
+		var fullCalendarOptions = {
 			height : 450,
 			editable : true,
+			droppable : true,
 			header : {
-				left : 'prev',
+				left : '',
 				center : 'title',
-				right : 'next'
+				right : ''
 			},
 			year : $scope.confirmedCheckinDate.getFullYear(), // Check in year
 			month : $scope.confirmedCheckinDate.getMonth(), // Check in month (month is zero based)
@@ -230,10 +235,17 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			disableResizing : false,
 			contentHeight : 320,
 			weekMode : 'fixed',
-			ignoreTimezone : false, // For ignoring timezone,
-			eventDrop : changedDateOnCalendar
+			ignoreTimezone : false // For ignoring timezone,
 		};
 
+		$scope.leftCalendarOptions = dclone(fullCalendarOptions);
+		$scope.leftCalendarOptions.eventDrop = changedDateOnCalendar;
+		$scope.rightCalendarOptions = dclone(fullCalendarOptions);
+		$scope.rightCalendarOptions.eventDrop = changedDateOnCalendar;
+
+		$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
+
+		$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 		//Refresh the calendar with the arrival, departure dates
 		$scope.refreshCalendarEvents();
 		$scope.refreshScroller('stay-dates-calendar');
@@ -325,14 +337,14 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
             } else if($scope.roomTypeForCalendar != "" && 
             	dateDetails[availabilityKey].room_type_availability.availability > 0) { 
                 calEvt.className = "type-available"; //TODO: verify class name
-                console.log("room type available----" + date);
+                //console.log("room type available----" + date);
             //room type not available but house available   
             } else if(dateDetails["house"].availability > 0) {
-            	console.log("room type not available----" + date)
+            	//console.log("room type not available----" + date)
             	//calEvt.className = ""; //TODO: verify class name from stjepan
             //house not available(no room available in the hotel for any room type)
             } else{
-            	console.log("house not available----" + date)
+            	//console.log("house not available----" + date)
 				calEvt.className = "house-unavailable";
             }
 
@@ -356,8 +368,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	* accoriding to our reqmt.
 	*/
 	var changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-
-
 		var newDateSelected = event.start;//the new date in calendar
 
 		// also we are storing the current business date for easiness of the following code
@@ -440,8 +450,47 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	};
 
 	$scope.handleCancelAction = function(){
-		console.log($scope.fromState);
 		$state.go($scope.fromState, {});
+	};
+
+	$scope.prevButtonClickHandler = function(){
+		$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) - 2;
+		$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) - 2;
+		$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+		$scope.refreshCalendarEvents();
+
+	};
+
+	$scope.isPrevButtonDisabled = function(){
+		var disabled = false;
+		if(parseInt(getDateObj($rootScope.businessDate).getMonth()) == parseInt($scope.leftCalendarOptions.month)){
+			disabled = true;
+		}
+		return disabled
+
+	};
+	
+
+	$scope.nextButtonClickHandler = function(){
+		var nextMonthDetailsFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 2;
+			//console.log($scope.leftCalendarOptions.month);
+			$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 2;
+			$scope.availabilityDetails = data;
+			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+			$scope.refreshCalendarEvents();
+			
+			//Display Calendar
+			//that.renderFullCalendar();
+		};
+
+		var params = {};
+        params.from_date = '';
+        params.per_page = that.CALENDAR_PAGINATION_COUNT;
+        params.to_date = '';
+        params.status = 'FETCH_ADDITIONAL';
+		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, nextMonthDetailsFetchSuccess);
 	};
 
 	this.init();

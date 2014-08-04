@@ -278,3 +278,15 @@ Date.prototype.addDays = function(days) {
    return dat;
 }
 
+/**
+* A public method to check if the given object is empty (it is recommended over the above one).
+* @param {object} is the object to be checked
+*/
+function isEmptyObject(obj) {
+    for(var key in obj) {
+        return false;
+    }
+    return true;
+}
+
+
