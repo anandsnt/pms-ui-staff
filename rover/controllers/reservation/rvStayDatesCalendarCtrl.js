@@ -146,6 +146,11 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		} 
 		//If not overbooking, update the datamodals
 		$scope.updateDataModel();
+		//Go to the addons screen
+		$state.go('rover.reservation.staycard.mainCard.addons', {
+					"from_date": $scope.reservationData.arrivalDate,
+					"to_date": $scope.reservationData.departureDate
+				});
 
 	};
 	/**
@@ -230,7 +235,8 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		};
 
 		//Refresh the calendar with the arrival, departure dates
-		$scope.refreshCalendarEvents()
+		$scope.refreshCalendarEvents();
+		$scope.refreshScroller('stay-dates-calendar');
 	}
 
 	/**
@@ -247,7 +253,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		                availabilityDetails.room_rates.single;
 		}
 		return rate;
-
 	}; 
 
 	/**
@@ -398,12 +403,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 		$scope.eventSources.length = 0;
 		$scope.eventSources.push($scope.events);
-	};
-
-	$scope.refreshScroller = function() {
-		setTimeout(function() {
-			$scope.myScroll['stay-dates-calendar'].refresh();
-		}, 0);
 	};
 
 	var getNumOfStayNights = function(){
