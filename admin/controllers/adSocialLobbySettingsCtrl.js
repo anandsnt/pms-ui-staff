@@ -23,19 +23,7 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 
 	//fetching the settings details
 	$scope.invokeApi(ADSocialLobbySrv.fetchSettingsDetails, {}, fetchCompletedOfSettingsDetails);
 
-	//function to go back to prev. screen
-	$scope.goBack = function(){
-		if($rootScope.previousStateParam){
-			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-		}
-		else if($rootScope.previousState){
-			$state.go($rootScope.previousState);
-		}
-		else 
-		{
-			$state.go('admin.dashboard', {menu : 0});
-		}  
-	}
+	
 
 	/*
 	* success call back of details web service call
