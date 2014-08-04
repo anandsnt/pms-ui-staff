@@ -673,3 +673,30 @@ Padding for the ows error popup
     pointer-events: none;
     cursor: default;
 }
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (max-width: 480px){
+
+  .ngdialog.ngdialog-theme-default.modal-theme .ngdialog-content {
+      width: 200px;
+  }
+
+  #modal .modal-content.new-content {
+    width: 200px;
+  }
+
+  #modal .modal-content .button {
+      font-size: 14px;
+      line-height: 30px;
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+  }
+
+  #modal .modal-content.new-content .actions .button {
+      padding: 0 10px;
+      width: 100%;
+      margin-bottom: 5px;
+  }
+
+}
