@@ -7,12 +7,12 @@
 		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
 			<select ng-model="roomTypeForCalendar"
                 ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()"ng-disabled="!isRoomTypeChangeAllowed()">
-                <option value="" disabled selected>All Room Types</option>
+                <option value="" disabled selected translate>RESV_ALL_ROOMS</option>
             </select>
 		</div>
 		<ul id="filter-calendar">
-			<li id="show-types" ng-class="{'active': calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()">Room Types</li>
-			<li id="show-bar" ng-class="{'active': calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()">Best Available</li>
+			<li id="show-types" ng-class="{'active': calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()" translate>ROOM_TYPES</li>
+			<li id="show-bar" ng-class="{'active': calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()" translate>BEST_AVAILABLE</li>
 		</ul>
 	</div>
 
@@ -23,21 +23,21 @@
 
 			<div id="stay-dates-chage" class="update-details">
 				<ul class="data">
-					<li class="nights"><span class="guest-status nights">nights</span><span id="new-nights">{{nights}} nights</span></li>
-					<li class="date"><span class="guest-status small-icon check-in">check-in</span><span id="new-check-in">{{checkinDateInCalender| date:dayAndDate}}</span></li>
-					<li class="date"><span class="guest-status small-icon check-out">check-out</span><span id="new-check-out">{{checkoutDateInCalender| date:dayAndDate}}</span></li>
+					<li class="nights"><span class="guest-status nights" translate>NIGHTS</span><span id="new-nights" translate>{{nights}} NIGHTS</span></li>
+					<li class="date"><span class="guest-status small-icon check-in" translate>CHECKIN</span><span id="new-check-in">{{checkinDateInCalender| date:dayAndDate}}</span></li>
+					<li class="date"><span class="guest-status small-icon check-out" translate>CHECKOUT</span><span id="new-check-out">{{checkoutDateInCalender| date:dayAndDate}}</span></li>
 					<li class="room-type">
 						<div class="select">
 							<select ng-model="finalRoomType"
 				                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-disabled="!isRoomTypeChangeAllowed()">
-				                <option value="" disabled selected>Select Room Type</option>
+				                <option value="" disabled selected translate>SELECT_ROOM_TYPE</option>
 				            </select>
 						</div>
 					</li>
 				</ul>
 				<div class="action">
-					<button id="cancel-stay-dates-change" type="button" class="button blank" ng-click="handleCancelAction()">Cancel</button>
-					<button id="set-stay-dates" type="button" class="button green" ng-class="{'grey': finalRoomType == ''}" ng-disabled="finalRoomType == ''" ng-click="setDatesClicked()">Set Dates</button>
+					<button id="cancel-stay-dates-change" type="button" class="button blank" ng-click="handleCancelAction()" translate>CANCEL</button>
+					<button id="set-stay-dates" type="button" class="button green" ng-class="{'grey': finalRoomType == ''}" ng-disabled="finalRoomType == ''" ng-click="setDatesClicked()" translate>SET_DATES</button>
 				</div>
 			</div>
 		</div>
@@ -45,14 +45,14 @@
 
 	<!-- Legend -->
 	<div id="stay-dates-legend" class="stay-dates-legend">
-		<strong class="notice">Drag &amp; drop to change stay dates</strong>
+		<strong class="notice" translate>DRAG_AND_DROP_TEXT</strong>
 		<ul>
-			<li><span class="check-in"></span>Arrival</li>
-			<li><span class="mid-stay"></span>Mid stay</li>
-			<li><span class="check-out"></span>Departure</li>
-			<li><span class="availability"></span>Room Type available</li>
-			<li><span class="no-type-availability"></span>No Type availability</li>
-			<li><span class="no-house-availability"></span>No House availability</li>
+			<li ><span class="check-in"></span>{{'ARRIVAL' | translate}}</li>
+			<li ><span class="mid-stay"></span>{{'MID_STAY' | translate}}</li>
+			<li ><span class="check-out"></span>{{'DEPARTURE' | translate}}</li>
+			<li ><span class="availability"></span>{{'ROOM_TYPE_AVAILABLE' | translate}}</li>
+			<li ><span class="no-type-availability"></span>{{'NO_TYPE_AVAILABLE' | translate}}</li>
+			<li ><span class="no-house-availability"></span>{{'NO_HOUSE_AVAILABLE' | translate}}</li>
 		</ul>
 	</div>
 </div>
