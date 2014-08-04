@@ -240,7 +240,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			var status = $scope.reservationData.reservation_card.reservation_status;
 			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN";
 		};
-		$scope.saveNewsPaperPreference = function() {
+		$scope.saveNewsPaperPreference = function() {BALANCECHANGED
 
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
@@ -295,5 +295,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				view: state
 			});
 		};
+		
+		
+	 
 	}
 ]);

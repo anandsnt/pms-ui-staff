@@ -26,7 +26,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
 	$scope.isRefreshOnBackToStaycard = false;
-	
+
 	$scope.showPayButton = false;
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
@@ -820,5 +820,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     		scope: $scope
     	});
 	};
-			
+	
+	$scope.$on('BALANCECHANGED', function(event, data){
+	 	var dataToSrv = {
+	 		"confirmationNumber": data.confirm_no,
+	 		"isRefresh":false
+	 	};
+	 	var getReservationDetailsSuccessCallback = function(successData){
+			$scope.$emit('hideLoader');
+			var reservationData = successData;
+			reservationData.reservation_card.balance_amount = data.balance;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
+		};
+	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
+	 });	
 }]);

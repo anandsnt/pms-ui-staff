@@ -200,6 +200,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
 			$scope.paymentData.bills[billNumber].total_fees[0].balance_amount = data.reservation_balance;
+			var dataToUpdate = {
+				"balance": data.reservation_balance,
+				"confirm_no" : $scope.paymentData.confirm_no 
+			};
+			$rootScope.$broadcast('BALANCECHANGED', dataToUpdate);
 		}
 		if($scope.saveData.add_to_guest_card){ 
 			if(!data.is_already_on_guest_card){
