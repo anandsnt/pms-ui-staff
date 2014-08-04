@@ -2,7 +2,7 @@
 
 <div ng-show="isAddTax || isEditTax">
 	<div class="form-title" >
-		<h3>TAX {{addData.id}}</h3>
+		<h3>{{'TAX' |translate}} {{addData.id}}</h3>
 	</div>
 
 	<div class="entry full-width">
@@ -11,27 +11,27 @@
 				<label class="radio">
 					<span ng-class="{'checked': addData.is_inclusive}" class="icon-form icon-radio "></span>
 					<input type="radio" ng-click="toggleExclusive(0,true)" >
-					Inclusive </label>
+					{{'INCLUSIVE' |translate}} </label>
 			</div>
 			<div class="float_left rates_exclusive">
 				<label class="radio" >
 					<span ng-class="{'checked': !addData.is_inclusive}" class="icon-form icon-radio" ></span>
 					<input type="radio" ng-click="toggleExclusive(0,false)" >
-					Exclusive </label>
+					{{'EXCLUSIVE' |translate}} </label>
 			</div>
 		</div>
 	</div>
-	<ad-dropdown label="Charge Code" selbox-class= "placeholder" label-in-drop-down="Select Charge Code" list="prefetchData.tax_codes" selected-Id="addData.selected_charge_code" div-class="full-width"  ></ad-dropdown>
+	<ad-dropdown label="{{'CHARGE_CODE' |translate}} " selbox-class= "placeholder" label-in-drop-down="{{'CHARGE_CODE_PLACEHOLDER'| translate}}" list="prefetchData.tax_codes" selected-Id="addData.selected_charge_code" div-class="full-width"  ></ad-dropdown>
 
 	<!-- Show from TAX 2 onwards. -->
-	<ad-dropdown ng-show="!addData.is_inclusive && addData.id!==1" label="Calculation Rule" selbox-class= "placeholder" label-in-drop-down="Select Calculation Rule" list="addData.calculation_rule_list" selected-Id="addData.selected_calculation_rule" div-class="full-width"  ></ad-dropdown>
+	<ad-dropdown ng-show="!addData.is_inclusive && addData.id!==1" label="{{'CALCULATION_RULE' |translate}}" selbox-class= "placeholder" label-in-drop-down="{{'SELECT_CALCULATION_RULE' |translate}}" list="addData.calculation_rule_list" selected-Id="addData.selected_calculation_rule" div-class="full-width"  ></ad-dropdown>
 	
 	<div class="actions float" style=" padding-top: 0px; height: 73px;">
-		<button type="button" ng-click="clickedCancelAddNewTax()" class="button blank edit-data-inline">
-			Cancel
+		<button type="button" ng-click="clickedCancelAddNewTax()" class="button blank edit-data-inline" translate >
+			CANCEL
 		</button>
-		<button type="button" ng-click="clickedSaveAddNewTax()" class="button green edit-data-inline">
-			Ok
+		<button type="button" ng-click="clickedSaveAddNewTax()" class="button green edit-data-inline"translate >
+			OK
 		</button>
 	</div>
 </div>
