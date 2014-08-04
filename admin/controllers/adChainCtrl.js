@@ -118,6 +118,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		var updateChainFailureCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
  			$scope.errorMessage = errorMessage;
+ 			//scroll to top of the page where error message is shown
+			if(angular.element( document.querySelector('.content')).find(".error_message").length) {
+	  			angular.element( document.querySelector('.content')).scrollTop(0);
+			}; 
 
 			if($scope.editData.lov.length === 0)
 				$scope.editData.lov = [{'value':'','name':''}];

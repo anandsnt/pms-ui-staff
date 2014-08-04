@@ -106,6 +106,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
          $scope.$on("errorReceived", function (e, value) {
             $scope.errorMessage = value;
+            angular.element( document.querySelector('#wrapper')).scrollTop(0);
         });
 
         /**

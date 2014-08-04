@@ -143,6 +143,11 @@
     "INHOUSE": "In house",
     "CHECKING_OUT": "Checking Out",
     "DASHBOARD_HEADING": "Dashboard",
+    
+    "DASHBOARD_MANAGER_HEADING": "Manager Dashboard",
+    "DASHBOARD_HOUSEKEEPING_HEADING": "Housekeeping Dashboard",
+    "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
+
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",	
 	"HK_GUESTS": "Guests",
 	"HK_OCCUPIED": "Occupied",
@@ -268,6 +273,9 @@
     "SOURCE_PLACEHOLDER":"Select Source",
     "ORIGIN_BOOKING_LABEL":"Origin of Booking",
     "ORIGIN_BOOKING_PLACEHOLDER":"Select Origin of Booking",
+    "SEND_CONFIRMATION_TO_FOLLOWING_EMAIL_ADDRESSES": "Send confirmation to the following email address(es)",
+    "GUEST_EMAIL_ADDRESS": "Guest Email Address",
+    "ADDITIONAL_EMAIL_ADDRESS": "Additional Email Address",
 
     "RESV_ALL_ROOMS" : "All Room Types",
     "RESV_RECOMMENDED" : "Recommended",
@@ -296,7 +304,8 @@
     "SEND_CONFIRMATION_EMAIL": "Send Confirmation Email",
     "GO_TO_STAYCARD": "Go To Stay Card",
     "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
-    "SEARCH_RESERVATIONS": "Search Reservations",    
+    "SEARCH_RESERVATIONS": "Search Reservations",
+    "RESERVATION_CHANGED": "Reservation changed",    
     
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper",
@@ -388,11 +397,22 @@
     "INCLUDE_NOTREADY_LABEL":"Include Not Ready",
     "INCLUDE_DUEOUT_LABEL":"Include Due Out",
     "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
+    "INCLUDE_CLEAN_LABEL":"Include Clean",
     "NIGHT_LABEL":"night",
     "NIGHTS_LABEL":"nights",
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
     "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
     "ASSIGN_LABEL": "Assign Room",
+
+    "CANCEL_LABEL":"Cancel",    
+    
+    "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
+    "DASHBOARD_SEARCH_CHECKINGOUT": "Departues",
+    "DASHBOARD_SEARCH_INHOUSE": "In-House",
+    "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
+    "DASHBOARD_SEARCH_VIP": "VIP's",
+    "SEARCH_NORMAL": "Find Reservation"
+,
     "CANCEL_LABEL":"Cancel",
 
 
@@ -414,8 +434,10 @@
     "ENTER_FIRST_NAME" : "Enter First Name",
     "ENTER_LAST_NAME" : "Enter Last Name",
     "FIRST_NAME" : "First Name",
-    "LAST_NAME" : "Last Name"
-,    
+    "LAST_NAME" : "Last Name",
+    "SMARTBANDS_WITH_REMAINING_BALANCE" : "Smartbands with Remaining Balances",
+    "KEEP_CREDIT" : "KEEP CREDIT",
+	"CREDIT_TO_ROOM" : "CREDIT TO ROOM",    
     
     "ROOM": "room",
     "NIGHTS": "nights",

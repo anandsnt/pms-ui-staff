@@ -396,6 +396,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
 		};
 
+		/*
+		 * Function to change hotel name on updation in hotel details page
+		 */
+		$scope.$on('hotelNameChanged',function(e,data){
+			$scope.data.current_hotel = data.new_name;
+		});
+
 
         /*
          * Admin menu data
@@ -455,6 +462,24 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				console.log("error controller");
 			});
 		};
+
+		/**
+		    *   Method to go back to previous state.
+		    */
+		$scope.goBackToPreviousState = function(){
+
+			    if($rootScope.previousStateParam){
+			      $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+			    }
+			    else if($rootScope.previousState){
+			      $state.go($rootScope.previousState);
+			    }
+			    else 
+			    {
+			      $state.go('admin.dashboard', {menu : 0});
+			    }
+			  
+		  	};
 	}
 	
 	

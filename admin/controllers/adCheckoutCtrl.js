@@ -65,24 +65,5 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     	}
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback,saveCheckoutDetailsFailureCallback);
     };
-  
- /**
-    *   Method to go back to previous state.
-    */
-    $scope.backClicked = function(){
-        
-        if($rootScope.previousStateParam){
-            $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-        }
-        else if($rootScope.previousState){
-            $state.go($rootScope.previousState);
-        }
-        else 
-        {
-            $state.go('admin.dashboard', {menu : 0});
-        }
-    
-    };
- 
 
 }]);
