@@ -1,0 +1,58 @@
+<!-- Rooms & Rates -->
+<div id="stay-dates-content" class="reservations-content-wrapper" ng-controller="RVStayDatesCalendarCtrl">
+	
+	<!-- Filters -->
+	<div class="reservation-filters">
+		<!-- Change room type visible for the calendar -->
+		<div id="change-room-type" class="select" ng-hide="calendarType == 'BEST_AVAILABLE'">
+			<select ng-model="roomTypeForCalendar"
+                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-change="roomTypeForCalendarChanged()"ng-disabled="!isRoomTypeChangeAllowed()">
+                <option value="" disabled selected translate>RESV_ALL_ROOMS</option>
+            </select>
+		</div>
+		<ul id="filter-calendar">
+			<li id="show-types" ng-class="{'active': calendarType == 'ROOM_TYPE'}" ng-click="selectedRoomTypesCalOption()" translate>ROOM_TYPES</li>
+			<li id="show-bar" ng-class="{'active': calendarType == 'BEST_AVAILABLE'}" ng-click="selectedBestAvailableRatesCalOption()" translate>BEST_AVAILABLE</li>
+		</ul>
+	</div>
+
+	<!-- Calendar -->
+	<div id="stay-dates-calendar" class="reservation-content stay-dates-content scrollable" ng-iscroll="stay-dates-calendar">
+		<div class="wrapper">
+			<two-month-calendar event-sources='eventSources' left-calendar-options='leftCalendarOptions' right-calendar-options='rightCalendarOptions' next-button-click-handler='nextButtonClickHandler()' prev-button-click-handler='prevButtonClickHandler()' disable-prev-button ='disablePrevButton'></two-month-calendar>
+
+			<div id="stay-dates-chage" class="update-details">
+				<ul class="data">
+					<li class="nights"><span class="guest-status nights" translate>NIGHTS</span><span id="new-nights" =>{{nights}} </span><span translate>NIGHTS</span></li>
+					<li class="date"><span class="guest-status small-icon check-in" translate>CHECKIN</span><span id="new-check-in">{{checkinDateInCalender| date:dayAndDate}}</span></li>
+					<li class="date"><span class="guest-status small-icon check-out" translate>CHECKOUT</span><span id="new-check-out">{{checkoutDateInCalender| date:dayAndDate}}</span></li>
+					<li class="room-type">
+						<div class="select">
+							<select ng-model="finalRoomType"
+				                ng-options="roomType.id as roomType.name for roomType in availabilityDetails.room_types" ng-disabled="!isRoomTypeChangeAllowed()">
+				                <option value="" disabled selected translate>SELECT_ROOM_TYPE</option>
+				            </select>
+						</div>
+					</li>
+				</ul>
+				<div class="action">
+					<button id="cancel-stay-dates-change" type="button" class="button blank" ng-click="handleCancelAction()" translate>CANCEL</button>
+					<button id="set-stay-dates" type="button" class="button green" ng-class="{'grey': finalRoomType == ''}" ng-disabled="finalRoomType == ''" ng-click="setDatesClicked()" translate>SET_DATES</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Legend -->
+	<div id="stay-dates-legend" class="stay-dates-legend">
+		<strong class="notice" translate>DRAG_AND_DROP_TEXT</strong>
+		<ul>
+			<li ><span class="check-in"></span>{{'ARRIVAL' | translate}}</li>
+			<li ><span class="mid-stay"></span>{{'MID_STAY' | translate}}</li>
+			<li ><span class="check-out"></span>{{'DEPARTURE' | translate}}</li>
+			<li ><span class="availability"></span>{{'ROOM_TYPE_AVAILABLE' | translate}}</li>
+			<li ><span class="no-type-availability"></span>{{'NO_TYPE_AVAILABLE' | translate}}</li>
+			<li ><span class="no-house-availability"></span>{{'NO_HOUSE_AVAILABLE' | translate}}</li>
+		</ul>
+	</div>
+</div>

@@ -1,5 +1,11 @@
-sntRover.controller('RVStayDatesCalendarCtrl', ['$state','$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
-function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
+sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
+												'$stateParams', 
+												'$rootScope', 
+												'$scope', 
+												'RVStayDatesCalendarSrv',
+												'$filter',
+												'ngDialog',
+function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, ngDialog) {
 
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
@@ -7,57 +13,220 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 	$scope.setTitle($scope.heading);
 	//scroller options
-	$scope.$parent.myScrollOptions = {
-		'edit_staydate_updatedDetails' : {
-			snap : false,
-			scrollbars : true,
-			vScroll : true,
-			vScrollbar : true,
-			hideScrollbar : false,
-			click : true,
-			tap : true
-		},
-		'edit_staydate_calendar' : {
-			snap : false,
-			scrollbars : true,
-			vScroll : true,
-			vScrollbar : true,
-			hideScrollbar : false,
-			click : true,
-			tap : true
+	$scope.setScroller('stay-dates-calendar'); 
+
+
+
+	
+	this.init = function() {
+		this.CALENDAR_PAGINATION_COUNT = 10;
+		$scope.eventSources = [];
+
+		$scope.calendarType = "ROOM_TYPE";
+		if($scope.reservationData.rooms[0].roomTypeId == ""){
+			$scope.calendarType = "BEST_AVAILABLE";
 		}
 
+		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.reservationData.arrivalDate);
+		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.reservationData.departureDate);
+		
+		//finalRoomType - Room type finally selected by the user. corresponds to the bottom select box
+		//roomTypeForCalendar - Room type which specifies the calendar data
+		$scope.finalRoomType = $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
+        //Stay nights in calendar
+        $scope.nights = getNumOfStayNights();
+
+		fetchAvailabilityDetails();
+	
 	};
 
-	this.dataAssign = function() {
-		//Data from Resolve method
-		$scope.stayDetails = stayDateDetails;
-		$scope.stayDetails.isOverlay = false;
-		//For future comparison / reset
-		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
-		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
+	/**
+	* @Return {Array} Dates of the stayrange - excludes the departure date
+	*/
+	var getDatesOfTheStayRange = function() {
+		var startDate = $scope.checkinDateInCalender;
+		var stopDate = $scope.checkoutDateInCalender;
 
-		//Data for rightside Pane.
-		$scope.rightSideReservationUpdates = '';
-		$scope.roomSelected = $scope.stayDetails.details.room_number;
-		$scope.calendarNightDiff = '';
-		$scope.avgRate = '';
-		$scope.availableRooms = [];
+	    var dateArray = new Array();
+	    var currentDate = startDate;
+	    while (currentDate < stopDate) {
+	        dateArray.push($filter('date')(currentDate, $rootScope.dateFormatForAPI))
+	        currentDate = currentDate.addDays(1);
+	    }
+	   return dateArray;
+	}
+
+	//We have to update the staydetails in 'reservationData' hash data modal
+	//for each day of reservation
+	$scope.updateDataModel = function(){
+
+		var availabilityDetails = dclone($scope.availabilityDetails);
+
+		//Update the room type details
+		$scope.reservationData.rooms[0].roomTypeId = $scope.finalRoomType;
+		var roomTypeName = "";
+		for(var i in availabilityDetails.room_types){
+			if(availabilityDetails.room_types[i].id == $scope.finalRoomType){
+				roomTypeName = availabilityDetails.room_types[i].name;
+				break;
+			}
+		}
+		$scope.reservationData.rooms[0].roomTypeName = roomTypeName;
+		
+		//Update the rate details - we need to update for each stay day
+		var stayDates = {};
+		/** stayDates hash format *** /
+		*
+		*	{
+		*        "2014-05-15": {
+		*            "rate": {
+		*                "id": 5,
+		*               "name": "rate_name"
+		*            },
+		*            "guests": {
+		*                "adults": 0,
+		*                "children": 0,
+		*                "infants": 5
+		*            }
+		*        }
+		*    }
+		*/
+		var date;
+		for(var i in $scope.dates){
+			date = $scope.dates[i];
+			
+			stayDates[date] = {};
+			//Guests hash
+			stayDates[date].guests = {};
+			stayDates[date].guests.adults = $scope.reservationData.rooms[0].numAdults;
+			stayDates[date].guests.children = $scope.reservationData.rooms[0].numChildren;
+			stayDates[date].guests.infants = $scope.reservationData.rooms[0].numInfants;
+
+			//rate details
+			stayDates[date].rate = {};
+
+			//We need to get the lowest rate for that room type from the availability details
+			//Even if we are in BAR calendar. we have to select a room type to make the reservation
+			var rateIdForTheDate = availabilityDetails.results[date][$scope.finalRoomType].rate_id;
+			stayDates[date].rate.id = rateIdForTheDate;
+			var rateName = "";
+			for(var j in availabilityDetails.rates){
+				if(availabilityDetails.rates[j].id == rateIdForTheDate){
+					rateName = availabilityDetails.rates[j].name;
+					break;
+				}
+			}
+			stayDates[date].rate.name = rateName;
+		}
+
+		$scope.reservationData.rooms[0].stayDates = stayDates;
 
 	};
+	/**
+	* Event handler for set dates button
+	* Confirms the staydates in calendar
+	*/
+	$scope.setDatesClicked = function(){
 
+		//Get the staydates from the calendar
+		$scope.houseNotAvailableForBooking = false;
+		$scope.roomTypeNotAvailableForBooking = false;
+		$scope.dates = getDatesOfTheStayRange();
+
+		//Check if the staydates has overbooking. if yes display a popup
+		if(isOverBooking()){
+	        ngDialog.open({
+	            template: '/assets/partials/reservation/alerts/overBookingAlert.html',
+	            className: 'ngdialog-theme-default',
+	            closeByDocument: false,
+	            scope: $scope
+	        });
+
+	        return false;
+		} 
+		//If not overbooking, update the datamodals
+		$scope.updateDataModel();
+		//Go to the addons screen
+		$state.go('rover.reservation.staycard.mainCard.addons', {
+					"from_date": $scope.reservationData.arrivalDate,
+					"to_date": $scope.reservationData.departureDate
+				});
+
+	};
+	/**
+	* Check if the stayrange has house & room type available
+	* If for any of the staydates, house or room type not available, then it is overbooking
+	*/
+	var isOverBooking = function(dates){
+		var dateDetails;
+		var roomTypeAvailbilityForTheDay;
+		var isOverBooking = false;
+		var date;
+		//Check for each stayday, whether it is overbooking
+		for(var i in $scope.dates){
+			date = $scope.dates[i];
+			dateDetails = $scope.availabilityDetails.results[date];
+			
+			//Check if houe available for the day 
+			houseAvailabilityForTheDay = dateDetails['house'].availability;
+			if(houseAvailabilityForTheDay <=0){
+				$scope.houseNotAvailableForBooking = true;
+				isOverBooking = true;
+				break;
+			}
+			//check if selected room type available for the day
+			roomTypeAvailbilityForTheDay = dateDetails[$scope.finalRoomType].room_type_availability.availability;
+			if(roomTypeAvailbilityForTheDay <= 0){
+				$scope.roomTypeNotAvailableForBooking = true;
+				isOverBooking = true;
+				break;
+			}
+
+		}
+
+		return isOverBooking;
+	}
+
+	var fetchAvailabilityDetails = function(){
+		var availabilityFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.availabilityDetails = data;
+			//Display Calendar
+			that.renderFullCalendar();
+		};
+
+
+
+		//TODO: verify if the date calculation is correct
+
+		//We are fetching the calendar data for one year. 
+		//Starting from the current business date
+		var params = {};
+        params.from_date = $rootScope.businessDate;
+        var businessDateParsed = getDateObj($rootScope.businessDate);
+        var toDate = businessDateParsed.setDate(businessDateParsed.getDate() + that.CALENDAR_PAGINATION_COUNT) ;
+
+        params.per_page = that.CALENDAR_PAGINATION_COUNT;
+        params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
+        params.status = "";
+		//Initialise data
+		RVStayDatesCalendarSrv.availabilityData = {};
+		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
+	};
+
+	/**
+	* Set the calendar options to display the calendar
+	*/
 	this.renderFullCalendar = function() {
-		/* event source that contains custom events on the scope */
-		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-		$scope.eventSources = [$scope.events];
 		//calender options used by full calender, related settings are done here
-		$scope.fullCalendarOptions = {
+		var fullCalendarOptions = {
 			height : 450,
 			editable : true,
+			droppable : true,
 			header : {
-				left : 'prev',
+				left : '',
 				center : 'title',
-				right : 'next'
+				right : ''
 			},
 			year : $scope.confirmedCheckinDate.getFullYear(), // Check in year
 			month : $scope.confirmedCheckinDate.getMonth(), // Check in month (month is zero based)
@@ -66,235 +235,150 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			disableResizing : false,
 			contentHeight : 320,
 			weekMode : 'fixed',
-			ignoreTimezone : false, // For ignoring timezone,
-			eventDrop : $scope.changedDateOnCalendar,
+			ignoreTimezone : false // For ignoring timezone,
 		};
-	}
-	this.initialise = function() {
-		that.dataAssign();
-		that.renderFullCalendar();
-		if($rootScope.isStandAlone){
-			if(!that.checkIfStaydatesCanBeExtended()){
-				$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
-				$scope.refreshScroller();
-			}
-		}
-	};
-	//Stay dates can be extended only if dates are available prior to checkin date
-	//or after checkout date.
-	this.checkIfStaydatesCanBeExtended = function(){
-		var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
-		var checkinTime = checkinDate.setHours(00, 00, 00);
-		var checkoutTime = checkoutDate.setHours(00, 00, 00);
-		var thisTime = "";
-		var canExtendStay = false;
 
-		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-			//Put time correction 
-			thisTime = getDateObj(this.date).setHours(00, 00, 00);
-			//Check if a day available for extending prior to the checkin day
-            if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
-				if (thisTime < checkinTime) {
-					canExtendStay = true;
-					return false;
-				}
-            }
-            //Check if a day is available to extend after the departure date
-			if (thisTime > checkoutTime) {
-				canExtendStay = true;
-				return false;
-			}
-		});
+		$scope.leftCalendarOptions = dclone(fullCalendarOptions);
+		$scope.leftCalendarOptions.eventDrop = changedDateOnCalendar;
+		$scope.rightCalendarOptions = dclone(fullCalendarOptions);
+		$scope.rightCalendarOptions.eventDrop = changedDateOnCalendar;
 
-		return canExtendStay;
+		$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
 
+		$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+		//Refresh the calendar with the arrival, departure dates
+		$scope.refreshCalendarEvents();
+		$scope.refreshScroller('stay-dates-calendar');
 	}
 
-	$scope.errorCallbackCheckUpdateAvaibale = function(errorMessage) {
-		$scope.$emit("hideLoader");
-
-	};
-
-	$scope.successCallbackCheckUpdateAvaibale = function(data) {
-		$scope.stayDetails.isOverlay = true;
-		$scope.$emit("hideLoader");
-		//entire function is for right side
-
-		/**
-		*based on the availability of room, web service will give 6 status
-		* "room_available": we need to show room details, rate, total, avg...
-		* "room_type_available": we need to show room list, after selecting that
-		* "not_available": we need to show the not available message
-		* "has_restriction": restrictions exist for the rate / room / date combination
-		* 					display the existing restriction 
-		* "to_be_unassigned": Room can be unassigned from another guest 
-		* 					and the guest can continue on same room
-		* "do_not_move": Do Not Move flag on reservation with the assigned room
-		* "maintenance": Room under maintenance
-		*/
-		if (data.availability_status == "room_available") {
-			$scope.showRoomAvailable();
-		}
-
-		else if (data.availability_status == "room_type_available") {
-			that.showRoomTypeAvailable(data);
-		}
-
-		else if (data.availability_status == "not_available") {
-			that.showRoomNotAvailable();
-		}
-
-		else if (data.availability_status == "has_restriction") {
-			$scope.rightSideReservationUpdates = 'RESTRICTION_EXISTS';
-			$scope.stayDetails.restrictions = data.restrictions;
-		}
-
-		else if (data.availability_status == "to_be_unassigned") {
-			$scope.rightSideReservationUpdates = 'PREASSIGNED';
-			$scope.stayDetails.preassignedGuest = data.preassigned_guest;
-		}
-
-		else if (data.availability_status == "maintenance") {
-			$scope.rightSideReservationUpdates = 'MAINTENANCE';
-		}
-
-		else if (data.availability_status == "do_not_move") {
-			$scope.rightSideReservationUpdates = "ROOM_CANNOT_UNASSIGN";
-		}
-		$scope.refreshScroller(); 
-	};
-
-	//function to show restricted stay range div- only available for non-standalone PMS
-	this.showRestrictedStayRange = function() {
-		$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
-		$scope.refreshScroller();
-	};
-
-	//function to show not available room types div
-	this.showRoomNotAvailable = function() {
-		$scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE';
-		$scope.refreshScroller();
-	};
-
-	// function to show room list
-	that.showRoomTypeAvailable = function(data) {
-		$scope.availableRooms = data.rooms;
-		//we are showing the right side with updates
-		$scope.rightSideReservationUpdates = 'ROOM_TYPE_AVAILABLE';
-		$scope.refreshScroller();
-	};
-
-	//function to show room details, total, avg.. after successful checking for room available
-	$scope.showRoomAvailable = function() {
-		//setting nights based on calender checking/checkout days
-		var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
-		$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-		//calculating the total rate / avg.rate
-		$scope.totRate = 0;
-		var checkinRate = '';
-		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-
-			//we have to add rate between the calendar checkin date & calendar checkout date only
-			if (getDateObj(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && getDateObj(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
-				$scope.totRate += parseFloat(this.rate);
-			}
-			//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
-			if (this.date == ($scope.stayDetails.details.arrival_date)) {
-				checkinRate = $scope.escapeNull(this.rate) == "" ? "" : parseInt(this.rate);
-			}
-
-		});
-		//calculating the avg. rate
-		if ($scope.calendarNightDiff > 0) {
-			$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100 );
+	/**
+	* return the rate for a given date
+	*/
+	var getRateForTheDay = function(availabilityDetails){
+		//If no room type is selected for the room type calendar, 
+		//then no need to display the price
+		var rate
+		if($scope.roomTypeForCalendar == "" && $scope.calendarType == "ROOM_TYPE"){
+			rate = "";
 		} else {
-			$scope.totRate = checkinRate;
-			$scope.avgRate = Math.round(($scope.totRate + 0.00001));
+			rate = $rootScope.currencySymbol + 
+		                availabilityDetails.room_rates.single;
 		}
-		//we are showing the right side with updates
-		$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
-		$scope.refreshScroller();
-	}
-	//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
-	$scope.roomSelectedFromList = function(roomNumber) {
-		$scope.roomSelected = roomNumber;
-		$scope.showRoomAvailable();
-	}
+		return rate;
+	}; 
 
-	$scope.getRoomClass = function(reservationStatus, roomStatus, foStatus) {
-		var roomClass = "";
-		if (reservationStatus == "CHECKING_IN") {
-			if (roomStatus == "READY" && foStatus == "VACANT") {
-				roomClass = "ready";
-			} else {
-				roomClass = "not-ready";
-			}
-		}
-		return roomClass;
+	/**
+	* Compute the fullcalendar events object from the availability details
+	*/
+    var computeEventSourceObject = function(checkinDate, checkoutDate){
+
+        var availabilityKey;
+        if($scope.calendarType == "BEST_AVAILABLE"){
+        	availabilityKey = 'BAR';
+        } else {
+			availabilityKey = $scope.roomTypeForCalendar;
+        }
+        var events = [];
+
+        var thisDate;
+        var calEvt = {};
+
+        angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
+            calEvt = {};
+            //instead of new Date(), Fixing the timezone issue related with fullcalendar
+            thisDate = getDateObj(date);
+            calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
+            calEvt.start = thisDate;
+            calEvt.end = thisDate;
+            calEvt.day = thisDate.getDate().toString();
+
+            //Event is check-in
+            if (thisDate.getTime() === checkinDate.getTime()) {
+                calEvt.id = "check-in";
+                calEvt.className = "check-in";
+                //For inhouse reservations, we can not move the arrival date
+				if ($scope.reservationData.status != "CHECKEDIN" && $scope.reservationData.status != "CHECKING_OUT") {
+                	calEvt.startEditable = "true";
+                }
+                calEvt.durationEditable = "false";
+
+                //If check-in date and check-out dates are the same, show split view.
+                if (checkinDate.getTime() == checkoutDate.getTime()) {
+                    calEvt.className = "check-in split-view";
+                    events.push(calEvt);
+                    //checkout-event
+                    calEvt = {};
+                    calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
+                                               	
+                    calEvt.start = thisDate;
+                    calEvt.end = thisDate;
+                    calEvt.day = thisDate.getDate().toString();
+                    calEvt.id = "check-out";
+                    calEvt.className = "check-out split-view";
+                    calEvt.startEditable = "true";
+                    calEvt.durationEditable = "false"
+                }
+
+            //mid-stay range
+            } else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
+                calEvt.id = "availability";
+                calEvt.className = "mid-stay";
+            //Event is check-out
+            } else if (thisDate.getTime() == checkoutDate.getTime()) {
+                calEvt.id = "check-out";
+                calEvt.className = "check-out";
+                calEvt.startEditable = "true";
+                calEvt.durationEditable = "false";
+            /**dates prior to check-in and dates after checkout*/
+            
+
+
+            //room type available - If no room type is being selected, only show house availability.
+            } else if($scope.roomTypeForCalendar != "" && 
+            	dateDetails[availabilityKey].room_type_availability.availability > 0) { 
+                calEvt.className = "type-available"; //TODO: verify class name
+                //console.log("room type available----" + date);
+            //room type not available but house available   
+            } else if(dateDetails["house"].availability > 0) {
+            	//console.log("room type not available----" + date)
+            	//calEvt.className = ""; //TODO: verify class name from stjepan
+            //house not available(no room available in the hotel for any room type)
+            } else{
+            	//console.log("house not available----" + date)
+				calEvt.className = "house-unavailable";
+            }
+
+            events.push(calEvt);
+        });
+        return events;
+    };
+	
+	/**
+	* Event handler for the room type dropdown in top 
+	* - the dropdown which defines the data for calendar.
+	*/
+	$scope.roomTypeForCalendarChanged = function(){
+		$scope.finalRoomType = $scope.roomTypeForCalendar;
+		$scope.resetCalendarDates();
+		$scope.refreshCalendarEvents();
 	};
 
-	this.successCallbackConfirmUpdates = function(data) {
-		$scope.$emit("hideLoader");
-		$scope.goBack();
-	};
-	this.failureCallbackConfirmUpdates = function(errorMessage) {
-
-		$scope.$emit("hideLoader");
-		$scope.errorMessage = errorMessage;
-	};
-
-	$scope.resetDates = function() {
-		$scope.stayDetails.isOverlay = false;
-		that.dataAssign();
-		/* event source that contains custom events on the scope */
-		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
-
-		$scope.eventSources.length = 0;
-		$scope.eventSources.push($scope.events);
-
-	}
-
-	$scope.goBack = function() {
-		$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": $stateParams.reservationId, "confirmationId": $stateParams.confirmNumber, "isrefresh": true});
-	};
-
-	// function to get color class against a room based on it's status
-	$scope.getColorCode = function(roomReadyStatus, checkinInspectedOnly) {
-		return getMappedRoomReadyStatusColor(roomReadyStatus, checkinInspectedOnly);
-	};
-
-	$scope.confirmUpdates = function() {
-		var postParams = {
-			'room_selected' : $scope.roomSelected,
-			'arrival_date' : getDateString($scope.checkinDateInCalender),
-			'dep_date' : getDateString($scope.checkoutDateInCalender),
-			'reservation_id' : $scope.stayDetails.calendarDetails.reservation_id
-		};
-		$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
-	}
-	/*
-	 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
-	 */
-	$scope.changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-		$scope.stayDetails.isOverlay = false;
-		var newDateSelected = event.start;
-		//the new date in calendar
-
-		// we are storing the available first date & last date for easiness of the following code
-		var availableStartDate = getDateObj($scope.stayDetails.calendarDetails.available_dates[0].date);
-		var availableLastDate = getDateObj($scope.stayDetails.calendarDetails.available_dates[$scope.stayDetails.calendarDetails.available_dates.length - 1].date);
+	/**
+	* This function is used to check the whether the movement of dates is valid 
+	* accoriding to our reqmt.
+	*/
+	var changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+		var newDateSelected = event.start;//the new date in calendar
 
 		// also we are storing the current business date for easiness of the following code
-		var currentBusinessDate = getDateObj($scope.stayDetails.calendarDetails.current_business_date);
+		var currentBusinessDate = getDateObj($rootScope.businessDate);
 
 		var finalCheckin = "";
 		var finalCheckout = "";
 
-		// we will not allow to drag before to available start date or to drag after available end date
-		if (newDateSelected < availableStartDate || newDateSelected > availableLastDate) {
+		// checkin date/ checkout date can not be moved prior to current business date
+		if (newDateSelected.getTime() < currentBusinessDate.getTime()) {
 			revertFunc();
-			// reverting back to it's original position
 			return false;
 		}
 
@@ -312,11 +396,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 				revertFunc();
 				return false;
 			}
-			// also before current busines date also not allowed
-			if (newDateSelected.getTime() < currentBusinessDate.getTime()) {
-				revertFunc();
-				return false;
-			}
 
 			finalCheckin = $scope.checkinDateInCalender;
 			finalCheckout = newDateSelected;
@@ -325,154 +404,95 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		$scope.checkinDateInCalender = finalCheckin;
 		$scope.checkoutDateInCalender = finalCheckout;
 
-		//$scope.myCalendar.fullCalendar.rerenderEvents();
-		//changing the data for fullcalendar
-		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+		//Reload the calendar with new arrival, departure dates
+		$scope.refreshCalendarEvents()
+	};
+
+	$scope.refreshCalendarEvents = function(){
+		$scope.eventSources.length = 0;
+		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 		$scope.eventSources.length = 0;
 		$scope.eventSources.push($scope.events);
+	};
 
-		//For stand-alone PMS, the restrictions are calculated from the server
-		//We call the API when dates are changed to get the status
-		if($rootScope.isStandAlone){
-			// checking if stay range is restricted between that days, 
-			//if so we will not call webservice for availabilty
-			if (that.isStayRangeRestricted($scope.checkinDateInCalender, 
-											$scope.checkoutDateInCalender)) {
-				that.showRestrictedStayRange();
-				return false;
-			}
+	var getNumOfStayNights = function(){
+		//setting nights based on calender checking/checkout days
+		var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
+		return Math.ceil(timeDiff / (1000 * 3600 * 24));
+	}
 
+	$scope.resetCalendarDates = function(){
+		$scope.checkinDateInCalender = $scope.confirmedCheckinDate;
+		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate;
+	};
+
+	$scope.selectedBestAvailableRatesCalOption = function(){
+		$scope.calendarType= 'BEST_AVAILABLE'; 
+		$scope.resetCalendarDates();
+		$scope.refreshCalendarEvents(); 
+
+
+	};
+	$scope.selectedRoomTypesCalOption = function(){
+		$scope.calendarType ='ROOM_TYPE'; 
+		$scope.resetCalendarDates();
+		$scope.refreshCalendarEvents(); 
+
+	};
+
+	$scope.isRoomTypeChangeAllowed = function(){
+		var ret = true;
+		if($scope.reservationData.status == "CHECKEDIN" || 
+			$scope.reservationData.status == "CHECKING_OUT") {
+			ret = false;
 		}
-		
-		//calling the webservice for to check the availablity of rooms on these days
-		var getParams = {
-			'arrival_date' : getDateString($scope.checkinDateInCalender),
-			'dep_date' : getDateString($scope.checkoutDateInCalender),
-			'reservation_id' : $scope.stayDetails.calendarDetails.reservation_id
+		return ret;
+	};
+
+	$scope.handleCancelAction = function(){
+		$state.go($scope.fromState, {});
+	};
+
+	$scope.prevButtonClickHandler = function(){
+		$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) - 2;
+		$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) - 2;
+		$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+		$scope.refreshCalendarEvents();
+
+	};
+
+	$scope.isPrevButtonDisabled = function(){
+		var disabled = false;
+		if(parseInt(getDateObj($rootScope.businessDate).getMonth()) == parseInt($scope.leftCalendarOptions.month)){
+			disabled = true;
+		}
+		return disabled
+
+	};
+	
+
+	$scope.nextButtonClickHandler = function(){
+		var nextMonthDetailsFetchSuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 2;
+			//console.log($scope.leftCalendarOptions.month);
+			$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 2;
+			$scope.availabilityDetails = data;
+			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+			$scope.refreshCalendarEvents();
+			
+			//Display Calendar
+			//that.renderFullCalendar();
 		};
 
-		$scope.invokeApi(RVChangeStayDatesSrv.checkUpdateAvaibale, getParams, $scope.successCallbackCheckUpdateAvaibale, $scope.errorCallbackCheckUpdateAvaibale);
-
+		var params = {};
+        params.from_date = '';
+        params.per_page = that.CALENDAR_PAGINATION_COUNT;
+        params.to_date = '';
+        params.status = 'FETCH_ADDITIONAL';
+		$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, nextMonthDetailsFetchSuccess);
 	};
 
-	/*
-	 function to check the stayrange restricted between dates
-	 */
-	this.isStayRangeRestricted = function(checkinDate, checkoutDate) {
-		var checkinTime = checkinDate.setHours(00, 00, 00);
-		var checkoutTime = checkoutDate.setHours(00, 00, 00);
-		var thisTime = "";
-		var totalNights = 0;
-		var minNumOfStay = "";
-		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-			//Put time correction 
-			thisTime = getDateObj(this.date).setHours(00, 00, 00);
-			//We calculate the minimum length of stay restriction 
-			//by reffering to the checkin day
-			if (this.date == getDateString(checkinDate)) {
-				$(this.restriction_list).each(function(index) {
-					if (this.restriction_type == "MINIMUM_LENGTH_OF_STAY") {
-						minNumOfStay = this.number_of_days;
-					}
-				});
-			}
-			//Get the number of nights of stay. 
-			if (thisTime < checkinTime || thisTime >= checkoutTime) {
-				return true;
-			}
-			totalNights++;
-		});
-		if (totalNights < minNumOfStay) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-
-	$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
-
-		var events = [];
-		var currencyCode = $scope.stayDetails.calendarDetails.currency_code;
-		var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
-
-		var thisDate;
-		var calEvt = {};
-		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-			calEvt = {};
-			//Fixing the timezone issue related with fullcalendar
-			thisDate = getDateObj(this.date);
-
-			if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-				calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
-			} else {
-				calEvt.title = getCurrencySymbol(currencyCode) + $scope.escapeNull(this.rate).split('.')[0];
-			}
-			calEvt.start = thisDate;
-			calEvt.end = thisDate;
-			calEvt.day = thisDate.getDate().toString();
-
-			//Event is check-in
-			if (thisDate.getTime() === checkinDate.getTime()) {
-				calEvt.id = "check-in";
-				calEvt.className = "check-in";
-				if (reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT") {
-					calEvt.startEditable = "true";
-				}
-				calEvt.durationEditable = "false";
-
-				//If check-in date and check-out dates are the same, show split view.
-				if (checkinDate.getTime() == checkoutDate.getTime()) {
-					calEvt.className = "check-in split-view";
-					events.push(calEvt);
-					//checkout-event
-					calEvt = {};
-					if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-						calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
-					} else {
-						calEvt.title = getCurrencySymbol(currencyCode) + $scope.escapeNull(this.rate).split('.')[0];
-					}
-					calEvt.start = thisDate;
-					calEvt.end = thisDate;
-					calEvt.day = thisDate.getDate().toString();
-					calEvt.id = "check-out";
-					calEvt.className = "check-out split-view";
-					calEvt.startEditable = "true";
-					calEvt.durationEditable = "false"
-				}
-
-				//mid-stay range
-			} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
-				calEvt.id = "availability";
-				calEvt.className = "mid-stay";
-				//Event is check-out
-			} else if (thisDate.getTime() == checkoutDate.getTime()) {
-				calEvt.id = "check-out";
-				calEvt.className = "check-out";
-				calEvt.startEditable = "true";
-				calEvt.durationEditable = "false";
-				//dates prior to check-in and dates after checkout
-			} else {
-				//calEvt.id = "availability";
-				calEvt.className = "type-available";
-			}
-
-			events.push(calEvt);
-		});
-		return events;
-	};
-
-	//this.initialise();
-
-	$scope.refreshScroller = function() {
-		setTimeout(function() {
-			$scope.myScroll['edit_staydate_updatedDetails'].refresh();
-			$scope.myScroll['edit_staydate_calendar'].refresh();
-		}, 300);
-	};
-
-	$scope.$on('$viewContentLoaded', function() {
-
-		$scope.refreshScroller();
-	});
+	this.init();
 
 }]); 
