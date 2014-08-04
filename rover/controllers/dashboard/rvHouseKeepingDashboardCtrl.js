@@ -1,4 +1,4 @@
-sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope', function($scope, $rootScope){
+sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope', '$state', function($scope, $rootScope, $state){
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -77,5 +77,9 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
         var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
         return valueToReturn;
    };  
+
+   $scope.clickedOnRoomButton = function(event, filterType){
+        $state.go('rover.housekeeping.roomStatus', {'roomStatus': filterType});
+   };
 
 }]);

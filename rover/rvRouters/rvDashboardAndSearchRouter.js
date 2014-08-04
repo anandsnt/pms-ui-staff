@@ -40,9 +40,35 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             }
         }); */
         $stateProvider.state('rover.search', {
-            url: '/search/',
+            url: '/search/:type',
             templateUrl: '/assets/partials/search/rvSearchReservation.html', 
-            controller: 'rvReservationSearchController'           
+            controller: 'rvReservationSearchController',
+            resolve: {
+                searchResultdata: function(RVSearchSrv, $stateParams) {
+                    var oldType = "";
+                    var dataDict = {};
+                    oldType = $stateParams.type;
+                    if( oldType != null && oldType!= '' ) {
+                        if(oldType == "LATE_CHECKOUT"){
+                            dataDict.is_late_checkout_only = true;
+                        }
+                        else if(oldType == "VIP"){
+                            dataDict.vip = true;
+                        }
+                        else{
+                            dataDict.status = oldType;
+                        }
+                        //calling the webservice
+                        return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
+                    } else if ( !!$stateParams.useCache ) {
+                        return RVSearchSrv.fetch({}, $stateParams.useCache);
+                    } else {
+                        console.log( 'to check in server' );
+                        var results = [];
+                        return results;
+                    }
+                }
+            }                      
         });
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',   

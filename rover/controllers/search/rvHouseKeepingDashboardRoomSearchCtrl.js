@@ -76,7 +76,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		var fetchRooms = function() {
 
 			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
+			if ( RVHkRoomStatusSrv.isListEmpty()) {
 				$scope.$emit('showLoader');
 
 				RVHkRoomStatusSrv.fetch()
@@ -92,15 +92,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 						console.log("fetch failed");
 						$scope.$emit('hideLoader');
 					});	
-			} else {
-				$timeout(function() {
-
-					// show loader as we will be slicing the rooms
-					// in smaller and bigger parts and show smaller first
-					// and rest after a delay
-					$scope.$emit('showLoader');
-					afterFetch( fetchedRoomList );
-				}, 1);
 			}
 		};
 
@@ -180,15 +171,18 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	  	};
 
 		/**
-		*
+		* when focused on query box, we need to show the search results area
+		* and need to hide the dashboard area
 		*/
 		$scope.focusedOnQueryBox = function(){
-
 			$scope.showSearchResultsArea = true;
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
 		}
-
+		/**
+		* when focusedout on query box, we need to hide the search results area
+		* and need to show the dashboard area only if there is no data displaying
+		*/
 		$scope.focusedOutOnQueryBox = function(){
 			if(!$scope.isSearchResultsShowing){
 				$scope.showSearchResultsArea = false;
