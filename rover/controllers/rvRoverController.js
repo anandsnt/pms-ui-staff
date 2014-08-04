@@ -197,7 +197,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             action: ""
           }, {
             title: "MENU_END_OF_DAY",
-            action: ""
+            action: "",
+            actionPopup:true,
+            menuIndex:"endOfDay"
           }]
         }, {
           title: "MENU_CONVERSATIONS",
@@ -366,6 +368,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
       $scope.showSubMenu = false;
+    };
+
+    $scope.subMenuAction = function(subMenu){
+      if(subMenu === "endOfDay"){
+         ngDialog.open({
+            template: '/assets/partials/settings/rvEndOfDayModal.html',
+            controller: 'RVEndOfDayModalController',
+            className: 'ngdialog-theme-plain calendar-modal'
+          });
+      }
     };
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)

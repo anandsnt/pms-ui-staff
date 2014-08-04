@@ -68,7 +68,8 @@
 			<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-hide="menuItem.standAlone && !isStandAlone">
 				<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}">
 				</a>
-				<a ng-if="menuItem.action == ''" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}">
+				<a ng-if="menuItem.action == '' && !menuItem.actionPopup" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}">
+				<a ng-if="menuItem.action == ''&& menuItem.actionPopup" ng-click="subMenuAction(menuItem.menuIndex)" translate="{{menuItem.title}}">
 				</a>
 			</li>
 			<li class="filler"></li>

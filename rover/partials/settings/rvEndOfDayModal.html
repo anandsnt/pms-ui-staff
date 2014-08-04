@@ -1,0 +1,34 @@
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
+	<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
+		<span class="icons icon-close invert"></span>
+	</button>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<span ng-hide="isLoggedIn">
+	<strong class="h2 admin-title">Enter your credentials</strong>
+	<div class="entry full-width">
+		<div id="notification-message"></div>
+	</div>
+	<div class="entry full-width">
+		<label for="name">User Name</label>
+		<input type="text" ng-model="userName" class="normalInputStyle">
+	</div>
+	<div class="entry full-width">
+		<label for="email">Password</label>
+		<input type="email" ng-model="password"  class="normalInputStyle">
+	</div>
+	<div class="actions float">
+		<button type="button" ng-click="login()" class="button  green" >
+			Login
+		</button>
+		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
+	</div>
+</span>
+<div ng-show="isLoggedIn">
+	<div class="actions float">
+		<button type="button" ng-click="login()" class="button  green" >
+			Start End of Day Process for {{businessDate}}
+		</button>
+	</div>
+</div>
+</form>
+</div>
