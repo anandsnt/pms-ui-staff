@@ -267,6 +267,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADiBeaconDetailsCtrl',
 			url : '/iBeaconDetails/:action'
 		});
+
+		$stateProvider.state('admin.settingsAndParams', {
+			templateUrl: '/assets/partials/settingsAndParams/adSettingsAndParams.html',
+			controller: 'settingsAndParamsCtrl',
+			url : '/settingsAndParams',
+			resolve: {
+				settingsAndParamsData: function(settingsAndParamsSrv) {
+					return settingsAndParamsSrv.fetchsettingsAndParamsSrv();
+				}
+			}
+		});
 		
         
 });
