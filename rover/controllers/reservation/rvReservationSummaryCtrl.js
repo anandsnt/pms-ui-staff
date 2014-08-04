@@ -6,8 +6,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.init = function() {
 			$scope.data = {};
-			$scope.data.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
-			$scope.data.isGuestAdditionalEmailChecked = false;
+			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
+			$scope.otherData.isGuestAdditionalEmailChecked = false;
 			$scope.data.paymentMethods = [];
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
@@ -109,10 +109,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// guest emails to which confirmation emails should send
 			data.confirmation_emails = [];
-			if ($scope.data.isGuestPrimaryEmailChecked) {
+			if ($scope.otherData.isGuestPrimaryEmailChecked) {
 				data.confirmation_emails.push($scope.reservationData.guest.email);
 			}
-			if ($scope.data.isGuestAdditionalEmailChecked) {
+			if ($scope.otherData.isGuestAdditionalEmailChecked) {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
 
@@ -310,9 +310,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		    this email should be linked to the guest card. 
 		 */
 		$scope.primaryEmailEntered = function() {
-			if ($scope.isGuestEmailAlreadyExists) {
-				return false;
-			}
 			var dataToUpdate = {
 				"email": $scope.reservationData.guest.email
 			};
@@ -324,6 +321,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var updateGuestEmailSuccessCallback = function(data) {
 				// console.log('reached success');
+				$scope.$emit('guestEmailChanged');
 				$scope.$emit("hideLoader");
 			}
 
