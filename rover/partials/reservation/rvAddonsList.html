@@ -41,8 +41,10 @@
                                     <em>{{ addon.description }}</em>
                                 </div>
                                 <div class="price">
-                                    {{currencySymbol}}{{ addon.price | number : 2}}
-                                    <span>{{ addon.stay | uppercase}}</span>
+                                   {{currencySymbol}}{{ addon.price | number : 2}}
+                                   <span class="amount-type">{{ addon.amountTypeDesc | uppercase}}</span>
+                                   <span ng-if="addon.amountTypeDesc != '' && addon.postTypeDesc != ''">/</span>
+                                   <span class="post-type">{{ addon.postTypeDesc | uppercase}}</span>
                                 </div>
                                 <div class="add-enhancement" ng-init="addonQty=1">
                                     <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
