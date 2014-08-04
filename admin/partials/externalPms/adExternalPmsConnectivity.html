@@ -2,7 +2,7 @@
 	<div >
 		<header class="content-title float">
 			<h2>OWS Connectivity Setup</h2>
-			<a id="go_back" data-type="load-details" class="action back" ng-click="cancelClick()">Back</a>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">Back</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
@@ -25,7 +25,7 @@
 
 			</fieldset>
 			<div class="actions float">
-				<button type="button" class="button blank add-data-inline" ng-click="cancelClick()">
+				<button type="button" class="button blank add-data-inline" ng-click="goBackToPreviousState()">
 					Cancel
 				</button>
 				<button type="button" class="button green" ng-click="saveConnectivity()">

@@ -614,6 +614,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * success callback ofcomplete checkin
 	 */
 	$scope.completeCheckinSuccessCallback = function(){
+
+		$scope.$emit('hideLoader');
 				
 		var keySettings = $scope.reservationBillData.key_settings;
 		$scope.fromView = "checkin";
@@ -649,8 +651,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			    scope: $scope
 			});
 		}
-		
-		
 	};
 
 	$scope.completeCheckinFailureCallback = function(data){
