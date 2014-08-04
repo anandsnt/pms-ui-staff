@@ -67,59 +67,41 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				"selected_link_with" : data.selected_link_with,
 				"charge_groups" : data.charge_groups,
 				"charge_code_types" : data.charge_code_types,
-				"link_with" : data.link_with,
 
 				"selected_amount_sign" : "+",
 				"selected_amount_symbol" : "$",
 				"amount" : "100",
-				"amount_types" : [{
-					"value" : "1",
-					"name" : "PerAdult"
-				}, {
-					"value" : "2",
-					"name" : "PerChild"
-				}, {
-					"value" : "3",
-					"name" : "Per Person"
-				}, {
-					"value" : "4",
-					"name" : "Flat"
-				}],
-				"selected_amount_type" : "1",
-				"post_types" : [{
-					"value" : "1",
-					"name" : "PerNight"
-				}, {
-					"value" : "2",
-					"name" : "PerStay"
-				}],
-				"selected_post_type" : "2",
-				"charge_codes_has_tax" : [{
-					"value" : "1",
-					"name" : "sample1"
-				}, {
-					"value" : "2",
-					"name" : "sample2"
-				}],
-				"tax_details" : [{
-					"id" : "1",
-					"is_inclusive" : true,
-					"selected_charge_code" : "2",
-					"calculation_rule_list" : [],
-					"selected_calculation_rule" : ""
-				}, {
-					"id" : "2",
-					"is_inclusive" : false,
-					"selected_charge_code" : "2",
-					"calculation_rule_list" : [{
+				"amount_types" : [
+					{
 						"value" : "1",
-						"name" : "ChargeCodeBaseAmount"
-					}, {
+						"name" : "PerAdult"
+					}, 
+					{
 						"value" : "2",
-						"name" : "ChargeCodeplusTax 1"
-					}],
-					"selected_calculation_rule" : "1"
-				}],
+						"name" : "PerChild"
+					}, 
+					{
+						"value" : "3",
+						"name" : "Per Person"
+					}, 
+					{
+						"value" : "4",
+						"name" : "Flat"
+					}
+				],
+				"selected_amount_type" : "1",
+				"post_types" : [
+					{
+						"value" : "1",
+						"name" : "PerNight"
+					},
+					{
+						"value" : "2",
+						"name" : "PerStay"
+					}
+				],
+				"selected_post_type" : "2",
+				
 				 "tax_codes": [
 			            {
 			                "value": "1",
@@ -138,18 +120,25 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			            {
 			                "charge_code_id": "1",
 			                "is_inclusive": false,
-			                "calculation_rules": [
-			                    3
-			                ]
+			                "calculation_rules": []
 			            },
 			            {
 			                "charge_code_id": "13",
 			                "is_inclusive": false,
-			                "calculation_rules": []
+			                "calculation_rules": [1]
+			            },
+			            {
+			                "charge_code_id": "13",
+			                "is_inclusive": false,
+			                "calculation_rules": [1,2]
 			            }
 			        ]
 			};
-
+			
+			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
+				item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+				
+	       	});
 			
 			console.log($scope.prefetchData);
 		
@@ -173,7 +162,12 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.isAdd = false;
 		
 			//$scope.getPrefetchData(data);
-			
+			// Generating calculation rules list.
+			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
+				item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+				
+	       	});
+	       	
 			// Generating link-with array to show charge code Link with - for non-standalone hotels
 			$scope.prefetchData.link_with = [];
 			angular.forEach($scope.prefetchData.tax_codes,function(item1, index1) {
@@ -281,6 +275,53 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		};
 		$scope.invokeApi(ADChargeCodesSrv.importData, {}, importSuccessCallback);
 	};
+	
+	$scope.generateCalculationRule = function(taxCount){
+		var calculation_rule_list = [];
+		if (taxCount === 0) {
+			calculation_rule_list = [];
+		} else if (taxCount === 1) {
+			
+				calculation_rule_list = [{
+					"value" : 0,
+					"name" : "ChargeCodeBaseAmount",
+					"ids" :[]
+				}, {
+					"value" : 1,
+					"name" : "ChargeCodeplusTax 1",
+					"ids" : [$scope.prefetchData.linked_charge_codes[0].charge_code_id]
+				}];
+			
+		} else if (taxCount > 1) {
+			calculation_rule_list = [{
+					"value" : 0,
+					"name" : "ChargeCodeBaseAmount",
+					"ids" :[]
+				}, {
+					"value" : 1,
+					"name" : "ChargeCodeplusTax 1",
+					"ids" : [$scope.prefetchData.linked_charge_codes[0].charge_code_id]
+			}];
+			/*
+			 * Generating 3rd calculation rule manually in UI.
+			 */
+			var name = "ChargeCodeplusTax 1";
+			var idList = [$scope.prefetchData.linked_charge_codes[0].charge_code_id];
+			for (var i = 2; i <= taxCount; i++) {
+				var name = name + " & " + i;
+				idList.push($scope.prefetchData.linked_charge_codes[i-1].charge_code_id);
+			}
+			var obj = {
+				"value" : 2,
+				"name" : name,
+				"ids": idList
+			};
+			calculation_rule_list.push(obj);
+		}
+		
+		return calculation_rule_list;
+		
+	};
 	/*
 	 * To fetch the tax details for add screen.
 	 */
@@ -291,46 +332,22 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var taxCount = $scope.prefetchData.linked_charge_codes.length;
 		if (taxCount === 0) {
 			$scope.addData = {
-				"id" : "1",
+				"id" : 1,
 				"is_inclusive" : true,
 				"calculation_rule_list" : [],
 			};
 		} else if (taxCount === 1) {
 			$scope.addData = {
-				"id" : "2",
+				"id" : 2,
 				"is_inclusive" : true,
-				"calculation_rule_list" : [{
-					"value" : "1",
-					"name" : "ChargeCodeBaseAmount"
-				}, {
-					"value" : "2",
-					"name" : "ChargeCodeplusTax 1"
-				}]
+				"calculation_rule_list" : $scope.generateCalculationRule(1)
 			};
 		} else if (taxCount > 1) {
 			$scope.addData = {
 				"id" : taxCount + 1,
 				"is_inclusive" : true,
-				"calculation_rule_list" : [{
-					"value" : "1",
-					"name" : "ChargeCodeBaseAmount"
-				}, {
-					"value" : "2",
-					"name" : "ChargeCodeplusTax 1"
-				}]
+				"calculation_rule_list" : $scope.generateCalculationRule(taxCount)
 			};
-			/*
-			 * Generating 3rd calculation rule manually in UI.
-			 */
-			var name = "ChargeCodeplusTax 1";
-			for (var i = 2; i <= $scope.prefetchData.linked_charge_codes.length; i++) {
-				var name = name + " & " + i;
-			}
-			var obj = {
-				"value" : "3",
-				"name" : name
-			};
-			$scope.addData.calculation_rule_list.push(obj);
 		}
 	};
 	/*

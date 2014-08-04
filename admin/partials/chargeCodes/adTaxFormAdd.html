@@ -21,7 +21,7 @@
 			</div>
 		</div>
 	</div>
-	<ad-dropdown label="Charge Code" selbox-class= "placeholder" label-in-drop-down="Select Charge Code" list="prefetchData.tax_codes" selected-Id="addData.selected_charge_code" div-class="full-width"  ></ad-dropdown>
+	<ad-dropdown label="Charge Code" selbox-class= "placeholder" label-in-drop-down="Select Charge Code" list="prefetchData.tax_codes" selected-Id="addData.charge_code_id" div-class="full-width"  ></ad-dropdown>
 
 	<!-- Show from TAX 2 onwards. -->
 	<ad-dropdown ng-show="!addData.is_inclusive && addData.id!==1" label="Calculation Rule" selbox-class= "placeholder" label-in-drop-down="Select Calculation Rule" list="addData.calculation_rule_list" selected-Id="addData.selected_calculation_rule" div-class="full-width"  ></ad-dropdown>
