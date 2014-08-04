@@ -101,7 +101,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 	};
 
 	$scope.$on("loyaltyDeletionError",function(e,error){
-
+			$scope.$parent.myScroll['loyaltyList'].scrollTo(0,0);
             $scope.errorMessage = error;
     });
 }]);
