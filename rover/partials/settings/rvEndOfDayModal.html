@@ -23,15 +23,15 @@
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
 	</div>
 </form>
-<div ng-show="isLoggedIn && !startProcess" class="modal-content" style="padding:50px;">
+<div ng-show="isLoggedIn && !startProcess" class="modal-content padding_30">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div class="actions float" style="padding:50px;">
+	<div class="actions float padding_30">
 		<button type="button" ng-click="startEndOfDayProcess()" class="button" ng-class="{'green':startProcessEnabled}" ng-disabled="!startProcessEnabled">
 			Start End of Day Process for {{businessDate}}
 		</button>
 	</div>
 </div>
-<div ng-show="isLoggedIn && startProcess" class="modal-content new-content form warning" style="padding:50px;">
+<div ng-show="isLoggedIn && startProcess" class="modal-content new-content form warning padding_30">
 	 <div>
 	   This will close of the Business Day for {{businessDate}} and change the date to {{nextBusinessDate}}
 	 </div>
