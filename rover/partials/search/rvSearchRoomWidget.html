@@ -7,7 +7,7 @@
 			</a>
 
 			<button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
-			<input name="dashboard-query" id="dashboard-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-focus="focusedOnQueryBox()"  ng-model="query" ng-change="filterByQuery()">
+			<input name="dashboard-query" id="dashboard-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-focus="focusedOnQueryBox()"  ng-model="query" ng-change="filterByQuery()" ng-blur="focusedOutOnQueryBox()">
 		</div>
 	</form>
 

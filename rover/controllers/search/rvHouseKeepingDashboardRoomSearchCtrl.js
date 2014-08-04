@@ -183,13 +183,16 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		*
 		*/
 		$scope.focusedOnQueryBox = function(){
+
 			$scope.showSearchResultsArea = true;
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
 		}
 
 		$scope.focusedOutOnQueryBox = function(){
-			$scope.showSearchResultsArea = false;
-			$scope.$emit("showDashboardArea", true);
+			if(!$scope.isSearchResultsShowing){
+				$scope.showSearchResultsArea = false;
+				$scope.$emit("showDashboardArea", true);
+			}
 		};
 }]);
