@@ -22,7 +22,7 @@ admin.service('settingsAndParamsSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
     */	
 	this.saveSettingsAndParamsSrv = function(data){
 		var deferred = $q.defer();
-		var url = "/api/hotel_settings";		
+		var url = "/api/hotel_settings/change_settings";		
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
