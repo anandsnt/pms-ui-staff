@@ -54,7 +54,7 @@
                     <div class="book-rate" ng-class="{hidden: selectedRoomType == room.id}">
                         <h4 translate>RESV_BEST_RATE</h4>
                         <div class="price">{{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span translate>RESV_AVG_NIGHT</span></div>
-                        <button class="button green" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
+                        <button class="button" ng-class = "{'green': stateCheck.restrictedContractedRates.indexOf(roomAvailability[room.id].defaultRate) == -1,'red': stateCheck.restrictedContractedRates.indexOf(roomAvailability[room.id].defaultRate) > -1}" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
                     </div>
                 </a>
 
@@ -68,7 +68,7 @@
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
                                 <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.stayDatesMode" class="button white green-text">CURRENT RATE</button>
-                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.stayDatesMode" class="button green" ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
+                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.stayDatesMode" class="button" ng-class = "{'green': stateCheck.restrictedContractedRates.indexOf(rate) == -1,'red': stateCheck.restrictedContractedRates.indexOf(rate) > -1}" ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
 
                             <!-- Rate Details -->
@@ -132,7 +132,7 @@
                         </div>
                         <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
                         <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.stayDatesMode" class="button white green-text">CURRENT RATE</button>
-                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.stayDatesMode" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
+                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.stayDatesMode" class="button" ng-class = "{'green': stateCheck.restrictedContractedRates.indexOf(rate.rate.id) == -1,'red': stateCheck.restrictedContractedRates.indexOf(rate.rate.id) > -1}" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
                     </div>
                 </a>
 

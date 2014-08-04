@@ -430,9 +430,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				} else if (cardType == "company") {
 					resetReservationData.resetCompanyCard();
 					$scope.reservationDetails.companyCard.id = "";
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
 					$scope.$broadcast("companyCardDetached");
 				} else if (cardType == "travel_agent") {
 					resetReservationData.resetTravelAgent();
+					$scope.reservationDetails.travelAgent.id = "";
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
 					$scope.$broadcast("travelAgentDetached");
 				}
 			} else {
@@ -464,10 +473,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('companyCardDetached');
 				$scope.viewState.pendingRemoval.status = true;
 				$scope.viewState.pendingRemoval.cardType = "company";
+				$scope.showContractedRates({
+					companyCard: '',
+					travelAgent: $scope.reservationDetails.travelAgent.id
+				})
 			} else if (cardType == 'guest') {
 				$scope.$broadcast('guestCardDetached');
 				$scope.viewState.pendingRemoval.status = true;
 				$scope.viewState.pendingRemoval.cardType = "guest";
+				$scope.showContractedRates({
+					companyCard: $scope.reservationDetails.companyCard.id,
+					travelAgent: ''
+				})
 			}
 		};
 

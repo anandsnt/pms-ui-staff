@@ -424,10 +424,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
             }
 
-
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
-                to_date: $scope.reservationData.departureDate
+                to_date: $scope.reservationData.departureDate,
+                company_id: $scope.reservationData.company.id,
+                travel_agent_id: $scope.reservationData.travelAgent.id
             });
         }
 
@@ -461,8 +462,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // stay
             var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
             var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2]+"-"+arrivalDateParts[0]+"-"+arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2]+"-"+departureDateParts[0]+"-"+departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
