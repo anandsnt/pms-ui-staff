@@ -38,6 +38,19 @@ $scope.startEndOfDayProcess = function(){
 $scope.continueClicked = function(){
 	$scope.startProcessEnabled = false;
 	$scope.startProcess = false;
+
+	var startProcessSuccess = function(){
+		$scope.$emit('hideLoader');
+		ngDialog.close();
+		//reload app
+	};
+	var startProcessFailure = function(){
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = ["Failed"];
+		$scope.startProcessEnabled = true;
+
+	};
+	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure); 
 };
 
 }]);

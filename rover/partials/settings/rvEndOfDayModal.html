@@ -17,14 +17,15 @@
 		<input type="password" ng-model="password"  class="normalInputStyle">
 	</div>
 	<div class="actions float">
-		<button type="button" ng-click="login()" class="button  green" >
+		<button type="submit" ng-click="login()" class="button  green" >
 			Login
 		</button>
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
 	</div>
 </form>
 <div ng-show="isLoggedIn && !startProcess" class="modal-content" style="padding:50px;">
-	<div class="actions float">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div class="actions float" style="padding:50px;">
 		<button type="button" ng-click="startEndOfDayProcess()" class="button" ng-class="{'green':startProcessEnabled}" ng-disabled="!startProcessEnabled">
 			Start End of Day Process for {{businessDate}}
 		</button>
