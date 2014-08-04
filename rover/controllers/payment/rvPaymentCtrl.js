@@ -182,7 +182,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccess = function(data){
 		 
 		var billIndex = parseInt($scope.passData.fromBill);		
-		console.log(billIndex)
 		$scope.$emit("hideLoader");
 		$scope.closeDialog();
 		var cardNumber = $scope.saveData.card_number;
@@ -197,12 +196,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
 		} else {
 			var billNumber = parseInt(billIndex) - parseInt(1);
-			console.log($scope.paymentData.bills[billNumber].total_amount+"=====dddBALANCE====="+data.reservation_balance)
-			$scope.paymentData.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
-			$scope.paymentData.bills[billIndex].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
-			$scope.paymentData.bills[billIndex].credit_card_details.card_expiry = expiryDate;
-			console.log($scope.paymentData.bills[billIndex].total_amount+"=====BALANCE====="+data.reservation_balance)
-			$scope.paymentData.bills[billIndex].total_amount = data.reservation_balance;
+			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
+			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
+			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
+			$scope.paymentData.bills[billNumber].total_fees[0].balance_amount = data.reservation_balance;
 		}
 		if($scope.saveData.add_to_guest_card){ 
 			if(!data.is_already_on_guest_card){

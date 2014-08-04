@@ -4,7 +4,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: 'Search results'
-		}
+		};
 
 		BaseCtrl.call(this, $scope);
 
@@ -99,7 +99,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			guest: $scope.reservationDetails.guestCard.id,
 			company: $scope.reservationDetails.companyCard.id,
 			agent: $scope.reservationDetails.travelAgent.id
-		}
+		};
 
 		$scope.reservationDetails.guestCard.id = reservationListData.guest_details.user_id == null ? "" : reservationListData.guest_details.user_id;
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id == null ? "" : reservationListData.company_id;
@@ -286,7 +286,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			} else {
 				$scope.goToRoomAndRates("CALENDAR");
 			}
-		}
+		};
 
 		$scope.goToRoomAndRates = function(state) {
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
@@ -294,6 +294,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				to_date: reservationMainData.departureDate,
 				view: state
 			});
-		}
+		};
 	}
 ]);
