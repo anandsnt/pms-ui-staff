@@ -76,7 +76,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		var fetchRooms = function() {
 
 			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty()) {
+			if ( $scope.rooms.length == 0) {
 				$scope.$emit('showLoader');
 
 				RVHkRoomStatusSrv.fetch()
@@ -135,7 +135,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		$scope.filterByQuery = function() {
 
 			//in order to reduce the number of processing room list procceesing, 
-			// (ui hangs for a while if room length cross some hundreds) 
+			// (ui hangs for a while if room length cross some hundreds) 			
 			if($scope.queryFunctionProccessing){
 				if($scope.query.trim().length == 0){
 					$scope.clearResults();
