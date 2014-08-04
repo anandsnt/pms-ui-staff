@@ -73,7 +73,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
 			$scope.$emit('setHeading', $scope.heading);
-
+			$scope.fromState = $stateParams.fromState;
 			$scope.displayData.dates = [];
 			$scope.filteredRates = [];
 			$scope.isRateFilterActive = true;

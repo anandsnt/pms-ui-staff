@@ -440,6 +440,11 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		return ret;
 	};
 
+	$scope.handleCancelAction = function(){
+		console.log($scope.fromState);
+		$state.go($scope.fromState, {});
+	};
+
 	this.init();
 
 }]); 

@@ -83,12 +83,13 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         };
 
         $scope.stayDatesClicked = function(){
+
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
-                view: "CALENDAR"
+                view: "CALENDAR",
+                fromState: $state.current.name
             });
-            $scope.$parent.hideSidebar = true;
         };
     }
 ]);

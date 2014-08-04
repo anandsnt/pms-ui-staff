@@ -36,7 +36,7 @@
 					</li>
 				</ul>
 				<div class="action">
-					<button id="cancel-stay-dates-change" type="button" class="button blank">Cancel</button>
+					<button id="cancel-stay-dates-change" type="button" class="button blank" ng-click="handleCancelAction()">Cancel</button>
 					<button id="set-stay-dates" type="button" class="button green" ng-class="{'grey': finalRoomType == ''}" ng-disabled="finalRoomType == ''" ng-click="setDatesClicked()">Set Dates</button>
 				</div>
 			</div>

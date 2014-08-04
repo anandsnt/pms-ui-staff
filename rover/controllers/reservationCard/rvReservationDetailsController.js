@@ -288,7 +288,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
-				view: state
+				view: state,
+				fromState: $state.current.name
 			});
 		}
 	}

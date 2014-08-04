@@ -5,7 +5,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
         this.changeStayDetails = {};
 
 
-        this.fetchStayDateDetails = function (data) {
+        /*this.fetchStayDateDetails = function (data) {
             var deferred = $q.defer();
 
             var url = "/ui/show?format=json&json_input=change_staydates/rooms_available.json";
@@ -15,7 +15,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 deferred.reject(data);
             });
             return deferred.promise;
-        };
+        };*/
 
         this.fetchAvailability = function(param) {
             var deferred = $q.defer();
