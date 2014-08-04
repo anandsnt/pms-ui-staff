@@ -119,7 +119,35 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 						"name" : "ChargeCodeplusTax 1"
 					}],
 					"selected_calculation_rule" : "1"
-				}]
+				}],
+				 "tax_codes": [
+			            {
+			                "value": "1",
+			                "name": "8300"
+			            },
+			            {
+			                "value": "2",
+			                "name": "8310"
+			            },
+			            {
+			                "value": "13",
+			                "name": "9055"
+			            }
+			        ],
+			        "linked_charge_codes": [
+			            {
+			                "charge_code_id": "1",
+			                "is_inclusive": false,
+			                "calculation_rules": [
+			                    3
+			                ]
+			            },
+			            {
+			                "charge_code_id": "13",
+			                "is_inclusive": false,
+			                "calculation_rules": []
+			            }
+			        ]
 			};
 
 			
@@ -145,7 +173,20 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.isAdd = false;
 		
 			//$scope.getPrefetchData(data);
-
+			
+			// Generating link-with array to show charge code Link with - for non-standalone hotels
+			$scope.prefetchData.link_with = [];
+			angular.forEach($scope.prefetchData.tax_codes,function(item1, index1) {
+				var obj = { "value" : item1.value, "name" : item1.name };
+				obj.is_checked = 'false';
+				angular.forEach($scope.prefetchData.linked_charge_codes,function(item2, index2) {
+		       		if (item2.charge_code_id == item1.value) {
+		       			obj.is_checked = 'true';
+				 	}
+		       	});
+		       	$scope.prefetchData.link_with.push(obj);
+	       	});
+			console.log($scope.prefetchData);
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
 	};
