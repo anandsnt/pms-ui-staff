@@ -1,9 +1,9 @@
-<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
-	<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()">
+<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
 		<span class="icons icon-close invert"></span>
-	</button>
+</button>
+<form name="update-settings" id="update-settings" class="modal-content form admin-form" ng-hide="isLoggedIn">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<span ng-hide="isLoggedIn">
 	<strong class="h2 admin-title">Enter your credentials</strong>
 	<div class="entry full-width">
 		<div id="notification-message"></div>
@@ -22,13 +22,21 @@
 		</button>
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
 	</div>
-</span>
-<div ng-show="isLoggedIn">
+</form>
+<div ng-show="isLoggedIn && !startProcess" class="modal-content" style="padding:50px;">
 	<div class="actions float">
-		<button type="button" ng-click="login()" class="button  green" >
+		<button type="button" ng-click="startEndOfDayProcess()" class="button" ng-class="{'green':startProcessEnabled}" ng-disabled="!startProcessEnabled">
 			Start End of Day Process for {{businessDate}}
 		</button>
 	</div>
 </div>
-</form>
+	<div ng-show="isLoggedIn && startProcess" class="modal-content new-content form warning">
+	 <div>
+	   This will close of the Business Day for {{businessDate}} and change the date to {{nextBusinessDate}}
+	 </div>
+	 <div class="actions float">
+	    <button class="button modal-close white red-text" ng-click="cancelClicked()">Cancel</button>
+	    <button id="try-again" class="button white red-text" ng-click="continueClicked()">Continue</button>
+	 </div>
+</div>
 </div>
