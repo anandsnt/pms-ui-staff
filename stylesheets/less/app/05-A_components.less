@@ -3810,7 +3810,7 @@
 
             /* Categories ***/
             .addon-categories {
-                #pixel-to-percent > .width(320,2048);
+                #pixel-to-percent > .width(360,2048);
                 .pull-left;
 
                 li {
@@ -3826,7 +3826,8 @@
                         .show; 
                     }
 
-                    &.ui-state-active {
+                    &.ui-state-active,
+                    &.active {
                         a {
                             color: @white;
                             text-shadow: 1px 1px 0 rgba(0,0,0,.15);
@@ -3844,7 +3845,7 @@
             .addon-items {
                 position: relative;
                 #pixel-to-percent > .left-margin(45,2048);
-                #pixel-to-percent > .width(1680,2048);
+                #pixel-to-percent > .width(1640,2048);
                 .pull-left;
 
                 .addon-tab {
@@ -3892,24 +3893,28 @@
                         }
 
                         .price {
+                            position: relative;
                             font-size: 36px;
                             line-height: 40px;
                             vertical-align: middle;
                             font-weight: 300;
+                            padding-right: 65px;
                             .show;
                             .pull-left;
 
                             span {
-                                display: inline-block;
+                                position: absolute;
+                                right: 0;
+                                width: 60px;
                                 color: @grey3;
                                 font-size: 12px;
                                 line-height: 12px;
                                 text-transform: uppercase;
                                 text-align: left;
                                 font-weight: 400;
-                                width: 60px;
-                                margin-left: 5px;
-                                overflow: hidden;
+
+                                &.amount-type { top: 7px; }
+                                &.post-type { top: 22px; }
                             }
                         }
 
