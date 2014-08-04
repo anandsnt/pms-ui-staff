@@ -1,0 +1,50 @@
+<!-- Search form -->
+<div ng-controller="rvHouseKeepingDashboardRoomSearchCtrl" >
+	<form name="dashboard-search-form" id="dashboard-search-form" class="search-form" role="search">
+		<div class="entry">
+			<a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearSearch()">
+				<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+			</a>
+
+			<button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
+			<input name="dashboard-query" id="dashboard-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-focus="focusedOnQueryBox()"  ng-model="query" ng-change="filterByQuery()">
+		</div>
+	</form>
+
+	<div ng-show="showSearchResultsArea">
+
+		<!-- Rooms list -->
+		<section id="dashboard-search" class="content scrollable dashboard-scroll-div" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results hidden': rooms.length==0}">
+			<div class="wrapper">
+				<ul id="dashboard-search-results" class="search-results" ng-show="isSearchResultsShowing">
+					<li ng-repeat="room in rooms" ng-if="room.display_room" class="room" >
+						<a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">
+							<div class="data">
+								<h2 class="room-number">{{ room.room_no }}</h2>
+							</div>
+							<figure class="guest-image">
+								<span ng-if="room.is_vip" class="vip" translate>VIP</span>
+								<img src="{{room.avatar_src}}">
+							</figure>
+							<p class="room-stats-wrap">
+								<span class="room-status">{{ room.description }}</span>
+								<span class="fo-status">{{ room.room_reservation_status }}</span>
+							</p>
+						</a>
+					</li>
+				</ul>
+				<!-- Empty -->
+				<ul id="dashboard-search-results" class="search-results" ng-show="!isSearchResultsShowing" >
+					<li class="no-content">
+						<div class="info">
+							<span class="icon-no-content icon-room"></span>
+							<strong class="h1">Find Rooms</strong>
+							<span class="h2">Search by <strong>Room Number</strong></span>
+						</div>
+					</li>
+				</ul>				
+			</div>
+		</section>
+
+	</div>
+</div>
