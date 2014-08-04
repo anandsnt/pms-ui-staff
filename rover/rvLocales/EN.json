@@ -143,11 +143,9 @@
     "INHOUSE": "In house",
     "CHECKING_OUT": "Checking Out",
     "DASHBOARD_HEADING": "Dashboard",
-    
     "DASHBOARD_MANAGER_HEADING": "Manager Dashboard",
     "DASHBOARD_HOUSEKEEPING_HEADING": "Housekeeping Dashboard",
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
-
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",	
 	"HK_GUESTS": "Guests",
 	"HK_OCCUPIED": "Occupied",
@@ -403,7 +401,6 @@
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",
     "MAXIMUM_OCCUPANCY_LABEL": "Maximum occupancy of room is",
     "ASSIGN_LABEL": "Assign Room",
-
     "CANCEL_LABEL":"Cancel",    
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
@@ -413,7 +410,6 @@
     "DASHBOARD_SEARCH_VIP": "VIP's",
     "SEARCH_NORMAL": "Find Reservation"
 ,
-    "CANCEL_LABEL":"Cancel",
 
 
     "SMARTBANDS": "Smartbands",
