@@ -274,7 +274,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/settingsAndParams',
 			resolve: {
 				settingsAndParamsData: function(settingsAndParamsSrv) {
-					return settingsAndParamsSrv.fetchsettingsAndParamsSrv();
+					return settingsAndParamsSrv.fetchsettingsAndParams();
 				}
 			}
 		});

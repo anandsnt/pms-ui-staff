@@ -2,43 +2,43 @@
 	<div data-view="UpsellLateCheckoutView">
 		<section>
 			<header class="content-title float">
-				<h2>Settings & Parameters</h2>
-				<a id="go_back" data-type="load-details" class="action back" ng-click="cancelClick()">Back</a>
+				<h2 translate>SETTINGS_AND_PARAMS</h2>
+				<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()"translate>BACK</a>
 			</header>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form  class="form float" >
 				<div class="form-title full-width">
-					<h3><span>Change Business Day</span></h3>
+					<h3><span translate>CHANGE_BUSSINESS_DAY</span></h3>
 				</div>
 				<fieldset class="holder left">
 					<div></div>
 
 					<!-- Switch -->
-					<ad-toggle-button is-checked=" data.auto_bussinnesdate_change" label="Auto Change Business Date"></ad-toggle-button>
+					<ad-toggle-button is-checked=" data.is_auto_change_bussiness_date" label="Auto Change Business Date"></ad-toggle-button>
 				</fieldset>
 				<fieldset class="holder right">
 
 					<div class="entry">
-						<label> Time to change business date </label>
+						<label translate>TIME_TO_CHANGE_BUSSINESS_DATE</label>
 						<div class="entry full-width float">
 
 							<!--  hour -->
 							<div class="select select-col col1-3">
 
-								<select ng-options="hour for hour  in hours" ng-model="data.hour">
+								<select ng-options="hour for hour  in hours" ng-model="data.changing_hour">
 									<option style="display:none" value="">HH</option>
 								</select>
 
 							</div>
 							<!--  minute -->
 							<div class="select select-col col1-3">
-								<select ng-options="minute for minute  in minutes" ng-model="data.minute">
+								<select ng-options="minute for minute  in minutes" ng-model="data.changing_minute">
 									<option style="display:none" value="">HH</option>
 								</select>
 
 							</div>
 							<div class="select select-col col1-3">
-								<select name="hotel-checkout-primetime"class="styled">
+								<select name="hotel-checkout-primetime"class="styled" ng-model="data.business_date_prime_time">
 									<option value="AM">AM</option>
 									<option value="PM">PM</option>
 								</select>
@@ -52,11 +52,11 @@
 			
 				
 				<div class="actions float">
-					<button type="button" id="cancel" class="button blank" ng-click="cancelClick()">
-						Cancel
+					<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
+						CANCEL
 					</button>
-					<button type="button" id="save" class="button green" ng-click="saveClick()">
-						Save changes
+					<button type="button" id="save" class="button green" ng-click="saveClick()"translate>
+						SAVE_CHANGES
 					</button>
 				</div>
 			</form>
