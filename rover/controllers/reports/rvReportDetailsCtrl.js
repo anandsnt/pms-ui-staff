@@ -19,6 +19,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
+			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
 
 
 			// for hard coding styles for report headers

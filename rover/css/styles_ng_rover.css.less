@@ -666,6 +666,22 @@ Padding for the ows error popup
 * DO NOT change the numeric values
 */
 
+#report-details.content.stay-card-inner{
+  position: absolute;
+}
+
+@media (max-width: 999px) {
+  #report-details.content.stay-card-inner {
+    position: static;
+  }
+}
+
+#report-details .report-content {
+  height: -webkit-calc(100% - 175px);
+  height: -moz-calc(100% - 175px);
+  height: calc(100% - 175px);
+}
+
 /* ui-view animation hook up class for main-view */
 .reports-wrapper {
   position: absolute;

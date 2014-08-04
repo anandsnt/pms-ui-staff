@@ -17,7 +17,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.setTitle( 'Stats & Reports' );
-
+		$scope.heading = 'Stats & Reports';
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
 		$scope.reportList = reportsResponse.results;
@@ -31,8 +31,8 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.goBackReportList = function() {
 			$rootScope.setPrevState.hide = true;
-
 			$scope.showReportDetails = false;
+			$scope.heading = 'Stats & Reports';
 		};
 
 		$scope.getFromOptions = function(item) {

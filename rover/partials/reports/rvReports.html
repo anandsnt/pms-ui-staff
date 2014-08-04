@@ -61,9 +61,9 @@
 		</div>
 	</section>
 
-	<section id="reports-details" class="content scrollable reports-wrapper" role="main" ng-show="showReportDetails">
+	<section id="reports-details-wrap" class="content scrollable reports-wrapper" role="main" ng-show="showReportDetails">
 		<div ng-controller="RVReportDetailsCtrl">
-			<div id="report-update" style="top:1px;">
+			<div id="report-update">
 				<div class="date-range" ng-if="chosenReport.hasDateFilter">
 					<label>Date range</label>
 					<div class="has-datepicker">
@@ -105,7 +105,7 @@
 				<a class="button green" ng-click="fetchUpdatedReport()">Update Report</a>
 			</div>
 
-			<section id="report-details" class="content stay-card-inner" style="padding-top: 92px;">
+			<section id="report-details" class="content stay-card-inner">
 				<div class="report-header">
 					<div class="actions">
 						<div class="select" ng-if="HIDE_THIS_FEATURE">
@@ -137,7 +137,7 @@
 					</ul>
 				</div>
 	
-				<div id="report-content" class="report-content scrollable" ng-iscroll="report-details-scroll" style="height:calc(100% - 90px);">
+				<div id="report-content" class="report-content scrollable" ng-iscroll="report-details-scroll">
 					<div class="wrapper" height>
 						<table>
 
