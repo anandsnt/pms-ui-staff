@@ -35,6 +35,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var paymentFetchSuccess = function(data) {
 				$scope.data.paymentMethods = data;
 				$scope.$emit('hideLoader');
+				var payments = _.where(data, {
+					value: $scope.reservationData.paymentType.type.value
+				});
+				if (payments.length > 0) {
+					$scope.reservationData.paymentType.type = payments[0];
+				}
 			};
 			var paymentFetchError = function(data) {
 				$scope.errorMessage = data;

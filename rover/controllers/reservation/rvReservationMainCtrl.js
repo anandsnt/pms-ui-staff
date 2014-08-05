@@ -464,8 +464,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // stay
             var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
             var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2]+"-"+arrivalDateParts[0]+"-"+arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2]+"-"+departureDateParts[0]+"-"+departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
@@ -523,6 +523,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     id: ""
                 }
             }
+
+            if (reservationDetails.reservation_card.payment_method_used != "") {
+                $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
+                $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
+            }
+
             console.log('$scope.reservationData model - 2', $scope.reservationData);
         };
 
