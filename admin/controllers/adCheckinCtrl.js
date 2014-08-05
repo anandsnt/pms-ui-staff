@@ -4,6 +4,12 @@
 
   	BaseCtrl.call(this, $scope);
 
+     /*
+    * To set the preveous state as admin.dashboard/Zest in all cases
+    */
+    $rootScope.previousState = 'admin.dashboard';
+    $rootScope.previousStateParam = '1';
+
       $scope.init = function(){
           $scope.checkinData = {};
           $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -79,23 +85,4 @@
     $scope.invokeApi(adCheckinSrv.save, uploadData,saveCheckinDetailsSuccessCallback,saveCheckinDetailsFailureCallback);
   };
 
-/**
-    *   Method to go back to previous state.
-    */
-  $scope.backClicked = function(){
-    
-    if($rootScope.previousStateParam){
-      $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-    }
-    else if($rootScope.previousState){
-      $state.go($rootScope.previousState);
-    }
-    else 
-    {
-      $state.go('admin.dashboard', {menu : 0});
-    }
-  
-  };
- 
-
-  }]);
+}]);

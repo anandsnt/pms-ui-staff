@@ -12,6 +12,7 @@
     "INCLUDE_NOTREADY_LABEL":"Include Not Ready",
     "INCLUDE_DUEOUT_LABEL":"Include Due Out",
     "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
+    "INCLUDE_CLEAN_LABEL":"Include Clean",
     "NIGHT_LABEL":"night",
     "NIGHTS_LABEL":"nights",
     "ROOM_ASSIGNMENT_TITLE":"Room Assignment",

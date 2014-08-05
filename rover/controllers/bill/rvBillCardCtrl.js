@@ -7,7 +7,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		title: 'Stay Card',
 		callback: 'goBackToStayCard',
 		scope: $scope
-	}
+	};
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height
@@ -26,6 +26,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
 	$scope.isRefreshOnBackToStaycard = false;
+
+	$scope.showPayButton = false;
+	if($rootScope.isStandAlone){
+		$scope.showPayButton = true;
+	}
+	//This value changes when clicks on pay button
+	$scope.fromViewToPaymentPopup = "billcard";
 	//options fo signature plugin
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 	$scope.signaturePluginOptions = {
@@ -314,7 +321,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 		   
   	 			var passData = {
 			 		"reservationId": $scope.reservationBillData.reservation_id,
-			 		"fromView": "billcard",
+			 		"fromView": $scope.fromViewToPaymentPopup,
 			 		"fromBill" : billNumber,
 			 		"is_swiped": false 
 			 	};
@@ -335,7 +342,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
          		data.token = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationBillData.reservation_id,
-		  	 		"fromView": "billcard",
+		  	 		"fromView": $scope.fromViewToPaymentPopup,
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
@@ -379,9 +386,21 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){
+	 		$scope.fromViewToPaymentPopup = "billcard";
 	 		$scope.addNewPaymentModal(data);
 	 	}
 	 });
+	 /*
+	  * Clicked pay button function
+	  */
+	 $scope.clickedPayButton = function(){
+	 	$scope.fromViewToPaymentPopup = "paybutton";
+	 	$scope.addNewPaymentModal();
+	 };
+	 $scope.clickedAddUpdateCCButton = function(){
+	 	$scope.fromViewToPaymentPopup = "billcard";
+	 	$scope.addNewPaymentModal();
+	 };
 	 /*
 	  * Toggle signature display
 	  */
@@ -528,7 +547,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * calculate Height of bill screen
 	 */
 
-	$scope.calculateHeightAndRefreshScroll = function(){
+	$scope.calculateHeightAndRefreshScroll = function() {
 		 
 		var height = 0;
 		var width = 0;
@@ -538,10 +557,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(5);
 			}
 			height = parseInt(height) + parseInt(countFeesElements*73.5);
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
 				height = parseInt(height) + parseInt(45);
 			}
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
 				height = parseInt(height) + parseInt(45);
 			}
 		}
@@ -614,6 +633,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * success callback ofcomplete checkin
 	 */
 	$scope.completeCheckinSuccessCallback = function(){
+
+		$scope.$emit('hideLoader');
 				
 		var keySettings = $scope.reservationBillData.key_settings;
 		$scope.fromView = "checkin";
@@ -649,8 +670,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			    scope: $scope
 			});
 		}
-		
-		
 	};
 
 	$scope.completeCheckinFailureCallback = function(data){
@@ -801,5 +820,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     		scope: $scope
     	});
 	};
-			
+	
+	$scope.$on('BALANCECHANGED', function(event, data){
+	 	var dataToSrv = {
+	 		"confirmationNumber": data.confirm_no,
+	 		"isRefresh":false
+	 	};
+	 	var getReservationDetailsSuccessCallback = function(successData){
+			$scope.$emit('hideLoader');
+			var reservationData = successData;
+			reservationData.reservation_card.balance_amount = data.balance;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
+		};
+	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
+	 });	
 }]);

@@ -21,4 +21,8 @@
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
     "SELECTED" : "Selected",
-    "CVV" :"cvv"
+    "CVV" :"cvv",
+    "PAY" : "Pay",
+    "AMOUNT": "Amount",
+    "WINDOW": "Window",
+    "SELECT_WINDOW": "Select Bill"

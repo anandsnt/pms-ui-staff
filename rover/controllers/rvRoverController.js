@@ -25,7 +25,61 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 
 
-    // State slide Animation direction controlling logic moved to rvApp.js
+
+    /***
+     * A method on the $rootScope to determine if the
+     * slide animation during stateChange should run in reverse or forward
+     *
+     * @param {string} fromState - name of the fromState
+     * @param {string} toState - name of the toState
+     *
+     * @return {boolean} - to indicate reverse or not
+     */
+    $rootScope.shallRevDir = function(fromState, toState) {
+      if (fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus') {
+        return true;
+      };
+
+      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
+        return true;
+      };
+
+      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+        return true;
+      };
+
+      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+        return true;
+      };
+
+      if (fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch') {
+        return true;
+      };
+
+      return false;
+    };
+
+    // this is make sure we add an
+    // additional class 'return-back' as a
+    // parent to ui-view, so as to apply a
+    // reverse slide animation
+    var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
+
+      // check this template for the applied class:
+      // app/assets/rover/partials/staycard/rvStaycard.html
+
+      // FUTURE: this check can include other state name also,
+      // from which while returning we expect a reverse slide
+      if ($rootScope.shallRevDir(fromState.name, toState.name)) {
+        $rootScope.returnBack = true;
+      } else {
+        $rootScope.returnBack = false;
+      }
+    });
+
+    // make sure you also destroy 'uiViewRevAnim'
+    // when moving away to release memory
+    $scope.$on('$destroy', uiViewRevAnim);
 
 
 
@@ -50,6 +104,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
+    $rootScope.monthAndDate = "MMMM dd";
+    $rootScope.fullMonth = "MMMM";
+    $rootScope.fullYear = "yyyy";
 
     /*
      * hotel Details
@@ -58,7 +115,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
-
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
 
 
@@ -75,15 +131,41 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+
+    //Default Dashboard
+    $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
+
+    $scope.searchBackButtonCaption = '';
+
+    /**
+    * reciever function used to change the heading according to the current page
+    * if there is any trnslation, please use that
+    * param1 {object}, javascript event
+    * param2 {String}, Backbutton's caption
+    */
+    $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption){
+      event.stopPropagation();
+      //chnaging the heading of the page
+      $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
+    });
+
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
 
+    var getDefaultDashboardState = function(){
+        var statesForDashbaord = {
+          'HOUSEKEEPING': 'rover.dashboard.housekeeping',
+          'FRONT_DESK'  : 'rover.dashboard.frontoffice',
+          'MANAGER'     : 'rover.dashboard.manager'
+        }
+        return statesForDashbaord[$rootScope.default_dashboard];
+    }
 
     if($rootScope.isStandAlone){
       // OBJECT WITH THE MENU STRUCTURE
         $scope.menu = [{
           title: "MENU_DASHBOARD",
-          action: "rover.dashboard",
+          action: getDefaultDashboardState(),
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
@@ -189,7 +271,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }]
         }, {
           title: "MENU_REPORTS",
-          action: "",
+          action: "rover.reports",
           iconClass: "icon-reports",
           submenu: []
         }];
@@ -198,7 +280,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       // OBJECT WITH THE MENU STRUCTURE
         $scope.menu = [{
           title: "MENU_DASHBOARD",
-          action: "rover.dashboard",
+          action: getDefaultDashboardState(),
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
@@ -227,7 +309,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }]
         },{
           title: "MENU_REPORTS",
-          action: "",
+          action: "rover.reports",
           iconClass: "icon-reports",
           submenu: []
         }];
@@ -368,12 +450,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	console.log('success');
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
-    $scope.failureCallBackSwipe = function() {};
+    $scope.failureCallBackSwipe = function() {
+    	console.log('failure');
+    	
+    };
 
-    var options = [];
+    var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
@@ -393,6 +479,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.showAddNewPaymentModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
+        console.log("===========++++++++++====================")
+        console.log($scope.guestInfoToPaymentModal)
+      $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
       ngDialog.open({
         template: '/assets/partials/payment/rvPaymentModal.html',
         controller: 'RVPaymentMethodCtrl',
@@ -408,6 +497,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.$on('SHOWGUESTLIKES', function(event) {
       $scope.$broadcast('SHOWGUESTLIKESINFO');
+    });
+    $scope.guestInfoToPaymentModal = {};
+    $scope.$on('SETGUESTDATA', function(event, guestData) {
+      console.log("=========== $scope.guestInfoToPaymentModal====================")
+        $scope.guestInfoToPaymentModal = guestData;
+      
+        console.log( $scope.guestInfoToPaymentModal);
     });
     /*
      * Tp close dialog box
