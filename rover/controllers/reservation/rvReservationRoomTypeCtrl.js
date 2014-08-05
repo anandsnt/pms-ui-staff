@@ -20,7 +20,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			guestOptionsIsEditable: false,
 			preferredType: "",
 			rateFilterText: "",
-			dateModeActiveDate: ""
+			dateModeActiveDate: "",
+			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80
 		};
 
 		$scope.showingStayDates = false;
@@ -137,7 +138,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 
 			//CICO-6069 Init selectedDay
-			if ($scope.stateCheck.dateModeActiveDate == '') {
+			if (!$scope.stateCheck.dateModeActiveDate) {
 				if ($scope.reservationData.midStay) {
 					// checking if midstay and handling the expiry condition
 					if (new tzIndependentDate($scope.reservationData.departureDate) > new tzIndependentDate($rootScope.businessDate)) {

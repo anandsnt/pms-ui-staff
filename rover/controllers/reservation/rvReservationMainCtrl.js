@@ -523,12 +523,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
             }
 
-            if(reservationDetails.reservation_card.paymentType && reservationDetails.reservation_card.paymentType.type){
-                $scope.reservationData.paymentType.type = reservationDetails.reservation_card.paymentType.type;
-            }
-
             /* CICO-6069
-             *  Hi Shiju,
+             *  Comments from story: 
              *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
              *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
              */
@@ -538,7 +534,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 $scope.reservationData.midStay = true;                
             }
 
-            console.log('initReservationData',$scope.reservationData);
         };
 
         $scope.initReservationData();
