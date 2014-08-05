@@ -111,7 +111,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		}
 
 		fetchFloors();
-		
 
 		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 
