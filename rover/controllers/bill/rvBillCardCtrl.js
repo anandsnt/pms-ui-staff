@@ -547,7 +547,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * calculate Height of bill screen
 	 */
 
-	$scope.calculateHeightAndRefreshScroll = function(){
+	$scope.calculateHeightAndRefreshScroll = function() {
 		 
 		var height = 0;
 		var width = 0;
@@ -557,10 +557,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 				countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(5);
 			}
 			height = parseInt(height) + parseInt(countFeesElements*73.5);
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
 				height = parseInt(height) + parseInt(45);
 			}
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
 				height = parseInt(height) + parseInt(45);
 			}
 		}
