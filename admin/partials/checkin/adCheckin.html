@@ -3,7 +3,7 @@
 		<header class="content-title float">
 			<h2>{{ 'GUEST_CHECKIN_SETUP' | translate}}</h2>
 			<a ui-sref="admin.checkinCheckoutEmail({ from: 'checkin'})" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
-			<a ng-click="backClicked()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
+			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 		<form style="overflow-y:auto;" class="form float" >

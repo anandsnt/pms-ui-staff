@@ -82,8 +82,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//interim check on page reload if the page is refreshed
 			if ($scope.reservationData.arrivalDate == '' || $scope.reservationData.departureDate == '') {
 				//defaulting to today's and tommorow's dates
-				$scope.reservationData.arrivalDate = (new Date().toISOString().slice(0, 10).replace(/-/g, "-"));
-				$scope.reservationData.departureDate = (new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10).replace(/-/g, "-"));
+				$scope.reservationData.arrivalDate = (new tzIndependentDate().toISOString().slice(0, 10).replace(/-/g, "-"));
+				$scope.reservationData.departureDate = (new tzIndependentDate(new tzIndependentDate().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10).replace(/-/g, "-"));
 
 				$($scope.reservationData.rooms).each(function(i, d) {
 					$scope.reservationData.rooms[i].numAdults = 1;
@@ -534,7 +534,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 								var stayLength = parseInt($scope.reservationData.numNights);
 								// The below variable stores the days till the arrival date
-								var daysTillArrival = Math.round((new Date($scope.reservationData.arrivalDate) - new Date($rootScope.businessDate)) / (1000 * 60 * 60 * 24));
+								var daysTillArrival = Math.round((new tzIndependentDate($scope.reservationData.arrivalDate) - new tzIndependentDate($rootScope.businessDate)) / (1000 * 60 * 60 * 24));
 
 								//Step 2 : Check if the rates are configured for the selected occupancy
 								if (rateConfiguration.single == null && rateConfiguration.double == null && rateConfiguration.extra_adult == null && rateConfiguration.child == null) {
@@ -566,12 +566,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 												validRate = false;
 												break;
 											case 'CLOSED_ARRIVAL': // 2 CLOSED_ARRIVAL
-												if (new Date(currDate) - new Date($scope.reservationData.arrivalDate) == 0) {
+												if (new tzIndependentDate(currDate) - new tzIndependentDate($scope.reservationData.arrivalDate) == 0) {
 													validRate = false;
 												}
 												break;
 											case 'CLOSED_DEPARTURE': // 3 CLOSED_DEPARTURE
-												if (new Date(currDate) - new Date($scope.reservationData.departureDate) == 0) {
+												if (new tzIndependentDate(currDate) - new tzIndependentDate($scope.reservationData.departureDate) == 0) {
 													validRate = false;
 												}
 												break;
@@ -586,7 +586,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 												}
 												break;
 											case 'MIN_STAY_THROUGH': // 6 MIN_STAY_THROUGH
-												if (Math.round((new Date($scope.reservationData.departureDate) - new Date(currDate)) / (1000 * 60 * 60 * 24)) < restriction.days) {
+												if (Math.round((new tzIndependentDate($scope.reservationData.departureDate) - new tzIndependentDate(currDate)) / (1000 * 60 * 60 * 24)) < restriction.days) {
 													validRate = false;
 												}
 												break;
@@ -641,7 +641,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$(roomRates.results).each(function(i, d) {
 				$scope.displayData.dates.push({
 					str: d.date,
-					obj: new Date(d.date)
+					obj: new tzIndependentDate(d.date)
 				});
 				var for_date = d.date;
 				//step1: check for room availability in the date range
@@ -681,7 +681,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							rate: $scope.calculateRate(d),
 							rateBreakUp: d,
 							tax: 0,
-							day: new Date(for_date)
+							day: new tzIndependentDate(for_date)
 						};
 						//TODO : compute total
 						if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
@@ -753,8 +753,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// Can we set the ADR & Total Stay calculation already now, so we can make sure it works correctly. When we add the tax, we just need to add in the extra amount. For now just add 0.00 for the tax value.
 			// Thanks,
 			// Nicki
+
+
 			var adults = $scope.reservationData.rooms[$scope.activeRoom].numAdults;
 			var children = $scope.reservationData.rooms[$scope.activeRoom].numChildren;
+
+			if ($scope.stateCheck.stayDatesMode) {
+				adults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.adults);
+				children = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.children);
+			}
 
 			var baseRoomRate = adults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = adults >= 2 ? adults - 2 : 0;

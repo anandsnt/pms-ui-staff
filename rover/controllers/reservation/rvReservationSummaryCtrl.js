@@ -304,10 +304,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}, 0);
 		};
 
-		$scope.$on("checkinCheckoutTimeUpdated", function(event) {
-			$scope.proceedCreatingReservation();
-		});
-
 		/*
 			If email address does not exists on Guest Card,
 		    and user decides to update via the Email field on the summary screen,

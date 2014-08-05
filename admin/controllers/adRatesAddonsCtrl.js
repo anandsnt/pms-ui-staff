@@ -322,12 +322,9 @@ admin.controller('ADRatesAddonsCtrl', [
 
 					$scope.tableParams.reload();
 				};
-				var erroCallback = function(data){
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = data;
-				};
+				
 
-				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback,erroCallback);
+				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, singleAddonData, callback);
 			};
 
 			// if we are editing an addon

@@ -425,11 +425,19 @@ height: 410px;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content {
-
   border-radius: 0px !important;
   padding: 0px !important;
+
+  /* CICO-8546: Fixing issue with close animation */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none !important;
+  width: auto !important;
 }
-.ngdialog-close{
+.ngdialog-close {
   display: none;
 }
 
@@ -658,4 +666,37 @@ Padding for the ows error popup
     float:left;
     margin-left: 40%; 
   }
+}
+
+.overlay{
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (max-width: 480px){
+
+  .ngdialog.ngdialog-theme-default.modal-theme .ngdialog-content {
+      width: 200px;
+  }
+
+  #modal .modal-content.new-content {
+    width: 200px;
+  }
+
+  #modal .modal-content .button {
+      font-size: 14px;
+      line-height: 30px;
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+  }
+
+  #modal .modal-content.new-content .actions .button {
+      padding: 0 10px;
+      width: 100%;
+      margin-bottom: 5px;
+  }
+
 }

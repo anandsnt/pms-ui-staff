@@ -5,8 +5,9 @@
 			<h2 ng-show="mod == 'add'">Add New User</h2>
 			<a id="go_back" data-type="load-details" class="action back" ui-sref='{{BackAction}}'>Back</a>
 		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<form user="2" id="edit-user" class="form float">
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<fieldset class="holder left">
 				<div class="form-title">
 					<h3><span>User</span> details </h3>

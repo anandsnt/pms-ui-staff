@@ -3,7 +3,7 @@
 		<section>
 			<header class="content-title float">
 				<h2 translate>ICARE_SERVICES</h2>
-				<a class="action back"  ng-click="goBack()" translate>BACK</a>
+				<a class="action back"  ng-click="goBackToPreviousState()" translate>BACK</a>
 			</header>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="icare-services" method="post" class="form float" action="">
@@ -30,7 +30,7 @@
 				</fieldset>
 					
 				<div class="actions float">
-					<button type="button" class="button blank" ng-click="goBack()" translate>
+					<button type="button" class="button blank" ng-click="goBackToPreviousState()" translate>
 						CANCEL
 					</button>
 					<button type="button" class="button green" ng-click="saveClick()" translate>

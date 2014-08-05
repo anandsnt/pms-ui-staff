@@ -137,6 +137,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go('admin.dashboard', {menu: 0});
+				$scope.$emit('hotelNameChanged',{"new_name":$scope.data.hotel_name});
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
@@ -188,9 +189,6 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   Method to go back to previous state.
     */
 	$scope.back = function(){
-
-		console.log($rootScope.nextState);
-		console.log($rootScope.previousState);
 
 		if($scope.isAdminSnt) {
 			

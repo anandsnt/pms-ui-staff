@@ -255,6 +255,13 @@
 			&:active { .gradient (@redEnd, @redStart); }
 		}
 
+		&.yellow { 
+			.gradient (@yellowStart, @yellowEnd);
+
+			&:hover,
+			&:active { .gradient (@yellowEnd, @yellowStart); }
+		}
+
 		&.soft-red { 
 			.gradient (@softRedStart, @softRedEnd);
 
