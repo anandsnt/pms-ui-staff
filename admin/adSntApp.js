@@ -1,15 +1,10 @@
-var GlobalApp = function(){
+var AdminGlobalApp = function(){
     var that = this;
     this.browser = "other";
     this.cordovaLoaded = false;
-    this.cardReader = null;
-    this.iBeaconLinker = null;
-    this.enableURLChange = true;
-
-    this.DEBUG = true;
+    this.DEBUG = false;
 
 
-    
     this.setBrowser = function(browser){
     	if(typeof browser === 'undefined' || browser === ''){
     		that.browser = "other";
@@ -48,14 +43,8 @@ var GlobalApp = function(){
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
-        try{
-    	   that.cardReader = new CardOperation();
-        }
-        catch(er){};
-        try{
-            that.iBeaconLinker = new iBeaconOperation();
-        }
-        catch(er){};
+        alert("cordova success");
+        that.iBeaconLinker = new iBeaconOperation();
     	that.cordovaLoaded = true;
     };
     
@@ -64,13 +53,6 @@ var GlobalApp = function(){
     	that.cordovaLoaded = false;
     };
 
-
-    this.enableCardSwipeDebug = function(){
-        that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
-        that.cardReader = new CardOperation();
-    };
 };
 
-sntapp = new GlobalApp();
-sntapp.enableCardSwipeDebug();
-
+adminapp = new AdminGlobalApp();

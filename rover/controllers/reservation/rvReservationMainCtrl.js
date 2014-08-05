@@ -160,7 +160,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
                 defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
                 businessDate: baseSearchData.businessDate,
-                additionalEmail: ""
+                additionalEmail: "",
+                isGuestPrimaryEmailChecked: false,
+                isGuestAdditionalEmailChecked: false
             };
 
             $scope.guestCardData = {};
@@ -523,6 +525,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
             console.log('$scope.reservationData model - 2', $scope.reservationData);
         };
+
+        $scope.$on("guestEmailChanged", function(e) {
+            console.log('reached main controller');
+            $scope.$broadcast('updateGuestEmail');
+        });
 
         $scope.initReservationData();
     }
