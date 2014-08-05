@@ -3,6 +3,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
 
     	var that = this;
         this.availabilityData = {};
+        this.totalAvailabilityData = {};
         this.lastFetchedDate = "";
 
         this.fetchAvailability = function(params) {
@@ -21,9 +22,12 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 //For every subsequent fetch requensts we fetch next set of dates
                 that.lastFetchedDate = tzIndependentDate(params.to_date);
                 if(params.status !== 'FETCH_ADDITIONAL'){
+                    that.totalAvailabilityData = dclone(response);
                     that.availabilityData = dclone(response);
                     //response.results is an array. We would keep it as a hash indexed with date
                     that.availabilityData.results = {};
+                } else {
+                    that.totalAvailabilityData.results = dclone(that.totalAvailabilityData.results.concat(response.results));
                 }
                 that.manipulateAvailabilityForEasyLookup(response);
                 deferred.resolve(that.availabilityData);
