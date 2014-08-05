@@ -111,7 +111,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		}
 
 		fetchFloors();
-		
 
 		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 
@@ -603,10 +602,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$rooms.addEventListener( 'touchcancel', touchEndHandler, false );
 
 			// remove the DOM binds when this scope is distroyed
-			$scope.$on( '$destroy', function() {
-				$rooms.removeEventListener( 'touchstart' );
-				$rooms.removeEventListener( 'touchend' );
-				$rooms.removeEventListener( 'touchcancel' );
+			$scope.$on( '$destroy', function() {				
+				!!$rooms.length && $rooms.removeEventListener( 'touchstart' );
+				!!$rooms.length && $rooms.removeEventListener( 'touchend' );
+				!!$rooms.length && $rooms.removeEventListener( 'touchcancel' );
 			});
 		};
 
