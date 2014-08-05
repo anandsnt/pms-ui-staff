@@ -700,3 +700,197 @@ Padding for the ows error popup
   }
 
 }
+
+
+/* Rooms page               ==============================*/
+    
+    /* Rooms listing ***/
+    #rooms {
+        li {
+            margin: 0;         
+            a {
+                color: @textColor;
+                padding: 0 10px 0 10px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                border-bottom: 1px solid rgba(0,0,0,.1);
+                background-color: @white;
+                position: relative;
+                .show;
+
+                .room-number {
+                    font-size: 30px;
+                    line-height: 50px;
+                    vertical-align: middle;
+                    font-weight: 700;
+                    width: 70px;
+                    .show;
+                    .pull-left;
+                }
+
+                .room-stats-wrap {
+                    display: block;
+                    overflow: hidden;
+                    position: absolute;
+                    top: 0;
+                    left: 90px;
+                    right: 50px;    
+                }
+
+
+                .room-status,
+                .fo-status {
+                    display: inline-block;
+                    color: @grey3;
+                    font-size: 13px;
+                    font-weight: 400; 
+                    font-style: italic;
+                    line-height: 50px;
+                }
+
+                .room-status {
+                    width: 50%;
+                    .pull-left;
+                 }
+
+                 @media (max-width: 319px) {
+                    .room-stats-wrap {
+                        clear: both;
+                        position: static;
+                        padding: 3px 0 10px;
+                    }
+
+                    .room-status,
+                    .fo-status {
+                        width: 49%;
+                        line-height: 1;
+                    }
+
+                    .fo-status {
+                        text-align: right;
+                        .pull-right;
+                    }
+                }
+
+                .guest-image {
+                    position: relative;
+                    top: 5px;
+                    .pull-right;
+                    #border-radius > .rounded(40px);
+                    .square(40px);
+
+                    .vip {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        font-size: 9px;
+                        line-height: 16px;
+                        .square(16px);
+                        #border-radius > .rounded(16px);       
+                    }
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                        #border-radius > .rounded(40px);
+                    }
+                }
+
+                &.room-clean { 
+                    .room-number { color: @green; }
+                }
+
+                &.room-dirty { 
+                    .room-number { color: @red; }
+                }
+
+                &.room-out {
+                    .room-number { color: @grey3; }
+                }
+
+                &.room-pickup {
+                    .room-number { color: @orange; }
+                }
+
+                &:hover,
+                &:active {
+                    background-color: rgba(0,0,0,.02);
+                }
+            }
+        }
+    }
+
+    /* Rooms page               ==============================*/
+        
+        /* Rooms listing ***/
+        #rooms {
+            li {           
+                a {
+                    color: @textColor;
+                    padding: 0 20px 0 20px;
+
+                    .room-number,
+                    .room-status,
+                    .fo-status { line-height: 60px !important; }
+
+                    .room-number { 
+                        font-size: 36px;
+                        width: 120px;
+                        vertical-align: middle;
+                        font-weight: 700;
+                        display: block;
+                        float: left;
+                    }
+                    
+                    .room-status,
+                    .fo-status {
+                        font-size: 16px;
+                        font-style: normal;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        color: #9d9d9d;
+                    }
+
+                    .guest-image {
+                        top: 10px;
+                        .square(40px);
+                    }
+
+                    .room-stats-wrap {
+                        left: 150px;
+                        right: 60px;
+                    }
+
+                    &.with-image {
+                        .guest-image {
+                            top: 10px;
+                            .square(40px);
+                        }
+                    }
+                }
+            }
+        }    
+            /* Rooms page               ==============================*/
+        
+        /* Rooms listing ***/
+        #rooms {
+            .wrapper { padding: 0 20px; }
+
+            li {
+                margin-bottom: 10px;
+
+                a {
+                    border-bottom: 0;
+                    .clickable;
+
+                    &:hover,
+                    &:active { background-color: @white; }
+                }
+            }
+
+            .iScrollVerticalScrollbar { 
+                top: 0;
+                bottom: 0;
+            }
+        }
