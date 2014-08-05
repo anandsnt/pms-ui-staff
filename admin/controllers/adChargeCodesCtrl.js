@@ -362,6 +362,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	var tempEditData = []; 
 	$scope.editSelectedTax = function(index) {
 		$scope.isEditTax = true;
+		$scope.isAddTax = false;
 		$scope.currentClickedTaxElement = index;
 		// Taking a deep copy edit data , need when we cancel out edit screen.
 		tempEditData = dclone($scope.prefetchData.linked_charge_codes[index],[]);
