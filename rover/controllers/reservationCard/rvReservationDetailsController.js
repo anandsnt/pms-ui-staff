@@ -148,7 +148,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 				var data = {
 					"confirmationNumber": confirmationNumber,
-					"isRefresh": $stateParams.isrefresh
+					"isRefresh": false
 				};
 				$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);
 			} else {
@@ -236,12 +236,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
-		$scope.isNewsPaperPreferenceAndWakeupCallAvailable = function() {
+		$scope.isWakeupCallAvailable = function() {
 			var status = $scope.reservationData.reservation_card.reservation_status;
 			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN";
 		};
-		$scope.saveNewsPaperPreference = function() {BALANCECHANGED
-
+		$scope.isNewsPaperPreferenceAvailable = function() {
+			var status = $scope.reservationData.reservation_card.reservation_status;
+			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN" || status == "RESERVED";
+		};
+		
+		$scope.saveNewsPaperPreference = function() {
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 			params.selected_newspaper = $scope.reservationData.reservation_card.news_paper_pref.selected_newspaper;
@@ -250,21 +254,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 		$scope.showFeatureNotAvailableMessage = function() {
-			var errorMessage = "Feature not available";
-			if ($scope.hasOwnProperty("errorMessage")) {
-				$scope.errorMessage = [errorMessage];
-				$scope.successMessage = '';
-			} else {
-				$scope.$emit("showErrorMessage", errorMessage);
-			}
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvFeatureNotAvailableDialog.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		};
+		$scope.deleteModal = function(){
+			ngDialog.close();
 		};
 
 		$scope.showWakeupCallDialog = function() {
-			if (!$scope.isNewsPaperPreferenceAndWakeupCallAvailable()) {
+			if (!$scope.isWakeupCallAvailable()) {
 				$scope.showFeatureNotAvailableMessage();
 				return;
 			}
-
+			
 			$scope.wakeupData = $scope.reservationData.reservation_card.wake_up_time;
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
@@ -292,7 +297,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
-				view: state
+				view: state,
+				company_id: $scope.reservationData.company.id,
+				travel_agent_id: $scope.reservationData.travelAgent.id
 			});
 		};
 		

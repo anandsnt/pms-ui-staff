@@ -25,7 +25,7 @@
 </div>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-class="{ 'no-scroll': noScroll }">
+<section id="rooms" class="content scrollable">
    <ul class="wrapper">
       <li ng-repeat="room in rooms" ng-if="room.display_room">
          <a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">
