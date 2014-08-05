@@ -14,28 +14,13 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	var that = this;
 	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 	$scope.setTitle($scope.heading);
-	//scroller options
-	$scope.$parent.myScrollOptions = {
-		'edit_staydate_updatedDetails' : {
-			snap : false,
-			scrollbars : true,
-			vScroll : true,
-			vScrollbar : true,
-			hideScrollbar : false,
-			click : true,
-			tap : true
-		},
-		'edit_staydate_calendar' : {
-			snap : false,
-			scrollbars : true,
-			vScroll : true,
-			vScrollbar : true,
-			hideScrollbar : false,
-			click : true,
-			tap : true
-		}
 
-	};
+	/**
+	* setting the scroll options for the room list
+	*/
+	var scrollerOptions = { preventDefault: false};
+  	$scope.setScroller('edit_staydate_updatedDetails', scrollerOptions);
+  	$scope.setScroller('edit_staydate_calendar', scrollerOptions);
 
 	this.dataAssign = function() {
 		//Data from Resolve method
