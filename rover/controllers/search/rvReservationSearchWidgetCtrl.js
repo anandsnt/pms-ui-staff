@@ -141,6 +141,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 		        var value = ""; 
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
+		        var totalCountOfFound = 0;		        
 		        for(var i = 0; i < $scope.results.length; i++){
 		          value = $scope.results[i];
 		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
@@ -150,10 +151,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0)
 		              {
 		                 $scope.results[i].is_row_visible = true;
+		                 totalCountOfFound++;
 		              }
 		          else {
 		            $scope.results[i].is_row_visible = false;
 		          }  
+		        }
+		        if(totalCountOfFound == 0){
+		        	 var dataDict = {'query': $scope.textInQueryBox.trim()};
+		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 		        }
 		      }
 		    else{
