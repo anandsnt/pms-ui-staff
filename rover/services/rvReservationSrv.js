@@ -8,33 +8,52 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		 * To fetch the list of users
 		 * @return {object} users list json
 		 */
-		this.fetch = function(reservationId) {
+		this.fetch = function(data) {
 
 			var deferred = $q.defer();
+			//Commented. Since we are using another API to get country list
+			// var fetchCountryList = function(data) {
+				// var url = 'api/countries.json';
+				// RVBaseWebSrv.getJSON(url).then(function(data) {
+					// that.reservationData.countries = data;
+					// deferred.resolve(that.reservationData);
+				// }, function(data) {
+					// deferred.reject(data);
+				// });
+// 
+			// };
+			var reservationId = data.reservationId;
+			var isRefresh = data.isRefresh;
+			var isReservationIdAlreadyCalled = false;
+			angular.forEach(that.reservationIdsArray, function(value, key) {
+				if (!isRefresh || isRefresh == null || isRefresh == '') {
+					if (value === reservationId)
+						isReservationIdAlreadyCalled = true;
+				}
+			});
+			if (!isReservationIdAlreadyCalled) {
+				that.storeReservationIds(reservationId);
+				var url = 'api/reservations/' +reservationId + '.json';
 
-			var fetchCountryList = function(data) {
-				var url = 'api/countries.json';
 				RVBaseWebSrv.getJSON(url).then(function(data) {
-					that.reservationData.countries = data;
-					deferred.resolve(that.reservationData);
+					that.reservationData[reservationId] = data;
+					deferred.resolve(data);
 				}, function(data) {
 					deferred.reject(data);
 				});
+			} else {
+				deferred.resolve(that.reservationData[reservationId]);
+			}
 
-			};
-
-			var url = 'api/reservations/' + reservationId + '.json';
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.reservationData = data;
-				fetchCountryList();
-			}, function(data) {
-				deferred.reject(data);
-			});
 			return deferred.promise;
+
 		};
 
 		this.reservationDetails = {};
 		this.confirmationNumbersArray = [];
+
+		this.reservationIdsArray = [];
+		var that = this;
 
 		this.emptyConfirmationNumbers = function() {
 			that.confirmationNumbersArray = [];
@@ -45,13 +64,17 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		};
 
+		this.storeReservationIds = function(reservationID) {
+			that.reservationIdsArray.push(reservationID);
+
+		};
 
 		this.fetchReservationDetails = function(data) {
 			var confirmationNumber = data.confirmationNumber;
 			var isRefresh = data.isRefresh;
 			var isConfirmationNumberAlreadyCalled = false;
 			angular.forEach(that.confirmationNumbersArray, function(value, key) {
-				if (!isRefresh) {
+				if (!isRefresh || isRefresh == null) {
 					if (value === confirmationNumber)
 						isConfirmationNumberAlreadyCalled = true;
 				}

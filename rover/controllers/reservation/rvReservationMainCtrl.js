@@ -38,6 +38,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         //fetching country list
+        //Commenting - Another call is happening to fetch countries
         $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
         $scope.initReservationData = function() {
