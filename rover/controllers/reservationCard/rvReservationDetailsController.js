@@ -1,11 +1,11 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', 'RVSearchSrv', '$vault',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, RVSearchSrv, $vault) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault) {
 
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: 'Search results',
 			name: 'rover.search',
-			param: !!$vault.get('lastSearchParam') ? JSON.parse( $vault.get('lastSearchParam') ) : {}
+			param: JSON.parse($vault.get('lastSearchParam'))
 		}
 
 		BaseCtrl.call(this, $scope);
@@ -16,6 +16,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * success call back of fetch reservation details
 		 */
 		//Data fetched using resolve in router
+		reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
@@ -23,13 +24,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 			// room related details
 			var data = {
-				'room':                   $scope.reservationData.reservation_card.room_number,
-				'reservation_status':     $scope.reservationData.reservation_card.reservation_status,
-				'roomstatus':             $scope.reservationData.reservation_card.room_status,
-				'fostatus':               $scope.reservationData.reservation_card.fo_status,
-				'is_reservation_queued':  $scope.reservationData.reservation_card.is_reservation_queued,
-				'is_queue_rooms_on':      $scope.reservationData.reservation_card.is_queue_rooms_on,
-				'late_checkout_time':     $scope.reservationData.reservation_card.late_checkout_time,
+				'room': $scope.reservationData.reservation_card.room_number,
+				'reservation_status': $scope.reservationData.reservation_card.reservation_status,
+				'roomstatus': $scope.reservationData.reservation_card.room_status,
+				'fostatus': $scope.reservationData.reservation_card.fo_status,
+				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
+				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
+				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
 				'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
 			};
 
@@ -80,9 +81,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.setScroller('resultDetails');
 
+		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
+		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.package_description;
+		var multipleRatesPresent = false;
+		var multipleRates = [];
+		angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+			multipleRates.push(item.rate_id);
+		});
+
+		if (multipleRates.reduce(function(a, b) {
+			return (a === b) ? false : true;
+		})) {
+			$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
+		};
+
+
 		//CICO-7078 : Initiate company & travelagent card info
-
-
 		//temporarily store the exiting card ids
 		var existingCards = {
 			guest: $scope.reservationDetails.guestCard.id,
@@ -95,7 +109,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationDetails.travelAgent.id = reservationListData.travel_agent_id == null ? "" : reservationListData.travel_agent_id;
 
 		angular.copy(reservationListData, $scope.reservationListData);
-		// console.log($scope.reservationListData)
+		$scope.populateDataModel(reservationDetails);
 		$scope.$emit('cardIdsFetched', {
 			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
 			company: $scope.reservationDetails.companyCard.id == existingCards.company,
@@ -103,31 +117,24 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
-
-
 		$scope.$on('$viewContentLoaded', function() {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
 				3000);
-
 		});
 
-
-		
-
-
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
-
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
 			//To move the scroller to top after rendering new data in reservation detals.
-			$scope.$parent.myScroll['resultDetails'].scrollTo(0,0);
+			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			updateSearchCache();
 		};
+
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
 		 * @param {int} confirmationNumber => confirmationNumber of reservation
@@ -143,8 +150,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			} else {
 				$scope.reservationData = {};
 			}
-
 		});
+
 		//To pass confirmation number and resrvation id to reservation Card controller.
 		// var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
 		var passData = reservationListData;
@@ -262,5 +269,28 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				scope: $scope
 			});
 		};
+
+		$scope.extendNights = function() {
+			// TODO : This following LOC has to change if the room number changes to an array
+			// to handle multiple rooms in future
+
+			if (reservationMainData.rooms[0].roomNumber != "") {
+				$state.go('rover.reservation.staycard.changestaydates', {
+					reservationId: reservationMainData.reservationId,
+					confirmNumber: reservationMainData.confirmNum
+				});
+			} else {
+				$scope.goToRoomAndRates("CALENDAR");
+			}
+		}
+
+		$scope.goToRoomAndRates = function(state) {
+			$state.go('rover.reservation.staycard.mainCard.roomType', {
+				from_date: reservationMainData.arrivalDate,
+				to_date: reservationMainData.departureDate,
+				view: state,
+				fromState: $state.current.name
+			});
+		}
 	}
 ]);
