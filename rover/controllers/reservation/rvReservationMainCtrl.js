@@ -343,6 +343,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
                 if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
+                    adults = parseInt(currentRoom.stayDates[date].guests.adults);
+                    children = parseInt(currentRoom.stayDates[date].guests.children);
                     var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                     var extraAdults = adults >= 2 ? adults - 2 : 0;
                     roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
@@ -466,8 +468,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // stay
             var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
             var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new Date(arrivalDateParts[2]+"-"+arrivalDateParts[0]+"-"+arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new Date(departureDateParts[2]+"-"+departureDateParts[0]+"-"+departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = dateFilter(new Date(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new Date(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards

@@ -757,6 +757,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			var adults = $scope.reservationData.rooms[$scope.activeRoom].numAdults;
 			var children = $scope.reservationData.rooms[$scope.activeRoom].numChildren;
 
+			if (typeof $scope.reservationData.rooms[$scope.activeRoom].stayDates[date] != 'undefined') {
+				adults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.adults);
+				children = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[date].guests.children);
+			}
+
 			var baseRoomRate = adults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = adults >= 2 ? adults - 2 : 0;
 
