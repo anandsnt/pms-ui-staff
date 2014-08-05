@@ -4,7 +4,7 @@
 	</div>
 	<div class="select">
 		<!-- The newspaper selection option is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
-		<select name="reservation_newspaper" ng-model = "reservationData.reservation_card.news_paper_pref.selected_newspaper" ng-change="saveNewsPaperPreference()" ng-disabled= "!isNewsPaperPreferenceAndWakeupCallAvailable()">
+		<select name="reservation_newspaper" ng-model = "reservationData.reservation_card.news_paper_pref.selected_newspaper" ng-change="saveNewsPaperPreference()" ng-disabled= "!isNewsPaperPreferenceAvailable()">
 			<option value="" class="placeholder" translate>NEWSPAPER_SELECT</option>
 			<option value="{{newspaper.value}}" ng-selected="newspaper.value==reservationData.reservation_card.news_paper_pref.selected_newspaper" ng-repeat="newspaper in reservationData.reservation_card.news_paper_pref.news_papers" >
 				{{newspaper.name}} 
