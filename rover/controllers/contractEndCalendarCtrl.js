@@ -1,53 +1,42 @@
-
 sntRover.controller('contractEndCalendarCtrl',['$rootScope','$scope','dateFilter','ngDialog',function($rootScope,$scope,dateFilter,ngDialog){
 	$scope.setUpData = function(){
-	
-	    $scope.isDateSelected = false;
-	    
+		    
 		if($scope.contractList.isAddMode){
-			
-	    	var myDate = new Date($scope.addData.begin_date);
-			myDate.setDate(myDate.getDate() + 1);
-  			$scope.minDate = dateFilter(myDate, 'yyyy-MM-dd');
   			$scope.date = $scope.addData.end_date;
-  			$scope.isDateSelected = true;
 	  	}
 	  	else{
 	  		if($scope.contractData.end_date){
-	  			
-	  			var myDate = new Date($rootScope.businessDate);
-				myDate.setDate(myDate.getDate() + 1);
-	  			$scope.minDate = dateFilter(myDate, 'yyyy-MM-dd');
-	  			
-		      	$scope.date = $scope.contractData.end_date;
-		      	$scope.isDateSelected = true;
+	 	      	$scope.date = $scope.contractData.end_date;
 		    }
 		    else{
-		    	var myDate = new Date($rootScope.businessDate);
+		    	//set end date as one day next to bussiness date
+		    	var myDate = tzIndependentDate($rootScope.businessDate);
 				myDate.setDate(myDate.getDate() + 1);
-				$scope.minDate = dateFilter(myDate, 'yyyy-MM-dd');
-				
 	     		$scope.date = dateFilter(myDate, 'yyyy-MM-dd'); 
 		    	$scope.contractData.end_date = $scope.date;
-		      	$scope.isDateSelected = true;
+
 		    }
 	  	
 	  	}
-	    $scope.closePopupOnSelection = false;
+	  	$scope.dateOptions = {
+		     changeYear: true,
+		     changeMonth: true,
+		     minDate: tzIndependentDate($rootScope.businessDate),
+		     yearRange: "0:+10",
+		     onSelect: function() {
+		     	
+			    if($scope.contractList.isAddMode){
+			     	$scope.addData.end_date = $scope.date;
+			    }
+			    else{
+			    	$scope.contractData.end_date = $scope.date;
+			    } 
+			        ngDialog.close();
+			    }
+
+    	}
+
 	};
 	$scope.setUpData();
 	
-	$scope.updateDate = function(){
-
-	    if($scope.closePopupOnSelection && $scope.contractList.isAddMode){
-	     	$scope.addData.end_date = $scope.date;
-	    }
-	    else{
-	    	$scope.contractData.end_date = $scope.date;
-	    } 
-	     if($scope.closePopupOnSelection)
-	    	ngDialog.close();
-
-  	};
-
 }]);

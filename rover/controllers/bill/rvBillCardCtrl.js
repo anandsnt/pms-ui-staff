@@ -7,7 +7,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		title: 'Stay Card',
 		callback: 'goBackToStayCard',
 		scope: $scope
-	}
+	};
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height
@@ -614,6 +614,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * success callback ofcomplete checkin
 	 */
 	$scope.completeCheckinSuccessCallback = function(){
+
+		$scope.$emit('hideLoader');
 				
 		var keySettings = $scope.reservationBillData.key_settings;
 		$scope.fromView = "checkin";
@@ -649,8 +651,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			    scope: $scope
 			});
 		}
-		
-		
 	};
 
 	$scope.completeCheckinFailureCallback = function(data){

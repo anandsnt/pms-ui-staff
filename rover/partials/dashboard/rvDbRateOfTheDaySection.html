@@ -1,0 +1,28 @@
+
+<div id="dashboard-rate-of-day" class="dashboard-block data rate-of-day" ng-show="isStandAlone">
+    <h3>Rate of the Day</h3>
+    <ul>
+        <li>
+        	Today
+        	<span class="rate">{{statisticsData.rate_of_day.today.name}}</span>
+        	<span class="value" ng-show="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
+                {{currencySymbol}}{{statisticsData.rate_of_day.today.amount | number : 2}}
+            </span>          
+        </li>
+        <li>
+        	{{tomorrow|date:monthAndDate}}
+        	<span class="rate">{{statisticsData.rate_of_day.tomorrow.name}}</span>
+            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.tomorrow.amount)!==''">
+                {{currencySymbol}}{{statisticsData.rate_of_day.tomorrow.amount | number : 2}}
+            </span>            
+        </li>
+        <li>
+        	{{dayAfterTomorrow|date:monthAndDate}}
+        	<span class="rate">{{statisticsData.rate_of_day.day_after_tomorrow.name}}</span>
+
+            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount)!==''">
+                {{currencySymbol}}{{statisticsData.rate_of_day.day_after_tomorrow.amount | number : 2}}
+            </span>            
+        </li>      
+    </ul>
+</div>

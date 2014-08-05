@@ -679,7 +679,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						}
 						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
 							rate_id: rate_id,
-							rate: $scope.calculateRate(d),
+							rate: $scope.calculateRate(d, for_date),
 							rateBreakUp: d,
 							tax: 0,
 							day: new Date(for_date)
@@ -739,7 +739,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		}
 
-		$scope.calculateRate = function(rateTable) {
+		$scope.calculateRate = function(rateTable, date) {
 			// Hi Shiju, 
 			// The rate amount calculation works as follows: 
 			// 1.       1 Adult, 0 Children: Single

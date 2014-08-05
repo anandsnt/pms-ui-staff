@@ -11,7 +11,7 @@
 //=require ../shared/lib/js/ng-table.js
 //=require ../shared/lib/js/fastclick.js
 //=require ../shared/lib/js/angular-dragdrop.min.js
-//=require ../shared/lib/js/angular-datepicker.js
+//=require ../shared/lib/js/date.js
 //=require ../shared/baseCtrl.js
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/angular-sanitize.js
@@ -25,4 +25,5 @@
 //=require_tree ../admin/controllers
 //=require_tree ../admin/directives
 //=require_tree ../admin/services
+//=require ../shared/iBeaconOperations.js
 //=require ../rover/rvSntApp.js

@@ -7,6 +7,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // activate Rate Details View
             $scope.rateMenu = 'Details';
             $scope.prevMenu = "";
+            //set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
+            $scope.businessDate = rateInitialData.business_date;
             // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",
@@ -104,6 +106,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
          $scope.$on("errorReceived", function (e, value) {
             $scope.errorMessage = value;
+            angular.element( document.querySelector('#wrapper')).scrollTop(0);
         });
 
         /**
