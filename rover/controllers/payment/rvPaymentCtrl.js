@@ -192,7 +192,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		var data = dclone($scope.saveData, unwantedKeys);
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
-			alert(JSON.stringify(data));
 			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
 			//Used to update the list with new value
