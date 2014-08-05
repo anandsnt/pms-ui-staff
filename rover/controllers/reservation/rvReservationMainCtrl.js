@@ -47,6 +47,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
+                midStay: false,// Flag to check in edit mode if in the middle of stay
                 stayDays: [],
                 checkinTime: {
                     hh: '',
@@ -160,7 +161,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
                 defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
                 businessDate: baseSearchData.businessDate,
-                additionalEmail: ""
+                additionalEmail: "",
+                isGuestPrimaryEmailChecked: false,
+                isGuestAdditionalEmailChecked: false
             };
 
             $scope.guestCardData = {};
@@ -425,10 +428,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
             }
 
-
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
-                to_date: $scope.reservationData.departureDate
+                to_date: $scope.reservationData.departureDate,
+                company_id: $scope.reservationData.company.id,
+                travel_agent_id: $scope.reservationData.travelAgent.id
             });
         }
 
@@ -462,8 +466,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // stay
             var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
             var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2]+"-"+arrivalDateParts[0]+"-"+arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2]+"-"+departureDateParts[0]+"-"+departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
@@ -521,8 +525,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     id: ""
                 }
             }
-            console.log('$scope.reservationData model - 2', $scope.reservationData);
+
+            /* CICO-6069
+             *  Comments from story: 
+             *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
+             *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
+             */
+
+            // Find if midstay
+            if(new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)){
+                $scope.reservationData.midStay = true;                
+            }
+
         };
+
+        $scope.$on("guestEmailChanged", function(e) {
+            console.log('reached main controller');
+            $scope.$broadcast('updateGuestEmail');
+        });
 
         $scope.initReservationData();
     }
