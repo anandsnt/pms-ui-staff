@@ -298,8 +298,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
 				view: state,
-				company_id: $scope.reservationData.company.id,
-				travel_agent_id: $scope.reservationData.travelAgent.id
+				company_id: $scope.$parent.reservationData.company.id,
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 			});
 		};
 		
