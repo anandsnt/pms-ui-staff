@@ -754,8 +754,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// Can we set the ADR & Total Stay calculation already now, so we can make sure it works correctly. When we add the tax, we just need to add in the extra amount. For now just add 0.00 for the tax value.
 			// Thanks,
 			// Nicki
+
+
 			var adults = $scope.reservationData.rooms[$scope.activeRoom].numAdults;
 			var children = $scope.reservationData.rooms[$scope.activeRoom].numChildren;
+
+			if ($scope.stateCheck.stayDatesMode) {
+				adults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.adults);
+				children = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.children);
+			}
 
 			var baseRoomRate = adults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = adults >= 2 ? adults - 2 : 0;
