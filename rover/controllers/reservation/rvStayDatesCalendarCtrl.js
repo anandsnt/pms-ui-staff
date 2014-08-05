@@ -61,6 +61,16 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	$scope.updateDataModel = function(){
 
 		var availabilityDetails = dclone($scope.availabilityDetails);
+		//Update the arrival_date and departure_dates
+		$scope.reservationData.arrivalDate = $scope.checkinDateInCalender;
+		$scope.reservationData.checkoutDateInCalender = $scope.departureDate;
+
+		//update the rateDetails - To calculate the total stay cost
+		var rateDetails = [];
+		for(var i in $scope.dates){
+			date = $scope.dates[i];
+			$scope.reservationData.rateDetails.push(availabilityDetails.results[date][$scope.finalRoomType].room_rates)
+		}
 
 		//Update the room type details
 		$scope.reservationData.rooms[0].roomTypeId = $scope.finalRoomType;
@@ -120,6 +130,10 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		}
 
 		$scope.reservationData.rooms[0].stayDates = stayDates;
+		//$scope.computeTotalStayCost();
+		//test = $scope.reservationData;
+		console.log($scope.reservationData.rooms[0].stayDates);
+
 
 		//Once updated, go to the addons screen
 		$state.go('rover.reservation.staycard.mainCard.addons', {
@@ -164,7 +178,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		var roomTypeAvailbilityForTheDay;
 		var isOverBooking = false;
 		var date;
-		console.log($scope.dates);
 		//Check for each stayday, whether it is overbooking
 		for(var i in $scope.dates){
 			date = $scope.dates[i];
@@ -559,9 +572,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			$scope.availabilityDetails = data;
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 			$scope.refreshCalendarEvents();
-			
-			//Display Calendar
-			//that.renderFullCalendar();
 		};
 
 		var params = {};

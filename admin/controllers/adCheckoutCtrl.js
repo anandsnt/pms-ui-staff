@@ -54,7 +54,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 				'emails':$scope.checkoutData.emails,
 				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
 				 'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
-				'require_cc_for_checkout_email':$scope.require_cc_for_checkout_email_flag
+				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email
 			};
 
         var saveCheckoutDetailsFailureCallback = function(data) {
@@ -65,24 +65,5 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     	}
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback,saveCheckoutDetailsFailureCallback);
     };
-  
- /**
-    *   Method to go back to previous state.
-    */
-    $scope.backClicked = function(){
-        
-        if($rootScope.previousStateParam){
-            $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
-        }
-        else if($rootScope.previousState){
-            $state.go($rootScope.previousState);
-        }
-        else 
-        {
-            $state.go('admin.dashboard', {menu : 0});
-        }
-    
-    };
- 
 
 }]);

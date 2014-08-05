@@ -1,70 +1,83 @@
 <section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
 	<header class="content-title float">
 		<h2>{{displayMessage}}</h2>
-		<a ng-click="backClicked()" data-type="load-details" class="action back" translate="BACK"></a>
+		<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" translate="BACK"></a>
 	</header>
 	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+	<div ng-include="'/assets/partials/common/notification_success_message.html'"  ></div>
+
+	{{errorMessage[0]}}
 	<!--- form starts here -->
 	<form style="overflow-y:auto;" class="form float inline-form" >
 		<fieldset class="holder left">				
-			<div class="entry">
-				<label translate="BEACON_ID"></label>
-				<input type="text"  placeholder="enter Id" ng-disabled="!isIpad" ng-model="data.id">							
+			<div class="entry full-width">
+				<label>{{'BEACON_ID'|translate}} <strong>*</strong></label>
+				<input type="text"  class="proximity-field" placeholder="Enter proximity ID" ng-disabled="!isIpad || !addmode || isBeaconLinked" ng-model="data.proximity_id">
+				<input type="text" class="majorid-field" placeholder="Major id" ng-disabled="!isIpad || !addmode || isBeaconLinked" ng-model="data.major_id">
+				<input type="text" class="majorid-field" placeholder="Minor ID" ng-disabled="!isIpad || !addmode || isBeaconLinked" ng-model="data.minor_id">					
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="data.id.length===0 || !isIpad" class="button" ng-class="{ 'brand-colors' :data.id.length>0 }" translate="LINK_BEACON"></button>
-				</div> 	
+				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || !addmode || isBeaconLinked" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode &&  !isBeaconLinked}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
-			<ad-textbox inputtype="text" value="rateData.name" label = "{{ 'LOCATION' | translate }}" placeholder = "Enter Location" required="no"></ad-textbox>			 
+			<ad-textbox inputtype="text" value="data.location" label = "{{ 'LOCATION' | translate }}" placeholder = "{{'ENTER_LOCATION'|translate}}" required="yes"></ad-textbox>			 
 			<div class="entry">
-				<label translate="TYPE"></label>
+				<label>{{'TYPE'|translate}} <strong>*</strong></label>
 				<div class="select">
-					<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+					<select class="placeholder" ng-model="data.type" ng-options="ibeacon.value as ibeacon.value for ibeacon in beaconTypes">
 						<option value="" disabled translate="SELECT_TYPE"></option>
 					</select>
 				</div>
 			</div>  
 			<div class="entry">
-					<label translate="TRIGGER"></label>
+					<label>{{'TRIGGER'|translate}} <strong>*</strong></label>
 					<div class="select">
-						<select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
+						<select class="placeholder" ng-model="data.trigger_range" ng-options="trigger.value as trigger.value for trigger in triggerTypes">
 							<option value="" disabled translate="SELECT_TRIGGER"></option>
 						</select>
 					</div>
 				</div>
 				<div class="entry">
 					<label ng-hide="label.length ==0" for="" translate="STATUS"></label>
-					<div class="switch-button single" ng-class="{'on': isActive}">
+					<div class="switch-button single" ng-class="{'on': data.status}">
 						<input type="checkbox"  ng-click="toggleStatus()">
 						<span class="switch-icon"></span>
 
 					</div>
 				</div>				
 		</fieldset>
+		<fieldset class="holder left">
+			<div class="entry">
+				<label>{{'NEARBY_BEACONS'|translate}}</label>
+			</div>
+			<select multiple ng:model="data.neighbours" ng-options="beaconNeighbour.beacon_id as beaconNeighbour.location for beaconNeighbour in beaconNeighbours" >
+	 		 </select>
+ 	</fieldset>
 			<div class="form-title" style="margin-bottom:32px;">
 				<h3><span translate="GUEST_MESSAGE"></span></h3>
 			</div>
-			<fieldset class="holder left">
+			<fieldset class="holder left" ng-hide="data.type !='PROMOTION'">
 				<div class="entry full-width">
 					<label for="room-type-picture" translate="PICTURE"></label>
 					<div class="file-upload with-preview">
 						<span class="input" translate="CHOOSE_FILE"></span>
-						<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
+						<input type="file" ng-model="data.picture" accept="image/*" app-filereader />
 						<button type="button" class="button brand-colors" translate="PICTURE">
 						</button> 
 					</div>
-					<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
+					<span class="file-preview"><img ng-src="{{data.picture}}" id="file-preview" alt=""> </span>
 				</div> 
 			</fieldset>
 			<fieldset class="holder right">
-				<ad-textbox inputtype="text" styleclass="full-width" value="message.title" label = "{{ 'TITLE' | translate }}" placeholder = "Enter Location" required="no"></ad-textbox>
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="message.description" label = "{{ 'DESCRIPTION' | translate }}" maxlength="200" placeholder = "Enter Description"></ad-textarea>
+				<ad-textbox inputtype="text" styleclass="full-width" value="data.title" label = "{{ 'TITLE' | translate }}" placeholder = "{{'ENTER_TITLE'|translate}}" required="no"></ad-textbox>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.description" label = "{{ 'DESCRIPTION' | translate }}" maxlength="200" placeholder = "{{'ENTER_DESCRIPTION'|translate}}"></ad-textarea>
 			</fieldset>
 			<div class="actions float">
-				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline actions_margin_top" translate="CANCEL"></button>
-				<button type="button" ng-click="saveCheckin()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
+
+				<button type="button" ng-click="backClicked()" class="button blank add-data-inline actions_margin_top" translate="CANCEL"></button>
+				<button type="button" ng-click="saveBeacon()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
 			</div>
 		</form>
 <!--- form ends here -->

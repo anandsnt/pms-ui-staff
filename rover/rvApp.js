@@ -1,4 +1,4 @@
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils','pickadate', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','advanced-pickadate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', , 'cacheVaultModule', 'twoMonthscalendar']);
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', , 'cacheVaultModule', 'twoMonthscalendar']);
 
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;

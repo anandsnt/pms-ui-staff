@@ -14,36 +14,31 @@
 			<tbody>
 				<tr ng-repeat="ibeacon in $data" ng-class = "{'inactive': !ibeacon.status}"> 
 					<td data-title="'Location'" sortable="'location'" header-class="width-15">
-						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data" ng-click="showLoader()">
+						<a ui-sref='admin.iBeaconDetails({action:ibeacon.beacon_id})' class="edit-data beacon-id" ng-click="showLoader()">
 							<strong> {{ibeacon.location}}</strong>
 						</a>
 					</td>
 					<td data-title="'ID'"  sortable="'beacon_id'" header-class="width-10">
-						<a ui-sref='admin.iBeaconDetails({action:ibeacon.id})' class="edit-data" ng-click="showLoader()">
-							{{ibeacon.id}}
+						<a ui-sref='admin.iBeaconDetails({action:ibeacon.beacon_id})' class="edit-data beacon-id" ng-click="showLoader()">
+							{{proximityId}}{{majorId}}{{ibeacon.minor_id}}
 						</a>
 					</td>
 					<td data-title="'Type'" sortable="'beacon_type'" header-class="width-15">
-				    	<div class="entry">
-			                 <!--   <div class="select">
-			                 <select class="placeholder" ng-model="ibeacon.selectedType" ng-options="ibeacon.id as ibeacon.type for ibeacon in ibeacons">
-			                        <option value="" disabled> Select Type</option>
-			                    </select>                     
-			                </div>-->	
-			                <strong>{{ibeacon.selectedType}}</strong>
+				    	<div class="entry">                     
+			                </div>	
+			                <strong>{{ibeacon.type}}</strong>
 	              		</div>
 					</td>
-					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': ibeacon.status}" header-class="width-15">
-						<div class="entry" ng-click="toggleActive(ibeacon.id,ibeacon.status)">
+					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': ibeacon.beacon_status}" header-class="width-15">
+						<div class="entry" ng-click="toggleActive(ibeacon.beacon_id,ibeacon.status)">
 							<div class="switch-button single" ng-class="{'on': ibeacon.status}">
 								<input type="checkbox"  ng-checked="ibeacon.status">
 								<span class="switch-icon"></span>
 							</div>
 						</div>
-						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
 					</td>
 					<td header-class="width-15">
-						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(ibeacon.id)"  ng-hide="false">&nbsp;</span>
+						 <span class="icons delete_small cursor_pointer" ng-click="deleteBeacon(ibeacon.beacon_id)"  ng-hide="false">&nbsp;</span>
 					</td>
 				</tr>
 			</tbody>

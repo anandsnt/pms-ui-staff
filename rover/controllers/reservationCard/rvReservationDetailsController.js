@@ -3,9 +3,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: 'Search results',
-			name: 'rover.search',
-			param: JSON.parse($vault.get('lastSearchParam'))
+			title: 'Search results'
 		}
 
 		BaseCtrl.call(this, $scope);
@@ -83,18 +81,17 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
 		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.package_description;
-		var multipleRatesPresent = false;
-		var multipleRates = [];
-		angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
-			multipleRates.push(item.rate_id);
-		});
+		// var multipleRatesPresent = false;
+		// var multipleRates = [];
+		// angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
+		// 	multipleRates.push(item.rate_id);
+		// });
 
-		if (multipleRates.reduce(function(a, b) {
-			return (a === b) ? false : true;
-		})) {
-			$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
-		};
-
+		// if (multipleRates.reduce(function(a, b) {
+		// 	return (a === b) ? true : false;
+		// })) {
+		// 	$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
+		// };
 
 		//CICO-7078 : Initiate company & travelagent card info
 		//temporarily store the exiting card ids
@@ -110,6 +107,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		angular.copy(reservationListData, $scope.reservationListData);
 		$scope.populateDataModel(reservationDetails);
+
+		// console.log($scope.reservationListData)
 		$scope.$emit('cardIdsFetched', {
 			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
 			company: $scope.reservationDetails.companyCard.id == existingCards.company,
@@ -117,14 +116,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
+
+
 		$scope.$on('$viewContentLoaded', function() {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
 				3000);
+
 		});
 
+
+
 		$scope.reservationDetailsFetchSuccessCallback = function(data) {
+
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
@@ -134,7 +139,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			updateSearchCache();
 		};
-
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
 		 * @param {int} confirmationNumber => confirmationNumber of reservation
@@ -144,14 +148,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 				var data = {
 					"confirmationNumber": confirmationNumber,
-					"isRefresh": $stateParams.isrefresh
+					"isRefresh": false
 				};
 				$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, data, $scope.reservationDetailsFetchSuccessCallback);
 			} else {
 				$scope.reservationData = {};
 			}
-		});
 
+		});
 		//To pass confirmation number and resrvation id to reservation Card controller.
 		// var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
 		var passData = reservationListData;
@@ -232,9 +236,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
-		$scope.isNewsPaperPreferenceAndWakeupCallAvailable = function() {
+		$scope.isWakeupCallAvailable = function() {
 			var status = $scope.reservationData.reservation_card.reservation_status;
 			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN";
+		};
+		$scope.isNewsPaperPreferenceAvailable = function() {
+			var status = $scope.reservationData.reservation_card.reservation_status;
+			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN" || status == "RESERVED";
 		};
 		$scope.saveNewsPaperPreference = function() {
 
@@ -246,21 +254,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		};
 		$scope.showFeatureNotAvailableMessage = function() {
-			var errorMessage = "Feature not available";
-			if ($scope.hasOwnProperty("errorMessage")) {
-				$scope.errorMessage = [errorMessage];
-				$scope.successMessage = '';
-			} else {
-				$scope.$emit("showErrorMessage", errorMessage);
-			}
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvFeatureNotAvailableDialog.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		};
+		$scope.deleteModal = function(){
+			ngDialog.close();
 		};
 
 		$scope.showWakeupCallDialog = function() {
-			if (!$scope.isNewsPaperPreferenceAndWakeupCallAvailable()) {
+			if (!$scope.isWakeupCallAvailable()) {
 				$scope.showFeatureNotAvailableMessage();
 				return;
 			}
-
+			
 			$scope.wakeupData = $scope.reservationData.reservation_card.wake_up_time;
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
@@ -290,6 +299,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				to_date: reservationMainData.departureDate,
 				view: state,
 				fromState: $state.current.name
+				company_id: $scope.reservationData.company.id,
+				travel_agent_id: $scope.reservationData.travelAgent.id
 			});
 		}
 	}

@@ -38,6 +38,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         //fetching country list
+        //Commenting - Another call is happening to fetch countries
         $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
         $scope.initReservationData = function() {
@@ -46,6 +47,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
+                midStay: false,// Flag to check in edit mode if in the middle of stay
                 stayDays: [],
                 checkinTime: {
                     hh: '',
@@ -160,7 +162,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 recommendedRateDisplay: baseSearchData.settings.recommended_rate_display,
                 defaultRateDisplayName: baseSearchData.settings.default_rate_display_name,
                 businessDate: baseSearchData.businessDate,
-                additionalEmail: ""
+                additionalEmail: "",
+                isGuestPrimaryEmailChecked: false,
+                isGuestAdditionalEmailChecked: false
             };
 
             $scope.guestCardData = {};
@@ -419,23 +423,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.demographics.source = '';
 
             // Redo the staydates array
-            for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')].rate = {
+            for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].rate = {
                     id: ''
                 }
             }
-
 
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
                 fromState: rover.reservation.search,
+                company_id: $scope.reservationData.company.id,
+                travel_agent_id: $scope.reservationData.travelAgent.id
             });
         }
 
         $scope.updateOccupancy = function(roomIdx) {
-            for (var d = [], ms = new Date($scope.reservationData.arrivalDate) * 1, last = new Date($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new Date(ms), 'yyyy-MM-dd')].guests = {
+            for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].guests = {
                     adults: parseInt($scope.reservationData.rooms[roomIdx].numAdults),
                     children: parseInt($scope.reservationData.rooms[roomIdx].numChildren),
                     infants: parseInt($scope.reservationData.rooms[roomIdx].numInfants)
@@ -466,8 +471,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             // stay
             var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
             var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new Date(arrivalDateParts[2]+"-"+arrivalDateParts[0]+"-"+arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new Date(departureDateParts[2]+"-"+departureDateParts[0]+"-"+departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             // cards
@@ -488,11 +493,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.stayDays = [];
             angular.forEach(reservationDetails.reservation_card.stay_dates, function(item, index) {
                 $scope.reservationData.stayDays.push({
-                    date: dateFilter(new Date(item.date), 'yyyy-MM-dd'),
-                    dayOfWeek: dateFilter(new Date(item.date), 'EEE'),
-                    day: dateFilter(new Date(item.date), 'dd')
+                    date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
+                    day: dateFilter(new tzIndependentDate(item.date), 'dd')
                 });
-                $scope.reservationData.rooms[0].stayDates[dateFilter(new Date(item.date), 'yyyy-MM-dd')] = {
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
                     guests: {
                         adults: item.adults,
                         children: item.children,
@@ -510,12 +515,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             });
             // appending departure date for UI handling since its not in API response
             $scope.reservationData.stayDays.push({
-                date: dateFilter(new Date($scope.reservationData.departureDate), 'yyyy-MM-dd'),
-                dayOfWeek: dateFilter(new Date($scope.reservationData.departureDate), 'EEE'),
-                day: dateFilter(new Date($scope.reservationData.departureDate), 'dd')
+                date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
+                dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
+                day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
             });
 
-            $scope.reservationData.rooms[0].stayDates[dateFilter(new Date($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
+            $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
                 guests: {
                     adults: "",
                     children: "",
@@ -525,8 +530,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     id: ""
                 }
             }
-            console.log('$scope.reservationData model - 2', $scope.reservationData);
+
+            /* CICO-6069
+             *  Comments from story: 
+             *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
+             *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
+             */
+
+            // Find if midstay
+            if(new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)){
+                $scope.reservationData.midStay = true;                
+            }
+
         };
+
+        $scope.$on("guestEmailChanged", function(e) {
+            console.log('reached main controller');
+            $scope.$broadcast('updateGuestEmail');
+        });
 
         $scope.initReservationData();
     }

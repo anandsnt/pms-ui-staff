@@ -3,7 +3,7 @@
 		<section>
 			<header class="content-title float">
 				<h2>Daily Upsell Setup</h2>
-				<a id="go_back" data-type="load-details" ng-click="cancelClick()" class="action back">Back</a>
+				<a id="go_back" data-type="load-details" ng-click="goBackToPreviousState()" class="action back">Back</a>
 			</header>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
@@ -126,7 +126,7 @@
 		</div>
 	</fieldset>
 	<div class="actions">
-		<button type="button" ng-click="cancelClick()" class="button blank">
+		<button type="button" ng-click="goBackToPreviousState()" class="button blank">
 			Cancel
 		</button>
 		<button type="button" ng-click="saveClick()" class="button green">

@@ -54,12 +54,16 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     });
 
     $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
-        url: '/roomType/:from_date/:to_date/:fromState:',
+        url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent',
         templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
         controller: 'RVReservationRoomTypeCtrl',
         onEnter: function($stateParams) {
             if (typeof $stateParams.view == "undefined" || $stateParams.view == null) {
                 $stateParams.view = "DEFAULT";
+            }if (typeof $stateParams.company_id == "undefined" || $stateParams.company_id == null) {
+                $stateParams.company_id = null;
+            }if (typeof $stateParams.travel_agent_id == "undefined" || $stateParams.travel_agent_id == null) {
+                $stateParams.travel_agent_id = null;
             }
         },
         resolve: {
@@ -67,6 +71,8 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
                 var params = {};
                 params.from_date = $stateParams.from_date;
                 params.to_date = $stateParams.to_date;
+                params.company_id = $stateParams.company_id;
+                params.travel_agent_id = $stateParams.travel_agent_id;
                 return RVReservationBaseSearchSrv.fetchAvailability(params);
             }
         }
@@ -100,7 +106,6 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'RVReservationConfirmCtrl'
     });
 
-
     $stateProvider.state('rover.reservation.staycard.reservationcard', {
         abstract: true,
         url: '/reservationcard',
@@ -114,7 +119,11 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'reservationDetailsController',
         resolve: {
             reservationListData: function(RVReservationCardSrv, $stateParams) {
-                return RVReservationCardSrv.fetch($stateParams.id);
+            	 var data = {
+                    "reservationId": $stateParams.id,
+                    "isRefresh": $stateParams.isrefresh
+                };
+                return RVReservationCardSrv.fetch(data);
             },
             reservationDetails: function(RVReservationCardSrv, $stateParams) {
                 var data = {
