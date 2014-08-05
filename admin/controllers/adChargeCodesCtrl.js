@@ -239,13 +239,27 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				selected_link_with.push(item.value);
 			}
 		});
+		angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
+			item.calculation_rules = [];
+			if(item.calculation_rule_list.length !==0 && item.selected_calculation_rule){
+				item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].ids;
+			}
+	    });
 		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
 		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
+		
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
 		if ($scope.prefetchData.selected_charge_code_type != "1") {
 			postData.selected_link_with = selected_link_with;
 		}
+		// Removing unwanted params from linked_charge_codes list.
+		angular.forEach(postData.linked_charge_codes,function(item, index) {
+			delete item["calculation_rule_list"];
+			delete item["selected_calculation_rule"];
+			if(item["id"])	delete item["id"];
+	    });
+		
 		$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		
 		console.log(postData);
