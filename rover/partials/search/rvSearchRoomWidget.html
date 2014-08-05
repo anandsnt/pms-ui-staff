@@ -2,7 +2,7 @@
 <div ng-controller="rvHouseKeepingDashboardRoomSearchCtrl" >
 	<form name="dashboard-search-form" id="dashboard-search-form" class="search-form" role="search">
 		<div class="entry">
-			<a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearSearch()">
+			<a href="#" id="dashboard-clear-query" class="clear-query" ng-show="query != ''" ng-click = "clearResults()" ng-class="{'visible': query != ''}">
 				<span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
 			</a>
 
@@ -14,14 +14,14 @@
 	<div ng-show="showSearchResultsArea">
 
 		<!-- Rooms list -->
-		<section id="dashboard-search" class="content scrollable dashboard-scroll-div" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': rooms.length==0}">
-			<div class="wrapper">
+		<section id="dashboard-search" class="content scrollable hkdashboard-scroll-div" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': rooms.length==0}">
+			<div class="wrapper" id="rooms">
 				<ul id="dashboard-search-results" class="search-results" ng-show="isSearchResultsShowing">
 					<li ng-repeat="room in rooms" ng-if="room.display_room" class="room" >
 						<a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">
-							<div class="data">
+						
 								<h2 class="room-number">{{ room.room_no }}</h2>
-							</div>
+						
 							<figure class="guest-image">
 								<span ng-if="room.is_vip" class="vip" translate>VIP</span>
 								<img src="{{room.avatar_src}}">
