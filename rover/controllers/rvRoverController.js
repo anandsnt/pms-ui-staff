@@ -263,7 +263,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }]
         }, {
           title: "MENU_REPORTS",
-          action: "",
+          action: "rover.reports",
           iconClass: "icon-reports",
           submenu: []
         }];
@@ -301,7 +301,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }]
         },{
           title: "MENU_REPORTS",
-          action: "",
+          action: "rover.reports",
           iconClass: "icon-reports",
           submenu: []
         }];
