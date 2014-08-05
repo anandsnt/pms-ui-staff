@@ -239,6 +239,12 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				selected_link_with.push(item.value);
 			}
 		});
+		
+		// Updating calculation rules list.
+		angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
+			item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+       	});
+       	
 		angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
 			item.calculation_rules = [];
 			if(item.calculation_rule_list.length !==0 && item.selected_calculation_rule){
