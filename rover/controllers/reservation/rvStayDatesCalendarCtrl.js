@@ -256,16 +256,38 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	*/
 	var getRateForTheDay = function(availabilityDetails){
 		//If no room type is selected for the room type calendar, 
-		//then no need to display the price
-		var rate
+		//then no need to display the rate
+		var rate = {};
 		if($scope.roomTypeForCalendar == "" && $scope.calendarType == "ROOM_TYPE"){
-			rate = "";
+			rate.value = "";
+			rate.name = "";
 		} else {
-			rate = $rootScope.currencySymbol + 
+			rate.value = $rootScope.currencySymbol + 
 		                availabilityDetails.room_rates.single;
+		    //Get the rate value iterating throught the rates array
+            angular.forEach($scope.availabilityDetails.rates, function(rateDetails, i) {
+            	if(rateDetails.id == availabilityDetails.rate_id){
+            		rate.name = rateDetails.name;
+            		return false;
+            	}
+            });
 		}
 		return rate;
 	}; 
+
+	var getRoomTypeForBAR = function(availabilityDetails){
+		var roomTypeId = availabilityDetails.room_rates.room_type_id;
+		var roomTypeName = "";
+		angular.forEach($scope.availabilityDetails.room_types, function(roomType, i) {
+			if(roomType.id == roomTypeId){
+				roomTypeName = roomType.description;
+				return false;
+			}
+		});
+		return roomTypeName;
+	};
+
+
 
 	/**
 	* Compute the fullcalendar events object from the availability details
@@ -282,16 +304,24 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
         var thisDate;
         var calEvt = {};
+        var rate = '';
 
         angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
             calEvt = {};
             //instead of new Date(), Fixing the timezone issue related with fullcalendar
             thisDate = getDateObj(date);
-            calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
+            rate = getRateForTheDay(dateDetails[availabilityKey]);
+            calEvt.title = rate.value;
+            calEvt.rate = rate.name;//Displayed in tooltip
+            //calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
             calEvt.start = thisDate;
             calEvt.end = thisDate;
             calEvt.day = thisDate.getDate().toString();
-
+            //Displayed in tooltip
+        	if($scope.calendarType == "BEST_AVAILABLE"){
+	            calEvt.roomType = getRoomTypeForBAR(dateDetails[availabilityKey]);
+	        }
+        
             //Event is check-in
             if (thisDate.getTime() === checkinDate.getTime()) {
                 calEvt.id = "check-in";
