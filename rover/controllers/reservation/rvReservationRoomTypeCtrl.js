@@ -21,7 +21,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			preferredType: "",
 			rateFilterText: "",
 			dateModeActiveDate: "",
-			restrictedContractedRates: []
+			restrictedContractedRates: [],
+			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80
 		};
 
 		$scope.showingStayDates = false;
@@ -68,7 +69,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		};
 
-		var init = function() {
+		var init = function(isCallingFirstTime) {
 			BaseCtrl.call(this, $scope);
 
 			$scope.$emit('showLoader');
@@ -113,7 +114,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// .. do the availabilty check here
 			// TODO : This section might have to be redone when there are more than one room in a reservation
-
 			if ($stateParams.view == "DEFAULT") {
 				var isRoomAvailable = true;
 				var isHouseAvailable = true;
@@ -132,11 +132,28 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				});
 
-				if (!isRoomAvailable && !isHouseAvailable) {
+				if (!isRoomAvailable && !isHouseAvailable && isCallingFirstTime) {
 					$scope.toggleCalendar();
 				}
-			} else if ($stateParams.view == "CALENDAR") {
+			} else if ($stateParams.view == "CALENDAR" && isCallingFirstTime) {
 				$scope.toggleCalendar();
+			}
+
+			//CICO-6069 Init selectedDay
+			if (!$scope.stateCheck.dateModeActiveDate) {
+				if ($scope.reservationData.midStay) {
+					// checking if midstay and handling the expiry condition
+					if (new tzIndependentDate($scope.reservationData.departureDate) > new tzIndependentDate($rootScope.businessDate)) {
+						$scope.stateCheck.dateModeActiveDate = $rootScope.businessDate;
+						$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$rootScope.businessDate];
+					} else {
+						$scope.stateCheck.dateModeActiveDate = $scope.reservationData.arrivalDate;
+						$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate];
+					}
+				} else {
+					$scope.stateCheck.dateModeActiveDate = $scope.reservationData.arrivalDate;
+					$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate];
+				}
 			}
 
 
@@ -362,11 +379,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.reservationData.rooms[$scope.activeRoom].rateName = "Multiple Rates Selected";
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[$scope.reservationData.rooms[$scope.activeRoom].roomTypeId].ratedetails;
 				$scope.computeTotalStayCost();
-				$state.go('rover.reservation.staycard.mainCard.addons', {
-					"from_date": $scope.reservationData.arrivalDate,
-					"to_date": $scope.reservationData.departureDate
-				});
+				enhanceStay();
 			}
+		}
+
+		$scope.handleNoEdit = function(event) {
+			event.stopPropagation();
+			if (!$scope.stateCheck.stayDatesMode) {
+				enhanceStay();
+			}
+		}
+
+		var enhanceStay = function() {
+			$state.go('rover.reservation.staycard.mainCard.addons', {
+				"from_date": $scope.reservationData.arrivalDate,
+				"to_date": $scope.reservationData.departureDate
+			});
 		}
 
 		$scope.handleBooking = function(roomId, rateId, event) {
@@ -414,10 +442,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.reservationData.rateDetails[$scope.activeRoom] = $scope.roomAvailability[roomId].ratedetails;
 				$scope.checkOccupancyLimit();
 
-				$state.go('rover.reservation.staycard.mainCard.addons', {
-					"from_date": $scope.reservationData.arrivalDate,
-					"to_date": $scope.reservationData.departureDate
-				});
+				enhanceStay();
 			}
 		}
 
@@ -826,8 +851,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// Can we set the ADR & Total Stay calculation already now, so we can make sure it works correctly. When we add the tax, we just need to add in the extra amount. For now just add 0.00 for the tax value.
 			// Thanks,
 			// Nicki
+
+
 			var adults = $scope.reservationData.rooms[$scope.activeRoom].numAdults;
 			var children = $scope.reservationData.rooms[$scope.activeRoom].numChildren;
+
+			if ($scope.stateCheck.stayDatesMode) {
+				adults = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.adults);
+				children = parseInt($scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests.children);
+			}
 
 			var baseRoomRate = adults >= 2 ? rateTable.double : rateTable.single;
 			var extraAdults = adults >= 2 ? adults - 2 : 0;
@@ -943,10 +975,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			Also, if the user is coming in this view for the first time, the first date is auto-selected
 		*/
 		$scope.toggleStayDaysMode = function() {
-			if ($scope.stateCheck.dateModeActiveDate == '') {
-				$scope.stateCheck.dateModeActiveDate = $scope.reservationData.arrivalDate;
-				$scope.stateCheck.selectedStayDate = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.reservationData.arrivalDate];
-			}
+
 			$scope.stateCheck.stayDatesMode = !$scope.stateCheck.stayDatesMode;
 
 			init();
@@ -966,6 +995,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		}
 
-		init();
+		init(true);
 	}
 ]);

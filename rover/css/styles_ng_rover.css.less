@@ -425,11 +425,19 @@ height: 410px;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content {
-
   border-radius: 0px !important;
   padding: 0px !important;
+
+  /* CICO-8546: Fixing issue with close animation */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none !important;
+  width: auto !important;
 }
-.ngdialog-close{
+.ngdialog-close {
   display: none;
 }
 

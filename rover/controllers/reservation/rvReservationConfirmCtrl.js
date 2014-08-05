@@ -1,11 +1,11 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog',
-	function($scope, $state, RVReservationSummarySrv, ngDialog) {
+sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.init = function() {
 			$scope.$emit('setHeading', 'Reservations');
 			$scope.$parent.hideSidebar = true;
-			$scope.isConfirmationEmailSent = ($scope.reservationData.guest.email || $scope.otherData.additionalEmail) ? true : false;
+			$scope.isConfirmationEmailSent = ($scope.otherData.isGuestPrimaryEmailChecked || $scope.otherData.isGuestAdditionalEmailChecked) ? true : false;
 			$scope.$parent.myScrollOptions = {
 				'reservationSummary': {
 					scrollbars: true,
@@ -79,6 +79,41 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			};
 			$scope.invokeApi(RVReservationSummarySrv.sendConfirmationEmail, postData, emailSentSuccess);
 		};
+
+		/*
+			If email address does not exists on Guest Card,
+		    and user decides to update via the Email field on the summary screen,
+		    this email should be linked to the guest card. 
+		 */
+		$scope.primaryEmailEntered = function() {
+
+			if($scope.reservationData.guest.email != '' && $scope.reservationData.guest.email != null){
+				return false;
+			}
+
+			var dataToUpdate = {
+				"email": $scope.reservationData.guest.sendConfirmMailTo
+			};
+
+			var data = {
+				'data': dataToUpdate,
+				'userId': $scope.reservationData.guest.id
+			};
+
+			var updateGuestEmailSuccessCallback = function(data) {
+				console.log('reached success');
+				$scope.reservationData.guest.email = $scope.reservationData.guest.sendConfirmMailTo;
+				$scope.$emit('guestEmailChanged');
+				$scope.$emit("hideLoader");
+			}
+
+			var updateGuestEmailFailureCallback = function(data) {
+				// console.log('reached failure');
+				$scope.$emit("hideLoader");
+			}
+
+			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
+		}
 
 		/**
 		 * Navigate to the staycard for this guest
