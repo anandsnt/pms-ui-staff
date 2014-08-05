@@ -29,7 +29,6 @@ var CardOperation = function(){
 	};
 	this.writeKeyDataDebug = function(options){
 		//Simulating the write function for easy testing. May be removed in production.
-		console.log("sucecss called in write key debug mode");
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var mechineResponse= { };
@@ -48,10 +47,9 @@ var CardOperation = function(){
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
-		
-		
+				
 		// cordova.exec function require success and error call back
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;		
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		
 		// if success call back require additional parameters

@@ -49,6 +49,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		$scope.isAddMode =false;
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
+		$scope.roomTypeData = {};
 	 	var successCallbackRender = function(data){	
 	 		$scope.$emit('hideLoader');
 	 		$scope.roomTypeData = data;
