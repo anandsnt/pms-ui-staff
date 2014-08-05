@@ -19,7 +19,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	
 	this.init = function() {
-		this.CALENDAR_PAGINATION_COUNT = 10;
+		this.CALENDAR_PAGINATION_COUNT = 75;
 		$scope.eventSources = [];
 
 		$scope.calendarType = "ROOM_TYPE";
@@ -240,8 +240,12 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 		$scope.leftCalendarOptions = dclone(fullCalendarOptions);
 		$scope.leftCalendarOptions.eventDrop = changedDateOnCalendar;
+		$scope.leftCalendarOptions.drop = dateDroppedToExternalCalendar;
+
 		$scope.rightCalendarOptions = dclone(fullCalendarOptions);
 		$scope.rightCalendarOptions.eventDrop = changedDateOnCalendar;
+		$scope.rightCalendarOptions.drop = dateDroppedToExternalCalendar;
+
 
 		$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
 
@@ -250,6 +254,50 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		$scope.refreshCalendarEvents();
 		$scope.refreshScroller('stay-dates-calendar');
 	}
+
+	//Drag and drop handler for drag and drop to an external calendar
+	dateDroppedToExternalCalendar = function(event, jsEvent, ui){
+		var finalCheckin;
+		var finalCheckout;
+
+		// checkin date/ checkout date can not be moved prior to current business date
+		if (event.getTime() < getDateObj($rootScope.businessDate).getTime()) {
+			//revertFunc();
+			return false;
+		}
+		
+		if ($(ui.target).attr('class').indexOf("check-in") >= 0) {
+			//If drag and drop carried in same calendar, we don't want to handle here.
+			//will be handled in 'eventDrop' (changedDateOnCalendar fn)
+			if(event.getMonth == $scope.checkinDateInCalender.getMonth()){
+				return false;
+			}
+			//checkin type date draging after checkout date wil not be allowed
+			if (event > $scope.checkoutDateInCalender) {
+				return false;
+			}
+			finalCheckin = event;
+			finalCheckout = $scope.checkoutDateInCalender;
+		} else if($(ui.target).attr('class').indexOf("check-out") >= 0) {
+			//If drag and drop carried in same calendar, we don't want to handle here.
+			//will be handled in 'eventDrop' (changedDateOnCalendar fn)
+			if(event.getMonth == $scope.checkoutDateInCalender.getMonth()){
+				return false;
+			}
+			//checkout date draging before checkin date wil not be allowed
+			if (event < $scope.checkinDateInCalender) {
+				return false;
+			}
+			finalCheckin = $scope.checkinDateInCalender;
+			finalCheckout = event;
+		}
+		// we are re-assinging our new checkin/checkout date for calendar
+		$scope.checkinDateInCalender = finalCheckin;
+		$scope.checkoutDateInCalender = finalCheckout;
+
+		//Reload the calendar with new arrival, departure dates
+		$scope.refreshCalendarEvents()
+	};
 
 	/**
 	* return the rate for a given date
@@ -398,6 +446,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	* accoriding to our reqmt.
 	*/
 	var changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+		console.log("changedDateOnCalendar");
 		var newDateSelected = event.start;//the new date in calendar
 
 		// also we are storing the current business date for easiness of the following code
@@ -439,6 +488,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	};
 
 	$scope.refreshCalendarEvents = function(){
+		console.log("refreshCalendarEvents");
 		$scope.eventSources.length = 0;
 		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 		$scope.eventSources.length = 0;
