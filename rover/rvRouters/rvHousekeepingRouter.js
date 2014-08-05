@@ -20,6 +20,10 @@ angular.module('housekeepingModule', [])
                         'INHOUSE_CLEAN': ['clean', 'arrived'],
                         'DEPARTURES_DIRTY': ['dueout', 'departed', 'dirty'],
                         'DEPARTURES_CLEAN': ['departed', 'clean'],
+                        'OCCUPIED': ['occupied'],
+                        'VACANT_READY': ['vacant', 'clean', 'inspected'],
+                        'VACANT_NOT_READY': ['vacant', 'dirty', 'out_of_order'],
+                        'OUTOFORDER_OR_SERVICE': ['out_of_order', 'out_of_service'],
                     }
                     var filtersToApply = filterStatus[$stateParams.roomStatus];
                     for(var i = 0; i < filtersToApply.length; i++){
