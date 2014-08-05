@@ -4,7 +4,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: 'Search results'
-		}
+		};
 
 		BaseCtrl.call(this, $scope);
 
@@ -99,7 +99,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			guest: $scope.reservationDetails.guestCard.id,
 			company: $scope.reservationDetails.companyCard.id,
 			agent: $scope.reservationDetails.travelAgent.id
-		}
+		};
 
 		$scope.reservationDetails.guestCard.id = reservationListData.guest_details.user_id == null ? "" : reservationListData.guest_details.user_id;
 		$scope.reservationDetails.companyCard.id = reservationListData.company_id == null ? "" : reservationListData.company_id;
@@ -244,8 +244,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			var status = $scope.reservationData.reservation_card.reservation_status;
 			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN" || status == "RESERVED";
 		};
+		
 		$scope.saveNewsPaperPreference = function() {
-
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 			params.selected_newspaper = $scope.reservationData.reservation_card.news_paper_pref.selected_newspaper;
@@ -291,16 +291,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			} else {
 				$scope.goToRoomAndRates("CALENDAR");
 			}
-		}
+		};
 
 		$scope.goToRoomAndRates = function(state) {
 			$state.go('rover.reservation.staycard.mainCard.roomType', {
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
 				view: state,
-				company_id: $scope.reservationData.company.id,
-				travel_agent_id: $scope.reservationData.travelAgent.id
+				company_id: $scope.$parent.reservationData.company.id,
+				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 			});
-		}
+		};
+		
+		
+	 
 	}
 ]);
