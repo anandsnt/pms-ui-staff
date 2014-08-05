@@ -3,6 +3,8 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
+	scopeRef = $scope;
+
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: 'Stay Card',
@@ -28,7 +30,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		//For future comparison / reset
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.stayDetails.details.arrival_date);
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate($scope.stayDetails.details.departure_date);
-		
+
 		//Data for rightside Pane.
 		$scope.rightSideReservationUpdates = '';
 		$scope.roomSelected = $scope.stayDetails.details.room_number;
