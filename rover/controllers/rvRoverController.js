@@ -442,12 +442,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	console.log('success');
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
-    $scope.failureCallBackSwipe = function() {};
+    $scope.failureCallBackSwipe = function() {
+    	console.log('failure');
+    	
+    };
 
-    var options = [];
+    var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 

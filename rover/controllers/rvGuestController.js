@@ -430,9 +430,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				} else if (cardType == "company") {
 					resetReservationData.resetCompanyCard();
 					$scope.reservationDetails.companyCard.id = "";
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
 					$scope.$broadcast("companyCardDetached");
 				} else if (cardType == "travel_agent") {
 					resetReservationData.resetTravelAgent();
+					$scope.reservationDetails.travelAgent.id = "";
+					$scope.showContractedRates({
+						companyCard: $scope.reservationDetails.companyCard.id,
+						travelAgent: $scope.reservationDetails.travelAgent.id
+					});
 					$scope.$broadcast("travelAgentDetached");
 				}
 			} else {
@@ -464,10 +473,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('companyCardDetached');
 				$scope.viewState.pendingRemoval.status = true;
 				$scope.viewState.pendingRemoval.cardType = "company";
+				$scope.showContractedRates({
+					companyCard: '',
+					travelAgent: $scope.reservationDetails.travelAgent.id
+				})
 			} else if (cardType == 'guest') {
 				$scope.$broadcast('guestCardDetached');
 				$scope.viewState.pendingRemoval.status = true;
 				$scope.viewState.pendingRemoval.cardType = "guest";
+				$scope.showContractedRates({
+					companyCard: $scope.reservationDetails.companyCard.id,
+					travelAgent: ''
+				})
 			}
 		};
 
@@ -683,8 +700,13 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectCompany = function(company, $event) {
 			$event.stopPropagation();
+			//CICO-7792
 			if ($scope.viewState.identifier == "CREATION") {
 				$scope.reservationData.company.id = company.id;
+				$scope.showContractedRates({
+					companyCard: company.id,
+					travelAgent: $scope.reservationData.travelAgent.id
+				});
 				$scope.reservationData.company.name = company.account_name;
 				$scope.reservationData.company.corporateid = $scope.companyCorpId;
 
@@ -707,9 +729,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.selectTravelAgent = function(travelAgent, $event) {
 			$event.stopPropagation();
+			//CICO-7792
 			if ($scope.viewState.identifier == "CREATION") {
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;
+				$scope.showContractedRates({
+					companyCard: $scope.reservationData.company.id,
+					travelAgent: travelAgent.id
+				});
 				$scope.reservationData.travelAgent.name = travelAgent.account_name;
 				$scope.reservationData.travelAgent.iataNumber = $scope.travelAgentIATA;
 
