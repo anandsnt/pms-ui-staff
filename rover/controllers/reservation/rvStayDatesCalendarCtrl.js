@@ -19,7 +19,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 	
 	this.init = function() {
-		this.CALENDAR_PAGINATION_COUNT = 10;
+		this.CALENDAR_PAGINATION_COUNT = 75;
 		$scope.eventSources = [];
 
 		$scope.calendarType = "ROOM_TYPE";
