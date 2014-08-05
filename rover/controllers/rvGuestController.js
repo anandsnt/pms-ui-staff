@@ -69,14 +69,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		// update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
 		var updateSearchCache = function() {
-		    var data = {
-		        'firstname': $scope.guestCardData.contactInfo.first_name,
-		        'lastname':  $scope.guestCardData.contactInfo.last_name,
-		        'location':  $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
-		        'vip':       $scope.guestCardData.contactInfo.vip
-		    };
+			var data = {
+				'firstname': $scope.guestCardData.contactInfo.first_name,
+				'lastname': $scope.guestCardData.contactInfo.last_name,
+				'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
+				'vip': $scope.guestCardData.contactInfo.vip
+			};
 
-		    RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
 		};
 
 		$scope.init = function() {
@@ -830,7 +830,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			$scope.closeGuestCard();
 		};
 
-	$scope.init();
-		
+		$scope.$on("updateGuestEmail", function(e) {
+			console.log('reached guest controller');
+			$scope.guestCardData.contactInfo.email = $scope.reservationData.guest.email;
+		})
+
+		$scope.init();
+
 	}
 ]);
