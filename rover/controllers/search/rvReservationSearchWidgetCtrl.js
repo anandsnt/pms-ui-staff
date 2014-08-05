@@ -24,6 +24,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 
 	//prevent unwanted result whoing while typeing
 	$scope.isTyping = false;
+	$scope.isSwiped = false;
 
 
 	$scope.showAddNewGuestButton = false; //read cooment below :(
@@ -56,7 +57,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	* failure call back of search result fetch	
 	*/
 	var failureCallBackofDataFetch= function(errorMessage){
-		scope.$emit('hideLoader');
+		$scope.$emit('hideLoader');
 		$scope.searchType = "default";
 		$scope.errorMessage = errorMessage;
 		setTimeout(function(){
@@ -96,7 +97,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	* function to perform filtering/request data from service in change event of query box
 	*/
 	$scope.queryEntered = function(){
-
+		$scope.isSwiped = false;
 		var queryText = $scope.textInQueryBox;
 
 		//inoreder to prevent unwanted results showing while tyeping..
@@ -256,7 +257,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
    			"CANCELED": 'guest-cancel',
    			"NOSHOW": 'guest-no-show',
    			"NOSHOW_CURRENT": 'guest-no-show',
-   		}
+   		};
    		if(reservationStatus.toUpperCase() in classes){
    			return classes[reservationStatus.toUpperCase()];
    		}
@@ -284,4 +285,53 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	$scope.$on('OWSConnectionRetrySuccesss', function(event){
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
 	});	
+	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
+		 $scope.$emit('hideLoader');
+		 $scope.isSwiped = true;
+		 data = searchByCCResults;
+		 if(data.length == 0){
+		 	$scope.$emit("updateDataFromOutside", data);  
+		 	$scope.focusOnSearchText();
+		 } else if(data.length == 1){
+		 		var reservationID = data[0].id;
+		 		var confirmationID = data[0].confirmation;
+		 		$scope.goToReservationDetails(reservationID, confirmationID);
+		 } else {
+		 	$scope.$emit("updateDataFromOutside", data);  
+		 	$scope.focusOnSearchText();
+		 }
+
+	};
+	$scope.$on('SWIPEHAPPENED', function(event, data){
+	 	
+	 //	console.log(JSON.stringify(data));
+	 	var ksn = data.RVCardReadTrack2KSN;
+  		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+			ksn = data.RVCardReadETBKSN;
+		}
+
+		//var url = '/staff/payments/search_by_cc';
+		var swipeData = {
+			'et2' : data.RVCardReadTrack2,
+			'ksn' : ksn,
+			'etb' : data.RVCardReadETB
+
+		};
+		
+		$scope.invokeApi(RVSearchSrv.searchByCC, swipeData, $scope.searchSwipeSuccessCallback);
+	 	
+	 	
+	 });
+	 
+	 $scope.showNoMatches = function(resultLength, queryLength, isTyping, isSwiped){
+	 	var showNoMatchesMessage = false;
+	 	if(isSwiped && resultLength == 0){
+	 		showNoMatchesMessage = true;
+	 	} else {
+	 		if(resultLength == 0 && queryLength>=3 && !isTyping){
+	 			showNoMatchesMessage = true;
+	 		}
+	 	}
+	 	return showNoMatchesMessage;
+	 };
 }]);
