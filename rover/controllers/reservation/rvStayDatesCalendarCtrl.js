@@ -63,7 +63,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		var availabilityDetails = dclone($scope.availabilityDetails);
 		//Update the arrival_date and departure_dates
 		$scope.reservationData.arrivalDate = $scope.checkinDateInCalender;
-		$scope.reservationData.checkoutDateInCalender = $scope.departureDate;
+		$scope.reservationData.departureDate = $scope.checkoutDateInCalender;
 
 		//update the rateDetails - To calculate the total stay cost
 		var rateDetails = [];
