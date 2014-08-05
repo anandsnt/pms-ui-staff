@@ -5,6 +5,8 @@ sntRover.controller('RVReportListCrl', [
     'RVreportsSrv',
 	function($scope, $rootScope, $filter, RVreportsSrv) {
 
+        BaseCtrl.call(this, $scope);
+
         $scope.setScroller( 'report-list-scroll', {click: true, preventDefault: false} );
 
 		/**

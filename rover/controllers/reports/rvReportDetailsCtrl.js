@@ -7,7 +7,14 @@ sntRover.controller('RVReportDetailsCtrl', [
     'RVreportsSrv',
 	function($scope, $rootScope, $filter, $timeout, $window, RVreportsSrv) {
 
+		BaseCtrl.call(this, $scope);
+
 		$scope.setScroller( 'report-details-scroll', {click: true, preventDefault: false} );
+
+		var refreshScroll = function() {
+			$scope.refreshScroller( 'report-details-scroll' );
+			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+		};
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
@@ -129,8 +136,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check Out Conversion' ? 6 : $scope.rightColSpan;
 
 			// scroller refresh and reset position
-			$scope.refreshScroller( 'report-details-scroll' );
-			$scope.$parent.myScroll['report-details-scroll'].scrollTo(0, 0, 100);
+			refreshScroll();
 
 			// need to keep a separate object to show the date stats in the footer area
 			// dirty hack to get the val() not model value
@@ -287,26 +293,36 @@ sntRover.controller('RVReportDetailsCtrl', [
 		    }, 100);
 		};
 
-		$rootScope.$on('report.submit', function() {
+		var reportSubmit = $rootScope.$on('report.submit', function() {
 			afterFetch();
 			findBackNames();
 			calPagination();
+			refreshScroll();
 		});
 
-		$rootScope.$on('report.updated', function() {
+		var reportUpdated = $rootScope.$on('report.updated', function() {
 			afterFetch();
 			findBackNames();
 			calPagination();
+			refreshScroll();
 		});
 
-		$rootScope.$on('report.page.changed', function() {
+		var reportPageChanged = $rootScope.$on('report.page.changed', function() {
 			afterFetch();
+			refreshScroll();
 		});
 
-		$rootScope.$on('report.printing', function() {
+		var reportPrinting = $rootScope.$on('report.printing', function() {
 			afterFetch();
 			findBackNames();
 			printReport();
+			refreshScroll();
 		});
+
+		// removing event listners when scope is destroyed
+		$scope.$on( 'destroy', reportSubmit );
+		$scope.$on( 'destroy', reportUpdated );
+		$scope.$on( 'destroy', reportPageChanged );
+		$scope.$on( 'destroy', reportPrinting );
     }
 ]);
