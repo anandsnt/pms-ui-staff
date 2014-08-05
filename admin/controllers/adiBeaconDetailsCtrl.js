@@ -11,6 +11,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     };
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
     $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+    $scope.isIpad = true;
     $scope.errorMessage = "";
     $scope.successMessage = "";
 
