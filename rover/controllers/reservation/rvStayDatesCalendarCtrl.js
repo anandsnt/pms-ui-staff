@@ -26,7 +26,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		if($scope.reservationData.rooms[0].roomTypeId == ""){
 			$scope.calendarType = "BEST_AVAILABLE";
 		}
-
 		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.reservationData.arrivalDate);
 		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.reservationData.departureDate);
 		
@@ -62,8 +61,11 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 		var availabilityDetails = dclone($scope.availabilityDetails);
 		//Update the arrival_date and departure_dates
-		$scope.reservationData.arrivalDate = $scope.checkinDateInCalender;
-		$scope.reservationData.departureDate = $scope.checkoutDateInCalender;
+		$scope.reservationData.arrivalDate = $filter('date')($scope.checkinDateInCalender, $rootScope.dateFormatForAPI);
+		$scope.reservationData.departureDate = $filter('date')($scope.checkoutDateInCalender, $rootScope.dateFormatForAPI);
+
+		//nights
+		$scope.reservationData.numNights = $scope.dates.length;
 
 		//update the rateDetails - To calculate the total stay cost
 		var rateDetails = [];
