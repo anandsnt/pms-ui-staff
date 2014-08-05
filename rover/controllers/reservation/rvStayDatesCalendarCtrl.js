@@ -121,6 +121,12 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 
 		$scope.reservationData.rooms[0].stayDates = stayDates;
 
+		//Once updated, go to the addons screen
+		$state.go('rover.reservation.staycard.mainCard.addons', {
+					"from_date": $scope.reservationData.arrivalDate,
+					"to_date": $scope.reservationData.departureDate
+				});
+
 	};
 	/**
 	* Event handler for set dates button
@@ -146,22 +152,19 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		} 
 		//If not overbooking, update the datamodals
 		$scope.updateDataModel();
-		//Go to the addons screen
-		$state.go('rover.reservation.staycard.mainCard.addons', {
-					"from_date": $scope.reservationData.arrivalDate,
-					"to_date": $scope.reservationData.departureDate
-				});
-
 	};
 	/**
 	* Check if the stayrange has house & room type available
 	* If for any of the staydates, house or room type not available, then it is overbooking
 	*/
 	var isOverBooking = function(dates){
+		console.log("isOverBooking");
+
 		var dateDetails;
 		var roomTypeAvailbilityForTheDay;
 		var isOverBooking = false;
 		var date;
+		console.log($scope.dates);
 		//Check for each stayday, whether it is overbooking
 		for(var i in $scope.dates){
 			date = $scope.dates[i];
@@ -183,7 +186,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			}
 
 		}
-
 		return isOverBooking;
 	}
 
@@ -194,8 +196,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 			//Display Calendar
 			that.renderFullCalendar();
 		};
-
-
 
 		//TODO: verify if the date calculation is correct
 
@@ -343,6 +343,7 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
     var computeEventSourceObject = function(checkinDate, checkoutDate){
 
         var availabilityKey;
+        var dateAvailability;
         if($scope.calendarType == "BEST_AVAILABLE"){
         	availabilityKey = 'BAR';
         } else {
@@ -355,13 +356,14 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
         var rate = '';
 
         angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
+
+
             calEvt = {};
             //instead of new Date(), Fixing the timezone issue related with fullcalendar
             thisDate = getDateObj(date);
             rate = getRateForTheDay(dateDetails[availabilityKey]);
             calEvt.title = rate.value;
             calEvt.rate = rate.name;//Displayed in tooltip
-            //calEvt.title = getRateForTheDay(dateDetails[availabilityKey]);
             calEvt.start = thisDate;
             calEvt.end = thisDate;
             calEvt.day = thisDate.getDate().toString();
@@ -408,12 +410,9 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
                 calEvt.startEditable = "true";
                 calEvt.durationEditable = "false";
             /**dates prior to check-in and dates after checkout*/
-            
 
-
-            //room type available - If no room type is being selected, only show house availability.
-            } else if($scope.roomTypeForCalendar != "" && 
-            	dateDetails[availabilityKey].room_type_availability.availability > 0) { 
+            }else if(($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0)
+            	|| ($scope.calendarType == "ROOM_TYPE"&& $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) { 
                 calEvt.className = "type-available"; //TODO: verify class name
                 //console.log("room type available----" + date);
             //room type not available but house available   
@@ -488,7 +487,6 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 	};
 
 	$scope.refreshCalendarEvents = function(){
-		console.log("refreshCalendarEvents");
 		$scope.eventSources.length = 0;
 		$scope.events = computeEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 		$scope.eventSources.length = 0;
@@ -528,11 +526,12 @@ function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filt
 		}
 		return ret;
 	};
-
+	//Click handler for cancel button in calendar screen
 	$scope.handleCancelAction = function(){
 		$state.go($scope.fromState, {});
 	};
 
+	//Click handler for calendar pre button
 	$scope.prevButtonClickHandler = function(){
 		$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) - 2;
 		$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) - 2;
