@@ -18,6 +18,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showQueued = false;
 
+		$scope.noResultsFound = 0;
+
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
 		// make sure any previous open filter is not showing
@@ -204,7 +206,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		*/
 		$scope.calculateFilters = function(source) {
 			var source = source || $scope.rooms;
-
+			$scope.noResultsFound = 0;
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
 
@@ -214,22 +216,26 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					if (room.floor.floor_number == null) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 				}
 
 				if ($scope.currentFilters.floorFilterSingle != '' && room.floor.floor_number != $scope.currentFilters.floorFilterSingle) {
 					room.display_room = false;
+					$scope.noResultsFound++;
 					continue;
 				}
 
 				if ($scope.currentFilters.floorFilterStart != '' && room.floor.floor_number < $scope.currentFilters.floorFilterStart) {
 					room.display_room = false;
+					$scope.noResultsFound++;
 					continue;
 				}
 
 				if ($scope.currentFilters.floorFilterEnd != '' && room.floor.floor_number > $scope.currentFilters.floorFilterEnd) {
 					room.display_room = false;
+					$scope.noResultsFound++;
 					continue;
 				}
 
@@ -237,26 +243,32 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service']) ) {
 					if ( !$scope.currentFilters.dirty && (room.hk_status.value === "DIRTY") ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 					if ( !$scope.currentFilters.pickup && (room.hk_status.value === "PICKUP") ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 					if ( !$scope.currentFilters.clean && (room.hk_status.value === "CLEAN") ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 					if ( !$scope.currentFilters.inspected && (room.hk_status.value === "INSPECTED") ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 					if ( !$scope.currentFilters.out_of_order && (room.hk_status.value === "OO") ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 					if ( !$scope.currentFilters.out_of_service && (room.hk_status.value === "OS") ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 				}
@@ -265,18 +277,21 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				if ( $scope.isAnyFilterTrue(["vacant","occupied","queued"]) ) {
 					if ( !$scope.currentFilters.queued && room.is_queued ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 
 					// If queued, that get priority. Do not show anything which is "not queued" and vacant
 					if ( !$scope.currentFilters.vacant && !room.is_queued && !room.is_occupied ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 
 					// If queued, that get priority.
 					if ( !$scope.currentFilters.occupied && !room.is_queued && room.is_occupied ) {
 						room.display_room = false;
+						$scope.noResultsFound++;
 						continue;
 					}
 				}
@@ -315,11 +330,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					}
 
 					room.display_room = false;
+					$scope.noResultsFound++;
 					continue;
 				}
 
 				room.display_room = true;
 			}
+
 		};
 
 		/**

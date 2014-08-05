@@ -26,8 +26,8 @@
 
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable">
-   <ul class="wrapper">
-      <li ng-repeat="room in rooms" ng-if="room.display_room">
+   <ul class="wrapper" ng-hide="noResultsFound==rooms.length">
+      <li ng-repeat="room in rooms" ng-if="room.display_room" >
          <a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">
             <h2 class="room-number">{{ room.room_no }}</h2>
             <figure class="guest-image">
@@ -41,6 +41,16 @@
          </a>
       </li>
    </ul>
+          <!-- Empty -->
+    <ul id="dashboard-search-results" class="search-results wrapper" ng-show="noResultsFound==rooms.length" >
+      <li class="no-content">
+        <div class="info">
+          <span class="icon-no-content icon-room"></span>
+          <strong class="h1">Find Rooms</strong>
+          <span class="h2">Search by <strong>Room Number</strong></span>
+        </div>
+      </li>
+    </ul> 
 </section>
 
 <!-- Rooms filters -->
