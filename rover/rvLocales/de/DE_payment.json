@@ -17,7 +17,8 @@
     "CASH_PAYMENT":"CASH PAYMENT",
     "CHECK_PAYMENT": "CHECK PAYMENT",
     "DIRECT_PAYMENT":"DIRECT PAYMENT",
-    "ADD": "Add",
+    "ADD": "Add",s
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
-    "SELECTED" : "Selected"
+    "SELECTED" : "Selected",
+    "PAY" : "Pay"

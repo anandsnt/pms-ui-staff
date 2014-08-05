@@ -52,11 +52,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				};
 				$scope.$emit('guestCardUpdateData', contactInfoData);
 				$scope.$emit('hideLoader');
-				var guestInfo = {
-					"user_id": data.user_id,
-					"guest_id": data.guest_id
-				};
-				$scope.showGuestPaymentList(guestInfo);
+				
 			};
 			var fetchGuestcardDataFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -68,6 +64,12 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 					'fakeDataToAvoidCache': new Date(),
 					'id': $scope.data.guest_details.reservation_id
 				};
+				var guestInfo = {
+					"user_id": $scope.data.guest_details.user_id,
+					"guest_id": $scope.data.guest_details.guest_id
+				};
+				$scope.$emit('SETGUESTDATA', guestInfo);
+				$scope.showGuestPaymentList(guestInfo);
 				// $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
 

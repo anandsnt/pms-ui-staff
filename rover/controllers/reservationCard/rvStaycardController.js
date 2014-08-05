@@ -18,7 +18,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 
 
 		$scope.$on('guestCardUpdateData', function(event, data) {
-		
+
 			$scope.guestCardData.contactInfo.avatar = data.avatar;
 			$scope.guestCardData.contactInfo.vip = data.vip;
 			
