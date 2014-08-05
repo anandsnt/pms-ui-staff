@@ -166,6 +166,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
 				console.log(item);
 				item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+				item.selected_calculation_rule = item.calculation_rules.length;
 				
 	       	});
 	       	
@@ -296,11 +297,11 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	};
 	
 	$scope.generateCalculationRule = function(taxCount){
+		console.log("taxCount");
 		console.log(taxCount);
 		var calculation_rule_list = [];
-		if (taxCount === 0) {
-			calculation_rule_list = [];
-		} else if (taxCount === 1) {
+		
+		if (taxCount === 1 || taxCount === 0) {
 			
 				calculation_rule_list = [{
 					"value" : 0,
