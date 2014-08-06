@@ -15,8 +15,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		//scroller options
 		$scope.setScroller('stay-dates-calendar');
 
-
-
 		this.init = function() {
 			this.CALENDAR_PAGINATION_COUNT = 75;
 			$scope.eventSources = [];
@@ -64,13 +62,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 			//nights
 			$scope.reservationData.numNights = $scope.dates.length - 1;
-
-			//update the rateDetails - To calculate the total stay cost
-			// var rateDetails = [];
-			// for (var i in $scope.dates) {
-			// 	date = $scope.dates[i];
-			// 	$scope.reservationData.rateDetails.push(availabilityDetails.results[date][$scope.finalRoomType].room_rates)
-			// }
 
 			//Update the room type details
 			$scope.reservationData.rooms[0].roomTypeId = $scope.finalRoomType;
@@ -214,6 +205,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.per_page = that.CALENDAR_PAGINATION_COUNT;
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = "";
+			if($scope.reservationData.travelAgent.id != ""){
+				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+			}
+			if($scope.reservationData.company.id != ""){
+				params.company_id = $scope.reservationData.company.id;
+			}
+
 			//Initialise data
 			RVStayDatesCalendarSrv.availabilityData = {};
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, availabilityFetchSuccess);
@@ -544,6 +542,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 		};
 
+		/**
+		* @return {Boolean} true if the month of left calendar is equal to current business date
+		* we can not navigate further to the left
+		*/
 		$scope.isPrevButtonDisabled = function() {
 			var disabled = false;
 			if (parseInt(getDateObj($rootScope.businessDate).getMonth()) == parseInt($scope.leftCalendarOptions.month)) {
@@ -553,7 +555,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 		};
 
-
+		/**
+		* Click handler for the next month arrow
+		* Fetches the details for the next set of dates
+		*/
 		$scope.nextButtonClickHandler = function() {
 			var nextMonthDetailsFetchSuccess = function(data) {
 				$scope.$emit('hideLoader');
@@ -570,6 +575,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			params.per_page = that.CALENDAR_PAGINATION_COUNT;
 			params.to_date = '';
 			params.status = 'FETCH_ADDITIONAL';
+			if($scope.reservationData.travelAgent.id != ""){
+				params.travel_agent_id = $scope.reservationData.travelAgent.id;
+			}
+			if($scope.reservationData.company.id != ""){
+				params.company_id = $scope.reservationData.company.id;
+			}
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, nextMonthDetailsFetchSuccess);
 		};
 
