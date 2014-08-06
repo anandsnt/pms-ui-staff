@@ -432,7 +432,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
-                fromState: rover.reservation.search,
+                fromState: 'rover.reservation.search',
                 company_id: $scope.reservationData.company.id,
                 travel_agent_id: $scope.reservationData.travelAgent.id
             });

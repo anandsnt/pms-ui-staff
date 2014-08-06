@@ -1,8 +1,9 @@
 sntRover.controller('RVchangeStayDatesController', ['$state','$stateParams', '$rootScope', '$scope', 'stayDateDetails', 'RVChangeStayDatesSrv','$filter',
 function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
-
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
+
+	scopeRef = $scope;
 
 	// set a back button on header
 	$rootScope.setPrevState = {
@@ -14,36 +15,21 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	var that = this;
 	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
 	$scope.setTitle($scope.heading);
-	//scroller options
-	$scope.$parent.myScrollOptions = {
-		'edit_staydate_updatedDetails' : {
-			snap : false,
-			scrollbars : true,
-			vScroll : true,
-			vScrollbar : true,
-			hideScrollbar : false,
-			click : true,
-			tap : true
-		},
-		'edit_staydate_calendar' : {
-			snap : false,
-			scrollbars : true,
-			vScroll : true,
-			vScrollbar : true,
-			hideScrollbar : false,
-			click : true,
-			tap : true
-		}
 
-	};
+	/**
+	* setting the scroll options for the room list
+	*/
+	var scrollerOptions = { preventDefault: false};
+  	$scope.setScroller('edit_staydate_updatedDetails', scrollerOptions);
+  	$scope.setScroller('edit_staydate_calendar', scrollerOptions);
 
 	this.dataAssign = function() {
 		//Data from Resolve method
 		$scope.stayDetails = stayDateDetails;
 		$scope.stayDetails.isOverlay = false;
 		//For future comparison / reset
-		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
-		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
+		$scope.checkinDateInCalender = $scope.confirmedCheckinDate = tzIndependentDate($scope.stayDetails.details.arrival_date);
+		$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = tzIndependentDate($scope.stayDetails.details.departure_date);
 
 		//Data for rightside Pane.
 		$scope.rightSideReservationUpdates = '';

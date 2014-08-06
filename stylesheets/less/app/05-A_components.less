@@ -5405,39 +5405,22 @@
                                 }
                             }
                         }
+
+                        &.totals {
+                            td {
+                                padding: 10px;
+                                background: rgba(0,0,0,.05);
+                                color: @textColor;
+                                font-size: 16px;
+                                line-height: 1em;
+                                font-weight: 600;
+                                &:last-child { text-align: left; }
+                            }
+                        }
                     }
-                    &.totals {
-              td {
-                padding: 10px;
-                background: rgba(0,0,0,.05);
-                color: @textColor;
-                font-size: 16px;
-                line-height: 1em;
-                font-weight: 600;
-                &:last-child { text-align: left; }
-              }
-            }
                 }
             }
         }
-    }
-
-    @media (max-width: 999px) {
-       #report-details.content.stay-card-inner {
-           position: static;
-       }
-   }
-    
-    /* reports details animation */
-    #reports-details.ng-hide-add,
-    #reports-details.ng-hide-remove {
-        display: block !important;
-    }
-
-    #reports-details.ng-hide-add.ng-hide-add-active,
-    #reports-details.ng-hide-remove.ng-hide-remove-active {
-        -webkit-animation: fadeInDown 0.5s;
-        -webkit-animation-fill-mode: both;
     }
 
     @-webkit-keyframes fadeInDown {

@@ -1,6 +1,6 @@
 sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state',
     function($scope, RVReservationBaseSearchSrv, $state) {
-
+        akhila = $scope;
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
@@ -82,6 +82,11 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
         };
 
+        var closeSidebar = function(){
+            $scope.reservationSettingsWidth = resizableMinWidth;
+            $scope.reservationSettingsVisible = false;
+        };
+
         $scope.stayDatesClicked = function(){
             var fromState = $state.current.name; 
             if(fromState == 'rover.reservation.staycard.mainCard.roomType'){
@@ -94,6 +99,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 view: "CALENDAR",
                 fromState: fromState
             });
+            closeSidebar();
         };
     }
 ]);

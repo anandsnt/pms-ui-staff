@@ -109,6 +109,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
                         }
                         addonItem.amountType = item.amount_type;
                         addonItem.postType = item.post_type;
+                        addonItem.amountTypeDesc = item.amount_type.description;
+                        addonItem.postTypeDesc = item.post_type.description;
                         $scope.addons.push(addonItem);
                     }
                 });
