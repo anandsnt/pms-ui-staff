@@ -7,57 +7,58 @@
 					{{likeSubtitle}}
 				</h3>
 				<em class="status">
-					Fields marked with
+					{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
 					<strong>*</strong>
-					are mandatory!
+					{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
+
 				</em>
 			</div>
 			<fieldset class="holder left float">
 
-				<ad-textbox value="likeData.name"   label = "name" placeholder = "Enter category name" required = "yes" styleclass="full-width"></ad-textbox>
+				<ad-textbox value="likeData.name"   label = "{{'NAME' | translate}}" placeholder = "{{'CATEGORY_NAME_PLACEHOLDER' | translate}}" required = "yes" styleclass="full-width"></ad-textbox>
 
 				<!-- Checkbox -->
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : likeData.show_on_room_setup === 'true' }"></span>
-						<label>Show on room assignment filter/room setup</label>
+						<label translate>ROOM_ASSIGMENT_SETUP_MSG</label>
 						<input type="checkbox" ng-click="likeData.show_on_room_setup =(likeData.show_on_room_setup === 'true')? 'fasle':'true'">
 
 					</label>
 				</div>
 				<div class="entry full-width">
 					<label>
-						Type
+						{{'TYPE' | translate}}
 						<strong>*</strong>
 					</label>
 					<div class="boxes">
 						<label class="radio" ng-class="{checked:likeData.type == 'textbox'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'textbox'}"></span>
 							<input type="radio" ng-model="likeData.type" value="textbox" class="change-data" checked='checked'>
-							Text value
-							<span>(Textbox)</span>
+							{{'TEXT_VALUE' | translate}}
+							<span>({{'TEXTBOX' | translate}})</span>
 						</label>
 
 						<label class="radio" ng-class="{checked:likeData.type == 'radio'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'radio'}"></span>
 							<input type="radio" ng-model="likeData.type" value="radio" class="change-data" >
-							One selection / Two options
-							<span>(Radio button list)</span>
+							{{'ONE_SELECTION_TWO_OPTIONS_TEXT' | translate}}
+							<span>({{'RADIO_BTN_LIST' | translate}})</span>
 						</label>
 
 						<label class="radio" ng-class="{checked:likeData.type == 'dropdown'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'dropdown'}"></span>
 							<input type="radio" ng-model="likeData.type" value="dropdown" class="change-data" >
-							One selection / Multiple options
-							<span>(Selectbox)</span>
+							{{'ONE_SELECTION_MULTIPLE_OPTIONS_TEXT' | translate}}
+							<span>({{'SELECTBOX' | translate}})</span>
 						</label>
 
 
 						<label class="radio" ng-class="{checked:likeData.type == 'checkbox'}">
 							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'checkbox'}"></span>
 							<input type="radio" ng-model="likeData.type" value="checkbox" class="change-data" >
-							Multiple options / Multiple selections
-							<span>(Checkbox list)</span>
+							{{'MULTIPLE_OPTIONS_MULTIPLE_SELECTION_TEXT' | translate}}
+							<span>({{'CHECKBOX_LIST' | translate}})</span>
 						</label>
 
 
@@ -70,7 +71,7 @@
 				<div id="entry-radio" class="data-type" ng-show="showRadio">
 					<div class="entry full-width">
 					 	<label for="radio-option1">
-							Options
+							{{'OPTIONS |translate'}}
 							<strong>*</strong>
 						</label>
 				
@@ -84,7 +85,7 @@
 				<div id="entry-select" class="data-type" ng-show="showDropDown">
 					<div class="entry full-width">
 						<label for="select-option1">
-							Options
+							{{'OPTIONS |translate'}}
 						</label>
 						<div class="entry" ng-repeat="option in likeData.options">
 							<input type="text"  placeholder="Add new option" name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="add-new-option"
@@ -98,7 +99,7 @@
 					<div class="entry full-width">
 						<div class="entry full-width">
 						<label for="select-option1">
-							Options
+							{{'OPTIONS |translate'}}
 						</label>
 						<div class="entry" ng-repeat="option in likeData.options">
 							<input type="text"  placeholder="Add new option" name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="add-new-option"
@@ -110,8 +111,8 @@
 
 
 			<div class="actions float">
-				<button type="button" ng-click="cancelCliked()" class="button blank add-data-inline">Cancel</button>
-				<button type="button" like-type="common" ng-click="addSaveCliked()" class="button green add-data-inline">Save changes</button>
+				<button type="button" ng-click="cancelCliked()" class="button blank add-data-inline" translate>CANCEL</button>
+				<button type="button" like-type="common" ng-click="addSaveCliked()" class="button green add-data-inline" translate>SAVE_CHANGES</button>
 			</div>
 		</form>
 	</div>
