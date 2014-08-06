@@ -39,6 +39,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		    return {
 		        dateFormat: 'mm-dd-yy',
 		        numberOfMonths: 1,
+		        changeYear: true,
+		        changeMonth: true,
 		        maxDate: tzIndependentDate( item.untilDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
@@ -55,6 +57,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		    return {
 		        dateFormat: 'mm-dd-yy',
 		        numberOfMonths: 1,
+		        changeYear: true,
+		        changeMonth: true,
 		        minDate: tzIndependentDate( item.fromDate ),
 		        maxDate: tzIndependentDate( $rootScope.businessDate ),
 		        beforeShow: function(input, inst) {
