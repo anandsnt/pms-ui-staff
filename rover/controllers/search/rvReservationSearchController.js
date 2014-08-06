@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationSearchController',['$scope', '$state', '$stateParams', '$filter',  'searchResultdata', function($scope, $state, $stateParams, $filter, searchResultdata){
+sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter',  'searchResultdata', function($scope, $rootScope, $state, $stateParams, $filter, searchResultdata){
 
 	/*
 	* Controller class for search,
@@ -25,7 +25,7 @@ sntRover.controller('rvReservationSearchController',['$scope', '$state', '$state
     }
     if ($stateParams.type in headingDict){
         heading = headingDict[$stateParams.type];
-        $scope.setPrevState = {'title': 'DASHBOARD', 'name': 'rover.dashboard'};
+        $rootScope.setPrevState = {'title': 'DASHBOARD', 'name': 'rover.dashboard'};
     }
     else {
         heading = headingDict['NORMAL_SEARCH'];
