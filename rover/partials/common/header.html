@@ -12,19 +12,18 @@
 
 	<!-- back to prev -->
 	<div class="actions-back button white">
-		<a class="back-button" href="" ng-if="setPrevState.title" ng-click="loadPrevState()">{{ setPrevState.title }}</a>		
+		<a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
+	</div>
+
+	<a id="late-checkout-alert" ng-click="clickedOnHeaderLateCheckoutIcon($event)"  class="icons icon-alert late-check-out" ng-show="isLateCheckoutTurnedOn && shouldShowLateCheckout"> {{userInfo.late_checkout_count}} </a>
+
+	<div class="logo">
+		<img alt = "" ng-src= "{{userInfo.logo}}" />
 	</div>
 
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
 		{{userInfo.last_name}} </strong> | <em class="date"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em></span>
-
-		<!-- Late checkout -->
 	</h1>
-
-	<a id="late-checkout-alert" ng-click="clickedOnHeaderLateCheckoutIcon($event)"  class="icons icon-alert late-check-out" ng-show="isLateCheckoutTurnedOn && shouldShowLateCheckout"> {{userInfo.late_checkout_count}} </a>
-	<div class="logo">
-		<img alt = "" ng-src= "{{userInfo.logo}}" />
-	</div>
 	<!-- Right side button -->
 </header>
