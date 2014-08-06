@@ -273,8 +273,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						//preferred room process
 						// If a contracted rate, then got to show it anyway
 						if (hasContractedRate([d.rate.id])) {
-							$scope.displayData.availableRates.push(d);	
-							d.preferredType = d.rooms[0].id;						
+							$scope.displayData.availableRates.push(d);
+							d.preferredType = d.rooms[0].id;
 						} else if (_.where(d.rooms, {
 							id: $scope.stateCheck.preferredType
 						}).length > 0) {
@@ -766,8 +766,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 								average: 0
 							}
 						}
-						rooms[d.room_type_id].total[rate_id].total = parseInt(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
-						rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.days).toFixed(2);
+						if (for_date != $scope.reservationData.departureDate) {
+							rooms[d.room_type_id].total[rate_id].total = parseFloat(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
+							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.reservationData.numNights).toFixed(2);
+						}
 
 					})
 				})
