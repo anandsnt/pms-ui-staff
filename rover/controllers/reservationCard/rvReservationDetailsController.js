@@ -3,7 +3,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: 'Search results'
+			title: 'Search results',
+			name: 'rover.search'
 		};
 
 		BaseCtrl.call(this, $scope);

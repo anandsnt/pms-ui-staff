@@ -47,7 +47,7 @@
 								<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
 							</div>	
 
-							<div class="status" >				
+							<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
 								<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 									{{row.late_checkout_time}}
 								</span>

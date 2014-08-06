@@ -894,3 +894,71 @@ Padding for the ows error popup
                 bottom: 0;
             }
         }
+
+
+/* 
+* Reports screen change animations  
+* ==================================
+* DO NOT change the numeric values
+*/
+#report-details.content.stay-card-inner{
+  position: absolute;
+}
+
+@media (max-width: 999px) {
+  #report-details.content.stay-card-inner {
+    position: static;
+  }
+}
+
+#reports-details-wrap #report-details .report-content {
+  .calc-height(100, 180);
+}
+
+/* ui-view animation hook up class for main-view */
+.reports-wrapper {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+}
+
+/* making sure we are not flickering */
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add {
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  z-index: 50;
+}
+
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  z-index: 30;
+}
+
+/* normal app state animations */
+.reports-wrapper.ng-hide-remove {
+  #move > #ui-view > .enter;
+}
+
+.reports-wrapper.ng-hide-add {
+  #move > #ui-view > .leave;
+}
+
+/* when returning back */
+.return-back .reports-wrapper.ng-hide-remove {
+  #move > #ui-view > .enter-rev;
+}
+
+.return-back .reports-wrapper.ng-hide-add {
+  #move > #ui-view > .leave-rev;
+}

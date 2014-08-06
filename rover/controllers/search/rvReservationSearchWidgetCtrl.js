@@ -339,4 +339,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	 	}
 	 	return showNoMatchesMessage;
 	 };
+	 $scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
+  	    var queueClass = '';
+  		if(isReservationQueued=="true" && isQueueRoomsOn == "true"){
+ 			queueClass = 'queued';
+ 		}
+ 		return queueClass;
+      };
 }]);
