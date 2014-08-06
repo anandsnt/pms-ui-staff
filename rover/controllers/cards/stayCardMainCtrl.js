@@ -338,6 +338,98 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 		};
 
+		// This method can be used to generate payload for the reservation update API call.
+		// Note: The payment and the confirmation mails related information is not computed in this call now, as that would require moving a few variables from the 
+		// scope of RVReservationSummaryCtrl to stayCardMainCtrl
+
+		$scope.computeReservationDataforUpdate = function() {
+			var data = {};
+			data.arrival_date = $scope.reservationData.arrivalDate;
+			data.arrival_time = '';
+			//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
+			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm != '') {
+				data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh,
+					$scope.reservationData.checkinTime.mm,
+					$scope.reservationData.checkinTime.ampm);
+			}
+			data.departure_date = $scope.reservationData.departureDate;
+			data.departure_time = '';
+			//Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
+			if ($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkoutTime.ampm != '') {
+				data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
+					$scope.reservationData.checkoutTime.mm,
+					$scope.reservationData.checkoutTime.ampm);
+			}
+
+			data.adults_count = parseInt($scope.reservationData.rooms[0].numAdults);
+			data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
+			data.infants_count = parseInt($scope.reservationData.rooms[0].numInfants);
+			// CICO - 8320 Rate to be handled in room level
+			// data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
+			data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
+
+			//Guest details
+			data.guest_detail = {};
+			// Send null if no guest card is attached, empty string causes server internal error
+			data.guest_detail.id = $scope.reservationData.guest.id == "" ? null : $scope.reservationData.guest.id;
+			// New API changes
+			data.guest_detail_id = data.guest_detail.id;
+			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
+			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
+			data.guest_detail.email = $scope.reservationData.guest.email;
+			if (!isEmpty($scope.reservationData.paymentType.type)) {
+				data.payment_type = {};
+				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
+				//TODO: verify
+				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+				data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+					$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
+				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+
+			}
+
+			//	CICO-8320
+			// 	The API request payload changes
+
+			var stay = [];
+			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
+				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
+					stay.push({
+						date: date,
+						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+						adults_count: parseInt(staydata.guests.adults),
+						children_count: parseInt(staydata.guests.children),
+						infants_count: parseInt(staydata.guests.infants)
+					});
+				} else if (date != $scope.reservationData.departureDate) {
+					stay.push({
+						date: date,
+						rate_id: staydata.rate.id,
+						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+						adults_count: parseInt(staydata.guests.adults),
+						children_count: parseInt(staydata.guests.children),
+						infants_count: parseInt(staydata.guests.infants)
+					});
+				}
+			});
+
+			//	end of payload changes
+
+			data.stay_dates = stay;
+
+			data.company_id = $scope.reservationData.company.id;
+			data.travel_agent_id = $scope.reservationData.travelAgent.id;
+			data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
+			data.source_id = parseInt($scope.reservationData.demographics.source);
+			data.market_segment_id = parseInt($scope.reservationData.demographics.market);
+			data.booking_origin_id = parseInt($scope.reservationData.demographics.origin);
+			data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
+			data.reservationId = $scope.reservationData.reservationId;
+			return data;
+
+		};
+
 		$scope.getEmptyAccountData = function() {
 			return {
 				"address_details": {
@@ -367,6 +459,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				},
 				"future_reservation_count": 0
 			}
+		}
+
+		$scope.showContractedRates = function(cardIds) {
+			// 	CICO-7792 BEGIN
+			/*
+			 *	When a Travel Agent or Company card has been attached to the reservation during the reservation process,
+			 *	the rate / room display should include the rate of the Company / Travel Agent contract if one exists.
+			 *	Have to make a call to the availability API with the card added as a request param
+			 */
+			console.log('make call to the availability API and once response has come call the method in the RVReservationRoomTypeCtrl');
+			$scope.$broadcast('cardChanged',cardIds);
+			// 	CICO-7792 END
 		}
 
 	}
