@@ -213,6 +213,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 
 		$scope.openPaymentList = function() {
+			//Disable the feature when the reservation is checked out
+            if(!$scope.isNewsPaperPreferenceAvailable())
+                return;
 			$scope.reservationData.currentView = "stayCard";
 			$scope.$emit('SHOWPAYMENTLIST', $scope.reservationData);
 		};
