@@ -1,0 +1,17 @@
+<div role="dialog" id="modal" class="modal-show">
+	<div class="modal-content new-content form warning">
+		<div>
+			<span translate> {{'NO' | translate}} <span ng-if="houseNotAvailableForBooking" translate>HOUSE</span><span ng-if="roomTypeNotAvailableForBooking" translate>RESV_ROOM</span> {{'OVERBOOK_TEXT' | translate}}</span>
+
+		</div>
+		<div class="actions float small-button">
+			<button class="button green" ng-click="updateDataModel(); closeThisDialog();" translate>
+				YES
+			</button>
+			<button  class="button white" ng-click="closeThisDialog()" translate>
+				NO
+			</button>
+		</div>
+	</div>
+</div>
+

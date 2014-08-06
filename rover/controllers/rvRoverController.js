@@ -104,6 +104,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
+    $rootScope.dateFormatForAPI = "yyyy-MM-dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
@@ -152,12 +153,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
 
+    var getDefaultDashboardState = function(){
+        var statesForDashbaord = {
+          'HOUSEKEEPING': 'rover.dashboard.housekeeping',
+          'FRONT_DESK'  : 'rover.dashboard.frontoffice',
+          'MANAGER'     : 'rover.dashboard.manager'
+        }
+        return statesForDashbaord[$rootScope.default_dashboard];
+    }
 
     if($rootScope.isStandAlone){
       // OBJECT WITH THE MENU STRUCTURE
         $scope.menu = [{
           title: "MENU_DASHBOARD",
-          action: "rover.dashboard",
+          action: getDefaultDashboardState(),
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
@@ -272,7 +281,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       // OBJECT WITH THE MENU STRUCTURE
         $scope.menu = [{
           title: "MENU_DASHBOARD",
-          action: "rover.dashboard",
+          action: getDefaultDashboardState(),
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
