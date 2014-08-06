@@ -96,5 +96,16 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 			};
 		};
 	};
+	
+	this.searchByCC = function(swipeData){
+		var deferred = $q.defer();
+		var url = '/staff/payments/search_by_cc';
+		RVBaseWebSrv.postJSON(url, swipeData).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 }]);

@@ -25,7 +25,7 @@ sntRover.controller('rvReservationSearchController',['$scope', '$state', '$state
     }
     if ($stateParams.type in headingDict){
         heading = headingDict[$stateParams.type];
-        $scope.setPrevState = {'title': 'DASHBOARD'};
+        $scope.setPrevState = {'title': 'DASHBOARD', 'name': 'rover.dashboard'};
     }
     else {
         heading = headingDict['NORMAL_SEARCH'];

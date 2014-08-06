@@ -303,7 +303,14 @@
     "GO_TO_STAYCARD": "Go To Stay Card",
     "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
     "SEARCH_RESERVATIONS": "Search Reservations",
+<<<<<<< HEAD
     "RESERVATION_CHANGED": "Reservation changed",    
+=======
+    "RESERVATION_CHANGED": "Reservation changed",
+
+    "SHOW_STAY_DATES": "Show Stay Dates"
+,    
+>>>>>>> 4536551ff2f38b1aa83f06f2e2398594affdf3e2
     
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper",

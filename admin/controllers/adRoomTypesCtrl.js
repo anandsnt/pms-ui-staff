@@ -49,6 +49,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		$scope.isAddMode =false;
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
+		$scope.roomTypeData = {};
 	 	var successCallbackRender = function(data){	
 	 		$scope.$emit('hideLoader');
 	 		$scope.roomTypeData = data;
@@ -102,7 +103,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     	var addSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
-    		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code});
+    		$scope.data.room_types.push({'name':$scope.roomTypeData.room_type_name,'code':$scope.roomTypeData.room_type_code,'id':data.id});
     		$scope.tableParams.reload();
     	};
     	

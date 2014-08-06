@@ -141,16 +141,16 @@
                     
                     <label for="email" translate>GUEST_EMAIL_ADDRESS</label>
                     <label class="checkbox inline">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : data.isGuestPrimaryEmailChecked}"></span>
-                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isGuestPrimaryEmailChecked"/>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestPrimaryEmailChecked}"></span>
+                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestPrimaryEmailChecked"/>
                         <span>&nbsp;</span>
                     </label>
                     <input class="summary_email" ng-model="reservationData.guest.email" ng-blur="primaryEmailEntered()">
 
                     <label for="email" translate>ADDITIONAL_EMAIL_ADDRESS</label>
                     <label class="checkbox inline">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : data.isGuestAdditionalEmailChecked}"></span>
-                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isGuestAdditionalEmailChecked"/>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : otherData.isGuestAdditionalEmailChecked}"></span>
+                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="otherData.isGuestAdditionalEmailChecked"/>
                         <span>&nbsp;</span>
                     </label>
                     <input class="summary_email" ng-model="otherData.additionalEmail">
@@ -168,17 +168,17 @@
                 </div>
                 <div data-type="credit-card-fields" class="entry margin" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="card-number-set1" translate>CREDIT_CARD</label>
-                    <input name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number"/>
+                    <input class="card" ng-class="data.MLIData.cardScheme" name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number" ng-blur="initFetchMLI()" />
                 </div>
                 <div data-type="credit-card-fields" class="entry" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <div class="reservation-card-cvv-container">
                         <label for="ccv"><span translate>CCV</span></label>
-                        <input name="ccv" placeholder="ccv" maxlength="5" size="5" type="text" ng-model="reservationData.paymentType.ccDetails.cvv"/>
+                        <input name="ccv" placeholder="ccv" maxlength="5" size="5" type="text" ng-model="reservationData.paymentType.ccDetails.cvv" ng-blur="initFetchMLI() "/>
                     </div>
                     <div class="reservation-card-expiry-date-container">
                         <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
-                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"/>
-                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"/>
+                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"ng-blur="initFetchMLI()" />
+                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"ng-blur="initFetchMLI()" />
                     </div>
                 </div>
                 <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.value == 'CC'">
