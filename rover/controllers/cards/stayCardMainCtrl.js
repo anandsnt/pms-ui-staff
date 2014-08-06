@@ -461,5 +461,17 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		}
 
+		$scope.showContractedRates = function(cardIds) {
+			// 	CICO-7792 BEGIN
+			/*
+			 *	When a Travel Agent or Company card has been attached to the reservation during the reservation process,
+			 *	the rate / room display should include the rate of the Company / Travel Agent contract if one exists.
+			 *	Have to make a call to the availability API with the card added as a request param
+			 */
+			console.log('make call to the availability API and once response has come call the method in the RVReservationRoomTypeCtrl');
+			$scope.$broadcast('cardChanged',cardIds);
+			// 	CICO-7792 END
+		}
+
 	}
 ]);

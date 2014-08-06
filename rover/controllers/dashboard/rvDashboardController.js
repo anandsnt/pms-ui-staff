@@ -53,10 +53,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         }, 2000);
 		
         //TODO: Add conditionally redirecting from API results
-        //$state.go('rover.dashboard.frontoffice');
-
-        //TODO: delete the code below and use the function
-        //$state.go('rover.dashboard.manager');
 
         reddirectToDefaultDashboard();
 
@@ -70,6 +66,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         var defaultDashboardMappedWithStates = {
           'FRONT_DESK': 'rover.dashboard.frontoffice',
           'MANAGER': 'rover.dashboard.manager',
+          'HOUSEKEEPING': 'rover.dashboard.housekeeping'
         }
         if($rootScope.default_dashboard in defaultDashboardMappedWithStates){
             $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);

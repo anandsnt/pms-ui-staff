@@ -8,7 +8,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateMenu = 'Details';
             $scope.prevMenu = "";
             //set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
-            $scope.businessDate = rateDetails.business_date;
+            $scope.businessDate = rateInitialData.business_date;
             // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",

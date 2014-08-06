@@ -12,11 +12,22 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 
             var deferred = $q.defer();
 
+            that.fetchBusinessDate = function(){
+                var url = '/api/business_dates/active';
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.business_date = data.business_date;
+                    deferred.resolve(that.addRatesDetailsData);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+            }
+
             that.fetchSelectedRestrictions = function () {
                var url = "api/restriction_types";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.selectedRestrictions = data.results;
-                    deferred.resolve(that.addRatesDetailsData);
+                    that.fetchBusinessDate();
                 }, function (data) {
                     deferred.reject(data);
                 });
