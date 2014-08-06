@@ -52,6 +52,14 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
         this.fetchAvailability = function(param) {
             var deferred = $q.defer();
             var url = '/api/availability?from_date=' + param.from_date + '&to_date=' + param.to_date;
+            if (typeof param.company_id != 'undefined' && param.company_id != '' && param.company_id != null) {
+                url += '&company_id=' + param.company_id;
+            }
+
+            if (typeof param.travel_agent_id != 'undefined' && param.travel_agent_id != '' && param.travel_agent_id != null) {
+                url += '&travel_agent_id=' + param.travel_agent_id;
+            }
+
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {

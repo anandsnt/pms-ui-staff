@@ -2,13 +2,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv) {
 
 		BaseCtrl.call(this, $scope);
-		var MLISessionId = "";
-
+		
 		$scope.init = function() {
 			$scope.data = {};
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.otherData.isGuestAdditionalEmailChecked = false;
 			$scope.data.paymentMethods = [];
+			$scope.data.MLIData = {};
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
@@ -124,7 +124,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// MLI Integration.
 			if ($scope.reservationData.paymentType.type.value === "CC") {
-				data.payment_type.session_id = MLISessionId;
+				data.payment_type.session_id = $scope.data.MLIData.session;
 			}
 
 			//	CICO-8320
@@ -192,14 +192,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"id": data.id,
 					"confirmationId": data.confirm_no
 				});
-
-				MLISessionId = "";
+				// $scope.data.MLIData = {};
 
 			};
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
-				MLISessionId = "";
+				// $scope.data.MLIData= {};
 
 			}
 
@@ -226,7 +225,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * MLI integration
 		 *
 		 */
-		$scope.fetchMLISession = function() {
+		var fetchMLISession = function() {
 
 			var sessionDetails = {};
 			sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
@@ -239,13 +238,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit("hideLoader");
 				$scope.$apply();
 				if (response.status === "ok") {
-
-					MLISessionId = response.session;
-					$scope.proceedCreatingReservation(); // call save payment details WS
-
+					$scope.data.MLIData = response;
 				} else {
 					$scope.errorMessage = ["There is a problem with your credit card"];
+					$scope.data.MLIData = {};
 				}
+				$scope.$apply();
 			}
 
 			try {
@@ -254,6 +252,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			} catch (err) {
 				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
+		}
+
+		$scope.initFetchMLI = function() {
+			if ($scope.reservationData.paymentType.ccDetails.number == "" ||
+				$scope.reservationData.paymentType.ccDetails.cvv == "" ||
+				$scope.reservationData.paymentType.ccDetails.expMonth == "" ||
+				$scope.reservationData.paymentType.ccDetails.expYear == "") {
+				return false;
+			}
+			fetchMLISession();
 		}
 
 
@@ -272,17 +280,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		$scope.submitReservation = function() {
 
-
-			if ($scope.reservationData.paymentType.type.value === "CC") {
-
-				if ($scope.reservationData.paymentType.ccDetails.number.length === 0) {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-				} else {
-					$scope.fetchMLISession();
-				}
-			} else {
-				$scope.proceedCreatingReservation();
+			if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
+				$scope.errorMessage = ["There is a problem with your credit card"];
+				return false;
 			}
+			$scope.proceedCreatingReservation();
 
 		};
 
@@ -332,7 +334,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			var updateGuestEmailFailureCallback = function(data) {
-				// console.log('reached failure');
 				$scope.$emit("hideLoader");
 			}
 
