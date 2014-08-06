@@ -79,6 +79,13 @@
 "CATEGORY_NAME_PLACEHOLDER":"Enter category name",
 "ROOM_FEATURE":"Room Feature",
 "ROOM_TYPE":"Room Type",
+"FREQUENT_FLYER_PROGRAMS":"Frequent Flyer Programs",
+"HOTEL_LOYALTY_PROGRAMS":"Hotel Loyalty Programs",
+"HOTEL_LOYALTY_PROGRAM":"Hotel Loyalty Program",
+"PROGRAM_NAME_PLACEHOLDER":"Enter program name",
+"CODE_NAME_PLACEHOLDER":"Enter program code",
+"LEVELS":"Levels",
+"ADD_NEW_LEVEL":"Add new level",
 
 
 "DEPARTMENTS":"Departments",
