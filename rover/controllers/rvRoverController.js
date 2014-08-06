@@ -563,12 +563,32 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }        
     };
 
+  /**
+    * Handles the bussiness date change
+    */
+    $rootScope.showBussinessDateChangingPopup = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        //if already shown no need to show again and again
+        if(!$rootScope.isBussinessDateChanging){
+            $rootScope.isBussinessDateChanging = true;
+            ngDialog.open({
+              template: '/assets/partials/common/bussinessDateChangingPopup.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'bussinessDateChangingCtrl',
+              closeByDocument: false,
+              scope: $scope
+          });
+        }        
+    };
+
   }
 ]);
 
-// adding an OWS check Interceptor here
+// adding an OWS check Interceptor here and bussiness date change
 // but should be moved to higher up above in root level
-sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
+sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
   return {
     request: function (config) {
       return config;
@@ -580,11 +600,16 @@ sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
+      else if(rejection.status == 505){
+        $rootScope.showBussinessDateChangingPopup();
+        $rootScope.isBussinessDateChanging = true;
+        //need to unset this once change is done and set new bussiness date
+      }
       return $q.reject(rejection);
     }
   };
 });
 
 sntRover.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('owsCheckInterceptor');
+  $httpProvider.interceptors.push('httpInterceptor');
 });
