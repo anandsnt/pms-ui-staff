@@ -4,6 +4,8 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
 
+	$rootScope.setPrevState = {};
+
 	/**
 	*	if this is true animation will be revesed, no more checks
 	* 	keep track of the previous state and params
