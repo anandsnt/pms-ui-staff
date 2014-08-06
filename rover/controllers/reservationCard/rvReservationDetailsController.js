@@ -280,6 +280,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		$scope.isNightsEnabled = function(){
+			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+			if(reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+				return true;
+			}
+			if($rootScope.isStandAlone && 
+				(reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT')){
+				return true;
+			}
+			return false;
+		}
+
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
