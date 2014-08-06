@@ -2,7 +2,16 @@
 <button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
 		<span class="icons icon-close invert"></span>
 </button>
-<form name="update-settings" id="update-settings" class="modal-content form admin-form" ng-hide="isLoggedIn">
+<div class="modal-content new-content form warning padding_30" ng-show="!isTimePastMidnight">
+	 <div class="padding_30">
+	   Business Day has not yet ended. Are you sure you want to initiate End of Day?.
+	 </div>
+	 <div class="actions float">
+	    <button class="button modal-close white red-text" ng-click="cancelClicked()">NO</button>
+	    <button id="try-again" class="button white red-text" ng-click="isTimePastMidnight = true">YES</button>
+	 </div>
+</div>
+<form name="update-settings" id="update-settings" class="modal-content form admin-form" ng-hide="isLoggedIn || !isTimePastMidnight">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<strong class="h2 admin-title">Enter your credentials</strong>
 	<div class="entry full-width">
@@ -23,7 +32,7 @@
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
 	</div>
 </form>
-<div ng-show="isLoggedIn && !startProcess" class="modal-content padding_30">
+<div ng-show="isLoggedIn && !startProcess && isTimePastMidnight" class="modal-content padding_30">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div class="actions float padding_30">
 		<button type="button" ng-click="startEndOfDayProcess()" class="button" ng-class="{'green':startProcessEnabled}" ng-disabled="!startProcessEnabled">
@@ -31,7 +40,7 @@
 		</button>
 	</div>
 </div>
-<div ng-show="isLoggedIn && startProcess" class="modal-content new-content form warning padding_30">
+<div ng-show="isLoggedIn && startProcess && isTimePastMidnight" class="modal-content new-content form warning padding_30">
 	 <div>
 	   This will close of the Business Day for {{businessDate}} and change the date to {{nextBusinessDate}}
 	 </div>

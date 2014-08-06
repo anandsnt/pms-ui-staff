@@ -13,6 +13,16 @@ $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
 $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, 'yyyy-MM-dd');
 
 
+//to handle timezone issue
+var midnight = new Date();
+midnight.setHours(12);
+midnight.setMinutes(0);
+midnight.setSeconds(0);
+var presentTime = new Date();
+
+$scope.isTimePastMidnight = Date.parse(presentTime) > Date.parse(midnight);
+
+
 /*
  * cancel click action
  */
