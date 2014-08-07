@@ -343,15 +343,55 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         /*
          * This method will return the tax details for the amount and the tax provided
+         *
+         * NOTE >>> CURRENTLY HANDLES ONLY PERNIGHT TAXES
          */
-        $scope.calculateTax = function(date, amount, taxes) {
-            console.log({
-                date: date,
-                amount: amount,
-                taxes: taxes,
-                taxMeta: $scope.otherData.taxesMeta
+        $scope.calculateTax = function(date, amount, taxes, roomIndex) {
+            var taxTotal = 0.0;
+            var adults = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.adults;
+            var children = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.children;
+            var nights = $scope.reservationData.numNights;
+            _.each(taxes, function(tax) {
+                //for every tax that is associated to the date proceed
+                var taxDetails = _.where($scope.otherData.taxesMeta, {
+                    id: parseInt(tax.charge_code_id)
+                });
+                if (taxDetails.length == 0) {
+                    //Error condition! Tax code in results but not in meta data
+                    console.log("Error on tax meta data");
+                } else {
+                    var taxData = taxDetails[0];
+                    // Need not consider perstay here
+                    var taxAmount = taxData.amount;
+                    if (taxData.amount_sign != "+") {
+                        taxData.amount = parseFloat(taxData.amount * -1.0);
+                    }
+                    var taxAmountType = taxData.amount_type;
+                    var multiplicity = 1; // for amount_type = flat
+                    if (taxAmountType == "Adult") {
+                        multiplicity = adults;
+                    } else if (taxAmountType == "Child") {
+                        multiplicity = children;
+                    } else if (taxAmountType == "Person") {
+                        multiplicity = parseInt(children) + parseInt(adults);
+                    }
+
+                    /*******************************************************************************
+                     *  THE TAX CALCULATION HAPPENS HERE
+                     *  FOR EVERY TAX (iteration) ADD APPROPRIATELY TO TOTAL PERCENT / TOTAL DOLLAR
+                     *  ONLY GOT TO DO THE PER NIGHT HERE
+                     *******************************************************************************/
+
+                    if (taxData.post_type == 'Per Night') {
+                        if (taxData.amount_symbol == '%') {
+                            taxTotal = parseFloat(taxTotal) + (multiplicity * (parseFloat(taxData.amount) * amount));
+                        } else {
+                            taxTotal = (multiplicity * parseFloat(taxData.amount)) + parseFloat(taxTotal);
+                        }
+                    }
+                }
             });
-            return 5;
+            return taxTotal;
         }
 
 
