@@ -40,7 +40,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		var clientWidth = $(window).width();
 		var clientHeight = $(window).height();
 		var drawGraph = function() {
-			console.log('reached::drawGraph');
 			$scope.highchartsNG = {
 				options: {
 					chart: {

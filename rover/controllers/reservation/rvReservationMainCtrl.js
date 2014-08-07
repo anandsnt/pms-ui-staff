@@ -360,7 +360,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
             $(currentRoom.addons).each(function(i, addon) {
-                // console.log(addon.amountType.value, addon.postType.value);
                 //Amount_Types
                 // 1   ADULT   
                 // 2   CHILD   
@@ -398,10 +397,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     return baseRate;
                 })();
                 if (addon.postType.value == "NIGHT") {
-                    console.log("//TODO:Got to calculate based on amount type and then mutiply with nights");
                     finalRate = parseFloat(amountPerday) * parseInt($scope.reservationData.numNights);
                 } else {
-                    console.log("//TODO:Rate is incl of all days");
                     finalRate = amountPerday;
                 }
                 addOnCumulative += parseInt(finalRate);
@@ -413,7 +410,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
 
         $scope.editRoomRates = function(roomIdx) {
-            // console.log($scope.reservationData.rooms[roomIdx]);
             //TODO: Navigate back to roomtype selection screen after resetting the current room options
             $scope.reservationData.rooms[roomIdx].roomTypeId = '';
             $scope.reservationData.rooms[roomIdx].roomTypeName = '';
@@ -545,7 +541,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         $scope.$on("guestEmailChanged", function(e) {
-            console.log('reached main controller');
             $scope.$broadcast('updateGuestEmail');
         });
 

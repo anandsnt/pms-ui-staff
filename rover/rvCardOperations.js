@@ -63,19 +63,15 @@ var CardOperation = function(){
 		var arguments = options["arguments"] ? options["arguments"] : [];
 		
 		if(successCallBack == null){
-			console.log('Card operation requires "successCallBack" parameter as function');
 			return false;
 		}
 		else if(failureCallBack == null){
-			console.log('Card operation requires "failureCallBack" parameter as function');
 			return false;			
 		}
 		else if(service == null){
-			console.log('Card operation requires service name as "service" parameter');
 			return false;
 		}
 		else if(action == null){
-			console.log('Card operation requires action name as "action" parameter');
 			return false;			
 		}		
 		else{
@@ -123,7 +119,6 @@ var CardOperation = function(){
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
 		if(shouldCallRecursively) {
-			console.log('Calling recursively');
 			that.callCordovaService(options);
 		}
 	};
@@ -168,7 +163,6 @@ var CardOperation = function(){
 	};
 
 	this.setBandTypeDebug = function(options){
-		console.log("sucecss called in setband type debug mode");
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -195,7 +189,6 @@ var CardOperation = function(){
 	// please check above method (checkDeviceConnected) for further description
 	this.checkDeviceConnectedDebug = function(options){
 		//Simulating the write function for easy testing. May be removed in production.
-		console.log("sucecss called in write key debug mode");
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
