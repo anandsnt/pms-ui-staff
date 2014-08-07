@@ -74,11 +74,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     addons: [],
                     stayDates: {},
                     taxes: {
-                        taxTotal: 0,
+                        taxTotal: '',
                         taxDetails: [{
-                            tax_id: '',
-                            tax_amount: '',
-                            tax_desc: ''
+                        	id:'',
+							charge_code:'',
+							amount:'',
+							amount_type:'',
+							post_type:'',
+							amount_symbol:'',
+							amount_sign:''
                         }]
                     }
                 }],
@@ -365,7 +369,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var children = currentRoom.numChildren;
             var roomTotal = 0;
             var roomAvg = 0;
-
+			var taxes = currentRoom.taxes;
+			
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
                 if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
@@ -428,6 +433,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 addOnCumulative += parseInt(finalRate);
                 addon.effectivePrice = finalRate;
             });
+            // Calculating total tax.
+            var totalTax = 0;
+            $scope.reservationData.rooms[roomIndex].taxes.taxDetails = $scope.otherData.taxesMeta;
+            angular.forEach($scope.reservationData.rooms[roomIndex].taxes.taxDetails,function(item, index) {
+				totalTax += parseFloat(item.amount);
+	       	});
+	       	$scope.reservationData.rooms[roomIndex].taxes.taxTotal = totalTax;
+	       	
             //TODO: Extend for multiple rooms
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative);
         }
