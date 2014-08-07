@@ -319,7 +319,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
 				$scope.$broadcast('guestSearchStopped');
 			}
-		}
+		};
 
 		$scope.showGuestPaymentList = function(guestInfo) {
 			var userId = guestInfo.user_id,
@@ -335,6 +335,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};
+			console.log("staycardmain controller")
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 		};
 
