@@ -11,6 +11,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 	
 	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
+		
 		var reservationRoomStatusClass = "";
 		if(reservationStatus == 'CHECKING_IN'){
 			

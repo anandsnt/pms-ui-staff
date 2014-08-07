@@ -79,7 +79,7 @@ sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$
 		}
 		
 
-	}
+	};
 	$scope.occupancyDialogSuccess = function(){
 		$scope.selectUpgrade();			
 	};
@@ -99,6 +99,7 @@ sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$
 				$scope.reservationData.reservation_card.room_type_code = selectedTypeCode;
 				$scope.reservationData.reservation_card.room_status = "READY";
 				$scope.reservationData.reservation_card.fo_status = "VACANT";
+				$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
 				$scope.reservationData.reservation_card.is_upsell_available = false;
 				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 				$scope.backToStayCard();				

@@ -100,7 +100,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.renderPayButtonDefaultValues = function(){
 		if($scope.passData.fromView == "paybutton"){
-	 		//console.log($scope.paymentData.bills[billIndex]);
 	 		$scope.selected_bill = $scope.passData.fromBill;
 			$scope.showPaymentAmount = true;
 			var billIndex = parseInt($scope.passData.fromBill) - parseInt(1);
@@ -234,8 +233,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	      setTimeout(function(){
 	      	 window.scrollTo(0,0);
 	      }, 700);
-		// console.log(JSON.stringify($scope.data));
-		// console.log($scope.saveData.selected_payment_type);
 		$scope.saveData.payment_type = "";
 		if($scope.saveData.selected_payment_type != undefined){
 			if(parseInt($scope.saveData.selected_payment_type)>=0){
@@ -327,7 +324,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 		$scope.savePayment();// call save payment details WS		 		
 			 	}
 			 	else{
-			 			console.log("error");
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			
 			 	$scope.$apply(); 	

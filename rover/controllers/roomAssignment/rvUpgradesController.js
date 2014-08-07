@@ -62,7 +62,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		}
 		
 
-	}
+	};
 	$scope.occupancyDialogSuccess = function(){
 		$scope.selectUpgrade();			
 	};

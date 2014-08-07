@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
-	function($scope, RVLikesSrv, dateFilter) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams',
+	function($scope, RVLikesSrv, dateFilter, $stateParams) {
 
 
 		$scope.errorMessage = "";
@@ -15,13 +15,17 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 		});
 
 		$scope.init = function() {
+			console.log("----------------LIKES-------------");
+			console.log(JSON.stringify($stateParams));
+			console.log($stateParams.isrefresh);
 			BaseCtrl.call(this, $scope);
 			var fetchLikesFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
 			};
 			var data = {
-				'userId': $scope.guestCardData.contactInfo.user_id
+				'userId': $scope.guestCardData.contactInfo.user_id,
+				'isRefresh': $stateParams.isrefresh
 			};
 			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
 		};
