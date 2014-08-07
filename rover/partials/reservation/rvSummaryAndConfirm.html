@@ -128,7 +128,13 @@
                     </ul>
                 </div>
                 <ul class="total-stay-cost">
-                    <li><span class="label" translate>TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</li>
+                	
+                	<li ng-repeat="row in reservationData.rooms[0].taxes.taxDetails">
+                		<span class="label" translate>TAX - {{$index+1}}</span>
+                		{{currencySymbol}}{{ row.amount | number : 2}}
+                	</li>
+                	
+                    <li><span class="label" >Total Tax</span>{{currencySymbol}}{{reservationData.rooms[0].taxes.taxTotal | number : 2}}</li>
                     <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong></li>
                 </ul>
             </div> 
