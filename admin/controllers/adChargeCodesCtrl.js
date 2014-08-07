@@ -136,7 +136,8 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			};
 			
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
-				item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+				
+				item.calculation_rule_list = $scope.generateCalculationRule(index);
 				
 	       	});
 			
@@ -165,7 +166,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			// Generating calculation rules list.
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
 				console.log(item);
-				item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+				item.calculation_rule_list = $scope.generateCalculationRule(index);
 				item.selected_calculation_rule = item.calculation_rules.length;
 				
 	       	});
@@ -245,7 +246,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		// Updating calculation rules list.
 		angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
 			console.log(item.calculation_rules);
-			if(item.calculation_rules) item.calculation_rule_list = $scope.generateCalculationRule(item.calculation_rules.length);
+			item.calculation_rule_list = $scope.generateCalculationRule(index);
 			item.calculation_rules = [];
 			if(item.calculation_rule_list.length !==0 && item.selected_calculation_rule){
 				item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].ids;
@@ -301,7 +302,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		console.log(taxCount);
 		var calculation_rule_list = [];
 		
-		if (taxCount === 1 || taxCount === 0) {
+		if (taxCount === 1) {
 			
 				calculation_rule_list = [{
 					"value" : 0,
