@@ -46,6 +46,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
+    $rootScope.dateFormatForAPI = "yyyy-MM-dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";

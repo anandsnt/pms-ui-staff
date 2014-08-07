@@ -1521,7 +1521,9 @@
 				}
 			}
 
-			&[data-tooltip]:not([data-tooltip=""]):not(.hide-tooltip) {
+			&[data-rate]:not([data-rate=""]):not(.hide-tooltip) {
+				.show;
+				white-space: pre;
 
 				&:before,
 				&:after {
@@ -1532,7 +1534,7 @@
 				}
 
 				&:before {
-					content: attr(data-tooltip);
+					content: attr(data-rate); 
 					position: absolute;
 					bottom: 49px;
 					right: 10px;
@@ -1540,6 +1542,7 @@
 					background-color: @white;
 					font-size: 18px;
 					font-weight: 600;
+					min-width: 200px;
 					.show;
 					.box-shadow();
 					#border-radius > .rounded();
@@ -1561,6 +1564,10 @@
 				&:hover:after {
 					visibility: visible;
 					.opacity(100);
+				}
+
+				&[data-room-type]:not([data-room-type=""]) {
+					&:before { content: attr(data-room-type) "\A" attr(data-rate);  }
 				}
 			}
 		}		

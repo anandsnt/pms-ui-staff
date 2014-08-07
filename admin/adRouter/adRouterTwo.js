@@ -275,7 +275,39 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 				},
 				beaconTypes: function(adiBeaconSettingsSrv) {
 					return adiBeaconSettingsSrv.fetchBeaconTypes();
-				}
+				},
+				beaconDetails: function(adiBeaconSettingsSrv, $stateParams) {
+                 	var params = {
+			 		  	"id":$stateParams.action
+		 		  	}; 
+                    return adiBeaconSettingsSrv.fetchBeaconDetails(params);
+                },
+                defaultBeaconDetails: function() {
+                    return {};
+                }
+			}
+		});
+
+		$stateProvider.state('admin.iBeaconNewDetails', {
+			templateUrl: '/assets/partials/iBeaconSettings/adiBeaconDetails.html',
+			controller: 'ADiBeaconDetailsCtrl',
+			url : '/iBeaconDetails/:action',
+			resolve: {
+				beaconNeighbours: function(adiBeaconSettingsSrv){
+					return adiBeaconSettingsSrv.fetchBeaconList();
+				},
+				triggerTypes: function(adiBeaconSettingsSrv) {
+					return adiBeaconSettingsSrv.fetchBeaconTriggerTypes();
+				},
+				beaconTypes: function(adiBeaconSettingsSrv) {
+					return adiBeaconSettingsSrv.fetchBeaconTypes();
+				},
+				beaconDetails: function() {
+                    return {};
+                },
+                defaultBeaconDetails: function(adiBeaconSettingsSrv) {
+                    return adiBeaconSettingsSrv.fetchBeaconDeafultDetails();
+          	   }
 			}
 		});
 		

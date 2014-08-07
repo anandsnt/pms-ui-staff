@@ -270,3 +270,23 @@ tzIndependentDate = function(st) {
     return new Date(r);
 }
 
+
+
+Date.prototype.addDays = function(days) {
+   var dat = new Date(this.valueOf())
+   dat.setDate(dat.getDate() + days);
+   return dat;
+}
+
+/**
+* A public method to check if the given object is empty (it is recommended over the above one).
+* @param {object} is the object to be checked
+*/
+function isEmptyObject(obj) {
+    for(var key in obj) {
+        return false;
+    }
+    return true;
+}
+
+

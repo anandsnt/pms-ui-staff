@@ -133,7 +133,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             if ($scope.checkOccupancyLimit()) {
                 $state.go('rover.reservation.staycard.mainCard.roomType', {
                     from_date: $scope.reservationData.arrivalDate,
-                    to_date: $scope.reservationData.departureDate
+                    to_date: $scope.reservationData.departureDate,
+                    fromState: $state.current.name
+
                 });
             }
         };
