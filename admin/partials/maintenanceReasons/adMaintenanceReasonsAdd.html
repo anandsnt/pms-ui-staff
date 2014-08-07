@@ -2,18 +2,18 @@
 	<!-- Add Charge Group -->
 	<form class="form inline-form float">
 		<div class="form-title">
-			<h3><span></span> Add </h3>
-			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			<h3><span></span> {{'ADD'|translate}} </h3>
+			<em class="status">{{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
 		</div>
 		<fieldset class="holder left float">
-			<ad-textbox value="data.name" name = "item-name" label = "Name" placeholder = "Enter maintenance reason" required = "yes"></ad-textbox>
+			<ad-textbox value="data.name" name = "item-name" label = "{{'NAME' | translate}}" placeholder = "{{'MAINTENANCE_REASON_PLACEHOLDER' | translate}}" required = "yes"></ad-textbox>
 		</fieldset>
 		<div class="actions float">
-			<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline">
-				Cancel
+			<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline" translate>
+				CANCEL
 			</button>
-			<button type="button" ng-click="saveAddNew()" class="button green edit-data-inline">
-				Save changes
+			<button type="button" ng-click="saveAddNew()" class="button green edit-data-inline" translate>
+				SAVE_CHANGES
 			</button>
 		</div>
 	</form>
