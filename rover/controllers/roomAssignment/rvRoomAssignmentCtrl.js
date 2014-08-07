@@ -20,7 +20,7 @@ sntRover.controller('RVroomAssignmentController',[
 		title: 'Stay Card',
 		callback: 'backToStayCard',
 		scope: $scope
-	}
+	};
 		
 	BaseCtrl.call(this, $scope);
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
@@ -70,7 +70,7 @@ sntRover.controller('RVroomAssignmentController',[
 			if($scope.roomTypes[i].type == $scope.roomType)
 				return $scope.roomTypes[i];
 		};
-	}
+	};
 
 	/**
 	* function to check occupancy for the reservation
@@ -102,7 +102,7 @@ sntRover.controller('RVroomAssignmentController',[
 		}
 		
 
-	}
+	};
 
 	$scope.occupancyDialogSuccess = function(){
 		$scope.assignRoom();			
@@ -411,7 +411,7 @@ sntRover.controller('RVroomAssignmentController',[
 			}				
 		};
 		return roomsWithInitialFilters;
-	}
+	};
 
 	$scope.includeNotReadyRooms = function(){
 		for(var i = 0; i < $scope.rooms.length; i++){
@@ -469,13 +469,13 @@ sntRover.controller('RVroomAssignmentController',[
 				}
 			}
 		}
-	}
+	};
 	/**
 	* function to return the rooms list status
 	*/
 	$scope.isRoomListEmpty = function(){
 		return ($scope.filteredRooms.length == 0);
-	}
+	};
 	/**
 	* function to add ids for predefined filters checking the corresponding status
 	*/
@@ -491,7 +491,7 @@ sntRover.controller('RVroomAssignmentController',[
 				$scope.rooms[i].room_features.push(-103);
 
 		}
-	}
+	};
 	$scope.init = function(){
 	$scope.roomTypes = roomPreferences.room_types;
 	$scope.roomFeatures = roomPreferences.room_features;
