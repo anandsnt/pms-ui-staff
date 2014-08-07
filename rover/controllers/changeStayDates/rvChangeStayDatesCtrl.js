@@ -37,12 +37,12 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		$scope.calendarNightDiff = '';
 		$scope.avgRate = '';
 		$scope.availableRooms = [];
-
 	};
 
 	this.renderFullCalendar = function() {
 		/* event source that contains custom events on the scope */
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+
 		$scope.eventSources = [$scope.events];
 		//calender options used by full calender, related settings are done here
 		$scope.fullCalendarOptions = {
@@ -66,6 +66,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	}
 	this.initialise = function() {
 		that.dataAssign();
+
 		if($rootScope.isStandAlone){
 			
 			if(!that.checkIfStaydatesCanBeExtended()){
@@ -79,21 +80,26 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			}
 
 		}
-
 		that.renderFullCalendar();
 
 	};
 
-
+	/**
+	* If the reservation has multiple rates, then the user should not be allowed to extend the Stay dates
+	* User has to select a rate first. So display an option to go to the stayDates calendar
+	* TODO: verify if stay dates can be shortened in this case
+	*/
 	this.hasMultipleRates = function(){
 		var calendarDetails = $scope.stayDetails.calendarDetails;
-		var checkinTime = $scope.checkinDateInCalender.setHours(00, 00, 00);
-		var checkoutTime = $scope.checkoutDateInCalender.setHours(00, 00, 00);
+		var checkinTime = $scope.checkinDateInCalender;
+		var checkoutTime = $scope.checkoutDateInCalender;
 		var thisTime = "";
-
+		//If the flag 'has_multiple_rates' is true, 
+		//then we do not display the dates before check in and dates after departure date as an event
+		//Remove those dates fromt the available dates response
 		if(calendarDetails.has_multiple_rates == 'true'){
 			for(var i = calendarDetails.available_dates.length-1; i >= 0 ; i--){
-				thisTime = getDateObj(calendarDetails.available_dates[i].date).setHours(00, 00, 00);
+				thisTime = tzIndependentDate(calendarDetails.available_dates[i].date)//.setHours(00, 00, 00);
 			    if (thisTime < checkinTime || thisTime > checkoutTime) {
 			        $scope.stayDetails.calendarDetails.available_dates.splice(i, 1);
 			    }
@@ -109,14 +115,14 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	this.checkIfStaydatesCanBeExtended = function(){
 		var calendarDetails = $scope.stayDetails.calendarDetails;
 		var reservationStatus = calendarDetails.reservation_status;
-		var checkinTime = $scope.checkinDateInCalender.setHours(00, 00, 00);
-		var checkoutTime = $scope.checkoutDateInCalender.setHours(00, 00, 00);
+		var checkinTime = $scope.checkinDateInCalender;
+		var checkoutTime = $scope.checkoutDateInCalender;
 		var thisTime = "";
 		var canExtendStay = false;
 
 		$(calendarDetails.available_dates).each(function(index) {
 			//Put time correction 
-			thisTime = getDateObj(this.date).setHours(00, 00, 00);
+			thisTime = tzIndependentDate(this.date);
 			//Check if a day available for extending prior to the checkin day
 			//Not applicable to inhouse reservations since they can not extend checkin date
             if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
@@ -235,7 +241,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 
 			//we have to add rate between the calendar checkin date & calendar checkout date only
-			if (getDateObj(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && getDateObj(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
+			if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
 				$scope.totRate += parseFloat(this.rate);
 			}
 			//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
@@ -286,6 +292,12 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	$scope.resetDates = function() {
 		$scope.stayDetails.isOverlay = false;
 		that.dataAssign();
+		if($rootScope.isStandAlone){
+			if(!that.checkIfStaydatesCanBeExtended()){
+				$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
+				$scope.refreshScroller();
+			}
+		}
 		/* event source that contains custom events on the scope */
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 
@@ -321,11 +333,11 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		//the new date in calendar
 
 		// we are storing the available first date & last date for easiness of the following code
-		var availableStartDate = getDateObj($scope.stayDetails.calendarDetails.available_dates[0].date);
-		var availableLastDate = getDateObj($scope.stayDetails.calendarDetails.available_dates[$scope.stayDetails.calendarDetails.available_dates.length - 1].date);
+		var availableStartDate = tzIndependentDate($scope.stayDetails.calendarDetails.available_dates[0].date);
+		var availableLastDate = tzIndependentDate($scope.stayDetails.calendarDetails.available_dates[$scope.stayDetails.calendarDetails.available_dates.length - 1].date);
 
 		// also we are storing the current business date for easiness of the following code
-		var currentBusinessDate = getDateObj($scope.stayDetails.calendarDetails.current_business_date);
+		var currentBusinessDate = tzIndependentDate($scope.stayDetails.calendarDetails.current_business_date);
 
 		var finalCheckin = "";
 		var finalCheckout = "";
@@ -405,7 +417,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		var minNumOfStay = "";
 		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 			//Put time correction 
-			thisTime = getDateObj(this.date).setHours(00, 00, 00);
+			thisTime = tzIndependentDate(this.date).setHours(00, 00, 00);
 			//We calculate the minimum length of stay restriction 
 			//by reffering to the checkin day
 			if (this.date == getDateString(checkinDate)) {
@@ -429,7 +441,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	};
 
 	$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
-
 		var events = [];
 		var currencyCode = $scope.stayDetails.calendarDetails.currency_code;
 		var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
@@ -439,7 +450,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 			calEvt = {};
 			//Fixing the timezone issue related with fullcalendar
-			thisDate = getDateObj(this.date);
+			thisDate = tzIndependentDate(this.date);
 
 			if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
 				calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
