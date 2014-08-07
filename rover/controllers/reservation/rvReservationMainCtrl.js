@@ -527,6 +527,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
             }
 
+            if (reservationDetails.reservation_card.payment_method_used != "") {
+                $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
+                $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
+            }
+
+            console.log('$scope.reservationData model - 2', $scope.reservationData);
+
             /* CICO-6069
              *  Comments from story: 
              *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
