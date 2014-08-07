@@ -858,9 +858,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		};
 
 		$scope.$on("updateGuestEmail", function(e) {
-			console.log('reached guest controller');
 			$scope.guestCardData.contactInfo.email = $scope.reservationData.guest.email;
-		})
+		});
 
 		$scope.init();
 

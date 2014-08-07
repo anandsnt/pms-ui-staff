@@ -44,7 +44,6 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 		$scope.invokeApi(RVKeyPopupSrv.fetchKeyEmailData,{ "reservationId": reservationId }, successCallback, failureCallback);  
 
 	};
-	console.log($scope);
 	setupData();
 	
 	// To handle close button click

@@ -181,7 +181,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			//sort the rooms by levels
-			// console.log($scope.roomAvailability);
 
 
 			$scope.displayData.allRooms.sort(function(a, b) {
