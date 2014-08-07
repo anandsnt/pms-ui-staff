@@ -10,7 +10,7 @@
 			<div class="data">
 				<span class="room" ng-show="reservationBillData.room_number != ''"> 
 					<span class="guest-status room" translate>ROOM</span>
-					<strong id="header-room-num" class="room-number" ng-class="getRoomClass(reservationBillData.reservation_status, reservationBillData.room_status, reservationBillData.fo_status)"> {{reservationBillData.room_number}} </strong> 
+					<strong id="header-room-num" class="room-number" ng-class="getRoomClass(reservationBillData.reservation_status, reservationBillData.room_status, reservationBillData.fo_status, reservationBillData.room_ready_status, reservationBillData.checkin_inspected_only)"> {{reservationBillData.room_number}} </strong> 
 					<span id="room-type"> {{reservationBillData.room_type_name}} </span> 
 				</span>
 				<span class="nights"> 

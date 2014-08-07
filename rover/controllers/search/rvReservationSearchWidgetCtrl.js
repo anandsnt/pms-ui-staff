@@ -216,17 +216,17 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
   };
 
   //Map the room status to the view expected format
-  $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
-    	var mappedStatus = "room-number";
-      if(reservation_status == 'CHECKING_IN'){
-      	if(roomstatus == "READY" && fostatus == "VACANT"){
-        	mappedStatus +=  " ready";
-      	}else{
-        	mappedStatus += " not-ready";
-      	}
-      }
-  	 return mappedStatus;
-  };
+  // $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
+    	// var mappedStatus = "room-number";
+      // if(reservation_status == 'CHECKING_IN'){
+      	// if(roomstatus == "READY" && fostatus == "VACANT"){
+        	// mappedStatus +=  " ready";
+      	// }else{
+        	// mappedStatus += " not-ready";
+      	// }
+      // }
+  	 // return mappedStatus;
+  // };
 
   //Map the room status to the view expected format
   $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
@@ -346,4 +346,37 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
  		}
  		return queueClass;
       };
+      
+      
+      $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
+       var mappedStatus = "room-number";
+       if(reservation_status == 'CHECKING_IN'){
+     
+	      	switch(roomReadyStatus) {
+	
+				case "INSPECTED":
+					mappedStatus += ' room-green';
+					break;
+				case "CLEAN":
+					if (checkinInspectedOnly == "true") {
+						mappedStatus += ' room-orange';
+						break;
+					} else {
+						mappedStatus += ' room-green';
+						break;
+					}
+					break;
+				case "PICKUP":
+					mappedStatus += " room-orange";
+					break;
+	
+				case "DIRTY":
+					mappedStatus += " room-red";
+					break;
+	
+			}
+	       }
+	   	 return mappedStatus;
+   };
+      
 }]);

@@ -1,0 +1,139 @@
+sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv', '$filter',
+    function ($q, RVBaseWebSrvV2, RVBaseWebSrv, $filter) {
+
+    	var that = this;
+        this.availabilityData = {};
+        this.totalAvailabilityData = {};
+        this.lastFetchedDate = "";
+
+        this.fetchAvailability = function(params) {
+            //If its a request to fetch the additional, then fetch the next set of availability data 
+            //based on the last_fetched date
+            if(params.status == 'FETCH_ADDITIONAL'){
+                var fromDate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + 1) ;
+                params.from_date = $filter('date')(fromDate, 'yyyy-MM-dd');
+                var todate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + params.per_page) ;
+                params.to_date = $filter('date')(todate, 'yyyy-MM-dd');
+            }
+            var deferred = $q.defer();
+            var url = '/api/availability';
+            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                //We save the last fetched date info to enable caching.
+                //For every subsequent fetch requensts we fetch next set of dates
+                that.lastFetchedDate = tzIndependentDate(params.to_date);
+                if(params.status !== 'FETCH_ADDITIONAL'){
+                    that.totalAvailabilityData = dclone(response);
+                    that.availabilityData = dclone(response);
+                    //response.results is an array. We would keep it as a hash indexed with date
+                    that.availabilityData.results = {};
+                } else {
+                    that.totalAvailabilityData.results = dclone(that.totalAvailabilityData.results.concat(response.results));
+                }
+                that.manipulateAvailabilityForEasyLookup(response);
+                deferred.resolve(that.availabilityData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        /**
+        * Manipulate the availability API response for the availablility
+        * Instead of arrays, we create hash with date as index.
+        * Also the rates are grouped for each room type - again a hash with room_type_id as index
+        * Also we calculate the best available rate - the lowest rate for a day
+        */
+        this.manipulateAvailabilityForEasyLookup = function(data){
+            var availability = {};
+            //loop1
+            angular.forEach(data.results, function(dayDetails, index) {
+                var dayInfo = {};
+                dayInfo.date = dayDetails.date;
+                dayInfo.house = dayDetails.house;
+                dayInfo.BAR = that.getBestAvailableRateForTheDay(dayDetails.rates, dayDetails.room_types);
+                //loop2
+                angular.forEach(dayDetails.room_types, function(roomType, i) {
+                    //Get the lowest rate for the room type
+                    dayInfo[roomType.id] = that.getLowestRateForRoomType(roomType, dayDetails.rates);
+                });
+                that.availabilityData.results[dayDetails.date] = dayInfo;
+
+            });
+            
+        };
+
+        /**
+        * @return {hash} The rate_id and the lowest roomrate for the rate 
+        * irrespective of the room type
+        */
+        this.getBestAvailableRateForTheDay = function(ratesForTheDay, allRoomTypes){
+            var rateForSingleRoom = null;
+            var lowestRate = {};
+            var rateId = "";
+
+            angular.forEach(ratesForTheDay, function(rate, rateIndex) {
+                //loop1 - we have to search among all room rates
+                //not considering the room type and find the lowest rate
+                angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
+                    if(rateForSingleRoom == null){
+                        rateForSingleRoom = roomRate.single;
+                    }
+                    if(parseFloat(roomRate.single) <= parseFloat(rateForSingleRoom)){
+                        rateForSingleRoom = roomRate.single;
+                        lowestRate = roomRate;
+                        rateId = rate.id;
+                    }
+                        
+                });
+
+            });
+
+            var dict = {};
+            dict.rate_id = rateId;
+            //Get the room type availability details looping through all room types. 
+            angular.forEach(allRoomTypes, function(roomType, roomTypeIndex) {
+                if(roomType.id == lowestRate.room_type_id){
+                    dict.room_type_availability = roomType;
+                    return false;//exit from the loop
+                }
+            });
+
+            dict.room_rates = lowestRate;
+            return dict;
+        };
+
+        /**
+        * @return {hash} The rate_id and the lowest roomrate for the rate 
+        * for the given room type
+        */
+        this.getLowestRateForRoomType = function(roomType, ratesForDay){
+            var rateForSingleRoom = null;
+            var lowestRate = {};
+            var rateId = "";
+            angular.forEach(ratesForDay, function(rate, rateIndex) {
+                //loop1 - we need to display only the lowest rate in the UI. For a room type
+                angular.forEach(rate.room_rates, function(roomRate, roomRateIndex) {
+                    if(roomRate.room_type_id == roomType.id){
+                        if(rateForSingleRoom == null){
+                            rateForSingleRoom = roomRate.single;
+                        }
+                        if(parseFloat(roomRate.single) <= parseFloat(rateForSingleRoom)){
+                            rateForSingleRoom = roomRate.single;
+                            lowestRate = roomRate;
+                            rateId = rate.id;
+                        }
+                        return false;//exit form loop1 - //we are searching for rates with a room type id. 
+                            //other room rates in this loop will be having different room types. 
+                            //so go to the next rate.
+                    }
+                });
+            });
+
+            var dict = {};
+            dict.rate_id = rateId;
+            dict.room_type_availability = roomType;
+            dict.room_rates = lowestRate;
+            return dict;
+        };
+
+}]);
