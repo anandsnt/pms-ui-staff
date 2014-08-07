@@ -72,7 +72,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateAvg: 0,
                     rateTotal: 0,
                     addons: [],
-                    stayDates: {}
+                    stayDates: {},
+                    taxes: {
+                        taxTotal: 0,
+                        taxDetails: [{
+                            tax_id: '',
+                            tax_amount: '',
+                            tax_desc: ''
+                        }]
+                    }
                 }],
                 totalTaxAmount: 0,
                 totalStayCost: 0,
@@ -368,7 +376,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             });
 
             currentRoom.rateTotal = roomTotal;
-
             currentRoom.rateAvg = roomTotal / $scope.reservationData.numNights;
 
             //Calculate Addon Addition for the room
