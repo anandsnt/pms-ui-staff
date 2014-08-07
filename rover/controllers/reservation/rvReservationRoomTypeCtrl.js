@@ -82,6 +82,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.isRateFilterActive = true;
 			$scope.rateFiltered = false;
 
+			$scope.otherData.taxesMeta = roomRates.tax_codes;
+
 			//interim check on page reload if the page is refreshed
 			if ($scope.reservationData.arrivalDate == '' || $scope.reservationData.departureDate == '') {
 				//defaulting to today's and tommorow's dates
@@ -743,7 +745,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						// CICO-7792 : To keep corporate rates even if not applicable on those days
 						if ($scope.displayData.allRates[rateId].account_id) {
 							if (!validRate) {
-								if(typeof $scope.stateCheck.restrictedContractedRates[roomId] == "undefined"){
+								if (typeof $scope.stateCheck.restrictedContractedRates[roomId] == "undefined") {
 									$scope.stateCheck.restrictedContractedRates[roomId] = [];
 								}
 								$scope.stateCheck.restrictedContractedRates[roomId].push(rateId);
@@ -802,6 +804,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//step2: extract rooms with rate information
 				$(d.rates).each(function(i, d) {
 					var rate_id = d.id;
+					var taxes = d.taxes;
 					$(d.room_rates).each(function(i, d) {
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
 							rooms[d.room_type_id].rates.push(rate_id);
@@ -812,10 +815,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
 							rate_id: rate_id,
 							rate: $scope.calculateRate(d),
+							taxes: taxes,
 							rateBreakUp: d,
-							tax: 0,
 							day: new tzIndependentDate(for_date)
 						};
+
+						//calculate tax for the current day
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = $scope.calculateTax(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes);
+
 						//TODO : compute total
 						if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
 							rooms[d.room_type_id].total[rate_id] = {

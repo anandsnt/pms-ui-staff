@@ -47,7 +47,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
-                midStay: false,// Flag to check in edit mode if in the middle of stay
+                midStay: false, // Flag to check in edit mode if in the middle of stay
                 stayDays: [],
                 checkinTime: {
                     hh: '',
@@ -143,6 +143,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var defaultMaxvalue = 5;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData = {
+                taxesMeta: [],
                 markets: baseData.demographics.markets,
                 sources: baseData.demographics.sources,
                 origins: baseData.demographics.origins,
@@ -330,6 +331,18 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.resetRoomSelection = function(roomIndex) {
             $scope.editRoomRates(roomIndex);
             $scope.closeDialog();
+        }
+
+        /*
+         * This method will return the tax details for the amount and the tax provided
+         */
+        $scope.calculateTax = function(amount, taxes) {
+            console.log({
+                amount: amount,
+                taxes: taxes,
+                taxMeta: $scope.otherData.taxesMeta
+            });
+            return 5;
         }
 
 
@@ -532,14 +545,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             }
 
             /* CICO-6069
-             *  Comments from story: 
+             *  Comments from story:
              *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
              *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
              */
 
             // Find if midstay
-            if(new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)){
-                $scope.reservationData.midStay = true;                
+            if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
+                $scope.reservationData.midStay = true;
             }
 
         };
