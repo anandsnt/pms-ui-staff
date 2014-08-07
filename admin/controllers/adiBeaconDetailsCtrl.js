@@ -1,7 +1,8 @@
-admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$state','beaconTypes','triggerTypes','beaconNeighbours','adiBeaconSettingsSrv',function($scope,$stateParams,$rootScope,$state,beaconTypes,triggerTypes,beaconNeighbours,adiBeaconSettingsSrv){
+admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$state','beaconTypes','triggerTypes','beaconNeighbours','adiBeaconSettingsSrv','defaultBeaconDetails','beaconDetails',function($scope,$stateParams,$rootScope,$state,beaconTypes,triggerTypes,beaconNeighbours,adiBeaconSettingsSrv,defaultBeaconDetails,beaconDetails){
 
   $scope.init = function(){
     BaseCtrl.call(this, $scope);
+    $scope.$emit('hideLoader');
     $scope.addmode = ($stateParams.action === "add")? true : false;
     if(!$scope.addmode){
       $scope.beaconId = $stateParams.action;
@@ -24,35 +25,19 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
   };
   $scope.init();
 
- var fetchFailedBeaconDetails = function(data){
-    $scope.$emit('hideLoader');
-    $scope.errorMessage = data;
-  };
-
- if(!$scope.addmode){
-    var fetchSuccessBeaconDetails = function(data){
-      $scope.$emit('hideLoader');
-      $scope.data = data;
-      //remove the beacon being edited
-      angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
+if(!$scope.addmode){
+  $scope.data = beaconDetails;
+   angular.forEach($scope.beaconNeighbours, function(beaconNeighbour, index) {
                 if (beaconNeighbour.beacon_id ==$scope.beaconId) {
                   $scope.beaconNeighbours.splice(index,1);
                 }
-        });
-    };
-
-    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDetails, {"id":$stateParams.action}, fetchSuccessBeaconDetails,fetchFailedBeaconDetails);
-  }
-  else{
-    var fetchSuccessBeaconDeafultDetails = function(data){
-      $scope.$emit('hideLoader');
-      $scope.data.proximity_id = data.proximity_id;
-      $scope.data.major_id = data.major_id;
-      $scope.data.minor_id = data.minor_id;
- 
-    };
-    $scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconDeafultDetails, {}, fetchSuccessBeaconDeafultDetails,fetchFailedBeaconDetails);
-  }
+  });
+ }
+ else{
+  $scope.data.proximity_id = defaultBeaconDetails.proximity_id;
+  $scope.data.major_id = defaultBeaconDetails.major_id;
+  $scope.data.minor_id = defaultBeaconDetails.minor_id;
+ }
 
 	/**
     *   Method to go back to previous state.
