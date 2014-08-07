@@ -32,7 +32,6 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
 	                } else if ( !!$stateParams.useCache ) {
                 		return RVSearchSrv.fetch({}, $stateParams.useCache);
 	                } else {
-                        console.log( 'to check in server' );
                         var results = [];
                         return results;
                     }
@@ -63,7 +62,6 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     } else if ( !!$stateParams.useCache ) {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
-                        console.log( 'to check in server' );
                         var results = [];
                         return results;
                     }

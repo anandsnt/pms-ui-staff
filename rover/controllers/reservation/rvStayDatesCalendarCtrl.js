@@ -416,14 +416,11 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
 					calEvt.className = "type-available"; //TODO: verify class name
-					//console.log("room type available----" + date);
 					//room type not available but house available   
 				} else if (dateDetails["house"].availability > 0) {
-					//console.log("room type not available----" + date)
 					//calEvt.className = ""; //TODO: verify class name from stjepan
 					//house not available(no room available in the hotel for any room type)
 				} else {
-					//console.log("house not available----" + date)
 					calEvt.className = "house-unavailable";
 				}
 
@@ -447,7 +444,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		 * accoriding to our reqmt.
 		 */
 		var changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-			console.log("changedDateOnCalendar");
 			var newDateSelected = event.start; //the new date in calendar
 
 			// also we are storing the current business date for easiness of the following code
@@ -563,7 +559,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var nextMonthDetailsFetchSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 2;
-				//console.log($scope.leftCalendarOptions.month);
 				$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 2;
 				$scope.availabilityDetails = data;
 				$scope.disablePrevButton = $scope.isPrevButtonDisabled();

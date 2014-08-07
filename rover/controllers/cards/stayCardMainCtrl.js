@@ -81,7 +81,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 			};
 
-			console.log($scope.reservationDetails.guestCard);
 
 			if ($scope.reservationDetails.guestCard.id != '' && $scope.reservationDetails.guestCard.id != null) {
 				var param = {
@@ -100,7 +99,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
-				console.log($scope.reservationDetails);
 			};
 			//	companycard defaults to search mode 
 			// 	Hence, do API call only if a company card ID is returned
@@ -167,11 +165,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 			// TODO: Remove the following commented out code!
 			// Leaving it now for further debugging if required
-			// console.log("FUTURE_COUNTER", {
-			// 	G: $scope.reservationDetails.guestCard.futureReservations,
-			// 	C: $scope.reservationDetails.companyCard.futureReservations,
-			// 	T: $scope.reservationDetails.travelAgent.futureReservations,
-			// });
+
 
 		});
 
@@ -191,7 +185,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'reservation': typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card
 				}, function() {
-					console.log('removeCard - success');
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
 					if ($scope.viewState.identifier == "STAY_CARD") {
@@ -202,7 +195,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 						});
 					}
 				}, function() {
-					console.log('removeCard - failure');
 					$scope.$emit('hideLoader');
 				});
 			} else {
@@ -234,7 +226,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				'id': cardData.id,
 				'future': typeof future == 'undefined' ? false : future
 			}, function() {
-				console.log('replaceCard - success');
 				$scope.cardRemoved(card);
 				$scope.cardReplaced(card, cardData);
 				if ($scope.viewState.lastCardSlot != "") {
@@ -250,7 +241,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}
 				$scope.$emit('hideLoader');
 			}, function() {
-				console.log('replaceCard -failure');
 				$scope.cardRemoved();
 				$scope.$emit('hideLoader');
 			});
@@ -263,7 +253,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			// reset the id and the future reservation counts that were cached
 			if (card == 'guest') {
 				$scope.reservationDetails.guestCard.id = "";
-				// console.log('future reservation count is reset');
 				$scope.reservationDetails.guestCard.futureReservations = 0;
 				var contactInfoData = {
 					'contactInfo': {},
@@ -469,7 +458,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 *	the rate / room display should include the rate of the Company / Travel Agent contract if one exists.
 			 *	Have to make a call to the availability API with the card added as a request param
 			 */
-			console.log('make call to the availability API and once response has come call the method in the RVReservationRoomTypeCtrl');
 			$scope.$broadcast('cardChanged',cardIds);
 			// 	CICO-7792 END
 		}

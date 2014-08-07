@@ -130,7 +130,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		console.log(fromState.name + ' ===> ' + toState.name);
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  

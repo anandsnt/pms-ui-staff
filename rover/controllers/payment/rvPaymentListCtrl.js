@@ -17,10 +17,8 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		if($scope.paymentListLength == 0){
 			$scope.showNoValues = true;
 		}
-		// console.log($scope.paymentListLength);
 	};
 
-	 // console.log(JSON.stringify($scope.dataToPaymentList));
 	// return false;
 	var reservationId = "";
 	if($scope.dataToPaymentList.currentView == "billCard"){

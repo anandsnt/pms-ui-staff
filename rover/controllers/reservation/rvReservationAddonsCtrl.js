@@ -43,7 +43,6 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
 
         $scope.calculateAddonTotal = function() {
             $($scope.activeRoom.addons).each(function(index, elem) {
-                console.log(elem);
             });
         }
 
