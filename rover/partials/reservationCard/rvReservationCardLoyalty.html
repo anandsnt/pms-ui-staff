@@ -4,7 +4,7 @@
 	</div>
 	<div class="select-item loyalty">
 		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->
-		<select ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled"ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)">
+		<select ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled"ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)" ng-disabled= "!isNewsPaperPreferenceAvailable()">
 			<option value="" data-id="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
 			<optgroup label="{{'FREEQUENT_FLYER_LABEL'|translate}}"></optgroup>
 			<option value="{{frequentflyer.id}}" ng-repeat="frequentflyer in $parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram" ng-selected="selectedLoyaltyID==frequentflyer.id">

@@ -1,6 +1,6 @@
 admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','adiBeaconSettingsSrv',
 	function($scope, $state, ngTableParams,adiBeaconSettingsSrv){
-
+	$scope.$emit('hideLoader');
 	$scope.init = function(){
 		$scope.errorMessage = "";
 		$scope.successMessage = "";
@@ -9,6 +9,10 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		$scope.data = [];
 	};
 	$scope.init();
+
+	$scope.showLoader = function(){
+		$scope.$emit("showLoader");
+	};
 
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
