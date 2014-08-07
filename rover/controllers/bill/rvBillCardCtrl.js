@@ -482,17 +482,50 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * @param {string} room status
 	 * @param {string} fo status
 	 */
-	$scope.getRoomClass =  function(reservationStatus, roomStatus, foStatus){
-		var roomClass = "";
-		if(reservationStatus == "CHECKING_IN"){
-			if(roomStatus == "READY" && foStatus== "VACANT"){
-				roomClass = "ready";
-			} else {
-				roomClass = "not-ready";
+	$scope.getRoomClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly){
+		var reservationRoomStatusClass = "";
+		if(reservationStatus == 'CHECKING_IN'){
+			
+			if(roomReadyStatus!=''){
+				if(foStatus == 'VACANT'){
+					switch(roomReadyStatus) {
+
+						case "INSPECTED":
+							reservationRoomStatusClass = ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								reservationRoomStatusClass = ' room-orange';
+								break;
+							} else {
+								reservationRoomStatusClass = ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							reservationRoomStatusClass = " room-orange";
+							break;
+			
+						case "DIRTY":
+							reservationRoomStatusClass = " room-red";
+							break;
+
+		        }
+				
+				} else {
+					reservationRoomStatusClass = "room-red";
+				}
+				
 			}
 		} 
-		return roomClass;
+		return reservationRoomStatusClass;
 	};
+	
+	
+	
+	
+	
+	
 	$scope.showDays = function(date, checkoutDate, numberOfNights, place){
 		var showDay = false;
 		if(place == 'checkout'){

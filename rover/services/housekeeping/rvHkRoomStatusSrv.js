@@ -61,7 +61,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    deferred.resolve(this.roomList);
 					}else{
-						console.log( 'Server request failed' );
 					}
 					
 				}.bind(this))
@@ -89,7 +88,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    this.floorList = response.floors;
 					    deferred.resolve(this.floorList);
 					}else{
-						console.log( 'API - Get Floor Request - Server request failed' );
 					}
 					
 					

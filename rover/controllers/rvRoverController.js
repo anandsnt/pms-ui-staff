@@ -25,64 +25,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 
 
-
-    /***
-     * A method on the $rootScope to determine if the
-     * slide animation during stateChange should run in reverse or forward
-     *
-     * @param {string} fromState - name of the fromState
-     * @param {string} toState - name of the toState
-     *
-     * @return {boolean} - to indicate reverse or not
-     */
-    $rootScope.shallRevDir = function(fromState, toState) {
-      if (fromState === 'rover.housekeeping.roomDetails' && toState === 'rover.housekeeping.roomStatus') {
-        return true;
-      };
-
-      if (fromState === 'rover.reservation.staycard.reservationcard.reservationdetails' && toState === 'rover.search') {
-        return true;
-      };
-
-      if (fromState === 'rover.reservation.staycard.billcard' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
-        return true;
-      };
-
-      if (fromState === 'rover.staycard.nights' && toState === 'rover.reservation.staycard.reservationcard.reservationdetails') {
-        return true;
-      };
-
-      if (fromState === 'rover.companycarddetails' && toState === 'rover.companycardsearch') {
-        return true;
-      };
-
-      return false;
-    };
-
-    // this is make sure we add an
-    // additional class 'return-back' as a
-    // parent to ui-view, so as to apply a
-    // reverse slide animation
-    var uiViewRevAnim = $scope.$on('$stateChangeSuccess', function(event, toState, toStateData, fromState, fromStateData) {
-
-      // check this template for the applied class:
-      // app/assets/rover/partials/staycard/rvStaycard.html
-
-      // FUTURE: this check can include other state name also,
-      // from which while returning we expect a reverse slide
-      if ($rootScope.shallRevDir(fromState.name, toState.name)) {
-        $rootScope.returnBack = true;
-      } else {
-        $rootScope.returnBack = false;
-      }
-    });
-
-    // make sure you also destroy 'uiViewRevAnim'
-    // when moving away to release memory
-    $scope.$on('$destroy', uiViewRevAnim);
-
-
-
     $scope.hotelDetails = hotelDetails;
 
     //Used to add precison in amounts
@@ -104,6 +46,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
+    $rootScope.dateFormatForAPI = "yyyy-MM-dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
@@ -450,12 +393,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
-    	console.log('success');
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
     $scope.failureCallBackSwipe = function() {
-    	console.log('failure');
     	
     };
 
@@ -479,8 +420,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.showAddNewPaymentModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
-        console.log("===========++++++++++====================")
-        console.log($scope.guestInfoToPaymentModal)
       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
       ngDialog.open({
         template: '/assets/partials/payment/rvPaymentModal.html',
@@ -492,7 +431,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
-      $scope.$broadcast('GUESTPAYMENT', paymentData);
+    		
+      	$scope.$broadcast('GUESTPAYMENT', paymentData);
     });
 
     $scope.$on('SHOWGUESTLIKES', function(event) {
@@ -500,17 +440,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     $scope.guestInfoToPaymentModal = {};
     $scope.$on('SETGUESTDATA', function(event, guestData) {
-      console.log("=========== $scope.guestInfoToPaymentModal====================")
         $scope.guestInfoToPaymentModal = guestData;
       
-        console.log( $scope.guestInfoToPaymentModal);
     });
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-      console.log("reached hereerrreee");
-      console.log(document.activeElement);
         document.activeElement.blur();
         $scope.$emit('hideLoader');
         setTimeout(function(){

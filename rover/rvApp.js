@@ -1,8 +1,9 @@
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule']);
-
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar']);
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
+
+	$rootScope.setPrevState = {};
 
 	/**
 	*	if this is true animation will be revesed, no more checks
@@ -129,7 +130,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		console.log(fromState.name + ' ===> ' + toState.name);
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  

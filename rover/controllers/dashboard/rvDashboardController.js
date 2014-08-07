@@ -68,8 +68,18 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
           'MANAGER': 'rover.dashboard.manager',
           'HOUSEKEEPING': 'rover.dashboard.housekeeping'
         }
-        if($rootScope.default_dashboard in defaultDashboardMappedWithStates){
-            $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
+        if($rootScope.default_dashboard in defaultDashboardMappedWithStates) {
+
+            // Nice Gotacha!!
+            // When returning from search to dashboard, the animation will be reversed
+            // but only for 'rover.search' to 'rover.dashboard'. We also need to make sure
+            // that the animation will be reversed for 'rover.dashboard' to 'rover.dashboard.DEFAULT_DASHBOARD'
+            if ( $rootScope.isReturning() ) {
+              $rootScope.setPrevState.name = defaultDashboardMappedWithStates[$rootScope.default_dashboard];
+              $rootScope.loadPrevState();
+            } else {
+              $state.go(defaultDashboardMappedWithStates[$rootScope.default_dashboard]);
+            }
         }
         else{
             $scope.errorMessage = 'We arr unable to redirect to dashboard, Please set Dashboard against this user and try again!!';

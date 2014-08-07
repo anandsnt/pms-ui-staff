@@ -89,7 +89,6 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 						}
 						afterFetch( data );
 					}, function() {
-						console.log("fetch failed");
 						$scope.$emit('hideLoader');
 					});	
 			}

@@ -328,7 +328,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			var updateGuestEmailSuccessCallback = function(data) {
-				// console.log('reached success');
 				$scope.$emit('guestEmailChanged');
 				$scope.$emit("hideLoader");
 			}

@@ -26,7 +26,6 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 			// $scope.fetchReservationData(data.reservationId);
 			// $scope.currentReservationId = data.confirmationNumber;
-			// console.log(JSON.stringify(data))
 			$scope.$emit('staycardGuestData', data);
 			$scope.data = data;
 
@@ -178,7 +177,11 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};
-			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
+				
+			if($stateParams.isrefresh == "true"){
+				$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
+			}
+			
 		};
 
 

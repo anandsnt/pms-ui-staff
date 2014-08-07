@@ -16,8 +16,9 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	$scope.assignedRoles = [];
 	$scope.rolesWithDashboards = [];
 
-	$scope.getDashboardOptionsFromRoles = function(rolesData){
-		
+	$scope.getMyDashboards = function() { 
+
+		var rolesData = $scope.assignedRoles;
 		$scope.dashboardOptions = [];
 		for (var i = 0; i < rolesData.length; i++){
 			var rolePresent = false;
@@ -33,25 +34,23 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 			}
 		}
 		return $scope.dashboardOptions;
-		
-	};
-
-	$scope.getMyDashboards = function() { 
-		var assignedRolesWithDashboard =[]
-		for(var i = 0; i < $scope.assignedRoles.length; i++){
-			for(var j = 0; j < $scope.rolesWithDashboards.length; j++){
-				if($scope.assignedRoles[i].value == $scope.rolesWithDashboards[j].value)
-					assignedRolesWithDashboard.push($scope.rolesWithDashboards[j]);
-			}
-		}
-
-		return $scope.getDashboardOptionsFromRoles(assignedRolesWithDashboard);
 	};
 
 	$scope.getRolesData = function(){
 		var successCallbackRoles = function(data){
 			$scope.$emit('hideLoader');
 			$scope.rolesWithDashboards = data.userRoles;
+			/**
+		    * To set mod of operation - add/edit
+		    */
+			var id = $stateParams.id;
+			if(id == ""){
+				$scope.mod = "add";
+				$scope.userDetailsAdd();
+			} else {
+				$scope.mod = "edit";
+				$scope.userDetailsEdit(id);
+			}
 			// $scope.setMyDashboards();			
 		};
 
@@ -198,7 +197,7 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 			$scope.assignedRoles = [];
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.unAssignedRoles = JSON.parse(JSON.stringify($scope.data.roles));
+			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			if(data.user_photo == ""){
 				$scope.image = "/assets/preview_image.png";
 			} else {
@@ -206,12 +205,13 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 			}
 			$scope.data.confirm_email = $scope.data.email;
 
-			for(var i = 0; i < $scope.data.roles.length; i++) {				
-				if ( $scope.data.user_roles.indexOf($scope.data.roles[i].value ) != -1 ){
-	   			 	$scope.assignedRoles.push($scope.data.roles[i]);
+			for(var i = 0; i < $scope.rolesWithDashboards.length; i++) {				
+				if ( $scope.data.user_roles.indexOf($scope.rolesWithDashboards[i].value.toString() ) != -1 ){
+	   			 	$scope.assignedRoles.push($scope.rolesWithDashboards[i]);
 	   			 	for(var j = 0; j < $scope.unAssignedRoles.length; j++){
-	   			 		if($scope.unAssignedRoles[j].value == $scope.data.roles[i].value){
-	   			 			$scope.unAssignedRoles.splice(j, 1);		
+	   			 		if($scope.unAssignedRoles[j].value == $scope.rolesWithDashboards[i].value){
+	   			 			$scope.unAssignedRoles.splice(j, 1);
+	   			 			break;		
 	   			 		}
 	   			 	}
 	   			 	
@@ -228,23 +228,13 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	 	var successCallbackRender = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.unAssignedRoles = $scope.data.roles;
+			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			$scope.assignedRoles = [];
 			$scope.image = "/assets/preview_image.png";
 		};	
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};
-   /**
-    * To set mod of operation - add/edit
-    */
-	var id = $stateParams.id;
-	if(id == ""){
-		$scope.mod = "add";
-		$scope.userDetailsAdd();
-	} else {
-		$scope.mod = "edit";
-		$scope.userDetailsEdit(id);
-	}
+   
    /*
     * Function to send invitation
     * @param {int} user id

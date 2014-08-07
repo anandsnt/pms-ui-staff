@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
-	function($scope, RVLikesSrv, dateFilter) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams',
+	function($scope, RVLikesSrv, dateFilter, $stateParams) {
 
 
 		$scope.errorMessage = "";
@@ -8,7 +8,8 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 		$scope.guestLikesData = {};
 		$scope.setScroller('likes_info');
 		$scope.calculatedHeight = 274; //height of Preferences + News paper + Room type + error message div
-
+		var presentLikeInfo  = {};
+		var updateData = {};
 		$scope.$on('clearNotifications', function() {
 			$scope.errorMessage = "";
 			$scope.successMessage = "";
@@ -21,7 +22,8 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				$scope.errorMessage = data;
 			};
 			var data = {
-				'userId': $scope.guestCardData.contactInfo.user_id
+				'userId': $scope.guestCardData.contactInfo.user_id,
+				'isRefresh': $stateParams.isrefresh
 			};
 			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
 		};
@@ -97,9 +99,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				$scope.errorMessage = data;
 				$scope.$emit('likesInfoError', true);
 			};
-
-
-			var updateData = {};
+			 presentLikeInfo = JSON.parse(JSON.stringify(updateData));			
 
 			updateData.guest_id = $scope.guestCardData.contactInfo.guest_id;
 			updateData.preference = [];
@@ -143,12 +143,15 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter',
 				updateData.preference.push(preferenceUpdateData);
 			});
 
+			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
+		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo))?true:false;
+		  
 			var saveData = {
 				userId: $scope.guestCardData.contactInfo.user_id,
 				data: updateData
 			};
 			
-			if (typeof $scope.guestCardData.contactInfo.user_id != "undefined" && $scope.guestCardData.contactInfo.user_id != null && $scope.guestCardData.contactInfo.user_id != "") {
+			if (typeof $scope.guestCardData.contactInfo.user_id != "undefined" && $scope.guestCardData.contactInfo.user_id != null && $scope.guestCardData.contactInfo.user_id != "" && !dataUpdated) {
 				$scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
 			}
 		};

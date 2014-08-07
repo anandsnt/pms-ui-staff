@@ -7,7 +7,7 @@
                     <span class="value">{{reservationData.numNights}}</span>
                 </a>
                 <div id="sidebar-nights" class="settings-content">
-                    <a class="stay-dates" data-transition="nested-view">
+                    <a class="stay-dates" data-transition="nested-view" ng-click="stayDatesClicked()">
                         <div class="check-in">
                             <span class="title" >{{'ARRIVING_LABEL'|translate}} <span translate>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></span>
                             <strong class="date">{{reservationData.arrivalDate|date:fullDateFullMonthYear}}</strong>
