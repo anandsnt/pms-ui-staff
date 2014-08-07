@@ -336,8 +336,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         /*
          * This method will return the tax details for the amount and the tax provided
          */
-        $scope.calculateTax = function(amount, taxes) {
+        $scope.calculateTax = function(date, amount, taxes) {
             console.log({
+                date: date,
                 amount: amount,
                 taxes: taxes,
                 taxMeta: $scope.otherData.taxesMeta
