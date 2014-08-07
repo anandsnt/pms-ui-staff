@@ -210,8 +210,6 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 * 'charge_code_id_list' - will be array of all charge code ids associated with that calculation rule.
 	 */
 	$scope.generateCalculationRule = function(taxCount){
-		console.log("taxCount");
-		console.log(taxCount);
 		var calculation_rule_list = [];
 		
 		if (taxCount === 1) {
