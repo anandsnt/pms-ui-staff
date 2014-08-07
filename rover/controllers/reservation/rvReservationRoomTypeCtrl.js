@@ -821,7 +821,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						};
 
 						//calculate tax for the current day
-						rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = $scope.calculateTax(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes);
+						rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = $scope.calculateTax(for_date,rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes);
 
 						//TODO : compute total
 						if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
