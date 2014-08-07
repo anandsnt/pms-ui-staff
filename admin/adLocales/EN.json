@@ -162,6 +162,17 @@
 "RATE_TYPE":"Rate Type",
 "RATE_TYPE_PLACEHOLDER":"Enter rate type",
 
+
+"MARKET":"Markets",
+"USE_MARKETS":"Use markets",
+"MARKET_NAME_PLACEHOLDER":"Enter market name",
+"ORIGINS":"Origins",
+"USE_ORIGIN_OF_BOOKING":"Use Origin of Booking",
+"ORIGIN_NAME_PLACEHOLDER":"Enter origin name",
+"SOURCES":"Sources",
+"USE_SOURCES":"Use sources",
+"SOURCE_NAME_PLACEHOLDER":"Enter source name",
+
     "ROOMS":"Rooms",
     "OF":"of",
     "LICENSED_ROOMS_CONFIGURED":"Licensed Rooms Configured",
