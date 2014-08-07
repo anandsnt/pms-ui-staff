@@ -15,9 +15,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		});
 
 		$scope.init = function() {
-			console.log("----------------LIKES-------------");
-			console.log(JSON.stringify($stateParams));
-			console.log($stateParams.isrefresh);
 			BaseCtrl.call(this, $scope);
 			var fetchLikesFailureCallback = function(data) {
 				$scope.$emit('hideLoader');

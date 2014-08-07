@@ -11,7 +11,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 
 		$scope.cardSaved = function() {
 			$scope.viewState.isAddNewCard = false;
-		}
+		};
 
 		var successCallbackOfCountryListFetch = function(data) {
 			$scope.countries = data;
@@ -28,6 +28,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
+				
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -88,7 +89,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				};
 				$scope.invokeApi(RVReservationCardSrv.getGuestDetails, param, fetchGuestcardDataSuccessCallback, fetchGuestcardDataFailureCallback, 'NONE');
 			}
-		}
+		};
 
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
@@ -108,7 +109,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				};
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, companyCardFound);
 			}
-		}
+		};
 
 		// fetch reservation travel agent card details
 		$scope.initTravelAgentCard = function() {
@@ -129,7 +130,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				};
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
 			}
-		}
+		};
 
 
 		$scope.$on('cardIdsFetched', function(event, isCardSame) {
@@ -216,7 +217,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					});
 				}
 			}
-		}
+		};
 
 		$scope.replaceCard = function(card, cardData, future) {
 			//Replace card with the selected one
@@ -244,7 +245,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.cardRemoved();
 				$scope.$emit('hideLoader');
 			});
-		}
+		};
 
 		$scope.cardRemoved = function(card) {
 			//reset Pending Flag
@@ -280,7 +281,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 
 
-		}
+		};
 
 		$scope.cardReplaced = function(card, cardData) {
 			if (card == 'company') {
@@ -324,7 +325,6 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('GUESTPAYMENTDATA', paymentData);
 				$scope.$emit('SHOWGUESTLIKES');
 			};
-			console.log("staycardmain controller")
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 		};
 
