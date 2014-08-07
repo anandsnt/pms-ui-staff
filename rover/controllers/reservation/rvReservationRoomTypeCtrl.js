@@ -21,7 +21,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			preferredType: "",
 			rateFilterText: "",
 			dateModeActiveDate: "",
-			restrictedContractedRates: [],
+			restrictedContractedRates: {},
 			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80
 		};
 
@@ -181,7 +181,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			//sort the rooms by levels
-			// console.log($scope.roomAvailability);
 
 
 			$scope.displayData.allRooms.sort(function(a, b) {
@@ -743,7 +742,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						// CICO-7792 : To keep corporate rates even if not applicable on those days
 						if ($scope.displayData.allRates[rateId].account_id) {
 							if (!validRate) {
-								$scope.stateCheck.restrictedContractedRates.push(rateId);
+								if(typeof $scope.stateCheck.restrictedContractedRates[roomId] == "undefined"){
+									$scope.stateCheck.restrictedContractedRates[roomId] = [];
+								}
+								$scope.stateCheck.restrictedContractedRates[roomId].push(rateId);
 							}
 						} else if (!validRate) {
 							var existingRates = roomsIn[roomId].rates;

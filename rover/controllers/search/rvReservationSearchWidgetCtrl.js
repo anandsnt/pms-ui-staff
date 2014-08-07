@@ -309,7 +309,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 
 	};
 	$scope.$on('SWIPEHAPPENED', function(event, data){
-	 //	console.log(JSON.stringify(data));
 	 	var ksn = data.RVCardReadTrack2KSN;
   		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
 			ksn = data.RVCardReadETBKSN;

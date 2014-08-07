@@ -26,7 +26,6 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 			// $scope.fetchReservationData(data.reservationId);
 			// $scope.currentReservationId = data.confirmationNumber;
-			// console.log(JSON.stringify(data))
 			$scope.$emit('staycardGuestData', data);
 			$scope.data = data;
 
