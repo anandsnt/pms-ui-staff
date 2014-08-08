@@ -11,17 +11,7 @@ $scope.businessDate = $rootScope.businessDate;
 $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
 $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
 $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, 'yyyy-MM-dd');
-
-
-//to handle timezone issue
-var midnight = new Date();
-midnight.setHours(12);
-midnight.setMinutes(0);
-midnight.setSeconds(0);
-var presentTime = new Date();
-
-$scope.isTimePastMidnight = Date.parse(presentTime) > Date.parse(midnight);
-
+$scope.isTimePastMidnight = true;
 
 /*
  * cancel click action
@@ -32,10 +22,13 @@ $scope.cancelClicked = function(){
 
 $scope.login = function(){
 	
-	var loginSuccess = function(){
+	var loginSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.isLoggedIn = true;
-	}
+		// verify if hotel time is past midnight or not
+		var currentHotelTime = data.current_hotel_time.substring(0, 2);
+		$scope.isTimePastMidnight = parseInt(currentHotelTime) > 12 ? true: false;
+	}	
 	var data = {"email":$scope.email,"password":$scope.password};
 
 	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess);  
@@ -43,23 +36,24 @@ $scope.login = function(){
 };
 $scope.startEndOfDayProcess = function(){
 	$scope.startProcess = true;
+
 };
 
 $scope.continueClicked = function(){
 	$scope.startProcessEnabled = false;
 	$scope.startProcess = false;
 
-	var startProcessSuccess = function(){
+	var startProcessFailure = function(data){
 		$scope.$emit('hideLoader');
-		ngDialog.close();
-		//reload app
-	};
-	var startProcessFailure = function(){
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = ["Failed"];
+		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
 
 	};
+	var startProcessSuccess = function(data){
+		$scope.$emit('hideLoader');
+		ngDialog.close();
+	}
+	
 	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure); 
 };
 

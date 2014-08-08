@@ -1,13 +1,13 @@
-sntRover.service('RVEndOfDayModalSrv', ['$q', 'RVBaseWebSrv',
-	function($q, RVBaseWebSrv) {
+sntRover.service('RVEndOfDayModalSrv', ['$q', 'rvBaseWebSrvV2',
+	function($q, rvBaseWebSrvV2) {
 
 		/**
 		 * service function used to login
 		 */
 		this.login = function(data) {
 			var deferred = $q.defer();
-			var url = '/login/submit';
-			RVBaseWebSrv.postJSON(url,data).then(function(data) {
+			var url = '/api/end_of_days/authenticate_user';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -20,8 +20,8 @@ sntRover.service('RVEndOfDayModalSrv', ['$q', 'RVBaseWebSrv',
 		 */
 		this.startProcess = function(data) {
 			var deferred = $q.defer();
-			var url = '/login/submit';
-			RVBaseWebSrv.postJSON(url,data).then(function(data) {
+			var url = '/api/end_of_days/change_business_date';
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
