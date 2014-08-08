@@ -11,7 +11,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       $scope.isBeaconLinked = false;
     };
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
-    $scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+    $scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
     $scope.errorMessage = "";
     $scope.successMessage = "";
 
