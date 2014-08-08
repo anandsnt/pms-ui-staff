@@ -48,12 +48,15 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
 			else if(status == 500){ // 500- Internal Server Error
 				deferred.reject(['Internal server error occured']);
 			}else if(status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
+				alert("1")
 				$window.location.href = '/500' ;
 			}else if(status == 404){ // 500- Internal Server Error
+				alert("2")
 				$window.location.href = '/500' ;
 			}
 			else if(status == 401){ // 401- Unauthorized
 				// so lets redirect to login page
+				alert("3")
 				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(errors);
