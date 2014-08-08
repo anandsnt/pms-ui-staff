@@ -13,7 +13,6 @@ sntRover.service('RVHkDashboardSrv', [
 					
 			    	deferred.resolve(response.data);
 				}else{
-					console.log("error");
 				}
 			}).error(function(response, status) {
 				if(status == 401){ // 401- Unauthorized

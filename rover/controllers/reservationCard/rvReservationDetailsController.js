@@ -109,7 +109,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		angular.copy(reservationListData, $scope.reservationListData);
 		$scope.populateDataModel(reservationDetails);
 
-		// console.log($scope.reservationListData)
 		$scope.$emit('cardIdsFetched', {
 			guest: $scope.reservationDetails.guestCard.id == existingCards.guest,
 			company: $scope.reservationDetails.companyCard.id == existingCards.company,
@@ -213,6 +212,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 
 		$scope.openPaymentList = function() {
+			//Disable the feature when the reservation is checked out
+            if(!$scope.isNewsPaperPreferenceAvailable())
+                return;
 			$scope.reservationData.currentView = "stayCard";
 			$scope.$emit('SHOWPAYMENTLIST', $scope.reservationData);
 		};
@@ -280,6 +282,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		$scope.isNightsEnabled = function(){
+			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+			if(reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+				return true;
+			}
+			if($rootScope.isStandAlone && 
+				(reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT')){
+				return true;
+			}
+			return false;
+		}
+
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
@@ -299,6 +313,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				from_date: reservationMainData.arrivalDate,
 				to_date: reservationMainData.departureDate,
 				view: state,
+				fromState: $state.current.name,
 				company_id: $scope.$parent.reservationData.company.id,
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 			});

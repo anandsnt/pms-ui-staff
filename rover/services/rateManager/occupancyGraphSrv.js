@@ -15,7 +15,6 @@ sntRover.service('RateMgrOccupancyGraphSrv', ['$q', 'BaseWebSrvV2',
         this.setTargets = function(params){
             var deferred = $q.defer();
             var url = '/api/daily_occupancies/targets';
-            console.log(JSON.stringify(params));
             BaseWebSrvV2.postJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {

@@ -16,7 +16,6 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			$scope.currentCard = $stateParams.id;
 		} else {
 			// $scope.currentCard = $scope.reservationDetails.companyCard.id;
-			// console.log($scope.contactInformation);
 			$scope.currentCard = $scope.contactInformation.id;
 		}
 
@@ -58,7 +57,6 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		clientWidth = $(window).width();
 		clientHeight = $(window).height();
 		var drawGraph = function() {
-			console.log('reached::drawGraph');
 			$scope.highchartsNG = {
 				options: {
 					chart: {

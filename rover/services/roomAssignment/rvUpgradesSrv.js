@@ -10,8 +10,8 @@ sntRover.service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 			deferred.reject(data);
 		});			
 			return deferred.promise;
-		};
-		this.selectUpgrade = function(param){
+	};
+	this.selectUpgrade = function(param){
 		var deferred = $q.defer();
 		var url =  '/staff/reservations/upgrade_room.json';			
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
@@ -20,6 +20,6 @@ sntRover.service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 			deferred.reject(data);
 		});			
 			return deferred.promise;
-		};
+	};
 
 }]);

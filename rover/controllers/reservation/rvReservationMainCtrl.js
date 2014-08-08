@@ -114,6 +114,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     promotionCode: '',
                     promotionType: ''
                 },
+                status: '', //reservation status
                 reservationId: '',
                 confirmNum: '',
                 isSameCard: false, // Set flag to retain the card details,
@@ -359,7 +360,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
             $(currentRoom.addons).each(function(i, addon) {
-                // console.log(addon.amountType.value, addon.postType.value);
                 //Amount_Types
                 // 1   ADULT   
                 // 2   CHILD   
@@ -397,10 +397,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     return baseRate;
                 })();
                 if (addon.postType.value == "NIGHT") {
-                    console.log("//TODO:Got to calculate based on amount type and then mutiply with nights");
                     finalRate = parseFloat(amountPerday) * parseInt($scope.reservationData.numNights);
                 } else {
-                    console.log("//TODO:Rate is incl of all days");
                     finalRate = amountPerday;
                 }
                 addOnCumulative += parseInt(finalRate);
@@ -412,7 +410,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
 
         $scope.editRoomRates = function(roomIdx) {
-            // console.log($scope.reservationData.rooms[roomIdx]);
             //TODO: Navigate back to roomtype selection screen after resetting the current room options
             $scope.reservationData.rooms[roomIdx].roomTypeId = '';
             $scope.reservationData.rooms[roomIdx].roomTypeName = '';
@@ -431,6 +428,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
                 to_date: $scope.reservationData.departureDate,
+                fromState: 'rover.reservation.search',
                 company_id: $scope.reservationData.company.id,
                 travel_agent_id: $scope.reservationData.travelAgent.id
             });
@@ -459,6 +457,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 CICO-8320 parse the reservation Details and store the data in the
                 $scope.reservationData model
             */
+            //status
+            $scope.reservationData.status = reservationDetails.reservation_card.reservation_status;
+
             // id
             $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
@@ -526,6 +527,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
             }
 
+            if (reservationDetails.reservation_card.payment_method_used != "") {
+                $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
+                $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
+            }
+
+            console.log('$scope.reservationData model - 2', $scope.reservationData);
+
             /* CICO-6069
              *  Comments from story: 
              *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
@@ -540,7 +548,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         $scope.$on("guestEmailChanged", function(e) {
-            console.log('reached main controller');
             $scope.$broadcast('updateGuestEmail');
         });
 
