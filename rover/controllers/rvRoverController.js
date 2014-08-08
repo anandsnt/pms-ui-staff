@@ -536,11 +536,12 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
-      else if(rejection.status == 505){
-        $rootScope.showBussinessDateChangingPopup();
-        $rootScope.isBussinessDateChanging = true;
-        //need to unset this once change is done and set new bussiness date
-      }
+      //Need to review the bussiness date changing notification process
+      // else if(rejection.status == 700){
+      //   $rootScope.showBussinessDateChangingPopup();
+      //   $rootScope.isBussinessDateChanging = true;
+      //   //need to unset this once change is done and set new bussiness date
+      // }
       return $q.reject(rejection);
     }
   };
