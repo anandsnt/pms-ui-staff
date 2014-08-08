@@ -15,13 +15,13 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 		$scope.errorMessage = message;
 	};
 	$scope.openAddNewPaymentModel = function(data){
-  	 	
+  	 
   	 	if(data === undefined){
   	 			 	var passData = {
-			  	 		"user_id": $scope.paymentData.user_id,
-			  	 		"guest_id": $scope.paymentData.guest_id,
+			  	 		"guest_id": $scope.paymentData.user_id,
 			  	 		"fromView": "guestcard"
 			  	 	};
+			  	 			  	 	
 			  	 	var paymentData = $scope.paymentData;
 			  	 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 	} else {

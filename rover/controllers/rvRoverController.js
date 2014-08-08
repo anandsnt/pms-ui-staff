@@ -393,12 +393,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
-    	console.log('success');
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
     $scope.failureCallBackSwipe = function() {
-    	console.log('failure');
     	
     };
 
@@ -422,8 +420,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.showAddNewPaymentModal = function(passData, paymentData) {
       $scope.passData = passData;
       $scope.paymentData = paymentData;
-        console.log("===========++++++++++====================")
-        console.log($scope.guestInfoToPaymentModal)
       $scope.guestInformationsToPaymentModal = $scope.guestInfoToPaymentModal;
       ngDialog.open({
         template: '/assets/partials/payment/rvPaymentModal.html',
@@ -435,7 +431,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
-      $scope.$broadcast('GUESTPAYMENT', paymentData);
+    		
+      	$scope.$broadcast('GUESTPAYMENT', paymentData);
     });
 
     $scope.$on('SHOWGUESTLIKES', function(event) {
@@ -443,17 +440,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     $scope.guestInfoToPaymentModal = {};
     $scope.$on('SETGUESTDATA', function(event, guestData) {
-      console.log("=========== $scope.guestInfoToPaymentModal====================")
         $scope.guestInfoToPaymentModal = guestData;
       
-        console.log( $scope.guestInfoToPaymentModal);
     });
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-      console.log("reached hereerrreee");
-      console.log(document.activeElement);
         document.activeElement.blur();
         $scope.$emit('hideLoader');
         setTimeout(function(){

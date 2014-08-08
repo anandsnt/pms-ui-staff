@@ -27,7 +27,10 @@
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
     </div>
     <div id="guest-card-content" class="card-tabs card-search card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-if="searchMode" ng-class="UICardContentCls('guest-card')">
-        <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
+        <strong class="results-count" ng-show="guests.length > 0">
+            {{ guests.length }} 
+            possible match<span ng-if="guests.length > 1">es</span>
+        </strong>
         <button id="new-guest" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
         <div id="search-guests-content" class="search-cards scrollable">
             <!-- Guest Card Results listing -->
