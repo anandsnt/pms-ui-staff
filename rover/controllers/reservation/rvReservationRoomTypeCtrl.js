@@ -783,61 +783,62 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						str: d.date,
 						obj: new tzIndependentDate(d.date)
 					});
-				}
-				var for_date = d.date;
-				//step1: check for room availability in the date range
-				$(d.room_types).each(function(i, d) {
-					if (typeof rooms[d.id] == "undefined") {
-						rooms[d.id] = {
-							id: d.id,
-							name: roomDetails[d.id].name,
-							level: roomDetails[d.id].level,
-							availability: true,
-							rates: [],
-							ratedetails: {},
-							total: [],
-							defaultRate: 0,
-							averagePerNight: 0,
-							description: roomDetails[d.id].description
-						};
-					}
-					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
-					if (d.availability < 1) {
-						rooms[d.id].availability = false;
-					}
-				});
 
-				//step2: extract rooms with rate information
-				$(d.rates).each(function(i, d) {
-					var rate_id = d.id;
-					$(d.room_rates).each(function(i, d) {
-						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
-							rooms[d.room_type_id].rates.push(rate_id);
+					var for_date = d.date;
+					//step1: check for room availability in the date range
+					$(d.room_types).each(function(i, d) {
+						if (typeof rooms[d.id] == "undefined") {
+							rooms[d.id] = {
+								id: d.id,
+								name: roomDetails[d.id].name,
+								level: roomDetails[d.id].level,
+								availability: true,
+								rates: [],
+								ratedetails: {},
+								total: [],
+								defaultRate: 0,
+								averagePerNight: 0,
+								description: roomDetails[d.id].description
+							};
 						}
-						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
-							rooms[d.room_type_id].ratedetails[for_date] = [];
+						//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+						if (d.availability < 1) {
+							rooms[d.id].availability = false;
 						}
-						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
-							rate_id: rate_id,
-							rate: $scope.calculateRate(d),
-							rateBreakUp: d,
-							tax: 0,
-							day: new tzIndependentDate(for_date)
-						};
-						//TODO : compute total
-						if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
-							rooms[d.room_type_id].total[rate_id] = {
-								total: 0,
-								average: 0
+					});
+
+					//step2: extract rooms with rate information
+					$(d.rates).each(function(i, d) {
+						var rate_id = d.id;
+						$(d.room_rates).each(function(i, d) {
+							if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
+								rooms[d.room_type_id].rates.push(rate_id);
 							}
-						}
-						if (for_date != $scope.reservationData.departureDate) {
-							rooms[d.room_type_id].total[rate_id].total = parseFloat(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
-							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.reservationData.numNights).toFixed(2);
-						}
+							if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
+								rooms[d.room_type_id].ratedetails[for_date] = [];
+							}
+							rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
+								rate_id: rate_id,
+								rate: $scope.calculateRate(d),
+								rateBreakUp: d,
+								tax: 0,
+								day: new tzIndependentDate(for_date)
+							};
+							//TODO : compute total
+							if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
+								rooms[d.room_type_id].total[rate_id] = {
+									total: 0,
+									average: 0
+								}
+							}
+							if (for_date != $scope.reservationData.departureDate) {
+								rooms[d.room_type_id].total[rate_id].total = parseFloat(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
+								rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.reservationData.numNights).toFixed(2);
+							}
 
-					})
-				})
+						})
+					});
+				}
 
 			});
 

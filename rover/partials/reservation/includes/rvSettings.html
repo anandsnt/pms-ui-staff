@@ -56,7 +56,7 @@
                                 <li>
                                     <em>{{room.rateName}}</em>
                                     <span class="price">
-                                        {{currencySymbol}}{{room.rateAvg}}
+                                        {{currencySymbol}}{{room.rateAvg | number : 0}}
                                         <span translate>AVG_NIGHT</span>
                                         <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                                     </span>
