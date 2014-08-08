@@ -1,31 +1,31 @@
 	<section id="replacing-div-first" class="content current" style="display: block;" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckOutConfiguration">
 		<header class="content-title float">
-			<h2>Guest Checkout Setup</h2>
-			<a ui-sref="admin.checkinCheckoutEmail({from:'checkout'})" class="action email">Send Checkout Email</a>
-			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">Back</a>
+			<h2 translate>GUEST_CHECKOUT_SETUP</h2>
+			<a ui-sref="admin.checkinCheckoutEmail({from:'checkout'})" class="action email" translate>SEND_CHECKOUT_EMAIL</a>
+			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" translate>BACK</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
 			<fieldset class="holder column">
 				<div class="entry">
-					<label>
-						Sent check out notification email to all DUE OUT guests at
+					<label translate>
+						SEND_CHECKOUT_NOTIFICATON_EMAIL
 					</label>
 					<div class="entry full-width float">
 						<div class="select select-col col1-3">
 							<select ng-options="hour for hour  in hours" ng-model="checkoutData.checkout_email_alert_time_hour">
-								<option style="display:none" value="">HH</option>
+								<option style="display:none" value="" translate>HH</option>
 							</select>
 						</div>
 						<div class="select select-col col1-3">
 							<select ng-options="minute for minute  in minutes" ng-model="checkoutData.checkout_email_alert_time_minute">
-								<option style="display:none" value="">MM</option>
+								<option style="display:none" value="" translate>MM</option>
 							</select>
 						</div>
 						<div class="select select-col col1-3">
 							<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-								<option value="AM" selected="">AM</option>
-								<option value="PM">PM</option>
+								<option value="AM" selected="" translate>AM</option>
+								<option value="PM" translate>PM</option>
 							</select>
 						</div>
 					</div>
@@ -33,14 +33,14 @@
 				</div>
 				
 				
-				<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="Only if Reservation is CC guaranteed" div-class="full-width"></ad-checkbox>	
+				<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
 
 				
 				
-				<ad-checkbox is-checked="include_cash_reservationsy_flag" label="Only if Reservation is CASH payment" div-class="full-width"></ad-checkbox>	
+				<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
 
 				
-				<ad-toggle-button is-checked="is_send_checkout_staff_alert_flag" label="Web Check Out staff alert"></ad-toggle-button>
+				<ad-toggle-button is-checked="is_send_checkout_staff_alert_flag" label="{{'WEB_CHEKOUT_ALERT_LABEL' | translate}}"></ad-toggle-button>
 
 				
 
@@ -49,24 +49,24 @@
 					<label class="radio" ng-class="{checked:checkoutData.checkout_staff_alert_option == 'all'}">
 						<span class="icon-form icon-radio " ng-class="{checked:checkoutData.checkout_staff_alert_option == 'all'}"></span>
 						<input type="radio" ng-model="checkoutData.checkout_staff_alert_option" value="all" class="change-data">
-						All
+						{{'ALL'| translate}}
 						
 					</label>
 
 					<label class="radio" ng-class="{checked:checkoutData.checkout_staff_alert_option == 'not_success'}">
 						<span class="icon-form icon-radio " ng-class="{checked:checkoutData.checkout_staff_alert_option == 'not_success'}"></span>
 						<input type="radio" ng-model="checkoutData.checkout_staff_alert_option" value="not_success" class="change-data">
-						Only when check out is NOT successful
+						{{'CHECKOUT_NOT_SUCESSFULL' | translate}}
 						
 					</label>
 				</div>
 
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.emails" label = "Email Accounts (Seperated by semicolon [;]) " placeholder = ""></ad-textarea>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.emails" label = "{{'EMAIL_ACCOUNTS_LABEL' | translate}}" placeholder = ""></ad-textarea>
 
 			</fieldset>
 			<div class="actions float">
-				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline">Cancel</button>
-				<button type="button" ng-click="saveCheckout()" class="button green">Save changes</button>
+				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline" translate>CANCEL</button>
+				<button type="button" ng-click="saveCheckout()" class="button green" translate>SAVE_CHANGES</button>
 			</div>
 		</form>
 	</div>

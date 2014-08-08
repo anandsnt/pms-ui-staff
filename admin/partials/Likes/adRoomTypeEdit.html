@@ -4,14 +4,14 @@
 	<form class="form inline-form float" id="edit-like" like_id="6">
 		<div class="form-title">
 			<h3>
-				<span>Edit</span>
-				Room Type
+				<span translate>EDIT</span>
+				{{'ROOM_TYPE' | translate}}
 			</h3>
 		</div>
 
 
 		<div class="entry full-width float">
-			<label>Options</label>
+			<label translate>OPTIONS</label>
 			<div class="boxes" id="newspaper-options">
 
 
@@ -25,15 +25,15 @@
 				</label> 
 				<label data-type="newspaper" class="add-new-checkbox inline" ng-click="shownewInputRoomOption()">
 					<span class="icons icon-add"></span>
-					Add new option
+					{{'ADD_NEW_OPTION' | translate}}
 				</label> 
 
 
 			</div>
 		</div>
 		<div class="actions float">
-			<button type="button" ng-click="cancelCliked()" class="button blank add-data-inline">Cancel</button>
-			<button type="button" id="update" class="button green add-data-inline" ng-click="customLikeSave()">Save changes</button>
+			<button type="button" ng-click="cancelCliked()" class="button blank add-data-inline" translate>CANCEL</button>
+			<button type="button" id="update" class="button green add-data-inline" ng-click="customLikeSave()"translate>SAVE_CHANGES</button>
 		</div>
 	</form>
 </div>

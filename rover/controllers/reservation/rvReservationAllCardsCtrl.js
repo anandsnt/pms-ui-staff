@@ -61,7 +61,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         $scope.checkEditMode = function() {
             if ($scope.viewState.isAddNewCard) {
-                console.log("Display pop up!" + $scope.UICards[0]);
                 // Discard the card Right Here
                 // 'guest-card', 'company-card', 'travel-agent-card'
                 var cards = {
@@ -292,7 +291,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.travelAgentInformation = data;
                 $scope.reservationDetails.travelAgent.futureReservations = data.future_reservation_count;
                 $scope.$broadcast('travelAgentFetchComplete');
-                console.log($scope.reservationDetails);
 
             };
             //  TAcard defaults to search mode 
@@ -557,7 +555,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     $scope.$broadcast("travelAgentDetached");
                 }
             }
-            console.log($scope.reservationDetails);
         };
 
         $scope.cardRemoved = function(card) {
@@ -641,12 +638,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.initGuestCard(guest);
             $scope.viewState.isAddNewCard = false;
             $scope.reservationDetails.guestCard.id = guest.id;
-            console.log($scope.reservationData);
             if ($scope.viewState.reservationStatus.confirm) {
                 // TODO : Handle changes in the staycard
                 // TODO : Replace card
-                console.log("These changes have to be communicated to the server with the reservation ID");
-                console.log("Replace Guest Card");
                 if ($scope.reservationDetails.guestCard.futureReservations <= 0) {
                     $scope.replaceCardCaller('guest', guest, false);
                 } else {
@@ -683,12 +677,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.reservationDetails.companyCard.id = company.id;
             $scope.initCompanyCard(company);
             $scope.viewState.isAddNewCard = false;
-            console.log($scope.reservationData);
             if ($scope.viewState.reservationStatus.confirm) {
                 // TODO : Handle changes in the staycard
                 // TODO : Replace card
-                console.log("These changes have to be communicated to the server with the reservation ID");
-                console.log("Replace Company Card");
                 if ($scope.reservationDetails.companyCard.futureReservations <= 0) {
                     $scope.replaceCardCaller('company', company, false);
                 } else {
@@ -711,12 +702,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.reservationDetails.travelAgent.id = travelAgent.id;
             $scope.initTravelAgentCard(travelAgent);
             $scope.viewState.isAddNewCard = false;
-            console.log($scope.reservationData);
             if ($scope.viewState.reservationStatus.confirm) {
                 // TODO : Handle changes in the staycard
                 // TODO : Replace card
-                console.log("These changes have to be communicated to the server with the reservation ID");
-                console.log("Replace Travel Agent Card");
                 if ($scope.reservationDetails.travelAgent.futureReservations <= 0) {
                     $scope.replaceCardCaller('travel_agent', travelAgent, false);
                 } else {
@@ -762,11 +750,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     'reservation': $scope.viewState.reservationStatus.number,
                     'cardType': card
                 }, function() {
-                    console.log('removeCard - success');
                     $scope.cardRemoved(card);
                     $scope.$emit('hideLoader');
                 }, function() {
-                    console.log('removeCard - failure');
                     $scope.$emit('hideLoader');
                 });
             } else {
@@ -1005,7 +991,6 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     'id': cardData.id,
                     'future': typeof future == 'undefined' ? false : future
                 }, function() {
-                    console.log('replaceCard - success');
                     $scope.cardRemoved(card);
                     $scope.cardReplaced(card, cardData);
                     if ($scope.viewState.lastCardSlot != "") {

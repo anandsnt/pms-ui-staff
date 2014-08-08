@@ -1,7 +1,5 @@
 sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams','ngDialog','$filter', '$timeout', function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter,$timeout){
 	
-	console.log("$stateParams type --"+$stateParams.type);
-	console.log("$stateParams id --"+$stateParams.id);
 	// Flag for add new card or not
 	$scope.isAddNewCard = ($stateParams.id == "add") ? true : false ;
 	$scope.isDiscard = false;
@@ -131,10 +129,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* success callback of save contact data
 	*/
 	var successCallbackOfContactSaveData = function(data){
-		console.log('in success');
 		
 		$scope.$emit("hideLoader");
-		console.log($scope.contactInformation.id);
 		if(typeof data.id !== 'undefined' && data.id !== ""){
 			$scope.contactInformation.id = data.id;
 		}
@@ -144,7 +140,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-		console.log(presentContactInfo);
 		//In the case of ass mode - rename the headding after saving contact info
 		if($scope.isAddNewCard){
 			//setting the heading of the screen
@@ -199,7 +194,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 				delete dataToSend['countries'];
 			}
 			dataToSend.account_type = $stateParams.type;
-			console.log(dataToSend);
 			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 		}
 	};

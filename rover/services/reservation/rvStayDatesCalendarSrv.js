@@ -3,18 +3,18 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
 
     	var that = this;
         this.availabilityData = {};
-        this.totalAvailabilityData = {};
+        //this.totalAvailabilityData = {};
         this.lastFetchedDate = "";
 
         this.fetchAvailability = function(params) {
             //If its a request to fetch the additional, then fetch the next set of availability data 
             //based on the last_fetched date
-            if(params.status == 'FETCH_ADDITIONAL'){
+          /*  if(params.status == 'FETCH_ADDITIONAL'){
                 var fromDate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + 1) ;
                 params.from_date = $filter('date')(fromDate, 'yyyy-MM-dd');
                 var todate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + params.per_page) ;
                 params.to_date = $filter('date')(todate, 'yyyy-MM-dd');
-            }
+            }*/
             var deferred = $q.defer();
             var url = '/api/availability';
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
@@ -22,13 +22,13 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
                 //For every subsequent fetch requensts we fetch next set of dates
                 that.lastFetchedDate = tzIndependentDate(params.to_date);
                 if(params.status !== 'FETCH_ADDITIONAL'){
-                    that.totalAvailabilityData = dclone(response);
+                    //that.totalAvailabilityData = dclone(response);
                     that.availabilityData = dclone(response);
                     //response.results is an array. We would keep it as a hash indexed with date
                     that.availabilityData.results = {};
-                } else {
+                } /*else {
                     that.totalAvailabilityData.results = dclone(that.totalAvailabilityData.results.concat(response.results));
-                }
+                }*/
                 that.manipulateAvailabilityForEasyLookup(response);
                 deferred.resolve(that.availabilityData);
             }, function(errorMessage) {

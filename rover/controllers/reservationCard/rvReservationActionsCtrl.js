@@ -139,7 +139,6 @@ sntRover.controller('reservationActionsController',
 				}
 			} else {
 				//Prompt user to add a Guest Card
-				// console.log('Prompt to select a guest card here');
 				$scope.errorMessage = ['Please select a Guest Card to check in'];
 				var templateUrl = '/assets/partials/cards/alerts/cardAdditionPrompt.html';
 				ngDialog.open({

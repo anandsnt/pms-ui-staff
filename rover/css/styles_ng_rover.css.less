@@ -678,11 +678,14 @@ Padding for the ows error popup
     cursor: default;
 }
 
+
 .padding_30{
   padding:30px !important;
 }
 
-/* Smartphones (portrait and landscape) ----------- */
+
+/* Smartphones (portrait) ----------- */
+
 @media only screen and (max-width: 480px){
 
   .ngdialog.ngdialog-theme-default.modal-theme .ngdialog-content {
@@ -704,6 +707,32 @@ Padding for the ows error popup
   #modal .modal-content.new-content .actions .button {
       padding: 0 10px;
       width: 100%;
+      margin-bottom: 5px;
+  }
+
+}
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 480px) and (max-width: 990px){
+
+  .ngdialog.ngdialog-theme-default.modal-theme .ngdialog-content {
+      width: 400px;
+  }
+
+  #modal .modal-content.new-content {
+    width: 400px;
+  }
+
+  #modal .modal-content .button {
+      font-size: 14px;
+      line-height: 30px;
+      width: 50%;
+      padding-left: 10px;
+      padding-right: 10px;
+  }
+
+  #modal .modal-content.new-content .actions .button {
+      padding: 0 10px;
+      width: 50%;
       margin-bottom: 5px;
   }
 

@@ -271,7 +271,7 @@ tzIndependentDate = function(st) {
 }
 
 
-
+//To add n days to the current date
 Date.prototype.addDays = function(days) {
    var dat = new Date(this.valueOf())
    dat.setDate(dat.getDate() + days);
@@ -288,5 +288,10 @@ function isEmptyObject(obj) {
     }
     return true;
 }
+
+/** Returns a deep copy of the date object**/
+Date.prototype.clone = function() { 
+    return new Date(this.getTime()); 
+};
 
 

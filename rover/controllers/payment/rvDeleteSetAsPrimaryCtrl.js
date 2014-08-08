@@ -29,7 +29,6 @@ sntRover.controller('RVDeleteSetAsPrimaryCtrl',['$rootScope', '$scope', '$state'
 		$scope.invokeApi(RVPaymentSrv.setAsPrimary, data, $scope.successSetAsPrimary, $scope.failureCallBack);
 	};
 	$scope.deletePayment= function(){
-		console.log(JSON.stringify($scope.paymentData));
 		var data = {
 			"id": $scope.paymentData.payment_id
 		};

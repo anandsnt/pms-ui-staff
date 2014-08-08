@@ -101,14 +101,12 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			};
 
 			var updateGuestEmailSuccessCallback = function(data) {
-				console.log('reached success');
 				$scope.reservationData.guest.email = $scope.reservationData.guest.sendConfirmMailTo;
 				$scope.$emit('guestEmailChanged');
 				$scope.$emit("hideLoader");
 			}
 
 			var updateGuestEmailFailureCallback = function(data) {
-				// console.log('reached failure');
 				$scope.$emit("hideLoader");
 			}
 
@@ -189,13 +187,11 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 
 			var updateSuccess = function(data){
 				$scope.$emit('hideLoader');
-				console.log('arr/dep time updated');
 			}
 
 
 			var updateFailure = function(data){
 				$scope.$emit('hideLoader');
-				console.log('arr/dep time update failed');
 			}
 			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkoutTime.hh != '') {
 				var postData = $scope.computeReservationDataforUpdate();

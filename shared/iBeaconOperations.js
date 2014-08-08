@@ -87,7 +87,6 @@ var iBeaconOperation = function(){
 
 	//function for linking iBeacon
 	this.linkiBeacon = function(options){
-		alert("linkiBeacon");
 		options['service'] = "RVBeaconPlugin";
 		options['action'] = "writeBeaconID";
 		that.callCordovaService(options);
