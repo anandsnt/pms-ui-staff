@@ -22,6 +22,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.data.status = false;
     $scope.data.description ="";
     $scope.data.title ="";
+    $scope.fileName = "Choose file...";
   };
   $scope.init();
 
