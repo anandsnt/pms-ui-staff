@@ -4,33 +4,33 @@
 		<div class="data-holder">
 			<form id="add-loyalty" class="form inline-form float">
 				<div class="form-title">
-					<h3><span>{{addEditTitle }}</span> Hotel Loyalty Program </h3>
-					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+					<h3><span>{{addEditTitle }}</span> {{'HOTEL_LOYALTY_PROGRAM' | translate}} </h3>
+					<em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
 				</div>
 				<fieldset class="holder left float">
 					<ad-textbox inputtype="text" value="hotelLoyaltyData.name" 
-						label = "Name" placeholder = "Enter program name"  
+						label = "{{'NAME' | translate}}" placeholder = "{{'PROGRAM_NAME_PLACEHOLDER'| translate}}"  
 						styleclass="full-width" required="yes"></ad-textbox>
 					<ad-textbox inputtype="text" value="hotelLoyaltyData.code" 
-						label = "Code" placeholder = "Enter program code"  
+						label = "{{'CODE' | translate}}" placeholder = "{{'CODE_NAME_PLACEHOLDER'| translate}}"  
 						styleclass="full-width" required="yes"></ad-textbox>
 				</fieldset>
 				<fieldset class="holder right float">
 					<div class="entry full-width">
-						<label for="loyalty-option1"> Levels </label>
+						<label for="loyalty-option1" translate> LEVELS </label>
 						<div class="entry" ng-repeat="level in hotelLoyaltyData.levels">
-							<input type="text"  placeholder="Add new level" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" ng-class="{'add-new-option': !getEditStatusForLevel($index) }"
+							<input type="text"  placeholder="{{'ADD_NEW_LEVEL'| translate}}" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" ng-class="{'add-new-option': !getEditStatusForLevel($index) }"
 							ng-model="level.name" >
 							<input type="text" ng-model="level.value" ng-hide="true">
 						</div>
 					</div>
 				</fieldset>
 				<div class="actions float">
-					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
-						Cancel
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>
+						CANCEL
 					</button>
-					<button type="button" id="save" class="button green" ng-click="saveHotelLoyalty()">
-						Save changes
+					<button type="button" id="save" class="button green" ng-click="saveHotelLoyalty()" translate>
+						SAVE_CHANGES
 					</button>
 				</div>
 			</form>

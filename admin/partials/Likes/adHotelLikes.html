@@ -1,12 +1,12 @@
 <section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="GuestCardLikesView">
 	<header class="content-title float">
-		<h2>
-			Likes
+		<h2 translate>
+			LIKES
 		</h2>
 		<span class="count">
 			({{likeList.likes.length}})
 		</span>
-		<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+		<a id="add-new-button" class="action add" ng-click="addNew()" translate>ADD_NEW</a>
 	</header>
 
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -20,7 +20,7 @@
 					
 					<a ng-show="{{like.is_system_defined !== 'true'}}">{{like.name}} </a>
 					<span class="bold" ng-show="{{like.is_system_defined === 'true'}}">{{like.name}} </span>
-					<em ng-show="{{like.is_system_defined === 'true'}}">(system defined)</em>
+					<em ng-show="{{like.is_system_defined === 'true'}}" translate>SYSTEM_DEFINED</em>
 				</td>
 				
 				<td class="activate" ng-hide="currentClickedElement == $index && isEditmode">

@@ -18,7 +18,20 @@
 
 "BILLING_GROUPS": "Billing Groups",
 "BILLING_GROUP_NAME": "Name",
-"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name", 
+"BILLING_GROUP_NAME_PLACEHOLDER": "Enter Name",
+
+
+"CHARGE_GROUPS":"Charge Groups",
+"ITEMS":"Items",
+"ADD_NEW_ITEM":"Add New Item",
+"BACK_TO_ITEMS":"Back to Items",
+"ITEM":"Item",
+"ITEM_DESCRIPTION":"Item Description",
+"ITEM_DESCRIPTION_PLACEHOLDER":"Enter Item Description",
+"UNIT_PRICE":"Unit Price",
+"UNIT_PRICE_PLACEHOLDER":"Enter Unit Price",
+"SELECT_CHARGE_CODE":"Select Charge Code",
+"FAVOURITE":"Favorite", 
     "EDIT": "Edit",
     "ALL": "All",
     "ADD":"Add",
@@ -59,7 +72,8 @@
     "MENU_REPORTS":"Reports",
     
 	"ICARE_SERVICES": "iCare Services",
-    "OK":"Ok"
+    "OK":"Ok",
+	"DELETE":"Delete"
 ,
 
 
@@ -86,6 +100,37 @@
 "CALCULATION_RULE":"Calculation Rule",
 "SELECT_CALCULATION_RULE":"Select Calculation Rule"
 ,
+
+
+"LIKES":"Likes",
+"ROOM_ASSIGMENT_SETUP_MSG":"Show on room assignment filter/room setup",
+"TEXT_VALUE":"Text value",
+"TEXTBOX":"Textbox",
+"ONE_SELECTION_TWO_OPTIONS_TEXT":"One selection / Two options",
+"RADIO_BTN_LIST":"Radio button list",
+"ONE_SELECTION_MULTIPLE_OPTIONS_TEXT":"One selection / Multiple options",
+"SELECTBOX":"Selectbox",
+"MULTIPLE_OPTIONS_MULTIPLE_SELECTION_TEXT":"Multiple options / Multiple selections",
+"CHECKBOX_LIST":"Checkbox list",
+"OPTIONS":"Options",
+"NEWSPAPER":"Newspaper",
+"ADD_NEW_OPTION":"Add new option",
+"CATEGORY_NAME_PLACEHOLDER":"Enter category name",
+"ROOM_FEATURE":"Room Feature",
+"ROOM_TYPE":"Room Type",
+"FREQUENT_FLYER_PROGRAMS":"Frequent Flyer Programs",
+"HOTEL_LOYALTY_PROGRAMS":"Hotel Loyalty Programs",
+"HOTEL_LOYALTY_PROGRAM":"Hotel Loyalty Program",
+"PROGRAM_NAME_PLACEHOLDER":"Enter program name",
+"CODE_NAME_PLACEHOLDER":"Enter program code",
+"LEVELS":"Levels",
+"ADD_NEW_LEVEL":"Add new level",
+
+
+"DEPARTMENTS":"Departments",
+"DEPARTMENT_NAME_PLACEHOLDER": "Enter department"
+
+,
  
  
     "HOTEL_ANNOUNCEMENTS": "Hotel Announcements",
@@ -107,6 +152,52 @@
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)"
 ,
+
+
+"DAILY_UPSELL_SETUP":"Daily Upsell Setup",
+"UPSELL_ROOMS":"Upsell Rooms",
+"DAILY_UPSELL":"Daily Upsell",
+"TARGETS":"Targets",
+"TARGET":"Target",
+"UPSELL_ONE_NIGHT_STAYS":"Upsell 1 Night Stays Only",
+"FORCE_UPSELL":"Force Upsell",
+"ROOM_LEVEL_TARGETS":"Room Level Targets ",
+"LEVEL_ONE":"Level 1",
+"LEVEL_TWO":"Level 2",
+"LEVEL_THREE":"Level 3",
+"DROP_HERE_FOR_LEVEL_ONE":"Drop here for Level 1",
+"DROP_HERE_FOR_LEVEL_TWO":"Drop here for Level 2",
+"DROP_HERE_FOR_LEVEL_THREE":"Drop here for Level 3",
+"LATE_CHECKOUT_UPSELL":"Late Checkout Upsell",
+"LATE_CHECKOUT":"Late Checkout",
+"UPSELL":"Upsell",
+"EXCULUDE_GUEST_IN_PRE_ALLOCATED_ROOMS":"Exclude guests in pre allocated rooms",
+"SEND_UPSELL_ALERT_TO_ALL_GUESTS":"Send Upsell alert to all guests [AM]",
+"NUMBER_OF_LATE_CHECKOUTS_PER_DAY":"NUMBER OF LATE CHECK OUT'S PER DAY",
+"CHECKOUT_TIME_EXTENDED_TO":"CheckOut Time extended to [PM]",
+"TYPE_NUMBER":"Type number",
+"CHARGE":"Charge",
+"LIMITED_LATE_CHECK_OUTS_BY_ROOM_TYPE":"LIMITED LATE CHECK OUT'S BY ROOM TYPE",
+"ADD_ROOM_TYPE":"Add room type",
+"MAX_PER_DAY":" Max per day"
+
+,
+
+
+"RATE_TYPES":"Rate Types",
+"RATE_TYPE":"Rate Type",
+"RATE_TYPE_PLACEHOLDER":"Enter rate type",
+
+
+"MARKET":"Markets",
+"USE_MARKETS":"Use markets",
+"MARKET_NAME_PLACEHOLDER":"Enter market name",
+"ORIGINS":"Origins",
+"USE_ORIGIN_OF_BOOKING":"Use Origin of Booking",
+"ORIGIN_NAME_PLACEHOLDER":"Enter origin name",
+"SOURCES":"Sources",
+"USE_SOURCES":"Use sources",
+"SOURCE_NAME_PLACEHOLDER":"Enter source name",
 
     "ROOMS":"Rooms",
     "OF":"of",
@@ -150,7 +241,34 @@
     "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
     "DEFAULT_DASHBOARD":"Default Dashboard",
 
-    "BILLING_GROUPS": "Billing Groups",    
+    "BILLING_GROUPS": "Billing Groups",
+
+
+"ROOM_KEY_DELIVERY_SETUP":"Room Key Delivery Setup",
+"ZEST":"Zest",
+"CHECKINS":"check in's",
+"DELIVER_QR_CODE_FOR_ROOM_KEY":"Deliver QR code for room key via email",
+"DELIVER_QR_CODE_TO_GUESTZEST_APP":"Deliver QR code to GuestZest App on Guests Smartphone",
+"DELIVER_MSG_TO_GUEST":"Deliver message to guest to pick up key from front desk",
+"ROVER":"Rover",
+"MAKE_KEY_FOR_RFID_READER":"Make Key from RFID reader at Tablet",
+"SHOW_QR_CODE_FOR_ROOM_KEY":"Show QR code for room key on Tablet",
+"ROOM_KEY_SYSTEM_VENDOR":"Room Key System Vendor",
+"KEY_SYSTEM_ACCESS_URL":"Key System Access URL",
+"KEY_SYSTEM_ACCESS_URL_PLACEHOLDER":"Enter Key System Access URL",
+"KEY_SYSTEM_ACCESS_PORT":"Key System Access Port",
+"KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER":"Enter Key System Access Port",
+"KEY_SYSTEM_USENAME":"Key System Username",
+"KEY_SYSTEM_USENAME_PLACEHOLDER":"Enter Key System Username",
+"KEY_SYSTEM_PASSWORD":"Key System Password",
+"KEY_SYSTEM_PASSWORD_PLACEHOLDER":"Enter Key System Password",
+"HOUSEKEEPING_SETTINGS":"Housekeeping Settings",
+"USE_INSPECTED_ROOM_STATUS":"Use Inspected room status",
+"USE_PICKUP_ROOM_STATUS":"Use Pick-up room status",
+"ENABLE_QUEUE_ROOMS":"Enable Queue Rooms",
+"CHECK_IN_TO_INSPECTED_ROOMS_ONLY":"Check in to inspected rooms only",
+"MAINTENANCE_REASONS":"Maintenance Reasons",
+"MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",    
     
     "NAME":"Name",
     "DESCRIPTION":"Description",
@@ -205,4 +323,25 @@
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
     "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
-}
+,
+
+
+"GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
+"SEND_CHECKOUT_EMAIL":"Send Checkout Email",
+"SEND_CHECKOUT_NOTIFICATON_EMAIL":"Sent check out notification email to all DUE OUT guests at",
+"CC_GUARENTEED_LABEL":"Only if Reservation is CC guaranteed",
+"CASH_PAYMENT_LABEL":"Only if Reservation is CASH payment",
+"WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
+"CHECKOUT_NOT_SUCESSFULL":"Only when check out is NOT successful",
+"EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
+"BACK_TO_SETUP":"Back to setup",
+"SOCIAL_LOBBY_SETUP":"Social Lobby Setup",
+"SOCIAL_LOBBY":"Social Lobby",
+"MY_GROUP":"My group",
+"ARRIVAL_GRACE_DAYS":"Arrival Grace Days",
+"DEPARTURE_GRACE_DAYS":"Departure Grace Days",
+"GUEST_REVIEW_SETUP":"Guest Review Setup",
+"GUEST_REVIEWS":"Guest Reviews",
+"NUMBER_OF_REVIEWS":"Number of reviews",
+"NUMBER_OF_REVIEWS_PLACEHOLDER":"Enter Number of reviews",
+"RATING_LIMIT":"Rating limit"}

@@ -3,12 +3,12 @@
 	<form like_id="1" id="edit-like" class="form inline-form float">
 		<div class="form-title">
 			<h3>
-				<span>Edit</span>
-				Room Feature
+				<span translate>EDIT</span>
+				{{'ROOM_FEATURE' | translate}}
 			</h3>
 		</div>
 		<div class="entry full-width float">
-			<label>Options</label>
+			<label translate>OPTIONS</label>
 			<div id="newspaper-options" class="boxes">
 
 				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
@@ -21,13 +21,13 @@
 
 				<label data-type="newspaper" class="add-new-checkbox inline" ng-click="shownewInputRoomOption()">
 					<span class="icons icon-add"></span>
-					Add new option
+					{{'ADD_NEW_OPTION' | translate}}
 				</label> 
 			</div>
 		</div>
 		<div class="actions float">
-			<button type="button"  ng-click="cancelCliked()" class="button blank edit-data-inline">Cancel</button>
-			<button type="button" like-type="newspaper" ng-click="customLikeSave()" class="button green edit-data-inline">Save changes</button>
+			<button type="button"  ng-click="cancelCliked()" class="button blank edit-data-inline" translate>CANCEL</button>
+			<button type="button" like-type="newspaper" ng-click="customLikeSave()" class="button green edit-data-inline" translate>SAVE_CHANGES</button>
 		</div>
 	</form>
 </div>

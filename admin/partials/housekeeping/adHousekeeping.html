@@ -1,20 +1,20 @@
 <section  class="content current" style="display: block;" ng-click="clearErrorMessage()">
 	<div>
 		<header class="content-title float">
-			<h2>Housekeeping Settings</h2>
+			<h2 translate>HOUSEKEEPING_SETTINGS</h2>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
 			<fieldset class="holder left">
-				<ad-toggle-button label="Use Inspected room status" is-checked="data.use_inspected" div-class=""></ad-toggle-button>
-				<ad-toggle-button label="Use Pick-up room status" is-checked="data.use_pickup" div-class=""></ad-toggle-button>
-				<ad-toggle-button label="Enable Queue Rooms" is-checked="data.is_queue_rooms_on" div-class=""></ad-toggle-button>
-				<ad-checkbox is-disabled="!data.use_inspected" is-checked="data.checkin_inspected_only" label="Check in to inspected rooms only" div-class="full-width"></ad-checkbox>
+				<ad-toggle-button label="{{'USE_INSPECTED_ROOM_STATUS' | translate}}" is-checked="data.use_inspected" div-class=""></ad-toggle-button>
+				<ad-toggle-button label="{{'USE_PICKUP_ROOM_STATUS' | translate}}" is-checked="data.use_pickup" div-class=""></ad-toggle-button>
+				<ad-toggle-button label="{{'ENABLE_QUEUE_ROOMS' | translate}}" is-checked="data.is_queue_rooms_on" div-class=""></ad-toggle-button>
+				<ad-checkbox is-disabled="!data.use_inspected" is-checked="data.checkin_inspected_only" label="{{'CHECK_IN_TO_INSPECTED_ROOMS_ONLY' | translate}}" div-class="full-width"></ad-checkbox>
 			</fieldset>
 			
 			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="backClicked()">Cancel</button>
-				<button type="button" id="save_social_lobby" class="button green" ng-click="save()">Save changes</button>
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="backClicked()" translate>CANCEL</button>
+				<button type="button" id="save_social_lobby" class="button green" ng-click="save()" translate>SAVE_CHANGES</button>
 			</div>
 		</form>
 	</div>

@@ -1,7 +1,7 @@
 	<section id="replacing-div-second" class="content current" style="display: block;" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="CheckoutGuests">
 		<header class="content-title float">
 			<h2>{{emailTitle}}</h2>
-			<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()" translate>BACK_TO_SETUP</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
@@ -35,7 +35,7 @@
 
 
 			<div class="actions float">
-				<button type="button" ng-click="backActionFromEmail()" class="button blank">Cancel</button>
+				<button type="button" ng-click="backActionFromEmail()" class="button blank" translate>CANCEL</button>
 				<button type="button" ng-disabled="disableSave" class="button grey" ng-show="disableSave">{{saveButtonTitle}}</button>
 
 			<button type="button" ng-disabled="disableSave" ng-click="sendMailClicked()" class="button blue" ng-hide="disableSave">{{saveButtonTitle}}</button>
