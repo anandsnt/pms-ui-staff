@@ -59,6 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     mm: '00',
                     ampm: 'AM'
                 },
+                taxDetails: [],
                 numNights: 1, // computed value, ensure to keep it updated
                 roomCount: 1, // Hard coded for now,
                 rooms: [{
@@ -76,13 +77,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     taxes: {
                         taxTotal: '',
                         taxDetails: [{
-                        	id:'',
-							charge_code:'',
-							amount:'',
-							amount_type:'',
-							post_type:'',
-							amount_symbol:'',
-							amount_sign:''
+                            id: '',
+                            charge_code: '',
+                            amount: '',
+                            amount_type: '',
+                            post_type: '',
+                            amount_symbol: '',
+                            amount_sign: ''
                         }]
                     }
                 }],
@@ -385,14 +386,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                      *  FOR EVERY TAX (iteration) ADD APPROPRIATELY TO TOTAL PERCENT / TOTAL DOLLAR
                      *  ONLY GOT TO DO THE PER NIGHT HERE
                      *******************************************************************************/
-
+                    var taxCalculated = 0;
                     if (taxData.post_type == 'Per Night') {
                         if (taxData.amount_symbol == '%') {
-                            taxTotal = parseFloat(taxTotal) + (multiplicity * (parseFloat(taxData.amount) * amount));
+                            taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount) * amount));
                         } else {
-                            taxTotal = (multiplicity * parseFloat(taxData.amount)) + parseFloat(taxTotal);
+                            taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                         }
                     }
+                    
+                    taxTotal = parseFloat(taxTotal) + parseFloat(taxCalculated);
+
                 }
             });
             return taxTotal;
@@ -408,20 +412,30 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var adults = currentRoom.numAdults;
             var children = currentRoom.numChildren;
             var roomTotal = 0;
+            var roomTax = 0;
             var roomAvg = 0;
-			var taxes = currentRoom.taxes;
-			
+            var totalTaxes = 0;
+            var taxes = currentRoom.taxes;
+
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
                 if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
+                    var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
+
                     var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                     var extraAdults = adults >= 2 ? adults - 2 : 0;
-                    roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
+                    var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+
+                    roomTotal = roomTotal + roomAmount;
+                    if (taxes.length > 0) {
+                        var taxAmount = parseFloat($scope.calculateTax(date, roomAmount, taxes, roomIndex));
+                        totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
+                    }
                 }
             });
 
-            currentRoom.rateTotal = roomTotal;
-            currentRoom.rateAvg = roomTotal / $scope.reservationData.numNights;
+            currentRoom.rateTotal = parseFloat(roomTotal) + parseFloat(roomTax);
+            currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
 
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
@@ -473,16 +487,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 addOnCumulative += parseInt(finalRate);
                 addon.effectivePrice = finalRate;
             });
-            // Calculating total tax.
-            var totalTax = 0;
-            $scope.reservationData.rooms[roomIndex].taxes.taxDetails = $scope.otherData.taxesMeta;
-            angular.forEach($scope.reservationData.rooms[roomIndex].taxes.taxDetails,function(item, index) {
-				totalTax += parseFloat(item.amount);
-	       	});
-	       	$scope.reservationData.rooms[roomIndex].taxes.taxTotal = totalTax;
-	       	
+
+
             //TODO: Extend for multiple rooms
-            $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative);
+            $scope.reservationData.totalTaxAmount = totalTaxes;
+            $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative) + parseFloat(totalTaxes);
+
+
         }
 
 
