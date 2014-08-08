@@ -742,7 +742,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						// CICO-7792 : To keep corporate rates even if not applicable on those days
 						if ($scope.displayData.allRates[rateId].account_id) {
 							if (!validRate) {
-								if(typeof $scope.stateCheck.restrictedContractedRates[roomId] == "undefined"){
+								if (typeof $scope.stateCheck.restrictedContractedRates[roomId] == "undefined") {
 									$scope.stateCheck.restrictedContractedRates[roomId] = [];
 								}
 								$scope.stateCheck.restrictedContractedRates[roomId].push(rateId);
@@ -771,10 +771,19 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// Parse through all room-rate combinations.
 			$(roomRates.results).each(function(i, d) {
-				$scope.displayData.dates.push({
-					str: d.date,
-					obj: new tzIndependentDate(d.date)
-				});
+
+				/*  --Initializing the displayData.dates array for the rows in the day wise rate table
+				 *	Need NOT show the departure day in the table. [It is NOT included in any of the computations]
+				 *	Hence check if the day is a departure day before adding it to the array
+				 *	TODO: Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
+				 *	If so, will have to change computation in other places as well to handle zero nights.
+				 */
+				if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
+					$scope.displayData.dates.push({
+						str: d.date,
+						obj: new tzIndependentDate(d.date)
+					});
+				}
 				var for_date = d.date;
 				//step1: check for room availability in the date range
 				$(d.room_types).each(function(i, d) {
