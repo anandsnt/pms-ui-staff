@@ -813,6 +813,12 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// Parse through all room-rate combinations.
 			$(roomRates.results).each(function(i, d) {
+				/*  --Initializing the displayData.dates array for the rows in the day wise rate table
+				 *	Need NOT show the departure day in the table. [It is NOT included in any of the computations]
+				 *	Hence check if the day is a departure day before adding it to the array
+				 *	TODO: Have added a check to handle zero nights > Need to check with product team if zero nights is an accepted scenario.
+				 *	If so, will have to change computation in other places as well to handle zero nights.
+				 */
 				if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
 					$scope.displayData.dates.push({
 						str: d.date,
@@ -845,7 +851,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					//step2: extract rooms with rate information
 					$(d.rates).each(function(i, d) {
 						var rate_id = d.id;
+
 						var taxes = d.taxes;
+
 						$(d.room_rates).each(function(i, d) {
 							if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
 								rooms[d.room_type_id].rates.push(rate_id);
