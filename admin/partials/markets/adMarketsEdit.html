@@ -1,16 +1,16 @@
 <div class="data-holder">
 	<form class="form single-field-form float">
-		<ad-textbox value="item.name" name = "item-name" label = "" placeholder = "Enter market name" required = ""></ad-textbox>
+		<ad-textbox value="item.name" name = "item-name" label = "" placeholder = "{{'MARKET_NAME_PLACEHOLDER'| translate}}" required = ""></ad-textbox>
 
 		<div class="actions float">
-			<button type="button" class="button blank edit-data-inline" ng-click="clickedCancel()">
-				Cancel
+			<button type="button" class="button blank edit-data-inline" ng-click="clickedCancel()" translate>
+				CANCEL
 			</button>
-			<button type="button" class="button green edit-data-inline" ng-click="updateItem()">
-				Save changes
+			<button type="button" class="button green edit-data-inline" ng-click="updateItem()" translate>
+				SAVE_CHANGES
 			</button>
-			<button type="button" class="button red edit-data-inline" ng-click="clickedDelete(item.value)">
-				Delete
+			<button type="button" class="button red edit-data-inline" ng-click="clickedDelete(item.value)" translate>
+				DELETE
 			</button>
 		</div>
 		
