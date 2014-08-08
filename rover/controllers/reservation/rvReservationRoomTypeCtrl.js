@@ -777,7 +777,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					if (taxData.amount_sign != "+") {
 						taxData.amount = parseFloat(taxData.amount * -1.0);
 					}
-					if (taxData.post_type == 'Per Night') {
+					if (taxData.post_type == 'NIGHT') {
 						if (taxData.amount_symbol == '%') {
 							taxTotalPercent = parseFloat(taxTotalPercent) + parseFloat(taxData.amount);
 						} else {
@@ -813,76 +813,88 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// Parse through all room-rate combinations.
 			$(roomRates.results).each(function(i, d) {
-				$scope.displayData.dates.push({
-					str: d.date,
-					obj: new tzIndependentDate(d.date)
-				});
-				var for_date = d.date;
-				//step1: check for room availability in the date range
-				$(d.room_types).each(function(i, d) {
-					if (typeof rooms[d.id] == "undefined") {
-						rooms[d.id] = {
-							id: d.id,
-							name: roomDetails[d.id].name,
-							level: roomDetails[d.id].level,
-							availability: true,
-							rates: [],
-							ratedetails: {},
-							total: [],
-							defaultRate: 0,
-							averagePerNight: 0,
-							description: roomDetails[d.id].description
-						};
-					}
-					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
-					if (d.availability < 1) {
-						rooms[d.id].availability = false;
-					}
-				});
+				if (d.date == $scope.reservationData.arrivalDate || d.date != $scope.reservationData.departureDate) {
+					$scope.displayData.dates.push({
+						str: d.date,
+						obj: new tzIndependentDate(d.date)
+					});
 
-				//step2: extract rooms with rate information
-				$(d.rates).each(function(i, d) {
-					var rate_id = d.id;
-					var taxes = d.taxes;
-					$(d.room_rates).each(function(i, d) {
-						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
-							rooms[d.room_type_id].rates.push(rate_id);
+					var for_date = d.date;
+					//step1: check for room availability in the date range
+					$(d.room_types).each(function(i, d) {
+						if (typeof rooms[d.id] == "undefined") {
+							rooms[d.id] = {
+								id: d.id,
+								name: roomDetails[d.id].name,
+								level: roomDetails[d.id].level,
+								availability: true,
+								rates: [],
+								ratedetails: {},
+								total: [],
+								defaultRate: 0,
+								averagePerNight: 0,
+								description: roomDetails[d.id].description
+							};
 						}
-						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
-							rooms[d.room_type_id].ratedetails[for_date] = [];
+						//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+						if (d.availability < 1) {
+							rooms[d.id].availability = false;
 						}
-						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
-							rate_id: rate_id,
-							rate: $scope.calculateRate(d),
-							taxes: taxes,
-							rateBreakUp: d,
-							day: new tzIndependentDate(for_date)
-						};
+					});
 
-						//calculate tax for the current day
-						if (taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
-						} else {
-							rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
-						}
-
-						rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].tax) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
-
-						//TODO : compute total
-						if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
-							rooms[d.room_type_id].total[rate_id] = {
-								total: 0,
-								average: 0,
-								percent: "0%"
+					//step2: extract rooms with rate information
+					$(d.rates).each(function(i, d) {
+						var rate_id = d.id;
+						var taxes = d.taxes;
+						$(d.room_rates).each(function(i, d) {
+							if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
+								rooms[d.room_type_id].rates.push(rate_id);
 							}
-						}
-						rooms[d.room_type_id].total[rate_id].total += rooms[d.room_type_id].ratedetails[for_date][rate_id].total;
-						if (taxes.length > 0) {
-							rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);;
-						}
-						rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.days).toFixed(2);
+							if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
+								rooms[d.room_type_id].ratedetails[for_date] = [];
+							}
+							rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
+								rate_id: rate_id,
+								rate: $scope.calculateRate(d),
+								taxes: taxes,
+								rateBreakUp: d,
+								day: new tzIndependentDate(for_date)
+							};
+
+							//calculate tax for the current day
+							if (taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+								var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
+								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
+							} else {
+								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = 0;
+								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = 0;
+							}
+
+							rooms[d.room_type_id].ratedetails[for_date][rate_id].total = parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive) + parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
+
+							//TODO : compute total
+							if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
+								rooms[d.room_type_id].total[rate_id] = {
+									total: 0,
+									totalRate: 0,
+									average: 0,
+									percent: "0%"
+								}
+							}
+
+							//total of all rates for ADR computation
+							rooms[d.room_type_id].total[rate_id].totalRate += parseFloat(rooms[d.room_type_id].ratedetails[for_date][rate_id].rate);
+							//total of all rates including taxes.
+							rooms[d.room_type_id].total[rate_id].total += rooms[d.room_type_id].ratedetails[for_date][rate_id].total;
+							//compute the tax header for the table
+							if (taxes.length > 0) {
+								rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);;
+							}
+							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / $scope.reservationData.numNights).toFixed(2);
+						})
 					})
-				})
+				}
 			});
 
 			rooms = restrictionCheck(rooms);

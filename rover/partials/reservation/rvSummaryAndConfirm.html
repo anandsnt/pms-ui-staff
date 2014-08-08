@@ -129,7 +129,8 @@
                 </div>
                 <ul class="total-stay-cost">                	
                 	<li ng-repeat="row in reservationData.taxDetails">
-                		<span class="label" translate>TAX - {{$index+1}}</span>
+                        <!-- TODO : REMOVE THE ADDITIONAL INFO FROM THE BELOW LINE AFTER FUNCTIONAL TESTING-->
+                		<span class="label" translate>{{row.rate}} {{row.description}} {{row.isInclusive?"INCL":"EXCL"}} {{row.postType}}</span>
                 		{{currencySymbol}}{{ row.amount | number : 2}}
                 	</li>
                 	
