@@ -16,7 +16,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		$scope.setScroller('stay-dates-calendar');
 
 		this.init = function() {
-			this.CALENDAR_PAGINATION_COUNT = 75;
+			this.CALENDAR_PAGINATION_COUNT = 10;
 			$scope.eventSources = [];
 
 			$scope.calendarType = "ROOM_TYPE";
@@ -324,10 +324,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			//If no room type is selected for the room type calendar, 
 			//then no need to display the rate
 			var rate = {};
+			rate.name = '';
+			rate.value = '';
 			if ($scope.roomTypeForCalendar == "" && $scope.calendarType == "ROOM_TYPE") {
 				rate.value = "";
 				rate.name = "";
-			} else {
+			} else if(typeof availabilityDetails.room_rates.single != 'undefined') {
 				rate.value = $rootScope.currencySymbol +
 					availabilityDetails.room_rates.single;
 				//Get the rate value iterating throught the rates array
@@ -374,14 +376,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var rate = '';
 
 			angular.forEach($scope.availabilityDetails.results, function(dateDetails, date) {
-
-
 				calEvt = {};
 				//instead of new Date(), Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(date);
 				rate = getRateForTheDay(dateDetails[availabilityKey]);
-				calEvt.title = rate.value;
-				calEvt.rate = rate.name; //Displayed in tooltip
+				console.log(rate);
+				calEvt.title = typeof rate.value == 'undefined'? '': rate.value;
+				calEvt.rate = typeof rate.name == 'undefined'? '': rate.name; //Displayed in tooltip
 				calEvt.start = thisDate;
 				calEvt.end = thisDate;
 				calEvt.day = thisDate.getDate().toString();
