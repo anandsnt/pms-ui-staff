@@ -870,7 +870,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							};
 
 							//calculate tax for the current day
-							if (taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+							if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
 								var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
 								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
 								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
@@ -896,7 +896,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							//total of all rates including taxes.
 							rooms[d.room_type_id].total[rate_id].total += rooms[d.room_type_id].ratedetails[for_date][rate_id].total;
 							//compute the tax header for the table
-							if (taxes.length > 0) {
+							if (taxes && taxes.length > 0) {
 								rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);;
 							}
 							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / $scope.reservationData.numNights).toFixed(2);

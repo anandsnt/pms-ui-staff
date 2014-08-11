@@ -4,10 +4,10 @@ admin.service('adiBeaconSettingsSrv',['$http', '$q', 'ADBaseWebSrvV2', function(
 * To fetch ibeacon list
 * @return {object}
 */	
-this.fetchBeaconList = function(){
+this.fetchBeaconList = function(data){
 	var deferred = $q.defer();
 	var url = '/api/beacons';		
-	ADBaseWebSrvV2.getJSON(url).then(function(data) {
+	ADBaseWebSrvV2.getJSON(url,data).then(function(data) {
 		deferred.resolve(data);
 	},function(data){
 		deferred.reject(data);

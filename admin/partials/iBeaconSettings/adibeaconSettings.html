@@ -4,6 +4,7 @@
 			<h2 translate="IBEACON_SETUP"></h2>
 			<span class="count"> ({{totalCount}}) </span>
 			<a class="action add" ui-sref="admin.iBeaconNewDetails({action:'add'})" ng-click="showLoader()" ng-show="isIpad" translate="ADD_NEW_SMALL"></a>
+			<a class="action back" ng-click="goBackToPreviousState()"translate="BACK"></a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
