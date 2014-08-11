@@ -269,6 +269,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
 
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
+/*			//Initialize the calendar events, 
+			//so that the calendar does not have to wait untill the API call is complete for availability
+			$scope.eventSources.length = 0;
+			$scope.eventSources.push($scope.events);*/
 			//Refresh the calendar with the arrival, departure dates
 			$scope.refreshCalendarEvents();
 			$scope.refreshScroller('stay-dates-calendar');
@@ -549,7 +553,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		};
 		//Click handler for cancel button in calendar screen
 		$scope.handleCancelAction = function() {
-			$state.go($stateParams.fromState, {});
+			if($stateParams.fromState == 'STAY_CARD'){
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
+					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
+			} else{
+				$state.go($stateParams.fromState, {});
+			}
 		};
 
 		/**

@@ -705,6 +705,30 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         };
 
+        /**
+        * Event handler for the left menu staydates click action
+        * We should display the calendar screen
+        */
+        $scope.stayDatesClicked = function(){
+            var fromState = $state.current.name; 
+            //If we are already in state for calendar/rooms&rates, 
+            //then we only need to switch the vuew type to calendar
+            if(fromState == 'rover.reservation.staycard.mainCard.roomType'){
+                $scope.$broadcast('switchToStayDatesCalendar');
+            //Switch state to display the reservation calendar
+            } else {
+                $state.go('rover.reservation.staycard.mainCard.roomType', {
+                    from_date: $scope.reservationData.arrivalDate,
+                    to_date: $scope.reservationData.departureDate,
+                    view: "CALENDAR",
+                    fromState: fromState,
+                    company_id: $scope.reservationData.company.id,
+                    travel_agent_id: $scope.reservationData.travelAgent.id
+                });
+            }
+            $scope.$broadcast('closeSidebar');
+        };
+
         $scope.$on("guestEmailChanged", function(e) {
             $scope.$broadcast('updateGuestEmail');
         });
