@@ -275,6 +275,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.ksn = $scope.passData.ksn;
 			$scope.saveData.pan = $scope.passData.pan;
 			$scope.saveData.mli_token = $scope.passData.token;
+			$scope.saveData.add_to_guest_card = true;
 		}
 		$scope.saveData.session_id = MLISessionId;
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
@@ -296,7 +297,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
-			 $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
 	$scope.clickCancel = function(){
