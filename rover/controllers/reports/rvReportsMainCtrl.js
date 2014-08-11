@@ -13,7 +13,11 @@ sntRover.controller('RVReportsMainCtrl', [
 		    hide: true,
 		    title: 'Reports',
 		    callback: 'goBackReportList',
-		    scope: $scope
+		    scope: $scope,
+
+		    // since there is no state change we must declare this explicitly
+		    // else there can be errors in future animations
+		    noStateChange: true
 		};
 
 		$scope.setTitle( 'Stats & Reports' );

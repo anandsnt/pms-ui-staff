@@ -99,7 +99,11 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// ok boys we are gonna sit this one out
 		// 'scope.callback' is will be running the show
 		if ( !!options.scope ) {
-			$_mustRevAnim = reverse ? options.reverse : true;
+
+			// NOTE: if the controller explicitly says there is not state change
+			// $_mustRevAnim must be set false, else check further
+			$_mustRevAnim = options.noStateChange ? false : (reverse ? options.reverse : true);
+			
 			options.scope[options.callback]();
 			return;
 		};
@@ -114,6 +118,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 	$rootScope.returnBack = false;
 	$rootScope.isReturning = function() {
+		console.log( '$rootScope.returnBack ' + $rootScope.returnBack );
 		return $rootScope.returnBack;
 	};
 
@@ -130,14 +135,12 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
+		console.log( fromState.name + ' --> ' + toState.name );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
 		// with its own desired values
 		$rootScope.setPrevState = {};
-
-		// reset this flag
-		$rootScope.returnBack = false;
 
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
@@ -165,6 +168,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			toParams.useCache = true;
 			$_userReqBack = false;
 		};
+
+		// reset this flag
+		$rootScope.returnBack = false;
 	});
 }]);
 
