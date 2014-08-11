@@ -1,12 +1,12 @@
 <section  class="content current" ng-click="clearErrorMessage()">
 	<div>
 		<header class="content-title float">
-			<h2> Origins </h2>
+			<h2 translate> ORIGINS </h2>
 			<span class="count"> (
 				{{data.booking_origins.length}}
 				) </span>
-			<a class="action add" ng-hide="!data.is_use_origins" ng-click="addNewClicked()" >Add new</a>
-			<ad-toggle-button is-checked="data.is_use_origins" div-class="header-title" ng-click="clickedUsedOrigins()" label="Use Origin of Booking"></ad-toggle-button>
+			<a class="action add" ng-hide="!data.is_use_origins" ng-click="addNewClicked()" translate>ADD_NEW</a>
+			<ad-toggle-button is-checked="data.is_use_origins" div-class="header-title" ng-click="clickedUsedOrigins()" label="{{'USE_ORIGIN_OF_BOOKING' | translate}}"></ad-toggle-button>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>

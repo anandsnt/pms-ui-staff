@@ -186,7 +186,13 @@
              sessionDetails.cardSecurityCode = $scope.ccv;
              sessionDetails.cardExpiryMonth = $scope.monthSelected;
              sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
-             HostedForm.updateSession(sessionDetails, $scope.callback);
+             try {
+                HostedForm.updateSession(sessionDetails, $scope.callback); 
+             }
+             catch(err) {
+                $scope.netWorkError = true;
+             };
+             
          }
       
 

@@ -1,11 +1,11 @@
 <section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
 	<div data-view="GuestCardHLPView">
 		<header class="content-title float">
-			<h2> Hotel Loyalty Programs </h2>
+			<h2 translate> HOTEL_LOYALTY_PROGRAMS </h2>
 			<span class="count"> (
 				{{data.hotel_loyalty_program.length}}
 				) </span>
-			<a id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()">Add new</a>
+			<a id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()" translate>ADD_NEW</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/hotelLoyalty/adHotelLoyaltyAdd.html'"></div>

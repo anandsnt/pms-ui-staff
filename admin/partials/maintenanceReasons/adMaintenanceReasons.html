@@ -1,11 +1,11 @@
 <section class="content current" ng-click="clearErrorMessage()">
 	<div>
 		<header class="content-title float">
-			<h2> Maintenance Reasons </h2>
+			<h2 translate> MAINTENANCE_REASONS </h2>
 			<span class="count"> (
 				{{data.maintenance_reasons.length}}
 				) </span>
-			<a class="action add" ng-click="addNewClicked()">Add new</a>
+			<a class="action add" ng-click="addNewClicked()" translate>ADD_NEW</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>

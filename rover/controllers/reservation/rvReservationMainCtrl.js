@@ -47,7 +47,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData = {
                 arrivalDate: '',
                 departureDate: '',
-                midStay: false,// Flag to check in edit mode if in the middle of stay
+                midStay: false, // Flag to check in edit mode if in the middle of stay
                 stayDays: [],
                 checkinTime: {
                     hh: '',
@@ -59,6 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     mm: '00',
                     ampm: 'AM'
                 },
+                taxDetails: {},
                 numNights: 1, // computed value, ensure to keep it updated
                 roomCount: 1, // Hard coded for now,
                 rooms: [{
@@ -143,6 +144,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var defaultMaxvalue = 5;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData = {
+                taxesMeta: [],
                 markets: baseData.demographics.markets,
                 sources: baseData.demographics.sources,
                 origins: baseData.demographics.origins,
@@ -332,6 +334,92 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.closeDialog();
         }
 
+        /*
+         * This method will return the tax details for the amount and the tax provided
+         * The computation happens at day level as the rate details can be varying for each day!
+         */
+
+        $scope.calculateTax = function(date, amount, taxes, roomIndex, recordTaxes) {
+            var taxInclusiveTotal = 0.0; //Per Night Inclusive Charges
+            var taxExclusiveTotal = 0.0; //Per Night Exclusive Charges
+            /* --The above two are required only for the room and rates section where we 
+             *  do not display the STAY taxes
+             */
+            var taxInclusiveStayTotal = 0.0; //Per Stay Inclusive Charges
+            var taxExclusiveStayTotal = 0.0; //Per Stay Exlusive Charges
+
+            var taxDescription = [];
+
+            var adults = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.adults;
+            var children = $scope.reservationData.rooms[roomIndex].stayDates[date].guests.children;
+            var nights = $scope.reservationData.numNights;
+
+            _.each(taxes, function(tax) {
+                //for every tax that is associated to the date proceed
+                var isInclusive = tax.is_inclusive;
+                var taxDetails = _.where($scope.otherData.taxesMeta, {
+                    id: parseInt(tax.charge_code_id)
+                });
+                if (taxDetails.length == 0) {
+                    //Error condition! Tax code in results but not in meta data
+                    console.log("Error on tax meta data");
+                } else {
+                    var taxData = taxDetails[0];
+                    // Need not consider perstay here
+                    var taxAmount = taxData.amount;
+                    if (taxData.amount_sign != "+") {
+                        taxData.amount = parseFloat(taxData.amount * -1.0);
+                    }
+                    var taxAmountType = taxData.amount_type;
+                    var multiplicity = 1; // for amount_type = flat
+                    if (taxAmountType == "ADULT") {
+                        multiplicity = adults;
+                    } else if (taxAmountType == "CHILD") {
+                        multiplicity = children;
+                    } else if (taxAmountType == "PERSON") {
+                        multiplicity = parseInt(children) + parseInt(adults);
+                    }
+                    /*
+                     *  THE TAX CALCULATION HAPPENS HERE
+                     */
+                    var taxCalculated = 0;
+                    if (taxData.amount_symbol == '%' && parseFloat(taxData.amount) != 0.0) {
+                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * amount));
+                    } else {
+                        taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
+                    }
+                    if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
+                        if (isInclusive) {
+                            taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
+                        } else {
+                            taxExclusiveTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
+                        }
+                    } else { // STAY tax computations                 
+                        if (isInclusive) {
+                            taxInclusiveStayTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
+                        } else {
+                            taxExclusiveStayTotal = parseFloat(taxExclusiveTotal) + parseFloat(taxCalculated);
+                        }
+                    }
+                    taxDescription.push({
+                        postType: taxData.post_type,
+                        isInclusive: isInclusive,
+                        amount: taxCalculated,
+                        id: taxData.id,
+                        description: taxData.description,
+                        roomIndex: roomIndex
+                    });
+                }
+            });
+            return {
+                inclusive: taxInclusiveTotal,
+                exclusive: taxExclusiveTotal,
+                stayInclusive: taxInclusiveStayTotal,
+                stayExclusive: taxExclusiveStayTotal,
+                taxDescription: taxDescription
+            };
+        }
+
 
         $scope.computeTotalStayCost = function() {
             // TODO : Loop thru all rooms
@@ -342,20 +430,85 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var adults = currentRoom.numAdults;
             var children = currentRoom.numChildren;
             var roomTotal = 0;
+            var roomTax = 0;
             var roomAvg = 0;
+            var totalTaxes = 0;
+            var taxes = currentRoom.taxes;
+            $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
                 if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
+                    var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
+
                     var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
                     var extraAdults = adults >= 2 ? adults - 2 : 0;
-                    roomTotal = roomTotal + (baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child));
+                    var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+
+                    roomTotal = roomTotal + roomAmount;
+
+                    if (taxes.length > 0) {
+                        //  We get the tax details for the specific day here
+                        var taxApplied = $scope.calculateTax(date, roomAmount, taxes, roomIndex);
+                        //  Note: Got to add the exclusive taxes into the tax Amount thing
+                        var taxAmount = 0;
+                        //  Compile up the data to be shown for the tax breakup
+                        //  Add up the inclusive taxes & exclusive taxes pernight
+                        //  TODO: PERSTAY TAXES TO BE COMPUTED HERE [[[[[[[[PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]]]
+                        _.each(taxApplied.taxDescription, function(description, index) {
+                            description.rate = $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id;
+                            if (description.postType == "NIGHT") {
+                                if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                                    $scope.reservationData.taxDetails[description.id] = description;
+                                } else {
+                                    // add the amount here
+                                    $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + parseFloat(description.amount);
+                                }
+                                taxAmount = parseFloat(taxApplied.exclusive);
+                            } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
+                                if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                                    // As stated earler per_stay taxes can be taken in only for the first rateId
+                                    if (_.isEmpty($scope.reservationData.taxDetails)) {
+                                        $scope.reservationData.taxDetails[description.id] = description;
+                                    } else {
+                                        //get the rateId of the first value in the $scope.reservationData.taxDetail
+                                        var rateIdExisting = $scope.reservationData.taxDetails[Object.keys($scope.reservationData.taxDetails)[0]].rate;
+                                        if (rateIdExisting == description.rate) {
+                                            $scope.reservationData.taxDetails[description.id] = description;
+                                        }
+                                    }
+                                } else {
+                                    /*
+                                     *   --NOTE: For the same rateId there could be different rates across the stay period.
+                                     *   For the above scenario if the PERSTAY tax is say some x% of the rate,
+                                     *   we would be having different rates >>> WHAT TO DO? For now sticking to the larger number
+                                     *   Now, even better: Say there are multiple rateIds selected, or even for this comment's sake a single rate for the all stay dates
+                                     *   but there are multiple occupancies and the taxes arent flat, but they are PER_PERSON/ PER_CHILD / PER_ADULT
+                                     *   ThereAgain : for now sticking to the largest tax amount of all
+                                     *   === TODO === Mail product team for a clarification on this!!!
+                                     */
+                                    $scope.reservationData.taxDetails[description.id].amount = $scope.reservationData.taxDetails[description.id].amount > description.amount ? $scope.reservationData.taxDetails[description.id].amount : description.amount;
+                                }
+                            }
+
+                        });
+                        //  update the total Tax Amount to be shown                        
+                        totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
+                    }
                 }
             });
 
-            currentRoom.rateTotal = roomTotal;
+            // Add exclusiveStayTaxes
+            var exclusiveStayTaxes = _.where($scope.reservationData.taxDetails, {
+                postType: 'STAY',
+                isInclusive: false
+            });
+            _.each(exclusiveStayTaxes, function(description, index) {
+                totalTaxes = parseFloat(totalTaxes) + parseFloat(description.amount);
+            })
 
-            currentRoom.rateAvg = roomTotal / $scope.reservationData.numNights;
+            currentRoom.rateTotal = parseFloat(roomTotal) + parseFloat(roomTax);
+            currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
 
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
@@ -404,8 +557,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 addOnCumulative += parseInt(finalRate);
                 addon.effectivePrice = finalRate;
             });
+
+
             //TODO: Extend for multiple rooms
-            $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative);
+            $scope.reservationData.totalTaxAmount = totalTaxes;
+            $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative) + parseFloat(totalTaxes);
+
+
         }
 
 
@@ -535,14 +693,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             console.log('$scope.reservationData model - 2', $scope.reservationData);
 
             /* CICO-6069
-             *  Comments from story: 
+             *  Comments from story:
              *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
              *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
              */
 
             // Find if midstay
-            if(new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)){
-                $scope.reservationData.midStay = true;                
+            if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
+                $scope.reservationData.midStay = true;
             }
 
         };
