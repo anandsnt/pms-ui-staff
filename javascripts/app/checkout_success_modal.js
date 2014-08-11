@@ -32,7 +32,7 @@ var CheckoutSuccessModal = function(callBack) {
 				requestParameters : data,
 				successCallBack : that.hide(callBack)
 			};
-			webservice.postJSON('/staff_house_keeping/change_house_keeping_status', options);
+			webservice.postJSON('/house/change_house_keeping_status.json', options);
 		}
 		else{
 			that.hide(callBack);
