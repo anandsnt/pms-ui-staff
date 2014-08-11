@@ -241,6 +241,7 @@
     "AVG_NIGHT": "avg/night",
     "EACH": "each",
     "TAX": "Tax",
+    "TOTAL_TAX": "Total Tax",
     "TOTAL_STAY_COST": "Total Stay Cost",
     "FIRST_NAME": "First name",
     "LAST_NAME": "Last Name",

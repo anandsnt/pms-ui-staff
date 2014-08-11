@@ -215,6 +215,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.rateData.addOns = data.addons;
         $scope.rateData.charge_code_id = data.charge_code_id;
         $scope.rateData.currency_code_id = data.currency_code_id;
+        $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
 
         manipulateAdditionalDetails(data);
 
@@ -301,7 +302,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             return true;
         };
 
-        // on click Cancel button redirect to previous active menu
+        // on click Cancel button redirect to previous active msetRateDetailsenu
         $scope.cancelMenu = function(){
             $scope.$emit("changeMenu", $scope.prevMenu);
         }

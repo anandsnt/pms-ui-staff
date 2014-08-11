@@ -3,41 +3,72 @@
 		<form class="form inline-form float">
 			<fieldset class="holder left">
 				<div class="form-title">
-					<h3><span>Charge Code</span> details </h3>
-					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+					<h3><span translate>CHARGE_CODE</span> {{'DETAILS' | translate}} </h3>
+					<em class="status"> {{'MANDATORY_FIELDS_MESSAGE1'| translate}} <strong>*</strong>{{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
 				</div>
 				
-				<ad-textbox value="prefetchData.code" label = "Charge Code" placeholder = "Enter charge code" required = "yes" styleclass="full-width" ></ad-textbox>
+				<ad-textbox value="prefetchData.code" label = "{{'CHARGE_CODE'| translate}}" placeholder = "{{'CHARGE_CODE_PLACEHOLDER'| translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "Description " placeholder = "Enter Description" required="true"></ad-textarea>
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "{{'DESCRIPTION'| translate}} " placeholder = "{{'DESC_PLACEHOLDER' | translate }}" required="true"></ad-textarea>
 
-				<ad-dropdown label="Charge Group" label-in-drop-down="Charge Group" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "yes" div-class="full-width"></ad-dropdown>
+				<ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "yes" div-class="full-width"></ad-dropdown>
 
-				<ad-dropdown label="Charge Code type" label-in-drop-down="Charge Code type" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
+				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
+
+				<!-- show For charge codes of the code type TAX , for standalone hotels-->
+				<div class="entry full-width" ng-show="prefetchData.selected_charge_code_type == '1' && !isPmsConfigured" >
+					<div class="entry full-width" >
+						<label translate> AMOUNT </label>
+						
+						<div class="select select-col col1-3 ">
+							<select ng-model="prefetchData.selected_amount_sign" class="styled">
+	                        	<option ng-repeat="sign in ['+','-']" ng-selected="sign==prefetchData.selected_amount_sign" value="{{sign}}">{{sign}}</option>
+	                        </select>
+						</div>
+						<div class=" select-col col1-3 " >
+							<ad-textbox value="prefetchData.amount" inputtype="text" value="" styleclass = "col1-3"	label = "" placeholder = "" style="  margin-top: 0; width: 66px;"></ad-textbox>
+						</div>
+						<div class="select select-col col1-3">
+							<select ng-model="prefetchData.selected_amount_symbol" class="styled">
+	                            <option ng-repeat="symbol in ['%','$']"  ng-selected="type===prefetchData.selected_amount_symbol" value="{{symbol}}">{{symbol}}</option>
+	                        </select>
+						</div>
+					</div>
+					<ad-dropdown label="{{'AMOUNT_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'SELECT_AMOUNT_TYPE' | translate}}" list="prefetchData.amount_types" selected-Id="prefetchData.selected_amount_type" ></ad-dropdown>
+					<ad-dropdown label="{{'POST_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'Select Post Type' | translate}}" list="prefetchData.post_types" selected-Id="prefetchData.selected_post_type" ></ad-dropdown>
+				</div>
+				<!-- show For charge codes of the code type TAX-->
 
 			</fieldset>
-			<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
-			<fieldset ng-hide="prefetchData.selected_charge_code_type == '1'" class="holder right">
-				<div class="form-title">
-					<h3><span>Charge code</span> Link with </h3>
-				</div>
-				<div class="entry full-width">
-					<div id="room-key-for-rover" class="boxes link-with" >
-						<div class="entry radio-check link-with" ng-repeat="link in prefetchData.link_with">
-							<label class="checkbox" ng-class="{ checked : link.is_checked === 'true' }">
-								<span class="icon-form icon-checkbox" ng-class="{ checked : link.is_checked === 'true' }"></span>
-								<label for="link-with-1"></label>
-								<input type="checkbox"  ng-click="link.is_checked =(link.is_checked  === 'true')? 'false':'true'">
-								{{link.name}}
-							</label>
+			
+			<fieldset class="holder right">
+				<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
+				<div ng-hide="prefetchData.selected_charge_code_type == '1' || !isPmsConfigured ">
+					<div class="form-title">
+						<h3><span translate>CHARGE_CODE</span> {{'LINK_WITH' | translate}} </h3>
+					</div>
+					<div class="entry full-width">
+						<div id="room-key-for-rover" class="boxes">
+							<div class="entry radio-check" ng-repeat="link in prefetchData.link_with">
+								<label class="checkbox" ng-class="{ checked : link.is_checked === 'true' }"> <span class="icon-form icon-checkbox" ng-class="{ checked : link.is_checked === 'true' }"></span> <label for="link-with-1"></label>
+									<input type="checkbox"  ng-click="link.is_checked =(link.is_checked  === 'true')? 'false':'true'">
+									{{link.name}} </label>
+							</div>
 						</div>
 					</div>
 				</div>
+				<!--for charge code type other than PAYMENT or TAX -->
+				<div ng-hide="isPmsConfigured || prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '2'" ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
+
 			</fieldset>
 
 			<div class="actions float">
-				<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline">Cancel</button>
-				<button type="button" ng-click="clickedSave()" class="button green edit-data-inline">Save changes</button>
+				<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline" translate>
+					CANCEL
+				</button>
+				<button type="button" ng-click="clickedSave()" class="button green edit-data-inline" translate>
+					SAVE_CHANGES
+				</button>
 			</div>
 
 		</form>

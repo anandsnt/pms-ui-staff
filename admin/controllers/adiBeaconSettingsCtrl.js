@@ -1,11 +1,11 @@
-admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','adiBeaconSettingsSrv',
-	function($scope, $state, ngTableParams,adiBeaconSettingsSrv){
+admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','adiBeaconSettingsSrv','$rootScope',
+	function($scope, $state, ngTableParams,adiBeaconSettingsSrv,$rootScope){
 	$scope.$emit('hideLoader');
 	$scope.init = function(){
 		$scope.errorMessage = "";
 		$scope.successMessage = "";
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
-		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null;
+		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
 		$scope.data = [];
 	};
 	$scope.init();
@@ -13,6 +13,12 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 	$scope.showLoader = function(){
 		$scope.$emit("showLoader");
 	};
+
+	/*
+    * To set the preveous state as admin.dashboard/Zest in all cases
+    */
+    $rootScope.previousState = 'admin.dashboard';
+    $rootScope.previousStateParam = '1';
 
 	$scope.fetchTableData = function($defer, params){
 		var getParams = $scope.calculateGetParams(params);
@@ -31,7 +37,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = data;
 		};
-		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, {}, fetchSuccessOfItemList,fetchFailedOfItemList);
+		$scope.invokeApi(adiBeaconSettingsSrv.fetchBeaconList, getParams, fetchSuccessOfItemList,fetchFailedOfItemList);
 	}
 
 	$scope.loadTable = function(){
@@ -39,7 +45,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page
 		        sorting: {
-		            rate: 'asc' // initial sorting
+		            location: 'asc' // initial sorting
 		        }
 		    }, {
 		        total: 0, // length of data
