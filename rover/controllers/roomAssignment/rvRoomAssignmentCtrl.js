@@ -107,7 +107,28 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.occupancyDialogSuccess = function(){
 		$scope.assignRoom();			
 	};
+
+	//success call of un-assigningb rooms
+	var successCallbackOfUnAssignRooms = function(data){
+		
+	};
 	
+	//failujre call of un-assigningb rooms
+	var failureCallBackOfUnAssignRooms = function(errorMessage){
+
+	};
+
+	/**
+	* click function to unassing rooms
+	*/
+	$scope.unassignRooms = function(){
+		var params = {
+			'reservation_id' : parseInt($stateParams.reservation_id, 10);
+		};
+
+		$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRooms, failureCallBackOfUnAssignRooms);
+	}
+		
 	/**
 	* function to assign the new room for the reservation
 	*/

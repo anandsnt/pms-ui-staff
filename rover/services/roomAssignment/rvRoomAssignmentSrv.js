@@ -1,4 +1,4 @@
-sntRover.service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+sntRover.service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2){
 		
 	this.getRooms = function(param){
 		var deferred = $q.defer();
@@ -34,4 +34,15 @@ sntRover.service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 		
 	};
 
+	this.UnAssignRoom = function(param){
+		var deferred = $q.defer();
+		var url =  '/api/reservations/unassign_room';			
+		RVBaseWebSrv.postJSON(url, param).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
 }]);
