@@ -565,7 +565,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.displayData.roomTypes = $($scope.displayData.allRooms).filter(function() {
 					return this.id == $scope.stateCheck.preferredType || hasContractedRate($scope.roomAvailability[this.id].rates);
 				});
-				if ($scope.displayData.roomTypes.length > 0 && !$scope.stateCheck.stayDatesMode) {
+				if ($scope.displayData.roomTypes.length > 0 && $scope.reservationData.status != "CHECKEDIN" && $scope.reservationData.status != "CHECKING_OUT") {
 					var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
 					if (level == 1 || level == 2) {
 						//Append rooms from the next level
