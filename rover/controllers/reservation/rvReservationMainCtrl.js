@@ -2,6 +2,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
         BaseCtrl.call(this, $scope);
 
+        // $rootScope.businessDate = "2014-05-10";
+
         $scope.$emit("updateRoverLeftMenu", "createReservation");
 
         var title = $filter('translate')('RESERVATION_TITLE');
@@ -699,12 +701,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
              *  We should show the first nights room type by default and the respective rate as 'Booked Rate'.
              *  If the reservation is already in house and it is midstay, it should show the current rate. Would this be possible?
              */
+            var arrivalDateDetails = _.where(reservationDetails.reservation_card.stay_dates, {
+                date: $scope.reservationData.arrivalDate
+            });
+            $scope.reservationData.rooms[0].numAdults = arrivalDateDetails[0].adults;
+            $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
+            $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
             // Find if midstay
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
+                var currentDayDetails = _.where(reservationDetails.reservation_card.stay_dates, {
+                    date: $rootScope.businessDate
+                });
+                if (currentDayDetails.length > 0) {
+                    $scope.reservationData.rooms[0].numAdults = currentDayDetails[0].adults;
+                    $scope.reservationData.rooms[0].numChildren = currentDayDetails[0].children;
+                    $scope.reservationData.rooms[0].numInfants = currentDayDetails[0].infants;
+                }
             }
-
         };
 
         $scope.$on("guestEmailChanged", function(e) {
