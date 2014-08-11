@@ -7,10 +7,10 @@ $scope.errorMessage='';
 $scope.isLoggedIn = false;
 $scope.startProcess = false;
 $scope.startProcessEnabled = true;
-$scope.businessDate = $rootScope.businessDate;
+$scope.businessDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
 $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
 $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
-$scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, 'yyyy-MM-dd');
+$scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, 'MM-dd-yyyy');
 $scope.isTimePastMidnight = true;
 
 /*
@@ -19,7 +19,9 @@ $scope.isTimePastMidnight = true;
 $scope.cancelClicked = function(){
    ngDialog.close();
 };
-
+/*
+ * verify credentials
+ */
 $scope.login = function(){
 	
 	var loginSuccess = function(data){
@@ -39,10 +41,14 @@ $scope.startEndOfDayProcess = function(){
 
 };
 
+$scope.yesClick = function(){
+	$scope.isTimePastMidnight = true
+}
+
 $scope.continueClicked = function(){
 	$scope.startProcessEnabled = false;
 	$scope.startProcess = false;
-
+// explicitly handled error callback to set $scope.startProcessEnabled
 	var startProcessFailure = function(data){
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;

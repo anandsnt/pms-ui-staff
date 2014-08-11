@@ -323,13 +323,10 @@
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
     "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
-
 ,	
 	"SETTINGS_AND_PARAMS":"Settings & Parameters",
     "CHANGE_BUSSINESS_DAY":"Change Business Day",
-    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date"
-
-,
+    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",
@@ -351,4 +348,3 @@
 "NUMBER_OF_REVIEWS":"Number of reviews",
 "NUMBER_OF_REVIEWS_PLACEHOLDER":"Enter Number of reviews",
 "RATING_LIMIT":"Rating limit"}
-
