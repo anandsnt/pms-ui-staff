@@ -9,12 +9,6 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
         this.fetchAvailability = function(params) {
             //If its a request to fetch the additional, then fetch the next set of availability data 
             //based on the last_fetched date
-          /*  if(params.status == 'FETCH_ADDITIONAL'){
-                var fromDate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + 1) ;
-                params.from_date = $filter('date')(fromDate, 'yyyy-MM-dd');
-                var todate = that.lastFetchedDate.setDate(that.lastFetchedDate.getDate() + params.per_page) ;
-                params.to_date = $filter('date')(todate, 'yyyy-MM-dd');
-            }*/
             var deferred = $q.defer();
             var url = '/api/availability';
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
@@ -90,6 +84,7 @@ sntRover.service('RVStayDatesCalendarSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSr
 
             var dict = {};
             dict.rate_id = rateId;
+            dict.room_type_availability = {};
             //Get the room type availability details looping through all room types. 
             angular.forEach(allRoomTypes, function(roomType, roomTypeIndex) {
                 if(roomType.id == lowestRate.room_type_id){

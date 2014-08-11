@@ -525,7 +525,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			from_date: $scope.confirmedCheckinDate,
 			to_date: $scope.confirmedCheckoutDate,
 			view: "CALENDAR",
-			fromState: 'rover.reservation.staycard.reservationcard.reservationdetails',
+			fromState: 'STAY_CARD',
 			company_id: $scope.reservationData.company.id,
 			travel_agent_id: $scope.reservationData.travelAgent.id
 		});
