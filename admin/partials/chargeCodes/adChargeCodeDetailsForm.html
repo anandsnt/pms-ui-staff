@@ -15,6 +15,18 @@
 
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
 
+				<!-- <ad-dropdown label="{{'PAYMENT_TYPE'| translate}}" ng-show="prefetchData.selected_charge_code_type == '2'" label-in-drop-down="{{'PAYMENT_TYPE'| translate}}" list="prefetchData.payment_types" selected-Id='prefetchData.selected_payment_type' required = "yes" div-class="full-width"></ad-dropdown> -->
+
+				<div class="block-title" ng-show="prefetchData.selected_charge_code_type == '2'">
+					<h3 translate>PAYMENT_TYPE</h3>
+				</div>
+				<select name="payment_type" ng-model = "selected_payment_type" ng-show="prefetchData.selected_charge_code_type == '2'">
+			<option value="" class="placeholder" translate>PAYMENT_TYPE</option>
+			<option value="{{paymentType.value}}" ng-selected="(paymentType.value==selected_payment_type.value && (paymentType.is_cc_type && selected_payment_type.is_cc_type))" ng-repeat="paymentType in prefetchData.payment_types" >
+				{{newspaper.name}} 
+			</option>
+		</select>
+
 				<!-- show For charge codes of the code type TAX , for standalone hotels-->
 				<div class="entry full-width" ng-show="prefetchData.selected_charge_code_type == '1' && !isPmsConfigured" >
 					<div class="entry full-width" >

@@ -10,6 +10,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
+	$scope.selected_payment_type = {};
 	
 	/*
 	 * To fetch charge code list
@@ -72,6 +73,8 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.prefetchData = data;
 			$scope.isEdit = true;
 			$scope.isAdd = false;
+
+			$scope.setSelectedPaymentType();
 		
 			// Generating calculation rules list.
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
@@ -164,7 +167,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			}
 	    });
 		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
-		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
+		var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
 		
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
@@ -177,6 +180,9 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			delete item["selected_calculation_rule"];
 			if(item["id"])	delete item["id"];
 	    });
+	    //include payment type details
+	    postData.selected_payment_type = $scope.selected_payment_type.value;
+	    postData.is_cc_type = $scope.selected_payment_type.is_cc_type;
 		
 		$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 	};
@@ -317,6 +323,18 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		}
 		else if($scope.isEditTax){
 			$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
+		}
+	};
+
+	/*
+	 * To set the selected payment type based on the id and cc_type from the api.
+	 */
+	$scope.setSelectedPaymentType = function() {
+		for(int i = 0; i < $scope.prefetchData.payment_types.length; i++){
+			if($scope.prefetchData.payment_types[i].value == $scope.prefetchData.selected_payment_type && ($scope.prefetchData.payment_types[i].is_cc_type && $scope.prefetchData.is_cc_type)){
+				$scope.selected_payment_type = $scope.prefetchData.payment_types[i];
+				return;
+			}
 		}
 	};
 }]);
