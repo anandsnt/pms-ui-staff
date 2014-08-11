@@ -867,4 +867,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 	 });	
+
+	$scope.openActionsPopup = function(feesIndex){
+		console.log(feesIndex)
+		console.log($scope.reservationBillData.bills)
+		//var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvBillActionsPopup.html',
+    	//	controller: 'RVBillActionsPopupCtrl',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	};
 }]);
