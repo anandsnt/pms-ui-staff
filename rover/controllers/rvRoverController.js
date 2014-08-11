@@ -325,7 +325,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.toggleDrawerMenu();
       if(subMenu === "endOfDay"){
          ngDialog.open({
-            template: '/assets/partials/settings/rvEndOfDayModal.html',
+            template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
             controller: 'RVEndOfDayModalController',
             className: 'ngdialog-theme-plain calendar-modal'
           });
