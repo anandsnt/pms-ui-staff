@@ -502,7 +502,6 @@ var RegistrationCardView = function(viewDom) {
 		webservice.postJSON(url, options);
 	};
 	// Success of complete checkout
-	krish=this;
 	this.fetchCompletedOfCompleteCheckout = function(data) {
 		var checkoutSuccessModal = new CheckoutSuccessModal(that.goToSearchScreen);
 		checkoutSuccessModal.initialize();
