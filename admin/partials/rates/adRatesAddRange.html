@@ -40,7 +40,7 @@
 							<button type="button" ng-click="saveDateRange()" ng-hide="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="!allFieldsFilled()">
 								Configure Rate
 							</button>
-							<button type="button" ng-click="saveDateRange()" ng-show="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="allFieldsFilled()">	Save
+							<button type="button" ng-click="saveDateRange()" ng-show="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'green' : (rateData.id > 0 && allFieldsFilled()) }" ng-disabled="allFieldsFilled()">	Save
 							</button>
 
 						</div>

@@ -1,8 +1,8 @@
 <!-- Header Collapse View -->
-<div ng-hide="detailsMenu ==='rulesAndRestrictions'">
+<div ng-hide="detailsMenu ==='rulesAndRestrictions'" ng-click="changeDetailsMenu('rulesAndRestrictions')" class="cursor_pointer">
 	<div class="form-title">
 		<h3 class="rate_additional_details_heading">  RULES & RESTRICTIONS </h3>
-		<div ng-click="changeDetailsMenu('rulesAndRestrictions')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+		<div style="float:right"><img src="/assets/arrow-down.png"></div>
 	</div>
 </div>
 
@@ -16,12 +16,12 @@
 	<!-- <fieldset class="holder full-width"> -->
 	<fieldset class="holder left">
 		<div class="entry full-width">
-			<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "min.advanced booking" placeholder = "Enter Number of Days" ng-show="minAdvancedBookingActivated"></ad-textbox>
-			<ad-textbox inputtype="text" value="rateData.max_advanced_booking" label = "max.advanced booking" placeholder = "Enter Number of Days" ng-show="maxAdvancedBookingActivated" ></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "min. advanced booking" placeholder = "Enter Number of Days" ng-show="minAdvancedBookingActivated"></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.max_advanced_booking" label = "max. advanced booking" placeholder = "Enter Number of Days" ng-show="maxAdvancedBookingActivated" ></ad-textbox>
 		</div>
 		<div class="entry full-width">
-			<ad-textbox inputtype="text" value="rateData.min_stay" label = "min.length of stay" placeholder = "Enter Number of Days" ng-show="minStayLengthActivated"></ad-textbox>
-			<ad-textbox inputtype="text" value="rateData.max_stay" label = "max.length of stay" placeholder = "Enter Number of Days" ng-show="maxStayLengthActivated"></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.min_stay" label = "min. length of stay" placeholder = "Enter Number of Days" ng-show="minStayLengthActivated"></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.max_stay" label = "max. length of stay" placeholder = "Enter Number of Days" ng-show="maxStayLengthActivated"></ad-textbox>
 		</div>
 		<!-- TODO :  part of future functionality <ad-checkbox is-checked="rateData.use_rate_levels" label="Use Rate Levels" div-class="full-width"></ad-checkbox> -->	
 	</fieldset>

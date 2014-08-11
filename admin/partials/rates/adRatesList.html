@@ -33,7 +33,7 @@
 		<div class="entry table-search">
 			<span class="search-text">Search</span>
 			<span class="icons icon-search" name="submit" type="submit"></span>
-	    	<input type="search" ng-model="searchTerm" ng-enter = "searchEntered()" autocomplete="off" placeholder="" />
+			<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
 	    </div>
 		
 
