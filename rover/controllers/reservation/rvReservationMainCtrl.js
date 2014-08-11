@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', 'RVReservationBaseSearchSrv', '$state', 'dateFilter', 'baseSearchData',
-    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, RVReservationBaseSearchSrv, $state, dateFilter, baseSearchData) {
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
+    function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
@@ -15,7 +15,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         // inner controllers
         $scope.$on("setHeading", function(e, value) {
             $scope.heading = value;
-        })
+        });
 
         $scope.viewState = {
             isAddNewCard: false,
@@ -73,6 +73,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateAvg: 0,
                     rateTotal: 0,
                     addons: [],
+                    varyingOccupancy: false,
                     stayDates: {}
                 }],
                 totalTaxAmount: 0,
@@ -120,7 +121,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 confirmNum: '',
                 isSameCard: false, // Set flag to retain the card details,
                 rateDetails: [] // This array would hold the configuration information of rates selected for each room
-            }
+            };
 
             $scope.searchData = {
                 guestCard: {
@@ -139,7 +140,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     travelAgentCity: "",
                     travelAgentIATA: ""
                 }
-            }
+            };
             // default max value if max_adults, max_children, max_infants is not configured
             var defaultMaxvalue = 5;
             var guestMaxSettings = baseSearchData.settings.max_guests;
@@ -271,6 +272,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.checkOccupancyLimit = function(date) {
             var roomIndex = 0;
             if (isOccupancyConfigured(roomIndex)) {
+                $scope.reservationData.rooms[roomIndex].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(roomIndex);
                 $scope.computeTotalStayCost();
                 var activeRoom = $scope.reservationData.rooms[roomIndex].roomTypeId;
                 var currOccupancy = parseInt($scope.reservationData.rooms[roomIndex].numChildren) +
@@ -708,6 +710,36 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.$on("guestEmailChanged", function(e) {
             $scope.$broadcast('updateGuestEmail');
         });
+
+        //CICO-8504 Generic method to check for varying occupancy
+        $scope.reservationUtils = (function() {
+            var self = this;
+            self.isVaryingOccupancy = function(roomIndex) {
+                var stayDates = $scope.reservationData.rooms[roomIndex].stayDates;
+                // If staying for just one night then there is no chance for varying occupancy
+                if ($scope.reservationData.numNights < 2) {
+                    return false;
+                }
+                // If number of nights is more than one, then need to check across the occupancies 
+                var numInitialAdults = stayDates[$scope.reservationData.arrivalDate].guests.adults;
+                var numInitialChildren = stayDates[$scope.reservationData.arrivalDate].guests.children;
+                var numInitialInfants = stayDates[$scope.reservationData.arrivalDate].guests.infants;
+
+                var occupancySimilarity = _.filter(stayDates, function(stayDateInfo, date) {
+                    return date != $scope.reservationData.departureDate && stayDateInfo.guests.adults == numInitialAdults && stayDateInfo.guests.children == numInitialChildren && stayDateInfo.guests.infants == numInitialInfants;
+                })
+
+                if (occupancySimilarity.length < $scope.reservationData.numNights) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+            return {
+                isVaryingOccupancy: self.isVaryingOccupancy
+            }
+        })();
 
         $scope.initReservationData();
     }
