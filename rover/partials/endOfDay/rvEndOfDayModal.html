@@ -13,7 +13,7 @@
 </div>
 <form name="update-settings" id="update-settings" class="modal-content form admin-form" ng-hide="isLoggedIn || !isTimePastMidnight">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<p class="credentials-title" translte>ENTER_CREDENTIALS</p>
+	<p class="credentials-title" translate>ENTER_CREDENTIALS</p>
 	<div class="entry full-width">
 		<div id="notification-message"></div>
 	</div>
@@ -34,7 +34,7 @@
 </form>
 <div ng-show="isLoggedIn && !startProcess && isTimePastMidnight" class="modal-content padding-30">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
+ <h3 translate="" class="actions-end-of-day-text" translate>END_OF_DAY</h3>
   <div class="end-of-day-message">
   {{'BUSSINESS_DAY_MSG_1' | translate}} <span class="current-bussiness-date">{{businessDate}}</span> {{'BUSSINESS_DAY_MSG_2' | translate}} <span class="next-bussiness-date">{{nextBusinessDate}}</span>
   </div>
