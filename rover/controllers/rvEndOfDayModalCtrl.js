@@ -29,7 +29,7 @@ $scope.login = function(){
 		$scope.isLoggedIn = true;
 		// verify if hotel time is past midnight or not
 		var currentHotelTime = data.current_hotel_time.substring(0, 2);
-		$scope.isTimePastMidnight = parseInt(currentHotelTime) > 12 ? true: false;
+		$scope.isTimePastMidnight = parseInt(currentHotelTime) < 12 ? true: false;
 	}	
 	var data = {"email":$scope.email,"password":$scope.password};
 
