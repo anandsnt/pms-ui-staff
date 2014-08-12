@@ -520,11 +520,10 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		}, 300);
 	};
 
-	$scope.goToRoomAndRatesCalendar = function() {
+	$scope.goToRoomAndRates = function() {
 		$state.go('rover.reservation.staycard.mainCard.roomType', {
 			from_date: $scope.confirmedCheckinDate,
 			to_date: $scope.confirmedCheckoutDate,
-			view: "CALENDAR",
 			fromState: 'STAY_CARD',
 			company_id: $scope.reservationData.company.id,
 			travel_agent_id: $scope.reservationData.travelAgent.id
