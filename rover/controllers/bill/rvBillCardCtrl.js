@@ -873,6 +873,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 
 	$scope.openActionsPopup = function(oldBillValue,feesIndex){
+		
 		var parseOldBillValue = parseInt(oldBillValue)-1;
 		//var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
 		var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex];
@@ -886,6 +887,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     		className: 'ngdialog-theme-default1',
     		scope: $scope
     	});
+    	
 	};
 
 	$scope.openRemoveChargePopup = function(){
@@ -925,8 +927,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 
 	$scope.editCharge = function(newAmount,chargeCode){
+		
 		ngDialog.close();
-
 		var newData = 
 		{
 			"updatedDate":
@@ -936,31 +938,27 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						},
 					"id" :$scope.selectedTransaction.transaction_id
 		};
-		//console.log(newData)
 		var transactionEditSuccessCallback = function(data){
 			console.log(data);
 			$scope.$emit("hideLoader");
 
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback);
-		console.log(newAmount,chargeCode);
+	
 	};
 
 
 	$scope.callActionsPopupAction = function(action){
-		ngDialog.close();
-	
+		
+		ngDialog.close();	
 		if(action ==="remove"){
-			//	alert(action+$scope.selectedTransactionId);
-				$scope.openRemoveChargePopup();
+			$scope.openRemoveChargePopup();
 		}
 		else if(action ==="split"){
-			  //alert(action+$scope.selectedTransactionId);
-			  $scope.openSplitChargePopup();
+			$scope.openSplitChargePopup();
 		}else if(action === "edit"){
-				//alert(action+$scope.selectedTransactionId);
-				$scope.openEditChargePopup();
-		}
+			$scope.openEditChargePopup();
+		};
 
 	};
 

@@ -53,8 +53,9 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 
 	this.transactionEdit = function(data){
-		alert("de");
+		alert("to be removed1");
 		console.log(data);
+		alert("to be removed2");
 		var deferred = $q.defer();
 		var trasactionId = data.id;
 		var updatedDate  = data.updatedDate;
