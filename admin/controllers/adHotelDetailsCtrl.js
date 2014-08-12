@@ -107,6 +107,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		};
 
 		var testMliConnectivitySuccess = function(data){
+			
 			$scope.$emit('hideLoader');
 			$scope.successMessage = "Connection Valid";
 		};
