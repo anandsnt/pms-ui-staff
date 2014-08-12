@@ -1,6 +1,6 @@
 <section role="complementary" id="room-assignment" class="content stay-card-inner check-in">
 	<!-- Room assignment header -->
-	<input type="hidden" value="35889" id="roomassignment-ref-id">
+	<input type="hidden" value="" id="roomassignment-ref-id">
 	<!-- Room assignment header -->
 	<div class="reservation-header">
 		<!-- Other header details -->
@@ -17,6 +17,7 @@
 	</div>
 	<div class="wrapper">
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<button class="button" ng-show="true" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
 		<!-- Room assignment content -->
 		<div class="room-assignment-content">
 			<!-- Rooms listing & filters -->
@@ -33,13 +34,12 @@
 					</div>
 				</div>
 				<div class="results">
-					<!-- Advanced search fields -->
-					<button class="button" ng-show="" ng-click="">Unassign Room </button>
+					<!-- Advanced search fields -->					
 					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
 					
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
-						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);" ng-show = "!isRoomListEmpty()">
+						<ul class="wrapper"  ng-show = "!isRoomListEmpty()">
 							<li ng-repeat="room in filteredRooms" ng-click="showMaximumOccupancyDialog($index)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span>
 									<span data-value="{{room.room_number}}" class="room-status" ng-class="getRoomStatusClassForRoom(room)" ng-show="room.room_status == 'NOTREADY'">{{getNotReadyRoomTag(room)}}</span>
