@@ -867,4 +867,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 	 });	
+	 
+	$scope.clickedEmail = function(){
+		
+		console.log("send Email >>");
+	};
+	
+	$scope.clickedPrint = function(){
+		
+		console.log("Print >>");
+	};
 }]);
