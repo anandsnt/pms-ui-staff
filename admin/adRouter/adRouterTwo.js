@@ -48,10 +48,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/floorsetups'
 		});
 
+		// $stateProvider.state('admin.billingGroups', {
+		// 	templateUrl: '/assets/partials/billingGroups/adBillingGroupList.html',
+		// 	controller: 'ADBillingGroupCtrl',
+		// 	url : '/billingGroups'
+		// });
 		$stateProvider.state('admin.billingGroups', {
-			templateUrl: '/assets/partials/billingGroups/adBillingGroupList.html',
-			controller: 'ADBillingGroupCtrl',
-			url : '/billingGroups'
+			templateUrl: '/assets/partials/accountReceivables/adAccountReceivables.html',
+			controller: 'ADAccountReceivablesCtrl',
+			url : '/accountReceivables'
 		});
 
 		$stateProvider.state('admin.reservationTypes', {

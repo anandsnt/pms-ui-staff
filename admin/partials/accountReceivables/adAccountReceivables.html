@@ -1,0 +1,25 @@
+
+<section class="content current ng-scope" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2 class="ng-scope" translate>ACCOUNTS_RECEIVABLES_TITLE</h2>
+			<a id="go_back" class="action back ng-scope" ng-click="goBackToPreviousState()" data-type="load-details" translate>BACK</a>
+		</header>
+		<div class="ng-scope" ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<form class="form float ng-pristine ng-valid ng-valid-required" method="post" name="edit-guest-review" style="overflow-y:auto;">
+			<fieldset class="holder column">	
+				<div class="entry full-width" is-checked="data.ar_number_settings.is_auto_assign_ar_numbers" div-class="full-width" label="Accounts Receivables">
+					<label class="ng-binding" for="" ng-hide="label.length ==0" translate>ACCOUNTS_RECEIVABLES_STATUS_LABEL</label>
+					<div class="switch-button single on" ng-class="{'on': isChecked}">
+					<input class="ng-pristine ng-valid" type="checkbox" ng-model="isChecked" ng-checked="isChecked" checked="checked">
+					<span class="switch-icon"></span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions float">
+				<button id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" type="button" translate>CANCEL</button>
+				<button id="save" class="button green ng-scope" translate="" ng-click="saveAccountReceivableStatus()" type="button" translate>SAVE_CHANGES</button>
+			</div>
+		</form>
+	</div>
+</section>
