@@ -557,8 +557,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.selectedRoomType = -1;
 			} else {
-				$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = $scope.stateCheck.preferredType;
-				$scope.checkOccupancyLimit();
+				$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = $scope.stateCheck.preferredType;				
 				// If a room type of category Level1 is selected, show this room type plus the lowest priced room type of the level 2 category.
 				// If a room type of category Level2 is selected, show this room type plus the lowest priced room type of the level 3 category.
 				// If a room type of category Level3 is selected, only show the selected room type.

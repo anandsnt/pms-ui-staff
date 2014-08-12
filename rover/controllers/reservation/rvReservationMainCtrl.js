@@ -2,8 +2,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
         BaseCtrl.call(this, $scope);
 
-        // $rootScope.businessDate = "2014-05-10";
-
         $scope.$emit("updateRoverLeftMenu", "createReservation");
 
         var title = $filter('translate')('RESERVATION_TITLE');
@@ -720,6 +718,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     $scope.reservationData.rooms[0].numInfants = currentDayDetails[0].infants;
                 }
             }
+            $scope.reservationData.rooms[0].varyingOccupancy = $scope.reservationUtils.isVaryingOccupancy(0);
         };
 
         $scope.$on("guestEmailChanged", function(e) {
