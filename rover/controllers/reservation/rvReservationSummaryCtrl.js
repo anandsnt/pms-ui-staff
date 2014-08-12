@@ -302,7 +302,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 			} else {
 				$scope.initReservationData();
-				$state.go('rover.staycard.reservation.search');
+				$state.go('rover.reservation.search');
 			}
 		};
 
