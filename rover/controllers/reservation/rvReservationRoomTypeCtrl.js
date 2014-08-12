@@ -473,6 +473,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
 				$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
+				if(!$scope.reservationData.rooms[$scope.activeRoom].rateId){
+					$scope.reservationData.rooms[$scope.activeRoom].rateId = []
+				}
 				$scope.reservationData.rooms[$scope.activeRoom].rateId.push(rateId);
 
 				// see if the done button has to be enabled
@@ -870,7 +873,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							};
 
 							//calculate tax for the current day
-							if (taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
+							if (taxes && taxes.length > 0) { // Need to calculate taxes IFF there are taxes associated with the rate
 								var taxApplied = $scope.calculateTax(for_date, rooms[d.room_type_id].ratedetails[for_date][rate_id].rate, taxes, $scope.activeRoom);
 								rooms[d.room_type_id].ratedetails[for_date][rate_id].tax = parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
 								rooms[d.room_type_id].ratedetails[for_date][rate_id].taxExclusive = parseFloat(taxApplied.exclusive);
@@ -896,7 +899,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							//total of all rates including taxes.
 							rooms[d.room_type_id].total[rate_id].total += rooms[d.room_type_id].ratedetails[for_date][rate_id].total;
 							//compute the tax header for the table
-							if (taxes.length > 0) {
+							if (taxes && taxes.length > 0) {
 								rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);;
 							}
 							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / $scope.reservationData.numNights).toFixed(2);
@@ -1080,6 +1083,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		});
 		// 	CICO-7792 END
 
+		$scope.$on('switchToStayDatesCalendar',function(){
+			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			$(".data-off span").toggleClass("value switch-icon");
+		});
 
 		$scope.toggleCalendar = function() {
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";

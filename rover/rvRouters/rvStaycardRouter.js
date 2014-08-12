@@ -54,7 +54,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     });
 
     $stateProvider.state('rover.reservation.staycard.mainCard.roomType', {
-        url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent',
+        url: '/roomType/:from_date/:to_date/:fromState:view/:company_id/:travel_agent_id',
         templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
         controller: 'RVReservationRoomTypeCtrl',
         onEnter: function($stateParams) {
