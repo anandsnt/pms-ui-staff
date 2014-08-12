@@ -15,13 +15,13 @@ admin.controller('ADAccountReceivablesCtrl',['$scope', '$state', 'ADHotelSetting
 
 	$scope.saveAccountReceivableStatus = function(){
 		
-			
+			var data = {};
+			data.ar_number_settings = $scope.data.ar_number_settings;
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				
 			};
-			$scope.data.ar_number_settings.is_auto_assign_ar_numbers;
-			$scope.invokeApi(ADHotelSettingsSrv.update, $scope.data, postSuccess);
+			$scope.invokeApi(ADHotelSettingsSrv.update, data, postSuccess);
 	}
 	$scope.fetchAccountReceivableStatus();
    
