@@ -37,7 +37,7 @@
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event)">
+            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event)">
                 <option value="" translate>RESV_ALL_ROOMS</option>
             </select>
         </div>
@@ -56,8 +56,8 @@
                             <h4 translate>RESV_BEST_RATE</h4>
                             <div class="price">{{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span translate>RESV_AVG_NIGHT</span></div>
     
-                            <button ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</butt   on>
-                            <button ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1}" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
+                            <button ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</butt   on>
+                            <button ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1}" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
                         </div>
                     </a>
                     <!-- Rates list -->
@@ -70,8 +70,8 @@
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
 
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
-                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1}"  ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
+                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1}"  ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
 
                             <!-- Rate Details -->
@@ -128,15 +128,15 @@
                     </div>
                     <div class="book-rate">
                         <div class="select" ng-click="$event.stopPropagation()">
-                            <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()" ng-disabled="activeCriteria == 'ROOM_TYPE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)">
+                            <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()" ng-disabled="activeCriteria == 'ROOM_TYPE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
                                 <!-- <option value="-1">Select Room Type</option> -->
                                 <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.preferredType">{{room.name}}</option>
                             </select>
                         </div>
                         <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
 
-                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
-                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id" ng-class = "{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1}" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
+                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
+                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" ng-class = "{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1}" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
                     </div>
                 </a>
 
