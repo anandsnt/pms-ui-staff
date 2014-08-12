@@ -868,14 +868,48 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 	 });	
 
+
+/* edit/remove/split starts here */
+	
+
 	$scope.openActionsPopup = function(oldBillValue,feesIndex){
 		var parseOldBillValue = parseInt(oldBillValue)-1;
 		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
+		$scope.selectedTransactionId = transactionId;
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
-    	//	controller: 'RVBillActionsPopupCtrl',
     		className: 'ngdialog-theme-default1',
     		scope: $scope
     	});
 	};
+
+	$scope.openRemoveChargePopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvRemoveChargePopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	}
+
+	$scope.removeCharge = function(reason){
+		console.log(reason);
+	};
+
+
+	$scope.callActionsPopupAction = function(action){
+		ngDialog.close();
+	
+		if(action ==="remove"){
+			//	alert(action+$scope.selectedTransactionId);
+				$scope.openRemoveChargePopup();
+		}
+		else if(action ==="split"){
+			  //alert(action+$scope.selectedTransactionId);
+		}else if(action === "edit"){
+				//alert(action+$scope.selectedTransactionId);
+		}
+
+	};
+
+/* edit/remove/split ends here */
 }]);

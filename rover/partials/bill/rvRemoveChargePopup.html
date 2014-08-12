@@ -1,0 +1,8 @@
+<div role="dialog" id="modal" class="modal-show">
+	<form class="modal-content form confirmation" name="remove-charge">
+		<p class="reason-for-removal"> REASON FOR REMOVAL</p>
+		<textarea class="reason-for-removal-field" ng-model="reasonForRemoving"></textarea>
+		<button class="button red modal-close" type="button" ng-click="removeCharge(reasonForRemoving)">Remove charge</button> 
+		<button class="button blank modal-close" type="button" ng-click="callActionsPopupAction('close')">Cancel</button>
+	</form>
+</div>
