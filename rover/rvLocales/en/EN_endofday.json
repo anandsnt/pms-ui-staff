@@ -1,0 +1,13 @@
+
+    "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
+    "ENTER_CREDENTIALS": "Enter your credentials",
+    "PASSWORD": "Password",
+    "VERIFY": "Verify",
+    "BUSSINESS_DAY_MSG_1": "This will close of the Business Day for",
+    "BUSSINESS_DAY_MSG_2": "and change the date to",
+    "START_END_OF_DAY_PROCESS": "Start End of Day Process",
+    "ARE_YOU_SURE": "Are you sure?",
+    "CONTINUE_WITH_END_OF_DAY":"Continue with end of day",
+    "YES":"yes",
+    "NO":"No",
+    "END_OF_DAY":"END OF DAY"
