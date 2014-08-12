@@ -473,6 +473,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				}
 				$scope.stateCheck.selectedStayDate.rate.id = rateId;
 				$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].rate.id = rateId;
+				if(!$scope.reservationData.rooms[$scope.activeRoom].rateId){
+					$scope.reservationData.rooms[$scope.activeRoom].rateId = []
+				}
 				$scope.reservationData.rooms[$scope.activeRoom].rateId.push(rateId);
 
 				// see if the done button has to be enabled
@@ -1079,6 +1082,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		});
 		// 	CICO-7792 END
 
+		$scope.$on('switchToStayDatesCalendar',function(){
+			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			$(".data-off span").toggleClass("value switch-icon");
+		});
 
 		$scope.toggleCalendar = function() {
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";

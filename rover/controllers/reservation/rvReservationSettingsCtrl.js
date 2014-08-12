@@ -1,6 +1,5 @@
 sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSearchSrv', '$state',
     function($scope, RVReservationBaseSearchSrv, $state) {
-        akhila = $scope;
         $scope.reservationSettingsVisible = false;
 
         var resizableMinWidth = 30;
@@ -81,27 +80,10 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 }
             }
         };
-
-        var closeSidebar = function(){
+        
+        $scope.$on('closeSidebar', function(){
             $scope.reservationSettingsWidth = resizableMinWidth;
             $scope.reservationSettingsVisible = false;
-        };
-
-        $scope.stayDatesClicked = function(){
-            var fromState = $state.current.name; 
-            if(fromState == 'rover.reservation.staycard.mainCard.roomType'){
-                fromState = 'rover.reservation.search';
-            }
-
-            $state.go('rover.reservation.staycard.mainCard.roomType', {
-                from_date: $scope.reservationData.arrivalDate,
-                to_date: $scope.reservationData.departureDate,
-                view: "CALENDAR",
-                fromState: fromState,
-                company_id: $scope.reservationData.company.id,
-                travel_agent_id: $scope.reservationData.travelAgent.id
-            });
-            closeSidebar();
-        };
+        });
     }
 ]);
