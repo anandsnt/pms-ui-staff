@@ -874,8 +874,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	$scope.openActionsPopup = function(oldBillValue,feesIndex){
 		var parseOldBillValue = parseInt(oldBillValue)-1;
-		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
-		$scope.selectedTransactionId = transactionId;
+		//var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
+		var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex];
+		console.log(selectedTransaction);
+		$scope.selectedTransaction = selectedTransaction;
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
     		className: 'ngdialog-theme-default1',
@@ -889,10 +891,39 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     		className: 'ngdialog-theme-default1',
     		scope: $scope
     	});
-	}
+	};
+
+
+	$scope.openSplitChargePopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvSplitChargePopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	};
+
+
+	$scope.openEditChargePopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvEditPostingPopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	};
 
 	$scope.removeCharge = function(reason){
+		ngDialog.close();
 		console.log(reason);
+	};
+
+	$scope.splitCharge = function(qty,type){
+		ngDialog.close();
+		console.log(qty,type);
+	};
+
+	$scope.editCharge = function(newAmount,chargeCode){
+		ngDialog.close();
+		console.log(newAmount,chargeCode);
 	};
 
 
@@ -905,8 +936,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		else if(action ==="split"){
 			  //alert(action+$scope.selectedTransactionId);
+			  $scope.openSplitChargePopup();
 		}else if(action === "edit"){
 				//alert(action+$scope.selectedTransactionId);
+				$scope.openEditChargePopup();
 		}
 
 	};

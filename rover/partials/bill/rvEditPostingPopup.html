@@ -1,0 +1,27 @@
+<div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
+	<button type="button" id="modal-close" ng-click = "callActionsPopupAction('close')" class="modal-close dark-title">
+		<span class="icons icon-close"></span>
+	</button>
+	<strong class="new-form-title" translate>Edit Posting {{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong>
+	<div class="entry full-width">
+ 	</div>
+	<div class="entry full-width">
+		<label for="type" translate>Charge Code</label>
+		<div class="select">
+			<select ng-model="chargeCode">
+					<option class="placeholder ng-scope" disabled="disabled" value="">Select one</option>
+					<option value="amount">{{currencySymbol}}</option>
+					<option value="percentage">%</option>				
+			</select>
+		</div>
+		</div>
+		<div class="entry full-width">
+			<label for="code" translate>new amount</label>
+			<input type="text" maxlength="16" value="" placeholder="Enter new amount" ng-model="newAmount" >
+		</div>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank modal-close" ng-click="callActionsPopupAction('close')" translate>CANCEL</button>
+			<button type="button" id="save" class="button green modal-close" ng-click="editCharge(newAmount,chargeCode)" translate>Split</button>
+		</div>
+	</form>
+</div>
