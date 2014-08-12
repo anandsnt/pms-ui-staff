@@ -12,39 +12,35 @@
             <div class="select">
                 <!-- number of options should match the number of bills created -->
                 <select name="post-charge-to-bill">
-                    <option value="bill1" selected="">1</option>
-                    <option value="bill2">2</option>
-                    <option value="bill3">3</option>
+                	<option ng-repeat="bills in billsArray" value="{{bills.bill_number}}" ng-selected="{{bills.bill_number == currentActiveBill}}">{{bills.bill_number}}</option>
                 </select>
             </div>
         </strong>
         <div id="payment-type" class="entry full-width">
             <label for="payment-type">Payment type</label>
             <div class="select">
-                <select id="payment-options" name="payment-options">
+                <select id="payment-options" ng-model="saveData.paymentType"  name="payment-options" ng-change="showHideCreditCard()">
                     <option value="">Select Payment Type</option>
-                    <option value="credit-card" selected>Credit card</option>
-                    <option value="cash">Cash</option>
-                    <option value="check">Check</option>
+                    <option ng-repeat="paymentData in renderData" value="{{paymentData.name}}" ng-selected="{{paymentData.name == defaultPaymentTypeOfBill}}">{{paymentData.description}}</option>
                 </select>
             </div>
         </div>
-        <div id="selected-card" class="entry full-width">
+        <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo">
             <label>Credit Card (<span>Tap to change</span>)</label>
             <label class="active-item item-payment">
                 <figure class="card-logo">
-                    <img src="{logo}" alt="" />
+                    <img src="/assets/{{defaultPaymentTypeCard}}.png" alt="" />
                 </figure>
-                <span class="number">Ending with <span class="value number">{date}</span></span>
-                <span class="date">Date <span class="value date">{name}</span></span>    
+                <span class="number">Ending with <span class="value number">{{defaultPaymentTypeCardNumberEndingWith}}</span></span>
+                <span class="date">Date <span class="value date">{{defaultPaymentTypeCardExpiry}}</span></span>    
             </label>
         </div>
         <div class="entry full-width">
             <label for="amount">Amount to pay (<span>$</span>)</label>
-            <input name="amount" id="amount" value="{balance}" type="text" />
+            <input id="amount" value="" type="text" />
         </div>      
         <div class="actions">
-            <button type="button" id="pay" class="button green modal-close">Submit payment</button>
+            <button type="button" id="pay" class="button green modal-close" ng-click="submitPayment()">Submit payment</button>
             <button type="button" id="cancel-payment" class="button blank modal-close">Cancel</button>
         </div>
     </fieldset> 

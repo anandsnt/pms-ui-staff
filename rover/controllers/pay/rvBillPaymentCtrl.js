@@ -1,11 +1,54 @@
 sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv','ngDialog', function($scope, RVBillPaymentSrv, RVPaymentSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.renderData = {};
+	$scope.saveData = {};
+	console.log($scope);
+	//We are passing $scope from bill to this modal
+	$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
+	$scope.billsArray = $scope.reservationBillData.bills;
+	//Parameter used to show credit card info - first modal
+	$scope.showCreditCardInfo = false;
+	$scope.isfromBill = false;
+	$scope.isfromGuestCard = false;
+	//Parameter used to handle ng-change of payment type 
+	// if default credit card not exist show guest payment lists
+	//Otherwise that screen will be viewed when click on credit card area. 
+	$scope.isExistPaymentType = false;
 	$scope.init = function(){
+		
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
 	};
 	$scope.getPaymentListSuccess = function(data){
+		$scope.$emit('hideLoader');
 		$scope.renderData = data;
+		$scope.renderDefaultValues();
+	};
+	$scope.init();
+	$scope.renderDefaultValues = function(){
+		$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
+		if($scope.defaultPaymentTypeOfBill == 'CC'){
+			$scope.isExistPaymentType = true;
+			$scope.showCreditCardInfo = true;
+			$scope.isfromBill = true;
+			$scope.defaultPaymentTypeCard = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase();
+			$scope.defaultPaymentTypeCardNumberEndingWith = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number;
+			$scope.defaultPaymentTypeCardExpiry = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_expiry;
+		}
+	};
+	$scope.submitPayment = function(){
+		
+	};
+	$scope.showHideCreditCard = function(){
+		if($scope.saveData.paymentType == "CC"){
+			if($scope.isExistPaymentType){
+				$scope.showCreditCardInfo = true;
+			} else{
+				
+			}
+			
+		} else {
+			$scope.showCreditCardInfo = false;
+		}
 	};
 	
 }]);
