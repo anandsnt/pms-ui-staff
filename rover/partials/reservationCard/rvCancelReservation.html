@@ -1,0 +1,19 @@
+<div role="dialog" id="modal" class="modal-show" ng-cloak>
+	<form id="validate" class="modal-content form confirmation">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<section ng-if="ngDialogData.state == 'PENALTY'">
+			<span class="h2 message" translate>CANCEL_HEADER</span>
+			<span class="text">{{'PENALTY_PRE' | translate}} {{currencySymbol}} {{'PENALTY_POST' | translate}}</span>				
+			<div class="actions float">
+				<a id="apply" class="button green modal-close" ng-click="ngDialogData.state='CONFIRM';ngDialogData.applyPenalty = true" translate>PENALTY_APPLY</a>
+				<a id="skip" class="button blue modal-close" ng-click="ngDialogData.state='CONFIRM'; ngDialogData.applyPenalty = false" translate>PENALTY_SKIP</a>
+				<a id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</a>
+			</div>
+		</section>
+		<section ng-if="ngDialogData.state == 'CONFIRM'">
+			<span class="h2 message" translate>PLEASE ENTER REASON</span>
+			<a id="apply" class="button red modal-close" ng-click="cancelReservation(ngDialogData.applyPenalty)" translate>CANCEL_CONFIRM</a>	
+			<a id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL_CANCEL</a>
+		</section>
+	</form>
+</div>

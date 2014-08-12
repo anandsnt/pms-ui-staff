@@ -71,4 +71,11 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+    "CANCEL_HEADER" : "Cancellation falls <br/> outside of the cancellation period",
+    "PENALTY_PRE" : "This incurs a",
+    "PENALTY_POST" : "penalty charge.",
+    "PENALTY_APPLY" : "Apply penalty",
+    "PENALTY_SKIP" : "Proceed without penalty",
+    "CANCEL_CONFIRM" : "Confirm Cancel",
+    "CANCEL_CANCEL" : "Return without Cancel"
