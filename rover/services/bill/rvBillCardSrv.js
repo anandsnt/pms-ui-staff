@@ -50,6 +50,23 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 		return deferred.promise;
 	};
+
+
+	this.transactionEdit = function(data){
+		alert("de");
+		console.log(data);
+		var deferred = $q.defer();
+		var trasactionId = data.id;
+		var updatedDate  = data.updatedDate;
+		var url = 'api/financial_transactions/'+trasactionId+'/edit';
+		RVBaseWebSrv.putJSON(url, updatedDate).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+
+		return deferred.promise;
+	};
 	
    
 }]);

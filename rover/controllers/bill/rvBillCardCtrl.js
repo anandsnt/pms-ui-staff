@@ -877,6 +877,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		//var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
 		var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex];
 		console.log(selectedTransaction);
+		if(!selectedTransaction.transaction_id){
+			alert("oops no transaction_id set")
+		};
 		$scope.selectedTransaction = selectedTransaction;
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
@@ -923,6 +926,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	$scope.editCharge = function(newAmount,chargeCode){
 		ngDialog.close();
+
+		var newData = 
+		{
+			"updatedDate":
+						{
+				  			"new_amount":newAmount,
+				  			"charge_code_id": chargeCode
+						},
+					"id" :$scope.selectedTransaction.transaction_id
+		};
+		//console.log(newData)
+		var transactionEditSuccessCallback = function(data){
+			console.log(data);
+			$scope.$emit("hideLoader");
+
+		};
+		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback);
 		console.log(newAmount,chargeCode);
 	};
 
