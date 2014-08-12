@@ -1,0 +1,78 @@
+<!-- Available cards & new card form -->
+    <fieldset id="credit-card" class="credit-card">
+        <!-- Title if there are cards attached -->
+        <strong class="h2 message">Select or Add Credit Card</strong>
+        <!-- Title if there are no cards attached 
+        <strong class="h2 message">Add Credit Card</strong> -->
+
+        <!-- Card options - show only when there are cards attached -->
+        <ul id="card-options" class="options">
+            <li class="active">Existing Cards</li>
+            <li>Add New Card</li>
+        </ul>
+
+        <!-- List of available cards - only when they exist -->
+        <div id="select-card" class="select-card">
+            <div id="available-cards" class="cards-list scrollable">
+                <div class="wrapper">
+                    <!-- Selected card -->
+                    <label class="active-item item-payment primary">
+                        <figure class="card-logo">
+                            <img src="{logo}" alt="" />
+                        </figure>
+                        <span class="number">Ending with <span class="value number">{number}</span></span>
+                        <span class="date">Date <span class="value date">{date}</span></span>
+                        <span class="name">Name <span class="value name">{name}</span></span>
+                        <span class="primary"><span class="value primary">Selected</span></span>
+                    </label>
+                    <!-- Other cards -->
+                    <label id="pay-with-visa" class="active-item item-payment">
+                        <figure class="card-logo">
+                            <img src="{logo}" alt="" />
+                        </figure>
+                        <span class="number">Ending with <span class="value number">{number}</span></span>
+                        <span class="date">Date <span class="value date">{date}</span></span>
+                        <span class="name">Name <span class="value name">{name}</span></span>
+                    </label>
+                    <!-- repeat ... -->
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" id="cancel-card-selection" class="button blank">Cancel</button>
+            </div>
+        </div>
+
+        <!-- New card form -->
+        <div id="new-card" class="new-card hidden">
+            <div class="holder">
+                <div class="entry margin">
+                    <label for="card-number">Card number</label>
+                    <input name="card-number" id="card-number" placeholder="Enter Card number" value="" maxlength="15" type="text" />
+                </div>
+                <div class="entry">
+                    <label for="expiry-month">Expiration date (<span>MM/YY</span>)</label>
+                    <input name="expiry-month" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
+                    <input name="expiry-year" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
+                </div>
+                <div class="entry margin">
+                    <label for="name-on-card">Name on card</label>
+                    <input name="name-on-card" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
+                </div>  
+                <div class="entry">
+                    <label for="ccv">CCV</label>
+                    <input name="ccv" id="ccv" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
+                </div>
+                <div class="entry full-width">
+                    <label class="checkbox inline" for="add-in-guest-card">
+                        <span class="icon-form icon-checkbox"></span>
+                        <input name="checkin" id="add-in-guest-card" value="1" type="checkbox" />
+                        Add to Guest Card
+                    </label>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" id="cancel-new-card" class="button blank">Cancel</button>
+                <button type="button" id="add-card" class="button green">Add Card</button>
+            </div>
+        </div>
+    </fieldset>
