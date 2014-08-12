@@ -394,8 +394,20 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Clicked pay button function
 	  */
 	 $scope.clickedPayButton = function(){
-	 	$scope.fromViewToPaymentPopup = "paybutton";
-	 	$scope.addNewPaymentModal();
+	 	// $scope.fromViewToPaymentPopup = "paybutton";
+	 	// $scope.addNewPaymentModal();
+	 	
+	 	
+	 	 ngDialog.open({
+              template: '/assets/partials/pay/paymentModal.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'RVBillPayCtrl',
+              scope: $scope
+          });
+	 	
+	 	
+	 	
+	 	
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
