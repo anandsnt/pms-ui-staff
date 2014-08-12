@@ -2,9 +2,13 @@
 	<button type="button" id="modal-close" ng-click = "callActionsPopupAction('close')" class="modal-close dark-title">
 		<span class="icons icon-close"></span>
 	</button>
-	<strong class="new-form-title" translate>Split posting {{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong>
+	<strong class="new-form-title" translate>Split posting</strong>
 	<div class="entry full-width">
  	</div>
+ 	<div class="entry full-width">
+		<label for="code" translate>current amount [{{currencySymbol}}]</label>
+		<input type="text" maxlength="16" value="" placeholder="Enter new amount" ng-model="selectedTransaction.description[0].fees_amount" disabled/>
+	</div>
  	<div class="entry full-width">
 			<label for="code" translate>Split quantity</label>
 			<input type="text" maxlength="16" value="" placeholder="Enter" ng-model="qty" >
