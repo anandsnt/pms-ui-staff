@@ -345,7 +345,8 @@
     "OVERBOOK_TEXT":"availability on one or more of the selected dates. Overbook?",
     "YES":"Yes",
     "NO":"No",
-    "SHOW_STAY_DATES": "Show Stay Dates"
+    "SHOW_STAY_DATES": "Show Stay Dates",
+    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
