@@ -125,7 +125,7 @@
 	</div>
 	<div class="entry action-filter">
 		<div class="actions float">
-			<button class="button green" type="button" ng-click="showRatesBtnClicked()" >Show Rates</button>
+			<button class="button green" type="button" ng-click="showRatesBtnClicked()" ng-class="{grey: !currentFilterData.begin_date || !currentFilterData.end_date}" ng-disabled="!currentFilterData.begin_date || !currentFilterData.end_date">Show Rates</button>
 		</div>
 	</div>
 </div>

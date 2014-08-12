@@ -2,26 +2,28 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
 
 	$scope.setUpData = function(){
 
-		if($scope.currentFilterData.begin_date.length > 0){
+		//Workaround - By default the system date will be highlighted, 
+		//if we don't specify a default date. But we don't want to highlight any date 
+		//So removing the highligting in jQuery way
+		/*window.setTimeout(function(){
+           $('#modal').find('.ui-state-highlight.ui-state-active')
+           .removeClass('ui-state-highlight ui-state-active');     
+       	},0); 
+		*/
+		if($scope.currentFilterData.begin_date){
 			$scope.fromDate = $scope.currentFilterData.begin_date;
-		}else{
-			$scope.fromDate =tzIndependentDate($rootScope.businessDate);
-		};
-		if($scope.currentFilterData.end_date.length > 0){
+		}
+		if($scope.currentFilterData.end_date){
 			$scope.toDate = $scope.currentFilterData.end_date
 		}
-		else{
-			$scope.toDate = tzIndependentDate($rootScope.businessDate);
-		};
-		
 
 		$scope.fromDateOptions = {
+			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
 			minDate: tzIndependentDate($rootScope.businessDate),
-			yearRange: "0:+10",
+			yearRange: "-5:+5", //Show 5 years in past & 5 years in future
 			onSelect: function() {
-
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
 					$scope.toDate = $scope.fromDate;
 				}
@@ -29,10 +31,11 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
 		};
 
 		$scope.toDateOptions = {
+			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
 			minDate: tzIndependentDate($rootScope.businessDate),
-			yearRange: "0:+10",
+			yearRange: "-5:+5",
 			onSelect: function() {
 
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
@@ -54,4 +57,5 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
 	$scope.cancelClicked = function(){
 		ngDialog.close();
 	};
+
 }]);
