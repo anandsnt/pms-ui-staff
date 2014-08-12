@@ -190,9 +190,12 @@ function BaseCtrl($scope, $vault, returnBack){
     	@param1: string as key 
     */
     $scope.refreshScroller = function (key){
-    	setTimeout(function(){
-    		if( !!$scope.$parent.myScroll && key in $scope.$parent.myScroll )
-    			$scope.$parent.myScroll[key].refresh();
+    	setTimeout(function() {
+    		if ( !!$scope.$parent && $scope.$parent.myScroll ) {
+    			if( key in $scope.$parent.myScroll ){
+    				$scope.$parent.myScroll[key].refresh();
+    			}
+    		};
     	}, $scope.timeOutForScrollerRefresh);   	
     };
 

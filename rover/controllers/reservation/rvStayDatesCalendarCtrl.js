@@ -16,7 +16,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		$scope.setScroller('stay-dates-calendar');
 
 		this.init = function() {
-			this.CALENDAR_PAGINATION_COUNT = 10;
 			$scope.eventSources = [];
 
 			$scope.calendarType = "ROOM_TYPE";
@@ -31,7 +30,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.finalRoomType = $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
 			//Stay nights in calendar
 			$scope.nights = getNumOfStayNights();
-
+			that.renderFullCalendar();
 			fetchAvailabilityDetails();
 
 		};
@@ -44,8 +43,11 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				$scope.availabilityDetails = data;
 				$scope.fetchedStartDate = tzIndependentDate(fromDate);
 				$scope.fetchedEndDate = tzIndependentDate(toDate);
+				
+				//Refresh the calendar with the arrival, departure dates
+				$scope.refreshCalendarEvents();
 				//Display Calendar
-				that.renderFullCalendar();
+				//that.renderFullCalendar();
 			};
 
 			//From date is the 22nd of the previous month of arrival date
@@ -53,22 +55,20 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			fromDate = $scope.checkinDateInCalender.clone();
 			fromDate.setMonth(fromDate.getMonth() - 1);
 			fromDate.setDate(22);
-			//console.log(new Date(fromDate));
 
 			if(fromDate < new Date($rootScope.businessDate)){
 				fromDate = $rootScope.businessDate;
 			}
 
-			//console.log(new Date(fromDate));
 			//We can see two calendars in a row. The 2nd calendar can display 
 			//max 13(6+7) days(the calendar has 6 rows) of its coming month
 			toDate = $scope.checkinDateInCalender.clone();
 			toDate.setMonth(toDate.getMonth() + 2);
 			toDate.setDate(13);
-			//console.log(new Date(toDate));
 
 			var params = {};
 			params.from_date = $filter('date')(fromDate, $rootScope.dateFormatForAPI);
+			//The maximum number of results we expect - 31+31+6+13
 			params.per_page = 81;
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = "";
@@ -257,19 +257,21 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			};
 
 			$scope.leftCalendarOptions = dclone(fullCalendarOptions);
+			//Setting events for left calendar - same for both calendars
+			//But we can not deep clone the events
 			$scope.leftCalendarOptions.eventDrop = changedDateOnCalendar;
 			$scope.leftCalendarOptions.drop = dateDroppedToExternalCalendar;
 
+			//Setting events for right calendar
 			$scope.rightCalendarOptions = dclone(fullCalendarOptions);
 			$scope.rightCalendarOptions.eventDrop = changedDateOnCalendar;
 			$scope.rightCalendarOptions.drop = dateDroppedToExternalCalendar;
 
-
+			//Set month of rigt calendar
 			$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
 
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
-			//Refresh the calendar with the arrival, departure dates
-			$scope.refreshCalendarEvents();
+
 			$scope.refreshScroller('stay-dates-calendar');
 		}
 
@@ -327,8 +329,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			rate.name = '';
 			rate.value = '';
 			if ($scope.roomTypeForCalendar == "" && $scope.calendarType == "ROOM_TYPE") {
-				rate.value = "";
-				rate.name = "";
+				return rate;
 			} else if(typeof availabilityDetails.room_rates.single != 'undefined') {
 				rate.value = $rootScope.currencySymbol +
 					availabilityDetails.room_rates.single;
@@ -343,6 +344,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			return rate;
 		};
 
+		//Get the room type name looping through the room type details
 		var getRoomTypeForBAR = function(availabilityDetails) {
 			var roomTypeId = availabilityDetails.room_rates.room_type_id;
 			var roomTypeName = "";
@@ -358,8 +360,8 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 
 		/**
-		 * Compute the fullcalendar events object from the availability details
-		 */
+		* Compute the fullcalendar events object from the availability details
+		*/
 		var computeEventSourceObject = function(checkinDate, checkoutDate) {
 
 			var availabilityKey;
@@ -380,7 +382,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				//instead of new Date(), Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(date);
 				rate = getRateForTheDay(dateDetails[availabilityKey]);
-				console.log(rate);
 				calEvt.title = typeof rate.value == 'undefined'? '': rate.value;
 				calEvt.rate = typeof rate.name == 'undefined'? '': rate.name; //Displayed in tooltip
 				calEvt.start = thisDate;
@@ -418,18 +419,18 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 						calEvt.durationEditable = "false"
 					}
 
-					//mid-stay range
+				//mid-stay range
 				} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
 					calEvt.id = "availability";
 					calEvt.className = "mid-stay";
-					//Event is check-out
+				//Event is check-out
 				} else if (thisDate.getTime() == checkoutDate.getTime()) {
 					calEvt.id = "check-out";
 					calEvt.className = "check-out";
 					calEvt.startEditable = "true";
 					calEvt.durationEditable = "false";
-					/**dates prior to check-in and dates after checkout*/
 
+				/**Following are for dates prior to check-in and dates after checkout*/
 				} else if (($scope.calendarType == "BEST_AVAILABLE" && dateDetails[availabilityKey].room_type_availability.availability > 0) || ($scope.calendarType == "ROOM_TYPE" && $scope.roomTypeForCalendar != "" && dateDetails[availabilityKey].room_type_availability.availability > 0)) {
 					calEvt.className = "type-available"; //TODO: verify class name
 					//room type not available but house available   
@@ -518,13 +519,17 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate;
 		};
 
+		/**
+		* Event handler for BAR option
+		*/
 		$scope.selectedBestAvailableRatesCalOption = function() {
 			$scope.calendarType = 'BEST_AVAILABLE';
 			$scope.resetCalendarDates();
 			$scope.refreshCalendarEvents();
-
-
 		};
+		/**
+		* Event handler for Room type view selecton
+		*/
 		$scope.selectedRoomTypesCalOption = function() {
 			$scope.calendarType = 'ROOM_TYPE';
 			$scope.resetCalendarDates();
@@ -532,6 +537,9 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 
 		};
 
+		/**
+		* Room type dropdown should be disabled for inhouse reservations
+		*/
 		$scope.isRoomTypeChangeAllowed = function() {
 			var ret = true;
 			if ($scope.reservationData.status == "CHECKEDIN" ||
@@ -542,17 +550,13 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		};
 		//Click handler for cancel button in calendar screen
 		$scope.handleCancelAction = function() {
-			$state.go($stateParams.fromState, {});
+			if($stateParams.fromState == 'STAY_CARD'){
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
+					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
+			} else{
+				$state.go($stateParams.fromState, {});
+			}
 		};
-
-		//Click handler for calendar pre button
-		/*$scope.prevButtonClickHandler = function() {
-			$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) - 1;
-			$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) - 1;
-			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
-			$scope.refreshCalendarEvents();
-
-		};*/
 
 		/**
 		* @return {Boolean} true if the month of left calendar is equal to current business date
@@ -566,6 +570,10 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			return disabled
 
 		};
+
+		/**
+		* Handles the forward and backward change for the calendar months
+		*/
 		var changeMonth = function(direction){
 			if(direction == 'FORWARD'){
 				$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 1;
@@ -576,23 +584,14 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			}
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 		};
-		/*var changeMonthBackward = function(){
-			$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) - 1;
-			$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) - 1;
-			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
-		};
-
-		var changeMonthforward = function(){
-			$scope.leftCalendarOptions.month = parseInt($scope.leftCalendarOptions.month) + 1;
-			$scope.rightCalendarOptions.month = parseInt($scope.rightCalendarOptions.month) + 1;
-			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
-		};*/
 
 		/**
 		* Click handler for the next month arrow
-		* Fetches the details for the next set of dates
+		* Fetches the details for the next set of dates - 
+		* Starting from last fetched date to the max visible date in calendar when we change month
 		*/
 		$scope.nextButtonClickHandler = function() {
+			//Get the start date and end date of availability details fetched so far.
 			var fetchedStartDate = $scope.fetchedStartDate.clone();
 			var fetchedEndDate = $scope.fetchedEndDate.clone();
 			var nextMonthLastVisibleDate;
@@ -600,25 +599,25 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			var nextMonthDetailsFetchSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.availabilityDetails = data;
-				//$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 				$scope.refreshCalendarEvents();
+				//Update the end date value
 				$scope.fetchedEndDate = nextMonthLastVisibleDate;
 				changeMonth('FORWARD');
-				//changeMonthforward();
 			};
-
+			//When we move the month forward, the last date visible would be
+			//The 13th of next month. We should fetch the availability upto that date
 			nextMonthLastVisibleDate = new Date($scope.rightCalendarOptions.year, $scope.rightCalendarOptions.month);
 			nextMonthLastVisibleDate.setMonth(nextMonthLastVisibleDate.getMonth() + 2);
 			nextMonthLastVisibleDate.setDate(13);
 			if((fetchedStartDate <= nextMonthLastVisibleDate) && (nextMonthLastVisibleDate <= fetchedEndDate)){
 				changeMonth('FORWARD');
-				//changeMonthforward();
 				return false
 			}
 
 			var params = {};
 			var fromDate = fetchedEndDate.setDate(fetchedEndDate.getDate() + 1);
 			params.from_date = $filter('date')(fromDate, $rootScope.dateFormatForAPI);
+			//Number of items to be fetched - 31+13
 			params.per_page = 44;
 			params.to_date = $filter('date')(nextMonthLastVisibleDate, $rootScope.dateFormatForAPI);;
 			params.status = 'FETCH_ADDITIONAL';
@@ -631,47 +630,45 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.invokeApi(RVStayDatesCalendarSrv.fetchAvailability, params, nextMonthDetailsFetchSuccess);
 		};
 
-				/**
+		/**
 		* Click handler for the next month arrow
-		* Fetches the details for the next set of dates
+		* Fetches the details for the next set of dates - 
+		* Stars from the first visible date in calendar when go back a month
+		* to the start date available in the availability details
 		*/
 		$scope.prevButtonClickHandler = function() {
 			var fetchedStartDate = $scope.fetchedStartDate.clone();
 			var fetchedEndDate = $scope.fetchedEndDate.clone();
-			console.log(fetchedStartDate);
-			console.log(fetchedEndDate);
 
 			var prevMonthLastVisibleDate;
 
 			var prevMonthDetailsFetchSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.availabilityDetails = data;
-				//$scope.disablePrevButton = $scope.isPrevButtonDisabled();
 				$scope.refreshCalendarEvents();
 				$scope.fetchedStartDate = prevMonthLastVisibleDate;
 				changeMonth('BACKWARD');
-
-				//changeMonthBackward();
 			};
 
+			//The max visible date in calendar could be 22nd of the previous month
 			prevMonthLastVisibleDate = new Date($scope.leftCalendarOptions.year, $scope.leftCalendarOptions.month);
 			prevMonthLastVisibleDate.setMonth(prevMonthLastVisibleDate.getMonth() - 2);
 			prevMonthLastVisibleDate.setDate(22);
 			
+			//Limit the start date to the current business date
 			if(prevMonthLastVisibleDate <= tzIndependentDate($rootScope.businessDate)){
 				prevMonthLastVisibleDate = tzIndependentDate($rootScope.businessDate);
 			}
-
+			//If the data is already fetched for the visble dates, then just swith the months
 			if((fetchedStartDate <= prevMonthLastVisibleDate) && (prevMonthLastVisibleDate <= fetchedEndDate)){
 				changeMonth('BACKWARD');
-
-				//changeMonthBackward();
 				return false
 			}
-
+			//Fetch the availability details if not already fetched
 			var params = {};
 			params.from_date = $filter('date')(prevMonthLastVisibleDate, $rootScope.dateFormatForAPI);
-			params.per_page = 44;
+			//The max possible count - 31 + 6
+			params.per_page = 37;
 			var toDate = fetchedStartDate.setDate(fetchedStartDate.getDate() - 1);
 			params.to_date = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			params.status = 'FETCH_ADDITIONAL';
