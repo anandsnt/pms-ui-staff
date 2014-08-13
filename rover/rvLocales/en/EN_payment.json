@@ -25,4 +25,8 @@
     "PAY" : "Pay",
     "AMOUNT": "Amount",
     "WINDOW": "Window",
+    "NEW_ACCOUNT_RECEIVABLE": "New Account Receivable",
+    "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
+    "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
+    "CREATE_AR_ACCOUNT": "Create Account",
     "SELECT_WINDOW": "Select Bill"

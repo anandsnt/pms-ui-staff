@@ -759,6 +759,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if(!$scope.isAllBillsReviewed){
 			return;
 		}
+
+		// To add proper conditions after the api params are set
+		ngDialog.open({
+				template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+				controller: 'RVAccountReceivableMessagePopupCtrl',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		return;
 		
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));

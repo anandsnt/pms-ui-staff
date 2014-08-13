@@ -1,0 +1,20 @@
+<div id="modal" class="modal-show" role="dialog">
+	
+		<form id="new-payment" class="modal-content form new-content ng-pristine ng-valid" method="post" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" name="new-payment" ng-click="setPosition()">
+			<button id="modal-close" class="dark-title modal-close" ng-click="closeDialog()" type="button">
+				<span class="icons icon-close"></span>
+			</button>
+			
+		
+			<div class="ng-scope" ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div class="modal-content new-content form warning ar-popup-content" >
+				<label class="ng-scope" translate>AR_ACCOUNT_NOT_CREATED</label>
+				<!-- <strong class="ng-scope" translate>AR_ACCOUNT_NOT_CREATED</strong> -->
+			</div>
+			<div class="actions float">
+				<button id="cancel" class="button blank modal-close ng-scope" ng-click="closeDialog()" type="button" translate>CANCEL</button>
+				<button id="save" class="button green modal-close ng-scope" ng-click="createAccountReceivable()" type="button" translate>CREATE_AR_ACCOUNT</button>
+			</div>
+		</form>
+	
+</div>
