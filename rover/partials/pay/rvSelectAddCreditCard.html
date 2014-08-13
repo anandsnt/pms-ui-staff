@@ -7,8 +7,8 @@
 
         <!-- Card options - show only when there are cards attached -->
         <ul id="card-options" class="modal-options">
-            <li class="active">Existing Cards</li>
-            <li ng-click="showAddNewCreditCard()">Add New Card</li>
+            <li ng-click="showExistingCards()" ng-class="{'active': showExistingGuestPayments}">Existing Cards</li>
+            <li ng-click="showAddNewCreditCard()" ng-class="{'active': showAddNewPaymentScreen}">Add New Card</li>
         </ul>
 
         <!-- List of available cards - only when they exist -->

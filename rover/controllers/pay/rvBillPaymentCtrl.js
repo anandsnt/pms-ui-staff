@@ -3,7 +3,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.renderData = {};
 	$scope.saveData = {};
 	$scope.guestPaymentList = {};
-	console.log($scope);
 	//We are passing $scope from bill to this modal
 	$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 	$scope.billsArray = $scope.reservationBillData.bills;
@@ -15,6 +14,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	// if default credit card not exist show guest payment lists
 	//Otherwise that screen will be viewed when click on credit card area. 
 	$scope.isExistPaymentType = false;
+	//same partial used to show existing payments and add new card screen
+	//Inside that file seperate partials added - for add new card and listing
 	$scope.showExistingAndAddNewPayments = false;
 	$scope.showExistingGuestPayments = false;
 	$scope.showInitalPaymentScreen = false;
@@ -76,6 +77,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showExistingAndAddNewPayments = true;
 		$scope.showInitalPaymentScreen = false;
 		$scope.showExistingGuestPayments = false;
+	};
+	$scope.showExistingCards = function(){
+		$scope.showExistingGuestPayments = true;
+		$scope.showExistingAndAddNewPayments = true;
+		$scope.showInitalPaymentScreen = false;
+		$scope.showAddNewPaymentScreen = false;
 	};
 	
 	
