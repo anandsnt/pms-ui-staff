@@ -1,19 +1,18 @@
 sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault){
-    
+
 	/*
 	* Controller class for dashboard search,
 	* will be updating the heading, update data from external source...
 	*/
 
 	var that = this;
-  	BaseCtrl.call( this, $scope, $vault, $rootScope.isReturning() );
+  	BaseCtrl.call( this, $scope );
 
 
 	//setting the scroller for view
 	var scrollerOptions = {
         click: true,
-        preventDefault: false,
-        probeType: 2
+        preventDefault: false
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
