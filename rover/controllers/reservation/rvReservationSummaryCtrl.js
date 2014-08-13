@@ -2,6 +2,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv) {
 
 		BaseCtrl.call(this, $scope);
+
+		$rootScope.setPrevState = {
+		    title: 'Add-on',
+		    name: 'rover.reservation.staycard.mainCard.addons',
+		    param: {
+		        from_date: $scope.reservationData.arrivalDate,
+		        to_date: $scope.reservationData.departureDate
+		    }
+		}
 		
 		$scope.init = function() {
 			$scope.data = {};

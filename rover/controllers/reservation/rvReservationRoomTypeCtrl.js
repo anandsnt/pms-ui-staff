@@ -1,6 +1,18 @@
 sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter',
 	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter) {
 
+		// set up back button
+		$rootScope.setPrevState = {
+			title: 'Stay card',
+			name: 'rover.reservation.staycard.reservationcard.reservationdetails',
+			param: {
+				confirmationId: $scope.reservationData.confirmNum,
+				id: $scope.reservationData.reservationId,
+				isrefresh: true
+			}
+		}
+
+
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
