@@ -18,7 +18,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var groupItemExpandedHeight = 0;
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
-	$scope.saveData.promotions = reservationBillData.is_promotions_and_email_set;
+	$scope.saveData.promotions = !!reservationBillData.is_promotions_and_email_set ? true : false;
 	$scope.saveData.termsAndConditions = false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;
