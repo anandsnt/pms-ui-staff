@@ -1,11 +1,11 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter', '$state', function($scope, RVSearchSrv, $filter, $state){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$vault', function($scope, $rootScope, RVSearchSrv, $filter, $state, $vault){
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
 	* you wrapping this.
 	*/
 	var that = this;
-  	BaseCtrl.call(this, $scope);	
+  	BaseCtrl.call(this, $scope, $vault, $rootScope.isReturning() );	
 
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";

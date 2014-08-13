@@ -1,4 +1,57 @@
-function BaseCtrl($scope, $vault, returnBack){	
+function BaseCtrl($scope, $vault, returnBack) {
+
+    /***
+    *	Since we dont know when the iscoll will be initated
+    *	the following piece of humble code will try to fill in the gap. NOT a perfect solution.
+    *	BEST if ng-iscroll emits an event notifying that instance has been created.
+	*
+	*	LOGIC: check if the particular scoller has be init,
+	*	YES - set up the scroll position listner to save it in $vault
+	*	NO - try again after 1 sec, update a counter
+	*	if counter > 10 (10 seconds), quit trying
+	*
+    *	NOTE: passing 'key' as a parameter to 'setTimeout' is only supported in modern browsers
+    */
+    var instCounter = 0;
+    var instTimer = null;
+    var afterIScrollInit = function(key) {
+
+    	// Gotcha! Why go through all this trouble when $vault is not passed in
+    	if ( !!$vault ) {
+			console.log( 'returnBack: %s key: %O', returnBack, $scope.$parent.myScroll ? $scope.$parent.myScroll[key] : key );
+
+			var _setup = function() {
+
+				// if this state is loaded via 'Go back', go to previous position
+				if ( returnBack && !!$vault.get(key) ) {
+					$scope.$parent.myScroll[key].scrollTo( 0, $vault.get(key), 0 );
+				};
+
+				// if $vault is provided and probeType is 2, setup scrollEnd listner
+				if ( $vault && $scope.$parent.myScrollOptions[key].probeType === 2 ) {
+		    		$scope.$parent.myScroll[key].on('scrollEnd', function() {
+		    			$vault.set( key, this.y );
+		    		});
+		    	}
+			};
+
+			// user has changed screens again before we could find and setup handler
+			// remove any set setTimeouts
+			if ( instCounter === 0 ) {
+				clearTimeout( instTimer );
+				instTimer = null;
+			};
+			
+			if ( !!$scope.$parent && !!$scope.$parent.myScroll && !!$scope.$parent.myScroll[key] ) {
+				instCounter = 0;
+				_setup();
+			} else if ( instCounter < 10 ) {
+				instCounter++;
+				instTimer = null;
+				instTimer = setTimeout( afterIScrollInit, 1000, key );
+			}
+    	};
+    };
 
 	$scope.businessDate = "";
 
@@ -169,20 +222,25 @@ function BaseCtrl($scope, $vault, returnBack){
     	$scope.$parent.myScrollOptions[key] = scrollerOptions; 
 
     	// set up handler to save scroller position
-    	setTimeout(function() {
+    	// setTimeout(function() {
 
-    		// if this state is loaded via 'Go back'
-    		if ( returnBack && !!$vault.get(key) ) {
-    			$scope.$parent.myScroll[key].scrollTo( 0, $vault.get(key), 0 );
-    		};
+    	// 	// if this state is loaded via 'Go back'
+    	// 	if ( returnBack && !!$vault.get(key) ) {
+    	// 		$scope.$parent.myScroll[key].scrollTo( 0, $vault.get(key), 0 );
+    	// 	};
 
-    		// if $vault is provided and probeType is 2, setup scrollEnd listner
-    		if ( $vault && $scope.$parent.myScrollOptions[key].probeType === 2 ) {
-	    		$scope.$parent.myScroll[key].on('scrollEnd', function() {
-	    			$vault.set( key, this.y );
-	    		});
-	    	};
-    	}, 1300);
+    	// 	// if $vault is provided and probeType is 2, setup scrollEnd listner
+    	// 	if ( $vault && $scope.$parent.myScrollOptions[key].probeType === 2 ) {
+	    // 		$scope.$parent.myScroll[key].on('scrollEnd', function() {
+	    // 			$vault.set( key, this.y );
+	    // 		});
+	    // 	};
+    	// }, 1500);
+		
+		// reset 'instCounter' as a sign that we have moved
+		// and any previous setTimeouts must be cleared.
+		instCounter = 0;
+		afterIScrollInit(key);
     };
 
     /*

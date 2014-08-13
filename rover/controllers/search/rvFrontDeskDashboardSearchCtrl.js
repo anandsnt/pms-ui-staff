@@ -1,4 +1,4 @@
-sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', '$stateParams', '$filter', '$rootScope',function($scope, $state, $stateParams, $filter, $rootScope){
+sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', '$stateParams', '$filter', '$rootScope', '$vault', function($scope, $state, $stateParams, $filter, $rootScope, $vault){
 
 	/*
 	* Controller class for dashboard search,
@@ -6,11 +6,15 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
 	*/
 
 	var that = this;
-  	BaseCtrl.call(this, $scope);
+  	BaseCtrl.call( this, $scope, $vault, $rootScope.isReturning() );
 
 
 	//setting the scroller for view
-	var scrollerOptions = { click: true, preventDefault: false };
+	var scrollerOptions = {
+        click: true,
+        preventDefault: false,
+        probeType: 2
+    };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
 
