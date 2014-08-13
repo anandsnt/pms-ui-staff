@@ -18,6 +18,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.showExistingAndAddNewPayments = false;
 	$scope.showExistingGuestPayments = false;
 	$scope.showInitalPaymentScreen = false;
+	$scope.showAddNewPaymentScreen = false;
 	$scope.init = function(){
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
@@ -65,9 +66,16 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		var modalClass = "card-attached";
 		if($scope.showExistingGuestPayments){
 			modalClass = "select-card";
+		} else if($scope.showAddNewPaymentScreen){
+			modalClass = "new-card";
 		}
 		return modalClass;
-		
+	};
+	$scope.showAddNewCreditCard = function(){
+		$scope.showAddNewPaymentScreen = true;
+		$scope.showExistingAndAddNewPayments = true;
+		$scope.showInitalPaymentScreen = false;
+		$scope.showExistingGuestPayments = false;
 	};
 	
 	

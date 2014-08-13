@@ -8,13 +8,13 @@
         <!-- Card options - show only when there are cards attached -->
         <ul id="card-options" class="options">
             <li class="active">Existing Cards</li>
-            <li>Add New Card</li>
+            <li ng-click="showAddNewCreditCard()">Add New Card</li>
         </ul>
 
         <!-- List of available cards - only when they exist -->
         <div ng-include="'/assets/partials/pay/rvCardList.html'" ng-show="showExistingGuestPayments"></div>
 
         <!-- New card form -->
-        <div ng-include="'/assets/partials/pay/rvNewCardForm.html'" ng-show="true"></div>
+        <div ng-include="'/assets/partials/pay/rvNewCardForm.html'" ng-show="showAddNewPaymentScreen"></div>
 
     </fieldset>
