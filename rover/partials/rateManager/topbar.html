@@ -6,7 +6,6 @@
 		<li ng-show="currentFilterData.name_cards.length > 0"><h6>Name Card</h6><span ng-repeat="card in currentFilterData.name_cards">{{card.account_name}}{{$last ? '' : ', '}}</span></li>
 	</ul>
 	<div class="display-mode" >
-		<div><button class="button cl-gr-button">&nbsp;</button></div>
 		<div><button ng-click="showGraphView()" class="button gr-button" ng-class="{'active' : displayMode == 'GRAPH'}">&nbsp;</button></div>
 		<div><button ng-click="showCalendarView()" class="button active cl-button" ng-class="{'active' : displayMode == 'CALENDAR'}">&nbsp;</button></div>
 	</div>
