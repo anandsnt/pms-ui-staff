@@ -918,6 +918,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	$scope.removeCharge = function(reason){
 		ngDialog.close();
+		var data = 
+		{
+			"reason":reason,
+			"id" :$scope.selectedTransaction.transaction_id
+		};
+		var transactionDeleteSuccessCallback = function(data){
+			console.log(data);
+			$scope.$emit("hideLoader");
+
+		};
+		$scope.invokeApi(RVBillCardSrv.transactionDelete, data, transactionDeleteSuccessCallback);
+	
 		console.log(reason);
 	};
 

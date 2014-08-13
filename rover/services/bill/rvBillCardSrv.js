@@ -53,13 +53,33 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 
 	this.transactionEdit = function(data){
-		alert("to be removed1");
+		alert("to be removed1 Edit- resheil");
 		console.log(data);
-		alert("to be removed2");
+		alert("to be removed2 edit- resheil");
 		var deferred = $q.defer();
 		var trasactionId = data.id;
 		var updatedDate  = data.updatedDate;
 		var url = 'api/financial_transactions/'+trasactionId+'/edit';
+		RVBaseWebSrv.putJSON(url, updatedDate).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+
+		return deferred.promise;
+	};
+
+
+
+
+	this.transactionDelete = function(data){
+		alert("to be removed1 delete- resheil");
+		console.log(data);
+		alert("to be removed2 delete- resheil");
+		var deferred = $q.defer();
+		var trasactionId = data.id;
+		var updatedDate  = {"reason":data.reason};
+		var url = 'api/financial_transactions/'+trasactionId;
 		RVBaseWebSrv.putJSON(url, updatedDate).then(function(data) {
 		   	 deferred.resolve(data);
 		},function(data){
