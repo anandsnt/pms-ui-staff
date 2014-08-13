@@ -985,7 +985,7 @@ $scope.colours = [
 };
 
 $scope.stateSelected = function (state) {
-    $scope.stateInfo = state.name + " (" + state.id + ")";
+   // $scope.stateInfo = state.name + " (" + state.id + ")";
 }
 
 $scope.selectedState = "";

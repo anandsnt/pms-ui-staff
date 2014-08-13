@@ -350,6 +350,14 @@ angular.module("acute.select", [])
                 filterData($scope.searchText);
             };
 
+            // Remove any client filtering of items
+            function clearClientFilter() {
+                if ($scope.allDataLoaded) {
+                    $scope.items = $scope.allItems;
+                    $scope.setListHeight();
+                }
+            }
+
             $scope.comboTextChange = function () {
                 $scope.popupVisible = true;
                 $scope.ensureDataLoaded();
@@ -359,6 +367,8 @@ angular.module("acute.select", [])
                 }
                 else if ($scope.settings.allowClear) {
                     clearSelection();
+                    clearClientFilter();
+    
                 }
             };
 
@@ -638,6 +648,7 @@ angular.module("acute.select", [])
                 confirmSelection($scope.selectedItem, true);
             }
 
+
             function deleteKey(event) {
                 if ($scope.settings.allowClear) {
                     var srcElement = angular.element(event.target);
@@ -757,13 +768,7 @@ angular.module("acute.select", [])
                 return valid;
             }
 
-            // Remove any client filtering of items
-            function clearClientFilter() {
-                if ($scope.allDataLoaded) {
-                    $scope.items = $scope.allItems;
-                    $scope.setListHeight();
-                }
-            }
+        
 
             function closeWhenClickingElsewhere(event, callbackFn) {
 
