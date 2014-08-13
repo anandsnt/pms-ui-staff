@@ -961,6 +961,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 
 	};
+/* to remove */
+	$scope.splitTypeisAmount = true;
+
+	$scope.chargeCodes =[
+    {name: "Options 1", value: "11"}, 
+    {name: "Options 2", value: "22"},
+    {name: "Options 3", value: "33"}
+	];
+	/* to remove */
 
 /* edit/remove/split ends here */
 }]);

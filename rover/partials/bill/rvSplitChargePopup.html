@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
+<!-- <div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
 	<button type="button" id="modal-close" ng-click = "callActionsPopupAction('close')" class="modal-close dark-title">
 		<span class="icons icon-close"></span>
 	</button>
@@ -29,4 +29,55 @@
 			<button type="button" id="save" class="button green modal-close" ng-click="splitCharge(qty,type)" translate>OK</button>
 	</div>
 	</form>
+</div> -->
+<div role="dialog" id="modal" class="modal-show">
+<form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
+	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"><span class="icons icon-close invert"></span></button>
+   <!-- 3. Split -->
+    <fieldset id="split-charge" name="split-charge" class="split-charge">
+        <span class="h2 message">Split charge</span>
+        <span class="text">{charge} <strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
+        
+        <!-- Form -->
+        <div class="entry full-width with-switch">
+            <label for="split-value">Splitting for</label>
+            <div class="switch-button" ng-class="{'on':splitTypeisAmount}">
+                <input name="split-type" id="split-type" value="" type="checkbox" ng-model="splitTypeisAmount"/>
+                <label class="data-off">
+                    <span class="switch-icon">%</span>
+                    <span class="value">$</span>
+                </label>
+                <label class="data-on">
+                    <span class="value">%</span>
+                    <span class="switch-icon">$</span>
+                </label>
+            </div>
+            <input name="split-value" id="split-value" placeholder="Enter split value" ng-model="splitValue" type="text" />
+        </div>
+        <!-- Preview, hidden until split value is defined -->
+        <div id="split-preview" class="entry full-width notice" ng-hide="splitValue.length === 0 || !splitValue">
+            <strong class="h4">Charge will be appear as:</strong>
+            <ul>
+                <li>
+                    {charge}
+                    <span class="value" ng-hide="splitTypeisAmount">
+                    	{{(selectedTransaction.description[0].fees_amount/splitValue)}}</span>
+                    <span class="value" ng-show="splitTypeisAmount">{{selectedTransaction.description[0].fees_amount -splitValue}} </span>
+
+                </li>
+                <li>
+                    {charge}
+                    <span class="value" ng-hide="splitTypeisAmount">{{selectedTransaction.description[0].fees_amount -(selectedTransaction.description[0].fees_amount/splitValue)}}</span>
+                    <span class="value" ng-show="splitTypeisAmount">{{splitValue}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="actions">
+            <button type="button" class="button blue modal-close" ng-click="splitCharge(splitValue,splitTypeisAmount)">Split charge</button>
+            <button type="button" class="button blank" ng-click="callActionsPopupAction('close')">Cancel</button> 
+        </div>
+    </fieldset> 
+
+</form>
+
 </div>

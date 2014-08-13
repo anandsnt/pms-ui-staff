@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
+<!-- <div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
 	<button type="button" id="modal-close" ng-click = "callActionsPopupAction('close')" class="modal-close dark-title">
 		<span class="icons icon-close"></span>
 	</button>
@@ -28,4 +28,62 @@
 		<button type="button" id="save" class="button green modal-close" ng-click="editCharge(newAmount,chargeCode)" translate>Split</button>
 	</div>
 	</form>
+</div> -->
+
+<div role="dialog" id="modal" class="modal-show">
+ <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
+ 	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"><span class="icons icon-close invert"></span></button>
+
+    <!-- 4. Edit -->
+    <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
+        <span class="h2 message">Edit charge</span>
+
+        <span class="text">{charge}<strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
+        <ul id="change-edit-type" class="modal-options">
+            <li ng-class="{'active':!chargeCodeActive}" ng-click="chargeCodeActive = false">Amount</li>
+            <li ng-class="{'active':chargeCodeActive}" ng-click="chargeCodeActive = true">Charge Code</li>
+        </ul>
+
+        <!-- Edit amount field -->
+        <div id="edit-amount" class="entry full-width" ng-hide="chargeCodeActive">
+            <label for="new-amount">New Amount (<span>{{currencySymbol}}</span>)</label>
+            <input name="new-amount" id="new-amount" placeholder="Enter value" ng-model="newAmount" type="text" />
+        </div>
+        
+        <!-- Charge code field, hidden until selected -->
+        <div id="change-code" class="entry full-width" ng-show="chargeCodeActive">
+            <div id="autocomplete-charge-codes" class="search-codes">
+                <!-- Autocomplete input to search charge codes -->
+                <input name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" autocomplete="off" ng-model="chargecodeSearchTerm"/>
+                <div class="mini-select">
+
+                	<select ng-model="selected" id="charge-codes" name="charge-codes" ng-model="chargeCode"
+        			ng-options="chargeCode.value as chargeCode.name for chargeCode in chargeCodes | filter:chargecodeSearchTerm">
+                  <!--   <select >
+                        <!-- List all charge codes here -->
+                   <!--      <option value="10">10 Minibar</option>
+                        ...
+                    </select> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview, hidden until amount edited or charge code changed -->
+        <div id="edit-preview" class="entry full-width notice hidden">
+            <strong class="h4">Charge will appear as:</strong>
+            <ul>
+                <li>
+                    <strong class="flag">Adjustment</strong>
+                    {charge}
+                    <span class="value">{+ or -edited value}</span>
+                    </li>
+            </ul>
+        </div>
+        <div class="actions">
+            <button type="button" class="button green modal-close" ng-click="editCharge(newAmount,chargeCode)">Change Amount</button>
+            <button type="button" class="button blank" ng-click="callActionsPopupAction('close')">Cancel</button> 
+        </div>
+
+    </fieldset>
+</form>
 </div>
