@@ -4,11 +4,13 @@
 
 <form method="post" action="pay-bill" id="pay-bill" name="pay-bill" class="modal-content form pay-bill card-attached">
     <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
-   
+    ====={{showExistingAndAddNewPayments}}
+    ==++++==={{showInitalPaymentScreen}}
     <!-- Payment method -->
-    <div ng-include="'/assets/partials/pay/rvPaymentMethod.html'" ng-show="true"></div>
+    <div ng-include="'/assets/partials/pay/rvPaymentMethod.html'" ng-show="showInitalPaymentScreen"></div>
 
     <!-- Available cards & new card form -->
-    <div ng-include="'/assets/partials/pay/rvSelectAddCreditCard.html'" ng-show="false"></div>
+   
+    <div ng-include="'/assets/partials/pay/rvSelectAddCreditCard.html'" ng-show="showExistingAndAddNewPayments"></div>
 </form>
 </div>

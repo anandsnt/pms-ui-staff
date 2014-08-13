@@ -399,7 +399,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	
 	 	
 	 	 ngDialog.open({
-              template: '/assets/partials/pay/paymentModal.html',
+              template: '/assets/partials/pay/rvPaymentModal.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               controller: 'RVBillPayCtrl',
               scope: $scope

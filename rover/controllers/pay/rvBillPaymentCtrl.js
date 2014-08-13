@@ -13,8 +13,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	// if default credit card not exist show guest payment lists
 	//Otherwise that screen will be viewed when click on credit card area. 
 	$scope.isExistPaymentType = false;
+	$scope.showExistingAndAddNewPayments = false;
+	$scope.showExistingGuestPayments = false;
+	$scope.showInitalPaymentScreen = false;
 	$scope.init = function(){
-		
+		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
 	};
 	$scope.getPaymentListSuccess = function(data){
@@ -42,7 +45,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if($scope.isExistPaymentType){
 				$scope.showCreditCardInfo = true;
 			} else{
-				
+				$scope.showInitalPaymentScreen = false;
+				$scope.showExistingAndAddNewPayments = true;
+				$scope.showExistingGuestPayments = true;
 			}
 			
 		} else {
