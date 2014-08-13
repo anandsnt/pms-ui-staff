@@ -871,6 +871,21 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.clickedEmail = function(){
 		
 		console.log("send Email >>");
+		
+		var data = {
+				"reservation_id" : $scope.reservationBillData.reservation_id,
+				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
+		};
+		var sendEmailSuccessCallback = function(successData){
+			$scope.$emit('hideLoader');
+		};
+		var sendEmailFailureCallback = function(errorData){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		console.log(data);
+		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
+	
 	};
 	
 	$scope.clickedPrint = function(){
