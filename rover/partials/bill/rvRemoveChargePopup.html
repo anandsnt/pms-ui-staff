@@ -1,24 +1,6 @@
-<!-- <div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
-	<button type="button" id="modal-close" ng-click = "callActionsPopupAction('close')" class="modal-close dark-title">
-		<span class="icons icon-close"></span>
-	</button>
-	<strong class="new-form-title" translate>Charge for {{currencySymbol}}{{selectedTransaction.description[0].fees_amount}} will be removed from Guest Bill </strong>
-	<div class="entry full-width">
- 	</div>
-	<div class="entry full-width">
-			<label for="code" translate>Enter Reason</label>
-			<textarea ng-model="reasonForRemoving"></textarea>
-		</div>
-		<div class="actions float">
-			<button type="button" id="cancel" class="button blank modal-close" ng-click="callActionsPopupAction('close')" translate>CANCEL</button>
-			<button type="button" id="save" class="button red modal-close" ng-click="removeCharge(reasonForRemoving)">Remove</button>
-		</div>
-	</form>
-</div> -->
 <div role="dialog" id="modal" class="modal-show">
 <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">  
-	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"><span class="icons icon-close invert"></span></button>
-  <!-- 2. Remove  -->
+	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
     <fieldset id="remove-charge" class="remove-charge">
         <span class="h2 message">Remove charge</span>
         <span class="text red">{charge} <strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>

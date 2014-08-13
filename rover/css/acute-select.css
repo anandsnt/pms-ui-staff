@@ -98,6 +98,7 @@ div.ac-select-no-items {
     margin-left: -4px;
     margin-right: -6px;
     border-width: 0px !important;
+    box-shadow: none !important;
 }
 
 
@@ -183,4 +184,14 @@ td.ac-select-add {
 .ac-select-load-more span {
     cursor: pointer;
     padding-left: 12px;
+}
+
+/* QBurst */
+
+.acute-select-li{
+    margin-bottom:5px !important;
+}
+
+.acute-td{
+    width:90% !important;
 }

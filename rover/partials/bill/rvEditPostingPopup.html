@@ -1,40 +1,7 @@
-<!-- <div role="dialog" id="modal" class="modal-show"><form name="new-hlp"  class="modal-content form new-content">
-	<button type="button" id="modal-close" ng-click = "callActionsPopupAction('close')" class="modal-close dark-title">
-		<span class="icons icon-close"></span>
-	</button>
-	<strong class="new-form-title" translate>Edit Posting</strong>
-	<div class="entry full-width">
- 	</div>
- 	<div class="entry full-width">
-		<label for="code" translate>current amount [{{currencySymbol}}]</label>
-		<input type="text" maxlength="16" value="" placeholder="Enter new amount" ng-model="selectedTransaction.description[0].fees_amount" disabled/>
-	</div>
- 	<div class="entry full-width">
-		<label for="code" translate>new amount</label>
-		<input type="text" maxlength="16" value="" placeholder="Enter new amount" ng-model="newAmount" >
-	</div>
-	<div class="entry full-width">
-		<label for="type" translate>Charge Code</label>
-		<div class="select">
-			<select ng-model="chargeCode">
-					<option class="placeholder ng-scope" disabled="disabled" value="">Select one</option>
-					<option value="0">{{currencySymbol}}</option>
-					<option value="1">%</option>				
-			</select>
-	</div>
-	</div>
-	<div class="actions float">
-		<button type="button" id="cancel" class="button blank modal-close" ng-click="callActionsPopupAction('close')" translate>CANCEL</button>
-		<button type="button" id="save" class="button green modal-close" ng-click="editCharge(newAmount,chargeCode)" translate>Split</button>
-	</div>
-	</form>
-</div> -->
-
 <div role="dialog" id="modal" class="modal-show">
  <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
- 	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"><span class="icons icon-close invert"></span></button>
+ 	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
 
-    <!-- 4. Edit -->
     <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
         <span class="h2 message">Edit charge</span>
 
@@ -54,25 +21,8 @@
         <div id="change-code" class="entry full-width" ng-show="chargeCodeActive">
 
         <!-- to remove -->
-     <select class="ac-select stateList" ac-model="selectedState" ac-options="s.name for s in getAllStates()" 
+    	 <select class="ac-select stateList guest-bill-edit-buttons" ac-model="selectedState" ac-options="s.name for s in getAllStates()" 
         ac-settings="{ comboMode: true, loadOnOpen: true, minWidth: '300px' }" ac-change="stateSelected(value)"></select>
-
-    <!--     <ac-select ac-model='chargeCode' ac-options='chargeCode.value as chargeCode.name for chargeCode  in chargeCodes' ac-change='selectionChanged(value)' ac-settings='{ loadOnOpen: true }'></ac-select> -->
-    
-        <!--  -->
-      <!--       <div id="autocomplete-charge-codes" class="search-codes">
-                <!-- Autocomplete input to search charge codes 
-                <input name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" autocomplete="off" ng-model="chargecodeSearchTerm"/>
-                <div class="mini-select">
-
-                	<select id="charge-codes" name="charge-codes" ng-model="chargeCode"
-        			ng-options="chargeCode.value as chargeCode.name for chargeCode in chargeCodes | filter:chargecodeSearchTerm">
-                     <select >
-                        <!-- List all charge codes here -->
-                   <!--      <option value="10">10 Minibar</option>
-                        ...
-                    </select> 
-                </div> -->
         </div>
 
         <!-- Preview, hidden until amount edited or charge code changed -->
@@ -86,9 +36,9 @@
                     </li>
             </ul>
         </div>
-        <div class="actions">
-            <button type="button" class="button green modal-close" ng-click="editCharge(newAmount,chargeCode)">Change Amount</button>
-            <button type="button" class="button blank" ng-click="callActionsPopupAction('close')">Cancel</button> 
+        <div>
+            <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,chargeCode)">Change Amount</button>
+            <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')">Cancel</button> 
         </div>
 
     </fieldset>
