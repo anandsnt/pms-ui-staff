@@ -6,7 +6,7 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
 	*/
 
 	var that = this;
-  	BaseCtrl.call( this, $scope );
+  	BaseCtrl.call(this, $scope);
 
 
 	//setting the scroller for view
