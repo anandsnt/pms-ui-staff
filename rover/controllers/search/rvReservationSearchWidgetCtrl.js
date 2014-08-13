@@ -1,4 +1,5 @@
 sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$vault', function($scope, $rootScope, RVSearchSrv, $filter, $state, $vault){
+
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
@@ -275,6 +276,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
     	$scope.results = [];
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
+	  	$rootScope.setPrevState.hide = true;
   	};
   	
   	/**
@@ -292,6 +294,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
 	});	
 	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
+		 $rootScope.setPrevState.hide = false;
 		 $scope.$emit('hideLoader');
 		 $scope.isSwiped = true;
 		 data = searchByCCResults;
@@ -377,5 +380,13 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	       }
 	   	 return mappedStatus;
    };
+  
+   $rootScope.setPrevState = {
+	    hide: true,
+	    title: 'Go back to Dashboard',
+	    callback: 'clearResults',
+	    scope: $scope,
+	    noStateChange: true
+	};
       
 }]);
