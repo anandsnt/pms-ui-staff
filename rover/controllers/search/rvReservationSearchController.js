@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter',  'searchResultdata', '$vault', function($scope, $rootScope, $state, $stateParams, $filter, searchResultdata, $vault){
+sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter',  'searchResultdata', function($scope, $rootScope, $state, $stateParams, $filter, searchResultdata){
 
 	/*
 	* Controller class for search,
@@ -6,7 +6,7 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 	*/
 
 	var that = this;
-  BaseCtrl.call( this, $scope, $vault, $rootScope.isReturning() );
+  BaseCtrl.call(this, $scope);
 
   	//changing the header
 	$scope.heading = 'SEARCH_TITLE';
@@ -25,7 +25,10 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
     }
     if ($stateParams.type in headingDict){
         heading = headingDict[$stateParams.type];
-        $rootScope.setPrevState = {'title': 'DASHBOARD', 'name': 'rover.dashboard'};
+        $rootScope.setPrevState = {
+          title: $filter( 'translate' )( headingDict[$stateParams.type] ),
+          name: 'rover.dashboard'
+        };
     }
     else {
         heading = headingDict['NORMAL_SEARCH'];
@@ -34,12 +37,8 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
     $scope.heading = heading;
 
 	//setting the scroller for view
-	var scrollerOptions = {
-    click: true,
-    preventDefault: false,
-    probeType: 2
-  };
-  $scope.setScroller('result_showing_area', scrollerOptions);
+	var scrollerOptions = { click: true, preventDefault: false };
+  	$scope.setScroller('result_showing_area', scrollerOptions);
 
 
   	//click function on search area, mainly for closing the drawer

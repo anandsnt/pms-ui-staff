@@ -1,5 +1,5 @@
 sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault){
-
+    
 	/*
 	* Controller class for dashboard search,
 	* will be updating the heading, update data from external source...
