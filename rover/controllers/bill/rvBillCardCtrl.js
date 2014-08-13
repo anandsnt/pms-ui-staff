@@ -969,6 +969,36 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     {name: "Options 2", value: "22"},
     {name: "Options 3", value: "33"}
 	];
+
+	$scope.getStates = function (callback) {
+    callback($scope.chargeCodes);
+};
+
+$scope.colours = [
+    { name: 'black', id: 0 },
+    { name: 'white', id: 1 },
+    { name: 'red', id: 2 }];
+
+    $scope.chargeCode = 0;
+    $scope.getAllStates = function (callback) {
+    callback($scope.allStates);
+};
+
+$scope.stateSelected = function (state) {
+    $scope.stateInfo = state.name + " (" + state.id + ")";
+}
+
+$scope.selectedState = "";
+
+$scope.allStates = [
+    { "name": "Alabama", "id": "AL" },
+    { "name": "Alaska", "id": "AK" },
+     { "name": "i", "id": "AL2" },
+    { "name": "a", "id": "AK2" },
+     { "name": "b", "id": "AL3" },
+    { "name": "c", "id": "AK4" },
+    { "name": "d", "id": "AK5" },
+    { "name": "k", "id": "AK6" },];
 	/* to remove */
 
 /* edit/remove/split ends here */
