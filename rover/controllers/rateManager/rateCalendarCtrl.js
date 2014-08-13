@@ -266,6 +266,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
             className: popupClassName,
             closeByDocument: true,
+            controller: 'UpdatePriceAndRestrictionsCtrl',
             scope: $scope
         });
    	};

@@ -275,27 +275,24 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
         return mixed;
     }
-    /**
+        /**
     * Click handler for restriction on/off buttons
     * Enable disable restriction. 
     */
-    $scope.onOffRestrictions = function(id, action, days,selectedIndex){
+    $scope.onOffRestrictions = function(id, toEnable, days,selectedIndex){
         $scope.data.showEditView = false;
         $scope.restrictionsList.selectedIndex = selectedIndex;
 
-    	angular.forEach($scope.data.restrictionTypes, function(value, key){
-    		value.showEdit =  false;
-    	});
+        angular.forEach($scope.data.restrictionTypes, function(value, key){
+            value.showEdit =  false;
+        });
 
-        /*Prompt the user for number of days
-         * Only if enabling a restriction.
-         */
         var shouldShowEdit =false;
-        if($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE"){
+        if($scope.data.restrictionTypes[id].hasEdit && toEnable){
             shouldShowEdit = true;
         }
 
-        if($scope.popupData.all_data_selected && action === "ENABLE" && $scope.data.restrictionTypes[id].isMixed){
+        if($scope.popupData.all_data_selected && toEnable && $scope.data.restrictionTypes[id].isMixed){
             shouldShowEdit = true;
         }
 
@@ -306,12 +303,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             $scope.updatePopupWidth();
             return false;
         }
-        if(action == "ENABLE"){
+        if(toEnable){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
             $scope.data.restrictionTypes[id].hasChanged = true; 
             $scope.data.restrictionTypes[id].isMixed = false; 
         }
-        if(action == "DISABLE"){
+        else{
             $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
             $scope.data.restrictionTypes[id].hasChanged = true; 
             $scope.data.restrictionTypes[id].isMixed = false;

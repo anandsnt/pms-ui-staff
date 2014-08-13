@@ -10,12 +10,12 @@
 				<li class="restriction-type"
 				ng-repeat="restrictionType in data.restrictionTypes"
 				ng-hide="restrictionType.isOnRate"
-				ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}">
+				ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}" ng-click="onOffRestrictions(restrictionType.id, !restrictionType.isRestrictionEnabled, restrictionType.days,$index)">
 				<div class="restrictions-container">
 					<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
 					<span class="text">{{restrictionType.description}}</span>
-					<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on" ng-click="onOffRestrictions(restrictionType.id, 'DISABLE', restrictionType.days,$index)">on</span>
-					<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off" ng-click="onOffRestrictions(restrictionType.id, 'ENABLE', restrictionType.days,$index)">off</span>
+					<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on">on</span>
+					<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off">off</span>
 				</div>
 			</li>
 		</ul>
