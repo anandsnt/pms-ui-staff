@@ -319,13 +319,13 @@
 			.message,
 			.text {
 				text-transform: uppercase;
-				font-weight: 600;
 				.show;
 			}
 
 			.message { 
 				margin: 10px 0 20px 0; 
 				text-align: center;
+				font-weight: 600;
 
 				.select,
 				.select-item {
@@ -341,16 +341,66 @@
 			}
 
 			.text:not(.value) {
-				font-size: 14px;
+				font-size: 16px;
 				line-height: 1em;
 				color: @grey3;
 				padding-bottom: 20px;
 				text-align: center;
+
+				&.red { 
+					color: @red; 
+					text-decoration: line-through;
+				}
 			}
 
 			.text.value {
 				font-weight: 400;
 				text-transform: none;
+			}
+
+			label {
+				&.checkbox,
+				&.radio { .show }
+			}
+
+			textarea { height: 100px; }
+
+			.modal-options {
+				margin: 20px auto;
+				display: table;
+				.float;
+
+				li { 
+                	display: inline-block;
+                    cursor: pointer;
+                    margin: 0 0 0 1px;
+                    font-size: 14px;
+                    line-height: 40px;
+                    text-align: center;
+                    color: @textColor;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    padding: 0 20px;
+                    .pull-left;
+                    .clickable;
+                    #border-radius > .rounded(0);
+
+                    &:hover { 
+                        color: @logoPrimary; 
+                        .box-shadow();
+                    }
+
+                    &.active {
+                        cursor: default;
+                        color: @white;
+                        text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+                        .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.3)");
+                        .gradient (@logoGradientEnd, @logoGradientStart);
+                    }
+
+                    &:first-child { #border-radius > .left(); }
+                    &:last-child { #border-radius > .right(); }
+                }
 			}
 
 			.button { 
