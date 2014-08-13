@@ -55,12 +55,19 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.showInitalPaymentScreen = false;
 				$scope.showExistingAndAddNewPayments = true;
 				$scope.showExistingGuestPayments = true;
-				
 			}
 			
 		} else {
 			$scope.showCreditCardInfo = false;
 		}
+	};
+	$scope.showModalClass = function(){
+		var modalClass = "card-attached";
+		if($scope.showExistingGuestPayments){
+			modalClass = "select-card";
+		}
+		return modalClass;
+		
 	};
 	
 	

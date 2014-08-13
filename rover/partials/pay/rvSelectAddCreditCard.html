@@ -12,7 +12,7 @@
         </ul>
 
         <!-- List of available cards - only when they exist -->
-        <div ng-include="'/assets/partials/pay/rvCardList.html'" ng-show="true"></div>
+        <div ng-include="'/assets/partials/pay/rvCardList.html'" ng-show="showExistingGuestPayments"></div>
 
         <!-- New card form -->
         <div ng-include="'/assets/partials/pay/rvNewCardForm.html'" ng-show="true"></div>
