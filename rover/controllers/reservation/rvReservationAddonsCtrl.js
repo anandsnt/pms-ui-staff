@@ -15,6 +15,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
             }
         }
 
+
+
         // by default load Best Sellers addon
         // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons] 
         // same will be overrided if with valid charge code id

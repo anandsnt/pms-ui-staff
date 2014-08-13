@@ -1,16 +1,34 @@
 sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter',
 	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter) {
 
-		// set up back button
-		$rootScope.setPrevState = {
-			title: 'Stay card',
-			name: 'rover.reservation.staycard.reservationcard.reservationdetails',
-			param: {
-				confirmationId: $scope.reservationData.confirmNum,
-				id: $scope.reservationData.reservationId,
-				isrefresh: true
+		// smart switch btw edit reservation flow and create reservation flow
+		if ( $scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId ) {
+			$rootScope.setPrevState = {
+				title: 'Stay card',
+				name: 'rover.reservation.staycard.reservationcard.reservationdetails',
+				param: {
+					confirmationId: $scope.reservationData.confirmNum,
+					id: $scope.reservationData.reservationId,
+					isrefresh: true
+				}
+			}	
+		} else {
+			$rootScope.setPrevState = {
+				title: 'Create Reservation',
+				callback: 'setSameCardNgo',
+				scope: $scope
 			}
 		}
+
+		// since we are going back to create reservation screen
+		// mark 'isSameCard' as true on '$scope.reservationData'
+		$scope.setSameCardNgo = function() {
+			$scope.reservationData.isSameCard = true;
+			$state.go( 'rover.reservation.search' );
+		};
+
+
+
 
 
 		$scope.displayData = {};

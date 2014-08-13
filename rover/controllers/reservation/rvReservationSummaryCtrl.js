@@ -3,8 +3,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		BaseCtrl.call(this, $scope);
 
+		// set the previous state
 		$rootScope.setPrevState = {
-		    title: 'Add-on',
+		    title: 'Enhance Stay',
 		    name: 'rover.reservation.staycard.mainCard.addons',
 		    param: {
 		        from_date: $scope.reservationData.arrivalDate,
@@ -12,6 +13,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		    }
 		}
 		
+
+
+
 		$scope.init = function() {
 			$scope.data = {};
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
