@@ -1,0 +1,29 @@
+<div id="select-card" class="select-card">
+    <div id="available-cards" class="cards-list scrollable">
+        <div class="wrapper">
+            <!-- Selected card -->
+            <label class="active-item item-payment primary">
+                <figure class="card-logo">
+                    <img src="{logo}" alt="" />
+                </figure>
+                <span class="number">Ending with <span class="value number">{number}</span></span>
+                <span class="date">Date <span class="value date">{date}</span></span>
+                <span class="name">Name <span class="value name">{name}</span></span>
+                <span class="primary"><span class="value primary">Selected</span></span>
+            </label>
+            <!-- Other cards -->
+            <label id="pay-with-visa" class="active-item item-payment">
+                <figure class="card-logo">
+                    <img src="{logo}" alt="" />
+                </figure>
+                <span class="number">Ending with <span class="value number">{number}</span></span>
+                <span class="date">Date <span class="value date">{date}</span></span>
+                <span class="name">Name <span class="value name">{name}</span></span>
+            </label>
+            <!-- repeat ... -->
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" id="cancel-card-selection" class="button blank">Cancel</button>
+    </div>
+</div>
