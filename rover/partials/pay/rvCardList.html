@@ -2,25 +2,16 @@
     <div id="available-cards" class="cards-list scrollable">
         <div class="wrapper">
             <!-- Selected card -->
-            <label class="active-item item-payment primary">
+            <label class="active-item item-payment primary" ng-repeat="guestCreditCardList in guestPaymentList">
                 <figure class="card-logo">
-                    <img src="{logo}" alt="" />
+                    <img src="/assets/{{guestCreditCardList.card_code}}.png" alt="">
                 </figure>
-                <span class="number">Ending with <span class="value number">{number}</span></span>
-                <span class="date">Date <span class="value date">{date}</span></span>
-                <span class="name">Name <span class="value name">{name}</span></span>
+                <span class="number">Ending with <span class="value number">{{guestCreditCardList.mli_token}}</span></span>
+                <span class="date">Date <span class="value date">{{guestCreditCardList.card_expiry}}</span></span>
+                <span class="name">Name <span class="value name">{{guestCreditCardList.card_name}}</span></span>
                 <span class="primary"><span class="value primary">Selected</span></span>
             </label>
-            <!-- Other cards -->
-            <label id="pay-with-visa" class="active-item item-payment">
-                <figure class="card-logo">
-                    <img src="{logo}" alt="" />
-                </figure>
-                <span class="number">Ending with <span class="value number">{number}</span></span>
-                <span class="date">Date <span class="value date">{date}</span></span>
-                <span class="name">Name <span class="value name">{name}</span></span>
-            </label>
-            <!-- repeat ... -->
+            
         </div>
     </div>
     <div class="actions">

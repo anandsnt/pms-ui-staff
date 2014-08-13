@@ -1,7 +1,9 @@
-sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv','ngDialog', function($scope, RVBillPaymentSrv, RVPaymentSrv, ngDialog){
+sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv','RVGuestCardSrv','ngDialog', function($scope, RVBillPaymentSrv, RVPaymentSrv, RVGuestCardSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.renderData = {};
 	$scope.saveData = {};
+	$scope.guestPaymentList = {};
+	console.log($scope);
 	//We are passing $scope from bill to this modal
 	$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 	$scope.billsArray = $scope.reservationBillData.bills;
@@ -19,13 +21,17 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.init = function(){
 		$scope.showInitalPaymentScreen = true;
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, '', $scope.getPaymentListSuccess);
+		$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestInfoToPaymentModal.user_id, $scope.guestPaymentListSuccess, '', 'NONE');
 	};
 	$scope.getPaymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.renderData = data;
 		$scope.renderDefaultValues();
 	};
-	$scope.init();
+	$scope.guestPaymentListSuccess = function(data){
+		$scope.$emit('hideLoader');
+		$scope.guestPaymentList = data;
+	};
 	$scope.renderDefaultValues = function(){
 		$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
 		if($scope.defaultPaymentTypeOfBill == 'CC'){
@@ -37,6 +43,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.defaultPaymentTypeCardExpiry = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_expiry;
 		}
 	};
+	$scope.init();
 	$scope.submitPayment = function(){
 		
 	};
@@ -48,11 +55,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.showInitalPaymentScreen = false;
 				$scope.showExistingAndAddNewPayments = true;
 				$scope.showExistingGuestPayments = true;
+				
 			}
 			
 		} else {
 			$scope.showCreditCardInfo = false;
 		}
 	};
+	
 	
 }]);
