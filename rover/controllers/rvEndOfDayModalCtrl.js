@@ -30,7 +30,7 @@ $scope.login = function(){
 		// verify if hotel time is past midnight or not
 		$scope.isTimePastMidnight = (data.is_show_warning ==="true") ? false: true;
 	}	
-	var data = {"email":$scope.email,"password":$scope.password};
+	var data = {"password":$scope.password};
 
 	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess);  
 	
