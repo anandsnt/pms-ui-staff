@@ -634,6 +634,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
+            /** CICO-6135
+             *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
+             */
+
+            $scope.reservationData.checkinTime = {
+                hh: '05',
+                mm: '00',
+                ampm: 'AM'
+            }
+
+            $scope.reservationData.checkoutTime = {
+                hh: '06',
+                mm: '00',
+                ampm: 'PM'
+            }
+
             // cards
             $scope.reservationData.company.id = $scope.reservationListData.company_id;
             $scope.reservationData.travelAgent.id = $scope.reservationListData.travel_agent_id;

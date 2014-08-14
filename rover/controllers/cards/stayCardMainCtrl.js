@@ -28,7 +28,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
-				
+
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -368,7 +368,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if (!isEmpty($scope.reservationData.paymentType.type)) {
+			if (!isEmpty($scope.reservationData.paymentType.type) && $scope.reservationData.paymentType.type.id != null) {
 				data.payment_type = {};
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
@@ -459,7 +459,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 *	the rate / room display should include the rate of the Company / Travel Agent contract if one exists.
 			 *	Have to make a call to the availability API with the card added as a request param
 			 */
-			$scope.$broadcast('cardChanged',cardIds);
+			$scope.$broadcast('cardChanged', cardIds);
 			// 	CICO-7792 END
 		}
 

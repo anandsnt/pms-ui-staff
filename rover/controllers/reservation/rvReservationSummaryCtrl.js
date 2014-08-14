@@ -102,7 +102,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if (!isEmpty($scope.reservationData.paymentType.type)) {
+			if (!isEmpty($scope.reservationData.paymentType.type) && $scope.reservationData.paymentType.type.id != null) {
 				data.payment_type = {};
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
