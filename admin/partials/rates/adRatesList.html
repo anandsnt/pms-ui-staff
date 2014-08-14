@@ -77,7 +77,7 @@
 						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
 					</td>
 					<td header-class="width-10" ng-hide="currentClickedElement == $index">
-						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)"  ng-hide="false">&nbsp;</span>
+						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)"  ng-hide="false" qtip content="/assets/partials/rates/adRateTypePopover.html">&nbsp;</span>
 					</td>
 					<td colspan="6" header-class="width-0" ng-include="getTemplateUrl($index, rate.id)"></td> 
 				</tr>
@@ -111,4 +111,3 @@
 </section>
 
 <div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
-
