@@ -28,7 +28,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.$emit('hideLoader');
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
-				
+
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -188,7 +188,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				}, function() {
 					$scope.cardRemoved(card);
 					$scope.$emit('hideLoader');
-					if ($scope.viewState.identifier == "STAY_CARD") {
+					/**
+					 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
+					 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
+					 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
+					 * 	However, in the confirmation screen the identifier would be "CONFIRM"
+					 */
+					if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
 						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 							"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 							"confirmationId": $stateParams.confirmationId,
@@ -233,7 +239,13 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					$scope.removeCard($scope.viewState.lastCardSlot);
 					$scope.viewState.lastCardSlot = "";
 				}
-				if ($scope.viewState.identifier == "STAY_CARD") {
+				/**
+				 * 	Reload the stay card if any of the attached cards are changed! >>> 7078 / 7370
+				 * 	the state would be STAY_CARD in the reservation edit mode also.. hence checking for confirmation id in the state params
+				 * 	The confirmationId will not be in the reservation edit/create stateParams except for the confirmation screen...
+				 * 	However, in the confirmation screen the identifier would be "CONFIRM"
+				 */
+				if ($scope.viewState.identifier == "STAY_CARD" && typeof $stateParams.confirmationId != "undefined") {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": typeof $stateParams.id == "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
 						"confirmationId": $stateParams.confirmationId,
@@ -291,6 +303,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.searchData.companyCard.companyName = "";
 				$scope.searchData.companyCard.companyCity = "";
 				$scope.searchData.companyCard.companyCorpId = "";
+				$scope.showContractedRates({
+					companyCard: cardData.id,
+					travelAgent: $scope.reservationDetails.travelAgent.id
+				});
 				$scope.$broadcast('companySearchStopped');
 			} else if (card == 'travel_agent') {
 				$scope.reservationDetails.travelAgent.id = cardData.id;
@@ -299,6 +315,10 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				$scope.searchData.travelAgentCard.travelAgentName = "";
 				$scope.searchData.travelAgentCard.travelAgentCity = "";
 				$scope.searchData.travelAgentCard.travelAgentIATA = "";
+				$scope.showContractedRates({
+					companyCard: $scope.reservationData.company.id,
+					travelAgent: cardData.id
+				});
 				$scope.$broadcast('travelAgentSearchStopped');
 			} else if (card == 'guest') {
 				$scope.reservationDetails.guestCard.id = cardData.id;
@@ -459,7 +479,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			 *	the rate / room display should include the rate of the Company / Travel Agent contract if one exists.
 			 *	Have to make a call to the availability API with the card added as a request param
 			 */
-			$scope.$broadcast('cardChanged',cardIds);
+			$scope.$broadcast('cardChanged', cardIds);
 			// 	CICO-7792 END
 		}
 
