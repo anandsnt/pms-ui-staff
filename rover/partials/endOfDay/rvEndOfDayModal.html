@@ -13,13 +13,9 @@
 </div>
 <form name="update-settings" id="update-settings" class="modal-content form admin-form" ng-hide="isLoggedIn || !isTimePastMidnight">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<p class="credentials-title" translate>ENTER_CREDENTIALS</p>
+	<p class="credentials-title" translate>ENTER_PASSWORD</p>
 	<div class="entry full-width">
 		<div id="notification-message"></div>
-	</div>
-	<div class="entry full-width">
-		<label translate>EMAIL</label>
-		<input type="text" ng-model="email" class="normalInputStyle">
 	</div>
 	<div class="entry full-width">
 		<label translate>PASSWORD</label>
