@@ -2,31 +2,31 @@
     <div class="holder">
         <div class="entry margin">
             <label for="card-number">Card number</label>
-            <input placeholder="Enter Card number" value="" type="text" />
+            <input placeholder="Enter Card number" value="" ng-model="newPaymentInfo.cardNumber" type="text" />
         </div>
         <div class="entry">
             <label for="expiry-month">Expiration date (<span>MM/YY</span>)</label>
-            <input name="expiry-month" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
-            <input name="expiry-year" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
+            <input ng-model="newPaymentInfo.cardExpiryMonth" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
+            <input ng-model="newPaymentInfo.cardExpiryYear" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
         </div>
         <div class="entry margin">
             <label for="name-on-card">Name on card</label>
-            <input name="name-on-card" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
+            <input ng-model="newPaymentInfo.cardHolderName" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
         </div>  
         <div class="entry">
             <label for="ccv">CCV</label>
-            <input name="ccv" id="ccv" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
+            <input ng-model="newPaymentInfo.cardCCV" id="ccv" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
         </div>
         <div class="entry full-width">
-            <label class="checkbox inline" for="add-in-guest-card">
-                <span class="icon-form icon-checkbox"></span>
-                <input name="checkin" id="add-in-guest-card" value="1" type="checkbox" />
+            <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': newPaymentInfo.addToGuestCard}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked': newPaymentInfo.addToGuestCard}"></span>
+                <input ng-model="newPaymentInfo.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
                 Add to Guest Card
             </label>
         </div>
     </div>
     <div class="actions">
         <button type="button" id="cancel-new-card" class="button blank">Cancel</button>
-        <button type="button" id="add-card" class="button green">Add Card</button>
+        <button type="button" id="add-card" class="button green" ng-click="saveNewPayment()">Add Card</button>
     </div>
 </div>

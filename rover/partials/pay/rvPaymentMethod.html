@@ -3,7 +3,7 @@
             Pay Bill #
             <div class="select">
                 <!-- number of options should match the number of bills created -->
-                <select name="post-charge-to-bill">
+                <select name="post-charge-to-bill" ng-model="billNumberSelected">
                 	<option ng-repeat="bills in billsArray" value="{{bills.bill_number}}" ng-selected="{{bills.bill_number == currentActiveBill}}">{{bills.bill_number}}</option>
                 </select>
             </div>
@@ -17,7 +17,7 @@
                 </select>
             </div>
         </div>
-        <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo">
+        <div id="selected-card" class="entry full-width" ng-show="showCreditCardInfo" ng-click="showGuestCreditCardList()">
             <label>Credit Card (<span>Tap to change</span>)</label>
             <label class="active-item item-payment">
                 <figure class="card-logo">
