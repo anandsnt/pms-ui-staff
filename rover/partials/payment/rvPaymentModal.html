@@ -5,7 +5,8 @@
 			<button class="dark-title modal-close" type="button" id="modal-close" ng-click="closeDialog()">
 				<span class="icons icon-close"></span>
 			</button>
-			<strong class="new-form-title" translate>NEW_PAYMENT_METHOD</strong>
+			<strong class="new-form-title" ng-hide="showPaymentAmount" translate>NEW_PAYMENT_METHOD</strong>
+			<strong class="new-form-title" ng-show="showPaymentAmount" translate>PAY</strong>
 			<div id="addPayment" ng-iscroll="addPayment" ng-iscroll-delay="2000" class="scrollable scroll-payment">
 				<div>
 					<div ng-include="'/assets/partials/common/notification_message.html'"></div>

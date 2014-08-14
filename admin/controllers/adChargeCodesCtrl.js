@@ -10,6 +10,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
+	$scope.selected_payment_type = "";
 	
 	/*
 	 * To fetch charge code list
@@ -24,7 +25,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				page : 1, // show first page
 				count : 10000, // count per page - Need to change when on pagination implemntation
 				sorting : {
-					name : 'asc' // initial sorting
+					charge_code : 'asc' // initial sorting
 				}
 			}, {
 				total : $scope.data.charge_codes.length, // length of data
@@ -32,7 +33,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 					// use build-in angular filter
 					var orderedData = params.sorting() ? $filter('orderBy')($scope.data.charge_codes, params.orderBy()) : $scope.data.charge_codes;
 					$scope.orderedData = orderedData;
-					$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+					$defer.resolve(orderedData);
 				}
 			});
 		};
@@ -164,7 +165,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			}
 	    });
 		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
-		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
+		var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
 		
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
@@ -177,7 +178,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			delete item["selected_calculation_rule"];
 			if(item["id"])	delete item["id"];
 	    });
-		
+	    		
 		$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 	};
 	/*
@@ -319,5 +320,14 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
 		}
 	};
+
+	/*
+	 * To set the selected payment type based on the id and cc_type from the dropdown.
+	 */
+	$scope.changeSelectedPaymentType = function(index) {
+		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[index].value;
+		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[index].is_cc_type;
+	};
+	
 }]);
 
