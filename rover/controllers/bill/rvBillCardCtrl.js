@@ -26,8 +26,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
 	$scope.isRefreshOnBackToStaycard = false;
-
+	$scope.paymentModalOpened = false;
 	$scope.showPayButton = false;
+	$scope.paymentModalSwipeHappened = false;
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
 	}
@@ -127,6 +128,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showSignedSignature = false;
 	$scope.showBillingInfo = false;
 	$scope.showIncomingBillingInfo = false;
+	
 	 width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
      if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
     	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
@@ -386,8 +388,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){
-	 		$scope.fromViewToPaymentPopup = "billcard";
-	 		$scope.addNewPaymentModal(data);
+	 		if($scope.paymentModalOpened){
+	 			$scope.paymentModalSwipeHappened = true;
+	 			$scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
+	 		} else {
+	 			$scope.fromViewToPaymentPopup = "billcard";
+	 			$scope.addNewPaymentModal(data);
+	 		}
+	 		
 	 	}
 	 });
 	 /*
@@ -396,7 +404,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 $scope.clickedPayButton = function(){
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
-	 	
+	 	$scope.paymentModalOpened = true;
 	 	
 	 	 ngDialog.open({
               template: '/assets/partials/pay/rvPaymentModal.html',
