@@ -117,7 +117,7 @@ sntRover.controller('reservationActionsController',
 						scope: $scope
 					});
 				} else {
-					if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT') {
+					if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_ready_status === 'DIRTY' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT') {
 						//TO DO:Go to room assignemt view
 						$state.go("rover.reservation.staycard.roomassignment", {
 							"reservation_id": $scope.reservationData.reservation_card.reservation_id,
