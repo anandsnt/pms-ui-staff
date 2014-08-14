@@ -28,11 +28,11 @@
             </label>
         </div>
         <div class="entry full-width">
-            <label for="amount">Amount to pay (<span>$</span>)</label>
-            <input id="amount" value="" type="text" ng-model="defaultPaymentAmount" />
+            <label for="amount">Amount to pay (<span>{{currencySymbol}}</span>)</label>
+            <input value="{{renderData.defaultPaymentAmount}}" type="text" ng-model="renderData.defaultPaymentAmount" />
         </div>      
         <div class="actions">
             <button type="button" id="pay" class="button green modal-close" ng-click="submitPayment()">Submit payment</button>
-            <button type="button" id="cancel-payment" class="button blank modal-close">Cancel</button>
+            <button type="button" id="cancel-payment" class="button blank modal-close" ng-click="handleCloseDialog()">Cancel</button>
         </div>
     </fieldset> 

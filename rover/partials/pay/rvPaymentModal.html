@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show">
 	<form method="post" action="pay-bill" id="pay-bill" name="pay-bill" ng-class="showModalClass()" class="modal-content form pay-bill">
-		<button id="modal-close" type="button" class="modal-close">
+		<button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()">
 			<span class="icons icon-close invert">
 		</button>
 		<!-- Payment method -->

@@ -2,7 +2,7 @@
     <div id="available-cards" class="cards-list scrollable">
         <div class="wrapper">
             <!-- Selected card -->
-            <label class="active-item item-payment primary" ng-repeat="guestCreditCardList in guestPaymentList">
+            <label class="active-item item-payment primary" ng-click="setCreditCardFromList($index)" ng-repeat="guestCreditCardList in guestPaymentList">
                 <figure class="card-logo">
                     <img src="/assets/{{guestCreditCardList.card_code}}.png" alt="">
                 </figure>

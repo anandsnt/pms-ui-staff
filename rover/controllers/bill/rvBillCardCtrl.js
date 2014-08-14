@@ -387,11 +387,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Handle swipe action in bill card
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
+	 	alert("test"+$scope.paymentModalOpened)
 	 	if(!$scope.isGuestCardVisible){
 	 		if($scope.paymentModalOpened){
+	 				alert("paymentModalOpened")
 	 			$scope.paymentModalSwipeHappened = true;
 	 			$scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
 	 		} else {
+	 			alert("addNewPaymentModal")
 	 			$scope.fromViewToPaymentPopup = "billcard";
 	 			$scope.addNewPaymentModal(data);
 	 		}
@@ -410,6 +413,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
               template: '/assets/partials/pay/rvPaymentModal.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               controller: 'RVBillPayCtrl',
+              closeByDocument: false,
               scope: $scope
           });
 	 	
@@ -886,5 +890,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
-	 });	
+	 });
+	 
+	 $scope.$on('PAYMENT_SUCCESS', function(event) {
+		
+		$scope.isRefreshOnBackToStaycard = true;
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	}); 
+	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
+	$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+		$scope.paymentModalOpened = false;
+	});
+		
 }]);
