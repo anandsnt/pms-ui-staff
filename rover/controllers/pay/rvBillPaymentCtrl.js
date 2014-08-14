@@ -6,7 +6,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.newPaymentInfo = {};
 	$scope.newPaymentInfo.addToGuestCard = false;
 	$scope.billNumberSelected = '';
-	// console.log($scope);
+	$scope.defaultPaymentAmount = 5;
+	console.log($scope);
 	//We are passing $scope from bill to this modal
 	$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 	$scope.billNumberSelected = $scope.currentActiveBillNumber;
@@ -44,7 +45,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 	$scope.guestPaymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
-		$scope.guestPaymentList = data;
+		if(data.length == 0){
+			$scope.guestPaymentList = [];
+		} else {
+			$scope.guestPaymentList = data;
+		}
+		
 	};
 	$scope.renderDefaultValues = function(){
 		if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
@@ -62,7 +68,23 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	};
 	$scope.init();
 	$scope.submitPayment = function(){
-		
+		var dataToSrv = {
+			"postData": {
+				"bill_number": $scope.billNumberSelected,
+			    "payment_type": "CC",
+			    "credit_card_type": $scope.defaultPaymentTypeCard.toUpperCase(),//Onlyifpayment_typeisCC
+			    "amount": $scope.defaultPaymentAmount
+			},
+			"reservation_id": $scope.reservationData.reservationId
+		};
+		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv);
+		// {
+    // "reservation_id": "45678",
+    // "bill_number": "2",
+    // "payment_type": "CC/CA/DB",
+    // "credit_card_type": "AX/DS",//Onlyifpayment_typeisCC
+    // "amount": "324"
+// }
 	};
 	$scope.showHideCreditCard = function(){
 		if($scope.saveData.paymentType == "CC"){
@@ -82,9 +104,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showExistingGuestPayments = true;
 	};
 	$scope.showInitialScreen = function(){
-		$scope.showInitalPaymentScreen = true;
 		$scope.showExistingAndAddNewPayments = false;
 		$scope.showExistingGuestPayments = false;
+		$scope.showInitalPaymentScreen = true;
+		$scope.showAddNewPaymentScreen = false;
 	};
 	$scope.showModalClass = function(){
 		var modalClass = "";
@@ -97,7 +120,10 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		}
 		return modalClass;
 	};
-	$scope.showAddNewCreditCard = function(){
+	$scope.showAddNewCreditCard = function(fromWhere){
+		if(fromWhere == '' || fromWhere == undefined){
+			$scope.newPaymentInfo.isSwiped = false;
+		}
 		$scope.showAddNewPaymentScreen = true;
 		$scope.showExistingAndAddNewPayments = true;
 		$scope.showInitalPaymentScreen = false;
@@ -110,7 +136,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showAddNewPaymentScreen = false;
 	};
 	$scope.saveNewPayment = function(){
-		console.log(JSON.stringify($scope.newPaymentInfo));
 		if($scope.newPaymentInfo.cardNumber.length>0){
 			if($scope.newPaymentInfo.isSwiped){
 				$scope.savePayment();
@@ -156,6 +181,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	var token = "";
 	var swipedCardData = "";
 	$scope.savePayment = function(){
+		var expiryDate = $scope.newPaymentInfo.cardExpiryMonth && $scope.newPaymentInfo.cardExpiryYear ? "20"+$scope.newPaymentInfo.cardExpiryYear+"-"+$scope.newPaymentInfo.cardExpiryMonth+"-01" : "";
 		if($scope.newPaymentInfo.isSwiped){
 			var dataToSave = {
 		     	"reservation_id": $scope.reservationData.reservationId,
@@ -163,13 +189,15 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		     	"ksn": swipedCardData.RVCardReadTrack2KSN,
 		     	"pan": swipedCardData.RVCardReadMaskedPAN,
 		     	"mli_token": token,
-		     	"payment_credit_type": "CC",
+		     	"payment_type": "CC",
 		     	"credit_card": swipedCardData.RVCardReadCardType,
+		     	"payment_credit_type": swipedCardData.RVCardReadCardType,
 		     	"bill_number": $scope.billNumberSelected,
-		     	"add_to_guest_card": $scope.newPaymentInfo.addToGuestCard
+		     	"add_to_guest_card": $scope.newPaymentInfo.addToGuestCard,
+		     	"card_expiry": expiryDate
 		     };
 		} else {
-			var expiryDate = $scope.newPaymentInfo.cardExpiryMonth && $scope.newPaymentInfo.cardExpiryYear ? "20"+$scope.newPaymentInfo.cardExpiryYear+"-"+$scope.newPaymentInfo.cardExpiryMonth+"-01" : "";
+			
 		    var dataToSave = {
 		     	"add_to_guest_card": $scope.newPaymentInfo.addToGuestCard,
 		     	"bill_number": $scope.billNumberSelected,
@@ -181,21 +209,36 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		     	"session_id": MLISessionId
 		     };
 		}
-		
 	     $scope.invokeApi(RVPaymentSrv.savePaymentDetails, dataToSave, $scope.successNewPayment);
 	     
 	};
 	$scope.successNewPayment = function(data){
 		$scope.$emit("hideLoader");
-		// $scope.defaultPaymentTypeCard = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase();
-		// $scope.defaultPaymentTypeCardNumberEndingWith = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number;
-		// $scope.defaultPaymentTypeCardExpiry = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_expiry;
+		$scope.isExistPaymentType = true;
+		$scope.showCreditCardInfo = true;
+		$scope.defaultPaymentTypeCard = data.credit_card_type.toLowerCase();
+		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.newPaymentInfo.cardNumber.slice(-4);
+		$scope.defaultPaymentTypeCardExpiry = $scope.newPaymentInfo.cardExpiryMonth+"/"+$scope.newPaymentInfo.cardExpiryYear;
+		var selectedBillIndex = parseInt($scope.billNumberSelected) - parseInt(1);
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = data.credit_card_type.toLowerCase();
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = $scope.newPaymentInfo.cardExpiryMonth+"/"+$scope.newPaymentInfo.cardExpiryYear;
+		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = $scope.newPaymentInfo.cardNumber.slice(-4);
+		if($scope.newPaymentInfo.addToGuestCard){
+			var dataToGuestList = {
+				"card_code": data.credit_card_type.toLowerCase(),
+				"mli_token": $scope.newPaymentInfo.cardNumber.slice(-4),
+				"card_expiry": $scope.newPaymentInfo.cardExpiryMonth+"/"+$scope.newPaymentInfo.cardExpiryYear,
+				"card_name": $scope.newPaymentInfo.cardHolderName
+			};
+			$scope.guestPaymentList.push(dataToGuestList);
+		}
+		
+		$scope.showInitialScreen();
 	};
 	
 	$scope.$on('PAYMENTSWIPEHAPPENED', function(event, data){
-		 $scope.showAddNewCreditCard();
+		 $scope.showAddNewCreditCard('swipe');
 	     swipedCardData = data;
-	     console.log("-------swipedat------------"+JSON.stringify(data));
 		 var getTokenFrom = {
 	              'et2': data.RVCardReadTrack2,
 	              'ksn': data.RVCardReadTrack2KSN,
