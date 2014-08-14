@@ -50,6 +50,18 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 		return deferred.promise;
 	};
+
+	this.getAdvanceBill = function(data){
+		var deferred = $q.defer();
+		var url = 'api/reservaions/'+data.id+'/advanced_bill';
+			RVBaseWebSrv.getJSON(url).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
 	
    
 }]);

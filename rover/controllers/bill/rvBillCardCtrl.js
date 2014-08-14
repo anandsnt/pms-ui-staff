@@ -866,5 +866,20 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
-	 });	
+	 });
+
+	/*
+	 * to invoke the api on opting the advance bill and fetch the advanced bill details 
+	 * @param {string} errormessage
+	 */
+	$scope.advanceBillSelected = function(){
+		var data = {};
+		data.id = $scope.reservationBillData.reservation_id;
+		var getAdvanceBillSuccessCallback = function(successData){
+			$scope.$emit('hideLoader');
+			$scope.init(successData);
+		};
+	 	$scope.invokeApi(RVBillCardSrv.getAdvanceBill, data, getAdvanceBillSuccessCallback );
+	};
+
 }]);
