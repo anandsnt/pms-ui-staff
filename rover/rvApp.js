@@ -143,11 +143,13 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
-			$_mustRevAnim = false;
 			$rootScope.returnBack = true;
 		} else {
 			$rootScope.returnBack = false;
 		}
+
+		// reset this flag
+		$_mustRevAnim = false;
 
 		// saving the prevState name and params
 		$_prevStateName  = fromState.name;

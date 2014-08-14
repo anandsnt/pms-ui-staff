@@ -10,6 +10,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		// set the previous state
+		$rootScope.setPrevState = {
+		    title: 'Dashboard',
+		    name: 'rover.dashboard'
+		}
+
 		$scope.filterOpen = false;
 
 		$scope.query = '';
