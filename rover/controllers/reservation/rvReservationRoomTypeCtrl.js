@@ -4,7 +4,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
-		$scope.containerHeight = 250;
+		//TODO : Make adjustments if multiple rooms are selected and the room selection bar is displayed
+		$scope.containerHeight = $(window).height() - 280;
 		$scope.showLessRooms = true;
 		$scope.showLessRates = false;
 
@@ -50,24 +51,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 
-		//scroller options
-		$scope.$parent.myScrollOptions = {
-			'room_types': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false,
-				click: true
-			},
-			'stayDates': {
-				snap: false,
-				scrollbars: true,
-				scrollX: true,
-				hideScrollbar: false,
-				click: true
-			}
-		};
+		$scope.setScroller('room_types', {
+			click: true,
+			scrollbars: true,
+			hideScrollbar: false
+		});
+
+		$scope.setScroller('stayDates', {
+			snap: false,
+			scrollbars: true,
+			scrollX: true,
+			hideScrollbar: false,
+			click: true
+		});
+
 
 		var init = function(isCallingFirstTime) {
 			BaseCtrl.call(this, $scope);
@@ -170,9 +167,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 
 			$scope.displayData.allRates = rates;
-
-			//TODO : Make adjustments if multiple rooms are selected and the room selection bar is displayed
-			$scope.containerHeight = $(window).height() - 250;
 
 			$scope.roomAvailability = $scope.getAvailability(roomRates);
 
@@ -331,9 +325,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							$scope.displayData.availableRates.push(d);
 							d.preferredType = d.rooms[0].id;
 						} else if (_.where(d.rooms, {
-							id: $scope.stateCheck.preferredType
+							id: parseInt($scope.stateCheck.preferredType)
 						}).length > 0) {
-							d.preferredType = $scope.stateCheck.preferredType;
+							d.preferredType = parseInt($scope.stateCheck.preferredType);
 							d.rooms.sort(function(a, b) {
 								if (a.total[d.rate.id].average < b.total[d.rate.id].average)
 									return -1;
@@ -444,7 +438,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				if (!$scope.stateCheck.rateSelected.oneDay) {
 					// The first selected day must be taken as the preferredType
 					// No more selection of rooms must be allowed here
-					$scope.stateCheck.preferredType = roomId;
+					$scope.stateCheck.preferredType = parseInt(roomId);
 					$scope.reservationData.rooms[$scope.activeRoom].roomTypeId = roomId;
 					$scope.reservationData.rooms[$scope.activeRoom].rateId = [];
 					$scope.reservationData.rooms[$scope.activeRoom].rateId.push(rateId);
@@ -549,7 +543,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.displayData.roomTypes = $($scope.displayData.allRooms).filter(function() {
 					return this.id == $scope.stateCheck.preferredType || hasContractedRate($scope.roomAvailability[this.id].rates);
 				});
-				if ($scope.displayData.roomTypes.length > 0 && $scope.reservationData.status != "CHECKEDIN" && $scope.reservationData.status != "CHECKING_OUT") {
+				if ($scope.displayData.roomTypes.length > 0 && !$scope.stateCheck.rateSelected.oneDay && $scope.reservationData.status != "CHECKEDIN" && $scope.reservationData.status != "CHECKING_OUT") {
 					var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
 					if (level == 1 || level == 2) {
 						//Append rooms from the next level
@@ -941,13 +935,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		}
 
 		$scope.refreshScroll = function() {
-			if (typeof $scope.$parent.myScroll != 'undefined') {
-				$timeout(function() {
-					if ($scope.$parent.myScroll["room_types"]) {
-						$scope.$parent.myScroll["room_types"].refresh();
-					}
-				}, 300);
-			}
+			$timeout(function() {
+				$scope.refreshScroller('room_types');
+			}, 100);
 		}
 
 		$scope.calculateRate = function(rateTable, forDate) {
@@ -1083,7 +1073,17 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
+				//Adjust to the height of the stay dates container
+				$scope.containerHeight = $scope.containerHeight - 70;
+			} else {
+				//Adjust to the height of the stay dates container
+				$scope.containerHeight = $scope.containerHeight + 70;
 			}
+			$scope.refreshScroll();
+			$timeout(function() {
+				$scope.refreshScroller("stayDates");
+			}, 150);
+
 		}
 
 		$scope.updateDayOccupancy = function(occupants) {

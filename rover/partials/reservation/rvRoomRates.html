@@ -27,9 +27,9 @@
             </div>
         </div>
         <ul>
-            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
-            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">{{'RESV_ROOM'|translate}}</li>
-            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
+            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED';refreshScroll()">{{'RESV_RECOMMENDED'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'; refreshScroll()">{{'RESV_ROOM'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE';refreshScroll()">{{'RESV_RATE'|translate}}</li>
         </ul>
         <div class="find-rates" ng-show="activeCriteria == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
