@@ -105,8 +105,13 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			"mli_hotel_code": $scope.data.mli_hotel_code,
 			"mli_pem_certificate": $scope.certificate
 		};
+
+		var testMliConnectivitySuccess = function(data){
+			$scope.$emit('hideLoader');
+			$scope.successMessage = "Connection Valid";
+		};
 		
-		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData);
+		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData,testMliConnectivitySuccess);
 	};
 	
 	/**
