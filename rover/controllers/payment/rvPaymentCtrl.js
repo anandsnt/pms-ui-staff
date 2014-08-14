@@ -33,8 +33,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.isFromGuestCard = true;
 	}
 	
-	var scrollerOptions = {click: true, preventDefault: false};
-	$scope.setScroller('addPayment',scrollerOptions);
+	var scrollerOptions = {click: true, preventDefault: false, preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }};
+	$scope.setScroller('addPayment', scrollerOptions);
 	//$scope.refreshScroll();
 
 	$scope.refreshScroll = function(){
@@ -396,5 +396,5 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.refreshScroller('addPayment');
 		}, 1000);
    };
-	
+   
 }]);
