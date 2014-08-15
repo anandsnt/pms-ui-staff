@@ -3,7 +3,7 @@
 	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
     <fieldset id="remove-charge" class="remove-charge">
         <span class="h2 message">Remove charge</span>
-        <span class="text red">{{selectedTransaction.description[0].fees_desc}} <strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
+        <span class="text red">{{selectedTransaction.desc}} <strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
 
         <div class="entry full-width">
             <textarea placeholder="Removal reason" rows="2" ng-model="reasonForRemoving"></textarea>

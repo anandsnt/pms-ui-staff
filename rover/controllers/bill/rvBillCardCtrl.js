@@ -869,7 +869,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 });	
 
 
-/* edit/remove/split starts here */
+/*------------- edit/remove/split starts here --------------*/
 	
 	$scope.splitTypeisAmount = true;
 	$scope.selectedChargeCode = "";
@@ -882,10 +882,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(oldBillValue,feesIndex){
+	$scope.openActionsPopup = function(id,desc,amount){
 		
-		$scope.parseOldBillValue = parseInt(oldBillValue)-1;
-		$scope.selectedTransaction = $scope.reservationBillData.bills[$scope.parseOldBillValue].total_fees[0].fees_details[feesIndex];
+		$scope.selectedTransaction = {};
+		$scope.selectedTransaction.id = id;
+		$scope.selectedTransaction.desc = desc;
+		$scope.selectedTransaction.amount = amount;
+		
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
     		className: 'ngdialog-theme-default1',
@@ -945,7 +948,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 		var transactionDeleteSuccessCallback = function(data){		
 			$scope.$emit("hideLoader");
-			//$scope.reservationBillData = data; // check with soumya
+			$scope.reservationBillData = data; // check with soumya
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback);
 	};
@@ -967,7 +970,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 		var transactionSplitSuccessCallback = function(data){		
 			$scope.$emit("hideLoader");
-			//$scope.reservationBillData = data; // check with soumya
+			$scope.reservationBillData = data; // check with soumya
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback);
 	};
@@ -990,7 +993,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		var transactionEditSuccessCallback = function(data){
 			$scope.$emit("hideLoader");
-			//$scope.reservationBillData = data; // check with soumya
+			$scope.reservationBillData = data; // check with soumya
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback);
 	
@@ -1011,5 +1014,5 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	};
 
-/* edit/remove/split ends here */
+/*----------- edit/remove/split ends here ---------------*/
 }]);

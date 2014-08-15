@@ -3,7 +3,7 @@
 	 <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
     <fieldset id="split-charge" name="split-charge" class="split-charge">
         <span class="h2 message">Split charge</span>
-        <span class="text">{{selectedTransaction.description[0].fees_desc}} <strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
+        <span class="text">{{selectedTransaction.desc}} <strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
         
         <!-- Form -->
         <div class="entry full-width with-switch">
@@ -26,16 +26,16 @@
             <strong class="h4">Charge will be appear as:</strong>
             <ul>
                 <li>
-                    {{selectedTransaction.description[0].fees_desc}}
+                    {{selectedTransaction.desc}}
                     <span class="value" ng-hide="splitTypeisAmount">
-                    	{{(selectedTransaction.description[0].fees_amount/splitValue)}}</span>
-                    <span class="value" ng-show="splitTypeisAmount">{{selectedTransaction.description[0].fees_amount -splitValue}} </span>
+                    	{{(selectedTransaction.amount*splitValue/100) | number:2}}</span>
+                    <span class="value" ng-show="splitTypeisAmount">{{selectedTransaction.amount -splitValue | number:2}} </span>
 
                 </li>
                 <li>
-                    {{selectedTransaction.description[0].fees_desc}}
-                    <span class="value" ng-hide="splitTypeisAmount">{{selectedTransaction.description[0].fees_amount -(selectedTransaction.description[0].fees_amount/splitValue)}}</span>
-                    <span class="value" ng-show="splitTypeisAmount">{{splitValue}}</span>
+                    {{selectedTransaction.desc}}
+                    <span class="value" ng-hide="splitTypeisAmount">{{selectedTransaction.amount -(selectedTransaction.amount*splitValue/100 | number:2)}}</span>
+                    <span class="value" ng-show="splitTypeisAmount">{{splitValue | number:2}}</span>
                 </li>
             </ul>
         </div>

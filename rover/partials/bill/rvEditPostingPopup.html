@@ -5,7 +5,7 @@
     <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
         <span class="h2 message">Edit charge</span>
 
-        <span class="text">{{selectedTransaction.description[0].fees_desc}}<strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
+        <span class="text">{{selectedTransaction.desc}}<strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
         <ul id="change-edit-type" class="modal-options">
             <li ng-class="{'active':!chargeCodeActive}" ng-click="chargeCodeActive = false">Amount</li>
             <li ng-class="{'active':chargeCodeActive}" ng-click="chargeCodeActive = true">Charge Code</li>
@@ -31,7 +31,7 @@
             <ul>
                 <li>
                     <strong class="flag">Adjustment</strong>
-                    {{selectedTransaction.description[0].fees_desc}}
+                    {{selectedTransaction.desc}}
                     <span class="value">{+ or -edited value}</span>
                     </li>
             </ul>
