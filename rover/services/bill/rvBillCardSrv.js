@@ -51,16 +51,17 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		return deferred.promise;
 	};
 
+   /*
+	 * Service function to edit transaction
+	 */
 
 	this.transactionEdit = function(data){
-		alert("to be removed1 Edit- resheil");
-		console.log(data);
-		alert("to be removed2 edit- resheil");
+	
 		var deferred = $q.defer();
 		var trasactionId = data.id;
 		var updatedDate  = data.updatedDate;
-		var url = 'api/financial_transactions/'+trasactionId+'/edit';
-		RVBaseWebSrv.putJSON(url, updatedDate).then(function(data) {
+		var url = 'api/financial_transactions/'+trasactionId;
+		BaseWebSrvV2.putJSON(url, updatedDate).then(function(data) {
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -70,22 +71,36 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 	};
 
 
+  /*
+	 * Service function to delete transaction
+	 */
 
+	this.transactionDelete = function(deleteData){
 
-	this.transactionDelete = function(data){
-		alert("to be removed1 delete- resheil");
-		console.log(data);
-		alert("to be removed2 delete- resheil");
 		var deferred = $q.defer();
-		var trasactionId = data.id;
-		var updatedDate  = {"reason":data.reason};
+		var trasactionId = deleteData.id;
 		var url = 'api/financial_transactions/'+trasactionId;
-		RVBaseWebSrv.putJSON(url, updatedDate).then(function(data) {
+		BaseWebSrvV2.putJSON(url, deleteData.data).then(function(data) {
 		   	 deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});	
 
+		return deferred.promise;
+	};
+ /*
+	 * Service function to split transaction
+	 */
+
+	this.transactionSplit = function(splitData){
+		var deferred = $q.defer();
+		var trasactionId = splitData.id;
+		var url = 'api/financial_transactions/'+trasactionId;
+		BaseWebSrvV2.putJSON(url, splitData.data).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
 		return deferred.promise;
 	};
 	

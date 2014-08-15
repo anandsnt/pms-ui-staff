@@ -5,7 +5,7 @@
     <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
         <span class="h2 message">Edit charge</span>
 
-        <span class="text">{charge}<strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
+        <span class="text">{{selectedTransaction.description[0].fees_desc}}<strong>{{currencySymbol}}{{selectedTransaction.description[0].fees_amount}}</strong></span>
         <ul id="change-edit-type" class="modal-options">
             <li ng-class="{'active':!chargeCodeActive}" ng-click="chargeCodeActive = false">Amount</li>
             <li ng-class="{'active':chargeCodeActive}" ng-click="chargeCodeActive = true">Charge Code</li>
@@ -21,7 +21,7 @@
         <div id="change-code" class="entry full-width" ng-show="chargeCodeActive">
 
         <!-- to remove -->
-    	 <select class="ac-select stateList guest-bill-edit-buttons" ac-model="selectedState" ac-options="s.name for s in getAllStates()" 
+    	 <select class="ac-select stateList guest-bill-edit-buttons" ac-model="selectedChargeCode" ac-options="s.name for s in getAllchargeCodes()" 
         ac-settings="{ comboMode: true, loadOnOpen: true, minWidth: '300px' }" ac-change="stateSelected(value)"></select>
         </div>
 
@@ -31,13 +31,13 @@
             <ul>
                 <li>
                     <strong class="flag">Adjustment</strong>
-                    {charge}
+                    {{selectedTransaction.description[0].fees_desc}}
                     <span class="value">{+ or -edited value}</span>
                     </li>
             </ul>
         </div>
         <div>
-            <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,chargeCode)">Change Amount</button>
+            <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount,selectedChargeCode)">Change Amount</button>
             <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')">Cancel</button> 
         </div>
 

@@ -871,24 +871,27 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 /* edit/remove/split starts here */
 	
+	$scope.splitTypeisAmount = true;
+	$scope.selectedChargeCode = "";
 
+
+   /*
+	 * open popup for edit/split/remove transaction
+	 */
 	$scope.openActionsPopup = function(oldBillValue,feesIndex){
 		
-		var parseOldBillValue = parseInt(oldBillValue)-1;
-		//var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
-		var selectedTransaction = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex];
-		console.log(selectedTransaction);
-		if(!selectedTransaction.transaction_id){
-			alert("oops no transaction_id set")
-		};
-		$scope.selectedTransaction = selectedTransaction;
+		$scope.parseOldBillValue = parseInt(oldBillValue)-1;
+		$scope.selectedTransaction = $scope.reservationBillData.bills[$scope.parseOldBillValue].total_fees[0].fees_details[feesIndex];
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
     		className: 'ngdialog-theme-default1',
     		scope: $scope
-    	});
-    	
+    	});    	
 	};
+
+  /*
+	 * open popup for remove transaction
+	 */
 
 	$scope.openRemoveChargePopup = function(){
 		ngDialog.open({
@@ -898,6 +901,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	});
 	};
 
+  /*
+	 * open popup for split transaction
+	 */
 
 	$scope.openSplitChargePopup = function(){
 		ngDialog.open({
@@ -907,6 +913,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	});
 	};
 
+  /*
+	 * open popup for edit transaction
+	 */
 
 	$scope.openEditChargePopup = function(){
 		ngDialog.open({
@@ -916,28 +925,52 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	});
 	};
 
+   /*
+	 * API call remove transaction
+	 */
+
 	$scope.removeCharge = function(reason){
 		ngDialog.close();
-		var data = 
+		var deleteData = 
 		{
-			"reason":reason,
-			"id" :$scope.selectedTransaction.transaction_id
+			data:{
+				"reason":reason,
+				"process":"delete"
+			},
+			"id" :$scope.selectedTransaction.id
 		};
-		var transactionDeleteSuccessCallback = function(data){
-			console.log(data);
+		var transactionDeleteSuccessCallback = function(data){		
 			$scope.$emit("hideLoader");
-
+			//$scope.reservationBillData = data; // check with soumya
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionDelete, data, transactionDeleteSuccessCallback);
-	
-		console.log(reason);
+		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback);
 	};
 
-	$scope.splitCharge = function(qty,type){
+   /*
+	 * API call split transaction
+	 */
+
+	$scope.splitCharge = function(qty,isAmountType){
 		ngDialog.close();
-		console.log(qty,type);
+		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
+		var splitData = {
+			"id" :$scope.selectedTransaction.id,
+			"data":{
+				"split_type": split_type,
+   				"split_value": qty
+			}
+			 
+		};
+		var transactionSplitSuccessCallback = function(data){		
+			$scope.$emit("hideLoader");
+			//$scope.reservationBillData = data; // check with soumya
+		};
+		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback);
 	};
 
+   /*
+	 * API call edit transaction
+	 */
 	$scope.editCharge = function(newAmount,chargeCode){
 		
 		ngDialog.close();
@@ -946,14 +979,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			"updatedDate":
 						{
 				  			"new_amount":newAmount,
-				  			"charge_code_id": chargeCode
+				  			"charge_code_id": chargeCode.id
 						},
-					"id" :$scope.selectedTransaction.transaction_id
+					"id" :$scope.selectedTransaction.id
 		};
-		var transactionEditSuccessCallback = function(data){
-			console.log(data);
-			$scope.$emit("hideLoader");
 
+		var transactionEditSuccessCallback = function(data){
+			$scope.$emit("hideLoader");
+			//$scope.reservationBillData = data; // check with soumya
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback);
 	
@@ -974,43 +1007,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	};
 /* to remove */
-	$scope.splitTypeisAmount = true;
+	
 
 	$scope.chargeCodes =[
-    {name: "Options 1", value: "11"}, 
-    {name: "Options 2", value: "22"},
-    {name: "Options 3", value: "33"}
+	    {name: "Options 1", value: "11"}, 
+	    {name: "Options 2", value: "22"},
+	    {name: "Options 3", value: "33"}
 	];
+	$scope.getAllchargeCodes = function (callback) {
+    	callback($scope.chargeCodes);
+	};
 
-	$scope.getStates = function (callback) {
-    callback($scope.chargeCodes);
-};
-
-$scope.colours = [
-    { name: 'black', id: 0 },
-    { name: 'white', id: 1 },
-    { name: 'red', id: 2 }];
-
-    $scope.chargeCode = 0;
-    $scope.getAllStates = function (callback) {
-    callback($scope.allStates);
-};
-
-$scope.stateSelected = function (state) {
-   // $scope.stateInfo = state.name + " (" + state.id + ")";
-}
-
-$scope.selectedState = "";
-
-$scope.allStates = [
-    { "name": "Alabama", "id": "AL" },
-    { "name": "Alaska", "id": "AK" },
-     { "name": "i", "id": "AL2" },
-    { "name": "a", "id": "AK2" },
-     { "name": "b", "id": "AL3" },
-    { "name": "c", "id": "AK4" },
-    { "name": "d", "id": "AK5" },
-    { "name": "k", "id": "AK6" },];
 	/* to remove */
 
 /* edit/remove/split ends here */
