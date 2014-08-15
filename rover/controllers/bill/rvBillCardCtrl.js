@@ -872,11 +872,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 /*------------- edit/remove/split starts here --------------*/
 	
 	$scope.splitTypeisAmount = true;
+	$scope.chargeCodeActive = false;
 	$scope.selectedChargeCode = "";
 	$scope.chargeCodeData = chargeCodeData.results;
 
 	$scope.getAllchargeCodes = function (callback) {
     	callback($scope.chargeCodeData);
+	};
+
+	$scope.setchargeCodeActive = function(bool){
+		$scope.chargeCodeActive = bool;
 	};
 
    /*

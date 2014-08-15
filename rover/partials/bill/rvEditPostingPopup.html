@@ -4,11 +4,10 @@
 
         <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
             <span class="h2 message" translate>EDIT_CHARGE</span>
-
             <span class="text">{{selectedTransaction.desc}}<strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
             <ul id="change-edit-type" class="modal-options">
-                <li ng-class="{'active':!chargeCodeActive}" ng-click="chargeCodeActive = false" translate>AMOUNT</li>
-                <li ng-class="{'active':chargeCodeActive}" ng-click="chargeCodeActive = true" translate>CHARGE_CODE</li>
+                <li ng-class="{'active':!chargeCodeActive}" ng-click="setchargeCodeActive(false)" translate>AMOUNT</li>
+                <li ng-class="{'active':chargeCodeActive}" ng-click="setchargeCodeActive(true)" translate>CHARGE_CODE</li>
             </ul>
 
             <!-- Edit amount field -->
@@ -25,7 +24,7 @@
             </div>
 
             <!-- Preview, hidden until amount edited or charge code changed -->
-            <div id="edit-preview" class="entry full-width notice hidden">
+            <div id="edit-preview" class="entry full-width notice" ng-show="selectedChargeCode || newAmount.length>0">
                 <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
                 <ul>
                     <li>
