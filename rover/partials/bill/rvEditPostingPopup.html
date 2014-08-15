@@ -21,8 +21,8 @@
         <div id="change-code" class="entry full-width" ng-show="chargeCodeActive">
 
         <!-- to remove -->
-    	 <select class="ac-select stateList guest-bill-edit-buttons" ac-model="selectedChargeCode" ac-options="s.name for s in getAllchargeCodes()" 
-        ac-settings="{ comboMode: true, loadOnOpen: true, minWidth: '300px' }" ac-change="stateSelected(value)"></select>
+    	 <select class="ac-select stateList guest-bill-edit-buttons" ac-model="selectedChargeCode" ac-options="chargeCode.description for chargeCode in getAllchargeCodes()" 
+        ac-settings="{ comboMode: true, loadOnOpen: true, minWidth: '300px',placeholderText:'Search or Select codes to add' }" ac-change="stateSelected(value)"></select>
         </div>
 
         <!-- Preview, hidden until amount edited or charge code changed -->

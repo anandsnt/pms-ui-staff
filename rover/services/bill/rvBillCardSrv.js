@@ -53,6 +53,9 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
    /*
 	 * Service function to edit transaction
+	 * @method PUT
+	 * @param {object} data
+	 * @return {object} defer promise
 	 */
 
 	this.transactionEdit = function(data){
@@ -73,6 +76,9 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
   /*
 	 * Service function to delete transaction
+	 * @method PUT
+	 * @param {object} data
+	 * @return {object} defer promise
 	 */
 
 	this.transactionDelete = function(deleteData){
@@ -89,8 +95,11 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		return deferred.promise;
 	};
  /*
-	 * Service function to split transaction
-	 */
+	* Service function to split transaction
+	* @method PUT
+	* @param {object} data
+	* @return {object} defer promise
+	*/
 
 	this.transactionSplit = function(splitData){
 		var deferred = $q.defer();
@@ -101,6 +110,24 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		},function(data){
 		    deferred.reject(data);
 		});	
+		return deferred.promise;
+	};
+
+	/*
+		* Get the list of charge codes
+		* @method GET
+		* @return {object} defer promise
+		*/
+	this.fetchChargeCodes = function() {
+		
+		var deferred = $q.defer();
+		var url = '/api/charge_codes';
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
 		return deferred.promise;
 	};
 	

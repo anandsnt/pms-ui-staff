@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window','chargeCodeData', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window,chargeCodeData){
 	
 	BaseCtrl.call(this, $scope);
 
@@ -873,7 +873,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	$scope.splitTypeisAmount = true;
 	$scope.selectedChargeCode = "";
+	$scope.chargeCodeData = chargeCodeData.results;
 
+	$scope.getAllchargeCodes = function (callback) {
+    	callback($scope.chargeCodeData);
+	};
 
    /*
 	 * open popup for edit/split/remove transaction
@@ -1006,19 +1010,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 
 	};
-/* to remove */
-	
-
-	$scope.chargeCodes =[
-	    {name: "Options 1", value: "11"}, 
-	    {name: "Options 2", value: "22"},
-	    {name: "Options 3", value: "33"}
-	];
-	$scope.getAllchargeCodes = function (callback) {
-    	callback($scope.chargeCodes);
-	};
-
-	/* to remove */
 
 /* edit/remove/split ends here */
 }]);
