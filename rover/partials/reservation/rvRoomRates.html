@@ -8,28 +8,28 @@
             <div id="guest-options" class="reservation-guests" ng-show="stateCheck.guestOptionsIsEditable">
                 <div class="select adults">
                     <label for="room-adults" class="label" translate>ADULTS</label>
-                    <select name="room-adults" id="room-adults" ng-model="stateCheck.selectedStayDate.guests.adults" ng-change="updateDayOccupancy('adults')">
+                    <select name="room-adults" id="room-adults" ng-model="stateCheck.selectedStayDate.guests.adults" ng-change="updateDayOccupancy('adults'); toggleEditGuestOptions()">
                         <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i == stateCheck.selectedStayDate.guests.adults">{{i}}</option>
                     </select>
                 </div>
                 <div class="select children">
                     <label for="room-children" class="label" translate>CHILDREN</label>
-                    <select name="room-children" id="room-children" ng-model="stateCheck.selectedStayDate.guests.children" ng-change="updateDayOccupancy('children')">
+                    <select name="room-children" id="room-children" ng-model="stateCheck.selectedStayDate.guests.children" ng-change="updateDayOccupancy('children'); toggleEditGuestOptions()">
                         <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i == stateCheck.selectedStayDate.guests.children">{{i}}</option>
                     </select>
                 </div>
                 <div class="select infants">
                     <label for="room-infants" class="label" translate>INFANTS</label>
-                    <select name="room-infants" id="room-infants" ng-model="stateCheck.selectedStayDate.guests.infants" ng-change="updateDayOccupancy('infants')">
+                    <select name="room-infants" id="room-infants" ng-model="stateCheck.selectedStayDate.guests.infants" ng-change="updateDayOccupancy('infants'); toggleEditGuestOptions()">
                         <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i == stateCheck.selectedStayDate.guests.infants">{{i}}</option>
                     </select>
                 </div>
             </div>
         </div>
         <ul>
-            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
-            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">{{'RESV_ROOM'|translate}}</li>
-            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
+            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED';refreshScroll()">{{'RESV_RECOMMENDED'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'; refreshScroll()">{{'RESV_ROOM'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE';refreshScroll()">{{'RESV_RATE'|translate}}</li>
         </ul>
         <div class="find-rates" ng-show="activeCriteria == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
