@@ -32,7 +32,7 @@
 		</header>
 
 		<!-- Availability content -->
-		<section id="availability-content" class="availability-content" role="main">
+		<section id="availability-content" class="availability-content" role="main" ng-if="isAvailabilitySet">
 
 			<!-- Grid -->
 			<div class="availability-header">
@@ -54,11 +54,11 @@
 			</div>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			
-			<div ng-include="'/assets/partials/availability/headerAvailabilitySection.html'" ng-if="isAvailabilitySet"></div>
+			<div ng-include="'/assets/partials/availability/headerAvailabilitySection.html'" ></div>
 			
-
 			<!-- Graph -->
 			<!-- Highcharts graph should go here -->
 
 		</section>
+		<section ng-if="!isAvailabilitySet" ng-include="'/assets/partials/availability/houseAvailabilityStatus.html'" ></section>
 	</div>
