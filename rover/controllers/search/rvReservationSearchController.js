@@ -33,7 +33,7 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
     else {
         heading = headingDict['NORMAL_SEARCH'];
         $rootScope.setPrevState = {
-          title: 'Dashboard',
+          title: $filter( 'translate' )( 'DASHBOARD' ),
           name: 'rover.dashboard'
         };
     }

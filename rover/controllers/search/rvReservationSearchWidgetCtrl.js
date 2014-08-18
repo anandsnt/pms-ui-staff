@@ -184,7 +184,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		// else it will override any other declarations by other controllers
 		if ( !$stateParams.type ) {
 			$rootScope.setPrevState = {
-				title: 'Dashboard',
+				title: $filter('translate')('DASHBOARD'),
 				callback: 'clearResults',
 				scope: $scope,
 				noStateChange: true

@@ -6,13 +6,14 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 	'RVHkRoomDetailsSrv',
 	'RVHkRoomStatusSrv',
 	'roomDetailsData',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, roomDetailsData) {
+	'$filter',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, roomDetailsData, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
 		// set the previous state
 		$rootScope.setPrevState = {
-		    title: 'Room Status',
+		    title: $filter('translate')('ROOM_STATUS'),
 		    name: 'rover.housekeeping.roomStatus'
 		}
 

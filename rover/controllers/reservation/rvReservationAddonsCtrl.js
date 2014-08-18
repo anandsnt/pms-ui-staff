@@ -1,9 +1,9 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv',
-    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv) {
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter) {
 
         // set the previous state
         $rootScope.setPrevState = {
-            title: 'Rooms Rates',
+            title: $filter('translate')('ROOM_RATES'),
             name: 'rover.reservation.staycard.mainCard.roomType',
             param: {
                 from_date: $scope.reservationData.arrivalDate,

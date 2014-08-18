@@ -12,7 +12,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// set the previous state
 		$rootScope.setPrevState = {
-		    title: 'Dashboard',
+		    title: $filter('translate')('DASHBOARD'),
 		    name: 'rover.dashboard'
 		}
 

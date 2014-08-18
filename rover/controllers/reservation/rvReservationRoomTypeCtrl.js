@@ -1,10 +1,10 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog', '$sce', '$stateParams', 'dateFilter', '$filter',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog, $sce, $stateParams, dateFilter, $filter) {
 
 		// smart switch btw edit reservation flow and create reservation flow
 		if ( $scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId ) {
 			$rootScope.setPrevState = {
-				title: 'Stay card',
+				title: $filter('translate')('STAY_CARD'),
 				name: 'rover.reservation.staycard.reservationcard.reservationdetails',
 				param: {
 					confirmationId: $scope.reservationData.confirmNum,
@@ -14,7 +14,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}	
 		} else {
 			$rootScope.setPrevState = {
-				title: 'Create Reservation',
+				title: $filter('translate')('CREATE_RESERVATION'),
 				callback: 'setSameCardNgo',
 				scope: $scope
 			}
