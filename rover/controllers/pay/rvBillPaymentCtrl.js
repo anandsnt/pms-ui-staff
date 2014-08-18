@@ -63,6 +63,9 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.guestPaymentList = [];
 		} else {
 			$scope.guestPaymentList = data;
+			angular.forEach($scope.guestPaymentList, function(value, key) {
+				$scope.guestPaymentList.isSelected = false;
+			});
 		}
 		
 	};
@@ -317,6 +320,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.defaultPaymentTypeCard = $scope.guestPaymentList[index].card_code.toLowerCase();
 		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.guestPaymentList[index].mli_token;
 		$scope.defaultPaymentTypeCardExpiry = $scope.guestPaymentList[index].card_expiry;
+		$scope.guestPaymentList[index].isSelected = true;
 		$scope.showInitialScreen();
 	};
 	$scope.handleCloseDialog = function(){

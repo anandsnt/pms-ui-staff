@@ -9,7 +9,7 @@
                 <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{guestCreditCardList.mli_token}}</span></span>
                 <span class="date">{{'DATE' | translate}} <span class="value date">{{guestCreditCardList.card_expiry}}</span></span>
                 <span class="name">{{'NAME' | translate}} <span class="value name">{{guestCreditCardList.card_name}}</span></span>
-                <span class="primary"><span class="value primary" translate>SELECTED</span></span>
+                <span class="primary"><span class="value primary" ng-show="guestCreditCardList.isSelected" translate >SELECTED</span></span>
             </label>
             
         </div>
