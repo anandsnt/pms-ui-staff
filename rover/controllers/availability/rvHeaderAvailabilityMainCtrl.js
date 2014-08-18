@@ -1,6 +1,11 @@
 sntRover.controller('rvHeaderAvailabilityMainController', [
-	'$scope', '$timeout',
-	function($scope, $timeout){
+	'$scope', 
+	'$timeout', 
+	'ngDialog', 
+	'$rootScope',
+	'$filter',
+	'rvAvailabilitySrv',
+	function($scope, $timeout, ngDialog, $rootScope, $filter, rvAvailabilitySrv){
 
 		/**
 		* Controller class for availability in header section
@@ -13,6 +18,18 @@ sntRover.controller('rvHeaderAvailabilityMainController', [
 		
 		//When closing we need to add a class to container div
 		$scope.isClosing = false;
+
+		//variable to get/set value availabilty or house
+		$scope.isAvailabilitySet = true;
+
+		//default number of selected days is 14
+		$scope.numberOfDaysSelected = 14;
+
+
+		$scope.data = {};
+
+		//default date value
+		$scope.data.selectedDate = $rootScope.businessDate;
 
 
 		/**
@@ -41,10 +58,15 @@ sntRover.controller('rvHeaderAvailabilityMainController', [
 			else{
 				$scope.showAvailability = true;	
 			}
-
-					
+				
 		};
 
+		/**
+		* function to execute when switching between availability and house keeping
+		*/
+		$scope.setAvailability = function(){
+			$scope.isAvailabilitySet = !$scope.isAvailabilitySet;
+		};
 
 		/**
 		* function to get the template url for availability, it will supply only if 
@@ -52,10 +74,60 @@ sntRover.controller('rvHeaderAvailabilityMainController', [
 		*/
 		$scope.getAvailabilityTemplateUrl = function(){
 			if($scope.showAvailability){
-				return '/assets/partials/availability/header_availability_section.html';
+				return '/assets/partials/availability/headerAvailability.html';
 			}
 			return "";
 		};
 
+		// To popup contract start date
+		$scope.clickedOnDatePicker = function() {
+			ngDialog.open({
+				template: '/assets/partials/common/rvDatePicker.html',
+				controller: 'rvAvailabilityDatePickerController',
+				className: 'ngdialog-theme-default calendar-single1',
+				scope: $scope,
+				closeByDocument: true
+			});
+		};	
+
+		/**
+		* success call of availability data fetch
+		*/
+		var successCallbackOfAvailabilityFetch = function(data){
+			$scope.isAvailabilitySet = true;
+
+			// for this successcallback we are not hiding the activty indicator
+			// we will hide it only after template loading.
+
+		}
+
+		/**
+		* error call of availability data fetch
+		*/
+		var failureCallbackOfAvailabilityFetch = function(errorMessage){
+			$scope.$emit("hideLoader");
+
+		};
+
+
+		/**
+		* When there is any change of for availability data params we need to call the api
+		*/	
+		$scope.changedAvailabilityDataParams = function(){
+			//calculating date after number of dates selected in the select box
+			var dateAfter = tzIndependentDate (($scope.data.selectedDate));
+			
+			//dateAfter.setDate(new Date($scope.data.selectedDate) + $scope.numberOfDaysSelected);
+			console.log(dateAfter);
+			var dataForWebservice = {
+				'from_date': tzIndependentDate($scope.data.selectedDate),
+				'to_date'  : tzIndependentDate(dateAfter)
+			}
+			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);						
+		};
+		
+		$scope.$on('$includeContentLoaded', function(event){
+			$scope.$emit("hideLoader");
+		});
 	}
 ]);
