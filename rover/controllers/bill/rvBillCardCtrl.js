@@ -938,6 +938,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	});
 	};
 
+
+	var refreshListWithData = function(data){
+		$scope.reservationBillData = data; 
+		//expand list
+		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
+	};
+
    /*
 	 * API call remove transaction
 	 */
@@ -954,7 +961,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 		var transactionDeleteSuccessCallback = function(data){		
 			$scope.$emit("hideLoader");
-			$scope.reservationBillData = data; // check with soumya
+			refreshListWithData(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback);
 	};
@@ -976,7 +983,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 		var transactionSplitSuccessCallback = function(data){		
 			$scope.$emit("hideLoader");
-			$scope.reservationBillData = data; // check with soumya
+			refreshListWithData(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback);
 	};
@@ -999,7 +1006,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		var transactionEditSuccessCallback = function(data){
 			$scope.$emit("hideLoader");
-			$scope.reservationBillData = data; // check with soumya
+			refreshListWithData(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback);
 	
