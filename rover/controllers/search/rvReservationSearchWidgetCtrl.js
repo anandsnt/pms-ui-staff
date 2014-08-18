@@ -1,4 +1,5 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope', 'RVSearchSrv', '$filter', '$state', function($scope, $rootScope, RVSearchSrv, $filter, $state){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams){
+
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
@@ -178,6 +179,17 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 		//we are showing the search area
 		$scope.$emit("showSearchResultsArea", true);		
 		refreshScroller();
+
+		// set the prev state here only, not outside
+		// else it will override any other declarations by other controllers
+		if ( !$stateParams.type ) {
+			$rootScope.setPrevState = {
+				title: $filter('translate')('DASHBOARD'),
+				callback: 'clearResults',
+				scope: $scope,
+				noStateChange: true
+			};
+		};
 	};
 
 
@@ -379,13 +391,5 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 	       }
 	   	 return mappedStatus;
    };
-  
-   $rootScope.setPrevState = {
-	    hide: true,
-	    title: 'Go back to Dashboard',
-	    callback: 'clearResults',
-	    scope: $scope,
-	    noStateChange: true
-	};
-      
+
 }]);
