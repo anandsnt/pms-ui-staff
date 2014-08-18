@@ -65,6 +65,7 @@ sntRover.controller('rvHeaderAvailabilityMainController', [
 		* function to execute when switching between availability and house keeping
 		*/
 		$scope.setAvailability = function(){
+			$scope.$emit("showLoader");
 			$scope.isAvailabilitySet = !$scope.isAvailabilitySet;
 		};
 
@@ -125,9 +126,6 @@ sntRover.controller('rvHeaderAvailabilityMainController', [
 			}
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);						
 		};
-		
-		$scope.$on('$includeContentLoaded', function(event){
-			$scope.$emit("hideLoader");
-		});
+
 	}
 ]);
