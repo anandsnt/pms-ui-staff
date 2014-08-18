@@ -26,4 +26,18 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		return deferred.promise;
 	};
 
+	this.fetchHouseStatusDetails = function(params){
+
+		//Webservice calling section
+		var deferred = $q.defer();
+		var url = '/api/availability/house';
+		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+			    deferred.resolve(data);
+		},function(data){
+			    deferred.reject(data);
+		});	
+		return deferred.promise;
+
+	};
+
 }]);
