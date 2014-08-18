@@ -192,42 +192,65 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		$scope.cancelReservation = function(applyPenalty) {
-			console.log('cancelReservation', applyPenalty);
-			// TODO: Make calls to the cancel reservation API here
+		var cancelReservation = function(penalty) {
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvCancelReservation.html',
+				controller: 'RVCancelReservation',
+				scope: $scope,
+				data: JSON.stringify({
+					state: 'CONFIRM',
+					cards: false,
+					penalty: penalty
+				})
+			});
 		}
+
+
 
 		/**
 		 * This method handles cancelling an exisiting reservation or
 		 * reinstating a cancelled reservation CICO-1403 and CICO-6056(Sprint20 >>> to be implemented in the next sprint)
 		 */
 		$scope.toggleCancellation = function() {
-			/**
-			 * The below method checks through the cancellation policied to find if within the
-			 * cancellation period
-			 */
-			var inCancellationPeriod = function() {
-				return true;
+
+			var checkCancellationPolicy = function() {
+				var onCancellationDetailsFetchSuccess = function(data) {
+					$scope.$emit('hideLoader');
+					var cancellationCharge = 0;
+					if (data == null) {
+						cancelReservation(cancellationCharge);
+					} else {
+						var inPenaltyTime = false;
+						
+						if (inPenaltyTime) {
+							/**
+							 * TODO : Calculate the penalty amount here
+							 */
+							cancellationCharge = 60;
+						}
+						cancelReservation(cancellationCharge);
+					}
+				}
+				var onCancellationDetailsFetchFailure = function(error) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = error;
+				}
+
+				var params = {
+					//first day's rate id
+					id: $scope.reservationData.reservation_card.stay_dates[0].rate_id
+				};
+
+				$scope.invokeApi(RVReservationCardSrv.fetchRateDetails, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
 			}
 
-			// Note: current implementation will only handle cancelling reservations
-			// TODO: Upon actioning the cancel request, the system should check for cancellation policies that may have been linked to the rate code.
-			var cancelationPolicies = {};
-			
 			/**
 			 * If the reservation is within cancellation period, no action will take place.
 			 * If the reservation is outside of the cancellation period, a screen will display to show the cancellation rule.
 			 * [Cancellation period is the date and time set up in the cancellation rule]
 			 */
-			if (inCancellationPeriod()) {
-				ngDialog.open({
-					template: '/assets/partials/reservationCard/rvCancelReservation.html',
-					scope: $scope,
-					data: JSON.stringify({
-						state: 'PENALTY'
-					})
-				});
-			}
+
+			checkCancellationPolicy();
 		}
 
 		$scope.openSmartBands = function() {
@@ -239,10 +262,8 @@ sntRover.controller('reservationActionsController', [
 				closeByEscape: false,
 				scope: $scope
 			});
-
-
-
 		};
+
 		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled) {
 			var showSmartBand = false;
 			if (icareEnabled) {

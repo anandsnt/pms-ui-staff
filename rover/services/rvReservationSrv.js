@@ -13,14 +13,14 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			var deferred = $q.defer();
 			//Commented. Since we are using another API to get country list
 			// var fetchCountryList = function(data) {
-				// var url = 'api/countries.json';
-				// RVBaseWebSrv.getJSON(url).then(function(data) {
-					// that.reservationData.countries = data;
-					// deferred.resolve(that.reservationData);
-				// }, function(data) {
-					// deferred.reject(data);
-				// });
-// 
+			// var url = 'api/countries.json';
+			// RVBaseWebSrv.getJSON(url).then(function(data) {
+			// that.reservationData.countries = data;
+			// deferred.resolve(that.reservationData);
+			// }, function(data) {
+			// deferred.reject(data);
+			// });
+			// 
 			// };
 			var reservationId = data.reservationId;
 			var isRefresh = data.isRefresh;
@@ -33,7 +33,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			});
 			if (!isReservationIdAlreadyCalled) {
 				that.storeReservationIds(reservationId);
-				var url = 'api/reservations/' +reservationId + '.json';
+				var url = 'api/reservations/' + reservationId + '.json';
 
 				RVBaseWebSrv.getJSON(url).then(function(data) {
 					that.reservationData[reservationId] = data;
@@ -122,6 +122,25 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			return deferred.promise;
 		};
 
+		this.fetchRateDetails = function(param) {
+			var deferred = $q.defer();
+			var url = '/api/rates/' + param.id;
+			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+				if (data.cancellation_policy_id && data.cancellation_policy_id != null) {
+					var url = '/api/policies/' + data.cancellation_policy_id;
+					rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+						deferred.resolve(data);
+					}, function(data) {
+						deferred.reject(data);
+					});
+				} else {
+					deferred.resolve(null);
+				}
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 
 		this.tokenize = function(data) {
 			var deferred = $q.defer();
@@ -165,13 +184,13 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			});
 			return deferred.promise;
 		};
-		this.modifyRoomQueueStatus = function(data){
+		this.modifyRoomQueueStatus = function(data) {
 			var deferred = $q.defer();
 			var postData = {
 				"status": data.status
 			};
-			
-			var url = '/api/reservations/'+data.reservationId+'/queue';
+
+			var url = '/api/reservations/' + data.reservationId + '/queue';
 			rvBaseWebSrvV2.postJSON(url, postData).then(function(postData) {
 				deferred.resolve(data);
 			}, function(data) {

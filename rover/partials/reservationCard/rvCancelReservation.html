@@ -1,19 +1,94 @@
-<div role="dialog" id="modal" class="modal-show" ng-cloak>
-	<form id="validate" class="modal-content form confirmation">
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<section ng-if="ngDialogData.state == 'PENALTY'">
-			<span class="h2 message" translate>CANCEL_HEADER</span>
-			<span class="text">{{'PENALTY_PRE' | translate}} {{currencySymbol}} {{'PENALTY_POST' | translate}}</span>				
-			<div class="actions float">
-				<a id="apply" class="button green modal-close" ng-click="ngDialogData.state='CONFIRM';ngDialogData.applyPenalty = true" translate>PENALTY_APPLY</a>
-				<a id="skip" class="button blue modal-close" ng-click="ngDialogData.state='CONFIRM'; ngDialogData.applyPenalty = false" translate>PENALTY_SKIP</a>
-				<a id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</a>
-			</div>
-		</section>
-		<section ng-if="ngDialogData.state == 'CONFIRM'">
-			<span class="h2 message" translate>PLEASE ENTER REASON</span>
-			<a id="apply" class="button red modal-close" ng-click="cancelReservation(ngDialogData.applyPenalty)" translate>CANCEL_CONFIRM</a>	
-			<a id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL_CANCEL</a>
-		</section>
-	</form>
-</div>
+<!-- 
+    When selecting "Apply penalty option", add "pay-bill select-card" classes to #cancel-reservation, so you have: modal-content form cancel-reservation pay-bill select-card
+
+    When switching form exsiting to new card, replace class "select-card" with the class "new-card" in #cancel-reservation
+-->
+<form method="post" action="cancel-reservation" id="cancel-reservation" name="cancel-reservation" ng-class="{'pay-bill':ngDialogData.state == 'PENALTY', 'select-card': (ngDialogData.state == 'PENALTY' && cancellationData.viewCardsList), 'new-card' :  (ngDialogData.state == 'PENALTY' && !cancellationData.viewCardsList)}" class="modal-content form cancel-reservation" ng-cloak>
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    
+    <!-- 1. Cancel Options screen -->
+    <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
+        <span class="h2 message" ng-show="ngDialogData.penalty > 0">Outside of the cancellation period</span>
+        <span class="text" ng-show="ngDialogData.penalty > 0">This incurs a {{currencySymbol}}{{ngDialogData.penalty}} penalty charge.</span>
+
+        <div class="entry full-width">
+            <label for="cancel-reason">Cancelation reason(<span>optional</span>)</label>
+            <textarea id="cancel-reason" name="cancel-reason" placeholder="Cancelling because ...." rows="2" />
+        </div> 
+        <div class="actions" ng-show="ngDialogData.penalty > 0">
+            <button type="button" class="button green" ng-click="applyPenalty();ngDialogData.applyPenalty = true" translate>PENALTY_APPLY</a>
+            <button type="button" class="button blue" ng-click="cancelReservation()" translate>PENALTY_SKIP</a>
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+        </div>
+        <div class="actions" ng-show="ngDialogData.penalty == 0">            
+            <button type="button" class="button blue" ng-click="cancelReservation()">Proceed</a>
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+        </div>
+    </fieldset>
+
+    <!-- 2. Apply penalty screen-->
+    <fieldset id="apply-penalty" class="credit-card" ng-if="ngDialogData.state == 'PENALTY'">
+        <strong class="h2 message" ng-show="ngDialogData.cards">Select or Add Credit Card</strong>
+        <strong class="h2 message" ng-hide="ngDialogData.cards">Add Credit Card</strong>
+        <span class="text">Card will be charged with a {{currencySymbol}}{{ngDialogData.penalty}} penalty.</span>
+
+        <ul id="card-options" class="modal-options" ng-show="ngDialogData.cards">
+            <li ng-class="{active:cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = true">Existing Cards</li>
+            <li ng-class="{active:!cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = false">Add New Card</li>
+        </ul>
+
+        <div id="select-card" class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
+            <div id="available-cards" class="cards-list scrollable" style="overflow-y:scroll;height:200px">
+                <div class="wrapper" ng-repeat="card in paymentData.existing_payments">
+                    <label class="active-item item-payment" ng-class="{primary: cancellationData.selectedCard == card.value}" ng-click="cancellationData.selectedCard = card.value"> <!-- Add class "primary" when card is selected -->
+                        <figure class="card-logo">
+                            <!-- <img src="{logo}" alt="" /> -->
+                        </figure>
+                        <span class="number">Ending with <span class="value number">{{card.ending_with}}</span></span>
+                        <span class="date">Date <span class="value date">{{card.expiry_date}}</span></span>
+                        <span class="name">Name <span class="value name">{{card.holder_name}}</span></span>
+                        <span class="primary" ng-show="cancellationData.selectedCard == card.value"><span class="value primary">Selected</span></span>
+                    </label>                    
+                    <!-- repeat ... -->
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="button blank" ng-click="ngDialogData.state = 'CONFIRM'">Cancel</button> <!-- Shows Cancel Options screen -->
+                <button type="button" class="button green" ng-hide="cancellationData.selectedCard == -1" ng-click="chargePenalty()">Charge Penalty</button> <!-- Remove class "hidden" when card is selected; Charges penalty to the card and cancels the reservation -->
+            </div>
+        </div>
+
+        <div id="new-card" class="new-card" ng-hide="ngDialogData.cards && cancellationData.viewCardsList"> <!-- Remove class hidden when New card selected in #card-options -->
+            <div class="holder">
+                <div class="entry margin">
+                    <label for="card-number">Card number</label>
+                    <input name="card-number" id="card-number" placeholder="Enter Card number" value="" maxlength="15" type="text" />
+                </div>
+                <div class="entry">
+                    <label for="expiry-month">Expiration date (<span>MM/YY</span>)</label>
+                    <input name="expiry-month" id="expiry-month" placeholder="MM" value="" maxlength="2" size="3" type="text" />
+                    <input name="expiry-year" id="expiry-year" placeholder="YY"  value="" maxlength="2" size="3" type="text" />
+                </div>
+                <div class="entry margin">
+                    <label for="name-on-card">Name on card</label>
+                    <input name="name-on-card" id="name-on-card" placeholder="Enter name on card" value="" type="text" />
+                </div>  
+                <div class="entry">
+                    <label for="ccv">CCV</label>
+                    <input name="ccv" id="ccv" placeholder="CCV" value="" maxlength="3" size="4" type="text" />
+                </div>
+                <div class="entry full-width">
+                    <label class="checkbox inline" for="add-in-guest-card">
+                        <span class="icon-form icon-checkbox"></span>
+                        <input name="checkin" id="add-in-guest-card" value="1" type="checkbox" />
+                        Add to Guest Card
+                    </label>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="button blank" ng-click="ngDialogData.state = 'CONFIRM'">Cancel</button> <!-- Shows Cancel Options screen -->
+                <button type="button" class="button green" ng-click="chargePenalty()">Charge Penalty</button> <!-- Charges penalty to the card and cancels the reservation -->
+            </div>
+        </div>
+    </fieldset>
+</form>
