@@ -182,14 +182,14 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 		// set the prev state here only, not outside
 		// else it will override any other declarations by other controllers
-		if ( !$stateParams.type ) {
+		if ( !$stateParams.hasOwnProperty('type') ) {
 			$rootScope.setPrevState = {
 				title: $filter('translate')('DASHBOARD'),
 				callback: 'clearResults',
 				scope: $scope,
 				noStateChange: true
 			};
-		};
+		}
 	};
 
 
@@ -287,7 +287,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
     	$scope.results = [];
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
-	  	$rootScope.setPrevState.hide = true;
+	  	
+	  	// Gotacha!! Only when we are dealing with 'noStateChange'
+	  	if ( !!$rootScope.setPrevState.noStateChange ) {
+	  	    $rootScope.setPrevState.hide = true;
+	  	};
   	};
   	
   	/**
