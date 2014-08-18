@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window','$timeout', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window,$timeout){
 	
 	BaseCtrl.call(this, $scope);
 
@@ -870,8 +870,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 
 	$scope.clickedEmail = function(){
 		
-		console.log("send Email >>");
-		
 		var data = {
 				"reservation_id" : $scope.reservationBillData.reservation_id,
 				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
@@ -887,9 +885,37 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	
 	};
-	
+	//print bill
 	$scope.clickedPrint = function(){
-		
-		console.log("Print >>");
+		printBill();
+		scrollToTop();
 	};
+	var scrollToTop = function() {
+			$scope.refreshScroller( 'registration-content' );
+			$scope.$parent.myScroll['registration-content'].scrollTo(0, 0, 100);
+	};
+
+	// print the page
+	var printBill = function() {
+		/*
+		*	=====[ READY TO PRINT ]=====
+		*/
+
+		// this will show the popup with full bill
+	    $timeout(function() {
+	    	/*
+	    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+	    	*/
+
+	        $window.print();
+	        if ( sntapp.cordovaLoaded ) {
+	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+	        };
+	    }, 100);
+
+	    /*
+	    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+	    */
+
+		};
 }]);
