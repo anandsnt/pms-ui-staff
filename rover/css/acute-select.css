@@ -80,7 +80,6 @@ div.ac-select-popup {
 div.ac-select-list {
     overflow: auto;
     margin-bottom: 1px;
-    border-top: 1px solid #d0d0d0;
 }
 
 div.ac-select-no-items {

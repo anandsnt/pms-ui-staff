@@ -29,8 +29,8 @@
                 <ul>
                     <li>
                         <strong class="flag" translate>ADJUSTMENT</strong>
-                        {{selectedTransaction.desc}}
-                        <span class="value">{{newAmount - selectedTransaction.amount}}</span>
+                        {{selectedTransaction.desc}}                       
+                        <span class="value"> <span ng-class ="{'hidden':newAmount - selectedTransaction.amount< 0}">+</span>{{newAmount - selectedTransaction.amount |number:2}}</span>
                     </li>
                 </ul>
             </div>
