@@ -1023,6 +1023,181 @@
 				}
 			}
 
+			/* Pay bill ***/
+			&.pay-bill {
+				.size(390px, 320px);
+
+				.payment-info { .show; }
+
+				.credit-card { 
+					.hide; 
+
+		            .select-card,
+		            .new-card {
+		            	#fade > .in;
+		            	.transition;
+
+		            	&.hidden { #fade > .out; }
+		            }
+
+		            .select-card {
+		            	.cards-list {
+							position: relative;
+							height: 320px;
+
+							.wrapper { padding: 0 10px 0 0; }
+							.iScrollVerticalScrollbar { 
+								top: 0;
+								bottom: 0;
+								right: 0;
+							}
+
+							.active-item {
+								position: relative;
+								line-height: 50px;
+								padding: 0 10px;
+								.clickable;
+
+								> span {
+									margin-right: 10px;
+
+									&.number { width: 150px; }
+									&.date { width: 100px; }
+									&.name { width: 220px; margin-right: 0; }
+
+									&.primary {
+										position: absolute;
+										top: 0;
+										right: 10px;
+										margin-right: 0;
+									}
+								}
+
+								.card-logo { margin-right: 10px; }
+							}
+						}
+		            }
+
+		            .new-card {
+		            	.holder {
+							.entry {
+								width: 40%;
+
+								input {
+									&:nth-of-type(2) { margin-left: 10px; }
+								}
+
+								&.margin {
+									margin-right: 40px;
+									.calc-width(60, 40);
+								}
+
+								&.full-width { 
+									margin: 0; 
+
+									.checkbox { margin-bottom: 0; }
+								}
+							}
+						}
+
+						.actions {
+							margin-top: 20px;
+							text-align: center;
+							.float;
+
+							.button {
+								display: inline-block;
+								width: auto;
+								padding: 0 40px;
+
+								&.blank { 
+									padding: 0 20px 0 0; 
+									text-align: right; 
+								}
+							}
+						}	
+		            }	
+				}
+
+				.actions { 
+					margin-top: 20px; 
+					padding-top: 20px;
+					border-top: 1px solid rgba(0,0,0,.1);
+
+					.button { margin-bottom: 0; }
+				}
+
+				&.card-attached {
+					.size(480px, 420px);
+
+					.active-item {
+						line-height: 50px;
+						padding: 0 10px;
+						margin: 0;
+						.clickable;
+
+						> span {
+							&.number { width: 150px; }
+							&.date { width: 100px; margin-right: 0; }
+						}
+
+						.card-logo { margin-right: 20px; }
+					}
+				}
+
+				&.select-card {
+					.size(560px, 720px);
+
+					.payment-info { .hide; }
+					.credit-card { .show; }				
+				}
+
+				&.new-card {
+					.size(440px, 480px);
+
+					.payment-info { .hide; }
+					.credit-card { .show; }
+				}
+			}
+
+			/* Cancel reservation ***/
+			&.cancel-reservation {
+				width: 360px;
+
+				.actions { 
+					margin-top: 20px;
+
+					.button { 
+						margin-bottom: 10px;
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+
+				&.pay-bill {
+
+					.actions {
+						text-align: center;
+
+						.button {
+							display: inline-block;
+							width: auto;
+							padding: 0 40px;
+							margin-bottom: 0;
+
+							&.blank { 
+								padding: 0 20px 0 0; 
+								text-align: right; 
+							}
+						}
+					}
+
+					&.select-card { .size(620px, 720px); }
+					&.new-card { .size(500px, 480px); }
+					&.only-new-card { .size(420px, 480px); }
+				}
+			}
+
 			/* Grid modal ***/
 			&.grid {
 				padding: 20px;
