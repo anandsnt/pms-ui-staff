@@ -945,12 +945,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
 	};
 
+	var hideLoaderAndClosePopup = function(){
+		$scope.$emit("hideLoader");
+		ngDialog.close();
+	};
+
+	var failureCallBack = function(data){
+		hideLoaderAndClosePopup();
+		$scope.errorMessage = data;
+	};
+
    /*
 	 * API call remove transaction
 	 */
 
 	$scope.removeCharge = function(reason){
-		ngDialog.close();
+		
 		var deleteData = 
 		{
 			data:{
@@ -960,10 +970,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			"id" :$scope.selectedTransaction.id
 		};
 		var transactionDeleteSuccessCallback = function(data){		
-			$scope.$emit("hideLoader");
+			hideLoaderAndClosePopup();
 			refreshListWithData(data);
+			
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback);
+		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
 	};
 
    /*
@@ -971,7 +982,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 
 	$scope.splitCharge = function(qty,isAmountType){
-		ngDialog.close();
+
 		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
 		var splitData = {
 			"id" :$scope.selectedTransaction.id,
@@ -982,10 +993,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			 
 		};
 		var transactionSplitSuccessCallback = function(data){		
-			$scope.$emit("hideLoader");
+			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback);
+		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
 	};
 
    /*
@@ -993,7 +1004,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 	$scope.editCharge = function(newAmount,chargeCode){
 		
-		ngDialog.close();
 		var newData = 
 		{
 			"updatedDate":
@@ -1005,10 +1015,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 
 		var transactionEditSuccessCallback = function(data){
-			$scope.$emit("hideLoader");
+			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 		};
-		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback);
+		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
 	
 	};
 
