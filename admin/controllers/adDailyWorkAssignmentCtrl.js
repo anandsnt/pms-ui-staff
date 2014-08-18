@@ -33,6 +33,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchMaidShift, {}, maidShiftCallback);
 
 
+		$scope.chosenItem = {};
+
+
 		// add new item
 		$scope.addNew = function(from) {
 			switch (from) {
@@ -55,6 +58,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					console.log( 'no idea where to add' );
 					break;
 			};
+
+			// clean up the object that will hold data
+			$scope.chosenItem = {
+				newItem: true
+			};
 		};
 
 		// remove a item
@@ -76,7 +84,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 
+		$scope.addNewTaskType = function() {
+			var callback = function() {
+				$scope.$emit('hideLoader');
+				$scope.taskType = data;
+			};
 
+			var data = _.omit($scope.chosenItem, 'newItem');
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.addTaskType, data, callback);
+		};
 
 
 	}
