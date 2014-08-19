@@ -387,14 +387,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Handle swipe action in bill card
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
-	 	alert("test"+$scope.paymentModalOpened)
 	 	if(!$scope.isGuestCardVisible){
 	 		if($scope.paymentModalOpened){
-	 				alert("paymentModalOpened")
 	 			$scope.paymentModalSwipeHappened = true;
 	 			$scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
 	 		} else {
-	 			alert("addNewPaymentModal")
 	 			$scope.fromViewToPaymentPopup = "billcard";
 	 			$scope.addNewPaymentModal(data);
 	 		}
@@ -416,9 +413,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
               closeByDocument: false,
               scope: $scope
           });
-	 	
-	 	
-	 	
 	 	
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){

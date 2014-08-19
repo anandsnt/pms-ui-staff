@@ -8,7 +8,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.newPaymentInfo.addToGuestCard = false;
 	$scope.billNumberSelected = '';
 	$scope.renderData.defaultPaymentAmount = '';
-	console.log($scope);
 	//We are passing $scope from bill to this modal
 	$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
 	$scope.billNumberSelected = $scope.currentActiveBillNumber;
