@@ -19,6 +19,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	}
 	
 	$scope.isContactInformationSaved = false;
+	$scope.showArAccountTab = false;
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
@@ -271,6 +272,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		 */
 		$timeout(function(){angular.element('#uplaodCompanyLogo').trigger('click')},0,false);
 	};
+
+	/*-------AR account starts here-----------*/
+
+	$scope.showArAccountButtonClick = function(){
+		$scope.showArAccountTab = true;
+		$scope.currentSelectedTab == 'cc-ar-accounts';
+	//	$scope.currentSelectedTab
+	};
 	
+	/*-------AR account ends here-----------*/
 	
 }]);

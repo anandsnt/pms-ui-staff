@@ -45,5 +45,8 @@
 	"SAVE_NEW": "Save new ",
 	"CARD":"card?",
 	"NEW_COMPANY_CARD" : "New Company Card",
-	"NEW_TA_CARD": "New Travel Agent Card"
+	"NEW_TA_CARD": "New Travel Agent Card",
+
+    "AR_ACCOUNT":"AR Account",
+    "CREATE_ACCOUNT":"Create Account"
 	
