@@ -31,6 +31,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		//Webservice calling section
 		var deferred = $q.defer();
 		var url = '/api/availability/house';
+		var url = '/ui/show?format=json&json_input=availability/house_status.json';
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			    deferred.resolve(data);
 		},function(data){

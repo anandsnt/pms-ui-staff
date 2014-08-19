@@ -13,13 +13,13 @@
 				<thead>
 					<tr>
 						<th class="heading"></th> <!-- First is blank, for row labels -->
-						<th>
+						<th ng-repeat='dayDetails in houseDetails'>
 							<div class="inner">
-								<span>Yesterday</span>
-								{date}
+								<span>dayDetails.day</span>
+								{{dayDetails.date}}
 							</div>
 						</th>
-						<th>
+						<!-- <th>
 							<div class="inner">
 								<span>Today</span>
 								{date}
@@ -30,7 +30,7 @@
 								<span>Tomorrow</span>
 								{date}
 							</div>
-						</th>
+						</th> -->
 					</tr>
 				</thead>
 
