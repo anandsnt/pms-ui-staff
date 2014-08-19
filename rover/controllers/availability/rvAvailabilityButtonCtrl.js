@@ -39,7 +39,11 @@ sntRover.controller('rvAvailabilityButtonController', [
 				 	$scope.isClosing = false;
 					//hiding/removing the availability section
 					$scope.showAvailability = false;
-				 }, 1000);			
+				 }, 1000);	
+
+				// setting data loaded as null, will be using to hide the data showing area on loading in availiable room grid display
+				var emptyDict = {};
+				rvAvailabilitySrv.updateData (emptyDict);		
 			}
 			else{
 				$scope.showAvailability = true;	

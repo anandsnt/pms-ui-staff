@@ -11,8 +11,6 @@ sntRover.controller('rvAvailabilityMainController', [
 		$scope.setAvailability = function(){
 			$scope.$emit("showLoader");
 			if($scope.availabilityToShow == 'room'){
-				var emptyDict = {};
-				rvAvailabilitySrv.updateData (emptyDict);
 				$scope.availabilityToShow = 'house';				
 			}
 			else if($scope.availabilityToShow == 'house'){
