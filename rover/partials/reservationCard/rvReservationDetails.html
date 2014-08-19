@@ -33,17 +33,20 @@
 		<li>
 			<span class="guest-icon">0-3</span>
 			<span class="label">Infants</span>
-			{{reservationData.reservation_card.number_of_infants}} 
+			{{$parent.reservationData.rooms[0].numInfants}} 
 		</li>
 		<li>
 			<span class="guest-icon">3-18</span>
 			<span class="label">Children</span>
-			{{reservationData.reservation_card.number_of_children}} 
+			{{$parent.reservationData.rooms[0].numChildren}} 
 		</li>
 		<li>
 			<span class="guest-icon">18+</span>
 			<span class="label">Adults</span>
-			{{reservationData.reservation_card.number_of_adults}} 
+			{{$parent.reservationData.rooms[0].numAdults}} 
+		</li>
+		<li>
+			<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
 		</li>
 	</ul>
 

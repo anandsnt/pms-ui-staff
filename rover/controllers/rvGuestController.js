@@ -10,7 +10,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		BaseCtrl.call(this, $scope);
 
-
 		var initReservation = function() {
 			if (!$scope.reservationData.isSameCard) {
 				// open search list card if any of the search fields are entered on main screen
@@ -590,8 +589,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'name': $scope.searchData.companyCard.companyName,
 					'city': $scope.searchData.companyCard.companyCity,
 					'account_number': $scope.searchData.companyCard.companyCorpId,
-					'from_date': $scope.viewState.identifier == "CREATION" ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-					'to_date': $scope.viewState.identifier == "CREATION" ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+					'from_date': ($scope.viewState.identifier == "CREATION" || $scope.viewState.identifier == "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+					'to_date': ($scope.viewState.identifier == "CREATION" || $scope.viewState.identifier == "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
 				};
 				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
 			} else {
@@ -659,8 +658,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					'name': $scope.searchData.travelAgentCard.travelAgentName,
 					'city': $scope.searchData.travelAgentCard.travelAgentCity,
 					'account_number': $scope.searchData.travelAgentCard.travelAgentIATA,
-					'from_date': $scope.viewState.identifier == "CREATION" ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
-					'to_date': $scope.viewState.identifier == "CREATION" ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
+					'from_date': ($scope.viewState.identifier == "CREATION" || $scope.viewState.identifier == "CONFIRM") ? $scope.reservationData.arrivalDate : new Date($scope.reservation.reservation_card.arrival_date).toISOString().slice(0, 10).replace(/-/g, "-"),
+					'to_date': ($scope.viewState.identifier == "CREATION" || $scope.viewState.identifier == "CONFIRM") ? $scope.reservationData.departureDate : new Date($scope.reservation.reservation_card.departure_date).toISOString().slice(0, 10).replace(/-/g, "-")
 				};
 				$scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
 			} else {

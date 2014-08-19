@@ -1,11 +1,29 @@
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault',
 	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault) {
 
+		// pre setup for back button
+		var titleDict = {
+		    'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
+		    'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
+		    'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
+		    'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+		    'VIP': 'DASHBOARD_SEARCH_VIP',
+		    'NORMAL_SEARCH': 'SEARCH_NORMAL'
+		}
+		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
+		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {}
+
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: 'Search results',
-			name: 'rover.search'
+			title: $filter( 'translate' )( backTitle ),
+			name: 'rover.search',
+			param: backParam
 		};
+
+
+
+
+
 
 		BaseCtrl.call(this, $scope);
 
