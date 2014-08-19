@@ -13,24 +13,12 @@
 				<thead>
 					<tr>
 						<th class="heading"></th> <!-- First is blank, for row labels -->
-						<th ng-repeat='dayDetails in houseDetails'>
+						<th ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span>dayDetails.day</span>
-								{{dayDetails.date}}
+								<span>{{dayDetails.day}}</span>
+								{{dayDetails.date | date : 'EEE, MMM d'}}
 							</div>
 						</th>
-						<!-- <th>
-							<div class="inner">
-								<span>Today</span>
-								{date}
-							</div>
-						</th>
-						<th>
-							<div class="inner">
-								<span>Tomorrow</span>
-								{date}
-							</div>
-						</th> -->
 					</tr>
 				</thead>
 
@@ -49,15 +37,15 @@
 				<tbody>
 					<tr>
 						<th class="heading" scope="row">Total Rooms occupied</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.total_rooms_occupied[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -68,21 +56,21 @@
 						<td>
 							<div class="inner">
 								<span class="value">N/A</span>
-								<!-- When no value, don't include span class="graph" as it's not needed -->
+								When no value, don't include span class="graph" as it's not needed
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th class="heading" scope="row">Total Guests In House</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.total_guests_inhouse[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -97,19 +85,19 @@
 									<span class="bar yellow" data-width="{percentage}"></span>
 								</span>
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Departures Expected</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.departues_expected[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -120,21 +108,21 @@
 						<td>
 							<div class="inner">
 								<span class="value">N/A</span>
-								<!-- When no value, don't include span class="graph" as it's not needed -->
+								When no value, don't include span class="graph" as it's not needed
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Departures Actual</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.departures_actual[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -149,19 +137,19 @@
 									<span class="bar yellow" data-width="{percentage}"></span>
 								</span>
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Arrivals Expected</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.arrivals_expected[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -172,21 +160,21 @@
 						<td>
 							<div class="inner">
 								<span class="value">N/A</span>
-								<!-- When no value, don't include span class="graph" as it's not needed -->
+								When no value, don't include span class="graph" as it's not needed
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Arrivals Actual</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.arrivals_actual[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -201,19 +189,19 @@
 									<span class="bar yellow" data-width="{percentage}"></span>
 								</span>
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Available Tonight</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.available_tonight[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -228,19 +216,19 @@
 									<span class="bar yellow" data-width="{percentage}"></span>
 								</span>
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Occupied Tonight</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value">{value}</span>
+								<span class="value">{{houseDetails.occupied_tonight[dayDetails.date]}}</span>
 								<span class="graph">
 									<span class="bar blue" data-width="{percentage}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
+						<!-- <td>
 							<div class="inner">
 								<span class="value">{value}</span>
 								<span class="graph">
@@ -255,7 +243,7 @@
 									<span class="bar yellow" data-width="{percentage}"></span>
 								</span>
 							</div>
-						</td>
+						</td> -->
 					</tr>
 					<tr>
 						<th class="heading" scope="row">Total Room Revenue</th>

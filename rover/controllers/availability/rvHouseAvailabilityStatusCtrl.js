@@ -6,13 +6,15 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 	'$filter',
 	'rvAvailabilitySrv',
 	function($scope, $timeout, ngDialog, $rootScope, $filter, rvAvailabilitySrv){
-		$s = $scope;
+		
 
 		$scope.$on('$includeContentLoaded', function(event){
+			console.log("inside");
 			$scope.$emit("hideLoader");
 		});
 
 		var init = function(){
+			$s = $scope;
 			$scope.houseStatus = {};
 			fetchHouseStatus();
 			
@@ -20,7 +22,10 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 
 		var fetchHouseStatus = function(){
 			var houseStatusFetchSuccess = function(data){
-				$scope.houseDetails = computeHouseStatistics(data.results, data.physical_count);
+				$scope.$emit("hideLoader");
+				console.log(data);
+				$scope.houseDetails = data;
+				//$scope.houseDetails = computeHouseStatistics(data.results, data.physical_count);
 
 			
 			};
@@ -35,13 +40,14 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 			//toDate = $filter('date')(toDate, $rootScope.dateFormatForAPI);
 			var dataForWebservice = {
 				'from_date': $filter('date')(fromDate, $rootScope.dateFormatForAPI),
-				'to_date'  : $filter('date')(toDate, $rootScope.dateFormatForAPI)
+				'to_date'  : $filter('date')(toDate, $rootScope.dateFormatForAPI),
+				'business_date' : $rootScope.businessDate
 			}
 
 			$scope.invokeApi(rvAvailabilitySrv.fetchHouseStatusDetails, dataForWebservice, houseStatusFetchSuccess);						
 		};
 
-		var computeHouseStatistics = function(data, houseTotal){
+/*		var computeHouseStatistics = function(data, houseTotal){
 			var houseDetails = [];
 			var houseStatus;
 			var businessDate = tzIndependentDate($rootScope.businessDate);
@@ -51,7 +57,7 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 			angular.forEach(data, function(dayInfo, i) {
 				houseStatus = {};
 				houseStatus.date = dayInfo.date;
-				
+
 				date = tzIndependentDate(dayInfo.date);
 				console.log(date);
 				//Set if the day is yesterday/today/tomorrow
@@ -81,7 +87,7 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 
 		return houseDetails;
 
-		};
+		};*/
 
 		init();
 	}
