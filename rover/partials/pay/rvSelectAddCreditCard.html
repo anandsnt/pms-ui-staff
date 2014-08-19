@@ -10,7 +10,7 @@
             <li ng-click="showExistingCards()" ng-class="{'active': showExistingGuestPayments}" translate>EXISTING_CARDS</li>
             <li ng-click="showAddNewCreditCard()" ng-class="{'active': showAddNewPaymentScreen}" translate>ADD_NEW_CARD</li>
         </ul>
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+       
 
         <!-- List of available cards - only when they exist -->
         <div ng-include="'/assets/partials/pay/rvCardList.html'" ng-show="showExistingGuestPayments"></div>
