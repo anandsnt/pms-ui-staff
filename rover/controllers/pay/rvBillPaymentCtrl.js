@@ -85,7 +85,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				$scope.defaultPaymentTypeCardExpiry = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_expiry;
 			}
 		}
-		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_amount;
+		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount;
 		$scope.renderData.defaultPaymentAmount = defaultAmount;
 		
 	};
