@@ -949,6 +949,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservationBillData = data; 
 		//expand list
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
+		$scope.calculateHeightAndRefreshScroll();
 	};
 
 	var hideLoaderAndClosePopup = function(){
