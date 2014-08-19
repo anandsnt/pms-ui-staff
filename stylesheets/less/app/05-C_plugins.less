@@ -1164,6 +1164,505 @@
 				}
 			}
 
+			/* Billing information ***/
+			&.billing-information {
+				padding: 0;
+				.size(700px, 800px);
+				.float;
+
+				.modal-header {
+					padding: 20px;
+					color: @white;
+					background: @gcard;
+					position: relative;
+					.size(90px, 100%);
+					#border-radius > .top();
+					.show;
+					.float;
+
+					h1 {
+						font-weight: 700;
+						clear: none;
+					}
+
+					em {
+						.h4;
+					}
+
+					.button {
+						position: absolute;
+						top: 20px;
+						right: 20px;
+						width: 160px;
+					}
+				}
+
+				.content-wrapper {
+					position: relative;
+					.float;
+					.calc-height(100, 180);
+					#fade > .in;
+		        	.transition;
+
+					/* Route listing ***/
+					.billing-list {
+						position: absolute;
+						left: 0;
+						top: 0; 
+						.square(100%);
+
+						> .wrapper { padding: 20px; }
+
+						li {
+							position: relative;
+
+							a {
+								color: @textColor;
+					            padding: 15px;
+					            .float;
+					            .clickable;
+								.calc-width(100, 40);
+
+								.guest-image { 
+									.square(30px); 
+
+									&.accompany {
+										img {
+											width: 25px;
+
+											&:nth-child(2) {
+												top: 10px;
+												left: 10px;
+												width: 20px;
+											}
+										}
+									}
+
+									&.icons {
+										padding: 0;
+										margin: 0;
+										#border-radius > .rounded();
+
+										&.icon-company {
+					                        background-color: @ccard;
+					                        background-position: 5px -3460px;
+					                    }
+
+					                    &.icon-travel-agent {
+					                        background-color: @tacard;
+					                        background-position: 5px -3575px;
+					                    }
+									}
+								}
+
+								h2 {
+									font-size: 21px;
+									line-height: 30px;
+					                font-weight: 700;
+					                margin: 0 10px;
+									width: 300px;
+									clear: none;
+									white-space: nowrap;
+					                overflow: hidden;
+					                text-overflow: ellipsis;
+					                .pull-left;
+								}
+
+								.type,
+								.bill {
+									font-size: 18px;
+									line-height: 30px;
+									text-transform: uppercase;
+									white-space: nowrap;
+					                overflow: hidden;
+					                text-overflow: ellipsis;
+									.pull-left;
+
+									&.type { 
+										width: 260px; 
+										margin-right: 10px;
+									}
+
+									&.bill { width: 70px; }
+								}
+
+								&.guest { 
+									h2 { color: @textColor; }
+								}
+								&.accompany { 
+									h2 { color: @grey3; }
+								}
+								&.company { 
+									h2 { color: @ccard; }
+								}
+								&.travel-agent { 
+									h2 { color: @tacard; }
+								}
+							}
+
+							.icon-remove-40 {
+								position: absolute;
+								top: 10px;
+								right: -5px;
+								cursor: pointer;
+							}
+						}
+					}
+
+					/* Add/Edit Route **/
+					.content-left,
+					.content-right {
+						position: relative;
+						overflow: hidden;
+						height: 100%;
+						.pull-left;
+
+						.no-content {
+							padding: 0 20px;
+
+							.h1 {
+								font-size: 24px;
+								margin: 0;
+							}
+
+							.h2 {
+								font-size: 18px;
+								margin: 0;
+							}
+						}
+					}
+
+					.content-left {
+						width: 330px;
+						background: rgba(0,0,0,.05);
+
+						.search-form { padding: 10px; }
+
+						/* Entity ***/
+						.entity {
+							color: @textColor;
+							line-height: 1em;
+				            padding: 10px;
+				            margin-bottom: 10px;
+				            .float;
+
+							.guest-image { 
+								.square(30px); 
+
+								&.accompany {
+									img {
+										width: 25px;
+
+										&:nth-child(2) {
+											top: 10px;
+											left: 10px;
+											width: 20px;
+										}
+									}
+								}
+
+								&.icons {
+									padding: 0;
+									margin: 0;
+									#border-radius > .rounded();
+
+									&.icon-company {
+				                        background-color: @ccard;
+				                        background-position: 5px -3460px;
+				                    }
+
+				                    &.icon-travel-agent {
+				                        background-color: @tacard;
+				                        background-position: 5px -3575px;
+				                    }
+								}
+							}
+
+							h2 {
+								font-size: 18px;
+								line-height: 30px;
+				                font-weight: 700;
+				                margin: 0 10px;
+								clear: none;
+								white-space: nowrap;
+				                overflow: hidden;
+				                text-overflow: ellipsis;
+				                width: 200px;
+				                .pull-left;
+
+				                .highlight { color: @logoPrimary; }
+							}
+
+							.data {
+								margin: 0 10px;
+								.size(30px, 200px);
+								.pull-left;
+
+								h2 { 
+									margin: 0;
+									line-height: 18px;
+									float: none;
+								}
+
+								.confirmation,
+								.room {
+									display: inline-block;
+									font-size: 13px;
+									line-height: 1em;
+									text-transform: uppercase;
+
+									&.confirmation { margin-right: 10px; }
+								}
+							}
+
+							.guest-status,
+							.status {
+								margin: 5px 0 0 0;
+								.pull-right;
+								.square(20px);
+								.hide-text;
+
+								&.company { background: @ccard @ccardTexture; }
+               					&.travel-agent { background: @tacard @tacardTexture; }
+							}
+
+							&.guest { 
+								h2 { color: @textColor; }
+							}
+
+							&.accompany { 
+								h2 { color: @grey3; }
+							}
+
+							&.company { 
+								h2 { color: @ccard; }
+							}
+
+							&.travel-agent { 
+								h2 { color: @tacard; }
+							}
+						}
+
+						li.entity {
+							cursor: pointer;
+							.clickable;
+						}
+
+						div.entity { 
+							margin: 10px; 
+							.faux-clickable;
+						}
+
+						/* Entity list & search ***/
+						.message { margin-top: 30px; }
+
+						.modal-options { margin: 10px auto; }
+
+						.entities-list {
+							position: absolute;
+							top: 120px;
+							left: 0;
+							.calc-height(100, 120);
+
+							> .wrapper { padding: 0 10px 20px 10px; }
+							> .iScrollVerticalScrollbar { top: 0; }
+						}
+
+						/* Entity details ***/
+						.entity-details {
+							position: relative;
+							height: 100%;
+
+							> .wrapper { padding: 0 0 20px 0; }
+							> .iScrollVerticalScrollbar { 
+								top: 0;
+								bottom: 0;
+								right: 2px;
+
+								.iScrollIndicator { background: rgba(0,0,0,.1); }
+							}
+
+							.title {
+								position: relative;
+								font-size: 16px;
+								text-transform: uppercase;
+								font-weight: 600;
+								line-height: 40px;
+								color: @textColor;
+								background-color: rgba(0,0,0,.05);
+								padding: 0 10px;
+								.show;
+
+								.button {
+									position: absolute;
+									top: 5px;
+									right: 10px;
+									.square(30px);
+
+									.icons { 
+										background-size: 90px; 
+										background-position: 4px -881px;
+									}
+								}
+							}
+
+							.payment {
+								position: relative;
+								line-height: 30px;
+					            padding: 10px;
+					            margin: 10px;
+					            .opacity(30);
+					            .float;
+
+					            .card-logo {
+					            	margin: 5px 20px 0 0;
+	                                .pull-left;
+	                                .size(20px, 40px);
+	                             
+	                                img { .size(auto, 100%); }
+					            }
+
+					            .number,
+					            .date {
+									display: inline-block;
+									vertical-align: middle;
+									color: @grey3;
+									font-size: 14px;
+									line-height: 18px;
+									text-transform: uppercase;
+									font-weight: 400;
+									margin-right: 10px;
+
+									.value {
+										display: inline-block;
+										font-size: 18px;
+										color: @textColor;
+										font-weight: 600;
+										margin-left: 5px;
+									}
+
+									&.date { margin-right: 0; }
+
+					            }
+
+					            &.active { 
+					            	.faux-clickable;
+					            	.opacity(100); 
+					            }
+
+					            &:not(.active) {
+					            	cursor: pointer;
+					            	.clickable;
+					            }
+							}
+
+							.add-new-button {
+								cursor: pointer;
+								background: transparent;
+								margin: 0 10px;
+								.calc-width(100, 20);
+							}
+
+							.form {
+								margin: 10px 10px 0 10px;
+
+								label { margin-bottom: 0; }
+
+								.actions {
+									padding: 0;
+									margin-top: 10px;
+									.box-shadow(none);
+									.size(auto, 100%);
+									
+									.button {
+										font-size: 14px;
+										line-height: 40px;
+										padding: 0 10px;
+									}
+								}
+							}
+						}
+					}
+
+					.content-right {
+						width: 470px;
+						.box-shadow(0 -2px 2px rgba(0,0,0,.3));
+
+						.h2 { margin: 30px 0; }
+
+						.list-toggle,
+						.search-codes { 
+							margin: 0 auto 20px auto; 
+							width: 310px;
+						}
+
+						.search-codes {
+							position: relative;
+							.float;
+
+							input {
+								width: 270px;
+								.pull-left;
+							}
+
+							.mini-select {
+								.pull-left;
+							}
+						}
+
+						.transactions {
+							position: relative;
+							.calc-height(100, 180);
+
+							> .iScrollVerticalScrollbar { top: 0; }
+
+							.entry {
+								margin: 0;
+								padding: 0 20px 20px;
+								.float;
+
+								.checkbox {
+									margin-bottom: 10px;
+									text-transform: uppercase;
+									color: @grey3;
+									.calc-width(50, 5);
+									.pull-left;
+
+									.value { 
+										color: @textColor; 
+										margin-right: 5px;
+									}
+
+									&:nth-child(odd) { margin-right: 10px; }
+
+									&:nth-last-of-type(1),
+									&:nth-last-of-type(2) { margin-bottom: 0; }
+								}
+							}
+
+							&.codes {
+								.calc-height(100, 240);
+							}
+						}
+					}
+
+					&.no-action { .calc-height(100, 90); }
+					&.loading { #fade > .out; }
+				}
+
+				.actions {
+					text-align: center;
+					padding: 20px;
+					.box-shadow(-2px 0 2px rgba(0,0,0,.3));
+					.size(90px, 100%);
+
+					.button {
+						display: inline-block;
+						width: auto;
+					}
+				}      	
+			}
+
 			/* New card ***/
 			&.new-card {
 				.button {
