@@ -25,4 +25,16 @@
     "PAY" : "Pay",
     "AMOUNT": "Amount",
     "WINDOW": "Window",
-    "SELECT_WINDOW": "Select Bill"
+    "SELECT_WINDOW": "Select Bill",
+    "PAY_BILL":"Pay Bill #",
+    "TAP_TO_CHANGE":"Tap to change",
+    "AMOUNT_TO_PAY":"Amount to pay",
+    "SUBMIT_PAYMENT":"Submit payment",
+    "CARD_NUMBER_PLACEHOLDER":"Enter Card number",
+    "MM":"MM",
+    "YY":"YY",
+    "NAME_ON_CARD_PLACEHOLDER":"Enter name on card",
+    "CCV":"CCV",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "ADD_NEW_CARD":"Add New Card",
+    "EXISTING_CARDS":"Existing Cards"
