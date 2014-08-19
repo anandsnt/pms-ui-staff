@@ -20,6 +20,7 @@ sntRover.controller('rvAvailabilityMainController', [
 		};	
 
 		/**
+		* function to load different template based the availability chosen
 		*/
 		$scope.getTemplateUrl = function()	{
 			if($scope.availabilityToShow == 'room'){
