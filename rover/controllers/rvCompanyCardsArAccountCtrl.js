@@ -11,7 +11,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', '$state', '$statePara
 			}, 500);
 		});
 
-		var refreshScroller = function() {
+		$scope.refreshScroller = function() {
 			$scope.refreshScroller('companyCardArAccountCtrl');
 		};
 
@@ -23,11 +23,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', '$state', '$statePara
 		$scope.data.note = "";
 
 		$scope.saveNote = function(){
-			alert("save");
-			console.log($scope.data.note);
+			
 			$scope.notes.push($scope.data.note);
-			console.log($scope.notes);
 			$scope.data.note = "";
+			$scope.refreshScroller();
 		}
 
 	}
