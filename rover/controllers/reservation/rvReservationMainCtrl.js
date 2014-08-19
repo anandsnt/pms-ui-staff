@@ -452,7 +452,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
                     roomTotal = roomTotal + roomAmount;
 
-                    if (taxes.length > 0) {
+                    if ( !!taxes && !!taxes.length ) {
                         //  We get the tax details for the specific day here
                         var taxApplied = $scope.calculateTax(date, roomAmount, taxes, roomIndex);
                         //  Note: Got to add the exclusive taxes into the tax Amount thing
