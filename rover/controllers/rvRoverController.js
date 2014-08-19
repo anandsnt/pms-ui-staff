@@ -100,9 +100,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           'HOUSEKEEPING': 'rover.dashboard.housekeeping',
           'FRONT_DESK'  : 'rover.dashboard.frontoffice',
           'MANAGER'     : 'rover.dashboard.manager'
-        }
+        };
         return statesForDashbaord[$rootScope.default_dashboard];
-    }
+    };
 
     if($rootScope.isStandAlone){
       // OBJECT WITH THE MENU STRUCTURE
