@@ -10,7 +10,7 @@
 ==========================================================*/
 
 /* Dashboard page           ==============================*/
-     #dashboard {
+    #dashboard {
         z-index: 99;
 
         .wrapper {
@@ -157,7 +157,8 @@
             }
         }
     }
-     #dashboard-search {
+    
+    #dashboard-search {
         z-index: 999;
         .background(@white);
 
@@ -176,7 +177,8 @@
             #move > #to > .bottom();
         }
     }
-  /* 768px+               ==============================*/
+
+    /* 768px+               ==============================*/
     @media only screen and (min-width: 768px) {
         #dashboard {
             .wrapper {
@@ -347,7 +349,6 @@
         }
     }
        
-
 /* Search page              ==============================*/
     .search-results {
         position: relative;
@@ -2279,9 +2280,8 @@
         /* Registration content ***/
         .registration-content {
             position: relative;
-            .calc-height(100, 40); /* %, px */
+            .calc-height(100, 40);
 
-            /* Scrollable area ***/
             > .wrapper { padding: 20px; .float; }
             > .iScrollVerticalScrollbar { bottom: 20px; }
 
@@ -2332,100 +2332,93 @@
 
                 /* Registration summary tabs navigation ***/
                 #bills-tabs-nav {
-                    width: 100%;
-                    height: 50px;
+                    .size(50px, 100%);
 
-                    .toggle {
-                        color: @textColor;
-                        text-transform: uppercase;
-                        line-height: 50px;
-                        padding-right: 25px;
-                        margin-right: 25px;
-                        background-position: 100% 50%;
-                        .pull-left;
-                    }
-
-                    ul,
                     .button {
-                        .pull-right;
-                    }
-
-                    li {
-                        display: inline-block;
-                        margin: 5px 0 0 0;
-                        line-height: 1em;
-                        vertical-align: middle;
-                        min-width: 95px;
-                        height: 45px;
-                        background: rgba(0,0,0,.05);
                         .pull-left;
-                        .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
-                        #border-radius > .top();
 
-                        a {
-                            color: @grey4;
-                            text-transform: uppercase;
-                            padding: 10px;
-                            .float;
-                            .show;
-                            .no-transition;
+                        &.with-icon {
+                            line-height: 50px;
+                            margin: 5px 0 0 10px;
+                            .square(45px);
+                            #border-radius > .bottom(0);
+                            .box-shadow(none);
+                            .pull-right;
 
-                            .price {
-                                font-weight: 600;
-                                .pull-left;
-
-                                span { 
-                                    font-size: 14px;
-                                    font-weight: 400;
-                                    .show;
-                                }
-                            }
-
-                            .card-logo,
-                            .payment {
-                                font-size: 12px;
-                                line-height: 12px;
-                                margin-left: 30px;
-                                text-align: right;
-                                .pull-left;
-                                .size(20px,40px);
-                                .opacity(50);
-
-                                img {
-                                    width: 100%;
-                                    height: auto;
-                                    margin-top: 2px;
-                                }
+                            &:hover,
+                            &:active { 
+                                .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
                             }
                         }
+                    }
 
-                        &.ui-tabs-active,
-                        &.active {
+                    ul {
+                        .pull-right;
+
+                        li {
+                            margin: 5px 0 0 0;
                             line-height: 1em;
-                            margin-top: 0;
-                            height: 50px;
-                            background: rgba(0,0,0,.1);
-                            .box-shadow(none);
+                            vertical-align: middle;
+                            min-width: 95px;
+                            height: 45px;
+                            background: rgba(0,0,0,.05);
+                            .show;
+                            .pull-left;
+                            .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
+                            #border-radius > .top();
 
                             a {
-                                color: @textColor;
+                                color: @grey4;
+                                text-transform: uppercase;
+                                padding: 10px;
+                                .float;
+                                .show;
+                                .no-transition;
+
+                                .price {
+                                    font-weight: 600;
+                                    .pull-left;
+
+                                    span { 
+                                        font-size: 14px;
+                                        font-weight: 400;
+                                        .show;
+                                    }
+                                }
 
                                 .card-logo,
-                                .payment { .opacity(100); }
+                                .payment {
+                                    font-size: 12px;
+                                    line-height: 12px;
+                                    margin-left: 30px;
+                                    text-align: right;
+                                    .pull-left;
+                                    .size(20px,40px);
+                                    .opacity(50);
+
+                                    img {
+                                        width: 100%;
+                                        height: auto;
+                                        margin-top: 2px;
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    .button {
-                        line-height: 50px;
-                        margin: 5px 0 0 10px;
-                        .square(45px);
-                        #border-radius > .bottom(0);
-                        .box-shadow(none);
+                            &.ui-tabs-active,
+                            &.active {
+                                line-height: 1em;
+                                margin-top: 0;
+                                height: 50px;
+                                background: rgba(0,0,0,.1);
+                                .box-shadow(none);
 
-                        &:hover,
-                        &:active { 
-                            .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+                                a {
+                                    color: @textColor;
+
+                                    .card-logo,
+                                    .payment { .opacity(100); }
+                                }
+                            }
                         }
                     }
                 }
