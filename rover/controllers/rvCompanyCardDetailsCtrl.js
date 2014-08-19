@@ -50,7 +50,11 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		}
 		if($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts'){
 			$scope.$broadcast("saveContract");
-		}		
+		}	
+
+		if(tabToSwitch == 'cc-ar-accounts'){
+			$scope.$broadcast("arAccountTabActive");
+		}	
 		$scope.currentSelectedTab = tabToSwitch;
 	};
 	

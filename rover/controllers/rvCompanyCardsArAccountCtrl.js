@@ -18,6 +18,17 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', '$state', '$statePara
 
 		$scope.useMainContact = true;
 		$scope.useMainAdrress = true;
+		$scope.notes = [];
+		$scope.data = {};
+		$scope.data.note = "";
+
+		$scope.saveNote = function(){
+			alert("save");
+			console.log($scope.data.note);
+			$scope.notes.push($scope.data.note);
+			console.log($scope.notes);
+			$scope.data.note = "";
+		}
 
 	}
 ]);
