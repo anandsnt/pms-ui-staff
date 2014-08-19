@@ -887,13 +887,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(id,desc,amount,type){
+	$scope.openActionsPopup = function(id,desc,amount,type,credits){
 		//hide edit and remove options in case type is  payment
 		$scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
 		$scope.selectedTransaction = {};
 		$scope.selectedTransaction.id = id;
 		$scope.selectedTransaction.desc = desc;
-		$scope.selectedTransaction.amount = amount;
+	
+		if(amount){
+			$scope.selectedTransaction.amount = amount;
+		}
+		else if(credits){
+			$scope.selectedTransaction.amount = credits;
+		};
 		
 		ngDialog.open({
     		template: '/assets/partials/bill/rvBillActionsPopup.html',
