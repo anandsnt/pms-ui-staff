@@ -10,6 +10,7 @@ sntRover.controller('roomAvailabilityMainController', [
 	BaseCtrl.call(this, $scope);
 	
 	$scope.selectedView = 'grid';
+	$scope.page.title = "Availability";
 
 	$scope.setSelectedView = function(selectedView){
 		$scope.$emit("showLoader");

@@ -14,10 +14,12 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 		});
 
 		var init = function(){
+			$scope.page.title = "House Status";
 			$s = $scope;
 			$scope.houseStatus = {};
 			fetchHouseStatus();
-			
+			$scope.setScroller('house-status-grid');
+
 		};
 
 		var fetchHouseStatus = function(){
@@ -25,6 +27,7 @@ sntRover.controller('RVHouseAvailabilityStatusCtrl', [
 				$scope.$emit("hideLoader");
 				console.log(data);
 				$scope.houseDetails = data;
+				$scope.refreshScroller('house-status-grid');
 				//$scope.houseDetails = computeHouseStatistics(data.results, data.physical_count);
 
 			
