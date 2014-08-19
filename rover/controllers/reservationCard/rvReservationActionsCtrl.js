@@ -216,12 +216,17 @@ sntRover.controller('reservationActionsController', [
 			var checkCancellationPolicy = function() {
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');
-					var cancellationCharge = 0;
+					var cancellationCharge = 60;
 					if (data == null) {
 						cancelReservation(cancellationCharge);
 					} else {
+
+						/**
+						 * TODO: Take the new API definitions into consideration
+						 */
+
 						var inPenaltyTime = false;
-						
+
 						if (inPenaltyTime) {
 							/**
 							 * TODO : Calculate the penalty amount here

@@ -1,3 +1,4 @@
+<div id="modal" class="modal-show" role="dialog">
 <!-- 
     When selecting "Apply penalty option", add "pay-bill select-card" classes to #cancel-reservation, so you have: modal-content form cancel-reservation pay-bill select-card
 
@@ -38,18 +39,21 @@
         </ul>
 
         <div id="select-card" class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
-            <div id="available-cards" class="cards-list scrollable" style="overflow-y:scroll;height:200px">
-                <div class="wrapper" ng-repeat="card in paymentData.existing_payments">
-                    <label class="active-item item-payment" ng-class="{primary: cancellationData.selectedCard == card.value}" ng-click="cancellationData.selectedCard = card.value"> <!-- Add class "primary" when card is selected -->
-                        <figure class="card-logo">
-                            <!-- <img src="{logo}" alt="" /> -->
-                        </figure>
-                        <span class="number">Ending with <span class="value number">{{card.ending_with}}</span></span>
-                        <span class="date">Date <span class="value date">{{card.expiry_date}}</span></span>
-                        <span class="name">Name <span class="value name">{{card.holder_name}}</span></span>
-                        <span class="primary" ng-show="cancellationData.selectedCard == card.value"><span class="value primary">Selected</span></span>
-                    </label>                    
-                    <!-- repeat ... -->
+            <div id="available-cards" class="cards-list scrollable" ng-iscroll="cardsList"  ng-iscroll-delay="500">
+                <div class="cards-list-container">
+                    <div class="wrapper" ng-repeat="card in paymentData.existing_payments">
+                        <label class="active-item item-payment" ng-class="{primary: cancellationData.selectedCard == card.value}" ng-click="cancellationData.selectedCard = card.value"> 
+                            <!-- Add class "primary" when card is selected --> 
+                            <figure class="card-logo">  
+                                <img ng-src="/assets/{{card.card_code}}.png" alt="" />  
+                            </figure>   
+                            <span class="number">Ending with <span class="value number">{{card.ending_with}}</span></span>  
+                            <span class="date">Date <span class="value date">{{card.expiry_date}}</span></span> 
+                            <span class="name">Name <span class="value name">{{card.holder_name}}</span></span> 
+                            <span class="primary" ng-show="cancellationData.selectedCard == card.value"><span class="value primary">Selected</span></span>  
+                        </label>                    
+                        <!-- repeat ... -->
+                    </div>
                 </div>
             </div>
             <div class="actions">
@@ -92,3 +96,4 @@
         </div>
     </fieldset>
 </form>
+</div>

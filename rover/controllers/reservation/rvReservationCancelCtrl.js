@@ -1,5 +1,5 @@
-sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv',
-	function($rootScope, $scope, $stateParams, RVPaymentSrv) {
+sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout',
+	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -8,12 +8,21 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			viewCardsList: false
 		}
 
+		$scope.setScroller('cardsList');
+
+		var refreshCardsList = function() {
+			$timeout(function() {
+				$scope.refreshScroller('cardsList');
+			}, 300)
+		}
+
 		var onFetchPaymentsSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.paymentData = data;
 			if ($scope.paymentData.existing_payments.length > 0) {
 				$scope.ngDialogData.cards = true;
 				$scope.cancellationData.viewCardsList = true;
+				refreshCardsList();
 			}
 			$scope.ngDialogData.state = 'PENALTY';
 		}
@@ -23,7 +32,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
 		}
 
-		$scope.cancelReservation = function(){
+		$scope.cancelReservation = function() {
 			console.log('cancel Reservation');
 		}
 
