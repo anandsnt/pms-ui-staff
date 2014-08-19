@@ -11,18 +11,25 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 		$scope.data = rvAvailabilitySrv.getData();
 
-		var scrollerOptions = {scrollX: true};
-  		$scope.setScroller('room_availability_scroller', scrollerOptions);
+		if(!isEmptyObject($scope.data)){
+			$scope.refreshScroller('room_availability_scroller');
+			$scope.hideMeBeforeFetching = true;			
+			$scope.$emit("hideLoader");
+		}
+
+		var scrollerOptions = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('room_availability_scroller', scrollerOptions);
 
 		$scope.$on('$includeContentLoaded', function(event){
 			$scope.$emit("hideLoader");
 			$scope.refreshScroller('room_availability_scroller');
 		});
 
-		$scope.$on("changedRoomAvailableData", function(event){
+		$scope.$on("changedRoomAvailableData", function(event){			
 			$scope.data = rvAvailabilitySrv.getData();
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
+			$scope.$emit("hideLoader");
 		});
 
 		

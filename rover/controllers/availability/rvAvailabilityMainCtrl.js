@@ -1,6 +1,6 @@
 sntRover.controller('rvAvailabilityMainController', [
-	'$scope', 
-	function($scope){
+	'$scope', 'rvAvailabilitySrv',
+	function($scope, rvAvailabilitySrv){
 
 		//variable to get/set value availabilty or house
 		$scope.availabilityToShow = 'room';
@@ -11,7 +11,9 @@ sntRover.controller('rvAvailabilityMainController', [
 		$scope.setAvailability = function(){
 			$scope.$emit("showLoader");
 			if($scope.availabilityToShow == 'room'){
-				$scope.availabilityToShow = 'house';
+				var emptyDict = {};
+				rvAvailabilitySrv.updateData (emptyDict);
+				$scope.availabilityToShow = 'house';				
 			}
 			else if($scope.availabilityToShow == 'house'){
 				$scope.availabilityToShow = 'room';
