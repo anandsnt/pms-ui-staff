@@ -1,4 +1,4 @@
-sntRover.controller('rvAvailabilityDatePickerController',['$scope', '$rootScope', 'ngDialog','$filter', function($scope, $rootScope, ngDialog,$filter){
+sntRover.controller('rvRoomAvailabilityDatePickerController',['$scope', '$rootScope', 'ngDialog','$filter', function($scope, $rootScope, ngDialog,$filter){
 
 
 	$scope.setUpCalendar = function(){
@@ -9,6 +9,7 @@ sntRover.controller('rvAvailabilityDatePickerController',['$scope', '$rootScope'
 	     yearRange: "-10:+10",
 	     
 	     onSelect: function(dateText, inst) {
+	     	$scope.changedAvailabilityDataParams();
 	        ngDialog.close();
 	      }
 
