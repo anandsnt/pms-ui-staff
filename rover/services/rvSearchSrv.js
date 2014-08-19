@@ -25,7 +25,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 		return deferred.promise;		
 	};
 
-	// update the room no. of cached data
+	// update the reservation details of cached data
 	this.updateRoomDetails = function(confirmation, data) {
 		if ( !self.data ) {
 			return;
@@ -34,7 +34,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 		// update room related details based on confirmation id
 		for (var i = 0, j = self.data.length; i < j; i++) {
 			if ( self.data[i]['confirmation'] === confirmation ) {
-				if ( data.room ) {
+
+				// special check since the ctrl could ask to set room number to null
+				if ( data.hasOwnProperty('room') ) {
 					self.data[i]['room'] = data.room;
 				}
 
@@ -65,11 +67,17 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 				if ( data['is_opted_late_checkout'] ) {
 					self.data[i]['is_opted_late_checkout'] = data['is_opted_late_checkout'];
 				}
-			};
+			}
+
+			// if not then check if this room number is assigned to any other reservation
+			// if so remove the room no from that reservation
+			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] ) {
+				self.data[i]['room'] = '';
+			}
 		};
 	};
 
-	// update the room no. of cached data
+	// update the guest details of cached data
 	this.updateGuestDetails = function(guestid, data) {
 		if ( !self.data ) {
 			return;
