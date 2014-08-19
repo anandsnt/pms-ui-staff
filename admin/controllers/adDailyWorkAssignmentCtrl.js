@@ -88,9 +88,12 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var callback = function() {
 				$scope.$emit('hideLoader');
 				$scope.taskType = data;
+				$scope.taskTypeClickedElement = -1;
 			};
 
 			var data = _.omit($scope.chosenItem, 'newItem');
+			data.is_system_defined = false;
+			data.activated = false;
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.addTaskType, data, callback);
 		};
 

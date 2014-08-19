@@ -54,7 +54,9 @@ admin.service('ADDailyWorkAssignmentSrv', [
     	    //     });
 
 			// temp, delete later
+            console.log( this.taskType );
 			this.taskType.push(item);
+            console.log( this.taskType );
 			deferred.resolve(this.taskType);
 			// temp, delete later
 
