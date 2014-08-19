@@ -503,7 +503,9 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// Success of complete checkout
 	this.fetchCompletedOfCompleteCheckout = function(data) {
-		that.showSuccessMessage(data.data, that.goToSearchScreen);
+		var checkoutSuccessModal = new CheckoutSuccessModal(that.goToSearchScreen);
+		checkoutSuccessModal.initialize();
+		checkoutSuccessModal.params = {"message": data.data};
 	};
 	// Failure of complete checkout
 	this.fetchFailedOfCompleteCheckout = function(errorMessage) {
