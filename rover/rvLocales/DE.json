@@ -1,4 +1,14 @@
 {    
+    
+    "STAY_CARD": "Stay Card",
+    "ROOM_STATUS": "Room Status",
+    "DASHBOARD": "Dashboard",
+    "REPORTS": "Reports",
+    "ROOM_RATES": "Room & Rates",
+    "CREATE_RESERVATION": "Create Reservation",
+    "ENHANCE_STAY": "Enhance Stay",
+    "SEARCH_RESULTS": "Search Results"
+,    
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",

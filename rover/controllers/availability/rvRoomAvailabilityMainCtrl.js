@@ -2,8 +2,9 @@ sntRover.controller('roomAvailabilityMainController', [
 	'$scope', 
 	'rvAvailabilitySrv',
 	'$rootScope',
-	'ngDialog', 
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog){
+	'ngDialog',
+	'$filter' ,
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter){
 	
 
 	BaseCtrl.call(this, $scope);
@@ -11,11 +12,13 @@ sntRover.controller('roomAvailabilityMainController', [
 	$scope.selectedView = 'grid';
 
 	$scope.setSelectedView = function(selectedView){
-		$scope.selectedView = selectedView;
+		$scope.$emit("showLoader");
+		$scope.selectedView = selectedView
+		$scope.$broadcast("changedRoomAvailableData");
 	};
 
 	$scope.loadSelectedView = function(){
-		if($scope.selectedView == 'grid'){
+		if($scope.selectedView == 'grid'){			
 			return '/assets/partials/availability/roomAvailabilityGridStatus.html';
 		}
 		else if($scope.selectedView == 'graph'){
@@ -43,7 +46,7 @@ sntRover.controller('roomAvailabilityMainController', [
 	$scope.clickedOnDatePicker = function() {
 		ngDialog.open({
 			template: '/assets/partials/common/rvDatePicker.html',
-			controller: 'rvAvailabilityDatePickerController',
+			controller: 'rvRoomAvailabilityDatePickerController',
 			className: 'ngdialog-theme-default calendar-single1',
 			scope: $scope,
 			closeByDocument: true
@@ -78,10 +81,10 @@ sntRover.controller('roomAvailabilityMainController', [
 		//calculating date after number of dates selected in the select box
 		var dateAfter = tzIndependentDate ($scope.data.selectedDate);
 
-		dateAfter.setDate (dateAfter.getDate() + $scope.numberOfDaysSelected);
+		dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected));
 		var dataForWebservice = {
-			'from_date': tzIndependentDate ($scope.data.selectedDate),
-			'to_date'  : "2014-08-30T00:00:00.000Z"
+			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
+			'to_date'  : $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
 		}
 		$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, dataForWebservice, successCallbackOfAvailabilityFetch, failureCallbackOfAvailabilityFetch);						
 	};	

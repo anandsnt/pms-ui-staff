@@ -30,7 +30,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.finalRoomType = $scope.roomTypeForCalendar = $scope.reservationData.rooms[0].roomTypeId;
 			//Stay nights in calendar
 			$scope.nights = getNumOfStayNights();
-
+			that.renderFullCalendar();
 			fetchAvailabilityDetails();
 
 		};
@@ -43,8 +43,11 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				$scope.availabilityDetails = data;
 				$scope.fetchedStartDate = tzIndependentDate(fromDate);
 				$scope.fetchedEndDate = tzIndependentDate(toDate);
+				
+				//Refresh the calendar with the arrival, departure dates
+				$scope.refreshCalendarEvents();
 				//Display Calendar
-				that.renderFullCalendar();
+				//that.renderFullCalendar();
 			};
 
 			//From date is the 22nd of the previous month of arrival date
@@ -57,7 +60,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 				fromDate = $rootScope.businessDate;
 			}
 
-			//console.log(new Date(fromDate));
 			//We can see two calendars in a row. The 2nd calendar can display 
 			//max 13(6+7) days(the calendar has 6 rows) of its coming month
 			toDate = $scope.checkinDateInCalender.clone();
@@ -269,8 +271,7 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 			$scope.rightCalendarOptions.month = $scope.leftCalendarOptions.month + 1;
 
 			$scope.disablePrevButton = $scope.isPrevButtonDisabled();
-			//Refresh the calendar with the arrival, departure dates
-			$scope.refreshCalendarEvents();
+
 			$scope.refreshScroller('stay-dates-calendar');
 		}
 
@@ -549,7 +550,12 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 		};
 		//Click handler for cancel button in calendar screen
 		$scope.handleCancelAction = function() {
-			$state.go($stateParams.fromState, {});
+			if($stateParams.fromState == 'STAY_CARD'){
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", 
+					{"id" : $scope.reservationData.reservationId, "confirmationId": $scope.reservationData.confirmNum, "isrefresh": true});
+			} else{
+				$state.go($stateParams.fromState, {});
+			}
 		};
 
 		/**

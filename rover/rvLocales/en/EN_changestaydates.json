@@ -10,7 +10,7 @@
 	"RESET_DATES": "Reset dates",
 	"PLEASE_SELECT_ANOTHER_ROOM" : "Please select another room or",
 	"PLEASE_SEE_FRONT_DESK" : "Please see Front Desk.",
-	"CANCEL_RESER_DATES" : "Cancel (reset dates)",
+	"CANCEL_RESET_DATES" : "Cancel (reset dates)",
 	"CONFIRM_UPDATES" : "Confirm updates",
 	"RESERVATION_UPDATES" : "Reservation updates",
 	"CAHNGE_STAY_DATE_TO_SEE_ROOM_AND_RATE_CHANGES" : "Change stay dates to see room and rate changes.",
@@ -19,7 +19,7 @@
 	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
 	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
 	"OF": "of",
-	"APPLIES_TO_RESERVATION": "applies to this reservation",
+	"APPLIES_TO_RESERVATION": "applies to this reservation/date",
 	"NO": "No",
 	"ROOM": "Room",
 	"NOT_AVAILABLE_FOR_DATE_RANGE": "not available for selected dates",
@@ -30,7 +30,12 @@
 	"NO_ROOMS_AVAILABLE_FOR_ROOM_TYPE": "There are no rooms available for the booked room type. Change room type or rate to extend the stay",
 	"MULTIPLE_RATES_EXISTS": "Multiple rates exist on reservation, select rate to extend the reservation",
 	"FIND_ROOMS_AND_RATE_BUTTON_TEXT": "Find rooms &amp; rate",
-	"CONTINUE": "continue"
+	"CONTINUE": "continue",
+	"RESTRICTIONS": "Restrictions",
+	"RESTRICTION": "Restriction",
+	"CANCEL": "cancel"
+
+
 
 
 	
