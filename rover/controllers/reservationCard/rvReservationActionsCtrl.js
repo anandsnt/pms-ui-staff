@@ -192,7 +192,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		var cancelReservation = function(penalty) {
+		var promptCancel = function(penalty) {
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -216,25 +216,31 @@ sntRover.controller('reservationActionsController', [
 			var checkCancellationPolicy = function() {
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');
-					var cancellationCharge = 60;
-					if (data == null) {
-						cancelReservation(cancellationCharge);
-					} else {
-
+					var cancellationCharge = 0.0;
+					if (data != null) {
 						/**
-						 * TODO: Take the new API definitions into consideration
+						 * TODO : Calculate the penalty amount here
+						 * New API to return an array of cancellation policies
 						 */
-
-						var inPenaltyTime = false;
-
-						if (inPenaltyTime) {
-							/**
-							 * TODO : Calculate the penalty amount here
-							 */
-							cancellationCharge = 60;
-						}
-						cancelReservation(cancellationCharge);
+						var cancellationPolicies = [];
+						cancellationPolicies.push(data);
+						// The above two lines are used to emulate an array which would be the API response
+						angular.forEach(cancellationPolicies, function(policy) {
+							if (policy.amount_type == "amount") {
+								cancellationCharge += parseFloat(policy.amount);
+							} else if (policy.amount_type == "percent") {
+								var multiplicity = 1; // DEFAULT TO PER_STAY
+								if (policy.post_type_id == 2) {
+									multiplicity = $scope.reservationData.reservation_card.total_nights;
+								}
+								cancellationCharge += parseFloat(multiplicity * parseFloat(policy.amount / 100) * parseFloat($scope.reservationData.reservation_card.total_rate));
+							} else if (policy.amount_type == "day"){
+								cancellationCharge += parseFloat(policy.amount) * $scope.reservationData.reservation_card.total_nights;
+							}
+						});
 					}
+					promptCancel(cancellationCharge);
+
 				}
 				var onCancellationDetailsFetchFailure = function(error) {
 					$scope.$emit('hideLoader');

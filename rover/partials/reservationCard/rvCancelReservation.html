@@ -10,7 +10,7 @@
     <!-- 1. Cancel Options screen -->
     <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
         <span class="h2 message" ng-show="ngDialogData.penalty > 0">Outside of the cancellation period</span>
-        <span class="text" ng-show="ngDialogData.penalty > 0">This incurs a {{currencySymbol}}{{ngDialogData.penalty}} penalty charge.</span>
+        <span class="text" ng-show="ngDialogData.penalty > 0">This incurs a {{currencySymbol}}{{ngDialogData.penalty | number:2}} penalty charge.</span>
 
         <div class="entry full-width">
             <label for="cancel-reason">Cancelation reason(<span>optional</span>)</label>
@@ -31,7 +31,7 @@
     <fieldset id="apply-penalty" class="credit-card" ng-if="ngDialogData.state == 'PENALTY'">
         <strong class="h2 message" ng-show="ngDialogData.cards">Select or Add Credit Card</strong>
         <strong class="h2 message" ng-hide="ngDialogData.cards">Add Credit Card</strong>
-        <span class="text">Card will be charged with a {{currencySymbol}}{{ngDialogData.penalty}} penalty.</span>
+        <span class="text">Card will be charged with a {{currencySymbol}}{{ngDialogData.penalty | number:2}} penalty.</span>
 
         <ul id="card-options" class="modal-options" ng-show="ngDialogData.cards">
             <li ng-class="{active:cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = true">Existing Cards</li>

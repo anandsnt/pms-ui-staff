@@ -34,6 +34,11 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 
 		$scope.cancelReservation = function() {
 			console.log('cancel Reservation');
+			/**
+			 * TODO: Make API calls to cancel the reservation
+			 */
+			console.log("Implementation of cancellation without penalty is pending!....");
+			$scope.closeDialog();
 		}
 
 		$scope.chargePenalty = function() {
@@ -43,6 +48,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			 * 			3.	Handle cancellation failure
 			 */
 			console.log("Implementation of chargePenalty is pending!....");
+			$scope.closeDialog();
 		}
 
 
