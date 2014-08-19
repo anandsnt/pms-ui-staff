@@ -27,9 +27,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		fromState: 'rover.housekeeping.roomDetails',
 		toState  : 'rover.housekeeping.roomStatus'
 	}, {
-		fromState: 'rover.reservation.staycard.reservationcard.reservationdetails',
-		toState  : 'rover.search'
-	}, {
 		fromState: 'rover.reservation.staycard.billcard',
 		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}, {
