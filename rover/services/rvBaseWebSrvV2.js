@@ -41,7 +41,8 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
 	    	deferred.resolve(response)
 		}).error(function(errors, status) {
 			console.log(status);
-			
+			var urlStart = url.split('?')[0];
+			console.log(urlStart)
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if(status == 406){ // 406- Network error
