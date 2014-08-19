@@ -26,8 +26,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.calculatedWidth = 0;
 	$scope.isRefreshOnBackToStaycard = false;
-
+	$scope.paymentModalOpened = false;
 	$scope.showPayButton = false;
+	$scope.paymentModalSwipeHappened = false;
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
 	}
@@ -127,6 +128,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showSignedSignature = false;
 	$scope.showBillingInfo = false;
 	$scope.showIncomingBillingInfo = false;
+	
 	 width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
      if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
     	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
@@ -386,16 +388,32 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){
-	 		$scope.fromViewToPaymentPopup = "billcard";
-	 		$scope.addNewPaymentModal(data);
+	 		if($scope.paymentModalOpened){
+	 			$scope.paymentModalSwipeHappened = true;
+	 			$scope.$broadcast('PAYMENTSWIPEHAPPENED', data);
+	 		} else {
+	 			$scope.fromViewToPaymentPopup = "billcard";
+	 			$scope.addNewPaymentModal(data);
+	 		}
+	 		
 	 	}
 	 });
 	 /*
 	  * Clicked pay button function
 	  */
 	 $scope.clickedPayButton = function(){
-	 	$scope.fromViewToPaymentPopup = "paybutton";
-	 	$scope.addNewPaymentModal();
+	 	// $scope.fromViewToPaymentPopup = "paybutton";
+	 	// $scope.addNewPaymentModal();
+	 	$scope.paymentModalOpened = true;
+	 	
+	 	 ngDialog.open({
+              template: '/assets/partials/pay/rvPaymentModal.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'RVBillPayCtrl',
+              closeByDocument: false,
+              scope: $scope
+          });
+	 	
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
@@ -866,5 +884,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
-	 });	
+	 });
+	 
+	 $scope.$on('PAYMENT_SUCCESS', function(event) {
+		
+		$scope.isRefreshOnBackToStaycard = true;
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	}); 
+	//To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
+	$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+		$scope.paymentModalOpened = false;
+	});
+		
 }]);

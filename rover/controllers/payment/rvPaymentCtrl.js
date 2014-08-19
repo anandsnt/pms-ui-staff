@@ -33,15 +33,15 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.isFromGuestCard = true;
 	}
 	
-	var scrollerOptions = {click: true, preventDefault: false, preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }};
-	$scope.setScroller('addPayment', scrollerOptions);
-	//$scope.refreshScroll();
-
-	$scope.refreshScroll = function(){
-		setTimeout(function() {
-			$scope.refreshScroller('addPayment');
-		}, 500);
-	};
+	// var scrollerOptions = {click: true, preventDefault: false, preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }};
+	// $scope.setScroller('addPayment', scrollerOptions);
+	// //$scope.refreshScroll();
+// 
+	// $scope.refreshScroll = function(){
+		// setTimeout(function() {
+			// $scope.refreshScroller('addPayment');
+		// }, 500);
+	// };
 
 	
 	/*
@@ -124,7 +124,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.is_from_bill = true;
 				$scope.saveData.id = $scope.paymentData.bills[billIndex].credit_card_details.payment_id;
 			}
-			$scope.refreshScroll();
+			// $scope.refreshScroll();
 		}
 	};
 	
@@ -147,9 +147,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.id = "";
 			}
 		}
-		setTimeout(function(){
-			$scope.refreshScroller('addPayment');
-		}, 1000);
+		// setTimeout(function(){
+			// $scope.refreshScroller('addPayment');
+		// }, 1000);
 		
 	};
 	/*
@@ -392,9 +392,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.saveData.is_from_guest_card = true;
 		$scope.saveData.is_from_bill = false;
 		$scope.saveData.id = $scope.guestPaymentList[index].id;
-		setTimeout(function(){
-			$scope.refreshScroller('addPayment');
-		}, 1000);
+		// setTimeout(function(){
+			// $scope.refreshScroller('addPayment');
+		// }, 1000);
    };
    
 }]);
