@@ -3,17 +3,21 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', '$state', '$statePara
 	function($scope, $state, $stateParams) {
 		BaseCtrl.call(this, $scope);
 		
-		// $scope.setScroller('companyCardDetailsContactCtrl');
+		$scope.setScroller('companyCardArAccountCtrl');
 
-		// $scope.$on("contactTabActive", function() {
-		// 	setTimeout(function() {
-		// 		refreshScroller();
-		// 	}, 500);
-		// });
+		$scope.$on("arAccountTabActive", function() {
+			setTimeout(function() {
+				refreshScroller();
+			}, 500);
+		});
 
-		// var refreshScroller = function() {
-		// 	$scope.refreshScroller('companyCardDetailsContactCtrl');
-		// };
+		var refreshScroller = function() {
+			$scope.refreshScroller('companyCardArAccountCtrl');
+		};
+
+
+		$scope.useMainContact = true;
+		$scope.useMainAdrress = true;
 
 	}
 ]);

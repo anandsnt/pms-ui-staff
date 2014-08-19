@@ -278,7 +278,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	$scope.showArAccountButtonClick = function(){
 		$scope.showArAccountTab = true;
 		$scope.currentSelectedTab == 'cc-ar-accounts';
-	//	$scope.currentSelectedTab
 	};
 	
 	/*-------AR account ends here-----------*/
