@@ -53,8 +53,8 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 	
 	this.sendEmail = function(data){
 		var deferred = $q.defer();
-		var url = '/api/bills/email_bill.json';
-			RVBaseWebSrv.postJSON(url, data).then(function(data) {
+		var url = 'api/reservations/email_guest_bill.json';
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);

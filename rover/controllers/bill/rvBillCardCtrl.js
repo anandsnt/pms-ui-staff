@@ -895,6 +895,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 		var sendEmailSuccessCallback = function(successData){
 			$scope.$emit('hideLoader');
+			$scope.errorMessage = "";
 		};
 		var sendEmailFailureCallback = function(errorData){
 			$scope.$emit('hideLoader');
