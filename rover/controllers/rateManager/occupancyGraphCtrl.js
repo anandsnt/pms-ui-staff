@@ -36,7 +36,7 @@ function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog) {
 					shared : true,
 					formatter : function() {
 						if ($scope.seriesActualVisible && $scope.seriesTargetVisible) {
-							return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%</b>' + '<br/>TARGET <b>' + (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '%</b>';
+							return 'ACTUAL <b>' + (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '%</b>' + '<br/>TARGET <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%</b>';
 						}
 						if ($scope.seriesActualVisible) {
 							return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%';
