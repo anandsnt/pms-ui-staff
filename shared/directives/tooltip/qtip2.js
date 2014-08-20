@@ -1,5 +1,5 @@
 angular.module('qtip2', [])
-  .directive('qtip', function($compile) {
+  .directive('qtip', function($compile, $filter) {
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
@@ -8,7 +8,7 @@ angular.module('qtip2', [])
           qtipClass = attrs.class || 'qtip-tipsy',
           content,
           htmlString,
-          category
+          category // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
 
         // tooltipText = $compile($('#invoiceTooltipTemplate').html())(scope);
         if (attrs.title) {
@@ -33,7 +33,9 @@ angular.module('qtip2', [])
                     case 'dateRange':
                       htmlString = "<ul>";
                       angular.forEach(resultSet, function(result, index) {
-                        htmlString += "<li>" + result.begin_date + " to " + result.end_date + "</li>";
+                        var beginDate = $filter('date')(result.begin_date, "MMM dd, yyyy");
+                        var endDate = $filter('date')(result.begin_date, "MMM dd, yyyy");
+                        htmlString += "<li>" + beginDate + " to " + endDate + "</li>";
                       });
                       htmlString += "</ul>";
                       break;
@@ -41,12 +43,11 @@ angular.module('qtip2', [])
                       htmlString = "<ul>";
                       content.title = resultSet.total_count + " " + content.title;
                       angular.forEach(resultSet.results, function(result, index) {
-                        htmlString += "<li ng-click=editRatesClicked(" + result.id + ","+ index + ")>" + result.name + "</li>";
+                        htmlString += "<li ng-click=editRatesClicked(" + result.id + "," + index + ")>" + result.name + "</li>";
                       });
                       htmlString += "</ul>";
                       break;
                   }
-                  console.log(resultSet);
                   // Set the tooltip content upon successful retrieval
                   api.set('content.title', content.title);
                   api.set('content.text', $compile(htmlString)(scope));

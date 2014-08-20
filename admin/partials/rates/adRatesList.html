@@ -59,8 +59,11 @@
 						</span>
 					</td>
 					<td data-title="'Date Ranges'" header-class="width-15" class = "center_align" ng-hide="currentClickedElement == $index">
-						<span qtip title="{{rate.name}} - RATE DATE RANGES" category='dateRange' url='/api/rates/{{rate.id}}/rate_date_ranges'>
-						{{rate.date_range_count}}
+						<span ng-show="rate.date_range_count > 0" qtip title="{{rate.name}} - RATE DATE RANGES" category='dateRange' url='/api/rates/{{rate.id}}/rate_date_ranges'>
+							{{rate.date_range_count}}
+						</span>
+						<span ng-show="rate.date_range_count == 0">
+							{{rate.date_range_count}}
 						</span>
 					</td>
 					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
