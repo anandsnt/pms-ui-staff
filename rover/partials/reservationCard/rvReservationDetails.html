@@ -116,32 +116,34 @@
 			</div>  
 		</div>
 
+		<!-- Guest details -->
+		<ul class="reservation-guests" ng-show="shouldShowGuestDetails">
+			<!-- Add new guest set as hidden -->
+			<li>
+				<a class="hidden open-modal add-new-button">+ New Guest</a>
+			</li>
+			<li>
+				<span class="guest-icon">0-3</span>
+				<span class="label">Infants</span>
+				{{$parent.reservationData.rooms[0].numInfants}} 
+			</li>
+			<li>
+				<span class="guest-icon">3-18</span>
+				<span class="label">Children</span>
+				{{$parent.reservationData.rooms[0].numChildren}} 
+			</li>
+			<li>
+				<span class="guest-icon">18+</span>
+				<span class="label">Adults</span>
+				{{$parent.reservationData.rooms[0].numAdults}} 
+			</li>
+			<li>
+				<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
+			</li>
+		</ul>
+
 	</div>
-	<!-- Guest details -->
-	<ul class="reservation-guests" ng-show="shouldShowGuestDetails">
-		<!-- Add new guest set as hidden -->
-		<li>
-			<a class="hidden open-modal add-new-button">+ New Guest</a>
-		</li>
-		<li>
-			<span class="guest-icon">0-3</span>
-			<span class="label">Infants</span>
-			{{$parent.reservationData.rooms[0].numInfants}} 
-		</li>
-		<li>
-			<span class="guest-icon">3-18</span>
-			<span class="label">Children</span>
-			{{$parent.reservationData.rooms[0].numChildren}} 
-		</li>
-		<li>
-			<span class="guest-icon">18+</span>
-			<span class="label">Adults</span>
-			{{$parent.reservationData.rooms[0].numAdults}} 
-		</li>
-		<li>
-			<span ng-if="$parent.reservationData.rooms[0].varyingOccupancy" translate>VAR_OCCUPANCY</span>
-		</li>
-	</ul>
+	
 
 	<div class="reservation-content scrollable check-in"  >
 		<div id="resultDetails" ng-iscroll='resultDetails' ng-iscroll-delay='50' style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
