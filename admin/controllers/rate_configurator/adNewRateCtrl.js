@@ -265,13 +265,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         var getActiveDateRange = function(){
             var beginDate = '';
             var endDate = '';
-            var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
+            var hotelBusinessDate = new tzIndependentDate($scope.hotel_business_date).getTime();
             var keepGoing = true;
             var activeDateRange = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length-1].id;
             angular.forEach($scope.rateData.date_ranges, function(dateRange, index){
                 if(keepGoing) {
-                    beginDate = new Date(dateRange.begin_date).getTime();
-                    endDate = new Date(dateRange.end_date).getTime();
+                    beginDate = new tzIndependentDate(dateRange.begin_date).getTime();
+                    endDate = new tzIndependentDate(dateRange.end_date).getTime();
                     if (beginDate <= hotelBusinessDate && hotelBusinessDate <= endDate){
                         activeDateRange = "dateRange." + dateRange.id;
                         keepGoing = false;

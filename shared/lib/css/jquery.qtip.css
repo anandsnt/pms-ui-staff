@@ -222,7 +222,7 @@
 .qtip-snt{
 	margin: 0px 0px;
 	background: #f5f5f5;
-	color: #000;
+	color: #ccc;
 	border: 0 solid transparent;
 	font-size: 14px;
     text-align:left;
@@ -254,7 +254,12 @@
 		text-shadow: none;
 	}
 
-	.qtip-snt li:hover{
+	.qtip-snt li.active{
+		cursor:pointer;
+		color:#000;
+	}
+
+	.qtip-snt li.active:hover{
 		cursor:pointer;
 		color:#F6991B;
 	}
