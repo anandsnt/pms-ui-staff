@@ -6,7 +6,19 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		BaseCtrl.call(this, $scope);
 
 
-  		$scope.hideMeBeforeFetching = false;	
+  		$scope.hideMeBeforeFetching = true;	
+
+  		$scope.availabilityGraphCongif = {
+			chart: 	{
+						type: 'area'
+					},
+			 xAxis: { 
+			 			categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                					'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                	}
+
+  		};
+
 
 	}
 ]);
