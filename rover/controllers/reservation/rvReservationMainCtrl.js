@@ -637,17 +637,25 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             /** CICO-6135
              *   TODO : Change the hard coded values to take the ones coming from the reservation_details API call
              */
-
-            $scope.reservationData.checkinTime = {
-                hh: '05',
-                mm: '00',
-                ampm: 'AM'
+            //  reservationDetails.reservation_card.departureDate ! = null
+            if (reservationDetails.reservation_card.arrival_time) {
+                var timeParts = reservationDetails.reservation_card.arrival_time.trim().split(" ");
+                var hourMinutes = timeParts[0].split(":");                
+                $scope.reservationData.checkinTime = {
+                    hh: hourMinutes[0].length == 1 ? "0"+ hourMinutes[0] : hourMinutes[0],
+                    mm: hourMinutes[1].length == 1 ? "0"+ hourMinutes[1] : hourMinutes[1],
+                    ampm: timeParts[1]
+                }
             }
-
-            $scope.reservationData.checkoutTime = {
-                hh: '06',
-                mm: '00',
-                ampm: 'PM'
+            //  reservationDetails.reservation_card.departureDate ! = null   
+            if (reservationDetails.reservation_card.departure_time) {
+                var timeParts = reservationDetails.reservation_card.departure_time.trim().split(" ");
+                var hourMinutes = timeParts[0].split(":");    
+                $scope.reservationData.checkoutTime = {
+                    hh: hourMinutes[0].length == 1 ? "0"+ hourMinutes[0] : hourMinutes[0],
+                    mm: hourMinutes[1].length == 1 ? "0"+ hourMinutes[1] : hourMinutes[1],
+                    ampm: timeParts[1]
+                }
             }
 
             // cards

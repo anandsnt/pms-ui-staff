@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv) {
 
 		// setup a back button
 		$rootScope.setPrevState = {
@@ -214,8 +214,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.openPaymentList = function() {
 			//Disable the feature when the reservation is checked out
-            if(!$scope.isNewsPaperPreferenceAvailable())
-                return;
+			if (!$scope.isNewsPaperPreferenceAvailable())
+				return;
 			$scope.reservationData.currentView = "stayCard";
 			$scope.$emit('SHOWPAYMENTLIST', $scope.reservationData);
 		};
@@ -248,7 +248,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			var status = $scope.reservationData.reservation_card.reservation_status;
 			return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN" || status == "RESERVED";
 		};
-		
+
 		$scope.saveNewsPaperPreference = function() {
 			var params = {};
 			params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
@@ -264,7 +264,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				scope: $scope
 			});
 		};
-		$scope.deleteModal = function(){
+		$scope.deleteModal = function() {
 			ngDialog.close();
 		};
 
@@ -273,7 +273,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.showFeatureNotAvailableMessage();
 				return;
 			}
-			
+
 			$scope.wakeupData = $scope.reservationData.reservation_card.wake_up_time;
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
@@ -283,13 +283,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
-		$scope.isNightsEnabled = function(){
+		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-			if(reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN') {
 				return true;
 			}
-			if($rootScope.isStandAlone && 
-				(reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT')){
+			if ($rootScope.isStandAlone &&
+				(reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT')) {
 				return true;
 			}
 			return false;
@@ -319,8 +319,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
 			});
 		};
-		
-		
-	 
+
+		$scope.modifyCheckinCheckoutTime = function() {
+			var updateSuccess = function(data) {
+				$scope.$emit('hideLoader');
+			}
+			var updateFailure = function(data) {
+				$scope.$emit('hideLoader');
+			}
+			if ($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkoutTime.hh != '') {
+				var postData = $scope.computeReservationDataforUpdate();
+				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+			}
+		}
 	}
+
 ]);

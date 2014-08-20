@@ -9,13 +9,6 @@ sntRover.controller('reservationActionsController', [
 	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.displayTime = function(status) {
-			var display = false;
-			if (status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
-				display = true;
-			}
-			return display;
-		};
 		$scope.displayBalance = function(status) {
 			var display = false;
 			if (status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
@@ -49,24 +42,6 @@ sntRover.controller('reservationActionsController', [
 			}
 			return display;
 		};
-
-		$scope.displayArrivalTime = function(status) {
-			var display = false;
-			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT') {
-				display = true;
-			}
-			return display;
-		};
-
-		$scope.getTimeColor = function(time) {
-			var timeColor = "";
-			if (time != null) {
-				timeColor = "time";
-			}
-			return timeColor;
-		};
-
-
 
 		$scope.openPostCharge = function() {
 
@@ -192,23 +167,6 @@ sntRover.controller('reservationActionsController', [
 			};
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
-
-		$scope.modifyCheckinCheckoutTime = function() {
-
-			var updateSuccess = function(data) {
-				$scope.$emit('hideLoader');
-			}
-
-
-			var updateFailure = function(data) {
-				$scope.$emit('hideLoader');
-			}
-			if ($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkoutTime.hh != '') {
-				var postData = $scope.computeReservationDataforUpdate();
-				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
-			}
-		}
-
 
 		$scope.openSmartBands = function() {
 			ngDialog.open({

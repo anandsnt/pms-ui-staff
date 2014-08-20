@@ -1,8 +1,23 @@
 <div ng-show="reservationDisplayStatus" role="tabpanel" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true" ng-click="clearErrorMessage()">
 	<!-- Reservation header -->
-	<div class="reservation-header">
+	<div class="reservation-header" style="height:400px">
+		<div class="data">
+			<span class="date"><span class="guest-status small-icon check-in">check-in</span>{{reservationData.reservation_card.arrival_date}} </span>
+			<span class="date"><span class="guest-status small-icon check-out">check-out</span>{{reservationData.reservation_card.departure_date}} </span>
+		</div>
 		<div class="actions">
-			<a class="button has-arrow toggle" ng-class="{'active': shouldShowGuestDetails}" ng-click="toggleGuests()"> <span class="label" >Guests</span> {{reservationData.reservation_card.guests_total}} </a>
+			<a href="{link}" class="button times check-in toggle"><span class="icons time check-in">Checking In</span>{{reservationData.reservation_card.arrival_time}}</a>
+			<!--
+			//If in house, departing or departed (add class 'not-set' to the '.button' if not set):
+			<a href="{link}" class="button times check-out toggle"><span class="icons time check-out">Checking Out</span>{check out time or 'Not set'}</a>
+			// If late check out:
+			<a href="{link}" class="button times late-check-out toggle"><span class="icons time late-check-out">Late Check Out</span>{late check out time}</a>
+			-->
+
+			<a class="button has-arrow toggle" ng-class="{'active': shouldShowGuestDetails}" ng-click="toggleGuests()"> 
+				<span class="label" >Guests</span> 
+				{{reservationData.reservation_card.guests_total}} 
+			</a>
 			<!-- nights button is clickable only for the below status -->
 			<a class="button has-arrow next-view" ng-show="isNightsEnabled()" ng-click="extendNights()">
   				<span class="label">
@@ -16,13 +31,86 @@
   				</span>
   				{{reservationData.reservation_card.total_nights}}
 			</div>
-
 			<!-- Show only a label for displaying nights -->
 		</div>
-		<div class="data">
-			<span class="date"><span class="guest-status small-icon check-in">check-in</span>{{reservationData.reservation_card.arrival_date}} </span>
-			<span class="date"><span class="guest-status small-icon check-out">check-out</span>{{reservationData.reservation_card.departure_date}} </span>
+
+		 <!-- Arrival / Departure -->
+		<div id="reservation-1066595-times" class="reservation-times"> <!-- Add class 'late-check-out' if it's a late check out reservation -->
+			<!-- Arrival time -->
+			<div class="check-data icons icon-time time-in"> <!-- Add class 'locked' if time is not editable -->
+			    <label for="check-in-hour" class="label">Arrival</label>
+			    <div class="select hour">
+			        <select id="check-in-hour" name="check-in" ng-model="reservationParentData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()"> <!-- Add attribute 'disabled' if time is not editable -->
+			            <option value="">HH</option> <!-- Selected if time not set -->
+			            <option value="01">01</option>
+			            <option value="02">02</option>
+			            <option value="03">03</option>
+			            <option value="04">04</option>
+			            <option value="05">05</option>
+			            <option value="06">06</option>
+			            <option value="07">07</option>
+			            <option value="08">08</option>
+			            <option value="09">09</option>
+			            <option value="10">10</option>
+			            <option value="11">11</option>
+			            <option value="12">12</option>
+			        </select>
+			    </div>
+			    <div class="select minutes">
+			        <select id="check-in-minutes" name="check-in" ng-model="reservationParentData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()"> <!-- Add attribute 'disabled' if time is not editable -->
+			            <option value="">MM</option> <!-- Selected if time not set -->
+			            <option value="00">00</option>
+			            <option value="15">15</option>
+			            <option value="30">30</option>
+			            <option value="45">45</option>
+			        </select>
+			    </div>
+			    <div class="select ampm">
+			        <select id="check-in-ampm" name="check-in" ng-model="reservationParentData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()">
+			            <option value="AM" selected>AM</option>
+			            <option value="PM">PM</option>
+			        </select>
+			    </div>
+			</div>
+			
+			<!-- Departure time  -->
+			<div class="check-data icons icon-time time-out"> <!-- Add class 'locked' if time is not editable -->
+			    <label for="check-out-hour" class="label">Departure</label>
+			    <div class="select hour">
+			        <select id="check-out-hour" name="check-out" ng-model="reservationParentData.checkoutTime.hh" ng-change="modifyCheckinCheckoutTime()"> <!-- Add attribute 'disabled' if time is not editable -->
+			            <option value="">HH</option> <!-- Selected if time not set -->
+			            <option value="01">01</option>
+			            <option value="02">02</option>
+			            <option value="03">03</option>
+			            <option value="04">04</option>
+			            <option value="05">05</option>
+			            <option value="06">06</option>
+			            <option value="07">07</option>
+			            <option value="08">08</option>
+			            <option value="09">09</option>
+			            <option value="10">10</option>
+			            <option value="11">11</option>
+			            <option value="12">12</option>
+			        </select>
+			    </div>
+			    <div class="select minutes">
+			        <select id="check-out-minutes" name="check-out" ng-model="reservationParentData.checkoutTime.mm" ng-change="modifyCheckinCheckoutTime()"> <!-- Add attribute 'disabled' if time is not editable -->
+			            <option value="">MM</option> <!-- Selected if time not set -->
+			            <option value="00">00</option> 
+			            <option value="15">15</option>
+			            <option value="30">30</option>
+			            <option value="45">45</option>
+			        </select>
+			    </div>
+			    <div class="select ampm">
+			        <select id="check-out-ampm" name="check-out" ng-model="reservationParentData.checkoutTime.ampm" ng-change="modifyCheckinCheckoutTime()">
+			            <option value="AM">AM</option>
+			            <option value="PM" selected>PM</option>
+			        </select>
+			    </div>
+			</div>  
 		</div>
+
 	</div>
 	<!-- Guest details -->
 	<ul class="reservation-guests" ng-show="shouldShowGuestDetails">
