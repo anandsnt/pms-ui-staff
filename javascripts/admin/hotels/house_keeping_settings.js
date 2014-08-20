@@ -62,6 +62,7 @@ var HouseKeepingSettingsView = function(domRef) {
 		var is_inspected_on = that.myDom.find("#div-use-inspected").hasClass("on");
 		var is_inspected_only_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
 		var is_queue_rooms_on = that.myDom.find("#div-queue-rooms-on").hasClass("on");
+		var enable_room_status_at_checkout = that.myDom.find("#enable-room-status-at-checkout").is(":checked");
 		if (is_queue_rooms_on){
 			that.is_queue_rooms_on = "true";
 		}
@@ -82,6 +83,7 @@ var HouseKeepingSettingsView = function(domRef) {
 		postParams.use_inspected = that.use_inspected;
 		postParams.checkin_inspected_only = that.checkin_inspected_only;
 		postParams.is_queue_rooms_on = that.is_queue_rooms_on;
+		postParams.enable_room_status_at_checkout = enable_room_status_at_checkout;
 		var url = '/admin/house_keeping_settings.json';
 		var webservice = new WebServiceInterface();
 		var options = {
