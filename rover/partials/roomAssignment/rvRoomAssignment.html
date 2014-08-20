@@ -1,4 +1,4 @@
-<section role="complementary" id="room-assignment" class="content stay-card-inner check-in">
+<section role="complementary" id="room-assignment" class="content stay-card-inner" ng-class="{'check-in': reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'CHECKEDIN'])!=-1}">
 	<!-- Room assignment header -->
 	<input type="hidden" value="" id="roomassignment-ref-id">
 	<!-- Room assignment header -->
@@ -6,7 +6,7 @@
 		<!-- Other header details -->
 		<div class="data">
 			<span class="room"> <span class="guest-status room">room</span> 
-			<strong id="header-room-num" ng-class="getRoomStatusClass()" class="room-number"> {{reservationData.reservation_card.room_number}} </strong>
+			<strong ng-if="reservationData.reservation_card.room_number" id="header-room-num" ng-class="getRoomStatusClass()" class="room-number" > {{reservationData.reservation_card.room_number}} </strong>
 			<span id="room-type" data-room-type="DLK"> {{reservationData.reservation_card.room_type_description}} </span> </span>
 			<span class="nights"> <span class="guest-status nights"></span> {{reservationData.reservation_card.total_nights + " " + setNightsText()}}
 				 </span>
@@ -17,9 +17,8 @@
 	</div>
 	<div class="wrapper">
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<button class="button" ng-show="true" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
 		<!-- Room assignment content -->
-		<div class="room-assignment-content">
+		<div class="room-assignment-content" ng-class="{'has-room': !!reservationData.reservation_card.room_number}">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
@@ -66,6 +65,7 @@
 			</div>
 
 		</div>
+		<button id="unassign-room" class="button red" ng-show="reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && !!reservationData.reservation_card.room_number" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
 	</div>
 
 </section>
