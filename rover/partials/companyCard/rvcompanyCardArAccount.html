@@ -13,19 +13,19 @@
 
             <div class="entry radio-check" ng-click="refreshScroller()">
                 <label for="opt-in" translate>USE_MAIN_ADDRESS</label>
-                <label class="checkbox"ng-class="{'checked': useMainAdrress}"><span class="icon-form icon-checkbox" ng-class="{'checked': useMainAdrress}"></span>
-                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="useMainAdrress">
+                <label class="checkbox"ng-class="{'checked': arAccountDetails.is_use_main_address}"><span class="icon-form icon-checkbox" ng-class="{'checked': arAccountDetails.is_use_main_address}"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="arAccountDetails.is_use_main_address">
                     <span class="guest_card_promotions" translate>USE_MAIN_ADDRESS </span> </label>
             </div>
 
             <div class="entry radio-check" ng-click="refreshScroller()">
                 <label for="opt-in" translate>USE_MAIN_CONTACT</label>
-                <label class="checkbox"ng-class="{'checked': useMainContact}"><span class="icon-form icon-checkbox" ng-class="{'checked': useMainContact}"></span>
-                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="useMainContact">
+                <label class="checkbox"ng-class="{'checked': arAccountDetails.is_use_main_contact}"><span class="icon-form icon-checkbox" ng-class="{'checked': arAccountDetails.is_use_main_contact}"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="arAccountDetails.is_use_main_contact">
                     <span class="guest_card_promotions" translate>USE_MAIN_CONTACT </span> </label>
             </div>
 
-            <div ng-hide="useMainAdrress">
+            <div ng-hide="arAccountDetails.is_use_main_address">
                 <strong class="h3 margin" translate>AR_ADDRESS</strong>
                 <rv-textbox value="arAccountDetails.ar_address_details.street1" label="Address" placeholder = "Enter Address Line 1" styleclass="margin"></rv-textbox>
 
@@ -55,7 +55,7 @@
         </div>
 
         <div class="holder right">
-            <div ng-hide="useMainContact">
+            <div ng-hide="arAccountDetails.is_use_main_contact">
                 <strong class="h3 margin" translate>CONTACT_DETAILS</strong>
 
                 <rv-textbox value="arAccountDetails.ar_contact_details.first_name" label="First name" placeholder = "Enter Contact First Name" styleclass="margin"></rv-textbox>

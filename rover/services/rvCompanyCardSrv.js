@@ -236,7 +236,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		}
 
 		this.saveARDetails = function(data) {
-			data.details.account_id = parseInt(data.account_id);
+			data.details.id = parseInt(data.id);
 			var deferred = $q.defer();
 			var url = 'api/accounts/save_ar_details';
 			rvBaseWebSrvV2.postJSON(url,data.details).then(function(data) {

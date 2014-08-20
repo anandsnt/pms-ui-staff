@@ -51,7 +51,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 				$scope.$emit("hideLoader");
 				console.log(data);
 			};
-			var dataToSend = {"account_id":$scope.contactInformation.id,"details":$scope.arAccountDetails};
+			var dataToSend = {"id":$scope.contactInformation.id,"details":$scope.arAccountDetails};
 			
 			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
 		    var dataNotUpdated = false;
