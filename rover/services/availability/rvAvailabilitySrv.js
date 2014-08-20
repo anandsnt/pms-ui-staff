@@ -103,9 +103,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 
 		//Webservice calling section
 		var deferred = $q.defer();
-		//var url = '/api/availability/house';
+		var url = '/api/availability/house';
 		var businessDate = tzIndependentDate(params['business_date']).clone();
-		var url = '/ui/show?format=json&json_input=availability/house_status.json';
+		//var url = '/ui/show?format=json&json_input=availability/house_status.json';
 		delete params['business_date'];
 
 		rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
@@ -120,6 +120,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 
 	this.restructureHouseDataForUI = function(data, houseTotal, businessDate){
 		var houseDetails = {};
+		houseDetails.physical_count = houseTotal;
 		houseDetails.dates = [];
 		houseDetails.total_rooms_occupied = {};
 		houseDetails.total_guests_inhouse = {};
@@ -133,35 +134,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		houseDetails.avg_daily_rate = {};
 
 		var houseStatus;
-		//var businessDate = tzIndependentDate(businessDate);
-		
 		var dateDetails;
-/*		var totalRooms;
-		var guestsInhouse;
-		var depExpected;
-		var depActual;
-		var arrExpected;
-		var arrActual;
-		var availTonight;
-		var occTonight;
-		var totRoomRevenue;
-		var avDailyRate;*/
-
-
 		angular.forEach(data, function(dayInfo, i) {
 			dateDetails = {};
-		/*	totalRooms = {};
-			guestsInhouse = {};
-			depExpected = {};
-			depActual = {};
-			arrExpected = {};
-			arrActual = {};
-			availTonight = {};
-			occTonight = {};
-			totRoomRevenue = {};
-			avDailyRate = {};*/
-
-			//houseStatus = {};
 			dateDetails.date = dayInfo.date;
 
 			var date = tzIndependentDate(dayInfo.date);
@@ -182,20 +157,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 			houseDetails.arrivals_actual[dayInfo.date] = dayInfo.house.arrived;
 			houseDetails.available_tonight[dayInfo.date] = Math.round(dayInfo.house.availability /houseTotal * 100);
 			houseDetails.occupied_tonight[dayInfo.date] = Math.round(dayInfo.house.sold /houseTotal * 100);
-			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.total_room_revenue;
-			houseDetails.avg_daily_rate[dayInfo.date] = dayInfo.avg_daily_rate;
+			houseDetails.total_room_revenue[dayInfo.date] = dayInfo.house.total_room_revenue;
+			houseDetails.avg_daily_rate[dayInfo.date] = dayInfo.house.avg_daily_rate;
 			//push to array
 			houseDetails.dates.push(dateDetails);
-			/*houseDetails.total_rooms_occupied.push(totalRooms);
-			houseDetails.total_guests_inhouse.push(guestsInhouse);
-			houseDetails.departues_expected.push(depExpected);
-			houseDetails.departures_actual.push(depActual);
-			houseDetails.arrivals_expected.push(arrExpected);
-			houseDetails.arrivals_actual.push(arrActual);
-			houseDetails.available_tonight.push(availTonight);
-			houseDetails.occupied_tonight.push(occTonight);
-			houseDetails.total_room_revenue.push(totRoomRevenue);
-			houseDetails.avg_daily_rate.push(avDailyRate);*/
 
 		});
 

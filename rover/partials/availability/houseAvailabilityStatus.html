@@ -1,5 +1,5 @@
 <!--  House status content  -->
-<section id="house-status-content" class="house-status-content" role="main" ng-controller="RVHouseAvailabilityStatusCtrl">
+<section id="house-status-content" class="house-status-content" role="main" ng-controller="RVHouseAvailabilityStatusCtrl" ng-hide="!houseDetailsFetched">
 	<div id="house-status-grid" class="house-status-grid scrollable" ng-iscroll="house-status-grid">
 		<div class="wrapper">
 			<table id="dates-grid" class="dates-grid">
@@ -40,65 +40,23 @@
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<span class="value">{{houseDetails.total_rooms_occupied[dayDetails.date]}}</span>
-								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY'">
-									<span class="bar blue showing" data-width="{percentage}" style="width: 50%;"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}" style="width: 50%;"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TOMORROW'">
-									<span class="bar yellow showing" data-width="{percentage}" style="width: 50%;"></span>
-								</span>
-							</div>
-						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
 								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
+									<span class="bar showing" style="width: {{houseDetails.total_rooms_occupied[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
-							<div class="inner">
-								<span class="value">N/A</span>
-								When no value, don't include span class="graph" as it's not needed
-							</div>
-						</td> -->
 					</tr>
-					<tr>
+					<!-- <tr>
 						<th class="heading" scope="row">Total Guests In House</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<span class="value">{{houseDetails.total_guests_inhouse[dayDetails.date]}}</span>
-								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY'">
-									<span class="bar blue showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TOMORROW'">
-									<span class="bar yellow showing" data-width="{percentage}"></span>
+								<span class="graph">
+									<span class="bar showing" style="width: {{houseDetails.total_guests_inhouse[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
 								</span>
 							</div>
 						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar yellow" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td> -->
-					</tr>
+					</tr> -->
 					<tr>
 						<th scope="row">Departures Expected</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
@@ -106,223 +64,89 @@
 								<!-- For yesterday we dont want to display the count and graph -->
 								<span class="value" ng-if="dayDetails.day != 'YESTERDAY'">{{houseDetails.departues_expected[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'YESTERDAY'">NA</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TOMORROW'">
-									<span class="bar yellow showing" data-width="{percentage}"></span>
-								</span>
+								<span class="graph" ng-if="dayDetails.day == 'TODAY' || dayDetails.day == 'TOMORROW'">
+									<span class="bar showing" style="width: {{houseDetails.departues_expected[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+								</span>								
 							</div>
 						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value">N/A</span>
-								When no value, don't include span class="graph" as it's not needed
-							</div>
-						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Departures Actual</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<!-- For tomorrow we dont need to display the count and graph -->
-								<span class="value" ng-if="dayDetails.day != 'TOMORROW'">{{houseDetails.departures_actual[dayDetails.date]}}</span>
+								<span class="value" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">{{houseDetails.departures_actual[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'TOMORROW'">NA</span>
-								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY'">
-									<span class="bar blue showing" data-width="{percentage}"></span>
+								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">
+									<span class="bar showing" style="width: {{houseDetails.departures_actual[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', blue: dayDetails.day == 'YESTERDAY'}"></span>
 								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
+								
 							</div>
 						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar yellow" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Arrivals Expected</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<!-- For yesterday we dont want to display the count and graph -->
-								<span class="value" ng-if="dayDetails.day != 'YESTERDAY'">{{houseDetails.arrivals_expected[dayDetails.date]}}</span>
+								<span class="value" ng-if="dayDetails.day == 'TODAY' || dayDetails.day == 'TOMORROW'">{{houseDetails.arrivals_expected[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'YESTERDAY'">NA</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TOMORROW'">
-									<span class="bar yellow showing" data-width="{percentage}"></span>
+								<span class="graph" ng-if="dayDetails.day == 'TODAY' || dayDetails.day == 'TOMORROW'">
+									<span class="bar showing" style="width: {{houseDetails.arrivals_expected[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
 								</span>
 							</div>
 						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value">N/A</span>
-								When no value, don't include span class="graph" as it's not needed
-							</div>
-						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Arrivals Actual</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<!-- For tomorrow we dont need to display the count and graph -->
-								<span class="value" ng-if="dayDetails.day != 'TOMORROW'">{{houseDetails.arrivals_actual[dayDetails.date]}}</span>
+								<span class="value" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">{{houseDetails.arrivals_actual[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'TOMORROW'">NA</span>
-								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY'">
-									<span class="bar blue showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
-								
-							</div>
-						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
+								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">
+									<span class="bar showing" style="width: {{houseDetails.arrivals_actual[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', blue: dayDetails.day == 'YESTERDAY'}"></span>
 								</span>
 							</div>
 						</td>
-						<td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar yellow" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Available Tonight</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<span class="value">{{houseDetails.available_tonight[dayDetails.date]}}</span>
-								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY'">
-									<span class="bar blue showing" data-width="{percentage}"></span>
+								<span class="graph">
+									<span class="bar showing" style="width: {{houseDetails.available_tonight[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
 								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TOMORROW'">
-									<span class="bar yellow showing" data-width="{percentage}"></span>
-								</span>
+								
 							</div>
 						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar yellow" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td> -->
 					</tr>
 					<tr>
 						<th scope="row">Occupied Tonight</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
 								<span class="value">{{houseDetails.occupied_tonight[dayDetails.date]}}</span>
-								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY'">
-									<span class="bar blue showing" data-width="{percentage}"></span>
+								<span class="graph">
+									<span class="bar showing" style="width: {{houseDetails.occupied_tonight[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
 								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TODAY'">
-									<span class="bar orange showing" data-width="{percentage}"></span>
-								</span>
-								<span class="graph" ng-if="dayDetails.day == 'TOMORROW'">
-									<span class="bar yellow showing" data-width="{percentage}"></span>
-								</span>
+								
 							</div>
 						</td>
-						<!-- <td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar orange" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value">{value}</span>
-								<span class="graph">
-									<span class="bar yellow" data-width="{percentage}"></span>
-								</span>
-							</div>
-						</td> -->
 					</tr>
 					<tr>
 						<th class="heading" scope="row">Total Room Revenue</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value full-width">${revenue}</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value full-width">${revenue}</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value full-width">${revenue}</span>
+								<span class="value full-width">{{currencySymbol}}{{houseDetails.total_room_revenue[dayDetails.date]}}</span>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<th class="heading" scope="row">Average Daily Rate</th>
-						<td>
+						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value full-width">${adr}</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value full-width">${adr}</span>
-							</div>
-						</td>
-						<td>
-							<div class="inner">
-								<span class="value full-width">${adr}</span>
+								<span class="value full-width">{{currencySymbol}}{{houseDetails.avg_daily_rate[dayDetails.date]}}</span>
 							</div>
 						</td>
 					</tr>
