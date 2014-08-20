@@ -27,9 +27,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		fromState: 'rover.housekeeping.roomDetails',
 		toState  : 'rover.housekeeping.roomStatus'
 	}, {
-		fromState: 'rover.reservation.staycard.reservationcard.reservationdetails',
-		toState  : 'rover.search'
-	}, {
 		fromState: 'rover.reservation.staycard.billcard',
 		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}, {
@@ -118,7 +115,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 	$rootScope.returnBack = false;
 	$rootScope.isReturning = function() {
-		console.log( '$rootScope.returnBack ' + $rootScope.returnBack );
 		return $rootScope.returnBack;
 	};
 
@@ -135,7 +131,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		console.log( fromState.name + ' --> ' + toState.name );
+		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
@@ -144,11 +140,13 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
-			$_mustRevAnim = false;
 			$rootScope.returnBack = true;
 		} else {
 			$rootScope.returnBack = false;
 		}
+
+		// reset this flag
+		$_mustRevAnim = false;
 
 		// saving the prevState name and params
 		$_prevStateName  = fromState.name;

@@ -1,0 +1,300 @@
+<!--  House status content  -->
+<section id="house-status-content" class="house-status-content" role="main" ng-controller="RVHouseAvailabilityStatusCtrl">
+	<div id="house-status-grid" class="house-status-grid scrollable">
+		<div class="wrapper">
+			<table id="dates-grid" class="dates-grid">
+				<!-- Here you'll always have 4 col elements -->
+				<colgroup>
+					<col> <!-- First col blank, for row labels -->
+					<col class="grid-col">
+					<col class="grid-col">
+					<col class="grid-col">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="heading"></th> <!-- First is blank, for row labels -->
+						<th>
+							<div class="inner">
+								<span>Yesterday</span>
+								{date}
+							</div>
+						</th>
+						<th>
+							<div class="inner">
+								<span>Today</span>
+								{date}
+							</div>
+						</th>
+						<th>
+							<div class="inner">
+								<span>Tomorrow</span>
+								{date}
+							</div>
+						</th>
+					</tr>
+				</thead>
+
+				<!-- in order to animate graphs, you'll need to:
+					1. append style attribute, with the value from data-width attribute
+					2. add class "showing"
+
+					I've used the following snipped to achieve this:
+					
+					$('#dates-grid .bar').each(function(e){
+		                var $width = ($(this).attr('data-width') !== undefined) ? $(this).attr('data-width') : '0%';
+		                $(this).css('width', $width).addClass('showing');
+		            });
+
+		        -->
+				<tbody>
+					<tr>
+						<th class="heading" scope="row">Total Rooms occupied</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">N/A</span>
+								<!-- When no value, don't include span class="graph" as it's not needed -->
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th class="heading" scope="row">Total Guests In House</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar yellow" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Departures Expected</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">N/A</span>
+								<!-- When no value, don't include span class="graph" as it's not needed -->
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Departures Actual</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar yellow" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Arrivals Expected</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">N/A</span>
+								<!-- When no value, don't include span class="graph" as it's not needed -->
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Arrivals Actual</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar yellow" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Available Tonight</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar yellow" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Occupied Tonight</th>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar blue" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar orange" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value">{value}</span>
+								<span class="graph">
+									<span class="bar yellow" data-width="{percentage}"></span>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th class="heading" scope="row">Total Room Revenue</th>
+						<td>
+							<div class="inner">
+								<span class="value full-width">${revenue}</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value full-width">${revenue}</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value full-width">${revenue}</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th class="heading" scope="row">Average Daily Rate</th>
+						<td>
+							<div class="inner">
+								<span class="value full-width">${adr}</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value full-width">${adr}</span>
+							</div>
+						</td>
+						<td>
+							<div class="inner">
+								<span class="value full-width">${adr}</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
