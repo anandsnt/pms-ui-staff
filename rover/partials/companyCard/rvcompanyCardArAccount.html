@@ -58,9 +58,9 @@
             <div ng-hide="arAccountDetails.is_use_main_contact">
                 <strong class="h3 margin" translate>CONTACT_DETAILS</strong>
 
-                <rv-textbox value="arAccountDetails.ar_contact_details.first_name" label="First name" placeholder = "Enter Contact First Name" styleclass="margin"></rv-textbox>
+                <rv-textbox value="arAccountDetails.ar_contact_details.contact_first_name" label="First name" placeholder = "Enter Contact First Name" styleclass="margin"></rv-textbox>
 
-                <rv-textbox value="arAccountDetails.ar_contact_details.last_name" label="Last Name" placeholder = "Enter Contact Last Name" ></rv-textbox>
+                <rv-textbox value="arAccountDetails.ar_contact_details.contact_last_name" label="Last Name" placeholder = "Enter Contact Last Name" ></rv-textbox>
 
                 <rv-textbox value="arAccountDetails.ar_contact_details.job_title" label="Job title" placeholder = "Enter Job Title" styleclass="margin"></rv-textbox>
 
@@ -73,7 +73,7 @@
             <textarea ng-model="ARData.note" style="width:80%;"></textarea>
             <button ng-click="saveNote()">save note</button>
             <ul style="overflow:scroll;height:100px;" ng-show="arAccountNotes.ar_notes.length>0">
-                <li ng-repeat="note in arAccountNotes.ar_notes track by $index" style="background:lightgray;">{{note}}</li>
+                <li ng-repeat="noteData in arAccountNotes.ar_notes track by $index" style="background:lightgray;">{{noteData.note}}</li>
             </ul>
             <strong class="h3 margin" translate>AR_DETAILS</strong>
             <textarea ng-model="details"style="width:80%;"></textarea>
