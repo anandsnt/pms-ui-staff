@@ -153,17 +153,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
     };  
 
-
-    //to be removed
-    $scope.billingPopup = function(){
-      ngDialog.open({
-        template: '/assets/partials/reservation/alerts/rvReservationBillingAddRoutePopup.html',
-        controller: 'rvReservationBillingAddRoutePopupCtrl',
-        className: 'ngdialog-theme-default',
-        scope: $scope
-      });
-    }
-
 }]);
 
     

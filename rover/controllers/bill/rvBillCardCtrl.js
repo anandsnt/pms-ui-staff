@@ -867,4 +867,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 	 });	
+
+	//trigger the billing information popup
+    $scope.openBillingInformation = function(){
+      ngDialog.open({
+        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+        controller: 'rvBillingInformationPopupCtrl',
+        className: 'ngdialog-theme-default',
+        scope: $scope
+      });
+    }
 }]);

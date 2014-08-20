@@ -1,0 +1,83 @@
+<div id="billing-content" class="content-wrapper ">
+         <!-- <div class="info">
+            <strong class="h1" translate>ROUTES_EMPTY_MESSAGE</strong>
+         </div> -->
+         <div id="routes" class="billing-list scrollable">
+			   <ul class="wrapper">
+			      
+			      <li>
+			         <a href="#route-details" class="guest">
+			            <figure class="guest-image">
+			               <img src="{image}" alt="" />
+			            </figure>
+			            <h2>{lastname, firstname}</h2>
+			            <div class="type">
+			               <span class="label">Billing Group(s)</span>
+			               {selected billing group}
+			            </div>
+			            <div class="bill">
+			               <span class="label">Bill #</span>
+			               {bill #}
+			            </div>
+			         </a>
+			         <span id="remove-route-1" class="icons icon-remove-40">-</span> 
+			      </li>
+			      
+			      <li>
+			         <a href="#route-details" class="accompany">
+			            <figure class="guest-image accompany">
+			               <img src="{image}" alt="" />
+			               <img src="{acc-image}" alt="" />
+			            </figure>
+			            <h2>{accompanying lastname, firstname}</h2>
+			            <div class="type">
+			               <span class="label">Charge Code(s)</span>
+			               Multiple
+			            </div>
+			            <div class="bill">
+			               <span class="label">Bill #</span>
+			               3
+			            </div>
+			         </a>
+			         <span id="remove-route-2" class="icons icon-remove-40">-</span>
+			      </li>
+			      
+			      <li>
+			         <a href="#route-details" class="company">
+			            <figure class="guest-image">
+			               <img src="{logo}" alt="" />
+			            </figure>
+			            <h2>{name}</h2>
+			            <div class="type">
+			               <span class="label">Charge Code(s)</span>
+			               {charge code}
+			            </div>
+			            <div class="bill">
+			               <span class="label">Bill #</span>
+			               4
+			            </div>
+			         </a>
+			         <span id="remove-route-3" class="icons icon-remove-40">-</span>
+			      </li>
+			      
+			      <li>
+			         <a href="#route-details" class="travel-agent">
+			            <div class="guest-image icons icon-travel-agent"></div>
+			            <h2>{name}</h2>
+			            <div class="type">
+			               <span class="label">Billing Group(s)</span>
+			               {charge code}
+			            </div>
+			            <div class="bill">
+			               <span class="label">Bill #</span>
+			               5
+			            </div>
+			         </a>
+			         <span id="remove-route-4" class="icons icon-remove-40">-</span>
+			      </li>
+			   </ul>
+		</div>
+</div>
+<div class="actions">
+         <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CLOSE</button>
+</div>

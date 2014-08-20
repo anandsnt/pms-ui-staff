@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationBillingAddRoutePopupCtrl',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog){
+sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	

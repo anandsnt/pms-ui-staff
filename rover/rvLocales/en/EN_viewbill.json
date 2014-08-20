@@ -71,4 +71,11 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+
+    "BILLING_INFO_TITLE" : "Billing Information",
+    "CONFIRMATION_LABEL" : "Confirmation",
+    "ROUTES_EMPTY_MESSAGE": "Bill Routing not defined",
+    "ADD_ROUTES_LABEL" : "ADD ROUTES",
+    "ALL_ROUTES_LABEL" : "ALL ROUTES"
+
