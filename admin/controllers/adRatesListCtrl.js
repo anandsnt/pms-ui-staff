@@ -1,5 +1,5 @@
 admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout',
-	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter,$timeout){
+	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout){
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";

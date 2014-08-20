@@ -15,4 +15,5 @@
  *= require '../shared/lib/css/ngDialog-theme-default.css'
  *= require '../shared/lib/css/ngDialog-theme-plain.css'
  *= require '../admin/css/styles_ng_admin.css.less'
+ *= require '../shared/lib/css/jquery.qtip.css'
  */
