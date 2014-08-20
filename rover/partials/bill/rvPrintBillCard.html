@@ -1,0 +1,28 @@
+<table>
+	<tr>
+		<td align="left">Guest Name: {{guestCardData.contactInfo.first_name}}&nbsp;{{guestCardData.contactInfo.last_name}}</td>
+		<td></td>
+		<td align="right">Room Number: {{reservationBillData.room_number}}</td>
+	</tr>
+	<tr>
+		<td align="left">City :{{guestCardData.contactInfo.address.city}}</td>
+		<td></td>
+		<td align="right">Arrival Date : {{reservationBillData.checkin_date | date:dayAndDate}}</td>
+	</tr>
+	<tr>
+		<td align="left">State:{{guestCardData.contactInfo.address.state}}</td>
+		<td></td>
+		<td align="right">Departure Date:{{reservationBillData.checkout_date | date:dayAndDate}}</td>
+	</tr>
+	<tr>
+		<td align="left">Country :{{guestCardData.contactInfo.address.country}}</td>
+		<td></td>
+		<td align="right">Confirmation No:{{reservationBillData.confirm_no}} </td>
+	</tr>
+	<tr>
+		<td align="left">Postal Code :{{guestCardData.contactInfo.address.postal_code}}</td>
+		<td></td>
+		<td align="right">Invoice Number:</td>
+	</tr>
+
+</table>

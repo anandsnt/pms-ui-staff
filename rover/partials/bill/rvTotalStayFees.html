@@ -1,4 +1,9 @@
 <!-- Total Fees & Balance -->
+
+<div class="print-billcard">
+	<div ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
+</div>
+
 <div class="total-stay-fees float">
 	<div class="overview" ng-repeat="totalFees in billData.total_fees" >
 		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle has-arrow with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">

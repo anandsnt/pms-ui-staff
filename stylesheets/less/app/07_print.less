@@ -210,52 +210,86 @@ h4, .h4 { page-break-after: avoid; }
 	.button { .hide; }
 
 	.details{
+
 		height: auto !important;
 		overflow: auto !important;
-		
-	
-		.total-fees{
-				padding: .3cm 0;
-				margin: 0 .5cm .75cm;
-				border-top: 2px solid rgba(0,0,0,.1);
-	
-				table-layout: fixed;
-				border-collapse: collapse; 
-				margin-bottom: 0;
-				tr {	
+		border-top: 2px solid rgba(0,0,0,.1);
+
+		table{
+			table-layout: fixed;
+			border-collapse: collapse; 
+			margin-bottom: 0;
+			tr {	
 				page-break-after: always;
 				page-break-inside: avoid;
-						
+					th{
+						padding-bottom:0.5cm !important;
+					}
+
 					th,
 					td {
-						page-break-after:always !important;
+					page-break-after:always !important;
 						page-break-inside: avoid !important;
 						white-space: normal !important;
 						overflow: visible !important;
 						vertical-align: top !important;
 						line-height: 1.1;
-						padding: .2cm 2cm .2cm 0;
+						padding: .2cm 1cm .2cm 0;
 						border-bottom: 1px solid rgba(0,0,0,.1);
-						word-break: break-all;
-						min-width:15%;
-						max-width:30%;
-						width:30%;
+						min-width:14%;
+						max-width:29%;
+						width:29%;
+						font-size:15px
 					}
 			
 				}
 
 				tfoot {
 					tr {
+						page-break-after: always !important;
+						page-break-inside: avoid !important;
 						td {
-							color: @grey3;
+							page-break-after:always !important;
+							page-break-inside: avoid !important;
 							border-bottom: 0;
-							padding-top: .5cm;
-							span { color: @textColor; }
+							padding-top: 1cm !important;
+							font-size:15px;
 						}
 					}
 				}
 	
 	}
+}
+.print-billcard{
+	display:block !important;
+	border-top: 1px solid black;
+	margin-top:-2cm;
+	padding-top:5px;
+	table{
+		width:800px;
+		font-size:20px;
+
+			tr {
+					page-break-after: always !important;
+					page-break-inside: avoid !important;
+
+					td:first-child, td:last-child{
+						width:40%;
+					}
+					td:nth-child(2){
+						width:20%;
+					}
+
+					td {
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
+						padding:0.25cm 0;
+					}
+				}
+	}
+
+
+
 }
 /* 6. IE
 ==========================================================*/

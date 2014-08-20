@@ -921,7 +921,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		/*
 		*	=====[ READY TO PRINT ]=====
 		*/
-
 		// this will show the popup with full bill
 	    $timeout(function() {
 	    	/*
