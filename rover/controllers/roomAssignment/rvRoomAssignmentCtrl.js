@@ -548,6 +548,7 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.assignedRoom = "";
 	$scope.reservationData = $scope.$parent.reservation;
 	$scope.roomType = $stateParams.room_type; 
+	$scope.isStandAlone = $rootScope.isStandAlone;
 	$scope.isFiltersVisible = false;
 	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 	};
