@@ -83,7 +83,6 @@
 				&#print-key { width: 400px; }
 			}
 
-			
 			/* Admin content modal window ***/
 			&.admin-form {
 				padding: 20px;
@@ -430,7 +429,8 @@
 						.calc-width(100, 20); /* %, px */
 						.calc-height(100, 398); /* %, px */
 
-            > .wrapper { padding-bottom: 2px; }
+            			> .wrapper { padding-bottom: 2px; }
+						
 						li {
 							position: relative;
 							margin: 0 20px 0 0;
@@ -793,6 +793,42 @@
 
 					&.primary {
 						.value { font-weight: 600; }
+					}
+				}
+			}
+
+			/* Terms & Conditions ***/
+			&.terms {
+				.size(600px, 480px);
+
+				.scrollable {
+					position: relative;
+					font-size: 14px;
+					background: @white;
+					#border-radius > .rounded();
+					.size(360px, 100%);
+
+					.wrapper {
+						padding: 20px 40px;
+
+						p { text-align: center; }
+					}
+
+					.iScrollVerticalScrollbar {
+						top: 10px;
+						bottom: 10px;
+					}
+				}
+
+				.actions {
+					margin-top: 20px;
+					text-align: center;
+
+					.button { 
+						display: inline-block;
+						width: auto;
+
+						&.green { padding: 0 40px; }
 					}
 				}
 			}
