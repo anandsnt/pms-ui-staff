@@ -41,7 +41,7 @@
 							<div class="inner">
 								<span class="value">{{houseDetails.total_rooms_occupied[dayDetails.date]}}</span>
 								<span class="graph">
-									<span class="bar showing" style="width: {{houseDetails.total_rooms_occupied[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+									<span class="bar" style="width: {{houseDetails.total_rooms_occupied[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW', showing: houseDetails.total_rooms_occupied[dayDetails.date] > 0}"></span>
 								</span>
 							</div>
 						</td>
@@ -52,7 +52,7 @@
 							<div class="inner">
 								<span class="value">{{houseDetails.total_guests_inhouse[dayDetails.date]}}</span>
 								<span class="graph">
-									<span class="bar showing" style="width: {{houseDetails.total_guests_inhouse[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+									<span class="bar" style="width: {{houseDetails.total_guests_inhouse[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW', showing: houseDetails.total_guests_inhouse[dayDetails.date] > 0}"></span>
 								</span>
 							</div>
 						</td>
@@ -65,7 +65,7 @@
 								<span class="value" ng-if="dayDetails.day != 'YESTERDAY'">{{houseDetails.departues_expected[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'YESTERDAY'">NA</span>
 								<span class="graph" ng-if="dayDetails.day == 'TODAY' || dayDetails.day == 'TOMORROW'">
-									<span class="bar showing" style="width: {{houseDetails.departues_expected[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+									<span class="bar" style="width: {{houseDetails.departues_expected[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW', showing: houseDetails.departues_expected[dayDetails.date] > 0}"></span>
 								</span>								
 							</div>
 						</td>
@@ -78,7 +78,7 @@
 								<span class="value" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">{{houseDetails.departures_actual[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'TOMORROW'">NA</span>
 								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">
-									<span class="bar showing" style="width: {{houseDetails.departures_actual[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', blue: dayDetails.day == 'YESTERDAY'}"></span>
+									<span class="bar" style="width: {{houseDetails.departures_actual[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', blue: dayDetails.day == 'YESTERDAY', showing: houseDetails.departures_actual[dayDetails.date] > 0}"></span>
 								</span>
 								
 							</div>
@@ -92,7 +92,7 @@
 								<span class="value" ng-if="dayDetails.day == 'TODAY' || dayDetails.day == 'TOMORROW'">{{houseDetails.arrivals_expected[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'YESTERDAY'">NA</span>
 								<span class="graph" ng-if="dayDetails.day == 'TODAY' || dayDetails.day == 'TOMORROW'">
-									<span class="bar showing" style="width: {{houseDetails.arrivals_expected[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+									<span class="bar" style="width: {{houseDetails.arrivals_expected[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW', showing: houseDetails.arrivals_expected[dayDetails.date] > 0}"></span>
 								</span>
 							</div>
 						</td>
@@ -105,7 +105,7 @@
 								<span class="value" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">{{houseDetails.arrivals_actual[dayDetails.date]}}</span>
 								<span class="value" ng-if="dayDetails.day == 'TOMORROW'">NA</span>
 								<span class="graph" ng-if="dayDetails.day == 'YESTERDAY' || dayDetails.day == 'TODAY'">
-									<span class="bar showing" style="width: {{houseDetails.arrivals_actual[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', blue: dayDetails.day == 'YESTERDAY'}"></span>
+									<span class="bar" style="width: {{houseDetails.arrivals_actual[dayDetails.date]}}%;" ng-class="{orange: dayDetails.day == 'TODAY', blue: dayDetails.day == 'YESTERDAY', showing: houseDetails.arrivals_actual[dayDetails.date] > 0}"></span>
 								</span>
 							</div>
 						</td>
@@ -116,7 +116,7 @@
 							<div class="inner">
 								<span class="value">{{houseDetails.available_tonight[dayDetails.date]}}</span>
 								<span class="graph">
-									<span class="bar showing" style="width: {{houseDetails.available_tonight[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+									<span class="bar" style="width: {{houseDetails.available_tonight[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW', showing: houseDetails.available_tonight[dayDetails.date] > 0}"></span>
 								</span>
 								
 							</div>
@@ -128,7 +128,7 @@
 							<div class="inner">
 								<span class="value">{{houseDetails.occupied_tonight[dayDetails.date]}}</span>
 								<span class="graph">
-									<span class="bar showing" style="width: {{houseDetails.occupied_tonight[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW'}"></span>
+									<span class="bar" style="width: {{houseDetails.occupied_tonight[dayDetails.date]}}%;" ng-class="{blue: dayDetails.day == 'YESTERDAY',orange: dayDetails.day == 'TODAY', yellow: dayDetails.day == 'TOMORROW', showing: houseDetails.occupied_tonight[dayDetails.date] > 0}"></span>
 								</span>
 								
 							</div>
