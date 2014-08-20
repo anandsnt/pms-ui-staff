@@ -202,7 +202,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.fetchArAccountDetails = function(data) {
 			var id = data.id;
 			var deferred = $q.defer();
-			var url = '/api/accounts/'+id+'ar_details';
+			var url = '/api/accounts/'+id+'/ar_details';
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
@@ -211,6 +211,29 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.fetchArAccountNotes = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/'+id+'/ar_notes';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.saveARNote = function(data) {
+			var id = data.account_id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/'+id+'/save_ar_notes';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
 
 	}
 ]);
