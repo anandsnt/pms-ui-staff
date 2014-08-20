@@ -19,7 +19,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	}
 	
 	$scope.isContactInformationSaved = false;
-	$scope.showArAccountTab = false;
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
@@ -81,6 +80,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* remaining portion will be the Controller class of company card's contact info
 	*/
 	var presentContactInfo = {};
+	var presentArDetails = {};
 	/**
 	* success callback of initial fetch data
 	*/
@@ -97,6 +97,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+	};
+
+
+	var successCallbackFetchArDetails = function(data){
+		$scope.$emit("hideLoader");
+		$scope.arAccountDetails = data;
+		//taking a deep copy of copy of contact info. for handling save operation
+		//we are not associating with scope in order to avoid watch
+		presentArDetails = JSON.parse(JSON.stringify($scope.arAccountDetails));
 	};
 
 	/**
@@ -128,6 +137,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	else if(typeof id !== 'undefined' && id !== ""){
 		var data = {'id': id};		
 		$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);	
+		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, data, successCallbackFetchArDetails);	
 	}
 
 	/**
@@ -280,7 +290,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	/*-------AR account starts here-----------*/
 
 	$scope.showArAccountButtonClick = function($event){
-		$scope.showArAccountTab = true;
 		$scope.switchTabTo($event, 'cc-ar-accounts')
 	};
 	
