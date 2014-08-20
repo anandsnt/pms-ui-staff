@@ -49,7 +49,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 			var successCallbackOfsaveARDetails = function(data){
 				$scope.$emit("hideLoader");
-				console.log(data);
 			};
 			var dataToSend = {"id":$scope.contactInformation.id,"details":$scope.arAccountDetails};
 
