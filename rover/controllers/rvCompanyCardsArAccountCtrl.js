@@ -26,7 +26,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', '$state', '$statePara
 			
 			$scope.notes.push($scope.data.note);
 			$scope.data.note = "";
-			$scope.refreshScroller();
 		}
 
 	}

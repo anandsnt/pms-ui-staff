@@ -1,4 +1,4 @@
-<!-- Company Card Tab 1 -->
+<!-- Company Card Tab 3 -->
 
 <form method="post"  id="cc-ar-accounts" name="cc-ar-accounts" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-ar-accounts'"   aria-labelledby="ui-id-1"
  role="tabpanel" aria-expanded="true" aria-hidden="false"
@@ -9,7 +9,7 @@
     	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
         <div class="holder left">
-            <rv-textbox value="contactInformation.account_details.account_name" label="AR_NUMBER" placeholder = "Enter AR Number" styleclass="full-width"></rv-textbox>
+            <rv-textbox value="contactInformation.account_details.account_name" label="{{'AR_NUMBER' | translate}}" placeholder = "Enter AR Number" styleclass="full-width"></rv-textbox>
 
             <div class="entry radio-check" ng-click="refreshScroller()">
                 <label for="opt-in" translate>USE_MAIN_ADDRESS</label>
@@ -70,13 +70,13 @@
             </div>
 
             <strong class="h3 margin" translate>AR_NOTES</strong>
-            <textarea ng-model="data.note"></textarea>
+            <textarea ng-model="data.note"style="width:80%;"></textarea>
             <button ng-click="saveNote()">save note</button>
-            <ul>
-                <li ng-repeat="note in notes track by $index">{{note}}</li>
+            <ul style="overflow:scroll;height:100px;" ng-show="notes.length>0">
+                <li ng-repeat="note in notes track by $index" style="background:lightgray;">{{note}}</li>
             </ul>
             <strong class="h3 margin" translate>AR_DETAILS</strong>
-            <textarea ng-model="details"></textarea>
+            <textarea ng-model="details"style="width:80%;"></textarea>
 
         </div>
     </div>
