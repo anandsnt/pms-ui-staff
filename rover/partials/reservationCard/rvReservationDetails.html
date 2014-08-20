@@ -6,7 +6,12 @@
 			<span class="date"><span class="guest-status small-icon check-out">check-out</span>{{reservationData.reservation_card.departure_date}} </span>
 		</div>
 		<div class="actions">
-			<a href="{link}" class="button times check-in toggle"><span class="icons time check-in">Checking In</span>{{reservationData.reservation_card.arrival_time}}</a>
+			<a href="{link}" ng-class="{'not-set':!reservationData.reservation_card.arrival_time}" ng-if="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED'" class="button times check-in toggle">
+				<span class="icons time check-in">Checking In</span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
+			</a>
+			<a ng-class="{'not-set':!reservationData.reservation_card.departure_time}" href="{link}" ng-if="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'" class="button times check-out toggle">
+				<span class="icons time check-out">Checking Out</span>{{reservationData.reservation_card.departure_time ? reservationData.reservation_card.departure_time : 'NOT SET' }}
+			</a>
 			<!--
 			//If in house, departing or departed (add class 'not-set' to the '.button' if not set):
 			<a href="{link}" class="button times check-out toggle"><span class="icons time check-out">Checking Out</span>{check out time or 'Not set'}</a>
@@ -37,10 +42,10 @@
 		 <!-- Arrival / Departure -->
 		<div id="reservation-1066595-times" class="reservation-times"> <!-- Add class 'late-check-out' if it's a late check out reservation -->
 			<!-- Arrival time -->
-			<div class="check-data icons icon-time time-in"> <!-- Add class 'locked' if time is not editable -->
+			<div class="check-data icons icon-time time-in" ng-class="{'locked':reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'}"> <!-- Add class 'locked' if time is not editable -->
 			    <label for="check-in-hour" class="label">Arrival</label>
 			    <div class="select hour">
-			        <select id="check-in-hour" name="check-in" ng-model="reservationParentData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()"> <!-- Add attribute 'disabled' if time is not editable -->
+			        <select id="check-in-hour" name="check-in" ng-model="reservationParentData.checkinTime.hh" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'"> <!-- Add attribute 'disabled' if time is not editable -->
 			            <option value="">HH</option> <!-- Selected if time not set -->
 			            <option value="01">01</option>
 			            <option value="02">02</option>
@@ -57,7 +62,7 @@
 			        </select>
 			    </div>
 			    <div class="select minutes">
-			        <select id="check-in-minutes" name="check-in" ng-model="reservationParentData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()"> <!-- Add attribute 'disabled' if time is not editable -->
+			        <select id="check-in-minutes" name="check-in" ng-model="reservationParentData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'"> <!-- Add attribute 'disabled' if time is not editable -->
 			            <option value="">MM</option> <!-- Selected if time not set -->
 			            <option value="00">00</option>
 			            <option value="15">15</option>
@@ -66,7 +71,7 @@
 			        </select>
 			    </div>
 			    <div class="select ampm">
-			        <select id="check-in-ampm" name="check-in" ng-model="reservationParentData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()">
+			        <select id="check-in-ampm" name="check-in" ng-model="reservationParentData.checkinTime.ampm" ng-change="modifyCheckinCheckoutTime()" ng-disabled="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			            <option value="AM" selected>AM</option>
 			            <option value="PM">PM</option>
 			        </select>
