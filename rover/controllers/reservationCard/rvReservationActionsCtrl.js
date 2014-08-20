@@ -108,7 +108,10 @@ sntRover.controller('reservationActionsController',
 
 			
 			$scope.goToCheckin = function() {
-				var _reservationCard = $scope.reservationData.reservation_card
+				var _reservationCard = $scope.reservationData.reservation_card;
+
+				console.log( _reservationCard );
+				return;
 
 				if ( !!$scope.guestCardData.userId ) {
 					if ( !$scope.guestCardData.contactInfo.email || !$scope.guestCardData.contactInfo.phone ) {
