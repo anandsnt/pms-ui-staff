@@ -1,11 +1,12 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSrv', '$filter', '$state', function($scope, RVSearchSrv, $filter, $state){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault){
+
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
 	* you wrapping this.
 	*/
 	var that = this;
-  	BaseCtrl.call(this, $scope);	
+  	BaseCtrl.call(this, $scope);
 
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
@@ -37,6 +38,18 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	$scope.$on("showAddNewGuestButton", function(event, showAddNewGuestButton){
 		$scope.showAddNewGuestButton = showAddNewGuestButton;
 	});
+
+
+
+	// if returning back and there was a search query typed in restore that
+	// else reset the query value in vault
+	if ( $stateParams.useCache && !!$vault.get('searchQuery') ) {
+		$scope.textInQueryBox = $vault.get('searchQuery');
+	} else {
+		$vault.set('searchQuery', '');
+	}
+
+
 
 	/**
 	* Success call back of data fetch from webservice
@@ -115,7 +128,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 		if(!$scope.showSearchResultsArea ){
 			$scope.showSearchResultsArea = true;
 		}
-	    displayFilteredResults();  
+	    displayFilteredResults();
+
+	    // save the entered query into vault
+	    // if returning back we will display that result
+	    $vault.set('searchQuery', $scope.textInQueryBox);
 
 	}; //end of query entered
 
@@ -178,6 +195,17 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 		//we are showing the search area
 		$scope.$emit("showSearchResultsArea", true);		
 		refreshScroller();
+
+		// set the prev state here only, not outside
+		// else it will override any other declarations by other controllers
+		if ( !$stateParams.hasOwnProperty('type') ) {
+			$rootScope.setPrevState = {
+				title: $filter('translate')('DASHBOARD'),
+				callback: 'clearResults',
+				scope: $scope,
+				noStateChange: true
+			};
+		}
 	};
 
 
@@ -275,6 +303,14 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
     	$scope.results = [];
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
+	  	
+	  	// Gotacha!! Only when we are dealing with 'noStateChange'
+	  	if ( !!$rootScope.setPrevState.noStateChange ) {
+	  	    $rootScope.setPrevState.hide = true;
+	  	};
+
+	  	// reset the query saved into vault
+	  	$vault.set('searchQuery', '');
   	};
   	
   	/**
@@ -292,6 +328,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
 	});	
 	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
+		 $rootScope.setPrevState.hide = false;
 		 $scope.$emit('hideLoader');
 		 $scope.isSwiped = true;
 		 data = searchByCCResults;
@@ -377,5 +414,5 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', 'RVSearchSr
 	       }
 	   	 return mappedStatus;
    };
-      
+
 }]);

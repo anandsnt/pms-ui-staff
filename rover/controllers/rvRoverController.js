@@ -100,9 +100,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           'HOUSEKEEPING': 'rover.dashboard.housekeeping',
           'FRONT_DESK'  : 'rover.dashboard.frontoffice',
           'MANAGER'     : 'rover.dashboard.manager'
-        }
+        };
         return statesForDashbaord[$rootScope.default_dashboard];
-    }
+    };
 
     if($rootScope.isStandAlone){
       // OBJECT WITH THE MENU STRUCTURE
@@ -148,7 +148,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             action: ""
           }, {
             title: "MENU_END_OF_DAY",
-            action: ""
+            action: "",
+            actionPopup:true,
+            menuIndex:"endOfDay"
           }]
         }, {
           title: "MENU_CONVERSATIONS",
@@ -319,6 +321,17 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.showSubMenu = false;
     };
 
+    $scope.subMenuAction = function(subMenu){
+      $scope.toggleDrawerMenu();
+      if(subMenu === "endOfDay"){
+         ngDialog.open({
+            template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+            controller: 'RVEndOfDayModalController',
+            className: 'ngdialog-theme-plain calendar-modal'
+          });
+      }
+    };
+
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
     
@@ -486,12 +499,32 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }        
     };
 
+  /**
+    * Handles the bussiness date change
+    */
+    $rootScope.showBussinessDateChangingPopup = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        //if already shown no need to show again and again
+        if(!$rootScope.isBussinessDateChanging){
+            $rootScope.isBussinessDateChanging = true;
+            ngDialog.open({
+              template: '/assets/partials/common/bussinessDateChangingPopup.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              controller: 'bussinessDateChangingCtrl',
+              closeByDocument: false,
+              scope: $scope
+          });
+        }        
+    };
+
   }
 ]);
 
-// adding an OWS check Interceptor here
+// adding an OWS check Interceptor here and bussiness date change
 // but should be moved to higher up above in root level
-sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
+sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
   return {
     request: function (config) {
       return config;
@@ -503,11 +536,17 @@ sntRover.factory('owsCheckInterceptor', function ($rootScope, $q, $location) {
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
+      //Need to review the bussiness date changing notification process
+      // else if(rejection.status == 700){
+      //   $rootScope.showBussinessDateChangingPopup();
+      //   $rootScope.isBussinessDateChanging = true;
+      //   //need to unset this once change is done and set new bussiness date
+      // }
       return $q.reject(rejection);
     }
   };
 });
 
 sntRover.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('owsCheckInterceptor');
+  $httpProvider.interceptors.push('httpInterceptor');
 });

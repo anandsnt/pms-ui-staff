@@ -37,6 +37,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		var rowToChange = successCallBackParameters.data;
 		rowToChange.amount = parseFloat(rowToChange.credit) + parseFloat(that.data.amount);
 		rowToChange.id = that.data.id;
+
 		that.parentController.getControllerObject('smartband-listing').updateRow(rowToChange);
 		that.data = {};	
 		that.parentController.showPage('smartband-listing');
@@ -81,6 +82,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		var dataToPost = {};
 		dataToPost.first_name = $.trim(that.myDom.find('#first-name').val());
 		dataToPost.last_name = $.trim(that.myDom.find('#last-name').val());
+		dataToPost.account_number = $.trim(that.myDom.find('#smartband-id').text());
 
 		dataToPost.credit = parseFloat($.trim(that.myDom.find('#credit-to-add').val()));
 		if(isNaN(dataToPost.credit)){

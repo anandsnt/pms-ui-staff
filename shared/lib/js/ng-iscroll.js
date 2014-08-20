@@ -83,6 +83,16 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                 }
 
                 scope.$parent.myScroll[scroll_key] = new IScroll(element[0], ngiScroll_opts);
+
+                // setup listner for 'scrollEnd'
+                if ( !!ngiScroll_opts.scrollEndCallback ) {
+                    scope.$parent.myScroll[scroll_key].on( 'scrollEnd', ngiScroll_opts.scrollEndCallback );
+                };
+
+                // scroll to any previous location
+                if ( ngiScroll_opts.hasOwnProperty('scrollToPrevLoc') ) {
+                    scope.$parent.myScroll[scroll_key].scrollTo( 0, ngiScroll_opts.scrollToPrevLoc, 0 );
+                };
             }
 
             // new specific setting for setting timeout using: ng-iscroll-timeout='{val}'
