@@ -66,6 +66,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* function to handle click operation on company card, mainly used for saving
 	*/
 	$scope.companyCardClicked = function($event){
+
 		$event.stopPropagation();
 		if(getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab == 'cc-contact-info'){
 			return;
@@ -74,7 +75,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			return;
 		}
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
+
 			$scope.$emit("saveContactInformation");
+			$scope.$broadcast("saveArAccount");//save ar details if any change
 		}
 
 	};
