@@ -2,19 +2,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 
-	// TODO: if while coming from staycard, the room state has been to changed to be not usable
-	// we should redirect back to room selection screen
-	console.log( reservationBillData );
-	if ( reservationBillData.room_ready_status === 'DIRTY' || reservationBillData.room_status !== 'READY' || reservationBillData.fo_status !== 'VACANT' ) {
-		$state.go("rover.reservation.staycard.roomassignment", {
-			"reservation_id": reservationBillData.reservation_id,
-			"room_type": reservationBillData.room_type,
-			"clickedButton": "checkinButton"
-		});
+	// // TODO: if while coming from staycard, the room state has been to changed to be not usable
+	// // we should redirect back to room selection screen
+	// console.log( reservationBillData );
+	// if ( reservationBillData.room_ready_status === 'DIRTY' || reservationBillData.room_status !== 'READY' || reservationBillData.fo_status !== 'VACANT' ) {
+	// 	$state.go("rover.reservation.staycard.roomassignment", {
+	// 		"reservation_id": reservationBillData.reservation_id,
+	// 		"room_type": reservationBillData.room_type,
+	// 		"clickedButton": "checkinButton"
+	// 	});
 
-		// process no further
-		return;
-	};
+	// 	// process no further
+	// 	return;
+	// };
 
 	
 
