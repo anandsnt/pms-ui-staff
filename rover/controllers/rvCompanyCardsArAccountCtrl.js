@@ -22,6 +22,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 		$scope.saveNote = function(){
 			
 			var successCallbackOfsaveARNote = function(){
+				$scope.$emit("hideLoader");
 				$scope.arAccountNotes.ar_notes.push($scope.ARData.note);
 				$scope.ARData.note = "";
 				console.log($scope.arAccountNotes)
@@ -32,7 +33,13 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 		}
 		var updateArAccount = function(){
-			alert("dd");
+			
+			var successCallbackOfsaveARDetails = function(data){
+				$scope.$emit("hideLoader");
+				console.log(data);
+			};
+			var dataToSend = {"account_id":$scope.contactInformation.id,"details":$scope.arAccountDetails};
+			$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails);
 		};
 
 

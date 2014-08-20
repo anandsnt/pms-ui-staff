@@ -226,8 +226,22 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		this.saveARNote = function(data) {
 			var id = data.account_id;
 			var deferred = $q.defer();
-			var url = '/api/accounts/'+id+'/save_ar_notes';
+			var url = '/api/accounts/'+id+'/save_ar_note';
 			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.saveARDetails = function(data) {
+			data.details.account_id = data.account_id;
+			alert("x");
+			console.log(data.details);
+			var deferred = $q.defer();
+			var url = 'api/accounts/save_ar_details';
+			rvBaseWebSrvV2.postJSON(url,data.details).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
