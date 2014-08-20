@@ -14,8 +14,6 @@ sntRover.controller('rvAvailabilityMainController', [
 		$scope.setAvailability = function(){
 			$scope.$emit("showLoader");
 			if($scope.availabilityToShow == 'room'){
-				var emptyDict = {};
-				rvAvailabilitySrv.updateData (emptyDict);
 				$scope.availabilityToShow = 'house';				
 			}
 			else if($scope.availabilityToShow == 'house'){
@@ -25,6 +23,7 @@ sntRover.controller('rvAvailabilityMainController', [
 		};	
 
 		/**
+		* function to load different template based the availability chosen
 		*/
 		$scope.getTemplateUrl = function()	{
 			if($scope.availabilityToShow == 'room'){
