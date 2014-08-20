@@ -1,0 +1,26 @@
+
+
+
+"LIKES":"Likes",
+"ROOM_ASSIGMENT_SETUP_MSG":"Show on room assignment filter/room setup",
+"TEXT_VALUE":"Text value",
+"TEXTBOX":"Textbox",
+"ONE_SELECTION_TWO_OPTIONS_TEXT":"One selection / Two options",
+"RADIO_BTN_LIST":"Radio button list",
+"ONE_SELECTION_MULTIPLE_OPTIONS_TEXT":"One selection / Multiple options",
+"SELECTBOX":"Selectbox",
+"MULTIPLE_OPTIONS_MULTIPLE_SELECTION_TEXT":"Multiple options / Multiple selections",
+"CHECKBOX_LIST":"Checkbox list",
+"OPTIONS":"Options",
+"NEWSPAPER":"Newspaper",
+"ADD_NEW_OPTION":"Add new option",
+"CATEGORY_NAME_PLACEHOLDER":"Enter category name",
+"ROOM_FEATURE":"Room Feature",
+"ROOM_TYPE":"Room Type",
+"FREQUENT_FLYER_PROGRAMS":"Frequent Flyer Programs",
+"HOTEL_LOYALTY_PROGRAMS":"Hotel Loyalty Programs",
+"HOTEL_LOYALTY_PROGRAM":"Hotel Loyalty Program",
+"PROGRAM_NAME_PLACEHOLDER":"Enter program name",
+"CODE_NAME_PLACEHOLDER":"Enter program code",
+"LEVELS":"Levels",
+"ADD_NEW_LEVEL":"Add new level"

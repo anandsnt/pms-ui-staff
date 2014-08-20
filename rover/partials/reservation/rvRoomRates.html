@@ -8,28 +8,28 @@
             <div id="guest-options" class="reservation-guests" ng-show="stateCheck.guestOptionsIsEditable">
                 <div class="select adults">
                     <label for="room-adults" class="label" translate>ADULTS</label>
-                    <select name="room-adults" id="room-adults" ng-model="stateCheck.selectedStayDate.guests.adults" ng-change="updateDayOccupancy('adults')">
+                    <select name="room-adults" id="room-adults" ng-model="stateCheck.selectedStayDate.guests.adults" ng-change="updateDayOccupancy('adults'); toggleEditGuestOptions()">
                         <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i == stateCheck.selectedStayDate.guests.adults">{{i}}</option>
                     </select>
                 </div>
                 <div class="select children">
                     <label for="room-children" class="label" translate>CHILDREN</label>
-                    <select name="room-children" id="room-children" ng-model="stateCheck.selectedStayDate.guests.children" ng-change="updateDayOccupancy('children')">
+                    <select name="room-children" id="room-children" ng-model="stateCheck.selectedStayDate.guests.children" ng-change="updateDayOccupancy('children'); toggleEditGuestOptions()">
                         <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i == stateCheck.selectedStayDate.guests.children">{{i}}</option>
                     </select>
                 </div>
                 <div class="select infants">
                     <label for="room-infants" class="label" translate>INFANTS</label>
-                    <select name="room-infants" id="room-infants" ng-model="stateCheck.selectedStayDate.guests.infants" ng-change="updateDayOccupancy('infants')">
+                    <select name="room-infants" id="room-infants" ng-model="stateCheck.selectedStayDate.guests.infants" ng-change="updateDayOccupancy('infants'); toggleEditGuestOptions()">
                         <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i == stateCheck.selectedStayDate.guests.infants">{{i}}</option>
                     </select>
                 </div>
             </div>
         </div>
         <ul>
-            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
-            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">{{'RESV_ROOM'|translate}}</li>
-            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
+            <li ng-show="otherData.recommendedRateDisplay" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED';refreshScroll()">{{'RESV_RECOMMENDED'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'; refreshScroll()">{{'RESV_ROOM'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE';refreshScroll()">{{'RESV_RATE'|translate}}</li>
         </ul>
         <div class="find-rates" ng-show="activeCriteria == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button> <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
@@ -37,7 +37,7 @@
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event)">
+            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event)">
                 <option value="" translate>RESV_ALL_ROOMS</option>
             </select>
         </div>
@@ -56,8 +56,8 @@
                             <h4 translate>RESV_BEST_RATE</h4>
                             <div class="price">{{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span translate>RESV_AVG_NIGHT</span></div>
     
-                            <button ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</butt   on>
-                            <button ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1}" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
+                            <button ng-show="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</butt   on>
+                            <button ng-hide="stateCheck.selectedStayDate.rate.id == roomAvailability[room.id].defaultRate && stateCheck.preferredType == room.id" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(roomAvailability[room.id].defaultRate) > -1}" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
                         </div>
                     </a>
                     <!-- Rates list -->
@@ -70,8 +70,8 @@
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
 
-                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
-                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1}"  ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
+                                <button ng-show="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
+                                <button ng-hide="stateCheck.selectedStayDate.rate.id == rate && stateCheck.preferredType == room.id" class="button green" ng-class = "{'red': stateCheck.restrictedContractedRates[room.id].indexOf(rate) > -1}"  ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
 
                             <!-- Rate Details -->
@@ -87,7 +87,7 @@
                                         <tr>
                                             <th translate>DATE</th>
                                             <th translate>RESV_RATE</th>
-                                            <th>{{'TAX'|translate}}({{tax}}%)</th>
+                                            <th>{{'TAX'|translate}}({{roomAvailability[room.id].total[rate].percent}})</th>
                                             <th translate>RESV_TOTAL</th>
                                             <th class="edit"></th>
                                         </tr>
@@ -108,7 +108,7 @@
                                             <td>{{day.obj | date: dayAndDateCS }}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
-                                            <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
+                                            <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].total | number: 2}}</td>
                                             <td class="edit"></td>
                                         </tr>
                                     </tbody>
@@ -128,15 +128,15 @@
                     </div>
                     <div class="book-rate">
                         <div class="select" ng-click="$event.stopPropagation()">
-                            <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()" ng-disabled="activeCriteria == 'ROOM_TYPE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)">
+                            <select name="room-1-type" class="placeholder" ng-model="selectedRoom" ng-change="refreshScroll()" ng-disabled="activeCriteria == 'ROOM_TYPE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
                                 <!-- <option value="-1">Select Room Type</option> -->
                                 <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="room.id == rate.preferredType">{{room.name}}</option>
                             </select>
                         </div>
                         <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
 
-                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
-                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id" ng-class = "{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1}" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
+                        <button ng-show="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" class="button white green-text" ng-click="handleNoEdit($event)">CURRENT RATE</button>
+                        <button ng-hide="stateCheck.selectedStayDate.rate.id == rate.rate.id && stateCheck.preferredType == selectedRoom" ng-class = "{'red': stateCheck.restrictedContractedRates[selectedRoom].indexOf(rate.rate.id) > -1}" class="button green" ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
                     </div>
                 </a>
 
@@ -152,7 +152,7 @@
                                 <tr>
                                     <th translate>DATE</th>
                                     <th translate>RESV_RATE</th>
-                                    <th>{{'TAX'|translate}}({{tax}}%)</th>
+                                    <th>{{'TAX'|translate}}({{roomAvailability[selectedRoom].total[rate.rate.id].percent}})</th>
                                     <th translate>RESV_TOTAL</th>
                                     <th class="edit"></th>
                                 </tr>
@@ -173,7 +173,7 @@
                                     <td>{{day.obj | date: dayAndDateCS }}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>
-                                    <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
+                                    <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].total | number: 2}}</td>
                                     <td class="edit"></td>
                                 </tr>
                             </tbody>

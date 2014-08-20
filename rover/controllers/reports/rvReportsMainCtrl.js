@@ -11,9 +11,13 @@ sntRover.controller('RVReportsMainCtrl', [
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
 		    hide: true,
-		    title: 'Reports',
+		    title: $filter('translate')('REPORTS'),
 		    callback: 'goBackReportList',
-		    scope: $scope
+		    scope: $scope,
+
+		    // since there is no state change we must declare this explicitly
+		    // else there can be errors in future animations
+		    noStateChange: true
 		};
 
 		$scope.setTitle( 'Stats & Reports' );

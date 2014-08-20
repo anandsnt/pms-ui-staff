@@ -1,8 +1,21 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
+
+		// set the previous state
+		$rootScope.setPrevState = {
+		    title: $filter('translate')('ENHANCE_STAY'),
+		    name: 'rover.reservation.staycard.mainCard.addons',
+		    param: {
+		        from_date: $scope.reservationData.arrivalDate,
+		        to_date: $scope.reservationData.departureDate
+		    }
+		}
 		
+
+
+
 		$scope.init = function() {
 			$scope.data = {};
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
@@ -35,6 +48,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var paymentFetchSuccess = function(data) {
 				$scope.data.paymentMethods = data;
 				$scope.$emit('hideLoader');
+				var payments = _.where(data, {
+					value: $scope.reservationData.paymentType.type.value
+				});
+				if (payments.length > 0) {
+					$scope.reservationData.paymentType.type = payments[0];
+				}
 			};
 			var paymentFetchError = function(data) {
 				$scope.errorMessage = data;
@@ -296,7 +315,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 			} else {
 				$scope.initReservationData();
-				$state.go('rover.staycard.reservation.search');
+				$state.go('rover.reservation.search');
 			}
 		};
 

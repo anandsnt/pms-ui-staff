@@ -127,8 +127,14 @@
                         </li>
                     </ul>
                 </div>
-                <ul class="total-stay-cost">
-                    <li><span class="label" translate>TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</li>
+                <ul class="total-stay-cost">                	
+                	<li ng-repeat="row in reservationData.taxDetails">
+                        <!-- TODO : REMOVE THE ADDITIONAL INFO FROM THE BELOW LINE AFTER FUNCTIONAL TESTING-->
+                		<span class="label" translate> {{row.description}} </span>
+                		{{currencySymbol}}{{ row.amount | number : 2}}
+                	</li>
+                	
+                    <li><span class="label" translate>TOTAL_TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</li>
                     <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong></li>
                 </ul>
             </div> 

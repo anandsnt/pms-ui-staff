@@ -8,7 +8,7 @@ angular.module('cacheVaultModule', [])
 			if ( 'number' === typeof value || 'string' === typeof value ) {
 				$_store.put( key, value );
 			} else {
-				console.warn( 'Not allowed to save ' + typeof value + ' type into cacheVault!' );
+				console.warn( 'Not allowed to save "' + key + '" with typeof "' + typeof value + '" type into cacheVault!' );
 			}
 		};
 

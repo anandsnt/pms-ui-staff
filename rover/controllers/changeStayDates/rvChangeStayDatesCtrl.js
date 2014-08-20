@@ -7,7 +7,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 
 	// set a back button on header
 	$rootScope.setPrevState = {
-		title: 'Stay Card',
+		title: $filter('translate')('STAY_CARD'),
 		callback: 'goBack',
 		scope: $scope
 	}
@@ -520,12 +520,11 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		}, 300);
 	};
 
-	$scope.goToRoomAndRatesCalendar = function() {
+	$scope.goToRoomAndRates = function() {
 		$state.go('rover.reservation.staycard.mainCard.roomType', {
 			from_date: $scope.confirmedCheckinDate,
 			to_date: $scope.confirmedCheckoutDate,
-			view: "CALENDAR",
-			fromState: 'rover.reservation.staycard.reservationcard.reservationdetails',
+			fromState: 'STAY_CARD',
 			company_id: $scope.reservationData.company.id,
 			travel_agent_id: $scope.reservationData.travelAgent.id
 		});

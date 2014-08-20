@@ -4,6 +4,7 @@
 			<h2 translate="IBEACON_SETUP"></h2>
 			<span class="count"> ({{totalCount}}) </span>
 			<a class="action add" ui-sref="admin.iBeaconNewDetails({action:'add'})" ng-click="showLoader()" ng-show="isIpad" translate="ADD_NEW_SMALL"></a>
+			<a class="action back" ng-click="goBackToPreviousState()"translate="BACK"></a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
@@ -30,15 +31,15 @@
 	              		</div>
 					</td>
 					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': ibeacon.beacon_status}" header-class="width-15">
-						<div class="entry" ng-click="toggleActive(ibeacon.beacon_id,ibeacon.status)">
-							<div class="switch-button single" ng-class="{'on': ibeacon.status}">
+						<div class="entry" >
+							<div class="switch-button single" ng-class="{'on': ibeacon.status}" ng-click="toggleActive(ibeacon.beacon_id,ibeacon.status)">
 								<input type="checkbox"  ng-checked="ibeacon.status">
 								<span class="switch-icon"></span>
 							</div>
 						</div>
 					</td>
-					<td header-class="width-15">
-						 <span class="icons delete_small cursor_pointer" ng-click="deleteBeacon(ibeacon.beacon_id)"  ng-hide="false">&nbsp;</span>
+					<td data-title="'Delete'" header-class="width-15">
+						 <span class="icons icon-delete large-icon cursor_pointer" ng-click="deleteBeacon(ibeacon.beacon_id)"  ng-hide="false">&nbsp;</span>
 					</td>
 				</tr>
 			</tbody>

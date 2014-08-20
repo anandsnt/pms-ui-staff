@@ -27,9 +27,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		fromState: 'rover.housekeeping.roomDetails',
 		toState  : 'rover.housekeeping.roomStatus'
 	}, {
-		fromState: 'rover.reservation.staycard.reservationcard.reservationdetails',
-		toState  : 'rover.search'
-	}, {
 		fromState: 'rover.reservation.staycard.billcard',
 		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
 	}, {
@@ -99,7 +96,11 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// ok boys we are gonna sit this one out
 		// 'scope.callback' is will be running the show
 		if ( !!options.scope ) {
-			$_mustRevAnim = reverse ? options.reverse : true;
+
+			// NOTE: if the controller explicitly says there is not state change
+			// $_mustRevAnim must be set false, else check further
+			$_mustRevAnim = options.noStateChange ? false : (reverse ? options.reverse : true);
+			
 			options.scope[options.callback]();
 			return;
 		};
@@ -130,22 +131,22 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
+		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
 		// with its own desired values
 		$rootScope.setPrevState = {};
 
-		// reset this flag
-		$rootScope.returnBack = false;
-
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
-			$_mustRevAnim = false;
 			$rootScope.returnBack = true;
 		} else {
 			$rootScope.returnBack = false;
 		}
+
+		// reset this flag
+		$_mustRevAnim = false;
 
 		// saving the prevState name and params
 		$_prevStateName  = fromState.name;
@@ -165,6 +166,9 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 			toParams.useCache = true;
 			$_userReqBack = false;
 		};
+
+		// reset this flag
+		$rootScope.returnBack = false;
 	});
 }]);
 

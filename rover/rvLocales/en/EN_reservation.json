@@ -12,6 +12,7 @@
     "AVG_NIGHT": "avg/night",
     "EACH": "each",
     "TAX": "Tax",
+    "TOTAL_TAX": "Total Tax",
     "TOTAL_STAY_COST": "Total Stay Cost",
     "FIRST_NAME": "First name",
     "LAST_NAME": "Last Name",
@@ -98,4 +99,5 @@
     "OVERBOOK_TEXT":"availability on one or more of the selected dates. Overbook?",
     "YES":"Yes",
     "NO":"No",
-    "SHOW_STAY_DATES": "Show Stay Dates"
+    "SHOW_STAY_DATES": "Show Stay Dates",
+    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date"

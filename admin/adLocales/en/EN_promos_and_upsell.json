@@ -1,0 +1,30 @@
+
+
+
+"DAILY_UPSELL_SETUP":"Daily Upsell Setup",
+"UPSELL_ROOMS":"Upsell Rooms",
+"DAILY_UPSELL":"Daily Upsell",
+"TARGETS":"Targets",
+"TARGET":"Target",
+"UPSELL_ONE_NIGHT_STAYS":"Upsell 1 Night Stays Only",
+"FORCE_UPSELL":"Force Upsell",
+"ROOM_LEVEL_TARGETS":"Room Level Targets ",
+"LEVEL_ONE":"Level 1",
+"LEVEL_TWO":"Level 2",
+"LEVEL_THREE":"Level 3",
+"DROP_HERE_FOR_LEVEL_ONE":"Drop here for Level 1",
+"DROP_HERE_FOR_LEVEL_TWO":"Drop here for Level 2",
+"DROP_HERE_FOR_LEVEL_THREE":"Drop here for Level 3",
+"LATE_CHECKOUT_UPSELL":"Late Checkout Upsell",
+"LATE_CHECKOUT":"Late Checkout",
+"UPSELL":"Upsell",
+"EXCULUDE_GUEST_IN_PRE_ALLOCATED_ROOMS":"Exclude guests in pre allocated rooms",
+"SEND_UPSELL_ALERT_TO_ALL_GUESTS":"Send Upsell alert to all guests [AM]",
+"NUMBER_OF_LATE_CHECKOUTS_PER_DAY":"NUMBER OF LATE CHECK OUT'S PER DAY",
+"CHECKOUT_TIME_EXTENDED_TO":"CheckOut Time extended to [PM]",
+"TYPE_NUMBER":"Type number",
+"CHARGE":"Charge",
+"LIMITED_LATE_CHECK_OUTS_BY_ROOM_TYPE":"LIMITED LATE CHECK OUT'S BY ROOM TYPE",
+"ADD_ROOM_TYPE":"Add room type",
+"MAX_PER_DAY":" Max per day"
+

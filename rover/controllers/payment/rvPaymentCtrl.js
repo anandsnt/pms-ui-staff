@@ -33,15 +33,15 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.isFromGuestCard = true;
 	}
 	
-	var scrollerOptions = {click: true, preventDefault: false};
-	$scope.setScroller('addPayment',scrollerOptions);
-	//$scope.refreshScroll();
-
-	$scope.refreshScroll = function(){
-		setTimeout(function() {
-			$scope.refreshScroller('addPayment');
-		}, 500);
-	};
+	// var scrollerOptions = {click: true, preventDefault: false, preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }};
+	// $scope.setScroller('addPayment', scrollerOptions);
+	// //$scope.refreshScroll();
+// 
+	// $scope.refreshScroll = function(){
+		// setTimeout(function() {
+			// $scope.refreshScroller('addPayment');
+		// }, 500);
+	// };
 
 	
 	/*
@@ -124,7 +124,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.is_from_bill = true;
 				$scope.saveData.id = $scope.paymentData.bills[billIndex].credit_card_details.payment_id;
 			}
-			$scope.refreshScroll();
+			// $scope.refreshScroll();
 		}
 	};
 	
@@ -147,9 +147,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.id = "";
 			}
 		}
-		setTimeout(function(){
-			$scope.refreshScroller('addPayment');
-		}, 1000);
+		// setTimeout(function(){
+			// $scope.refreshScroller('addPayment');
+		// }, 1000);
 		
 	};
 	/*
@@ -275,6 +275,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.ksn = $scope.passData.ksn;
 			$scope.saveData.pan = $scope.passData.pan;
 			$scope.saveData.mli_token = $scope.passData.token;
+			$scope.saveData.add_to_guest_card = true;
 		}
 		$scope.saveData.session_id = MLISessionId;
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
@@ -296,7 +297,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
-			 $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
 	$scope.clickCancel = function(){
@@ -391,9 +392,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.saveData.is_from_guest_card = true;
 		$scope.saveData.is_from_bill = false;
 		$scope.saveData.id = $scope.guestPaymentList[index].id;
-		setTimeout(function(){
-			$scope.refreshScroller('addPayment');
-		}, 1000);
+		// setTimeout(function(){
+			// $scope.refreshScroller('addPayment');
+		// }, 1000);
    };
-	
+   
 }]);
