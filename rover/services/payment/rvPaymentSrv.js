@@ -74,6 +74,16 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			});	
 		return deferred.promise;
 	};
+	this.submitPaymentOnBill = function(dataToSrv){
+		var deferred = $q.defer();
+		var url = 'api/reservations/'+dataToSrv.reservation_id+'/submit_payment';
+		RVBaseWebSrv.postJSON(url, dataToSrv.postData).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
 	
 	
 	

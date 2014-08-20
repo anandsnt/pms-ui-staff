@@ -25,59 +25,59 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 		return deferred.promise;		
 	};
 
-// update the reservation details of cached data
-this.updateRoomDetails = function(confirmation, data) {
-	if ( !self.data ) {
-		return;
+	// update the reservation details of cached data
+	this.updateRoomDetails = function(confirmation, data) {
+		if ( !self.data ) {
+			return;
+		};
+
+		// update room related details based on confirmation id
+		for (var i = 0, j = self.data.length; i < j; i++) {
+			if ( self.data[i]['confirmation'] === confirmation ) {
+
+				// special check since the ctrl could ask to set room number to null
+				if ( data.hasOwnProperty('room') ) {
+					self.data[i]['room'] = data.room;
+				}
+
+				if ( data['reservation_status'] ) {
+					self.data[i]['reservation_status'] = data['reservation_status'];
+				}
+
+				if ( data['roomstatus'] ) {
+					self.data[i]['roomstatus'] = data['roomstatus'];
+				}
+
+				if ( data['fostatus'] ) {
+					self.data[i]['fostatus'] = data['fostatus'];
+				}
+
+				if ( data['is_reservation_queued'] ) {
+					self.data[i]['is_reservation_queued'] = data['is_reservation_queued'];
+				}
+
+				if ( data['is_queue_rooms_on'] ) {
+					self.data[i]['is_queue_rooms_on'] = data['is_queue_rooms_on'];
+				}
+
+				if ( data['late_checkout_time'] ) {
+					self.data[i]['late_checkout_time'] = data['late_checkout_time'];
+				}
+
+				if ( data['is_opted_late_checkout'] ) {
+					self.data[i]['is_opted_late_checkout'] = data['is_opted_late_checkout'];
+				}
+			}
+
+			// if not then check if this room number is assigned to any other reservation
+			// if so remove the room no from that reservation
+			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] ) {
+				self.data[i]['room'] = '';
+			}
+		};
 	};
 
-	// update room related details based on confirmation id
-	for (var i = 0, j = self.data.length; i < j; i++) {
-		if ( self.data[i]['confirmation'] === confirmation ) {
-
-			// special check since the ctrl could ask to set room number to null
-			if ( data.hasOwnProperty('room') ) {
-				self.data[i]['room'] = data.room;
-			}
-
-			if ( data['reservation_status'] ) {
-				self.data[i]['reservation_status'] = data['reservation_status'];
-			}
-
-			if ( data['roomstatus'] ) {
-				self.data[i]['roomstatus'] = data['roomstatus'];
-			}
-
-			if ( data['fostatus'] ) {
-				self.data[i]['fostatus'] = data['fostatus'];
-			}
-
-			if ( data['is_reservation_queued'] ) {
-				self.data[i]['is_reservation_queued'] = data['is_reservation_queued'];
-			}
-
-			if ( data['is_queue_rooms_on'] ) {
-				self.data[i]['is_queue_rooms_on'] = data['is_queue_rooms_on'];
-			}
-
-			if ( data['late_checkout_time'] ) {
-				self.data[i]['late_checkout_time'] = data['late_checkout_time'];
-			}
-
-			if ( data['is_opted_late_checkout'] ) {
-				self.data[i]['is_opted_late_checkout'] = data['is_opted_late_checkout'];
-			}
-		}
-
-		// if not then check if this room number is assigned to any other reservation
-		// if so remove the room no from that reservation
-		else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] ) {
-			self.data[i]['room'] = '';
-		}
-	};
-};
-
-	// update the room no. of cached data
+	// update the guest details of cached data
 	this.updateGuestDetails = function(guestid, data) {
 		if ( !self.data ) {
 			return;
@@ -104,12 +104,13 @@ this.updateRoomDetails = function(confirmation, data) {
 			};
 		};
 	};
-	
+	//self.searchByCCData = {};
 	this.searchByCC = function(swipeData){
 		var deferred = $q.defer();
 		var url = '/staff/payments/search_by_cc';
 		RVBaseWebSrv.postJSON(url, swipeData).then(function(data) {
 			deferred.resolve(data);
+			self.data = data;
 		}, function(data) {
 			deferred.reject(data);
 		});
