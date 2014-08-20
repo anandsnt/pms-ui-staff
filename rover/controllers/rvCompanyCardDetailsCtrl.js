@@ -76,15 +76,13 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
 			$scope.$emit("saveContactInformation");
 		}
-		
+
 	};
 
 	/**
 	* remaining portion will be the Controller class of company card's contact info
 	*/
 	var presentContactInfo = {};
-	var presentArDetails = {};
-	var presentArNotes ={};
 	/**
 	* success callback of initial fetch data
 	*/
@@ -107,17 +105,12 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	var successCallbackFetchArDetails = function(data){
 		$scope.$emit("hideLoader");
 		$scope.arAccountDetails = data;
-		//taking a deep copy of copy of contact info. for handling save operation
-		//we are not associating with scope in order to avoid watch
-		presentArDetails = JSON.parse(JSON.stringify($scope.arAccountDetails));
+		$scope.$broadcast('ARDetailsRecieved');
 	};
 
 	var successCallbackFetchArNotes = function(data){
 		$scope.$emit("hideLoader");
 		$scope.arAccountNotes = data;
-		//taking a deep copy of copy of contact info. for handling save operation
-		//we are not associating with scope in order to avoid watch
-		presentArNotes = JSON.parse(JSON.stringify($scope.arAccountNotes));
 	};
 
 	/**
@@ -146,9 +139,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.arAccountNotes = {};
 		$scope.arAccountDetails = {};
 		presentContactInfo = {};
-		presentArDetails ={};
-		presentArNotes = {}
-		
 
 	}
 	//we are checking for edit screen
