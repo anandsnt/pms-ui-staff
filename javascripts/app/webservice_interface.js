@@ -133,8 +133,9 @@ var WebServiceInterface = function(){
 			errorMessage = 'Internal Server Error [500].';
 		}else if (jqXHR.status == 520) {
 			errorMessage = 'OWS Connectivity Error';
-		}
-		else {
+		} else if (jqXHR.status == 501){
+			errorMessage = ERROR_MESSAGE_501; //TODO: Add custom message
+		}else {
 			errorMessage = 'Uncaught Error.\n [' + jqXHR.status + '] ' + errorThrown;
 		}
 		return errorMessage;
@@ -260,15 +261,15 @@ var WebServiceInterface = function(){
 			error: function(jqXHR, textStatus, errorThrown){
                 var urlEndsWith = requestUrl.split('/')[requestUrl.split('/').length - 1];
                 
-                if (jqXHR.status=="520" && urlEndsWith != "test_pms_connection") {
+                if ((jqXHR.status=="520" || jqXHR.status=="502") && urlEndsWith != "test_pms_connection") {
 					sntapp.activityIndicator.hideActivityIndicator();
                 	sntapp.showOWSErrorPopup();
                 	return;
                 }
 
                 if (jqXHR.status=="401") { sntapp.logout(); return;}
-                if (jqXHR.status=="501" || jqXHR.status=="502" || jqXHR.status=="503") {
-
+                //Status codes updated as part of CICO-9089
+                if (jqXHR.status=="503" || jqXHR.status=="504") {
                     location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
                     return;
                 }

@@ -18,3 +18,5 @@ XHR_STATUS = {
 	REJECTED: "/500",
 	SERVER_DOWN: "/500"
 }
+
+ERROR_MESSAGE_501 = "Something went wrong. Please try again";
