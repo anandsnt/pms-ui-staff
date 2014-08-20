@@ -84,10 +84,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 				$scope.currentSelectedRate = data.selectedRateDetails;
 				$scope.ratesDisplayed.push(data.selectedRateDetails);
 			}
-
+			$scope.calendarData = data;
         	$scope.currentFilterData.filterConfigured = true;
 			$scope.$emit('hideLoader');
-			$scope.calendarData = data;
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
 				$scope.refreshScroller();
 			}
