@@ -3,31 +3,31 @@
     <ul>
         <li>Today
         	<span ng-show="escapeNull(statisticsData.occupancy.today)!==''">
-        		{{statisticsData.occupancy.today | number : 2}}%
+        		{{statisticsData.occupancy.today | round}}%
         	</span>       	
         </li>
 
         <li>{{tomorrow|date:monthAndDate}}
         	<span ng-show="escapeNull(statisticsData.occupancy.tomorrow)!==''">
-        		{{statisticsData.occupancy.tomorrow | number : 2}}%
+        		{{statisticsData.occupancy.tomorrow | round}}%
         	</span>       	
         </li>
 
         <li>{{dayAfterTomorrow|date:monthAndDate}}
         	<span ng-show="escapeNull(statisticsData.occupancy.day_after_tomorrow)!==''">
-        		{{statisticsData.occupancy.day_after_tomorrow | number : 2}}%
+        		{{statisticsData.occupancy.day_after_tomorrow | round}}%
         	</span>       	
         </li>
 
         <li ng-show="statisticsData.occupancy.fullMonth!=''">{{userInfo.business_date|date:fullMonth}}
         	<span ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
-        		{{statisticsData.occupancy.current_month | number : 2}}%
+        		{{statisticsData.occupancy.current_month | round}}%
         	</span>
         </li>
 
         <li ng-show="statisticsData.occupancy.current_year!=''">{{userInfo.business_date|date:fullYear}}
         	<span ng-show="escapeNull(statisticsData.occupancy.current_year)!==''">
-        		{{statisticsData.occupancy.current_year | number : 2}}%
+        		{{statisticsData.occupancy.current_year | round}}%
         	</span>
         </li>
     </ul>
