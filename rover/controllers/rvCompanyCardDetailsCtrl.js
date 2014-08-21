@@ -67,7 +67,13 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	*/
 	$scope.companyCardClicked = function($event){
 
+		//to check if click is outside the AR accounts Tab
+		if(!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))){
+				$scope.$broadcast("saveArAccount");
+		};
+
 		$event.stopPropagation();
+
 		if(getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab == 'cc-contact-info'){
 			return;
 		}
@@ -75,10 +81,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			return;
 		}
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
-
 			$scope.$emit("saveContactInformation");
-			$scope.$broadcast("saveArAccount");//save ar details if any change
 		}
+
+		
 
 	};
 

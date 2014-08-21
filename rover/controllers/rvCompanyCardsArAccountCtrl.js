@@ -69,7 +69,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 		 */
 		$scope.$on('saveArAccount', function(event) {
 			event.preventDefault();
-			//event.stopPropagation();
 			updateArAccount();
 		});
 
