@@ -40,7 +40,7 @@ var Search = function(domRef) {
 			} else if (type == "DUEOUT") {
 				searchTitle = "Checking Out";
 			} else if (type == "INHOUSE") {
-				searchTitle = "In House";
+				searchTitle = "Stayovers";
 			}
 			var searchTitleHtml = that.myDomElement.find('#search-title').html();
 			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
@@ -189,10 +189,11 @@ var Search = function(domRef) {
 		//Change the search heading to "Search"
 		if ( typeof e == "undefined") {
 			var searchTitleHtml = $('#search_list #search-title').html();
+			
 			var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
 			var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
 			var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
-			var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+			var newSearchTitleHtml = newSearchTitleHtml.replace("Stayovers", "Search");
 			$('#search_list #search-title').html(newSearchTitleHtml);
 		}
 
@@ -383,7 +384,7 @@ var Search = function(domRef) {
 		var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
-		newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+		newSearchTitleHtml = newSearchTitleHtml.replace("Stayovers", "Search");
 
 		that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 		// Clear button visibility toggle
