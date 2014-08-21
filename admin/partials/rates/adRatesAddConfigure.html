@@ -10,7 +10,7 @@
     <form class="form form-rate-config">
         <div style="width:100%;">
             <ul>        
-                <li ng-click="$emit('changeMenu', '');" class="cursor-hand">
+                <li ng-click="closeDateRangeGrid(dateRange, $index)" class="cursor-hand">
                     <span  class="italic_text">{{dateRange.begin_date | date:'MMMM dd, y'}}</span>
                     <span style="margin:0 5px;">to</span>
                     <span  class="italic_text">{{dateRange.end_date | date:'MMMM dd, y'}}</span>

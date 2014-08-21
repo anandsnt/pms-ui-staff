@@ -2,7 +2,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
     function ($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state) {
         //expand first set
         $scope.currentClickedSet = 0;
-
+        $scope.setChanged = false;
         $scope.init = function(){
             // in edit mode last date range data will be expanded and details can't fetch by click
             // so intiating fetch data
@@ -276,36 +276,25 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             ngDialog.close();
         };
 
-        $scope.deleteSet = function () {
-            var successDeleteCallBack = function () {
-                $scope.$emit('hideLoader');
-                $scope.$parent.data.sets.splice($scope.deleteSetIndex, 1);
-                if ($scope.$parent.data.sets.length == 0){
-                    $scope.$emit('deletedAllDateRangeSets', $scope.dateRange.id);
-                }
-                $scope.closeConfirmDeleteSet();
-            };
-            $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, successDeleteCallBack);
-        };
-
-
         $scope.checkFieldEntered = function (index) {
             var enableSetUpdateButton = false;
-            angular.forEach($scope.data.sets[index].room_rates, function (value, key) {
-                if (value.hasOwnProperty("single") && value.single != "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("double") && value.double != "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("extra_adult") && value.extra_adult != "") {
-                    enableSetUpdateButton = true;
-                }
-                if (value.hasOwnProperty("child") && value.child != "") {
-                    enableSetUpdateButton = true;
-                }
-            });
-            if (enableSetUpdateButton) {
+            // if($scope.rateData.id == ""){
+                angular.forEach($scope.data.sets[index].room_rates, function (value, key) {
+                    if (value.hasOwnProperty("single") && value.single != "") {
+                        enableSetUpdateButton = true;
+                    }
+                    if (value.hasOwnProperty("double") && value.double != "") {
+                        enableSetUpdateButton = true;
+                    }
+                    if (value.hasOwnProperty("extra_adult") && value.extra_adult != "") {
+                        enableSetUpdateButton = true;
+                    }
+                    if (value.hasOwnProperty("child") && value.child != "") {
+                        enableSetUpdateButton = true;
+                    }
+                });
+            // }
+            if (enableSetUpdateButton && $scope.setChanged) {
                 $scope.data.sets[index].isEnabled = true;
             } else {
                 $scope.data.sets[index].isEnabled = false;
@@ -343,6 +332,23 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
             return true;
         };
+
+        $scope.rateSetChanged = function(){
+            $scope.setChanged = true;
+        }
+
+        $scope.closeDateRangeGrid = function(dateRange, index){
+            $scope.activeDateRange = dateRange;
+            $scope.activeDateRangeIndex = index;
+            if($scope.setChanged){
+                ngDialog.open({
+                    template: '/assets/partials/rates/confirmRateSaveDialog.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }
+            $scope.setChanged = false;
+        }
 
         $scope.init();
     }
