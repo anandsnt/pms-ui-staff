@@ -760,14 +760,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			return;
 		}
 
-		// To add proper conditions after the api params are set
-		ngDialog.open({
+		// To check for ar account details in case of direct bills
+		var index = $scope.reservationBillData.bills.length - 1;
+		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null){
+			
+			$scope.account_id = ($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined')? "": $scope.reservationBillData.account_id;
+			ngDialog.open({
 				template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
 				controller: 'RVAccountReceivableMessagePopupCtrl',
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
-		return;
+			return;
+		}
 		
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
@@ -818,6 +823,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	// To handle review button click
 	$scope.clickedReviewButton = function(index){
+		// To check for ar account details in case of direct bills
+		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null){
+			
+			$scope.account_id = ($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined')? "": $scope.reservationBillData.account_id;
+			ngDialog.open({
+				template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+				controller: 'RVAccountReceivableMessagePopupCtrl',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+			return;
+		}
+		
 		$scope.reviewStatusArray[index].reviewStatus = true;
 		$scope.findNextBillToReview();
 	};

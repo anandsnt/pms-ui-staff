@@ -2,8 +2,8 @@ sntRover.service('RVAccountReceivableSrv',['$http', '$q', 'RVBaseWebSrv', functi
    
 	this.create = function(data){
 		var deferred = $q.defer();
-		var url = '/staff/payments/payment.json?user_id='+userId;
-		RVBaseWebSrv.getJSON(url).then(function(data) {
+		var url = 'api/accounts/save_ar_details.json';
+		RVBaseWebSrv.postJSON(url).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);

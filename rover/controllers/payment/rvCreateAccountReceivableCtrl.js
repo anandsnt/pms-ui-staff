@@ -1,8 +1,9 @@
 sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$state', 'RVAccountReceivableSrv','ngDialog', function($rootScope, $scope, $state, RVAccountReceivableSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
-	$scope.account_no = "";
+	$scope.ar_number = "";
 	$scope.successCreate = function(){
 		$scope.$emit("hideLoader");
+		$scope.reservationBillData.ar_number = $scope.ar_number;
 		ngDialog.close();
 	};
 	$scope.failureCreate = function(errorMessage){
@@ -11,9 +12,10 @@ sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$s
 		$scope.errorMessage = errorMessage;
 	};
 	$scope.createAccountReceivable = function(){
+		
 		var data = {
-			"id": "",
-			"account_no": $scope.account_no
+			"account_id": $scope.account_id,
+			"ar_number": $scope.ar_number
 		};
 		$scope.invokeApi(RVAccountReceivableSrv.create, data, $scope.successCreate, $scope.failureCreate);
 	};
