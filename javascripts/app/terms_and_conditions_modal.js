@@ -12,6 +12,8 @@ var showTermsAndConditionsModal = function(backDom){
 		
 		backDom.find("#terms-and-conditions").addClass("checked");
 		backDom.find("#terms-and-conditions-span").addClass("checked");
+		backDom.find("#terms-checkbox").attr("checked", true);
+		
 		that.hide();
 		
 	};
