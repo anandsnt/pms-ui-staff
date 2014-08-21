@@ -157,10 +157,6 @@ var RegistrationCardView = function(viewDom) {
 	    }
 	    if(getParentWithSelector(event, "#agree")){
 	    	event.preventDefault();
-	    	event.stopImmediatePropagation();
-	    	event.stopPropagation();
-	    	
-	    	
 	    	return that.showTermsAndConditionsModal();
 	    }
 	    
