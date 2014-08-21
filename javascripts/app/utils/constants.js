@@ -19,4 +19,5 @@ XHR_STATUS = {
 	SERVER_DOWN: "/500"
 }
 
-ERROR_MESSAGE_501 = "Something went wrong. Please try again";
+ERROR_MESSAGE_501 = "Unable to process request. Please try again";
+
