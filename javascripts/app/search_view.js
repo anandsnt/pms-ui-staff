@@ -29,6 +29,15 @@ var Search = function(domRef) {
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 			this.fetchSearchData(search_url, "", type);
 		}
+		if (type == "QUEUE_ROOMS") {
+			that.myDomElement.find("#no-results").html("");
+			var search_url = "search.json?is_queued_rooms_only=true";
+			searchTitle = "Queued Reservations";
+			var searchTitleHtml = that.myDomElement.find('#search-title').html();
+			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+			this.fetchSearchData(search_url, "", type);
+		}
 
 		/*preload the search results,
 		 if navigated to search screen by clicking checking-in/checking-out/in-house options
@@ -42,6 +51,7 @@ var Search = function(domRef) {
 			} else if (type == "INHOUSE") {
 				searchTitle = "Stayovers";
 			}
+
 			var searchTitleHtml = that.myDomElement.find('#search-title').html();
 			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
@@ -159,6 +169,8 @@ var Search = function(domRef) {
 		that.myDomElement.find('#search-form').on('submit', that.submitSearchForm);
 
 		that.myDomElement.find('#late-checkout-alert').on('click', that.latecheckoutSelected);
+		that.myDomElement.find('#queue-rooms').on('click', that.queueRoomsSelected);
+		
 
 	};
 
@@ -176,10 +188,40 @@ var Search = function(domRef) {
 		that.fetchTerm = "";
 		searchTitle = "Checking Out Late";
 		var searchTitleHtml = that.myDomElement.find('#search-title').html();
-		var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+		var indexFound = searchTitleHtml.indexOf("<span");
+		var newSearchTitleHtml = "";
+		if(indexFound!= -1){
+			var htmlAfterCaption = searchTitleHtml.substr(indexFound);
+			newSearchTitleHtml = searchTitle + htmlAfterCaption;
+		}
+		/*var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+		var newSearchTitleHtml = newSearchTitleHtml.replace("Queued Reservations", searchTitle);
+		var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", searchTitle);
+		var newSearchTitleHtml = newSearchTitleHtml.replace("Stayovers", searchTitle);
+		var newSearchTitleHtml = newSearchTitleHtml.replace("Checking In", searchTitle);*/
 		that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 		var search_url = "search.json?is_late_checkout_only=true";
 		that.fetchSearchData(search_url, "", "LATE_CHECKOUT");
+
+	};
+	
+	this.queueRoomsSelected = function(e) {
+		e.preventDefault();
+		that.currentQuery = "";
+		that.fetchResults = [];
+		that.preloadedResults = [];
+		that.fetchTerm = "";
+		searchTitle = "Queued Reservations";
+		var searchTitleHtml = that.myDomElement.find('#search-title').html();
+		var indexFound = searchTitleHtml.indexOf("<span");
+		var newSearchTitleHtml = "";
+		if(indexFound!= -1){
+			var htmlAfterCaption = searchTitleHtml.substr(indexFound);
+			newSearchTitleHtml = searchTitle + htmlAfterCaption;
+		}
+		that.myDomElement.find('#search_list #search-title').html(newSearchTitleHtml);
+		var search_url = "search.json?is_queued_rooms_only=true";
+		that.fetchSearchData(search_url, "", "QUEUE_ROOMS");
 
 	};
 
@@ -250,6 +292,8 @@ var Search = function(domRef) {
 			searchType = "in house";
 		} else if (type == "LATE_CHECKOUT") {
 			searchType = "opted for late checkout";
+		} else if(type == "QUEUE_ROOMS"){
+			searchType = "opted for queue reservations";
 		}
 
         if(searchType != "" ) {
@@ -385,6 +429,7 @@ var Search = function(domRef) {
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Stayovers", "Search");
+		newSearchTitleHtml = newSearchTitleHtml.replace("Queued Reservations", "Search");
 
 		that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 		// Clear button visibility toggle
