@@ -1,10 +1,11 @@
 <div role="dialog" id="modal" class="modal-show">
-	<div class="modal-content new-content form warning">
-	  <div class="end-of-day">
-	   End of Day Routine starting now.
-	  </div>
+	<div class="modal-content new-content form warning" style="width:80%;">
+	 <button class="modal-close" type="button"  ng-click="closeThisDialog()"  id="modal-close"><span class="icons icon-close invert"></span></button>
+	   <div id="edit-preview" class="entry full-width notice" style="padding:5%;">
+                <h1 class="h4" translate style="text-transform:uppercase;">End of Day Routine starting now</h1>
+        </div>
 	  <div class="actions float">
-	    <button class="button modal-close white red-text" ng-click="closeThisDialog()">Ok</button>
+	    <button class="button modal-close white green-text" ng-click="closeThisDialog()">Ok</button>
 	  </div>
 	</div>
 </div>
