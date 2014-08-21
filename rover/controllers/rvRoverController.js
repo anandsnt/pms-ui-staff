@@ -328,7 +328,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
          ngDialog.open({
             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
             controller: 'RVEndOfDayModalController',
-            className: 'ngdialog-theme-plain calendar-modal'
+            className: 'end-of-day-popup ngdialog-theme-plain'
           });
       }
     };

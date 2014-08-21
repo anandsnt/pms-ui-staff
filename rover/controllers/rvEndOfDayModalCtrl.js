@@ -45,11 +45,13 @@ $scope.yesClick = function(){
 }
 
 $scope.continueClicked = function(){
+	
 	$scope.startProcessEnabled = false;
-	$scope.startProcess = false;
+	
 // explicitly handled error callback to set $scope.startProcessEnabled
 	var startProcessFailure = function(data){
 		$scope.$emit('hideLoader');
+		$scope.startProcess = false;
 		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
 
