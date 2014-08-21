@@ -524,6 +524,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $rootScope.showBussinessDateChangingPopup();
     });
 
+    // to reload app in case the bussiness date is changed
+    $rootScope.reloadApplication = function(){
+      $state.go('rover.dashboard', {}, {reload: true});
+    };    
+
   }
 ]);
 

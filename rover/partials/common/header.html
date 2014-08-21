@@ -24,7 +24,7 @@
 
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
-		{{userInfo.last_name}} </strong> | <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="date" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
+		{{userInfo.last_name}} </strong> | <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="blink_text" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
 	</span>
 	</h1>
 	<!-- Right side button -->
