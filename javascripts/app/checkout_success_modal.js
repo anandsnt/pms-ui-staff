@@ -13,29 +13,35 @@ var CheckoutSuccessModal = function(callBack) {
 	this.okButtonClicked = function(){
 		var checkinInspectedOnly = $("#headerDetails").attr('data-checkin-inspected-only');
 		var roomNumber = $("#headerDetails").attr('data-room-number');
-		var isReady = that.myDom.find(".switch-button").hasClass('on');
+		if(that.myDom.find('#checkout_message').attr("data-enable-room-status") == "true"){
+			var isReady = that.myDom.find(".switch-button").hasClass('on');
 		
-		if(isReady){
-			/*
-			 * "hkstatus_id": 1 for CLEAN
-			 * "hkstatus_id": 2 for INSPECTED
-			 */
-			if(checkinInspectedOnly === "true"){
-				var data  = { "hkstatus_id": 2, "room_no":roomNumber };
+			if(isReady){
+				/*
+				 * "hkstatus_id": 1 for CLEAN
+				 * "hkstatus_id": 2 for INSPECTED
+				 */
+				if(checkinInspectedOnly === "true"){
+					var data  = { "hkstatus_id": 2, "room_no":roomNumber };
+				}
+				else{
+					var data  = { "hkstatus_id": 1, "room_no":roomNumber };
+				}
+				// API call for make room as READY
+				var webservice = new WebServiceInterface();
+				var options = {
+					requestParameters : data,
+					successCallBack : that.hide(callBack)
+				};
+				webservice.postJSON('/house/change_house_keeping_status.json', options);
 			}
 			else{
-				var data  = { "hkstatus_id": 1, "room_no":roomNumber };
+				that.hide(callBack);
 			}
-			// API call for make room as READY
-			var webservice = new WebServiceInterface();
-			var options = {
-				requestParameters : data,
-				successCallBack : that.hide(callBack)
-			};
-			webservice.postJSON('/house/change_house_keeping_status.json', options);
 		}
 		else{
 			that.hide(callBack);
 		}
+		
 	};
 };
