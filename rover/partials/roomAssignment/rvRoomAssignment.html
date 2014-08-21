@@ -1,12 +1,12 @@
-<section role="complementary" id="room-assignment" class="content stay-card-inner check-in">
+<section role="complementary" id="room-assignment" class="content stay-card-inner" ng-class="{'check-in': reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'CHECKEDIN'])!=-1}">
 	<!-- Room assignment header -->
-	<input type="hidden" value="35889" id="roomassignment-ref-id">
+	<input type="hidden" value="" id="roomassignment-ref-id">
 	<!-- Room assignment header -->
 	<div class="reservation-header">
 		<!-- Other header details -->
 		<div class="data">
 			<span class="room"> <span class="guest-status room">room</span> 
-			<strong id="header-room-num" ng-class="getRoomStatusClass()" class="room-number"> {{reservationData.reservation_card.room_number}} </strong>
+			<strong ng-if="reservationData.reservation_card.room_number" id="header-room-num" ng-class="getRoomStatusClass()" class="room-number" > {{reservationData.reservation_card.room_number}} </strong>
 			<span id="room-type" data-room-type="DLK"> {{reservationData.reservation_card.room_type_description}} </span> </span>
 			<span class="nights"> <span class="guest-status nights"></span> {{reservationData.reservation_card.total_nights + " " + setNightsText()}}
 				 </span>
@@ -18,7 +18,7 @@
 	<div class="wrapper">
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Room assignment content -->
-		<div class="room-assignment-content">
+		<div class="room-assignment-content" ng-class="{'has-room': !!reservationData.reservation_card.room_number}">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
@@ -33,12 +33,12 @@
 					</div>
 				</div>
 				<div class="results">
-					<!-- Advanced search fields -->
+					<!-- Advanced search fields -->					
 					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
 					
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
-						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);" ng-show = "!isRoomListEmpty()">
+						<ul class="wrapper"  ng-show = "!isRoomListEmpty()">
 							<li ng-repeat="room in filteredRooms" ng-click="showMaximumOccupancyDialog($index)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span>
 									<span data-value="{{room.room_number}}" class="room-status" ng-class="getRoomStatusClassForRoom(room)" ng-show="room.room_status == 'NOTREADY'">{{getNotReadyRoomTag(room)}}</span>
@@ -65,6 +65,7 @@
 			</div>
 
 		</div>
+		<button id="unassign-room" class="button red" ng-show="reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && !!reservationData.reservation_card.room_number && isStandAlone" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
 	</div>
 
 </section>

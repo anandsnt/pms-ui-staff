@@ -389,7 +389,7 @@
 
 
 /* Dashboard page           ==============================*/
-     #dashboard {
+    #dashboard {
         z-index: 99;
 
         .wrapper {
@@ -536,7 +536,8 @@
             }
         }
     }
-     #dashboard-search {
+    
+    #dashboard-search {
         z-index: 999;
         .background(@white);
 
@@ -555,7 +556,8 @@
             #move > #to > .bottom();
         }
     }
-  /* 768px+               ==============================*/
+
+    /* 768px+               ==============================*/
     @media only screen and (min-width: 768px) {
         #dashboard {
             .wrapper {
@@ -726,7 +728,6 @@
         }
     }
        
-
 /* Search page              ==============================*/
     .search-results {
         position: relative;
@@ -3480,9 +3481,8 @@
             .rooms-listing,
             .upgrades {
                 position: relative;
-                width: 50%;
-                height: 100%;
                 overflow: hidden;
+                .size(100%, 50%);
                 .pull-left;
             }
 
@@ -3507,7 +3507,7 @@
                     .button {
                         padding: 0;
                         margin-right: 10px;
-                        .square(44px);
+                        .square(40px);
                         .pull-left; 
 
                         &.active {
@@ -3517,7 +3517,7 @@
                     }
 
                     .select {
-                        .calc-width(100, 54); /* %, px */
+                        .calc-width(100, 50);
                         .pull-left; 
                     }
                 }
@@ -3525,7 +3525,7 @@
                 /* Attributes filers and results ***/
                 .results {
                     position: relative;
-                    .calc-height(100, 70);
+                    .calc-height(100, 60);
 
                     /* Room attributes ***/
                     .attributes {
@@ -3585,11 +3585,10 @@
                         position: absolute;
                         top: 0;
                         left: 0;
-                        height: 100%;
-                        width: 100%;
                         padding-right: 10px;
                         background: @rcardTexture2;
                         z-index: 9;
+                        .square(100%);
 
                         li {
                             margin-bottom: 10px;
@@ -3609,7 +3608,7 @@
 
                         &.no-content {
                             padding: 0 40px;
-                            .calc-width(100, 10); /* %, px */
+                            .calc-width(100, 10);
 
                             .h1 { 
                                 font-size: 24px;
@@ -3777,6 +3776,18 @@
                     width: 50%;
                 }
             }
+
+            /* Room can be unassigned ***/
+            &.has-room { .calc-height(100, 170); }
+        }
+
+        #unassign-room {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            line-height: 50px;
+            width: 380px;
+            margin-left: -190px;
         }
     }
 

@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout){
 	
 	BaseCtrl.call(this, $scope);
 
@@ -42,6 +42,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			lineWidth : 1
 	};
 	width = 0;
+
+	console.log( reservationBillData );
 
 	if($scope.clickedButton == "checkoutButton"){
 		$scope.$emit('HeaderChanged', $filter('translate')('GUEST_BILL_TITLE'));
@@ -93,7 +95,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		
-		setTimeout(function(){
+		$timeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
         }, 500);
 		
@@ -657,7 +659,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.calculatedHeight = height;
 		
 		$scope.calculatedWidth = width;
-		setTimeout(function(){
+		
+		$timeout(function(){
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('billDays');
 			}, 
@@ -769,7 +772,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.errorMessage = data;
 	};
 	// To handle complete checkout button click
-	$scope.clickedCompleteCheckout = function(){
+	$scope.clickedCompleteCheckout = function() {
 
 		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
@@ -781,6 +784,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		var errorMsg = "";
+		var totalBal = 0;
+
+		// calculate total
+		for (var i = 0; i < reservationBillData.bills.length; i++) {
+			var bill = reservationBillData.bills[i];
+			totalBal += bill.total_amount * 1;
+		};
 		
 		if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
 			// Popup to accept and save email address.
@@ -814,6 +824,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		else if (!$scope.saveData.acceptCharges){
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
+		}
+		else if ($rootScope.isStandAlone && totalBal > 0) {
+			$scope.clickedPayButton();
 		}
 		else{
 			var data = {
