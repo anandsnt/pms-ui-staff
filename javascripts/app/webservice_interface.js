@@ -117,25 +117,23 @@ var WebServiceInterface = function(){
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
 		if (textStatus === 'parsererror') {
-			errorMessage = 'Requested JSON parse failed.';
+			errorMessage = 'Requested JSON parse failed';
               }
 		else if (textStatus === 'timeout') {
-			errorMessage = 'Time out error.';
+			errorMessage = 'Time out error';
 			}
 		else if (textStatus === 'abort') {
-			errorMessage = 'Ajax request aborted.';
+			errorMessage = 'Ajax request aborted';
 			}
 		else if (jqXHR.status === '0') {
-			errorMessage = 'Not connect.\n Verify Network.';
+			errorMessage = 'Not connect.\n Verify Network';
 		}else if (jqXHR.status == 404) {
 			errorMessage = 'Requested page not found. [404]';
-		}else if (jqXHR.status == 500) {
-			errorMessage = 'Internal Server Error [500].';
+		}else if (jqXHR.status == 500 || jqXHR.status == 501) {
+			errorMessage = ERROR_MESSAGE_COMMON;
 		}else if (jqXHR.status == 520) {
 			errorMessage = 'OWS Connectivity Error';
-		} else if (jqXHR.status == 501){
-			errorMessage = ERROR_MESSAGE_501; //TODO: Add custom message
-		}else {
+		} else {
 			errorMessage = 'Uncaught Error.\n [' + jqXHR.status + '] ' + errorThrown;
 		}
 		return errorMessage;
@@ -283,10 +281,13 @@ var WebServiceInterface = function(){
 
 				if(failureCallBack) {
 					var errorMessage = that.createErrorMessage(jqXHR, textStatus, errorThrown);
+					console.log(errorMessage);
 					if(failureCallBackParameters){
+						console.log("has parameters");
 						failureCallBack(errorMessage, failureCallBackParameters);
 					}
 					else{
+						console.log("no parameters");
 						failureCallBack(errorMessage);
 					}
 				}

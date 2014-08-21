@@ -1074,8 +1074,8 @@ function EventManager(options, _sources) {
         				    location.href = XHR_STATUS.SERVER_DOWN;
         				    return;
         				}
-        				if(jqxhr.status=="501"){
-        				    sntapp.notification.showErrorMessage(ERROR_MESSAGE_501);
+        				if(jqxhr.status=="501" || jqxhr.status=="500"){
+        				    sntapp.notification.showErrorMessage(ERROR_MESSAGE_COMMON);
         				}
 						applyAll(error, this, arguments);
 						callback();

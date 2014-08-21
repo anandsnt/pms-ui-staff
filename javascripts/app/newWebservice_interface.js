@@ -117,11 +117,11 @@ var NewWebServiceInterface = function(){
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
 		if (jqXHR.status === '0') {
-			errorMessage = 'Not connect.\n Verify Network.';
+			errorMessage = 'Not connect.\n Verify Network';
 		}else if (jqXHR.status == 404) {
 			errorMessage = 'Requested page not found. [404]';
-		}else if (jqXHR.status == 500) {
-			errorMessage = 'Internal Server Error [500].';			
+		}else if (jqXHR.status == 500 || jqXHR.status == 501) {
+			errorMessage = ERROR_MESSAGE_COMMON;			
 		}		
 		else if(jqXHR.responseJSON != ""){
 			errorMessage = jqXHR.responseJSON;
@@ -130,17 +130,14 @@ var NewWebServiceInterface = function(){
 			errorMessage = jqXHR.responseText;
 		}		
 		else if (textStatus === 'parsererror') {
-			errorMessage = 'Requested JSON parse failed.';
+			errorMessage = 'Requested JSON parse failed';
         } 
 		else if (textStatus === 'timeout') {
-			errorMessage = 'Time out error.';
+			errorMessage = 'Time out error';
 		} 
 		else if (textStatus === 'abort') {
-			errorMessage = 'Ajax request aborted.';
-		}else if (jqXHR.status == 501){
-			errorMessage = ERROR_MESSAGE_501; //TODO: Add custom message
-		}
-		else {
+			errorMessage = 'Ajax request aborted';
+		}else {
 			errorMessage = 'Error happened [' + jqXHR.status + '] ' + errorThrown;
 		}	
 		return errorMessage;
