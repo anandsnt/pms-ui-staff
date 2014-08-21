@@ -50,8 +50,8 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 			var successCallbackOfsaveARDetails = function(data){
 				$scope.$emit("hideLoader");
 			};
-			var dataToSend = {"id":$scope.contactInformation.id,"details":$scope.arAccountDetails};
-
+			var dataToSend = $scope.arAccountDetails;
+			dataToSend.id  = $scope.contactInformation.id
 			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
 		    var dataNotUpdated = false;
 		    //check if data was edited
