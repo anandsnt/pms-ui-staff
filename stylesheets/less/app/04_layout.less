@@ -343,6 +343,43 @@ body { overflow: hidden; }
 			left: 0;
 		}
 
+		.switch-button {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				.size(40px, 260px);
+				.show;
+
+				.data-off,
+                .data-on {
+                	font-size: 14px;
+                	line-height: 30px;
+                	text-transform: uppercase;
+                	height: 30px;
+
+                	.switch-icon { .gradient(@greenStart, @greenEnd); }
+
+                    &.data-off { 
+                        left: auto;
+                        right: 0;
+
+                        .switch-icon { margin: 0 5px 0 0; }
+                    }
+                    
+                    &.data-on { 
+                        left: auto;
+                        right: 100%;
+
+                        .switch-icon { margin: 0 0 0 5px; }
+                    }
+                }
+
+                &.on {
+                    .data-off { left: auto; right: -100%; }
+                    .data-on { left: auto; right: 0; }
+                }
+			}
+
 		.icon-alert {
 			position: absolute;
 			top: 10px;
