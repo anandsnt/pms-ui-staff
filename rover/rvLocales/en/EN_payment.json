@@ -25,8 +25,23 @@
     "PAY" : "Pay",
     "AMOUNT": "Amount",
     "WINDOW": "Window",
+
     "NEW_ACCOUNT_RECEIVABLE": "New Account Receivable",
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
-    "SELECT_WINDOW": "Select Bill"
+    "SELECT_WINDOW": "Select Bill",
+    
+    "PAY_BILL":"Pay Bill #",
+    "TAP_TO_CHANGE":"Tap to change",
+    "AMOUNT_TO_PAY":"Amount to pay",
+    "SUBMIT_PAYMENT":"Submit payment",
+    "CARD_NUMBER_PLACEHOLDER":"Enter Card number",
+    "MM":"MM",
+    "YY":"YY",
+    "NAME_ON_CARD_PLACEHOLDER":"Enter name on card",
+    "CCV":"CCV",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "ADD_NEW_CARD":"Add New Card",
+    "EXISTING_CARDS":"Existing Cards"
+
