@@ -32,7 +32,7 @@ var Search = function(domRef) {
 		if (type == "QUEUE_ROOMS") {
 			that.myDomElement.find("#no-results").html("");
 			var search_url = "search.json?is_queued_rooms_only=true";
-			searchTitle = "Queue Rooms";
+			searchTitle = "Queued Reservations";
 			var searchTitleHtml = that.myDomElement.find('#search-title').html();
 			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
@@ -50,7 +50,7 @@ var Search = function(domRef) {
 				searchTitle = "Checking Out";
 			} else if (type == "INHOUSE") {
 				searchTitle = "In House";
-			}
+			} 
 			var searchTitleHtml = that.myDomElement.find('#search-title').html();
 			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
@@ -258,6 +258,8 @@ var Search = function(domRef) {
 			searchType = "in house";
 		} else if (type == "LATE_CHECKOUT") {
 			searchType = "opted for late checkout";
+		} else if(type == "QUEUE_ROOMS"){
+			searchType = "opted for queue reservations";
 		}
 
         if(searchType != "" ) {
