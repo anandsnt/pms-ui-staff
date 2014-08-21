@@ -1,0 +1,84 @@
+<!-- Company Card Tab 3 -->
+
+<form method="post"  id="cc-ar-accounts" name="cc-ar-accounts" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-ar-accounts'"   aria-labelledby="ui-id-1"
+ role="tabpanel" aria-expanded="true" aria-hidden="false"
+ style="height:90%;" ng-iscroll="companyCardArAccountCtrl" ng-iscroll-delay="2000">
+
+    <div class="wrapper cc-contact-info-height1" style="height:170%;">
+
+    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <div class="holder left">
+            <rv-textbox value="arAccountDetails.ar_number" label="{{'AR_NUMBER' | translate}}" placeholder = "Enter AR Number" styleclass="full-width"></rv-textbox>
+
+            <div class="entry radio-check" ng-click="refreshScroller()">
+                <label for="opt-in" translate>USE_MAIN_ADDRESS</label>
+                <label class="checkbox"ng-class="{'checked': arAccountDetails.is_use_main_address}"><span class="icon-form icon-checkbox" ng-class="{'checked': arAccountDetails.is_use_main_address}"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="arAccountDetails.is_use_main_address">
+                    <span class="guest_card_promotions" translate>USE_MAIN_ADDRESS </span> </label>
+            </div>
+
+            <div class="entry radio-check" ng-click="refreshScroller()">
+                <label for="opt-in" translate>USE_MAIN_CONTACT</label>
+                <label class="checkbox"ng-class="{'checked': arAccountDetails.is_use_main_contact}"><span class="icon-form icon-checkbox" ng-class="{'checked': arAccountDetails.is_use_main_contact}"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="arAccountDetails.is_use_main_contact">
+                    <span class="guest_card_promotions" translate>USE_MAIN_CONTACT </span> </label>
+            </div>
+
+            <div ng-hide="arAccountDetails.is_use_main_address">
+                <strong class="h3 margin" translate>AR_ADDRESS</strong>
+                <rv-textbox value="arAccountDetails.ar_address_details.street1" label="Address" placeholder = "Enter Address Line 1" styleclass="margin"></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_address_details.street2" placeholder = "Enter Address Line 2" styleclass="no-label"></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_address_details.street3" placeholder = "Enter Address Line 3" styleclass="no-label full-width"></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_address_details.city" label="City" placeholder = "Enter City" styleclass="margin"></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_address_details.postal_code" label="Postal code" placeholder = "Enter Postal code" ></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_address_details.state" label="State" placeholder = "Enter State" styleclass="margin"></rv-textbox>
+
+                <div class="entry">
+                    <label for="company-country" translate>COUNTRY</label>
+                    <div class="select">
+                        <select iscroll-stop-propagation id="company-country" name="company-country" ng-model="arAccountDetails.ar_address_details.country_id">
+                            <option value="" class="placeholder" translate>SELECT_COUNTRY</option>
+                            <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country_id" >
+                                {{country.value}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+
+        <div class="holder right">
+            <div ng-hide="arAccountDetails.is_use_main_contact">
+                <strong class="h3 margin" translate>CONTACT_DETAILS</strong>
+
+                <rv-textbox value="arAccountDetails.ar_contact_details.contact_first_name" label="First name" placeholder = "Enter Contact First Name" styleclass="margin"></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_contact_details.contact_last_name" label="Last Name" placeholder = "Enter Contact Last Name" ></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_contact_details.job_title" label="Job title" placeholder = "Enter Job Title" styleclass="margin"></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_contact_details.phone" label="Phone" placeholder = "Enter Contact Phone" ></rv-textbox>
+
+                <rv-textbox value="arAccountDetails.ar_contact_details.email" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="full-width"></rv-textbox>
+            </div>
+
+            <strong class="h3 margin" translate>AR_NOTES</strong>
+            <textarea ng-model="ARData.note" style="width:80%;"></textarea>
+            <button ng-click="saveNote()">save note</button>
+            <ul style="overflow:scroll;height:100px;" ng-show="arAccountNotes.ar_notes.length>0">
+                <li ng-repeat="noteData in arAccountNotes.ar_notes track by $index" style="background:lightgray;">{{noteData.note}}</li>
+            </ul>
+            <strong class="h3 margin" translate>AR_DETAILS</strong>
+            <textarea ng-model="details"style="width:80%;"></textarea>
+
+        </div>
+    </div>
+</form>
+

@@ -132,7 +132,17 @@
 	"SAVE_NEW": "Save new ",
 	"CARD":"card?",
 	"NEW_COMPANY_CARD" : "New Company Card",
-	"NEW_TA_CARD": "New Travel Agent Card"
+	"NEW_TA_CARD": "New Travel Agent Card",
+
+    "AR_ACCOUNT":"AR Account",
+    "CREATE_ACCOUNT":"Create Account",
+    "AR_NUMBER":"AR NUMBER",
+    "AR_ADDRESS":"AR ADDRESS",
+    "USE_MAIN_ADDRESS":"Use Main Address",
+    "USE_MAIN_CONTACT":"Use Main Contact",
+    "AR_NOTES":"AR Notes",
+    "AR_DETAILS":"AR Details",
+    "CONTACT_DETAILS":"Contact Details"
 	
 ,    
     
@@ -154,7 +164,7 @@
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
     "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
-    "ENTER_CREDENTIALS": "Enter your credentials",
+    "ENTER_PASSWORD": "Enter your Password",
     "PASSWORD": "Password",
     "VERIFY": "Verify",
     "BUSSINESS_DAY_MSG_1": "This will close of the Business Day for",

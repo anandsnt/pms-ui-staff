@@ -49,7 +49,13 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		}
 		if($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts'){
 			$scope.$broadcast("saveContract");
-		}		
+		}
+		else if($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts'){
+			$scope.$broadcast("saveArAccount");
+		}	
+		else if(tabToSwitch == 'cc-ar-accounts'){
+			$scope.$broadcast("arAccountTabActive");
+		}	
 		$scope.currentSelectedTab = tabToSwitch;
 	};
 	
@@ -60,7 +66,14 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* function to handle click operation on company card, mainly used for saving
 	*/
 	$scope.companyCardClicked = function($event){
+
+		//to check if click is outside the AR accounts Tab
+		if(!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))){
+				$scope.$broadcast("saveArAccount");
+		};
+
 		$event.stopPropagation();
+
 		if(getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab == 'cc-contact-info'){
 			return;
 		}
@@ -70,6 +83,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
 			$scope.$emit("saveContactInformation");
 		}
+
+		
+
 	};
 
 	/**
@@ -94,6 +110,18 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 	};
 
+
+	var successCallbackFetchArDetails = function(data){
+		$scope.$emit("hideLoader");
+		$scope.arAccountDetails = data;
+		$scope.$broadcast('ARDetailsRecieved');
+	};
+
+	var successCallbackFetchArNotes = function(data){
+		$scope.$emit("hideLoader");
+		$scope.arAccountNotes = data;
+	};
+
 	/**
 	* successcall back of country list fetch
 	*/
@@ -116,6 +144,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		}
 
 		//setting as null dictionary, will help us in saving..
+	
+		$scope.arAccountNotes = {};
+		$scope.arAccountDetails = {};
 		presentContactInfo = {};
 
 	}
@@ -123,6 +154,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	else if(typeof id !== 'undefined' && id !== ""){
 		var data = {'id': id};		
 		$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);	
+		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, data, successCallbackFetchArDetails);	
+		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, data, successCallbackFetchArNotes);
 	}
 
 	/**
@@ -271,6 +304,14 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		 */
 		$timeout(function(){angular.element('#uplaodCompanyLogo').trigger('click')},0,false);
 	};
+
+	/*-------AR account starts here-----------*/
+
+	$scope.showArAccountButtonClick = function($event){
+		$scope.switchTabTo($event, 'cc-ar-accounts')
+	};
+
 	
+	/*-------AR account ends here-----------*/
 	
 }]);
