@@ -5,7 +5,7 @@ var showTermsAndConditionsModal = function(backDom){
   	
   	this.delegateEvents = function(){
 		that.myDom.find('#agree-button').on('click', that.setAgreeCheckbox);
-		that.myDom.find('#disagree-button').on('click', that.hide);
+		that.myDom.find('#disagree-button').on('click', that.setDisAgreeCheckbox);
 		createVerticalScroll('#terms-content');
 	};
 	this.setAgreeCheckbox = function(){
@@ -16,6 +16,12 @@ var showTermsAndConditionsModal = function(backDom){
 		
 		that.hide();
 		
+	}; 
+	this.setDisAgreeCheckbox = function(){
+		backDom.find("#terms-and-conditions").removeClass("checked");
+		backDom.find("#terms-and-conditions-span").removeClass("checked");
+		backDom.find("#terms-checkbox").attr("checked", false);
+		that.hide();
 	};
    	
     
