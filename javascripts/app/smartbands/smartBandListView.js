@@ -74,6 +74,7 @@ var SmartBandListView = function(domRef) {
 		var html = "<li data-id = "+ rowToAppend.id + " data-is-fixed = " + rowToAppend.is_fixed+ ">";
 		html += "<span class=smartband-icon></span>";
 		html += "<span class=band-holder>" + rowToAppend.first_name + " " + rowToAppend.last_name  + "</span>";
+
 		if(rowToAppend.is_fixed == true){
 			var amount = parseFloat(rowToAppend.amount ).toFixed(2);
 			html += "<span class=charge>" + that.myDom.find("#listing-area").data("currency-symbol") + " " + amount + "</span>";
@@ -81,6 +82,9 @@ var SmartBandListView = function(domRef) {
 		else{
 			html += "<span class=charge> OPEN ROOM CHARGE </span>";
 		}
+		var accountNum = rowToAppend.account_number.substr(rowToAppend.account_number.length - 4);
+		html += "<span class=account-num>" + accountNum + "</span>";
+
 		that.myDom.find("#listing-area ul").prepend(html);
 		createVerticalScroll('#listing-area'); 
 	};
@@ -88,6 +92,8 @@ var SmartBandListView = function(domRef) {
 	this.updateRow = function(rowToChange){
 		var row = that.myDom.find("#listing-area ul li[data-id=" + rowToChange.id + "]");
 		row.find('span.band-holder').html(rowToChange.first_name + " " + rowToChange.last_name);
+		var accountNum = rowToChange.account_number.substr(rowToChange.account_number.length - 4);
+		row.find('span.account-num').html(accountNum);
 		var amount = parseFloat(rowToChange.amount).toFixed(2);
 		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + amount);
 	}
