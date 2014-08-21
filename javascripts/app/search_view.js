@@ -289,8 +289,6 @@ var Search = function(domRef) {
 	};
 
 	this.fetchFailedOfFetchSearchData = function(errorMessage) {
-		console.log('fetchFailedOfFetchSearchData');
-		console.log($('#search-results'));
 		$('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number.</span></div></li>').removeClass('hidden');
 		sntapp.notification.showErrorMessage(errorMessage, that.myDomElement);
 		//TODO: verify implemention, rename function
