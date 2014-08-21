@@ -49,8 +49,9 @@ var Search = function(domRef) {
 			} else if (type == "DUEOUT") {
 				searchTitle = "Checking Out";
 			} else if (type == "INHOUSE") {
-				searchTitle = "In House";
-			} 
+				searchTitle = "Stayovers";
+			}
+
 			var searchTitleHtml = that.myDomElement.find('#search-title').html();
 			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
@@ -198,10 +199,11 @@ var Search = function(domRef) {
 		//Change the search heading to "Search"
 		if ( typeof e == "undefined") {
 			var searchTitleHtml = $('#search_list #search-title').html();
+			
 			var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
 			var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
 			var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
-			var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+			var newSearchTitleHtml = newSearchTitleHtml.replace("Stayovers", "Search");
 			$('#search_list #search-title').html(newSearchTitleHtml);
 		}
 
@@ -299,8 +301,9 @@ var Search = function(domRef) {
 		}
 	};
 
-	this.fetchFailedOfFetchSearchData = function() {
-		$('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number.</span></div></li>');
+	this.fetchFailedOfFetchSearchData = function(errorMessage) {
+		$('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number.</span></div></li>').removeClass('hidden');
+		sntapp.notification.showErrorMessage(errorMessage, that.myDomElement);
 		//TODO: verify implemention, rename function
 		that.updateView();
 	};
@@ -321,7 +324,6 @@ var Search = function(domRef) {
 			successCallBackParameters : successCallBackParams,
 			failureCallBack : that.fetchFailedOfFetchSearchData,
 		};
-		sntapp.activityIndicator.showActivityIndicator('blocker', 'get-json-web-calling');
 		webservice.getJSON(url, options);
 
 	};
@@ -394,7 +396,8 @@ var Search = function(domRef) {
 		var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
-		newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+		newSearchTitleHtml = newSearchTitleHtml.replace("Stayovers", "Search");
+		newSearchTitleHtml = newSearchTitleHtml.replace("Queued Reservations", "Search");
 
 		that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 		// Clear button visibility toggle
