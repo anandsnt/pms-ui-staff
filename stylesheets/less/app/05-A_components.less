@@ -2335,20 +2335,16 @@
                     .size(50px, 100%);
 
                     .button {
-                        .pull-left;
+                        line-height: 50px;
+                        margin: 5px 0 0 10px;
+                        .square(45px);
+                        #border-radius > .bottom(0);
+                        .box-shadow(none);
+                        .pull-right;
 
-                        &.with-icon {
-                            line-height: 50px;
-                            margin: 5px 0 0 10px;
-                            .square(45px);
-                            #border-radius > .bottom(0);
-                            .box-shadow(none);
-                            .pull-right;
-
-                            &:hover,
-                            &:active { 
-                                .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
-                            }
+                        &:hover,
+                        &:active { 
+                            .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
                         }
                     }
 
