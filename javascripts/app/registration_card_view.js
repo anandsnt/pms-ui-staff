@@ -159,12 +159,14 @@ var RegistrationCardView = function(viewDom) {
 	    	event.preventDefault();
 	    	event.stopImmediatePropagation();
 	    	event.stopPropagation();
+	    	
+	    	
 	    	return that.showTermsAndConditionsModal();
 	    }
 	    
 	};
 	this.showTermsAndConditionsModal = function(){
-		var showTermsAndConditions = new showTermsAndConditionsModal();
+		var showTermsAndConditions = new showTermsAndConditionsModal(that.myDom);
     	showTermsAndConditions.initialize();
 	};
 
