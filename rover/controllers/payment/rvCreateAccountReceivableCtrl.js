@@ -12,8 +12,8 @@ sntRover.controller('RVCreateAccountReceivableCtrl',['$rootScope', '$scope', '$s
 		$scope.errorMessage = errorMessage;
 	};
 	$scope.createAccountReceivable = function(){
-		var data = {};
-		data.details = {
+		
+		var data = {
 			"id": $scope.account_id,
 			"ar_number": $scope.ar_number
 		};
