@@ -1,12 +1,12 @@
-<div class="confirm-delete">
+<div class="confirm-save">
     <header class="">
         Save change to Rate set for date range {{activeDateRange.begin_date | date:'MMMM dd, y'}} to {{activeDateRange.end_date | date:'MMMM dd, y'}}
     </header>
     <div class="confirm-button">
-      <button type="button" id="cancel" class="button blank edit-data-inline float_left" ng-click="ngDialog.close()">
+      <button type="button" id="cancel" class="button blank edit-data-inline float_left" ng-click="closeDialog()">
           Cancel
       </button>
-      <button type="button" id="cancel" class="button blank edit-data-inline float_left" ng-click="$emit('changeMenu', '')">
+      <button type="button" id="cancel" class="button blank edit-data-inline float_left" ng-click="discardRateSetChange()">
           Discard
       </button>
       <button type="button" id="update" class="button green edit-data-inline float_left" ng-click="saveSet(activeDateRange.id, activeDateRangeIndex)">

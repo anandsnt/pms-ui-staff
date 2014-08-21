@@ -272,7 +272,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             });
         };
 
-        $scope.closeConfirmDeleteSet = function(){
+        $scope.closeDialog = function(){
             ngDialog.close();
         };
 
@@ -347,7 +347,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     scope: $scope
                 });
             }
+            else{
+                $scope.$emit('changeMenu', '')
+            }
+        }
+
+        $scope.discardRateSetChange = function(){
             $scope.setChanged = false;
+            $scope.closeDialog();
         }
 
         $scope.init();
