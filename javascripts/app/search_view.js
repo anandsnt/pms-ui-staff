@@ -29,6 +29,15 @@ var Search = function(domRef) {
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 			this.fetchSearchData(search_url, "", type);
 		}
+		if (type == "QUEUE_ROOMS") {
+			that.myDomElement.find("#no-results").html("");
+			var search_url = "search.json?is_queued_rooms_only=true";
+			searchTitle = "Queue Rooms";
+			var searchTitleHtml = that.myDomElement.find('#search-title').html();
+			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+			this.fetchSearchData(search_url, "", type);
+		}
 
 		/*preload the search results,
 		 if navigated to search screen by clicking checking-in/checking-out/in-house options
