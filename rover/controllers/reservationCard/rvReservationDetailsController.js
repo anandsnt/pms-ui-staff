@@ -58,7 +58,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
+			if($scope.shouldShowGuestDetails){
+				$scope.shouldShowTimeDetails = false;				
+			}
 		};
+
+		$scope.shouldShowTimeDetails = false;
+		$scope.toggleTime = function() {
+			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;
+			if($scope.shouldShowTimeDetails){
+				$scope.shouldShowGuestDetails = false;				
+			}
+		};
+
+
 		// $scope.wake_up_time = ;
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id) {
@@ -323,11 +336,18 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.modifyCheckinCheckoutTime = function() {
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
+				if ($scope.reservationParentData.checkinTime.hh != '') {
+					$scope.reservationData.reservation_card.arrival_time = $scope.reservationParentData.checkinTime.hh + ":" + $scope.reservationParentData.checkinTime.mm + " " + $scope.reservationParentData.checkinTime.ampm;
+				}
+				if ($scope.reservationParentData.checkoutTime.hh != '') {
+					$scope.reservationData.reservation_card.departure_time = $scope.reservationParentData.checkoutTime.hh + ":" + $scope.reservationParentData.checkoutTime.mm + " " + $scope.reservationParentData.checkoutTime.ampm;
+				}
 			}
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 			}
-			if ($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkoutTime.hh != '') {
+
+			if ($scope.reservationParentData.checkinTime.hh != '' || $scope.reservationParentData.checkoutTime.hh != '') {
 				var postData = $scope.computeReservationDataforUpdate();
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}

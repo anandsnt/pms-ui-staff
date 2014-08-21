@@ -640,20 +640,36 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //  reservationDetails.reservation_card.departureDate ! = null
             if (reservationDetails.reservation_card.arrival_time) {
                 var timeParts = reservationDetails.reservation_card.arrival_time.trim().split(" ");
-                var hourMinutes = timeParts[0].split(":");                
+                //flooring to nearest 15th as the select element's options are in 15s
+                var hourMinutes = timeParts[0].split(":");
+                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkinTime = {
-                    hh: hourMinutes[0].length == 1 ? "0"+ hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0"+ hourMinutes[1] : hourMinutes[1],
+                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
+                    ampm: timeParts[1]
+                }
+            }
+            // Handling late checkout
+            if (reservationDetails.reservation_card.is_opted_late_checkout && reservationDetails.reservation_card.late_checkout_time) {
+                var timeParts = reservationDetails.reservation_card.late_checkout_time.trim().split(" ");
+                var hourMinutes = timeParts[0].split(":");
+                //flooring to nearest 15th as the select element's options are in 15s
+                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
+                $scope.reservationData.checkoutTime = {
+                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
                     ampm: timeParts[1]
                 }
             }
             //  reservationDetails.reservation_card.departureDate ! = null   
-            if (reservationDetails.reservation_card.departure_time) {
+            else if (reservationDetails.reservation_card.departure_time) {
                 var timeParts = reservationDetails.reservation_card.departure_time.trim().split(" ");
-                var hourMinutes = timeParts[0].split(":");    
+                var hourMinutes = timeParts[0].split(":");
+                //flooring to nearest 15th as the select element's options are in 15s
+                hourMinutes[1] = (15 * Math.floor(hourMinutes[1] / 15) % 60).toString();
                 $scope.reservationData.checkoutTime = {
-                    hh: hourMinutes[0].length == 1 ? "0"+ hourMinutes[0] : hourMinutes[0],
-                    mm: hourMinutes[1].length == 1 ? "0"+ hourMinutes[1] : hourMinutes[1],
+                    hh: hourMinutes[0].length == 1 ? "0" + hourMinutes[0] : hourMinutes[0],
+                    mm: hourMinutes[1].length == 1 ? "0" + hourMinutes[1] : hourMinutes[1],
                     ampm: timeParts[1]
                 }
             }
