@@ -30,7 +30,7 @@ $scope.login = function(){
 		// verify if hotel time is past midnight or not
 		$scope.isTimePastMidnight = (data.is_show_warning ==="true") ? false: true;
 	}	
-	var data = {"email":$scope.email,"password":$scope.password};
+	var data = {"password":$scope.password};
 
 	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess);  
 	
@@ -45,11 +45,13 @@ $scope.yesClick = function(){
 }
 
 $scope.continueClicked = function(){
+	
 	$scope.startProcessEnabled = false;
-	$scope.startProcess = false;
+	
 // explicitly handled error callback to set $scope.startProcessEnabled
 	var startProcessFailure = function(data){
 		$scope.$emit('hideLoader');
+		$scope.startProcess = false;
 		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
 

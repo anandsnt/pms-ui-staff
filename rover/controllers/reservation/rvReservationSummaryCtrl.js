@@ -1,8 +1,21 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
+
+		// set the previous state
+		$rootScope.setPrevState = {
+		    title: $filter('translate')('ENHANCE_STAY'),
+		    name: 'rover.reservation.staycard.mainCard.addons',
+		    param: {
+		        from_date: $scope.reservationData.arrivalDate,
+		        to_date: $scope.reservationData.departureDate
+		    }
+		}
 		
+
+
+
 		$scope.init = function() {
 			$scope.data = {};
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;

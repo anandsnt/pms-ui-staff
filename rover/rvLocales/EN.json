@@ -19,7 +19,7 @@
 	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
 	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
 	"OF": "of",
-	"APPLIES_TO_RESERVATION": "applies to this reservation",
+	"APPLIES_TO_RESERVATION": "applies to this reservation/date",
 	"NO": "No",
 	"ROOM": "Room",
 	"NOT_AVAILABLE_FOR_DATE_RANGE": "not available for selected dates",
@@ -132,7 +132,17 @@
 	"SAVE_NEW": "Save new ",
 	"CARD":"card?",
 	"NEW_COMPANY_CARD" : "New Company Card",
-	"NEW_TA_CARD": "New Travel Agent Card"
+	"NEW_TA_CARD": "New Travel Agent Card",
+
+    "AR_ACCOUNT":"AR Account",
+    "CREATE_ACCOUNT":"Create Account",
+    "AR_NUMBER":"AR NUMBER",
+    "AR_ADDRESS":"AR ADDRESS",
+    "USE_MAIN_ADDRESS":"Use Main Address",
+    "USE_MAIN_CONTACT":"Use Main Contact",
+    "AR_NOTES":"AR Notes",
+    "AR_DETAILS":"AR Details",
+    "CONTACT_DETAILS":"Contact Details"
 	
 ,    
     
@@ -154,10 +164,10 @@
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
     "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
-    "ENTER_CREDENTIALS": "Enter your credentials",
+    "ENTER_PASSWORD": "Enter your Password",
     "PASSWORD": "Password",
     "VERIFY": "Verify",
-    "BUSSINESS_DAY_MSG_1": "This will close of the Business Day for",
+    "BUSSINESS_DAY_MSG_1": "This will close the Business Day for",
     "BUSSINESS_DAY_MSG_2": "and change the date to",
     "START_END_OF_DAY_PROCESS": "Start End of Day Process",
     "ARE_YOU_SURE": "Are you sure?",
@@ -248,7 +258,20 @@
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
-    "SELECT_WINDOW": "Select Bill"
+    "SELECT_WINDOW": "Select Bill",
+    "SELECT_WINDOW": "Select Bill",
+    "PAY_BILL":"Pay Bill #",
+    "TAP_TO_CHANGE":"Tap to change",
+    "AMOUNT_TO_PAY":"Amount to pay",
+    "SUBMIT_PAYMENT":"Submit payment",
+    "CARD_NUMBER_PLACEHOLDER":"Enter Card number",
+    "MM":"MM",
+    "YY":"YY",
+    "NAME_ON_CARD_PLACEHOLDER":"Enter name on card",
+    "CCV":"CCV",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "ADD_NEW_CARD":"Add New Card",
+    "EXISTING_CARDS":"Existing Cards"
 ,    
     
     "RESERVATION_SUMMARY": "Reservation summary",
@@ -453,10 +476,10 @@
     "CANCEL_LABEL":"Cancel",    
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
-    "DASHBOARD_SEARCH_CHECKINGOUT": "Departues",
+    "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
     "DASHBOARD_SEARCH_INHOUSE": "In-House",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
-    "DASHBOARD_SEARCH_VIP": "VIP's",
+    "DASHBOARD_SEARCH_VIP": "VIPs",
     "SEARCH_NORMAL": "Find Reservation"
 ,
 
