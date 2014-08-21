@@ -2285,18 +2285,26 @@
 				h2 { margin-bottom: 10px; }
 
 				.entry {
-					width: 50%;
-					.pull-left;
+                    width: 50%;
+                    .float;
+                    .pull-left;
 
-					.checkbox {
-						line-height: 30px;
-						.show;
+                    .checkbox,
+                    a {
+                        line-height: 30px;
+                        .pull-left;
+                        .show;
+                    }
 
-						.icon-checkbox { top: 5px; }
+                    a { margin-left: 5px; }
 
-						&.single { margin-top: 20px; }
-					}
-				}
+                    .checkbox {
+                        .icon-checkbox { top: 5px; }
+
+                        &.single { margin-top: 10px; }
+                        &:last-child { clear: both; }
+                    }
+                }
 
 				.actions {
 					width: 50%;
