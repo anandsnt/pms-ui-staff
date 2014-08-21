@@ -1052,12 +1052,27 @@ Padding for the ows error popup
 }
 .billing-info-container{
   float: left;
+  margin-bottom: 10px;
+   
+     .button{
+        display: block;
+        line-height: 50px !important;
+        margin: 0 0 5px !important;
+        width: 100% !important;   
+        border-bottom-left-radius: 3px !important;
+        border-bottom-right-radius: 3px !important;
+    }
 }
 
-.billing-info-container .button{
-    display: block;
-    line-height: 50px !important;
-    margin-bottom: 10px !important;
-    padding: 10px;
-    width: 100% !important;    
+.billing-info-body{  
+    height: 510px;
+    padding: 0;
+    width: 800px;
+    .content-wrapper{
+        height: calc(100% - 90px) !important;
+  }
+}
+#modal .modal-content.billing-information{
+  height: 600px;
+
 }
