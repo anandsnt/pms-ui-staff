@@ -520,29 +520,33 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }        
     };
 
+    $rootScope.$on('bussinessDateChangeInProgress',function(){
+      $rootScope.showBussinessDateChangingPopup();
+    });
+
   }
 ]);
 
 // adding an OWS check Interceptor here and bussiness date change
 // but should be moved to higher up above in root level
 sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
+  
+  var bussinessDateChangeInProgress = function() {
+      $rootScope.$broadcast('bussinessDateChangeInProgress');
+  };
+
   return {
     request: function (config) {
       return config;
     },
     response: function (response) {
+        bussinessDateChangeInProgress();
         return response || $q.when(response);
     },
     responseError: function(rejection) {
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
-      //Need to review the bussiness date changing notification process
-      // else if(rejection.status == 700){
-      //   $rootScope.showBussinessDateChangingPopup();
-      //   $rootScope.isBussinessDateChanging = true;
-      //   //need to unset this once change is done and set new bussiness date
-      // }
       return $q.reject(rejection);
     }
   };
