@@ -224,18 +224,30 @@ sntRover.controller('reservationActionsController', [
 						 */
 						var cancellationPolicies = data.results;
 
+						//to ensure same policy is not applied twice, putting the IDs of applied policies.
+						//this bucket would be used to filter out thus avoiding duplicating a policy application
+						var calculatedIds = [];
+
+
 						// The above two lines are used to emulate an array which would be the API response
 						angular.forEach(cancellationPolicies, function(policy) {
-							if (policy.amount_type == "amount") {
-								cancellationCharge += parseFloat(policy.amount);
-							} else if (policy.amount_type == "percent") {
-								var multiplicity = 1; // DEFAULT TO PER_STAY
-								if (policy.post_type_id == 2) {
-									multiplicity = $scope.reservationData.reservation_card.total_nights;
+							if (!_.contains(calculatedIds, policy.id)) {
+								calculatedIds.push(policy.id);
+								var numRateNights = _.where($scope.reservationData.reservation_card.stay_dates, {
+									rate_id: policy.associated_rate_id
+								}).length;
+
+								if (policy.amount_type == "amount") {
+									cancellationCharge += parseFloat(policy.amount);
+								} else if (policy.amount_type == "percent") {
+									var multiplicity = 1; // DEFAULT TO PER_STAY
+									if (policy.post_type_id == 2) {
+										multiplicity = numRateNights;
+									}
+									cancellationCharge += parseFloat(multiplicity * parseFloat(policy.amount / 100) * parseFloat($scope.reservationData.reservation_card.total_rate));
+								} else if (policy.amount_type == "day") {
+									cancellationCharge += parseFloat(policy.amount) * numRateNights;
 								}
-								cancellationCharge += parseFloat(multiplicity * parseFloat(policy.amount / 100) * parseFloat($scope.reservationData.reservation_card.total_rate));
-							} else if (policy.amount_type == "day") {
-								cancellationCharge += parseFloat(policy.amount) * $scope.reservationData.reservation_card.total_nights;
 							}
 						});
 					}
