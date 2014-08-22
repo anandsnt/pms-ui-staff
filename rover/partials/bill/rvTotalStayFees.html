@@ -77,6 +77,7 @@
 
 	<!-- Bill Total Stay Fees -->
 	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
+
 		<table class="total-fees">
 			<thead>
 				<tr>
@@ -94,10 +95,10 @@
 				<tr class="active edit">
 					<td colspan="2" class="total-label">
 						<!-- Show email and print buttons -->
-						<a class="button with-icon only-icon blue hidden">
+						<a ng-click="clickedEmail()" class="button with-icon only-icon blue">
 							 <span class="icons icon-email"></span> 
 						</a>
-						<a class="button with-icon only-icon blue hidden"> 
+						<a ng-click="clickedPrint()" class="button with-icon only-icon blue"> 
 							<span class="icons icon-print"></span> 
 						</a> <span translate>STAY_FEES_AS_OF</span>
 					 		{{totalFeesArray.fees_date | date:'MM-dd-yy'}}	):

@@ -23,10 +23,20 @@
       padding: 0 20px 20px 20px;
     }
 
-    .reservation-content.rooms-and-rates-content .rate-details .info{
-      ul{
-        li{
-          margin-left: 0px;
+    .reservation-content.rooms-and-rates-content {
+      .iScrollVerticalScrollbar, .iScrollHorizontalScrollbar{
+        .iScrollIndicator {        
+          background: #ffb319 !important;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+        }
+      } 
+      .rate-details .info{
+        ul{
+          li{
+            margin-left: 0px;
+          }
         }
       }
     }
@@ -83,6 +93,27 @@
 #staycard_main{
   span.no-right-margin {
     margin-right: 0px;
+  }
+  .icons.time.check-in{
+    background-position: 10px -553px;
+    height: 30px;
+    width: 30px;
+  }
+
+  .icons.time.check-out {
+    background-position: 10px -593px;
+    height: 30px;
+    width: 30px;
+  }
+  .icons.time.late-check-out {
+    background-position: 10px -2914px;
+    width: 30px;
+    height: 30px;
+  }
+  #reservation-card{
+    .reservation-actions, .reservation-content{
+      top: 60px;  
+    }
   }
 }
 

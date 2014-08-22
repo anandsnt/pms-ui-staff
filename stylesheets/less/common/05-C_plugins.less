@@ -316,6 +316,40 @@
 			.opacity(0);
 			.transition;
 
+			.status {
+				height: 70px;
+				margin: 20px 0;
+
+				label {
+					font-size: 14px;
+					text-transform: uppercase;
+					text-align: center;
+					font-weight: 600;
+				}
+
+				.switch-button {
+					.size(40px, 100%);
+					.show;
+
+					.data-off,
+	                .data-on {
+	                	font-size: 14px;
+	                	line-height: 30px;
+	                	text-transform: uppercase;
+	                	height: 30px;
+
+	                	&.data-off {
+	                		.switch-icon { .gradient(@redStart, @redEnd); }
+
+	                	}
+
+	                	&.data-on {
+	                		.switch-icon { .gradient(@greenStart, @greenEnd); }
+	                	}
+	                }
+				}
+			}
+
 			.message,
 			.text {
 				text-transform: uppercase;
@@ -419,7 +453,7 @@
 				&.half {
 					padding: 0 5px;
 					.pull-left;
-					.calc-width(50, 10); /* %, px */
+					.calc-width(50, 10);
 
 					&:first-child { margin-right: 20px; }
 				}
