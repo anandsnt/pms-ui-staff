@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+{
+
+"EDIT_CHARGE":"Edit charge",
+"AMOUNT":"Amount",
+"CHARGE_CODE":"Charge Code",
+"NEW_AMOUNT":"New Amount",
+"CHARGE_WILL_APPEAR_AS":"Charge will appear as:",
+"ADJUSTMENT":"Adjustment",
+"CHANGE_AMOUNT":"Change Amount",
+"REMOVE_CHARGE":"Remove charge",
+"SPLIT_CHARGE":"Split charge",
+"SPLITTING_FOR":"Splitting for",	
+=======
 {    
     
     "STAY_CARD": "Stay Card",
@@ -9,6 +23,7 @@
     "ENHANCE_STAY": "Enhance Stay",
     "SEARCH_RESULTS": "Search Results"
 ,	
+>>>>>>> 802b3a4c1f1a3a886096a3071f5dd1f533dd8075
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
 	"NO_AVAILABILITY" : "No availability",

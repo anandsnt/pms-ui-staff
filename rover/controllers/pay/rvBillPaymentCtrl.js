@@ -81,6 +81,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 			$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
 			$scope.saveData.payment_type_id = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_id;
+			$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
 			if($scope.defaultPaymentTypeOfBill == 'CC'){
 				$scope.isExistPaymentType = true;
 				$scope.showCreditCardInfo = true;
@@ -114,7 +115,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"reservation_id": $scope.reservationData.reservationId
 			};
 			if($scope.saveData.paymentType == "CC"){
-				dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
+				if($scope.defaultPaymentTypeCard == undefined){
+					$scope.errorMessage = ["Please select/add credit card"];
+				} else {
+					$scope.errorMessage = "";
+					dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
+				}
 			}
 			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successPayment);
 		}
