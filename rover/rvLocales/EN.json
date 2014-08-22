@@ -1,4 +1,14 @@
-{	
+{    
+    
+    "STAY_CARD": "Stay Card",
+    "ROOM_STATUS": "Room Status",
+    "DASHBOARD": "Dashboard",
+    "REPORTS": "Reports",
+    "ROOM_RATES": "Room & Rates",
+    "CREATE_RESERVATION": "Create Reservation",
+    "ENHANCE_STAY": "Enhance Stay",
+    "SEARCH_RESULTS": "Search Results"
+,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
 	"NO_AVAILABILITY" : "No availability",
@@ -259,7 +269,6 @@
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
-
     "SELECT_WINDOW": "Select Bill",
     
     "PAY_BILL":"Pay Bill #",
@@ -274,10 +283,6 @@
     "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
     "ADD_NEW_CARD":"Add New Card",
     "EXISTING_CARDS":"Existing Cards"
-<<<<<<< HEAD
-
-=======
->>>>>>> 0df2e7df2bd4bede6573ffec9f28bb7db679ca9d
 ,    
     
     "RESERVATION_SUMMARY": "Reservation summary",
