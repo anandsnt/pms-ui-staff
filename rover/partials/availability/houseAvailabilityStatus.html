@@ -130,7 +130,7 @@
 						<th class="heading" scope="row">Total Room Revenue</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value full-width">{{currencySymbol}}{{houseDetails.total_room_revenue[dayDetails.date] | number: precisonTwo}}</span>
+								<span class="value full-width">{{currencySymbol}}{{houseDetails.total_room_revenue[dayDetails.date] | number: precisonZero}}</span>
 							</div>
 						</td>
 					</tr>
@@ -138,7 +138,7 @@
 						<th class="heading" scope="row">Average Daily Rate</th>
 						<td ng-repeat='dayDetails in houseDetails.dates'>
 							<div class="inner">
-								<span class="value full-width">{{currencySymbol}}{{houseDetails.avg_daily_rate[dayDetails.date] | number: precisonTwo}}</span>
+								<span class="value full-width">{{currencySymbol}}{{houseDetails.avg_daily_rate[dayDetails.date] | number: precisonZero}}</span>
 							</div>
 						</td>
 					</tr>
