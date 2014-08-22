@@ -1,5 +1,5 @@
-sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
-	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2) {
+sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope',
+	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $rootScope) {
 
 		this.reservationData = {};
 		var that = this;
@@ -122,25 +122,29 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 			return deferred.promise;
 		};
 
-		this.fetchRateDetails = function(param) {
+		this.fetchCancellationPolicies = function(param) {
 			var deferred = $q.defer();
-			var url = '/api/rates/' + param.id;
+			var url = '/api/reservations/' + param.id + '/policies';
 			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
-				if (data.cancellation_policy_id && data.cancellation_policy_id != null) {
-					var url = '/api/policies/' + data.cancellation_policy_id;
-					rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
-						deferred.resolve(data);
-					}, function(data) {
-						deferred.reject(data);
-					});
-				} else {
-					deferred.resolve(null);
-				}
+				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
 			});
 			return deferred.promise;
 		};
+
+		this.cancelReservation = function(param) {
+			var deferred = $q.defer();
+			// var url = '/api/reservations/' + param.id + '/cancel';
+			// rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+			var url = '/api/reservations/' + param.id + '/policies';
+			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
 
 		this.tokenize = function(data) {
 			var deferred = $q.defer();

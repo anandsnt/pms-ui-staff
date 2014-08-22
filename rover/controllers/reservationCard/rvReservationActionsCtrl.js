@@ -217,13 +217,13 @@ sntRover.controller('reservationActionsController', [
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');
 					var cancellationCharge = 0.0;
-					if (data != null) {
+					if (data && data.total_count > 0) {
 						/**
 						 * TODO : Calculate the penalty amount here
 						 * New API to return an array of cancellation policies
 						 */
-						var cancellationPolicies = [];
-						cancellationPolicies.push(data);
+						var cancellationPolicies = data.results;
+
 						// The above two lines are used to emulate an array which would be the API response
 						angular.forEach(cancellationPolicies, function(policy) {
 							if (policy.amount_type == "amount") {
@@ -234,7 +234,7 @@ sntRover.controller('reservationActionsController', [
 									multiplicity = $scope.reservationData.reservation_card.total_nights;
 								}
 								cancellationCharge += parseFloat(multiplicity * parseFloat(policy.amount / 100) * parseFloat($scope.reservationData.reservation_card.total_rate));
-							} else if (policy.amount_type == "day"){
+							} else if (policy.amount_type == "day") {
 								cancellationCharge += parseFloat(policy.amount) * $scope.reservationData.reservation_card.total_nights;
 							}
 						});
@@ -248,11 +248,10 @@ sntRover.controller('reservationActionsController', [
 				}
 
 				var params = {
-					//first day's rate id
-					id: $scope.reservationData.reservation_card.stay_dates[0].rate_id
+					id: $scope.reservationData.reservation_card.reservation_id
 				};
 
-				$scope.invokeApi(RVReservationCardSrv.fetchRateDetails, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
+				$scope.invokeApi(RVReservationCardSrv.fetchCancellationPolicies, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
 			}
 
 			/**

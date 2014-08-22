@@ -1,11 +1,31 @@
-sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout',
-	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout) {
+sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv',
+	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 
+		//Set merchant ID for MLI integration
+		var MLISessionId = "";
+
+		// try {
+		HostedForm.setMerchant($rootScope.MLImerchantId);
+		// } catch (err) {};
+
 		$scope.cancellationData = {
 			selectedCard: -1,
-			viewCardsList: false
+			reason: "",
+			viewCardsList: false,
+			existingCard: false,
+			cardId: "",
+			newCard: {
+				cardNumber: "",
+				addToGuest: false,
+				nameOnCard: "",
+				expiryDate: {
+					mm: "",
+					yy: ""
+				},
+				ccv: ""
+			}
 		}
 
 		$scope.setScroller('cardsList');
@@ -15,6 +35,55 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				$scope.refreshScroller('cardsList');
 			}, 300)
 		}
+
+		var savePayment = function() {
+			var onSaveSuccess = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.cancellationData.selectedCard = data.id;
+				$scope.cancelReservation();
+			}
+			var onSaveFailure = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = data;
+			}
+			var paymentData = {
+				add_to_guest_card: $scope.cancellationData.newCard.addToGuest,
+				card_expiry: $scope.cancellationData.newCard.expiryDate.mm && $scope.cancellationData.newCard.expiryDate.yy ? "20" + $scope.cancellationData.newCard.expiryDate.yy + "-" + $scope.cancellationData.newCard.expiryDate.mm + "-01" : "",
+				credit_card: "",
+				name_on_card: $scope.cancellationData.newCard.nameOnCard,
+				payment_type: "CC",
+				reservation_id: $scope.reservationData.reservation_card.reservation_id,
+				session_id: MLISessionId
+			}
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess, onSaveFailure);
+		}
+
+		var fetchMLISessionId = function() {
+			var sessionDetails = {};
+			sessionDetails.cardNumber = $scope.cancellationData.newCard.cardNumber;
+			sessionDetails.cardSecurityCode = $scope.cancellationData.newCard.ccv;
+			sessionDetails.cardExpiryMonth = $scope.cancellationData.newCard.expiryDate.mm;
+			sessionDetails.cardExpiryYear = $scope.cancellationData.newCard.expiryDate.yy;
+
+			var callback = function(response) {
+				$scope.$emit("hideLoader");
+				if (response.status === "ok") {
+					MLISessionId = response.session;
+					savePayment(); // call save payment details WS		 		
+				} else {
+					$scope.errorMessage = ["There is a problem with your credit card"];
+				}
+				$scope.$apply();
+			};
+
+			try {
+				HostedForm.updateSession(sessionDetails, callback);
+				$scope.$emit("showLoader");
+			} catch (err) {
+				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			};
+
+		};
 
 		var onFetchPaymentsSuccess = function(data) {
 			$scope.$emit('hideLoader');
@@ -33,25 +102,38 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		}
 
 		$scope.cancelReservation = function() {
-			console.log('cancel Reservation');
-			/**
-			 * TODO: Make API calls to cancel the reservation
-			 */
-			console.log("Implementation of cancellation without penalty is pending!....");
-			$scope.closeDialog();
+			var onCancelSuccess = function(data){
+				$scope.$emit('hideLoader');
+				$scope.closeDialog();
+			}
+			var onCancelFailure = function(data){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage=["Could Not Cancel Reservation"];
+			}
+			var cancellationParameters = {
+				reason: parseFloat($scope.ngDialogData.penalty),
+				penalty: $scope.cancellationData.reason,
+				payment_method_id: parseInt($scope.cancellationData.selectedCard),
+				id: $scope.reservationData.reservation_card.reservation_id
+			}
+			console.log('cancellationParameters', cancellationParameters);
+			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);			
 		}
 
 		$scope.chargePenalty = function() {
-			/**
-			 * TODO : 	1.	Make calls to the appropriate API
-			 * 			2.	Handle cancellation success
-			 * 			3.	Handle cancellation failure
-			 */
-			console.log("Implementation of chargePenalty is pending!....");
-			$scope.closeDialog();
+			//Clear the error messages if they exist from the previous attempt to charge penalty with a new card
+			$scope.errorMessage = [];
+			if ($scope.cancellationData.viewCardsList) {
+				$scope.cancelReservation();
+			}
+			//If the user is on add card screen && if there is a card Number entered then make call to MLI to check validity of the card			 
+			else if (!$scope.cancellationData.viewCardsList && $scope.cancellationData.newCard.cardNumber.toString().length > 0) {
+				fetchMLISessionId();
+			} else {
+				// Client side validation added to eliminate a false session being retrieved in case of empty card number
+				$scope.errorMessage = ["There is a problem with your credit card"];
+			}
 		}
-
-
-
 	}
+
 ]);
