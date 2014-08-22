@@ -4,10 +4,12 @@
       <div class="modal-header">
          <h1 translate>BILLING_INFO_TITLE</h1>
          <em>{CONFIRMATION_LABEL | translate} #2453454</em>
-         <button type="button" id="new-route" class="button green" translate>ADD_ROUTES_LABEL</button>
+         <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()">{{getHeaderButtonLabel()}}</button>
       </div>
       <!-- Billing Info Content -->
-      <div class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'"  ng-controller="rvAllRoutesCtrl"></div>
+      <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'"  ng-controller="rvAllRoutesCtrl"></div>
+
+      <div ng-if = "!isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvSelectEntity.html'"  ng-controller="rvSelectEntityCtrl"></div>
       
    </form>
 </div>

@@ -1,0 +1,71 @@
+<div id="billing-content" class="content-wrapper no-action">
+   <fieldset class="content-left">
+      <div class="search-form" role="search">
+         <div class="entry">
+            <a href="#" id="billing-info-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></a>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input name="billing-info-query" id="billing-info-query" class="query" placeholder="Find Guest, Company or Travel Agent" type="search" autocomplete="off" />
+         </div>
+      </div>
+      <div id="available-entities">
+         <!-- Attached entities, if exist -->
+         <span class="h3 message">Attached Entities</span>
+         <div id="entities" class="entities-list scrollable">
+            <ul class="wrapper">
+               <li class="entity guest">
+                  <figure class="guest-image">
+                     <img src="{image}" alt="" />
+                  </figure>
+                  <h2>{guest lastname, firstname}</h2>
+                  <span class="guest-status {resStatus} small-icon">{resStatus}</span>
+               </li>
+               <!-- If accompanying guest added -->
+               <li class="entity accompany">
+                  <figure class="guest-image accompany">
+                     <img src="{image}" alt="" />
+                     <img src="{accompany image}" alt="" />
+                  </figure>
+                  <h2>{accompany lastname, firstname}</h2>
+                  <span class="guest-status {accompany resStatus} small-icon">{accompany resStatus}</span>
+               </li>
+               <!-- If company card added -->
+               <li class="entity company">
+                  <figure class="guest-image">
+                     <!-- or <div class="guest-image icons icon-company"></div> if no logo (instead of the entire <figure> element) -->
+                     <img src="{logo}" alt="" />
+                  </figure>
+                  <h2>{company name}</h2>
+                  <div class="status company">company</div>
+               </li>
+               <!-- If travel agent added -->
+               <li class="entity travel-agent">
+                  <figure class="guest-image">
+                     <!-- or <div class="guest-image icons icon-travel-agent"></div> if no logo (instead of the entire <figure> element) -->
+                     <img src="{logo}" alt="" />
+                  </figure>
+                  <h2>{ta name}</h2>
+                  <div class="status travel-agent">travel-agent</div>
+               </li>
+            </ul>
+         </div>
+         <!-- Search results, show instead of attached entities when searching
+            <ul id="filter-entities" class="modal-options">
+            <li class="active">Reservations</li>
+            <li>Cards</li>
+            </ul>
+            <div id="entities" class="entities-list scrollable">
+            <ul class="wrapper">
+            ... same markup as attached entities
+            </ul>
+            </div> -->
+      </div>
+   </fieldset>
+   <fieldset class="content-right">
+      <div class="no-content">
+         <div class="info">
+            <strong class="h1">Entity not selected</strong>
+            <span class="h2">Select Entity to configure bill routing</span>
+         </div>
+      </div>
+   </fieldset>
+</div>
