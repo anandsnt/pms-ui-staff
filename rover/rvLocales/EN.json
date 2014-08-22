@@ -270,8 +270,7 @@
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
     "SELECT_WINDOW": "Select Bill",
-
-    "SELECT_WINDOW": "Select Bill",
+    
     "PAY_BILL":"Pay Bill #",
     "TAP_TO_CHANGE":"Tap to change",
     "AMOUNT_TO_PAY":"Amount to pay",
@@ -283,7 +282,7 @@
     "CCV":"CCV",
     "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
     "ADD_NEW_CARD":"Add New Card",
-    "EXISTING_CARDS":"Existing Cards",
+    "EXISTING_CARDS":"Existing Cards"
 
 ,    
     
