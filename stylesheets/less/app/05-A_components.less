@@ -389,7 +389,7 @@
 
 
 /* Dashboard page           ==============================*/
-     #dashboard {
+    #dashboard {
         z-index: 99;
 
         .wrapper {
@@ -536,7 +536,8 @@
             }
         }
     }
-     #dashboard-search {
+    
+    #dashboard-search {
         z-index: 999;
         .background(@white);
 
@@ -555,7 +556,8 @@
             #move > #to > .bottom();
         }
     }
-  /* 768px+               ==============================*/
+
+    /* 768px+               ==============================*/
     @media only screen and (min-width: 768px) {
         #dashboard {
             .wrapper {
@@ -726,7 +728,6 @@
         }
     }
        
-
 /* Search page              ==============================*/
     .search-results {
         position: relative;
@@ -2126,60 +2127,152 @@
 
         /* Reservation header ***/
         .reservation-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            .transition(height, .3s,cubic-bezier(.10, .10, .25, .90));
             .float;
 
-
             .data {
-                /*.pull-left;
-                .calc-width(100, 240);*/
-                position: relative;
-                text-align: left;
-                .calc-width(100, 240); /* %, px */
-                .pull-right;
-
-                .guest-status { text-indent: 9999px; }
+                .pull-left;
+                .calc-width(100, 360);
             }
 
             .actions {
                 text-align: right;
-                width: 240px; 
+                width: 360px; 
                 .pull-right; 
-            }
-        }
 
-        /* Reservation guest info ***/
-        .reservation-guests {
-            background: @grey1;
-            z-index: 10;
-            .transition (display, .3s, ease);
-
-            li {
-                line-height: 30px;
-                vertical-align: middle;
-                margin: 0 40px 0 0;
-                padding: 0;
-                .show;
-                .pull-right;
-
-                span {
-                    .pull-left;
-
-                    &.guest-icon {
-                        font-size: 12px;
-                        line-height: 30px;
-                        text-transform: uppercase;
-                        text-align: center;
-                        font-weight: 600;
-                        color: @white;
-                        background: @grey2;
-                        margin-right: 10px;
-                        .square(30px);
-                    }
+                .inactive-nights {
+                    font-weight: 600;
+                    #border-radius > .rounded(3px);
+                    .box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
                 }
 
-                .add-new-button { line-height: 38px; }
+                .times {
+                    position: relative;
+                    padding-left: 35px;
 
-                &:first-child { margin: -5px 0 0 0; }
+                    .time {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                    }
+
+                    &.check-in { color: @green; }
+                    &.check-out,
+                    &.late-check-out { color: @red; }
+                    &.late-check-out { background-color: lighten(@yellow, 20); }
+
+                    &.not-set {
+                        color: @grey3;
+                        font-size: 12px;
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            .reservation-guests,
+            .reservation-times { 
+                padding: 20px;
+                margin-bottom: 10px;
+                overflow: hidden;
+                background: @grey1;
+                z-index: 90;
+                .transition(height, .3s, cubic-bezier(.10, .10, .25, .90));
+                .box-shadow(1px 1px 0 rgba(0,0,0,.2));
+                .show;
+
+                &.hidden,
+                &.ng-hide {
+                    display: block !important;
+                    height: 0px;
+                    padding: 0;
+                    margin: 0;
+                    .transition(height, .3s,cubic-bezier(.10, .10, .25, .90));
+                }
+            }
+
+            /* Reservation guest info ***/
+            .reservation-guests {
+                .size(70px, 100%);
+
+                li {
+                    line-height: 30px;
+                    vertical-align: middle;
+                    margin: 0 40px 0 0;
+                    padding: 0;
+                    .show;
+                    .pull-right;
+
+                    span {
+                        .pull-left;
+
+                        &.guest-icon {
+                            font-size: 12px;
+                            line-height: 30px;
+                            text-transform: uppercase;
+                            text-align: center;
+                            font-weight: 600;
+                            color: @white;
+                            background: @grey2;
+                            margin-right: 10px;
+                            .square(30px);
+                        }
+                    }
+
+                    .add-new-button { line-height: 38px; }
+
+                    &:first-child { margin: -5px 0 0 0; }
+                }
+            }
+
+            /* Arrival / Departure times ***/
+            .reservation-times {
+                .float;
+                .size(80px, 100%);
+
+                .check-data {
+                    position: relative;
+                    padding-left: 120px;
+                    height: 40px;
+                    .calc-width(50, 20);
+                    .faux-clickable;
+                    .pull-left;
+                    .float;
+
+                    .label {
+                        position: absolute;
+                        top: 0;
+                        left: 40px;
+                        line-height: 40px;
+
+                    }            
+                    
+                    .select {
+                        max-width: 75px;
+                        width: 33%;
+                        .pull-left;
+
+                        select { 
+                            background: transparent;
+                            .box-shadow(none);
+                        }
+
+                        &:after { #border-radius > .right(0px); }
+                    }
+
+                    &.locked { 
+                        .opacity(40); 
+
+                        .label { cursor: default; }
+                    }
+
+                    &:first-child { margin-right: 40px;}
+                }
+
+                &.late-check-out { background-color: lighten(@yellow, 20); }
             }
         }
 
@@ -3480,9 +3573,8 @@
             .rooms-listing,
             .upgrades {
                 position: relative;
-                width: 50%;
-                height: 100%;
                 overflow: hidden;
+                .size(100%, 50%);
                 .pull-left;
             }
 
@@ -3507,7 +3599,7 @@
                     .button {
                         padding: 0;
                         margin-right: 10px;
-                        .square(44px);
+                        .square(40px);
                         .pull-left; 
 
                         &.active {
@@ -3517,7 +3609,7 @@
                     }
 
                     .select {
-                        .calc-width(100, 54); /* %, px */
+                        .calc-width(100, 50);
                         .pull-left; 
                     }
                 }
@@ -3525,7 +3617,7 @@
                 /* Attributes filers and results ***/
                 .results {
                     position: relative;
-                    .calc-height(100, 70);
+                    .calc-height(100, 60);
 
                     /* Room attributes ***/
                     .attributes {
@@ -3585,11 +3677,10 @@
                         position: absolute;
                         top: 0;
                         left: 0;
-                        height: 100%;
-                        width: 100%;
                         padding-right: 10px;
                         background: @rcardTexture2;
                         z-index: 9;
+                        .square(100%);
 
                         li {
                             margin-bottom: 10px;
@@ -3609,7 +3700,7 @@
 
                         &.no-content {
                             padding: 0 40px;
-                            .calc-width(100, 10); /* %, px */
+                            .calc-width(100, 10);
 
                             .h1 { 
                                 font-size: 24px;
@@ -3777,6 +3868,18 @@
                     width: 50%;
                 }
             }
+
+            /* Room can be unassigned ***/
+            &.has-room { .calc-height(100, 170); }
+        }
+
+        #unassign-room {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            line-height: 50px;
+            width: 380px;
+            margin-left: -190px;
         }
     }
 
