@@ -1,14 +1,15 @@
 <!-- Available cards & new card form -->
     <fieldset id="credit-card" class="credit-card">
         <!-- Title if there are cards attached -->
-        <strong class="h2 message" translate>SELECT_OR_ADD_CREDIT_CARD</strong>
+        <strong class="h2 message" ng-hide="showOnlyAddCard" translate>SELECT_OR_ADD_CREDIT_CARD</strong>
+         <strong class="h2 message" ng-show="showOnlyAddCard" translate>ADD_CREDIT_CARD</strong>
         <!-- Title if there are no cards attached 
         <strong class="h2 message">Add Credit Card</strong> -->
 
         <!-- Card options - show only when there are cards attached -->
         <ul id="card-options" class="modal-options">
-            <li ng-click="showExistingCards()" ng-class="{'active': showExistingGuestPayments}" translate>EXISTING_CARDS</li>
-            <li ng-click="showAddNewCreditCard()" ng-class="{'active': showAddNewPaymentScreen}" translate>ADD_NEW_CARD</li>
+            <li ng-click="showExistingCards()" ng-hide="showOnlyAddCard" ng-class="{'active': showExistingGuestPayments}" translate>EXISTING_CARDS</li>
+            <li ng-click="showAddNewCreditCard()" ng-hide="showOnlyAddCard" ng-class="{'active': showAddNewPaymentScreen}" translate>ADD_NEW_CARD</li>
         </ul>
        
 

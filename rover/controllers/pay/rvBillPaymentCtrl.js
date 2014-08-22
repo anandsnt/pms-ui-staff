@@ -27,6 +27,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.showInitalPaymentScreen = false;
 	$scope.showAddNewPaymentScreen = false;
 	$scope.newPaymentInfo.isSwiped = false;
+	$scope.showOnlyAddCard = false;
 	//To set merchant id
 	try 
 	{
@@ -110,7 +111,6 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			if($scope.saveData.paymentType == "CC"){
 				dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
 			}
-			console.log(dataToSrv);
 			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successPayment);
 		}
 		
@@ -143,9 +143,16 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	 * Show guest credit card list
 	 */
 	$scope.showGuestCreditCardList = function(){
-		$scope.showInitalPaymentScreen = false;
-		$scope.showExistingAndAddNewPayments = true;
-		$scope.showExistingGuestPayments = true;
+		if($scope.guestPaymentList.length >0){
+			$scope.showInitalPaymentScreen = false;
+			$scope.showExistingAndAddNewPayments = true;
+			$scope.showExistingGuestPayments = true;
+			$scope.showOnlyAddCard = false;
+		} else {
+			$scope.showOnlyAddCard = true;
+			$scope.showAddNewCreditCard();
+		}
+		
 	};
 	/*
 	 * Show initial screen - On click cancel button from add new card, and from guest payment list
@@ -174,6 +181,12 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	 * Show Add new screen
 	 */
 	$scope.showAddNewCreditCard = function(fromWhere){
+		$scope.newPaymentInfo.cardNumber = '';
+		$scope.newPaymentInfo.cardExpiryMonth = '';
+		$scope.newPaymentInfo.cardExpiryYear = '';
+		$scope.newPaymentInfo.cardHolderName = '';
+		$scope.newPaymentInfo.cardCCV = '';
+		$scope.newPaymentInfo.addToGuestCard = false;
 		if(fromWhere == '' || fromWhere == undefined){
 			$scope.newPaymentInfo.isSwiped = false;
 		}
