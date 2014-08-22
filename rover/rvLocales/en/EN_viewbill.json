@@ -71,4 +71,6 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+
+    "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out."

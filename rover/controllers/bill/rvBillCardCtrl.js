@@ -771,6 +771,28 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
+
+	// To handle ar account details in case of direct bills
+	$scope.isArAccountNeeded = function(index){
+		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null && $rootScope.isStandAlone){
+			
+			if($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined'){
+				$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
+			}else{
+				$scope.account_id = $scope.reservationBillData.account_id;
+				ngDialog.open({
+					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+					controller: 'RVAccountReceivableMessagePopupCtrl',
+					className: 'ngdialog-theme-default',
+					scope: $scope
+				});
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 
@@ -783,18 +805,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		// To check for ar account details in case of direct bills
 		var index = $scope.reservationBillData.bills.length - 1;
-		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null){
-			
-			$scope.account_id = ($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined')? "": $scope.reservationBillData.account_id;
-			ngDialog.open({
-				template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
-				controller: 'RVAccountReceivableMessagePopupCtrl',
-				className: 'ngdialog-theme-default',
-				scope: $scope
-			});
+		if($scope.isArAccountNeeded(index)){
 			return;
 		}
-		
+
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		var errorMsg = "";
@@ -855,15 +869,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To handle review button click
 	$scope.clickedReviewButton = function(index){
 		// To check for ar account details in case of direct bills
-		if($scope.reservationBillData.bills[index].credit_card_details.payment_type == "DB" && $scope.reservationBillData.ar_number == null){
-			
-			$scope.account_id = ($scope.reservationBillData.account_id == null || typeof $scope.reservationBillData.account_id == 'undefined')? "": $scope.reservationBillData.account_id;
-			ngDialog.open({
-				template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
-				controller: 'RVAccountReceivableMessagePopupCtrl',
-				className: 'ngdialog-theme-default',
-				scope: $scope
-			});
+		if($scope.isArAccountNeeded(index)){
 			return;
 		}
 		
