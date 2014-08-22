@@ -95,16 +95,25 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	 */
 	$scope.submitPayment = function(){
 		
-		var dataToSrv = {
-			"postData": {
-				"bill_number": $scope.billNumberSelected,
-			    "payment_type": "CC",
-			    "credit_card_type": $scope.defaultPaymentTypeCard.toUpperCase(),//Onlyifpayment_typeisCC
-			    "amount": $scope.renderData.defaultPaymentAmount
-			},
-			"reservation_id": $scope.reservationData.reservationId
-		};
-		$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successPayment);
+		if($scope.saveData.paymentType == '' || $scope.saveData.paymentType == null){
+			$scope.errorMessage = ["Please select payment type"];
+		} else {
+			$scope.errorMessage = "";
+			var dataToSrv = {
+				"postData": {
+					"bill_number": $scope.billNumberSelected,
+				    "payment_type": $scope.saveData.paymentType,
+				    "amount": $scope.renderData.defaultPaymentAmount
+				},
+				"reservation_id": $scope.reservationData.reservationId
+			};
+			if($scope.saveData.paymentType == "CC"){
+				dataToSrv.postData.credit_card_type = $scope.defaultPaymentTypeCard.toUpperCase();//Onlyifpayment_type is CC
+			}
+			console.log(dataToSrv);
+			$scope.invokeApi(RVPaymentSrv.submitPaymentOnBill, dataToSrv, $scope.successPayment);
+		}
+		
 	};
 	/*
 	 * Success call back of success payment
