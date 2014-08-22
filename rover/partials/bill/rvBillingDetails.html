@@ -1,0 +1,41 @@
+  <span class="h2 message">Route to Bill #
+                <div class="select">
+                    same as {billing-group.html}
+                </div>
+            </span>
+
+            <!-- Show billing groups or charge codes -->
+            <ul id="transaction-type" class="modal-options">
+                <li>Billing Group</li>
+                <li class="active">Charge Codes</li>
+            </ul>
+
+            <!-- Search available charge codes -->
+            <div id="autocomplete-charge-codes" class="search-codes">
+                <input name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
+                <div class="mini-select">
+                    <select id="charge-codes" name="charge-codes">
+                        <option value="10">10 Minibar</option>
+                        ... repeat
+                    </select>
+                </div>
+            </div>
+
+            <!-- Added from search -->
+            <div id="transactions" class="transactions codes scrollable">
+                <div class="entry radio-check wrapper">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox checked"></span>
+                        <input name="billing-group" id="100" value="100" type="checkbox" checked />
+                        <span class="value">100</span> Spa
+                    </label>
+                    .. repeat
+                </div>
+            </div>
+
+            <!-- No content
+            <div id="transactions" class="transactions codes scrollable no-content">
+                <div class="info">
+                    <strong class="h1">No codes added</strong>
+                </div>
+            </div>-->
