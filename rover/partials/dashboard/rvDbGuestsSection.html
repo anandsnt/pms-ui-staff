@@ -9,17 +9,17 @@
             </a>
         </li>
         <li>
-            <a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT')">
-                <strong>{{statisticsData.guests.checking_out}}</strong>
-                Departures
-            </a>
-        </li>
-        <li>
             <a class="button blue" ng-click="clickedOnGuestsToday($event, 'INHOUSE')">
                 <strong>{{statisticsData.guests.in_house}}</strong> 
                 In-house
             </a>
         </li>
+        <li>
+            <a class="button red" ng-click="clickedOnGuestsToday($event, 'DUEOUT')">
+                <strong>{{statisticsData.guests.checking_out}}</strong>
+                Departures
+            </a>
+        </li>        
         <li>
             <a class="button yellow" ng-click="clickedOnGuestsToday($event, 'VIP')">
                 <strong>{{statisticsData.guests.vip}}</strong> 
