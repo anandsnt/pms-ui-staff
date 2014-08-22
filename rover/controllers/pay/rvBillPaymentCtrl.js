@@ -77,6 +77,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.renderDefaultValues = function(){
 		if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
 			$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
+			$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
 			if($scope.defaultPaymentTypeOfBill == 'CC'){
 				$scope.isExistPaymentType = true;
 				$scope.showCreditCardInfo = true;
