@@ -704,7 +704,6 @@ body { overflow: hidden; }
 		}	
 	}
 
-
 /* Post bar					==============================*/
 	.post-form {
 		position: absolute;
@@ -1028,19 +1027,14 @@ body { overflow: hidden; }
 	}
 
 /* Reservation header		==============================*/
-	.reservation-header,
-	.reservation-guests {
+	.reservation-header {
 		width: 100%;
-		height: 50px;
 		padding: 10px 20px;
 		overflow: hidden;
-		.box-shadow(0 1px 1px rgba(0,0,0,.1));
-		.show;
-	}
-
-	.reservation-header {
 		background: @white;
 		z-index: 90;
+		.box-shadow(0 1px 1px rgba(0,0,0,.1));
+		.show;
 
 		.actions {
 			.button,
@@ -1054,7 +1048,7 @@ body { overflow: hidden; }
 				vertical-align: top;
 				background-color: @grey1;
 				background-position: 90% 50%;
-				padding: 0 30px 0 10px;
+				padding: 0 10px;
 				.no-transition;
 
 				.label { 
@@ -1062,6 +1056,8 @@ body { overflow: hidden; }
 					float: none;
 					font-size: 12px;
 				}
+
+				&.has-arrow { padding-right: 30px; }
 
 				&.toggle { 
 					margin-right: 10px; 
@@ -1071,13 +1067,9 @@ body { overflow: hidden; }
 						background-position: 90% -webkit-calc(~"50% - 10px");
 						background-position: 90% -moz-calc(~"50% - 10px");
 						background-position: 90% calc(~"50% - 10px");
+						.box-shadow(1px 0 0 rgba(0,0,0,.2));
+						#border-radius > .bottom();
 					}
-				}
-
-				&.inactive-nights {
-					font-weight: 600;
-					#border-radius > .rounded(3px);
-					.box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
 				}
 
 				&:hover,

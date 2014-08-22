@@ -1,0 +1,48 @@
+<div role="dialog" id="modal" class="modal-show">
+    <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form edit-charge">
+        <button class="modal-close" type="button"  ng-click="callActionsPopupAction('close')"  id="modal-close"><span class="icons icon-close invert"></span></button>
+        <fieldset id="split-charge" name="split-charge" class="split-charge">
+            <span class="h2 message" translate>SPLIT_CHARGE</span>
+            <span class="text">{{selectedTransaction.desc}} <strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
+
+            <!-- Form -->
+            <div class="entry full-width with-switch">
+                <label for="split-value" translate>SPLITTING_FOR</label>
+                <div class="switch-button" ng-class="{'on':splitTypeisAmount}">
+                    <input name="split-type" id="split-type" value="" type="checkbox" ng-model="splitTypeisAmount"/>
+                    <label class="data-off">
+                        <span class="switch-icon">%</span>
+                        <span class="value">{{currencySymbol}}</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="value">%</span>
+                        <span class="switch-icon">{{currencySymbol}}</span>
+                    </label>
+                </div>
+                <input name="split-value" id="split-value" placeholder="Enter split value" ng-model="splitValue" type="text" />
+            </div>
+            <!-- Preview, hidden until split value is defined -->
+            <div id="split-preview" class="entry full-width notice" ng-hide="splitValue.length === 0 || !splitValue">
+                <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
+                <ul>
+                    <li>
+                        {{selectedTransaction.desc}}
+                        <span class="value" ng-hide="splitTypeisAmount">
+                            {{(selectedTransaction.amount*splitValue/100) | number:2}}</span>
+                            <span class="value" ng-show="splitTypeisAmount">{{selectedTransaction.amount -splitValue | number:2}} </span>
+
+                        </li>
+                        <li>
+                            {{selectedTransaction.desc}}
+                            <span class="value" ng-hide="splitTypeisAmount">{{selectedTransaction.amount -(selectedTransaction.amount*splitValue/100 | number:2)}}</span>
+                            <span class="value" ng-show="splitTypeisAmount">{{splitValue | number:2}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="actions">
+                    <button type="button" class="button blue modal-close" ng-click="splitCharge(splitValue,splitTypeisAmount)" translate>SPLIT_CHARGE</button>
+                    <button type="button" class="button blank" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
+                </div>
+            </fieldset> 
+        </form>
+</div>
