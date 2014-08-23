@@ -293,40 +293,24 @@ body { overflow: hidden; }
 
 		.icon-alert {
 			position: absolute;
-			top: 10px;
-			.square(40px);
+			top: 15px;
+			padding: 0 10px 0 30px;
+			font-weight: 600;
+			line-height: 30px;
+			.size(30px, auto);
 			.show;
 
-			span {
-				position: absolute;
-				top: 0;
-				right: 0;
-				font-size: 11px;
-				line-height: 16px;
-				font-weight: 400;
-				color: @white;
-				background: @softRed;
-				.square(16px);				
-				.show;
-				#border-radius > .rounded(16px);
+			&.queued-rooms {
+				right: 266px; 
+				color: @red;
+				background-color: @white;
 			}
-
-			&#lobby-alert { left: 50px; }
-			&#messages-alert { left: 100px; }
-			&#reviews-alert { left: 150px; }
 			
-			&#late-checkout-alert { 
-				top: 15px;
+			&.late-check-out {
 				right: 196px; 
-				height: 30px;
-				width: auto;
-				padding: 0 10px 0 30px;
 				color: @white;
-				font-weight: 600;
-				line-height: 30px;
 				background-color: @red;
 			}
-
 		}
 
 		.logo {
