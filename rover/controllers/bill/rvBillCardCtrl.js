@@ -992,7 +992,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 
 	var failureCallBack = function(data){
-		hideLoaderAndClosePopup();
+		//hideLoaderAndClosePopup();
+		$scope.$emit("hideLoader");
 		$scope.errorMessage = data;
 	};
 
