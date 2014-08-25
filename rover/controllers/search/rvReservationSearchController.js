@@ -26,13 +26,15 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
   }
   if ($stateParams.type in headingDict){
       heading = headingDict[$stateParams.type];
-      $rootScope.setPrevState = {
-        title: $filter( 'translate' )( headingDict[$stateParams.type] ),
-        name: 'rover.dashboard'
-      };
   } else {
       heading = headingDict['NORMAL_SEARCH'];
   }
+
+  // setup a back to dashboard
+  $rootScope.setPrevState = {
+    title: $filter( 'translate' )( 'DASHBOARD' ),
+    name: 'rover.dashboard'
+  };
 
   // saving/reseting search params to $vault
   $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
