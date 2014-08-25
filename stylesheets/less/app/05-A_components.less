@@ -1239,40 +1239,16 @@
                             }
                             
                             .entry {
+                                #fade > .in();
                                 #pixel-to-percent > .width(432, 904);
 
-                                label { 
-                                    margin-bottom: 0; 
-                                }
+                                label { margin-bottom: 0; }
                                 
                                 input[size] {
                                     text-align: center;
                                     margin-right: 5px;
 
                                     &:last-child { margin-right: 0; }
-                                }
-
-                                &.margin { #pixel-to-percent > .right-margin(40, 904); }
-
-                                &.no-label {
-                                    padding-top: 24px;
-
-                                    &.full-width { padding-top: 0; }
-                                }
-
-                                &.price-adjust {
-                                    .float;
-
-                                    .select {
-                                        #pixel-to-percent > .width(122, 432);
-                                        .pull-left;
-                                    }
-
-                                    input {
-                                        margin: 0 10px;
-                                        #pixel-to-percent > .width(148, 432);
-                                        .pull-left;
-                                    }
                                 }
 
                                 .contracted-nights {
@@ -1325,6 +1301,46 @@
                                     }
                                 }
 
+                                &.margin { #pixel-to-percent > .right-margin(40, 904); }
+
+                                &.no-label {
+                                    padding-top: 24px;
+
+                                    &.full-width { padding-top: 0; }
+                                }
+
+                                &.price-adjust {
+                                    .float;
+
+                                    .select {
+                                        #pixel-to-percent > .width(122, 432);
+                                        .pull-left;
+                                    }
+
+                                    input {
+                                        margin: 0 10px;
+                                        #pixel-to-percent > .width(148, 432);
+                                        .pull-left;
+                                    }
+                                }
+
+                                &.with-notes {
+                                    .float;
+
+                                    textarea {
+                                        height: 80px;
+                                        #pixel-to-percent > .right-margin(40, 904);
+                                        #pixel-to-percent > .width(664, 904); 
+                                        .pull-left;
+                                    }
+
+                                    .button {
+                                        line-height: 40px;
+                                        #pixel-to-percent > .width(200, 904); 
+                                        .pull-left;
+                                    }
+                                }                                
+
                                 &.full-width,
                                 &.radio-check {
                                     float: none;
@@ -1335,9 +1351,7 @@
                                     .float;       
                                     
                                     .checkbox,
-                                    .radio {
-                                        #pixel-to-percent > .width(432, 904);
-                                    }
+                                    .radio { #pixel-to-percent > .width(432, 904); }
 
                                     &.full-width {
                                         .checkbox,
@@ -1347,6 +1361,65 @@
 
                                 &.has-datepicker {
                                     .ui-datepicker-trigger { top: 24px; }
+                                }
+
+                                &.hidden { #fade > .out(); }
+                            }
+
+                            .notes {
+                                margin-top: 20px;
+                                clear: both;
+                                .show;
+
+                                li {
+                                    position: relative;
+                                    font-size: 14px;
+                                    min-height: 40px;
+                                    padding: 0 0 20px 60px;
+                                    margin-bottom: 20px;
+                                    border-bottom: 1px solid rgba(0,0,0,.1);
+
+                                    .guest-image {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        .square(40px);
+
+                                        .vip {
+                                            bottom: -10px;
+                                            left: 0;
+                                        }
+                                    }
+
+                                    .note-title {
+                                        font-size: 16px;
+                                        text-transform: uppercase;
+
+                                        h4 {
+                                            display: inline-block;
+                                            margin-right: 20px;
+                                            color: @logoPrimary;
+                                            font-size: 16px;
+                                            font-weight: 600;
+                                        }
+
+                                        time {
+                                            display: inline-block;
+                                            color: @grey3;
+                                            margin-right: 20px;
+                                        }
+
+                                        .icon-trash {
+                                            display: inline-block;
+                                            cursor: pointer;
+                                            .pull-right;
+                                        }
+                                    }
+
+                                    &:last-child { 
+                                        margin-bottom: 0;
+                                        border-bottom: 0; 
+                                    }
                                 }
                             }
 
