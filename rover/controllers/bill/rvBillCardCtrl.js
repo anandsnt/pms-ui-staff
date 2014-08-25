@@ -1,4 +1,6 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window','$timeout', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window,$timeout){
+
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData){
+
 	
 	BaseCtrl.call(this, $scope);
 
@@ -93,7 +95,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		
-		setTimeout(function(){
+		$timeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
         }, 500);
 		
@@ -657,7 +659,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.calculatedHeight = height;
 		
 		$scope.calculatedWidth = width;
-		setTimeout(function(){
+		
+		$timeout(function(){
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('billDays');
 			}, 
@@ -769,7 +772,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.errorMessage = data;
 	};
 	// To handle complete checkout button click
-	$scope.clickedCompleteCheckout = function(){
+	$scope.clickedCompleteCheckout = function() {
 
 		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
@@ -781,6 +784,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 		var errorMsg = "";
+		var totalBal = 0;
+
+		// calculate total
+		for (var i = 0; i < reservationBillData.bills.length; i++) {
+			var bill = reservationBillData.bills[i];
+			totalBal += bill.total_amount * 1;
+		};
 		
 		if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
 			// Popup to accept and save email address.
@@ -814,6 +824,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		else if (!$scope.saveData.acceptCharges){
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
+		}
+		else if ($rootScope.isStandAlone && totalBal > 0) {
+			$scope.clickedPayButton();
 		}
 		else{
 			var data = {
@@ -886,6 +899,188 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 
 	 });	
+
+
+
+/*------------- edit/remove/split starts here --------------*/
+	
+	$scope.splitTypeisAmount = true;
+	$scope.chargeCodeActive = false;
+	$scope.selectedChargeCode = "";
+	$scope.chargeCodeData = chargeCodeData.results;
+
+	$scope.getAllchargeCodes = function (callback) {
+    	callback($scope.chargeCodeData);
+	};
+
+	$scope.setchargeCodeActive = function(bool){
+		$scope.chargeCodeActive = bool;
+	};
+
+   /*
+	 * open popup for edit/split/remove transaction
+	 */
+	$scope.openActionsPopup = function(id,desc,amount,type,credits){
+		//hide edit and remove options in case type is  payment
+		$scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
+		$scope.selectedTransaction = {};
+		$scope.selectedTransaction.id = id;
+		$scope.selectedTransaction.desc = desc;
+	
+		if(amount){
+			$scope.selectedTransaction.amount = amount;
+		}
+		else if(credits){
+			$scope.selectedTransaction.amount = credits;
+		};
+		
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvBillActionsPopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});    	
+	};
+
+  /*
+	 * open popup for remove transaction
+	 */
+
+	$scope.openRemoveChargePopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvRemoveChargePopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	};
+
+  /*
+	 * open popup for split transaction
+	 */
+
+	$scope.openSplitChargePopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvSplitChargePopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	};
+
+  /*
+	 * open popup for edit transaction
+	 */
+
+	$scope.openEditChargePopup = function(){
+		ngDialog.open({
+    		template: '/assets/partials/bill/rvEditPostingPopup.html',
+    		className: 'ngdialog-theme-default1',
+    		scope: $scope
+    	});
+	};
+
+
+	var refreshListWithData = function(data){
+		$scope.reservationBillData = data; 
+		reservationBillData = data;
+		//expand list
+		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
+		$scope.calculateHeightAndRefreshScroll();
+	};
+
+	var hideLoaderAndClosePopup = function(){
+		$scope.$emit("hideLoader");
+		ngDialog.close();
+	};
+
+	var failureCallBack = function(data){
+		//hideLoaderAndClosePopup();
+		$scope.$emit("hideLoader");
+		$scope.errorMessage = data;
+	};
+
+   /*
+	 * API call remove transaction
+	 */
+
+	$scope.removeCharge = function(reason){
+		
+		var deleteData = 
+		{
+			data:{
+				"reason":reason,
+				"process":"delete"
+			},
+			"id" :$scope.selectedTransaction.id
+		};
+		var transactionDeleteSuccessCallback = function(data){		
+			hideLoaderAndClosePopup();
+			refreshListWithData(data);
+			
+		};
+		$scope.invokeApi(RVBillCardSrv.transactionDelete, deleteData, transactionDeleteSuccessCallback,failureCallBack);
+	};
+
+   /*
+	 * API call split transaction
+	 */
+
+	$scope.splitCharge = function(qty,isAmountType){
+
+		var split_type = isAmountType ? $rootScope.currencySymbol:'%';
+		var splitData = {
+			"id" :$scope.selectedTransaction.id,
+			"data":{
+				"split_type": split_type,
+   				"split_value": qty
+			}
+			 
+		};
+		var transactionSplitSuccessCallback = function(data){		
+			hideLoaderAndClosePopup();
+			refreshListWithData(data);
+		};
+		$scope.invokeApi(RVBillCardSrv.transactionSplit, splitData, transactionSplitSuccessCallback,failureCallBack);
+	};
+
+   /*
+	 * API call edit transaction
+	 */
+	$scope.editCharge = function(newAmount,chargeCode){
+		
+		var newData = 
+		{
+			"updatedDate":
+						{
+				  			"new_amount":newAmount,
+				  			"charge_code_id": chargeCode.id
+						},
+					"id" :$scope.selectedTransaction.id
+		};
+
+		var transactionEditSuccessCallback = function(data){
+			hideLoaderAndClosePopup();
+			refreshListWithData(data);
+		};
+		$scope.invokeApi(RVBillCardSrv.transactionEdit, newData, transactionEditSuccessCallback,failureCallBack);
+	
+	};
+
+
+	$scope.callActionsPopupAction = function(action){
+		
+		ngDialog.close();	
+		if(action ==="remove"){
+			$scope.openRemoveChargePopup();
+		}
+		else if(action ==="split"){
+			$scope.openSplitChargePopup();
+		}else if(action === "edit"){
+			$scope.openEditChargePopup();
+		};
+
+	};
+
+/*----------- edit/remove/split ends here ---------------*/
+
 	 
 	$scope.clickedEmail = function(){
 		
@@ -950,5 +1145,4 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.paymentModalOpened = false;
 	});
 		
-
 }]);

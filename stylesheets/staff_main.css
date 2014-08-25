@@ -19,5 +19,6 @@
  *= require '../shared/lib/css/ng-table.css'
  *= require '../shared/lib/css/date-picker.css.less'
  *= require '../shared/lib/css/advanced_date_picker.css'
+ *= require '../rover/css/acute-select.css'
 
  */
