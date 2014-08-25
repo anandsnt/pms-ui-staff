@@ -164,7 +164,7 @@ td.ac-select-add {
 }
 
 .ac-select-popup li:hover {
-    background-color: #f0f0f0;   
+     
 }
 
 .ac-select-load-more {
@@ -188,7 +188,7 @@ td.ac-select-add {
 /* QBurst */
 
 .acute-select-li{
-    margin-bottom:5px !important;
+    margin-bottom:0.5em !important;
     border-bottom: 1px solid lightgray;
 }
 

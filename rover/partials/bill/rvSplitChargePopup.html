@@ -29,12 +29,12 @@
                         {{selectedTransaction.desc}}
                         <span class="value" ng-hide="splitTypeisAmount">
                             {{(selectedTransaction.amount*splitValue/100) | number:2}}</span>
-                            <span class="value" ng-show="splitTypeisAmount">{{selectedTransaction.amount -splitValue | number:2}} </span>
+                            <span class="value" ng-show="splitTypeisAmount">{{(selectedTransaction.amount -splitValue) | number:2}} </span>
 
                         </li>
                         <li>
                             {{selectedTransaction.desc}}
-                            <span class="value" ng-hide="splitTypeisAmount">{{selectedTransaction.amount -(selectedTransaction.amount*splitValue/100 | number:2)}}</span>
+                            <span class="value" ng-hide="splitTypeisAmount">{{(selectedTransaction.amount -(selectedTransaction.amount*splitValue/100)) | number:2}}</span>
                             <span class="value" ng-show="splitTypeisAmount">{{splitValue | number:2}}</span>
                         </li>
                     </ul>
