@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault){
 
 	/*
 	* Base reservation search, will extend in some place
@@ -6,7 +6,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	* you wrapping this.
 	*/
 	var that = this;
-  	BaseCtrl.call(this, $scope);	
+  	BaseCtrl.call(this, $scope);
 
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
@@ -38,6 +38,18 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	$scope.$on("showAddNewGuestButton", function(event, showAddNewGuestButton){
 		$scope.showAddNewGuestButton = showAddNewGuestButton;
 	});
+
+
+
+	// if returning back and there was a search query typed in restore that
+	// else reset the query value in vault
+	if ( $stateParams.useCache && !!$vault.get('searchQuery') ) {
+		$scope.textInQueryBox = $vault.get('searchQuery');
+	} else {
+		$vault.set('searchQuery', '');
+	}
+
+
 
 	/**
 	* Success call back of data fetch from webservice
@@ -116,7 +128,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		if(!$scope.showSearchResultsArea ){
 			$scope.showSearchResultsArea = true;
 		}
-	    displayFilteredResults();  
+	    displayFilteredResults();
+
+	    // save the entered query into vault
+	    // if returning back we will display that result
+	    $vault.set('searchQuery', $scope.textInQueryBox);
 
 	}; //end of query entered
 
@@ -292,6 +308,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	  	if ( !!$rootScope.setPrevState.noStateChange ) {
 	  	    $rootScope.setPrevState.hide = true;
 	  	};
+
+	  	// reset the query saved into vault
+	  	$vault.set('searchQuery', '');
   	};
   	
   	/**

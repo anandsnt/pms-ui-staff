@@ -231,6 +231,8 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.completeCheckin = function(e) {
+		
+		var isSwipeHappenedDuringCheckin = sntapp.getViewInst('addNewPaymentModal').swipeHappened;
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -267,12 +269,28 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else {
-			var data = {
-				"is_promotions_and_email_set" : is_promotions_and_email_set,
-				"signature" : signature,
-				"reservation_id" : that.reservation_id		
-			};
-
+			if(isSwipeHappenedDuringCheckin){
+				var data = {
+					"is_promotions_and_email_set" : is_promotions_and_email_set,
+					"signature" : signature,
+					"reservation_id" : that.reservation_id,
+					"payment_type": sntapp.regCardData.payment_type,
+					"mli_token": sntapp.regCardData.mli_token,
+					"et2": sntapp.regCardData.et2,
+					"ksn": sntapp.regCardData.ksn,
+					"pan": sntapp.regCardData.pan,
+					"name_on_card": sntapp.regCardData.name_on_card,
+					"card_expiry": sntapp.regCardData.card_expiry,	
+					"credit_card" : sntapp.regCardData.credit_card 	
+				};
+			} else {
+				var data = {
+					"is_promotions_and_email_set" : is_promotions_and_email_set,
+					"signature" : signature,
+					"reservation_id" : that.reservation_id
+				};
+			}
+		
 			var webservice = new WebServiceInterface();
 
 			var url = '/staff/checkin';
@@ -414,7 +432,7 @@ var RegistrationCardView = function(viewDom) {
 	      	  return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
 	      if(options && options.should_show_overlay){
-	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay = true;
 	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = 
