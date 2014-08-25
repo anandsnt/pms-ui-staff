@@ -111,17 +111,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	};
 
 
-	var successCallbackFetchArDetails = function(data){
-		$scope.$emit("hideLoader");
-		$scope.arAccountDetails = data;
-		$scope.$broadcast('ARDetailsRecieved');
-	};
-
-	var successCallbackFetchArNotes = function(data){
-		$scope.$emit("hideLoader");
-		$scope.arAccountNotes = data;
-	};
-
 	/**
 	* successcall back of country list fetch
 	*/
@@ -154,8 +143,23 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	else if(typeof id !== 'undefined' && id !== ""){
 		var data = {'id': id};		
 		$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);	
+		
+		var successCallbackFetchArNotes = function(data){
+			$scope.$emit("hideLoader");
+			$scope.arAccountNotes = data;
+			$scope.$broadcast('ARDetailsRecieved');
+		};
+		var fetchARNotes = function(){
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, data, successCallbackFetchArNotes);
+		}
+
+		var successCallbackFetchArDetails = function(data){
+			$scope.$emit("hideLoader");
+			$scope.arAccountDetails = data;
+			fetchARNotes();
+		};
 		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, data, successCallbackFetchArDetails);	
-		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, data, successCallbackFetchArNotes);
+		
 	}
 
 	/**

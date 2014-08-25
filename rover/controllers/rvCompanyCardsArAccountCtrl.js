@@ -29,6 +29,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 			presentArDetails = JSON.parse(JSON.stringify($scope.arAccountDetails));
 		});
 
+		$scope.checkboxModelChanged = function(){
+			refreshScroller();
+		};
+
 
 		$scope.saveNote = function(){
 

@@ -5,8 +5,8 @@
  role="tabpanel" aria-expanded="true" aria-hidden="false"
  style="height:90%;" ng-iscroll="companyCardArAccountCtrl" ng-iscroll-delay="2000">
 
-    <div class="wrapper cc-contact-info-height1" style="height:170%;">
-
+    <div class="wrapper cc-contact-info-height1" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; left: 0px; top: 0px;">
+    <div style="display: table;width:100%;border-collapse: collapse;">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
     <div class="holder left">
@@ -47,7 +47,7 @@
     <div class="entry only-switch">
         <label for="company-main-address"translate>USE_MAIN_ADDRESS</label>
         <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_use_main_address}">
-            <input name="company-main-address" id="company-main-address" type="checkbox" ng-model="arAccountDetails.is_use_main_address">
+            <input name="company-main-address" id="company-main-address" type="checkbox" ng-model="arAccountDetails.is_use_main_address" ng-change="checkboxModelChanged()">
             <label class="data-off">
                 <span class="value">Yes</span>
                 <span class="switch-icon">No</span>
@@ -94,7 +94,7 @@
     <div class="entry only-switch">
         <label for="company-main-contact"translate>USE_MAIN_CONTACT</label>
         <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_use_main_contact}">
-            <input name="company-main-contact" id="company-main-contact" type="checkbox" ng-model="arAccountDetails.is_use_main_contact" />
+            <input name="company-main-contact" id="company-main-contact" type="checkbox" ng-model="arAccountDetails.is_use_main_contact" ng-change="checkboxModelChanged()" />
              <label class="data-off">
                 <span class="value">Yes</span>
                 <span class="switch-icon">No</span>
@@ -119,7 +119,7 @@
         <rv-textbox value="arAccountDetails.ar_contact_details.email" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="full-width"></rv-textbox>
 
     </div>
-
+    </div>
     </div>
 </div>
     </div>
