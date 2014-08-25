@@ -76,6 +76,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
+
+    $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
+      $scope.userInfo.business_date = newBussinessDate
+    });
+
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
 
