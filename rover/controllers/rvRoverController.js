@@ -148,7 +148,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             action: ""
           }, {
             title: "MENU_POST_CHARGES",
-            action: ""
+            action: "",
+            actionPopup:true,
+             menuIndex:"postcharges"
           }, {
             title: "MENU_CASHIER",
             action: ""
@@ -266,7 +268,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }];
 
     }
-    
 
     $scope.$on("updateSubMenu", function(idx, item) {
       if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
@@ -329,6 +330,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.subMenuAction = function(subMenu){
       $scope.toggleDrawerMenu();
+      if(subMenu === "postcharges"){
+      	ngDialog.open({
+				template: '/assets/partials/postCharge/postCharge.html',
+				controller: 'RVPostChargeController',
+				scope: $scope
+			});
+      }
       if(subMenu === "endOfDay"){
          ngDialog.open({
             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
