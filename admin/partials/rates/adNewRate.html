@@ -4,7 +4,7 @@
         <div ng-show="is_edit">
             <h2>Edit Rate <span>{{ rateData.name }}</span></h2>
         </div>
-        <a class="action back" ui-sref="admin.rates">Back to rates</a>
+        <a class="action back" ng-click="backToRates($event)">Back to rates</a>
 
     </header>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>

@@ -33,6 +33,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date":"",
                 "end_date_for_display":""
             }
+
+            $scope.otherData = {
+                "setChanged" : false,
+                "activeDateRange" : "",
+                "activeDateRangeIndex" : ""
+            }
             // intialize rateData dictionary - END
 
             $scope.allAddOns = [];
@@ -305,6 +311,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         // on click Cancel button redirect to previous active msetRateDetailsenu
         $scope.cancelMenu = function(){
             $scope.$emit("changeMenu", $scope.prevMenu);
+        }
+
+        $scope.backToRates = function(event){
+            event.preventDefault();
+            if($scope.otherData.setChanged){     
+                $scope.$broadcast('backToRatesClicked', event);
+            }
+            else{
+                $state.go('admin.rates');
+            }
         }
 
         /*
