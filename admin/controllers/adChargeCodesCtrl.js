@@ -10,8 +10,11 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
-	$scope.selected_payment_type = "";
+
+	$scope.selected_payment_type = {};
+	$scope.selected_payment_type.id = -1;
 	$scope.prefetchData = {};
+	
 	/*
 	 * To fetch charge code list
 	 */
@@ -51,6 +54,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
 			$scope.prefetchData = data;
+			$scope.addIDForPaymentTypes();
 			$scope.prefetchData.linked_charge_codes = [];
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
@@ -71,6 +75,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
 			$scope.prefetchData = data;
+			$scope.addIDForPaymentTypes();
 			$scope.isEdit = true;
 			$scope.isAdd = false;
 			$scope.checkAmountPrecision();
@@ -100,6 +105,15 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	       	});
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
+	};
+	/*
+	 * To add unique ids to the payment type list
+	 */
+	$scope.addIDForPaymentTypes = function() {
+
+		for(var i = 0; i < $scope.prefetchData.payment_types.length; i++){
+			$scope.prefetchData.payment_types[i].id = i;
+		}
 	};
 	/*
 	 * To fetch the template for charge code details add/edit screens
@@ -138,6 +152,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+	    		// $scope.tableParams.reload();
 			} else {
 				$scope.data.charge_codes.push(data);
 				$scope.tableParams.reload();
@@ -325,9 +340,9 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	/*
 	 * To set the selected payment type based on the id and cc_type from the dropdown.
 	 */
-	$scope.changeSelectedPaymentType = function(index) {
-		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[index].value;
-		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[index].is_cc_type;
+	$scope.changeSelectedPaymentType = function() {
+		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
+		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
 	};
 	
 	/*
