@@ -5,7 +5,7 @@
          <div id="routes" class="billing-list scrollable">
 			   <ul class="wrapper">
 			      
-			      <li ng-repeat = "route in routes">
+			      <li ng-repeat = "route in routes" ng-click= "selectEntity()">
 			         <a href="#route-details" ng-class = "getEntityRole(route)">
 			            <figure class="guest-image" ng-class = "getEntityIconClass(route)">
 			               <img src="{image}" alt="" />
