@@ -28,10 +28,10 @@
                 <img src="{{noteData.avatar}}" alt="" />
             </figure>
             <div class="note-title">
-                <h4>{posted by}</h4>
+                <h4>{{noteData.user_name}}</h4>
                 <time datetime="{timestamp}">
-                    <span class="time">{time}</span>
-                    <span class="date">{date}</span>
+                    <span class="time">{{noteData.created_time}}</span>
+                    <span class="date">{{noteData.created_at}}</span>
                 </time>
                 <button type="button" class="icons icon-trash" ng-click="deletePost(noteData.id,$index)" translate>DELETE_POST</button>
             </div>
@@ -43,15 +43,16 @@
 <div class="holder right">
     <!-- Main Address -->
     <strong class="h3" translate>ADDRESS</strong>
+
     <div class="entry only-switch">
         <label for="company-main-address"translate>USE_MAIN_ADDRESS</label>
-        <div class="switch-button full-width">
+        <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_use_main_address}">
             <input name="company-main-address" id="company-main-address" type="checkbox" ng-model="arAccountDetails.is_use_main_address">
-            <label ng-class="{'data-off':!arAccountDetails.is_use_main_address,'data-on':arAccountDetails.is_use_main_address}">
+            <label class="data-off">
                 <span class="value">Yes</span>
                 <span class="switch-icon">No</span>
             </label>
-            <label ng-class="{'data-off':arAccountDetails.is_use_main_address,'data-on':!arAccountDetails.is_use_main_address}">
+            <label class="data-on">
                 <span class="switch-icon">Yes</span>
                 <span class="value">No</span>
             </label>
@@ -92,13 +93,13 @@
     <strong class="h3 margin" translate>CONTACT</strong>
     <div class="entry only-switch">
         <label for="company-main-contact"translate>USE_MAIN_CONTACT</label>
-        <div class="switch-button full-width">
+        <div class="switch-button full-width" ng-class="{'on':arAccountDetails.is_use_main_contact}">
             <input name="company-main-contact" id="company-main-contact" type="checkbox" ng-model="arAccountDetails.is_use_main_contact" />
-            <label ng-class="{'data-off':!arAccountDetails.is_use_main_contact,'data-on':arAccountDetails.is_use_main_contact}">
+             <label class="data-off">
                 <span class="value">Yes</span>
                 <span class="switch-icon">No</span>
             </label>
-            <label  ng-class="{'data-off':arAccountDetails.is_use_main_contact,'data-on':!arAccountDetails.is_use_main_contact}">
+            <label class="data-on">
                 <span class="switch-icon">Yes</span>
                 <span class="value">No</span>
             </label>
