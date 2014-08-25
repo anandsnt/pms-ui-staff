@@ -2,6 +2,10 @@
 sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 	function($scope,RVCompanyCardSrv) {
 
+		$scope.setScroller('companyCardArAccountCtrl');
+		var refreshScroller = function() {
+				$scope.refreshScroller('companyCardArAccountCtrl');
+			};
 
 		var init = function(){
 
@@ -9,12 +13,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 			$scope.ARData = {};
 			$scope.ARData.note = "";
-			$scope.setScroller('companyCardArAccountCtrl');
-
-			var refreshScroller = function() {
-				$scope.refreshScroller('companyCardArAccountCtrl');
-			};
-
 			$scope.$on("arAccountTabActive", function() {
 				setTimeout(function() {
 					refreshScroller();
@@ -34,17 +32,32 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 		$scope.saveNote = function(){
 
-			var successCallbackOfsaveARNote = function(){
+			var successCallbackOfsaveARNote = function(data){
 				$scope.$emit("hideLoader");
-				var noteData = {"note":$scope.ARData.note}
-				$scope.arAccountNotes.ar_notes.push(noteData);
+				$scope.arAccountNotes.ar_notes.push(data);
 				$scope.ARData.note = "";
+				refreshScroller();
 			};
 
 			var dataToSend = {"id":$scope.contactInformation.id,"note":$scope.ARData.note};
 			$scope.invokeApi(RVCompanyCardSrv.saveARNote, dataToSend, successCallbackOfsaveARNote);
 
 		}
+
+
+		$scope.deletePost = function(note_id,index){
+
+			var deleteARNoteSuccess = function(){
+				$scope.$emit("hideLoader");
+				$scope.arAccountNotes.ar_notes.splice(index,1);
+				refreshScroller();
+			};
+
+			var dataToSend = {"id":$scope.contactInformation.id,"note_id":note_id};
+			$scope.invokeApi(RVCompanyCardSrv.deleteARNote, dataToSend, deleteARNoteSuccess);
+
+		}
+
 		var updateArAccount = function(){
 
 			var successCallbackOfsaveARDetails = function(data){

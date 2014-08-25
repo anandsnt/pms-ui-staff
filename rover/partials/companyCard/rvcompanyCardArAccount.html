@@ -17,15 +17,15 @@
     </div>
 
     <!-- Notes -->
-    <strong class="h3 margin"translate>AR_NOTES</strong>
+    <strong class="h3 margin" translate>AR_NOTES</strong>
     <div class="entry full-width no-label with-notes">
         <textarea id="company-ar-notes" placeholder="Write a note" rows="2" ng-model="ARData.note"></textarea>
-        <button type="button" id="post-company-ar-note" class="button brand-colors post" ng-click="saveNote()">Post</button>
+        <button type="button" id="post-company-ar-note" class="button brand-colors post" ng-click="saveNote()" translate>POST</button>
     </div>
     <ul class="notes">
         <li ng-repeat="noteData in arAccountNotes.ar_notes">
             <figure class="guest-image">
-                <img src="{image}" alt="" />
+                <img src="{{noteData.avatar}}" alt="" />
             </figure>
             <div class="note-title">
                 <h4>{posted by}</h4>
@@ -33,7 +33,7 @@
                     <span class="time">{time}</span>
                     <span class="date">{date}</span>
                 </time>
-                <button type="button" class="icons icon-trash">Delete post</button>
+                <button type="button" class="icons icon-trash" ng-click="deletePost(noteData.id,$index)" translate>DELETE_POST</button>
             </div>
             <p>{{noteData.note}}</p>
         </li>
@@ -42,7 +42,7 @@
 
 <div class="holder right">
     <!-- Main Address -->
-    <strong class="h3">Address</strong>
+    <strong class="h3" translate>ADDRESS</strong>
     <div class="entry only-switch">
         <label for="company-main-address"translate>USE_MAIN_ADDRESS</label>
         <div class="switch-button full-width">
@@ -89,7 +89,7 @@
     </div>
 
     <!-- Main Contact -->
-    <strong class="h3 margin">Contact</strong>
+    <strong class="h3 margin" translate>CONTACT</strong>
     <div class="entry only-switch">
         <label for="company-main-contact"translate>USE_MAIN_CONTACT</label>
         <div class="switch-button full-width">

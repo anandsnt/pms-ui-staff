@@ -55,5 +55,9 @@
     "USE_MAIN_CONTACT":"Use Main Contact",
     "AR_NOTES":"AR Notes",
     "AR_DETAILS":"AR Details",
-    "CONTACT_DETAILS":"Contact Details"
+    "CONTACT_DETAILS":"Contact Details",
+    "ADDRESS":"Address",
+    "POST":"Post",
+    "DELETE_POST":"Delete post",
+    "CONTACT":"Contact"
 	

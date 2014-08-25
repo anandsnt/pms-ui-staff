@@ -162,7 +162,11 @@
     "USE_MAIN_CONTACT":"Use Main Contact",
     "AR_NOTES":"AR Notes",
     "AR_DETAILS":"AR Details",
-    "CONTACT_DETAILS":"Contact Details"
+    "CONTACT_DETAILS":"Contact Details",
+    "ADDRESS":"Address",
+    "POST":"Post",
+    "DELETE_POST":"Delete post",
+    "CONTACT":"Contact"
 	
 ,    
     
@@ -235,7 +239,6 @@
 	"SHOW_DEPARTED": "Show Departed",
 
 	"ROOM_DETAILS": "Room Details",
-	"ROOM_STATUS": "Room status",
 	"ROOM_IS_VACANT": "Room is vacant.",
 
 	"HK_FLOORS": "Floors",
