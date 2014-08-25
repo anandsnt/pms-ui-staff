@@ -341,15 +341,20 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         }
 
         var showRateSetChangeSaveDialog = function() {
-            ngDialog.open({
-                template: '/assets/partials/rates/confirmRateSaveDialog.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
+            if($scope.otherData.rateSavePromptOpen){
+                ngDialog.open({
+                    template: '/assets/partials/rates/confirmRateSaveDialog.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+                $scope.otherData.rateSavePromptOpen = false;
+            }
+
         }
 
         $scope.closeDateRangeGrid = function(dateRange, index) {
             if ($scope.otherData.setChanged) {
+                $scope.otherData.rateSavePromptOpen = true;
                 showRateSetChangeSaveDialog();
             } else {
                 $scope.$emit('changeMenu', '')

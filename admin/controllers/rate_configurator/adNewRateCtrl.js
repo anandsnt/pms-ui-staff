@@ -37,7 +37,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.otherData = {
                 "setChanged" : false,
                 "activeDateRange" : "",
-                "activeDateRangeIndex" : ""
+                "activeDateRangeIndex" : "",
+                "rateSavePromptOpen" : false
             }
             // intialize rateData dictionary - END
 
@@ -314,8 +315,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         }
 
         $scope.backToRates = function(event){
-            event.preventDefault();
-            if($scope.otherData.setChanged){     
+            if($scope.otherData.setChanged){
+                $scope.otherData.rateSavePromptOpen = true;
                 $scope.$broadcast('backToRatesClicked', event);
             }
             else{
