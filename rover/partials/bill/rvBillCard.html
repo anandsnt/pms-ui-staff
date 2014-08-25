@@ -85,12 +85,7 @@
 						<!-- %span.icons.icon-plus -->
 						<!-- Add new -->
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-							<!-- Get advance bill -->
-							<li class="ui-state-default ui-corner-top ui-state-active" ng-show="(reservationBillData.reservation_status == 'CHECKEDIN' && !reservationBillData.is_advance_bill)" ng-click="advanceBillSelected()">
-								<a class="ui-tabs-anchor green" >
-									Get advanced bill
-								</a>
-							</li>
+							
 							<li class="ui-state-default ui-corner-top" ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<a class="ui-tabs-anchor" >
 								<div class="price" ng-hide="billTab.total_amount=='SR'">
