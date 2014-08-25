@@ -10,8 +10,8 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
-	$scope.selected_payment_type = "";
-	$scope.selected_payment_type_id = -1;
+	$scope.selected_payment_type = {};
+	$scope.selected_payment_type.id = -1;
 	
 	/*
 	 * To fetch charge code list
@@ -338,8 +338,8 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 * To set the selected payment type based on the id and cc_type from the dropdown.
 	 */
 	$scope.changeSelectedPaymentType = function() {
-		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type_id].value;
-		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type_id].is_cc_type;
+		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
+		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
 	};
 	
 }]);
