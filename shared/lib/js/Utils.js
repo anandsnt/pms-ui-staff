@@ -268,15 +268,15 @@ tzIndependentDate = function(st) {
     }
     
     return new Date(r);
-}
+};
 
 
 //To add n days to the current date
 Date.prototype.addDays = function(days) {
-   var dat = new Date(this.valueOf())
+   var dat = new Date(this.valueOf());
    dat.setDate(dat.getDate() + days);
    return dat;
-}
+};
 
 /**
 * A public method to check if the given object is empty (it is recommended over the above one).
@@ -294,4 +294,38 @@ Date.prototype.clone = function() {
     return new Date(this.getTime()); 
 };
 
+/**
+* function to get List of dates between two dates
+* param1 {Date Object}
+* param2 {Date Object}
+* return Array of Date Objects
+*/
+var getDatesBetweenTwoDates = function(fromDate, toDate){
+    var datesBetween = [];
+
+    while(fromDate <= toDate){
+        datesBetween.push(new Date(fromDate));
+        fromDate.setDate(fromDate.getDate() + 1);
+    }
+
+    return datesBetween;
+}
+
+
+function getWeekDayName(dayIndexInWeek, minLetterCount){
+    if(typeof minLetterCount === 'undefined'){
+        minLetterCount = 0;
+    }
+    var weekday = new Array(7);
+    weekday[0]=  "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    var n = weekday[dayIndexInWeek];
+    return n.substr(0, minLetterCount);
+}
 
