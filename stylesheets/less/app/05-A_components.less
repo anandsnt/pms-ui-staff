@@ -938,7 +938,29 @@
                     .size(90px, 100%);
                     .show;
 
-                    form {
+                    .guest-image { 
+                        &.icon-company,
+                        &.icon-travel-agent {
+                            padding-top: 65px;
+                            margin: -20px 0 0 -20px;
+                            text-align: center;
+                            text-transform: uppercase;
+                            color: @white;
+                            font-size: 12px;
+                            line-height: 1em;
+                            font-weight: 600;
+                            white-space: nowrap;
+                            text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+                            .square(90px);
+
+                            span { .show; }                             
+
+                            &.new { padding-top: 55px; }
+                        }                       
+                    }
+
+                    form,
+                    .card-search-form {
                         height: 50px;
                         margin-left: 20px;
                         .calc-width(100, 90);
