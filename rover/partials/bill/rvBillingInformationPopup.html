@@ -9,7 +9,10 @@
       <!-- Billing Info Content -->
       <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'"  ng-controller="rvAllRoutesCtrl"></div>
 
-      <div ng-if = "!isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvSelectEntity.html'"  ></div>
+
+      <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/bill/rvSelectEntity.html'"></div>
+
+      <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-information billing-info-body" ng-include="'/assets/partials/bill/rvRouteDetails.html'"  ng-controller="rvRouteDetailsCtrl"></div>
       
    </form>
 </div>

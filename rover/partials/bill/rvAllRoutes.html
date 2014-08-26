@@ -5,25 +5,25 @@
          <div id="routes" class="billing-list scrollable">
 			   <ul class="wrapper">
 			      
-			      <li>
-			         <a href="#route-details" class="guest">
-			            <figure class="guest-image">
+			      <li ng-repeat = "route in routes" ng-click= "selectEntity()">
+			         <a href="#route-details" ng-class = "getEntityRole(route)">
+			            <figure class="guest-image" ng-class = "getEntityIconClass(route)">
 			               <img src="{image}" alt="" />
 			            </figure>
-			            <h2>{lastname, firstname}</h2>
+			            <h2>{{route.entity_name}}</h2>
 			            <div class="type">
-			               <span class="label">Billing Group(s)</span>
-			               {selected billing group}
+			               <span class="label">{{route.route_type}}</span>
+			               {{getCharges(route)}}
 			            </div>
 			            <div class="bill">
 			               <span class="label">Bill #</span>
-			               {bill #}
+			               {{route.bill_no}}
 			            </div>
 			         </a>
 			         <span id="remove-route-1" class="icons icon-remove-40">-</span> 
 			      </li>
 			      
-			      <li>
+			      <!-- <li>
 			         <a href="#route-details" class="accompany">
 			            <figure class="guest-image accompany">
 			               <img src="{image}" alt="" />
@@ -75,7 +75,7 @@
 			         </a>
 			         <span id="remove-route-4" class="icons icon-remove-40">-</span>
 			      </li>
-			   </ul>
+			   </ul> -->
 		</div>
 </div>
 <div class="actions">

@@ -1,0 +1,62 @@
+<div id="billing-content" class="content-wrapper">
+   <fieldset class="content-left">
+      <div id="entity-details" class="entity-details scrollable">
+         <div class="wrapper">
+            <div class="title">
+               Entity
+               <button type="button" id="edit-entity" class="button with-icon only-icon purple edit">
+               <span class="icons icon-pencil"></span>
+               </button>
+            </div>
+            <!-- Selected entity -->
+            <div class="entity guest">
+               <figure class="guest-image">
+                  <img src="{image}" alt="" />
+               </figure>
+               <h2>{lastname}, {firstname}</h2>
+               <span class="guest-status {reservation-status} small-icon">{reservation-status}</span>
+            </div>
+            <div class="title">Payment</div>
+            <!-- Available credit card -->
+            <div class="payment">
+               <!-- add class active when selected -->
+               <figure class="card-logo">
+                  <img src="{card-logo}" alt="" />
+               </figure>
+               <span class="number">Number <span class="value number">{number}</span></span>
+               <span class="date">Date <span class="value date">{date}</span></span>
+            </div>
+            ... repeat for all card
+            <!-- Add new credit card button - remove it when new card is added -->
+            <button type="button" class="add-new-button">+ New Payment Method</button>
+            <!-- For to add the new credit card, should be shown when button above is tapped -->
+            
+         </div>
+      </div>
+   </fieldset>
+   <fieldset class="content-right">
+      <span class="h2 message">
+         Route to Bill #
+         <div class="select">
+            <select name="post-charge-to-bill">
+               <option value="1" selected="true">1</option>
+               <!-- .. add options as needed -->
+            </select>
+         </div>
+      </span>
+      <ul id="transaction-type" class="modal-options">
+         <li class="active">Billing Group</li>
+         <li>Charge Codes</li>
+      </ul>
+      <div id="transactions" class="transactions scrollable">
+         <div class="entry radio-check wrapper">
+            <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input name="billing-group" id="100" value="100" type="checkbox" />
+            <span class="value">100</span> Room
+            </label>
+            
+         </div>
+      </div>
+   </fieldset>
+</div>

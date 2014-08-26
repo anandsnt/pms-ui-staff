@@ -14,7 +14,7 @@
          <span class="h3 message" ng-hide="textInQueryBox!=''">Attached Entities</span>
          <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''">
             <ul class="wrapper">
-                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="{'guest':entity.entity_role =='guest','accompany':entity.entity_role =='accompanying guest','company':entity.entity_role =='company','travel-agent':entity.entity_role =='travel_agent'}" ng-click="showBillGroup()">
+                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="{'guest':entity.entity_role =='guest','accompany':entity.entity_role =='accompanying guest','company':entity.entity_role =='company','travel-agent':entity.entity_role =='travel_agent'}" ng-click="selectEntity()">
                   <!-- image -->
                   <figure class="guest-image" ng-class="{'accompany':entity.entity_role =='accompanying guest'}">
                      <img src="{{entity.entity_avatar}}" alt="" />
@@ -73,12 +73,12 @@
       </div>
    </fieldset>
    <fieldset class="content-right">
-      <div class="no-content" ng-show="noDetails">
+      <div class="no-content" >
          <div class="info">
             <strong class="h1">Entity not selected</strong>
             <span class="h2">Select Entity to configure bill routing</span>
          </div>
       </div>
-        <div class="info" ng-include="'/assets/partials/bill/rvBillingDetails.html'" ng-hide="noDetails"></div>
+        
    </fieldset>
 </div>

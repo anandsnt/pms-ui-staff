@@ -2,6 +2,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	BaseCtrl.call(this, $scope);
 	
 	$scope.isInitialPage = true;
+    $scope.isEntitySelected = false;
+
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -16,13 +18,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	}
 
 	$scope.headerButtonClicked = function(){
+        $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
 	}
 
-	$scope.noDetails = true;
-
-	$scope.showBillGroup = function(){
-		$scope.noDetails = false;
+	$scope.selectEntity = function(){
+		$scope.isEntitySelected = true;
+        $scope.isInitialPage = false;
 	}
 
 
