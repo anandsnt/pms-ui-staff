@@ -166,7 +166,9 @@
     "ADDRESS":"Address",
     "POST":"Post",
     "DELETE_POST":"Delete post",
-    "CONTACT":"Contact"
+    "CONTACT":"Contact",
+    "DELETE_ACCOUNT":"Delete Account",
+    "DELETE_AR_ACCOUNT":"Delete AR Account?"
 	
 ,    
     

@@ -74,7 +74,9 @@
             </div>
             <div class="entry">
               <label>&nbsp;</label>
-              <button ng-click="showArAccountButtonClick($event)" class="button green" translate>CREATE_ACCOUNT</button>
+              <button ng-click="showARTab($event)" ng-hide="isArTabAvailable"class="button green" translate>CREATE_ACCOUNT</button>
+              <button ng-click="deleteArAccount()" ng-show="isArTabAvailable"class="button red" translate>DELETE_ACCOUNT</button>
+
             </div>
 
             <strong class="h3 margin" translate>PRIMARY_CONTACT_DETAILS</strong>

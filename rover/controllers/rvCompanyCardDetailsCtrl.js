@@ -315,6 +315,36 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.switchTabTo($event, 'cc-ar-accounts')
 	};
 
+
+	$scope.showARTab = function($event){
+		$scope.isArTabAvailable = true;
+		$scope.showArAccountButtonClick($event);
+	};
+
+	$scope.deleteArAccount = function(){
+
+		ngDialog.open({
+			 template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
+			 className: 'ngdialog-theme-default1 calendar-single1',
+			 closeByDocument: false,
+			 scope: $scope
+		});		
+	};
+
+	$scope.deleteARAccountConfirmed = function(){
+		var successCallbackOfdeleteArAccount = function(){
+			$scope.$emit('hideLoader');
+			$scope.isArTabAvailable = false;
+			ngDialog.close();
+		};
+		successCallbackOfdeleteArAccount();
+		//$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
+	};
+
+	$scope.clikedDiscardDeleteAr = function(){
+			ngDialog.close();
+	};
+
 	
 	/*-------AR account ends here-----------*/
 	
