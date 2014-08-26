@@ -930,6 +930,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');
 			$scope.init(successData);
 			$scope.clickedPayButton();
+			$scope.reservationBillData.is_advance_bill = true;
 		};
 		var getAdvanceBillErrorCallback = function(error){
 			ngDialog.close();
