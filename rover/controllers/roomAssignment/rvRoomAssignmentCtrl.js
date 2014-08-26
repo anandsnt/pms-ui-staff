@@ -380,8 +380,9 @@ sntRover.controller('RVroomAssignmentController',[
 		group.items.push(item1);
 		group.items.push(item2);
 		group.items.push(item3);
-		if($scope.rooms[0].checkin_inspected_only == "true")
+		if($scope.rooms.length > 0 && $scope.rooms[0].checkin_inspected_only == "true"){
 			group.items.push(item4);
+		}
 		$scope.roomFeatures.splice(0, 0, group);
 	};
 
