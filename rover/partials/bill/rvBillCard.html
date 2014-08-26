@@ -28,7 +28,7 @@
 		
 		<div ng-iscroll='registration-content' ng-iscroll-delay='1000' class="registration-content bill_content">
 
-			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
+			<div class="wrapper wrapperDisplay">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
 					<table>
@@ -105,7 +105,7 @@
 						</ul>
 					</div>
 					<!-- Bill Tabs for Day items and Group items -->
-					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
+					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills" style="position: static">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'  >
