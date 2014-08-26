@@ -939,6 +939,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	$scope.invokeApi(RVBillCardSrv.getAdvanceBill, data, getAdvanceBillSuccessCallback, getAdvanceBillErrorCallback );
 	};
 
+	/*
+	 * to invoke the payment dialogs on closing the advance bill dialog. 
+	 *
+	 */
 	$scope.closeAdanceBillDialog = function(){
 		ngDialog.close();
 		$scope.clickedPayButton();
