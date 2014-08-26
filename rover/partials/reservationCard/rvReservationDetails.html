@@ -53,26 +53,29 @@
 	<div class="reservation-content scrollable check-in"  >
 		<div id="resultDetails" ng-iscroll='resultDetails' ng-iscroll-delay='50' style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
 		<div class="wrapper" >
+			
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
 			<!-- Accompany in guest card -->
 			<div ng-if ="reservationData.reservation_card.group_name != '' || reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+
 			<!-- Credit card -->
 			<div ng-include="'/assets/partials/reservationCard/rvReservationCardPayment.html'"></div>
+
 			<!-- Display only the upgrades option -->
-			<div ng-include="'/assets/partials/reservationCard/reservationCardRoom.html'"></div>
-			
+			<div ng-include="'/assets/partials/reservationCard/reservationCardRoom.html'"></div>			
 
 			<!-- ADR / Total Stay Cost -->
 			<div ng-include="'/assets/partials/reservationCard/reservationCardTotalStayCost.html'"></div>
 
+			<!-- Clubbing the Wakeup and NewsPaper Partials together as per new markup from Stjepan -->
 			<!-- Wake up / Newspaper / Loyalty -->
-			<div id="stay-card-loyalty" class="block-wrapper float">
-				<div ng-include="'/assets/partials/reservationCard/reservationCardWakeup.html'"></div>
-				<div ng-include="'/assets/partials/reservationCard/reservationCardNewsPaper.html'"></div>
-				<div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
-			</div>
+			<div ng-include="'/assets/partials/reservationCard/reservationCardWakeup.html'"></div>						
 			
-			<!-- Notes -->
+ 			<!-- Loyalty -->
+			<div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
+			
+			<!-- Additional Details -->
 			<div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'"  ng-controller="rvReservationAdditionalController"></div>				
 
 			<!-- Notes -->
