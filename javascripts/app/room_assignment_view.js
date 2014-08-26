@@ -419,7 +419,7 @@ var RoomAssignmentView = function(viewDom){
     var options = { requestParameters: postParams,
     				successCallBack: that.roomAssignmentSuccess,
     				successCallBackParameters: successCallBackParams,
-    				failureCallBack: that.fetchFailedOfSave,
+    				failureCallBack: that.fetchFailedOfSaveRoomAssignment,
     				loader: 'blocker'
     };
 	    
@@ -505,9 +505,15 @@ var RoomAssignmentView = function(viewDom){
     webservice.postJSON(url, options);  
 
   };
-  this.fetchFailedOfSave = function(errorMessage){
+  this.fetchFailedOfSaveRoomAssignment = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
+	//sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
+	
+	var roomassignmentErrorModal = new RoomassignmentErrorModal();
+	roomassignmentErrorModal.initialize();
+	roomassignmentErrorModal.params = {"message": errorMessage};
+	
+	
   };  
   this.upgradeSuccess = function(data, requestParams){
 
