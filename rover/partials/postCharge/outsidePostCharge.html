@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()">
+<div role="dialog" id="modal" class="modal-show">
 	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended">
 	    <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
 	
@@ -35,7 +35,7 @@
 		    <header class="cards-header">
 		    	<div class="card-header">
 		        	<figure class="guest-image">
-			            <img src="./images/avatar-female.jpg" alt="" />
+			            <img src="/assets/avatar-female.png" alt="" />
 			            <span class="search-indicator"></span>
 			        </figure>
 			        <div class="card-search-form">
@@ -96,31 +96,50 @@
 	
 	    <!-- Left side -->
 	    <fieldset class="content-left">
-	        <div class="search-form" role="search">
-    <div class="select">
-        <select id="charge-groups" name="charge-groups">
-            <option value="" class="placeholder">All Charge Groups</option>
-            <option value="favorites" selected>Favorites</option>
-            ... repeat for all charge groups
-        </select>
-    </div>
-    <div class="entry">
-        <a href="#" id="post-charge-clear-query" class="clear-query">
-            <span class="icons icon-clear-search">Clear query</span>
-        </a>
-        <button type="submit" name="submit" class="icons icon-search">Search</button>
-        <!-- data-keyboard was used to prevent iPad keyboard shifting content, not sure if used in angular -->
-        <input name="post-charge-query" id="post-charge-query" class="query" placeholder="Search items" type="search" autocomplete="off" data-keyboard="lock" />
-    </div>
-</div>
-<div id="items-listing" class="scrollable">
-    <ul class="wrapper">
-        <li>'
-            <a href="#" class="button white">{name}<span class="price">$ <span class="value">{price</span></span></a>
-        </li>
-        .. repeat for all codes in the selected charge group
-    </ul>
-</div>
+	        <div role="search" class="search-form">
+				<div class="select">
+					<select
+						name="charge-groups"
+						id="charge-groups"
+						ng-model="chargeGroup"
+						ng-change = "filterbyChargeGroup()">
+						<option value="" class="placeholder" translate>ALL_CHARGE_GROUPS</option>
+						<option value="FAV" translate>FAVORITE</option>
+						<option ng-repeat="group in fetchedData.charge_groups" value="{{ group.value }}">
+					        {{ group.name }}
+					    </opzion>
+					</select>
+				</div>
+				<div class="entry">
+					<a class="icons icon-clear-search visible" href="" id="clear-query" ng-show="query" ng-click="clearQuery()">Clear query</a>
+					<button type="button" name="submit" class="icons icon-search">
+						Search
+					</button>
+					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
+				</div>
+			</div>
+			<div id="items-listing" class="scrollable">
+				<ul id="search-item-results" class="wrapper">
+					<li id="items-list" ng-repeat="each in fetchedItems" ng-show="each.show" ng-click="addItem(each)">
+						<a class="button white">
+							<span ng-bind-html="'{{ each.item_name }}' | highlight:query:false"></span>
+							<span class="price">
+								{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
+							</span>
+							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
+						</a>
+					</li>
+					<li id="items-list" ng-repeat="each in fetchedChargeCodes" ng-show="each.show && isResultOnFetchedChargecode" ng-click="addItem(each)">
+						<a class="button white">
+							<span ng-bind-html="'{{ each.description }}' | highlight:query:false"></span>
+							<span class="price">
+								<span class="value" ng-bind-html="'{{ each.charge_code }}' | highlight:query:false"></span>
+							</span>
+							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
+						</a>
+					</li>
+				</ul>
+			</div>
 	    </fieldset>
 	
 	    <!-- Right side -->
