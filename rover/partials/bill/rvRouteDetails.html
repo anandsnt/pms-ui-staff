@@ -26,7 +26,7 @@
                <span class="number">Number <span class="value number">{number}</span></span>
                <span class="date">Date <span class="value date">{date}</span></span>
             </div>
-            ... repeat for all card
+            
             <!-- Add new credit card button - remove it when new card is added -->
             <button type="button" class="add-new-button">+ New Payment Method</button>
             <!-- For to add the new credit card, should be shown when button above is tapped -->
@@ -45,10 +45,10 @@
          </div>
       </span>
       <ul id="transaction-type" class="modal-options">
-         <li class="active">Billing Group</li>
-         <li>Charge Codes</li>
+         <li ng-class="{'active' : isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup">Billing Group</li>
+         <li ng-class="{'active' : !isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup">Charge Codes</li>
       </ul>
-      <div id="transactions" class="transactions scrollable">
+      <div id="transactions" class="transactions scrollable" ng-show = "isBillingGroup">
          <div class="entry radio-check wrapper">
             <label class="checkbox">
             <span class="icon-form icon-checkbox"></span>
@@ -58,5 +58,34 @@
             
          </div>
       </div>
+
+      <!-- Search available charge codes -->
+      <div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
+         <input name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
+         <div class="mini-select">
+            <select id="charge-codes" name="charge-codes">
+               <option value="10">10 Minibar</option>
+               
+            </select>
+         </div>
+      </div>
+      <!-- Added from search -->
+      <div id="transactions" class="transactions codes scrollable" ng-show = "!isBillingGroup">
+         <div class="entry radio-check wrapper">
+            <label class="checkbox">
+               <span class="icon-form icon-checkbox checked"></span>
+                  <input name="billing-group" id="100" value="100" type="checkbox" checked />
+               <span class="value">100</span> Spa
+            </label>
+            
+         </div>
+      </div>
+      <!-- No content-->
+         <div id="transactions" class="transactions codes scrollable no-content" ng-show = "!isBillingGroup">
+            <div class="info">
+               <strong class="h1">No codes added</strong>
+            </div>
+         </div>
+
    </fieldset>
 </div>
