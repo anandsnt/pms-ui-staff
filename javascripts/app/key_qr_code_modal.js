@@ -21,6 +21,10 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('.modal-content').addClass('check-in');
 			that.myDom.find('#room-status .message#status').text('Check in Complete');
+			if(that.params.origin == views.STAYCARD){
+				that.myDom.find('#room-status .message#status').text('Checking In');
+			}
+			that.myDom.find('#modal-close').addClass('green');
 
 		} else if(that.params.reservationStatus == "CHECKEDIN") {
 			that.myDom.find('.modal-content').addClass('inhouse');

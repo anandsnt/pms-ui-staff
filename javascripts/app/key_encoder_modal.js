@@ -85,6 +85,11 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('#print-key').addClass('check-in');
 			that.myDom.find('#room-status .message').text('Check in Complete');
+			console.log(that.params.origin);
+			if(that.params.origin == views.STAYCARD){
+				that.myDom.find('#room-status .message').text('Checking In');
+			}
+			that.myDom.find('#modal-close').addClass('green');
 
 		} else if(that.params.reservationStatus == "CHECKEDIN") {
 			that.myDom.find('#print-key').addClass('inhouse');
