@@ -13,15 +13,44 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 			$scope.ARData = {};
 			$scope.ARData.note = "";
-			$scope.$on("arAccountTabActive", function() {
-				setTimeout(function() {
-					refreshScroller();
-				}, 500);
-			});
 
 		};
 		init();
 		var presentArDetails = {};
+
+
+
+		var updateArAccount = function(){
+
+			var successCallbackOfsaveARDetails = function(data){
+				$scope.$emit("hideLoader");
+				if($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number){
+					$scope.arAccountDetails.ar_number = data.ar_number;
+				};
+				$scope.$emit('ARNumberChanged',{'newArNumber':$scope.arAccountDetails.ar_number})	
+			};
+			var dataToSend = $scope.arAccountDetails;
+			dataToSend.id  = $scope.contactInformation.id
+			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
+		    var dataNotUpdated = false;
+		    //check if data was edited
+		    if(!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
+				dataNotUpdated = true;
+				presentArDetails = presentArDetailsAfterEdit;
+			}
+			if(dataNotUpdated)
+				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails);
+		};
+
+		$scope.$on("arAccountTabActive", function() {
+				setTimeout(function() {
+					refreshScroller();
+				}, 500);
+			// if automatic mode is on,call save action to generate a random number				
+			if($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number){
+				updateArAccount();
+			};
+		});
 
 		// to set data to be compared from time to time
 		//to check if data has been edited or not
@@ -32,7 +61,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 		$scope.checkboxModelChanged = function(){
 			refreshScroller();
 		};
-
 
 		$scope.saveNote = function(){
 
@@ -61,25 +89,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 			$scope.invokeApi(RVCompanyCardSrv.deleteARNote, dataToSend, deleteARNoteSuccess);
 
 		}
-
-		var updateArAccount = function(){
-
-			var successCallbackOfsaveARDetails = function(data){
-				$scope.$emit("hideLoader");
-				$scope.$emit('ARNumberChanged',{'newArNumber':$scope.arAccountDetails.ar_number})	
-			};
-			var dataToSend = $scope.arAccountDetails;
-			dataToSend.id  = $scope.contactInformation.id
-			var presentArDetailsAfterEdit = JSON.parse(JSON.stringify($scope.arAccountDetails));
-		    var dataNotUpdated = false;
-		    //check if data was edited
-		    if(!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
-				dataNotUpdated = true;
-				presentArDetails = presentArDetailsAfterEdit;
-			}
-			if(dataNotUpdated)
-				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails);
-		};
 
 
 	  /**

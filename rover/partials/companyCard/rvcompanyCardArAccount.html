@@ -13,7 +13,7 @@
     <!-- Number -->
     <strong class="h3" translate>AR_NUMBER</strong>
     <div class="entry full-width no-label">
-        <input name="company-arn" id="company-arn" value="" type="text" placeholder = "Enter AR Number" ng-model="arAccountDetails.ar_number" />
+        <input name="company-arn" id="company-arn" value="" type="text" placeholder = "Enter AR Number" ng-model="arAccountDetails.ar_number" ng-disabled="arAccountDetails.is_auto_assign_ar_numbers"/>
     </div>
 
     <!-- Notes -->
