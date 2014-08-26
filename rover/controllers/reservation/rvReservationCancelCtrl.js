@@ -102,14 +102,14 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		}
 
 		$scope.cancelReservation = function() {
-			var onCancelSuccess = function(data) {
-				$scope.$emit('hideLoader');
+			var onCancelSuccess = function(data) {				
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id,
 					"confirmationId": $stateParams.confirmationId,
 					"isrefresh": false
 				});
 				$scope.closeDialog();
+				$scope.$emit('hideLoader');
 			}
 			var onCancelFailure = function(data) {
 				$scope.$emit('hideLoader');

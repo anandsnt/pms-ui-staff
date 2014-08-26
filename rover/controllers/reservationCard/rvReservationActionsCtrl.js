@@ -8,6 +8,10 @@ sntRover.controller('reservationActionsController', [
 	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv) {
 		BaseCtrl.call(this, $scope);
 
+		$scope.actionsCheck = {
+			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
+		}
+
 		$scope.displayTime = function(status) {
 			var display = false;
 			if (status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
