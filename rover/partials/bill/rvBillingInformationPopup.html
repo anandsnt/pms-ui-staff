@@ -7,11 +7,11 @@
          <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()">{{getHeaderButtonLabel()}}</button>
       </div>
       <!-- Billing Info Content -->
-      <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'"  ng-controller="rvAllRoutesCtrl"></div>
+      <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'" ></div>
 
-      <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/bill/rvSelectEntity.html'"  ng-controller="rvSelectEntityCtrl"></div>
+      <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/bill/rvSelectEntity.html'"  ></div>
 
-      <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-information billing-info-body" ng-include="'/assets/partials/bill/rvRouteDetails.html'"  ng-controller="rvRouteDetailsCtrl"></div>
+      <div ng-if = "(!isInitialPage && isEntitySelected)" class="modal-content billing-information billing-info-body" ng-include="'/assets/partials/bill/rvRouteDetails.html'"  > </div>
       
    </form>
 </div>
