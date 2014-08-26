@@ -1,0 +1,196 @@
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()">
+	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended">
+	    <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
+	
+	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div
+	    <div id="cant-post" class="inner-overlay">
+			<div class="inner-content">
+				<span class="message h2">No guest/room selected!</span>
+				<span class="text">You need to select guest or room number!</span>
+				<button type="button" class="button green">Add guest/room</button>
+				<button type="button" class="button blank">Cancel</button>
+			</div>
+		</div>
+	
+		<div id="not-checked-in" class="inner-overlay">
+			<div class="inner-content">
+				<span class="message h2">Guest has not yet checked in!</span>
+				<span class="text">Proceed with posting?</span>
+				<button type="button" class="button green">Post charge</button>
+				<button type="button" class="button blank">Cancel</button>
+			</div>
+		</div>
+	
+		<div id="charge-posted" class="inner-overlay">
+			<div class="inner-content">
+				<span class="message h2">Charge posted</span>
+				<button type="button" class="button green">Post another charge</button>
+				<button type="button" class="button blank modal-close">Close window</button>
+			</div>
+		</div> -->
+	
+		<!-- Card search -->
+		<div class="cards-wrapper">
+		    <!-- Cards Header -->
+		    <header class="cards-header">
+		    	<div class="card-header">
+		        	<figure class="guest-image">
+			            <img src="./images/avatar-female.jpg" alt="" />
+			            <span class="search-indicator"></span>
+			        </figure>
+			        <div class="card-search-form">
+			            <div class="holder">
+			                <div class="entry">
+			                    <input name="post-to-room" id="post-to-room" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" />
+								<input name="post-to-name" id="post-to-name" placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" />
+			                </div>               
+			            </div>
+			        </div>
+			        <div class="card-actions">
+				    	<button type="button" class="button white red-text">Cancel</button>
+				    </div>
+			    </div>
+		    </header>
+	
+		    <!-- Cards Content -->
+		    <div class="cards-content">
+		    	<div class="card-search card-content visible">
+		    		<!-- Initially, when no results 
+		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content">
+		                <div class="info">
+		                    <span class="icon-no-content icon-guest"></span>
+		                    <strong class="h1">Find Reservation</strong>
+		                    <span class="h2">Search <em>Room</em> by <strong>Number</strong> or <em>Reservation</em> by <strong>Guest</strong>, <strong>Company</strong> or <strong>Travel Agent</strong> Name</span>
+		                </div>
+		            </div> -->
+	
+		    		<!-- When you have results, use the same markup as on reservation search screen. -->
+		        	<div id="search-guests-for-charge-content" class="search-cards scrollable hidden">
+		                <div class="wrapper">
+		                    <ul id="search-guests-for-charge-results" class="search-results">
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    </ul>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	
+	
+	    <!-- Left side -->
+	    <fieldset class="content-left">
+	        <div class="search-form" role="search">
+    <div class="select">
+        <select id="charge-groups" name="charge-groups">
+            <option value="" class="placeholder">All Charge Groups</option>
+            <option value="favorites" selected>Favorites</option>
+            ... repeat for all charge groups
+        </select>
+    </div>
+    <div class="entry">
+        <a href="#" id="post-charge-clear-query" class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </a>
+        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <!-- data-keyboard was used to prevent iPad keyboard shifting content, not sure if used in angular -->
+        <input name="post-charge-query" id="post-charge-query" class="query" placeholder="Search items" type="search" autocomplete="off" data-keyboard="lock" />
+    </div>
+</div>
+<div id="items-listing" class="scrollable">
+    <ul class="wrapper">
+        <li>'
+            <a href="#" class="button white">{name}<span class="price">$ <span class="value">{price</span></span></a>
+        </li>
+        .. repeat for all codes in the selected charge group
+    </ul>
+</div>
+	    </fieldset>
+	
+	    <!-- Right side -->
+	    <fieldset class="content-right">
+	        <span class="h2 message">
+    Post charge to Bill #<!-- when initiated from bill summary screen, just show the number -->
+    <div class="select">
+        <select name="post-charge-to-bill">
+            <option value="bill1" selected>1</option>
+            .. repeat for all bills
+            <option value="new-bill">X &nbsp;&nbsp;&nbsp;(Will create new bill)</option><!-- X = number of bills +1 -->
+        </select>
+    </div>
+</span>
+<!-- No items added - showed initially 
+<div id="no-items-added" class="no-content">
+    <div class="info">
+        <strong class="h1">0 items selected</strong>
+    </div>
+</div> -->
+
+<!-- Items added -->
+<div id="items-added"> <!-- Initially has class="hidden" -->
+    <div id="items-summary" class="scrollable">
+        <ul class="wrapper">
+            <li> <!-- add class="selected" when clicked on -->
+                {item name}
+                <span class="count">({count})</span> <!-- show only when more than 1 -->
+                <span class="base">at {base price / per unit}</span>
+                <span class="price">$ <span class="value">{total charge cost}</span></span> <!-- sum for this item -->
+            </li>
+            .. repeat for each added
+        </ul>
+    </div>
+
+    <p id="total-charge"> <!-- add class offset-1 when 1 item added, offset-2 when 2 items added, offset-3 for 3 items, and offset-4 when 4 items added. When 5th element is added, remove class attribute -->
+        Total <span class="price">$ 
+            <span class="value">{total charge cost}</span>
+        </span>
+    </p>
+
+    <div id="numpad">
+        <div id="numpad-numbers">
+            <button type="button" value="1" class="button white">1</button>
+            <button type="button" value="2" class="button white">2</button>
+            <button type="button" value="3" class="button white">3</button>
+            <button type="button" value="4" class="button white">4</button>
+            <button type="button" value="5" class="button white">5</button>
+            <button type="button" value="6" class="button white">6</button>
+            <button type="button" value="7" class="button white">7</button>
+            <button type="button" value="8" class="button white">8</button>
+            <button type="button" value="9" class="button white">9</button>
+            <button type="button" value="+/-" class="button white small">+/-</button>
+            <button type="button" value="0" class="button white">0</button>
+            <button type="button" value="." class="button white small">.</button>
+        </div>
+
+        <div id="numpad-options">
+            <button type="button" value="QTY" class="button white numpad-toggle">QTY</button>
+            <button type="button" value="PR" class="button white numpad-toggle selected">PR</button>
+            <button type="button" value="undo" class="button white with-icon only-icon clear-value"><span class="icons icon-clear"></span>Clear last value</button>
+            <button type="button" value="delete" class="button white with-icon only-icon remove-item"><span class="icons icon-trash"></span>Remove item</button>
+        </div>
+    </div>
+
+    <div class="actions float">
+        <button type="button" class="button green">Post charge</button> <!-- can have class grey instead of green when generic post charge -->
+        <button type="button" class="button blank modal-close">Cancel</button>
+    </div>
+</div>
+	    </fieldset>
+	</form>
+</div>

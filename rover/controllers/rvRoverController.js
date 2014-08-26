@@ -332,7 +332,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.toggleDrawerMenu();
       if(subMenu === "postcharges"){
       	ngDialog.open({
-				template: '/assets/partials/postCharge/postCharge.html',
+				template: '/assets/partials/postCharge/outsidePostCharge.html',
 				controller: 'RVPostChargeController',
 				scope: $scope
 			});
