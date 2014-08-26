@@ -360,9 +360,10 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		if ($scope.prefetchData.selected_amount_symbol === '%' && $scope.prefetchData.amount !=="") {
 			$scope.prefetchData.amount = parseInt($scope.prefetchData.amount).toString();
 		}
-		else if($scope.prefetchData.selected_amount_symbol === '$' && $scope.prefetchData.amount !==""){
+		else if($scope.prefetchData.selected_amount_symbol === '$' || $scope.prefetchData.amount !==""){
 			$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
 		}
+		
 	};
 	
 }]);
