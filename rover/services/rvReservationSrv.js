@@ -135,10 +135,8 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 
 		this.cancelReservation = function(param) {
 			var deferred = $q.defer();
-			// var url = '/api/reservations/' + param.id + '/cancel';
-			// rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
-			var url = '/api/reservations/' + param.id + '/policies';
-			rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+			var url = '/api/reservations/' + param.id + '/cancel';
+			rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);

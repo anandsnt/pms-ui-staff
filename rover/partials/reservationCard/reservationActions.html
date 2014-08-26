@@ -55,7 +55,9 @@
 
 		<!-- show cancel / reinstate reservation -->
 		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
-		<!-- TODO:  The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-		<a class="button white red-text bottom" ng-click="toggleCancellation()" translate>CANCEL_RESERVATION</a>
+		<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
+		<a ng-if="(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00)))" class="button white red-text bottom" ng-click="toggleCancellation()" translate>
+			CANCEL_RESERVATION
+		</a>
 	
 	</div>

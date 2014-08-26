@@ -1,5 +1,5 @@
-sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv',
-	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv) {
+sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state',
+	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -102,22 +102,27 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		}
 
 		$scope.cancelReservation = function() {
-			var onCancelSuccess = function(data){
+			var onCancelSuccess = function(data) {
 				$scope.$emit('hideLoader');
+				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+					"id": $stateParams.id,
+					"confirmationId": $stateParams.confirmationId,
+					"isrefresh": false
+				});
 				$scope.closeDialog();
 			}
-			var onCancelFailure = function(data){
+			var onCancelFailure = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.errorMessage=["Could Not Cancel Reservation"];
+				$scope.errorMessage = ["Could Not Cancel Reservation"];
 			}
 			var cancellationParameters = {
-				reason: parseFloat($scope.ngDialogData.penalty),
-				penalty: $scope.cancellationData.reason,
-				payment_method_id: parseInt($scope.cancellationData.selectedCard),
+				reason: $scope.cancellationData.reason,
+				penalty: parseFloat($scope.ngDialogData.penalty),
+				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard) == -1,
 				id: $scope.reservationData.reservation_card.reservation_id
 			}
 			console.log('cancellationParameters', cancellationParameters);
-			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);			
+			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 		}
 
 		$scope.chargePenalty = function() {
