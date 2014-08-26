@@ -2,6 +2,9 @@
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
+    "YES": "YES",
+    "NO": "No",
+
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",

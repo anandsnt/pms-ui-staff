@@ -75,7 +75,7 @@ sntRover.controller('reservationActionsController', [
 
 			balance += netPrice;
 
-			$scope.reservationData.reservation_card.balance_amount = balance;
+			$scope.reservationData.reservation_card.balance_amount = parseFloat(netPrice);
 		});
 
 		// the listner must be destroyed when no needed anymore
