@@ -7,41 +7,42 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 
 	var that = this;
   BaseCtrl.call(this, $scope);
-
-  	//changing the header
+  
+  //changing the header
 	$scope.heading = 'SEARCH_TITLE';
 	//updating the left side menu
 	$scope.$emit("updateRoverLeftMenu","search");
 	
 	//setting search back button caption
 	$scope.$emit("UpdateSearchBackbuttonCaption", ""); 
-    var headingDict = {
-        'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
-        'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
-        'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
-        'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
-        'VIP': "DASHBOARD_SEARCH_VIP",
-        'NORMAL_SEARCH': 'SEARCH_NORMAL'
-    }
-    if ($stateParams.type in headingDict){
-        heading = headingDict[$stateParams.type];
-        $rootScope.setPrevState = {
-          title: $filter( 'translate' )( headingDict[$stateParams.type] ),
-          name: 'rover.dashboard'
-        };
-    }
-    else {
-        heading = headingDict['NORMAL_SEARCH'];
-        $rootScope.setPrevState = {
-          title: $filter( 'translate' )( 'DASHBOARD' ),
-          name: 'rover.dashboard'
-        };
-    }
+
+  var headingDict = {
+      'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
+      'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
+      'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
+      'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+      'VIP': 'DASHBOARD_SEARCH_VIP',
+      'NORMAL_SEARCH': 'SEARCH_NORMAL'
+  }
+  if ($stateParams.type in headingDict){
+      heading = headingDict[$stateParams.type];
+  } else {
+      heading = headingDict['NORMAL_SEARCH'];
+  }
+
+  // setup a back to dashboard
+  $rootScope.setPrevState = {
+    title: $filter( 'translate' )( 'DASHBOARD' ),
+    name: 'rover.dashboard'
+  };
+
+  // saving/reseting search params to $vault
+  $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
+
+
+
     
-    $scope.heading = heading;
-
-
-
+  $scope.heading = heading;
 
 	// setting the scroller for view
 	var scrollerOptions = {
@@ -60,10 +61,6 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 
   // finally
   $scope.setScroller('result_showing_area', scrollerOptions);
-
-
-
-
 
   	//click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event){

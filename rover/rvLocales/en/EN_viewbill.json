@@ -77,5 +77,6 @@
     "CONFIRMATION_LABEL" : "Confirmation",
     "ROUTES_EMPTY_MESSAGE": "Bill Routing not defined",
     "ADD_ROUTES_LABEL" : "ADD ROUTES",
-    "ALL_ROUTES_LABEL" : "ALL ROUTES"
+    "ALL_ROUTES_LABEL" : "ALL ROUTES",
 
+     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"

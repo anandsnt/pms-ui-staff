@@ -343,42 +343,63 @@ body { overflow: hidden; }
 			left: 0;
 		}
 
+		.switch-button {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				.size(40px, 260px);
+				.show;
+
+				.data-off,
+                .data-on {
+                	font-size: 14px;
+                	line-height: 30px;
+                	text-transform: uppercase;
+                	height: 30px;
+
+                	.switch-icon { .gradient(@greenStart, @greenEnd); }
+
+                    &.data-off { 
+                        left: auto;
+                        right: 0;
+
+                        .switch-icon { margin: 0 5px 0 0; }
+                    }
+                    
+                    &.data-on { 
+                        left: auto;
+                        right: 100%;
+
+                        .switch-icon { margin: 0 0 0 5px; }
+                    }
+                }
+
+                &.on {
+                    .data-off { left: auto; right: -100%; }
+                    .data-on { left: auto; right: 0; }
+                }
+			}
+
 		.icon-alert {
 			position: absolute;
-			top: 10px;
-			.square(40px);
+			top: 15px;
+			padding: 0 10px 0 30px;
+			font-weight: 600;
+			line-height: 30px;
+			.size(30px, auto);
 			.show;
 
-			span {
-				position: absolute;
-				top: 0;
-				right: 0;
-				font-size: 11px;
-				line-height: 16px;
-				font-weight: 400;
-				color: @white;
-				background: @softRed;
-				.square(16px);				
-				.show;
-				#border-radius > .rounded(16px);
+			&.queued-rooms {
+				right: 266px; 
+				color: @red;
+				background-color: @white;
 			}
-
-			&#lobby-alert { left: 50px; }
-			&#messages-alert { left: 100px; }
-			&#reviews-alert { left: 150px; }
 			
-			&#late-checkout-alert { 
-				top: 15px;
+			&.late-check-out {
 				right: 196px; 
-				height: 30px;
-				width: auto;
-				padding: 0 10px 0 30px;
 				color: @white;
-				font-weight: 600;
-				line-height: 30px;
 				background-color: @red;
 			}
-
 		}
 
 		.logo {
@@ -666,7 +687,6 @@ body { overflow: hidden; }
 			}
 		}	
 	}
-
 
 /* Post bar					==============================*/
 	.post-form {
@@ -991,19 +1011,14 @@ body { overflow: hidden; }
 	}
 
 /* Reservation header		==============================*/
-	.reservation-header,
-	.reservation-guests {
+	.reservation-header {
 		width: 100%;
-		height: 50px;
 		padding: 10px 20px;
 		overflow: hidden;
-		.box-shadow(0 1px 1px rgba(0,0,0,.1));
-		.show;
-	}
-
-	.reservation-header {
 		background: @white;
 		z-index: 90;
+		.box-shadow(0 1px 1px rgba(0,0,0,.1));
+		.show;
 
 		.actions {
 			.button,
@@ -1014,6 +1029,8 @@ body { overflow: hidden; }
 				text-shadow: none;
 				line-height: 30px;
 				vertical-align: top;
+				background-color: @grey1;
+				background-position: 90% 50%;
 				padding: 0 10px;
 				.no-transition;
 
@@ -1024,7 +1041,6 @@ body { overflow: hidden; }
 				}
 
 				&.has-arrow { padding-right: 30px; }
-
 				&.toggle,
 				&.next-view {
 					color: @textColor;
@@ -1042,13 +1058,30 @@ body { overflow: hidden; }
 					font-weight: 600;
 					#border-radius > .rounded(3px);
 					.box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
+				&.toggle { 
+					margin-right: 10px; 
+
+					&.active {
+						padding-bottom: 20px;
+						background-position: 90% -webkit-calc(~"50% - 10px");
+						background-position: 90% -moz-calc(~"50% - 10px");
+						background-position: 90% calc(~"50% - 10px");
+						.box-shadow(1px 0 0 rgba(0,0,0,.2));
+						#border-radius > .bottom();
+					}
+				}
+
+				&:hover,
+				&:active { 
+					color: @textColor;
+					background-color: @grey1; 
 				}
 			}
 
 			&.back { .pull-left; }
 		}
 	}
-
+}
 	.stay-card-inner {
 		/* Registration header ***/
 		.reservation-header {
