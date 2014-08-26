@@ -51,6 +51,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var fetchNewDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.prefetchData.linked_charge_codes = [];
@@ -72,6 +73,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var editSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.isEdit = true;
