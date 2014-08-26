@@ -1,4 +1,43 @@
-<div id="reservation-notes">
+<div class="block-wrapper">
+    <a href="#{notes-id}" class="block-title toggle has-arrow">Notes</a> <!-- Change text to "Add Note" if there are no notes -->    
+    <div id="{notes-id}" class="block-item item-notes has-buttons"> <!-- Remove class hidden when 'a.toggle' is clicked -->
+        <!-- Post note form -->
+        <form method="post" action="{action}" class="form">
+            <textarea placeholder="Write a note" rows="2"></textarea>
+            <div class="actions">
+                <div class="select">
+                    <select name="topic"> <!-- Add  class="placeholder" when no value option is selected -->
+                        <option value="">Select topic</option>
+                        ... list topics
+                    </select>
+                </div>
+                <button type="button" class="button brand-colors post">Post</button>
+            </div>
+        </form>
+
+        <!-- Notes posted -->
+        <ul class="notes">
+            <li>
+                <figure class="guest-image">
+                    <img src="{image}" alt="" />
+                </figure>
+                <div class="note-title">
+                    <h4>{posted by}</h4>
+                    <time datetime="{timestamp}">
+                        <span class="time">{time}</span>
+                        <span class="date">{date}</span>
+                    </time>
+                    <span class="topic">{topic}</span>
+                    <button type="button" class="icons icon-trash">Delete post</button>
+                </div>
+                <p>{note}</p>
+            </li>
+            ... repeat for all notes
+        </ul>
+    </div>
+</div>
+
+<!-- <div id="reservation-notes">
 	<div class="block-item item-notes has-buttons">
 		<div class="block-title">
 			<h3 translate>NOTES_HEADER</h3>
@@ -31,4 +70,4 @@
 			</li>
 		</ul>
 	</div>
-</div>
+</div> -->

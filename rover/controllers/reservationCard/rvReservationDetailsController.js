@@ -34,6 +34,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 */
 		//Data fetched using resolve in router
 		var reservationMainData = $scope.$parent.reservationData;
+		$scope.reservationParentData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
