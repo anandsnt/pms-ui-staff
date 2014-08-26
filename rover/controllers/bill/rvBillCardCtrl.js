@@ -4,12 +4,32 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	BaseCtrl.call(this, $scope);
 
+	// // TODO: if while coming from staycard, the room state has been to changed to be not usable
+	// // we should redirect back to room selection screen
+	// console.log( reservationBillData );
+	// if ( reservationBillData.room_ready_status === 'DIRTY' || reservationBillData.room_status !== 'READY' || reservationBillData.fo_status !== 'VACANT' ) {
+	// 	$state.go("rover.reservation.staycard.roomassignment", {
+	// 		"reservation_id": reservationBillData.reservation_id,
+	// 		"room_type": reservationBillData.room_type,
+	// 		"clickedButton": "checkinButton"
+	// 	});
+
+	// 	// process no further
+	// 	return;
+	// };
+
+	
+
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
 		callback: 'goBackToStayCard',
 		scope: $scope
 	};
+
+
+
+
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(100); //Approximate height
@@ -20,7 +40,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var groupItemExpandedHeight = 0;
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
-	$scope.saveData.promotions = reservationBillData.is_promotions_and_email_set;
+	$scope.saveData.promotions = !!reservationBillData.is_promotions_and_email_set ? true : false;
 	$scope.saveData.termsAndConditions = false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;

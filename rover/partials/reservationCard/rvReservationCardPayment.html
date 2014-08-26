@@ -10,13 +10,13 @@
 			<figure class="card-logo">
 				<img src="/assets/{{reservationData.reservation_card.payment_details.card_type_image}}" alt="">
 			</figure> 
-			<span class="number" > <span translate>ENDING_WITH </span>
+			<span class="number"> {{ 'ENDING_WITH' | translate }} 
 				<span id="token-last-value" class="value number"> {{reservationData.reservation_card.payment_details.card_number}} </span> 
 			</span> 
-			<span class="date" > <span translate>DATE </span>
+			<span class="date"> {{ 'DATE' | translate }}  
 				<span class="value date"> {{reservationData.reservation_card.payment_details.card_expiry}} </span> 
 			</span>
-		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped" class="icons icon-swiped">Credit card swiped</span> 
+		    <span ng-show="reservationData.reservation_card.payment_details.is_swiped" class="icons icon-swiped"></span> 
 		</a>
 		<div  ng-click="openAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'CC'">
 			<a class="button with-icon green" > 
