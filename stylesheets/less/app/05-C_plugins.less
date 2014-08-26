@@ -1111,6 +1111,41 @@
 				}
 			}
 
+			/* Terms & Conditions ***/
+			&.terms {
+				.size(600px, 480px);
+
+				.scrollable {
+					position: relative;
+					font-size: 14px;
+					.size(480px, 100%);
+
+					.wrapper { 
+						padding-right: 40px; 
+
+						br { margin-bottom: 20px; }
+					}
+
+					.iScrollVerticalScrollbar {
+						top: 0;
+						bottom: 0;
+					}
+				}
+
+				.actions {
+					margin-top: 20px;
+					text-align: center;
+
+					.button { 
+						display: inline-block;
+						width: auto;
+
+						&.green { padding: 0 40px; }
+					}
+				}
+			}
+		}
+
 			/* Pay bill ***/
 			&.pay-bill {
 				.size(390px, 320px);
