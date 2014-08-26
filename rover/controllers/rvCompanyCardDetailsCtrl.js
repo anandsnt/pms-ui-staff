@@ -321,6 +321,11 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.showArAccountButtonClick($event);
 	};
 
+
+	$scope.$on('ARNumberChanged',function(e,data){
+		$scope.contactInformation.account_details.accounts_receivable_number  = data.newArNumber;
+	});
+
 	$scope.deleteArAccount = function(){
 
 		ngDialog.open({
@@ -335,10 +340,11 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		var successCallbackOfdeleteArAccount = function(){
 			$scope.$emit('hideLoader');
 			$scope.isArTabAvailable = false;
+			$scope.contactInformation.account_details.accounts_receivable_number = "";
 			ngDialog.close();
 		};
-		successCallbackOfdeleteArAccount();
-		//$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
+		var dataToSend = {"id":$scope.contactInformation.id};
+		$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 	};
 
 	$scope.clikedDiscardDeleteAr = function(){

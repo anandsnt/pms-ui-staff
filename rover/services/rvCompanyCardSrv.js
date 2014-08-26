@@ -258,5 +258,17 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.deleteArAccount = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = 'api/accounts/'+id+'/delete_ar_detail';
+			rvBaseWebSrvV2.deleteJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 	}
 ]);

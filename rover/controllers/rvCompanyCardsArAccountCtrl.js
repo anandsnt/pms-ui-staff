@@ -66,6 +66,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 			var successCallbackOfsaveARDetails = function(data){
 				$scope.$emit("hideLoader");
+				$scope.$emit('ARNumberChanged',{'newArNumber':$scope.arAccountDetails.ar_number})	
 			};
 			var dataToSend = $scope.arAccountDetails;
 			dataToSend.id  = $scope.contactInformation.id
