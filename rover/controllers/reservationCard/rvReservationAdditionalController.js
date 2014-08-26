@@ -14,7 +14,10 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 				console.log('Data', data);
+				$scope.errorMessage = data;
 			};
+
+			$scope.errorMessage = [];
 
 			$scope.invokeApi(RVReservationSummarySrv.updateReservation, {
 				'reservationId': $scope.reservationParentData.reservationId,
