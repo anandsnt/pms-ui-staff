@@ -1,5 +1,5 @@
-admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv', 'ngDialog', '$state',
-    function($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state) {
+admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv', 'ngDialog', '$state', '$timeout',
+    function($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state, $timeout) {
         //expand first set
         $scope.currentClickedSet = 0;
         $scope.setChanged = false;
@@ -220,7 +220,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.errorMessage = errorMessage;
                 $scope.$emit("errorReceived", errorMessage);
             };
-
+            if($scope.otherData.rateSavePromptOpen){$scope.otherData.setChanged = false;$scope.closeDialog();}
             // API request do not require all keys except room_types
             var unwantedKeys = ["room_types"];
             var setData = dclone($scope.data.sets[index], unwantedKeys);
@@ -272,6 +272,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.closeDialog = function() {
+            $timeout(function(){$scope.otherData.rateSavePromptOpen = false;},3000);
             ngDialog.close();
         };
 
@@ -341,20 +342,20 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         }
 
         var showRateSetChangeSaveDialog = function() {
-            if($scope.otherData.rateSavePromptOpen){
+            if(!$scope.otherData.rateSavePromptOpen){
+                $scope.otherData.rateSavePromptOpen = true;
                 ngDialog.open({
                     template: '/assets/partials/rates/confirmRateSaveDialog.html',
                     className: 'ngdialog-theme-default',
+                    closeByDocument: false,
                     scope: $scope
                 });
-                $scope.otherData.rateSavePromptOpen = false;
             }
 
         }
 
         $scope.closeDateRangeGrid = function(dateRange, index) {
             if ($scope.otherData.setChanged) {
-                $scope.otherData.rateSavePromptOpen = true;
                 showRateSetChangeSaveDialog();
             } else {
                 $scope.$emit('changeMenu', '')
@@ -363,11 +364,17 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.discardRateSetChange = function() {
             $scope.otherData.setChanged = false;
+            $scope.otherData.rateSavePromptOpen = false;
             $scope.closeDialog();
         }
 
         $scope.$on("backToRatesClicked", function(event) {
             event.preventDefault();
+            showRateSetChangeSaveDialog();
+            return false;
+        });
+
+        $scope.$on("outsideRateClicked", function(event) {
             showRateSetChangeSaveDialog();
             return false;
         });
