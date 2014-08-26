@@ -83,12 +83,16 @@ var RoomAssignmentView = function(viewDom){
   	that.fetchRoomList(that.selectedRoomType);
   };
   //Fetches the non-filtered list of rooms.
-  this.fetchRoomList = function(roomType){
+  this.fetchRoomList = function(roomType, isRefresh){
     //var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
     var data = {};
     if(roomType != null && roomType!= undefined){
       data = {"room_type": roomType, "reservation_id": that.reservation_id};
+      if(isRefresh != null && isRefresh!= undefined){
+      	data.refresh_rooms = true;
+      }
     }
+    console.log(data);
     var url = "/staff/rooms/get_rooms";
     var webservice = new WebServiceInterface(); 
     var options = {
@@ -511,7 +515,7 @@ var RoomAssignmentView = function(viewDom){
 	
 	var roomassignmentErrorModal = new RoomassignmentErrorModal();
 	roomassignmentErrorModal.initialize();
-	roomassignmentErrorModal.params = {"message": errorMessage};
+	roomassignmentErrorModal.params = {"closeButtonCall": that.fetchRoomList, "initialRoomType": that.selectedRoomType, "reservationId": that.reservation_id};
 	
 	
   };  
