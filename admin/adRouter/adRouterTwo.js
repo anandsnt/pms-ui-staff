@@ -322,5 +322,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 		
-        
+        $stateProvider.state('admin.dailyWorkAssignment', {
+        	templateUrl: 'assets/partials/housekeeping/adDailyWorkAssignment.html',
+        	controller: 'ADDailyWorkAssignmentCtrl',
+        	url: '/daily_work_assignment'
+        });
 });

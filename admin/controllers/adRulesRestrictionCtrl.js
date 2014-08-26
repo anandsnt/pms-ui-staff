@@ -6,12 +6,12 @@ admin.controller('ADRulesRestrictionCtrl', [
     'ADRulesRestrictionSrv',
     function($scope, $state, $filter, dateFilter, ADRulesRestrictionSrv) {
 
-        $scope.init = function(){
+        var init = function(){
             BaseCtrl.call(this, $scope);
             $scope.ruleList = {};
         }
 
-        $scope.init();
+        init();
 
         /**
         * To fetch restrictions list
