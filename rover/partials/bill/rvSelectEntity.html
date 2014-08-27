@@ -3,15 +3,15 @@
       <div class="search-form" role="search">
          <div class="entry">
             <a href="#" id="billing-info-clear-query" class="clear-query">
-            	<span class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">Clear query</span>
+            	<span class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}" translate>CLEAR_QUERY</span>
             </a>
-            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
             <input name="billing-info-query" id="billing-info-query" class="query" placeholder="Find Guest, Company or Travel Agent" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
          </div>
       </div>
       <div id="available-entities">
          <!-- Attached entities, if exist -->
-         <span class="h3 message" ng-hide="textInQueryBox!=''">Attached Entities</span>
+         <span class="h3 message" ng-hide="textInQueryBox!=''" translate>ATTACHED_ENTITIES</span>
          <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
                  <li class="entity" ng-repeat="entity in attachedEntities"ng-class="{'guest':entity.entity_role =='guest','accompany':entity.entity_role =='accompanying guest','company':entity.entity_role =='company','travel-agent':entity.entity_role =='travel_agent'}" ng-click="selectEntity()">
@@ -31,17 +31,17 @@
          <!-- Search results, show instead of attached entities when searching -->
          
         <ul id="filter-entities" class="modal-options" ng-show="textInQueryBox!=''">
-			<li ng-click="toggleClicked(true)" ng-class="{'active':isReservationActive}">
-				Reservations
+			<li ng-click="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
+				RESERVATIONS
 			</li>
-			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}">
-				Cards
+			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}" translate>
+				CARDS
 			</li>
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 				
-				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.length.cards == 0" ng-click="showBillGroup()">
+				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity()">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
 	                        <img ng-src="{{row.company_logo}}" alt="">
@@ -61,7 +61,7 @@
             	<li class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
 					<div class="info">
 						<span class="icon-no-content icon-cards"></span>
-						<strong class="h1">No matches have been found</strong>
+						<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
 					</div>
 				</li>
 			</ul>
@@ -69,7 +69,7 @@
 		
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.length.reservations == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}">
+				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity()">
 							
 							 <!-- image -->
 							<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
@@ -80,14 +80,14 @@
 
 								'second-image':(row.images.length >1 && image.is_primary==false)}">
 
-								<span class="vip" ng-show="row.vip==true">VIP</span>
+								<span class="vip" ng-show="row.vip==true" translate>VIP</span>
 							</figure>
 
 							<div class="data">
 								<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
 								ng-class="{'grey' : row.images.length >1}"> </h2>
 								<span class="confirmation" ># {{row.confirmation}}</span>
-								<span class="confirmation" >ROOM {{row.room}}</span>
+								<span class="confirmation" >{{'ROOM_LABEL' | translate}} {{row.room}}</span>
 							</div>	
 							
 							<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
@@ -97,19 +97,21 @@
 	            	<li class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
 						<div class="info">
 							<span class="icon-no-content icon-cards"></span>
-							<strong class="h1">No matches have been found</strong>
+							<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
 						</div>
 					</li>
 				
 			</ul>
 		</div>
+		
+		
       </div>
    </fieldset>
    <fieldset class="content-right">
       <div class="no-content" >
          <div class="info">
-            <strong class="h1">Entity not selected</strong>
-            <span class="h2">Select Entity to configure bill routing</span>
+            <strong class="h1" translate>ENTITY_NOT_SELECTED</strong>
+            <span class="h2" translate>SELECT_ENTITY_TO_CONFIGURE</span>
          </div>
       </div>
         
