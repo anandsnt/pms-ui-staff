@@ -1699,7 +1699,20 @@
 							.calc-height(100, 120);
 
 							> .wrapper { padding: 0 10px 20px 10px; }
-							> .iScrollVerticalScrollbar { top: 0; }
+							> .iScrollVerticalScrollbar { 
+								top: 0; 
+								.iScrollIndicator { background: rgba(0,0,0,.1); }
+							}
+
+							&.search {
+								.calc-height(100, 200);
+							}
+						}
+
+						#cancel-entity-search {
+							position: absolute;
+							bottom: 20px;
+							left: 0;
 						}
 
 						/* Entity details ***/
