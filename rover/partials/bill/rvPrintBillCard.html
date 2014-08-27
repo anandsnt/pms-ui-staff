@@ -1,28 +1,151 @@
-<table>
-	<tr>
-		<td align="left">Guest Name: {{guestCardData.contactInfo.first_name}}&nbsp;{{guestCardData.contactInfo.last_name}}</td>
-		<td></td>
-		<td align="right">Room Number: {{reservationBillData.room_number}}</td>
-	</tr>
-	<tr>
-		<td align="left">City :{{guestCardData.contactInfo.address.city}}</td>
-		<td></td>
-		<td align="right">Arrival Date : {{reservationBillData.checkin_date | date:dayAndDate}}</td>
-	</tr>
-	<tr>
-		<td align="left">State:{{guestCardData.contactInfo.address.state}}</td>
-		<td></td>
-		<td align="right">Departure Date:{{reservationBillData.checkout_date | date:dayAndDate}}</td>
-	</tr>
-	<tr>
-		<td align="left">Country :{{guestCardData.contactInfo.address.country}}</td>
-		<td></td>
-		<td align="right">Confirmation No:{{reservationBillData.confirm_no}} </td>
-	</tr>
-	<tr>
-		<td align="left">Postal Code :{{guestCardData.contactInfo.address.postal_code}}</td>
-		<td></td>
-		<td align="right">Invoice Number:</td>
-	</tr>
+<div class="guest-info">
 
-</table>
+	<table>
+		<tr>
+			<td>Date:{{printData.invoice_date}}</td>
+			<td ></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Hotel Name: {{printData.hotel_name}}</td>
+			<td></td>
+			<td >Guest Name: {{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td >Address: {{printData.guest_details.street}}</td>
+		</tr>
+		<tr>
+			<td >Confirmation No:{{printData.confirmation_number}}</td>
+			<td></td>
+			<td >City :{{printData.guest_details.city}}</td>
+		</tr>
+		<tr>
+			<td>Room Number: {{printData.room_number}}</td>
+			<td></td>
+			<td >State:{{printData.guest_details.state}}</td>
+		</tr>
+		</tr>
+		<tr>
+			<td>Invoice Number:{{printData.invoice_number}}</td>
+			<td></td>
+			<td >Postal Code :{{printData.guest_details.postal_code}}</td>
+		</tr>
+		<tr>
+			<td ></td>
+			<td></td>
+			<td >Country :{{printData.guest_details.country}}</td>
+		</tr>
+		<tr>
+			<td ></td>
+			<td></td>
+			<td >Arrival Date : {{printData.arrival_date}}</td>
+		</tr>
+		<tr>
+			<td ></td>
+			<td></td>
+			<td >Departure Date:{{printData.departure_date}}</td>
+		</tr>
+	</table>
+</div>
+<div class="bill-details" >
+	<table>
+			<tr>
+				<th>Date of charge</th>
+				<th>Charge description</th>
+				<th>Charge amount</th>
+				<th>Credit amount </th>
+			</tr>
+		<tbody ng-repeat="feesData in printData.fee_details">
+			<tr ng-repeat="item in feesData.charge_details" ng-if="!item.is_tax">
+					<td> {{feesData.date | date:'MM-dd-yyyy'}}</td>
+					<td> 
+						<span>
+							{{item.description}}
+						</span>
+					</td>
+					<td><strong> 
+							<span>
+								{{printData.currency}}{{item.amount | number: precisonTwo}}
+							</span>
+					</strong></td>
+					<td></td>
+			</tr>
+			<tr ng-repeat="item in feesData.credit_details">
+			
+					<td> {{feesData.date | date:'MM-dd-yyyy'}}</td>
+					<td> 
+						<span>
+							{{item.description}}
+						</span>
+					</td>
+					<td></td>
+					<td>
+						<strong>
+						 	<span>
+								{{printData.currency}}{{item.amount | number: precisonTwo}}
+							</span>
+						</strong>
+					</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="amount-details">
+	<table>
+		<tr>	
+			<td colspan="2" align="right"><span translate>Total charge</span></td>
+			<td colspan="3" align="right">
+				<strong> 
+					{{printData.currency}}{{printData.total_fees}}
+				</strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="2"> <span translate>Total Credits</span></td>
+			<td colspan="3">
+				<strong> 
+					{{printData.currency}} {{printData.credits | number: precisonTwo}} 
+				</strong>
+			</td>
+		</tr>
+
+		<tr ng-repeat="payment_details in printData.payment_details">
+			<td colspan="2">
+				<span >{{payment_details.description}}({{payment_details.card_number}})</span>
+	 		</td>
+ 			<td colspan="3" ></td>
+		</tr>
+
+		<tr >
+			<td colspan="2"><span>Balance</span></td>
+			<td colspan="3"><span><strong>{{printData.currency}}{{printData.balance}}</strong></span></td>
+		</tr>
+		<tr >
+			<td colspan="2"><span>Net Amount</span></td>
+			<td colspan="3"><span><strong>{{printData.currency}}{{printData.net_amount}}</strong></span></td>
+		</tr>
+		<tbody ng-repeat="feesData in printData.fee_details">
+			<tr ng-repeat="item in feesData.charge_details" ng-if="item.is_tax">
+				<td colspan="2"> 
+					<span>
+						{{item.description}}
+					</span>
+				</td>
+				<td colspan="3">
+					<strong > 
+						<span>
+							{{printData.currency}}{{item.amount | number: precisonTwo}}
+						</span>
+					</strong>
+				</td>
+			</tr>
+		</tbody>
+		<tr >
+			<td colspan="2"><span>Total Incl Tax</span></td>
+			<td colspan="3"><span><strong>{{printData.currency}}{{printData.total_incl_tax}}</strong></span></td>
+		</tr>
+	</table>
+</div>

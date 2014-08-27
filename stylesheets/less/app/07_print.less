@@ -207,7 +207,7 @@ h4, .h4 { page-break-after: avoid; }
 
 	.reservation-header,.billing-information, .bill-summary-wrapper,.selectBill { .hide; }
 
-	.button { .hide; }
+	.button, .total-stay-fees,.notice,.error error_message { .hide; }
 
 	.details{
 
@@ -228,7 +228,7 @@ h4, .h4 { page-break-after: avoid; }
 
 					th,
 					td {
-					page-break-after:always !important;
+						page-break-after:always !important;
 						page-break-inside: avoid !important;
 						white-space: normal !important;
 						overflow: visible !important;
@@ -262,35 +262,109 @@ h4, .h4 { page-break-after: avoid; }
 }
 .print-billcard{
 	display:block !important;
-	border-top: 1px solid black;
 	margin-top:-2cm;
 	padding-top:5px;
-	table{
-		width:800px;
-		font-size:20px;
 
+	.guest-info{
+		table{
+				width:100%;
+				font-size:20px;
+				tr:first-child{
+					border-bottom: 1px solid black;
+					padding-bottom:.25cm;
+				}
+				tr {
+						page-break-after: always !important;
+						page-break-inside: avoid !important;
+
+						td:first-child, td:last-child{
+							width:40%;
+						}
+						td:nth-child(2){
+							width:20%;
+						}
+						td:first-child{
+							text-align:left;
+						}
+						td:last-child{
+							text-align:right;
+						}
+
+
+						td {
+							page-break-after:always !important;
+							page-break-inside: avoid !important;
+							padding:0;
+						}
+					}
+		}
+	}
+
+	.bill-details{
+		table{
+			    border-collapse: collapse;
+				width:100%;
+				font-size:20px;
+				
 			tr {
 					page-break-after: always !important;
 					page-break-inside: avoid !important;
-
-					td:first-child, td:last-child{
-						width:40%;
-					}
-					td:nth-child(2){
-						width:20%;
-					}
-
-					td {
-						page-break-after:always !important;
-						page-break-inside: avoid !important;
+					th{
+						text-align:center;
+						font-weight:bold !important;
+						border:1px solid #C0C0C0;
 						padding:0.25cm 0;
 					}
+					td:first-child{
+						text-align:center;
+					}
+					td:nth-child(2), td:nth-child(3), td:nth-child(4){
+						text-align:right;
+					}
+					td {
+
+						border:1px solid #C0C0C0;
+						width:30%;
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
+						padding:.25cm .25cm 0;
+					}
+				
 				}
-	}
+				
+
+		}
+		}
+	.amount-details{
+		table{
+			    border-collapse: collapse;
+				width:100%;
+				font-size:20px;
+				
+			tr {
+					page-break-after: always !important;
+					page-break-inside: avoid !important;
+				
+					td {
+						text-align:right;
+						border:1px solid #C0C0C0;
+						width:30%;
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
+						padding:.25cm .25cm 0;
+					}
+				
+				}
+				
+
+		}
+		}
 
 
 
 }
+
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
