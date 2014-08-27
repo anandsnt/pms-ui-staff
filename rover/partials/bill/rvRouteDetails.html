@@ -3,7 +3,7 @@
       <div id="entity-details" class="entity-details scrollable">
          <div class="wrapper">
             <div class="title">
-               Entity
+               {{'ENTITY' | translate}}
                <button type="button" id="edit-entity" class="button with-icon only-icon purple edit">
                <span class="icons icon-pencil"></span>
                </button>
@@ -23,12 +23,12 @@
                <figure class="card-logo">
                   <img src="{card-logo}" alt="" />
                </figure>
-               <span class="number">Number <span class="value number">{number}</span></span>
-               <span class="date">Date <span class="value date">{date}</span></span>
+               <span class="number">{{'NUMBER' | translate}} <span class="value number">{number}</span></span>
+               <span class="date">{{'DATE' | translate}} <span class="value date">{date}</span></span>
             </div>
             
             <!-- Add new credit card button - remove it when new card is added -->
-            <button type="button" class="add-new-button" ng-click = "isAddPayment = true" ng-show = "!isAddPayment">+ New Payment Method</button>
+            <button type="button" class="add-new-button" ng-click = "isAddPayment = true" ng-show = "!isAddPayment">+ {{'NEW_PAYMENT_METHOD' | translate}}</button>
 
             <!-- For to add the new credit card, should be shown when button above is tapped -->
             <div ng-show = "isAddPayment" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"  > </div>
@@ -37,7 +37,7 @@
    </fieldset>
    <fieldset class="content-right">
       <span class="h2 message">
-         Route to Bill #
+        {{'ROUTE_TO_BILL' | translate}}
          <div class="select">
             <select name="post-charge-to-bill">
                <option value="1" selected="true">1</option>
@@ -46,8 +46,8 @@
          </div>
       </span>
       <ul id="transaction-type" class="modal-options">
-         <li ng-class="{'active' : isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup">Billing Group</li>
-         <li ng-class="{'active' : !isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup">Charge Codes</li>
+         <li ng-class="{'active' : isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup" translate>BILLING_GROUP</li>
+         <li ng-class="{'active' : !isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup" translate>CHARGE_CODES</li>
       </ul>
       <div id="transactions" class="transactions scrollable" ng-show = "isBillingGroup">
          <div class="entry radio-check wrapper">
@@ -84,7 +84,7 @@
       <!-- No content-->
          <div id="transactions" class="transactions codes scrollable no-content" ng-show = "!isBillingGroup">
             <div class="info">
-               <strong class="h1">No codes added</strong>
+               <strong class="h1" translate>NO_CODES_ADDED</strong>
             </div>
          </div>
 
