@@ -75,7 +75,7 @@ sntRover.controller('reservationActionsController', [
 
 			balance += netPrice;
 
-			$scope.reservationData.reservation_card.balance_amount = balance;
+			$scope.reservationData.reservation_card.balance_amount = parseFloat(netPrice);
 		});
 
 		// the listner must be destroyed when no needed anymore
@@ -94,7 +94,7 @@ sntRover.controller('reservationActionsController', [
 							scope: $scope
 						});
 					} else {
-						if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT') {
+						if ($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status === 'NOTREADY' || $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
 							//TO DO:Go to room assignemt view
 							$state.go("rover.reservation.staycard.roomassignment", {
 								"reservation_id": $scope.reservationData.reservation_card.reservation_id,
@@ -128,8 +128,9 @@ sntRover.controller('reservationActionsController', [
 				}
 			};
 			
-			// NOTE: room_id is provided as string, that why checking length
-			if ( $scope.reservationData.reservation_card.room_id.length ) {
+			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
+			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id
+			if ( !!hasRoom ) {
 				// Go fetch the room status again
 				// After fetch do the entire rest of it
 				$scope.$emit('showLoader');	

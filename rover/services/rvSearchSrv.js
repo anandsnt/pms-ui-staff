@@ -52,6 +52,10 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 					self.data[i]['fostatus'] = data['fostatus'];
 				}
 
+				if ( data['room_ready_status'] ) {
+					self.data[i]['room_ready_status'] = data['room_ready_status'];
+				}
+
 				if ( data['is_reservation_queued'] ) {
 					self.data[i]['is_reservation_queued'] = data['is_reservation_queued'];
 				}
