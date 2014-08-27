@@ -36,7 +36,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		for(i = 0; i < data.results.length; i++){
 
 			var isWeekend = new Date(data.results[i].date).getDay() == 0 || new Date(data.results[i].date).getDay() == 6;
-			dates.push({'date': data.results[i].date, 'isWeekend': isWeekend});
+			dates.push({'date': data.results[i].date, 'isWeekend': isWeekend, 'dateObj': new Date(data.results[i].date)});
 
 			occupancies.push((data.results[i].house.sold / data.physical_count) * 100);
 
@@ -70,7 +70,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 			'reservedRooms'		: reservedRooms,
 			'overBookableRooms'	: overBookableRooms,
 			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
-			'individualAvailableRooms': individualAvailableRooms
+			'individualAvailableRooms': individualAvailableRooms,
+			'totalRooms'		: data.physical_count
 		}
 		return availabilityData;
 	};
