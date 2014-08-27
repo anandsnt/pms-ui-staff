@@ -41,7 +41,7 @@
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 				
-				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.length.cards == 0" ng-click="showBillGroup()">
+				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity()">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
 	                        <img ng-src="{{row.company_logo}}" alt="">
@@ -69,7 +69,7 @@
 		
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.length.reservations == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}">
+				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity()">
 							
 							 <!-- image -->
 							<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
@@ -103,6 +103,8 @@
 				
 			</ul>
 		</div>
+		
+		
       </div>
    </fieldset>
    <fieldset class="content-right">
