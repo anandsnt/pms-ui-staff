@@ -17,7 +17,7 @@
 				{{totalFees.balance_amount}}
 			</span> 
 		</a>
-		<a class="button with-icon green" ng-click='clickedPayButton()' ng-show="showPayButton"> 
+		<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 			<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 		</a>
 	</div>
@@ -27,7 +27,7 @@
 			<span class="value"> 
 				{{currencySymbol}}	0.00 
 			</span>
-			<a class="button with-icon green" ng-click='clickedPayButton()' ng-show="showPayButton"> 
+			<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 				<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 			</a>
 		</p>
@@ -138,7 +138,7 @@
 						</strong>
 					</td>
 					 <td class="edit">
-						<a class="button with-icon green" ng-click='clickedPayButton()' ng-show="showPayButton"> 
+						<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 							<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 						</a>
 					</td>

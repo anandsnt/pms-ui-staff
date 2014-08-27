@@ -2,23 +2,7 @@
 sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData){
 
 	
-	BaseCtrl.call(this, $scope);
-
-	// // TODO: if while coming from staycard, the room state has been to changed to be not usable
-	// // we should redirect back to room selection screen
-	// console.log( reservationBillData );
-	// if ( reservationBillData.room_ready_status === 'DIRTY' || reservationBillData.room_status !== 'READY' || reservationBillData.fo_status !== 'VACANT' ) {
-	// 	$state.go("rover.reservation.staycard.roomassignment", {
-	// 		"reservation_id": reservationBillData.reservation_id,
-	// 		"room_type": reservationBillData.room_type,
-	// 		"clickedButton": "checkinButton"
-	// 	});
-
-	// 	// process no further
-	// 	return;
-	// };
-
-	
+	BaseCtrl.call(this, $scope);	
 
 	// set a back button on header
 	$rootScope.setPrevState = {
@@ -26,8 +10,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		callback: 'goBackToStayCard',
 		scope: $scope
 	};
-
-
 
 
 	
@@ -426,6 +408,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Clicked pay button function
 	  */
 	 $scope.clickedPayButton = function(){
+
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
@@ -437,7 +420,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
               closeByDocument: false,
               scope: $scope
           });
-	 	
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
@@ -623,70 +605,74 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 
 	$scope.calculateHeightAndRefreshScroll = function() {
+
+
+		// NO MORE CALCULATING THE HEIGHT ONLY WIDTH
 		 
-		var height = 0;
+		// var height = 0;
+		// if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails){
+		// 	//height = parseInt(height) + parseInt(41);//For table title
+		// 	if(reservationBillData.bills[$scope.currentActiveBill].total_fees.length > 0){
+		// 		countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(5);
+		// 	}
+		// 	height = parseInt(height) + parseInt(countFeesElements*73.5);
+		// 	if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
+		// 		height = parseInt(height) + parseInt(45);
+		// 	}
+		// 	if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
+		// 		height = parseInt(height) + parseInt(45);
+		// 	}
+		// }
+		// else{
+		// 	//If Total fees toggle is closed.
+		// 	height = parseInt(height) + parseInt(150);
+		// }
+		// if($scope.dayRates!=-1){
+		// 	height = parseInt(height) + parseInt(50);
+		// }
+		// if($scope.showRoomDetailsIndex!=-1){
+		// 	height = parseInt(height) + parseInt(roomTypeDescriptionLength);
+		// }
+		// if($scope.showAddonIndex!=-1){
+		// 	height = parseInt(height) + parseInt(addOnExpandedHeight);
+		// }
+		// if($scope.showGroupItemIndex!=-1){
+		// 	height = parseInt(height) + parseInt(groupItemExpandedHeight);
+		// }
+		// if($scope.clickedButton == "checkinButton" || $scope.clickedButton == "checkoutButton"){
+		// 	height = parseInt(height) + parseInt(50);//For checkin or checkout buttons
+		// 	if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill && $scope.reservationBillData.required_signature_at !== "NO_SIGNATURE"){
+		// 		//For siganture Pad.
+		// 		if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails) height = parseInt(height) + parseInt(200);
+	 //     		else height = parseInt(height) + parseInt(350);
+	 //     	}
+	 //    };
+	 //    if($scope.showBillingInfo){
+	 //        var routingLength =	($scope.reservationBillData.routing_array.length*32);
+	 //    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
+	 //    }
+	 //    if($scope.showIncomingBillingInfo){
+	 //        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*32);
+	 //    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
+	 //    }
+	    
+		// $scope.calculatedHeight = height;
+		
 		var width = 0;
-		if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails){
-			//height = parseInt(height) + parseInt(41);//For table title
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees.length > 0){
-				countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(5);
-			}
-			height = parseInt(height) + parseInt(countFeesElements*73.5);
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
-				height = parseInt(height) + parseInt(45);
-			}
-			if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
-				height = parseInt(height) + parseInt(45);
-			}
+
+		width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
+		if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
+			width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
 		}
-		else{
-			//If Total fees toggle is closed.
-			height = parseInt(height) + parseInt(150);
+		if(reservationBillData.bills[$scope.currentActiveBill].group_items != undefined){
+			width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].group_items.length*70);
 		}
-		if($scope.dayRates!=-1){
-			height = parseInt(height) + parseInt(50);
-		}
-		if($scope.showRoomDetailsIndex!=-1){
-			height = parseInt(height) + parseInt(roomTypeDescriptionLength);
-		}
-		if($scope.showAddonIndex!=-1){
-			height = parseInt(height) + parseInt(addOnExpandedHeight);
-		}
-		if($scope.showGroupItemIndex!=-1){
-			height = parseInt(height) + parseInt(groupItemExpandedHeight);
-		}
-		if($scope.clickedButton == "checkinButton" || $scope.clickedButton == "checkoutButton"){
-			height = parseInt(height) + parseInt(50);//For checkin or checkout buttons
-			if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill && $scope.reservationBillData.required_signature_at !== "NO_SIGNATURE"){
-				//For siganture Pad.
-				if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails) height = parseInt(height) + parseInt(200);
-	     		else height = parseInt(height) + parseInt(350);
-	     	}
-	    };
-	    if($scope.showBillingInfo){
-	        var routingLength =	($scope.reservationBillData.routing_array.length*32);
-	    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
-	    }
-	    if($scope.showIncomingBillingInfo){
-	        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*32);
-	    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
-	    }
-	    width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
-	    if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
-	    	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
-	    }
-	     if(reservationBillData.bills[$scope.currentActiveBill].group_items != undefined){
-	    	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].group_items.length*70);
-	    }
-		$scope.calculatedHeight = height;
-		
 		$scope.calculatedWidth = width;
-		
+
 		$timeout(function(){
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('billDays');
-			}, 
-		1000);
+		}, 1000);
 		
 	};
 	// To enable scroll
@@ -920,8 +906,56 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 
-	 });	
+	 });
 
+	/*
+	 * to show the advance bill confirmation dialog
+	 *
+	 */
+	$scope.showAdvancedBillDialog = function(){
+		if($scope.reservationBillData.reservation_status == 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill){
+		 		ngDialog.open({
+	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
+	    		className: 'ngdialog-theme-default',
+	    		scope : $scope
+	    	});
+	 	}else{
+	 		$scope.clickedPayButton();
+	 	}
+		
+		
+	};
+
+	/*
+	 * to invoke the api on opting the advance bill and fetch the advanced bill details 
+	 *
+	 */
+	$scope.generateAdvanceBill = function(){
+		var data = {};
+		data.id = $scope.reservationBillData.reservation_id;
+		var getAdvanceBillSuccessCallback = function(successData){
+			ngDialog.close();
+			$scope.$emit('hideLoader');
+			$scope.init(successData);
+			$scope.clickedPayButton();
+			$scope.reservationBillData.is_advance_bill = true;
+		};
+		var getAdvanceBillErrorCallback = function(error){
+			ngDialog.close();
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = error;			
+		};
+	 	$scope.invokeApi(RVBillCardSrv.getAdvanceBill, data, getAdvanceBillSuccessCallback, getAdvanceBillErrorCallback );
+	};
+
+	/*
+	 * to invoke the payment dialogs on closing the advance bill dialog. 
+	 *
+	 */
+	$scope.closeAdanceBillDialog = function(){
+		ngDialog.close();
+		$scope.clickedPayButton();
+	};
 
 
 /*------------- edit/remove/split starts here --------------*/
