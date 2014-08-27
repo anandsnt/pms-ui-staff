@@ -4,6 +4,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 
 	this.data = {};
 
+	this.roomAvailabilityData = {};
 	this.getData = function(){
 		return that.data;
 	}
@@ -11,7 +12,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		that.data = data;
 	};
 
-	this.restructureDataForUI = function(data){
+	this.restructureDataForUI = function(dataFromAPI){
+		var roomAvailabilityData = dataFromAPI.roomAvailabilityData;
+		var occupanyData = dataFromAPI.roomAvailabilityData;
 		var dates 				= [];
 		var occupancies 		= [];
 		var bookableRooms 		= [];
@@ -19,48 +22,62 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		var outOfOrderRooms 	= [];
 		var reservedRooms 		= [];
 		var overBookableRooms 	= [];
+		var occupanciesActual	= [];
+		var occupanciesTargeted = [];		
 		var availableRoomsWithBookableRooms = [];
 		var individualAvailableRooms = [];
+
 
 		//web service response is arrogant!!, requested to change. no use
 		// before looking into the code, please have good look in the webservice response.
 		//creating list of room types
-		for(var i = 0; i < data.room_types.length; i++){
+		for(var i = 0; i < roomAvailabilityData.room_types.length; i++){
 			individualAvailableRooms.push({
-				'id' 	: data.room_types[i].id, 
-				'name'	: data.room_types[i].name,
+				'id' 	: roomAvailabilityData.room_types[i].id, 
+				'name'	: roomAvailabilityData.room_types[i].name,
 				'availableRoomNumberList': []
 			})
 		}
 
-		for(i = 0; i < data.results.length; i++){
+		for(i = 0; i < roomAvailabilityData.results.length; i++){
+			var isWeekend = new Date(roomAvailabilityData.results[i].date).getDay() == 0 || new Date(roomAvailabilityData.results[i].date).getDay() == 6;
+			dates.push({'date': roomAvailabilityData.results[i].date, 'isWeekend': isWeekend, 'dateObj': new Date(roomAvailabilityData.results[i].date)});
 
-			var isWeekend = new Date(data.results[i].date).getDay() == 0 || new Date(data.results[i].date).getDay() == 6;
-			dates.push({'date': data.results[i].date, 'isWeekend': isWeekend, 'dateObj': new Date(data.results[i].date)});
+			occupancies.push((roomAvailabilityData.results[i].house.sold / roomAvailabilityData.physical_count) * 100);
 
-			occupancies.push((data.results[i].house.sold / data.physical_count) * 100);
+			bookableRooms.push(roomAvailabilityData.physical_count - roomAvailabilityData.results[i].house.out_of_order);
 
-			bookableRooms.push(data.physical_count - data.results[i].house.out_of_order);
-
-			availableRooms.push(data.results[i].house.availability - data.results[i].house.out_of_order - data.results[i].house.sold);
+			availableRooms.push(roomAvailabilityData.results[i].house.availability - roomAvailabilityData.results[i].house.out_of_order - roomAvailabilityData.results[i].house.sold);
 			//web service response is arrogant!!, requested to change. no use :(
-			for(var j = 0; j < data.results[i].room_types.length; j++){
-				var id = data.results[i].room_types[j].id;
+			for(var j = 0; j < roomAvailabilityData.results[i].room_types.length; j++){
+				var id = roomAvailabilityData.results[i].room_types[j].id;
 				for(var k = 0; k < individualAvailableRooms.length; k++){
 					if(individualAvailableRooms[k].id == id){
-						individualAvailableRooms[k].availableRoomNumberList.push(data.results[i].room_types[j].availability);
+						individualAvailableRooms[k].availableRoomNumberList.push(roomAvailabilityData.results[i].room_types[j].availability);
 					}
 				}
 			}
 
-			outOfOrderRooms.push(data.results[i].house.out_of_order);
+			outOfOrderRooms.push(roomAvailabilityData.results[i].house.out_of_order);
 
-			reservedRooms.push(data.results[i].house.sold);
+			reservedRooms.push(roomAvailabilityData.results[i].house.sold);
 			//hardcoded
 			overBookableRooms.push(1);
 			availableRoomsWithBookableRooms.push(3);
 
 		}
+		var IsOccupancyTargetSetBetween = false;
+		for(i = 0; i < occupanyData.results.length; i++){	
+			console.log(occupanyData.results[i].target);
+			var actual = escapeNull(occupanyData.results[i].actual) == "" ? 0 : occupanyData.results[i].actual;
+			var target = escapeNull(occupanyData.results[i].target) == "" ? 0 : occupanyData.results[i].target;
+			occupanciesActual.push((actual / roomAvailabilityData.physical_count) * 100);
+			occupanciesTargeted.push((target / roomAvailabilityData.physical_count) * 100);
+			if(target > 0) {
+				IsOccupancyTargetSetBetween = true;
+			}
+		}
+		console.log(occupanciesTargeted);
 		var availabilityData = {
 			'dates'				: dates,
 			'occupancies'		: occupancies,
@@ -71,7 +88,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 			'overBookableRooms'	: overBookableRooms,
 			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
 			'individualAvailableRooms': individualAvailableRooms,
-			'totalRooms'		: data.physical_count
+			'totalRooms'		: roomAvailabilityData.physical_count,
+			'occupanciesActual'	: occupanciesActual,
+			'occupanciesTargeted': occupanciesTargeted,
+			'IsOccupancyTargetSetBetween': IsOccupancyTargetSetBetween
 		}
 		return availabilityData;
 	};
@@ -92,13 +112,35 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		var deferred = $q.defer();
 		var url = 'api/availability';
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(data) {
-
-			deferred.resolve(that.restructureDataForUI(data));
+			that.roomAvailabilityData.roomAvailabilityData = data;	
+			return that.fetchOccupancyDetails(params, deferred);
 		},function(data){
 			deferred.reject(data);
 		});	
 		return deferred.promise;
 	};
+
+	/*
+	* function to fetch occupancy details date wise
+	*/
+	this.fetchOccupancyDetails = function(params, deferred){
+		var firstDate 	= tzIndependentDate(params.from_date);
+		var secondDate 	= tzIndependentDate(params.to_date);
+		
+		var dataForWebservice = {
+			from_date	: firstDate,
+			to_date		: secondDate
+		};
+
+		var url = 'api/daily_occupancies';
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(data) {
+			that.roomAvailabilityData.occupancyTargetted = data;	
+			deferred.resolve(that.restructureDataForUI(that.roomAvailabilityData));
+		},function(data){
+			deferred.reject(data);
+		});	
+		return deferred.promise;
+	};	
 
 	this.fetchHouseStatusDetails = function(params){
 
