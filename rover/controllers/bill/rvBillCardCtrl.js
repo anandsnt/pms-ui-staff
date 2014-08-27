@@ -406,6 +406,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * Clicked pay button function
 	  */
 	 $scope.clickedPayButton = function(){
+
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
@@ -417,7 +418,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
               closeByDocument: false,
               scope: $scope
           });
-	 	
 	 };
 	 $scope.clickedAddUpdateCCButton = function(){
 	 	$scope.fromViewToPaymentPopup = "billcard";
@@ -904,8 +904,56 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 
-	 });	
+	 });
 
+	/*
+	 * to show the advance bill confirmation dialog
+	 *
+	 */
+	$scope.showAdvancedBillDialog = function(){
+		if($scope.reservationBillData.reservation_status == 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill){
+		 		ngDialog.open({
+	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
+	    		className: 'ngdialog-theme-default',
+	    		scope : $scope
+	    	});
+	 	}else{
+	 		$scope.clickedPayButton();
+	 	}
+		
+		
+	};
+
+	/*
+	 * to invoke the api on opting the advance bill and fetch the advanced bill details 
+	 *
+	 */
+	$scope.generateAdvanceBill = function(){
+		var data = {};
+		data.id = $scope.reservationBillData.reservation_id;
+		var getAdvanceBillSuccessCallback = function(successData){
+			ngDialog.close();
+			$scope.$emit('hideLoader');
+			$scope.init(successData);
+			$scope.clickedPayButton();
+			$scope.reservationBillData.is_advance_bill = true;
+		};
+		var getAdvanceBillErrorCallback = function(error){
+			ngDialog.close();
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = error;			
+		};
+	 	$scope.invokeApi(RVBillCardSrv.getAdvanceBill, data, getAdvanceBillSuccessCallback, getAdvanceBillErrorCallback );
+	};
+
+	/*
+	 * to invoke the payment dialogs on closing the advance bill dialog. 
+	 *
+	 */
+	$scope.closeAdanceBillDialog = function(){
+		ngDialog.close();
+		$scope.clickedPayButton();
+	};
 
 
 /*------------- edit/remove/split starts here --------------*/
