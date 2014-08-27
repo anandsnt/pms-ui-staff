@@ -506,7 +506,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
   /**
-    * Handles the bussiness date change
+    * Handles the bussiness date change in progress
     */
     $rootScope.showBussinessDateChangingPopup = function() {
 
@@ -525,14 +525,37 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }        
     };
 
+ 
     $rootScope.$on('bussinessDateChangeInProgress',function(){
       $rootScope.showBussinessDateChangingPopup();
     });
 
-    // to reload app in case the bussiness date is changed
-    $rootScope.reloadApplication = function(){
+       
+
+    $scope.goToDashboard = function(){
+      ngDialog.close();
+      // to reload app in case the bussiness date is changed
       $state.go('rover.dashboard', {}, {reload: true});
-    };    
+    }
+
+     /**
+    * Handles the bussiness date change completion
+    */
+    $rootScope.showBussinessDateChangedPopup = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        if(!$rootScope.isBussinessDateChanged){
+            $rootScope.isBussinessDateChanged = true;
+            ngDialog.open({
+              template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              closeByDocument: true,
+              scope: $scope
+          });
+        }        
+    };
+
 
   }
 ]);
@@ -554,8 +577,11 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
         return response || $q.when(response);
     },
     responseError: function(rejection) {
+      if(rejection.status == 540){
+         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+      }
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
-        $rootScope.showOWSError && $rootScope.showOWSError();
+       $rootScope.showOWSError && $rootScope.showOWSError();
       }
       return $q.reject(rejection);
     }
