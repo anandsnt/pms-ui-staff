@@ -9,9 +9,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		    'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
 		    'VIP': 'DASHBOARD_SEARCH_VIP',
 		    'NORMAL_SEARCH': 'SEARCH_NORMAL'
-		}
+		};
 		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {}
+		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
 
 		// setup a back button
 		$rootScope.setPrevState = {
