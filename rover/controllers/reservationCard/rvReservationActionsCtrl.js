@@ -75,7 +75,7 @@ sntRover.controller('reservationActionsController', [
 
 			balance += netPrice;
 
-			$scope.reservationData.reservation_card.balance_amount = balance;
+			$scope.reservationData.reservation_card.balance_amount = parseFloat(netPrice);
 		});
 
 		// the listner must be destroyed when no needed anymore
@@ -128,23 +128,29 @@ sntRover.controller('reservationActionsController', [
 				}
 			};
 			
-			// Go fetch the room status again
-			// After fetch do the entire rest of it
-			$scope.$emit('showLoader');	
-			RVHkRoomDetailsSrv.fetch($scope.reservationData.reservation_card.room_id)
-				.then(function(data) {
-					// Rest of the things
-					$scope.$emit('hideLoader');
+			// NOTE: room_id is provided as string, that why checking length
+			if ( $scope.reservationData.reservation_card.room_id.length ) {
+				// Go fetch the room status again
+				// After fetch do the entire rest of it
+				$scope.$emit('showLoader');	
+				RVHkRoomDetailsSrv.fetch($scope.reservationData.reservation_card.room_id)
+					.then(function(data) {
+						// Rest of the things
+						$scope.$emit('hideLoader');
 
-					// update the room status to reservation card
-					$scope.reservationData.reservation_card.room_ready_status = data.room_details.current_hk_status;
-					$scope.reservationData.reservation_card.room_status       = data.room_details.is_ready === "true" ? 'READY' : 'NOTREADY';
-					$scope.reservationData.reservation_card.fo_status         = data.room_details.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
+						// update the room status to reservation card
+						$scope.reservationData.reservation_card.room_ready_status = data.room_details.current_hk_status;
+						$scope.reservationData.reservation_card.room_status       = data.room_details.is_ready === "true" ? 'READY' : 'NOTREADY';
+						$scope.reservationData.reservation_card.fo_status         = data.room_details.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 
-					afterRoomUpdate();
-				}, function(){
-					$scope.$emit('hideLoader');
-				});
+						afterRoomUpdate();
+					}, function(){
+						$scope.$emit('hideLoader');
+					});
+			} else {
+				// just cont.
+				afterRoomUpdate();
+			}
 		};
 
 
