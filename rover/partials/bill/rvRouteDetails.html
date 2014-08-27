@@ -18,7 +18,7 @@
             </div>
             <div class="title">Payment</div>
             <!-- Available credit card -->
-            <div class="payment">
+            <div class="payment" ng-show = "!isAddPayment">
                <!-- add class active when selected -->
                <figure class="card-logo">
                   <img src="{card-logo}" alt="" />
@@ -28,9 +28,10 @@
             </div>
             
             <!-- Add new credit card button - remove it when new card is added -->
-            <button type="button" class="add-new-button">+ New Payment Method</button>
+            <button type="button" class="add-new-button" ng-click = "isAddPayment = true" ng-show = "!isAddPayment">+ New Payment Method</button>
+
             <!-- For to add the new credit card, should be shown when button above is tapped -->
-            
+            <div ng-show = "isAddPayment" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"  > </div>
          </div>
       </div>
    </fieldset>

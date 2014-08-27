@@ -1,4 +1,4 @@
-<div id="new-payment-method" class="form hidden">
+<div id="new-payment-method" class="form" ng-controller = "rvRoutesAddPaymentCtrl">
                      <div class="entry full-width">
                         <label for="payment-type">Payment type</label>
                         <div class="select">
@@ -25,7 +25,7 @@
                         <input name="name-on-card" id="name-on-card" value="" type="text" />
                      </div>
                      <div class="actions">
-                        <button type="button" class="button blank">Cancel</button>
-                        <button type="button" class="button green">Add Payment Method</button>
+                        <button type="button" class="button blank" ng-click = "cancelClicked()">Cancel</button>
+                        <button type="button" class="button green" ng-click = "cancelClicked()">Add Payment Method</button>
                      </div>
 </div>                  
