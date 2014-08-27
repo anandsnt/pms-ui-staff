@@ -544,6 +544,7 @@
     "BALANCE_AS_OF" : "Balance (as of",
     "GUEST_BALANCE_AS_OF": "Guest Balance (as of",
     "MOVE_TO_BILL" : "Move to bill",
+    "WILL_CREATE_NEW_BILL":"Will create new bill",
     "EDIT": "Edit",
     "ALL_CHARGE_GROUPS": "All Charge Groups",
     "FAVORITE": "Favorite",
