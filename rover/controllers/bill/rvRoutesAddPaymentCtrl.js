@@ -2,7 +2,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	BaseCtrl.call(this, $scope);
 	
 		$scope.cancelClicked = function(){
-			$scope.isAddPayment = false;
+			$scope.showPaymentList();
 		};
 	
 }]);

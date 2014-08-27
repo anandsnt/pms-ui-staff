@@ -2,6 +2,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVGue
 	BaseCtrl.call(this, $scope);
 	$scope.isBillingGroup = true;
 	$scope.isAddPayment = false;
+
+	$scope.showPaymentList = function(){
+		$scope.isAddPayment = false;
+	}
 		
 	
 }]);
