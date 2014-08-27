@@ -556,7 +556,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }        
     };
 
-
   }
 ]);
 
@@ -573,6 +572,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
       return config;
     },
     response: function (response) {
+        // if manual bussiness date change is in progress alert user.
         if(response.data.is_eod_in_progress && response.data.is_eod_manual_started){
            bussinessDateChangeInProgress();
         }       
