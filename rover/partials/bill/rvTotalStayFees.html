@@ -14,7 +14,7 @@
 				{{totalFees.balance_amount}}
 			</span> 
 		</a>
-		<a class="button with-icon green" ng-click='clickedPayButton()' ng-show="showPayButton"> 
+		<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 			<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 		</a>
 	</div>
@@ -24,7 +24,7 @@
 			<span class="value"> 
 				{{currencySymbol}}	0.00 
 			</span>
-			<a class="button with-icon green" ng-click='clickedPayButton()' ng-show="showPayButton"> 
+			<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 				<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 			</a>
 		</p>
@@ -135,7 +135,7 @@
 						</strong>
 					</td>
 					 <td class="edit">
-						<a class="button with-icon green" ng-click='clickedPayButton()' ng-show="showPayButton"> 
+						<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 							<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
 						</a>
 					</td>
@@ -198,7 +198,7 @@
 						</select>
 					</div>
 					</td>
-					<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> <span translate>EDIT</span> </a></td>
+					<td class="edit"><a class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="feesData.type.value != 'TAX'"> <span class="icons icon-pencil"></span> <span translate>EDIT</span> </a></td>
 				</tr>
 			</tbody>
 
