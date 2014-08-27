@@ -1,5 +1,5 @@
 <div id="availability-graph" class="availability-graph scrollable " ng-controller="rvRoomAvailabilityGraphStatusController"  ng-show="hideMeBeforeFetching">
-
+<!-- ng-iscroll="availability-graph-scroller" ng-iscroll-delay="100"  -->
 	<div id="graph-options-area">
 
         <div class="entry radio-check" ng-repeat="eachGraphData in graphData">
@@ -12,8 +12,8 @@
         </div>
     </div>
 
-    <div id="graph-showing-area" ng-iscroll="graph-scroller" ng-iscroll-delay="100" >
-    	<div >
+    <div id="graph-showing-area"  ng-iscroll="graph-scroller" ng-iscroll-delay="100"  >
+    	<div class="wrapper" style="min-width:{{graphWidth}}px;">
         		<div id="nav-listing">
         			<ul>
         				<li ng-repeat="eachDate in data.dates track by $index"> <span>{{eachDate.dateObj|date:dayInWeek}}</span> {{eachDate.dateObj|date:shortMonthAndDate}}</li>
