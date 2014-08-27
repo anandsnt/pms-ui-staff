@@ -8,12 +8,20 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$scope.updateAdditionalDetails = function() {
 			console.log('updateAdditionalDetails', $scope.reservationParentData.demographics);
 			var updateSuccess = function(data) {
+				// Set the Reservation Type in the sntCode/app/assets/rover/partials/reservationCard/rvReservationCardPayment.html partial
+
+				var selectedReservationGuaranteeType = _.where($scope.otherData.reservationTypes, {
+					value: parseInt($scope.reservationParentData.demographics.reservationType)
+				});
+				if (selectedReservationGuaranteeType.length > 0) {
+					$scope.reservationData.reservation_card.guarentee_type = selectedReservationGuaranteeType[0].name;
+				} else {
+					$scope.reservationData.reservation_card.guarentee_type = "";
+				}
 				$scope.$emit('hideLoader');
-				console.log('Data', data);
 			};
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
-				console.log('Data', data);
 				$scope.errorMessage = data;
 			};
 

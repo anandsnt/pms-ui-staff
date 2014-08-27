@@ -2,7 +2,7 @@
 	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass(reservationData.reservation_card.reservation_status)" action="">
 		<h3 class="block-title">
 			{{ 'PAYMENT_METHOD' | translate }}
-			<span>
+			<span ng-if="reservationData.reservation_card.guarentee_type && reservationData.reservation_card.guarentee_type!=''">
 				{{reservationData.reservation_card.guarentee_type}} {{ 'GUARANTEE' | translate }}
 			</span>
 		</h3>		
