@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show">
-	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended">
+	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge ">
 	    <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
 	
 	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div
@@ -41,8 +41,8 @@
 			        <div class="card-search-form">
 			            <div class="holder">
 			                <div class="entry">
-			                    <input name="post-to-room" id="post-to-room" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" />
-								<input name="post-to-name" id="post-to-name" placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" />
+			                    <input ng-keyup="searchByRoomNumber()" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" />
+								<input placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" />
 			                </div>               
 			            </div>
 			        </div>
