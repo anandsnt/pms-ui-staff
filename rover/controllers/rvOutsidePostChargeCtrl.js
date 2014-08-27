@@ -1,4 +1,4 @@
-sntRover.controller('RVPostChargeController',
+sntRover.controller('RVOutsidePostChargeController',
 	[
 		'$rootScope',
 		'$scope',
@@ -17,9 +17,13 @@ sntRover.controller('RVPostChargeController',
 			$scope.selectedChargeItem = null;
 			$scope.isResultOnFetchedItems = true;
 			//$scope.isResultOnFetchedChargecode = false;
+			//Show/hide reservations or items
+			$scope.itemsVisible = true;
+			$scope.firstTime = true;
+			
 			
 			// set the default bill number
-			$scope.billNumber = $scope.fetchedData.bill_numbers[0];
+		//	$scope.billNumber = $scope.fetchedData.bill_numbers[0];
 
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
@@ -476,9 +480,19 @@ sntRover.controller('RVPostChargeController',
 
 				$scope.invokeApi(RVChargeItems.postCharges, data, callback);
 			};
-			
+			$scope.searchByRoomNumberSuccess = function(data){
+				$scope.firstTime = false;
+				$scope.reservationsList = data;
+				$scope.
+				angular.forEach($scope.reservationsList, function(value, key) {
+					if()
+				});
+				
+			};
 			$scope.searchByRoomNumber = function(){
-				$scope.invokeApi(RVSearchSrv.fetch, {});
+				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, {'firstTime': $scope.firstTime}, $scope.searchByRoomNumberSuccess);
+				$scope.itemsVisible = false;
+				$scope.setScroller('search-guests-for-charge-content');
 			};
 			
 		}

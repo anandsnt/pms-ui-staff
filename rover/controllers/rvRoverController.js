@@ -334,7 +334,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 		ngDialog.open({
 			template: '/assets/partials/postCharge/outsidePostCharge.html',
-			controller: 'RVPostChargeController',
+			controller: 'RVOutsidePostChargeController',
 			scope: $scope
 		});
 	};

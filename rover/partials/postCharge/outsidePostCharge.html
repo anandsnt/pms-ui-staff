@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show">
-	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge ">
+	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended">
 	    <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
 	
 	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div
@@ -54,7 +54,7 @@
 	
 		    <!-- Cards Content -->
 		    <div class="cards-content">
-		    	<div class="card-search card-content visible">
+		    	<div class="card-search card-content">
 		    		<!-- Initially, when no results 
 		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content">
 		                <div class="info">
@@ -65,9 +65,136 @@
 		            </div> -->
 	
 		    		<!-- When you have results, use the same markup as on reservation search screen. -->
-		        	<div id="search-guests-for-charge-content" class="search-cards scrollable hidden">
+		        	
+		        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll='search-guests-for-charge-content' ng-iscroll-delay='300' ng-class="{'hidden': itemsVisible}">
 		                <div class="wrapper">
 		                    <ul id="search-guests-for-charge-results" class="search-results">
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
+		                    	<li class="reservation">
+		                    		<a href="{link}" class="guest-{reservation-status}">
+		                    			<figure class="guest-image">
+		                    				<img src="{guest-image}" alt="" />
+		                    			</figure>
+		                    			<div class="data">
+		                    				<h2>{lastname}, {firstname}</h2>
+		                    				<span class="confirmation">{confirmation num}</span>
+		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    			</div>
+		                    			<div class="status {queued}">
+		                    				<span class="guest-status {reservation-status}">arrival</span>
+		                    			</div>
+		                    			<strong class="room-number {room status}">
+		                    				{room}
+		                    			</strong>
+		                    		</a>
+		                    	</li>
 		                    	<li class="reservation">
 		                    		<a href="{link}" class="guest-{reservation-status}">
 		                    			<figure class="guest-image">
@@ -95,7 +222,7 @@
 	
 	
 	    <!-- Left side -->
-	    <fieldset class="content-left">
+	    <fieldset class="content-left" ng-class="{'hidden': !itemsVisible}">
 	        <div role="search" class="search-form">
 				<div class="select">
 					<select
@@ -143,7 +270,7 @@
 	    </fieldset>
 	
 	    <!-- Right side -->
-	    <fieldset class="content-right">
+	    <fieldset class="content-right" ng-class="{'hidden': !itemsVisible}">
 	        <span class="h2 message">
     Post charge to Bill #<!-- when initiated from bill summary screen, just show the number -->
     <div class="select">

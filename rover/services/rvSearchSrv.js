@@ -116,5 +116,21 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 		});
 		return deferred.promise;
 	};
+	this.fetchReservationsToPostCharge = function(data){
+		var deferred = $q.defer();
+		if(data.firstTime){
+			var url = '/staff/payments/search_by_cc';
+			RVBaseWebSrv.gettJSON(url).then(function(data) {
+				deferred.resolve(data);
+				self.reservationsList = data;
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			deferred.resolve(self.reservationsList);
+		}
+		
+		return deferred.promise;
+	};
 
 }]);
