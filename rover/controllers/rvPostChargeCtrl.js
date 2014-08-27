@@ -465,11 +465,11 @@ sntRover.controller('RVPostChargeController',
 					items: items
 				};
 
-				var callback = function() {
+				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
-
 					// update the price in staycard
-					$scope.$emit('postcharge.added', $scope.net_total_price);
+					//$scope.$emit('postcharge.added', $scope.net_total_price);
+					$scope.$emit('postcharge.added', data.total_balance_amount);
 
 					$scope.closeDialog();
 				};
