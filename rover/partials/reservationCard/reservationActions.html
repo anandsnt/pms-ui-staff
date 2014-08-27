@@ -7,21 +7,11 @@
 		
 		<button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button white red-text" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
 		
-		<!-- Show checkin time -->
-		<div class="icons check-in" ng-show="displayArrivalTime(reservationData.reservation_card.reservation_status)" ng-class="getTimeColor(reservationData.reservation_card.arrival_time)"> 
-			{{reservationData.reservation_card.arrival_time}}
-		</div>
-		
 		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
-		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
-			 {{reservationData.reservation_card.late_checkout_time}}
-		</div>
-		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !='' && !reservationData.reservation_card.is_opted_late_checkout">
-			 {{reservationData.reservation_card.departure_time}}
-		</div>
-		<!-- Reservation is checking out -->
+		
+    	<!-- Reservation is checking out -->
 		<!-- Show balance -->
 		<div class="balance break" ng-show="displayBalance(reservationData.reservation_card.reservation_status)">
 			<span class="label">Balance</span>
