@@ -28,10 +28,10 @@
             </div>
             
             <!-- Add new credit card button - remove it when new card is added -->
-            <button type="button" class="add-new-button" ng-click = "isAddPayment = true" ng-show = "!isAddPayment">+ New Payment Method</button>
+            <button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "!isAddPayment">+ New Payment Method</button>
 
             <!-- For to add the new credit card, should be shown when button above is tapped -->
-            <div ng-show = "isAddPayment" ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"  > </div>
+            <div id = "newpaymentview"  ng-show = "isAddPayment"  ng-include="'/assets/partials/bill/rvRoutesAddPayment.html'"> </div>
          </div>
       </div>
    </fieldset>
@@ -89,4 +89,8 @@
          </div>
 
    </fieldset>
+</div>
+<div class="actions">
+   <button type="button" id="close-information" class="button blank modal-close" ng-click = "headerButtonClicked()">Cancel</button>
+   <button type="button" id="save-route" class="button green modal-close">Save Route</button>
 </div>

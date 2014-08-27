@@ -1,4 +1,5 @@
-<div id="new-payment-method" class="form" ng-controller = "rvRoutesAddPaymentCtrl">
+<div id="new-payment-method" class="form" ng-iscroll='newpaymentview' ng-iscroll-delay='100' ng-controller = "rvRoutesAddPaymentCtrl"  style="position: relative;height:250px;overflow: hidden;">
+      <div style="margin-right:20">
                      <div class="entry full-width">
                         <label for="payment-type">Payment type</label>
                         <div class="select">
@@ -7,20 +8,19 @@
                               <option value="credit-card">Credit card</option>
                               <option value="cash">Cash</option>
                               <option value="cheque">Cheque</option>
-                              .. add/remove options as needed
                            </select>
                         </div>
                      </div>
-                     <div class="entry card-number-large full-width hidden">
+                     <div class="entry card-number-large full-width ">
                         <label for="card-number-set1">Credit Card</label>
                         <input name="card-number-set1" id="card-number-set1" value="" type="text" />
                      </div>
-                     <div class="entry card-number-small hidden">
+                     <div class="entry card-number-small ">
                         <label for="expiry-month">Expiration date (<span>MM YY</span>)</label>
                         <input name="expiry-month" id="expiry-month" placeholder="" value="" maxlength="2" size="2" type="text" />
                         <input name="expiry-year" id="expiry-year" placeholder="" value="" maxlength="2" size="2" type="text" />
                      </div>
-                     <div class="entry cardn-name full-width hidden">
+                     <div class="entry cardn-name full-width ">
                         <label for="name-on-card">Name on card</label>
                         <input name="name-on-card" id="name-on-card" value="" type="text" />
                      </div>
@@ -28,4 +28,5 @@
                         <button type="button" class="button blank" ng-click = "cancelClicked()">Cancel</button>
                         <button type="button" class="button green" ng-click = "cancelClicked()">Add Payment Method</button>
                      </div>
+      </div>                  
 </div>                  

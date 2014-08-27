@@ -6,6 +6,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVGue
 	$scope.showPaymentList = function(){
 		$scope.isAddPayment = false;
 	}
-		
+
+	$scope.showAddPayment = function(){
+		$scope.isAddPayment = true;
+	}		
 	
 }]);
