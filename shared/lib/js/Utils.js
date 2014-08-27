@@ -329,3 +329,40 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
+
+
+function getTextWidth(text){
+        // create a dummy span, we'll use this to measure text.          
+        var tester = $('<span>'),
+
+          // get the computed style of the input
+         elemStyle = window.document.defaultView
+          .getComputedStyle(tester[0], '');
+
+        // apply any styling that affects the font to the tester span.
+        tester.css({
+          'font-family': elemStyle.fontFamily,
+          'line-height': elemStyle.lineHeight,
+          'font-size': elemStyle.fontSize,
+          'font-weight': elemStyle.fontWeight,
+          'width': 'auto',
+          'position': 'absolute',
+          'top': '-99999px',
+          'left': '-99999px'
+        });
+
+        // put the tester next to the input temporarily.
+        $('body').append(tester);
+
+        // update the text of the tester span
+        tester.text(text);
+
+        // measure!
+        var r = tester[0].getBoundingClientRect();
+
+        var w = r.width;
+
+        // remove the tester.
+        tester.remove();
+        return w;
+}
