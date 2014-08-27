@@ -46,6 +46,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'reservation_status': $scope.reservationData.reservation_card.reservation_status,
 				'roomstatus': $scope.reservationData.reservation_card.room_status,
 				'fostatus': $scope.reservationData.reservation_card.fo_status,
+				'room_ready_status': $scope.reservationData.reservation_card.room_ready_status,
 				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
 				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
 				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,

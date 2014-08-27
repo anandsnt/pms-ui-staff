@@ -121,6 +121,7 @@ sntRover.controller('RVroomAssignmentController',[
 	//success call of un-assigningb rooms
 	var successCallbackOfUnAssignRoom = function(data){
 		$scope.$emit('hideLoader');
+		$scope.reservationData.reservation_card.room_id = '';
 		$scope.reservationData.reservation_card.room_number = '';
 		$scope.reservationData.reservation_card.is_upsell_available = true;
 	
@@ -156,6 +157,7 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
+			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
@@ -210,6 +212,7 @@ sntRover.controller('RVroomAssignmentController',[
 	* Listener to update the reservation details on upgrade selection
 	*/
 	$scope.$on('upgradeSelected', function(event, data){
+			$scope.reservationData.reservation_card.room_id = data.room_id;
 			$scope.reservationData.reservation_card.room_number = data.room_no;
 			$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
 			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;

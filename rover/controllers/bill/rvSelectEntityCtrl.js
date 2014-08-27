@@ -8,8 +8,10 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
   	$scope.isReservationActive = true;
   	
   	var scrollerOptions = {click: true, preventDefault: false};
-    $scope.setScroller('search_scroller', scrollerOptions);
-    $scope.refreshScroller('search_scroller');
+    $scope.setScroller('cards_search_scroller', scrollerOptions);
+    $scope.setScroller('res_search_scroller', scrollerOptions);
+    $scope.refreshScroller('cards_search_scroller');
+    $scope.refreshScroller('res_search_scroller');
   	/**
   	* function to perform filtering/request data from service in change event of query box
   	*/
@@ -36,7 +38,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		$scope.results.cards = [];
 		$scope.results.cards = data.accounts;
 		console.log(data);
-		//setTimeout(function(){refreshScroller();}, 750);
+		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
 	};
   	/**
   	* function to perform filering on results.
@@ -44,9 +46,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
   	*/
   	$krish = $scope;
   	var displayFilteredResultsCards = function(){ 
-  		console.log("displayFilteredResults");
-  		console.log($scope.textInQueryBox);
-  		
 	    //if the entered text's length < 3, we will show everything, means no filtering    
 	    if($scope.textInQueryBox.length < 3){
 	      //based on 'is_row_visible' parameter we are showing the data in the template      
@@ -55,7 +54,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	      }     
 	      
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //refreshScroller();      
+	      $scope.refreshScroller('cards_search_scroller');      
 	    }
 	    else{
 	      var value = ""; 
@@ -75,16 +74,13 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	        }
 	              
 	      }
-	      console.log("visibleElementsCount"+visibleElementsCount);
 	      // last hope, we are looking in webservice.      
 	     if(visibleElementsCount == 0){    
 	        var dataDict = {'query': $scope.textInQueryBox.trim()};
-	        console.log("api call");
-	        console.log(dataDict);
 	        $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);
 	      }
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //refreshScroller();                  
+	      $scope.refreshScroller('cards_search_scroller');                  
 	    }
   	};	
 	
@@ -96,6 +92,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
         $scope.results.reservations = [];
 		$scope.results.reservations = data;
 		console.log(data);
+		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
 	};
 
 	/**
@@ -114,7 +111,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	          $scope.results.reservations[i].is_row_visible = true;
 	      	}     
 	      	
-			//refreshScroller();    
+			$scope.refreshScroller('res_search_scroller');
 	    }
 	    else{
 
@@ -148,12 +145,39 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, searchSuccessReservations, failureCallBackofDataFetch);         
 		    }
 	      	// we have changed data, so we are refreshing the scrollerbar
-	      	//refreshScroller();                  
+	      	$scope.refreshScroller('res_search_scroller');                
 	    }
 	}; //end of displayFilteredResults
 	
+	//Toggle between Reservations , Cards
 	$scope.toggleClicked = function(flag){
-		
 		$scope.isReservationActive = flag;
-	}
+	};
+	
+	/*
+	* function used in template to map the reservation status to the view expected format
+	*/
+	$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
+	  var viewStatus = "";
+      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+        viewStatus = "late-check-out";
+        return viewStatus;
+      }
+      if("RESERVED" == reservationStatus){
+        viewStatus = "arrival";
+      }else if("CHECKING_IN" == reservationStatus){
+        viewStatus = "check-in";
+      }else if("CHECKEDIN" == reservationStatus){
+        viewStatus = "inhouse";
+      }else if("CHECKEDOUT" == reservationStatus){
+        viewStatus = "departed";
+      }else if("CHECKING_OUT" == reservationStatus){
+        viewStatus = "check-out";
+      }else if("CANCELED" == reservationStatus){
+        viewStatus = "cancel";
+      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+        viewStatus = "no-show";
+      }
+      return viewStatus;
+  };
 }]);

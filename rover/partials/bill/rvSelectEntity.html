@@ -38,7 +38,7 @@
 				Cards
 			</li>
 		</ul>
-		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='search_scroller' ng-iscroll-delay="100">
+		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 				
 				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.length.cards == 0" ng-click="showBillGroup()">
@@ -67,16 +67,11 @@
 			</ul>
 		</div>
 		
-		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive">
+		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.length.reservations == 0">
-						<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
-						
-						<a data-transition="inner-page" class="link-item float" 
-
-						ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails(row.id, row.confirmation)" 
-						> <!--ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})" -->
-
+				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.length.reservations == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}">
+							
+							 <!-- image -->
 							<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
 								<img ng-repeat="image in row.images" 
 								ng-src="{{image.guest_image}}" 
@@ -90,35 +85,16 @@
 
 							<div class="data">
 								<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
-
-								ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
-								<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
-								<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
-								</span>
-								<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
+								ng-class="{'grey' : row.images.length >1}"> </h2>
+								<span class="confirmation" ># {{row.confirmation}}</span>
+								<span class="confirmation" >ROOM {{row.room}}</span>
 							</div>	
-
-							<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
-								<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
-									{{row.late_checkout_time}}
-								</span>
-
-								<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
-								</span>
-							</div>	
-
-							<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-								<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
-									{{row.room}}
-								</span>			
-							</span>
-
-
-							<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
-						</a>
+							
+							<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
+						
 					</li>
 					<!-- No results / no content when searched query not found-->
-	            	<li class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && isReservationActive">
+	            	<li class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
 						<div class="info">
 							<span class="icon-no-content icon-cards"></span>
 							<strong class="h1">No matches have been found</strong>
