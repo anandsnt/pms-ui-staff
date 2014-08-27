@@ -12,7 +12,7 @@
       <div id="available-entities">
          <!-- Attached entities, if exist -->
          <span class="h3 message" ng-hide="textInQueryBox!=''">Attached Entities</span>
-         <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''">
+         <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
                  <li class="entity" ng-repeat="entity in attachedEntities"ng-class="{'guest':entity.entity_role =='guest','accompany':entity.entity_role =='accompanying guest','company':entity.entity_role =='company','travel-agent':entity.entity_role =='travel_agent'}" ng-click="selectEntity()">
                   <!-- image -->
@@ -31,17 +31,17 @@
          <!-- Search results, show instead of attached entities when searching -->
          
         <ul id="filter-entities" class="modal-options" ng-show="textInQueryBox!=''">
-			<li class="active">
+			<li ng-click="toggleClicked(true)" ng-class="{'active':isReservationActive}">
 				Reservations
 			</li>
-			<li>
+			<li ng-click="toggleClicked(false)" ng-class="{'active':!isReservationActive}">
 				Cards
 			</li>
 		</ul>
-		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!=''">
+		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='search_scroller' ng-iscroll-delay="100">
 			<ul class="wrapper">
 				
-				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-click="showBillGroup()">
+				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.length.cards == 0" ng-click="showBillGroup()">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
 	                        <img ng-src="{{row.company_logo}}" alt="">
@@ -58,16 +58,73 @@
                  </li>
                  
             	<!-- No results / no content when searched query not found-->
-            	<li class="no-content" ng-show="results.cards.length==0 && textInQueryBox!=''">
+            	<li class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
 					<div class="info">
 						<span class="icon-no-content icon-cards"></span>
 						<strong class="h1">No matches have been found</strong>
-						
 					</div>
 				</li>
+			</ul>
+		</div>
+		
+		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive">
+			<ul class="wrapper">
+				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.length.reservations == 0">
+						<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
+						
+						<a data-transition="inner-page" class="link-item float" 
 
-            
-            
+						ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails(row.id, row.confirmation)" 
+						> <!--ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})" -->
+
+							<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
+								<img ng-repeat="image in row.images" 
+								ng-src="{{image.guest_image}}" 
+
+								ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
+
+								'second-image':(row.images.length >1 && image.is_primary==false)}">
+
+								<span class="vip" ng-show="row.vip==true">VIP</span>
+							</figure>
+
+							<div class="data">
+								<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
+
+								ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
+								<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
+								<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
+								</span>
+								<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
+							</div>	
+
+							<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
+								<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
+									{{row.late_checkout_time}}
+								</span>
+
+								<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
+								</span>
+							</div>	
+
+							<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
+								<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
+									{{row.room}}
+								</span>			
+							</span>
+
+
+							<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+						</a>
+					</li>
+					<!-- No results / no content when searched query not found-->
+	            	<li class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && isReservationActive">
+						<div class="info">
+							<span class="icon-no-content icon-cards"></span>
+							<strong class="h1">No matches have been found</strong>
+						</div>
+					</li>
+				
 			</ul>
 		</div>
       </div>
