@@ -86,9 +86,11 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		};
 
 		var onFetchPaymentsSuccess = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.paymentData = data;
-			if ($scope.paymentData.existing_payments.length > 0) {
+			$scope.$emit('hideLoader');			
+			$scope.cardsInPaymentMethods = _.where(data.existing_payments, {
+				is_credit_card: true
+			});
+			if ($scope.cardsInPaymentMethods.length > 0) {
 				$scope.ngDialogData.cards = true;
 				$scope.cancellationData.viewCardsList = true;
 				refreshCardsList();
@@ -102,7 +104,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		}
 
 		$scope.cancelReservation = function() {
-			var onCancelSuccess = function(data) {				
+			var onCancelSuccess = function(data) {
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id,
 					"confirmationId": $stateParams.confirmationId,
@@ -113,12 +115,12 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			}
 			var onCancelFailure = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.errorMessage = ["Could Not Cancel Reservation"];
+				$scope.errorMessage = data;
 			}
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				penalty: parseFloat($scope.ngDialogData.penalty),
-				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard) == -1,
+				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				id: $scope.reservationData.reservation_card.reservation_id
 			}
 			console.log('cancellationParameters', cancellationParameters);

@@ -42,7 +42,7 @@
         <div id="select-card" class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
             <div id="available-cards" class="cards-list scrollable" ng-iscroll="cardsList"  ng-iscroll-delay="500">
                 <div class="cards-list-container">
-                    <div class="wrapper" ng-repeat="card in paymentData.existing_payments">
+                    <div class="wrapper" ng-repeat="card in cardsInPaymentMethods">
                         <label class="active-item item-payment" ng-class="{primary: cancellationData.selectedCard == card.value}" ng-click="cancellationData.selectedCard = card.value"> 
                             <!-- Add class "primary" when card is selected --> 
                             <figure class="card-logo">  
