@@ -3,11 +3,14 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 	'rvAvailabilitySrv', 
 	'dateFilter', 
 	'$rootScope',
-	function($scope, rvAvailabilitySrv, dateFilter, $rootScope){
+	'$timeout',
+	function($scope, rvAvailabilitySrv, dateFilter, $rootScope, $timeout){
 		BaseCtrl.call(this, $scope);
 
-		plottedChart = null;
+		var plottedChart = null;
 
+
+		var isAlreadyRemoved = false;
   		$scope.hideMeBeforeFetching = false;	
 
   		$scope.graphWidth = '1000';
@@ -21,6 +24,8 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
 
  		var legendClasses = [];
+
+ 		var timeoutFunction = null;
 
  		for(var i = 0 ;i < colors.length; i++){ 			
  			legendClasses.push("background-image: none !important;"  + 
@@ -87,7 +92,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					yAxis: 0,
 					checked: false
 				}, {
-					name: 'Occupancy Actual',
+					name: 'Occupancy Actual(%)',
 					data: $scope.data.occupanciesActual,
 					yAxis: 1,
 					checked: false,
@@ -99,7 +104,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				//we are adding occupancy target between if it has setuped in rate manager
 				if($scope.data.IsOccupancyTargetSetBetween){
 					$scope.graphData.push({
-						name: 'Occupancy Target',
+						name: 'Occupancy Target(%)',
 						data: $scope.data.occupanciesTargeted,
 						yAxis: 1,
 						checked: false
@@ -237,7 +242,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					tooltip: {
 			            formatter: function () {
 			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
-			                       this.series.name +  ': ' + this.y;
+			                       this.series.name +  ': ' + this.y.toFixed(2);
 			            }
 				    },	
 				},
@@ -323,7 +328,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			        	}, 150)
 
 			        	$(window).resize(function(){
-			        		setTimeout(function(){
+			        		timeoutFunction = $timeout(function(){			
 			        			resizedWindow();
 			        			$scope.refreshScroller('graph-scroller');		
 			        		}, 500);
@@ -360,21 +365,35 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		$scope.$on("changedRoomAvailableData", function(event){	
-			$scope.hideMeBeforeFetching = false;	
-			doInitialOperation();		
-        	setTimeout(function(){
-	        	for(var i = 0; i < $scope.graphData.length; i++){
-	        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
-	        	}	    
-	        	$scope.$apply(function(){
-	        		resizedWindow();
-	        		$scope.hideMeBeforeFetching = true;	
-	        	});    	
-	        	$(window).resize();
-        		
-        	}, 1000);
+		var cr = $scope.$on("changedRoomAvailableData", function(event){	
+			if(!isAlreadyRemoved){
+				$scope.hideMeBeforeFetching = false;	
+				doInitialOperation();		
+	        	setTimeout(function(){
+
+		        	for(var i = 0; i < $scope.graphData.length; i++){
+		        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
+		        	}	    
+		        	$scope.$apply(function(){
+		        		resizedWindow();
+		        		$scope.hideMeBeforeFetching = true;	
+		        	});    	
+		        	$(window).resize();
+	        		
+	        	}, 1000);
+        	}
 				
+		});
+
+		/**
+		*
+		*/
+		$scope.$on("$destroy", function(){
+			isAlreadyRemoved = true;
+			$(window).unbind('resize');
+			if(timeoutFunction){
+				$timeout.cancel(timeoutFunction)
+			}
 		});
   	
 
