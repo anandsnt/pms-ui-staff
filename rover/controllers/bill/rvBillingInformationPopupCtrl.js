@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog){
+sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.isInitialPage = true;
@@ -26,6 +26,11 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
 	}
+
+    $scope.fetchRoutes = function(){
+        $scope.isEntitySelected = true;
+        $scope.isInitialPage = false;
+    }
 
 
 
