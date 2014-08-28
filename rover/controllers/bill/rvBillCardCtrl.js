@@ -11,6 +11,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		scope: $scope
 	};
 
+	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
+
 
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -99,8 +102,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		$timeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
-        }, 500);
-		
+        }, 500);		
 	};
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
@@ -389,6 +391,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		setTimeout(function(){
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('billDays');
+			$scope.refreshScroller('bill-tab-scroller');
 			}, 
 		3000);
      });
@@ -679,6 +682,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$timeout(function(){
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('billDays');
+			$scope.refreshScroller('bill-tab-scroller');
 		}, 1000);
 		
 	};
@@ -1170,6 +1174,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 
 	var scrollToTop = function() {
+			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller( 'registration-content' );
 			$scope.$parent.myScroll['registration-content'].scrollTo(0, 0, 100);
 	};
