@@ -38,7 +38,7 @@
 				CARDS
 			</li>
 		</ul>
-		<div id="entities" class="entities-list scrollable card-search-scroller" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100">
+		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 				
 				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity()">
@@ -67,7 +67,7 @@
 			</ul>
 		</div>
 		
-		<div id="entities" class="entities-list scrollable res-search-scroller" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100">
+		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="position:absolute;  bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity()">
 							
@@ -104,7 +104,7 @@
 			</ul>
 			
 		</div>
-		<div class="cancel-search-container" ng-show="textInQueryBox!=''">
+		<div class="cancel-search-container1" ng-show="textInQueryBox!=''">
 			<button type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>
 		</div>
 		
