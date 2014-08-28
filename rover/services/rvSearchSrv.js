@@ -116,11 +116,11 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		});
 		return deferred.promise;
 	};
-	this.fetchReservationsToPostCharge = function(data){
+	this.fetchReservationsToPostCharge = function(dataToSrv){
 		var deferred = $q.defer();
-		if(data.firstTime){
+		if(dataToSrv.refreshApi){
 			var url = 'api/reservations/search_reservation';
-			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+			rvBaseWebSrvV2.postJSON(url, dataToSrv.postData).then(function(data) {
 				deferred.resolve(data);
 				self.reservationsList = data;
 			}, function(data) {

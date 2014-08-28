@@ -26,7 +26,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.showInitialSearchScreen = false;
 			$scope.showSearchScreen = false;
 			var oldSearchGuestText = '';
-			
+			var oldSearchRoomValue = '';
 			// set the default bill number
 		//	$scope.billNumber = $scope.fetchedData.bill_numbers[0];
 
@@ -486,12 +486,14 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.invokeApi(RVChargeItems.postCharges, data, callback);
 			};
 			$scope.searchForResultsSuccess = function(data){
+				console.log("successs");
 				$scope.showInitialSearchScreen = false;
 				$scope.$emit( 'hideLoader' );
 				// $scope.firstTime = false;
 				// $scope.reservationsList = data;
 				$scope.reservationsArray = data;
 				oldSearchGuestText = $scope.search.guest_company_agent;
+				oldSearchRoomValue = $scope.search.room;
 				angular.forEach($scope.reservationsArray, function(value, key) {
 					value.shouldShowReservation = true;
 				});
@@ -539,18 +541,27 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showInitialSearchScreen = false;
 				$scope.refreshApi = true;
 				if($scope.search.guest_company_agent.length > 2 || $scope.search.room.length > 1){
-					console.log(oldSearchGuestText+":::::::::::::::::::"+$scope.search.guest_company_agent+"==="+$scope.search.guest_company_agent.indexOf(oldSearchGuestText));
+					//console.log(oldSearchGuestText+":::::::::::::::::::"+$scope.search.guest_company_agent+"==="+$scope.search.guest_company_agent.indexOf(oldSearchGuestText));
 					if(oldSearchGuestText.length > 0){
 						if((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !=-1 )){
 							$scope.refreshApi = false;
 						}
 					}
 					
-					 // else if() {
-// 						
-					// }
+					else if(oldSearchRoomValue.length > 0) {
+						if((oldSearchRoomValue.length < $scope.search.room.length) && ($scope.search.room.indexOf(oldSearchRoomValue) !=-1 )){
+							$scope.refreshApi = false;
+						}
+					}
 				}
-				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, {'firstTime': $scope.refreshApi}, $scope.searchForResultsSuccess);
+				var dataToSrv = {
+					"refreshApi": $scope.refreshApi,
+				    "postData": {
+				    	"room_no": $scope.search.room,
+				    	"account": $scope.search.guest_company_agent
+				    }
+				};
+				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, dataToSrv, $scope.searchForResultsSuccess);
 				
 				$scope.itemsVisible = false;
 				$scope.setScroller('search-guests-for-charge-content');
