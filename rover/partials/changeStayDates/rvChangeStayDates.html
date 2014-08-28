@@ -8,10 +8,9 @@
 		<div class="edit-reservation-content" >
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<!-- Reservation calendar -->
-			<!-- <div ng-include="'/assets/partials/changeStayDates/rvChangeStayDatesCalendar.html'"></div> -->
 			<div id="calendar-holder" class="reservation-calendar scrollable" ng-iscroll="edit_staydate_calendar" ng-iscroll-delay="100">
 				<div class="wrapper">
-					<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar"></div>
+					<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources" calendar="myCalendar" iscroll-stop-propagation></div>
 					<strong id="instruction-title" class="notice" translate>DRAG_AND_DROP_TO_CHANGE_STAY_DATES</strong>
 					<ul id="reservation-calendar-legend">
 						<li><span class="check-in"></span>{{'ARRIVAL' | translate}}
