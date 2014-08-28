@@ -40,7 +40,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		}
 
 		for(i = 0; i < roomAvailabilityData.results.length; i++){
-			var isWeekend = new Date(roomAvailabilityData.results[i].date).getDay() == 0 || new Date(roomAvailabilityData.results[i].date).getDay() == 6;
+			var dateToCheck = tzIndependentDate(roomAvailabilityData.results[i].date);
+			var isWeekend = dateToCheck.getDay() == 0 || dateToCheck.getDay() == 6;
 			dates.push({'date': roomAvailabilityData.results[i].date, 'isWeekend': isWeekend, 'dateObj': new Date(roomAvailabilityData.results[i].date)});
 
 			occupancies.push((roomAvailabilityData.results[i].house.sold / roomAvailabilityData.physical_count) * 100);
