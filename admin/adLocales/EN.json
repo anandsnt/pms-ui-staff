@@ -12,7 +12,10 @@
 "SELECT_TRIGGER":"Select Trigger",
 "LINK_BEACON":"Link Beacon",
 "GUEST_MESSAGE":"Guest Message",
-"IBEACON_SETUP":"iBeacon setup"
+"IBEACON_SETUP":"iBeacon setup",
+"MESSAGE":"Message",
+"ENTER_MESSAGE":"Enter Message"
+
 ,
 
 
@@ -99,6 +102,8 @@
 "INCLUSIVE":"Inclusive",
 "EXCLUSIVE":"Exclusive",
 "CALCULATION_RULE":"Calculation Rule",
+"ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
+"ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
 "SELECT_CALCULATION_RULE":"Select Calculation Rule"
 ,
 

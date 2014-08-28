@@ -68,7 +68,12 @@
 					<span class="file-preview"><img ng-src="{{data.picture}}" id="file-preview" alt=""> </span>
 				</div> 
 			</fieldset>
-			<fieldset class="holder right">
+			
+			<fieldset class="holder left" ng-show="data.type !='PROMOTION'">
+				<ad-textbox inputtype="text" styleclass="full-width" value="data.message" label = "{{ 'MESSAGE' | translate }}" placeholder = "{{'ENTER_MESSAGE'|translate}}" required="no"></ad-textbox>
+			</fieldset>
+
+			<fieldset class="holder right" ng-hide="data.type !='PROMOTION'">
 				<ad-textbox inputtype="text" styleclass="full-width" value="data.title" label = "{{ 'TITLE' | translate }}" placeholder = "{{'ENTER_TITLE'|translate}}" required="no"></ad-textbox>
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.description" label = "{{ 'DESCRIPTION' | translate }}" maxlength="200" placeholder = "{{'ENTER_DESCRIPTION'|translate}}"></ad-textarea>
 			</fieldset>

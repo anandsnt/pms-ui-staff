@@ -64,6 +64,9 @@
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
+    "YES": "YES",
+    "NO": "No",
+
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
@@ -152,7 +155,23 @@
 	"SAVE_NEW": "Save new ",
 	"CARD":"card?",
 	"NEW_COMPANY_CARD" : "New Company Card",
-	"NEW_TA_CARD": "New Travel Agent Card"
+	"NEW_TA_CARD": "New Travel Agent Card",
+
+    "AR_ACCOUNT":"AR Account",
+    "CREATE_ACCOUNT":"Create Account",
+    "AR_NUMBER":"AR NUMBER",
+    "AR_ADDRESS":"AR ADDRESS",
+    "USE_MAIN_ADDRESS":"Use Main Address",
+    "USE_MAIN_CONTACT":"Use Main Contact",
+    "AR_NOTES":"AR Notes",
+    "AR_DETAILS":"AR Details",
+    "CONTACT_DETAILS":"Contact Details",
+    "ADDRESS":"Address",
+    "POST":"Post",
+    "DELETE_POST":"Delete post",
+    "CONTACT":"Contact",
+    "DELETE_ACCOUNT":"Delete Account",
+    "DELETE_AR_ACCOUNT":"Delete AR Account?"
 	
 ,    
     
@@ -225,7 +244,6 @@
 	"SHOW_DEPARTED": "Show Departed",
 
 	"ROOM_DETAILS": "Room Details",
-	"ROOM_STATUS": "Room status",
 	"ROOM_IS_VACANT": "Room is vacant.",
 
 	"HK_FLOORS": "Floors",
@@ -485,7 +503,7 @@
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
     "DASHBOARD_SEARCH_INHOUSE": "In-House",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
-    "DASHBOARD_SEARCH_VIP": "VIPs",
+    "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation"
 ,
 
@@ -585,5 +603,6 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
 }

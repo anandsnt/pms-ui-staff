@@ -1063,6 +1063,7 @@ Padding for the ows error popup
   padding:0 !important;
 }
 
+
 .add-new-bill-li{
   background:none !important;
   min-width:50px !important;
@@ -1071,5 +1072,70 @@ Padding for the ows error popup
 .add-new-bill-button{
   height:100% !important;
   margin: 0px 0px 0px 5px !important;
+}
+#availability-graph {
+  position: absolute;
+  top: 100px;
+
+  #graph-options-area {
+    width: 14%;
+    float: left;
+    position: relative;
+    top: 45px;
+  }
+
+  #graph-showing-area {
+    padding-top: 4px;
+    background-color: white;
+      width: 85%;
+      float: left;
+      position: relative;
+      overflow: hidden;
+  }
+  #nav-listing{
+      overflow: hidden;
+      height: 100%;
+      position:relative;
+      color: white;
+      margin-bottom: 5px;
+  }
+  #nav-listing ul{
+     list-style: none outside none;
+     white-space: nowrap;
+     height: 50px;
+         
+  }
+  #nav-listing ul li{
+    background-color: #373837;    
+      display: inline-block;
+      border-right: 2px solid white;
+      height: 50px;
+      color: #cccccc;
+      font-size: 14px;
+      padding: 5px 0px 5px 0px;
+      text-align: center;
+      font-weight: 600;
+  }
+  #nav-listing ul li span{
+      display: block;
+  }
+  #availabilityGraphShowingArea {
+      display: block;    
+      overflow: hidden;
+      width: 100%;
+  }
+
+  #graph-options-area label.checkbox {
+      background-color: transparent;
+      box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.15);
+  }
+  #graph-options-area label {
+      font-size: 14px;
+      text-transform: uppercase;
+  }
+  .iScrollHorizontalScrollbar {
+    position: relative !important;
+    top:0px !important;    
+  }
 }
 

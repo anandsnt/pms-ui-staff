@@ -51,6 +51,18 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		return deferred.promise;
 	};
 
+
+	this.getAdvanceBill = function(data){
+		var deferred = $q.defer();
+		var url = 'api/reservations/'+data.id+'/advance_bill';
+			RVBaseWebSrv.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
    /*
 	 * Service function to edit transaction
 	 * @method PUT

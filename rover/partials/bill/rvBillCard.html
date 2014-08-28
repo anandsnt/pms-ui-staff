@@ -28,7 +28,7 @@
 		
 		<div ng-iscroll='registration-content' ng-iscroll-delay='1000' class="registration-content bill_content">
 
-			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
+			<div class="wrapper wrapperDisplay">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
 					<table>
@@ -76,13 +76,16 @@
 					<!-- Bills summary tabs navigation -->
 					<div id="bills-tabs-nav" class="float bill-tabs">
 						<!-- Billing instructions -->
-						<a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a>
+						<!-- <a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a> -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
+						
+						
 						<!-- Add new bill -->
 						<!-- %a.button.with-icon.only-icon.brand-colors -->
 						<!-- %span.icons.icon-plus -->
 						<!-- Add new -->
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+							
 							<li class="ui-state-default ui-corner-top" ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<a class="ui-tabs-anchor" >
 								<div class="price" ng-hide="billTab.total_amount=='SR'">
@@ -110,7 +113,7 @@
 						</ul>
 					</div>
 					<!-- Bill Tabs for Day items and Group items -->
-					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
+					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills" style="position: static">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'  >
