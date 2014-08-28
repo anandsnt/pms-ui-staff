@@ -1021,7 +1021,7 @@ body { overflow: hidden; }
 		background: @white;
 		z-index: 90;
 		.box-shadow(0 1px 1px rgba(0,0,0,.1));
-		.show;
+		.show;		
 
 		.actions {
 			.button,
@@ -1032,8 +1032,6 @@ body { overflow: hidden; }
 				text-shadow: none;
 				line-height: 30px;
 				vertical-align: top;
-				background-color: @grey1;
-				background-position: 90% 50%;
 				padding: 0 10px;
 				.no-transition;
 
@@ -1044,6 +1042,7 @@ body { overflow: hidden; }
 				}
 
 				&.has-arrow { padding-right: 30px; }
+
 				&.toggle,
 				&.next-view {
 					color: @textColor;
@@ -1057,10 +1056,6 @@ body { overflow: hidden; }
 					}
 				}
 
-				&.inactive-nights {
-					font-weight: 600;
-					#border-radius > .rounded(3px);
-					.box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
 				&.toggle { 
 					margin-right: 10px; 
 
@@ -1073,18 +1068,50 @@ body { overflow: hidden; }
 						#border-radius > .bottom();
 					}
 				}
+			}
+		}
+	}
 
-				&:hover,
-				&:active { 
-					color: @textColor;
-					background-color: @grey1; 
+	.reservation-header,
+	#reservation-updates {
+		.data { 
+			.icon-group,
+			.date,
+			.nights,
+			.room {
+				font-size: 14px;
+				line-height: 30px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			.icon-group {
+				color: @grey3;
+				padding-left: 20px;
+				margin-right: 20px;
+				background-position: 0 -45px;
+			}
+
+			.date,
+			.nights,
+			.room {
+				margin-right: 20px;
+
+				.guest-status {
+					margin: 5px 5px 5px 0;
+					.square(20px);
 				}
 			}
 
-			&.back { .pull-left; }
+			.room {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				max-width: 320px;
+			}
 		}
 	}
-}
+
 	.stay-card-inner {
 		/* Registration header ***/
 		.reservation-header {
