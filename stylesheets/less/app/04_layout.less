@@ -343,42 +343,63 @@ body { overflow: hidden; }
 			left: 0;
 		}
 
+		.switch-button {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				.size(40px, 260px);
+				.show;
+
+				.data-off,
+                .data-on {
+                	font-size: 14px;
+                	line-height: 30px;
+                	text-transform: uppercase;
+                	height: 30px;
+
+                	.switch-icon { .gradient(@greenStart, @greenEnd); }
+
+                    &.data-off { 
+                        left: auto;
+                        right: 0;
+
+                        .switch-icon { margin: 0 5px 0 0; }
+                    }
+                    
+                    &.data-on { 
+                        left: auto;
+                        right: 100%;
+
+                        .switch-icon { margin: 0 0 0 5px; }
+                    }
+                }
+
+                &.on {
+                    .data-off { left: auto; right: -100%; }
+                    .data-on { left: auto; right: 0; }
+                }
+			}
+
 		.icon-alert {
 			position: absolute;
-			top: 10px;
-			.square(40px);
+			top: 15px;
+			padding: 0 10px 0 30px;
+			font-weight: 600;
+			line-height: 30px;
+			.size(30px, auto);
 			.show;
 
-			span {
-				position: absolute;
-				top: 0;
-				right: 0;
-				font-size: 11px;
-				line-height: 16px;
-				font-weight: 400;
-				color: @white;
-				background: @softRed;
-				.square(16px);				
-				.show;
-				#border-radius > .rounded(16px);
+			&.queued-rooms {
+				right: 266px; 
+				color: @red;
+				background-color: @white;
 			}
-
-			&#lobby-alert { left: 50px; }
-			&#messages-alert { left: 100px; }
-			&#reviews-alert { left: 150px; }
 			
-			&#late-checkout-alert { 
-				top: 15px;
+			&.late-check-out {
 				right: 196px; 
-				height: 30px;
-				width: auto;
-				padding: 0 10px 0 30px;
 				color: @white;
-				font-weight: 600;
-				line-height: 30px;
 				background-color: @red;
 			}
-
 		}
 
 		.logo {
@@ -667,7 +688,6 @@ body { overflow: hidden; }
 		}	
 	}
 
-
 /* Post bar					==============================*/
 	.post-form {
 		position: absolute;
@@ -795,8 +815,7 @@ body { overflow: hidden; }
 	}
 
 /* Grey label				==============================*/
-	.label,
-	.block-title {
+	.label {
 		text-transform: uppercase;
 		color: @grey3;
 		font-size: 14px;
@@ -833,12 +852,12 @@ body { overflow: hidden; }
 				position: absolute;
 				top: 0;
 				left: 0;
-				width: 40px;
+				width: 30px;
 
 				&:nth-child(2) {
 					top: 15px;
 					left: 15px;
-					width: 35px;
+					width: 25px;
 				}
 
 			}
@@ -881,21 +900,24 @@ body { overflow: hidden; }
 
 		&.item-payment,
 		&.item-loyalty {
+			.float;
+
 			span {
-				display: inline-block;
 				vertical-align: middle;
 				color: @grey3;
-				font-size: 13px;
+				font-size: 14px;
 				text-transform: uppercase;
 				font-weight: 400;
 				margin-right: 20px;
+				.pull-left;
+				.flex(center);
 
 				&.value,
 				.value {
 					display: inline-block;
-					font-size: 17px;
+					font-size: 18px;
 					color: @textColor;
-					margin-left: 10px;
+					margin: 0 0 0 10px;
 
 					&.code {
 						font-size: 21px; 
@@ -911,18 +933,19 @@ body { overflow: hidden; }
 					}
 				}
 			}
+
+			&.primary { 
+				.value { font-weight: 600; }
+			}
 		}
 
 		&.item-payment {
 			.card-logo {
 				margin: 10px 40px 0 0;
-				.pull-left;
 				.size(30px,60px);
+				.pull-left;
 
-				img {
-					width: 100%;
-					height: auto;
-				}
+				img { .size(auto, 100%); }
 			}		
 		}
 
@@ -991,19 +1014,14 @@ body { overflow: hidden; }
 	}
 
 /* Reservation header		==============================*/
-	.reservation-header,
-	.reservation-guests {
+	.reservation-header {
 		width: 100%;
-		height: 50px;
 		padding: 10px 20px;
 		overflow: hidden;
-		.box-shadow(0 1px 1px rgba(0,0,0,.1));
-		.show;
-	}
-
-	.reservation-header {
 		background: @white;
 		z-index: 90;
+		.box-shadow(0 1px 1px rgba(0,0,0,.1));
+		.show;
 
 		.actions {
 			.button,
@@ -1017,7 +1035,7 @@ body { overflow: hidden; }
 				vertical-align: top;
 				background-color: @grey1;
 				background-position: 90% 50%;
-				padding: 0 30px 0 10px;
+				padding: 0 10px;
 				.no-transition;
 
 				.label { 
@@ -1025,6 +1043,8 @@ body { overflow: hidden; }
 					float: none;
 					font-size: 12px;
 				}
+
+				&.has-arrow { padding-right: 30px; }
 
 				&.toggle { 
 					margin-right: 10px; 
@@ -1034,13 +1054,9 @@ body { overflow: hidden; }
 						background-position: 90% -webkit-calc(~"50% - 10px");
 						background-position: 90% -moz-calc(~"50% - 10px");
 						background-position: 90% calc(~"50% - 10px");
+						.box-shadow(1px 0 0 rgba(0,0,0,.2));
+						#border-radius > .bottom();
 					}
-				}
-
-				&.inactive-nights {
-					font-weight: 600;
-					#border-radius > .rounded(3px);
-					.box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
 				}
 
 				&:hover,
@@ -1128,69 +1144,69 @@ body { overflow: hidden; }
 	}
 
 /* Left sidebar			 	==============================*/
-.sidebar-left {
-	position: absolute;
-	top: 150px;
-	left: 0;
-	width: 30px;
-	padding-right: 25px;
-	height: 100%;
-	z-index: 990;
-	.show;
+	.sidebar-left {
+		position: absolute;
+		top: 150px;
+		left: 0;
+		width: 30px;
+		padding-right: 25px;
+		height: 100%;
+		z-index: 990;
+		.show;
 
-	.scrollable {
-		background: @rcardTexture1;
-		width: 100%;
-		.box-shadow(1px 0 1px rgba(0,0,0,.2));
-		.calc-height(100, 150);
+		.scrollable {
+			background: @rcardTexture1;
+			width: 100%;
+			.box-shadow(1px 0 1px rgba(0,0,0,.2));
+			.calc-height(100, 150);
 
-		> .wrapper { padding: 0; }
-		> .iScrollVerticalScrollbar { 
-			right: 30px;
+			> .wrapper { padding: 0; }
+			> .iScrollVerticalScrollbar { 
+				right: 30px;
 
-			.iScrollIndicator { background: rgba(0,0,0,.05); }
-		}
-
-		.settings-title {
-			font-size: 16px;
-			text-transform: uppercase;
-			font-weight: 600;
-			line-height: 40px;
-			color: @textColor;
-			background-color: rgba(0,0,0,.05);
-			width: 235px;
-			padding: 0 20px;
-			.float;
-
-			.title {
-				width: 155px;
-				.pull-left;
+				.iScrollIndicator { background: rgba(0,0,0,.05); }
 			}
 
-			.value {
-				width: 20px;
-				text-align: right;
-				.pull-left;
-			}
-		}
-
-		.settings-content {
-			width: 235px;
-			padding: 20px;
-
-			label:not(.radio) {
-				font-size: 14px;
+			.settings-title {
+				font-size: 16px;
 				text-transform: uppercase;
+				font-weight: 600;
+				line-height: 40px;
 				color: @textColor;
+				background-color: rgba(0,0,0,.05);
+				width: 235px;
+				padding: 0 20px;
+				.float;
 
-				span,
-				&.label { color: @grey3; }
+				.title {
+					width: 155px;
+					.pull-left;
+				}
+
+				.value {
+					width: 20px;
+					text-align: right;
+					.pull-left;
+				}
 			}
-		}
 
-		@media @highdpi { background-size: 40px; }
+			.settings-content {
+				width: 235px;
+				padding: 20px;
+
+				label:not(.radio) {
+					font-size: 14px;
+					text-transform: uppercase;
+					color: @textColor;
+
+					span,
+					&.label { color: @grey3; }
+				}
+			}
+
+			@media @highdpi { background-size: 40px; }
+		}
 	}
-}
 	
 /* 6. IE
 ==========================================================*/

@@ -1,23 +1,27 @@
-sntRover.controller('RMDashboradCtrl', ['$scope', '$window', 'dateFilter', '$filter',
-    function($scope, $window, dateFilter, $filter) {
 
-        BaseCtrl.call(this, $scope);
+sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter', '$vault',  function($scope,$window,dateFilter, $filter, $vault){
+    
+    BaseCtrl.call(this, $scope);
 
-        var title = $filter('translate')('RATE_MANAGER_TITLE');
-        $scope.setTitle(title);
+    // reseting search params to $vault
+    // MUST else there will be problems with back button working
+    $vault.set('searchType', '');
 
-        $scope.$emit("updateRoverLeftMenu", "rateManager");
+    var title = $filter('translate')('RATE_MANAGER_TITLE');
+	$scope.setTitle(title);
+	
+    $scope.$emit("updateRoverLeftMenu","rateManager");
 
-        $scope.displayMode = "CALENDAR";
-        //$scope.filterConfigured = false;
-        var defaultDateRange = 7;
-        $scope.backbuttonEnabled = false;
+    $scope.displayMode = "CALENDAR";
+    //$scope.filterConfigured = false;
+    var defaultDateRange = 7;
+    $scope.backbuttonEnabled = false;
+    
+    //left side menu class, based on which it will appear or not
+    $scope.currentLeftMenuClass = 'slide_right';
+    
 
-        //left side menu class, based on which it will appear or not
-        $scope.currentLeftMenuClass = 'slide_right';
-
-
-        $scope.currentFilterData = {
+	$scope.currentFilterData =	{
             filterConfigured: false,
             begin_date: "", //dateFilter(new Date(), 'yyyy-MM-dd'),
             end_date: "", //dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),

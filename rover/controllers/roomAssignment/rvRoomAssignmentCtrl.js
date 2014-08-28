@@ -17,12 +17,13 @@ sntRover.controller('RVroomAssignmentController',[
 
 	// set a back button on header
 	$rootScope.setPrevState = {
-		title: 'Stay Card',
+		title: $filter('translate')('STAY_CARD'),
 		callback: 'backToStayCard',
 		scope: $scope
 	};
 		
 	BaseCtrl.call(this, $scope);
+	$scope.errorMessage = '';
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 	$scope.setTitle(title);
 
@@ -107,12 +108,56 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.occupancyDialogSuccess = function(){
 		$scope.assignRoom();			
 	};
+	// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
+	var updateSearchCache = function() {
+
+		// room related details
+		var data = {
+			'room': '',					
+		};
+
+		RVSearchSrv.updateRoomDetails($scope.reservationData.reservation_card.confirmation_num, data);
+	};
+	//success call of un-assigningb rooms
+	var successCallbackOfUnAssignRoom = function(data){
+		$scope.$emit('hideLoader');
+		$scope.reservationData.reservation_card.room_id = '';
+		$scope.reservationData.reservation_card.room_number = '';
+		$scope.reservationData.reservation_card.is_upsell_available = true;
 	
+		$scope.reservationData.reservation_card.room_type_description = '';
+		$scope.reservationData.reservation_card.room_type_code = '';
+					
+		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+		updateSearchCache();
+		$scope.backToStayCard();
+			
+	};
+	
+	//failujre call of un-assigningb rooms
+	var failureCallBackOfUnAssignRoom = function(errorMessage){
+
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
+	};
+
+	/**
+	* click function to unassing rooms
+	*/
+	$scope.unassignRoom = function(){
+		var params = {
+			'reservationId' : parseInt($stateParams.reservation_id, 10)
+		};
+
+		$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
+	}
+		
 	/**
 	* function to assign the new room for the reservation
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
+			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
@@ -167,6 +212,7 @@ sntRover.controller('RVroomAssignmentController',[
 	* Listener to update the reservation details on upgrade selection
 	*/
 	$scope.$on('upgradeSelected', function(event, data){
+			$scope.reservationData.reservation_card.room_id = data.room_id;
 			$scope.reservationData.reservation_card.room_number = data.room_no;
 			$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
 			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
@@ -337,8 +383,9 @@ sntRover.controller('RVroomAssignmentController',[
 		group.items.push(item1);
 		group.items.push(item2);
 		group.items.push(item3);
-		if($scope.rooms[0].checkin_inspected_only == "true")
+		if($scope.rooms.length > 0 && $scope.rooms[0].checkin_inspected_only == "true"){
 			group.items.push(item4);
+		}
 		$scope.roomFeatures.splice(0, 0, group);
 	};
 
@@ -505,6 +552,7 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.assignedRoom = "";
 	$scope.reservationData = $scope.$parent.reservation;
 	$scope.roomType = $stateParams.room_type; 
+	$scope.isStandAlone = $rootScope.isStandAlone;
 	$scope.isFiltersVisible = false;
 	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 	};

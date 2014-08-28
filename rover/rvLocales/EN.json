@@ -1,4 +1,25 @@
-{	
+{    
+    
+    "STAY_CARD": "Stay Card",
+    "ROOM_STATUS": "Room Status",
+    "DASHBOARD": "Dashboard",
+    "REPORTS": "Reports",
+    "ROOM_RATES": "Room & Rates",
+    "CREATE_RESERVATION": "Create Reservation",
+    "ENHANCE_STAY": "Enhance Stay",
+    "SEARCH_RESULTS": "Search Results"
+,
+
+"EDIT_CHARGE":"Edit charge",
+"AMOUNT":"Amount",
+"CHARGE_CODE":"Charge Code",
+"NEW_AMOUNT":"New Amount",
+"CHARGE_WILL_APPEAR_AS":"Charge will appear as:",
+"ADJUSTMENT":"Adjustment",
+"CHANGE_AMOUNT":"Change Amount",
+"REMOVE_CHARGE":"Remove charge",
+"SPLIT_CHARGE":"Split charge",
+"SPLITTING_FOR":"Splitting for",	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
 	"NO_AVAILABILITY" : "No availability",
@@ -19,7 +40,7 @@
 	"ROOM_SCHEDULED_FOR_MAINTENANCE": "Room is scheduled for Maintenance",
 	"ROOM_CANNOT_UNASSIGN": "Room cannot be unassigned from arriving guest",
 	"OF": "of",
-	"APPLIES_TO_RESERVATION": "applies to this reservation",
+	"APPLIES_TO_RESERVATION": "applies to this reservation/date",
 	"NO": "No",
 	"ROOM": "Room",
 	"NOT_AVAILABLE_FOR_DATE_RANGE": "not available for selected dates",
@@ -43,6 +64,9 @@
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
+    "YES": "YES",
+    "NO": "No",
+
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
@@ -131,7 +155,23 @@
 	"SAVE_NEW": "Save new ",
 	"CARD":"card?",
 	"NEW_COMPANY_CARD" : "New Company Card",
-	"NEW_TA_CARD": "New Travel Agent Card"
+	"NEW_TA_CARD": "New Travel Agent Card",
+
+    "AR_ACCOUNT":"AR Account",
+    "CREATE_ACCOUNT":"Create Account",
+    "AR_NUMBER":"AR NUMBER",
+    "AR_ADDRESS":"AR ADDRESS",
+    "USE_MAIN_ADDRESS":"Use Main Address",
+    "USE_MAIN_CONTACT":"Use Main Contact",
+    "AR_NOTES":"AR Notes",
+    "AR_DETAILS":"AR Details",
+    "CONTACT_DETAILS":"Contact Details",
+    "ADDRESS":"Address",
+    "POST":"Post",
+    "DELETE_POST":"Delete post",
+    "CONTACT":"Contact",
+    "DELETE_ACCOUNT":"Delete Account",
+    "DELETE_AR_ACCOUNT":"Delete AR Account?"
 	
 ,    
     
@@ -153,10 +193,10 @@
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
     "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
-    "ENTER_CREDENTIALS": "Enter your credentials",
+    "ENTER_PASSWORD": "Enter your Password",
     "PASSWORD": "Password",
     "VERIFY": "Verify",
-    "BUSSINESS_DAY_MSG_1": "This will close of the Business Day for",
+    "BUSSINESS_DAY_MSG_1": "This will close the Business Day for",
     "BUSSINESS_DAY_MSG_2": "and change the date to",
     "START_END_OF_DAY_PROCESS": "Start End of Day Process",
     "ARE_YOU_SURE": "Are you sure?",
@@ -204,7 +244,6 @@
 	"SHOW_DEPARTED": "Show Departed",
 
 	"ROOM_DETAILS": "Room Details",
-	"ROOM_STATUS": "Room status",
 	"ROOM_IS_VACANT": "Room is vacant.",
 
 	"HK_FLOORS": "Floors",
@@ -243,7 +282,20 @@
     "PAY" : "Pay",
     "AMOUNT": "Amount",
     "WINDOW": "Window",
-    "SELECT_WINDOW": "Select Bill"
+    "SELECT_WINDOW": "Select Bill",
+    "PAY_BILL":"Pay Bill #",
+    "TAP_TO_CHANGE":"Tap to change",
+    "AMOUNT_TO_PAY":"Amount to pay",
+    "SUBMIT_PAYMENT":"Submit payment",
+    "CARD_NUMBER_PLACEHOLDER":"Enter Card number",
+    "MM":"MM",
+    "YY":"YY",
+    "NAME_ON_CARD_PLACEHOLDER":"Enter name on card",
+    "CCV":"CCV",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "ADD_NEW_CARD":"Add New Card",
+    "EXISTING_CARDS":"Existing Cards",
+    "ADD_CREDIT_CARD": "Add Credit Card"
 ,    
     
     "RESERVATION_SUMMARY": "Reservation summary",
@@ -448,10 +500,10 @@
     "CANCEL_LABEL":"Cancel",    
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
-    "DASHBOARD_SEARCH_CHECKINGOUT": "Departues",
+    "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
     "DASHBOARD_SEARCH_INHOUSE": "In-House",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
-    "DASHBOARD_SEARCH_VIP": "VIP's",
+    "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation"
 ,
 
@@ -550,5 +602,6 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
 }

@@ -92,6 +92,12 @@ var WriteToSmartBandView = function(domRef){
 	*/
 	this.successCallbackOfSaveAction = function(data){		
 		that.data.id = data.id;
+		//As per CICO-9080
+		//The account number returned from device is in reverse form
+		//The server reverses it to the correct format
+		//So UI should display the value returned from server
+
+		that.data.account_number = data.account_number;
 		that.writeBandType();	
 	};
 

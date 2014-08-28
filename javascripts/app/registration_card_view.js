@@ -155,7 +155,15 @@ var RegistrationCardView = function(viewDom) {
 	    if(getParentWithSelector(event, "#bills-tabs-nav li")) {
 	    	return that.clickedBillTab(event);
 	    }
+	    if(getParentWithSelector(event, "#agree")){
+	    	event.preventDefault();
+	    	return that.showTermsAndConditionsModal();
+	    }
 	    
+	};
+	this.showTermsAndConditionsModal = function(){
+		var showTermsAndConditions = new showTermsAndConditionsModal(that.myDom);
+    	showTermsAndConditions.initialize();
 	};
 
      // function for closing the drawer if is open
@@ -231,6 +239,8 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.completeCheckin = function(e) {
+		
+		var isSwipeHappenedDuringCheckin = sntapp.getViewInst('addNewPaymentModal').swipeHappened;
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -267,12 +277,28 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else {
-			var data = {
-				"is_promotions_and_email_set" : is_promotions_and_email_set,
-				"signature" : signature,
-				"reservation_id" : that.reservation_id		
-			};
-
+			if(isSwipeHappenedDuringCheckin){
+				var data = {
+					"is_promotions_and_email_set" : is_promotions_and_email_set,
+					"signature" : signature,
+					"reservation_id" : that.reservation_id,
+					"payment_type": sntapp.regCardData.payment_type,
+					"mli_token": sntapp.regCardData.mli_token,
+					"et2": sntapp.regCardData.et2,
+					"ksn": sntapp.regCardData.ksn,
+					"pan": sntapp.regCardData.pan,
+					"name_on_card": sntapp.regCardData.name_on_card,
+					"card_expiry": sntapp.regCardData.card_expiry,	
+					"credit_card" : sntapp.regCardData.credit_card 	
+				};
+			} else {
+				var data = {
+					"is_promotions_and_email_set" : is_promotions_and_email_set,
+					"signature" : signature,
+					"reservation_id" : that.reservation_id
+				};
+			}
+		
 			var webservice = new WebServiceInterface();
 
 			var url = '/staff/checkin';
@@ -414,7 +440,7 @@ var RegistrationCardView = function(viewDom) {
 	      	  return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
 	      if(options && options.should_show_overlay){
-	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay = true;
 	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = 
@@ -503,7 +529,9 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// Success of complete checkout
 	this.fetchCompletedOfCompleteCheckout = function(data) {
-		that.showSuccessMessage(data.data, that.goToSearchScreen);
+		var checkoutSuccessModal = new CheckoutSuccessModal(that.goToSearchScreen);
+		checkoutSuccessModal.initialize();
+		checkoutSuccessModal.params = {"message": data.data};
 	};
 	// Failure of complete checkout
 	this.fetchFailedOfCompleteCheckout = function(errorMessage) {
