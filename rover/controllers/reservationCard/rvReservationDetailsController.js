@@ -22,10 +22,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			param: backParam
 		};
 
-
-
 		BaseCtrl.call(this, $scope);
-
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		/*
@@ -45,6 +42,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'reservation_status': $scope.reservationData.reservation_card.reservation_status,
 				'roomstatus': $scope.reservationData.reservation_card.room_status,
 				'fostatus': $scope.reservationData.reservation_card.fo_status,
+				'room_ready_status': $scope.reservationData.reservation_card.room_ready_status,
 				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
 				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
 				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
@@ -147,14 +145,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
-
-
-		$scope.$on('$viewContentLoaded', function() {
+		$scope.refreshReservationDetailsScroller = function(timeoutSpan) {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
-				3000);
+				timeoutSpan);
+		}
 
+
+		$scope.$on('$viewContentLoaded', function() {
+			$scope.refreshReservationDetailsScroller(3000);
 		});
 
 
@@ -368,7 +368,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				$scope.$emit('hideLoader');
 			}
 
-			if ( ($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') || ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '')  || ($scope.reservationParentData.checkinTime.hh == '' && $scope.reservationParentData.checkinTime.mm == '') || ($scope.reservationParentData.checkoutTime.hh == '' && $scope.reservationParentData.checkoutTime.mm == '')) {
+			if (($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') || ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '') || ($scope.reservationParentData.checkinTime.hh == '' && $scope.reservationParentData.checkinTime.mm == '') || ($scope.reservationParentData.checkoutTime.hh == '' && $scope.reservationParentData.checkoutTime.mm == '')) {
 				var postData = $scope.computeReservationDataforUpdate();
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
