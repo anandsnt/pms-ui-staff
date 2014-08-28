@@ -3,7 +3,8 @@
       <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
       <div class="modal-header">
          <h1 translate>BILLING_INFO_TITLE</h1>
-         <em>{{'CONFIRMATION_LABEL' | translate}} #2453454</em>
+
+         <em><span translate>CONFIRMATION_LABEL</span> #2453454</em>
          <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()">{{getHeaderButtonLabel()}}</button>
       </div>
       <!-- Billing Info Content -->
