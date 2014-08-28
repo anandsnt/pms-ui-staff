@@ -133,7 +133,14 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		}
 		// Hotel Admin -To save Edit data
 		else{
-			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages"];
+			
+			if($scope.data.hotel_template_logo.indexOf("data:")!= -1){
+				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages"];
+			} else {
+				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages", "hotel_template_logo"];
+			}
+			
+			
 			
 			var data = dclone($scope.data, unwantedKeys);
 			if($scope.hotelLogoPrefetched == data.hotel_logo){ 

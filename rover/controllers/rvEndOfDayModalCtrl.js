@@ -45,11 +45,13 @@ $scope.yesClick = function(){
 }
 
 $scope.continueClicked = function(){
+	
 	$scope.startProcessEnabled = false;
-	$scope.startProcess = false;
+	
 // explicitly handled error callback to set $scope.startProcessEnabled
 	var startProcessFailure = function(data){
 		$scope.$emit('hideLoader');
+		$scope.startProcess = false;
 		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
 
@@ -57,6 +59,7 @@ $scope.continueClicked = function(){
 	var startProcessSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$rootScope.businessDate = data.hotel_business_date;
+		$rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
 		ngDialog.close();
 	}
 	

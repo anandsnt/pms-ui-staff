@@ -112,9 +112,11 @@
                         <li>
                             <em>{{room.rateName}}</em>
                             <span class="price">
-                                {{currencySymbol}}{{room.rateAvg | number : 2}}
+                                <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                <label ng-if="room.isSuppressed">SR</label>
                                 <span translate>AVG_NIGHT</span>
-                                <span class="total">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
+                                <span class="total" ng-if="room.isSuppressed">SR</span>
+                                <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                             </span>
                         </li>
                         <li ng-repeat='addon in room.addons'>
@@ -134,8 +136,16 @@
                 		{{currencySymbol}}{{ row.amount | number : 2}}
                 	</li>
                 	
-                    <li><span class="label" translate>TOTAL_TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</li>
-                    <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong></li>
+                    <li>
+                        <span class="label" translate>TOTAL_TAX</span>
+                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</label>
+                        <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
+                    </li>
+                    <li>
+                        <span class="label" translate>TOTAL_STAY_COST</span>
+                        <label ng-if="!reservationData.isRoomRateSuppressed"><strong>{{currencySymbol}}{{reservationData.totalStayCost | number : 2}}</strong></label>
+                        <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
+                    </li>
                 </ul>
             </div> 
         </div>

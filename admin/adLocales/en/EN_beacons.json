@@ -12,4 +12,7 @@
 "SELECT_TRIGGER":"Select Trigger",
 "LINK_BEACON":"Link Beacon",
 "GUEST_MESSAGE":"Guest Message",
-"IBEACON_SETUP":"iBeacon setup"
+"IBEACON_SETUP":"iBeacon setup",
+"MESSAGE":"Message",
+"ENTER_MESSAGE":"Enter Message"
+

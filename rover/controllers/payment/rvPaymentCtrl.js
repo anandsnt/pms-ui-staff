@@ -4,7 +4,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData = {};
 	$scope.guestPaymentList = {};
 	$scope.saveData.add_to_guest_card = false;
-	
+
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
 	
@@ -189,12 +189,19 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var cardHolderName = $scope.saveData.name_on_card;
 		
 		if($scope.passData.fromView == "staycard"){
+			if($scope.passData.is_swiped){
+				$scope.paymentData.reservation_card.payment_details.is_swiped = true;
+			}
 			$scope.paymentData.reservation_card.payment_method_used = 'CC';
 			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
+			
 		} else {
 			var billNumber = parseInt(billIndex) - parseInt(1);
+			if($scope.passData.is_swiped){
+				$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
+			}
 			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
