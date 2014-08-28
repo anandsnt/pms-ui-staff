@@ -123,9 +123,6 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.$emit('hideLoader');
 		$scope.reservationData.reservation_card.room_number = '';
 		$scope.reservationData.reservation_card.is_upsell_available = true;
-	
-		$scope.reservationData.reservation_card.room_type_description = '';
-		$scope.reservationData.reservation_card.room_type_code = '';
 					
 		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 		updateSearchCache();
