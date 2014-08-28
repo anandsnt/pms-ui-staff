@@ -200,15 +200,12 @@
                             border-spacing: 5px 0;
 
                             col {
-                                width: 8.5em;
+                                width: 140px;
 
                                 &.grid-col {
                                     background-color: rgba(0,0,0,.1);
-                                    width: 3.35em;
 
-                                    &.weekend {
-                                        background-color: rgba(95,131,146,.2);
-                                    }
+                                    &.weekend { background-color: rgba(95,131,146,.2); }
                                 }
                             }   
 
@@ -258,8 +255,6 @@
                                         &:not(.main) {
                                             th,
                                             td { font-style: italic; }
-
-                                            th { padding-right: 0; }
                                         }
 
                                         &:nth-child(odd) { 
@@ -272,6 +267,34 @@
                                                 .inner { background-color: #dce7f0; }
                                             }
                                         }
+                                    }
+                                }
+                            }
+
+                            &.grid-7 {
+                                col {
+                                    &.grid-col { .calc-width(14, 20); }
+                                }
+                            }
+
+                            &.grid-14 {
+                                col {
+                                    &.grid-col { .calc-width(7, 10); }
+                                }
+                            }
+
+                            &.grid-30 {
+                                col {
+                                    &.grid-col { 
+                                        width: 3.33em; 
+
+                                        @media (min-width: 1080px) { width: 3.55em; }
+                                        @media (min-width: 1280px) { width: 4.45em; }
+                                        @media (min-width: 1360px) { width: 4.85em; }
+                                        @media (min-width: 1440px) { width: 5.2em; }
+                                        @media (min-width: 1600px) { width: 5.9em; }
+                                        @media (min-width: 1680px) { width: 6.25em; }
+                                        @media (min-width: 1920px) { width: 7.3em; }
                                     }
                                 }
                             }
@@ -386,7 +409,6 @@
             &.availability-closing { #availability > .close(); }
         }
     }
-
 
 /* Dashboard page           ==============================*/
     #dashboard {
@@ -1239,40 +1261,16 @@
                             }
                             
                             .entry {
+                                #fade > .in();
                                 #pixel-to-percent > .width(432, 904);
 
-                                label { 
-                                    margin-bottom: 0; 
-                                }
+                                label { margin-bottom: 0; }
                                 
                                 input[size] {
                                     text-align: center;
                                     margin-right: 5px;
 
                                     &:last-child { margin-right: 0; }
-                                }
-
-                                &.margin { #pixel-to-percent > .right-margin(40, 904); }
-
-                                &.no-label {
-                                    padding-top: 24px;
-
-                                    &.full-width { padding-top: 0; }
-                                }
-
-                                &.price-adjust {
-                                    .float;
-
-                                    .select {
-                                        #pixel-to-percent > .width(122, 432);
-                                        .pull-left;
-                                    }
-
-                                    input {
-                                        margin: 0 10px;
-                                        #pixel-to-percent > .width(148, 432);
-                                        .pull-left;
-                                    }
                                 }
 
                                 .contracted-nights {
@@ -1325,6 +1323,46 @@
                                     }
                                 }
 
+                                &.margin { #pixel-to-percent > .right-margin(40, 904); }
+
+                                &.no-label {
+                                    padding-top: 24px;
+
+                                    &.full-width { padding-top: 0; }
+                                }
+
+                                &.price-adjust {
+                                    .float;
+
+                                    .select {
+                                        #pixel-to-percent > .width(122, 432);
+                                        .pull-left;
+                                    }
+
+                                    input {
+                                        margin: 0 10px;
+                                        #pixel-to-percent > .width(148, 432);
+                                        .pull-left;
+                                    }
+                                }
+
+                                &.with-notes {
+                                    .float;
+
+                                    textarea {
+                                        height: 80px;
+                                        #pixel-to-percent > .right-margin(40, 904);
+                                        #pixel-to-percent > .width(664, 904); 
+                                        .pull-left;
+                                    }
+
+                                    .button {
+                                        line-height: 40px;
+                                        #pixel-to-percent > .width(200, 904); 
+                                        .pull-left;
+                                    }
+                                }                                
+
                                 &.full-width,
                                 &.radio-check {
                                     float: none;
@@ -1335,9 +1373,7 @@
                                     .float;       
                                     
                                     .checkbox,
-                                    .radio {
-                                        #pixel-to-percent > .width(432, 904);
-                                    }
+                                    .radio { #pixel-to-percent > .width(432, 904); }
 
                                     &.full-width {
                                         .checkbox,
@@ -1347,6 +1383,65 @@
 
                                 &.has-datepicker {
                                     .ui-datepicker-trigger { top: 24px; }
+                                }
+
+                                &.hidden { #fade > .out(); }
+                            }
+
+                            .notes {
+                                margin-top: 20px;
+                                clear: both;
+                                .show;
+
+                                li {
+                                    position: relative;
+                                    font-size: 14px;
+                                    min-height: 40px;
+                                    padding: 0 0 20px 60px;
+                                    margin-bottom: 20px;
+                                    border-bottom: 1px solid rgba(0,0,0,.1);
+
+                                    .guest-image {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        .square(40px);
+
+                                        .vip {
+                                            bottom: -10px;
+                                            left: 0;
+                                        }
+                                    }
+
+                                    .note-title {
+                                        font-size: 16px;
+                                        text-transform: uppercase;
+
+                                        h4 {
+                                            display: inline-block;
+                                            margin-right: 20px;
+                                            color: @logoPrimary;
+                                            font-size: 16px;
+                                            font-weight: 600;
+                                        }
+
+                                        time {
+                                            display: inline-block;
+                                            color: @grey3;
+                                            margin-right: 20px;
+                                        }
+
+                                        .icon-trash {
+                                            display: inline-block;
+                                            cursor: pointer;
+                                            .pull-right;
+                                        }
+                                    }
+
+                                    &:last-child { 
+                                        margin-bottom: 0;
+                                        border-bottom: 0; 
+                                    }
                                 }
                             }
 
@@ -2377,7 +2472,7 @@
             .pull-left;
 
             /* Scrollable area ***/
-            .wrapper { padding-right: 20px; }
+            .wrapper { padding: 0 20px 20px 0; }
             .iScrollVerticalScrollbar { 
                 top: 0;
                 right: 0;
@@ -2412,14 +2507,53 @@
                         border-bottom: 0;
                     }
                 }
-            }
+            } 
 
             /* Grouped card elements ***/
             .block-wrapper {
+                .float;
+
                 .block-item {
-                    clear: none;
                     margin-right: 10px;
+                    clear: none;
                     .pull-left;
+                }
+
+                &.cols-2 {
+                    .block-item {
+                        margin-right: 20px;
+                        .calc-width(50, 10);
+
+                        &:last-child { margin-right: 0; }
+                    }
+                }
+            }
+
+            /* Block title ***/
+            .block-title {
+                color: @textColor;
+                font-size: 14px;
+                text-transform: uppercase;
+                padding-bottom: 5px;
+                margin-bottom: 10px;
+                border-bottom: 1px solid rgba(0,0,0,.1);
+                .float;
+
+                span { 
+                    margin: 0;
+                    .pull-right; 
+                }
+
+                &.has-arrow { 
+                    cursor: pointer;
+                    font-size: 16px;
+                    line-height: 1em;
+                    font-weight: 600;
+                    background-position: 100% 50%;
+                    padding: 15px 0 5px;
+                    margin-bottom: 20px;
+
+                    &.active { border-bottom: 0; }
                 }
             }
 
@@ -2428,105 +2562,38 @@
                 width: 100%;
                 clear: both;
                 margin-bottom: 20px;
+                .float;
                 .show;
 
-                /* Block title ***/
-                .block-title {
-                    float: none;
-                    margin: 0 0 10px 0;
-                    padding-bottom: 10px;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-
-                    h3 {
-                        display: inline;
-                        color: @textColor;
-                        font-size: 14px;
-                    }
-
-                    .icons {
-                        margin: 5px 5px 0 0;
-                        .square(14px);
-                        .pull-left;
-                    }
-
-                    span { 
-                        line-height: 1em;
-                        margin: 0;
-                        .pull-right; 
-                    }
-                }
-
                 /* Block contents ***/
-                .next-view {
-                    color: @textColor;
-                    line-height: 40px;
-                    padding: 5px 20px;
-                    .clickable;
-
-                    &.has-arrow { padding-right: 40px; }
-                }
-
+                .next-view,
                 .no-view {
                     color: @textColor;
                     line-height: 50px;
-                    padding: 5px 20px;
-                    .faux-clickable;
+                    padding: 5px 15px;
                 }
 
-                .next-view,
-                .no-view {
-                    .value.text { 
-                        font-size: 24px; 
-                        line-height: 50px;
-                        font-weight: 300; 
-                        text-transform: none;
-                        margin-left: 0;
-
-                        &.empty { 
-                            font-size: 16px;
-                            font-style: italic; 
-                            color: @grey3;
-                        }
-                    }
+                .next-view {
+                    .clickable;
+                    &.has-arrow { padding-right: 40px; }
                 }
 
-                .select,
-                .select-item {
-                    height: 50px;
-
-                    select {  
-                        padding-top: 13px;
-                        height: 50px; 
-                    }
+                .no-view { 
+                    .faux-clickable; 
+                    .box-shadow(none);
                 }
 
-                /* Block details - Credit card **/
+                /* Block item - Credit card **/
                 &.item-payment {
+                    .next-view,
+                    .no-view { 
+                        position: relative;
 
-                    &.has-buttons {
-                        .next-view,
-                        .no-view { 
-                            position: relative;
-                            line-height: 48px; 
-                            .calc-width(100, 150); /* %, px - 140 is the width of two buttons + 10px margin */ 
-
-                            .card-logo,
-                            span { margin-right: 10px; }
-
-                            .icon-swiped {
-                                position: absolute;
-                                top: 15px;
-                                right: 10px;
-                                margin: 0;
-                            }
-                        }
-                    } 
-
-                    &.has-button {
-                        .next-view,
-                        .no-view { 
-                            line-height: 48px; 
-                            .calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ 
+                        .icon-swiped {
+                            position: absolute;
+                            top: 15px;
+                            right: 20px;
+                            margin: 0;
                         }
                     }
 
@@ -2541,13 +2608,31 @@
                             &:last-child { margin-right: 0; }
                         }
                     }
+
+                    &.has-buttons {
+                        .next-view,
+                        .no-view { 
+                            .calc-width(100, 150); 
+
+                            .card-logo,
+                            span { margin-right: 10px; }
+
+                            .icon-swiped { right: 0; }
+                        }
+                    }   
+
+                    &.has-button {
+                        .next-view,
+                        .no-view { 
+                            .calc-width(100, 75); 
+
+                            .icon-swiped { right: 10px; }
+                        }
+                    }
                 }
 
-                /* Block details - room **/
+                /* Block item - room **/
                 &.item-room {
-
-                    .next-view { line-height: 50px; }
-
                     .room-number,
                     .room-status { 
                         margin-right: 20px; 
@@ -2558,60 +2643,101 @@
                         .pull-left;
 
                         &:last-child { margin: 0; }
-                    }   
+                    } 
 
                     &.has-buttons {
                         .next-view,
-                        .no-view { .calc-width(100, 150); /* %, px - 140 is the width of two buttons + 10px margin */ }
-                    } 
+                        .no-view { .calc-width(100, 150); }
+                    }   
 
                     &.has-button {
                         .next-view,
-                        .no-view { .calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ }
-                    }   
+                        .no-view { .calc-width(100, 75); }
+                    }       
                 }
 
-                /* Block details - wake up call **/
+                /* Block item - Wake up / Newspaper **/
                 &.item-wake-up { 
-                    #pixel-to-percent > .width(220, 1070); 
+                    margin-right: 20px;
+                    #pixel-to-percent > .width(240, 1070); 
 
-                    .next-view,
-                    .no-view {
-                        height: 50px;
-                        padding: 0 10px;
+                    .next-view { 
+                        font-size: 24px; 
+                        font-weight: 300; 
+                    }
+
+                    .no-view { 
+                        font-weight: 300; 
+                        font-style: italic; 
+                        color: @grey3;
                     }
                 }
 
-                /* Block details - newspaper **/
-                &.item-newspaper { 
-                    #pixel-to-percent > .width(280, 1070); 
-                    select { width: 100%; }
+                &.item-newspaper {
+                    margin-right: 0; 
+                    #pixel-to-percent > .width(780, 1070);
+
+                    select {
+                        height: 60px;
+                        line-height: 60px;
+                        padding: 0 15px;
+                    }
                 }
 
-                /* Block details - loyalty **/
+                /* Loyalty ***/
                 &.item-loyalty { 
                     margin-right: 0; 
-                    #pixel-to-percent > .width(525, 1070); 
+                    width: 100%;
 
                     .select-item {
-                        #pixel-to-percent > .width(380, 525); 
+                        margin-right: 10px;
+                        height: 60px; 
+                        padding: 0 15px;
+                        .calc-width(100, 75);
+
+                        .selected {
+                            line-height: 50px; 
+                            padding: 5px 0;
+
+                            span {
+                                &.value.code { margin-right: 20px; }
+                                &.value.number { margin-left: 10px; }   
+                            }
+                        }
                     }
 
                     .actions {
-                        #pixel-to-percent > .width(120, 525); 
-
-                        .add-new-button { width: 100%;}
+                        .add-new-button { 
+                            line-height: 60px;
+                            .size(60px, 65px);
+                        }
                     }
                 }
 
-                /* Block details - rate **/
+                /* Block item - Additional details **/
+                &.item-market, 
+                &.item-origin,
+                &.item-type,
+                &.item-source {
+                    .calc-width(50, 10); 
+
+                    select {
+                        height: 50px;
+                        line-height: 50px;
+                        padding: 0 15px;
+                    }
+                }
+
+                &.item-market, 
+                &.item-origin {  margin-right: 0; }
+
+                &.item-type,
+                &.item-source { margin-right: 20px; }
+
+                /* Block details - ADR **/
                 &.item-rate { 
-                    
                     .next-view,
                     .no-view {
-                        line-height: 50px;
-                        background-position: 98% 53%;
-
                         .number {
                             font-size: 30px;
                             line-height: 40px;
@@ -2626,7 +2752,11 @@
 
                 /* Block details - notes **/
                 &.item-notes { 
+                    margin-bottom: 0;
+
                     .form {
+                        .float;
+
                         textarea {
                             height: 110px;
                             margin-right: 10px;
@@ -2693,6 +2823,7 @@
 
                                 .icon-trash {
                                     display: inline-block;
+                                    cursor: pointer;
                                     .pull-right;
                                 }
                             }

@@ -1,16 +1,4 @@
-<!-- 
-	<div id="availability"> = default, hidden state
-	<div id="availability" class="availability-open"> = when open
-	add class "availability-closing" when closing availabiltiy screen, so you'll have:  <div id="availability" class="availability-open availability-closing">
 
-	when closed, strip the classes so you end up with the default state: <div id="availability">
--->
-<div id="availability" ng-controller="rvAvailabilityButtonController" 
-	ng-class="{	'availability-open': showAvailability, 
-				'availability-closing': isClosing}">
-	<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
-	<div ng-include="getAvailabilityTemplateUrl()"></div>
-</div>	
 
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <div ui-view></div>

@@ -53,6 +53,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var fetchNewDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.prefetchData.linked_charge_codes = [];
@@ -74,6 +75,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var editSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.isEdit = true;
@@ -358,9 +360,10 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		if ($scope.prefetchData.selected_amount_symbol === '%' && $scope.prefetchData.amount !=="") {
 			$scope.prefetchData.amount = parseInt($scope.prefetchData.amount).toString();
 		}
-		else if($scope.prefetchData.selected_amount_symbol === '$' && $scope.prefetchData.amount !==""){
+		else if($scope.prefetchData.selected_amount_symbol === '$' || $scope.prefetchData.amount !==""){
 			$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
 		}
+		
 	};
 	
 }]);

@@ -71,4 +71,5 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
