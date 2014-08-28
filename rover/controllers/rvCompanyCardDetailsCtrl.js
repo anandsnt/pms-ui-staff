@@ -111,17 +111,6 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	};
 
 
-	var successCallbackFetchArDetails = function(data){
-		$scope.$emit("hideLoader");
-		$scope.arAccountDetails = data;
-		$scope.$broadcast('ARDetailsRecieved');
-	};
-
-	var successCallbackFetchArNotes = function(data){
-		$scope.$emit("hideLoader");
-		$scope.arAccountNotes = data;
-	};
-
 	/**
 	* successcall back of country list fetch
 	*/
@@ -154,8 +143,23 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	else if(typeof id !== 'undefined' && id !== ""){
 		var data = {'id': id};		
 		$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);	
+		
+		var successCallbackFetchArNotes = function(data){
+			$scope.$emit("hideLoader");
+			$scope.arAccountNotes = data;
+			$scope.$broadcast('ARDetailsRecieved');
+		};
+		var fetchARNotes = function(){
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, data, successCallbackFetchArNotes);
+		}
+
+		var successCallbackFetchArDetails = function(data){
+			$scope.$emit("hideLoader");
+			$scope.arAccountDetails = data;
+			fetchARNotes();
+		};
 		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, data, successCallbackFetchArDetails);	
-		$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, data, successCallbackFetchArNotes);
+		
 	}
 
 	/**
@@ -308,7 +312,48 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	/*-------AR account starts here-----------*/
 
 	$scope.showArAccountButtonClick = function($event){
-		$scope.switchTabTo($event, 'cc-ar-accounts')
+		$scope.switchTabTo($event, 'cc-ar-accounts');
+	};
+
+
+	$scope.showARTab = function($event){
+		$scope.isArTabAvailable = true;
+		$scope.showArAccountButtonClick($event);
+	};
+
+
+	$scope.$on('ARNumberChanged',function(e,data){
+		$scope.contactInformation.account_details.accounts_receivable_number  = data.newArNumber;
+	});
+
+	$scope.deleteArAccount = function(){
+
+		ngDialog.open({
+			 template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
+			 className: 'ngdialog-theme-default1 calendar-single1',
+			 closeByDocument: false,
+			 scope: $scope
+		});		
+	};
+
+	$scope.deleteARAccountConfirmed = function(){
+		var successCallbackOfdeleteArAccount = function(){
+			$scope.$emit('hideLoader');
+			$scope.isArTabAvailable = false;
+			var bool = $scope.arAccountDetails.is_auto_assign_ar_numbers;
+			var arNumber = $scope.arAccountDetails.ar_number;
+			$scope.arAccountDetails = {};
+			$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
+			$scope.arAccountDetails.ar_number = arNumber;
+			$scope.contactInformation.account_details.accounts_receivable_number = "";
+			ngDialog.close();
+		};
+		var dataToSend = {"id":$scope.contactInformation.id};
+		$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
+	};
+
+	$scope.clikedDiscardDeleteAr = function(){
+			ngDialog.close();
 	};
 
 	

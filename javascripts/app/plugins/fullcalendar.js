@@ -1057,14 +1057,14 @@ function EventManager(options, _sources) {
 					},
 					error: function(jqxhr, status, errorFn){
 						//Show ows connectivity error popup
-						if (jqxhr.status=="520") {
+						if (jqxhr.status=="520" || jqxhr.status=="502") {
 						    sntapp.activityIndicator.hideActivityIndicator();
 						    sntapp.showOWSErrorPopup();
 						    return;
 						}
         				//checking whether a user is logged in
         				if (jqxhr.status == "401") { sntapp.logout(); return;}
-                if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                		if (jqxhr.status=="503" || jqxhr.status=="504") {
 
         				    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
         				    return;
@@ -1073,6 +1073,9 @@ function EventManager(options, _sources) {
         				if(jqxhr.status=="404"){
         				    location.href = XHR_STATUS.SERVER_DOWN;
         				    return;
+        				}
+        				if(jqxhr.status=="501" || jqxhr.status=="500"){
+        				    sntapp.notification.showErrorMessage(ERROR_MESSAGE_COMMON);
         				}
 						applyAll(error, this, arguments);
 						callback();

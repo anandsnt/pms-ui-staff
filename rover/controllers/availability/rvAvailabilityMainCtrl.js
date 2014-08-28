@@ -4,6 +4,9 @@ sntRover.controller('rvAvailabilityMainController', [
 
 		//variable to get/set value availabilty or house
 		$scope.availabilityToShow = 'room';
+		$scope.page = {};
+		$scope.page.title = "Availability";
+
 
 		/**
 		* function to execute when switching between availability and house keeping

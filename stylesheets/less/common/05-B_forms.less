@@ -337,6 +337,31 @@ select[disabled],{
             #border-radius > .right();
         }
     }
+
+    .mini-select {
+        .square(40px);
+        position: relative;
+
+        select {
+            height: 40px;
+            .opacity(0);
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            .gradient-with-image(@selectArrow, @grey1, #d1d1d1);
+            background-repeat: no-repeat, repeat;
+            background-position: 50% 50%, 0 0;
+            background-size: 6px 4px, 100% 100%;
+            pointer-events: none;
+            z-index: 99;
+            .square(40px);
+            #border-radius > .rounded();
+        }
+    }
     
 /* 6. IE
 ==========================================================*/
