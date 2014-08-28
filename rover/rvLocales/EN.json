@@ -64,6 +64,9 @@
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
+    "YES": "YES",
+    "NO": "No",
+
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
@@ -500,7 +503,7 @@
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
     "DASHBOARD_SEARCH_INHOUSE": "In-House",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
-    "DASHBOARD_SEARCH_VIP": "VIPs",
+    "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation"
 ,
 
@@ -599,5 +602,6 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
 }

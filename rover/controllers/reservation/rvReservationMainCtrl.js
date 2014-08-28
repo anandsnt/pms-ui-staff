@@ -452,7 +452,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
                     roomTotal = roomTotal + roomAmount;
 
-                    if ( !!taxes && !!taxes.length ) {
+                    if (!!taxes && !!taxes.length) {
                         //  We get the tax details for the specific day here
                         var taxApplied = $scope.calculateTax(date, roomAmount, taxes, roomIndex);
                         //  Note: Got to add the exclusive taxes into the tax Amount thing
@@ -679,6 +679,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.travelAgent.id = $scope.reservationListData.travel_agent_id;
             $scope.reservationData.guest.id = $scope.reservationListData.guest_details.user_id;
 
+            //demographics
+            $scope.reservationData.demographics.reservationType = reservationDetails.reservation_card.reservation_type_id == null ? "" : reservationDetails.reservation_card.reservation_type_id;
+            $scope.reservationData.demographics.market = reservationDetails.reservation_card.market_segment_id == null ? "" : reservationDetails.reservation_card.market_segment_id;
+            $scope.reservationData.demographics.source = reservationDetails.reservation_card.source_id == null ? "" : reservationDetails.reservation_card.source_id;
+            $scope.reservationData.demographics.origin = reservationDetails.reservation_card.booking_origin_id == null ? "" : reservationDetails.reservation_card.booking_origin_id;
+
             // TODO : This following LOC has to change if the room number changes to an array
             // to handle multiple rooms in future
             $scope.reservationData.rooms[0].roomNumber = reservationDetails.reservation_card.room_number;
@@ -689,12 +695,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
 
             $scope.reservationData.totalStayCost = reservationDetails.reservation_card.total_rate;
+
+
+
             /*
             reservation stay dates manipulation
             */
-
-
-
             $scope.reservationData.stayDays = [];
             $scope.reservationData.rooms[0].rateId = [];
 
