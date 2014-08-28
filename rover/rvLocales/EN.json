@@ -34,7 +34,9 @@
 "CARDS":"Cards",
 "NO_MATCH_FOUND_MSG":"No matches have been found",
 "ENTITY_NOT_SELECTED":"Entity not selected",
-"SELECT_ENTITY_TO_CONFIGURE":"Select Entity to configure bill routing",	
+"SELECT_ENTITY_TO_CONFIGURE":"Select Entity to configure bill routing",
+"CANCEL_SEARCH":"Cancel Search"
+,	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
 	"NO_AVAILABILITY" : "No availability",

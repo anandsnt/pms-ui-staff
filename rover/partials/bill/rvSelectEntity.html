@@ -87,7 +87,7 @@
 								<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
 								ng-class="{'grey' : row.images.length >1}"> </h2>
 								<span class="confirmation" ># {{row.confirmation}}</span>
-								<span class="confirmation" >{{'ROOM_LABEL' | translate}} {{row.room}}</span>
+								<span class="room" >{{'ROOM_LABEL' | translate}} <strong>{{row.room}}</strong></span>
 							</div>	
 							
 							<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
@@ -96,16 +96,20 @@
 					<!-- No results / no content when searched query not found-->
 	            	<li class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
 						<div class="info">
-							<span class="icon-no-content icon-cards"></span>
+							<span class="icon-no-content icon-search"></span>
 							<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
 						</div>
 					</li>
 				
 			</ul>
+			
+		</div>
+		<div class="cancel-search-container1" ng-show="textInQueryBox!=''">
+			<button type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>
 		</div>
 		
-		
       </div>
+      
    </fieldset>
    <fieldset class="content-right">
       <div class="no-content" >
