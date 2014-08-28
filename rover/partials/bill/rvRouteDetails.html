@@ -46,8 +46,8 @@
          </div>
       </span>
       <ul id="transaction-type" class="modal-options">
-         <li ng-class="{'active' : isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup" translate>BILLING_GROUP</li>
-         <li ng-class="{'active' : !isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup" translate>CHARGE_CODES</li>
+         <li ng-class="{'active' : isBillingGroup}" ng-click = "toggleChargeType()" translate>BILLING_GROUP</li>
+         <li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
       </ul>
       <div id="transactions" class="transactions scrollable" ng-show = "isBillingGroup">
          <div class="entry radio-check wrapper">
