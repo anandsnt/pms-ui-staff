@@ -8,7 +8,18 @@
     "CREATE_RESERVATION": "Create Reservation",
     "ENHANCE_STAY": "Enhance Stay",
     "SEARCH_RESULTS": "Search Results"
-,	
+,
+
+"EDIT_CHARGE":"Edit charge",
+"AMOUNT":"Amount",
+"CHARGE_CODE":"Charge Code",
+"NEW_AMOUNT":"New Amount",
+"CHARGE_WILL_APPEAR_AS":"Charge will appear as:",
+"ADJUSTMENT":"Adjustment",
+"CHANGE_AMOUNT":"Change Amount",
+"REMOVE_CHARGE":"Remove charge",
+"SPLIT_CHARGE":"Split charge",
+"SPLITTING_FOR":"Splitting for",	
 	"DRAG_AND_DROP_TO_CHANGE_STAY_DATES": "Drag & drop to change stay dates",
 	"ARRIVAL" : "Arrival",
 	"NO_AVAILABILITY" : "No availability",
@@ -53,6 +64,9 @@
     "ALL": "All",
     "CANCEL": "Cancel",
     "SAVE": "Save",
+    "YES": "YES",
+    "NO": "No",
+
    
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
@@ -214,7 +228,6 @@
 	"SHOW_DEPARTED": "Show Departed",
 
 	"ROOM_DETAILS": "Room Details",
-	"ROOM_STATUS": "Room status",
 	"ROOM_IS_VACANT": "Room is vacant.",
 
 	"HK_FLOORS": "Floors",
@@ -265,7 +278,8 @@
     "CCV":"CCV",
     "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
     "ADD_NEW_CARD":"Add New Card",
-    "EXISTING_CARDS":"Existing Cards"
+    "EXISTING_CARDS":"Existing Cards",
+    "ADD_CREDIT_CARD": "Add Credit Card"
 ,    
     
     "RESERVATION_SUMMARY": "Reservation summary",
@@ -473,7 +487,7 @@
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
     "DASHBOARD_SEARCH_INHOUSE": "In-House",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
-    "DASHBOARD_SEARCH_VIP": "VIPs",
+    "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation"
 ,
 
@@ -572,5 +586,6 @@
 	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
-	"REGISTRATION" : "Registration"
+	"REGISTRATION" : "Registration",
+     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
 }

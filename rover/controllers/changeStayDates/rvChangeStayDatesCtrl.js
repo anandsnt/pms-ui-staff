@@ -329,8 +329,8 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	 */
 	$scope.changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
 		$scope.stayDetails.isOverlay = false;
-		var newDateSelected = event.start;
 		//the new date in calendar
+		var newDateSelected = event.start;
 
 		// we are storing the available first date & last date for easiness of the following code
 		var availableStartDate = tzIndependentDate($scope.stayDetails.calendarDetails.available_dates[0].date);
@@ -348,6 +348,11 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			// reverting back to it's original position
 			return false;
 		}
+		//Events other than check-in and checkout should not be drag and droped
+		if (event.id !== 'check-in' &&  event.id !== 'check-out') {
+			revertFunc();
+			return false;
+		}
 
 		if (event.id == 'check-in') {
 			//checkin type date draging after checkout date wil not be allowed
@@ -355,8 +360,8 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 				revertFunc();
 				return false;
 			}
-			finalCheckin = newDateSelected;
-			finalCheckout = $scope.checkoutDateInCalender;
+			finalCheckin = newDateSelected.clone();
+			finalCheckout = $scope.checkoutDateInCalender.clone();
 		} else if (event.id == "check-out") {
 			//checkout date draging before checkin date wil not be allowed
 			if (newDateSelected < $scope.checkinDateInCalender) {
@@ -368,25 +373,21 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 				revertFunc();
 				return false;
 			}
-
-			finalCheckin = $scope.checkinDateInCalender;
-			finalCheckout = newDateSelected;
+			finalCheckin = $scope.checkinDateInCalender.clone();
+			finalCheckout = newDateSelected.clone();
 		}
 		// we are re-assinging our new checkin/checkout date for calendar
 		$scope.checkinDateInCalender = finalCheckin;
 		$scope.checkoutDateInCalender = finalCheckout;
 
-		//$scope.myCalendar.fullCalendar.rerenderEvents();
-		//changing the data for fullcalendar
 		$scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 		$scope.eventSources.length = 0;
 		$scope.eventSources.push($scope.events);
 
-		//For stand-alone PMS, the restrictions are calculated from the server
-		//We call the API when dates are changed to get the status
-		if($rootScope.isStandAlone){
-			// checking if stay range is restricted between that days, 
-			//if so we will not call webservice for availabilty
+		//For non standalone PMS the restrications are calculated from the 
+		//initital calendar data returned by server
+		if(!$rootScope.isStandAlone){
+			//Check if the stay range is restricted, if so display a restrication message
 			if (that.isStayRangeRestricted($scope.checkinDateInCalender, 
 											$scope.checkoutDateInCalender)) {
 				that.showRestrictedStayRange();
@@ -406,12 +407,13 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 
 	};
 
-	/*
-	 function to check the stayrange restricted between dates
-	 */
+	/**
+	* function to check the stayrange restricted between dates
+	* We iterate through each day and see if any restriction is applied
+	*/
 	this.isStayRangeRestricted = function(checkinDate, checkoutDate) {
-		var checkinTime = checkinDate.setHours(00, 00, 00);
-		var checkoutTime = checkoutDate.setHours(00, 00, 00);
+		var checkinTime = checkinDate.clone().setHours(00, 00, 00);
+		var checkoutTime = checkoutDate.clone().setHours(00, 00, 00);
 		var thisTime = "";
 		var totalNights = 0;
 		var minNumOfStay = "";
@@ -451,7 +453,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			calEvt = {};
 			//Fixing the timezone issue related with fullcalendar
 			thisDate = tzIndependentDate(this.date);
-
 			if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
 				calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
 			} else {
@@ -492,7 +493,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 
 				//mid-stay range
 			} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
-				calEvt.id = "availability";
+				calEvt.id = "mid-stay" + index; // Id should be unique
 				calEvt.className = "mid-stay";
 				//Event is check-out
 			} else if (thisDate.getTime() == checkoutDate.getTime()) {
@@ -502,7 +503,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 				calEvt.durationEditable = "false";
 				//dates prior to check-in and dates after checkout
 			} else {
-				//calEvt.id = "availability";
+				calEvt.id = "availability" + index; // Id should be unique
 				calEvt.className = "type-available";
 			}
 

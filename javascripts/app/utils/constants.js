@@ -18,3 +18,6 @@ XHR_STATUS = {
 	REJECTED: "/500",
 	SERVER_DOWN: "/500"
 }
+
+ERROR_MESSAGE_COMMON = "Unable to process request. Please try again";
+

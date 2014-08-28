@@ -1,5 +1,5 @@
-sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault',
-	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault) {
+sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv',
+	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv) {
 
 		// pre setup for back button
 		var titleDict = {
@@ -15,6 +15,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			type: $vault.get('searchType')
 		} : {}
 
+
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: $filter('translate')(backTitle),
@@ -22,10 +23,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			param: backParam
 		};
 
-
-
 		BaseCtrl.call(this, $scope);
-
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		/*
@@ -38,13 +36,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		var updateSearchCache = function() {
-
 			// room related details
 			var data = {
 				'room': $scope.reservationData.reservation_card.room_number,
 				'reservation_status': $scope.reservationData.reservation_card.reservation_status,
 				'roomstatus': $scope.reservationData.reservation_card.room_status,
 				'fostatus': $scope.reservationData.reservation_card.fo_status,
+				'room_ready_status': $scope.reservationData.reservation_card.room_ready_status,
 				'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
 				'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
 				'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
@@ -75,7 +73,20 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
+			if ($scope.shouldShowGuestDetails) {
+				$scope.shouldShowTimeDetails = false;
+			}
 		};
+
+		$scope.shouldShowTimeDetails = false;
+		$scope.toggleTime = function() {
+			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;
+			if ($scope.shouldShowTimeDetails) {
+				$scope.shouldShowGuestDetails = false;
+			}
+		};
+
+
 		// $scope.wake_up_time = ;
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id) {
@@ -339,7 +350,25 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			});
 		};
 
+		$scope.modifyCheckinCheckoutTime = function() {
+			var updateSuccess = function(data) {
+				$scope.$emit('hideLoader');
+				if ($scope.reservationParentData.checkinTime.hh != '') {
+					$scope.reservationData.reservation_card.arrival_time = $scope.reservationParentData.checkinTime.hh + ":" + $scope.reservationParentData.checkinTime.mm + " " + $scope.reservationParentData.checkinTime.ampm;
+				}
+				if ($scope.reservationParentData.checkoutTime.hh != '') {
+					$scope.reservationData.reservation_card.departure_time = $scope.reservationParentData.checkoutTime.hh + ":" + $scope.reservationParentData.checkoutTime.mm + " " + $scope.reservationParentData.checkoutTime.ampm;
+				}
+			}
+			var updateFailure = function(data) {
+				$scope.$emit('hideLoader');
+			}
 
-
+			if ($scope.reservationParentData.checkinTime.hh != '' || $scope.reservationParentData.checkoutTime.hh != '') {
+				var postData = $scope.computeReservationDataforUpdate();
+				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
+			}
+		}
 	}
+
 ]);
