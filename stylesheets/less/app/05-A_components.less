@@ -200,15 +200,12 @@
                             border-spacing: 5px 0;
 
                             col {
-                                width: 8.5em;
+                                width: 140px;
 
                                 &.grid-col {
                                     background-color: rgba(0,0,0,.1);
-                                    width: 3.35em;
 
-                                    &.weekend {
-                                        background-color: rgba(95,131,146,.2);
-                                    }
+                                    &.weekend { background-color: rgba(95,131,146,.2); }
                                 }
                             }   
 
@@ -258,8 +255,6 @@
                                         &:not(.main) {
                                             th,
                                             td { font-style: italic; }
-
-                                            th { padding-right: 0; }
                                         }
 
                                         &:nth-child(odd) { 
@@ -272,6 +267,34 @@
                                                 .inner { background-color: #dce7f0; }
                                             }
                                         }
+                                    }
+                                }
+                            }
+
+                            &.grid-7 {
+                                col {
+                                    &.grid-col { .calc-width(14, 20); }
+                                }
+                            }
+
+                            &.grid-14 {
+                                col {
+                                    &.grid-col { .calc-width(7, 10); }
+                                }
+                            }
+
+                            &.grid-30 {
+                                col {
+                                    &.grid-col { 
+                                        width: 3.33em; 
+
+                                        @media (min-width: 1080px) { width: 3.55em; }
+                                        @media (min-width: 1280px) { width: 4.45em; }
+                                        @media (min-width: 1360px) { width: 4.85em; }
+                                        @media (min-width: 1440px) { width: 5.2em; }
+                                        @media (min-width: 1600px) { width: 5.9em; }
+                                        @media (min-width: 1680px) { width: 6.25em; }
+                                        @media (min-width: 1920px) { width: 7.3em; }
                                     }
                                 }
                             }

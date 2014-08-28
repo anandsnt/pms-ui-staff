@@ -9,12 +9,12 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	BaseCtrl.call(this, $scope);
 	
-	$scope.selectedView = 'grid';
+	$scope.selectedView = 'graph';
 	$scope.page.title = "Availability";
 
 	$scope.setSelectedView = function(selectedView){
 		$scope.$emit("showLoader");
-		$scope.selectedView = selectedView
+		$scope.selectedView = selectedView;		
 		$scope.$broadcast("changedRoomAvailableData");
 	};
 
