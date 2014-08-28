@@ -1,5 +1,5 @@
-sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state',
-	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state) {
+sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter',
+	function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -86,7 +86,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 		};
 
 		var onFetchPaymentsSuccess = function(data) {
-			$scope.$emit('hideLoader');			
+			$scope.$emit('hideLoader');
 			$scope.cardsInPaymentMethods = _.where(data.existing_payments, {
 				is_credit_card: true
 			});
@@ -123,7 +123,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				id: $scope.reservationData.reservation_card.reservation_id
 			}
-			console.log('cancellationParameters', cancellationParameters);
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 		}
 
@@ -138,7 +137,7 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				fetchMLISessionId();
 			} else {
 				// Client side validation added to eliminate a false session being retrieved in case of empty card number
-				$scope.errorMessage = ["There is a problem with your credit card"];
+				$scope.errorMessage = [$filter('translate')('CARD_ERROR')];
 			}
 		}
 	}

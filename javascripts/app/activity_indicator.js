@@ -30,6 +30,7 @@ var ActivityIndicator = function() {
 	};
 	
 	this.hideActivityIndicator = function(loaderId) {
+		console.log("hide ActivityIndicator");
 		var myLoaderId =loaderId;
 		if(typeof loaderId === 'undefined' || $.trim(loaderId) === ''){
 			myLoaderId = that.defaultLoaderId;

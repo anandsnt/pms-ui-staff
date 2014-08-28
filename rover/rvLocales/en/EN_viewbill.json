@@ -78,4 +78,6 @@
     "PENALTY_APPLY" : "Apply penalty",
     "PENALTY_SKIP" : "Proceed without penalty",
     "CANCEL_CONFIRM" : "Confirm Cancel",
-    "CANCEL_CANCEL" : "Return without Cancel"
+    "CANCEL_CANCEL" : "Return without Cancel",
+    "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+
