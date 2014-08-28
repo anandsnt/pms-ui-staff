@@ -3,25 +3,24 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// pre setup for back button
 		var titleDict = {
-		    'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
-		    'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
-		    'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
-		    'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
-		    'VIP': 'DASHBOARD_SEARCH_VIP',
-		    'NORMAL_SEARCH': 'SEARCH_NORMAL'
-		};
+			'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
+			'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
+			'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
+			'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+			'VIP': 'DASHBOARD_SEARCH_VIP',
+			'NORMAL_SEARCH': 'SEARCH_NORMAL'
+		}
 		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+		var backParam = !!titleDict[$vault.get('searchType')] ? {
+			type: $vault.get('searchType')
+		} : {}
 
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: $filter( 'translate' )( backTitle ),
+			title: $filter('translate')(backTitle),
 			name: 'rover.search',
 			param: backParam
 		};
-
-
-
 
 
 
@@ -149,14 +148,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
-
-
-		$scope.$on('$viewContentLoaded', function() {
+		$scope.refreshReservationDetailsScroller = function(timeoutSpan) {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
-				3000);
+				timeoutSpan);
+		}
 
+
+		$scope.$on('$viewContentLoaded', function() {
+			$scope.refreshReservationDetailsScroller(3000);
 		});
 
 

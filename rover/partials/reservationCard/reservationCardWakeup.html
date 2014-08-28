@@ -1,11 +1,25 @@
-<div class="block-item item-wake-up">
-	<div class="block-title">
-		<span class="icons icon-alarm active"></span>
-		<h3 translate>WAKE_UP_HEADER</h3>
-	</div>
-	<!-- Wake up feature available - added class 'feature-available'. -->
-	<a id="wakeup-time" class="next-view hover-hand" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" ng-click="showWakeupCallDialog()"> 
-		<span id="reservation_card_wake_up_time" ng-model="wake_up_time" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" class="value text">
-			 {{wake_up_time}} </span>
-	 </a>
+<div class="block-wrapper">
+    <!-- Wake up -->
+    <div class="block-item item-wake-up">
+        <h3 class="block-title" translate>WAKE_UP_HEADER</h3>
+        <a id="wakeup-time" class="next-view hover-hand"  class="open-modal next-view" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" ng-click="showWakeupCallDialog()"> 
+			<span id="reservation_card_wake_up_time" ng-model="wake_up_time" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" class="value text">
+				{{wake_up_time}} 
+			</span>
+		</a>        
+    </div>
+
+    <!-- Newspaper -->
+    <form method="post" class="block-item item-newspaper">
+        <h3 class="block-title" translate>NEWSPAPER_LABEL</h3>
+        <div class="select">
+            <!-- The newspaper selection option is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
+			<select name="reservation_newspaper" ng-model = "reservationData.reservation_card.news_paper_pref.selected_newspaper" ng-change="saveNewsPaperPreference()" ng-disabled= "!isNewsPaperPreferenceAvailable()">
+				<option value="" class="placeholder" translate>NEWSPAPER_SELECT</option>
+				<option value="{{newspaper.value}}" ng-selected="newspaper.value==reservationData.reservation_card.news_paper_pref.selected_newspaper" ng-repeat="newspaper in reservationData.reservation_card.news_paper_pref.news_papers" >
+					{{newspaper.name}} 
+				</option>
+			</select>
+        </div>
+    </form> 
 </div>

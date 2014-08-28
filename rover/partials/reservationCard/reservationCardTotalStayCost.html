@@ -1,18 +1,19 @@
 <div class="block-item item-rate">
-	<div class="block-title">
-		<h3> ADR / <strong>Total Room Charge</strong></h3>
-	</div>
+	<h3 class="block-title"> ADR / <strong>Total Room Charge</strong></h3>
 	<a id="stay-card-total-stay-cost" class="has-arrow next-view hover-hand" ng-click="goToRoomAndRates('ROOM_RATE')"> 
 		<span class="number" ng-show="reservationData.reservation_card.is_rates_suppressed">
 			{{reservationData.reservation_card.text_rates_suppressed}} / 
-			<strong> {{reservationData.reservation_card.text_rates_suppressed}}</strong>
-			
+			<strong> {{reservationData.reservation_card.text_rates_suppressed}}</strong>			
 		</span> 
 		<span class="number" ng-hide="reservationData.reservation_card.is_rates_suppressed">
 			{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}} / 
-			<strong> {{currencySymbol}}{{reservationData.reservation_card.total_rate}}</strong>
-			
+			<strong> {{currencySymbol}}{{reservationData.reservation_card.total_rate}}</strong>			
 		</span> 
 	{{reservationData.rateDescriptionADR}} 
 	</a>
+	<!-- If reservation is not editable 
+    <div class="no-view">
+        <span class="number">${Daily Rate} / <strong>${Total Fees}</strong></span>
+        {Rate and Packages}
+    </div> -->
 </div>

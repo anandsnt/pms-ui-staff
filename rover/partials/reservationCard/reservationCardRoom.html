@@ -1,7 +1,5 @@
-<div class="block-item item-room float" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
-	<div class="block-title">
-		<h3>Room</h3>
-	</div>
+<div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
+	<h3 class="block-title">Room</h3>
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
 	<a class="next-view no-auto-bind hover-hand" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
@@ -9,6 +7,12 @@
 		 	 {{reservationData.reservation_card.room_number}} 
 		 </strong>{{reservationData.reservation_card.room_type_description}} 
 	</a>
+
+	<!-- If room assignment not available:
+    <div class="no-view">
+        <strong class="room-number">{Room number}</strong>
+        {Room Type}
+    </div> -->
 	
 	<div class="actions" ng-show="showUpgradeButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)">
   		<a id="upgrade-btn" class="button with-icon brand-colors" ui-sref="rover.reservation.staycard.upgrades({reservation_id:reservationData.reservation_card.reservation_id, clickedButton : 'upgradeButton'})">
@@ -18,7 +22,7 @@
 	</div>
 	
 	<div class="actions" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)">
-  		<a ng-click="clickedIconKey()" id="add-keys" class="button with-icon blue" >
+  		<a ng-click="clickedIconKey()" id="add-keys" class="button with-icon blue" > <!-- Add attribute data-position="bottom-right" if QR is to be shown --> 
     		<span class="icons icon-key"></span>
     		Keys
   		</a>
