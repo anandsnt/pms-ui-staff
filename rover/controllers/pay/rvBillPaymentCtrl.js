@@ -68,6 +68,14 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.guestPaymentList = data;
 			angular.forEach($scope.guestPaymentList, function(value, key) {
 				value.isSelected = false;
+				if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
+					if($scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase() == "CC"){
+						if(($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number == value.mli_token) && ($scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase() == value.card_code.toLowerCase() )) {
+							value.isSelected = true;
+						} 
+					}
+				}
+				
 			});
 		}
 		
@@ -78,19 +86,32 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	 * Default payment method attached to that bill can be viewed in initial screen
 	 */
 	$scope.renderDefaultValues = function(){
-		if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
-			$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
-			$scope.saveData.payment_type_id = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_id;
-			$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
-			if($scope.defaultPaymentTypeOfBill == 'CC'){
-				$scope.isExistPaymentType = true;
-				$scope.showCreditCardInfo = true;
-				$scope.isfromBill = true;
-				$scope.defaultPaymentTypeCard = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase();
-				$scope.defaultPaymentTypeCardNumberEndingWith = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number;
-				$scope.defaultPaymentTypeCardExpiry = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_expiry;
+		var ccExist = false;
+		if($scope.renderData.length > 0){
+			if(!isEmptyObject($scope.billsArray[$scope.currentActiveBill].credit_card_details)){
+				$scope.defaultPaymentTypeOfBill = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_type.toUpperCase();
+				$scope.saveData.payment_type_id = $scope.billsArray[$scope.currentActiveBill].credit_card_details.payment_id;
+				angular.forEach($scope.renderData, function(value, key) {
+					if(value.name == "CC"){
+						ccExist = true;
+					}
+				});
+				
+				$scope.saveData.paymentType = $scope.defaultPaymentTypeOfBill;
+				if($scope.defaultPaymentTypeOfBill == 'CC'){
+					if(!ccExist){
+						$scope.saveData.paymentType = '';
+					}
+					$scope.isExistPaymentType = true;
+					$scope.showCreditCardInfo = true;
+					$scope.isfromBill = true;
+					$scope.defaultPaymentTypeCard = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_code.toLowerCase();
+					$scope.defaultPaymentTypeCardNumberEndingWith = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_number;
+					$scope.defaultPaymentTypeCardExpiry = $scope.billsArray[$scope.currentActiveBill].credit_card_details.card_expiry;
+				}
 			}
 		}
+		
 		var defaultAmount = $scope.billsArray[$scope.currentActiveBill].total_fees[0].balance_amount;
 		$scope.renderData.defaultPaymentAmount = defaultAmount;
 		
