@@ -30,6 +30,7 @@
 		</div> -->
 	
 		<!-- Card search -->
+		<div class="cards guest-card" role="complementary" ng-class="{'cards-list': showSearchScreen }">
 		<div class="cards-wrapper">
 		    <!-- Cards Header -->
 		    <header class="cards-header">
@@ -41,185 +42,60 @@
 			        <div class="card-search-form">
 			            <div class="holder">
 			                <div class="entry">
-			                    <input ng-keyup="searchByRoomNumber()" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" />
-								<input placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" />
+			                    <input ng-click="showHideInitialSearchScreen()" ng-model="search.room" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
+								<input ng-click="showHideInitialSearchScreen()" ng-model="search.guest_company_agent" placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
 			                </div>               
 			            </div>
 			        </div>
 			        <div class="card-actions">
-				    	<button type="button" class="button white red-text">Cancel</button>
+				    	<button type="button" class="button white red-text" ng-click="clickedCancel()">Cancel</button>
 				    </div>
 			    </div>
 		    </header>
 	
 		    <!-- Cards Content -->
 		    <div class="cards-content">
-		    	<div class="card-search card-content">
-		    		<!-- Initially, when no results 
-		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content">
+		    	<div class="card-search card-content" ng-class="{'display-card-search': showSearchScreen}">
+		    		<!-- Initially, when no results -->
+		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content" ng-show="showInitialSearchScreen">
 		                <div class="info">
 		                    <span class="icon-no-content icon-guest"></span>
 		                    <strong class="h1">Find Reservation</strong>
 		                    <span class="h2">Search <em>Room</em> by <strong>Number</strong> or <em>Reservation</em> by <strong>Guest</strong>, <strong>Company</strong> or <strong>Travel Agent</strong> Name</span>
 		                </div>
-		            </div> -->
+		            </div> 
 	
 		    		<!-- When you have results, use the same markup as on reservation search screen. -->
 		        	
-		        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll='search-guests-for-charge-content' ng-iscroll-delay='300' ng-class="{'hidden': itemsVisible}">
+		        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll='search-guests-for-charge-content' ng-iscroll-delay='300' ng-show="!showInitialSearchScreen" ng-class="{'hidden': itemsVisible}">
 		                <div class="wrapper">
 		                    <ul id="search-guests-for-charge-results" class="search-results">
-		                    	<li class="reservation">
+		                    	<li class="reservation" ng-show="reservations.shouldShowReservation" ng-repeat="reservations in reservationsArray">
 		                    		<a href="{link}" class="guest-{reservation-status}">
 		                    			<figure class="guest-image">
 		                    				<img src="{guest-image}" alt="" />
 		                    			</figure>
 		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
+		                    				<h2>{{reservations.lastname}}, {{reservations.firstname}}</h2>
+		                    				<span class="confirmation">{{reservations.confirmation}}</span>
+		                    				<span class="icons icon-location">{{reservations.location}}</span>
 		                    			</div>
 		                    			<div class="status {queued}">
 		                    				<span class="guest-status {reservation-status}">arrival</span>
 		                    			</div>
 		                    			<strong class="room-number {room status}">
-		                    				{room}
+		                    				{{reservations.room}}
 		                    			</strong>
 		                    		</a>
 		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
-		                    	<li class="reservation">
-		                    		<a href="{link}" class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{lastname}, {firstname}</h2>
-		                    				<span class="confirmation">{confirmation num}</span>
-		                    				<span class="icons icon-location">{city}, {state}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{room}
-		                    			</strong>
-		                    		</a>
-		                    	</li>
+		                    	
 		                    </ul>
 		                </div>
 		            </div>
 		        </div>
 		    </div>
 		</div>
-	
+	</div>
 	
 	    <!-- Left side -->
 	    <fieldset class="content-left" ng-class="{'hidden': !itemsVisible}">

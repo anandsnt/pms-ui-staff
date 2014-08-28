@@ -20,7 +20,12 @@ sntRover.controller('RVOutsidePostChargeController',
 			//Show/hide reservations or items
 			$scope.itemsVisible = true;
 			$scope.firstTime = true;
-			
+			$scope.search = {};
+			$scope.search.guest_company_agent = '';
+			$scope.search.room = '';
+			$scope.showInitialSearchScreen = false;
+			$scope.showSearchScreen = false;
+			var oldSearchGuestText = '';
 			
 			// set the default bill number
 		//	$scope.billNumber = $scope.fetchedData.bill_numbers[0];
@@ -480,19 +485,86 @@ sntRover.controller('RVOutsidePostChargeController',
 
 				$scope.invokeApi(RVChargeItems.postCharges, data, callback);
 			};
-			$scope.searchByRoomNumberSuccess = function(data){
-				$scope.firstTime = false;
-				$scope.reservationsList = data;
-				$scope.
-				angular.forEach($scope.reservationsList, function(value, key) {
-					if()
+			$scope.searchForResultsSuccess = function(data){
+				$scope.showInitialSearchScreen = false;
+				$scope.$emit( 'hideLoader' );
+				// $scope.firstTime = false;
+				// $scope.reservationsList = data;
+				$scope.reservationsArray = data;
+				oldSearchGuestText = $scope.search.guest_company_agent;
+				angular.forEach($scope.reservationsArray, function(value, key) {
+					value.shouldShowReservation = true;
 				});
 				
+				
+			//	console.log($scope.search.guest_company_agent +"==-----==="+	$scope.search.room );
+				/*angular.forEach($scope.reservationsArray, function(value, key) {
+					// var isAlreadyPushed = false;
+					if($scope.search.room != ''){
+						var roomNumber = value.room;
+						if(roomNumber!=null){
+							if(roomNumber.indexOf($scope.search.room) == -1){
+								// isAlreadyPushed = true;
+								//$scope.reservationsArray.push(value);
+								value.shouldShowReservation = false;
+							}
+						}
+						
+					}
+					// if(!isAlreadyPushed){
+						if($scope.search.guest_company_agent != ''){
+							var guestName = value.firstname+" "+value.lastname;
+							var companyName = value.company_name;
+							var travelAgentName = value.travel_agent_name;
+							if(guestName.toLowerCase().indexOf($scope.search.guest_company_agent.toLowerCase()) == -1){
+								//$scope.reservationsArray.push(value);
+								value.shouldShowReservation = false;
+							} else if(companyName.toLowerCase().indexOf($scope.search.guest_company_agent.toLowerCase()) == -1){
+								//$scope.reservationsArray.push(value);
+								value.shouldShowReservation = false;
+							} else if(travelAgentName.toLowerCase().indexOf($scope.search.guest_company_agent.toLowerCase()) == -1){
+								//$scope.reservationsArray.push(value);
+								value.shouldShowReservation = false;
+							}
+						}
+					// }
+					
+					
+				});*/
+				
+				
+				
 			};
-			$scope.searchByRoomNumber = function(){
-				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, {'firstTime': $scope.firstTime}, $scope.searchByRoomNumberSuccess);
+			$scope.searchForResults = function(){
+				$scope.showInitialSearchScreen = false;
+				$scope.refreshApi = true;
+				if($scope.search.guest_company_agent.length > 2 || $scope.search.room.length > 1){
+					console.log(oldSearchGuestText+":::::::::::::::::::"+$scope.search.guest_company_agent+"==="+$scope.search.guest_company_agent.indexOf(oldSearchGuestText));
+					if(oldSearchGuestText.length > 0){
+						if((oldSearchGuestText.length < $scope.search.guest_company_agent.length) && ($scope.search.guest_company_agent.indexOf(oldSearchGuestText) !=-1 )){
+							$scope.refreshApi = false;
+						}
+					}
+					
+					 // else if() {
+// 						
+					// }
+				}
+				$scope.invokeApi(RVSearchSrv.fetchReservationsToPostCharge, {'firstTime': $scope.refreshApi}, $scope.searchForResultsSuccess);
+				
 				$scope.itemsVisible = false;
 				$scope.setScroller('search-guests-for-charge-content');
+			};
+			$scope.clickedCancel = function(){
+				$scope.search.guest_company_agent = '';
+				$scope.search.room = '';
+				$scope.showInitialSearchScreen = true;
+				$scope.itemsVisible = false;
+			};
+			$scope.showHideInitialSearchScreen = function(){
+				$scope.showInitialSearchScreen = true;
+				$scope.showSearchScreen = true;
+				$scope.itemsVisible = false;
 			};
 			
 		}

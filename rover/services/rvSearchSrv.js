@@ -1,4 +1,4 @@
-sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVBaseWebSrv, $vault){
+sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
 	
 	var self = this;
 	
@@ -119,8 +119,8 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 	this.fetchReservationsToPostCharge = function(data){
 		var deferred = $q.defer();
 		if(data.firstTime){
-			var url = '/staff/payments/search_by_cc';
-			RVBaseWebSrv.gettJSON(url).then(function(data) {
+			var url = 'api/reservations/search_reservation';
+			rvBaseWebSrvV2.postJSON(url).then(function(data) {
 				deferred.resolve(data);
 				self.reservationsList = data;
 			}, function(data) {
