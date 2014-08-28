@@ -2,7 +2,7 @@
 
 <div id="availability-grid" class="availability-grid scrollable " ng-controller="rvRoomAvailabilityGridStatusController" ng-iscroll='room_availability_scroller' ng-iscroll-delay="100" ng-show="hideMeBeforeFetching">
 	<div class="wrapper position-absolute">
-		<table class="dates-grid" id="dates-grid">
+		<table class="dates-grid" ng-class="{'grid-7': data.dates.length<=7, 'grid-14': data.dates.length<=14, 'grid-30': data.dates.length<=30}"  id="dates-grid">
 			<colgroup>
 				<col>
 				<col class="grid-col" ng-repeat="eachDate in data.dates" ng-class="{'weekend': eachDate.isWeekend}">		
@@ -22,7 +22,7 @@
 				<tr>
 					<th class="heading">Occupancy %</th>
 					<td ng-repeat="occupancy in data.occupancies track by $index">
-						<div class="inner"> {{occupancy}}%</div>
+						<div class="inner"> {{occupancy | number : 2}}%</div>
 					</td>
 				</tr>
 				<tr>

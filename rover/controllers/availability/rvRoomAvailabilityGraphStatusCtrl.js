@@ -2,7 +2,8 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 	'$scope', 
 	'rvAvailabilitySrv', 
 	'dateFilter', 
-	function($scope, rvAvailabilitySrv, dateFilter){
+	'$rootScope',
+	function($scope, rvAvailabilitySrv, dateFilter, $rootScope){
 		BaseCtrl.call(this, $scope);
 
 		plottedChart = null;
@@ -228,18 +229,24 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			$scope.availabilityGraphCongif = { 
 				options : {
 					chart: {
-						type: 'areaspline',
+						type: 'area',
 					},
 					legend : {
 						enabled : false
 					},
-
+					tooltip: {
+			            formatter: function () {
+			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
+			                       this.series.name +  ': ' + this.y;
+			            }
+				    },	
 				},
 		
 				title: {
 					text: ''
 				},
 				xAxis: {
+
 					showLastLabel: true,
     				endOnTick: true,					
 					min: 0,
@@ -298,18 +305,18 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					opposite: true,			
 				}
 				],
-							
+				 						
 				series: $scope.graphData,
 			    func: function (chart) { // on complete
 			        	plottedChart = chart;
 			        	setTimeout(function(){
 			        		$scope.$apply(function(){
-			        			resizedWindow();
+			        			
 					        	for(var i = 0; i < $scope.graphData.length; i++){
 					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
 					        	}
 					        	$scope.graphWidth = getMaxSeriesLengthData() * 75;
-
+					        	resizedWindow();
 					        						        	
 			        		});
 	        				

@@ -13,8 +13,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 	};
 
 	this.restructureDataForUI = function(dataFromAPI){
-		var roomAvailabilityData = dataFromAPI.roomAvailabilityData;
-		var occupanyData = dataFromAPI.roomAvailabilityData;
+		var roomAvailabilityData= dataFromAPI.roomAvailabilityData;
+		var occupanyData 		= dataFromAPI.occupancyTargetted;
 		var dates 				= [];
 		var occupancies 		= [];
 		var bookableRooms 		= [];
@@ -68,7 +68,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		}
 		var IsOccupancyTargetSetBetween = false;
 		for(i = 0; i < occupanyData.results.length; i++){	
-			console.log(occupanyData.results[i].target);
 			var actual = escapeNull(occupanyData.results[i].actual) == "" ? 0 : occupanyData.results[i].actual;
 			var target = escapeNull(occupanyData.results[i].target) == "" ? 0 : occupanyData.results[i].target;
 			occupanciesActual.push((actual / roomAvailabilityData.physical_count) * 100);
@@ -77,7 +76,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 				IsOccupancyTargetSetBetween = true;
 			}
 		}
-		console.log(occupanciesTargeted);
 		var availabilityData = {
 			'dates'				: dates,
 			'occupancies'		: occupancies,
