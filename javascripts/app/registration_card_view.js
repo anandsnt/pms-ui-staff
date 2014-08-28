@@ -155,7 +155,15 @@ var RegistrationCardView = function(viewDom) {
 	    if(getParentWithSelector(event, "#bills-tabs-nav li")) {
 	    	return that.clickedBillTab(event);
 	    }
+	    if(getParentWithSelector(event, "#agree")){
+	    	event.preventDefault();
+	    	return that.showTermsAndConditionsModal();
+	    }
 	    
+	};
+	this.showTermsAndConditionsModal = function(){
+		var showTermsAndConditions = new showTermsAndConditionsModal(that.myDom);
+    	showTermsAndConditions.initialize();
 	};
 
      // function for closing the drawer if is open

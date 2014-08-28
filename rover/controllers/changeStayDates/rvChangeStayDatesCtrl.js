@@ -3,8 +3,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
-	scopeRef = $scope;
-
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
@@ -63,6 +61,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			ignoreTimezone : false, // For ignoring timezone,
 			eventDrop : $scope.changedDateOnCalendar,
 		};
+		$scope.refreshScroller('edit_staydate_calendar');
 	}
 	this.initialise = function() {
 		that.dataAssign();
@@ -348,6 +347,11 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			// reverting back to it's original position
 			return false;
 		}
+		//Events other than check-in and checkout should not be drag and droped
+		if (event.id !== 'check-in' &&  event.id !== 'check-out') {
+			revertFunc();
+			return false;
+		}
 
 		if (event.id == 'check-in') {
 			//checkin type date draging after checkout date wil not be allowed
@@ -488,7 +492,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 
 				//mid-stay range
 			} else if ((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
-				calEvt.id = "availability";
+				calEvt.id = "mid-stay" + index; // Id should be unique
 				calEvt.className = "mid-stay";
 				//Event is check-out
 			} else if (thisDate.getTime() == checkoutDate.getTime()) {
@@ -498,7 +502,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 				calEvt.durationEditable = "false";
 				//dates prior to check-in and dates after checkout
 			} else {
-				//calEvt.id = "availability";
+				calEvt.id = "availability" + index; // Id should be unique
 				calEvt.className = "type-available";
 			}
 

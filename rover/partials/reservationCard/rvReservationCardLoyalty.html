@@ -1,7 +1,5 @@
-<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-buttons float">
-	<div class="block-title">
-		<h3 translate>LOYALTY_LABEL</h3>
-	</div>
+<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-button">
+	<h3 class="block-title" translate>LOYALTY_LABEL</h3>	
 	<div class="select-item loyalty">
 		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->
 		<select ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled"ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)" ng-disabled= "!isNewsPaperPreferenceAvailable()">
@@ -30,5 +28,4 @@
 	<div class="actions">
 		<a id="add_new_loyalty_staycard" ng-click="showLoyaltyProgramDialog()" class="add-new-button" translate>HOTEL_LOYALTY_ADD_BUTTON</a>
 	</div>
-
 </form>
