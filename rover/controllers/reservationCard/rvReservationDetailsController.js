@@ -3,30 +3,26 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// pre setup for back button
 		var titleDict = {
-		    'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
-		    'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
-		    'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
-		    'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
-		    'VIP': 'DASHBOARD_SEARCH_VIP',
-		    'NORMAL_SEARCH': 'SEARCH_NORMAL'
+			'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
+			'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
+			'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
+			'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+			'VIP': 'DASHBOARD_SEARCH_VIP',
+			'NORMAL_SEARCH': 'SEARCH_NORMAL'
 		};
 		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+		var backParam = !!titleDict[$vault.get('searchType')] ? {
+			type: $vault.get('searchType')
+		} : {};
 
 		// setup a back button
 		$rootScope.setPrevState = {
-			title: $filter( 'translate' )( backTitle ),
+			title: $filter('translate')(backTitle),
 			name: 'rover.search',
 			param: backParam
 		};
 
-
-
-
-
-
 		BaseCtrl.call(this, $scope);
-
 
 		$scope.reservationCardSrv = RVReservationCardSrv;
 		/*
@@ -77,16 +73,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
-			if($scope.shouldShowGuestDetails){
-				$scope.shouldShowTimeDetails = false;				
+			if ($scope.shouldShowGuestDetails) {
+				$scope.shouldShowTimeDetails = false;
 			}
 		};
 
 		$scope.shouldShowTimeDetails = false;
 		$scope.toggleTime = function() {
 			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;
-			if($scope.shouldShowTimeDetails){
-				$scope.shouldShowGuestDetails = false;				
+			if ($scope.shouldShowTimeDetails) {
+				$scope.shouldShowGuestDetails = false;
 			}
 		};
 
@@ -149,14 +145,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		});
 		//CICO-7078
 
-
-
-		$scope.$on('$viewContentLoaded', function() {
+		$scope.refreshReservationDetailsScroller = function(timeoutSpan) {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
 				},
-				3000);
+				timeoutSpan);
+		}
 
+
+		$scope.$on('$viewContentLoaded', function() {
+			$scope.refreshReservationDetailsScroller(3000);
 		});
 
 
@@ -355,18 +353,22 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.modifyCheckinCheckoutTime = function() {
 			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
-				if ($scope.reservationParentData.checkinTime.hh != '') {
-					$scope.reservationData.reservation_card.arrival_time = $scope.reservationParentData.checkinTime.hh + ":" + $scope.reservationParentData.checkinTime.mm + " " + $scope.reservationParentData.checkinTime.ampm;
+				if ($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') {
+					$scope.reservationData.reservation_card.arrival_time = $scope.reservationParentData.checkinTime.hh + ":" + ($scope.reservationParentData.checkinTime.mm != '' ? $scope.reservationParentData.checkinTime.mm : '00') + " " + $scope.reservationParentData.checkinTime.ampm;
+				} else {
+					$scope.reservationData.reservation_card.arrival_time = null;
 				}
-				if ($scope.reservationParentData.checkoutTime.hh != '') {
-					$scope.reservationData.reservation_card.departure_time = $scope.reservationParentData.checkoutTime.hh + ":" + $scope.reservationParentData.checkoutTime.mm + " " + $scope.reservationParentData.checkoutTime.ampm;
+				if ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '') {
+					$scope.reservationData.reservation_card.departure_time = $scope.reservationParentData.checkoutTime.hh + ":" + ($scope.reservationParentData.checkoutTime.mm != '' ? $scope.reservationParentData.checkoutTime.mm : '00') + " " + $scope.reservationParentData.checkoutTime.ampm;
+				} else {
+					$scope.reservationData.reservation_card.departure_time = null;
 				}
 			}
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 			}
 
-			if ($scope.reservationParentData.checkinTime.hh != '' || $scope.reservationParentData.checkoutTime.hh != '') {
+			if (($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') || ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '') || ($scope.reservationParentData.checkinTime.hh == '' && $scope.reservationParentData.checkinTime.mm == '') || ($scope.reservationParentData.checkoutTime.hh == '' && $scope.reservationParentData.checkoutTime.mm == '')) {
 				var postData = $scope.computeReservationDataforUpdate();
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
