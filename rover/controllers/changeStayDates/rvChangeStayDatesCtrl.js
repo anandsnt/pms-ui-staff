@@ -61,6 +61,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			ignoreTimezone : false, // For ignoring timezone,
 			eventDrop : $scope.changedDateOnCalendar,
 		};
+		$scope.refreshScroller('edit_staydate_calendar');
 	}
 	this.initialise = function() {
 		that.dataAssign();
