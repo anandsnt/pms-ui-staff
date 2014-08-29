@@ -4,6 +4,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.isInitialPage = true;
     $scope.isEntitySelected = false;
 
+    $scope.selectedEntity = {};
+
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -22,16 +24,38 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.isInitialPage = !$scope.isInitialPage;
 	}
 
-	$scope.selectEntity = function(){
+	$scope.selectEntity = function(index){
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
+        $scope.selectedEntity = $scope.attachedEntities[index];
 	}
+
+	$scope.getEntityRole = function(route){
+    	if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'false')
+    		return 'guest';
+    	else if(route.entity_type == 'RESERVATION')
+    		return 'accompany';
+    	else if(route.entity_type == 'TRAVEL_AGENT')
+    		return 'travel-agent';
+    	else if(route.entity_type == 'COMPANY_CARD')
+    		return 'company';
+    };
+    $scope.getEntityIconClass = function(route){
+        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'true')
+            return 'accompany';
+    	else if(route.entity_type == 'RESERVATION' || route.entity_type == 'COMPANY_CARD')
+            return '';
+    	else if(route.entity_type == 'TRAVEL_AGENT')
+    		return 'icons icon-travel-agent';
+    	
+    };
 
     $scope.fetchRoutes = function(){
         
             var successCallback = function(data) {
                 $scope.attachedEntities = data;
-                 $scope.$emit('hideLoader');
+                $scope.routes = data;
+                 $scope.$parent.$emit('hideLoader');
             };
             var errorCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
