@@ -84,7 +84,7 @@
 							<strong class="h1">No guests opted for late checkout </strong>
 						</div>
 					</li>
-					<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<3">
+					<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<3 && !swipeNoResults">
 						<div class="info">
 							<span class="icon-no-content icon-search"></span>
 							<strong class="h1">Find Guests</strong>
@@ -96,6 +96,16 @@
 								or
 								<strong>Confirmation No.</strong>
 							</span>
+						</div>
+					</li>
+					<li class="no-content" ng-show="swipeNoResults">
+						<div class="info">
+							<span class="icon-no-content icon-search" ></span>
+							<strong class="h1">No matches </strong>
+							<span class="h2">Enter different search criteria to find reservation / guest. 
+								
+							</span>
+							
 						</div>
 					</li>
 

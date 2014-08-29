@@ -13,8 +13,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 	};
 
 	this.restructureDataForUI = function(dataFromAPI){
-		var roomAvailabilityData = dataFromAPI.roomAvailabilityData;
-		var occupanyData = dataFromAPI.roomAvailabilityData;
+		var roomAvailabilityData= dataFromAPI.roomAvailabilityData;
+		var occupanyData 		= dataFromAPI.occupancyTargetted;
 		var dates 				= [];
 		var occupancies 		= [];
 		var bookableRooms 		= [];
@@ -40,7 +40,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		}
 
 		for(i = 0; i < roomAvailabilityData.results.length; i++){
-			var isWeekend = new Date(roomAvailabilityData.results[i].date).getDay() == 0 || new Date(roomAvailabilityData.results[i].date).getDay() == 6;
+			var dateToCheck = tzIndependentDate(roomAvailabilityData.results[i].date);
+			var isWeekend = dateToCheck.getDay() == 0 || dateToCheck.getDay() == 6;
 			dates.push({'date': roomAvailabilityData.results[i].date, 'isWeekend': isWeekend, 'dateObj': new Date(roomAvailabilityData.results[i].date)});
 
 			occupancies.push((roomAvailabilityData.results[i].house.sold / roomAvailabilityData.physical_count) * 100);
@@ -54,6 +55,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 				for(var k = 0; k < individualAvailableRooms.length; k++){
 					if(individualAvailableRooms[k].id == id){
 						individualAvailableRooms[k].availableRoomNumberList.push(roomAvailabilityData.results[i].room_types[j].availability);
+						break;
 					}
 				}
 			}
@@ -68,7 +70,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		}
 		var IsOccupancyTargetSetBetween = false;
 		for(i = 0; i < occupanyData.results.length; i++){	
-			console.log(occupanyData.results[i].target);
 			var actual = escapeNull(occupanyData.results[i].actual) == "" ? 0 : occupanyData.results[i].actual;
 			var target = escapeNull(occupanyData.results[i].target) == "" ? 0 : occupanyData.results[i].target;
 			occupanciesActual.push((actual / roomAvailabilityData.physical_count) * 100);
@@ -77,7 +78,6 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 				IsOccupancyTargetSetBetween = true;
 			}
 		}
-		console.log(occupanciesTargeted);
 		var availabilityData = {
 			'dates'				: dates,
 			'occupancies'		: occupancies,

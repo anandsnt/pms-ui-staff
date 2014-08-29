@@ -124,10 +124,10 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.reservationData.reservation_card.room_id = '';
 		$scope.reservationData.reservation_card.room_number = '';
 		$scope.reservationData.reservation_card.is_upsell_available = true;
-	
-		$scope.reservationData.reservation_card.room_type_description = '';
-		$scope.reservationData.reservation_card.room_type_code = '';
-					
+
+		$scope.reservationData.reservation_card.room_status = '';
+		$scope.reservationData.reservation_card.fo_status = '';
+		$scope.reservationData.reservation_card.room_ready_status = '';					
 		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 		updateSearchCache();
 		$scope.backToStayCard();
