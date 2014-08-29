@@ -22,6 +22,26 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		}
 	}	
 
+    $scope.isBillingGroupSelected = function(billingGroup){
+        for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
+            if($scope.selectedEntity.attached_billing_groups[i].id == billingGroup.id )
+                return true;
+        }
+        return false;
+    }   
+
+    $scope.toggleSelectionForBillingGroup = function(billingGroup){
+        for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
+            if($scope.selectedEntity.attached_billing_groups[i].id == billingGroup.id ){
+                $scope.selectedEntity.attached_charge_codes = [];
+                $scope.selectedEntity.attached_billing_groups.splice(i, 1);
+                return;                
+            }
+        }
+        $scope.selectedEntity.attached_charge_codes = [];
+        $scope.selectedEntity.attached_billing_groups.push(billingGroup);
+    };
+
 	$scope.setChargeType();
 
 	$scope.fetchAvailableChargeCodes = function(){
