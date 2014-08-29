@@ -72,4 +72,8 @@
 	"OK" : "Ok",
 	"CANCEL" : "Cancel",
 	"REGISTRATION" : "Registration",
-     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+
+    "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
+
+    "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+
