@@ -440,7 +440,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date != $scope.reservationData.departureDate || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
 
@@ -514,7 +514,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             })
 
             currentRoom.rateTotal = parseFloat(roomTotal) + parseFloat(roomTax);
-            currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
+            currentRoom.rateAvg = currentRoom.rateTotal / ($scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights);
 
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
