@@ -120,7 +120,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 reservationId: '',
                 confirmNum: '',
                 isSameCard: false, // Set flag to retain the card details,
-                rateDetails: [] // This array would hold the configuration information of rates selected for each room
+                rateDetails: [], // This array would hold the configuration information of rates selected for each room
+                isRoomRateSuppressed: false // This variable will hold flag to check whether any of the room rates is suppressed?
             };
 
             $scope.searchData = {
@@ -439,7 +440,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date != $scope.reservationData.departureDate || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
 
@@ -513,7 +514,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             })
 
             currentRoom.rateTotal = parseFloat(roomTotal) + parseFloat(roomTax);
-            currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
+            currentRoom.rateAvg = currentRoom.rateTotal / ($scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights);
 
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;

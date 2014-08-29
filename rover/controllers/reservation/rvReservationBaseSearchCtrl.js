@@ -66,8 +66,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
             // to make sure that the number of
-            // dates the guest stays must not be less than 1
-            if (dayDiff < 1) {
+            // dates the guest stays must not be less than ZERO [In order to handle day reservations!]
+            if (dayDiff < 0) {
 
                 // user tried set the departure date
                 // before the arriaval date
