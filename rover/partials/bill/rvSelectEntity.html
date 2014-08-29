@@ -6,7 +6,7 @@
             	<span class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}" translate>CLEAR_QUERY</span>
             </a>
             <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
-            <input name="billing-info-query" id="billing-info-query" class="query" placeholder="Find Guest, Company or Travel Agent" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
+            <input name="billing-info-query" id="billing-info-query" class="query" placeholder="{{'FIND_PLACEHOLDER' | translate}}" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
          </div>
       </div>
       <div id="available-entities">
