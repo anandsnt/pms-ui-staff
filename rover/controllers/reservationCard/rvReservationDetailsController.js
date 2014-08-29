@@ -328,14 +328,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
-
-			if (reservationMainData.rooms[0].roomNumber != "") {
+			if($rootScope.isStandAlone){
+				//If standalone, go to change staydates calendar if rooms is assigned.
+				//If no room is assigned, go to stay dates calendar.
+				if (reservationMainData.rooms[0].roomNumber != "") {
+					$state.go('rover.reservation.staycard.changestaydates', {
+						reservationId: reservationMainData.reservationId,
+						confirmNumber: reservationMainData.confirmNum
+					});
+				} else {
+					$scope.goToRoomAndRates("CALENDAR");
+				}
+			} else {
+				//If ext PMS connected, go to change staydates screen
 				$state.go('rover.reservation.staycard.changestaydates', {
 					reservationId: reservationMainData.reservationId,
 					confirmNumber: reservationMainData.confirmNum
 				});
-			} else {
-				$scope.goToRoomAndRates("CALENDAR");
 			}
 		};
 
