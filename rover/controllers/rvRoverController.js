@@ -579,7 +579,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
         return response || $q.when(response);
     },
     responseError: function(rejection) {
-      if(rejection.status == 504){
+      if(rejection.status == 430){
          $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
       }
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {

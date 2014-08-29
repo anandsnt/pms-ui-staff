@@ -815,8 +815,7 @@ body { overflow: hidden; }
 	}
 
 /* Grey label				==============================*/
-	.label,
-	.block-title {
+	.label {
 		text-transform: uppercase;
 		color: @grey3;
 		font-size: 14px;
@@ -853,12 +852,12 @@ body { overflow: hidden; }
 				position: absolute;
 				top: 0;
 				left: 0;
-				width: 40px;
+				width: 30px;
 
 				&:nth-child(2) {
 					top: 15px;
 					left: 15px;
-					width: 35px;
+					width: 25px;
 				}
 
 			}
@@ -901,21 +900,24 @@ body { overflow: hidden; }
 
 		&.item-payment,
 		&.item-loyalty {
+			.float;
+
 			span {
-				display: inline-block;
 				vertical-align: middle;
 				color: @grey3;
-				font-size: 13px;
+				font-size: 14px;
 				text-transform: uppercase;
 				font-weight: 400;
 				margin-right: 20px;
+				.pull-left;
+				.flex(center);
 
 				&.value,
 				.value {
 					display: inline-block;
-					font-size: 17px;
+					font-size: 18px;
 					color: @textColor;
-					margin-left: 10px;
+					margin: 0 0 0 10px;
 
 					&.code {
 						font-size: 21px; 
@@ -931,18 +933,19 @@ body { overflow: hidden; }
 					}
 				}
 			}
+
+			&.primary { 
+				.value { font-weight: 600; }
+			}
 		}
 
 		&.item-payment {
 			.card-logo {
 				margin: 10px 40px 0 0;
-				.pull-left;
 				.size(30px,60px);
+				.pull-left;
 
-				img {
-					width: 100%;
-					height: auto;
-				}
+				img { .size(auto, 100%); }
 			}		
 		}
 
@@ -1141,69 +1144,69 @@ body { overflow: hidden; }
 	}
 
 /* Left sidebar			 	==============================*/
-.sidebar-left {
-	position: absolute;
-	top: 150px;
-	left: 0;
-	width: 30px;
-	padding-right: 25px;
-	height: 100%;
-	z-index: 990;
-	.show;
+	.sidebar-left {
+		position: absolute;
+		top: 150px;
+		left: 0;
+		width: 30px;
+		padding-right: 25px;
+		height: 100%;
+		z-index: 990;
+		.show;
 
-	.scrollable {
-		background: @rcardTexture1;
-		width: 100%;
-		.box-shadow(1px 0 1px rgba(0,0,0,.2));
-		.calc-height(100, 150);
+		.scrollable {
+			background: @rcardTexture1;
+			width: 100%;
+			.box-shadow(1px 0 1px rgba(0,0,0,.2));
+			.calc-height(100, 150);
 
-		> .wrapper { padding: 0; }
-		> .iScrollVerticalScrollbar { 
-			right: 30px;
+			> .wrapper { padding: 0; }
+			> .iScrollVerticalScrollbar { 
+				right: 30px;
 
-			.iScrollIndicator { background: rgba(0,0,0,.05); }
-		}
-
-		.settings-title {
-			font-size: 16px;
-			text-transform: uppercase;
-			font-weight: 600;
-			line-height: 40px;
-			color: @textColor;
-			background-color: rgba(0,0,0,.05);
-			width: 235px;
-			padding: 0 20px;
-			.float;
-
-			.title {
-				width: 155px;
-				.pull-left;
+				.iScrollIndicator { background: rgba(0,0,0,.05); }
 			}
 
-			.value {
-				width: 20px;
-				text-align: right;
-				.pull-left;
-			}
-		}
-
-		.settings-content {
-			width: 235px;
-			padding: 20px;
-
-			label:not(.radio) {
-				font-size: 14px;
+			.settings-title {
+				font-size: 16px;
 				text-transform: uppercase;
+				font-weight: 600;
+				line-height: 40px;
 				color: @textColor;
+				background-color: rgba(0,0,0,.05);
+				width: 235px;
+				padding: 0 20px;
+				.float;
 
-				span,
-				&.label { color: @grey3; }
+				.title {
+					width: 155px;
+					.pull-left;
+				}
+
+				.value {
+					width: 20px;
+					text-align: right;
+					.pull-left;
+				}
 			}
-		}
 
-		@media @highdpi { background-size: 40px; }
+			.settings-content {
+				width: 235px;
+				padding: 20px;
+
+				label:not(.radio) {
+					font-size: 14px;
+					text-transform: uppercase;
+					color: @textColor;
+
+					span,
+					&.label { color: @grey3; }
+				}
+			}
+
+			@media @highdpi { background-size: 40px; }
+		}
 	}
-}
 	
 /* 6. IE
 ==========================================================*/
