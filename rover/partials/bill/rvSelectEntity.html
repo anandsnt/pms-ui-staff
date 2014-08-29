@@ -14,17 +14,17 @@
          <span class="h3 message" ng-hide="textInQueryBox!=''" translate>ATTACHED_ENTITIES</span>
          <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
-                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="{'guest':entity.entity_role =='guest','accompany':entity.entity_role =='accompanying guest','company':entity.entity_role =='company','travel-agent':entity.entity_role =='travel_agent'}" ng-click="selectEntity()">
+                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index)">
                   <!-- image -->
-                  <figure class="guest-image" ng-class="{'accompany':entity.entity_role =='accompanying guest'}">
+                  <figure class="guest-image" ng-class="{'accompany':entity.has_accompanying_guests =='true'}">
                      <img src="{{entity.entity_avatar}}" alt="" />
-                     <img src="{{entity.accompanyImage}}" alt="" ng-show="entity.entity_role =='accompany'"/>
+                     <img src="{{entity.accompanyImage}}" alt="" ng-show="entity.has_accompanying_guests =='true'}"/>
                   </figure>
                   <!-- heading -->
-                  <h2>{{entity.entity_name}}</h2>
+                  <h2>{{entity.name}}</h2>
                   <!-- icon -->
-                  <span class="guest-status small-icon {{entity.status}}"  ng-hide="entity.entity_role =='company' || entity.entity_role =='travel_agent'" >{{entity.status}}</span>
-                  <div class="status" ng-class="{'travel-agent':entity.entity_role =='travel_agent','company':entity.entity_role =='company'}" ng-show="entity.entity_role =='company' || entity.entity_role =='travel_agent'">{{entity.status}}</div>
+                  <span class="guest-status small-icon checkin"  ng-hide="entity.entity_type !='RESERVATION'" >{{entity.status}}</span>
+                  <div class="status" ng-class="getEntityRole(entity)" ng-show="entity.entity_type !='RESERVATION'">{{entity.status}}</div>
                  </li>
             </ul>
          </div>
