@@ -1,8 +1,10 @@
-sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog){
+sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.isInitialPage = true;
     $scope.isEntitySelected = false;
+
+    $scope.selectedEntity = {};
 
 	$scope.closeDialog = function(){
 		ngDialog.close();
@@ -22,42 +24,47 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.isInitialPage = !$scope.isInitialPage;
 	}
 
-	$scope.selectEntity = function(){
+	$scope.selectEntity = function(index){
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
+        $scope.selectedEntity = $scope.attachedEntities[index];
 	}
 
+	$scope.getEntityRole = function(route){
+    	if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'false')
+    		return 'guest';
+    	else if(route.entity_type == 'RESERVATION')
+    		return 'accompany';
+    	else if(route.entity_type == 'TRAVEL_AGENT')
+    		return 'travel-agent';
+    	else if(route.entity_type == 'COMPANY_CARD')
+    		return 'company';
+    };
+    $scope.getEntityIconClass = function(route){
+        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'true')
+            return 'accompany';
+    	else if(route.entity_type == 'RESERVATION' || route.entity_type == 'COMPANY_CARD')
+            return '';
+    	else if(route.entity_type == 'TRAVEL_AGENT')
+    		return 'icons icon-travel-agent';
+    	
+    };
 
+    $scope.fetchRoutes = function(){
+        
+            var successCallback = function(data) {
+                $scope.attachedEntities = data;
+                $scope.routes = data;
+                 $scope.$parent.$emit('hideLoader');
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+           
+            $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, {}, successCallback, errorCallback);
+    };	
 
-	 $scope.attachedEntities = [
-        {
-            "id": "1",
-            "entity_name": "Aron Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "guest",
-            "status":"check-in"
-        },
-        {
-            "id": "2",
-            "entity_name": "Allianz Insurance",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "company"
-        },
-        {
-            "id": "3",
-            "entity_name": "Mctavish travels",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "travel_agent"
-        },
-        {
-            "id": "4",
-            "entity_name": "John Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "accompanying guest",
-            "status":"check-out"
-        }
-    ]
-
-	
+    $scope.fetchRoutes();
 	
 }]);

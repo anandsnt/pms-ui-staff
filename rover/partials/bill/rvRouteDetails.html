@@ -13,7 +13,7 @@
                <figure class="guest-image">
                   <img src="{image}" alt="" />
                </figure>
-               <h2>{lastname}, {firstname}</h2>
+               <h2>{{selectedEntity.name}}</h2>
                <span class="guest-status {reservation-status} small-icon">{reservation-status}</span>
             </div>
             <div class="title">Payment</div>
@@ -46,15 +46,15 @@
          </div>
       </span>
       <ul id="transaction-type" class="modal-options">
-         <li ng-class="{'active' : isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup" translate>BILLING_GROUP</li>
-         <li ng-class="{'active' : !isBillingGroup}" ng-click = "isBillingGroup = !isBillingGroup" translate>CHARGE_CODES</li>
+         <li ng-class="{'active' : isBillingGroup}" ng-click = "toggleChargeType()" translate>BILLING_GROUP</li>
+         <li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
       </ul>
       <div id="transactions" class="transactions scrollable" ng-show = "isBillingGroup">
-         <div class="entry radio-check wrapper">
+         <div class="entry radio-check wrapper" ng-repeat  = "billingGroup in availableBillingGroups">
             <label class="checkbox">
             <span class="icon-form icon-checkbox"></span>
             <input name="billing-group" id="100" value="100" type="checkbox" />
-            <span class="value">100</span> Room
+            <span class="value"></span> {{billingGroup.name}}
             </label>
             
          </div>
@@ -62,21 +62,21 @@
 
       <!-- Search available charge codes -->
       <div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
-         <input name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
+         <input name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
          <div class="mini-select">
             <select id="charge-codes" name="charge-codes">
-               <option value="10">10 Minibar</option>
+               <option value="10" ng-repeat = "chargeCode in availableChargeCodes">{{chargeCode.code + " " + chargeCode.description}}</option>
                
             </select>
          </div>
       </div>
       <!-- Added from search -->
       <div id="transactions" class="transactions codes scrollable" ng-show = "!isBillingGroup">
-         <div class="entry radio-check wrapper">
+         <div class="entry radio-check wrapper" ng-repeat = "selectedChargeCode in selectedEntity.selected_charge_codes">
             <label class="checkbox">
                <span class="icon-form icon-checkbox checked"></span>
                   <input name="billing-group" id="100" value="100" type="checkbox" checked />
-               <span class="value">100</span> Spa
+               <span class="value">{{selectedChargeCode.id}}</span> {{selectedChargeCode.description}}
             </label>
             
          </div>

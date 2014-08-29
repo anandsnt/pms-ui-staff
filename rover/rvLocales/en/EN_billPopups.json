@@ -25,4 +25,9 @@
 "NO_MATCH_FOUND_MSG":"No matches have been found",
 "ENTITY_NOT_SELECTED":"Entity not selected",
 "SELECT_ENTITY_TO_CONFIGURE":"Select Entity to configure bill routing",
-"CANCEL_SEARCH":"Cancel Search"
+"CANCEL_SEARCH":"Cancel Search",
+"ENTER_VALUE_PLACEHOLDER":"Enter value",
+"REMOVAL_REASON_PLACEHOLDER":"Removal reason",
+"SEARCH_OR_SELECT_CODES_PLACEHOLDER":"Search or Select codes to add",
+"FIND_PLACEHOLDER":"Find Guest, Company or Travel Agent",
+"ENTER_SPLIT_VALUE_PLACEHOLDER":"Enter split value"
