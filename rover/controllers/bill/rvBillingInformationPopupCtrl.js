@@ -35,27 +35,16 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         	var data = $scope.results.reservations[index];
         	$scope.selectedEntity = {
 			    "id": data.id,
+			    "reservation_status" : data.reservation_status,
 			    "name": data.firstname + " " + data.lastname,
+			    "images": data.images,
 			    "bill_no": "",
 			    "entity_type": "RESERVATION",
+			    "has_accompanying_guests" : ( data.images.length >1 ) ? "true" : "false",
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": []
 			};
 			
-			if(data.images.length >1){
-				$scope.selectedEntity.images = {
-					"primary": data.images[0].guest_image,
-			        "secondary": data.images[1].guest_image
-				}
-				$scope.selectedEntity.has_accompanying_guests = "true";
-			}
-			else{
-				$scope.selectedEntity.images = {
-		            "primary": data.images[0].guest_image,
-		            "secondary": ""
-		       	};
-				$scope.selectedEntity.has_accompanying_guests = "false";
-			}
         	console.log($scope.selectedEntity);
         }
         else if(type === 'CARDS'){
@@ -64,7 +53,6 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "id": data.id,
 			    "name": data.account_name,
 			    "bill_no": "",
-			    "entity_type": data.account_type,
 			    "images": {
 		            "primary": data.company_logo,
 		            "secondary": ""
@@ -72,6 +60,12 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": []
 			};
+			if(data.data.account_type === 'COMPANY'){
+				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
+			}
+			else{
+				$scope.selectedEntity.entity_type = 'TRAVEL_AGENT';
+			}
 			console.log($scope.selectedEntity);
         }
 	}
