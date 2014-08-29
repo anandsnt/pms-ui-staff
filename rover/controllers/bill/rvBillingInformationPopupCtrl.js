@@ -5,7 +5,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.isEntitySelected = false;
 
     $scope.selectedEntity = {};
-
+	$scope.results = {};
+	
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -24,10 +25,55 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.isInitialPage = !$scope.isInitialPage;
 	}
 
-	$scope.selectEntity = function(index){
+	$scope.selectEntity = function(index,type){
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
-        $scope.selectedEntity = $scope.attachedEntities[index];
+        if(type === 'ATTACHED_ENTITY'){
+        	$scope.selectedEntity = $scope.attachedEntities[index];
+        }
+        else if(type === 'RESERVATIONS'){
+        	var data = $scope.results.reservations[index];
+        	$scope.selectedEntity = {
+			    "id": data.id,
+			    "name": data.firstname + " " + data.lastname,
+			    "bill_no": "",
+			    "entity_type": "RESERVATION",
+			    "attached_charge_codes": [],
+			    "attached_billing_groups": []
+			};
+			
+			if(data.images.length >1){
+				$scope.selectedEntity.images = {
+					"primary": data.images[0].guest_image,
+			        "secondary": data.images[1].guest_image
+				}
+				$scope.selectedEntity.has_accompanying_guests = "true";
+			}
+			else{
+				$scope.selectedEntity.images = {
+		            "primary": data.images[0].guest_image,
+		            "secondary": ""
+		       	};
+				$scope.selectedEntity.has_accompanying_guests = "false";
+			}
+        	console.log($scope.selectedEntity);
+        }
+        else if(type === 'CARDS'){
+        	var data = $scope.results.cards[index];
+        	$scope.selectedEntity = {
+			    "id": data.id,
+			    "name": data.account_name,
+			    "bill_no": "",
+			    "entity_type": data.account_type,
+			    "images": {
+		            "primary": data.company_logo,
+		            "secondary": ""
+		        },
+			    "attached_charge_codes": [],
+			    "attached_billing_groups": []
+			};
+			console.log($scope.selectedEntity);
+        }
 	}
 
 	$scope.getEntityRole = function(route){

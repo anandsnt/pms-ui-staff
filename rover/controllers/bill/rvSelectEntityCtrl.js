@@ -2,9 +2,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	BaseCtrl.call(this, $scope);
 	
 	$scope.textInQueryBox = "";
-	$scope.results = {};
-  	$scope.results.reservations = [];
-  	$scope.results.cards = [];
   	$scope.isReservationActive = true;
   	
   	var scrollerOptions = {click: true, preventDefault: false};
@@ -18,7 +15,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	$scope.queryEntered = function(){
 		console.log("queryEntered");
 		if($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3){
-			$scope.results = {};
 			$scope.results.cards = [];
 			$scope.results.reservations = [];
 		}
