@@ -524,13 +524,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           });
         }        
     };
-
  
     $rootScope.$on('bussinessDateChangeInProgress',function(){
       $rootScope.showBussinessDateChangingPopup();
-    });
-
-       
+    });     
 
     $scope.goToDashboard = function(){
       ngDialog.close();
@@ -563,10 +560,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 // but should be moved to higher up above in root level
 sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
   
-  var bussinessDateChangeInProgress = function() {
-      $rootScope.$broadcast('bussinessDateChangeInProgress');
-  };
-
   return {
     request: function (config) {
       return config;
@@ -574,7 +567,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
     response: function (response) {
         // if manual bussiness date change is in progress alert user.
         if(response.data.is_eod_in_progress && response.data.is_eod_manual_started){
-           bussinessDateChangeInProgress();
+           $rootScope.$emit('bussinessDateChangeInProgress');
         }       
         return response || $q.when(response);
     },
