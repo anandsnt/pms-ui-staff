@@ -28,41 +28,19 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	}
 
     $scope.fetchRoutes = function(){
-        $scope.isEntitySelected = true;
-        $scope.isInitialPage = false;
-    }
+        
+            var successCallback = function(data) {
+                $scope.attachedEntities = data;
+                 $scope.$emit('hideLoader');
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+           
+            $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, {}, successCallback, errorCallback);
+    };	
 
-
-
-	 $scope.attachedEntities = [
-        {
-            "id": "1",
-            "entity_name": "Aron Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "guest",
-            "status":"check-in"
-        },
-        {
-            "id": "2",
-            "entity_name": "Allianz Insurance",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "company"
-        },
-        {
-            "id": "3",
-            "entity_name": "Mctavish travels",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "travel_agent"
-        },
-        {
-            "id": "4",
-            "entity_name": "John Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "entity_role": "accompanying guest",
-            "status":"check-out"
-        }
-    ]
-
-	
+    $scope.fetchRoutes();
 	
 }]);

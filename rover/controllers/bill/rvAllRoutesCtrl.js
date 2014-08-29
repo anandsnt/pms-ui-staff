@@ -2,58 +2,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVGuestC
 	BaseCtrl.call(this, $scope);
 	$scope.isInitialPage = true;
 
-	$scope.routes = [
-        {
-            "id": "1",
-            "entity_name": "Aron Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "route_type": "charge_code",
-            "entity_role": "guest",
-            "route_charges": [
-                "room",
-                "food",
-                "parking"
-            ],
-            "bill_no": 3
-        },
-        {
-            "id": "2",
-            "entity_name": "John Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "route_type": "billing_group",
-            "entity_role": "accompny_guest",
-            "route_charges": [
-                "room",
-                "food"
-            ],
-            "bill_no": 4
-        },
-        {
-            "id": "3",
-            "entity_name": "John Smith",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "route_type": "billing_group",
-            "entity_role": "travel_agent",
-            "route_charges": [
-                "room",
-                "food",
-                "parking"
-            ],
-            "bill_no": 4
-        },
-        {
-            "id": "4",
-            "entity_name": "Allianz Insurance",
-            "entity_avatar": "http://localhost:3000/assets/avatar-female.png",
-            "route_type": "charge_code",
-            "entity_role": "company",
-            "route_charges": [
-                "food",
-                "parking"
-            ],
-            "bill_no": 5
-        }
-    ];
+	$scope.routes = $scope.$parent.attachedEntities;
 
     $scope.getEntityRole = function(route){
     	if(route.entity_role == 'guest')
@@ -76,11 +25,19 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVGuestC
     };
 
     $scope.getCharges = function(route){
-    	if(route.route_charges.length > 2){
+    	if(route.attached_charge_codes.length > 2){
     		return 'Multiple';
-    	}else{
+    	}else if(route.attached_charge_codes.length > 0){
     		return route.route_charges[0] + ', ' + route.route_charges[1];
     	}
+    }
+
+    $scope.getRouteType = function(route){
+        if(route.attached_charge_codes.length > 0){
+            return 'CHARGE GROUP(S)';
+        }else{
+            return 'BILLING GROUP(S)';
+        }
     }
 		
 	
