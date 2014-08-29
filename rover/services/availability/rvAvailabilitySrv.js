@@ -55,6 +55,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 				for(var k = 0; k < individualAvailableRooms.length; k++){
 					if(individualAvailableRooms[k].id == id){
 						individualAvailableRooms[k].availableRoomNumberList.push(roomAvailabilityData.results[i].room_types[j].availability);
+						break;
 					}
 				}
 			}

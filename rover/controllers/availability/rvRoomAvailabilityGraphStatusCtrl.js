@@ -28,9 +28,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
  		var timeoutFunction = null;
 
  		for(var i = 0 ;i < colors.length; i++){ 			
- 			legendClasses.push("background-image: none !important;"  + 
-			"background-color: "+colors[i]+" !important; " +
-			"background-repeat: repeat;");
+ 			legendClasses.push("background: "+colors[i]+" !important;");
 		}
 
 		$scope.returnLegendStyle  = function(index, legendModel){
@@ -46,17 +44,18 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			/*
 				Caution, DOM accessing, TODO: try to convert it into angular way
 			*/
-        	$("#graph-showing-area #nav-listing").css("left", plottedChart.plotLeft);
-        	$("#graph-showing-area #nav-listing").css("width", plottedChart.plotSizeX);
+			var navListNode = $("#graph-showing-area #nav-listing");
+			var LabelElements = navListNode.find("ul li");
+        	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
         	if(getMaxSeriesLengthData() != 0){
         		labelWidthToSet = parseInt((plottedChart.plotSizeX)/getMaxSeriesLengthData());
         	}
         	else{
-        		$("#graph-showing-area #nav-listing").css("width", 0);
+        		navListNode.css("width", 0);
         	}
-        	$("#graph-showing-area #nav-listing ul li").css("width", labelWidthToSet);        	
+        	LabelElements.css("width", labelWidthToSet);        	
         	$scope.refreshScroller('graph-scroller');			
 
 		}
@@ -117,14 +116,16 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
  			for(var i = 0; i < plottedChart.series.length; i++){
  				if(plottedChart.series[i].name == legendName){
  					if (model){						
- 						plottedChart.series[i].hide();
+ 						plottedChart.series[i].hide(); 						
  					}
  					else{						
  						plottedChart.series[i].show();
- 					}
+ 					} 					 					
+ 					break;
  				}
  			}
  			resizedWindow();
+ 			
  		};
 
 
