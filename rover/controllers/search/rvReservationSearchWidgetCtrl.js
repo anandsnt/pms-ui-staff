@@ -336,7 +336,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		
 		 $scope.$emit('hideLoader');
 		 $scope.isSwiped = true;
-		 data = [];
+		 data = searchByCCResults;
 		 if(data.length == 0){
 		 	$scope.$emit("updateDataFromOutside", data);  
 		 	$scope.swipeNoResults = true;
