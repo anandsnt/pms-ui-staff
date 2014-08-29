@@ -17,6 +17,34 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
         $scope.updatePopupWidth();
 
+        // CICO-8452 fixed the missing ".00"
+        // from form inputs
+        setTimeout(function() {
+            var inputs = $('#restrictionPriceContainer .hook'),
+                val,
+                dec;
+
+            if ( inputs.length ) {
+                inputs.each(function() {
+                    val = $(this).val();
+
+                    if ( !!val ) {
+                        dec = val.split( '.' )[1];
+                        
+                        if ( angular.isDefined(dec) ) {
+                            if ( dec !== '00' && dec * 1 < 10 ) {
+                                val += '0';
+                            };
+                        } else {
+                            val += '.00';
+                        };
+
+                        $(this).val( val );
+                    }; 
+                });
+            };
+        }, 100);
+        
     };
 
     $scope.$parent.myScrollOptions = {
