@@ -5,7 +5,7 @@
             <div class="title">
                {{'ENTITY' | translate}}
                <button type="button" id="edit-entity" class="button with-icon only-icon purple edit">
-               <span class="icons icon-pencil"></span>
+               <span class="icons icon-pencil" ng-click="isEntitySelected = false"></span>
                </button>
             </div>
             <!-- Selected entity -->
@@ -92,5 +92,5 @@
 </div>
 <div class="actions">
    <button type="button" id="close-information" class="button blank modal-close" ng-click = "headerButtonClicked()">Cancel</button>
-   <button type="button" id="save-route" class="button green modal-close">Save Route</button>
+   <button type="button" id="save-route" class="button green modal-close" ng-click = "saveRoute()">Save Route</button>
 </div>

@@ -71,6 +71,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	$scope.setChargeType();
 
+    
+
 	$scope.fetchAvailableChargeCodes = function(){
         
             var successCallback = function(data) {
@@ -81,7 +83,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
-           
+            
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, {}, successCallback, errorCallback);
     };	
 

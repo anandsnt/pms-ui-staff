@@ -2,7 +2,7 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
    
 	this.fetchRoutes = function(reservationId){
 		var deferred = $q.defer();
-		var url = 'api/bill_routings';
+		var url = 'api/bill_routings/' + reservationId + '/attached_entities' ;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				
 			   	 deferred.resolve(data);
@@ -39,10 +39,23 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		return deferred.promise;
 	};
 
-	this.saveRoute = function(reservationId){
+	this.saveRoute = function(data){
 		var deferred = $q.defer();
-		var url = 'api/bill_routings/save';
-			BaseWebSrvV2.getJSON(url).then(function(data) {
+		var url = 'api/bill_routings/save_routing';
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+				
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
+
+	this.deleteRoute = function(data){
+		var deferred = $q.defer();
+		var url = 'api//bill_routings/delete_routing';
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 				
 			   	 deferred.resolve(data);
 			},function(data){
