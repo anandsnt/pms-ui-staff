@@ -2,11 +2,11 @@
    <fieldset class="content-left">
       <div class="search-form" role="search">
          <div class="entry">
-            <a href="#" id="billing-info-clear-query" class="clear-query">
-            	<span class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}" translate>CLEAR_QUERY</span>
+            <a href="#" id="billing-info-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox!=''}">
+            	<span class="icons icon-clear-search" ng-click="clearResults()"  translate>CLEAR_QUERY</span>
             </a>
             <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
-            <input name="billing-info-query" id="billing-info-query" class="query" placeholder="Find Guest, Company or Travel Agent" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
+            <input name="billing-info-query" id="billing-info-query" class="query" placeholder="{{'FIND_PLACEHOLDER' | translate}}" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
          </div>
       </div>
       <div id="available-entities">
@@ -14,7 +14,7 @@
          <span class="h3 message" ng-hide="textInQueryBox!=''" translate>ATTACHED_ENTITIES</span>
          <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
-                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index)">
+                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index,'ATTACHED_ENTITY')">
                   <!-- image -->
                   <figure class="guest-image" ng-class="{'accompany':entity.has_accompanying_guests =='true'}">
                      <img src="{{entity.entity_avatar}}" alt="" />
@@ -40,8 +40,7 @@
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				
-				<li class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity()">
+				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
 	                        <img ng-src="{{row.company_logo}}" alt="">
@@ -55,53 +54,51 @@
 	                <h2 ng-bind-html="row.account_name | highlight:textInQueryBox:false"></h2>
 	                <!-- icon -->
                   	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
-                 </li>
-                 
-            	<!-- No results / no content when searched query not found-->
-            	<li class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
-					<div class="info">
-						<span class="icon-no-content icon-cards"></span>
-						<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
-					</div>
-				</li>
+                 </div>
 			</ul>
+			<!-- No results / no content when searched query not found-->
+        	<div class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
+				<div class="info">
+					<span class="icon-no-content icon-cards"></span>
+					<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
+				</div>
+			</div>
 		</div>
 		
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
-				<li class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity()">
+				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
 							
-							 <!-- image -->
-							<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
-								<img ng-repeat="image in row.images" 
-								ng-src="{{image.guest_image}}" 
+					<!-- image -->
+					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
+						<img ng-repeat="image in row.images" 
+						ng-src="{{image.guest_image}}" 
 
-								ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
+						ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
 
-								'second-image':(row.images.length >1 && image.is_primary==false)}">
+						'second-image':(row.images.length >1 && image.is_primary==false)}">
 
-								<span class="vip" ng-show="row.vip==true" translate>VIP</span>
-							</figure>
+						<span class="vip" ng-show="row.vip==true" translate>VIP</span>
+					</figure>
 
-							<div class="data">
-								<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
-								ng-class="{'grey' : row.images.length >1}"> </h2>
-								<span class="confirmation" ># {{row.confirmation}}</span>
-								<span class="room" >{{'ROOM_LABEL' | translate}} <strong>{{row.room}}</strong></span>
-							</div>	
-							
-							<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
+					<div class="data">
+						<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
+						ng-class="{'grey' : row.images.length >1}"> </h2>
+						<span class="confirmation" ># {{row.confirmation}}</span>
+						<span class="room" >{{'ROOM_LABEL' | translate}} <strong>{{row.room}}</strong></span>
+					</div>	
+					
+					<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
 						
-					</li>
-					<!-- No results / no content when searched query not found-->
-	            	<li class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
-						<div class="info">
-							<span class="icon-no-content icon-search"></span>
-							<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
-						</div>
-					</li>
-				
+				</div>
 			</ul>
+			<!-- No results / no content when searched query not found-->
+        	<div class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
+				<div class="info">
+					<span class="icon-no-content"></span>
+					<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
+				</div>
+			</div>
 			
 		</div>
 		<button ng-show="textInQueryBox!=''" type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>

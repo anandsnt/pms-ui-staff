@@ -62,7 +62,7 @@
 
       <!-- Search available charge codes -->
       <div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
-         <input name="search-codes" id="search-codes" type="text" placeholder="Search or Select codes to add" value="" autocomplete="off" />
+         <input name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
          <div class="mini-select">
             <select id="charge-codes" name="charge-codes">
                <option value="10" ng-repeat = "chargeCode in availableChargeCodes">{{chargeCode.code + " " + chargeCode.description}}</option>
