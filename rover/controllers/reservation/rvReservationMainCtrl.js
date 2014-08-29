@@ -120,7 +120,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 reservationId: '',
                 confirmNum: '',
                 isSameCard: false, // Set flag to retain the card details,
-                rateDetails: [] // This array would hold the configuration information of rates selected for each room
+                rateDetails: [], // This array would hold the configuration information of rates selected for each room
+                isRoomRateSuppressed: false // This variable will hold flag to check whether any of the room rates is suppressed?
             };
 
             $scope.searchData = {

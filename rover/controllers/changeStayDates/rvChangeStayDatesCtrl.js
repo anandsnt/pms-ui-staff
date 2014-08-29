@@ -3,8 +3,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
-	scopeRef = $scope;
-
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
@@ -63,6 +61,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			ignoreTimezone : false, // For ignoring timezone,
 			eventDrop : $scope.changedDateOnCalendar,
 		};
+		$scope.refreshScroller('edit_staydate_calendar');
 	}
 	this.initialise = function() {
 		that.dataAssign();
