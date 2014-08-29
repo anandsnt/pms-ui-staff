@@ -35,7 +35,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		var updateSearchCache = function() {
-
 			// room related details
 			var data = {
 				'room': $scope.reservationData.reservation_card.room_number,
