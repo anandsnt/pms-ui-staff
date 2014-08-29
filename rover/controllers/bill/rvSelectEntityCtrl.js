@@ -44,7 +44,6 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
   	* function to perform filering on results.
   	* if not fouund in the data, it will request for webservice
   	*/
-  	$krish = $scope;
   	var displayFilteredResultsCards = function(){ 
 	    //if the entered text's length < 3, we will show everything, means no filtering    
 	    if($scope.textInQueryBox.length < 3){
