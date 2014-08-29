@@ -64,16 +64,16 @@
       <div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
          <input name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
          <div class="mini-select">
-            <select id="charge-codes" name="charge-codes">
-               <option value="10" ng-repeat = "chargeCode in availableChargeCodes">{{chargeCode.code + " " + chargeCode.description}}</option>
+            <select id="charge-codes" ng-model =  "chargeCodeToAdd" name="charge-codes"  ng-change="addChargeCode()">
+               <option value="{{chargeCode.id}}" ng-repeat = "chargeCode in availableChargeCodes">{{chargeCode.code + " " + chargeCode.description}}</option>
                
             </select>
          </div>
       </div>
       <!-- Added from search -->
-      <div id="transactions" class="transactions codes scrollable" ng-show = "!isBillingGroup">
+      <div id="transactions" class="transactions codes scrollable" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
          <div class="entry radio-check wrapper" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
-            <label class="checkbox">
+            <label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)">
                <span class="icon-form icon-checkbox checked"></span>
                   <input name="billing-group" id="100" value="100" type="checkbox" checked />
                <span class="value">{{selectedChargeCode.id}}</span> {{selectedChargeCode.description}}

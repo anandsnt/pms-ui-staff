@@ -1,6 +1,7 @@
 sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
+    $scope.chargeCodeToAdd = "";
 
 	$scope.showPaymentList = function(){
 		$scope.isAddPayment = false;
@@ -41,6 +42,32 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         $scope.selectedEntity.attached_charge_codes = [];
         $scope.selectedEntity.attached_billing_groups.push(billingGroup);
     };
+
+    $scope.removeChargeCode = function(chargeCode){
+        for(var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++){
+            if($scope.selectedEntity.attached_charge_codes[i].id == chargeCode.id ){
+                $scope.selectedEntity.attached_billing_groups = [];
+                $scope.selectedEntity.attached_charge_codes.splice(i, 1);
+                return;                
+            }
+        }
+    };    
+
+    $scope.addChargeCode = function(){
+        for(var i=0; i < $scope.availableChargeCodes.length; i++){
+            if($scope.availableChargeCodes[i].id == $scope.chargeCodeToAdd){
+                for(var j=0; j < $scope.selectedEntity.attached_charge_codes.length; j++){
+                    
+                    if($scope.selectedEntity.attached_charge_codes[j].id == $scope.chargeCodeToAdd ){
+                        $scope.selectedEntity.attached_billing_groups = [];
+                        return;                
+                    }
+                }     
+                $scope.selectedEntity.attached_billing_groups = [];
+                $scope.selectedEntity.attached_charge_codes.push($scope.availableChargeCodes[i]);         
+            }
+        }
+    };  
 
 	$scope.setChargeType();
 
