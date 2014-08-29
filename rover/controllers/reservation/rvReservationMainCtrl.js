@@ -147,8 +147,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData = {
                 taxesMeta: [],
+                marketsEnabled: baseData.demographics.is_use_markets,
                 markets: baseData.demographics.markets,
+                sourcesEnabled: baseData.demographics.is_use_sources,
                 sources: baseData.demographics.sources,
+                originsEnabled: baseData.demographics.is_use_origins,
                 origins: baseData.demographics.origins,
                 reservationTypes: baseData.demographics.reservationTypes,
                 promotionTypes: [{
