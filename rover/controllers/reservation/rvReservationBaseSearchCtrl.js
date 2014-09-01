@@ -143,30 +143,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
 
 
 
-        /**
-         *   Validation conditions
-         *
-         *   Either adults or children can be 0,
-         *   but one of them will have to have a value other than 0.
-         *
-         *   Infants should be excluded from this validation.
-         */
-        $scope.validateOccupant = function(room, from) {
-
-            // just in case
-            if (!room) {
-                return;
-            };
-
-            var numAdults = parseInt(room.numAdults),
-                numChildren = parseInt(room.numChildren);
-
-            if (from === 'adult' && (numAdults === 0 && numChildren === 0)) {
-                room.numChildren = 1;
-            } else if (from === 'children' && (numChildren === 0 && numAdults === 0)) {
-                room.numAdults = 1;
-            }
-        };
+      
 
 
 
