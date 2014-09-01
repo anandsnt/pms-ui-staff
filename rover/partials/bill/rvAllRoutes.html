@@ -1,8 +1,8 @@
-<div id="billing-content" class="content-wrapper " ng-controller="rvAllRoutesCtrl">
-         <!-- <div class="info">
+<div id="billing-content" class="content-wrapper " ng-class= "{'no-content':routes.length == 0}" ng-controller="rvAllRoutesCtrl">
+         <div class="info" ng-show = "routes.length == 0">
             <strong class="h1" translate>ROUTES_EMPTY_MESSAGE</strong>
-         </div> -->
-         <div id="routes" class="billing-list scrollable">
+         </div>
+         <div id="routes" ng-show = "routes.length > 0" class="billing-list scrollable">
 			   <ul class="wrapper">
 			      
 			      <li ng-repeat = "route in routes" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">

@@ -16,7 +16,7 @@
                <h2>{{selectedEntity.name}}</h2>
                <span class="guest-status small-icon" ng-class = "reservationData.reservation_status">{{$parent.reservationData.reservation_status}}</span>
             </div>
-            <div class="title">Payment</div>
+            <div class="title" ng-show= "showPayment">Payment</div>
             <!-- Available credit card -->
             <div class="payment" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes">
                <!-- add class active when selected -->
