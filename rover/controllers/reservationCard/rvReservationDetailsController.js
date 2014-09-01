@@ -11,9 +11,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			'NORMAL_SEARCH': 'SEARCH_NORMAL'
 		};
 		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? {
-			type: $vault.get('searchType')
-		} : {};
+		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
 
 		// setup a back button
 		$rootScope.setPrevState = {
@@ -21,6 +19,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			name: 'rover.search',
 			param: backParam
 		};
+
+
 
 		BaseCtrl.call(this, $scope);
 
@@ -35,7 +35,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		var updateSearchCache = function() {
-
 			// room related details
 			var data = {
 				'room': $scope.reservationData.reservation_card.room_number,
@@ -328,14 +327,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
-
-			if (reservationMainData.rooms[0].roomNumber != "") {
+			if($rootScope.isStandAlone){
+				//If standalone, go to change staydates calendar if rooms is assigned.
+				//If no room is assigned, go to stay dates calendar.
+				if (reservationMainData.rooms[0].roomNumber != "") {
+					$state.go('rover.reservation.staycard.changestaydates', {
+						reservationId: reservationMainData.reservationId,
+						confirmNumber: reservationMainData.confirmNum
+					});
+				} else {
+					$scope.goToRoomAndRates("CALENDAR");
+				}
+			} else {
+				//If ext PMS connected, go to change staydates screen
 				$state.go('rover.reservation.staycard.changestaydates', {
 					reservationId: reservationMainData.reservationId,
 					confirmNumber: reservationMainData.confirmNum
 				});
-			} else {
-				$scope.goToRoomAndRates("CALENDAR");
 			}
 		};
 

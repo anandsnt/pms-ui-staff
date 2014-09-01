@@ -9,12 +9,13 @@
 
 	when closed, strip the classes so you end up with the default state: <div id="availability">
 -->
-<div id="availability" ng-controller="rvAvailabilityButtonController" 
-	ng-class="{	'availability-open': showAvailability, 
-				'availability-closing': isClosing}">
-	<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
-	<div ng-include="getAvailabilityTemplateUrl()"></div>
-</div>		
+	<div id="availability" ng-controller="rvAvailabilityButtonController" 
+		ng-class="{	'availability-open': showAvailability, 
+					'availability-closing': isClosing}">
+		<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
+		<div ng-include="getAvailabilityTemplateUrl()"></div>
+	</div>
+		
 	<div ui-view class="main-view" ></div>
 </div>
-<div ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"></div>
+<div ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"></div>	

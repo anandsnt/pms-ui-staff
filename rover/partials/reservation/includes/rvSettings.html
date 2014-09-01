@@ -154,7 +154,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.marketsEnabled">
                         <label for="market" translate>MARKET_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
@@ -163,7 +163,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.sourcesEnabled">
                         <label for="source" translate>SOURCE_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
@@ -172,7 +172,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.originsEnabled">
                         <label for="origin" translate>ORIGIN_BOOKING_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
