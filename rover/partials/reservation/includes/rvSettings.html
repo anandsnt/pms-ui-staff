@@ -57,9 +57,11 @@
                                 <li>
                                     <em>{{room.rateName}}</em>
                                     <span class="price">
-                                        {{currencySymbol}}{{room.rateAvg | number : 0}}
+                                        <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 0}}</label>
+                                        <label ng-if="room.isSuppressed">SR</label>
                                         <span translate>AVG_NIGHT</span>
-                                        <span class="total">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
+                                        <span class="total" ng-if="room.isSuppressed">SR</span>
+                                        <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
                                     </span>
                                 </li>
                             </ul>
@@ -152,7 +154,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.marketsEnabled">
                         <label for="market" translate>MARKET_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
@@ -161,7 +163,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.sourcesEnabled">
                         <label for="source" translate>SOURCE_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
@@ -170,7 +172,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.originsEnabled">
                         <label for="origin" translate>ORIGIN_BOOKING_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
