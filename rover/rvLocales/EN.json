@@ -501,9 +501,8 @@
     "CHARGE_PENALTY" : "Charge Penalty",
     "PROCEED" : "Proceed",
     "CANCELATION_REASON" : "Cancelation reason",
-    "OPTIONAL" : "Optional"
-
-,	
+    "OPTIONAL" : "Optional",
+    "CANCELATION_REASON_PLACEHOLDER" : "Cancelling because...",	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",

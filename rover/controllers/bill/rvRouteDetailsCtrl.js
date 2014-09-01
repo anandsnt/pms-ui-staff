@@ -122,5 +122,56 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
     };
     $scope.fetchAvailableChargeCodes();
+    
+    $scope.chargeCodeEntered = function(){
+    	console.log($scope.chargeCodeSearchText);
+	   	displayFilteredResultsChargeCodes();
+	   	var queryText = $scope.chargeCodeSearchText;
+	   	$scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+    };
 	
+	$scope.clearResults = function(){
+	  	$scope.chargeCodeSearchText = "";
+	};
+  	var searchSuccessChargeCodes = function(data){
+		$scope.$emit("hideLoader");
+		$scope.availableChargeCodes = data.accounts;
+		console.log(data);
+		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
+	};
+  	/**
+  	* function to perform filering on results.
+  	* if not fouund in the data, it will request for webservice
+  	*/
+  	var displayFilteredResultsChargeCodes = function(){ 
+	    //if the entered text's length < 3, we will show everything, means no filtering    
+	    if($scope.chargeCodeSearchText.length < 3){
+	      //based on 'is_row_visible' parameter we are showing the data in the template      
+	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+	          $scope.availableChargeCodes[i].is_row_visible = true;
+	      }     
+	      
+	      // we have changed data, so we are refreshing the scrollerbar
+	      //$scope.refreshScroller('cards_search_scroller');      
+	    }
+	    else{
+	      var value = ""; 
+	      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+	      //if it is zero, then we will request for webservice
+	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
+	        value = $scope.availableChargeCodes[i];
+	        if (($scope.escapeNull(value.code).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0 || 
+	            ($scope.escapeNull(value.description).toUpperCase()).indexOf($scope.chargeCodeSearchText.toUpperCase()) >= 0 ) 
+	            {
+	               $scope.availableChargeCodes[i].is_row_visible = true;
+	            }
+	        else {
+	          $scope.availableChargeCodes[i].is_row_visible = false;
+	        }
+	              
+	      }
+	      // we have changed data, so we are refreshing the scrollerbar
+	      //$scope.refreshScroller('cards_search_scroller');                  
+	    }
+  	};	
 }]);
