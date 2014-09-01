@@ -110,6 +110,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchAttachedPaymentTypes = function(){
         
             var successCallback = function(data) {
+                
                 $scope.attachedPaymentTypes = data;
                 $scope.$parent.$emit('hideLoader');
             };
