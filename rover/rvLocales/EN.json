@@ -87,6 +87,7 @@
     "CANCEL": "Cancel",
     "SAVE": "Save",
     "CLOSE": "Close",
+    "CREATE": "Create",
     "YES": "YES",
     "NO": "No",
    
@@ -304,7 +305,13 @@
     "PAY" : "Pay",
     "AMOUNT": "Amount",
     "WINDOW": "Window",
+
+    "NEW_ACCOUNT_RECEIVABLE": "New Account Receivable",
+    "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
+    "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
+    "CREATE_AR_ACCOUNT": "Create Account",
     "SELECT_WINDOW": "Select Bill",
+    
     "PAY_BILL":"Pay Bill #",
     "TAP_TO_CHANGE":"Tap to change",
     "AMOUNT_TO_PAY":"Amount to pay",
@@ -484,21 +491,18 @@
     "KEY_CREATED_STATUS" : "Key created!",
     "KEY_CREATION_FAILED_STATUS" : "Key creation failed!",
     "KEY_CREATION_FAILED_STATUS_LONG" : "Print key failed, Please try again",
-
-
-
-
-
-
-
-
-
-
-    
 	"PREFERENCES" : "Preferences",
 	"NEWSPAPER" : "Newspaper",
 	"ROOM_TYPE" : "Room type",
-	"ROOM_FEATURES" : "Room Features"
+	"ROOM_FEATURES" : "Room Features",
+    "CARD_ERROR" : "There is a problem with your credit card",
+    "OUTSIDE_CANCELLATION" : "Outside of the cancellation period",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "CHARGE_PENALTY" : "Charge Penalty",
+    "PROCEED" : "Proceed",
+    "CANCELATION_REASON" : "Cancelation reason",
+    "OPTIONAL" : "Optional"
+
 ,	
 
 	"BACK_BUTTON_LABEL":"BACK",
@@ -632,5 +636,15 @@
     "ADD_ROUTES_LABEL" : "ADD ROUTES",
     "ALL_ROUTES_LABEL" : "ALL ROUTES",
 
-     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+    "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
+    "CANCEL_HEADER" : "Cancellation falls <br/> outside of the cancellation period",
+    "PENALTY_PRE" : "This incurs a",
+    "PENALTY_POST" : "penalty charge.",
+    "PENALTY_APPLY" : "Apply penalty",
+    "PENALTY_SKIP" : "Proceed without penalty",
+    "CANCEL_CONFIRM" : "Confirm Cancel",
+    "CANCEL_CANCEL" : "Return without Cancel",
+    "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
+    "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+
 }

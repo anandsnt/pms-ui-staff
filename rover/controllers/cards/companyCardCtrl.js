@@ -159,6 +159,11 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
+		$scope.showARTab = function($event) {
+			$scope.isArTabAvailable = true;
+			$scope.showArAccountButtonClick($event);
+		};
+
 		/**
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
