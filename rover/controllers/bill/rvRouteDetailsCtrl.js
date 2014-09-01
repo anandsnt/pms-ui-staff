@@ -1,7 +1,8 @@
-sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog){
+sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
+    $scope.showPayment = false;
 
 	$scope.showPaymentList = function(){
 		$scope.isAddPayment = false;
@@ -80,7 +81,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.fetchAvailableBillingGroups();
             };
             var errorCallback = function(errorMessage) {
-                $scope.$emit('hideLoader');
+                $scope.$parent.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
             
@@ -91,15 +92,34 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         
             var successCallback = function(data) {
                 $scope.availableBillingGroups = data;
-                $scope.$parent.$emit('hideLoader');
+                if($scope.reservationData.reservation_id == $scope.selectedEntity.id){
+                    $scope.showPayment = true;
+                    $scope.fetchAttachedPaymentTypes();
+                }else{
+                    $scope.$parent.$emit('hideLoader');
+                }
+                
             };
             var errorCallback = function(errorMessage) {
-                $scope.$emit('hideLoader');
+                $scope.$parent.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
            
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, {}, successCallback, errorCallback);
     };	
+    $scope.fetchAttachedPaymentTypes = function(){
+        
+            var successCallback = function(data) {
+                $scope.attachedPaymentTypes = data;
+                $scope.$parent.$emit('hideLoader');
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+           
+            $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
+    };
     $scope.fetchAvailableChargeCodes();
 	
 }]);

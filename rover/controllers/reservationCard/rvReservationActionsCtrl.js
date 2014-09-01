@@ -110,7 +110,8 @@ sntRover.controller('reservationActionsController', [
 						} else {
 							$state.go('rover.reservation.staycard.billcard', {
 								"reservationId": $scope.reservationData.reservation_card.reservation_id,
-								"clickedButton": "checkinButton"
+								"clickedButton": "checkinButton",
+								"userId": $scope.guestCardData.userId
 							});
 						}
 					}
@@ -237,7 +238,8 @@ sntRover.controller('reservationActionsController', [
 			} else {
 				$state.go("rover.reservation.staycard.billcard", {
 					"reservationId": reservationId,
-					"clickedButton": clickedButton
+					"clickedButton": clickedButton,
+					"userId": $scope.guestCardData.userId
 				});
 			}
 		};
