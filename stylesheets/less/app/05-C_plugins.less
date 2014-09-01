@@ -1294,9 +1294,8 @@
 
 				.payment-info { .show; }
 
-				.credit-card { 
-					 .hide; 
-
+				.credit-card {
+					.hide; 
 		            .select-card,
 		            .new-card {
 		            	#fade > .in;
@@ -1388,11 +1387,11 @@
 					margin-top: 20px; 
 					padding-top: 20px;
 					border-top: 1px solid rgba(0,0,0,.1);
+					.button { margin-bottom: 0; }
 				}
 
-				&.card-attached {
+				&.card-attached {	
 					.size(auto, 420px);
-
 					.active-item {
 						line-height: 50px;
 						padding: 0 10px;
@@ -1420,6 +1419,44 @@
 
 					.payment-info { .hide; }
 					.credit-card { .show; }
+				}
+			}
+
+			/* Cancel reservation ***/
+			&.cancel-reservation {
+				width: 360px;
+
+				.actions { 
+					margin-top: 20px;
+
+					.button { 
+						margin-bottom: 10px;
+
+						&:last-child { margin-bottom: 0; }
+					}
+				}
+
+				&.pay-bill {
+
+					.actions {
+						text-align: center;
+
+						.button {
+							display: inline-block;
+							width: auto;
+							padding: 0 40px;
+							margin-bottom: 0;
+
+							&.blank { 
+								padding: 0 20px 0 0; 
+								text-align: right; 
+							}
+						}
+					}
+
+					&.select-card { .size(620px, 720px); }
+					&.new-card { .size(500px, 480px); }
+					&.only-new-card { .size(420px, 480px); }
 				}
 			}
 
