@@ -491,21 +491,18 @@
     "KEY_CREATED_STATUS" : "Key created!",
     "KEY_CREATION_FAILED_STATUS" : "Key creation failed!",
     "KEY_CREATION_FAILED_STATUS_LONG" : "Print key failed, Please try again",
-
-
-
-
-
-
-
-
-
-
-    
 	"PREFERENCES" : "Preferences",
 	"NEWSPAPER" : "Newspaper",
 	"ROOM_TYPE" : "Room type",
-	"ROOM_FEATURES" : "Room Features"
+	"ROOM_FEATURES" : "Room Features",
+    "CARD_ERROR" : "There is a problem with your credit card",
+    "OUTSIDE_CANCELLATION" : "Outside of the cancellation period",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "CHARGE_PENALTY" : "Charge Penalty",
+    "PROCEED" : "Proceed",
+    "CANCELATION_REASON" : "Cancelation reason",
+    "OPTIONAL" : "Optional"
+
 ,	
 
 	"BACK_BUTTON_LABEL":"BACK",
