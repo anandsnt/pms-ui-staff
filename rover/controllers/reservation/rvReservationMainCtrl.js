@@ -171,7 +171,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 businessDate: baseSearchData.businessDate,
                 additionalEmail: "",
                 isGuestPrimaryEmailChecked: false,
-                isGuestAdditionalEmailChecked: false
+                isGuestAdditionalEmailChecked: false,
+                reservationCreated: false
             };
 
             $scope.guestCardData = {};
