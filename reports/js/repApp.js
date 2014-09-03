@@ -106,7 +106,15 @@ reports.controller('reporstList', [
                     $scope.reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 
                     // sort by options
-                    $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
+                    $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields'];
+
+                    // CICO-8010: for Yotel make "date" default sort by filter
+                    if ( $scope.reportList[i].title === 'Check In / Check Out' || $scope.reportList[i].title === 'Late Check Out' ) {
+                        var sel = _.find($scope.reportList[i]['sort_fields'], function(item) {
+                            return item.value === 'DATE';
+                        });
+                        $scope.reportList[i].chosenSortBy = sel.value;
+                    };
 
 
                     // IMPORTANT used date filter with option 'medium' to avoid incorrect date due to timezone change
