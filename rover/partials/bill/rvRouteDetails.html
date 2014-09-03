@@ -14,7 +14,7 @@
 						<img src="{image}" alt="" />
 					</figure>
 					<h2>{{selectedEntity.name}}</h2>
-					<span class="guest-status small-icon" ng-class = "reservationData.reservation_status">{{$parent.reservationData.reservation_status}}</span>
+					<span class="guest-status small-icon" ng-class = "$parent.reservationData.reservation_status">{{$parent.reservationData.reservation_status}}</span>
 				</div>
 				<div class="title" ng-show= "showPayment">Payment</div>
 				<!-- Available credit card -->
@@ -42,7 +42,7 @@
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select">
 				<select ng-model = "selectedEntity.to_bill" name="post-charge-to-bill">
-					<option value="bill.id" ng-repeat = "bill in bills">1</option>
+					<option value="{{bill.id}}" ng-repeat = "bill in bills">{{bill.id}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>
