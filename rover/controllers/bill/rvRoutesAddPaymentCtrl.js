@@ -3,6 +3,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 
 	$scope.saveData = {};
 	$scope.saveData.card_number  = "";
+	$scope.saveData.cvv = "";
 	$scope.saveData.credit_card  =  "";
 	$scope.saveData.name_on_card =  "";
 	$scope.saveData.payment_type =  "";
@@ -25,10 +26,13 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	var scrollerOptions = { preventDefault: false};
   	$scope.setScroller('newpaymentview', scrollerOptions);	
 
-  	// setTimeout(function(){
-									
-			// 	}, 
-			// 500);
+  	$scope.$on('showaddpayment', function(event){
+  		setTimeout(function(){
+						$scope.refreshScroller('newpaymentview');			
+				}, 
+			500);
+			
+	});
 
   	$scope.fetchAvailablePaymentTypes = function(){
         
@@ -50,6 +54,11 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
   // 	/* MLI integration starts here */
 
      $scope.savePaymentDetails = function(){
+
+     		if($scope.saveData.payment_type != "CC"){
+     			$scope.savePayment();
+     			return;
+     		}
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
@@ -93,7 +102,8 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
             };
 			$scope.saveData.user_id = $scope.reservationData.user_id;
 			$scope.saveData.session_id = MLISessionId;
-			$scope.saveData.card_expiry = $scope.saveData.card_expiry_year + "-"+ $scope.saveData.card_expiry_month+"-01";
+			var expiry_year =  2000 + parseInt($scope.saveData.card_expiry_year) ;
+			$scope.saveData.card_expiry = expiry_year + "-"+ $scope.saveData.card_expiry_month+"-01";
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.saveData, successCallback, errorCallback);
 		};
 	
