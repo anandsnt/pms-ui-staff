@@ -129,7 +129,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchBillsForReservation = function(){
         
             var successCallback = function(data) {
-                if($scope.reservationData.reservation_id != scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                     $scope.bills.push(data[0]);
                     $scope.$parent.bills.push(data[0]);
                 }else{
@@ -200,8 +200,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
   	};	
   	
   	$scope.isChargeCodeSelected = function(chargeCode){
-  		for(var i=0; i < $scope.selectedEntity.attached_charge_code.length; i++){
-            if($scope.selectedEntity.attached_charge_code[i].id == chargeCode.id )
+  		for(var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++){
+            if($scope.selectedEntity.attached_charge_codes[i].id == chargeCode.id )
                 return true;
         }
         return false;
