@@ -6,6 +6,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
     $scope.selectedEntity = {};
 	$scope.results = {};
+    $scope.bills = [];
 	
 	$scope.closeDialog = function(){
 		ngDialog.close();
@@ -24,6 +25,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
 	}
+
+    $scope.deSelectEntity = function(){
+        $scope.isEntitySelected = false;
+    }
 
 	$scope.selectEntity = function(index,type){
 		$scope.isEntitySelected = true;

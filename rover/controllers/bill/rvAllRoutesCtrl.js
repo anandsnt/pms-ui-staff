@@ -28,6 +28,23 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVGuestC
             return 'BILLING GROUP(S)';
         }
     }
+
+    $scope.deleteRoute = function(index){
+        var successCallback = function(data) {
+                
+                
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+
+            var data = {};
+            data.id = $scope.routes[index].id;
+            data.from_bill = $scope.routes[index].from_bill;
+            data.to_bill = $scope.routes[index].to_bill;
+            $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
+    }
 		
 	
 }]);

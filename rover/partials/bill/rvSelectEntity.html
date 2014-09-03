@@ -17,8 +17,8 @@
                  <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index,'ATTACHED_ENTITY')">
                   <!-- image -->
                   <figure class="guest-image" ng-class="{'accompany':entity.has_accompanying_guests =='true'}">
-                     <img src="{{entity.entity_avatar}}" alt="" />
-                     <img src="{{entity.accompanyImage}}" alt="" ng-show="entity.has_accompanying_guests =='true'}"/>
+                     <img src="{{entity.images[0].guest_image}}" alt="" />
+                     <img src="{{entity.images[1].guest_image}}" alt="" ng-show="entity.has_accompanying_guests =='true'}"/>
                   </figure>
                   <!-- heading -->
                   <h2>{{entity.name}}</h2>

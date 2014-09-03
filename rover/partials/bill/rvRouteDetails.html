@@ -4,14 +4,14 @@
 			<div class="wrapper">
 				<div class="title">
 					{{'ENTITY' | translate}}
-					<button type="button" id="edit-entity" class="button with-icon only-icon purple edit">
-					<span class="icons icon-pencil" ng-click="isEntitySelected = false"></span>
+					<button type="button" id="edit-entity" ng-click="deSelectEntity()" class="button with-icon only-icon purple edit">
+						<span class="icons icon-pencil" ></span>
 					</button>
 				</div>
 				<!-- Selected entity -->
 				<div class="entity guest">
 					<figure class="guest-image">
-						<img src="{image}" alt="" />
+						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
 					</figure>
 					<h2>{{selectedEntity.name}}</h2>
 					<span class="guest-status small-icon" ng-class = "$parent.reservationData.reservation_status">{{$parent.reservationData.reservation_status}}</span>
@@ -37,12 +37,12 @@
 			</div>
 		</div>
 	</fieldset>
-	<fieldset class="content-right">
+	<fieldset class="content-right" ng-show = "bills.length != 0">
 		<span class="h2 message">
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select">
 				<select ng-model = "selectedEntity.to_bill" name="post-charge-to-bill">
-					<option value="{{bill.id}}" ng-repeat = "bill in bills">{{bill.id}}</option>
+					<option value="{{bill.id}}" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>
@@ -96,8 +96,19 @@
 			</div>
 
 	</fieldset>
+
+	<fieldset class="content-right" ng-show = "bills.length == 0">
+      <div class="no-content" >
+         <div class="info">
+            <strong class="h1" translate>NO_BILLS_TO_ROUTE</strong>
+            
+         </div>
+      </div>
+        
+   </fieldset>
+
 </div>
 <div class="actions">
 	<button type="button" id="close-information" class="button blank modal-close" ng-click = "headerButtonClicked()">Cancel</button>
-	<button type="button" id="save-route" class="button green modal-close" ng-click = "saveRoute()">Save Route</button>
+	<button type="button" id="save-route" class="button green modal-close" ng-disabled="bills.length == 0" ng-class="{'grey': bills.length == 0}" ng-click = "saveRoute()">Save Route</button>
 </div>

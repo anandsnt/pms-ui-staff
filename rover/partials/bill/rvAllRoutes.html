@@ -8,7 +8,7 @@
 			      <li ng-repeat = "route in routes" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
 			         <a href="#route-details" ng-class = "getEntityRole(route)">
 			            <figure class="guest-image" ng-class = "getEntityIconClass(route)">
-			               <img src="{image}" alt="" />
+			               <img src="{{route.images[0].guest_image}}" alt="" />
 			            </figure>
 			            <h2>{{route.name}}</h2>
 			            <div class="type">
@@ -20,7 +20,7 @@
 			               {{route.bill_no}}
 			            </div>
 			         </a>
-			         <span id="remove-route-1" class="icons icon-remove-40">-</span> 
+			         <span id="remove-route-1" class="icons icon-remove-40" ng-click = "deleteRoute($index)">-</span> 
 			      </li>    
 				</ul>
 		</div>

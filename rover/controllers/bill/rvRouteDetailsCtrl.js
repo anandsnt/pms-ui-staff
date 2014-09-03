@@ -3,7 +3,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
     $scope.showPayment = false;
-    $scope.bills = [];
+    
 
     var scrollerOptions = { preventDefault: false};
     $scope.setScroller('paymentList', scrollerOptions);  
@@ -142,6 +142,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             var successCallback = function(data) {
                 
                 $scope.bills = data;
+                $scope.$parent.bills = data;
                 $scope.fetchAvailableChargeCodes();
             };
             var errorCallback = function(errorMessage) {
