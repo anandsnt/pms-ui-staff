@@ -3,9 +3,21 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
     $scope.showPayment = false;
+    $scope.bills = [];
+
+    var scrollerOptions = { preventDefault: false};
+    $scope.setScroller('paymentList', scrollerOptions);  
+
+    setTimeout(function(){
+                $scope.refreshScroller('paymentList'); 
+                $scope.refreshScroller('billingGroups');
+                $scope.refreshScroller('chargeCodes');
+                }, 
+            500);
 
 	$scope.showPaymentList = function(){
 		$scope.isAddPayment = false;
+        $scope.refreshScroller('paymentList'); 
 	};
 
 	$scope.showAddPayment = function(){
@@ -15,6 +27,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	$scope.toggleChargeType = function(){
 		$scope.isBillingGroup = !$scope.isBillingGroup;
+        $scope.refreshScroller('billingGroups');
+                $scope.refreshScroller('chargeCodes');
 	}
 
 	$scope.setChargeType = function(){
@@ -122,7 +136,22 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
            
             $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
     };
-    $scope.fetchAvailableChargeCodes();
+
+    $scope.fetchBillsForReservation = function(){
+        
+            var successCallback = function(data) {
+                
+                $scope.bills = data;
+                $scope.fetchAvailableChargeCodes();
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+           
+            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, $scope.selectedEntity.id, successCallback, errorCallback);
+    };
+    $scope.fetchBillsForReservation();
     
     $scope.chargeCodeEntered = function(){
     	console.log($scope.chargeCodeSearchText);

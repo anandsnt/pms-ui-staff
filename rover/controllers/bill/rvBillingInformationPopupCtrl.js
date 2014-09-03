@@ -115,10 +115,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
-           $scope.selectedEntity.id=$scope.reservationData.reservation_id;
-           $scope.selectedEntity.from_bill = 1;
-    		$scope.selectedEntity.to_bill = 2;
-            $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
+           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
+           
+           $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
     };
 	
 }]);

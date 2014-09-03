@@ -4,6 +4,13 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVGuestC
 
 	
 
+    var scrollerOptions = { preventDefault: false};
+    $scope.setScroller('routes', scrollerOptions);  
+
+    setTimeout(function(){
+                $scope.refreshScroller('routes'); 
+                }, 
+            500);
     $scope.getCharges = function(route){
     	if(route.attached_charge_codes.length > 2 || route.attached_billing_groups.length > 2){
     		return 'Multiple';

@@ -2,7 +2,7 @@
          <div class="info" ng-show = "routes.length == 0">
             <strong class="h1" translate>ROUTES_EMPTY_MESSAGE</strong>
          </div>
-         <div id="routes" ng-show = "routes.length > 0" class="billing-list scrollable">
+         <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable">
 			   <ul class="wrapper">
 			      
 			      <li ng-repeat = "route in routes" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
@@ -22,7 +22,7 @@
 			         </a>
 			         <span id="remove-route-1" class="icons icon-remove-40">-</span> 
 			      </li>    
-		
+				</ul>
 		</div>
 </div>
 <div class="actions">

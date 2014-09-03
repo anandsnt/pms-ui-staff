@@ -12,7 +12,7 @@
       <div id="available-entities">
          <!-- Attached entities, if exist -->
          <span class="h3 message" ng-hide="textInQueryBox!=''" translate>ATTACHED_ENTITIES</span>
-         <div id="entities" class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
+         <div id="entities" ng-iscroll='entities' ng-iscroll-delay='100' class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
                  <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index,'ATTACHED_ENTITY')">
                   <!-- image -->

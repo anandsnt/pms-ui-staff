@@ -9,6 +9,14 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
     $scope.setScroller('res_search_scroller', scrollerOptions);
     $scope.refreshScroller('cards_search_scroller');
     $scope.refreshScroller('res_search_scroller');
+
+    var scrollerOptions = { preventDefault: false};
+    $scope.setScroller('entities', scrollerOptions);  
+
+    setTimeout(function(){
+                $scope.refreshScroller('entities'); 
+                }, 
+            500);
   	/**
   	* function to perform filtering/request data from service in change event of query box
   	*/
@@ -28,6 +36,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
   
 	$scope.clearResults = function(){
 	  	$scope.textInQueryBox = "";
+	  	$scope.refreshScroller('entities');
 	};
   	var searchSuccessCards = function(data){
 		$scope.$emit("hideLoader");

@@ -39,6 +39,19 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		return deferred.promise;
 	};
 
+	this.fetchBillsForReservation = function(reservationId){
+		var deferred = $q.defer();
+		var url = 'api/bill_routings/' + reservationId + '/bills.json';
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+				
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
+
 	this.saveRoute = function(data){
 		var deferred = $q.defer();
 		var url = 'api/bill_routings/save_routing';
