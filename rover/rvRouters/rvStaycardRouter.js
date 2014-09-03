@@ -142,6 +142,9 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         resolve: {
             reservationBillData: function(RVBillCardSrv, $stateParams) {
                 return RVBillCardSrv.fetch($stateParams.reservationId);
+            },
+            chargeCodeData: function(RVBillCardSrv){
+                return RVBillCardSrv.fetchChargeCodes();
             }
         }
     });

@@ -1,8 +1,20 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
-		
+
+		// set the previous state
+		$rootScope.setPrevState = {
+			title: $filter('translate')('ENHANCE_STAY'),
+			name: 'rover.reservation.staycard.mainCard.addons',
+			param: {
+				from_date: $scope.reservationData.arrivalDate,
+				to_date: $scope.reservationData.departureDate
+			}
+		}
+
+
+
 		$scope.init = function() {
 			$scope.data = {};
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
@@ -156,6 +168,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			//	end of payload changes
 
 			data.stay_dates = stay;
+
+			//addons
+
+			data.addons = [];
+
+			_.each($scope.reservationData.rooms[0].addons, function(addon) {
+				data.addons.push({
+					id: addon.id,
+					quantity: addon.quantity
+
+				});
+			})
 
 			data.company_id = $scope.reservationData.company.id;
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;

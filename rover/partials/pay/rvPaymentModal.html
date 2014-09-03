@@ -1,0 +1,12 @@
+<div role="dialog" id="modal" class="modal-show">
+	<form method="post" action="pay-bill" id="pay-bill" name="pay-bill" ng-class="showModalClass()" class="modal-content form pay-bill pay-bill-modal">
+		<button id="modal-close" type="button" class="modal-close" ng-click="handleCloseDialog()">
+			<span class="icons icon-close invert">
+		</button>
+		<!-- Payment method -->
+		 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/pay/rvPaymentMethod.html'" ng-show="showInitalPaymentScreen"></div>
+		<!-- Available cards & new card form -->
+		<div ng-include="'/assets/partials/pay/rvSelectAddCreditCard.html'" ng-show="showExistingAndAddNewPayments"></div>
+	</form>
+</div>

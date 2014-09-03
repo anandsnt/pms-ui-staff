@@ -10,6 +10,10 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.isEditTax = false;
 	$scope.isEdit = false;
 	$scope.successMessage = "";
+
+	$scope.selected_payment_type = {};
+	$scope.selected_payment_type.id = -1;
+	$scope.prefetchData = {};
 	
 	/*
 	 * To fetch charge code list
@@ -24,7 +28,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 				page : 1, // show first page
 				count : 10000, // count per page - Need to change when on pagination implemntation
 				sorting : {
-					name : 'asc' // initial sorting
+					charge_code : 'asc' // initial sorting
 				}
 			}, {
 				total : $scope.data.charge_codes.length, // length of data
@@ -32,7 +36,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 					// use build-in angular filter
 					var orderedData = params.sorting() ? $filter('orderBy')($scope.data.charge_codes, params.orderBy()) : $scope.data.charge_codes;
 					$scope.orderedData = orderedData;
-					$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+					$defer.resolve(orderedData);
 				}
 			});
 		};
@@ -49,7 +53,9 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var fetchNewDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
+			$scope.addIDForPaymentTypes();
 			$scope.prefetchData.linked_charge_codes = [];
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
@@ -69,10 +75,13 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 		var editSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
+			$scope.addIDForPaymentTypes();
 			$scope.isEdit = true;
 			$scope.isAdd = false;
-		
+			$scope.checkAmountPrecision();
+			
 			// Generating calculation rules list.
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
 				item.calculation_rule_list = $scope.generateCalculationRule(index);
@@ -98,6 +107,15 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	       	});
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
+	};
+	/*
+	 * To add unique ids to the payment type list
+	 */
+	$scope.addIDForPaymentTypes = function() {
+
+		for(var i = 0; i < $scope.prefetchData.payment_types.length; i++){
+			$scope.prefetchData.payment_types[i].id = i;
+		}
 	};
 	/*
 	 * To fetch the template for charge code details add/edit screens
@@ -136,6 +154,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+	    		// $scope.tableParams.reload();
 			} else {
 				$scope.data.charge_codes.push(data);
 				$scope.tableParams.reload();
@@ -164,7 +183,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			}
 	    });
 		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
-		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
+		var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
 		
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
@@ -177,7 +196,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			delete item["selected_calculation_rule"];
 			if(item["id"])	delete item["id"];
 	    });
-		
+	    		
 		$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 	};
 	/*
@@ -319,5 +338,33 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
 		}
 	};
+
+	/*
+	 * To set the selected payment type based on the id and cc_type from the dropdown.
+	 */
+	$scope.changeSelectedPaymentType = function() {
+		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
+		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
+	};
+	
+	/*
+	 * Function to handle data change in 'Contract selected_type' in Add mode
+	 * on selecting "$" , rate value must be float with 2 decimals.
+	 * on selecting "%" , rate value must be integer
+	 */
+	$scope.$watch('prefetchData.selected_amount_symbol', function() {
+		$scope.checkAmountPrecision();
+	});
+	// Method to check precision for tax amount.
+	$scope.checkAmountPrecision = function(){
+		if ($scope.prefetchData.selected_amount_symbol === '%' && $scope.prefetchData.amount !=="") {
+			$scope.prefetchData.amount = parseInt($scope.prefetchData.amount).toString();
+		}
+		else if($scope.prefetchData.selected_amount_symbol === '$' || $scope.prefetchData.amount !==""){
+			$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
+		}
+		
+	};
+	
 }]);
 

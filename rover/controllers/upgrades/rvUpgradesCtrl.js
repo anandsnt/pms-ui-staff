@@ -4,7 +4,7 @@ sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$
 	BaseCtrl.call(this, $scope);
 
 	$rootScope.setPrevState = {
-		title: 'Stay Card'
+		title: $filter('translate')('STAY_CARD')
 	}
 	
 	$scope.$parent.myScrollOptions = {		

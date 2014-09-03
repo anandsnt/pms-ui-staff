@@ -1,5 +1,21 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv',
-    function($scope, addonData, $state, ngDialog, RVReservationAddonsSrv) {
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter) {
+
+        // set the previous state
+        $rootScope.setPrevState = {
+            title: $filter('translate')('ROOM_RATES'),
+            name: 'rover.reservation.staycard.mainCard.roomType',
+            param: {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate,
+                view: "ROOM_RATE",
+                company_id: null,
+                travel_agent_id: null,
+                fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+            }
+        }
+
+
 
         // by default load Best Sellers addon
         // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons] 

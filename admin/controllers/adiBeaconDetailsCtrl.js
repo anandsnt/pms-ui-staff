@@ -67,11 +67,13 @@ if(!$scope.addmode){
     if($scope.data.status){
       $scope.data.status = false;
     }
-    else if($scope.data.description && $scope.data.title){
-      if($scope.data.description.length>0 && $scope.data.title.length>0){
-          $scope.data.status = ! $scope.data.status;
-      }
+    else if($scope.data.description.length>0 && $scope.data.title.length>0){
+      $scope.data.status = ! $scope.data.status;
     }
+    else if($scope.data.message.length>0){
+      $scope.data.status = ! $scope.data.status;
+    }
+
       
   };
 
@@ -121,9 +123,17 @@ if(!$scope.addmode){
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
       };
+      //unset title and description in case beacon is not promotion else unset message
+      if($scope.data.type !='PROMOTION'){
+          $scope.data.title = "";
+          $scope.data.description = "";
+      }
+      else{
+          $scope.data.message = "";
+      };
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
       if($scope.addmode){
-        var unwantedKeys = ["major_id","minor_id","proximity_id"];
+        var unwantedKeys = ["major_id","minor_id","proximity_id"];        
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);

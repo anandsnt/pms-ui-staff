@@ -1,4 +1,4 @@
-sntRover.controller('rvManagerDashboardSearchController',['$scope', '$state', '$stateParams', '$filter',  function($scope, $state, $stateParams, $filter){
+sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$vault',  function($scope, $rootScope, $state, $stateParams, $filter, $vault){
 
 	/*
 	* Controller class for dashboard search,
@@ -6,11 +6,14 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$state', '$
 	*/
 
 	var that = this;
-  	BaseCtrl.call(this, $scope);
+  	BaseCtrl.call( this, $scope );
 
 
 	//setting the scroller for view
-	var scrollerOptions = { click: true, preventDefault: false };
+	var scrollerOptions = {
+        click: true,
+        preventDefault: false
+    };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
 
@@ -38,8 +41,9 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$state', '$
         $scope.$broadcast("showSearchResultsArea", false);
         //also need to clear results present in that & type 
         $scope.$broadcast("updateReservationTypeFromOutside", 'default');
-        $scope.$broadcast("updateDataFromOutside", []);  
-    }
+        $scope.$broadcast("updateDataFromOutside", []); 
+        $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING'); 
+    };
 
     /**
     * recievable function to handle backbutton click on header area

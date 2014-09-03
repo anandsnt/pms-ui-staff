@@ -1,11 +1,12 @@
-sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope', 'RVSearchSrv', '$filter', '$state', function($scope, $rootScope, RVSearchSrv, $filter, $state){
+sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope', 'RVSearchSrv', '$filter', '$state', '$stateParams', '$vault', function($scope, $rootScope, RVSearchSrv, $filter, $state, $stateParams, $vault){
+
 	/*
 	* Base reservation search, will extend in some place
 	* it contain only minimal function, please add functions & methods where
 	* you wrapping this.
 	*/
 	var that = this;
-  	BaseCtrl.call(this, $scope);	
+  	BaseCtrl.call(this, $scope);
 
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
@@ -15,6 +16,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 
 	// these varibales will be used to various conditiopns for ui rendering
 	$scope.isLateCheckoutList = false;
+	$scope.swipeNoResults = false;
 
 	//showSearchResultsAre
 	$scope.showSearchResultsArea = false;
@@ -37,6 +39,32 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 	$scope.$on("showAddNewGuestButton", function(event, showAddNewGuestButton){
 		$scope.showAddNewGuestButton = showAddNewGuestButton;
 	});
+
+
+
+	// if returning back and there was a search query typed in restore that
+	// else reset the query value in vault
+	if ( $stateParams.useCache && !!$vault.get('searchQuery') ) {
+		$scope.textInQueryBox = $vault.get('searchQuery');
+	} else {
+		$vault.set('searchQuery', '');
+	}
+
+
+	// setting up back to dashboard
+	// this must be set only for switching b/w
+	// dashboard and search results by clicking the search in dashboard
+	if ( !$stateParams.hasOwnProperty('type') ) {
+		$rootScope.setPrevState = {
+			title: $filter('translate')('DASHBOARD'),
+			callback: 'clearResults',
+			scope: $scope,
+			noStateChange: true,
+			hide: true
+		};
+	}
+
+
 
 	/**
 	* Success call back of data fetch from webservice
@@ -86,10 +114,18 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
   	* reciever function to show/hide the search result area.
   	*/
   	$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus){
-  		$scope.showSearchResultsArea = searchAreaVisibilityStatus; 
+  		$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+
   		// if it is hiding, we need to clear the search text
   		if(!searchAreaVisibilityStatus) {
   			$scope.textInQueryBox = '';
+
+  			// hide the dashboard back button 
+  			$rootScope.setPrevState.hide = true;
+  		} else {
+
+  			// show the dashboard back button 
+  			$rootScope.setPrevState.hide = false;
   		}
   	});
 
@@ -98,8 +134,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 	*/
 	$scope.queryEntered = function(){
 		$scope.isSwiped = false;
+		$scope.swipeNoResults = false;
 		var queryText = $scope.textInQueryBox;
-
+		$scope.$emit("UPDATE_MANAGER_DASHBOARD");
 		//inoreder to prevent unwanted results showing while tyeping..
 		if(!$scope.isTyping){
 			$scope.isTyping = true;
@@ -115,7 +152,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 		if(!$scope.showSearchResultsArea ){
 			$scope.showSearchResultsArea = true;
 		}
-	    displayFilteredResults();  
+	    displayFilteredResults();
+
+	    // save the entered query into vault
+	    // if returning back we will display that result
+	    $vault.set('searchQuery', $scope.textInQueryBox);
 
 	}; //end of query entered
 
@@ -275,7 +316,14 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
     	$scope.results = [];
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
-	  	$rootScope.setPrevState.hide = true;
+	  	
+	  	// Gotacha!! Only when we are dealing with 'noStateChange'
+	  	if ( !!$rootScope.setPrevState.noStateChange ) {
+	  	    $rootScope.setPrevState.hide = true;
+	  	};
+
+	  	// reset the query saved into vault
+	  	$vault.set('searchQuery', '');
   	};
   	
   	/**
@@ -291,14 +339,22 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 	//Relaunch the reservation details screen when the ows connection retry succeeds
 	$scope.$on('OWSConnectionRetrySuccesss', function(event){
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
-	});	
+	});
+
 	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
-		 $rootScope.setPrevState.hide = false;
+
+		// show back to dashboard button
+		$rootScope.setPrevState.hide = false;
+
+
+		$scope.$emit("UpdateHeading", swipeHeadingInSearch);
+		
 		 $scope.$emit('hideLoader');
 		 $scope.isSwiped = true;
 		 data = searchByCCResults;
 		 if(data.length == 0){
 		 	$scope.$emit("updateDataFromOutside", data);  
+		 	$scope.swipeNoResults = true;
 		 	$scope.focusOnSearchText();
 		 } else if(data.length == 1){
 		 		var reservationID = data[0].id;
@@ -310,12 +366,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 		 }
 
 	};
+	var swipeHeadingInSearch = '';
 	$scope.$on('SWIPEHAPPENED', function(event, data){
 	 	var ksn = data.RVCardReadTrack2KSN;
   		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
 			ksn = data.RVCardReadETBKSN;
 		}
-
+		var cardNumber = data.RVCardReadMaskedPAN.substr(data.RVCardReadMaskedPAN.length - 4);
+		swipeHeadingInSearch = 'Reservations with card '+cardNumber;
+		
 		//var url = '/staff/payments/search_by_cc';
 		var swipeData = {
 			'et2' : data.RVCardReadTrack2,
@@ -331,13 +390,16 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 	 
 	 $scope.showNoMatches = function(resultLength, queryLength, isTyping, isSwiped){
 	 	var showNoMatchesMessage = false;
-	 	if(isSwiped && resultLength == 0){
-	 		showNoMatchesMessage = true;
-	 	} else {
-	 		if(resultLength == 0 && queryLength>=3 && !isTyping){
-	 			showNoMatchesMessage = true;
-	 		}
+	 	if(!$scope.swipeNoResults){
+	 		if(isSwiped && resultLength == 0){
+		 		showNoMatchesMessage = true;
+		 	} else {
+		 		if(resultLength == 0 && queryLength>=3 && !isTyping){
+		 			showNoMatchesMessage = true;
+		 		}
+		 	}
 	 	}
+	 	
 	 	return showNoMatchesMessage;
 	 };
 	 $scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
@@ -379,13 +441,5 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope','$rootScope'
 	       }
 	   	 return mappedStatus;
    };
-  
-   $rootScope.setPrevState = {
-	    hide: true,
-	    title: 'Go back to Dashboard',
-	    callback: 'clearResults',
-	    scope: $scope,
-	    noStateChange: true
-	};
-      
+
 }]);

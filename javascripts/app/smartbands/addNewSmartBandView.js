@@ -61,12 +61,7 @@ var AddNewSmartBandView = function(domRef) {
 		}
 		//validation part
 		var blankKeys = "";
-		if(data.first_name == ''){
-			blankKeys = "First Name"			
-		}
-		if(data.last_name == ''){			
-			blankKeys = blankKeys == '' ? "Last Name" : (blankKeys + ", " + 'Last Name');
-		}
+		// Removed validation for first name and last name as per CICO-9174
 		if(payment_mode){	
 			if(data.amount == ''){			
 				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");

@@ -1,5 +1,10 @@
 <!-- Navbar -->
 <header class="nav-bar float" role="banner">
+   <!-- Missing back to prev -->
+   <div class="actions-back button white">
+    <a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
+   </div>
+   
    <!-- Title -->
    <h1 class="h2" translate>ROOM_STATUS</h1>
    <!-- Filter / Checkout button  -->
@@ -23,9 +28,8 @@
   <span id="icon"></span>
   <span id="ref-text" translate>PULL_REFRESH</span>
 </div>
-
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable">
+<section id="rooms" class="content scrollable" div-touch-move-stop-propogate>
    <ul class="wrapper" ng-hide="noResultsFound==rooms.length">
       <li ng-repeat="room in rooms" ng-if="room.display_room" >
          <a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">

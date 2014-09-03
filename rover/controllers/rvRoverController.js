@@ -47,6 +47,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; //Wednesday, 06-04-2014
     $rootScope.dateFormatForAPI = "yyyy-MM-dd";
+    $rootScope.shortMonthAndDate = "MMM dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
@@ -75,6 +76,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
+
+    $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
+      $scope.userInfo.business_date = newBussinessDate
+    });
+
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
 
@@ -100,9 +106,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           'HOUSEKEEPING': 'rover.dashboard.housekeeping',
           'FRONT_DESK'  : 'rover.dashboard.frontoffice',
           'MANAGER'     : 'rover.dashboard.manager'
-        }
+        };
         return statesForDashbaord[$rootScope.default_dashboard];
-    }
+    };
 
     if($rootScope.isStandAlone){
       // OBJECT WITH THE MENU STRUCTURE
@@ -327,7 +333,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
          ngDialog.open({
             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
             controller: 'RVEndOfDayModalController',
-            className: 'ngdialog-theme-plain calendar-modal'
+            className: 'end-of-day-popup ngdialog-theme-plain'
           });
       }
     };
