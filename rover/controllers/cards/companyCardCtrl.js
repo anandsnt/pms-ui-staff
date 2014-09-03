@@ -85,9 +85,15 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
-				$scope.$emit("saveContactInformation");
+			} 
+			else if (document.getElementById("cc-ar-accounts") != null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab == 'cc-ar-accounts') {
+				return;
 			}
+			else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
+				$scope.$emit("saveContactInformation");
+				$scope.$broadcast("saveArAccount");
+			}
+			
 		};
 
 		/**
@@ -111,6 +117,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			event.preventDefault();
 			saveContactInformation($scope.contactInformation);
 			$scope.checkOutsideClick(targetElement);
+			$scope.$broadcast("saveArAccount");
 		});
 
 		/**
