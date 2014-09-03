@@ -16,8 +16,8 @@ angular.module('housekeepingModule', [])
             fetchedRoomList: function(RVHkRoomStatusSrv, $stateParams) {
                 if(typeof $stateParams !== 'undefined' && typeof $stateParams.roomStatus !== 'undefined' && $stateParams.roomStatus != null){
                     var filterStatus = {
-                        'INHOUSE_DIRTY': ['dirty', 'arrived'],
-                        'INHOUSE_CLEAN': ['clean', 'arrived'],
+                        'INHOUSE_DIRTY': ['dirty', 'stayover'],
+                        'INHOUSE_CLEAN': ['clean', 'stayover'],
                         'DEPARTURES_DIRTY': ['dueout', 'departed', 'dirty'],
                         'DEPARTURES_CLEAN': ['departed', 'clean'],
                         'OCCUPIED': ['occupied'],
