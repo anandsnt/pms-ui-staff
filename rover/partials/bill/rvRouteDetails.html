@@ -71,25 +71,17 @@
          </div>
          <div ng-show="chargeCodeSearchText!='' && chargeCodeSearchText.length>2">
          	
-         	<!--
-         	<span ng-repeat = "chargeCode in availableChargeCodes" ng-show="chargeCode.is_row_visible === true">
-         		{{chargeCode.code + " " + chargeCode.description}}
-         	</span>
-         	-->
-         	
-         	
-         	<!-- Company Card Results / content -->
-			<div class="company-card-results" ng-hide="availableChargeCodes.length === 0 || chargeCodeSearchText === ''"  ng-iscroll="nameOnCard" ng-iscroll-delay="100">
+         	<!-- Charge code Results / content -->
+			<div class="company-card-results" ng-hide="availableChargeCodes.length === 0 || chargeCodeSearchText === ''"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100" style="height: 250px; top: 290px; z-index: 999; left: 390px; width: 300px;">
 				<div class="search-results" >
 					<ul id="search-list" >
 						<li ng-repeat="chargeCode in availableChargeCodes" ng-show="chargeCode.is_row_visible === true">
-							<div class="icon company-card"></div>
-							<h4 ng-bind-html="chargeCode.code|highlight:chargeCodeSearchText:false"></h4>
+							<h4 class="text-bold" ng-class="{'grey':chargeCode.is_selected==true}" ng-bind-html="chargeCode.code|highlight:chargeCodeSearchText:false"></h4> &nbsp;
+							<h4 class="text-bold" ng-class="{'grey':chargeCode.is_selected==true}" ng-bind-html="chargeCode.description|highlight:chargeCodeSearchText:false"></h4>
 						</li>
 					</ul>
 				</div>
 			</div>
-			
 			
          </div>
       </div>

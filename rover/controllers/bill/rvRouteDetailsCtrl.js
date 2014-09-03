@@ -3,7 +3,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
     $scope.showPayment = false;
-
+	var scrollerOptions = {click: true, preventDefault: false};
+    $scope.setScroller('chargeCodesList', scrollerOptions);
+    $scope.refreshScroller('chargeCodesList');
+    $scope.chargeCodesListDivHgt = 250;
+    $scope.chargeCodesListDivTop = 0;
+    
 	$scope.showPaymentList = function(){
 		$scope.isAddPayment = false;
 	}
@@ -133,12 +138,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.clearResults = function(){
 	  	$scope.chargeCodeSearchText = "";
 	};
-  	var searchSuccessChargeCodes = function(data){
-		$scope.$emit("hideLoader");
-		$scope.availableChargeCodes = data.accounts;
-		console.log(data);
-		setTimeout(function(){$scope.refreshScroller('cards_search_scroller');}, 750);
-	};
+  	
   	/**
   	* function to perform filering on results.
   	* if not fouund in the data, it will request for webservice
@@ -149,6 +149,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	      //based on 'is_row_visible' parameter we are showing the data in the template      
 	      for(var i = 0; i < $scope.availableChargeCodes.length; i++){
 	          $scope.availableChargeCodes[i].is_row_visible = true;
+	          $scope.availableChargeCodes[i].is_selected = true;
 	      }     
 	      
 	      // we have changed data, so we are refreshing the scrollerbar
@@ -171,7 +172,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	              
 	      }
 	      // we have changed data, so we are refreshing the scrollerbar
-	      //$scope.refreshScroller('cards_search_scroller');                  
+	      //$scope.refreshScroller('cards_search_scroller');    
+	      $scope.refreshScroller('chargeCodesList');              
 	    }
   	};	
 }]);
