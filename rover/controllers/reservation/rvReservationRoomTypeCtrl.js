@@ -931,7 +931,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							if (taxes && taxes.length > 0) {
 								rooms[d.room_type_id].total[rate_id].percent = getTaxPercent(taxes);
 							}
-							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / $scope.reservationData.numNights).toFixed(2);
+							var stayLength = $scope.reservationData.numNights;
+							// Handle single days for calculating rates
+							if (stayLength == 0) stayLength = 1;
+							rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].totalRate / stayLength).toFixed(2);
 						})
 					})
 				}
