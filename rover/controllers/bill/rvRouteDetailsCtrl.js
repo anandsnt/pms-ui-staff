@@ -208,4 +208,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	      $scope.refreshScroller('chargeCodesList');              
 	    }
   	};	
+  	
+  	$scope.isChargeCodeSelected = function(chargeCode){
+  		for(var i=0; i < $scope.selectedEntity.attached_charge_code.length; i++){
+            if($scope.selectedEntity.attached_charge_code[i].id == chargeCode.id )
+                return true;
+        }
+        return false;
+  	};
 }]);
