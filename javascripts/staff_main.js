@@ -21,7 +21,7 @@
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 
-//=require ../shared/lib/js/acute-select.js
+//=require ../shared/directives/acuteSelect/acute-select.js
 //=require_tree ../shared
 //=require ../shared/lib/js/date.js
 //=require_tree ../rover/rvRouters/
