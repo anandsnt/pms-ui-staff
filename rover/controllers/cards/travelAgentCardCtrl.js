@@ -1,5 +1,5 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCardSrv',
-	function($scope, $timeout, RVCompanyCardSrv) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCardSrv','ngDialog',
+	function($scope, $timeout, RVCompanyCardSrv,ngDialog) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
