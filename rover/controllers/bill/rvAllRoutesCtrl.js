@@ -31,8 +31,8 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVGuestC
 
     $scope.deleteRoute = function(index){
         var successCallback = function(data) {
-                
-                
+                $scope.attachedEntities.splice(index, 1);
+                $scope.routes.splice(index, 1);
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');

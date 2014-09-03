@@ -62,6 +62,7 @@
 			</div>
 		</div>
 
+
 		<!-- Search available charge codes -->
 		<div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
 			<input ng-model="chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
@@ -72,10 +73,20 @@
 				</select>
 			</div>
 			<div ng-show="chargeCodeSearchText!='' && chargeCodeSearchText.length>2">
-				<span ng-repeat = "chargeCode in availableChargeCodes" ng-show="chargeCode.is_row_visible === true">
-					{{chargeCode.code + " " + chargeCode.description}}
-				</span>
-			</div>
+         	
+	         	<!-- Charge code Results / content -->
+				<div class="company-card-results" ng-hide="availableChargeCodes.length === 0 || chargeCodeSearchText === ''"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100" style="height: 250px; top: 290px; z-index: 999; left: 390px; width: 300px;">
+					<div class="search-results" >
+						<ul id="search-list" >
+							<li ng-repeat="chargeCode in availableChargeCodes" ng-show="chargeCode.is_row_visible === true">
+								<h4 class="text-bold" ng-class="{'grey':chargeCode.is_selected==true}" ng-bind-html="chargeCode.code|highlight:chargeCodeSearchText:false"></h4> &nbsp;
+								<h4 class="text-bold" ng-class="{'grey':chargeCode.is_selected==true}" ng-bind-html="chargeCode.description|highlight:chargeCodeSearchText:false"></h4>
+							</li>
+						</ul>
+					</div>
+				</div>
+			
+         	</div>
 		</div>
 		<!-- Added from search -->
 		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
@@ -100,7 +111,7 @@
 	<fieldset class="content-right" ng-show = "bills.length == 0">
       <div class="no-content" >
          <div class="info">
-            <strong class="h1" translate>NO_BILLS_TO_ROUTE</strong>
+            <strong class="h1" translate>NO_BILLS_TO_ROUTE</strong>  
             
          </div>
       </div>
