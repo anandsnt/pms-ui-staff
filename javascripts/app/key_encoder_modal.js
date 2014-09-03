@@ -11,9 +11,11 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
 	this.isAdditional = false;
-	
+	this.isSmartbandCreateWithKeyWrite = that.params.isSmartbandCreateWithKeyWrite;
 	this.numOfKeys = 0;
 	this.printKeyStatus = [];
+	//variable to maintain last successful ID from card reader, will use for smartband creation
+	var lastSuccessfulCardIDReaded = '';
 
 	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
 
@@ -286,6 +288,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    }
 	    if(typeof uID !== 'undefined'){
 	    	postParams.uid = uID;
+	    	lastSuccessfulCardIDReaded = uID;
 	    }else{
 	    	postParams.uid = "";
 
@@ -357,6 +360,19 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
 				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
+    			
+    			//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
+    			if(that.isSmartbandCreateWithKeyWrite && lastSuccessfulCardIDReaded != ''){
+    				var data = {}
+    				//since there is not UI for adding first name & last name, we are choosing guest name
+    				var data.first_name = $("#guest-card #card-wrapper #change-name #gc-firstname").val();
+    				var data.last_name  = $("#guest-card #card-wrapper #change-name #gc-lastname").val();
+    				//setting as OPEN ROOM charge
+    				data.is_fixed = false;
+    				//setting smartband account number as last read ID from card reader
+    				data.account_number = lastSuccessfulCardReadID;
+    				that.addNewSmartbandWithKey(data);
+    			}
 
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
@@ -387,6 +403,70 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 		else{
 			sntapp.cardReader.writeKeyData(options);
+		}
+
+	};
+
+	/**
+	* function used to add smartband, mainly for smartband creation while key writing
+	*/
+	this.addNewSmartbandWithKey = function(data){
+		var reservationId = getReservationId();
+		var url = '/api/reservations/' + reservationId + '/smartbands';
+	    var options = { 
+			requestParameters: JSON.stringify(data),
+			successCallBack: that.successCallbackOfAddNewSmartband,
+			failureCallBack: that.failureCallbackOfAddNewSmartband,
+			successCallBackParameters: data,
+			loader: 'blocker',
+			async: false
+	    };
+
+		var webservice = new NewWebServiceInterface();	    			
+    	webservice.postJSON(url, options);	
+	};
+
+	//success call back of smartband's api call for creation
+	that.successCallbackOfAddNewSmartband = function(data, successCallbackParams){
+		sntapp.activityIndicator.showActivityIndicator();
+		that.writeBandType (successCallbackParams);
+	};
+
+	//failure call back of smartband's api call for creation
+	that.failureCallbackOfAddNewSmartband = function(errorMessage){
+
+	};
+
+	/**
+	* Set the selected band type - fixed room/open charge to the band
+	*/
+	this.writeBandType = function(data){
+		var args = [];
+		var bandType = '00000002';
+		if(data.is_fixed){
+			bandType = '00000001';
+		}
+		args.push(bandType);
+		args.push(data.account_number);
+		args.push('19');//Block Address - hardcoded
+
+		var options = {
+			//Cordova write success callback
+			'successCallBack': function(){
+				sntapp.activityIndicator.hideActivityIndicator();		
+				return;				
+			},
+			'failureCallBack': function(message){
+				sntapp.activityIndicator.hideActivityIndicator();
+				return;				
+			},
+			arguments: args
+		};
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.setBandTypeDebug(options);
+		}
+		else{
+			sntapp.cardReader.setBandType(options);
 		}
 
 	};
