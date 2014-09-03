@@ -34,18 +34,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.toggleChargeType = function(){
 		$scope.isBillingGroup = !$scope.isBillingGroup;
         $scope.refreshScroller('billingGroups');
-                $scope.refreshScroller('chargeCodes');
+        $scope.refreshScroller('chargeCodes');
 	}
 
-	$scope.setChargeType = function(){
-		if(($scope.selectedEntity.attached_charge_codes.length == 0 && $scope.selectedEntity.attached_billing_groups.length == 0) || $scope.selectedEntity.attached_billing_groups.length > 0){
-			$scope.isBillingGroup = true;
-		}else if($scope.selectedEntity.attached_charge_codes.length > 0 ){
-			$scope.isBillingGroup = false;
-		}
-	}	
-
-    $scope.isBillingGroupSelected = function(billingGroup){
+	$scope.isBillingGroupSelected = function(billingGroup){
         for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
             if($scope.selectedEntity.attached_billing_groups[i].id == billingGroup.id )
                 return true;
@@ -56,19 +48,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.toggleSelectionForBillingGroup = function(billingGroup){
         for(var i=0; i < $scope.selectedEntity.attached_billing_groups.length; i++){
             if($scope.selectedEntity.attached_billing_groups[i].id == billingGroup.id ){
-                $scope.selectedEntity.attached_charge_codes = [];
                 $scope.selectedEntity.attached_billing_groups.splice(i, 1);
                 return;                
             }
         }
-        $scope.selectedEntity.attached_charge_codes = [];
         $scope.selectedEntity.attached_billing_groups.push(billingGroup);
     };
 
     $scope.removeChargeCode = function(chargeCode){
         for(var i=0; i < $scope.selectedEntity.attached_charge_codes.length; i++){
             if($scope.selectedEntity.attached_charge_codes[i].id == chargeCode.id ){
-                $scope.selectedEntity.attached_billing_groups = [];
                 $scope.selectedEntity.attached_charge_codes.splice(i, 1);
                 return;                
             }
@@ -81,19 +70,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 for(var j=0; j < $scope.selectedEntity.attached_charge_codes.length; j++){
                     
                     if($scope.selectedEntity.attached_charge_codes[j].id == $scope.chargeCodeToAdd ){
-                        $scope.selectedEntity.attached_billing_groups = [];
                         return;                
                     }
                 }     
-                $scope.selectedEntity.attached_billing_groups = [];
                 $scope.selectedEntity.attached_charge_codes.push($scope.availableChargeCodes[i]);         
             }
         }
-    };  
-
-	$scope.setChargeType();
-
-    
+    };      
 
 	$scope.fetchAvailableChargeCodes = function(){
         
@@ -146,17 +129,24 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchBillsForReservation = function(){
         
             var successCallback = function(data) {
-                
-                $scope.bills = data;
-                $scope.$parent.bills = data;
+                if($scope.reservationData.reservation_id != scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                    $scope.bills.push(data[0]);
+                    $scope.$parent.bills.push(data[0]);
+                }else{
+                    $scope.bills = data;
+                    $scope.$parent.bills = data;
+                }
                 $scope.fetchAvailableChargeCodes();
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
+            var id = $scope.selectedEntity.id;
+            if($scope.selectedEntity.entity_type != 'RESERVATION')
+                id = $scope.reservationData.reservation_id;
            
-            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, $scope.selectedEntity.id, successCallback, errorCallback);
+            $scope.invokeApi(RVBillinginfoSrv.fetchBillsForReservation, id, successCallback, errorCallback);
     };
     $scope.fetchBillsForReservation();
     
