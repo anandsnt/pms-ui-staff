@@ -2,11 +2,15 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 	'$scope', 
 	'rvAvailabilitySrv', 
 	'dateFilter', 
-	function($scope, rvAvailabilitySrv, dateFilter){
+	'$rootScope',
+	'$timeout',
+	function($scope, rvAvailabilitySrv, dateFilter, $rootScope, $timeout){
 		BaseCtrl.call(this, $scope);
 
-		plottedChart = null;
+		var plottedChart = null;
 
+
+		var isAlreadyRemoved = false;
   		$scope.hideMeBeforeFetching = false;	
 
   		$scope.graphWidth = '1000';
@@ -17,14 +21,15 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
   		/*var scrollerOptionsForAvailability = {click: true, preventDefault: false};
   		$scope.setScroller ('availability-graph-scroller', scrollerOptionsForAvailability);*/
 
+
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
 
  		var legendClasses = [];
 
+ 		var timeoutFunction = null;
+
  		for(var i = 0 ;i < colors.length; i++){ 			
- 			legendClasses.push("background-image: none !important;"  + 
-			"background-color: "+colors[i]+" !important; " +
-			"background-repeat: repeat;");
+ 			legendClasses.push("background: "+colors[i]+" !important;");
 		}
 
 		$scope.returnLegendStyle  = function(index, legendModel){
@@ -40,17 +45,18 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			/*
 				Caution, DOM accessing, TODO: try to convert it into angular way
 			*/
-        	$("#graph-showing-area #nav-listing").css("left", plottedChart.plotLeft);
-        	$("#graph-showing-area #nav-listing").css("width", plottedChart.plotSizeX);
+			var navListNode = $("#graph-showing-area #nav-listing");
+			var LabelElements = navListNode.find("ul li");			
+        	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
         	if(getMaxSeriesLengthData() != 0){
         		labelWidthToSet = parseInt((plottedChart.plotSizeX)/getMaxSeriesLengthData());
         	}
         	else{
-        		$("#graph-showing-area #nav-listing").css("width", 0);
+        		navListNode.css("width", 0);
         	}
-        	$("#graph-showing-area #nav-listing ul li").css("width", labelWidthToSet);        	
+        	LabelElements.css("width", labelWidthToSet);        	
         	$scope.refreshScroller('graph-scroller');			
 
 		}
@@ -86,7 +92,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					yAxis: 0,
 					checked: false
 				}, {
-					name: 'Occupancy Actual',
+					name: 'Occupancy Actual(%)',
 					data: $scope.data.occupanciesActual,
 					yAxis: 1,
 					checked: false,
@@ -98,7 +104,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 				//we are adding occupancy target between if it has setuped in rate manager
 				if($scope.data.IsOccupancyTargetSetBetween){
 					$scope.graphData.push({
-						name: 'Occupancy Target',
+						name: 'Occupancy Target(%)',
 						data: $scope.data.occupanciesTargeted,
 						yAxis: 1,
 						checked: false
@@ -111,14 +117,16 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
  			for(var i = 0; i < plottedChart.series.length; i++){
  				if(plottedChart.series[i].name == legendName){
  					if (model){						
- 						plottedChart.series[i].hide();
+ 						plottedChart.series[i].hide(); 						
  					}
  					else{						
  						plottedChart.series[i].show();
- 					}
+ 					} 					 					
+ 					break;
  				}
  			}
  			resizedWindow();
+ 			
  		};
 
 
@@ -228,18 +236,24 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			$scope.availabilityGraphCongif = { 
 				options : {
 					chart: {
-						type: 'areaspline',
+						type: 'area',
 					},
 					legend : {
 						enabled : false
 					},
-
+					tooltip: {
+			            formatter: function () {
+			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
+			                       this.series.name +  ': ' + this.y.toFixed(2);
+			            }
+				    },	
 				},
 		
 				title: {
 					text: ''
 				},
 				xAxis: {
+
 					showLastLabel: true,
     				endOnTick: true,					
 					min: 0,
@@ -298,25 +312,25 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					opposite: true,			
 				}
 				],
-							
+				 						
 				series: $scope.graphData,
 			    func: function (chart) { // on complete
 			        	plottedChart = chart;
 			        	setTimeout(function(){
 			        		$scope.$apply(function(){
-			        			resizedWindow();
+			        			
 					        	for(var i = 0; i < $scope.graphData.length; i++){
 					        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
 					        	}
 					        	$scope.graphWidth = getMaxSeriesLengthData() * 75;
-
+					        	resizedWindow();
 					        						        	
 			        		});
 	        				
 			        	}, 150)
 
 			        	$(window).resize(function(){
-			        		setTimeout(function(){
+			        		timeoutFunction = $timeout(function(){			
 			        			resizedWindow();
 			        			$scope.refreshScroller('graph-scroller');		
 			        		}, 500);
@@ -353,21 +367,35 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		/**
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
-		$scope.$on("changedRoomAvailableData", function(event){	
-			$scope.hideMeBeforeFetching = false;	
-			doInitialOperation();		
-        	setTimeout(function(){
-	        	for(var i = 0; i < $scope.graphData.length; i++){
-	        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
-	        	}	    
-	        	$scope.$apply(function(){
-	        		resizedWindow();
-	        		$scope.hideMeBeforeFetching = true;	
-	        	});    	
-	        	$(window).resize();
-        		
-        	}, 1000);
+		var cr = $scope.$on("changedRoomAvailableData", function(event){	
+			if(!isAlreadyRemoved){
+				$scope.hideMeBeforeFetching = false;	
+				doInitialOperation();		
+	        	setTimeout(function(){
+
+		        	for(var i = 0; i < $scope.graphData.length; i++){
+		        		$scope.clickedOnLegend($scope.graphData[i].name, !$scope.graphData[i].checked)
+		        	}	    
+		        	$scope.$apply(function(){
+		        		resizedWindow();
+		        		$scope.hideMeBeforeFetching = true;	
+		        	});    	
+		        	$(window).resize();
+	        		
+	        	}, 1000);
+        	}
 				
+		});
+
+		/**
+		*
+		*/
+		$scope.$on("$destroy", function(){
+			isAlreadyRemoved = true;
+			$(window).unbind('resize');
+			if(timeoutFunction){
+				$timeout.cancel(timeoutFunction)
+			}
 		});
   	
 

@@ -8,6 +8,8 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		$scope.hideMeBeforeFetching = false;
 		$scope.showRoomTypeWiseAvailableRooms = false;
 
+
+
 		$scope.data = rvAvailabilitySrv.getData();
 
 		//if already fetched we will show without calling the API
