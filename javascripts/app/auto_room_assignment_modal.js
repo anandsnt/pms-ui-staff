@@ -1,7 +1,8 @@
 var AutoRoomAssignmentModal = function(callBack) {
 	BaseModal.call(this);
 	var that = this;
-	this.url = "ui/autoRoomAssignmentModal";
+	var room = that.params.data.room;
+	this.url = "ui/autoRoomAssignmentModal?room="+room;
 
 	this.delegateEvents = function() {
 		
