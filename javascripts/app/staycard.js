@@ -205,6 +205,15 @@ var StayCard = function(viewDom){
 	if(getParentWithSelector(event, "#reservation-queue")) {
         return that.reservationQueueHandler(event);
     }
+    if(getParentWithSelector(event, "#deposit_balance")) {
+        var showMakePaymentModal = new ShowMakePaymentModal();
+		// setWakeUpCallModal.params = {
+			// "reservation_id" : that.reservation_id
+		// };
+		// setWakeUpCallModal.backDom = that.myDom;
+		// setWakeUpCallModal.type = "POST";
+		showMakePaymentModal.initialize();
+    }
   };
 
   // function for closing the drawer if is open
