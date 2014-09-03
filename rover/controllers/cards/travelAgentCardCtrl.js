@@ -240,6 +240,36 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 				ngDialog.close();
 		};
 
+		var callCompanyCardServices =  function(param){
+			var successCallbackFetchArNotes = function(data){
+					$scope.$emit("hideLoader");
+					$scope.arAccountNotes = data;
+					$scope.$broadcast('ARDetailsRecieved');
+				};
+				var fetchARNotes = function(){
+					$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
+				}
+
+				var successCallbackFetchArDetails = function(data){
+					$scope.$emit("hideLoader");
+					$scope.arAccountDetails = data;
+					if($scope.arAccountDetails.is_use_main_contact !== false){
+						$scope.arAccountDetails.is_use_main_contact = true;
+					}
+					if($scope.arAccountDetails.is_use_main_address !== false){
+						$scope.arAccountDetails.is_use_main_address = true;
+					}
+					fetchARNotes();
+				};
+				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);		
+
+			};
+		var param = {
+						'id': $scope.reservationDetails.companyCard.id
+					};
+		callCompanyCardServices(param);
+
+
 	
 	/*-------AR account ends here-----------*/
 	}
