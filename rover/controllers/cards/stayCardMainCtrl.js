@@ -106,6 +106,31 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		var callCompanyCardServices =  function(param){
+			var successCallbackFetchArNotes = function(data){
+					$scope.$emit("hideLoader");
+					$scope.arAccountNotes = data;
+					$scope.$broadcast('ARDetailsRecieved');
+				};
+				var fetchARNotes = function(){
+					$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
+				}
+
+				var successCallbackFetchArDetails = function(data){
+					$scope.$emit("hideLoader");
+					$scope.arAccountDetails = data;
+					if($scope.arAccountDetails.is_use_main_contact !== false){
+						$scope.arAccountDetails.is_use_main_contact = true;
+					}
+					if($scope.arAccountDetails.is_use_main_address !== false){
+						$scope.arAccountDetails.is_use_main_address = true;
+					}
+					fetchARNotes();
+				};
+				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);		
+
+		};
+
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
@@ -123,6 +148,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'id': $scope.reservationDetails.companyCard.id
 				};
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, companyCardFound);
+				callCompanyCardServices(param);
 			}
 		};
 
@@ -144,6 +170,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'id': $scope.reservationDetails.travelAgent.id
 				};
 				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
+				callCompanyCardServices(param);
 			}
 		};
 

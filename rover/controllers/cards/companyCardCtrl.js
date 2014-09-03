@@ -25,6 +25,12 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
 			}
+			else if($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts'){
+				$scope.$broadcast("saveArAccount");
+			}	
+			else if(tabToSwitch == 'cc-ar-accounts'){
+				$scope.$broadcast("arAccountTabActive");
+			};	
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
@@ -161,7 +167,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
-			$scope.showArAccountButtonClick($event);
+			//$scope.showArAccountButtonClick($event);
 		};
 
 		/**
