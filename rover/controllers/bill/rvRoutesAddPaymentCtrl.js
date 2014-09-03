@@ -27,11 +27,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
   	$scope.setScroller('newpaymentview', scrollerOptions);	
 
   	$scope.$on('showaddpayment', function(event){
-  		setTimeout(function(){
-						$scope.refreshScroller('newpaymentview');			
-				}, 
-			500);
-			
+  		$scope.refreshScroller('newpaymentview');						
 	});
 
   	$scope.fetchAvailablePaymentTypes = function(){

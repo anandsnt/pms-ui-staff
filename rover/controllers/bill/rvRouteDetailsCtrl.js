@@ -10,7 +10,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	$scope.showAddPayment = function(){
 		$scope.isAddPayment = true;
-        $scope.$emit('showaddpayment');
+        $scope.$broadcast('showaddpayment');
 	}	
 
 	$scope.toggleChargeType = function(){
