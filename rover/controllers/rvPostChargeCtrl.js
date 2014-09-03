@@ -19,7 +19,8 @@ sntRover.controller('RVPostChargeController',
 			//$scope.isResultOnFetchedChargecode = false;
 			
 			// set the default bill number
-			$scope.billNumber = $scope.fetchedData.bill_numbers[0];
+			
+			// $scope.billNumber = $scope.fetchedData.bill_numbers[0];
 
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
@@ -480,6 +481,12 @@ sntRover.controller('RVPostChargeController',
 			$scope.searchByRoomNumber = function(){
 				$scope.invokeApi(RVSearchSrv.fetch, {});
 			};
+			
+			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
+				console.log("reached");
+				$scope.fetchedData.bill_numbers = data.bills;
+			});
+					
 			
 		}
 	]

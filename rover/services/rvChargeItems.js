@@ -2,7 +2,8 @@ sntRover.service('RVChargeItems',
 	[
 		'$q',
 		'RVBaseWebSrv',
-		function($q, RVBaseWebSrv) {
+		'rvBaseWebSrvV2',
+		function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
 			// will hold all values fetched from server
 			this.fetchedItems = {};
@@ -206,6 +207,19 @@ sntRover.service('RVChargeItems',
 				var url = '/staff/items/post_items_to_bill';
 
 				RVBaseWebSrv.postJSON(url, params)
+					.then(function(data) {
+						deferred.resolve(data);
+					}, function(data) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
+			};
+			this.getReservationBillDetails = function(reservationId){
+				var deferred = $q.defer();
+				var url = '/api/reservations/'+reservationId+'/bills';
+
+				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						deferred.resolve(data);
 					}, function(data) {
