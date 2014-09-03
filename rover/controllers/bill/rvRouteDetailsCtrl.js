@@ -11,10 +11,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     
 	$scope.showPaymentList = function(){
 		$scope.isAddPayment = false;
-	}
+	};
 
 	$scope.showAddPayment = function(){
 		$scope.isAddPayment = true;
+        $scope.$broadcast('showaddpayment');
 	}	
 
 	$scope.toggleChargeType = function(){

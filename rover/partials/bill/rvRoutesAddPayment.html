@@ -3,31 +3,44 @@
                      <div class="entry full-width">
                         <label for="payment-type" translate>PAYMENT_TYPE</label>
                         <div class="select">
-                           <select name="payment-type" id="payment-type" class="placeholder">
-                              <option value="" selected>Select Payment Type</option>
-                              <option value="credit-card">Credit card</option>
-                              <option value="cash">Cash</option>
-                              <option value="cheque">Cheque</option>
+                           <select name="payment-type" ng-model = "saveData.payment_type" id="payment-type" class="placeholder" >
+                              <option value="" translate>SELECT_PAYMENT_TYPE</option>
+                              <option value="{{paymentType.name}}" ng-repeat = "paymentType in availablePaymentTypes">{{paymentType.description}}</option>
+                              
+                           </select>
+                        </div>
+                     </div>
+                     <div class="entry full-width">
+                        <label for="payment-type" translate>CREDIT_CARD</label>
+                        <div class="select">
+                           <select name="payment-type" ng-model = "saveData.credit_card" id="payment-type" class="placeholder" ng-disabled = "saveData.payment_type != 'CC'">
+                              <option value="" translate>SELECT_CREDIT_CARD_LABEL</option>
+                              <option value="{{creditcard.cardcode}}" ng-repeat = "creditcard in availablePaymentTypes[0].values">{{creditcard.cardname}}</option>
+                              
                            </select>
                         </div>
                      </div>
                      <div class="entry card-number-large full-width ">
-                        <label for="card-number-set1">Credit Card</label>
-                        <input name="card-number-set1" id="card-number-set1" value="" type="text" />
+                        <label for="card-number-set1" translate>CARD_NUMBER</label>
+                        <input name="card-number-set1" id="card-number-set1" ng-model = "saveData.card_number" value="" type="text" />
+                     </div>
+                     <div class="entry card-number-small">
+                        <label for="card-number-set1" translate>CVV</label>
+                        <input name="card-number-set1" id="card-number-set1" ng-model = "saveData.cvv" value="" type="text" />
                      </div>
                      <div class="entry card-number-small ">
                         <label for="expiry-month">Expiration date (<span>MM YY</span>)</label>
-                        <input name="expiry-month" id="expiry-month" placeholder="" value="" maxlength="2" size="2" type="text" />
-                        <input name="expiry-year" id="expiry-year" placeholder="" value="" maxlength="2" size="2" type="text" />
+                        <input name="expiry-month" id="expiry-month" ng-model="saveData.card_expiry_month" placeholder="" value="" maxlength="2" size="2" type="text" />
+                        <input name="expiry-year" id="expiry-year" ng-model="saveData.card_expiry_year" placeholder="" value="" maxlength="2" size="2" type="text" />
                      </div>
                      <div class="entry cardn-name full-width ">
-                        <label for="name-on-card">Name on card</label>
+                        <label for="name-on-card" >Name on card</label>
 
-                        <input name="name-on-card" id="name-on-card" value="" type="text" />
+                        <input name="name-on-card" ng-model = "saveData.name_on_card" id="name-on-card" value="" type="text" />
                      </div>
                      <div class="actions">
                         <button type="button" class="button blank" ng-click = "cancelClicked()" translate>CANCEl</button>
-                        <button type="button" class="button green" ng-click = "cancelClicked()" translate>ADD_PAYMENT_METHOD</button>
+                        <button type="button" class="button green" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button>
                      </div>
       </div>                  
 </div>                  
