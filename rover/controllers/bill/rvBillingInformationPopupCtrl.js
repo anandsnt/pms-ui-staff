@@ -16,20 +16,28 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			$scope.$emit('hideLoader');
 			$scope.closeDialog();
 		};
-
+    /**
+    * function to get label for all routes and add routes button
+    */
 	$scope.getHeaderButtonLabel = function(){
 		return $scope.isInitialPage? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');		
 	}
-
+    /**
+    * function to handle the click 'all routes' and 'add routes' button
+    */
 	$scope.headerButtonClicked = function(){
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
 	}
-
+    /**
+    * function to handle the pencil button click in route detail screen
+    */
     $scope.deSelectEntity = function(){
         $scope.isEntitySelected = false;
     }
-
+    /**
+    * function to handle entity selection from the 'All Routes' screen and the 'select entity' screen
+    */
 	$scope.selectEntity = function(index,type){
 
 		$scope.isEntitySelected = true;
@@ -78,7 +86,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			console.log($scope.selectedEntity);
         }
 	}
-
+     /**
+    * function to get the class for the 'li' according to the entity role
+    */
 	$scope.getEntityRole = function(route){
     	if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'false')
     		return 'guest';
@@ -89,6 +99,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     	else if(route.entity_type == 'COMPANY_CARD')
     		return 'company';
     };
+     /**
+    * function to get the class for the 'icon' according to the entity role
+    */
     $scope.getEntityIconClass = function(route){
         if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'true')
             return 'accompany';
@@ -98,7 +111,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     		return 'icons icon-travel-agent';
     	
     };
-
+    /**
+    * function to fetch the attached entity list
+    */
     $scope.fetchRoutes = function(){
         
             var successCallback = function(data) {
@@ -115,7 +130,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     };	
 
     $scope.fetchRoutes();
-
+    /**
+    * function to save the new route
+    */
     $scope.saveRoute = function(){
             var successCallback = function(data) {
                 $scope.$emit('hideLoader');
