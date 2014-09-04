@@ -145,10 +145,8 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
-    var scrollerOptions = {
-      click: true,
-    };
-    $scope.setScroller('contact_info', scrollerOptions);
+    
+    $scope.setScroller('contact_info');
 
     $scope.$on('CONTACTINFOLOADED', function(event) {
       setTimeout(function() {

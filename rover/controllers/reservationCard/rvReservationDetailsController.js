@@ -16,8 +16,15 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: $filter('translate')(backTitle),
-			name: 'rover.search',
-			param: backParam
+			scope: $scope,
+			callback: 'goBackSearch'
+		};
+
+		// we need to update any changes to the room
+		// before going back to search results
+		$scope.goBackSearch = function() {
+			$scope.updateSearchCache();
+			$state.go('rover.search', backParam);
 		};
 
 
@@ -34,7 +41,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
-		var updateSearchCache = function() {
+		$scope.updateSearchCache = function() {
 			// room related details
 			var data = {
 				'room': $scope.reservationData.reservation_card.room_number,
@@ -52,7 +59,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		// update any room related data to search service also
-		updateSearchCache();
+		$scope.updateSearchCache();
 
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
@@ -167,7 +174,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
-			updateSearchCache();
+			$scope.updateSearchCache();
 		};
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
@@ -266,7 +273,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
-			updateSearchCache();
+			$scope.updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
 		$scope.isWakeupCallAvailable = function() {
