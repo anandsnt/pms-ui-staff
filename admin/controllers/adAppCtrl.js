@@ -150,7 +150,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				}, {
 					title: "MENU_REPORTS",
-					action: "staff#/staff/reports/",
+					action: "staff#/staff/reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
@@ -185,7 +185,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				},{
 					title: "MENU_REPORTS",
-					action: "staff#/staff/reports/",
+					action: "staff#/staff/reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
