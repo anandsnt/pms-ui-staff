@@ -14,7 +14,11 @@ angular.module('housekeepingModule', [])
         controller: 'RVHkRoomStatusCtrl',
         resolve: {
             fetchedRoomList: function(RVHkRoomStatusSrv, $stateParams) {
-                if(typeof $stateParams !== 'undefined' && typeof $stateParams.roomStatus !== 'undefined' && $stateParams.roomStatus != null){
+                if ( !$stateParams ) {
+                    return false;
+                };
+
+                if( !!$stateParams.roomStatus ) {
                     var filterStatus = {
                         'INHOUSE_DIRTY': ['dirty', 'stayover'],
                         'INHOUSE_CLEAN': ['clean', 'stayover'],
@@ -30,6 +34,7 @@ angular.module('housekeepingModule', [])
                         RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                     }
                 }
+
                 return RVHkRoomStatusSrv.roomList;
             }
         }
