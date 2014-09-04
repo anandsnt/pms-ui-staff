@@ -11,7 +11,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		BaseCtrl.call(this, $scope);
 
 		var initReservation = function() {
-			if (!$scope.reservationData.isSameCard) {
+			if (!$scope.reservationData.isSameCard || !$scope.otherData.reservationCreated) {
 				// open search list card if any of the search fields are entered on main screen
 				var searchData = $scope.reservationData;
 				if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
