@@ -4,11 +4,14 @@ var ShowMakePaymentModal = function() {
 	var that = this;
 	
 	this.reservationId = getReservationId();
-	this.url = "api/reservations/"+that.reservationId+"/deposit_and_balance";
+	this.url = "staff/reservations/"+that.reservationId+"/deposit_and_balance";
 
 	this.delegateEvents = function() {
-		//that.myDom.find('#set-wake-up-call #save-wakeup-call').on('click', that.saveWakeUpCall);
+		that.myDom.find('#close').on('click', that.hidePaymentModal);
 		
+	};
+	that.hidePaymentModal = function(){
+		that.hide();
 	};
 
 	
