@@ -13,10 +13,10 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		return deferred.promise;
 	};	
 
-	this.fetchAvailableBillingGroups = function(reservationId){
+	this.fetchAvailableBillingGroups = function(data){
 		var deferred = $q.defer();
-		var url = 'api/bill_routings/billing_groups';
-			BaseWebSrvV2.getJSON(url).then(function(data) {
+		var url = 'api/bill_routings/billing_groups?id='+ data.id+'&to_bill='+data.to_bill;
+			BaseWebSrvV2.getJSON(url, data).then(function(data) {
 				
 			   	 deferred.resolve(data);
 			},function(data){
@@ -26,9 +26,9 @@ sntRover.service('RVBillinginfoSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv
 		return deferred.promise;
 	};
 
-	this.fetchAvailableChargeCodes = function(reservationId){
+	this.fetchAvailableChargeCodes = function(data){
 		var deferred = $q.defer();
-		var url = 'api/bill_routings/charge_codes';
+		var url = 'api/bill_routings/charge_codes?id='+ data.id+'&to_bill='+data.to_bill;
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				
 			   	 deferred.resolve(data);

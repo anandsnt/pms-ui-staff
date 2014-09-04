@@ -3,6 +3,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
     $scope.showPayment = false;
+    $scope.first_bill_id = "";
     
 
     var scrollerOptions = { preventDefault: false};
@@ -78,6 +79,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         }
     };      
 
+    $scope.selectChargeCode = function(selected_chargecode_id){
+        $scope.chargeCodeToAdd = selected_chargecode_id;
+         $scope.addChargeCode();
+    }
+
 	$scope.fetchAvailableChargeCodes = function(){
         
             var successCallback = function(data) {
@@ -88,8 +94,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
+            var data = {};
+            data.id = $scope.reservationData.reservation_id;
+            data.to_bill = $scope.first_bill_id;
             
-            $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, {}, successCallback, errorCallback);
+            $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };	
 
     $scope.fetchAvailableBillingGroups = function(){
@@ -108,8 +117,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
             };
+            var data = {};
+            data.id = $scope.reservationData.reservation_id;
+            data.to_bill = $scope.first_bill_id;
            
-            $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, {}, successCallback, errorCallback);
+            $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, data, successCallback, errorCallback);
     };	
     $scope.fetchAttachedPaymentTypes = function(){
         
@@ -129,10 +141,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchBillsForReservation = function(){
         
             var successCallback = function(data) {
+                $scope.first_bill_id = data[0].id;
                 if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                     $scope.bills.push(data[0]);
                     $scope.$parent.bills.push(data[0]);
                 }else{
+                    data.splice(0, 1);
                     $scope.bills = data;
                     $scope.$parent.bills = data;
                 }
