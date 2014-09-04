@@ -71,7 +71,7 @@
 					<option value="{{chargeCode.id}}" ng-repeat = "chargeCode in availableChargeCodes">{{chargeCode.code + " " + chargeCode.description}}</option>
 					
 				</select>
-			</div>
+			</div></div>
 			<div ng-show="chargeCodeSearchText!='' && chargeCodeSearchText.length>2">
          	
          	<!-- Charge code Results / content -->
@@ -88,7 +88,7 @@
 	         	</div>
 			</div>
 		<!-- Added from search -->
-		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable" ng-show = "(!isBillingGroup)">
+		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
 			<div class="entry radio-check wrapper" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
 				<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)">
 					<span class="icon-form icon-checkbox checked"></span>
@@ -104,7 +104,6 @@
 					<strong class="h1" translate>NO_CODES_ADDED</strong>
 				</div>
 			</div>
-
 	</fieldset>
 
 	<fieldset class="content-right" ng-show = "bills.length == 0">
