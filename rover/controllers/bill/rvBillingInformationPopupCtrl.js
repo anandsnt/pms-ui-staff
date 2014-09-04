@@ -7,6 +7,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.selectedEntity = {};
 	$scope.results = {};
     $scope.bills = [];
+    $scope.isReloadNeeded = false;
 	
 	$scope.closeDialog = function(){
 		ngDialog.close();
@@ -28,6 +29,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.headerButtonClicked = function(){
         $scope.isEntitySelected = false;
 		$scope.isInitialPage = !$scope.isInitialPage;
+        if($scope.isInitialPage  && $scope.isReloadNeeded){
+            $scope.isReloadNeeded = false;
+            $scope.fetchRoutes();
+        }
 	}
     /**
     * function to handle the pencil button click in route detail screen
@@ -136,6 +141,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.saveRoute = function(){
             var successCallback = function(data) {
                 $scope.$emit('hideLoader');
+                $scope.isReloadNeeded = true;
+                $scope.headerButtonClicked();
             };
             var errorCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
