@@ -7,7 +7,7 @@
 		<label>SINGLE</label>
 		
 		<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
-				<input class="hook" type="text" size="7" ng-model="data.single" value="{{data.single | number : 2}}" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined">
+				<input class="hook" type="text" size="7" ng-model="data.single" value="{{data.single | number : 2}}" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != '' || data.single == undefined" force-decimal-zero-dir>
 			</span> <span class="or"> OR</span> </span>
 		<span class="inp-field-after-or select">
 			<select style="width:70px;" ng-model="data.single_sign" ng-disabled="data.single == undefined">
