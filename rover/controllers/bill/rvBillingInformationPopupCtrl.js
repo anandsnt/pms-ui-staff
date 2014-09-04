@@ -36,7 +36,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY'){
         	$scope.selectedEntity = $scope.attachedEntities[index];
-            $scope.selectedEntity.pass is_new = false; 
+            $scope.selectedEntity.pass_is_new = false; 
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];
