@@ -42,7 +42,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
             };
 
             var data = {};
-            data.id = $scope.routes[index].id;
+            data.id = $scope.reservationData.reservation_id;
             data.from_bill = $scope.routes[index].from_bill;
             data.to_bill = $scope.routes[index].to_bill;
             $scope.invokeApi(RVBillinginfoSrv.deleteRoute, data, successCallback, errorCallback);
