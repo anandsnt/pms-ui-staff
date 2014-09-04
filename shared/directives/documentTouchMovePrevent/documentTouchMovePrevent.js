@@ -2,10 +2,12 @@ angular.module('documentTouchMovePrevent', []).directive('documentTouchMovePreve
   return {
 
     link: function(scope, element) {
-
-      document.addEventListener('touchmove', function(event){
-        event.preventDefault();
-      });
+    	var hasTouch = 'ontouchstart' in window;
+    	if(hasTouch){
+		    document.addEventListener('touchmove', function(event){
+		    	event.preventDefault();
+		    });
+		}
     }
   }
 });

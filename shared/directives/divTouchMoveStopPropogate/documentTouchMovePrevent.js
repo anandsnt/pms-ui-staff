@@ -2,9 +2,12 @@ angular.module('divTouchMoveStopPropogate', []).directive('divTouchMoveStopPropo
   return {
 
     link: function(scope, element) {
-      element.on('touchmove', function(event){
-        event.stopPropagation();
-      });
+    	var hasTouch = 'ontouchstart' in window;
+    	if(hasTouch){    	
+	      element.on('touchmove', function(event){
+	        event.stopPropagation();
+	      });
+	    }
     }
   }
 });
