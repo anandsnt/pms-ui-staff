@@ -239,7 +239,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeou
 			$scope.contactInformation.account_details.accounts_receivable_number = "";
 			ngDialog.close();
 		};
-		var dataToSend = {"id":$scope.contactInformation.id};
+		var dataToSend = {"id":$scope.reservationDetails.companyCard.id};
 		$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 	};
 

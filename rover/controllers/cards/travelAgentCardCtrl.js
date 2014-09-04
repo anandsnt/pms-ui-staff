@@ -232,7 +232,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 				$scope.contactInformation.account_details.accounts_receivable_number = "";
 				ngDialog.close();
 			};
-			var dataToSend = {"id":$scope.contactInformation.id};
+			var dataToSend = {"id":$scope.reservationDetails.travelAgent.id};
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
@@ -265,7 +265,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 
 			};
 		var param = {
-						'id': $scope.reservationDetails.companyCard.id
+						'id': $scope.reservationDetails.travelAgent.id
 					};
 		callCompanyCardServices(param);
 
