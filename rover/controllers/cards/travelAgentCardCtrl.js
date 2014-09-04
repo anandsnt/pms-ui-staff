@@ -1,5 +1,5 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCardSrv','ngDialog',
-	function($scope, $timeout, RVCompanyCardSrv,ngDialog) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout', 'RVCompanyCardSrv','ngDialog',
+	function($scope,$rootScope, $timeout, RVCompanyCardSrv,ngDialog) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
@@ -86,7 +86,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			}
 			else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
 				$scope.$emit("saveContactInformation");
-				$scope.$broadcast("saveArAccount");
+				$rootScope.$broadcast("saveArAccount");
 			}
 		};
 
@@ -111,7 +111,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$timeout', 'RVCompanyCa
 			event.preventDefault();
 			saveContactInformation($scope.contactInformation);
 			$scope.checkOutsideClick(targetElement);
-			$scope.$broadcast("saveArAccount");
+			$rootScope.$broadcast("saveArAccount");
 		});
 
 		/**
