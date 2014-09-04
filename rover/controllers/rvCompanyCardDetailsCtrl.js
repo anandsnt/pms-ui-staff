@@ -349,6 +349,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			var bool = $scope.arAccountDetails.is_auto_assign_ar_numbers;
 			var arNumber = $scope.arAccountDetails.ar_number;
 			$scope.arAccountDetails = {};
+			$scope.arAccountDetails.is_use_main_contact = true;
+			$scope.arAccountDetails.is_use_main_address = true;
 			$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
 			$scope.arAccountDetails.ar_number = arNumber;
 			$scope.contactInformation.account_details.accounts_receivable_number = "";

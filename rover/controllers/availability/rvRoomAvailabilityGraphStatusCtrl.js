@@ -21,11 +21,6 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
   		/*var scrollerOptionsForAvailability = {click: true, preventDefault: false};
   		$scope.setScroller ('availability-graph-scroller', scrollerOptionsForAvailability);*/
 
-		/*
-			Caution, DOM accessing, TODO: try to convert it into angular way
-		*/
-		var navListNode = $("#graph-showing-area #nav-listing");
-		var LabelElements = navListNode.find("ul li");
 
  		var colors = ['#c1c1c1', '#dc829c', '#83c3df', '#82de89', '#f6981a', '#f2d6af'];
 
@@ -50,6 +45,8 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			/*
 				Caution, DOM accessing, TODO: try to convert it into angular way
 			*/
+			var navListNode = $("#graph-showing-area #nav-listing");
+			var LabelElements = navListNode.find("ul li");			
         	navListNode.css({"left" :plottedChart.plotLeft, "width": plottedChart.plotSizeX});
         	var labelWidthToSet = 0;
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
