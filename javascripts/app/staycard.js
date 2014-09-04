@@ -92,7 +92,7 @@ var StayCard = function(viewDom){
            return new AddNewPaymentModal(fromPage, domElement, params);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-       // if addNewPaymentModal instance exist, but the dom is removed
+       // if addNewPaymentModal instance exist, but the dom is removedsuccessCallBackHandler
          sntapp.updateViewInst('addNewPaymentModal', function() {
            return new AddNewPaymentModal(fromPage, domElement, params);
         });
@@ -103,6 +103,26 @@ var StayCard = function(viewDom){
         sntapp.getViewInst('addNewPaymentModal').params = params;
       }
       sntapp.getViewInst('addNewPaymentModal').dataUpdated();
+    };
+    /* Function for listening from swipe in staycard, guestcard, billcard */
+    var respondToSwipeInPaymentModal = function (fromPage, domElement, params){
+      // if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+         // sntapp.setViewInst('addNewPaymentModal', function() {
+           // return new AddNewPaymentModal(fromPage, domElement, params);
+        // });
+      // } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+       // // if addNewPaymentModal instance exist, but the dom is removedsuccessCallBackHandler
+         // sntapp.updateViewInst('addNewPaymentModal', function() {
+           // return new AddNewPaymentModal(fromPage, domElement, params);
+        // });
+      // }
+      // sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+      // sntapp.getViewInst('addNewPaymentModal').initialize();
+      // if(typeof params != "undefined"){
+        // sntapp.getViewInst('addNewPaymentModal').params = params;
+      // }
+      // sntapp.getViewInst('addNewPaymentModal').dataUpdated();
+      sntapp.getViewInst('ShowMakePaymentModal').dataUpdated();
     };
     
 
@@ -141,7 +161,11 @@ var StayCard = function(viewDom){
           respondToSwipe("guest", $("#cc-payment"), {});
 
           break;
-
+		case 'StayCardDepositModal':
+        	var confirmationNum = getCurrentConfirmation();
+        	console.log("staycard")
+            respondToSwipeInPaymentModal("StayCardDepositModal", $("#reservation-"+confirmationNum), {});
+          break;
         // do nothing
         default:
         	/*
@@ -213,6 +237,7 @@ var StayCard = function(viewDom){
 		// setWakeUpCallModal.backDom = that.myDom;
 		// setWakeUpCallModal.type = "POST";
 		showMakePaymentModal.initialize();
+		sntapp.setViewInst('ShowMakePaymentModal');
     }
   };
 
