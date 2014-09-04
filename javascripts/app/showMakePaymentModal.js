@@ -10,8 +10,12 @@ var ShowMakePaymentModal = function() {
 	this.delegateEvents = function() {
 		that.myDom.find('#close').on('click', that.hidePaymentModal);
 		that.myDom.find("#make-payment").on('click', that.makePayment);
+		that.myDom.find("#existing-cards").on('click', that.showExistingCards);
+		that.myDom.find("#add-new-card").on('click', that.showAddCardScreen);
+		// that
 	};
 	this.hidePaymentModal = function(){
+		sntapp.cardSwipeCurrView = 'StayCardView';
 		that.hide();
 	};
 	this.dataUpdated = function(){
@@ -21,10 +25,51 @@ var ShowMakePaymentModal = function() {
 		var cardNumber = that.myDom.find("#card-number").val(),
 			expiryMonth = that.myDom.find("#expiry-month").val(),
 			expiryYear = that.myDom.find("#expiry-year").val(),
-			cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "";
+			cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "",
+			cardHolderName = that.myDom.find("#name-on-card").val(),
+			ccv = that.myDom.find("#ccv").val(),
+			amount = that.myDom.find("#amount").val();
+			
+		var webservice = new WebServiceInterface();
+	    var data = {
+	    		reservation_id : that.reservationId,
+				payment_type: "CC",
+			    //payment_credit_type: $payment_credit_type,
+			    card_number: cardNumber,
+			    card_expiry: cardExpiry,
+			    name_on_card: cardHolderName,
+			    amount: amount
+	    };
+	    if(that.myDom.find("#add-in-guest-card").hasClass("checked")){
+			data.add_to_guest_card = "true";
+		}
+			console.log(data)
+	    // var url = 'ghfghfghfghfghfg'; 
+	    // var options = {
+			   // requestParameters: data,
+			   // // successCallBack: that.fetchCompletedOfPayment,
+			   // // failureCallBack: that.fetchFailedOfPayment,
+			   // // successCallBackParameters: {
+				   // // 'image': $image, 
+				   // // 'number': $number, 
+				   // // 'expiry': $expiry,
+				   // // 'cardHolderName': $cardHolderName,
+			   // // },
+			   // loader: "blocker"
+	    // };
+		// webservice.postJSON(url, options);
+			
+	    
 		
 	};
-	
+	this.showExistingCards = function(){
+		that.myDom.find("#select-make-payment-card").removeClass("hidden");
+		that.myDom.find("#new-make-payment-card").addClass("hidden");
+	};
+	this.showAddCardScreen = function(){
+		that.myDom.find("#select-make-payment-card").addClass("hidden");
+		that.myDom.find("#new-make-payment-card").removeClass("hidden");
+	};
 	
 
 	
