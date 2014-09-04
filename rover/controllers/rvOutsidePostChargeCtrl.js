@@ -27,6 +27,17 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.showSearchScreen = false;
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
+			
+			$scope.setScroller('result_showing_area_post_charg');
+			/**
+			* function used for refreshing the scroller
+			*/
+			var refreshScroller = function(){  
+				setTimeout(function() {
+					$scope.refreshScroller('result_showing_area_post_charg');
+				}, 500);
+			};
+	
 			// set the default bill number
 		//	$scope.billNumber = $scope.fetchedData.bill_numbers[0];
 
@@ -497,7 +508,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				angular.forEach($scope.reservationsArray, function(value, key) {
 					value.shouldShowReservation = true;
 				});
-				
+				refreshScroller();
 				
 			//	console.log($scope.search.guest_company_agent +"==-----==="+	$scope.search.room );
 				/*angular.forEach($scope.reservationsArray, function(value, key) {
@@ -589,6 +600,120 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showInitialSearchScreen = false;
 				$scope.showSearchScreen = false;
 			};
+			
+			
+			
+			
+			/*
+			* function used in template to map the reservation status to the view expected format
+			*/
+			$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
+			  var viewStatus = "";
+		      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+		        viewStatus = "late-check-out";
+		        return viewStatus;
+		      }
+		      if("RESERVED" == reservationStatus){
+		        viewStatus = "arrival";
+		      }else if("CHECKING_IN" == reservationStatus){
+		        viewStatus = "check-in";
+		      }else if("CHECKEDIN" == reservationStatus){
+		        viewStatus = "inhouse";
+		      }else if("CHECKEDOUT" == reservationStatus){
+		        viewStatus = "departed";
+		      }else if("CHECKING_OUT" == reservationStatus){
+		        viewStatus = "check-out";
+		      }else if("CANCELED" == reservationStatus){
+		        viewStatus = "cancel";
+		      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+		        viewStatus = "no-show";
+		      }
+		      return viewStatus;
+		  };
+		
+		  //Map the room status to the view expected format
+		  $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
+		    var mappedStatus = "";
+		    if (roomstatus == "READY" && fostatus == "VACANT") {
+		    mappedStatus = 'ready';
+		    } else {
+		    mappedStatus = "not-ready";
+		    }
+		    return mappedStatus;
+		  };
+		
+		  //function that converts a null value to a desired string.
+		
+		   //if no replace value is passed, it returns an empty string
+		
+		  $scope.escapeNull = function(value, replaceWith){
+		       var newValue = "";
+		      if((typeof replaceWith != "undefined") && (replaceWith != null)){
+		       newValue = replaceWith;
+		       }
+		      var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+		      return valueToReturn;
+		   };  
+		
+		   /*
+		   * function to get reservation class against reservation status
+		   */
+		   $scope.getReservationClass = function(reservationStatus){
+		   		var classes = {
+		   			"CHECKING_IN": 'guest-check-in',
+		   			"CHECKEDIN": 'guest-inhouse',
+		   			"CHECKING_OUT": 'guest-check-out',
+		   			"CANCELED": 'guest-cancel',
+		   			"NOSHOW": 'guest-no-show',
+		   			"NOSHOW_CURRENT": 'guest-no-show',
+		   		};
+		   		if(reservationStatus.toUpperCase() in classes){
+		   			return classes[reservationStatus.toUpperCase()];
+		   		}
+		   	};
+		  	
+		  	
+			 $scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
+		  	    var queueClass = '';
+		  		if(isReservationQueued=="true" && isQueueRoomsOn == "true"){
+		 			queueClass = 'queued';
+		 		}
+		 		return queueClass;
+		      };
+		      
+		      
+		      $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
+		       var mappedStatus = "room-number";
+		       if(reservation_status == 'CHECKING_IN'){
+		     
+			      	switch(roomReadyStatus) {
+			
+						case "INSPECTED":
+							mappedStatus += ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								mappedStatus += ' room-orange';
+								break;
+							} else {
+								mappedStatus += ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							mappedStatus += " room-orange";
+							break;
+			
+						case "DIRTY":
+							mappedStatus += " room-red";
+							break;
+			
+					}
+			       }
+			   	 return mappedStatus;
+		   };
+			
+			
 		}
 	]
 );

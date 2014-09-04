@@ -67,25 +67,49 @@
 	
 		    		<!-- When you have results, use the same markup as on reservation search screen. -->
 		        	
-		        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll='search-guests-for-charge-content' ng-iscroll-delay='300' ng-show="!showInitialSearchScreen" ng-class="{'hidden': itemsVisible}">
+		        	<div id="search-guests-for-charge-content" class="search-cards reservation-list scrollable" ng-iscroll="result_showing_area_post_charg" ng-iscroll-delay="1000" ng-show="!showInitialSearchScreen" ng-class="{'hidden': itemsVisible}">
 		                <div class="wrapper">
 		                    <ul id="search-guests-for-charge-results" class="search-results">
-		                    	<li class="reservation" ng-click="clickedReservationToPostCharge(reservations.id)" ng-show="reservations.shouldShowReservation" ng-repeat="reservations in reservationsArray">
-		                    		<a class="guest-{reservation-status}">
-		                    			<figure class="guest-image">
-		                    				<img src="{guest-image}" alt="" />
-		                    			</figure>
-		                    			<div class="data">
-		                    				<h2>{{reservations.lastname}}, {{reservations.firstname}}</h2>
-		                    				<span class="confirmation">{{reservations.confirmation}}</span>
-		                    				<span class="icons icon-location">{{reservations.location}}</span>
-		                    			</div>
-		                    			<div class="status {queued}">
-		                    				<span class="guest-status {reservation-status}">arrival</span>
-		                    			</div>
-		                    			<strong class="room-number {room status}">
-		                    				{{reservations.room}}
-		                    			</strong>
+		                    	<li class="reservation" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
+		                    		<a ng-class="getReservationClass(row.reservation_status)">
+		                    			<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
+											<img ng-repeat="image in row.images" 
+											ng-src="{{image.guest_image}}" 
+			
+											ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
+			
+											'second-image':(row.images.length >1 && image.is_primary==false)}">
+			
+											<span class="vip" ng-show="row.vip==true">VIP</span>
+										</figure>
+			
+										<div class="data">
+											<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:search.guest_company_agent:false" 
+			
+											ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
+											<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
+											<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
+											</span>
+											<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:search.guest_company_agent:false"></em>
+										</div>	
+			
+										<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
+											<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
+												{{row.late_checkout_time}}
+											</span>
+			
+											<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
+											</span>
+										</div>	
+			
+										<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
+											<span ng-class="{'highlight': row.room.indexOf(search.guest_company_agent) != -1 && search.guest_company_agent!='' && search.guest_company_agent.length>=3 }" >
+												{{row.room}}
+											</span>			
+										</span>
+			
+			
+										<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
 		                    		</a>
 		                    	</li>
 		                    	
