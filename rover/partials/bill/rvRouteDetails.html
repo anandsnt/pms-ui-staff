@@ -78,7 +78,7 @@
 				<div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0 || chargeCodeSearchText === ''"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
 					<div class="search-results" >
 						<ul id="search-list" >
-							<li ng-repeat="chargeCode in availableChargeCodes" ng-show="chargeCode.is_row_visible === true">
+							<li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true">
 								<h4 class="text-bold first-text" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.code|highlight:chargeCodeSearchText:false"></h4> &nbsp;
 								<h4 class="text-bold" ng-class="{'grey':isChargeCodeSelected(chargeCode)}" ng-bind-html="chargeCode.description|highlight:chargeCodeSearchText:false"></h4>
 							</li>
