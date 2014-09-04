@@ -51,6 +51,21 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	}
 
 
+	// dont remove yet
+	// setting up back to dashboard
+	// this must be set only for switching b/w
+	// dashboard and search results by clicking the search in dashboard
+	// if ( !$stateParams.hasOwnProperty('type') ) {
+	// 	$rootScope.setPrevState = {
+	// 		title: $filter('translate')('DASHBOARD'),
+	// 		callback: 'clearResults',
+	// 		scope: $scope,
+	// 		noStateChange: true,
+	// 		hide: true
+	// 	};
+	// }
+
+
 
 	/**
 	* Success call back of data fetch from webservice
@@ -100,10 +115,18 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
   	* reciever function to show/hide the search result area.
   	*/
   	$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus){
-  		$scope.showSearchResultsArea = searchAreaVisibilityStatus; 
+  		$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+
   		// if it is hiding, we need to clear the search text
   		if(!searchAreaVisibilityStatus) {
   			$scope.textInQueryBox = '';
+
+  			// hide the dashboard back button (dont remove yet)
+  			// $rootScope.setPrevState.hide = true;
+  		} else {
+
+  			// show the dashboard back button (dont remove yet)
+  			// $rootScope.setPrevState.hide = false;
   		}
   	});
 
@@ -197,8 +220,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		//we are showing the search area
 		$scope.$emit("showSearchResultsArea", true);		
 		refreshScroller();
-
-		
 	};
 
 
@@ -297,10 +318,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
 	  	
+	  	// dont remove yet
 	  	// Gotacha!! Only when we are dealing with 'noStateChange'
-	  	if ( !!$rootScope.setPrevState.noStateChange ) {
-	  	    $rootScope.setPrevState.hide = true;
-	  	};
+	  	// if ( !!$rootScope.setPrevState.noStateChange ) {
+	  	//     $rootScope.setPrevState.hide = true;
+	  	// };
 
 	  	// reset the query saved into vault
 	  	$vault.set('searchQuery', '');
@@ -319,19 +341,14 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	//Relaunch the reservation details screen when the ows connection retry succeeds
 	$scope.$on('OWSConnectionRetrySuccesss', function(event){
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
-	});	
+	});
+
 	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
-		 $rootScope.setPrevState.hide = false;
-		 // set the prev state here only, not outside
-		// else it will override any other declarations by other controllers
-		if ( !$stateParams.hasOwnProperty('type') ) {
-			$rootScope.setPrevState = {
-				title: $filter('translate')('DASHBOARD'),
-				callback: 'clearResults',
-				scope: $scope,
-				noStateChange: true
-			};
-		}
+
+		// show back to dashboard button (dont remove yet)
+		// $rootScope.setPrevState.hide = false;
+
+
 		$scope.$emit("UpdateHeading", swipeHeadingInSearch);
 		
 		 $scope.$emit('hideLoader');

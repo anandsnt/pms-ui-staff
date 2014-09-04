@@ -147,8 +147,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData = {
                 taxesMeta: [],
+                marketsEnabled: baseData.demographics.is_use_markets,
                 markets: baseData.demographics.markets,
+                sourcesEnabled: baseData.demographics.is_use_sources,
                 sources: baseData.demographics.sources,
+                originsEnabled: baseData.demographics.is_use_origins,
                 origins: baseData.demographics.origins,
                 reservationTypes: baseData.demographics.reservationTypes,
                 promotionTypes: [{
@@ -168,7 +171,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 businessDate: baseSearchData.businessDate,
                 additionalEmail: "",
                 isGuestPrimaryEmailChecked: false,
-                isGuestAdditionalEmailChecked: false
+                isGuestAdditionalEmailChecked: false,
+                reservationCreated: false
             };
 
             $scope.guestCardData = {};
@@ -440,7 +444,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.taxDetails = {};
 
             _.each($scope.reservationData.rateDetails[roomIndex], function(d, date) {
-                if (date != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
+                if ((date != $scope.reservationData.departureDate || $scope.reservationData.numNights == 0) && $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id != '') {
                     var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].rateBreakUp;
                     var taxes = d[$scope.reservationData.rooms[roomIndex].stayDates[date].rate.id].taxes;
 
@@ -514,7 +518,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             })
 
             currentRoom.rateTotal = parseFloat(roomTotal) + parseFloat(roomTax);
-            currentRoom.rateAvg = currentRoom.rateTotal / $scope.reservationData.numNights;
+            currentRoom.rateAvg = currentRoom.rateTotal / ($scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights);
 
             //Calculate Addon Addition for the room
             var addOnCumulative = 0;
@@ -862,6 +866,31 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 isVaryingRates: self.isVaryingRates
             }
         })();
+
+        /**
+         *   Validation conditions
+         *
+         *   Either adults or children can be 0,
+         *   but one of them will have to have a value other than 0.
+         *
+         *   Infants should be excluded from this validation.
+         */
+        $scope.validateOccupant = function(room, from) {
+
+            // just in case
+            if (!room) {
+                return;
+            };
+
+            var numAdults = parseInt(room.numAdults),
+                numChildren = parseInt(room.numChildren);
+
+            if (from === 'adult' && (numAdults === 0 && numChildren === 0)) {
+                room.numChildren = 1;
+            } else if (from === 'children' && (numChildren === 0 && numAdults === 0)) {
+                room.numAdults = 1;
+            }
+        };
 
         $scope.initReservationData();
     }
