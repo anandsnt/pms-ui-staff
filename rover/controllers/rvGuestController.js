@@ -236,14 +236,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var element = $event.target;
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
-			if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-content") != null && getParentWithSelector($event, document.getElementById("company-card-content"))) {
-				$scope.$emit("saveContactInformation");
-				$rootScope.$broadcast("saveArAccount");
-			}
-			if (!$scope.viewState.isAddNewCard && document.getElementById("travel-agent-card-content") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-content"))) {
-				$scope.$emit("saveContactInformation");
-				$rootScope.$broadcast("saveArAccount");
-			}
 			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 				if (parseInt($scope.eventTimestamp)) {
 					if (($event.timeStamp - $scope.eventTimestamp) < 100) {
