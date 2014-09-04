@@ -150,6 +150,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.bills = data;
                     $scope.$parent.bills = data;
                 }
+                $scope.selectedEntity.to_bill = $scope.bills[0].id;
                 $scope.fetchAvailableChargeCodes();
             };
             var errorCallback = function(errorMessage) {
