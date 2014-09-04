@@ -79,17 +79,17 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             }          
         });
         $stateProvider.state('rover.dashboard.manager', {
-            url: '/dashboard/manager',
+            url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
             controller: 'RVmanagerDashboardController',                       
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
-            url: '/dashboard/frontoffice',
+            url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
             controller: 'RVfrontDeskDashboardController',                       
         }); 
         $stateProvider.state('rover.dashboard.housekeeping', {
-            url: '/dashboard/housekeeping',  //TODO: check can we reduced it to hk?
+            url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController',                       
         });           

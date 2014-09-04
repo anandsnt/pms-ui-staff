@@ -3,8 +3,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
-	scopeRef = $scope;
-
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
@@ -63,6 +61,9 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			ignoreTimezone : false, // For ignoring timezone,
 			eventDrop : $scope.changedDateOnCalendar,
 		};
+		setTimeout(function(){
+			$scope.refreshScroller('edit_staydate_calendar');
+		}, 0)
 	}
 	this.initialise = function() {
 		that.dataAssign();
@@ -456,7 +457,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
 				calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
 			} else {
-				calEvt.title = getCurrencySymbol(currencyCode) + $scope.escapeNull(this.rate).split('.')[0];
+				calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
 			}
 			calEvt.start = thisDate;
 			calEvt.end = thisDate;
@@ -480,7 +481,7 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 					if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
 						calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
 					} else {
-						calEvt.title = getCurrencySymbol(currencyCode) + $scope.escapeNull(this.rate).split('.')[0];
+						calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
 					}
 					calEvt.start = thisDate;
 					calEvt.end = thisDate;

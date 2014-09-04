@@ -1051,6 +1051,18 @@ Padding for the ows error popup
   text-transform: uppercase;
 }
 
+
+.ar-popup-content {
+    
+    text-align: center;
+  }
+   
+
+.ngdialog.end-of-day-popup .ngdialog-content{
+  padding:0 !important;
+
+}
+
 .guest-bill-edit-buttons{
   width:100% !important;
 }
@@ -1078,7 +1090,7 @@ Padding for the ows error popup
   top: 100px;
 
   #graph-options-area {
-    width: 14%;
+    width: 15%;
     float: left;
     position: relative;
     top: 45px;
@@ -1087,7 +1099,7 @@ Padding for the ows error popup
   #graph-showing-area {
     padding-top: 4px;
     background-color: white;
-      width: 85%;
+      width: 84%;
       float: left;
       position: relative;
       overflow: hidden;
@@ -1105,17 +1117,25 @@ Padding for the ows error popup
      height: 50px;
          
   }
+  #nav-listing ul li:first-child{
+    border-left: none;
+  }
+  #nav-listing ul li:last-child{
+    border-right: none;
+  }  
   #nav-listing ul li{
     background-color: #373837;    
-      display: inline-block;
-      border-right: 2px solid white;
-      height: 50px;
-      color: #cccccc;
-      font-size: 14px;
-      padding: 5px 0px 5px 0px;
-      text-align: center;
-      font-weight: 600;
+    display: inline-block;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    height: 50px;
+    color: #cccccc;
+    font-size: 14px;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+    font-weight: 600;
   }
+
   #nav-listing ul li span{
       display: block;
   }
@@ -1138,6 +1158,7 @@ Padding for the ows error popup
     top:0px !important;    
   }
 }
+
 
 
 /*-----CICO-6094 implementing horizontal scroll starts here-------*/
@@ -1170,3 +1191,9 @@ Padding for the ows error popup
 
 
 /*-----CICO-6094 implementing horizontal scroll ends here-------*/
+
+#room-assignment{
+ #unassign-room {
+    z-index: 10;
+  }
+ }

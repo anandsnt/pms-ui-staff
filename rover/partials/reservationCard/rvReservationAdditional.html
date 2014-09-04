@@ -15,7 +15,7 @@
         </div> 
 
         <!-- Market -->
-        <div class="block-item item-market">
+        <div class="block-item item-market" ng-if="otherData.marketsEnabled">
             <h3 class="block-title">Market</h3>
             <div class="select">
                 <select name="market" ng-class="{'placeholder':reservationParentData.demographics.market == ''}" ng-model="reservationParentData.demographics.market" ng-change="updateAdditionalDetails()"> <!-- Add  class="placeholder" when no value option is selected -->
@@ -26,7 +26,7 @@
         </div> 
 
         <!-- Source -->
-        <div class="block-item item-source">
+        <div class="block-item item-source" ng-if="otherData.sourcesEnabled">
             <h3 class="block-title">Source</h3>
             <div class="select">
                 <select name="source" ng-class="{'placeholder':reservationParentData.demographics.source == ''}" ng-model="reservationParentData.demographics.source" ng-change="updateAdditionalDetails()"> <!-- Add  class="placeholder" when no value option is selected -->
@@ -37,7 +37,7 @@
         </div> 
 
         <!-- Origin of Booking -->
-        <div class="block-item item-origin">
+        <div class="block-item item-origin" ng-if="otherData.originsEnabled">
             <h3 class="block-title">Origin of Booking</h3>
             <div class="select">
                 <select name="origin" ng-class="{'placeholder':reservationParentData.demographics.origin == ''}" ng-model="reservationParentData.demographics.origin" ng-change="updateAdditionalDetails()"> <!-- Add  class="placeholder" when no value option is selected -->
