@@ -733,21 +733,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
 
             });
-            // appending departure date for UI handling since its not in API response
-            $scope.reservationData.stayDays.push({
-                date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
-                dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
-                day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
-            });
+            
+            // appending departure date for UI handling since its not in API response IFF not a day reservation
+            if (parseInt($scope.reservationData.numNights) > 0) {
+                $scope.reservationData.stayDays.push({
+                    date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
+                    day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
+                });
 
-            $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
-                guests: {
-                    adults: "",
-                    children: "",
-                    infants: ""
-                },
-                rate: {
-                    id: ""
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
+                    guests: {
+                        adults: "",
+                        children: "",
+                        infants: ""
+                    },
+                    rate: {
+                        id: ""
+                    }
                 }
             }
 
