@@ -29,40 +29,40 @@
     
         $scope.months = [{
             'name': 'January',
-            'value': '00'
-          }, {
-            'name': 'February',
             'value': '01'
           }, {
-            'name': 'March',
+            'name': 'February',
             'value': '02'
           }, {
-            'name': 'April',
+            'name': 'March',
             'value': '03'
           }, {
-            'name': 'May',
+            'name': 'April',
             'value': '04'
           }, {
-            'name': 'June',
+            'name': 'May',
             'value': '05'
           }, {
-            'name': 'July',
+            'name': 'June',
             'value': '06'
           }, {
-            'name': 'August',
+            'name': 'July',
             'value': '07'
           }, {
-            'name': 'September',
+            'name': 'August',
             'value': '08'
           }, {
-            'name': 'October',
+            'name': 'September',
             'value': '09'
           }, {
-            'name': 'November',
+            'name': 'October',
             'value': '10'
           }, {
-            'name': 'December',
+            'name': 'November',
             'value': '11'
+          }, {
+            'name': 'December',
+            'value': '12'
           }];
 
           $scope.years = [];
