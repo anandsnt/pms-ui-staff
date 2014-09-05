@@ -19,9 +19,13 @@ sntRover.controller('RVPostChargeController',
 			//$scope.isResultOnFetchedChargecode = false;
 			
 			// set the default bill number
-			
-			// $scope.billNumber = $scope.fetchedData.bill_numbers[0];
-
+			$scope.successGetBillDetails = function(data){
+				$scope.$emit( 'hideLoader' );
+				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
+			};
+			if(!$scope.passActiveBillNo){
+				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+			}
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 

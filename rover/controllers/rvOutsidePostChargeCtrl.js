@@ -30,6 +30,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.noGuestOrRoomSelected = false;
 			$scope.guestHasNotCheckedin = false;
 			$scope.chargePosted = false;
+			$scope.passActiveBillNo= true;
 			
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
@@ -737,6 +738,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.cardAttached = {};
 				$scope.search.room = '';
 				$scope.search.guest_company_agent = '';
+				$scope.fetchedData.bill_numbers = [];
 			};
 			
 			$scope.clickedPostCharges = function(){
