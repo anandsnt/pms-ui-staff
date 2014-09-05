@@ -588,6 +588,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.search.room = '';
 				$scope.showInitialSearchScreen = true;
 				$scope.itemsVisible = false;
+				$scope.showSearchScreen = false;
 			};
 			$scope.showHideInitialSearchScreen = function(){
 				$scope.showInitialSearchScreen = true;

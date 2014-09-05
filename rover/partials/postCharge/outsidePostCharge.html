@@ -30,7 +30,7 @@
 		</div>
 	
 		<!-- Card search -->
-		<div class="cards guest-card" role="complementary" ng-class="{'cards-list': showSearchScreen }">
+		<div class="cards guest-card" role="complementary" ng-class="{'cards-list open': showSearchScreen }">
 		<div class="cards-wrapper">
 		    <!-- Cards Header -->
 		    <header class="cards-header">
@@ -49,7 +49,7 @@
 				                </div>               
 				            </div>
 				        </div>
-				        <div class="card-actions visible">
+				        <div class="card-actions">
 					    	<button type="button" class="button white red-text" ng-click="clickedCancel()" translate>CANCEL</button>
 					    </div>
 				    </div>
@@ -137,7 +137,7 @@
 										</div>	
 			
 										<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
-											<span ng-class="{'highlight': row.room.indexOf(search.guest_company_agent) != -1 && search.guest_company_agent!='' && search.guest_company_agent.length>=3 }" >
+											<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }" >
 												{{row.room}}
 											</span>			
 										</span>
