@@ -948,9 +948,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 				//step4 : sort the rates within each room
 				value.rates.sort(function(a, b) {
-					if (value.total[a].total < value.total[b].total)
+					var averageA = parseFloat(value.total[a].average);
+					var averageB = parseFloat(value.total[b].average);
+					if (averageA < averageB)
 						return -1;
-					if (value.total[a].total > value.total[b].total)
+					if (averageA > averageB)
 						return 1;
 					return 0;
 				});
