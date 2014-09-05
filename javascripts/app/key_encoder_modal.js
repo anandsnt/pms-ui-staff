@@ -365,8 +365,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
     			if(that.isSmartbandCreateWithKeyWrite && lastSuccessfulCardIDReaded != ''){
     				var data = {}
     				//since there is not UI for adding first name & last name, we are choosing guest name
-    				var data.first_name = $("#guest-card #card-wrapper #change-name #gc-firstname").val();
-    				var data.last_name  = $("#guest-card #card-wrapper #change-name #gc-lastname").val();
+    				data.first_name = $("#guest-card #card-wrapper #change-name #gc-firstname").val();
+    				data.last_name  = $("#guest-card #card-wrapper #change-name #gc-lastname").val();
     				//setting as OPEN ROOM charge
     				data.is_fixed = false;
     				//setting smartband account number as last read ID from card reader
