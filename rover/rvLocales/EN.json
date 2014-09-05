@@ -629,6 +629,12 @@
     "BY":"by",
     "NUMBER":"Number",
     "OR":"or",
-    "GUEST":"Guest"
+    "GUEST":"Guest",
+    "QTY":"QTY",
+    "PR":"PR",
+    "CLEAR_LAST_VALUE":"Clear last value",
+    "REMOVE_ITEM":"Remove item",
+    "UNIT":"unit",
+    "AT":"at"
 
 }
