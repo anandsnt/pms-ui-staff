@@ -15,7 +15,7 @@
 		<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
 		<div ng-include="getAvailabilityTemplateUrl()"></div>
 	</div>
-	<div>		
+	<div class="ui-router-wrapper">		
 		<div ui-view class="main-view" ></div>
 	</div>
 </div>
