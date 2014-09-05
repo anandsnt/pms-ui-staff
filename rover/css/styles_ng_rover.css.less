@@ -1111,6 +1111,16 @@ Padding for the ows error popup
   padding:0 !important;
 }
 
+
+.add-new-bill-li{
+  background:none !important;
+  min-width:50px !important;
+}
+
+.add-new-bill-button{
+  height:100% !important;
+  margin: 0px 0px 0px 5px !important;
+}
 #availability-graph {
   position: absolute;
   top: 100px;
@@ -1184,6 +1194,39 @@ Padding for the ows error popup
     top:0px !important;    
   }
 }
+
+
+
+/*-----CICO-6094 implementing horizontal scroll starts here-------*/
+
+.bill-tab-ul{
+
+    list-style: none outside none !important;
+    white-space: nowrap !important;
+}
+
+#registration-details .registration-content .registration-summary #bills-tabs-nav li{
+  white-space: normal !important;
+}
+#bills-tabs-nav .iScrollHorizontalScrollbar{
+  visibility:hidden;
+}
+#registration-details .registration-content .registration-summary #bills-tabs-nav ul, #registration-details .registration-content .registration-summary #bills-tabs-nav .button{
+  float:none;
+}
+
+#payment-info-1 .credit-card-image{
+  margin-bottom:3px !important;
+}
+
+#bills-tabs-nav .bill-tab-container{
+  width: 1600px; 
+  height: 100%;
+}
+
+
+/*-----CICO-6094 implementing horizontal scroll ends here-------*/
+
 #room-assignment{
  #unassign-room {
     z-index: 10;
