@@ -9,6 +9,9 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		callback: 'goBack',
 		scope: $scope
 	}
+
+
+	$s = $scope;
 	
 	var that = this;
 	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
@@ -235,28 +238,45 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		//setting nights based on calender checking/checkout days
 		var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
 		$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
+		var numNightsWithoutSR = $scope.calendarNightDiff; 
+		$scope.isStayRatesSuppressed = false;
 		//calculating the total rate / avg.rate
 		$scope.totRate = 0;
-		var checkinRate = '';
-		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
+		var checkinRate;
+		var stayRangeRatesSuppressed = true;
 
+		$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
+			
 			//we have to add rate between the calendar checkin date & calendar checkout date only
-			if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
-				$scope.totRate += parseFloat(this.rate);
+			if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime()
+		 	&& tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
+
+				if(this.is_sr == "false"){
+					stayRangeRatesSuppressed = false;
+					$scope.totRate += parseFloat(this.rate);
+				} else {
+					numNightsWithoutSR --;// Findout the number of days having no suppressed rate
+				}
 			}
+
 			//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
-			if (this.date == ($scope.stayDetails.details.arrival_date)) {
-				checkinRate = $scope.escapeNull(this.rate) == "" ? "" : parseInt(this.rate);
+			if ($scope.calendarNightDiff == 0 && tzIndependentDate(this.date).getTime() == $scope.checkinDateInCalender.getTime()) {
+				stayRangeRatesSuppressed = this.is_sr == "true" ? true: false;
+				checkinRate = this.is_sr == "true" ? $filter('translate')('SUPPRESSED_RATES_TEXT'): $scope.escapeNull(this.rate);
 			}
 
 		});
+
 		//calculating the avg. rate
-		if ($scope.calendarNightDiff > 0) {
-			$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100 );
+		if (numNightsWithoutSR > 0) {
+			$scope.avgRate = Math.round(parseInt($scope.totRate) / numNightsWithoutSR + 0.00001);
 		} else {
-			$scope.totRate = checkinRate;
-			$scope.avgRate = Math.round(($scope.totRate + 0.00001));
+			$scope.totRate = Math.round((parseInt(checkinRate) + 0.00001));;
+			$scope.avgRate = Math.round((parseInt($scope.totRate) + 0.00001));
+		}
+		//If the entair stay range has suppressed rate, then we display the avg daily rate and total staycost as SR
+		if(stayRangeRatesSuppressed){
+			$scope.isStayRatesSuppressed = true;
 		}
 		//we are showing the right side with updates
 		$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
@@ -454,8 +474,8 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 			calEvt = {};
 			//Fixing the timezone issue related with fullcalendar
 			thisDate = tzIndependentDate(this.date);
-			if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-				calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
+			if (this.is_sr == "true") {
+				calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 			} else {
 				calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
 			}
@@ -478,8 +498,8 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 					events.push(calEvt);
 					//checkout-event
 					calEvt = {};
-					if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-						calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
+					if (this.is_sr == "true") {
+						calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 					} else {
 						calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
 					}
