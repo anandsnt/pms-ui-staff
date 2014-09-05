@@ -11,7 +11,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
 	this.isAdditional = false;
-	this.isSmartbandCreateWithKeyWrite = that.params.isSmartbandCreateWithKeyWrite;
+	this.isSmartbandCreateWithKeyWrite = '';
 	this.numOfKeys = 0;
 	this.printKeyStatus = [];
 	//variable to maintain last successful ID from card reader, will use for smartband creation
@@ -82,7 +82,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Configure the popup based on its reservation status and the parent view
 	*/
 	this.modalDidShow = function() {
-
+		that.isSmartbandCreateWithKeyWrite = that.params.isSmartbandCreateWithKeyWrite;
 		//Apply color themes based on reservation Status
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('#print-key').addClass('check-in');
@@ -105,7 +105,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			$("#modal-overlay").unbind("click");
 			$("#modal-overlay").addClass("locked");
 		}
-
 		that.showDeviceConnectingMessge();
 	};
 
@@ -360,17 +359,17 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
 				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
-    			
+				
     			//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
-    			if(that.isSmartbandCreateWithKeyWrite && lastSuccessfulCardIDReaded != ''){
-    				var data = {}
-    				//since there is not UI for adding first name & last name, we are choosing guest name
-    				data.first_name = $("#guest-card #card-wrapper #change-name #gc-firstname").val();
-    				data.last_name  = $("#guest-card #card-wrapper #change-name #gc-lastname").val();
+    			if(that.isSmartbandCreateWithKeyWrite == "true" && lastSuccessfulCardIDReaded != ''){
+    				var data = {};
+    				//since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
+    				data.first_name = '';
+    				data.last_name  = '';
     				//setting as OPEN ROOM charge
     				data.is_fixed = false;
     				//setting smartband account number as last read ID from card reader
-    				data.account_number = lastSuccessfulCardReadID;
+    				data.account_number = lastSuccessfulCardIDReaded;
     				that.addNewSmartbandWithKey(data);
     			}
 
@@ -410,7 +409,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	/**
 	* function used to add smartband, mainly for smartband creation while key writing
 	*/
-	this.addNewSmartbandWithKey = function(data){
+	this.addNewSmartbandWithKey = function(data){		
 		var reservationId = getReservationId();
 		var url = '/api/reservations/' + reservationId + '/smartbands';
 	    var options = { 
@@ -425,18 +424,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		var webservice = new NewWebServiceInterface();	    			
     	webservice.postJSON(url, options);	
 	};
-
-	//success call back of smartband's api call for creation
-	that.successCallbackOfAddNewSmartband = function(data, successCallbackParams){
-		sntapp.activityIndicator.showActivityIndicator();
-		that.writeBandType (successCallbackParams);
-	};
-
-	//failure call back of smartband's api call for creation
-	that.failureCallbackOfAddNewSmartband = function(errorMessage){
-
-	};
-
 	/**
 	* Set the selected band type - fixed room/open charge to the band
 	*/
@@ -458,6 +445,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			},
 			'failureCallBack': function(message){
 				sntapp.activityIndicator.hideActivityIndicator();
+				if(that.numOfKeys > 0){
+					that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
+				}
+				else {
+					var message = 'Key creation failed!';
+					that.showKeyPrintFailure(message);
+				}				
 				return;				
 			},
 			arguments: args
@@ -470,6 +464,26 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 
 	};
+	//success call back of smartband's api call for creation
+	that.successCallbackOfAddNewSmartband = function(data, successCallbackParams){
+		sntapp.activityIndicator.showActivityIndicator();
+
+		that.writeBandType (successCallbackParams);
+	};
+
+	//failure call back of smartband's api call for creation
+	that.failureCallbackOfAddNewSmartband = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		if(that.numOfKeys > 0){
+			that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
+		}
+		else {
+			var message = 'Key creation failed!';
+			that.showKeyPrintFailure(message);
+		}
+	};
+
+	
 
 	/*
 	* Key fetch failed callback. Show a print key failure status

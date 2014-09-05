@@ -337,11 +337,14 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else if(keySettings == "encode"){
+			var isSmartbandCreateWithKeyWrite = that.myDom.find("#checkin-button").attr("data-smartband-create-with-key-writing");			
 			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);
 			keyEncoderModal.initialize();
 			keyEncoderModal.params = {
 				"origin" : views.BILLCARD,
-				"reservationStatus" : reservationStatus
+				"reservationStatus" : reservationStatus,
+				"isSmartbandCreateWithKeyWrite": isSmartbandCreateWithKeyWrite
+				
 			};
 			
 		}

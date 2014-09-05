@@ -178,14 +178,14 @@ var reservationDetailsView = function(domRef) {
 			};
 		} 
 		else if(keySettings == "encode"){
-			var isSmartbandCreateWithKeyWrite = that.myDom.find("#add-keys").attr("data-smartband-create-with-key-writing");
-			var keyEncoderModal = new KeyEncoderModal();
-			keyEncoderModal.initialize();
+			var isSmartbandCreateWithKeyWrite = that.myDom.find("#add-keys").attr("data-smartband-create-with-key-writing");			
+			var keyEncoderModal = new KeyEncoderModal();			
 			keyEncoderModal.params = {
 				"origin" : views.STAYCARD,
 				"reservationStatus" : reservationStatus,
 				"isSmartbandCreateWithKeyWrite": isSmartbandCreateWithKeyWrite
 			};
+			keyEncoderModal.initialize();
 			
 		}
 	};
