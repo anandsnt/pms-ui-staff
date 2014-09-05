@@ -981,6 +981,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.close();
 			$scope.$emit('hideLoader');
 			$scope.init(successData);
+			var reservation = RVReservationCardSrv.getResrvationForConfirmationNumber($scope.reservationBillData.confirm_no);
+			reservation.reservation_card.balance_amount = successData.reservation_balance;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationBillData.confirm_no, reservation);
 			$scope.clickedPayButton();
 			$scope.reservationBillData.is_advance_bill = true;
 		};
