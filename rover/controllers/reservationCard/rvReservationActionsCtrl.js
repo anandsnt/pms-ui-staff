@@ -8,7 +8,6 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
 	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv) {
-		$s = $scope;
 		BaseCtrl.call(this, $scope);
 
 		$scope.actionsCheck = {
