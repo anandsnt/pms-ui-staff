@@ -106,26 +106,8 @@ var StayCard = function(viewDom){
     };
     /* Function for listening from swipe in staycard, guestcard, billcard */
     var respondToSwipeInPaymentModal = function (fromPage, domElement, params){
-      // if ( !sntapp.getViewInst('addNewPaymentModal') ) {
-         // sntapp.setViewInst('addNewPaymentModal', function() {
-           // return new AddNewPaymentModal(fromPage, domElement, params);
-        // });
-      // } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-       // // if addNewPaymentModal instance exist, but the dom is removedsuccessCallBackHandler
-         // sntapp.updateViewInst('addNewPaymentModal', function() {
-           // return new AddNewPaymentModal(fromPage, domElement, params);
-        // });
-      // }
-      // sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
-      // sntapp.getViewInst('addNewPaymentModal').initialize();
-      // if(typeof params != "undefined"){
-        // sntapp.getViewInst('addNewPaymentModal').params = params;
-      // }
-      // sntapp.getViewInst('addNewPaymentModal').dataUpdated();
-      console.log("++++++++++++++++++++++++++++++==");
       sntapp.getViewInst('ShowMakePaymentModal').swipedCardData = swipedCardData;
       sntapp.getViewInst('ShowMakePaymentModal').renderSwipedData();
-      
     };
     
 
@@ -138,13 +120,11 @@ var StayCard = function(viewDom){
         // respond to StayCardView
         case 'StayCardView':
         var confirmationNum = getCurrentConfirmation();
-        console.log("staycard")
           respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
           break;
 
         //respond to GuestBillView
         case 'GuestBillView':
-         console.log("GuestBillView")
           //To get the current bill number we are re-using the bill card view object
           var regCardView = sntapp.getViewInst('registrationCardView');
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
@@ -160,13 +140,11 @@ var StayCard = function(viewDom){
 
         //respond to GuestCardView
         case 'GuestCardView':
-          console.log("GuestCardView")
           respondToSwipe("guest", $("#cc-payment"), {});
 
           break;
 		case 'StayCardDepositModal':
         	var confirmationNum = getCurrentConfirmation();
-        	console.log("staycard")
             respondToSwipeInPaymentModal("StayCardDepositModal", $("#reservation-"+confirmationNum), {});
           break;
         // do nothing
@@ -234,11 +212,9 @@ var StayCard = function(viewDom){
     }
     if(getParentWithSelector(event, "#deposit_balance")) {
        sntapp.setViewInst('ShowMakePaymentModal', function(){
-       		 // var showMakePaymentModal = new ShowMakePaymentModal();
-       		 // showMakePaymentModal.initialize();
        		 return new ShowMakePaymentModal();
        });
-       var showMakePaymentModal = new ShowMakePaymentModal();
+       var showMakePaymentModal = new ShowMakePaymentModal(that.myDom);
        showMakePaymentModal.initialize();
 		// setWakeUpCallModal.params = {
 			// "reservation_id" : that.reservation_id
