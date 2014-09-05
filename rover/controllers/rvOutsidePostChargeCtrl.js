@@ -25,6 +25,12 @@ sntRover.controller('RVOutsidePostChargeController',
 			$scope.search.room = '';
 			$scope.showInitialSearchScreen = false;
 			$scope.showSearchScreen = false;
+			
+			$scope.isCardAttched = false;
+			$scope.noGuestOrRoomSelected = false;
+			$scope.guestHasNotCheckedin = false;
+			$scope.chargePosted = false;
+			
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
 			
@@ -713,6 +719,24 @@ sntRover.controller('RVOutsidePostChargeController',
 			   	 return mappedStatus;
 		   };
 			
+			/*
+			 * Method to handle selection of guest/compny/TA item
+			 */
+			$scope.selectReservation = function(item){
+				console.log(item);
+				$scope.isCardAttched = true;
+				$scope.cardAttached = item;
+				
+			};
+			/*
+			 * Method to handle DETACH CARD button click.
+			 */
+			$scope.clickedDetachCard = function(item){
+				$scope.isCardAttched = false;
+				$scope.cardAttached = {};
+				$scope.search.room = '';
+				$scope.search.guest_company_agent = '';
+			};
 			
 		}
 	]

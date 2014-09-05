@@ -2,8 +2,8 @@
 	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended">
 	    <button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
 	
-	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div
-	    <div id="cant-post" class="inner-overlay">
+	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div -->
+	    <div id="cant-post" class="inner-overlay" ng-class="{'visible': noGuestOrRoomSelected == true}">
 			<div class="inner-content">
 				<span class="message h2">No guest/room selected!</span>
 				<span class="text">You need to select guest or room number!</span>
@@ -12,7 +12,7 @@
 			</div>
 		</div>
 	
-		<div id="not-checked-in" class="inner-overlay">
+		<div id="not-checked-in" class="inner-overlay" ng-class="{'visible': guestHasNotCheckedin == true}">
 			<div class="inner-content">
 				<span class="message h2">Guest has not yet checked in!</span>
 				<span class="text">Proceed with posting?</span>
@@ -21,13 +21,13 @@
 			</div>
 		</div>
 	
-		<div id="charge-posted" class="inner-overlay">
+		<div id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 			<div class="inner-content">
 				<span class="message h2">Charge posted</span>
 				<button type="button" class="button green">Post another charge</button>
 				<button type="button" class="button blank modal-close">Close window</button>
 			</div>
-		</div> -->
+		</div>
 	
 		<!-- Card search -->
 		<div class="cards guest-card" role="complementary" ng-class="{'cards-list': showSearchScreen }">
@@ -35,20 +35,54 @@
 		    <!-- Cards Header -->
 		    <header class="cards-header">
 		    	<div class="card-header">
-		        	<figure class="guest-image">
-			            <img src="/assets/avatar-female.png" alt="" />
-			            <span class="search-indicator"></span>
-			        </figure>
-			        <div class="card-search-form">
-			            <div class="holder">
-			                <div class="entry">
-			                    <input ng-click="showHideInitialSearchScreen()" ng-model="search.room" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
-								<input ng-click="showHideInitialSearchScreen()" ng-model="search.guest_company_agent" placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
-			                </div>               
-			            </div>
-			        </div>
-			        <div class="card-actions">
-				    	<button type="button" class="button white red-text" ng-click="clickedCancel()">Cancel</button>
+		    		<!-- 1.search -->
+		    		<div ng-show="!isCardAttched">
+			        	<figure class="guest-image">
+				            <img src="/assets/avatar-female.png" alt="" />
+				            <span class="search-indicator"></span>
+				        </figure>
+				        <div class="card-search-form">
+				            <div class="holder">
+				                <div class="entry">
+				                    <input ng-click="showHideInitialSearchScreen()" ng-model="search.room" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
+									<input ng-click="showHideInitialSearchScreen()" ng-model="search.guest_company_agent" placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
+				                </div>               
+				            </div>
+				        </div>
+				        <div class="card-actions visible">
+					    	<button type="button" class="button white red-text" ng-click="clickedCancel()">Cancel</button>
+					    </div>
+				    </div>
+				    <!-- 2. Card attached -->
+				    <div ng-show="isCardAttched">
+		            	
+		            	<figure class="guest-image" ng-show="cardAttached.images.length!=0 " ng-class="{'accompany': cardAttached.images.length >1}">	
+							<img ng-repeat="image in cardAttached.images" 
+							ng-src="{{image.guest_image}}" 
+
+							ng-class="{'first-image':(cardAttached.images.length >1 && image.is_primary==true),
+
+							'second-image':(cardAttached.images.length >1 && image.is_primary==false)}">
+
+							<span class="vip" ng-show="cardAttached.vip==true">VIP</span>
+						</figure>
+										
+				        <div class="card-details">
+				        	<div class="holder">
+				        		<h1>{{cardAttached.firstname}} {{cardAttached.lastname}}</h1>
+				        		<span class="guest-status {{getGuestStatusMapped(cardAttached.reservation_status, cardAttached.is_opted_late_checkout)}}"></span>
+				        		<span class="room">{{cardAttached.room}}</span>
+				        	</div>
+				            <div class="holder data">
+				                <span class="icons icon-gc-location">{{cardAttached.city}}</span>
+				                <span class="state">{{cardAttached.state}}</span>
+				                <span class="icons icon-gc-phone">{{cardAttached.phone}}</span>
+				                <span class="icons icon-gc-email">{{cardAttached.email}}</span>
+				            </div>
+				        </div>
+				        <div class="card-actions visible">
+				            <button type="button" class="button red" ng-click="clickedDetachCard()">Detach Card</button>
+				        </div>
 				    </div>
 			    </div>
 		    </header>
@@ -71,7 +105,7 @@
 		                <div class="wrapper">
 		                    <ul id="search-guests-for-charge-results" class="search-results">
 		                    	<li class="reservation" ng-click="clickedReservationToPostCharge(row.id)" ng-show="row.shouldShowReservation" ng-repeat="row in reservationsArray">
-		                    		<a ng-class="getReservationClass(row.reservation_status)">
+		                    		<a ng-class="getReservationClass(row.reservation_status)" ng-click="selectReservation(row)">
 		                    			<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
 											<img ng-repeat="image in row.images" 
 											ng-src="{{image.guest_image}}" 
@@ -121,127 +155,6 @@
 		</div>
 	</div>
 	
-	    <!-- Left side -->
-	    <!-- <fieldset class="content-left" ng-class="{'hidden': !itemsVisible}">
-	        <div role="search" class="search-form">
-				<div class="select">
-					<select
-						name="charge-groups"
-						id="charge-groups"
-						ng-model="chargeGroup"
-						ng-change = "filterbyChargeGroup()">
-						<option value="" class="placeholder" translate>ALL_CHARGE_GROUPS</option>
-						<option value="FAV" translate>FAVORITE</option>
-						<option ng-repeat="group in fetchedData.charge_groups" value="{{ group.value }}">
-					        {{ group.name }}
-					    </opzion>
-					</select>
-				</div>
-				<div class="entry">
-					<a class="icons icon-clear-search visible" href="" id="clear-query" ng-show="query" ng-click="clearQuery()">Clear query</a>
-					<button type="button" name="submit" class="icons icon-search">
-						Search
-					</button>
-					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
-				</div>
-			</div>
-			<div id="items-listing" class="scrollable">
-				<ul id="search-item-results" class="wrapper">
-					<li id="items-list" ng-repeat="each in fetchedItems" ng-show="each.show" ng-click="addItem(each)">
-						<a class="button white">
-							<span ng-bind-html="'{{ each.item_name }}' | highlight:query:false"></span>
-							<span class="price">
-								{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
-							</span>
-							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
-						</a>
-					</li>
-					<li id="items-list" ng-repeat="each in fetchedChargeCodes" ng-show="each.show && isResultOnFetchedChargecode" ng-click="addItem(each)">
-						<a class="button white">
-							<span ng-bind-html="'{{ each.description }}' | highlight:query:false"></span>
-							<span class="price">
-								<span class="value" ng-bind-html="'{{ each.charge_code }}' | highlight:query:false"></span>
-							</span>
-							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-	    </fieldset> -->
-	
-	    <!-- Right side -->
-	    <!-- <fieldset class="content-right" ng-class="{'hidden': !itemsVisible}">
-	        <span class="h2 message">
-    Post charge to Bill #<!-- when initiated from bill summary screen, just show the number -->
-    <!-- <div class="select">
-        <select name="post-charge-to-bill">
-            <option value="bill1" selected>1</option>
-            .. repeat for all bills
-            <option value="new-bill">X &nbsp;&nbsp;&nbsp;(Will create new bill)</option>
-       
-        </select>
-    </div>
-</span> --> 
-<!-- No items added - showed initially 
-<div id="no-items-added" class="no-content">
-    <div class="info">
-        <strong class="h1">0 items selected</strong>
-    </div>
-</div> -->
-
-<!-- Items added -->
-<!-- div id="items-added"> 
-    <div id="items-summary" class="scrollable">
-        <ul class="wrapper">
-            <li> 
-            
-                {item name}
-                <span class="count">({count})</span> 
-                <span class="base">at {base price / per unit}</span>
-                <span class="price">$ <span class="value">{total charge cost}</span></span>
-            
-            </li>
-            .. repeat for each added
-        </ul>
-    </div>
-
-    <p id="total-charge"> -->
-    	 <!-- add class offset-1 when 1 item added, offset-2 when 2 items added, offset-3 for 3 items, and offset-4 when 4 items added. When 5th element is added, remove class attribute -->
-        <!-- Total <span class="price">$ 
-            <span class="value">{total charge cost}</span>
-        </span>
-    </p>
-
-    <div id="numpad">
-        <div id="numpad-numbers">
-            <button type="button" value="1" class="button white">1</button>
-            <button type="button" value="2" class="button white">2</button>
-            <button type="button" value="3" class="button white">3</button>
-            <button type="button" value="4" class="button white">4</button>
-            <button type="button" value="5" class="button white">5</button>
-            <button type="button" value="6" class="button white">6</button>
-            <button type="button" value="7" class="button white">7</button>
-            <button type="button" value="8" class="button white">8</button>
-            <button type="button" value="9" class="button white">9</button>
-            <button type="button" value="+/-" class="button white small">+/-</button>
-            <button type="button" value="0" class="button white">0</button>
-            <button type="button" value="." class="button white small">.</button>
-        </div>
-
-        <div id="numpad-options">
-            <button type="button" value="QTY" class="button white numpad-toggle">QTY</button>
-            <button type="button" value="PR" class="button white numpad-toggle selected">PR</button>
-            <button type="button" value="undo" class="button white with-icon only-icon clear-value"><span class="icons icon-clear"></span>Clear last value</button>
-            <button type="button" value="delete" class="button white with-icon only-icon remove-item"><span class="icons icon-trash"></span>Remove item</button>
-        </div>
-    </div>
-
-    <div class="actions float">
-        <button type="button" class="button green">Post charge</button> <!-- can have class grey instead of green when generic post charge -->
-       <!-- <button type="button" class="button blank modal-close">Cancel</button>
-    </div>
-</div>
-	    </fieldset> -->
 	    
 	    
 	    
