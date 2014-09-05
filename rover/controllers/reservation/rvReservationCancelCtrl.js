@@ -121,7 +121,8 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 				reason: $scope.cancellationData.reason,
 				penalty: parseFloat($scope.ngDialogData.penalty),
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
-				id: $scope.reservationData.reservation_card.reservation_id
+				id: $scope.reservationData.reservation_card.reservation_id,
+				cancellation_policy_ids : $scope.reservationParentData.cancellationPolicies
 			}
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess, onCancelFailure);
 		}

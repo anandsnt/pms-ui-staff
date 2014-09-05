@@ -259,8 +259,7 @@ sntRover.controller('reservationActionsController', [
 						//to ensure same policy is not applied twice, putting the IDs of applied policies.
 						//this bucket would be used to filter out thus avoiding duplicating a policy application
 						var calculatedIds = [];
-
-
+						$scope.reservationParentData.cancellationPolicies = [];
 						// The above two lines are used to emulate an array which would be the API response
 						angular.forEach(cancellationPolicies, function(policy) {
 							if (!_.contains(calculatedIds, policy.id)) {
@@ -282,6 +281,7 @@ sntRover.controller('reservationActionsController', [
 								}
 							}
 						});
+						$scope.reservationParentData.cancellationPolicies = calculatedIds;
 					}
 					promptCancel(cancellationCharge);
 
