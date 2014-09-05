@@ -122,7 +122,10 @@ var StayCard = function(viewDom){
         // sntapp.getViewInst('addNewPaymentModal').params = params;
       // }
       // sntapp.getViewInst('addNewPaymentModal').dataUpdated();
-      sntapp.getViewInst('ShowMakePaymentModal').dataUpdated();
+      console.log("++++++++++++++++++++++++++++++==");
+      sntapp.getViewInst('ShowMakePaymentModal').swipedCardData = swipedCardData;
+      sntapp.getViewInst('ShowMakePaymentModal').renderSwipedData();
+      
     };
     
 
@@ -230,14 +233,20 @@ var StayCard = function(viewDom){
         return that.reservationQueueHandler(event);
     }
     if(getParentWithSelector(event, "#deposit_balance")) {
-        var showMakePaymentModal = new ShowMakePaymentModal();
+       sntapp.setViewInst('ShowMakePaymentModal', function(){
+       		 // var showMakePaymentModal = new ShowMakePaymentModal();
+       		 // showMakePaymentModal.initialize();
+       		 return new ShowMakePaymentModal();
+       });
+       var showMakePaymentModal = new ShowMakePaymentModal();
+       showMakePaymentModal.initialize();
 		// setWakeUpCallModal.params = {
 			// "reservation_id" : that.reservation_id
 		// };
 		// setWakeUpCallModal.backDom = that.myDom;
 		// setWakeUpCallModal.type = "POST";
-		showMakePaymentModal.initialize();
-		sntapp.setViewInst('ShowMakePaymentModal');
+		
+		
     }
   };
 
@@ -429,7 +438,7 @@ var StayCard = function(viewDom){
     this.queueSaveFailed = function(errorMessage){
       sntapp.activityIndicator.hideActivityIndicator();
       sntapp.notification.showErrorMessage(errorMessage, that.myDom); 
-    }
+    };
     // Success callback for queue
     this.queueSaveSuccess = function(data,params){
     	

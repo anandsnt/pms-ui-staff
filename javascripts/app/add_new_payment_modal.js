@@ -38,6 +38,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 	};
     
     this.dataUpdated=function(){
+    	
     	$("#setOverlay").hide();
     	$("#new-payment").removeClass("hidden");
     	if (that.swipedCardData) {

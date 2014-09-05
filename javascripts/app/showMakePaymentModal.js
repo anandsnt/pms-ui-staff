@@ -9,19 +9,30 @@ var ShowMakePaymentModal = function() {
 
 	this.delegateEvents = function() {
 		that.myDom.find("#make-payment").attr("disabled", true);
-		
 		that.myDom.find('#close').on('click', that.hidePaymentModal);
 		that.myDom.find("#make-payment").on('click', that.makePayment);
 		that.myDom.find("#existing-cards").on('click', that.showExistingCards);
 		that.myDom.find("#add-new-card").on('click', that.showAddCardScreen);
 		that.myDom.find(".active-item").on('click', that.selectCreditCardItem);
+		that.myDom.find("#modal-close").on('click', that.hidePaymentModal);
 	};
+	this.modalDidShow = function() {
+		$("#modal-overlay").unbind("click");
+		$("#modal-overlay").addClass("locked");
+	};
+	
 	this.hidePaymentModal = function(){
 		sntapp.cardSwipeCurrView = 'StayCardView';
 		that.hide();
 	};
-	this.dataUpdated = function(){
+	this.renderSwipedData = function(){
 		console.log("=====================================");
+		var swipedCardData = this.swipedCardData;
+		console.log(swipedCardData);
+		$('#card-number').val( 'xxxx-xxxx-xxxx-' + swipedCardData.token.slice(-4) );
+		$('#expiry-month').val( swipedCardData.expiry.slice(-2) );
+		$('#expiry-year').val( swipedCardData.expiry.substring(0, 2) );
+		$('#name-on-card').val( swipedCardData.cardHolderName );
 	};
 	this.makePayment = function(){
 		
@@ -86,6 +97,11 @@ var ShowMakePaymentModal = function() {
 	this.selectCreditCardItem = function(){
 		that.myDom.find("#available-cards").attr("data-is-existing-card", "yes");
 		that.myDom.find("#available-cards").attr("data-selected-payment", $(this).attr("payment-id"));
+		that.myDom.find(".primary-selected").html("");
+		that.myDom.find("#primary-"+$(this).attr("payment-id")).html("SELECTED");
+		that.myDom.find("#make-payment").attr("disabled", false);
+		that.myDom.find("#make-payment").removeClass("grey");
+		that.myDom.find("#make-payment").addClass("green");
 	};
 	
 
