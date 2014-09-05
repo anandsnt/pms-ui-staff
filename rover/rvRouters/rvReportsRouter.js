@@ -7,7 +7,11 @@ angular.module('reportsModule', [])
         controller: 'RVReportsMainCtrl',
         resolve: {
             reportsResponse: function(RVreportsSrv) {
-                return RVreportsSrv.fetchReportList();
+                if ( !!RVreportsSrv ) {
+                    return RVreportsSrv.fetchReportList();
+                } else {
+                    return {};
+                }
             }
         }
     });

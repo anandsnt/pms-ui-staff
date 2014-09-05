@@ -51,18 +51,19 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	}
 
 
+	// dont remove yet
 	// setting up back to dashboard
 	// this must be set only for switching b/w
 	// dashboard and search results by clicking the search in dashboard
-	if ( !$stateParams.hasOwnProperty('type') ) {
-		$rootScope.setPrevState = {
-			title: $filter('translate')('DASHBOARD'),
-			callback: 'clearResults',
-			scope: $scope,
-			noStateChange: true,
-			hide: true
-		};
-	}
+	// if ( !$stateParams.hasOwnProperty('type') ) {
+	// 	$rootScope.setPrevState = {
+	// 		title: $filter('translate')('DASHBOARD'),
+	// 		callback: 'clearResults',
+	// 		scope: $scope,
+	// 		noStateChange: true,
+	// 		hide: true
+	// 	};
+	// }
 
 
 
@@ -120,12 +121,12 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
   		if(!searchAreaVisibilityStatus) {
   			$scope.textInQueryBox = '';
 
-  			// hide the dashboard back button 
-  			$rootScope.setPrevState.hide = true;
+  			// hide the dashboard back button (dont remove yet)
+  			// $rootScope.setPrevState.hide = true;
   		} else {
 
-  			// show the dashboard back button 
-  			$rootScope.setPrevState.hide = false;
+  			// show the dashboard back button (dont remove yet)
+  			// $rootScope.setPrevState.hide = false;
   		}
   	});
 
@@ -317,10 +318,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
 	  	
+	  	// dont remove yet
 	  	// Gotacha!! Only when we are dealing with 'noStateChange'
-	  	if ( !!$rootScope.setPrevState.noStateChange ) {
-	  	    $rootScope.setPrevState.hide = true;
-	  	};
+	  	// if ( !!$rootScope.setPrevState.noStateChange ) {
+	  	//     $rootScope.setPrevState.hide = true;
+	  	// };
 
 	  	// reset the query saved into vault
 	  	$vault.set('searchQuery', '');
@@ -343,8 +345,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
 
-		// show back to dashboard button
-		$rootScope.setPrevState.hide = false;
+		// show back to dashboard button (dont remove yet)
+		// $rootScope.setPrevState.hide = false;
 
 
 		$scope.$emit("UpdateHeading", swipeHeadingInSearch);
