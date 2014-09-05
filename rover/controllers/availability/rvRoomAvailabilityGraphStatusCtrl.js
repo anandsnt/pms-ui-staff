@@ -51,12 +51,12 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
         	var labelWidthToSet = 0;
         	$scope.graphWidth = getMaxSeriesLengthData() * 75;
         	if(getMaxSeriesLengthData() != 0){
-        		labelWidthToSet = parseInt((plottedChart.plotSizeX)/getMaxSeriesLengthData());
+        		labelWidthToSet = (100/getMaxSeriesLengthData());
         	}
         	else{
         		navListNode.css("width", 0);
         	}
-        	LabelElements.css("width", labelWidthToSet);        	
+        	LabelElements.css("width", labelWidthToSet + "%");        	
         	$scope.refreshScroller('graph-scroller');			
 
 		}
