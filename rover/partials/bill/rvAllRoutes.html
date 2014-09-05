@@ -5,8 +5,8 @@
          <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable">
 			   <ul class="wrapper">
 			      
-			      <li ng-repeat = "route in routes" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
-			         <a href="#route-details" ng-class = "getEntityRole(route)">
+			      <li ng-repeat = "route in routes" >
+			         <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
 			            <figure class="guest-image" ng-class = "getEntityIconClass(route)">
 			               <img src="{{route.images[0].guest_image}}" alt="" />
 			            </figure>

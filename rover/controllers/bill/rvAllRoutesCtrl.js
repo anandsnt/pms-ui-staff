@@ -35,6 +35,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
         var successCallback = function(data) {
                 $scope.attachedEntities.splice(index, 1);
                 $scope.routes.splice(index, 1);
+                $scope.$parent.$emit('hideLoader');
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
