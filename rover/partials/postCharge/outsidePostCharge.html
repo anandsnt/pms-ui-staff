@@ -5,27 +5,27 @@
 	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div -->
 	    <div id="cant-post" class="inner-overlay" ng-class="{'visible': noGuestOrRoomSelected == true}">
 			<div class="inner-content">
-				<span class="message h2">No guest/room selected!</span>
-				<span class="text">You need to select guest or room number!</span>
-				<button type="button" class="button green">Add guest/room</button>
-				<button type="button" class="button blank">Cancel</button>
+				<span class="message h2" translate>NO_GUEST_ROOM_SELECTED</span>
+				<span class="text" translate>SELECT_GUEST_ROOM</span>
+				<button type="button" class="button green" translate>ADD_GUEST_ROOM</button>
+				<button type="button" class="button blank" translate>CANCEL</button>
 			</div>
 		</div>
 	
 		<div id="not-checked-in" class="inner-overlay" ng-class="{'visible': guestHasNotCheckedin == true}">
 			<div class="inner-content">
-				<span class="message h2">Guest has not yet checked in!</span>
-				<span class="text">Proceed with posting?</span>
-				<button type="button" class="button green">Post charge</button>
-				<button type="button" class="button blank">Cancel</button>
+				<span class="message h2" translate>GUEST_NOT_CHECKEDIN_MSG</span>
+				<span class="text" translate>PROCEED_WITH_PROCEEDING</span>
+				<button type="button" class="button green" translate>POST_CHARGE</button>
+				<button type="button" class="button blank" translate>CANCEL</button>
 			</div>
 		</div>
 	
 		<div id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 			<div class="inner-content">
-				<span class="message h2">Charge posted</span>
-				<button type="button" class="button green">Post another charge</button>
-				<button type="button" class="button blank modal-close">Close window</button>
+				<span class="message h2" translate>CHARGE_POSTED</span>
+				<button type="button" class="button green" translate>POST_ANOTHER_CHARGE</button>
+				<button type="button" class="button blank modal-close" translate>CLOSE_WINDOW</button>
 			</div>
 		</div>
 	
@@ -44,13 +44,13 @@
 				        <div class="card-search-form">
 				            <div class="holder">
 				                <div class="entry">
-				                    <input ng-click="showHideInitialSearchScreen()" ng-model="search.room" placeholder="Room Number" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
-									<input ng-click="showHideInitialSearchScreen()" ng-model="search.guest_company_agent" placeholder="Guest, Company or Travel Agent" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
+				                    <input ng-click="showHideInitialSearchScreen()" ng-model="search.room" placeholder="{{'ROOM_NUMBER' | translate}}" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
+									<input ng-click="showHideInitialSearchScreen()" ng-model="search.guest_company_agent" placeholder="{{'GUEST_COMPANY_AGENT' | translate}}" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
 				                </div>               
 				            </div>
 				        </div>
 				        <div class="card-actions visible">
-					    	<button type="button" class="button white red-text" ng-click="clickedCancel()">Cancel</button>
+					    	<button type="button" class="button white red-text" ng-click="clickedCancel()" translate>CANCEL</button>
 					    </div>
 				    </div>
 				    <!-- 2. Card attached -->
@@ -64,7 +64,7 @@
 
 							'second-image':(cardAttached.images.length >1 && image.is_primary==false)}">
 
-							<span class="vip" ng-show="cardAttached.vip==true">VIP</span>
+							<span class="vip" ng-show="cardAttached.vip==true" translate>VIP</span>
 						</figure>
 										
 				        <div class="card-details">
@@ -81,7 +81,7 @@
 				            </div>
 				        </div>
 				        <div class="card-actions visible">
-				            <button type="button" class="button red" ng-click="clickedDetachCard()">Detach Card</button>
+				            <button type="button" class="button red" ng-click="clickedDetachCard()" translate>DETACH_CARD</button>
 				        </div>
 				    </div>
 			    </div>
@@ -94,8 +94,8 @@
 		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content" ng-show="showInitialSearchScreen">
 		                <div class="info">
 		                    <span class="icon-no-content icon-guest"></span>
-		                    <strong class="h1">Find Reservation</strong>
-		                    <span class="h2">Search <em>Room</em> by <strong>Number</strong> or <em>Reservation</em> by <strong>Guest</strong>, <strong>Company</strong> or <strong>Travel Agent</strong> Name</span>
+		                    <strong class="h1" translate>SEARCH_NORMAL</strong>
+		                    <span class="h2">{{'SEARCH' | translate}} <em>{{'ROOM_LABEL' | translate}}</em> {{'BY'| translate}} <strong>{{'NUMBER' | translate}}</strong> {{'OR' | translate}} <em>Reservation</em> {{'BY'| translate}} <strong>{{'GUEST' | translate}}</strong>, <strong>{{'COMPANY' | translate}}</strong> {{'OR' | translate}} <strong>{{'TRAVELAGENT' | translate}}</strong> {{'NAME' | translate}}</span>
 		                </div>
 		            </div> 
 	
@@ -175,9 +175,9 @@
 					</select>
 				</div>
 				<div class="entry">
-					<a class="icons icon-clear-search visible" href="" id="clear-query" ng-show="query" ng-click="clearQuery()">Clear query</a>
-					<button type="button" name="submit" class="icons icon-search">
-						Search
+					<a class="icons icon-clear-search visible" href="" id="clear-query" ng-show="query" ng-click="clearQuery()" translate>CLEAR_QUERY</a>
+					<button type="button" name="submit" class="icons icon-search" translate>
+						SEARCH
 					</button>
 					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>

@@ -81,5 +81,20 @@
     "CANCEL_CONFIRM" : "Confirm Cancel",
     "CANCEL_CANCEL" : "Return without Cancel",
     "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
-    "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+    "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
+    "NO_GUEST_ROOM_SELECTED":"No guest/room selected!",
+    "SELECT_GUEST_ROOM":"You need to select guest or room number!",
+    "ADD_GUEST_ROOM":"Add guest/room",
+    "GUEST_NOT_CHECKEDIN_MSG":"Guest has not yet checked in!",
+    "PROCEED_WITH_PROCEEDING":"Proceed with posting?",
+    "CHARGE_POSTED":"Charge posted",
+    "POST_ANOTHER_CHARGE":"Post another charge",
+    "CLOSE_WINDOW":"Close window",
+    "ROOM_NUMBER":"Room Number",
+    "GUEST_COMPANY_AGENT":"Guest, Company or Travel Agent",
+    "DETACH_CARD":"Detach Card",
+    "BY":"by",
+    "NUMBER":"Number",
+    "OR":"or",
+    "GUEST":"Guest"
 
