@@ -9,9 +9,6 @@ function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStay
 		callback: 'goBack',
 		scope: $scope
 	}
-
-
-	$s = $scope;
 	
 	var that = this;
 	$scope.heading = $filter('translate')('CHANGE_STAY_DATES_TITLE');
