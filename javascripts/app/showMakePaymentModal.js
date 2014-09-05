@@ -4,7 +4,6 @@ var ShowMakePaymentModal = function(backDom) {
 	var that = this;
 	sntapp.cardSwipeCurrView = 'StayCardDepositModal';
 	var swipedCardData = '';
-	var isSwiped = false;
 	this.reservationId = getReservationId();
 	this.url = "staff/reservations/"+that.reservationId+"/deposit_and_balance";
 
@@ -16,26 +15,45 @@ var ShowMakePaymentModal = function(backDom) {
 		that.myDom.find("#add-new-card").on('click', that.showAddCardScreen);
 		that.myDom.find(".active-item").on('click', that.selectCreditCardItem);
 		that.myDom.find("#modal-close").on('click', that.hidePaymentModal);
+		that.myDom.find("#card-number").on('blur', that.activateMakePaymentButton);
 	};
 	this.modalDidShow = function() {
 		$("#modal-overlay").unbind("click");
 		$("#modal-overlay").addClass("locked");
 	};
-	
+	this.activateMakePaymentButton = function(){
+		if(that.myDom.find("#card-number")!=''){
+			$("#make-payment").attr("disabled", false);
+			$("#make-payment").removeClass("grey");
+			$("#make-payment").addClass("green");
+		}
+		
+		
+	};
 	this.hidePaymentModal = function(){
 		sntapp.cardSwipeCurrView = 'StayCardView';
 		that.hide();
 	};
 	this.renderSwipedData = function(){
 		swipedCardData = this.swipedCardData;
-		isSwiped = true;
+		console.log(swipedCardData)
+		$("#isSwiped").attr("data-is-swiped", true);
 		$('#card-number').val( 'xxxx-xxxx-xxxx-' + swipedCardData.token.slice(-4) );
 		$('#expiry-month').val( swipedCardData.expiry.slice(-2) );
 		$('#expiry-year').val( swipedCardData.expiry.substring(0, 2) );
 		$('#name-on-card').val( swipedCardData.cardHolderName );
-		$("#make-payment").attr("disabled", false);
-		$("#make-payment").removeClass("grey");
-		$("#make-payment").addClass("green");
+		that.activateMakePaymentButton();
+		
+		
+		$('#deposit-balance').append('<input type="hidden" id="card-token" value="' + swipedCardData.token + '">');
+		$('#deposit-balance').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
+		$('#deposit-balance').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
+		$('#deposit-balance').append('<input type="hidden" id="pan" value="' + swipedCardData.getTokenFrom.pan + '">');
+		$('#deposit-balance').append('<input type="hidden" id="etb" value="' + swipedCardData.getTokenFrom.etb + '">');
+// 
+		
+	//	deposit-balance
+		
 	};
 	this.makePayment = function(){
 		
@@ -47,10 +65,12 @@ var ShowMakePaymentModal = function(backDom) {
 // 
 // 		
 
-alert(isSwiped)
+
+	    var isSwiped = that.myDom.find("#isSwiped").attr("data-is-swiped");		
 		if(!isSwiped){
-			console.log("---------&&&&--------------")
+			
 			 var merchantId = that.myDom.find("#merchantId").attr("data-merchantId");
+		
 			 HostedForm.setMerchant(merchantId);
 			 
 			 var sessionDetails ={};
@@ -59,22 +79,35 @@ alert(isSwiped)
 	         sessionDetails.cardSecurityCode = that.myDom.find("#ccv").val();
 	         sessionDetails.cardExpiryMonth = that.myDom.find("#expiry-month").val();
 	         sessionDetails.cardExpiryYear = that.myDom.find("#expiry-year").val();
+	         console.log(sessionDetails);
 	         try {
+	         	console.log("---------try-------------");
 	                HostedForm.updateSession(sessionDetails, that.sessionSuccessCallBack); 
 	             }
-	         catch(err) {}
+	         catch(err) {
+	         		console.log("---------catch-------------");
+	         }
 		} else {
 			console.log("-----------------------")
-			var cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "",
+			console.log(swipedCardData);
+			var expiryMonth = that.myDom.find("#expiry-month").val(),
+				expiryYear = that.myDom.find("#expiry-year").val(),
+				cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "",
 		    	cardHolderName = that.myDom.find("#name-on-card").val();
 			var data = {
 			    card_expiry: cardExpiry,
 			    name_on_card: cardHolderName,
-			    mli_token: swipedCardData.token,
-			    et2: swipedCardData.getTokenFrom.et2,
-				ksn: swipedCardData.getTokenFrom.ksn,
-				pan: swipedCardData.getTokenFrom.pan,
-				etb: swipedCardData.getTokenFrom.etb,
+			    // mli_token: swipedCardData.token,
+			    // et2: swipedCardData.getTokenFrom.et2,
+				// ksn: swipedCardData.getTokenFrom.ksn,
+				// pan: swipedCardData.getTokenFrom.pan,
+				// etb: swipedCardData.getTokenFrom.etb,
+				mli_token: that.myDom.find("#card-token").val(),
+			    et2: that.myDom.find("#et2").val(),
+				ksn: that.myDom.find("#ksn").val(),
+				pan: that.myDom.find("#pan").val(),
+				etb: that.myDom.find("#etb").val(),
+				
 				reservationId: that.reservationId
 		    };
 		    that.addNewCardToReservation(data);
@@ -135,12 +168,14 @@ alert(isSwiped)
 		
 	};
 	this.sessionSuccessCallBack = function(response){
-		
+		console.log("ddddddddddddddddddddddddd")
+		console.log(response)
+		  var user_id = $("#user_id").val();
           if(response.status ==="ok"){     
               var MLISessionId = response.session;
               var dataToApiToAddNewCard = {
-              	"sessionId" : MLISessionId,
-              	"reservationId" :that.reservationId
+              	"session_id" : MLISessionId,
+              	"user_id" :user_id
               };
               that.addNewCardToReservation(dataToApiToAddNewCard);
              
@@ -170,8 +205,8 @@ alert(isSwiped)
 		if(that.myDom.find("#add-in-guest-card").hasClass("checked")){
 			dataToApi.add_to_guest_card = "true";
 		}
-		
-		var url = 'staff/payment/save_new_payment'; 
+		var webservice = new WebServiceInterface();
+		var url = 'staff/payments/save_new_payment'; 
 	    var options = {
 			   requestParameters: dataToApi,
 			   successCallBack: that.successCallbackAddNewCardToReservation,
@@ -185,7 +220,7 @@ alert(isSwiped)
 		var	amount = that.myDom.find("#amount").val();
 		var dataToMakePaymentApi = {
 			"payment_id": paymentId,
-			"reservationId": that.reservationId,
+			"reservation_id": that.reservationId,
 			"amount": amount
 		};
 		that.doPaymentOnReservation(dataToMakePaymentApi);
@@ -193,6 +228,7 @@ alert(isSwiped)
 	this.doPaymentOnReservation = function(dataToMakePaymentApi){
 		console.log("do payment on reservation");
 		console.log(dataToMakePaymentApi);
+		var webservice = new WebServiceInterface();
 		// var url = 'ghjghjghjghjent'; 
 	    // var options = {
 			   // requestParameters: dataToMakePaymentApi,

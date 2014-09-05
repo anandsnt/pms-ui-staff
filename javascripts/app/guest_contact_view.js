@@ -170,16 +170,16 @@ var GuestContactView = function(domRef) {
 			fakeDataToAvoidCache : new Date(), // fakeDataToAvoidCache is iOS Safari fix
 			id : $reservation_id
 		};
-		var url = '/staff/guestcard/show.json';
-	    var options = {
-			   requestParameters: data,
-			   successCallBack: that.fetchCompletedOfRenderContactInformation,
-			   failureCallBack: that.fetchFailedOfRenderContactInformation,
-			   loader: 'NONE',
-			   async: true
-	    };		
-		var webservice = new WebServiceInterface();
-		webservice.getJSON(url, options);
+		// var url = '/staff/guestcard/show.json';
+	    // var options = {
+			   // requestParameters: data,
+			   // successCallBack: that.fetchCompletedOfRenderContactInformation,
+			   // failureCallBack: that.fetchFailedOfRenderContactInformation,
+			   // loader: 'NONE',
+			   // async: true
+	    // };		
+		// var webservice = new WebServiceInterface();
+		// webservice.getJSON(url, options);
 	};
 	this.dateSplit = function(dateToSplit) {
 		var splitDate = dateToSplit.split('-');
