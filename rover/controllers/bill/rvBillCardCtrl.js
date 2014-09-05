@@ -820,7 +820,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 
-		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 
 		if(!$scope.isAllBillsReviewed){
