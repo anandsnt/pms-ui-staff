@@ -113,7 +113,8 @@ sntRover.service('RVChargeItems',
 			// fetch and return data from server
 			this.fetch = function(reservation_id) {
 				var deferred = $q.defer();
-				var url =  '/staff/items/' + reservation_id + '/get_items.json';
+				//var url =  '/staff/items/' + reservation_id + '/get_items.json';
+				var url =  '/staff/items/get_items.json';
 
 				// if we have fetched items previously
 				if (this.fetchedItems.length) {

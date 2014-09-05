@@ -739,6 +739,18 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.search.guest_company_agent = '';
 			};
 			
+			$scope.clickedPostCharges = function(){
+				console.log("clickedPostCharges");
+				console.log()
+				
+				if(!$scope.isCardAttched){
+					$scope.noGuestOrRoomSelected = true;
+				}
+				else if($scope.cardAttached.reservation_status === 'CHECKING_IN'){
+					$scope.guestHasNotCheckedin = true;
+				}
+			};
+			
 		}
 	]
 );

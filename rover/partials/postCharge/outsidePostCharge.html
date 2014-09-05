@@ -306,7 +306,7 @@
 					</div>
 				</div>
 				<div class="actions float">
-					<button type="button" id="post" class="button green modal-close" ng-click="postCharges()" translate>POST_CHARGE</button>
+					<button type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges()" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
 					<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
 				</div>
 			</div>
