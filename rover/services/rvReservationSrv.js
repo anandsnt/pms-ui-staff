@@ -103,6 +103,9 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.updateResrvationForConfirmationNumber = function(confirmationNumber, reservationData) {
 			that.reservationDetails[confirmationNumber] = reservationData;
 		};
+		this.getResrvationForConfirmationNumber = function(confirmationNumber) {
+			return that.reservationDetails[confirmationNumber];
+		};
 		this.guestData = "";
 		this.setGuestData = function(data) {
 			this.guestData = data;
