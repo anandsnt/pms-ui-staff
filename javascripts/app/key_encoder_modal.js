@@ -358,7 +358,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			//If keys left to print, call the cordova write key function to write the pending key
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
-				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
+
 				
     			//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
     			if(that.isSmartbandCreateWithKeyWrite == "true" && lastSuccessfulCardIDReaded != ''){
@@ -370,9 +370,9 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
     				data.is_fixed = false;
     				//setting smartband account number as last read ID from card reader
     				data.account_number = lastSuccessfulCardIDReaded;
-    				that.addNewSmartbandWithKey(data);
+    				return that.addNewSmartbandWithKey(data, index);
     			}
-
+    			that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
@@ -384,7 +384,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 				that.myDom.find('#create-key').text('Print key '+ (index+1));
 
 			},
-			'failureCallBack': function(){
+			'failureCallBack': function(message){
 				sntapp.activityIndicator.hideActivityIndicator();
 				if(that.numOfKeys > 0){
 					that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
@@ -409,14 +409,14 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	/**
 	* function used to add smartband, mainly for smartband creation while key writing
 	*/
-	this.addNewSmartbandWithKey = function(data){		
+	this.addNewSmartbandWithKey = function(data, index){		
 		var reservationId = getReservationId();
 		var url = '/api/reservations/' + reservationId + '/smartbands';
 	    var options = { 
 			requestParameters: JSON.stringify(data),
 			successCallBack: that.successCallbackOfAddNewSmartband,
 			failureCallBack: that.failureCallbackOfAddNewSmartband,
-			successCallBackParameters: data,
+			successCallBackParameters: {'data': data, 'index': index},
 			loader: 'blocker',
 			async: false
 	    };
@@ -427,7 +427,9 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	/**
 	* Set the selected band type - fixed room/open charge to the band
 	*/
-	this.writeBandType = function(data){
+	this.writeBandType = function(dataParams){
+		var data = dataParams.data;
+		var index = dataParams.index;
 		var args = [];
 		var bandType = '00000002';
 		if(data.is_fixed){
@@ -440,6 +442,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		var options = {
 			//Cordova write success callback
 			'successCallBack': function(){
+				that.numOfKeys--;
+				if(that.numOfKeys == 0){
+					that.showKeyPrintSuccess();
+					return true;
+				}
+
+				that.printKeyStatus[index-1].printed = true;
+				that.myDom.find('#key' + index).closest('label').addClass('printed');
+				that.myDom.find('#create-key').text('Print key '+ (index+1));				
 				sntapp.activityIndicator.hideActivityIndicator();		
 				return;				
 			},
