@@ -75,7 +75,8 @@ angular.module('housekeepingModule', [])
 
         $stateProvider.state('rover.workManagement.new', {
             url: '/new',
-            templateUrl: '/assets/partials/workManagement/rvWorkManagementNewWorkSheet.html'
+            templateUrl: '/assets/partials/workManagement/rvWorkManagementNewWorkSheet.html',
+            controller: 'RVWorkManagementNewWorkSheetCtrl'
         });
 
 
