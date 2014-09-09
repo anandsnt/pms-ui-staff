@@ -225,7 +225,6 @@
                                     th {
                                         &.rows-toggle {
                                             cursor: pointer;
-                                            padding-left: 40px;
                                             background: @arrowDown 100% 50% no-repeat;
 
                                             &.active { background-image: @arrowUp; }
@@ -458,6 +457,11 @@
                     }
                 }
 
+                &:last-child {
+                    padding-bottom: 0;
+                    margin-bottom: 0;
+                }
+
                 &.buttons {
                     .actions { .hide; }
                     .data { 
@@ -491,7 +495,6 @@
                                 border-bottom: 0;
                             }
                         }
-
                     }
                 }
 
@@ -605,7 +608,6 @@
                         text-align: right;
                         #pixel-to-percent > .width(260, 1888);
                         .pull-left;
-
                     }
 
                     h4 {
@@ -660,10 +662,9 @@
                         li {
                             text-align: center;
                             line-height: 1em;
-                            margin-right: 40px;
+                            margin: 0 40px 0 0;
                             border-bottom: 0;
                             padding-bottom: 0;
-                            margin-bottom: 0;
                             color: @grey3;
                             .calc-width(20, 32);
 
@@ -751,179 +752,472 @@
     }
        
 /* Search page              ==============================*/
+    #search,
+    #find-cards,
+    #rooms {
+       &.no-results {
+            .wrapper,
+            .search-results { height: 100%; }            
+        } 
+    }
+
     .search-results {
         position: relative;
-        padding: 20px;
 
-        a:not(.open-modal) {
-            color: @textColor;
-            line-height: 1em;
-            padding: 15px;
-            .clickable;
-            
-            .data {
-                margin: 0 40px 0 20px;
+        li:not(.no-content) {
+            margin: 0;           
+
+            a {
+                color: @textColor;
+                line-height: 1em;
+                padding: 10px;
+                background-color: @white;
                 overflow: hidden;
-                text-overflow: ellipsis;
-                .calc-width(63, 40); /* %, px */
-                .pull-left;
+                .box-shadow(inset 0 1px 1px rgba(0,0,0,.1));
+                .show;
+                .float;
 
-                h2 {
-                    font-size: 24px;
-                    line-height: 24px;
-                    font-weight: 700;
-                    margin-bottom: 10px;
-                    white-space: nowrap;
+                .data {
+                    margin-right: 10px;
                     overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-
-                span:not(.highlight),
-                em {
-                    display: inline;
-                    height: 20px;
-                    margin-right: 30px;
-                    overflow: hidden;
-
-                    &.confirmation { font-weight: 600; }
-
-                    &.icon-location,
-                    &.icon-phone,
-                    &.icon-group,
-                    &.icon-email-grey {
-                        color: @grey3;
-                        padding-left: 20px; 
-                    }
-                }
-
-                .highlight { color: @logoPrimary; }
-            }
-
-            .status {
-                width: 80px;
-                .pull-left;
-
-                .guest-status {
-                    margin-top: 10px;
-                    .square(30px);
-                }
-
-                .late-checkout-time {
-                    font-weight: 600;
-                    line-height: 50px;
-                    text-transform: uppercase;
-                    margin-left: -80px;
+                    .show;
                     .pull-left;
+
+                    h2 {
+                        font-weight: 700;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
                 }
 
-                &.queued {
-                    .icons;
-                    .icons > .icon-queued;
+                .guest-image { margin-right: 10px; }
+
+                .status { .pull-left; }
+
+                &.accompany {
+                    .data {
+                        h2 { color: @grey3; }
+                    }
                 }
             }
 
-            .room-number {
-                margin: 7px 20px;
-                .pull-left;
+            &.reservation {
+                a {
+                    .data {
+                        .calc-width(100, 90);
 
-                .highlight { 
-                    display: inline-block;
-                    margin-left: -10px;
-                    padding-left: 10px;
-                    border-left: 4px solid @logoPrimary;
-                }
-            }
+                        h2 {
+                            font-size: 18px;
+                            line-height: 40px;
+                        }
 
-            .room-status {
-                line-height: 50px;
-                vertical-align: middle;
-                .pull-left;
-            }
+                        span:not(.highlight),
+                        em { .hide; }
 
-            .stays {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                .pull-left;
-
-                .count,
-                .last-stay {
-                    font-size: 24px;
-                    line-height: 22px;
-                    font-weight: 600;
-                    
-                    .label { 
-                        display: inline-block;
-                        font-weight: 14px;
-                        line-height: 24px;
-                        margin: 0 20px 0 0;
-                        font-weight: 400;
+                        .highlight { color: @logoPrimary; }
                     }
 
-                    &.last-stay {
-                        font-size: 18px;
-                        font-weight: 400;
-                        margin-top: 6px;
+                    .status {
+                        width: 30px;
 
-                        strong { 
-                            font-size: 24px; 
-                            font-weight: 600;
-                            margin: 0 10px 0 20px;
+                        .guest-status {
+                            margin-top: 5px;
+                            .square(30px);
+                        }
+
+                        .late-checkout-time { .hide; }
+                    }
+
+                    .room-number,
+                    .room-status,
+                    .stays { .hide; }
+
+                    &.guest-check-in {
+                        .room-number {
+                            &.ready { color: @green; }
+                            &.not-ready { color: @red; }
                         }
                     }
                 }
             }
 
-            &.accompany {
-                .data {
-                    h2 { color: @grey3; }
+            &.room {
+                a {
+                    min-height: 60px;
+
+                    .data {
+                        .calc-width(35, 10);
+                        
+                        h2 { 
+                            font-size: 30px; 
+
+                            &.clean,
+                            &.inspected { color: @green; }
+
+                            &.dirty,
+                            &.pickup { color: @red; }
+
+                            &.out { color: @grey3; }
+                        }
+
+                        .room-status {
+                            line-height: 18px;
+
+                            &.clean,
+                            &.inspected { color: @green; }
+
+                            &.pickup,
+                            &.clean-not-bookable  { color: @orange; }
+
+                            &.dirty { color: @red; }
+                        }
+                    }
+
+                    .reservation-status {
+                        margin-right: 10px;
+                        .calc-width(65, 10);
+                        .pull-left;
+
+                        .guest-status { 
+                            margin-right: 5px;
+                            width: 20px !important;
+                            height: 20px !important;
+                            background-size: 80px;
+
+                            &.check-in { background-position: 6px -75px; }
+                            &.check-out { background-position: 6px -101px; }
+                            &.inhouse { background-position:  5px -128px; }
+                        }
+
+                        .current,
+                        .next {
+                            font-size: 14px;
+                            line-height: 20px;
+                            text-transform: uppercase;
+                            .size(20px, 100%);
+
+                            &.current { margin-bottom: 5px; }
+                            &.check-in { color: @green; }
+                            &.check-out { color: @red; }
+                            &.inhouse { color: @blue; }
+                        }                        
+                    }
+
+                    .additional-info { .hide; }
+
+                    &.with-image {
+                        position: relative;
+
+                        .reservation-status { .calc-width(65, 50); }
+
+                        .guest-image {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            margin: 0;
+                        }
+                    }
                 }
             }
 
-            &.guest-check-in {
-                .room-number {
-                    &.ready { color: @green; }
-                    &.not-ready { color: @red; }
+            &.card {
+                a {
+                    .guest-image {
+
+                        &.icon-company {
+                            background-color: @ccard;
+                            background-position: 6px -3453px;
+                        }
+
+                        &.icon-travel-agent {
+                            background-color: @tacard;
+                            background-position: 10px -3570px;
+                        }
+                    }
+
+                    .data {
+                        .calc-width(100, 90);
+
+                        h2 {
+                            font-size: 18px;
+                            line-height: 40px;
+                            vertical-align: middle; 
+                        }
+
+                        .highlight { color: @logoPrimary; }
+                    }
+
+                    .status { 
+                        margin-top: 10px;
+                        .hide-text;
+                        .square(20px);
+
+                        &.guest { background: @gcard @gcardTexture; }
+                        &.company { background: @ccard @ccardTexture; }
+                        &.travel-agent { background: @tacard @tacardTexture; }
+                    }
                 }
             }
+        }
+    }
 
-            &.card-result {
-                .guest-image {
+    /* 600px+               ==============================*/
+    @media only screen and (min-width: 600px) {
+        .search-results {
+            padding: 20px;
 
-                    &.icon-company,
-                    &.icon-travel-agent {
-                        margin: 0;
-                        .square(50px);
-                        #border-radius > .rounded();
-                    }
+            li:not(.no-content) {
+                margin-bottom: 10px; 
 
-                    &.icon-company {
-                        background-color: @ccard;
-                        background-position: 12px -3445px;
-                    }
+                a { .clickable; }
 
-                    &.icon-travel-agent {
-                        background-color: @tacard;
-                        background-position: 14px -3562px;
-                    }
-                }
+                &.reservation {
+                    a {
+                        .data {
+                            .calc-width(100, 110);
 
-                .data {
-                    .calc-width(100, 145); /* %, px */
+                            h2 {
+                                font-size: 21px;
+                                line-height: 40px;
+                            }
 
-                    h2 {
-                        line-height: 50px;
-                        margin: 0;
+                            .highlight { color: @logoPrimary; }
+                        }     
                     }
                 }
 
-                .status { 
-                    margin-top: 10px;
-                    .hide-text;
-                    .square(30px);
+                &.room {
+                    a {
+                        .data {
+                            .calc-width(40, 10);
 
-                    &.guest { background: @gcard @gcardTexture; }
-                    &.company { background: @ccard @ccardTexture; }
-                    &.travel-agent { background: @tacard @tacardTexture; }
+                            h2,
+                            .room-status {
+                                width: 50%;
+                                line-height: 40px;
+                                .pull-left;
+                            }
+                        }
+
+                        .reservation-status {
+                            margin-top: 5px;
+                            .calc-width(60, 10);
+
+                            .guest-status { 
+                                margin-right: 10px;
+                                width: 30px !important;
+                                height: 30px !important;
+                                background-size: 120px;
+
+                                &.check-in { background-position: 8px -112px; }
+                                &.check-out { background-position: 8px -152px; }
+                                &.inhouse { background-position: 8px -192px; }
+                            }
+
+                            .current,
+                            .next { 
+                                font-size: 16px;
+                                line-height: 30px;
+                                margin: 0;
+                                .size(30px, 40%);
+                                .pull-left;
+                            }       
+                        }
+
+                        &.with-image {
+                            .reservation-status { .calc-width(60, 10); }
+                        }
+                    }
+                }
+
+                &.card {
+                    a {
+                        .guest-image {
+                            &.icon-company { background-position: 12px -3445px; }
+                            &.icon-travel-agent { background-position: 14px -3562px; }
+                        }
+
+                        .data {
+                            .calc-width(100, 110);
+
+                            h2 { 
+                                font-size: 24px;
+                                line-height: 50px; 
+                            }
+                        }
+
+                        .status { .square(30px); }
+                    }
+                }
+            }
+        }
+    }
+
+    /* 768px+               ==============================*/
+    @media only screen and (min-width: 768px) {
+        .search-results {
+            li:not(.no-content) {
+
+                a {
+                    padding: 15px;
+
+                    .data { margin-right: 40px; }
+
+                    .guest-image { margin-right: 20px; }
+
+                    .status { width: 80px; }
+                }
+
+                &.reservation {
+                    a {
+                        .data { 
+                            .calc-width(63, 40); 
+
+                            h2 {
+                                font-size: 24px;
+                                line-height: 24px;
+                                margin-bottom: 10px;
+                            }
+
+                            span:not(.highlight),
+                            em {
+                                display: inline;
+                                height: 20px;
+                                margin-right: 30px;
+                                overflow: hidden;
+
+                                &.confirmation { font-weight: 600; }
+
+                                &.icon-location,
+                                &.icon-phone,
+                                &.icon-group,
+                                &.icon-email-grey {
+                                    color: @grey3;
+                                    padding-left: 20px; 
+                                }
+                            }
+                        }
+
+                        .status {
+                            width: 80px;
+
+                            .guest-status { margin-top: 10px;  }
+
+                            .late-checkout-time {
+                                font-weight: 600;
+                                line-height: 50px;
+                                text-transform: uppercase;
+                                margin-left: -80px;
+                                .show;
+                                .pull-left;
+                            }
+
+                            &.queued {
+                                .icons;
+                                .icons > .icon-queued;
+                            }
+                        }
+
+                        .room-number {
+                            margin: 7px 20px;
+                            .show;
+                            .pull-left;
+
+                            .highlight { 
+                                display: inline-block;
+                                margin-left: -10px;
+                                padding-left: 10px;
+                                border-left: 4px solid @logoPrimary;
+                            }
+                        }
+
+                        .room-status {
+                            line-height: 50px;
+                            vertical-align: middle;
+                            .show;
+                            .pull-left;
+                        }
+
+                        .stays {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            .show;
+                            .pull-left;
+
+                            .count,
+                            .last-stay {
+                                font-size: 24px;
+                                line-height: 22px;
+                                font-weight: 600;
+                                
+                                .label { 
+                                    display: inline-block;
+                                    font-weight: 14px;
+                                    line-height: 24px;
+                                    margin: 0 20px 0 0;
+                                    font-weight: 400;
+                                }
+
+                                &.last-stay {
+                                    font-size: 18px;
+                                    font-weight: 400;
+                                    margin-top: 6px;
+
+                                    strong { 
+                                        font-size: 24px; 
+                                        font-weight: 600;
+                                        margin: 0 10px 0 20px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.room {
+                    a {
+                        .data { .calc-width(20, 10); }
+                        .reservation-status { .calc-width(35, 10); }
+                        
+                        .additional-info { 
+                            font-size: 16px;
+                            line-height: 40px;
+                            text-transform: uppercase;
+                            clear: none;
+                            .size(40px, 40%);
+                            .pull-left;
+                            .float;
+                            .show;
+
+                            .assigned,
+                            .unassigned,
+                            .service-status {
+                                width: 50%;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                .pull-left;
+                            }
+
+                            .unassigned { color: @grey2; }
+                            .service-status { color: @grey3; }
+                        }
+
+                        &.with-image {
+                            .reservation-status { .calc-width(35, 10); }
+
+                            .guest-image {
+                                top: 10px;
+                                right: 10px;
+                            }
+                        }
+                    }
+                }
+
+                &.card {
+                    a {
+                        .data { .calc-width(100, 145); }
+                    }
                 }
             }
         }
@@ -937,6 +1231,7 @@
         width: 100%;
         height: 90px;
         z-index: 999;
+        .transition(height, .2s, cubic-bezier(.10, .10, .25, .90));
         .show;
 
         .cards-wrapper {
@@ -956,11 +1251,32 @@
                     position: absolute;
                     top: 0;
                     padding: 20px;
-                    cursor: pointer;
                     .size(90px, 100%);
                     .show;
 
-                    form {
+                    .guest-image { 
+                        &.icon-company,
+                        &.icon-travel-agent {
+                            padding-top: 65px;
+                            margin: -20px 0 0 -20px;
+                            text-align: center;
+                            text-transform: uppercase;
+                            color: @white;
+                            font-size: 12px;
+                            line-height: 1em;
+                            font-weight: 600;
+                            white-space: nowrap;
+                            text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+                            .square(90px);
+
+                            span { .show; }                             
+
+                            &.new { padding-top: 55px; }
+                        }                       
+                    }
+
+                    form,
+                    .card-search-form {
                         height: 50px;
                         margin-left: 20px;
                         .calc-width(100, 90);
@@ -974,7 +1290,6 @@
                             clear: none;
                             padding: 0 5px;
                             margin-right: 5px;
-                            width: 150px;
                             .placeholder-text(30px, 40px, 700, rgba(255,255,255,.6), normal);
                             .show;
                             .pull-left;
@@ -1079,11 +1394,11 @@
                                 margin-right: 10px;
                                 .hide;
 
-                                &.name { width: 180px; .show; }
+                                &.name { width: 190px; .show; }
                                 &.long-name { width: 360px; .show; }
-                                &.city { width: 220px; }
+                                &.city { width: 210px; }
                                 &.loyalty { width: 260px; }
-                                &.code { width: 360px; }
+                                &.code { width: 280px; }
                             }
                         }
                     }
@@ -1109,13 +1424,13 @@
                     &#travel-agent-card-header { background: @tacard @tacardTexture; }
 
                     &.first {
-                        cursor: default;
                         left: 0;
                         z-index: 10;
                         .calc-width(100, 180);
                     }
 
                     &.second { 
+                        cursor: pointer;
                         z-index: 20; 
                         .box-shadow(-1px 0 3px rgba(0,0,0,.5));
                         #calc-position > .left(100, 180);
@@ -1124,6 +1439,7 @@
                     }
 
                     &.third { 
+                        cursor: pointer;
                         z-index: 30; 
                         .box-shadow(-1px 0 3px rgba(0,0,0,.5));
                         #calc-position > .left(100, 90);
@@ -1234,7 +1550,7 @@
                         .background(@white);
                         #border-radius > .rounded();
                         #border-radius > .left-top(0px);
-                        .calc-height(100, 60); /* %, px */
+                        .calc-height(100, 60);
                         
                         .wrapper { 
                             padding: 20px; 
@@ -1331,6 +1647,20 @@
                                     &.full-width { padding-top: 0; }
                                 }
 
+                                &.with-button {
+                                    .float;
+
+                                    input {
+                                        #pixel-to-percent > .width(432, 904);
+                                        .pull-left;
+                                    }
+
+                                    .button { 
+                                        #pixel-to-percent > .left-margin(40, 904);
+                                        .pull-left;
+                                    }
+                                }
+
                                 &.price-adjust {
                                     .float;
 
@@ -1361,7 +1691,7 @@
                                         #pixel-to-percent > .width(200, 904); 
                                         .pull-left;
                                     }
-                                }                                
+                                }
 
                                 &.full-width,
                                 &.radio-check {
@@ -1370,7 +1700,7 @@
                                 }
 
                                 &.radio-check { 
-                                    .float;       
+                                    .float;                         
                                     
                                     .checkbox,
                                     .radio { #pixel-to-percent > .width(432, 904); }
@@ -1505,7 +1835,7 @@
                             > .primary:not(.value) {
                                 position: absolute;
                                 top: 0;
-                                right: 0;
+                                right: 20px;
                                 margin-right: 0;
                             }
 
@@ -1555,7 +1885,7 @@
                             .tab-details {
                                 position: relative;
                                 overflow: hidden;
-                                .calc-height(100, 60); /* %, px */
+                                .calc-height(100, 60);
 
                                 .wrapper { padding: 20px; }
                                 .iScrollVerticalScrollbar { 
@@ -1580,7 +1910,7 @@
                             .tab-details {
                                 position: relative;
                                 overflow: hidden;
-                                .calc-height(100, 80); /* %, px */
+                                .calc-height(100, 80);
 
                                 .wrapper { padding: 20px; }
                                 .iScrollVerticalScrollbar { 
@@ -1596,7 +1926,7 @@
                                 &:last-child { 
                                     #pixel-to-percent > .width(503, 1888);
                                     margin-right: 0; 
-                                }     
+                                }                   
                             }
 
                             .timeline-title {
@@ -1651,7 +1981,7 @@
                                     .summary {
                                         position: relative;
                                         margin-left: 10px;
-                                        .calc-width(100, 40); /* %, px */
+                                        .calc-width(100, 40);
                                         .pull-left;
 
                                         h3 {
@@ -1890,7 +2220,7 @@
                                                     &.cancel { background-color: @grey3; }
                                                     &.no-show { background: @grey2; }
                                                 }
-                                            }           
+                                            }                                       
                                         }
                                     }
                                 }
@@ -1936,39 +2266,42 @@
                             .calc-width(100, 40);
 
                             .search-results {
-                                a:not(.open-modal) {
-                                    .data,
-                                    .stays { .calc-width(50, 60); }
 
-                                    &.card-result {
-                                        .data { 
-                                            margin-right: 0;
-                                            .calc-width(100, 70);
+                                li:not(.no-content) {
+                                      a {
+                                        .data,
+                                        .stays { .calc-width(50, 60); }
 
-                                            .info {
-                                                height: 40px;
-                                                .float;
+                                        &.card-result {
+                                            .data { 
+                                                margin-right: 0;
+                                                .calc-width(100, 70);
 
-                                                h2 {
-                                                    line-height: 1em;
-                                                    margin-right: 40px;
-                                                    .pull-left;
-                                                }
+                                                .info {
+                                                    height: 40px;
+                                                    .float;
 
-                                                .rate { 
-                                                    font-size: 24px;
-                                                    line-height: 1em;
-                                                    font-weight: 600;
-                                                    .pull-left;
-                                                    
-                                                    .label { 
-                                                        display: inline-block;
-                                                        font-weight: 14px;
-                                                        line-height: 24px;
-                                                        margin: 0 10px 0 0;
-                                                        font-weight: 400;
+                                                    h2 {
+                                                        line-height: 1em;
+                                                        margin-right: 40px;
+                                                        .pull-left;
                                                     }
 
+                                                    .rate { 
+                                                        font-size: 24px;
+                                                        line-height: 1em;
+                                                        font-weight: 600;
+                                                        .pull-left;
+                                                        
+                                                        .label { 
+                                                            display: inline-block;
+                                                            font-weight: 14px;
+                                                            line-height: 24px;
+                                                            margin: 0 10px 0 0;
+                                                            font-weight: 400;
+                                                        }
+
+                                                    }
                                                 }
                                             }
                                         }
@@ -2022,6 +2355,8 @@
             }
         }
 
+        &.ui-resizable-resizing { .no-transition(); }
+
         /* Fullscreen cards ***/
         &.fullscreen {
             .calc-height(100, 60);
@@ -2032,6 +2367,7 @@
 
                         form { .calc-width(100, 250); }
 
+                        /*.icon-show-conversations  { .show; }*/
                         .card-actions { .hide; }
                     }
                 }
@@ -8048,6 +8384,852 @@
             }
         }
     }
+
+/* Rooms page               ==============================*/
+    
+    .worksheet-options {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background-color: @white;
+        text-align: center;
+        z-index: 999;
+        .box-shadow(-1px -1px 1px rgba(0,0,0,.15));
+        .size(40px, 100%);
+
+        li { 
+            display: inline-block;
+            cursor: pointer;
+            margin: 0;
+            font-size: 14px;
+            line-height: 40px;
+            text-align: center;
+            color: @textColor;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0 20px;
+
+            &:hover { color: @logoPrimary; }
+
+            &.active {
+                position: relative;
+                cursor: default;
+                color: @white;
+                text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+                .gradient (@logoGradientEnd, @logoGradientStart);
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    left: 50%;
+                    top: -10px;
+                    width: 0; 
+                    height: 0; 
+                    margin-left: -10px;
+                    border-bottom: 10px solid @logoGradientEnd;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                }
+            }
+        }
+    }
+
+    .worksheet-summary {
+        margin: 20px 20px 0;
+
+        li {
+            line-height: 40px;
+            vertical-align: middle;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            width: 100%;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+
+            span {
+                font-size: 30px;
+                line-height: 40px;
+                font-weight: 300;
+                color: @textColor;
+                .show;
+                .pull-right;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+                border-bottom: 0;
+            }
+        }
+    }
+
+    #filter-rooms {
+        z-index: 9999;
+        background: @white;
+
+        #filter-options {
+            top: 0;
+            height: 100%;
+
+            .wrapper {
+                padding: 20px;
+
+                .holder {
+                    position: relative;
+                    margin-bottom: 20px;
+
+                    .title {
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        margin-bottom: 10px;
+                    }
+
+                    .entry {
+                        padding: 5px 0;
+                        margin-bottom: 0;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        .show;
+
+                        .radio,
+                        .checkbox { 
+                            font-size: 14px;
+                            line-height: 30px;
+                            height: 30px;
+                            padding-left: 30px;
+                            margin-bottom: 0;
+                            float: none; 
+                            background-color: transparent;
+                            width: 100%;
+                            #border-radius > .rounded(0px);
+                            .box-shadow(none);
+                            .show;
+
+                            .icon-form { 
+                                top: 5px; 
+                                left: 0;
+                            }
+                        }
+
+                        &:first-child { padding-top: 0; }
+                        &:last-child { border-bottom: 0; }
+
+                        &.floors {
+
+                            .entry-data {
+                                margin-bottom: 10px;
+                                background-color: @grey1;
+                                .float;
+                                #border-radius > .rounded();
+                                .box-shadow();
+
+                                .left,
+                                .right {
+                                    padding: 20px;
+                                    .size(160px, 50%);
+                                    .pull-left;
+
+                                    .h4 {
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                        text-align: center;
+                                        text-transform: uppercase;
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .label {
+                                        font-size: 14px;
+                                        text-transform: uppercase;
+                                        margin-bottom: 5px;
+                                    }
+
+                                    .select {
+                                        position: relative;
+                                        .faux-clickable;
+
+                                        select { 
+                                            text-align: center;
+                                            vertical-align: middle;
+                                            position: relative;
+                                            background: transparent;
+                                            border: 0;
+                                            padding: 10px;
+                                            line-height: 40px; 
+                                            height: 40px;
+                                            min-height: 40px;
+                                            .box-shadow(none);
+                                        }
+                                    }
+                                }
+
+                                .left {
+                                    padding-right: 40px;
+                                    position: relative;
+                                    border-right: 1px solid rgba(0,0,0,.1);
+
+                                    .select { margin-top: 30px; }
+
+                                    &:after {
+                                        content: "Or";
+                                        position: absolute;
+                                        top: 50%;
+                                        right: -10px;
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        padding: 10px 0;
+                                        margin-top: -16px;
+                                        background: @background;
+                                    }
+                                }
+
+                                .right { 
+                                    padding-left: 40px;
+                                    clear: right; 
+
+                                    .select:first-of-type { margin-bottom: 10px; }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.showing-filters {
+            #move > #from > .bottom();
+        }
+
+        &.closing-filters {
+            #move > #to > .bottom();
+        }
+    }
+
+    /* 600px+               ==============================*/
+    @media only screen and (min-width: 600px) {
+        .worksheet-options {
+            height: 50px;
+
+            li { 
+                font-size: 16px;
+                line-height: 50px; 
+            }
+        }
+        
+        #filter-rooms {
+            .background(@white);
+
+            #filter-options {
+                margin: 20px;
+                background: @white;
+                .box-shadow();
+                .calc-width(100, 40);
+                .calc-height(100, 20);
+                #border-radius > .rounded();
+
+               .wrapper {
+                    .holder {
+                        .entry {
+                            .radio,
+                            .checkbox { font-size: 16px; }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* 768px+               ==============================*/
+    @media only screen and (min-width: 768px) {
+        .worksheet-options { .hide; }
+        #rooms.hidden { display: block !important; }
+
+        .worksheet-summary {
+            margin: 20px auto;
+            display: table;
+
+            li {
+                display: inline-block;
+                font-size: 14px;
+                line-height: 20px;
+                text-align: center;
+                width: auto;
+                margin: 0 20px 0 0;
+                padding-right: 20px;
+                border-bottom: 0;
+                border-right: 1px solid rgba(0,0,0,.1);
+
+                span {
+                    float: none;
+                    font-size: 48px;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                    padding-right: 0;
+                    border-right: 0;
+                }
+            }
+
+            &.hidden { display: table !important; }
+        }
+
+        #filter-rooms {
+            #filter-options {
+                .wrapper {
+                    padding: 20px 40px;
+                    .float;
+
+                    .holder {
+                        margin-right: 40px;
+                        .calc-width(50, 20);
+                        .pull-left;
+
+                        &:nth-child(2n) { margin-right: 0; }
+                    }
+
+                    .entry {
+                        .radio,
+                        .checkbox { 
+                            line-height: 40px;
+                            height: 40px;
+
+                            .icon-form { 
+                                top: 10px; 
+                                left: 0;
+                            }
+                        }
+                    }
+                }
+
+                .iScrollVerticalScrollbar { right: 10px; }
+            }
+        }
+    }
+
+/* Room details page        ==============================*/
+
+    #room-details {
+        .room-header {
+            height: 60px;
+            color: @white;
+            background: @grey3;
+            .transition;
+            .float;
+
+            .icon-room {
+                padding: 10px 0 10px 46px;
+                margin-left: 10px;
+                overflow: hidden;
+                height: 60px;
+                .calc-width(50, 10);
+                .show;
+                .pull-left;
+
+                h1 {
+                    font-size: 36px;
+                    line-height: .8em;
+                    font-weight: 600;
+                }
+
+                span {
+                    font-size: 12px;
+                    line-height: 1em;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    .show;
+                }
+            }
+
+            .display {
+                width: 50%;
+                max-width: 300px;
+                .pull-right;
+
+                li {
+                    margin: 0;
+                    cursor: pointer;
+                    font-size: 12px;
+                    text-align: center;
+                    text-transform: uppercase;
+                    .box-shadow(1px 0 0 rgba(0,0,0,.1));
+                    .size(60px, 33%);
+                    .show;
+                    .pull-left;
+
+                    span {
+                        .square(100%);
+                        .show;
+                        .hide-text;
+                    }
+
+                    &:last-child { .box-shadow(none); }
+
+                    &.active {
+                        position: relative;
+                        .box-shadow(0 1px 1px rgba(0,0,0,.1));
+                        .gradient(@logoGradientStart, @logoGradientEnd);
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            left: 50%;
+                            bottom: -10px;
+                            width: 0; 
+                            height: 0; 
+                            margin-left: -10px;
+                            border-top: 10px solid @logoGradientEnd;
+                            border-left: 10px solid transparent;
+                            border-right: 10px solid transparent;
+                        }
+                    }
+                }
+            }
+
+            &.clean,
+            &.inspected,
+            &.check-in { background: @green; }
+
+            &.pickup { background: @orange; }
+
+            &.dirty,
+            &.check-out { background: @red; }
+
+            &.inhouse { background: @blue; }
+        }
+
+        .room-info {
+            .calc-height(100, 60);
+
+            .room-actions {
+                padding: 10px;
+                height: 60px;
+                text-align: center;
+                background: rgba(0,0,0,.1);
+
+                .select {
+                    width: 50%;
+                    margin: 0 auto;
+                    .show;
+                }
+
+                &.dual-select {
+                    .select {
+                        display: inline-block;
+                        .calc-width(50, 10);
+
+                        &:first-child { margin-right: 10px; }
+                    }
+                }
+            }
+
+            .room-content {
+                text-align: center;       
+                position: relative;
+                padding: 0 20px;
+
+                .h2 { 
+                    color: @grey3;
+                    font-weight: 700;
+                    margin: 20px 0;
+
+                    .green { color: @green; }
+                    .red { color: @red; }
+                    .orange { color: @orange; }
+                }
+
+                .guest-image {
+                    margin: 20px auto;
+                    float: none;
+                    background: @grey1;
+                    .square(64px);
+
+                    .vip {
+                        font-size: 10px;
+                        line-height: 20px;
+                        .square(20px);
+                    }
+                }
+
+                h2 {
+                    font-weight: 300;
+                    text-align: center;
+                    margin: 0;
+                    .show;
+
+                    .guest-status {
+                        display: inline-block;
+                        background-color: rgba(0,0,0,.15);
+                        margin-right: 5px;
+                        float: none;
+                        .square(30px);
+
+                        &.check-out,
+                        &.late-check-out { background-color: @red; }
+                        &.inhouse { background-color: @blue; }
+                    }
+
+                    .name {
+                        line-height: 30px;
+                        vertical-align: top;
+                    }
+                }
+
+                .progress {
+                    position: relative;
+                    overflow: hidden;
+                    margin: 20px auto;
+                    .gradient(@blueStart, @blueEnd);
+                    #border-radius > .rounded(25px);
+                    .box-shadow(inset 1px 1px 0 rgba(0,0,0,.1));
+                    .size(20px, 75%);
+                    .show;
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-size: 40px 40px;
+                        .candystripe(rgba(0,0,0,.1), -45deg);
+                        #move > .candystripe();
+                    }
+                }
+
+                .button {
+                    margin: 0 auto;
+                    .show;
+
+                    &.show-sheet {
+                        line-height: 50px;
+                        margin-top: 20px;
+
+                        span { 
+                            font-weight: 400;
+                            color: @grey3; 
+                        }
+                    }
+
+                    &.action {
+                        font-size: 18px;
+                        .square(80px);
+                        #border-radius > .rounded(80px);
+                    }
+                }
+
+                .row {
+                    text-align: left;
+                    margin-bottom: 20px;
+
+                    .entry {
+                        margin-bottom: 10px;
+
+                        label {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            color: @textColor;
+
+                            span,
+                            &.label { color: @grey3; }
+                        }
+
+                        input,
+                        select {
+                            font-size: 18px;
+                            line-height: 50px;
+                            min-height: 50px;
+                            .size(50px, 100%);
+                        }
+
+                        textarea {
+                            font-size: 18px;
+                            width: 100%;
+                        }
+
+                        .entry-data {
+                            cursor: pointer;
+                            .size(50px, 100%);
+                            .faux-clickable;
+
+                            input,
+                            select {
+                                background: transparent;
+                                border: 0;
+                                .box-shadow(none);
+                            }
+                        }
+                    }
+
+                    &#dates {
+                        .entry {
+                            .entry-data { 
+                                padding: 0 10px;
+                                background: @white @calendar no-repeat 95% 15px;
+                                background-size: 20px;
+                                position: relative;
+
+                                input { .hide; }
+
+                                .ui-datepicker-trigger {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    z-index: 99;
+                                    cursor: pointer;
+                                    .square(100%);
+                                    .opacity(0);
+                                }
+
+                                .day,
+                                .month,
+                                .year {
+                                    display: inline-block;
+                                    font-size: 18px;
+                                    line-height: 50px;
+                                }
+
+                                &:hover { background-position: 95% -35px; }
+
+                                @media @highdpi { background-image: @calendar2x; }                                
+                            }
+
+                            &#out-from { color: @green; }
+                            &#out-to { color: @red; }
+                        }
+                    }
+
+                    &#actions {
+                        text-align: center;
+                        margin-bottom: 0;
+
+                        .button {
+                            line-height: 50px;
+                            .size(50px, 100%);
+                        }
+                    }
+                }
+
+                &.scrollable {
+                    padding: 0;
+                    .calc-height(100, 80);
+
+                    .wrapper { padding: 0 20px 20px 20px; }
+
+                    .iScrollVerticalScrollbar { 
+                        top: 10px;
+                        bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    /* 600px+               ==============================*/
+    @media only screen and (min-width: 600px) {
+        #room-details {
+            .room-header {
+                height: 80px;
+
+                .icon-room {
+                    margin-top: 10px;
+
+                    h1 { font-size: 48px; }
+                    span { font-size: 14px; }
+                }
+
+                .display {
+
+                    li {
+                        height: 80px;
+
+                        span { 
+                            padding-top: 55px;
+                            text-indent: 0; 
+                            font-size: 15px;
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+
+            .room-info {
+                .calc-height(100, 80);
+
+                .room-actions { 
+                    padding: 20px 10px;
+                    height: 80px; 
+                }
+
+                .room-content {
+                    padding: 0 80px;
+
+                    .h2 { 
+                        font-size: 30px; 
+                        margin-top: 40px;
+                    }
+
+                    .guest-image {
+                        .square(80px);
+
+                        .vip {
+                            font-size: 12px;
+                            line-height: 30px;
+                            .square(30px);
+                        }
+                    }
+
+                    h2 { font-size: 36px; }
+
+                    .button {
+
+                        &.show-sheet { width: 80%; }
+
+                        &.action {
+                            font-size: 21px;
+                            .square(120px);
+                        }
+                    }
+
+                    &.scrollable {
+                        padding: 0;
+
+                        .wrapper {  padding: 0 80px 20px 80px; }
+                    }
+                }
+            }
+        }
+    }
+
+    /* 768px+               ==============================*/
+    @media only screen and (min-width: 768px) {
+        #room-details {
+            .room-header {
+                height: 90px;
+
+                .icon-room {
+                    margin-top: 5px;
+                    padding-left: 90px;
+                    height: 80px;
+
+                    h1 { font-size: 60px; }
+                    span { font-size: 18px; }
+                }
+
+                .display {
+
+                    li {
+                        height: 90px;
+
+                        span { 
+                            padding-top: 65px;
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }
+
+            .room-info {
+                .calc-height(100, 90);
+
+                .room-actions {
+
+                    .select { width: 200px; }
+
+                    &.dual-select {
+                        .select { width: 190px; }
+                    }
+                }
+
+                .room-content {
+                    padding: 0 25%;
+
+                    .row {
+                        margin-bottom: 0;
+
+                        .entry {
+                            margin-bottom: 20px;
+
+                            input,
+                            select {
+                                font-size: 18px;
+                                line-height: 60px;
+                                min-height: 60px;
+                                .size(60px, 100%);
+                            }
+
+                            .entry-data {
+                                cursor: pointer;
+                                .size(60px, 100%);
+                                .faux-clickable;
+
+                                input,
+                                select {
+                                    background: transparent;
+                                    border: 0;
+                                    .box-shadow(none);
+                                }
+                            }
+                        }
+
+                        &#dates {
+                            .float;
+
+                            .entry {
+                                margin-right: 20px;
+                                .pull-left;
+                                
+                                &#out-from,
+                                &#out-to {
+                                    .calc-width(50, 10);
+
+                                    .entry-data {
+                                        padding: 0;
+                                        background-position: 90% 20px;
+                                        
+                                        .day,
+                                        .month,
+                                        .year { position: absolute; }
+
+                                        .month,
+                                        .year {
+                                            left: 80px;
+                                            font-size: 18px;
+                                            line-height: 18px;
+                                        }
+
+                                        .day {
+                                            top: 8px;
+                                            left: 15px;
+                                            font-size: 48px;
+                                        }
+
+                                        .month { top: 10px; }
+                                        .year { top: 30px; }
+
+                                        &:hover { background-position: 90% -30px; }
+                                    
+                                    }                       
+                                }                               
+
+                                &:last-child { margin-right: 0; }                   
+                            }
+                        }
+
+                        &#actions {
+
+                            .button { width: 50%; }
+                        }
+                    }
+
+                    &.scrollable {
+                        padding: 0;
+
+                        .wrapper {  padding: 0 25% 20px 25%; }
+                    }
+                }
+            }
+        }
+    }
+
 
 /* 6. IE
 ==========================================================*/
