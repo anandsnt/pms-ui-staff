@@ -497,25 +497,37 @@
 
 /* Back button			==================================*/
 	.back-button:not(.button):not(.switch) {
-		color: @logoPrimary;
-		text-transform: uppercase;
-		font-size: 18px;
-		line-height: 30px;
-		vertical-align: middle;
-		font-weight: 600;	
-		padding-left: 25px;
-		background: @icons 0 -1595px no-repeat; 
+		background: @icons 10px -1587px no-repeat;
+		.square(40px);
+		.hide-text;
 		.no-transition;
+		.show;
 
 		&:hover,
-		&:active {
-			color: @textColor;
-			background-position: 0 -1535px;
-		}
+		&:active { background-position: 10px -1527px; }
 
 		@media @highdpi { 
 			background-image: @icons2x;
 			background-size: 120px;
+		}
+	}
+
+	@media only screen and (min-width: 768px) {
+		.back-button:not(.button):not(.switch) {
+			color: @logoPrimary;
+			text-transform: uppercase;
+			text-indent: 0;
+			line-height: 40px;
+			vertical-align: middle;
+			font-weight: 600;	
+			width: auto;
+			padding: 0 20px 0 40px;
+			background-color: @white;
+			#border-radius > .rounded();
+			.box-shadow();
+
+			&:hover,
+			&:active { color: @textColor; }
 		}
 	}
 
