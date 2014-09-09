@@ -63,7 +63,7 @@
 		</a>
 		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> {{billData.guest_or_company_name}} </h3>
 		
-		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''"> {{billData.credit_card_details.payment_type_description}}<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a></h3>
+		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''"> {{billData.credit_card_details.payment_type_description}}<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a></h3>
 		
 		<h3 ng-show="billData.credit_card_details.payment_type ==''"> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a></h3>
 	</div>
@@ -194,7 +194,7 @@
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
-							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}}({{'WILL_CREATE_NEW_BILL'|translate}})</option>
+							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}}({{'NEW_BILL'|translate}})</option>
 							
 						</select>
 					</div>
