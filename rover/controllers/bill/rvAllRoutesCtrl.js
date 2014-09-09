@@ -11,6 +11,10 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
                 $scope.refreshScroller('routes'); 
                 }, 
             500);
+
+    /**
+    * function to get the charge code or billing group description, to reflect in UI
+    */
     $scope.getCharges = function(route){
     	if(route.attached_charge_codes.length > 1 || route.attached_billing_groups.length > 1){
     		return 'Multiple';
@@ -21,7 +25,9 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
         }
      
     }
-
+    /**
+    * function to get the charge type
+    */
     $scope.getRouteType = function(route){
         if((route.attached_charge_codes.length > 1 && route.attached_billing_groups.length > 1) || route.attached_charge_codes.length > 1){
             return 'CHARGE CODE(S)';
@@ -30,7 +36,9 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
         }      
         
     }
-
+    /**
+    * function to delete route
+    */
     $scope.deleteRoute = function(index){
         var successCallback = function(data) {
                 $scope.attachedEntities.splice(index, 1);

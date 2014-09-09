@@ -33,7 +33,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	   	var queryText = $scope.textInQueryBox;
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
-  
+  	/**
+  	* function to clear the entity search text
+  	*/
 	$scope.clearResults = function(){
 	  	$scope.textInQueryBox = "";
 	  	$scope.refreshScroller('entities');
@@ -106,7 +108,10 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
 	};
-	
+	/**
+  	* function to perform filering on results for reservations.
+  	* if not fouund in the data, it will request for webservice
+  	*/
 	var displayFilteredResultsReservations = function(){ 
 	    //if the entered text's length < 3, we will show everything, means no filtering    
 	    if($scope.textInQueryBox.length < 3){
