@@ -36,7 +36,6 @@ var ShowMakePaymentModal = function(backDom) {
 	};
 	this.renderSwipedData = function(){
 		swipedCardData = this.swipedCardData;
-		console.log(swipedCardData)
 		$("#isSwiped").attr("data-is-swiped", true);
 		$('#card-number').val( 'xxxx-xxxx-xxxx-' + swipedCardData.token.slice(-4) );
 		$('#expiry-month').val( swipedCardData.expiry.slice(-2) );
@@ -57,14 +56,6 @@ var ShowMakePaymentModal = function(backDom) {
 	};
 	this.makePayment = function(){
 		
-		// $('#new-payment').append('<input type="hidden" id="card-token" value="' + swipedCardData.token + '">');
-		// $('#new-payment').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
-		// $('#new-payment').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
-		// $('#new-payment').append('<input type="hidden" id="pan" value="' + swipedCardData.getTokenFrom.pan + '">');
-		// $('#new-payment').append('<input type="hidden" id="etb" value="' + swipedCardData.getTokenFrom.etb + '">');
-// 
-// 		
-
 
 	    var isSwiped = that.myDom.find("#isSwiped").attr("data-is-swiped");		
 		if(!isSwiped){
@@ -168,14 +159,19 @@ var ShowMakePaymentModal = function(backDom) {
 		
 	};
 	this.sessionSuccessCallBack = function(response){
-		console.log("ddddddddddddddddddddddddd")
-		console.log(response)
+
 		  var user_id = $("#user_id").val();
           if(response.status ==="ok"){     
               var MLISessionId = response.session;
+              var expiryMonth = that.myDom.find("#expiry-month").val(),
+				  expiryYear = that.myDom.find("#expiry-year").val(),
+				  cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "";
+           
               var dataToApiToAddNewCard = {
-              	"session_id" : MLISessionId,
-              	"user_id" :user_id
+	              	"session_id" : MLISessionId,
+	              	"user_id" :user_id,
+	              	"card_expiry": cardExpiry,
+	              	"is_deposit": true
               };
               that.addNewCardToReservation(dataToApiToAddNewCard);
              
@@ -192,13 +188,12 @@ var ShowMakePaymentModal = function(backDom) {
 		that.myDom.find("#new-make-payment-card").removeClass("hidden");
 	};
 	this.selectCreditCardItem = function(){
+
 		that.myDom.find("#available-cards").attr("data-is-existing-card", "yes");
 		that.myDom.find("#available-cards").attr("data-selected-payment", $(this).attr("payment-id"));
 		that.myDom.find(".primary-selected").html("");
 		that.myDom.find("#primary-"+$(this).attr("payment-id")).html("SELECTED");
-		that.myDom.find("#make-payment").attr("disabled", false);
-		that.myDom.find("#make-payment").removeClass("grey");
-		that.myDom.find("#make-payment").addClass("green");
+		that.activateMakePaymentButton();
 	};
 	this.addNewCardToReservation = function(dataToApi){
 		dataToApi.add_to_guest_card = "false";
@@ -219,7 +214,7 @@ var ShowMakePaymentModal = function(backDom) {
 		var paymentId = data.data.id;
 		var	amount = that.myDom.find("#amount").val();
 		var dataToMakePaymentApi = {
-			"payment_id": paymentId,
+			"guest_payment_id": paymentId,
 			"reservation_id": that.reservationId,
 			"amount": amount
 		};
@@ -229,14 +224,14 @@ var ShowMakePaymentModal = function(backDom) {
 		console.log("do payment on reservation");
 		console.log(dataToMakePaymentApi);
 		var webservice = new WebServiceInterface();
-		// var url = 'ghjghjghjghjent'; 
-	    // var options = {
-			   // requestParameters: dataToMakePaymentApi,
-			   // successCallBack: that.successCallbackPaymentOnReservation,
-			   // // failureCallBack: that.fetchFailedOfPayment,
-			   // loader: "blocker"
-	    // };
-		// webservice.postJSON(url, options);
+		var url = 'staff/reservation/post_payment'; 
+	    var options = {
+			   requestParameters: dataToMakePaymentApi,
+			   successCallBack: that.successCallbackPaymentOnReservation,
+			   // failureCallBack: that.fetchFailedOfPayment,
+			   loader: "blocker"
+	    };
+		webservice.postJSON(url, options);
 	};
 	this.successCallbackPaymentOnReservation = function(data){
 		
