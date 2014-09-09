@@ -506,7 +506,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
   /**
-    * Handles the bussiness date change
+    * Handles the bussiness date change in progress
     */
     $rootScope.showBussinessDateChangingPopup = function() {
 
@@ -524,6 +524,34 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           });
         }        
     };
+ 
+    $rootScope.$on('bussinessDateChangeInProgress',function(){
+      $rootScope.showBussinessDateChangingPopup();
+    });     
+
+    $scope.goToDashboard = function(){
+      ngDialog.close();
+      // to reload app in case the bussiness date is changed
+      $state.go('rover.dashboard', {}, {reload: true});
+    }
+
+     /**
+    * Handles the bussiness date change completion
+    */
+    $rootScope.showBussinessDateChangedPopup = function() {
+
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        // if(!$rootScope.isBussinessDateChanged){
+        //     $rootScope.isBussinessDateChanged = true;
+            ngDialog.open({
+              template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              closeByDocument: true,
+              scope: $scope
+          });
+        // }        
+    };
 
   }
 ]);
@@ -531,23 +559,25 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 // adding an OWS check Interceptor here and bussiness date change
 // but should be moved to higher up above in root level
 sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
+  
   return {
     request: function (config) {
       return config;
     },
     response: function (response) {
+        // if manual bussiness date change is in progress alert user.
+        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started){
+           $rootScope.$emit('bussinessDateChangeInProgress');
+        }       
         return response || $q.when(response);
     },
     responseError: function(rejection) {
+      if(rejection.status == 430){
+         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+      }
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
-      //Need to review the bussiness date changing notification process
-      // else if(rejection.status == 700){
-      //   $rootScope.showBussinessDateChangingPopup();
-      //   $rootScope.isBussinessDateChanging = true;
-      //   //need to unset this once change is done and set new bussiness date
-      // }
       return $q.reject(rejection);
     }
   };
