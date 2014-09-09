@@ -13,6 +13,7 @@
 
         <header id="room-header" ng-class= "{'inspected-clean': isGreen, 'dirty': isRed, '': isOutOfService, 'pickup': isOrange, 'occupied': isDefaultRoomColor}">
             <h1 class="icons icon-room">{{ data.room_details.current_room_no }}</h1>
+            <span>{{ data.room_details.room_type.name}}</span>
             <div class="select">
                 <div ng-show = "shouldDisable()" style = "height:100%; z-index:999; width : 100%; position:absolute;"></div>
                 <select ng-model="currentHKStatus"
