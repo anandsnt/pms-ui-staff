@@ -77,7 +77,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
 
-    $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
+    $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
       $scope.userInfo.business_date = newBussinessDate
     });
 
@@ -87,12 +87,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.searchBackButtonCaption = '';
 
     /**
-    * reciever function used to change the heading according to the current page
-    * if there is any trnslation, please use that
-    * param1 {object}, javascript event
-    * param2 {String}, Backbutton's caption
-    */
-    $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption){
+     * reciever function used to change the heading according to the current page
+     * if there is any trnslation, please use that
+     * param1 {object}, javascript event
+     * param2 {String}, Backbutton's caption
+     */
+    $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption) {
       event.stopPropagation();
       //chnaging the heading of the page
       $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
@@ -101,172 +101,172 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
 
-    var getDefaultDashboardState = function(){
-        var statesForDashbaord = {
-          'HOUSEKEEPING': 'rover.dashboard.housekeeping',
-          'FRONT_DESK'  : 'rover.dashboard.frontoffice',
-          'MANAGER'     : 'rover.dashboard.manager'
-        };
-        return statesForDashbaord[$rootScope.default_dashboard];
+    var getDefaultDashboardState = function() {
+      var statesForDashbaord = {
+        'HOUSEKEEPING': 'rover.dashboard.housekeeping',
+        'FRONT_DESK': 'rover.dashboard.frontoffice',
+        'MANAGER': 'rover.dashboard.manager'
+      };
+      return statesForDashbaord[$rootScope.default_dashboard];
     };
 
-    if($rootScope.isStandAlone){
+    if ($rootScope.isStandAlone) {
       // OBJECT WITH THE MENU STRUCTURE
-        $scope.menu = [{
-          title: "MENU_DASHBOARD",
-          action: getDefaultDashboardState(),
-          menuIndex: "dashboard",
-          submenu: [],
-          iconClass: "icon-dashboard"
+      $scope.menu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        submenu: [],
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_AVAILABILITY",
+        action: "",
+        iconClass: "icon-availability",
+        submenu: [{
+          title: "MENU_HOUSE_STATUS",
+          action: ""
         }, {
           title: "MENU_AVAILABILITY",
-          action: "",
-          iconClass: "icon-availability",
-          submenu: [{
-            title: "MENU_HOUSE_STATUS",
-            action: ""
-          }, {
-            title: "MENU_AVAILABILITY",
-            action: ""
-          }]
-        }, {
-          title: "MENU_FRONT_DESK",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-frontdesk",
-          submenu: [{
-            title: "MENU_SEARCH_RESERVATIONS",
-            action: "rover.search",
-            menuIndex:"search"
-          },{
-            title: "MENU_CREATE_RESERVATION",
-            action: "rover.reservation.search",
-            standAlone: true,
-            menuIndex: "createReservation"
-          }, {
-            title: "MENU_ROOM_ASSIGNMENT",
-            action: ""
-          }, {
-            title: "MENU_POST_CHARGES",
-            action: ""
-          }, {
-            title: "MENU_CASHIER",
-            action: ""
-          }, {
-            title: "MENU_END_OF_DAY",
-            action: "",
-            actionPopup:true,
-            menuIndex:"endOfDay"
-          }]
-        }, {
-          title: "MENU_CONVERSATIONS",
-          hidden: true,
-          action: "",
-          iconClass: "icon-conversations",
-          submenu: [{
-            title: "MENU_SOCIAL_LOBBY",
-            action: ""
-          }, {
-            title: "MENU_MESSAGES",
-            action: ""
-          }, {
-            title: "MENU_REVIEWS",
-            action: ""
-          }]
-        }, {
-          title: "MENU_REV_MAN",
-          action: "",
-          iconClass: "icon-revenue",
-          submenu: [{
-            title: "MENU_RATE_MANAGER",
-            action: "rover.ratemanager",
-            menuIndex: "rateManager"
-          }, {
-            title: "MENU_TA_CARDS",
-            action: "rover.companycardsearch",
-            menuIndex: "cards"
-          }, {
-            title: "MENU_DISTRIBUTION_MANAGER",
-            action: ""
-          }]
-        }, {
-          title: "MENU_HOUSEKEEPING",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-housekeeping",
-          submenu: [{
-            title: "MENU_ROOM_STATUS",
-            action: "rover.housekeeping.roomStatus",
-            menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: ""
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
-          }]
-        }, {
-          title: "MENU_FINANCIALS",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-finance",
-          submenu: [{
-            title: "MENU_REVENUE",
-            action: ""
-          }, {
-            title: "MENU_ACCOUNTING",
-            action: ""
-          }, {
-            title: "MENU_COMMISIONS",
-            action: ""
-          }]
-        }, {
-          title: "MENU_REPORTS",
-          action: "rover.reports",
-          iconClass: "icon-reports",
-          submenu: []
-        }];
-    }
-    else{
-      // OBJECT WITH THE MENU STRUCTURE
-        $scope.menu = [{
-          title: "MENU_DASHBOARD",
-          action: getDefaultDashboardState(),
-          menuIndex: "dashboard",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_SEARCH",
+          action: ""
+        }]
+      }, {
+        title: "MENU_FRONT_DESK",
+        //hidden: true,
+        action: "",
+        iconClass: "icon-frontdesk",
+        submenu: [{
+          title: "MENU_SEARCH_RESERVATIONS",
           action: "rover.search",
-          menuIndex: "search",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        }, 
-         {
-          title: "MENU_HOUSEKEEPING",
-          //hidden: true,
+          menuIndex: "search"
+        }, {
+          title: "MENU_CREATE_RESERVATION",
+          action: "rover.reservation.search",
+          standAlone: true,
+          menuIndex: "createReservation"
+        }, {
+          title: "MENU_ROOM_ASSIGNMENT",
+          action: ""
+        }, {
+          title: "MENU_POST_CHARGES",
+          action: ""
+        }, {
+          title: "MENU_CASHIER",
+          action: ""
+        }, {
+          title: "MENU_END_OF_DAY",
           action: "",
-          iconClass: "icon-housekeeping",
-          submenu: [{
-            title: "MENU_ROOM_STATUS",
-            action: "rover.housekeeping.roomStatus",
-            menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: ""
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
-          }]
-        },{
-          title: "MENU_REPORTS",
-          action: "rover.reports",
-          iconClass: "icon-reports",
-          submenu: []
-        }];
+          actionPopup: true,
+          menuIndex: "endOfDay"
+        }]
+      }, {
+        title: "MENU_CONVERSATIONS",
+        hidden: true,
+        action: "",
+        iconClass: "icon-conversations",
+        submenu: [{
+          title: "MENU_SOCIAL_LOBBY",
+          action: ""
+        }, {
+          title: "MENU_MESSAGES",
+          action: ""
+        }, {
+          title: "MENU_REVIEWS",
+          action: ""
+        }]
+      }, {
+        title: "MENU_REV_MAN",
+        action: "",
+        iconClass: "icon-revenue",
+        submenu: [{
+          title: "MENU_RATE_MANAGER",
+          action: "rover.ratemanager",
+          menuIndex: "rateManager"
+        }, {
+          title: "MENU_TA_CARDS",
+          action: "rover.companycardsearch",
+          menuIndex: "cards"
+        }, {
+          title: "MENU_DISTRIBUTION_MANAGER",
+          action: ""
+        }]
+      }, {
+        title: "MENU_HOUSEKEEPING",
+        //hidden: true,
+        action: "",
+        iconClass: "icon-housekeeping",
+        submenu: [{
+          title: "MENU_ROOM_STATUS",
+          action: "rover.housekeeping.roomStatus",
+          menuIndex: "roomStatus"
+        }, {
+          title: "MENU_TASK_MANAGEMENT",
+          action: "rover.workManagement.start",
+          menuIndex: "workManagement"
+        }, {
+          title: "MENU_MAINTAENANCE",
+          action: ""
+        }]
+      }, {
+        title: "MENU_FINANCIALS",
+        //hidden: true,
+        action: "",
+        iconClass: "icon-finance",
+        submenu: [{
+          title: "MENU_REVENUE",
+          action: ""
+        }, {
+          title: "MENU_ACCOUNTING",
+          action: ""
+        }, {
+          title: "MENU_COMMISIONS",
+          action: ""
+        }]
+      }, {
+        title: "MENU_REPORTS",
+        action: "rover.reports",
+        iconClass: "icon-reports",
+        submenu: []
+      }];
+    } else {
+      // OBJECT WITH THE MENU STRUCTURE
+      $scope.menu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        submenu: [],
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_SEARCH",
+        action: "rover.search",
+        menuIndex: "search",
+        submenu: [],
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_HOUSEKEEPING",
+        //hidden: true,
+        action: "",
+        iconClass: "icon-housekeeping",
+        submenu: [{
+          title: "MENU_ROOM_STATUS",
+          action: "rover.housekeeping.roomStatus",
+          menuIndex: "roomStatus"
+        }, {
+          title: "MENU_TASK_MANAGEMENT",
+          action: "rover.workManagement.start",
+          menuIndex: "workManagement"
+        }, {
+          title: "MENU_MAINTAENANCE",
+          action: ""
+        }]
+      }, {
+        title: "MENU_REPORTS",
+        action: "rover.reports",
+        iconClass: "icon-reports",
+        submenu: []
+      }];
 
     }
-    
+
 
     $scope.$on("updateSubMenu", function(idx, item) {
       if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
@@ -327,28 +327,28 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.showSubMenu = false;
     };
 
-    $scope.subMenuAction = function(subMenu){
+    $scope.subMenuAction = function(subMenu) {
       $scope.toggleDrawerMenu();
-      if(subMenu === "endOfDay"){
-         ngDialog.open({
-            template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-            controller: 'RVEndOfDayModalController',
-            className: 'end-of-day-popup ngdialog-theme-plain'
-          });
+      if (subMenu === "endOfDay") {
+        ngDialog.open({
+          template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+          controller: 'RVEndOfDayModalController',
+          className: 'end-of-day-popup ngdialog-theme-plain'
+        });
       }
     };
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
-    
-    var routeChange = function(event, newURL){
-       event.preventDefault();
-       return;
+
+    var routeChange = function(event, newURL) {
+      event.preventDefault();
+      return;
     };
 
-    $rootScope.$on('$locationChangeStart', routeChange);                   
+    $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-    
+
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
@@ -373,7 +373,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
-      }         
+      }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -381,8 +381,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('hideLoader');
       $rootScope.previousState = from;
       $rootScope.previousStateParams = fromParams;
-   
-      
+
+
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
@@ -416,7 +416,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $scope.failureCallBackSwipe = function() {
-    	
+
     };
 
     var options = {};
@@ -450,8 +450,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
-    		
-      	$scope.$broadcast('GUESTPAYMENT', paymentData);
+
+      $scope.$broadcast('GUESTPAYMENT', paymentData);
     });
 
     $scope.$on('SHOWGUESTLIKES', function(event) {
@@ -459,98 +459,100 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     $scope.guestInfoToPaymentModal = {};
     $scope.$on('SETGUESTDATA', function(event, guestData) {
-        $scope.guestInfoToPaymentModal = guestData;
-      
+      $scope.guestInfoToPaymentModal = guestData;
+
     });
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-        document.activeElement.blur();
-        $scope.$emit('hideLoader');
-        setTimeout(function(){
-           ngDialog.close();
-           window.scrollTo(0,0);
-           $scope.$apply();
-        }, 700);
+      document.activeElement.blur();
+      $scope.$emit('hideLoader');
+      setTimeout(function() {
+        ngDialog.close();
+        window.scrollTo(0, 0);
+        $scope.$apply();
+      }, 700);
     };
     /*
      * To fix issue with ipad keypad - 7702
      */
-    $scope.setPosition = function(){
-      if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
-         document.activeElement.blur();
-          setTimeout(function(){
-             window.scrollTo(0,0);
-          }, 700);
+    $scope.setPosition = function() {
+      if (document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT') {
+        document.activeElement.blur();
+        setTimeout(function() {
+          window.scrollTo(0, 0);
+        }, 700);
       }
     };
 
     /**
-    * Handles the OWS error - Shows a popup having OWS connection test option
-    */
+     * Handles the OWS error - Shows a popup having OWS connection test option
+     */
     $rootScope.showOWSError = function() {
 
-        // Hide loading message
-        $scope.$emit('hideLoader');
-        if(!$rootScope.isOWSErrorShowing){
-            $rootScope.isOWSErrorShowing = true;
-            ngDialog.open({
-              template: '/assets/partials/hkOWSError.html',
-              className: 'ngdialog-theme-default1 modal-theme1',
-              controller: 'RVHKOWSErrorCtrl',
-              closeByDocument: false,
-              scope: $scope
-          });
-        }        
+      // Hide loading message
+      $scope.$emit('hideLoader');
+      if (!$rootScope.isOWSErrorShowing) {
+        $rootScope.isOWSErrorShowing = true;
+        ngDialog.open({
+          template: '/assets/partials/hkOWSError.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          controller: 'RVHKOWSErrorCtrl',
+          closeByDocument: false,
+          scope: $scope
+        });
+      }
     };
 
-  /**
-    * Handles the bussiness date change in progress
-    */
+    /**
+     * Handles the bussiness date change in progress
+     */
     $rootScope.showBussinessDateChangingPopup = function() {
 
-        // Hide loading message
-        $scope.$emit('hideLoader');
-        //if already shown no need to show again and again
-        if(!$rootScope.isBussinessDateChanging){
-            $rootScope.isBussinessDateChanging = true;
-            ngDialog.open({
-              template: '/assets/partials/common/bussinessDateChangingPopup.html',
-              className: 'ngdialog-theme-default1 modal-theme1',
-              controller: 'bussinessDateChangingCtrl',
-              closeByDocument: false,
-              scope: $scope
-          });
-        }        
+      // Hide loading message
+      $scope.$emit('hideLoader');
+      //if already shown no need to show again and again
+      if (!$rootScope.isBussinessDateChanging) {
+        $rootScope.isBussinessDateChanging = true;
+        ngDialog.open({
+          template: '/assets/partials/common/bussinessDateChangingPopup.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          controller: 'bussinessDateChangingCtrl',
+          closeByDocument: false,
+          scope: $scope
+        });
+      }
     };
- 
-    $rootScope.$on('bussinessDateChangeInProgress',function(){
-      $rootScope.showBussinessDateChangingPopup();
-    });     
 
-    $scope.goToDashboard = function(){
+    $rootScope.$on('bussinessDateChangeInProgress', function() {
+      $rootScope.showBussinessDateChangingPopup();
+    });
+
+    $scope.goToDashboard = function() {
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      $state.go('rover.dashboard', {}, {reload: true});
+      $state.go('rover.dashboard', {}, {
+        reload: true
+      });
     }
 
-     /**
-    * Handles the bussiness date change completion
-    */
+    /**
+     * Handles the bussiness date change completion
+     */
     $rootScope.showBussinessDateChangedPopup = function() {
 
-        // Hide loading message
-        $scope.$emit('hideLoader');
-        // if(!$rootScope.isBussinessDateChanged){
-        //     $rootScope.isBussinessDateChanged = true;
-            ngDialog.open({
-              template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
-              className: 'ngdialog-theme-default1 modal-theme1',
-              closeByDocument: true,
-              scope: $scope
-          });
-        // }        
+      // Hide loading message
+      $scope.$emit('hideLoader');
+      // if(!$rootScope.isBussinessDateChanged){
+      //     $rootScope.isBussinessDateChanged = true;
+      ngDialog.open({
+        template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
+        className: 'ngdialog-theme-default1 modal-theme1',
+        closeByDocument: true,
+        scope: $scope
+      });
+      // }        
     };
 
   }
@@ -558,24 +560,24 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
 // adding an OWS check Interceptor here and bussiness date change
 // but should be moved to higher up above in root level
-sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
-  
+sntRover.factory('httpInterceptor', function($rootScope, $q, $location) {
+
   return {
-    request: function (config) {
+    request: function(config) {
       return config;
     },
-    response: function (response) {
-        // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started){
-           $rootScope.$emit('bussinessDateChangeInProgress');
-        }       
-        return response || $q.when(response);
+    response: function(response) {
+      // if manual bussiness date change is in progress alert user.
+      if (response.data.is_eod_in_progress && response.data.is_eod_manual_started) {
+        $rootScope.$emit('bussinessDateChangeInProgress');
+      }
+      return response || $q.when(response);
     },
     responseError: function(rejection) {
-      if(rejection.status == 430){
-         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+      if (rejection.status == 430) {
+        $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
       }
-      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
+      if (rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
       return $q.reject(rejection);
@@ -583,6 +585,6 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
   };
 });
 
-sntRover.config(function ($httpProvider) {
+sntRover.config(function($httpProvider) {
   $httpProvider.interceptors.push('httpInterceptor');
 });
