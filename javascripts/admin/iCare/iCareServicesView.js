@@ -21,6 +21,7 @@ var ICareServicesView = function(domRef){
 		var dataToPost = {};
 		dataToPost.icare = {};
 		dataToPost.icare.enabled = that.myDom.find('#icare-service-toggle').is(":checked");
+		dataToPost.icare.save_customer_info = that.myDom.find('#icare-service-toggle-customer').is(":checked");
 		dataToPost.icare.debit_charge_code_id = that.myDom.find('#debit-charge-group').val();
 		dataToPost.icare.credit_charge_code_id = that.myDom.find('#credit-charge-group').val();
 		dataToPost.icare.url = that.myDom.find('#access-url').val();

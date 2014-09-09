@@ -92,6 +92,7 @@ h4, .h4 { page-break-after: avoid; }
 
 /* Nav Bar 					==============================*/
 	.nav-bar {
+
 		height: auto;
 		background: transparent;
 		.box-shadow(none);
@@ -199,6 +200,63 @@ h4, .h4 { page-break-after: avoid; }
 		}
 	}
 
+/* Guest Bill*/	
+	.overview, .block-item,.action-select { .hide; }
+
+	#guest-card, #bills-tabs-nav{ .hide; }
+
+	.reservation-header,.billing-information, .bill-summary-wrapper,.selectBill { .hide; }
+
+	.button { .hide; }
+
+	.details{
+		height: auto !important;
+		overflow: auto !important;
+		
+	
+		.total-fees{
+				padding: .3cm 0;
+				margin: 0 .5cm .75cm;
+				border-top: 2px solid rgba(0,0,0,.1);
+	
+				table-layout: fixed;
+				border-collapse: collapse; 
+				margin-bottom: 0;
+				tr {	
+				page-break-after: always;
+				page-break-inside: avoid;
+						
+					th,
+					td {
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
+						white-space: normal !important;
+						overflow: visible !important;
+						vertical-align: top !important;
+						line-height: 1.1;
+						padding: .2cm 2cm .2cm 0;
+						border-bottom: 1px solid rgba(0,0,0,.1);
+						word-break: break-all;
+						min-width:15%;
+						max-width:30%;
+						width:30%;
+					}
+			
+				}
+
+				tfoot {
+					tr {
+						td {
+							color: @grey3;
+							border-bottom: 0;
+							padding-top: .5cm;
+							span { color: @textColor; }
+						}
+					}
+				}
+	
+	}
+}
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

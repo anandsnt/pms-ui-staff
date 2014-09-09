@@ -1,7 +1,9 @@
 <div class="page inner-page page-current" id="page-inner-first">
     <header class="nav-bar float">
-        <!-- Menu toggle button / Back button  -->
-        <a ui-sref="rover.housekeeping.roomStatus" class="back-button" translate>ROOMS_LABEL</a>
+        <!-- Missing back to prev -->
+        <div class="actions-back button white">
+          <a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
+        </div>
 
         <!-- Title -->
         <h1 class="h2" translate>ROOM_DETAILS</h1>

@@ -15,6 +15,22 @@
 
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
 
+				<!-- show For charge codes of the code type Payment -->
+				<div class="entry full-width" required="required" ng-show="prefetchData.selected_charge_code_type == '2'" >
+					<label class="ng-binding" ng-hide="label.length==0" for="" >
+						{{'PAYMENT_TYPE'| translate}}
+						<strong class="" > * </strong>
+					</label>
+				<div class="select">
+					<select name="payment-type" ng-model = "selected_payment_type.id"   ng-change="changeSelectedPaymentType()" >
+						<option value="" class="placeholder" translate>PAYMENT_TYPE</option>
+						<option value="{{paymentType.id}}" ng-selected="(paymentType.value==prefetchData.selected_payment_type && (paymentType.is_cc_type == prefetchData.is_cc_type))" ng-repeat="paymentType in prefetchData.payment_types" >
+						{{paymentType.description}} 
+						</option>
+					</select>
+				</div>
+				</div>
+
 				<!-- show For charge codes of the code type TAX , for standalone hotels-->
 				<div class="entry full-width" ng-show="prefetchData.selected_charge_code_type == '1' && !isPmsConfigured" >
 					<div class="entry full-width" >
@@ -30,7 +46,7 @@
 						</div>
 						<div class="select select-col col1-3">
 							<select ng-model="prefetchData.selected_amount_symbol" class="styled">
-	                            <option ng-repeat="symbol in ['%','$']"  ng-selected="type===prefetchData.selected_amount_symbol" value="{{symbol}}">{{symbol}}</option>
+	                            <option ng-repeat='symbol in ["%","$"]'  ng-selected="symbol===prefetchData.selected_amount_symbol" value="{{symbol}}">{{symbol}}</option>
 	                        </select>
 						</div>
 					</div>

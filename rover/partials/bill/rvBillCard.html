@@ -28,7 +28,7 @@
 		
 		<div ng-iscroll='registration-content' ng-iscroll-delay='1000' class="registration-content bill_content">
 
-			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
+			<div class="wrapper wrapperDisplay">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
 					<table>
@@ -72,18 +72,22 @@
 				</div>
 				<!-- -data["incoming_routing_array"] = [{"room_no"=>"12345","guest_name"=>"krishobh","details"=>"qburst clt"},{"room_no"=>"12345","guest_name"=>"krishobh","details"=>"qburst clt"}] -->
 				<!-- Rate & Bill Summary -->
-				<div id="bills" class="registration-summary ui-tabs ui-widget ui-widget-content ui-corner-all">
+				<div id="bills" class="registration-summary ui-tabs ui-widget ui-widget-content ui-corner-all" >
 					<!-- Bills summary tabs navigation -->
-					<div id="bills-tabs-nav" class="float bill-tabs">
+					<div id="bills-tabs-nav" class="float bill-tabs" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
+						<div class="bill-tab-container">
 						<!-- Billing instructions -->
-						<a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a>
+						<!-- <a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a> -->
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
+						
+						
 						<!-- Add new bill -->
 						<!-- %a.button.with-icon.only-icon.brand-colors -->
 						<!-- %span.icons.icon-plus -->
 						<!-- Add new -->
-						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-							<li class="ui-state-default ui-corner-top" ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
+						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
+							
+							<li class="ui-state-default ui-corner-top bill-tab-li" ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<a class="ui-tabs-anchor" >
 								<div class="price" ng-hide="billTab.total_amount=='SR'">
 									<span translate>BILL #{{billTab.bill_number}}</span>
@@ -97,15 +101,21 @@
 									{{billTab.credit_card_details.payment_type_description}}
 								</div>
 								<figure id="payment-info-1" class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">
-									<img src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="">
+									<img src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
 									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>
+							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10">
+							<a class="button with-icon brand-colors ng-binding ui-tabs-anchor add-new-bill-button" ng-click="createNewBill()"> 
+								<span class="icons icon-plus"></span> 
+							</a>
+							</li>
 
 						</ul>
+						</div>
 					</div>
 					<!-- Bill Tabs for Day items and Group items -->
-					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
+					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills" style="position: static">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
 							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'  >

@@ -12,7 +12,10 @@
 "SELECT_TRIGGER":"Select Trigger",
 "LINK_BEACON":"Link Beacon",
 "GUEST_MESSAGE":"Guest Message",
-"IBEACON_SETUP":"iBeacon setup"
+"IBEACON_SETUP":"iBeacon setup",
+"MESSAGE":"Message",
+"ENTER_MESSAGE":"Enter Message"
+
 ,
 
 
@@ -83,6 +86,7 @@
 "CHARGE_CODE_PLACEHOLDER":"Enter charge code",
 "CHARGE_GROUP":"Charge Group",
 "CHARGE_CODE_TYPE":"Charge Code Type",
+"PAYMENT_TYPE":"Payment Type",
 "AMOUNT":"Amount",
 "AMOUNT_TYPE":"Amount Type", 
 "SELECT_AMOUNT_TYPE":"Select Amount Type",
@@ -98,6 +102,8 @@
 "INCLUSIVE":"Inclusive",
 "EXCLUSIVE":"Exclusive",
 "CALCULATION_RULE":"Calculation Rule",
+"ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
+"ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
 "SELECT_CALCULATION_RULE":"Select Calculation Rule"
 ,
 
@@ -323,7 +329,10 @@
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
     "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
-,
+,	
+	"SETTINGS_AND_PARAMS":"Settings & Parameters",
+    "CHANGE_BUSSINESS_DAY":"Change Business Day",
+    "TIME_TO_CHANGE_BUSSINESS_DATE":"Time to change business date",
 
 
 "GUEST_CHECKOUT_SETUP":"Guest Checkout Setup",

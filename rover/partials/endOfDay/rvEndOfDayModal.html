@@ -1,0 +1,51 @@
+<div role="dialog" id="modal" class="modal-show end-of-day-modal" ng-click="clearErrorMessage()">
+<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
+		<span class="icons icon-close invert"></span>
+</button>
+<div class="modal-content new-content form warning padding-30" ng-show="!isTimePastMidnight">
+	 <div class="padding-30 end-of-day-notification" translate>
+	  BUSSINESS_DATE_NOT_ENDED_MSG
+	 </div>
+	 <div class="actions float actions-end-of-day-container">
+	 	<button id="try-again" class="button green end-of-day-button" ng-click="yesClick()" translate>YES</button>
+	    <button class="button red end-of-day-button" ng-click="cancelClicked()"translate>NO</button>
+	 </div>
+</div>
+<form name="update-settings" id="update-settings" class="modal-content form admin-form" ng-hide="isLoggedIn || !isTimePastMidnight">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<p class="credentials-title" translate>ENTER_PASSWORD</p>
+	<div class="entry full-width">
+		<div id="notification-message"></div>
+	</div>
+	<div class="entry full-width">
+		<label translate>PASSWORD</label>
+		<input type="password" ng-model="password"  class="normalInputStyle">
+	</div>
+	<div class="actions float">
+		<button type="submit" ng-click="login()" class="button  green" translate>
+			VERIFY
+		</button>
+		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close" translate>CANCEL</button>
+	</div>
+</form>
+<div ng-show="isLoggedIn && !startProcess && isTimePastMidnight" class="modal-content padding-30">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+ <h3 translate="" class="actions-end-of-day-text" translate>END_OF_DAY</h3>
+  <div class="end-of-day-message">
+  {{'BUSSINESS_DAY_MSG_1' | translate}} <span class="current-bussiness-date">{{businessDate}}</span> {{'BUSSINESS_DAY_MSG_2' | translate}} <span class="next-bussiness-date">{{nextBusinessDate}}</span>
+  </div>
+	<div class="actions float padding-30">
+		<button type="button" ng-click="startEndOfDayProcess()" class="button" ng-class="{'green':startProcessEnabled}" ng-disabled="!startProcessEnabled" translate>
+			START_END_OF_DAY_PROCESS
+		</button>
+		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close" translate>CANCEL</button>
+	</div>
+</div>
+<div ng-show="isLoggedIn && startProcess && isTimePastMidnight" class="modal-content new-content form warning padding-30">
+	<h3 class="actions-end-of-day-text" translate>ARE_YOU_SURE</h3>
+	 <div class="actions float actions-end-of-day-container">
+	 	<button id="try-again" class="button green end-of-day-button" ng-click="continueClicked()" translate>CONTINUE_WITH_END_OF_DAY</button>
+	    <button class="button red end-of-day-button" ng-click="cancelClicked()"translate>CANCEL</button>
+	 </div>
+</div>
+</div>

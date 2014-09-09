@@ -53,6 +53,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADBillingGroupCtrl',
 			url : '/billingGroups'
 		});
+		$stateProvider.state('admin.accountsReceivables', {
+			templateUrl: '/assets/partials/accountReceivables/adAccountReceivables.html',
+			controller: 'ADAccountReceivablesCtrl',
+			url : '/accountReceivables'
+		});
 
 		$stateProvider.state('admin.reservationTypes', {
 			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',
@@ -308,6 +313,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
                 defaultBeaconDetails: function(adiBeaconSettingsSrv) {
                     return adiBeaconSettingsSrv.fetchBeaconDeafultDetails();
           	   }
+			}
+		});
+
+		$stateProvider.state('admin.settingsAndParams', {
+			templateUrl: '/assets/partials/settingsAndParams/adSettingsAndParams.html',
+			controller: 'settingsAndParamsCtrl',
+			url : '/settingsAndParams',
+			resolve: {
+				settingsAndParamsData: function(settingsAndParamsSrv) {
+					return settingsAndParamsSrv.fetchsettingsAndParams();
+				}
 			}
 		});
 		

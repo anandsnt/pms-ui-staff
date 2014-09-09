@@ -1,6 +1,10 @@
-sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter',  function($scope,$window,dateFilter, $filter){
+sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter', '$vault',  function($scope,$window,dateFilter, $filter, $vault){
     
     BaseCtrl.call(this, $scope);
+
+    // reseting search params to $vault
+    // MUST else there will be problems with back button working
+    $vault.set('searchType', '');
 
     var title = $filter('translate')('RATE_MANAGER_TITLE');
 	$scope.setTitle(title);
