@@ -20,15 +20,23 @@ var ShowMakePaymentModal = function(backDom) {
 	this.modalDidShow = function() {
 		$("#modal-overlay").unbind("click");
 		$("#modal-overlay").addClass("locked");
+		setTimeout(function(){
+			createVerticalScroll('#available-cards');
+		}, 300);
 	};
 	this.activateMakePaymentButton = function(){
-		if($("#card-number")!=''){
+		if($("#card-number").val()!=''){
 			$("#make-payment").attr("disabled", false);
 			$("#make-payment").removeClass("grey");
 			$("#make-payment").addClass("green");
 		}
 		
 		
+	};
+	this.inactivateMakePaymentButton = function(){
+			$("#make-payment").attr("disabled", true);
+			$("#make-payment").removeClass("green");
+			$("#make-payment").addClass("grey");
 	};
 	this.hidePaymentModal = function(){
 		sntapp.cardSwipeCurrView = 'StayCardView';
@@ -57,30 +65,10 @@ var ShowMakePaymentModal = function(backDom) {
 	this.makePayment = function(){
 		
 
-	    var isSwiped = that.myDom.find("#isSwiped").attr("data-is-swiped");		
-		if(!isSwiped){
+	    var isSwiped = that.myDom.find("#isSwiped").attr("data-is-swiped").toString();		
+	    
+		if(isSwiped == "true"){
 			
-			 var merchantId = that.myDom.find("#merchantId").attr("data-merchantId");
-		
-			 HostedForm.setMerchant(merchantId);
-			 
-			 var sessionDetails ={};
-	
-	 		 sessionDetails.cardNumber = that.myDom.find("#card-number").val();
-	         sessionDetails.cardSecurityCode = that.myDom.find("#ccv").val();
-	         sessionDetails.cardExpiryMonth = that.myDom.find("#expiry-month").val();
-	         sessionDetails.cardExpiryYear = that.myDom.find("#expiry-year").val();
-	         console.log(sessionDetails);
-	         try {
-	         	console.log("---------try-------------");
-	                HostedForm.updateSession(sessionDetails, that.sessionSuccessCallBack); 
-	             }
-	         catch(err) {
-	         		console.log("---------catch-------------");
-	         }
-		} else {
-			console.log("-----------------------")
-			console.log(swipedCardData);
 			var user_id = $("#user_id").val();
 			var expiryMonth = that.myDom.find("#expiry-month").val(),
 				expiryYear = that.myDom.find("#expiry-year").val(),
@@ -88,15 +76,6 @@ var ShowMakePaymentModal = function(backDom) {
 		    	cardHolderName = that.myDom.find("#name-on-card").val(),
 		    	cardType = that.myDom.find("#card-type").val();
 			
-			// user_id : user_id,
-					// payment_type: $payment_type,
-				    // payment_credit_type: $payment_credit_type,
-				    // card_number: $card_number,
-				    // credit_card: $card_type,
-				    // card_expiry: $card_expiry,
-				    // name_on_card: $name_on_card,
-				    // guest_id: $guest_id
-// 			
 			
 			var data = {
 			    card_expiry: cardExpiry,
@@ -104,75 +83,47 @@ var ShowMakePaymentModal = function(backDom) {
 			    payment_type: "CC",
 			    payment_credit_type: cardType,
 			    credit_card: cardType,
-			    // mli_token: swipedCardData.token,
-			    // et2: swipedCardData.getTokenFrom.et2,
-				// ksn: swipedCardData.getTokenFrom.ksn,
-				// pan: swipedCardData.getTokenFrom.pan,
-				// etb: swipedCardData.getTokenFrom.etb,
 				mli_token: that.myDom.find("#card-token").val(),
 			    et2: that.myDom.find("#et2").val(),
 				ksn: that.myDom.find("#ksn").val(),
 				pan: that.myDom.find("#pan").val(),
 				etb: that.myDom.find("#etb").val(),
-				
 				"user_id" :user_id
 		    };
-		    alert(JSON.stringify(data));
+
 		    that.addNewCardToReservation(data);
-		}
-		 
+			 
+		} else {
 		
+			if(that.myDom.find("#available-cards").attr("data-is-existing-card") == "yes"){
+				var paymentId = that.myDom.find("#available-cards").attr("data-selected-payment");
+				var	amount = that.myDom.find("#amount").val();
+				var dataToMakePaymentApi = {
+					"guest_payment_id": paymentId,
+					"reservation_id": that.reservationId,
+					"amount": amount
+				};
+				that.doPaymentOnReservation(dataToMakePaymentApi);
+			} else {
+				 var merchantId = that.myDom.find("#merchantId").attr("data-merchantId");
+				 sntapp.activityIndicator.showActivityIndicator('BLOCKER');
+				 HostedForm.setMerchant(merchantId);
+				 
+				 var sessionDetails ={};
 		
-		
-		
-		// var	amount = that.myDom.find("#amount").val();
-// 			
-		// var webservice = new WebServiceInterface();
-		// if(that.myDom.find("#available-cards").attr("data-is-existing-card") == "yes"){
-			// var selectedPaymentId = that.myDom.find("#available-cards").attr("data-selected-payment");
-			// var data = {
-				// reservation_id : that.reservationId,
-				 // amount: amount,
-				 // payment_id: selectedPaymentId
-			// };
-		// } else {
-			// var cardNumber = that.myDom.find("#card-number").val(),
-				// expiryMonth = that.myDom.find("#expiry-month").val(),
-				// expiryYear = that.myDom.find("#expiry-year").val(),
-				// cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "",
-				// cardHolderName = that.myDom.find("#name-on-card").val(),
-				// ccv = that.myDom.find("#ccv").val();
-			// var data = {
-	    		// reservation_id : that.reservationId,
-				// payment_type: "CC",
-			    // //payment_credit_type: $payment_credit_type,
-			    // card_number: cardNumber,
-			    // card_expiry: cardExpiry,
-			    // name_on_card: cardHolderName,
-			    // amount: amount
-		    // };
-		    // if(that.myDom.find("#add-in-guest-card").hasClass("checked")){
-				// data.add_to_guest_card = "true";
-			// }
-		// }
-// 	    
-			// console.log(data)
-	    // var url = 'ghfghfghfghfghfg'; 
-	    // var options = {
-			   // requestParameters: data,
-			   // // successCallBack: that.fetchCompletedOfPayment,
-			   // // failureCallBack: that.fetchFailedOfPayment,
-			   // // successCallBackParameters: {
-				   // // 'image': $image, 
-				   // // 'number': $number, 
-				   // // 'expiry': $expiry,
-				   // // 'cardHolderName': $cardHolderName,
-			   // // },
-			   // loader: "blocker"
-	    // };
-		// webservice.postJSON(url, options);
+		 		 sessionDetails.cardNumber = that.myDom.find("#card-number").val();
+		         sessionDetails.cardSecurityCode = that.myDom.find("#ccv").val();
+		         sessionDetails.cardExpiryMonth = that.myDom.find("#expiry-month").val();
+		         sessionDetails.cardExpiryYear = that.myDom.find("#expiry-year").val();
+		         try {
+		         		
+		                HostedForm.updateSession(sessionDetails, that.sessionSuccessCallBack); 
+		             }
+		         catch(err) {
+		         }
+			}
 			
-	    
+		}		 
 		
 	};
 	this.sessionSuccessCallBack = function(response){
@@ -192,6 +143,9 @@ var ShowMakePaymentModal = function(backDom) {
               };
               that.addNewCardToReservation(dataToApiToAddNewCard);
              
+          } else {
+          	sntapp.notification.showErrorMessage("There is a problem with your credit card", that.myDom);
+          	sntapp.activityIndicator.hideActivityIndicator();
           }
           
         
@@ -199,10 +153,29 @@ var ShowMakePaymentModal = function(backDom) {
 	this.showExistingCards = function(){
 		that.myDom.find("#select-make-payment-card").removeClass("hidden");
 		that.myDom.find("#new-make-payment-card").addClass("hidden");
+		
+		that.myDom.find("#existing-cards").addClass("active");
+		that.myDom.find("#add-new-card").removeClass("active");
+		
+		refreshVerticalScroll('#available-cards');
+		$("#isSwiped").attr("data-is-swiped", false);
+		$('#card-number').val('');
+		$('#expiry-month').val('');
+		$('#expiry-year').val('');
+		$('#name-on-card').val('');
+		that.inactivateMakePaymentButton();
+		
 	};
 	this.showAddCardScreen = function(){
 		that.myDom.find("#select-make-payment-card").addClass("hidden");
 		that.myDom.find("#new-make-payment-card").removeClass("hidden");
+		
+		that.myDom.find("#available-cards").attr("data-is-existing-card", "no");
+		that.myDom.find("#available-cards").attr("data-selected-payment", "");
+		that.myDom.find(".primary-selected").html("");
+		that.myDom.find("#existing-cards").removeClass("active");
+		that.myDom.find("#add-new-card").addClass("active");
+		that.inactivateMakePaymentButton();
 	};
 	this.selectCreditCardItem = function(){
 
@@ -210,7 +183,9 @@ var ShowMakePaymentModal = function(backDom) {
 		that.myDom.find("#available-cards").attr("data-selected-payment", $(this).attr("payment-id"));
 		that.myDom.find(".primary-selected").html("");
 		that.myDom.find("#primary-"+$(this).attr("payment-id")).html("SELECTED");
-		that.activateMakePaymentButton();
+		$("#make-payment").attr("disabled", false);
+		$("#make-payment").removeClass("grey");
+		$("#make-payment").addClass("green");
 	};
 	this.addNewCardToReservation = function(dataToApi){
 		dataToApi.add_to_guest_card = "false";
@@ -228,12 +203,11 @@ var ShowMakePaymentModal = function(backDom) {
 		webservice.postJSON(url, options);
 	};
 	this.failureCallBackOfAddNewCard = function(errorMessage){
-		alert(errorMessage);
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	this.successCallbackAddNewCardToReservation = function(data){
-		alert("success");
+		sntapp.activityIndicator.hideActivityIndicator();
 		var paymentId = data.data.id;
 		var	amount = that.myDom.find("#amount").val();
 		var dataToMakePaymentApi = {
@@ -244,8 +218,6 @@ var ShowMakePaymentModal = function(backDom) {
 		that.doPaymentOnReservation(dataToMakePaymentApi);
 	};
 	this.doPaymentOnReservation = function(dataToMakePaymentApi){
-		console.log("do payment on reservation");
-		console.log(dataToMakePaymentApi);
 		var webservice = new WebServiceInterface();
 		var url = 'staff/reservation/post_payment'; 
 	    var options = {
@@ -257,7 +229,7 @@ var ShowMakePaymentModal = function(backDom) {
 		webservice.postJSON(url, options);
 	};
 	this.successCallbackPaymentOnReservation = function(data){
-		
+		sntapp.activityIndicator.hideActivityIndicator();
 	};
 	
 };
