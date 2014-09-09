@@ -35,10 +35,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	$scope.toggleChargeType = function(){
 		$scope.isBillingGroup = !$scope.isBillingGroup;
-        if($scope.isBillingGroup)
+        if($scope.isBillingGroup){
             $scope.refreshScroller('billingGroups');
+        }
         else
             $scope.refreshScroller('chargeCodes');
+        $scope.showChargeCodes = false;
 	}
 
 	$scope.isBillingGroupSelected = function(billingGroup){
@@ -179,6 +181,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     
     $scope.chargeCodeEntered = function(){
     	console.log($scope.chargeCodeSearchText);
+        $scope.showChargeCodes = false;
 	   	displayFilteredResultsChargeCodes();
 	   	var queryText = $scope.chargeCodeSearchText;
 	   	$scope.chargeCodeSearchText = queryText.charAt(0).toUpperCase() + queryText.slice(1);
@@ -200,7 +203,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	          $scope.availableChargeCodes[i].is_row_visible = true;
 	          $scope.availableChargeCodes[i].is_selected = true;
 	      }     
-	      
+	      $scope.refreshScroller('chargeCodesList');
 	      // we have changed data, so we are refreshing the scrollerbar
 	      //$scope.refreshScroller('cards_search_scroller');      
 	    }
