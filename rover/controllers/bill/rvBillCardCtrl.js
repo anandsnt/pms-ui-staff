@@ -417,6 +417,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.clickedPayButton = function(){
 
+	 	// To check for ar account details in case of direct bills		
+		if($scope.isArAccountNeeded( $scope.currentActiveBill)){
+			return;
+		}
+
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
@@ -815,7 +820,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 
-		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 
 		if(!$scope.isAllBillsReviewed){
@@ -981,6 +985,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.close();
 			$scope.$emit('hideLoader');
 			$scope.init(successData);
+			var reservation = RVReservationCardSrv.getResrvationForConfirmationNumber($scope.reservationBillData.confirm_no);
+			reservation.reservation_card.balance_amount = successData.reservation_balance;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationBillData.confirm_no, reservation);
 			$scope.clickedPayButton();
 			$scope.reservationBillData.is_advance_bill = true;
 		};
