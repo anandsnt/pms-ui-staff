@@ -81,5 +81,9 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
    $scope.$on("UPDATE_MANAGER_DASHBOARD", function(){
    		 $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING'); 
    });
+   //scroller is not appearing after coming back from other screens
+   setTimeout(function(){
+      $scope.refreshScroller('dashboard_scroller');
+   }, 200);
 
 }]);
