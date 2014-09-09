@@ -15,7 +15,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 	
     var init =  function(){
 	
-       
 		
           //setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";

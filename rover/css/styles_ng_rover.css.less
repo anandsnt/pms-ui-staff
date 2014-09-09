@@ -1052,6 +1052,51 @@ Padding for the ows error popup
 }
 
 
+.bussines-date-popup-container{
+  width:80% !important;
+  padding: 8% !important;
+}
+.bussiness-date-warning{
+  text-transform:uppercase;
+  margin:5%;
+}
+
+.blink_text {
+    color:#f5b53c;
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 1s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    
+    animation-name: blinker;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+
+}
 .ar-popup-content {
     
     text-align: center;
@@ -1060,7 +1105,6 @@ Padding for the ows error popup
 
 .ngdialog.end-of-day-popup .ngdialog-content{
   padding:0 !important;
-
 }
 
 .guest-bill-edit-buttons{
@@ -1075,6 +1119,30 @@ Padding for the ows error popup
   padding:0 !important;
 }
 
+
+.bussiness-date-changed-popup{
+  width:300px !important;
+}
+
+
+
+.add-new-bill-li{
+  background:none !important;
+  min-width:50px !important;
+}
+
+.add-new-bill-button{
+  height:100% !important;
+  margin: 0px 0px 0px 5px !important;
+}
+#availability { 
+    width: auto !important;
+    height: auto !important; 
+}
+#availability.availability-open {
+  width: 100% !important;
+  height: 100% !important;
+}
 #availability-graph {
   position: absolute;
   top: 100px;
@@ -1089,7 +1157,7 @@ Padding for the ows error popup
   #graph-showing-area {
     padding-top: 4px;
     background-color: white;
-      width: 83%;
+      width: 84%;
       float: left;
       position: relative;
       overflow: hidden;
@@ -1107,17 +1175,25 @@ Padding for the ows error popup
      height: 50px;
          
   }
+  #nav-listing ul li:first-child{
+    border-left: none;
+  }
+  #nav-listing ul li:last-child{
+    border-right: none;
+  }  
   #nav-listing ul li{
     background-color: #373837;    
-      display: inline-block;
-      border-right: 2px solid white;
-      height: 50px;
-      color: #cccccc;
-      font-size: 14px;
-      padding: 5px 0px 5px 0px;
-      text-align: center;
-      font-weight: 600;
+    display: inline-block;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    height: 50px;
+    color: #cccccc;
+    font-size: 14px;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+    font-weight: 600;
   }
+
   #nav-listing ul li span{
       display: block;
   }
@@ -1140,6 +1216,40 @@ Padding for the ows error popup
     top:0px !important;    
   }
 }
+
+
+
+/*-----CICO-6094 implementing horizontal scroll starts here-------*/
+
+.bill-tab-ul{
+
+    list-style: none outside none !important;
+    white-space: nowrap !important;
+}
+
+#registration-details .registration-content .registration-summary #bills-tabs-nav li{
+  float:none !important;
+  white-space: normal !important;
+}
+#bills-tabs-nav .iScrollHorizontalScrollbar{
+  visibility:hidden;
+}
+#registration-details .registration-content .registration-summary #bills-tabs-nav ul, #registration-details .registration-content .registration-summary #bills-tabs-nav .button{
+  float:none;
+}
+
+#payment-info-1 .credit-card-image{
+  margin-bottom:3px !important;
+}
+
+#bills-tabs-nav .bill-tab-container{
+  width: 1600px; 
+  height: 100%;
+}
+
+
+/*-----CICO-6094 implementing horizontal scroll ends here-------*/
+
 #room-assignment{
  #unassign-room {
     z-index: 10;

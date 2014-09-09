@@ -468,22 +468,18 @@
     "KEY_CREATED_STATUS" : "Key created!",
     "KEY_CREATION_FAILED_STATUS" : "Key creation failed!",
     "KEY_CREATION_FAILED_STATUS_LONG" : "Print key failed, Please try again",
-
-
-
-
-
-
-
-
-
-
-    
 	"PREFERENCES" : "Preferences",
 	"NEWSPAPER" : "Newspaper",
 	"ROOM_TYPE" : "Room type",
-	"ROOM_FEATURES" : "Room Features"
-,	
+	"ROOM_FEATURES" : "Room Features",
+    "CARD_ERROR" : "There is a problem with your credit card",
+    "OUTSIDE_CANCELLATION" : "Outside of the cancellation period",
+    "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
+    "CHARGE_PENALTY" : "Charge Penalty",
+    "PROCEED" : "Proceed",
+    "CANCELATION_REASON" : "Cancelation reason",
+    "OPTIONAL" : "Optional",
+    "CANCELATION_REASON_PLACEHOLDER" : "Cancelling because...",	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",
@@ -568,6 +564,7 @@
     "BALANCE_AS_OF" : "Balance (as of",
     "GUEST_BALANCE_AS_OF": "Guest Balance (as of",
     "MOVE_TO_BILL" : "Move to bill",
+    "WILL_CREATE_NEW_BILL":"Will create new bill",
     "EDIT": "Edit",
     "ALL_CHARGE_GROUPS": "All Charge Groups",
     "FAVORITE": "Favorite",
@@ -616,7 +613,9 @@
     "PENALTY_SKIP" : "Proceed without penalty",
     "CANCEL_CONFIRM" : "Confirm Cancel",
     "CANCEL_CANCEL" : "Return without Cancel",
-    "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
+
+    "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. <br/>Please link card for Direct Bill check out.",
     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?"
+    "POST_CHARGES_LABEL": "Post Room Charges"
 
 }
