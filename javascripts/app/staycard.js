@@ -122,13 +122,18 @@ var StayCard = function(viewDom){
         //respond to GuestBillView
         case 'GuestBillView':
          console.log("GuestBillView")
+         
+         
+                
+          var shouldShowAuthorize = $("#registrationcard_main").attr("data-should-show-authorize");
           //To get the current bill number we are re-using the bill card view object
           var regCardView = sntapp.getViewInst('registrationCardView');
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
           
           var params = { 
           	"bill_number" : regCardView.getActiveBillNumber(), 
-          	"origin":views.BILLCARD
+          	"origin":views.BILLCARD,
+          	"shouldShowAuthorize": shouldShowAuthorize
           	};
           // $("#setOverlay").hide();
           respondToSwipe(views.BILLCARD, domElement, params);
