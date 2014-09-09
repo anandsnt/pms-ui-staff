@@ -15,8 +15,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             fetchPriceDetailsForRate();
         }
 
-        $scope.updatePopupWidth();
-
+        $scope.updatePopupWidth();        
     };
 
     $scope.$parent.myScrollOptions = {
@@ -498,6 +497,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     * Calls the API and dismiss the popup on success
     */
     $scope.saveRestriction = function(){
+
         //The dates to which the restriction should be applied
         var datesSelected = getAllSelectedDates();
     	
@@ -519,7 +519,5 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
 
     $scope.init();
-        
-       
     
 }]);
