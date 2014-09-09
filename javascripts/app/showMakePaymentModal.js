@@ -16,6 +16,7 @@ var ShowMakePaymentModal = function(backDom) {
 		that.myDom.find(".active-item").on('click', that.selectCreditCardItem);
 		that.myDom.find("#modal-close").on('click', that.hidePaymentModal);
 		that.myDom.find("#card-number").on('blur', that.activateMakePaymentButton);
+		
 	};
 	this.modalDidShow = function() {
 		$("#modal-overlay").unbind("click");
@@ -145,10 +146,15 @@ var ShowMakePaymentModal = function(backDom) {
              
           } else {
           	sntapp.notification.showErrorMessage("There is a problem with your credit card", that.myDom);
+          	that.myDom.find(".close-btn").on('click', that.hideErrorMessage);
           	sntapp.activityIndicator.hideActivityIndicator();
           }
           
         
+	};
+	this.hideErrorMessage = function(){
+		console.log("hide");
+		that.myDom.find("#notification-message").removeClass('notice success_message error_message').html('');
 	};
 	this.showExistingCards = function(){
 		that.myDom.find("#select-make-payment-card").removeClass("hidden");
@@ -205,6 +211,7 @@ var ShowMakePaymentModal = function(backDom) {
 	this.failureCallBackOfAddNewCard = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
+		that.myDom.find(".close-btn").on('click', that.hideErrorMessage);
 	};
 	this.successCallbackAddNewCardToReservation = function(data){
 		sntapp.activityIndicator.hideActivityIndicator();
