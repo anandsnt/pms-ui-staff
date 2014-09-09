@@ -950,7 +950,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 
-	 });
+	 });	
+
+	//trigger the billing information popup
+    $scope.openBillingInformation = function(){
+
+    	$scope.reservationData = {};
+    	$scope.reservationData.confirm_no = $scope.reservationBillData.confirm_no;
+    	$scope.reservationData.reservation_id = $scope.reservationBillData.reservation_id;
+    	$scope.reservationData.reservation_status = $scope.reservationBillData.reservation_status;
+    	$scope.reservationData.user_id = $stateParams.userId;
+      ngDialog.open({
+        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+        controller: 'rvBillingInformationPopupCtrl',
+        className: 'ngdialog-theme-default',
+        scope: $scope
+      });
+    }
 
 	/*
 	 * to show the advance bill confirmation dialog
