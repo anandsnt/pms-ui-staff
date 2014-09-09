@@ -5,6 +5,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	this.fromPagePayment = fromPagePayment;
+  	this.swipeHappened = false;
   	
   	
     //Delegate events
@@ -32,6 +33,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 	};
 	that.hidePaymentModal = function(){
 		that.hide();
+		//CICO-9109
+		that.swipeHappened = false;
 	};
     
     this.dataUpdated=function(){
@@ -75,8 +78,10 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		if((typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0)
 			||that.should_show_overlay===true){
     		that.params = {"card_action": "swipe"};
+    		that.swipeHappened = true;
 		}else{
     		that.params = {"card_action": "manual_entry"};
+    		that.swipeHappened = false;
 		}
 	
 		
@@ -238,9 +243,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		//do not update the server with card details. 
 		//Instead, save the details locally and pass the information while cheking in 
 		//Commenting for now as per CICO-6389
-		/*if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
-			console.log("---------------------------------");
-			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card}
+		if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
+			console.log("----------------swipe-----------------");
+			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card};
 		    var data = {
 				payment_type: $payment_type,
 			    credit_card: $card_type,
@@ -255,7 +260,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		    sntapp.regCardData = data;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
-		}*/
+		}
 		
 		if(fromPagePayment == "guest"){
 		    that.save_inprogress = true; // Handle clicking on Add button twice.

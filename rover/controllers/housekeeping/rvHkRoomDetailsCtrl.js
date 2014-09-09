@@ -1,13 +1,21 @@
 sntRover.controller('RVHkRoomDetailsCtrl', [
 	'$scope',
+	'$rootScope',
 	'$state',
 	'$stateParams',
 	'RVHkRoomDetailsSrv',
 	'RVHkRoomStatusSrv',
 	'roomDetailsData',
-	function($scope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, roomDetailsData) {
+	'$filter',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, roomDetailsData, $filter) {
 
 		BaseCtrl.call(this, $scope);
+
+		// set the previous state
+		$rootScope.setPrevState = {
+		    title: $filter('translate')('ROOM_STATUS'),
+		    name: 'rover.housekeeping.roomStatus'
+		}
 
 		/** Method for getting the guest status icon class
 		  @return the guest status icon class  

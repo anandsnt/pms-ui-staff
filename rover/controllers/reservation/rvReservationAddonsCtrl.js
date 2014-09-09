@@ -1,5 +1,20 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv',
-    function($scope, addonData, $state, ngDialog, RVReservationAddonsSrv) {
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv', '$filter', '$timeout',
+    function($scope, $rootScope, addonData, $state, ngDialog, RVReservationAddonsSrv, $filter, $timeout) {
+
+        // set the previous state
+        $rootScope.setPrevState = {
+            title: $filter('translate')('ROOM_RATES'),
+            name: 'rover.reservation.staycard.mainCard.roomType',
+            param: {
+                from_date: $scope.reservationData.arrivalDate,
+                to_date: $scope.reservationData.departureDate,
+                view: "ROOM_RATE",
+                company_id: null,
+                travel_agent_id: null,
+                fromState: 'rover.reservation.staycard.reservationcard.reservationdetails'
+            }
+        }
+
 
         // by default load Best Sellers addon
         // Best Sellers in not a real charge code [just hard coding -1 as charge group id to fetch best sell addons] 
@@ -25,6 +40,12 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
             ngDialog.close();
         }
 
+        $scope.refreshAddonsScroller = function() {
+            $timeout(function() {
+                $scope.$parent.myScroll['enhanceStays'].refresh();
+            }, 700);
+        }
+
         $scope.goToSummaryAndConfirm = function() {
             $scope.closePopup();
             $state.go('rover.reservation.staycard.mainCard.summaryAndConfirm');
@@ -42,8 +63,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
         }
 
         $scope.calculateAddonTotal = function() {
-            $($scope.activeRoom.addons).each(function(index, elem) {
-            });
+            $($scope.activeRoom.addons).each(function(index, elem) {});
         }
 
         $scope.selectAddon = function(addon, addonQty) {
@@ -97,13 +117,14 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
                         addonItem.description = item.description;
                         addonItem.price = item.amount;
                         addonItem.stay = "";
-                        if(item.amount_type != ""){ addonItem.stay = item.amount_type.description; }
-                        if(item.post_type != ""){ 
-                            if(addonItem.stay != "") { 
-                                addonItem.stay += " / "+item.post_type.description 
-                            }
-                            else{
-                                addonItem.stay = item.post_type.description 
+                        if (item.amount_type != "") {
+                            addonItem.stay = item.amount_type.description;
+                        }
+                        if (item.post_type != "") {
+                            if (addonItem.stay != "") {
+                                addonItem.stay += " / " + item.post_type.description
+                            } else {
+                                addonItem.stay = item.post_type.description
                             }
                         }
                         addonItem.amountType = item.amount_type;
@@ -113,6 +134,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
                         $scope.addons.push(addonItem);
                     }
                 });
+                $scope.refreshAddonsScroller();
 
             }
             var chargeGroupId = paramChargeGrpId == undefined ? '' : paramChargeGrpId;
@@ -135,6 +157,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
         // for fetching best sellers - call method without params ie. no charge group id
         // Best Sellers in not a real charge code [just hard coded charge group to fetch best sell addons]
         $scope.fetchAddons();
+        $scope.setScroller("enhanceStays");
+
 
     }
 ]);

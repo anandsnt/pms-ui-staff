@@ -268,15 +268,15 @@ tzIndependentDate = function(st) {
     }
     
     return new Date(r);
-}
+};
 
 
 //To add n days to the current date
 Date.prototype.addDays = function(days) {
-   var dat = new Date(this.valueOf())
+   var dat = new Date(this.valueOf());
    dat.setDate(dat.getDate() + days);
    return dat;
-}
+};
 
 /**
 * A public method to check if the given object is empty (it is recommended over the above one).
@@ -294,4 +294,86 @@ Date.prototype.clone = function() {
     return new Date(this.getTime()); 
 };
 
+/**
+* function to get List of dates between two dates
+* param1 {Date Object}
+* param2 {Date Object}
+* return Array of Date Objects
+*/
+var getDatesBetweenTwoDates = function(fromDate, toDate){
+    var datesBetween = [];
 
+    while(fromDate <= toDate){
+        datesBetween.push(new Date(fromDate));
+        fromDate.setDate(fromDate.getDate() + 1);
+    }
+
+    return datesBetween;
+}
+
+
+function getWeekDayName(dayIndexInWeek, minLetterCount){
+    if(typeof minLetterCount === 'undefined'){
+        minLetterCount = 0;
+    }
+    var weekday = new Array(7);
+    weekday[0]=  "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    var n = weekday[dayIndexInWeek];
+    return n.substr(0, minLetterCount);
+}
+
+
+
+function getTextWidth(text){
+        // create a dummy span, we'll use this to measure text.          
+        var tester = $('<span>'),
+
+          // get the computed style of the input
+         elemStyle = window.document.defaultView
+          .getComputedStyle(tester[0], '');
+
+        // apply any styling that affects the font to the tester span.
+        tester.css({
+          'font-family': elemStyle.fontFamily,
+          'line-height': elemStyle.lineHeight,
+          'font-size': elemStyle.fontSize,
+          'font-weight': elemStyle.fontWeight,
+          'width': 'auto',
+          'position': 'absolute',
+          'top': '-99999px',
+          'left': '-99999px'
+        });
+
+        // put the tester next to the input temporarily.
+        $('body').append(tester);
+
+        // update the text of the tester span
+        tester.text(text);
+
+        // measure!
+        var r = tester[0].getBoundingClientRect();
+
+        var w = r.width;
+
+        // remove the tester.
+        tester.remove();
+        return w;
+}
+
+//function that converts a null value to a desired string.
+//if no replace value is passed, it returns an empty string
+var escapeNull = function(value, replaceWith){
+    var newValue = "";
+    if((typeof replaceWith != "undefined") && (replaceWith != null)){
+        newValue = replaceWith;
+    }
+    var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+    return valueToReturn;
+};

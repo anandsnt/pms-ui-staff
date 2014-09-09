@@ -8,7 +8,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'fetchedRoomList',
 	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, fetchedRoomList) {
 
+		// additional check since the router resolve may fail
+		if ( !fetchedRoomList ) {
+			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
+		};
+
 		BaseCtrl.call(this, $scope);
+
+		// set the previous state
+		$rootScope.setPrevState = {
+		    title: $filter('translate')('DASHBOARD'),
+		    name: 'rover.dashboard'
+		}
 
 		$scope.filterOpen = false;
 

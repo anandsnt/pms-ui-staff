@@ -1,4 +1,5 @@
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar']);
+
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar','acute.select', 'documentTouchMovePrevent', 'divTouchMoveStopPropogate']);
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
@@ -26,9 +27,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	var $_revAnimList = [{
 		fromState: 'rover.housekeeping.roomDetails',
 		toState  : 'rover.housekeeping.roomStatus'
-	}, {
-		fromState: 'rover.reservation.staycard.reservationcard.reservationdetails',
-		toState  : 'rover.search'
 	}, {
 		fromState: 'rover.reservation.staycard.billcard',
 		toState  : 'rover.reservation.staycard.reservationcard.reservationdetails'
@@ -88,7 +86,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// so what the hell, put them here
 		var options = $rootScope.setPrevState,
 			name    = !!options.name ? options.name : $_prevStateName,
-			param   = !!options.name && !!options.param ? options.param : $_prevStateParam,
+			param   = !!options.name && !!options.param ? options.param : (!!$_prevStateParam ? $_prevStateParam : {}),
 			reverse = typeof options.reverse === 'boolean' ? true : false;
 
 		// if currently disabled, return
@@ -109,7 +107,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		};
 
 		// check necessary as we can have a case where both can be null
-		if ( !!options.stateName || !!$_prevStateName ) {
+		if ( !!name ) {
 			$_mustRevAnim = reverse ? options.reverse : true;
 			$state.go( name, param );
 		};
@@ -118,7 +116,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 	$rootScope.returnBack = false;
 	$rootScope.isReturning = function() {
-		console.log( '$rootScope.returnBack ' + $rootScope.returnBack );
 		return $rootScope.returnBack;
 	};
 
@@ -135,7 +132,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
 		// spiting state names so as to add them to '$_revAnimList', if needed
-		console.log( fromState.name + ' --> ' + toState.name );
+		console.debug( '[%s %O] >>> [%s %O]', fromState.name, fromParams, toState.name, toParams );
 
 		// this must be reset with every state change
 		// invidual controllers can then set it  
@@ -144,11 +141,13 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 
 		// choose slide animation direction
 		if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
-			$_mustRevAnim = false;
 			$rootScope.returnBack = true;
 		} else {
 			$rootScope.returnBack = false;
 		}
+
+		// reset this flag
+		$_mustRevAnim = false;
 
 		// saving the prevState name and params
 		$_prevStateName  = fromState.name;

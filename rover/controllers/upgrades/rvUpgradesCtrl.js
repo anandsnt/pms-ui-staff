@@ -4,7 +4,7 @@ sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$
 	BaseCtrl.call(this, $scope);
 
 	$rootScope.setPrevState = {
-		title: 'Stay Card'
+		title: $filter('translate')('STAY_CARD')
 	}
 	
 	$scope.$parent.myScrollOptions = {		
@@ -100,7 +100,10 @@ sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$
 				$scope.reservationData.reservation_card.room_status = "READY";
 				$scope.reservationData.reservation_card.fo_status = "VACANT";
 				$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
-				$scope.reservationData.reservation_card.is_upsell_available = false;
+				// CICO-7904 : Remove option for Standalone PMS as the user should be able to upgrade reservation as many times as required
+				if(!$rootScope.isStandAlone || parseInt($scope.upgradesList[index].room_type_level) == 3){
+					$scope.reservationData.reservation_card.is_upsell_available = false;
+				}
 				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 				$scope.backToStayCard();				
 			}
