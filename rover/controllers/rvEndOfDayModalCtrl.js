@@ -1,4 +1,4 @@
-sntRover.controller('RVEndOfDayModalController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv){
+sntRover.controller('RVEndOfDayModalController', ['$scope','ngDialog','$rootScope','$filter','RVEndOfDayModalSrv','$state', function($scope,ngDialog,$rootScope,$filter,RVEndOfDayModalSrv,$state){
 
 BaseCtrl.call(this, $scope);
 $scope.userName = '';
@@ -54,15 +54,18 @@ $scope.continueClicked = function(){
 		$scope.startProcess = false;
 		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
+		$rootScope.isCurrentUserChangingBussinessDate = false;
 
 	};
 	var startProcessSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$rootScope.businessDate = data.hotel_business_date;
 		$rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
+		$rootScope.isCurrentUserChangingBussinessDate = false;
+		$state.go('rover.dashboard', {}, {reload: true});
 		ngDialog.close();
 	}
-	
+	$rootScope.isCurrentUserChangingBussinessDate = true;
 	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure); 
 };
 

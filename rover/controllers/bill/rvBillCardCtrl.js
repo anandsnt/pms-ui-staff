@@ -417,6 +417,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.clickedPayButton = function(){
 
+	 	// To check for ar account details in case of direct bills		
+		if($scope.isArAccountNeeded( $scope.currentActiveBill)){
+			return;
+		}
+
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
@@ -815,7 +820,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 
-		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 
 		if(!$scope.isAllBillsReviewed){
@@ -950,7 +954,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		};
 	 	$scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, dataToSrv, getReservationDetailsSuccessCallback );
 
-	 });
+	 });	
+
+	//trigger the billing information popup
+    $scope.openBillingInformation = function(){
+
+    	$scope.reservationData = {};
+    	$scope.reservationData.confirm_no = $scope.reservationBillData.confirm_no;
+    	$scope.reservationData.reservation_id = $scope.reservationBillData.reservation_id;
+    	$scope.reservationData.reservation_status = $scope.reservationBillData.reservation_status;
+    	$scope.reservationData.user_id = $stateParams.userId;
+      ngDialog.open({
+        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+        controller: 'rvBillingInformationPopupCtrl',
+        className: 'ngdialog-theme-default',
+        scope: $scope
+      });
+    }
 
 	/*
 	 * to show the advance bill confirmation dialog
