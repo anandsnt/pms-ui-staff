@@ -70,6 +70,6 @@
     "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
     "CHARGE_PENALTY" : "Charge Penalty",
     "PROCEED" : "Proceed",
-    "CANCELATION_REASON" : "Cancelation reason",
+    "CANCELATION_REASON" : "Cancellation Reason",
     "OPTIONAL" : "Optional",
     "CANCELATION_REASON_PLACEHOLDER" : "Cancelling because..."
