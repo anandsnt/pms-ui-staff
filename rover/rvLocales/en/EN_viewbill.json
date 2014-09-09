@@ -82,5 +82,6 @@
     "CANCEL_CANCEL" : "Return without Cancel",
     "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
-    "POST_CHARGES_LABEL": "Post Room Charges"
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "BUSSINESS_DATE_HAS_CHANGED":"The Business Date has changed."
 
