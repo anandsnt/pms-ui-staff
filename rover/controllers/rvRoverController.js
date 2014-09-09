@@ -548,7 +548,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             ngDialog.open({
               template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
               className: 'ngdialog-theme-default1 modal-theme1',
-              closeByDocument: true,
+              closeByDocument: false,
               scope: $scope
           });
         // }        
