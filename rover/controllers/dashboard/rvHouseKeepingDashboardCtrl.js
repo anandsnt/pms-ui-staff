@@ -82,4 +82,8 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
         $state.go('rover.housekeeping.roomStatus', {'roomStatus': filterType});
    };
 
+   //scroller is not appearing after coming back from other screens
+    setTimeout(function(){
+      $scope.refreshScroller('dashboard_scroller');
+    }, 200);
 }]);
