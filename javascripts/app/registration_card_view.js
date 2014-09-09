@@ -159,6 +159,9 @@ var RegistrationCardView = function(viewDom) {
 	    	event.preventDefault();
 	    	return that.showTermsAndConditionsModal();
 	    }
+	    if(getParentWithSelector(event, "#room-charge-btn")){
+	    	return that.roomChargeBtnClicked();
+	    }	    
 	    
 	};
 	this.showTermsAndConditionsModal = function(){
@@ -601,6 +604,25 @@ var RegistrationCardView = function(viewDom) {
 		if(that.myDom.find(activeTabExpandedId).hasClass('hidden')){
 			that.myDom.find(activeTab).removeClass('active');
 		}
+	};
+	
+	// Room charge disable button click
+	this.roomChargeBtnClicked = function(){
+		var data = {
+			"enable_room_charge" : "true"
+		};
+
+		var webservice = new WebServiceInterface();
+		var options = {
+			requestParameters : data,
+			successCallBack : that.roomChargeBtnDisable
+		};
+		webservice.postJSON('staff/reservations/checkin', options); 
+
+	};
+	this.roomChargeBtnDisable=function(){
+		that.myDom.find("#room-charge-btn").removeClass("green").addClass("red");
+
 	};
 };
 
