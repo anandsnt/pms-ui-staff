@@ -232,7 +232,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* and pass it to the API while fetching the keys.
 	*/
 	this.keyCreateBtnClicked = function(){
-
 		that.myDom.find("input[name='keys']").attr("disabled", "disabled");
 
 		//On selecting the key create button for the first time, get the keys form API.
@@ -319,6 +318,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Calculate the keyWrite data from the API response and call the write key method for key writing.
 	*/
 	that.printKeys = function(){
+
+
 		var index = -1;
 		for(var i = 0; i < that.printKeyStatus.length; i++){
 			if(that.printKeyStatus[i].printed == false){
@@ -405,30 +406,11 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 
 	};
-
-	/**
-	* function used to add smartband, mainly for smartband creation while key writing
-	*/
-	this.addNewSmartbandWithKey = function(data, index){		
-		var reservationId = getReservationId();
-		var url = '/api/reservations/' + reservationId + '/smartbands';
-	    var options = { 
-			requestParameters: JSON.stringify(data),
-			successCallBack: that.successCallbackOfAddNewSmartband,
-			failureCallBack: that.failureCallbackOfAddNewSmartband,
-			successCallBackParameters: {'data': data, 'index': index},
-			loader: 'blocker',
-			async: false
-	    };
-
-		var webservice = new NewWebServiceInterface();	    			
-    	webservice.postJSON(url, options);	
-	};
 	/**
 	* Set the selected band type - fixed room/open charge to the band
 	*/
 	this.writeBandType = function(dataParams){
-		var data = dataParams.data;
+		var data = dataParams;
 		var index = dataParams.index;
 		var args = [];
 		var bandType = '00000002';
@@ -444,6 +426,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'successCallBack': function(){
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
+					sntapp.activityIndicator.hideActivityIndicator();
 					that.showKeyPrintSuccess();
 					return true;
 				}
@@ -474,16 +457,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			sntapp.cardReader.setBandType(options);
 		}
 
-	};
+	};	
 	//success call back of smartband's api call for creation
-	that.successCallbackOfAddNewSmartband = function(data, successCallbackParams){
-		sntapp.activityIndicator.showActivityIndicator();
-
+	this.successCallbackOfAddNewSmartband_ = function(data, successCallbackParams){
+		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		that.writeBandType (successCallbackParams);
 	};
 
 	//failure call back of smartband's api call for creation
-	that.failureCallbackOfAddNewSmartband = function(errorMessage){
+	this.failureCallbackOfAddNewSmartband = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();
 		if(that.numOfKeys > 0){
 			that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
@@ -492,7 +474,30 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			var message = 'Key creation failed!';
 			that.showKeyPrintFailure(message);
 		}
+	};		
+	/**
+	* function used to add smartband, mainly for smartband creation while key writing
+	*/
+	this.addNewSmartbandWithKey = function(data, index){	
+		var reservationId = getReservationId();
+		data.index = index;
+		var url = '/api/reservations/' + reservationId + '/smartbands';
+	    var options = { 
+			requestParameters: JSON.stringify(data),
+			successCallBack: that.successCallbackOfAddNewSmartband_,
+			failureCallBack: that.failureCallbackOfAddNewSmartband,
+			successCallBackParameters: data,
+			loader: 'blocker',
+			async: false
+	    };
+
+		var webservice = new NewWebServiceInterface();	    			
+    	webservice.postJSON(url, options);	
 	};
+
+
+
+
 
 	
 
