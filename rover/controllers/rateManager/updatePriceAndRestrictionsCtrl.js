@@ -498,8 +498,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     */
     $scope.saveRestriction = function(){
 
-        console.log( 'yep im defined' );
-
         //The dates to which the restriction should be applied
         var datesSelected = getAllSelectedDates();
     	
@@ -521,7 +519,5 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
 
     $scope.init();
-        
-       
     
 }]);

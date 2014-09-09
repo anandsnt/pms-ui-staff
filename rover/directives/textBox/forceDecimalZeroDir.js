@@ -1,28 +1,18 @@
-sntRover.directive('forceDecimalZeroDir', ['$interval', function($timeout) {
+sntRover.directive('forceDecimalZeroDir', ['$timeout', '$filter', function($timeout, $filter) {
     return {
-        link: function(scope, element, attrs) {
-            var attrVal, timer, dec, exec;
+        restrict: 'A',
+        scope: {
+            ngModel: '='
+        },
+        link: function(scope, el) {
+            var value, dec, exec;
 
             exec = function(val) {
-                attrVal = attrs.value;
-                if ( !!attrVal ) {
-                    dec = attrs.value.split( '.' )[1];
-
-                    if ( angular.isDefined(dec) ) {
-                        if ( dec !== '00' && dec * 1 < 10 ) {
-                            attrVal += '0';
-                        };
-                    } else {
-                        attrVal += '.00';
-                    };
-
-                    element.val( attrVal );
-                }
+                value = $filter( 'number' )( scope.ngModel, 2 );
+                el.val( value );
             }
 
-            timer = $timeout(function() {
-                exec();
-            }, 100);
+            $timeout( exec, 10, false );
         }
     };
 }]);
