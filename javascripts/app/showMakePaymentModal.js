@@ -22,7 +22,7 @@ var ShowMakePaymentModal = function(backDom) {
 		$("#modal-overlay").addClass("locked");
 	};
 	this.activateMakePaymentButton = function(){
-		if(that.myDom.find("#card-number")!=''){
+		if($("#card-number")!=''){
 			$("#make-payment").attr("disabled", false);
 			$("#make-payment").removeClass("grey");
 			$("#make-payment").addClass("green");
@@ -43,7 +43,7 @@ var ShowMakePaymentModal = function(backDom) {
 		$('#name-on-card').val( swipedCardData.cardHolderName );
 		that.activateMakePaymentButton();
 		
-		
+		$('#deposit-balance').append('<input type="hidden" id="card-type" value="' + swipedCardData.cardType + '">');
 		$('#deposit-balance').append('<input type="hidden" id="card-token" value="' + swipedCardData.token + '">');
 		$('#deposit-balance').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
 		$('#deposit-balance').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
@@ -81,13 +81,29 @@ var ShowMakePaymentModal = function(backDom) {
 		} else {
 			console.log("-----------------------")
 			console.log(swipedCardData);
+			var user_id = $("#user_id").val();
 			var expiryMonth = that.myDom.find("#expiry-month").val(),
 				expiryYear = that.myDom.find("#expiry-year").val(),
 				cardExpiry = expiryMonth && expiryYear ? "20"+expiryYear+"-"+expiryMonth+"-01" : "",
-		    	cardHolderName = that.myDom.find("#name-on-card").val();
+		    	cardHolderName = that.myDom.find("#name-on-card").val(),
+		    	cardType = that.myDom.find("#card-type").val();
+			
+			// user_id : user_id,
+					// payment_type: $payment_type,
+				    // payment_credit_type: $payment_credit_type,
+				    // card_number: $card_number,
+				    // credit_card: $card_type,
+				    // card_expiry: $card_expiry,
+				    // name_on_card: $name_on_card,
+				    // guest_id: $guest_id
+// 			
+			
 			var data = {
 			    card_expiry: cardExpiry,
 			    name_on_card: cardHolderName,
+			    payment_type: "CC",
+			    payment_credit_type: cardType,
+			    credit_card: cardType,
 			    // mli_token: swipedCardData.token,
 			    // et2: swipedCardData.getTokenFrom.et2,
 				// ksn: swipedCardData.getTokenFrom.ksn,
@@ -99,8 +115,9 @@ var ShowMakePaymentModal = function(backDom) {
 				pan: that.myDom.find("#pan").val(),
 				etb: that.myDom.find("#etb").val(),
 				
-				reservationId: that.reservationId
+				"user_id" :user_id
 		    };
+		    alert(JSON.stringify(data));
 		    that.addNewCardToReservation(data);
 		}
 		 
@@ -205,12 +222,18 @@ var ShowMakePaymentModal = function(backDom) {
 	    var options = {
 			   requestParameters: dataToApi,
 			   successCallBack: that.successCallbackAddNewCardToReservation,
-			   // failureCallBack: that.fetchFailedOfPayment,
+			   failureCallBack: that.failureCallBackOfAddNewCard,
 			   loader: "blocker"
 	    };
 		webservice.postJSON(url, options);
 	};
+	this.failureCallBackOfAddNewCard = function(errorMessage){
+		alert(errorMessage);
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
+	};
 	this.successCallbackAddNewCardToReservation = function(data){
+		alert("success");
 		var paymentId = data.data.id;
 		var	amount = that.myDom.find("#amount").val();
 		var dataToMakePaymentApi = {
