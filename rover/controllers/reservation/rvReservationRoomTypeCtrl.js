@@ -51,6 +51,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			rateFilterText: "",
 			dateModeActiveDate: "",
 			restrictedContractedRates: {},
+			datesContainerWidth: $(window).width() - 180,
 			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80,
 			suppressedRates: []
 		};
@@ -86,12 +87,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			hideScrollbar: false
 		});
 
-		$scope.setScroller('stayDates', {
-			snap: false,
-			scrollbars: true,
-			scrollX: true,
-			hideScrollbar: false,
-			click: true
+		$scope.setScroller('stayDates', {			
+			scrollX: true,			
+			scrollY: false
 		});
 
 
