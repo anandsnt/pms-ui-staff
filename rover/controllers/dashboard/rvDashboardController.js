@@ -150,7 +150,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         var data = {};
         data.is_late_checkout_only = true;      
         $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    };    
+    };  
+
 }]);
 
     

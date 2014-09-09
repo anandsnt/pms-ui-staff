@@ -1,0 +1,30 @@
+<div id="billing-content" class="content-wrapper " ng-class= "{'no-content':routes.length == 0}" ng-controller="rvAllRoutesCtrl">
+         <div class="info" ng-show = "routes.length == 0">
+            <strong class="h1" translate>ROUTES_EMPTY_MESSAGE</strong>
+         </div>
+         <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable">
+			   <ul class="wrapper">
+			      
+			      <li ng-repeat = "route in routes" >
+			         <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
+			            <figure class="guest-image" ng-class = "getEntityIconClass(route)">
+			               <img src="{{route.images[0].guest_image}}" alt="" />
+			            </figure>
+			            <h2>{{route.name}}</h2>
+			            <div class="type">
+			               <span class="label">{{getRouteType(route)}}</span>
+			               {{getCharges(route)}}
+			            </div>
+			            <div class="bill">
+			               <span class="label">Bill #</span>
+			               {{route.bill_no}}
+			            </div>
+			         </a>
+			         <div id="remove-route-1" class="icons icon-remove-40" ng-click = "deleteRoute($index)">-</div> 
+			      </li>    
+				</ul>
+		</div>
+</div>
+<div class="actions">
+         <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CLOSE</button>
+</div>
