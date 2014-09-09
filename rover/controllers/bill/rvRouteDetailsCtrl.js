@@ -4,6 +4,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.chargeCodeToAdd = "";
     $scope.showPayment = false;
     $scope.first_bill_id = "";
+    $scope.showChargeCodes = false;
     
 
     var scrollerOptions = { preventDefault: false};
@@ -34,8 +35,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 
 	$scope.toggleChargeType = function(){
 		$scope.isBillingGroup = !$scope.isBillingGroup;
-        $scope.refreshScroller('billingGroups');
-        $scope.refreshScroller('chargeCodes');
+        if($scope.isBillingGroup)
+            $scope.refreshScroller('billingGroups');
+        else
+            $scope.refreshScroller('chargeCodes');
 	}
 
 	$scope.isBillingGroupSelected = function(billingGroup){
@@ -54,6 +57,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
         }
         $scope.selectedEntity.attached_billing_groups.push(billingGroup);
+        $scope.refreshScroller('billingGroups');
     };
 
     $scope.removeChargeCode = function(chargeCode){
@@ -64,6 +68,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             }
         }
     };    
+    $scope.showAvailableChargeCodes = function(){
+        $scope.clearResults ();
+        displayFilteredResultsChargeCodes();
+        $scope.showChargeCodes = !$scope.showChargeCodes;
+    }; 
+
 
     $scope.addChargeCode = function(){
         for(var i=0; i < $scope.availableChargeCodes.length; i++){
@@ -74,7 +84,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         return;                
                     }
                 }     
-                $scope.selectedEntity.attached_charge_codes.push($scope.availableChargeCodes[i]);         
+                $scope.selectedEntity.attached_charge_codes.push($scope.availableChargeCodes[i]); 
+                $scope.refreshScroller('chargeCodes');     
+                return;
             }
         }
     };      

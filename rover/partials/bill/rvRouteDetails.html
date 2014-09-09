@@ -52,13 +52,15 @@
 			<li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
 		</ul>
 		<div id="transactions" ng-iscroll='billingGroups' ng-iscroll-delay='100' class="transactions scrollable" ng-show = "isBillingGroup">
-			<div class="entry radio-check wrapper" ng-click = "toggleSelectionForBillingGroup(billingGroup)" ng-repeat  = "billingGroup in availableBillingGroups">
-				<label class="checkbox">
-				<span class="icon-form icon-checkbox" ng-class = "{'checked':isBillingGroupSelected(billingGroup)}" ></span>
-				<input name="billing-group" id="100" value="100" type="checkbox" />
-				<span class="value"></span> {{billingGroup.name}}
-				</label>
-				
+			<div class = "wrapper">
+				<div class="entry radio-check wrapper" ng-click = "toggleSelectionForBillingGroup(billingGroup)" ng-repeat  = "billingGroup in availableBillingGroups">
+					<label class="checkbox">
+					<span class="icon-form icon-checkbox" ng-class = "{'checked':isBillingGroupSelected(billingGroup)}" ></span>
+					<input name="billing-group" id="100" value="100" type="checkbox" />
+					<span class="value"></span> {{billingGroup.name}}
+					</label>
+					
+				</div>
 			</div>
 		</div>
 
@@ -66,16 +68,13 @@
 		<!-- Search available charge codes -->
 		<div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
 			<input ng-model="chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
-			<div class="mini-select">
-				<select id="charge-codes" ng-model =  "chargeCodeToAdd" name="charge-codes"  ng-change="addChargeCode()">
-					<option value="{{chargeCode.id}}" ng-repeat = "chargeCode in availableChargeCodes">{{chargeCode.code + " " + chargeCode.description}}</option>
-					
-				</select>
+			<div class="mini-select" ng-click = "showAvailableChargeCodes()">
+				
 			</div></div>
-			<div ng-show="chargeCodeSearchText!='' && chargeCodeSearchText.length>2">
+			<div ng-show="((chargeCodeSearchText!='' && chargeCodeSearchText.length>2) || showChargeCodes)">
          	
          	<!-- Charge code Results / content -->
-				<div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0 || chargeCodeSearchText === ''"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
+				<div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
 					<div class="search-results" >
 						<ul id="search-list" >
 							<li ng-repeat="chargeCode in availableChargeCodes" ng-click="selectChargeCode(chargeCode.id)" ng-show="chargeCode.is_row_visible === true">
@@ -89,13 +88,15 @@
 			</div>
 		<!-- Added from search -->
 		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
-			<div class="entry radio-check wrapper" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
-				<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)">
-					<span class="icon-form icon-checkbox checked"></span>
-						<input name="billing-group" id="100" value="100" type="checkbox" checked />
-					<span class="value">{{selectedChargeCode.id}}</span> {{selectedChargeCode.description}}
-				</label>
-				
+			<div class = "wrapper">
+				<div class="entry radio-check wrapper" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
+					<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)">
+						<span class="icon-form icon-checkbox checked"></span>
+							<input name="billing-group" id="100" value="100" type="checkbox" checked />
+						<span class="value">{{selectedChargeCode.id}}</span> {{selectedChargeCode.description}}
+					</label>
+					
+				</div>
 			</div>
 		</div>
 		<!-- No content-->
