@@ -17,7 +17,6 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
 				$scope.selectedChargeItem = null;
 				$scope.isResultOnFetchedItems = true;
-				//$scope.isResultOnFetchedChargecode = false;
 				//Show/hide reservations or items
 				$scope.itemsVisible = true;
 				$scope.firstTime = true;
@@ -114,45 +113,42 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showSearchScreen = false;
 			};
 			
-			
-			
-			
 			/*
 			* function used in template to map the reservation status to the view expected format
 			*/
 			$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
-			  var viewStatus = "";
-		      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
-		        viewStatus = "late-check-out";
-		        return viewStatus;
-		      }
-		      if("RESERVED" == reservationStatus){
-		        viewStatus = "arrival";
-		      }else if("CHECKING_IN" == reservationStatus){
-		        viewStatus = "check-in";
-		      }else if("CHECKEDIN" == reservationStatus){
-		        viewStatus = "inhouse";
-		      }else if("CHECKEDOUT" == reservationStatus){
-		        viewStatus = "departed";
-		      }else if("CHECKING_OUT" == reservationStatus){
-		        viewStatus = "check-out";
-		      }else if("CANCELED" == reservationStatus){
-		        viewStatus = "cancel";
-		      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
-		        viewStatus = "no-show";
-		      }
-		      return viewStatus;
+				  var viewStatus = "";
+			      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+			        viewStatus = "late-check-out";
+			        return viewStatus;
+			      }
+			      if("RESERVED" == reservationStatus){
+			        viewStatus = "arrival";
+			      }else if("CHECKING_IN" == reservationStatus){
+			        viewStatus = "check-in";
+			      }else if("CHECKEDIN" == reservationStatus){
+			        viewStatus = "inhouse";
+			      }else if("CHECKEDOUT" == reservationStatus){
+			        viewStatus = "departed";
+			      }else if("CHECKING_OUT" == reservationStatus){
+			        viewStatus = "check-out";
+			      }else if("CANCELED" == reservationStatus){
+			        viewStatus = "cancel";
+			      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+			        viewStatus = "no-show";
+			      }
+			      return viewStatus;
 		  };
 		
 		  //Map the room status to the view expected format
 		  $scope.getRoomStatusMapped = function(roomstatus, fostatus) {
-		    var mappedStatus = "";
-		    if (roomstatus == "READY" && fostatus == "VACANT") {
-		    mappedStatus = 'ready';
-		    } else {
-		    mappedStatus = "not-ready";
-		    }
-		    return mappedStatus;
+			    var mappedStatus = "";
+			    if (roomstatus == "READY" && fostatus == "VACANT") {
+			    mappedStatus = 'ready';
+			    } else {
+			    mappedStatus = "not-ready";
+			    }
+			    return mappedStatus;
 		  };
 		
 		  //function that converts a null value to a desired string.
@@ -160,7 +156,7 @@ sntRover.controller('RVOutsidePostChargeController',
 		   //if no replace value is passed, it returns an empty string
 		
 		  $scope.escapeNull = function(value, replaceWith){
-		       var newValue = "";
+		      var newValue = "";
 		      if((typeof replaceWith != "undefined") && (replaceWith != null)){
 		       newValue = replaceWith;
 		       }
@@ -186,16 +182,16 @@ sntRover.controller('RVOutsidePostChargeController',
 		   	};
 		  	
 		  	
-			 $scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
+			$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
 		  	    var queueClass = '';
 		  		if(isReservationQueued=="true" && isQueueRoomsOn == "true"){
 		 			queueClass = 'queued';
 		 		}
 		 		return queueClass;
-		      };
+		    };
 		      
 		      
-		      $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
+		    $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
 		       var mappedStatus = "room-number";
 		       if(reservation_status == 'CHECKING_IN'){
 		     
@@ -230,10 +226,8 @@ sntRover.controller('RVOutsidePostChargeController',
 			 * Method to handle selection of guest/compny/TA item
 			 */
 			$scope.selectReservation = function(item){
-				console.log(item);
 				$scope.isCardAttched = true;
 				$scope.cardAttached = item;
-				
 			};
 			/*
 			 * Method to handle DETACH CARD button click.
@@ -245,9 +239,10 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.search.guest_company_agent = '';
 				$scope.fetchedData.bill_numbers = [];
 			};
-			
+			/*
+			 * Method to handle POST CHARGE button click.
+			 */
 			$scope.clickedPostCharges = function(){
-				
 				if(!$scope.isCardAttched){
 					$scope.noGuestOrRoomSelected = true;
 				}
@@ -255,39 +250,46 @@ sntRover.controller('RVOutsidePostChargeController',
 					$scope.guestHasNotCheckedin = true;
 				}
 			};
-			
+			/*
+			 * Method to handle ADD GUEST OR ROOM button click
+			 * On 'No guest/room selected!'
+			 */
 			$scope.clickedAddGuestOrRoom = function(){
 				$scope.noGuestOrRoomSelected = false;
 				$scope.showHideInitialSearchScreen();
 			};
-			
 			$scope.clickedAddGuestOrRoomCancel = function(){
 				$scope.noGuestOrRoomSelected = false;
 			};
-			
-			
+			/*
+			 * Method to handle POST CHARGE button click,
+			 * On 'Guest has not yet checked in!' popup.
+			 */
 			$scope.clickedPostCharge = function(){
 				$scope.guestHasNotCheckedin = false;
 				$scope.reservation_id = $scope.cardAttached.id;
 				$scope.$broadcast('POSTCHARGE');
 			};
-			
 			$scope.clickedPostChargeCancel = function(){
 				$scope.guestHasNotCheckedin = false;
 			};
 			
-			
+			/*
+			 * Method to handle POST ANOTHER CHARGE button click
+			 * On 'Charge posted' popup
+			 */
 			$scope.clickedPostAnotherCharge = function(){
 				$scope.init();
 				$scope.chargePosted = false;
 				$scope.$broadcast('RESETPOSTCHARGE');
 			};
-			
 			$scope.clickedPostAnotherChargeCancel = function(){
 				$scope.chargePosted = false;
 				$scope.closeDialog();
 			};
-			
+			/*
+			 * On charge posted successfully.
+			 */
 			$scope.$on('CHARGEPOSTED', function(event, data) {
 			    $scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = true;
