@@ -16,14 +16,14 @@ sntRover.controller('RVPostChargeController',
 			$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
 			$scope.selectedChargeItem = null;
 			$scope.isResultOnFetchedItems = true;
-			//$scope.isResultOnFetchedChargecode = false;
+			$scope.isOutsidePostCharge = false;
 			
 			// set the default bill number
 			$scope.successGetBillDetails = function(data){
 				$scope.$emit( 'hideLoader' );
 				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
 			};
-			if(!$scope.passActiveBillNo){
+			if(!$scope.passActiveBillNo && $scope.reservation_id){
 				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
 			}
 			// filter the items based on the chosen charge group
@@ -138,7 +138,6 @@ sntRover.controller('RVPostChargeController',
 			$scope.chosenChargedItem = null;
 
 			$scope.net_total_price = 0;
-
 			// set the default toggle to 'QTY'
 			$scope.calToggle = 'QTY';
 
@@ -473,10 +472,13 @@ sntRover.controller('RVPostChargeController',
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
-					//$scope.$emit('postcharge.added', $scope.net_total_price);
-					$scope.$emit('postcharge.added', data.total_balance_amount);
-
-					$scope.closeDialog();
+					if(!$scope.isOutsidePostCharge){
+						$scope.$emit('postcharge.added', data.total_balance_amount);
+						$scope.closeDialog();
+					}
+					else{
+						$scope.$emit( 'CHARGEPOSTED' );
+					}
 				};
 
 				$scope.invokeApi(RVChargeItems.postCharges, data, callback);
@@ -491,7 +493,31 @@ sntRover.controller('RVPostChargeController',
 				$scope.fetchedData.bill_numbers = data.bills;
 			});
 					
+			$scope.$on('POSTCHARGE', function(event, data) {
+			   $scope.postCharges();
+			   $scope.isOutsidePostCharge = true;
+			});
 			
+			$scope.$on('RESETPOSTCHARGE', function(event, data) {
+			    $scope.selectedChargeItem = null;
+				$scope.selectedChargeItem = null;
+				$scope.isResultOnFetchedItems = false;
+				$scope.fetchedData.bill_numbers = [];
+				
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					if($scope.fetchedItems[i].isChosen) {
+						$scope.fetchedItems[i].isChosen = false;
+						$scope.fetchedItems[i].count = 0;
+					}
+				}
+				
+				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					if ( $scope.fetchedChargeCodes[i].isChosen ){
+						 $scope.fetchedChargeCodes[i].isChosen = false;
+						 $scope.fetchedChargeCodes[i].count = 0;
+					}
+				}
+			});
 		}
 	]
 );

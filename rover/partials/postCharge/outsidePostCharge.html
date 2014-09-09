@@ -7,8 +7,8 @@
 			<div class="inner-content">
 				<span class="message h2" translate>NO_GUEST_ROOM_SELECTED</span>
 				<span class="text" translate>SELECT_GUEST_ROOM</span>
-				<button type="button" class="button green" translate>ADD_GUEST_ROOM</button>
-				<button type="button" class="button blank" translate>CANCEL</button>
+				<button type="button" class="button green" ng-click="clickedAddGuestOrRoom()" translate>ADD_GUEST_ROOM</button>
+				<button type="button" class="button blank" ng-click="clickedAddGuestOrRoomCancel()" translate>CANCEL</button>
 			</div>
 		</div>
 	
@@ -16,16 +16,16 @@
 			<div class="inner-content">
 				<span class="message h2" translate>GUEST_NOT_CHECKEDIN_MSG</span>
 				<span class="text" translate>PROCEED_WITH_PROCEEDING</span>
-				<button type="button" class="button green" translate>POST_CHARGE</button>
-				<button type="button" class="button blank" translate>CANCEL</button>
+				<button type="button" class="button green" ng-click="clickedPostCharge()" translate>POST_CHARGE</button>
+				<button type="button" class="button blank" ng-click="clickedPostChargeCancel()" translate>CANCEL</button>
 			</div>
 		</div>
 	
 		<div id="charge-posted" class="inner-overlay" ng-class="{'visible': chargePosted == true}">
 			<div class="inner-content">
 				<span class="message h2" translate>CHARGE_POSTED</span>
-				<button type="button" class="button green" translate>POST_ANOTHER_CHARGE</button>
-				<button type="button" class="button blank modal-close" translate>CLOSE_WINDOW</button>
+				<button type="button" class="button green" ng-click="clickedPostAnotherCharge()" translate>POST_ANOTHER_CHARGE</button>
+				<button type="button" class="button blank modal-close" ng-click="clickedPostAnotherChargeCancel()" translate>CLOSE_WINDOW</button>
 			</div>
 		</div>
 	
