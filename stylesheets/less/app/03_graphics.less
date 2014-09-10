@@ -49,6 +49,10 @@
 			background-position: 0 -960px;
 		}
 
+		&.icon-ok {
+			background-position: 0 -1080px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 125px, 120px;
@@ -80,6 +84,7 @@
 		border: 0;
 		.show;
 
+		/* Modal icons ***/
 		&.icon-close {
 			background-position: 0 -3040px;
 			.square(24px);
@@ -88,6 +93,7 @@
 			&.invert { background-position: 0 -3100px; }
 		}
 
+		/* Search icons ***/
 		&.icon-search {
 			background-color: transparent;
 			background-position: 0 3px;
@@ -102,6 +108,7 @@
 			.hide-text;
 		}
 
+		/* Navbar icons ***/
 		&.icon-alert {
 			.square(40px);
 
@@ -109,6 +116,41 @@
 			&.queued-rooms { 
 				background-position: 5px -2780px; 
 				background-size: 80px;
+			}
+		}
+
+		&.icon-navbar {
+			padding-top: 35px;
+			height: 60px;
+
+			&.icon-grid { 
+				background-position: 19px -4520px;
+				&.active { background-position: 19px -4580px; }
+			}
+
+			&.icon-graph { 
+				background-position: 18px -4635px;
+				&.active { background-position: 18px -4695px; }
+			}
+
+			&.icon-dual { 
+				background-position: 18px -4755px;
+				&.active { background-position: 18px -4815px; }
+			}
+
+			&.icon-hk-guest { background-position: 50% -4890px; }
+			&.icon-hk-work { background-position: 50% -5010px; }
+			&.icon-hk-room { background-position: 50% -5130px; }
+
+			@media only screen and (min-width: 768px) {
+				&.icon-hk-guest { background-position: 50% -4880px; }
+				&.icon-hk-work { background-position: 50% -5000px; }
+				&.icon-hk-room { background-position: 50% -5120px; }
+			}
+
+			&.only-icon { 
+				padding-top: 0;
+				.hide-text; 
 			}
 		}
 
@@ -210,9 +252,21 @@
 		&.icon-filter.active { background-position: 0 -1360px; }
 
 		&.time { 
+			.square(30px);
+			.hide-text;
+
 			&.check-in { background-position: 10px -542px; }
 			&.check-out { background-position: 10px -582px; }
 			&.late-check-out { background-position: 10px -2903px; }
+		}
+
+		/* Housekeeping icons ***/
+		&.icon-room {
+			background-position: 0 -4350px;
+
+			@media only screen and (min-width: 768px) {
+				background-position: 0 -4415px;
+			}
 		}
 
 		/* Social Lobby Icons ***/
@@ -278,6 +332,12 @@
 			.square(60px);
 		}
 
+		&.icon-remove-40 {
+			background-position: 10px -3750px;
+			.hide-text;
+			.square(40px);
+		}
+
 		&.icon-remove-10 {
 			background-color: transparent;
 			background-position: 2px -3938px;
@@ -302,53 +362,6 @@
 			background-image: @icons2x;
 			background-size: 120px;
 		}
-	}
-
-/* Menu & availability toggle	==========================*/
-	.icon-toggle,
-	.icon-availability {
-		overflow: hidden;
-		background-image: @iconMenu, @darkTexture;
-		background-repeat: no-repeat, repeat;
-		.hide-text;
-		.square(40px);
-		.show;
-		.no-transition;
-
-		@media @highdpi {
-			background-image: @iconMenu2x, @darkTexture;
-			background-size: 40px;
-		}
-	}
-
-	&.icon-toggle {
-		background-position: 0 -70px, 0 0;
-		#border-radius > .right();
-
-		&.active { 
-			background-color: @logoGradientStart; 
-			.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-		}
-
-		@media only screen and (min-width: 768px) {
-			background-color: @logoGradientStart;
-			background-position: 0 -10px, 0 0;
-			.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-
-			&:hover,
-			&.active { background-position: 0 -70px, 0 0; }
-		}
-	}
-
-	&.icon-availability {
-		background-color: @grey2;
-		background-repeat: no-repeat, repeat;
-		background-position: 0 -250px, 0 0;
-		#border-radius > .left();
-		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-
-		&:hover,
-		&.active { background-position: 0 -310px, 0 0; }
 	}
 
 /* Arrow icons			==================================*/
@@ -484,25 +497,37 @@
 
 /* Back button			==================================*/
 	.back-button:not(.button):not(.switch) {
-		color: @logoPrimary;
-		text-transform: uppercase;
-		font-size: 18px;
-		line-height: 30px;
-		vertical-align: middle;
-		font-weight: 600;	
-		padding-left: 25px;
-		background: @icons 0 -1595px no-repeat; 
+		background: @icons 10px -1587px no-repeat;
+		.square(40px);
+		.hide-text;
 		.no-transition;
+		.show;
 
 		&:hover,
-		&:active {
-			color: @textColor;
-			background-position: 0 -1535px;
-		}
+		&:active { background-position: 10px -1527px; }
 
 		@media @highdpi { 
 			background-image: @icons2x;
 			background-size: 120px;
+		}
+	}
+
+	@media only screen and (min-width: 768px) {
+		.back-button:not(.button):not(.switch) {
+			color: @logoPrimary;
+			text-transform: uppercase;
+			text-indent: 0;
+			line-height: 40px;
+			vertical-align: middle;
+			font-weight: 600;	
+			width: auto;
+			padding: 0 20px 0 40px;
+			background-color: @white;
+			#border-radius > .rounded();
+			.box-shadow();
+
+			&:hover,
+			&:active { color: @textColor; }
 		}
 	}
 

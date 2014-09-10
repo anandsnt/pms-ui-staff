@@ -19,7 +19,7 @@
 	.hide { display: none; }
 	.show { display: block; }
 
-	.flex(@align) { /* stretch|center|flex-start|flex-end|baseline|initial|inherit */
+	.flex(@align) {
 		display: -webkit-box;
 	    display: -moz-box;
 	    display: -ms-flexbox;
@@ -239,15 +239,15 @@
 		background-repeat: repeat;
 	}
 
-	/*.faux-columns-gradient(@image, @color1, @color2, @break: 50%, @stop: 100%) {
-		background-image: @image, -moz-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, -ms-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, -webkit-gradient(linear, left top, right top, color-stop(0, @color1), color-stop(@break, @color1), color-stop(@break, @color2), color-stop(@stop, @color2));
-		background-image: @image, -webkit-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, -o-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+	.candystripe(@color, @angle) {
+        background-image: -moz-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-image: -ms-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+       	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, @color), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, @color), color-stop(.75, @color), color-stop(.75, transparent), to(transparent));
+		background-image: -webkit-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-image: -o-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+		background-image: linear-gradient(@angle,@color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
 		background-repeat: repeat;
-	}*/
+	}
 
 	/* Opacity			======================================*/
 	.opacity(@opacity: 100) {
@@ -319,21 +319,28 @@
 		height: -webkit-calc(~"@{percentage}% - @{pixels}px");
 		height: -moz-calc(~"@{percentage}% - @{pixels}px");
 		height: calc(~"@{percentage}% - @{pixels}px");
-		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+		.no-transition; 
 	}
 
 	.calc-width(@percentage, @pixels) {
 		width: -webkit-calc(~"@{percentage}% - @{pixels}px");
 		width: -moz-calc(~"@{percentage}% - @{pixels}px");
 		width: calc(~"@{percentage}% - @{pixels}px");
-		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+		.no-transition; 
+	}
+
+	.calc-max-width(@percentage, @pixels) {
+		max-width: -webkit-calc(~"@{percentage}% - @{pixels}px");
+		max-width: -moz-calc(~"@{percentage}% - @{pixels}px");
+		max-width: calc(~"@{percentage}% - @{pixels}px");
+		.no-transition;
 	}
 
 	.extend-width(@percentage, @pixels) {
 		width: -webkit-calc(~"@{percentage}% + @{pixels}px");
 		width: -moz-calc(~"@{percentage}% + @{pixels}px");
 		width: calc(~"@{percentage}% + @{pixels}px");
-		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+		.no-transition; 
 	}
 
 	#calc-position {
@@ -341,7 +348,7 @@
 			left: -webkit-calc(~"@{percentage}% - @{pixels}px");
 			left: -moz-calc(~"@{percentage}% - @{pixels}px");
 			left: calc(~"@{percentage}% - @{pixels}px");
-			.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+			.no-transition; 
 		}
 	}
 
@@ -390,12 +397,6 @@
 	  	.right-margin(@target, @context) {
 	    	margin-right: (@target / @context) * 100%;
 	  	}
-  	}
-
-  	.backface-visibility(@value: hidden) {
-  		-webkit-backface-visibility: @value;
-		-moz-backface-visibility: @value;
-		backface-visibility: @value;
   	}
   	
 /* 5. COMPONENTS
