@@ -50,12 +50,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         if(type === 'ATTACHED_ENTITY'){
         	$scope.selectedEntity = $scope.attachedEntities[index];
             $scope.selectedEntity.is_new = false; 
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];
         	$scope.selectedEntity = {
 			    "id": data.id,
 			    "reservation_status" : data.reservation_status,
+                "is_opted_late_checkout" : data.is_opted_late_checkout,
 			    "name": data.firstname + " " + data.lastname,
 			    "images": data.images,
 			    "bill_no": "",
@@ -91,6 +93,33 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			console.log($scope.selectedEntity);
         }
 	}
+    /*
+    * function used in template to map the reservation status to the view expected format
+    */
+    $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
+      var viewStatus = "";
+      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+        viewStatus = "late-check-out";
+        return viewStatus;
+      }
+      if("RESERVED" == reservationStatus){
+        viewStatus = "arrival";
+      }else if("CHECKING_IN" == reservationStatus){
+        viewStatus = "check-in";
+      }else if("CHECKEDIN" == reservationStatus){
+        viewStatus = "inhouse";
+      }else if("CHECKEDOUT" == reservationStatus){
+        viewStatus = "departed";
+      }else if("CHECKING_OUT" == reservationStatus){
+        viewStatus = "check-out";
+      }else if("CANCELED" == reservationStatus){
+        viewStatus = "cancel";
+      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+        viewStatus = "no-show";
+      }
+      return viewStatus;
+  };
+
      /**
     * function to get the class for the 'li' according to the entity role
     */
