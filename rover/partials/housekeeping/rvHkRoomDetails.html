@@ -24,6 +24,25 @@
         </header>
         
         <section ng-show="openTab === 'Guest'">
+                 
+          <!-- 1.A Guest Tab - Room vacant, not queued -->
+          <div class="no-content" ng-show="data.room_details.is_occupied == 'false'">
+            <div class="info">
+              <span class="icon-no-content icon-room"></span>
+              <strong class="h1">ROOM_IS_VACANT.</strong>
+            </div>
+          </div>
+
+          <!-- 1.B Guest Tab - Room vacant and queued to next quest (NOT SURE IF WE'RE DOING THIS NOW, CHECK WITH GOP/JOS)
+          <div id="room-content" class="room-content">
+            <strong class="h2">Room is queued.</strong>
+            <figure class="guest-image">
+              <img src="{{ data.room_details.avatar_src }}" alt="">
+            </figure>
+            <p>Queued for <em>{{ data.room_details.guest_name }}</em></p>
+          </div> -->
+
+          <!-- 1.C Guest Tab - Room Occupied -->
           <div class="room-actions">
             <div class="select">
               <select id="front-office-status" name="front-office-status">
@@ -35,22 +54,13 @@
               </select>
             </div>
           </div>
-          
-          <!-- 1.A - Room vacant -->
-          <div class="no-content" ng-show="data.room_details.is_occupied == 'false'">
-            <div class="info">
-              <span class="icon-no-content icon-room"></span>
-              <strong class="h1">Room is vacant.</strong>
-            </div>
-          </div>
-
-          <!-- 1.B - Room occupied -->
           <div class="room-content scrollable" ng-show="data.room_details.is_occupied == 'true'">
             <div class="wrapper">
-              <!-- <strong class="h2">
-                {Front Office Status}.
-                <span class="{red or green}">{Departing or Arriving} at {time}</span>.
-              </strong> -->
+              <strong class="h2">
+                {{ data.room_details.current_room_reservation_status }}.
+                <span class="green" ng-show="data.room_details.reservation_status == 'CHECKING_IN'">Arriving at {{ data.room_details.dept_date }}</span>.
+                <span class="red" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Departing at {{ data.room_details.dept_date }}</span>.
+              </strong>
               <figure class="guest-image">
                 <img src="{{ data.room_details.avatar_src }}" alt="">
               </figure>
