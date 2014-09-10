@@ -38,7 +38,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 				dataNotUpdated = true;
 				presentArDetails = presentArDetailsAfterEdit;
 			}
-			if(dataNotUpdated && $scope.arAccountDetails.ar_number)
+			if((dataNotUpdated && $scope.arAccountDetails.ar_number)|| $scope.arAccountDetails.is_auto_assign_ar_numbers)
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails);
 		};
 
