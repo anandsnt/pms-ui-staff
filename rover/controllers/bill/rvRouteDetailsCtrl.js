@@ -276,4 +276,29 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         }
         return false;
   	};
+
+    /**
+    * Listener for the save button click
+    */
+    $scope.$on('routeSaveClicked', function(event){
+            
+            $scope.saveRoute();
+    });
+    /**
+    * function to save the new route
+    */
+    $scope.saveRoute = function(){
+            var successCallback = function(data) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.isReloadNeeded = true;
+                $scope.headerButtonClicked();
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
+           
+           $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
+    };
 }]);
