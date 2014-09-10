@@ -51,6 +51,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
+    $rootScope.isCurrentUserChangingBussinessDate = false;
 
     /*
      * hotel Details
@@ -547,7 +548,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             ngDialog.open({
               template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
               className: 'ngdialog-theme-default1 modal-theme1',
-              closeByDocument: true,
+              closeByDocument: false,
               scope: $scope
           });
         // }        
@@ -566,7 +567,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
     },
     response: function (response) {
         // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started){
+        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started && !$rootScope.isCurrentUserChangingBussinessDate){
            $rootScope.$emit('bussinessDateChangeInProgress');
         }       
         return response || $q.when(response);
