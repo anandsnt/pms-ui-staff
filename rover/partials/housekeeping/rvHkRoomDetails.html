@@ -25,7 +25,6 @@
         </header>
         
         <section ng-show="openTab === 'Guest'">
-                 
           <!-- 1.A Guest Tab - Room vacant, not queued -->
           <div class="no-content" ng-if="data.room_details.is_occupied == 'false'">
             <div class="info">
@@ -73,33 +72,112 @@
           </div>
         </section>
 
-        <section ng-show="openTab === 'Work'"><h1>WORK TAB</h1></section>
-        <section ng-show="openTab === 'Room'"><h1>ROOM TAB</h1></section>
-
-
-
-        <!-- <div id="guest-info" ng-show="data.room_details.is_occupied == 'true'">
-            <div class="wrapper">
-                  <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
-                  <figure class="guest-image">
-                      <img alt="" src="{{ data.room_details.avatar_src }}">
-                      <span ng-show="data.room_details.is_vip == 'true'" class="vip" translate>VIP</span>            
-                  </figure>
-                  <h2>
-                      <span class="guest-status {{guestViewStatus}}"></span>
-                      <span class="name">{{ data.room_details.guest_name }}</span>
-                  </h2>
-                  <em class="status" ng-hide="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out {{data.room_details.dept_date}}</em>
-                  <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today<span ng-show="data.room_details.is_late_checkout == 'true'"> ({{data.room_details.late_checkout_time}}) </span></em>
-              </div>
-        </div>
-
-        <div id="guest-info" class="no-content" ng-show="data.room_details.is_occupied == 'false'">
-            <div class="info">
-                <span class="icons icon-vacant"></span>
-                <strong class="h1" translate>ROOM_IS_VACANT</strong>
+        <section ng-show="openTab === 'Work'">
+          <div class="room-actions dual-select">
+            <div class="select">
+              <select id="work-type" name="work-type">
+                <option value="">All Work Types</option>
+                <option value="daily-cleaning" selected>Daily Cleaning</option>
+              </select>
             </div>
-        </div> -->     
+            <div class="select">
+              <!-- Disable when cleaning in progrees. -->
+              <select id="room-status" name="room-status">
+                  <option value="clean">Clean</option>
+                  <option value="dirty">Dirty</option>
+                  <option value="pickup">Pickup</option>
+                  <option value="inspected">Inspected</option>
+              </select>
+            </div>
+          </div>
+          <div id="room-content" class="room-content">
+            <!-- 2.A Work Tab - Room is clean 
+            <strong class="h2">Room is clean.</strong>
+            <span class="icon-no-content icon-ok"></span> -->
+
+            <!-- 2.B Work Tab - Room is dirty 
+            <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
+            <button type="button" class="button blue">Start</button> 
+            <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>{Employe First and Last Name}</a> // Show this only if room is assigned to staff memeber
+            -->
+
+            <!-- 2.C Work Tab - Room is pickup 
+            <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
+            <button type="button" class="button blue">Start</button>
+            <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>{Employe First and Last Name}</a> // Show this only if room is assigned to staff memeber
+            -->
+
+            <!-- 2.D Work Tab - Room cleaning in progress -->
+            <strong class="h2">Work is in Progress.</strong>
+            <span class="progress"></span>
+            <button type="button" class="button green action">Done!</button>
+          </div>
+        </section>
+
+        <section ng-show="openTab === 'Room'">
+          <div class="room-actions">
+            <div class="select">
+              <select id="room-service-status" name="room-service-status">
+                <option value="in-service" selected>In Service</option>
+                <option value="ooo">Out of Order</option>
+                <option value="oos">Out of Service</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 3.A  Room Tab - Room in service 
+          <div id="room-content" class="room-content">
+            <strong class="h2">In Service</strong>
+            <span class="icon-no-content icon-ok"></span>
+          </div> -->
+
+          <!-- 3.B Room Tab - Room is OOO or OOS -->
+          <form method="post" action="" name="room-content" id="room-content" class="room-content scrollable">
+            <strong class="h2">
+                {Out of Order or Out of Service}.
+            </strong>
+            <div id="dates" class="row">
+              <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
+              <div id="out-from" class="entry">
+                <label id="room-out-from-label" for="room-out-from">From <span>{day of the week, or today/tomorrow}</span></label>
+                <div class="entry-data">
+                  <input name="room-out-from" id="room-out-from" type="text" class="datepicker" value="{ooo/oos from date}" readonly />
+                  <strong id="room-out-from-day" class="day">{ooo/oos from day}</strong>
+                  <span id="room-out-from-month" class="month">{ooo/oos from month}</span>
+                  <span id="room-out-from-year" class="year">{ooo/oos from year}</span>
+                </div>
+              </div>
+              <div id="out-to" class="entry">
+                <label id="room-out-to-label" for="room-out-to">To <span>{day of the week, or today/tomorrow}</span></label>
+                <div class="entry-data">
+                  <input name="room-out-to" id="room-out-to" type="text" class="datepicker" value="{ooo/oos to date}" readonly />
+                  <strong id="room-out-to-day" class="day">{ooo/oos to date}</strong>
+                  <span id="room-out-to-month" class="month">{ooo/oos to date}</span>
+                  <span id="room-out-to-year" class="year">{ooo/oos to date}</span>
+                </div>
+              </div>
+            </div>
+            <div id="reason" class="row">
+              <div class="entry">
+                <label for="reason">Reason</label>
+                <div class="select">
+                  <select name="reason" id="reason">
+                    <option value="" selected>Select</option>
+                    <option value="1">Reason 1</option>
+                    <option value="2">Reason 2</option>
+                  </select>
+                </div>
+              </div>
+              <div class="entry">
+                <label for="reason-comments">Comments <span>(optional)</span></label>
+                <textarea name="reason-comments" id="reason-comments" rows="4"></textarea>
+              </div>
+            </div>
+            <div id="actions" class="row">
+              <button type="button" class="button green">Update</button>
+            </div>
+          </form>
+        </section>
         
     </section>
 </div>
