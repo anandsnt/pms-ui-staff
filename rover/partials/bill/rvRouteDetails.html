@@ -14,7 +14,8 @@
 						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
 					</figure>
 					<h2>{{selectedEntity.name}}</h2>
-					<span class="guest-status small-icon" ng-class = "$parent.reservationData.reservation_status">{{$parent.reservationData.reservation_status}}</span>
+					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+                  <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
 				</div>
 				<div class="title" ng-show= "showPayment">Payment</div>
 				<!-- Available credit card -->
@@ -22,10 +23,10 @@
 					<div class="payment" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes">
 						<!-- add class active when selected -->
 						<figure class="card-logo">
-							<img src="{card-logo}" alt="" />
+							<img src="/assets/{{paymentType.card_code}}.png" alt="" />
 						</figure>
-						<span class="number">{{'NUMBER' | translate}} <span class="value number">{number}</span></span>
-						<span class="date">{{'DATE' | translate}} <span class="value date">{date}</span></span>
+						<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
+						<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
 					</div>
 				</div>
 				
@@ -52,16 +53,16 @@
 			<li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
 		</ul>
 		<div id="transactions" ng-iscroll='billingGroups' ng-iscroll-delay='100' class="transactions scrollable" ng-show = "isBillingGroup">
-			<div class = "wrapper">
-				<div class="entry radio-check wrapper" ng-click = "toggleSelectionForBillingGroup(billingGroup)" ng-repeat  = "billingGroup in availableBillingGroups">
-					<label class="checkbox">
-					<span class="icon-form icon-checkbox" ng-class = "{'checked':isBillingGroupSelected(billingGroup)}" ></span>
-					<input name="billing-group" id="100" value="100" type="checkbox" />
-					<span class="value"></span> {{billingGroup.name}}
+			
+				<div class="entry radio-check wrapper"  >
+					<label class="checkbox" ng-repeat  = "billingGroup in availableBillingGroups" ng-click = "toggleSelectionForBillingGroup(billingGroup)">
+						<span class="icon-form icon-checkbox" ng-class = "{'checked':isBillingGroupSelected(billingGroup)}" ></span>
+						<input name="billing-group" id="100" value="100" type="checkbox" />
+						<span class="value"></span> {{billingGroup.name}}
 					</label>
 					
 				</div>
-			</div>
+			
 		</div>
 
 
@@ -71,7 +72,7 @@
 			<div class="mini-select" ng-click = "showAvailableChargeCodes()">
 				
 			</div></div>
-			<div ng-show="((chargeCodeSearchText!='' && chargeCodeSearchText.length>2) || showChargeCodes)">
+			<div ng-show="(chargeCodeSearchText.length>2 || showChargeCodes)">
          	
          	<!-- Charge code Results / content -->
 				<div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">
@@ -88,16 +89,15 @@
 			</div>
 		<!-- Added from search -->
 		<div id="transactions" ng-iscroll='chargeCodes' ng-iscroll-delay='100' class="transactions codes scrollable" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length > 0)">
-			<div class = "wrapper">
-				<div class="entry radio-check wrapper" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
-					<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)">
+			
+				<div class="entry radio-check wrapper" >
+					<label class="checkbox" ng-click="removeChargeCode(selectedChargeCode)" ng-repeat = "selectedChargeCode in selectedEntity.attached_charge_codes">
 						<span class="icon-form icon-checkbox checked"></span>
 							<input name="billing-group" id="100" value="100" type="checkbox" checked />
-						<span class="value">{{selectedChargeCode.id}}</span> {{selectedChargeCode.description}}
+						<span class="value">{{selectedChargeCode.code}}</span> {{selectedChargeCode.description}}
 					</label>
 					
 				</div>
-			</div>
 		</div>
 		<!-- No content-->
 			<div id="transactions" class="transactions codes scrollable no-content" ng-show = "(!isBillingGroup && selectedEntity.attached_charge_codes.length == 0)">

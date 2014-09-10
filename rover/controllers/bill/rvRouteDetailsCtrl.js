@@ -5,6 +5,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.showPayment = false;
     $scope.first_bill_id = "";
     $scope.showChargeCodes = false;
+    $scope.isBillingGroup = true;
     
     /**
     * Initializing the scrollers for the screen
@@ -186,17 +187,19 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchBillsForReservation = function(){
         
             var successCallback = function(data) {
-                $scope.first_bill_id = data[0].id;
-                if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
-                    $scope.bills.push(data[0]);
-                    // $scope.$parent.bills.push(data[0]);
-                }else{
-                    data.splice(0, 1);
-                    $scope.bills = data;
-                    $scope.$parent.bills = data;
+               if(data.length > 0){
+                    $scope.first_bill_id = data[0].id;
+                    if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                        $scope.bills.push(data[0]);
+                        // $scope.$parent.bills.push(data[0]);
+                    }else{
+                        data.splice(0, 1);
+                        $scope.bills = data;
+                        $scope.$parent.bills = data;
+                    }
+                    $scope.selectedEntity.to_bill = $scope.bills[0].id;
+                    $scope.fetchAvailableChargeCodes();
                 }
-                $scope.selectedEntity.to_bill = $scope.bills[0].id;
-                $scope.fetchAvailableChargeCodes();
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
@@ -273,4 +276,29 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         }
         return false;
   	};
+
+    /**
+    * Listener for the save button click
+    */
+    $scope.$on('routeSaveClicked', function(event){
+            
+            $scope.saveRoute();
+    });
+    /**
+    * function to save the new route
+    */
+    $scope.saveRoute = function(){
+            var successCallback = function(data) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.isReloadNeeded = true;
+                $scope.headerButtonClicked();
+            };
+            var errorCallback = function(errorMessage) {
+                $scope.$parent.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+            };
+           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
+           
+           $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
+    };
 }]);
