@@ -1375,6 +1375,46 @@ body { overflow: hidden; }
 		}
 	}
 
+	.reservation-header,
+	#reservation-updates {
+		.data { 
+			.icon-group,
+			.date,
+			.nights,
+			.room {
+				font-size: 14px;
+				line-height: 30px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			.icon-group {
+				color: @grey3;
+				padding-left: 20px;
+				margin-right: 20px;
+				background-position: 0 -45px;
+			}
+
+			.date,
+			.nights,
+			.room {
+				margin-right: 20px;
+
+				.guest-status {
+					margin: 5px 5px 5px 0;
+					.square(20px);
+				}
+			}
+
+			.room {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				max-width: 320px;
+			}
+		}
+	}
+
 	.stay-card-inner {
 		/* Registration header ***/
 		.reservation-header {

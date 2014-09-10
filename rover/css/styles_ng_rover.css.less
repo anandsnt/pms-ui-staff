@@ -1044,6 +1044,42 @@ Padding for the ows error popup
   text-transform: uppercase;
 }
 
+.billing-info-container{
+  float: left;
+     .button{
+        display: block;
+        margin: 0 0 5px !important;
+        width: 100% !important;   
+        border-bottom-left-radius: 3px !important;
+        border-bottom-right-radius: 3px !important;
+    }
+}
+.cancel-search-container{
+  position:fixed;
+  bottom:15px;
+  left:70px;
+}
+.card-search-scroller, .res-search-scroller{
+  position:absolute;
+  bottom: 0px;
+  left:0px;
+  width: 100%;
+  overflow:hidden;
+}
+.billing-info-body{  
+    height: 510px;
+    padding: 0;
+    width: 800px;
+    .content-wrapper{
+        height: 420px !important;
+  }
+}
+.billing-info-entity{
+  height: 100%;
+}
+#modal .modal-content.billing-information{
+  height: 600px;
+}
 
 .bussines-date-popup-container{
   width:80% !important;
@@ -1221,7 +1257,6 @@ Padding for the ows error popup
 }
 
 #registration-details .registration-content .registration-summary #bills-tabs-nav li{
-  float:none !important;
   white-space: normal !important;
 }
 #bills-tabs-nav .iScrollHorizontalScrollbar{
@@ -1248,3 +1283,32 @@ Padding for the ows error popup
     z-index: 10;
   }
  }
+ // For CICO-6080 Charge code search results.
+ 
+ .charge-code-list{
+    height: 200px;
+    top: 290px;
+    z-index: 999;
+    left: 390px;
+    width: 330px;
+    li{
+      padding-left: 5px;
+    }
+    .text-bold {
+     font-weight: bold;
+     font-size:16px;
+    }
+    .first-text{
+     margin-right:5px;
+   }
+ }
+ 
+#bills-tabs-nav .toggle {
+    background-position: 100% 50%;
+    color: #202225;
+    float: left;
+    line-height: 50px;
+    margin-right: 25px;
+    padding-right: 25px;
+    text-transform: uppercase;
+}
