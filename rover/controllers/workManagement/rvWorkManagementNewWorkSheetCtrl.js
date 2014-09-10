@@ -1,5 +1,5 @@
 sntRover.controller('RVWorkManagementNewWorkSheetCtrl', ['$rootScope', '$scope',
     function($rootScope, $scope) {
-        $scope.heading = "Work Management New Worksheet";
+        $scope.setHeading("Work Management New Worksheet");
     }
 ]);
