@@ -11,7 +11,7 @@
     <!-- 1. Cancel Options screen -->
     <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
         <span class="h2 message" ng-show="ngDialogData.penalty > 0" translate> OUTSIDE_CANCELLATION </span>
-        <span class="text" ng-show="ngDialogData.penalty > 0">{{'PENALTY_PRE'| translate}} {{currencySymbol}}{{ngDialogData.penalty | number:2}} {{'PENALTY_POST' | translate}}.</span>
+        <span class="text" ng-show="ngDialogData.penalty > 0">{{'PENALTY_PRE'| translate}} {{ ngDialogData.penaltyText }} {{'PENALTY_POST' | translate}}.</span>
 
         <div class="entry full-width">
             <label for="cancel-reason">{{'CANCELATION_REASON'| translate}}(<span translate>OPTIONAL</span>)</label>
