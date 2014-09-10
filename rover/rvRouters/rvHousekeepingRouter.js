@@ -59,18 +59,20 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement', {
             abstract: true,
             url: '/workmanagement',
-            templateUrl: '/assets/partials/workManagement/rvWorkManagement.html'
+            templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
+            controller: 'RVWorkManagementCtrl'
         });
 
         $stateProvider.state('rover.workManagement.start', {
             url: '/start',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementLanding.html',
-            controller: 'RVWorkManagementCtrl'
+            controller: 'RVWorkManagementStartCtrl'
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {
             url: '/multisheet',
-            templateUrl: '/assets/partials/workManagement/rvWorkManagementMultiSheet.html'
+            templateUrl: '/assets/partials/workManagement/rvWorkManagementMultiSheet.html',
+            controller: 'RVWorkManagementMultiSheetCtrl'
         });
 
         $stateProvider.state('rover.workManagement.new', {
