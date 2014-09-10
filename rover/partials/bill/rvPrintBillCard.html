@@ -113,8 +113,11 @@
 		</tr>
 
 		<tr ng-repeat="payment_details in printData.payment_details">
-			<td colspan="2">
-				<span >{{payment_details.description}}({{payment_details.card_number}})</span>
+			<td colspan="2" ng-if="payment_details.description == 'Credit Card'">
+				<span>{{payment_details.description}}({{payment_details.card_number}})</span>
+	 		</td>
+	 		<td colspan="2"  ng-if="payment_details.description != 'Credit Card'">
+				<span>{{payment_details.description}}</span>
 	 		</td>
  			<td colspan="3" ></td>
 		</tr>
