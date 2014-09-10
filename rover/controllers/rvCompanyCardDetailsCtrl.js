@@ -324,6 +324,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 
 	$scope.showARTab = function($event){
 		$scope.isArTabAvailable = true;
+		$scope.$broadcast('setgenerateNewAutoAr',true);
 		$scope.showArAccountButtonClick($event);
 	};
 
@@ -346,6 +347,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		var successCallbackOfdeleteArAccount = function(){
 			$scope.$emit('hideLoader');
 			$scope.isArTabAvailable = false;
+			$scope.$broadcast('setgenerateNewAutoAr',false);
 			$scope.$broadcast('ArAccountDeleted');
 			$scope.contactInformation.account_details.accounts_receivable_number = "";
 			ngDialog.close();

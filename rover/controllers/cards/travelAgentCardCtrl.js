@@ -35,6 +35,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
+			$scope.$broadcast('setgenerateNewAutoAr',true);
 			$scope.switchTabTo($event, 'cc-ar-accounts');
 		};
 		$scope.$on('ARNumberChanged',function(e,data){
@@ -54,6 +55,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			var successCallbackOfdeleteArAccount = function(data){
 				$scope.$emit('hideLoader');
 				$scope.isArTabAvailable = false;
+				$scope.$broadcast('setgenerateNewAutoAr',false);
 				$scope.$broadcast('ArAccountDeleted');
 				$scope.contactInformation.account_details.accounts_receivable_number = "";
 				ngDialog.close();

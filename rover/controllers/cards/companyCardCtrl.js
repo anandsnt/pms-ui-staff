@@ -40,7 +40,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
+			$scope.$broadcast('setgenerateNewAutoAr',true);
 			$scope.switchTabTo($event, 'cc-ar-accounts');
+
 		};
 		$scope.$on('ARNumberChanged',function(e,data){
 			$scope.contactInformation.account_details.accounts_receivable_number  = data.newArNumber;
@@ -61,6 +63,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 				$scope.isArTabAvailable = false;
 				$scope.$broadcast('ArAccountDeleted');
 				$scope.contactInformation.account_details.accounts_receivable_number = "";
+				//$scope.generateNewAutoAr = false;
+				$scope.$broadcast('setgenerateNewAutoAr',false);
 				ngDialog.close();
 			};
 			var dataToSend = {"id":$scope.reservationDetails.companyCard.id};
