@@ -128,5 +128,17 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 			.bind( 'ontouchmove', function(e) {
 				e.stopPropagation();
 			});
+
+
+
+		// default open tab
+		$scope.openTab = 'Guest';
+
+		// methods to switch tab
+		$scope.tabSwitch = function(tab) {
+			if ( !!tab ) {
+				$scope.openTab = tab;
+			};
+		};
 	}
 ]);
