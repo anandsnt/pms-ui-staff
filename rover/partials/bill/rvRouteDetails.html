@@ -72,7 +72,7 @@
 			<div class="mini-select" ng-click = "showAvailableChargeCodes()">
 				
 			</div></div>
-			<div ng-show="((chargeCodeSearchText!='' && chargeCodeSearchText.length>2) || showChargeCodes)">
+			<div ng-show="(chargeCodeSearchText.length>2 || showChargeCodes)">
          	
          	<!-- Charge code Results / content -->
 				<div class="company-card-results charge-code-list" ng-hide="availableChargeCodes.length === 0"  ng-iscroll="chargeCodesList" ng-iscroll-delay="100">

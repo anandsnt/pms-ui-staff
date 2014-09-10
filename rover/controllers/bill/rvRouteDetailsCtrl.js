@@ -5,6 +5,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.showPayment = false;
     $scope.first_bill_id = "";
     $scope.showChargeCodes = false;
+    $scope.isBillingGroup = true;
     
     /**
     * Initializing the scrollers for the screen

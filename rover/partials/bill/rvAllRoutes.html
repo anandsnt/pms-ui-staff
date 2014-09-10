@@ -8,7 +8,7 @@
 			      <li ng-repeat = "route in routes" >
 			         <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
 			            <figure class="guest-image" ng-class = "getEntityIconClass(route)">
-			               <img src="{{route.images[0].guest_image}}" alt="" />
+			               <img src="{{route.images[0].image}}" alt="" />
 			            </figure>
 			            <h2>{{route.name}}</h2>
 			            <div class="type">

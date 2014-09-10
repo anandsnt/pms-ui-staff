@@ -19,7 +19,7 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
     	if(route.attached_charge_codes.length > 1 || route.attached_billing_groups.length > 1){
     		return 'Multiple';
     	}else if(route.attached_charge_codes.length > 0){
-    		return route.attached_charge_codes[0].code + ', ' + route.attached_charge_codes[0].description;
+    		return route.attached_charge_codes[0].charge_code + ', ' + route.attached_charge_codes[0].description;
     	}else if(route.attached_billing_groups.length > 0){
             return route.attached_billing_groups[0].name ;
         }

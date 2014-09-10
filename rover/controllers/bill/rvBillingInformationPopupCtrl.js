@@ -50,6 +50,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
         if(type === 'ATTACHED_ENTITY'){
         	$scope.selectedEntity = $scope.attachedEntities[index];
             $scope.selectedEntity.is_new = false; 
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];

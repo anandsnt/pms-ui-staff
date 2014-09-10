@@ -17,13 +17,13 @@
                  <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index,'ATTACHED_ENTITY')">
                   <!-- image -->
                   <figure class="guest-image" ng-class="{'accompany':entity.has_accompanying_guests =='true'}">
-                     <img src="{{entity.images[0].guest_image}}" alt="" />
-                     <img src="{{entity.images[1].guest_image}}" alt="" ng-show="entity.has_accompanying_guests =='true'}"/>
+                     <img src="{{entity.images[0].image}}" alt="" />
+                     <img src="{{entity.images[1].image}}" alt="" ng-show="entity.has_accompanying_guests =='true'}"/>
                   </figure>
                   <!-- heading -->
                   <h2>{{entity.name}}</h2>
                   <!-- icon -->
-                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(entity.status, entity.is_opted_late_checkout)"  ng-hide="entity.entity_type !='RESERVATION'" >{{entity.status}}</span>
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(entity.reservation_status, entity.is_opted_late_checkout)"  ng-hide="entity.entity_type !='RESERVATION'" >{{entity.status}}</span>
                   <div class="status" ng-class="getEntityRole(entity)" ng-show="entity.entity_type !='RESERVATION'">{{entity.status}}</div>
                  </li>
             </ul>
