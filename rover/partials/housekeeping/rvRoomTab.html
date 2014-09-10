@@ -1,0 +1,62 @@
+<div class="room-actions">
+  <div class="select">
+    <select id="room-service-status" name="room-service-status">
+      <option value="in-service" selected>In Service</option>
+      <option value="ooo">Out of Order</option>
+      <option value="oos">Out of Service</option>
+    </select>
+  </div>
+</div>
+
+<!-- 3.A  Room Tab - Room in service 
+<div id="room-content" class="room-content">
+  <strong class="h2">In Service</strong>
+  <span class="icon-no-content icon-ok"></span>
+</div> -->
+
+<!-- 3.B Room Tab - Room is OOO or OOS -->
+<form method="post" action="" name="room-content" id="room-content" class="room-content scrollable">
+  <strong class="h2">
+      {Out of Order or Out of Service}.
+  </strong>
+  <div id="dates" class="row">
+    <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
+    <div id="out-from" class="entry">
+      <label id="room-out-from-label" for="room-out-from">From <span>{day of the week, or today/tomorrow}</span></label>
+      <div class="entry-data">
+        <input name="room-out-from" id="room-out-from" type="text" class="datepicker" value="{ooo/oos from date}" readonly />
+        <strong id="room-out-from-day" class="day">{ooo/oos from day}</strong>
+        <span id="room-out-from-month" class="month">{ooo/oos from month}</span>
+        <span id="room-out-from-year" class="year">{ooo/oos from year}</span>
+      </div>
+    </div>
+    <div id="out-to" class="entry">
+      <label id="room-out-to-label" for="room-out-to">To <span>{day of the week, or today/tomorrow}</span></label>
+      <div class="entry-data">
+        <input name="room-out-to" id="room-out-to" type="text" class="datepicker" value="{ooo/oos to date}" readonly />
+        <strong id="room-out-to-day" class="day">{ooo/oos to date}</strong>
+        <span id="room-out-to-month" class="month">{ooo/oos to date}</span>
+        <span id="room-out-to-year" class="year">{ooo/oos to date}</span>
+      </div>
+    </div>
+  </div>
+  <div id="reason" class="row">
+    <div class="entry">
+      <label for="reason">Reason</label>
+      <div class="select">
+        <select name="reason" id="reason">
+          <option value="" selected>Select</option>
+          <option value="1">Reason 1</option>
+          <option value="2">Reason 2</option>
+        </select>
+      </div>
+    </div>
+    <div class="entry">
+      <label for="reason-comments">Comments <span>(optional)</span></label>
+      <textarea name="reason-comments" id="reason-comments" rows="4"></textarea>
+    </div>
+  </div>
+  <div id="actions" class="row">
+    <button type="button" class="button green">Update</button>
+  </div>
+</form>
