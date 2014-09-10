@@ -14,7 +14,8 @@
 						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
 					</figure>
 					<h2>{{selectedEntity.name}}</h2>
-					<span class="guest-status small-icon" ng-class = "$parent.reservationData.reservation_status">{{$parent.reservationData.reservation_status}}</span>
+					<span class="guest-status small-icon" ng-class = "getGuestStatusMapped(selectedEntity.reservation_status, selectedEntity.is_opted_late_checkout)"  ng-hide="selectedEntity.entity_type !='RESERVATION'" >{{selectedEntity.status}}</span>
+                  <div class="status" ng-class="getEntityRole(selectedEntity)" ng-show="selectedEntity.entity_type !='RESERVATION'">{{selectedEntity.status}}</div>
 				</div>
 				<div class="title" ng-show= "showPayment">Payment</div>
 				<!-- Available credit card -->
@@ -22,10 +23,10 @@
 					<div class="payment" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes">
 						<!-- add class active when selected -->
 						<figure class="card-logo">
-							<img src="{card-logo}" alt="" />
+							<img src="/assets/{{paymentType.card_code}}.png" alt="" />
 						</figure>
-						<span class="number">{{'NUMBER' | translate}} <span class="value number">{number}</span></span>
-						<span class="date">{{'DATE' | translate}} <span class="value date">{date}</span></span>
+						<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
+						<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
 					</div>
 				</div>
 				

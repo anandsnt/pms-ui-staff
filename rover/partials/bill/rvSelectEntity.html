@@ -23,7 +23,7 @@
                   <!-- heading -->
                   <h2>{{entity.name}}</h2>
                   <!-- icon -->
-                  <span class="guest-status small-icon checkin"  ng-hide="entity.entity_type !='RESERVATION'" >{{entity.status}}</span>
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(entity.status, entity.is_opted_late_checkout)"  ng-hide="entity.entity_type !='RESERVATION'" >{{entity.status}}</span>
                   <div class="status" ng-class="getEntityRole(entity)" ng-show="entity.entity_type !='RESERVATION'">{{entity.status}}</div>
                  </li>
             </ul>
