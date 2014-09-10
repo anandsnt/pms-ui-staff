@@ -313,7 +313,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.completeCheckinSuccess = function(data) {
-		console.log("completeCheckinSuccess");
+		hello = that.myDom.find("#checkin-button");
 
 		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
 		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
@@ -337,12 +337,15 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else if(keySettings == "encode"){
-			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);
-			keyEncoderModal.initialize();
+			var isSmartbandCreateWithKeyWrite = that.myDom.find("#checkin-button").attr("data-smartband-create-with-key-writing");			
+			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);			
 			keyEncoderModal.params = {
 				"origin" : views.BILLCARD,
-				"reservationStatus" : reservationStatus
+				"reservationStatus" : reservationStatus,
+				"isSmartbandCreateWithKeyWrite": isSmartbandCreateWithKeyWrite
+				
 			};
+			keyEncoderModal.initialize();
 			
 		}
 

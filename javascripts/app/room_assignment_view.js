@@ -448,14 +448,36 @@ var RoomAssignmentView = function(viewDom){
 
     var staycardView = new StayCard($("#view-nested-first"));
     currentReservation = requestParams['currentReservation'];
+    console.log(JSON.stringify(data));
+     console.log(">>>>>"+data.data.is_room_auto_assigned);
 
-    if(that.viewParams.next_view == views.STAYCARD){
+	if(data.data.is_room_auto_assigned == true){	
+		var autoRoomAssignmentModal = new AutoRoomAssignmentModal(data.data.room);
+		
+		autoRoomAssignmentModal.params = {"closeButtonCall": that.goToNextView, "data": data.data, "requestParams": requestParams};
+	
+		autoRoomAssignmentModal.initialize();
+		
+		
+	} 
+	else if(that.viewParams.next_view == views.STAYCARD){
       staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
     }
     else if(that.viewParams.next_view == views.BILLCARD){
       staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
     }
+  };
+  //To handle from modal clos button - Auto room assignment modal
+  this.goToNextView = function(data, requestParams){
+  	var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['currentReservation'];
 
+  	if(that.viewParams.next_view == views.STAYCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
+    }
   };
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
