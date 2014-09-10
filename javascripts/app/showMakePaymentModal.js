@@ -8,6 +8,7 @@ var ShowMakePaymentModal = function(backDom) {
 	this.url = "staff/reservations/"+that.reservationId+"/deposit_and_balance";
 
 	this.delegateEvents = function() {
+	
 		that.myDom.find("#make-payment").attr("disabled", true);
 		that.myDom.find('#close').on('click', that.hidePaymentModal);
 		that.myDom.find("#make-payment").on('click', that.makePayment);
@@ -58,9 +59,7 @@ var ShowMakePaymentModal = function(backDom) {
 		$('#deposit-balance').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
 		$('#deposit-balance').append('<input type="hidden" id="pan" value="' + swipedCardData.getTokenFrom.pan + '">');
 		$('#deposit-balance').append('<input type="hidden" id="etb" value="' + swipedCardData.getTokenFrom.etb + '">');
-// 
-		
-	//	deposit-balance
+
 		
 	};
 	this.makePayment = function(){
@@ -130,6 +129,7 @@ var ShowMakePaymentModal = function(backDom) {
 	this.sessionSuccessCallBack = function(response){
 
 		  var user_id = $("#user_id").val();
+	
           if(response.status ==="ok"){     
               var MLISessionId = response.session;
               var expiryMonth = that.myDom.find("#expiry-month").val(),
@@ -214,8 +214,39 @@ var ShowMakePaymentModal = function(backDom) {
 		that.myDom.find(".close-btn").on('click', that.hideErrorMessage);
 	};
 	this.successCallbackAddNewCardToReservation = function(data){
-		sntapp.activityIndicator.hideActivityIndicator();
 		var paymentId = data.data.id;
+		
+		if(that.myDom.find("#add-in-guest-card").hasClass("checked")){
+			var expiryMonth = that.myDom.find("#expiry-month").val(),
+				expiryYear = that.myDom.find("#expiry-year").val(),
+				cardExpiry = expiryMonth+"/"+expiryYear,
+		    	cardHolderName = that.myDom.find("#name-on-card").val(),
+		    	//cardType = that.myDom.find("#card-type").val();
+		    	cardType = data.data.card_type;
+			var endingWith = $('#card-number').val().slice(-4);
+			
+			var logo = cardType.toLowerCase()+".png";
+			var appendHTML = "<label payment-id='"+paymentId+"' class='active-item item-payment primary'>"+
+						+"<figure class='card-logo'>"+
+						+"<img src='/assets/"+logo+"' alt=''>"+
+						+"</figure>"+
+						+"<span class='number'>Ending with "+
+						+"<span class='value number'>"+endingWith+""+
+						+"</span>"+
+						+"</span>"+
+						+"<span class='date'>Date"+
+						+"<span class='value date'>"+cardExpiry+"</span></span>"+
+						+"<span class='primary'>"+
+						+"<span id='primary-"+paymentId+"' class='value primary primary-selected'></span>"+
+						+"</span>"+
+						+"</label>";
+
+			$("#available-cards-wrapper").append(appendHTML);
+		}
+		
+		
+		sntapp.activityIndicator.hideActivityIndicator();
+		
 		var	amount = that.myDom.find("#amount").val();
 		var dataToMakePaymentApi = {
 			"guest_payment_id": paymentId,
@@ -236,6 +267,10 @@ var ShowMakePaymentModal = function(backDom) {
 		webservice.postJSON(url, options);
 	};
 	this.successCallbackPaymentOnReservation = function(data){
+		var depositBalanceOnStayCard = parseInt($("#depositAmount").attr("data-deposit-amount")) + parseInt(that.myDom.find("#amount").val());
+		backDom.find("#deposit_balance").html("");
+		backDom.find("#deposit_balance").html("Deposit / Balance $"+depositBalanceOnStayCard.toFixed(2));
+		that.hidePaymentModal();
 		sntapp.activityIndicator.hideActivityIndicator();
 	};
 	
