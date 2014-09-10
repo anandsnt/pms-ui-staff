@@ -29,6 +29,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
 
+				/**
+				 *	CICO-9169
+				 * 	Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
+				 *  -- To have the primary email id in app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
+				 */
+
+				if (data.email && data.email.length > 0) {
+					$scope.otherData.isGuestPrimaryEmailChecked = true;
+				} else {
+					// Handles cases where Guest with email is replaced with a Guest w/o an email address!
+					$scope.otherData.isGuestPrimaryEmailChecked = false;
+				}
+
+				//	CICO-9169
+
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -91,6 +106,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {

@@ -1,4 +1,5 @@
 <div class="reservation-actions" ng-controller="reservationActionsController">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Resevation is checking-in -->
 		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
@@ -29,11 +30,11 @@
 
 		<a class="button white red-text hidden">Cancel reservation</a>
 		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:guestCardData.userId})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
 			View bill / Routing
 		</a>
 		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:guestCardData.userId})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
 		
 		<!-- show add charge -->
 		
@@ -42,7 +43,11 @@
 		<!-- show smartbands -->
 		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled)">SmartBands</a>
 
-	
-	
+		<!-- show cancel / reinstate reservation -->
+		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
+		<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
+		<a ng-if="(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate)))" class="button white red-text bottom" ng-click="toggleCancellation()" translate>
+			CANCEL_RESERVATION
+		</a>
 	
 	</div>

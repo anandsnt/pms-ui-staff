@@ -6,7 +6,7 @@
             <span class="h2 message" translate>REMOVE_CHARGE</span>
             <span class="text red">{{selectedTransaction.desc}} <strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
             <div class="entry full-width">
-                <textarea placeholder="Removal reason" rows="2" ng-model="reasonForRemoving"></textarea>
+                <textarea placeholder="{{'REMOVAL_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="reasonForRemoving"></textarea>
             </div>
             <div class="actions">
                 <button type="button" class="button red modal-close" ng-click="removeCharge(reasonForRemoving)" translate>REMOVE_CHARGE</button> 

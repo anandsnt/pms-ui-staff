@@ -172,6 +172,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$scope.reservationData.confirmNum = '';
 			// Set flag to retain the card details
 			$scope.reservationData.isSameCard = true;
+			$scope.otherData.reservationCreated = true;
 
 			$state.go('rover.reservation.search');
 		};
