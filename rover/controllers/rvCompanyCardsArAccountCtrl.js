@@ -38,7 +38,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 				dataNotUpdated = true;
 				presentArDetails = presentArDetailsAfterEdit;
 			}
-			if(dataNotUpdated)
+			if(dataNotUpdated && $scope.arAccountDetails.ar_number)
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails);
 		};
 
@@ -97,6 +97,15 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 		$scope.$on('saveArAccount', function(event) {
 			event.preventDefault();
 			updateArAccount();
+		});
+
+		$scope.$on('ArAccountDeleted', function(event) {
+			var bool = $scope.arAccountDetails.is_auto_assign_ar_numbers;
+			$scope.arAccountDetails = {};
+			$scope.arAccountDetails.is_use_main_contact = true;
+			$scope.arAccountDetails.is_use_main_address = true;
+			$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
+			$scope.arAccountDetails.ar_number = "";
 		});
 
 	}
