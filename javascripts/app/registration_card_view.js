@@ -76,6 +76,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#complete-checkout-button").addClass("hidden");
 		that.myDom.find(".review").addClass("hidden");
 		that.myDom.find("#terms-and-conditions").addClass("hidden");
+		that.myDom.find(".room-charge-enable").addClass("hidden");
 	};
 	
 	this.executeLoadingAnimation = function() {
@@ -283,6 +284,7 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else {
+			var no_post_room_charge = that.myDom.find("#no-post-room-charge-value").attr("data-no-post");
 			if(isSwipeHappenedDuringCheckin){
 				if(sntapp.regCardData.authorizeCard == "true"){
 					var data = {
@@ -296,13 +298,15 @@ var RegistrationCardView = function(viewDom) {
 						"pan": sntapp.regCardData.pan,
 						"name_on_card": sntapp.regCardData.name_on_card,
 						"card_expiry": sntapp.regCardData.card_expiry,	
-						"credit_card" : sntapp.regCardData.credit_card 	
+						"credit_card" : sntapp.regCardData.credit_card,
+						"no_post": no_post_room_charge 	
 					};
 				} else {
 					var data = {
 						"is_promotions_and_email_set" : is_promotions_and_email_set,
 						"signature" : signature,
-						"reservation_id" : that.reservation_id
+						"reservation_id" : that.reservation_id,
+						"no_post": no_post_room_charge 	
 					};
 				}
 				
@@ -310,7 +314,8 @@ var RegistrationCardView = function(viewDom) {
 				var data = {
 					"is_promotions_and_email_set" : is_promotions_and_email_set,
 					"signature" : signature,
-					"reservation_id" : that.reservation_id
+					"reservation_id" : that.reservation_id,
+					"no_post": no_post_room_charge 	
 				};
 			}
 		
@@ -620,21 +625,15 @@ var RegistrationCardView = function(viewDom) {
 	
 	// Room charge disable button click
 	this.roomChargeBtnClicked = function(){
-		var data = {
-			"enable_room_charge" : "true"
-		};
+		that.myDom.find("#no-post-room-charge-value").attr("data-no-post", "false");
 
-		var webservice = new WebServiceInterface();
-		var options = {
-			requestParameters : data,
-			successCallBack : that.roomChargeBtnDisable
-		};
-		webservice.postJSON('staff/reservations/checkin', options); 
+		
+        that.myDom.find("#room-charge-btn").removeClass("green").addClass("red");
+		that.myDom.find("#room-charge-btn").text("ROOM CHARGE DISABLED");
+		that.myDom.find("#room-charge-btn").attr("disabled", true);
+		
 
 	};
-	this.roomChargeBtnDisable=function(){
-		that.myDom.find("#room-charge-btn").removeClass("green").addClass("red");
 
-	};
 };
 
