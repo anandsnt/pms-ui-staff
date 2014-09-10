@@ -55,7 +55,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 			});		
 		};
 
-		$scope.deleteARAccountConfirmed = function(){
+		$scope.deleteARAccountConfirmed = function(event){
 			var successCallbackOfdeleteArAccount = function(data){
 				$scope.$emit('hideLoader');
 				$scope.isArTabAvailable = false;
@@ -159,7 +159,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 			}
 			else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
 				$scope.$emit("saveContactInformation");
-				//$rootScope.$broadcast("saveArAccount");
+				$rootScope.$broadcast("saveArAccount");
 			}
 			
 		};
@@ -185,7 +185,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 			event.preventDefault();
 			saveContactInformation($scope.contactInformation);
 			$scope.checkOutsideClick(targetElement);
-			//$rootScope.$broadcast("saveArAccount");
+			$rootScope.$broadcast("saveArAccount");
 		});
 
 		/**
