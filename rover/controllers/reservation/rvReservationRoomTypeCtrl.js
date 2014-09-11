@@ -87,8 +87,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			hideScrollbar: false
 		});
 
-		$scope.setScroller('stayDates', {			
-			scrollX: true,			
+		$scope.setScroller('stayDates', {
+			scrollX: true,
 			scrollY: false
 		});
 
@@ -1152,6 +1152,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			if ($scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
 				//repopulate the room and rates to suit the current day
 				init();
+			} else {
+				$scope.preferredType = "";
+				// TODO : Reset other stuff as well
+				$scope.stateCheck.rateSelected.oneDay = false;
+				$scope.stateCheck.rateSelected.allDays = false;
+				_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate) {
+					stayDate.guests = {
+						adults: $scope.reservationData.rooms[$scope.activeRoom].numAdults,
+						children: $scope.reservationData.rooms[$scope.activeRoom].numChildren,
+						infants: $scope.reservationData.rooms[$scope.activeRoom].numInfants
+					}
+
+					stayDate.rate = {
+						id: ""
+					}
+				});
 			}
 		}
 
