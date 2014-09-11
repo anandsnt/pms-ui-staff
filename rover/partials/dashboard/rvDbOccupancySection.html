@@ -2,32 +2,32 @@
     <h3>Occupancy</h3>
     <ul>
         <li>Today
-        	<span bo-text="statisticsData.occupancy.today | round" ng-show="escapeNull(statisticsData.occupancy.today)!==''">
-        		%
+        	<span bo-text="'{{statisticsData.occupancy.today | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.today)!==''">
+        		
         	</span>       	
         </li>
 
         <li>{{tomorrow|date:monthAndDate}}
-        	<span ng-show="escapeNull(statisticsData.occupancy.tomorrow)!==''">
-        		{{statisticsData.occupancy.tomorrow | round}}%
+        	<span bo-text="'{{statisticsData.occupancy.tomorrow | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.tomorrow)!==''">
+        		
         	</span>       	
         </li>
 
         <li>{{dayAfterTomorrow|date:monthAndDate}}
-        	<span ng-show="escapeNull(statisticsData.occupancy.day_after_tomorrow)!==''">
-        		{{statisticsData.occupancy.day_after_tomorrow | round}}%
+        	<span bo-text="'{{statisticsData.occupancy.day_after_tomorrow | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.day_after_tomorrow)!==''">
+        		
         	</span>       	
         </li>
 
         <li ng-show="statisticsData.occupancy.fullMonth!=''">{{userInfo.business_date|date:fullMonth}}
-        	<span ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
-        		{{statisticsData.occupancy.current_month | round}}%
+        	<span bo-text="'{{statisticsData.occupancy.current_month | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
+        		
         	</span>
         </li>
 
         <li ng-show="statisticsData.occupancy.current_year!=''">{{userInfo.business_date|date:fullYear}}
-        	<span ng-show="escapeNull(statisticsData.occupancy.current_year)!==''">
-        		{{statisticsData.occupancy.current_year | round}}%
+        	<span bo-text="'{{statisticsData.occupancy.current_year | round}}' + '%'" ng-show="escapeNull(statisticsData.occupancy.current_year)!==''">
+        	
         	</span>
         </li>
     </ul>

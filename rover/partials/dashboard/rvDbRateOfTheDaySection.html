@@ -4,7 +4,7 @@
     <ul>
         <li>
         	Today
-        	<span class="rate">{{statisticsData.rate_of_day.today.name}}</span>
+        	<span class="rate" >{{statisticsData.rate_of_day.today.name}}</span>
         	<span class="value" ng-show="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.today.amount | number : 2}}
             </span>          
