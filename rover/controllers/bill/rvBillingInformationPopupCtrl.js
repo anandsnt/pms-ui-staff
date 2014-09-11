@@ -24,6 +24,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		return $scope.isInitialPage? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');		
 	}
     /**
+    * function to set the reload option
+    param option is boolean
+    */
+    $scope.setReloadOption = function(option){
+        $scope.isReloadNeeded = option;
+    }
+    /**
     * function to handle the click 'all routes' and 'add routes' button
     */
 	$scope.headerButtonClicked = function(){
@@ -84,7 +91,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "attached_billing_groups": [],
                 "is_new" : true
 			};
-			if(data.data.account_type === 'COMPANY'){
+			if(data.account_type === 'COMPANY'){
 				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
 			}
 			else{
@@ -168,18 +175,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to save the new route
     */
     $scope.saveRoute = function(){
-            var successCallback = function(data) {
-                $scope.$emit('hideLoader');
-                $scope.isReloadNeeded = true;
-                $scope.headerButtonClicked();
-            };
-            var errorCallback = function(errorMessage) {
-                $scope.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
-            };
-           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
-           
-           $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
+            $rootScope.$broadcast('routeSaveClicked');
     };
 	
 }]);
