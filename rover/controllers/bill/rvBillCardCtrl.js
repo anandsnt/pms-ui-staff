@@ -476,6 +476,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 	};
 
+	$scope.$on('paymentTypeUpdated', function() {
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	}); 
+
 	// just fetch the bills again ;)
 	var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
 		
@@ -1241,7 +1245,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	 
 	 $scope.$on('PAYMENT_SUCCESS', function(event) {
-		
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	}); 
