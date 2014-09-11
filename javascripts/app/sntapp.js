@@ -2,7 +2,7 @@ var DEBUG_LEVEL = 5;
 
 var is_level_higher = function(level){
     return true;
-}
+};
 function qlog(message, level){
     //if (is_level_higher(level)) console.log(message);
 }
@@ -263,5 +263,5 @@ var app = function(){
 };
 
 sntapp = new app();
-// sntapp.enableCardSwipeDebug();
+sntapp.enableCardSwipeDebug();
 

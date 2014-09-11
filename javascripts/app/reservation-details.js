@@ -159,8 +159,7 @@ var reservationDetailsView = function(domRef) {
 
 	this.addKeysModal = function(e) {
 		var reservationStatus = that.myDom.find("#add-keys").attr('data-reseravation-status');
-		var keySettings = that.myDom.find("#add-keys").attr("data-key-settings");
-		
+		var keySettings = that.myDom.find("#add-keys").attr("data-key-settings");				
 		if(keySettings == "email"){
 			var keyEmailModal = new KeyEmailModal();
 			keyEmailModal.initialize();
@@ -179,13 +178,14 @@ var reservationDetailsView = function(domRef) {
 			};
 		} 
 		else if(keySettings == "encode"){
-			
-			var keyEncoderModal = new KeyEncoderModal();
-			keyEncoderModal.initialize();
+			var isSmartbandCreateWithKeyWrite = that.myDom.find("#add-keys").attr("data-smartband-create-with-key-writing");			
+			var keyEncoderModal = new KeyEncoderModal();			
 			keyEncoderModal.params = {
 				"origin" : views.STAYCARD,
-				"reservationStatus" : reservationStatus
+				"reservationStatus" : reservationStatus,
+				"isSmartbandCreateWithKeyWrite": isSmartbandCreateWithKeyWrite
 			};
+			keyEncoderModal.initialize();
 			
 		}
 	};
