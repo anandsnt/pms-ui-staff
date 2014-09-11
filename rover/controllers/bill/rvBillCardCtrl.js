@@ -39,6 +39,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
 	}
+	$scope.printData = {};
 	//This value changes when clicks on pay button
 	$scope.fromViewToPaymentPopup = "billcard";
 	//options fo signature plugin
@@ -63,7 +64,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	}
 	
 	$scope.init = function(reservationBillData){
-		/*
+		
+				/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
 		 * To handle move to bill action
 		 * Added same value to two different key because angular is two way binding
@@ -1223,6 +1225,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	
 	};
+	
+
 	//print bill
 	$scope.clickedPrint = function(){
 		printBill();
@@ -1237,10 +1241,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	// print the page
 	var printBill = function() {
+		var data = {
+				"reservation_id" : $scope.reservationBillData.reservation_id,
+				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
+		};
+		var printDataFetchSuccess = function(successData){
+			$scope.$emit('hideLoader');
+			$scope.printData = successData;
+			$scope.errorMessage = "";
 		/*
 		*	=====[ READY TO PRINT ]=====
 		*/
-
 		// this will show the popup with full bill
 	    $timeout(function() {
 	    	/*
@@ -1253,11 +1264,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        };
 	    }, 100);
 
+		};
+		var printDataFailureCallback = function(errorData){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+
+
 	    /*
 	    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 	    */
 
-		};
+	};
 
 	 
 	 $scope.$on('PAYMENT_SUCCESS', function(event) {
