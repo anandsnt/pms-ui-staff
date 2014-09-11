@@ -23,21 +23,27 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
       'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
       'VIP': 'DASHBOARD_SEARCH_VIP',
       'NORMAL_SEARCH': 'SEARCH_NORMAL'
-  }
+  };
   if ($stateParams.type in headingDict){
       heading = headingDict[$stateParams.type];
   } else {
       heading = headingDict['NORMAL_SEARCH'];
   }
 
-  // setup a back to dashboard
-  $rootScope.setPrevState = {
-    title: $filter( 'translate' )( 'DASHBOARD' ),
-    name: 'rover.dashboard'
-  };
-
+  // set up a back button
+  if($stateParams.type!='' && $stateParams.type != null){
+	  $rootScope.setPrevState = {
+	    title: $filter( 'translate' )( 'DASHBOARD' ),
+	    name: 'rover.dashboard'
+	  };
+  }
+  
   // saving/reseting search params to $vault
   $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
+
+  // resetting the scroll position to 0, so that it dont jump anywhere else
+  // check CICO-9247
+  $vault.set( 'result_showing_area', 0 );
 
 
 
@@ -85,4 +91,10 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 	$scope.$on("SearchResultsCleared", function(event, data){
 		$scope.heading = headingDict['NORMAL_SEARCH'];
 	});	
+	$scope.$on("UpdateHeading", function(event, data){
+		$scope.heading = data;
+	});
+	$scope.$on("UPDATE_MANAGER_DASHBOARD", function(){
+   		 $scope.heading = headingDict['NORMAL_SEARCH'];
+   });
 }]);

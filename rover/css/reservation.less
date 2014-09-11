@@ -13,8 +13,11 @@
     float:right;
   }
 
-  .reservations-inner .reservation-filters.with-guests .edit-guests .reservation-guests .select select{
-    padding: 0 10px 0 70%;
+  .reservations-inner .reservation-filters.with-guests .edit-guests .reservation-guests{
+    width:170px;
+    .select select{
+      padding: 0 10px 0 70%;
+    }
   }
 
   .reservations-inner .reservations-content-wrapper {
@@ -94,6 +97,14 @@
   span.no-right-margin {
     margin-right: 0px;
   }
+  
+  .reservation-actions{
+    a.bottom{
+      position: absolute;
+      bottom: 0;
+    }
+  } 
+
   .icons.time.check-in{
     background-position: 10px -553px;
     height: 30px;
@@ -105,16 +116,19 @@
     height: 30px;
     width: 30px;
   }
+
   .icons.time.late-check-out {
     background-position: 10px -2914px;
     width: 30px;
     height: 30px;
   }
+
   #reservation-card{
     .reservation-actions, .reservation-content{
       top: 60px;  
     }
   }
+
 }
 
 .ui-autocomplete {

@@ -169,6 +169,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			data.stay_dates = stay;
 
+			//addons
+
+
 			data.addons = [];
 
 			_.each($scope.reservationData.rooms[0].addons, function(addon) {
@@ -177,7 +180,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					quantity: addon.quantity
 
 				});
-			});
+
+			})
+
 
 			data.company_id = $scope.reservationData.company.id;
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;

@@ -11,16 +11,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			'NORMAL_SEARCH': 'SEARCH_NORMAL'
 		};
 		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? {
-			type: $vault.get('searchType')
-		} : {};
+		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
 
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: $filter('translate')(backTitle),
-			name: 'rover.search',
-			param: backParam
+			scope: $scope,
+			callback: 'goBackSearch'
 		};
+
+		// we need to update any changes to the room
+		// before going back to search results
+		$scope.goBackSearch = function() {
+			$scope.updateSearchCache();
+			$state.go('rover.search', backParam);
+		};
+
+
 
 		BaseCtrl.call(this, $scope);
 
@@ -34,8 +41,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
-		var updateSearchCache = function() {
-
+		$scope.updateSearchCache = function() {
 			// room related details
 			var data = {
 				'room': $scope.reservationData.reservation_card.room_number,
@@ -53,7 +59,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		// update any room related data to search service also
-		updateSearchCache();
+		$scope.updateSearchCache();
 
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
@@ -168,7 +174,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
-			updateSearchCache();
+			$scope.updateSearchCache();
 		};
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
@@ -267,7 +273,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
-			updateSearchCache();
+			$scope.updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
 		$scope.isWakeupCallAvailable = function() {
@@ -328,14 +334,23 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
 			// to handle multiple rooms in future
-
-			if (reservationMainData.rooms[0].roomNumber != "") {
+			if($rootScope.isStandAlone){
+				//If standalone, go to change staydates calendar if rooms is assigned.
+				//If no room is assigned, go to stay dates calendar.
+				if (reservationMainData.rooms[0].roomNumber != "") {
+					$state.go('rover.reservation.staycard.changestaydates', {
+						reservationId: reservationMainData.reservationId,
+						confirmNumber: reservationMainData.confirmNum
+					});
+				} else {
+					$scope.goToRoomAndRates("CALENDAR");
+				}
+			} else {
+				//If ext PMS connected, go to change staydates screen
 				$state.go('rover.reservation.staycard.changestaydates', {
 					reservationId: reservationMainData.reservationId,
 					confirmNumber: reservationMainData.confirmNum
 				});
-			} else {
-				$scope.goToRoomAndRates("CALENDAR");
 			}
 		};
 

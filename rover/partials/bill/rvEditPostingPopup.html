@@ -14,7 +14,7 @@
             <!-- Edit amount field -->
             <div id="edit-amount" class="entry full-width" ng-hide="chargeCodeActive">
                 <label for="new-amount">{{'NEW_AMOUNT' | translate}}(<span>{{currencySymbol}}</span>)</label>
-                <input name="new-amount" id="new-amount" placeholder="Enter value" ng-model="newAmount" type="text" />
+                <input name="new-amount" id="new-amount" placeholder="{{'ENTER_VALUE_PLACEHOLDER' | translate}}" ng-model="newAmount" type="text" />
             </div>
 
             <!-- Charge code field, hidden until selected -->
@@ -33,7 +33,7 @@
                         <span ng-hide="selectedChargeCode">
                         {{selectedTransaction.desc}} </span>
                         <span ng-show="selectedChargeCode">{{selectedChargeCode.description}}</span>               
-                        <span class="value"> <span ng-class ="{'hidden':newAmount - selectedTransaction.amount< 0}">+</span>{{newAmount - selectedTransaction.amount |number:2}}</span>
+                        <span class="value" ng-show="newAmount.length>0"> <span ng-class ="{'hidden':newAmount - selectedTransaction.amount< 0}">+</span>{{newAmount - selectedTransaction.amount |number:2}}</span>
                     </li>
                 </ul>
             </div>
