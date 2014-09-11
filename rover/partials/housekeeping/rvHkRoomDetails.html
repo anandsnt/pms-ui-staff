@@ -24,11 +24,11 @@
           </ul>
         </header>
         
-        <section ng-show="openTab === 'Guest'" ng-include="'/assets/partials/housekeeping/rvGuestTab.html'"></section>
+        <section ng-if="openTab === 'Guest'" ng-include="'/assets/partials/housekeeping/rvGuestTab.html'"></section>
 
-        <section ng-show="openTab === 'Work'" ng-include="'/assets/partials/housekeeping/rvWorkTab.html'"></section>
+        <section ng-if="openTab === 'Work'" ng-include="'/assets/partials/housekeeping/rvWorkTab.html'"></section>
 
-        <section ng-show="openTab === 'Room'" ng-include="'/assets/partials/housekeeping/rvRoomTab.html'"></section>
+        <section ng-if="openTab === 'Room'" ng-include="'/assets/partials/housekeeping/rvRoomTab.html'"></section>
         
     </section>
 </div>
