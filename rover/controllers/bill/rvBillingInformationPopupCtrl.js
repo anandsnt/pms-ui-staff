@@ -24,6 +24,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		return $scope.isInitialPage? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');		
 	}
     /**
+    * function to set the reload option
+    param option is boolean
+    */
+    $scope.setReloadOption = function(option){
+        $scope.isReloadNeeded = option;
+    }
+    /**
     * function to handle the click 'all routes' and 'add routes' button
     */
 	$scope.headerButtonClicked = function(){
