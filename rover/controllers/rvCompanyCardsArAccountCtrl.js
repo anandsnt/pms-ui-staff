@@ -73,7 +73,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 				refreshScroller();
 			};
 
-			var dataToSend = {"id":$scope.contactInformation.id,"note":$scope.ARData.note};
+			var dataToSend = {"id":$scope.contactInformation.id,"note":$scope.ARData.note,"ar_number":$scope.arAccountDetails.ar_number};
 			$scope.invokeApi(RVCompanyCardSrv.saveARNote, dataToSend, successCallbackOfsaveARNote);
 		}
 
