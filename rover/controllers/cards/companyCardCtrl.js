@@ -36,7 +36,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
-				/*-------AR account starts here-----------*/
+		/*-------AR account starts here-----------*/
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
@@ -100,11 +100,10 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 					};
 					$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);		
 
-		};
-		
+		};	
 
 	
-	/*-------AR account ends here-----------*/
+		/*-------AR account ends here-----------*/
 
 		$scope.$on('companyCardAvailable', function(obj, isNew) {
 			$scope.searchMode = false;

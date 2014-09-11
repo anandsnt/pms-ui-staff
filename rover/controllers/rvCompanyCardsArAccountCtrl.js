@@ -8,23 +8,16 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 			};
 
 		var init = function(){
-
 			BaseCtrl.call(this, $scope);
-
 			$scope.ARData = {};
 			$scope.ARData.note = "";
-
 		};
 		init();
 		var presentArDetails = {};
 
-
-
 		$scope.$on('setgenerateNewAutoAr',function(e,bool){
 			$scope.$parent.generateNewAutoAr = bool;
 		});
-
-
 
 		var updateArAccount = function(){
 
@@ -81,9 +74,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 
 			var dataToSend = {"id":$scope.contactInformation.id,"note":$scope.ARData.note};
 			$scope.invokeApi(RVCompanyCardSrv.saveARNote, dataToSend, successCallbackOfsaveARNote);
-
 		}
-
 
 		$scope.deletePost = function(note_id,index){
 
@@ -97,7 +88,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 			$scope.invokeApi(RVCompanyCardSrv.deleteARNote, dataToSend, deleteARNoteSuccess);
 
 		}
-
 
 	  /**
 		 * recieving function for save AR accounts with data
