@@ -51,7 +51,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
-
+    $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy";
     /*
      * hotel Details
      */
