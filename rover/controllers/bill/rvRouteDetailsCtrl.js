@@ -290,7 +290,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.saveRoute = function(){
             var successCallback = function(data) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.isReloadNeeded = true;
+                $scope.setReloadOption(true);
                 $scope.headerButtonClicked();
             };
             var errorCallback = function(errorMessage) {
