@@ -257,7 +257,6 @@ sntRover.controller('reservationActionsController', [
 			var checkCancellationPolicy = function() {
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');
-					$scope.reservationParentData.cancellationPolicies = [];
 					var nights = false;
 					var cancellationCharge = 0;
 
@@ -277,7 +276,6 @@ sntRover.controller('reservationActionsController', [
 						} else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
-						$scope.reservationParentData.cancellationPolicies.push(data.results.cancellation_policy_id);
 					}
 					promptCancel(cancellationCharge, nights);
 
