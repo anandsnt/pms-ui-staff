@@ -33,7 +33,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	   	var queryText = $scope.textInQueryBox;
 	   	$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
   	};
-  
+  	/**
+  	* function to clear the entity search text
+  	*/
 	$scope.clearResults = function(){
 	  	$scope.textInQueryBox = "";
 	  	$scope.refreshScroller('entities');
@@ -106,7 +108,10 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
 	};
-	
+	/**
+  	* function to perform filering on results for reservations.
+  	* if not fouund in the data, it will request for webservice
+  	*/
 	var displayFilteredResultsReservations = function(){ 
 	    //if the entered text's length < 3, we will show everything, means no filtering    
 	    if($scope.textInQueryBox.length < 3){
@@ -158,30 +163,4 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		$scope.isReservationActive = flag;
 	};
 	
-	/*
-	* function used in template to map the reservation status to the view expected format
-	*/
-	$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
-	  var viewStatus = "";
-      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
-        viewStatus = "late-check-out";
-        return viewStatus;
-      }
-      if("RESERVED" == reservationStatus){
-        viewStatus = "arrival";
-      }else if("CHECKING_IN" == reservationStatus){
-        viewStatus = "check-in";
-      }else if("CHECKEDIN" == reservationStatus){
-        viewStatus = "inhouse";
-      }else if("CHECKEDOUT" == reservationStatus){
-        viewStatus = "departed";
-      }else if("CHECKING_OUT" == reservationStatus){
-        viewStatus = "check-out";
-      }else if("CANCELED" == reservationStatus){
-        viewStatus = "cancel";
-      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
-        viewStatus = "no-show";
-      }
-      return viewStatus;
-  };
 }]);

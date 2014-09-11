@@ -9,7 +9,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	$scope.saveData.payment_type =  "";
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";
-
+	/**
+    * MLI session set up
+    */
 	var MLISessionId = "";
 	try {
 			HostedForm.setMerchant($rootScope.MLImerchantId);
@@ -29,7 +31,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
   	$scope.$on('showaddpayment', function(event){
   		$scope.refreshScroller('newpaymentview');						
 	});
-
+  	/**
+    * function to show available payment types from server
+    */
   	$scope.fetchAvailablePaymentTypes = function(){
         
             var successCallback = function(data) {
@@ -84,13 +88,16 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			};
 			 		
 		};
-
+		/**
+	    * function to save a new payment type for the reservation
+	    */
 		$scope.savePayment = function(){
 			
 			var successCallback = function(data) {
                 
                 $scope.attachedPaymentTypes.push(data);
                 $scope.$parent.$emit('hideLoader');
+                $scope.showPaymentList();
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');

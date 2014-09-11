@@ -11,26 +11,34 @@ sntRover.controller('rvAllRoutesCtrl',['$scope','$rootScope','$filter','RVBillin
                 $scope.refreshScroller('routes'); 
                 }, 
             500);
+
+    /**
+    * function to get the charge code or billing group description, to reflect in UI
+    */
     $scope.getCharges = function(route){
     	if(route.attached_charge_codes.length > 1 || route.attached_billing_groups.length > 1){
     		return 'Multiple';
     	}else if(route.attached_charge_codes.length > 0){
-    		return route.attached_charge_codes[0].description + ', ' + route.attached_charge_codes[1].description;
+    		return route.attached_charge_codes[0].charge_code + ', ' + route.attached_charge_codes[0].description;
     	}else if(route.attached_billing_groups.length > 0){
-            return route.attached_billing_groups[0].name + ', ' + route.attached_billing_groups[1].name;
+            return route.attached_billing_groups[0].name ;
         }
      
     }
-
+    /**
+    * function to get the charge type
+    */
     $scope.getRouteType = function(route){
-        if((route.attached_charge_codes.length > 1 && route.attached_billing_groups.length > 1) || route.attached_charge_codes.length > 1){
+        if((route.attached_charge_codes.length > 0 && route.attached_billing_groups.length > 0) || route.attached_charge_codes.length > 0){
             return 'CHARGE CODE(S)';
         }else {
             return 'BILLING GROUP(S)';
         }      
         
     }
-
+    /**
+    * function to delete route
+    */
     $scope.deleteRoute = function(index){
         var successCallback = function(data) {
                 $scope.attachedEntities.splice(index, 1);
