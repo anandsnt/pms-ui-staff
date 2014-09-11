@@ -105,6 +105,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope','RVCompanyCardSrv',
 			$scope.arAccountDetails.is_use_main_address = true;
 			$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
 			$scope.arAccountDetails.ar_number = "";
+			$scope.arAccountNotes.ar_notes = [];
 		});
 
 
