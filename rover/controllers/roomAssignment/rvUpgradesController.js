@@ -74,11 +74,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		index = $scope.selectedUpgradeIndex;
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
-			if($scope.clickedButton == "checkinButton"){
-				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-			} else {
-				$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
-			}
+			$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
 		};
 		var errorCallbackselectUpgrade = function(error){
 			$scope.$emit('hideLoader');
