@@ -1,9 +1,9 @@
-<div id="dashboard-occupancy" class="dashboard-block data">
+<div bindonce="statisticsData" id="dashboard-occupancy" class="dashboard-block data">
     <h3>Occupancy</h3>
     <ul>
         <li>Today
-        	<span ng-show="escapeNull(statisticsData.occupancy.today)!==''">
-        		{{statisticsData.occupancy.today | round}}%
+        	<span bo-text="statisticsData.occupancy.today | round" ng-show="escapeNull(statisticsData.occupancy.today)!==''">
+        		%
         	</span>       	
         </li>
 
