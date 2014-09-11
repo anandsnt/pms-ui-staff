@@ -83,10 +83,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "id": data.id,
 			    "name": data.account_name,
 			    "bill_no": "",
-			    "images": {
-		            "primary": data.company_logo,
-		            "secondary": ""
-		        },
+			    "images": [{
+                    "is_primary":true, 
+		            "guest_image": data.company_logo,
+		        }],
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "is_new" : true
