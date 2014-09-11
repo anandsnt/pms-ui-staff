@@ -7,7 +7,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
-
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
@@ -777,7 +776,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
                 var currentDayDetails = _.where(reservationDetails.reservation_card.stay_dates, {
-                    date: $rootScope.businessDate
+                    date: dateFilter(new tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
                 });
                 if (currentDayDetails.length > 0) {
                     $scope.reservationData.rooms[0].numAdults = currentDayDetails[0].adults;

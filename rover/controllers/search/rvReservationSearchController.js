@@ -41,6 +41,10 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
   // saving/reseting search params to $vault
   $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
 
+  // resetting the scroll position to 0, so that it dont jump anywhere else
+  // check CICO-9247
+  $vault.set( 'result_showing_area', 0 );
+
 
 
     

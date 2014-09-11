@@ -201,6 +201,31 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			}
 		}
 
+		/**
+		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
+		 */
+		
+	    $scope.openBillingInformation = function(){
+
+	    	
+	    	$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
+	    	$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
+	    	$scope.reservationData.reservation_status = $scope.reservationData.status;
+	    	if($scope.reservationData.guest.id != null){
+	    		$scope.reservationData.user_id = $scope.reservationData.guest.id ;
+	    	}else{
+	    		$scope.reservationData.user_id = $scope.reservationData.company.id ;
+	    	}
+	    	
+		      ngDialog.open({
+		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+		        controller: 'rvBillingInformationPopupCtrl',
+		        className: 'ngdialog-theme-default',
+		        scope: $scope
+		      });
+	    }
+
 		$scope.init();
 
 
