@@ -74,7 +74,7 @@
             </div>
             <div class="entry">
               <label>&nbsp;</label>
-              <button ng-click="showARTab($event)" ng-hide="contactInformation.account_details.accounts_receivable_number || isArTabAvailable" class="button green" translate>CREATE_ACCOUNT</button>
+              <button ng-click="showARTab($event)" ng-hide="contactInformation.account_details.accounts_receivable_number || isArTabAvailable || !contactInformation.id" class="button green" translate>CREATE_ACCOUNT</button>
               <button ng-click="deleteArAccount()" ng-show="contactInformation.account_details.accounts_receivable_number" class="button red" translate>DELETE_ACCOUNT</button>
             </div>
 
