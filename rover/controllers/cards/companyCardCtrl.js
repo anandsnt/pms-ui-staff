@@ -128,6 +128,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 
 		$scope.$on("companyCardDetached", function() {
 			$scope.searchMode = true;
+			$scope.isArTabAvailable = false;
+			$scope.$broadcast('setgenerateNewAutoAr',false);
 		});
 
 		$scope.$on("companySearchInitiated", function() {

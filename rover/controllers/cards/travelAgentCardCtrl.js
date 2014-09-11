@@ -136,6 +136,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 
 		$scope.$on("travelAgentDetached", function() {
 			$scope.searchMode = true;
+			$scope.isArTabAvailable = false;
+			$scope.$broadcast('setgenerateNewAutoAr',false);
 		});
 
 		/**
