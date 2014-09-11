@@ -146,6 +146,8 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
         
             var successCallback = function(data) {
                 $scope.availableBillingGroups = data;
+                if(data.length == 0)
+                    $scope.isBillingGroup = false;
                 if($scope.reservationData.reservation_id == $scope.selectedEntity.id){
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
