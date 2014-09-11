@@ -267,7 +267,7 @@ var ShowMakePaymentModal = function(backDom) {
 		webservice.postJSON(url, options);
 	};
 	this.successCallbackPaymentOnReservation = function(data){
-		var depositBalanceOnStayCard = parseInt($("#depositAmount").attr("data-deposit-amount")) + parseInt(that.myDom.find("#amount").val());
+		var depositBalanceOnStayCard = parseInt($("#outstandingAmount").attr("data-outstanding-amount")) - parseInt(that.myDom.find("#amount").val());
 		backDom.find("#deposit_balance").html("");
 		backDom.find("#deposit_balance").html("Deposit / Balance $"+depositBalanceOnStayCard.toFixed(2));
 		that.hidePaymentModal();
