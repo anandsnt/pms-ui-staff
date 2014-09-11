@@ -235,8 +235,12 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		
 		$scope.$emit("hideLoader");
 		if(typeof data.id !== 'undefined' && data.id !== ""){
-			$scope.contactInformation.id = data.id;
-			callCompanyCardServices();
+			//to check if id is defined or not before save
+			var contactInfoAvailable = $scope.contactInformation.id ? true : false;
+			$scope.contactInformation.id = data.id;	
+			if(!contactInfoAvailable){
+				callCompanyCardServices();
+			}		
 		}
 		else if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
 			$scope.contactInformation.id = $stateParams.id;
