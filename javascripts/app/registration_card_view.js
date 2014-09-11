@@ -628,7 +628,7 @@ var RegistrationCardView = function(viewDom) {
 	
 	// Room charge disable button click
 	this.roomChargeBtnClicked = function(){
-		that.myDom.find("#no-post-room-charge-value").attr("data-no-post", "false");
+		that.myDom.find("#no-post-room-charge-value").attr("data-no-post", "true");
 
 		
         that.myDom.find("#room-charge-btn").removeClass("green").addClass("red");
