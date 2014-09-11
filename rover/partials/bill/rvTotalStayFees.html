@@ -86,6 +86,7 @@
 				<tr>
 					<!-- %th Type -->
 					<th><span translate>DATE</span> </th>
+					<th><span translate>CHARGE_CODE</span></th>
 					<th><span translate>DESCRIPTION</span></th>
 					<th><span translate>FEES</span></th>
 					<th><span translate>CREDITS</span></th>
@@ -165,6 +166,12 @@
 			<tbody>
 				<tr class="active edit" ng-repeat="feesData in totalFeesArray.fees_details">
 					<td> {{feesData.date | date:'MM-dd-yyyy'}}</td>
+					<td> 
+						<span ng-repeat="description in feesData.description">
+							{{description.charge_code}}
+							<br>
+						</span> 
+					</td>
 					<td> 
 						<span ng-repeat="description in feesData.description">
 							{{description.fees_desc}}
