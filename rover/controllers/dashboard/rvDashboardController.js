@@ -15,7 +15,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 	
     var init =  function(){
 	
-       
 		
           //setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";
@@ -151,7 +150,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         var data = {};
         data.is_late_checkout_only = true;      
         $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    };    
+    };  
+
 }]);
 
     
