@@ -87,8 +87,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			hideScrollbar: false
 		});
 
-		$scope.setScroller('stayDates', {			
-			scrollX: true,			
+		$scope.setScroller('stayDates', {
+			scrollX: true,
 			scrollY: false
 		});
 
@@ -1149,6 +1149,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.updateDayOccupancy = function(occupants) {
 			$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests[occupants] = parseInt($scope.stateCheck.selectedStayDate.guests[occupants]);
+			/**
+			 * CICO-8504
+			 * In case of multiple rates selected, the side bar and the reservation summary need to showcase the first date's occupancy!
+			 *
+			 */
+			if ($scope.reservationData.arrivalDate == $scope.stateCheck.dateModeActiveDate) {
+				var occupancy = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests;
+				$scope.reservationData.rooms[$scope.activeRoom].numAdults = occupancy.adults;
+				$scope.reservationData.rooms[$scope.activeRoom].numChildren = occupancy.children;
+				$scope.reservationData.rooms[$scope.activeRoom].numInfants = occupancy.infants;
+			}
+
 			if ($scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
 				//repopulate the room and rates to suit the current day
 				init();
