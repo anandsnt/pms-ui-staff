@@ -134,8 +134,7 @@ sntRover.controller('RVPostChargeController',
 			// must have delay
 			$timeout(function() {
 				$scope.chargeGroup = 'FAV';
-				$scope.filterbyChargeGroup();
-				$scope.refreshScroller('items_list');	
+				$scope.filterbyChargeGroup();				
 			}, 500);
 
 
