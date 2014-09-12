@@ -12,6 +12,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms.json';	
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+			console.log(JSON.stringify(data));
 			deferred.resolve(data);
 		},function(errorMessage){
 			console.log('failed');
@@ -46,6 +47,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms/';
 		
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+			
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
