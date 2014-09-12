@@ -93,3 +93,13 @@ function isEmpty(obj) {
 }
 
 
+var DateFormatInfoMappings = {
+
+    'DD-MM-YYYY': 'dd-MM-yyyy',
+    'DD/MM/YYYY': 'dd/MM/yyyy'
+    
+};
+
+var getDateFormat = function(dateFormat) {
+    return DateFormatInfoMappings[dateFormat];
+};
