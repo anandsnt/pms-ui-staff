@@ -18,8 +18,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
 		};
 		
-		 // var shouldShowAuthorize = backView.find("#registrationcard_main").attr("data-should-show-authorize"); 
-		// console.log("+++++++++++++++"+shouldShowAuthorize);
     	
     };
     
@@ -53,10 +51,12 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		   		$("#authorize-card").parent().parent().show();
 		   		$("#authorize-card").parent().addClass("checked");
 		   		$("#auth-card").addClass("checked");
+		   		$("#authorize-card").attr("checked", true);
 		   } else {
 		   		$("#authorize-card").parent().parent().hide();
 		   		$("#authorize-card").parent().removeClass("checked");
 		   		$("#auth-card").removeClass("checked");
+		   		$("#authorize-card").attr("checked", false);
 		   }
 	  }, 500);
 	  
