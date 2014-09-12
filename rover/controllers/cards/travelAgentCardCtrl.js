@@ -1,5 +1,5 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout', 'RVCompanyCardSrv','ngDialog',
-	function($scope,$rootScope, $timeout, RVCompanyCardSrv,ngDialog) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout', 'RVCompanyCardSrv','ngDialog', '$filter',
+	function($scope,$rootScope, $timeout, RVCompanyCardSrv,ngDialog, $filter) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
@@ -10,7 +10,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			$event.stopImmediatePropagation();
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 				if ($scope.viewState.isAddNewCard) {
-					$scope.errorMessage = ["Please save Travel Agent Card first"];
+					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
 				} else {
 					saveContactInformation($scope.contactInformation);
 					$scope.$broadcast("contractTabActive");
