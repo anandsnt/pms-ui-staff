@@ -1,9 +1,16 @@
 
 module.exports = function(grunt) {
+    var paths = {
+        dist: 'dev',
+        src: {
+            admin: 'admin/',
+            rover: 'rover/'
+        }
+    };
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-
+    paths: paths,
     clean :{
         cwd : 'build',
         build :{
@@ -34,8 +41,7 @@ module.exports = function(grunt) {
 		  install: {
 		  }
 	},
-	concat: {
-		
+	concat: {		
 	   roverEnglishJson: {
             src: ['rover/rvLocales/en/*.json'],
             dest: 'rover/rvLocales/EN.json',
@@ -80,11 +86,19 @@ module.exports = function(grunt) {
                 separator: ','
             }
         }
-		
-
+    },
+    watch: {
+    files: ['<%= paths.src.admin %>/{,**/}*.js',
+            '<%= paths.src.rover %>/{,**/}*.js']
+    },
+    tasks: ['jshint'],
+    options: {
+        livereload: true
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-bower-task');
