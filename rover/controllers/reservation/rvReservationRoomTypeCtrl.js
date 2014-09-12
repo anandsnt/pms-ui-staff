@@ -1161,10 +1161,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.reservationData.rooms[$scope.activeRoom].numInfants = occupancy.infants;
 			}
 
-			if ($scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
-				//repopulate the room and rates to suit the current day
-				init();
+			if (!$scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
+				$scope.preferredType = "";
+				// TODO : Reset other stuff as well
+				$scope.stateCheck.rateSelected.oneDay = false;
+				$scope.stateCheck.rateSelected.allDays = false;
+				_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate) {
+					stayDate.rate = {
+						id: ""
+					}
+				});
 			}
+			init();
 		}
 
 		init(true);
