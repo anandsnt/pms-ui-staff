@@ -48,10 +48,11 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 */
 	$scope.addNewClicked = function() {
 
-		$scope.isAdd = true;
+		$scope.currentClickedElement = -1;
 		$scope.isAddTax = false;
 		var fetchNewDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
+			$scope.isAdd = true;
 			$scope.prefetchData = {};
 			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
@@ -66,7 +67,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 */
 	$scope.editSelected = function(index, value) {
 		$scope.isAddTax = false;
-		$scope.currentClickedElement = index;
+		$scope.isAdd = false;
 		$scope.editId = value;
 		var data = {
 			'editId' : value
@@ -74,6 +75,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 
 		var editSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
+			$scope.currentClickedElement = index;
 			$scope.prefetchData = {};
 			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
