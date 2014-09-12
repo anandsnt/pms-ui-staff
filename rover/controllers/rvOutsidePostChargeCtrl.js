@@ -9,7 +9,7 @@ sntRover.controller('RVOutsidePostChargeController',
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
-			
+			$scope.reservationsArray = [];
 			$scope.init = function(){
 				// quick ref to fetched items
 				// and chosen one from the list
@@ -38,6 +38,8 @@ sntRover.controller('RVOutsidePostChargeController',
 			
 			$scope.init();
 			$scope.setScroller('result_showing_area_post_charg');
+			$scope.roomSearchStatus = false;
+			$scope.guestCompanySearchStatus = false;
 			/**
 			* function used for refreshing the scroller
 			*/
@@ -48,7 +50,7 @@ sntRover.controller('RVOutsidePostChargeController',
 			};
 	
 			$scope.searchForResultsSuccess = function(data){
-				console.log("successs");
+	
 				$scope.showInitialSearchScreen = false;
 				$scope.$emit( 'hideLoader' );
 				$scope.reservationsArray = data;
@@ -96,12 +98,16 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showSearchScreen = false;
 			};
 			$scope.showHideInitialSearchScreen = function(){
-				$scope.showInitialSearchScreen = true;
-				$scope.showSearchScreen = true;
-				$scope.itemsVisible = false;
+				if($scope.reservationsArray.length == 0){
+					$scope.showInitialSearchScreen = true;
+					$scope.showSearchScreen = true;
+					$scope.itemsVisible = false;
+				}
+				
 			};
 			$scope.successGetBillDetails = function(data){
 				$scope.$emit( 'hideLoader' );
+				data.isFromOut = true;
 				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
 			};
 			$scope.clickedReservationToPostCharge = function(reservationId){
@@ -294,6 +300,19 @@ sntRover.controller('RVOutsidePostChargeController',
 			    $scope.guestHasNotCheckedin = false;
 				$scope.chargePosted = true;
 			});
+			$scope.keyDownRoom = function(){
+				$scope.roomSearchStatus = true;
+			};
+			$scope.keyBlurRoom = function(){
+				$scope.roomSearchStatus = false;
+			};
+			$scope.keyDownGuestCompany = function(){
+				$scope.guestCompanySearchStatus = true;
+			};
+			$scope.keyBlurGuestCompany = function(){
+				$scope.guestCompanySearchStatus = false;
+			};
+			
 		}
 	]
 );
