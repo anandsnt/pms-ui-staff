@@ -18,6 +18,9 @@ sntRover.controller('RVPostChargeController',
 			$scope.isResultOnFetchedItems = true;
 			$scope.isOutsidePostCharge = false;
 			
+			var scrollerOptions = {click: true};
+  			$scope.setScroller ('items_list', scrollerOptions);
+  			$scope.setScroller ('items_summary', scrollerOptions);
 			// set the default bill number
 			$scope.successGetBillDetails = function(data){
 				$scope.$emit( 'hideLoader' );
@@ -47,7 +50,8 @@ sntRover.controller('RVPostChargeController',
 					} else {
 						item.show = false;
 					}
-				}
+				}	
+				$scope.refreshScroller('items_list');				
 			};
 
 			// filter the items based on the search query
@@ -105,7 +109,7 @@ sntRover.controller('RVPostChargeController',
 						}
 							
 					}
-					
+				$scope.refreshScroller('items_list');					
 				//}
 			};
 
@@ -122,6 +126,8 @@ sntRover.controller('RVPostChargeController',
 				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					$scope.fetchedChargeCodes[i].show = true;
 				};
+				$scope.refreshScroller('items_summary');	
+				$scope.refreshScroller('items_list');	
 			};
 
 			// make favorite selected by default
@@ -129,6 +135,7 @@ sntRover.controller('RVPostChargeController',
 			$timeout(function() {
 				$scope.chargeGroup = 'FAV';
 				$scope.filterbyChargeGroup();
+				$scope.refreshScroller('items_list');	
 			}, 500);
 
 
@@ -194,6 +201,7 @@ sntRover.controller('RVPostChargeController',
 				$scope.selectedChargeItem = item;
 
 				calNetTotalPrice();
+				$scope.refreshScroller('items_summary');
 			};
 
 			/**
@@ -215,6 +223,7 @@ sntRover.controller('RVPostChargeController',
 
 				// recalculate net price
 				calNetTotalPrice();
+				$scope.refreshScroller('items_summary');
 			};
 
 			/**
