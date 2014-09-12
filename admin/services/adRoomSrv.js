@@ -2,7 +2,9 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
    /*
 	* service class for room related operations
 	*/
+	var that = this;
 
+    this.roomsArray = {};
    /*
     * getter method to fetch rooms list
     * @return {object} room list
@@ -10,18 +12,24 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	this.fetchRoomList = function(){
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms.json';	
+		if(!isEmptyObject(that.roomsArray)){
+			deferred.resolve(that.roomsArray);
+		} else {
+			ADBaseWebSrv.getJSON(url).then(function(data) {
+				that.saveRoomsArray(data);
+				deferred.resolve(data);
+			},function(errorMessage){
+				console.log('failed');
+				deferred.reject(errorMessage);
+			});
+		}
 		
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-			console.log(JSON.stringify(data));
-			deferred.resolve(data);
-		},function(errorMessage){
-			console.log('failed');
-			deferred.reject(errorMessage);
-		});
 		return deferred.promise;
 	};
-
-  /*
+	this.saveRoomsArray = function(data){
+		that.roomsArray = data;
+	};
+   /*
     * getter method for the room details of hotel
     * @return {object} room details
     */
@@ -92,6 +100,22 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		});
 		return deferred.promise;
 	};
+	
+	
+	this.updateRoomDataOnUpdate = function(roomId, param, updatedValue){
+		angular.forEach(that.roomsArray.rooms, function(value, key) {
+	     	if(value.id == roomId){
+	     		if(param == "room_number"){
+	     			value.room_number = updatedValue;
+	     		}
+	     		if(param == "room_type"){
+	     			value.room_type = updatedValue;
+	     		}
+	     		
+	     	}
+	    });
+	};
+	
    /*
     * To add new chain 
     * @param {object} new chain details
