@@ -7,7 +7,8 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationCardSrv',
 	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
-	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv) {
+	'$filter',
+	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -227,7 +228,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.invokeApi(RVReservationCardSrv.modifyRoomQueueStatus, data, $scope.successRemoveFromQueueCallBack);
 		};
 
-		var promptCancel = function(penalty) {
+		var promptCancel = function(penalty, nights) {
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservation.html',
 				controller: 'RVCancelReservation',
@@ -235,7 +236,14 @@ sntRover.controller('reservationActionsController', [
 				data: JSON.stringify({
 					state: 'CONFIRM',
 					cards: false,
-					penalty: penalty
+					penalty: penalty,
+					penaltyText: (function() {
+						if (nights) {
+							return penalty + (penalty > 1 ? " nights" : " night");
+						} else {
+							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+						}
+					})()
 				})
 			});
 		}
@@ -249,42 +257,27 @@ sntRover.controller('reservationActionsController', [
 			var checkCancellationPolicy = function() {
 				var onCancellationDetailsFetchSuccess = function(data) {
 					$scope.$emit('hideLoader');
-					var cancellationCharge = 0.0;
-					if (data && data.total_count > 0) {
-						/**
-						 * TODO : Calculate the penalty amount here
-						 * New API to return an array of cancellation policies
-						 */
-						var cancellationPolicies = data.results;
+					var nights = false;
+					var cancellationCharge = 0;
 
-						//to ensure same policy is not applied twice, putting the IDs of applied policies.
-						//this bucket would be used to filter out thus avoiding duplicating a policy application
-						var calculatedIds = [];
+					// Sample Response from api/reservations/:id/policies inside the results hash
+					// calculated_penalty_amount: 40
+					// cancellation_policy_id: 36
+					// penalty_type: "percent"
+					// penalty_value: 20
 
-
-						// The above two lines are used to emulate an array which would be the API response
-						angular.forEach(cancellationPolicies, function(policy) {
-							if (!_.contains(calculatedIds, policy.id)) {
-								calculatedIds.push(policy.id);
-								var numRateNights = _.where($scope.reservationData.reservation_card.stay_dates, {
-									rate_id: policy.associated_rate_id
-								}).length;
-
-								if (policy.amount_type == "amount") {
-									cancellationCharge += parseFloat(policy.amount);
-								} else if (policy.amount_type == "percent") {
-									var multiplicity = 1; // DEFAULT TO PER_STAY
-									if (policy.post_type_id == 2) {
-										multiplicity = numRateNights;
-									}
-									cancellationCharge += parseFloat(multiplicity * parseFloat(policy.amount / 100) * parseFloat($scope.reservationData.reservation_card.total_rate));
-								} else if (policy.amount_type == "day") {
-									cancellationCharge += parseFloat(policy.amount) * numRateNights;
-								}
-							}
-						});
+					if (typeof data.results != 'undefined') {
+						if (data.results.penalty_type == 'day') {
+							// To get the duration of stay
+							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
+							// Make sure that the cancellation value is -lte thatn the total duration
+							cancellationCharge = stayDuration > data.results.penalty_value ? data.results.penalty_value : stayDuration;
+							nights = true;
+						} else {
+							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
+						}
 					}
-					promptCancel(cancellationCharge);
+					promptCancel(cancellationCharge, nights);
 
 				}
 				var onCancellationDetailsFetchFailure = function(error) {
