@@ -55,12 +55,12 @@
 						<div class="inner"> {{reservedRoom}}</div>
 					</td>
 				</tr>	
-				<tr>
+				<tr ng-hide="true">
 					<th class="">[Overbooking]</th>
 					<td ng-repeat="overBookableRoom in data.overBookableRooms track by $index">
 						<div class="inner"> [{{overBookableRoom}}]</div>
 					</td>
-				</tr>																		<tr>
+				</tr>																		<tr ng-hide="true">
 					<th class="">[Available rooms with overbooking]</th>
 					<td ng-repeat="availableRoomsWithBookableRoom in data.availableRoomsWithBookableRooms track by $index">
 						<div class="inner"> [{{availableRoomsWithBookableRoom}}]</div>

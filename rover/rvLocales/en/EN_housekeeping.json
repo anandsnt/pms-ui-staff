@@ -7,7 +7,7 @@
 
 	"OWS_ERROR_MSG": "The PMS Interface is not responding. StayNTouch Apps have been disabled until a connection has been re-established. Please continue to re-try or contact your PMS vendor.",
 	
-	"ROOM_STATUS": "Rooms Status",
+	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
 	"FILTER_ROOMS": "Filter rooms",
 	"CLEAR_QUERY": "Clear query",
