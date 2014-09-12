@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems',
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -51,8 +51,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
+    $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
-
     /*
      * hotel Details
      */
@@ -149,7 +149,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             action: ""
           }, {
             title: "MENU_POST_CHARGES",
-            action: ""
+            action: "",
+            actionPopup:true,
+             menuIndex:"postcharges"
           }, {
             title: "MENU_CASHIER",
             action: ""
@@ -267,7 +269,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }];
 
     }
-    
 
     $scope.$on("updateSubMenu", function(idx, item) {
       if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
@@ -327,9 +328,23 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.menuOpen = false;
       $scope.showSubMenu = false;
     };
+	$scope.fetchAllItemsSuccessCallback = function(data){
+		$scope.$emit('hideLoader');
 
+		$scope.fetchedData = data;
+
+		ngDialog.open({
+			template: '/assets/partials/postCharge/outsidePostCharge.html',
+			controller: 'RVOutsidePostChargeController',
+			scope: $scope
+		});
+	};
     $scope.subMenuAction = function(subMenu){
       $scope.toggleDrawerMenu();
+      if(subMenu === "postcharges"){
+      	$scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
+      	
+      }
       if(subMenu === "endOfDay"){
          ngDialog.open({
             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
