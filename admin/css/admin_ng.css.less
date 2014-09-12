@@ -564,6 +564,77 @@ height: 410px;
     text-transform: none;
 }
 
+/*Tooltip indicator sample...*/
+.tooltip-indicator {
+    display: inline-block;
+    border: none;
+    height: 22%;
+    width: 22%;
+    padding: 0px;
+    padding-left: 2%;
+    margin: 0px;
+    background-color: transparent;
+    background-image: url('/assets/admin/qm-icon.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: 5%;
+    position: relative;
+    cursor: pointer;
+}
+
+/*BEGIN -- For Fixed Content Header Update*/
+header.content-title {
+    position: fixed;
+    background-image: url(http://localhost:3000/assets/texture.png);
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: repeat;
+    background-repeat-y: repeat;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: rgb(252, 252, 252);
+    margin-top: -25px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-left: 20px;
+    min-height: 60px;
+    left: 19.35483870967742%;
+    right: 20px;
+    z-index: 1199;
+}
+
+/*header.content-header-fixed .content-title-fixed
+{
+    float: left;
+    overflow: hidden;
+}*/
+
+/*header.content-header-fixed a.action {
+    float: left;
+}*/
+
+header.content-title a.action.back {
+    background-position: 0 -585px;  
+}
+
+section.content-scroll {
+    position: relative;
+    top: 50px;
+    display: table;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    overflow: auto;
+    z-index: 1099;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+}
+
+/*END -- For Fixed Content Header Update*/
+
 .rate_end_delete{
   margin-left:51%;
   margin-top:30px;
