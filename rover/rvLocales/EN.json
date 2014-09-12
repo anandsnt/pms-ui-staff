@@ -235,7 +235,7 @@
 
 	"OWS_ERROR_MSG": "The PMS Interface is not responding. StayNTouch Apps have been disabled until a connection has been re-established. Please continue to re-try or contact your PMS vendor.",
 	
-	"ROOM_STATUS": "Rooms Status",
+	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
 	"FILTER_ROOMS": "Filter rooms",
 	"CLEAR_QUERY": "Clear query",
@@ -351,7 +351,7 @@
     "RETURN_TO_DASHBOARD": "return to dashboard",
     "CREATE_NEW_FOR_GUEST": "create new for this guest",
     "CANCEL_RESERVATION": "Cancel Reservation",
-    "STAY_CARD_TITLE" : "Staycard",
+    "STAY_CARD_TITLE" : "Stay Card",
     "CODE": "Code",
     "TYPE" : "Type",
     "RESERVATION_TYPE_LABEL":"Reservation type",
@@ -587,7 +587,7 @@
     "BALANCE_AS_OF" : "Balance (as of",
     "GUEST_BALANCE_AS_OF": "Guest Balance (as of",
     "MOVE_TO_BILL" : "Move to bill",
-    "WILL_CREATE_NEW_BILL":"Will create new bill",
+    "NEW_BILL":"new bill",
     "EDIT": "Edit",
     "ALL_CHARGE_GROUPS": "All Charge Groups",
     "FAVORITE": "Favorite",
@@ -649,6 +649,9 @@
     "BUSSINESS_DATE_HAS_CHANGED":"The Business Date has changed.",
     "ACCOUNT_ID_NIL_MESSAGE" : "No Company or Travel Agent card linked to this bill window. Please link card for Direct Bill check out.",
     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "ADD_PAYMENT_TYPE":"Add Payment Type",
+    "BUSSINESS_DATE_HAS_CHANGED":"The Business Date has changed.",
     "NO_GUEST_ROOM_SELECTED":"No guest/room selected!",
     "SELECT_GUEST_ROOM":"You need to select guest or room number!",
     "ADD_GUEST_ROOM":"Add guest/room",
@@ -670,6 +673,4 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"
-
-}
+    "POST_CHARGES_LABEL": "Post Room Charges"}
