@@ -177,7 +177,7 @@
 				<div class="select">
 					<select ng-model="data.hotel_date_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
 						<option value=""> Hotel Date Format </option>
-						<option ng-repeat="formats in data.date_formats"  ng-selected="formats.value==data.hotel_date_format">{{formats.value}}</option>
+						<option ng-repeat="formats in data.date_formats"  ng-selected="formats.id==data.hotel_date_format">{{formats.value}}</option>
 					</select>
 				</div>
 			</div>
