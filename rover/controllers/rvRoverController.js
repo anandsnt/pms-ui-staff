@@ -60,8 +60,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+    $rootScope.dateFormat = hotelDetails.date_format.value;
     console.log("currency code "+hotelDetails.currency.value);
     console.log("currency symbol "+$rootScope.currencySymbol);
+    console.log("date format "+$rootScope.dateFormat);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
 
 
