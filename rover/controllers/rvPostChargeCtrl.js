@@ -24,6 +24,7 @@ sntRover.controller('RVPostChargeController',
 			// set the default bill number
 			$scope.successGetBillDetails = function(data){
 				$scope.$emit( 'hideLoader' );
+				data.isFromOut = false;
 				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
 			};
 			if(!$scope.passActiveBillNo && $scope.reservation_id){
@@ -522,6 +523,9 @@ sntRover.controller('RVPostChargeController',
 			
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
+				if(data.isFromOut){
+					$scope.billNumber = 1;
+				}
 			});
 			
 			$scope.$on('POSTCHARGE', function(event, data) {

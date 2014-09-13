@@ -32,14 +32,14 @@
     <fieldset id="apply-penalty" class="credit-card" ng-if="ngDialogData.state == 'PENALTY'">
         <strong class="h2 message" ng-show="ngDialogData.cards" translate>SELECT_OR_ADD_CREDIT_CARD</strong>
         <strong class="h2 message" ng-hide="ngDialogData.cards" translate>ADD_NEW_CARD</strong>
-        <span class="text">Card will be charged with a {{currencySymbol}}{{ngDialogData.penalty | number:2}} penalty.</span>
+        <span class="text">{{'PENALTY_PRE'| translate}} {{ ngDialogData.penaltyText }} {{'PENALTY_POST' | translate}}.</span>
 
         <ul id="card-options" class="modal-options" ng-show="ngDialogData.cards">
             <li ng-class="{active:cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = true" translate>EXISTING_CARDS</li>
             <li ng-class="{active:!cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = false" translate>ADD_NEW_CARD</li>
         </ul>
 
-        <div id="select-card" class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
+        <div class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
             <div id="available-cards" class="cards-list scrollable" ng-iscroll="cardsList"  ng-iscroll-delay="500">
                 <div class="cards-list-container">
                     <div class="wrapper" ng-repeat="card in cardsInPaymentMethods">
