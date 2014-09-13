@@ -462,7 +462,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
 		// pass down active bill no
-		$scope.passActiveBillNo = activeBillNo;
+		/*************************************************/
+		/* commented out as per requirement in CICO-6094 */
+		/*************************************************/
+		//$scope.passActiveBillNo = activeBillNo;
+		/*************************************************/
 
 		// translating this logic as such from old Rover
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
