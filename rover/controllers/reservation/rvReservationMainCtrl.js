@@ -7,7 +7,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
 
-
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
@@ -250,8 +249,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
                     if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '') {
                         var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
-                        var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
-                        var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
+                        var numAdults = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.adults);
+                        var numChildren = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.children);
 
                         if (rateToday.single == null && rateToday.double == null && rateToday.extra_adult == null && rateToday.child == null) {
                             rateConfigured = false;
@@ -733,21 +732,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
 
             });
-            // appending departure date for UI handling since its not in API response
-            $scope.reservationData.stayDays.push({
-                date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
-                dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
-                day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
-            });
+            
+            // appending departure date for UI handling since its not in API response IFF not a day reservation
+            if (parseInt($scope.reservationData.numNights) > 0) {
+                $scope.reservationData.stayDays.push({
+                    date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
+                    day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
+                });
 
-            $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
-                guests: {
-                    adults: "",
-                    children: "",
-                    infants: ""
-                },
-                rate: {
-                    id: ""
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
+                    guests: {
+                        adults: "",
+                        children: "",
+                        infants: ""
+                    },
+                    rate: {
+                        id: ""
+                    }
                 }
             }
 
@@ -774,7 +776,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
                 var currentDayDetails = _.where(reservationDetails.reservation_card.stay_dates, {
-                    date: $rootScope.businessDate
+                    date: dateFilter(new tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
                 });
                 if (currentDayDetails.length > 0) {
                     $scope.reservationData.rooms[0].numAdults = currentDayDetails[0].adults;
