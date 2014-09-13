@@ -54,9 +54,9 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
-        if(type === 'ATTACHED_ENTITY'){
+        if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.attachedEntities[index];
-            $scope.selectedEntity.is_new = false; 
+            $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false; 
             $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
         }
         else if(type === 'RESERVATIONS'){
@@ -83,10 +83,10 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "id": data.id,
 			    "name": data.account_name,
 			    "bill_no": "",
-			    "images": {
-		            "primary": data.company_logo,
-		            "secondary": ""
-		        },
+			    "images": [{
+                    "is_primary":true, 
+		            "guest_image": data.company_logo,
+		        }],
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "is_new" : true
