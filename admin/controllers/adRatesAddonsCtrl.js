@@ -218,7 +218,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		};
 
 		// the listner must be destroyed when no needed anymore
-		// $scope.$on( '$destroy', updateBind );
+		$scope.$on( '$destroy', updateBind );
 
 		$scope.editSingle = function() {
 			$scope.isAddMode   = false;
