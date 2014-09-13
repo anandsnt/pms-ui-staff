@@ -132,6 +132,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.$apply();
 				}
+				$scope.guestCardHeight = $(this).height();
 			},
 			stop: function(event, ui) {
 				preventClicking = true;
@@ -236,21 +237,35 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var element = $event.target;
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
+			//if the main menu is open close the same
+			if ($scope.isMenuOpen()) {
+				$scope.closeDrawer();
+				return false;
+			}
 			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])) {
 				if (parseInt($scope.eventTimestamp)) {
 					if (($event.timeStamp - $scope.eventTimestamp) < 100) {
 						return;
 					}
 				}
-				if (!$scope.guestCardVisible) {
-					$scope.openGuestCard();
-					$scope.$broadcast('CONTACTINFOLOADED');
-					$scope.$emit('GUESTCARDVISIBLE', true);
+				var currentHeight = $scope.guestCardHeight;
+				if (currentHeight == resizableMinHeight || currentHeight == resizableMaxHeight) {
+					// open a closed card
+					if (!$scope.guestCardVisible) {
+						$scope.openGuestCard();
+						$scope.$broadcast('CONTACTINFOLOADED');
+						$scope.$emit('GUESTCARDVISIBLE', true);
+					} else if ($scope.guestCardVisible && currentHeight == resizableMaxHeight) { // close an opened card
+						$scope.closeGuestCard();
+						$scope.$emit('GUESTCARDVISIBLE', false);
+					}
 				} else {
+					// mid way click : close guest card
 					$scope.closeGuestCard();
 					$scope.$emit('GUESTCARDVISIBLE', false);
-					$scope.handleDrawClosing();
 				}
+
+
 			} else {
 				if (getParentWithSelector($event, document.getElementById("guest-card-content"))) {
 					/**
@@ -273,7 +288,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.$broadcast('saveContactInfo');
 				$scope.$broadcast('SAVELIKES');
 			}
-			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1) {
+			if ($(targetElement).closest(".rover-header").length < 1 && $(targetElement).closest(".stay-card-alerts").length < 1 && $(targetElement).closest(".guest-card").length < 1 && $(targetElement).closest(".ngdialog").length < 1 && $(targetElement).find("#loading").length < 1 && $(targetElement).closest("#loading").length < 1 && $(targetElement).closest('.nav-toggle').length < 1) {
 				$scope.closeGuestCard();
 			}
 		};

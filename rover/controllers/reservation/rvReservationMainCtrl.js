@@ -1,5 +1,6 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
+
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
@@ -772,12 +773,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
-            // Find if midstay
+            // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
+                /**
+                 * CICO-8504
+                 * Initialize occupancy to the last day
+                 * If midstay update it to that day's
+                 * 
+                 */
+                var lastDaydetails = _.last(reservationDetails.reservation_card.stay_dates);
+                $scope.reservationData.rooms[0].numAdults = lastDaydetails.adults;
+                $scope.reservationData.rooms[0].numChildren = lastDaydetails.children;
+                $scope.reservationData.rooms[0].numInfants = lastDaydetails.infants;
+
                 var currentDayDetails = _.where(reservationDetails.reservation_card.stay_dates, {
                     date: dateFilter(new tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
                 });
+
                 if (currentDayDetails.length > 0) {
                     $scope.reservationData.rooms[0].numAdults = currentDayDetails[0].adults;
                     $scope.reservationData.rooms[0].numChildren = currentDayDetails[0].children;
