@@ -6,7 +6,7 @@
 			   <ul class="wrapper">
 			      
 			      <li ng-repeat = "route in routes" >
-			         <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntity($index,'ATTACHED_ENTITY')">
+			         <a href="#route-details" ng-class = "getEntityRole(route)" ng-click= "selectEntity($index,'ROUTES')">
 			            
 			            <figure class="guest-image" ng-class = "getEntityIconClass(route)" ng-if="(escapeNull(route.images[0].image)!='' && route.images[0].image != null)">
 							<img src="{{route.images[0].image}}" alt="" />
