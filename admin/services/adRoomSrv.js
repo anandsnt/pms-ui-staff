@@ -5,6 +5,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	var that = this;
 
     this.roomsArray = {};
+    this.roomTypesArray = [];
    /*
     * getter method to fetch rooms list
     * @return {object} room list
@@ -37,6 +38,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/new.json';	
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+			
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -80,6 +82,9 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
+	};
+	this.saveRoomTypesArray = function(data){
+		that.roomTypesArray = data.room_types;
 	};
    
    /*
