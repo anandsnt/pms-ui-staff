@@ -101,7 +101,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.errorMessage = errorMessage[0];
             };
 			$scope.saveData.user_id = $scope.reservationData.user_id;
 			$scope.saveData.session_id = MLISessionId;

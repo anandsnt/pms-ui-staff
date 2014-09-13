@@ -200,11 +200,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchBillsForReservation = function(){
         
             var successCallback = function(data) {
+                $scope.bills = [];
+                $scope.$parent.bills = [];
                if(data.length > 0){
                     $scope.first_bill_id = data[0].id;
                     if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                         $scope.bills.push(data[0]);
-                        // $scope.$parent.bills.push(data[0]);
+                        $scope.$parent.bills.push(data[0]);
                     }else{
                         data.splice(0, 1);
                         $scope.bills = data;
@@ -212,8 +214,6 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     }
                     $scope.selectedEntity.to_bill = $scope.bills[0].id;
                     $scope.fetchAvailableChargeCodes();
-                }else{
-                    $scope.bills = [];
                 }
             };
             var errorCallback = function(errorMessage) {
