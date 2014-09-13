@@ -4,8 +4,8 @@ sntRover.controller('RVPostChargeController',
 		'$scope',
 		'RVChargeItems',
 		'RVSearchSrv',
-		'$timeout',
-		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout) {
+		'$timeout','RVBillCardSrv',
+		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,RVBillCardSrv) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -476,6 +476,12 @@ sntRover.controller('RVPostChargeController',
 					total: $scope.net_total_price,
 					items: items
 				};
+				/****    CICO-6094    **/
+				var needToCreateNewBill = false;
+				if($scope.billNumber > $scope.fetchedData.bill_numbers.length){
+					needToCreateNewBill = true;
+				}
+				/****    CICO-6094    **/
 
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
@@ -488,8 +494,26 @@ sntRover.controller('RVPostChargeController',
 						$scope.$emit( 'CHARGEPOSTED' );
 					}
 				};
-
-				$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+				/****    CICO-6094    **/
+				if(!needToCreateNewBill){
+					$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+				}
+				else{
+						var billData ={
+						"reservation_id" : $scope.reservation_id,
+						"bill_number" : $scope.billNumber
+						};
+					/*
+					 * Success Callback of create bill action
+					 */
+					var createBillSuccessCallback = function(){
+						$scope.$emit('hideLoader');			
+						//Fetch data again to refresh the screen with new data
+						$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+					};
+					$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+				}
+				/****    CICO-6094    **/
 			};
 			
 			$scope.searchByRoomNumber = function(){
