@@ -218,7 +218,7 @@ admin.controller('ADRatesAddonsCtrl', [
 		};
 
 		// the listner must be destroyed when no needed anymore
-		$scope.$on( '$destroy', updateBind );
+		// $scope.$on( '$destroy', updateBind );
 
 		$scope.editSingle = function() {
 			$scope.isAddMode   = false;
@@ -308,8 +308,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// convert dates to system format yyyy-MM-dd
 			// if not date null should be passed - read story CICO-7287
-			singleAddonData.begin_date = $scope.isStartDateSelected ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
-			singleAddonData.end_date = $scope.isEndDateSelected? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
+			singleAddonData.begin_date = $scope.singleAddon.begin_date ? $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'yyyy-MM-dd') : null;
+			singleAddonData.end_date = $scope.singleAddon.end_date? $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'yyyy-MM-dd') : null;
 
 
 	
