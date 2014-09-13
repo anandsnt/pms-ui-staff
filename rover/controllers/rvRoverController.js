@@ -560,7 +560,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     * Handles the bussiness date change completion
     */
     $rootScope.showBussinessDateChangedPopup = function() {
-
+        $rootScope.isBussinessDateChanging = false;
         // Hide loading message
         $scope.$emit('hideLoader');
         // if(!$rootScope.isBussinessDateChanged){
@@ -587,7 +587,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
     },
     response: function (response) {
         // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started && !$rootScope.isCurrentUserChangingBussinessDate){
+        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
            $rootScope.$emit('bussinessDateChangeInProgress');
         }       
         return response || $q.when(response);
