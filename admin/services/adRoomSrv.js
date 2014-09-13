@@ -38,7 +38,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/new.json';	
 		ADBaseWebSrv.getJSON(url).then(function(data) {
-			
+			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -57,6 +57,11 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms/';
 		
 		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+			var dataToAdd = {
+				"room_number": updateData.room_number,
+                "room_type": that.getRoomTypeName(updateData.room_type_id)
+			};
+			that.addToRoomsArray(dataToAdd);
 			
 			deferred.resolve(data);
 		},function(errorMessage){
@@ -64,7 +69,12 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		});
 		return deferred.promise;
 	};
-
+    /*
+	 * Add new room data to saved data
+	 */
+	this.addToRoomsArray = function(newData){
+		that.roomsArray.rooms.push(newData);
+	};
 
    /*
     * getter method for the details of room
@@ -77,6 +87,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms/'+roomId+'/edit.json';	
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
@@ -99,17 +110,30 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		var url = '/admin/hotel_rooms/'+id;	
 		
 		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+			that.updateRoomDataOnUpdate(id, "room_number", updateData.room_number);
+			that.updateRoomDataOnUpdate(id, "room_type", that.getRoomTypeName(updateData.room_type_id));
 			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
 	};
-	
+	/*
+	 * To get the rooom type name 
+	 */
+	this.getRoomTypeName = function(roomTypeId){
+		var roomTypeName = "";
+		angular.forEach(that.roomTypesArray, function(value, key) {
+	     	if(value.value == roomTypeId){
+	     		roomTypeName = value.name;
+	     	}
+	    });
+	    return roomTypeName;
+	};
 	
 	this.updateRoomDataOnUpdate = function(roomId, param, updatedValue){
 		angular.forEach(that.roomsArray.rooms, function(value, key) {
-	     	if(value.id == roomId){
+	     	if(value.room_id == roomId){
 	     		if(param == "room_number"){
 	     			value.room_number = updatedValue;
 	     		}
@@ -119,6 +143,7 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	     		
 	     	}
 	    });
+	   // console.log(JSON.stringify(that.roomsArray));
 	};
 	
    /*
