@@ -132,6 +132,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.$apply();
 				}
+				$scope.guestCardHeight = $(this).height();
 			},
 			stop: function(event, ui) {
 				preventClicking = true;
@@ -242,15 +243,21 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 						return;
 					}
 				}
-				if (!$scope.guestCardVisible) {
-					$scope.openGuestCard();
-					$scope.$broadcast('CONTACTINFOLOADED');
-					$scope.$emit('GUESTCARDVISIBLE', true);
+				var currentHeight = $scope.guestCardHeight;
+				if (currentHeight == resizableMinHeight || currentHeight == resizableMaxHeight) {
+					if (!$scope.guestCardVisible) {
+						$scope.openGuestCard();
+						$scope.$broadcast('CONTACTINFOLOADED');
+						$scope.$emit('GUESTCARDVISIBLE', true);
+					} else if ($scope.guestCardVisible && currentHeight == resizableMaxHeight) {
+						$scope.closeGuestCard();
+						$scope.$emit('GUESTCARDVISIBLE', false);
+					}
 				} else {
-					$scope.closeGuestCard();
-					$scope.$emit('GUESTCARDVISIBLE', false);
-					$scope.handleDrawClosing();
+					// mid way click : Open guest card
+					$scope.openGuestCard();
 				}
+
 			} else {
 				if (getParentWithSelector($event, document.getElementById("guest-card-content"))) {
 					/**
