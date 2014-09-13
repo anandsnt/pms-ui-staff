@@ -179,7 +179,7 @@
 					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>
 			</div>
-			<div id="items-listing" class="scrollable">
+			<div id="items-listing" class="scrollable" ng-iscroll="items_list">
 				<ul id="search-item-results" class="wrapper">
 					<li id="items-list" ng-repeat="each in fetchedItems" ng-show="each.show" ng-click="addItem(each)">
 						<a class="button white">
@@ -221,7 +221,7 @@
 				</div>
 			</div>
 			<div id="items-added" ng-show="isAnyChosen()">
-				<div id="items-summary" class="scrollable">
+				<div id="items-summary" class="scrollable"  ng-iscroll="items_summary">
 					
 					<ul class="wrapper">
 						<li ng-repeat="each in fetchedItems" ng-show="each.isChosen" ng-class="{'selected': each.item_name === selectedChargeItem.item_name}" ng-click="selectUnselect(each)">

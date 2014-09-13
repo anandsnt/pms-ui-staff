@@ -54,6 +54,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showInitialSearchScreen = false;
 				$scope.$emit( 'hideLoader' );
 				$scope.reservationsArray = data;
+				console.log("successssssssssssssssssssss")
 				oldSearchGuestText = $scope.search.guest_company_agent;
 				oldSearchRoomValue = $scope.search.room;
 				angular.forEach($scope.reservationsArray, function(value, key) {
@@ -254,6 +255,10 @@ sntRover.controller('RVOutsidePostChargeController',
 				}
 				else if($scope.cardAttached.reservation_status !== 'CHECKEDIN'){
 					$scope.guestHasNotCheckedin = true;
+				}
+				else {
+					$scope.reservation_id = $scope.cardAttached.id;
+					$scope.$broadcast('POSTCHARGE');
 				}
 			};
 			/*
