@@ -135,7 +135,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var data = {};
             data.id = $scope.reservationData.reservation_id;
-            data.to_bill = $scope.first_bill_id;
+            if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                        data.to_bill = $scope.first_bill_id;
+            }else{
+                data.to_bill = $scope.selectedEntity.to_bill;
+            }
+            data.is_new = $scope.selectedEntity.is_new;
+            
             
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableChargeCodes, data, successCallback, errorCallback);
     };	
@@ -162,7 +168,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var data = {};
             data.id = $scope.reservationData.reservation_id;
-            data.to_bill = $scope.first_bill_id;
+            if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                        data.to_bill = $scope.first_bill_id;
+            }else{
+                data.to_bill = $scope.selectedEntity.to_bill;
+            }
+            data.is_new = $scope.selectedEntity.is_new;
            
             $scope.invokeApi(RVBillinginfoSrv.fetchAvailableBillingGroups, data, successCallback, errorCallback);
     };	
@@ -189,11 +200,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.fetchBillsForReservation = function(){
         
             var successCallback = function(data) {
+                $scope.bills = [];
+                $scope.$parent.bills = [];
                if(data.length > 0){
                     $scope.first_bill_id = data[0].id;
                     if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                         $scope.bills.push(data[0]);
-                        // $scope.$parent.bills.push(data[0]);
+                        $scope.$parent.bills.push(data[0]);
                     }else{
                         data.splice(0, 1);
                         $scope.bills = data;
