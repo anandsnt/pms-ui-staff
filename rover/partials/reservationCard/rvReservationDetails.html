@@ -3,10 +3,10 @@
 	<div class="reservation-header">
 		<div class="data">
 			<span class="date"><span class="guest-status small-icon check-in">check-in</span>
-			{{reservationData.reservation_card.arrival_date|date:fulldayInWeek}}
+			{{reservationData.reservation_card.arrival_date|date:'EEEE'}}
 			{{reservationData.reservation_card.arrival_date|date:dateFormat}} </span>
 			<span class="date"><span class="guest-status small-icon check-out">check-out</span>
-			{{reservationData.reservation_card.arrival_date|date:fulldayInWeek}}
+			{{reservationData.reservation_card.departure_date|date:fulldayInWeek}}
 			{{reservationData.reservation_card.departure_date|date:dateFormat}} </span>
 		</div>
 		<div class="actions">
