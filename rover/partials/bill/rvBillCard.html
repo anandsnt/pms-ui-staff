@@ -109,7 +109,7 @@
 									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>
-							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10">
+							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10 && isStandAlone">
 							<a class="button with-icon brand-colors ng-binding ui-tabs-anchor add-new-bill-button" ng-click="createNewBill()"> 
 								<span class="icons icon-plus"></span> 
 							</a>

@@ -67,3 +67,29 @@
 .display-card-search{
   display: block !important;
 }
+
+.extended-post-charge{
+  height:635px !important;
+}
+.searchTextOrange{
+  color:#F6991B  !important;
+}
+@-webkit-keyframes postChargeOutside {
+ 0% {
+  height: 0;
+ }
+
+ 100% {
+  height: 100%;
+ }
+}
+.show-initial-search {
+  -webkit-animation: postChargeOutside 5s ease-in-out !important;
+}
+
+#search-cards-wrapper .cards-results-scrollable{
+  position: absolute;
+  top:125px;
+  bottom: 0;
+  left: 0;
+}
