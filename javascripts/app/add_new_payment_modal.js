@@ -262,6 +262,10 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var reservationStatus = $('#registration-content').attr('data-reservation-status');
 		
 		refreshVerticalScroll('#cc-payment');
+		var add_to_guest_card = "false";
+		if(that.myDom.find("#add-in-guest-card").parent().hasClass("checked")){
+			add_to_guest_card = "true";
+		}
 		//If it is a check-in reservation using card swipe from registration card, 
 		//do not update the server with card details. 
 		//Instead, save the details locally and pass the information while cheking in 
@@ -282,6 +286,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		    };
 		    sntapp.regCardData = data;
 		    sntapp.regCardData.doNotauthorizeCard = doNotauthorizeCard;
+		    sntapp.regCardData.add_to_guest_card = add_to_guest_card;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
 		}
@@ -319,10 +324,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			var reservation_id = getReservationId();
 			that.save_inprogress = true;
 			var webservice = new WebServiceInterface();
-			var add_to_guest_card = "false";
-			if(that.myDom.find("#add-in-guest-card").parent().hasClass("checked")){
-				add_to_guest_card = "true";
-			}
+			
 			
 		    var data = {
 				    reservation_id: reservation_id,

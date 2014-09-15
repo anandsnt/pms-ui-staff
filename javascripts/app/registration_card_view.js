@@ -299,7 +299,8 @@ var RegistrationCardView = function(viewDom) {
 						"name_on_card": sntapp.regCardData.name_on_card,
 						"card_expiry": sntapp.regCardData.card_expiry,	
 						"credit_card" : sntapp.regCardData.credit_card,
-						"no_post": no_post_room_charge 	
+						"no_post": no_post_room_charge 	,
+						"add_to_guest_card": sntapp.regCardData.add_to_guest_card
 					};
 					if(sntapp.regCardData.doNotauthorizeCard == "true"){
 						data.do_not_cc_auth = true;
