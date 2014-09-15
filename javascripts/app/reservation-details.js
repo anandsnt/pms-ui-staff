@@ -177,13 +177,11 @@ var reservationDetailsView = function(domRef) {
 				"reservationStatus" : reservationStatus
 			};
 		} 
-		else if(keySettings == "encode"){
-			var isSmartbandCreateWithKeyWrite = that.myDom.find("#add-keys").attr("data-smartband-create-with-key-writing");			
+		else if(keySettings == "encode"){			
 			var keyEncoderModal = new KeyEncoderModal();			
 			keyEncoderModal.params = {
 				"origin" : views.STAYCARD,
-				"reservationStatus" : reservationStatus,
-				"isSmartbandCreateWithKeyWrite": isSmartbandCreateWithKeyWrite
+				"reservationStatus" : reservationStatus
 			};
 			keyEncoderModal.initialize();
 			

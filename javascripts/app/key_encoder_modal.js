@@ -359,8 +359,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			//If keys left to print, call the cordova write key function to write the pending key
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
-
-				
+				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');				
     			//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
     			if(that.isSmartbandCreateWithKeyWrite == "true" && lastSuccessfulCardIDReaded != ''){
     				var data = {};
@@ -373,7 +372,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
     				data.account_number = lastSuccessfulCardIDReaded;
     				return that.addNewSmartbandWithKey(data, index);
     			}
-    			that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
+    			
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
@@ -410,6 +409,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Set the selected band type - fixed room/open charge to the band
 	*/
 	this.writeBandType = function(dataParams){
+		that.myDom.find('#key-status .status').removeClass('success error').addClass('pending').text('Writing band type..');	
 		var data = dataParams;
 		var index = dataParams.index;
 		var args = [];
@@ -439,11 +439,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			},
 			'failureCallBack': function(message){
 				sntapp.activityIndicator.hideActivityIndicator();
-				if(that.numOfKeys > 0){
-					that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
+				that.numOfKeys--;
+				if(that.numOfKeys > 0){					
+					that.myDom.find('#key-status .status').removeClass('success pending').addClass('error').text('Key created, Band Added, Writing band type failed..');
+					that.printKeyStatus[index-1].printed = true;
+					that.myDom.find('#key' + index).closest('label').addClass('printed');
+					that.myDom.find('#create-key').text('Print key '+ (index+1));
 				}
 				else {
-					var message = 'Key creation failed!';
+					var message = 'Key created, Band Added, Writing band type failed!';
 					that.showKeyPrintFailure(message);
 				}				
 				return;				
@@ -460,33 +464,41 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};	
 	//success call back of smartband's api call for creation
 	this.successCallbackOfAddNewSmartband_ = function(data, successCallbackParams){
+		that.myDom.find('#key-status .status').removeClass('error pending').addClass('success').text('Band Added');
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		that.writeBandType (successCallbackParams);
 	};
 
 	//failure call back of smartband's api call for creation
-	this.failureCallbackOfAddNewSmartband = function(errorMessage){
+	this.failureCallbackOfAddNewSmartband = function(errorMessage, failureCallBackParams){
+		that.myDom.find('#key-status .status').removeClass('success pending').addClass('error').text('Key created successfully, but failed in adding band: ' + errorMessage);
 		sntapp.activityIndicator.hideActivityIndicator();
+		that.numOfKeys--;
 		if(that.numOfKeys > 0){
-			that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
+			var index = failureCallBackParams.index;
+			that.printKeyStatus[index-1].printed = true;
+			that.myDom.find('#key' + index).closest('label').addClass('printed');
+			that.myDom.find('#create-key').text('Print key '+ (index+1));			
 		}
 		else {
-			var message = 'Key creation failed!';
+			var message = 'Key created successfully, but failed in adding band: ' + errorMessage;
 			that.showKeyPrintFailure(message);
 		}
 	};		
 	/**
 	* function used to add smartband, mainly for smartband creation while key writing
 	*/
-	this.addNewSmartbandWithKey = function(data, index){	
+	this.addNewSmartbandWithKey = function(data, index){
+		that.myDom.find('#key-status .status').removeClass('success error').addClass('pending').text('Adding band..');	
 		var reservationId = getReservationId();
 		data.index = index;
 		var url = '/api/reservations/' + reservationId + '/smartbands';
 	    var options = { 
-			requestParameters: JSON.stringify(data),
-			successCallBack: that.successCallbackOfAddNewSmartband_,
-			failureCallBack: that.failureCallbackOfAddNewSmartband,
+			requestParameters		: JSON.stringify(data),
+			successCallBack 		: that.successCallbackOfAddNewSmartband_,
+			failureCallBack 		: that.failureCallbackOfAddNewSmartband,
 			successCallBackParameters: data,
+			failureCallBackParameters: {'index': index},
 			loader: 'blocker',
 			async: false
 	    };
