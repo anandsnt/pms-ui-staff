@@ -39,7 +39,7 @@
 			</li>
 		</ul>
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && !isReservationActive" ng-iscroll='cards_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
-			<div class="wrapper">
+			<ul class="wrapper">
 				<div class="entity" ng-repeat="row in results.cards"  ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" ng-show="row.is_row_visible==true" ng-hide="results.cards.length == 0" ng-click="selectEntity($index,'CARDS')">
 	                <!-- image -->
 	              	<figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
@@ -55,7 +55,7 @@
 	                <!-- icon -->
                   	<div class="status" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}"></div>
                  </div>
-			</div>
+			</ul>
 			<!-- No results / no content when searched query not found-->
         	<div class="no-content" ng-show="results.cards.length==0 && textInQueryBox!='' && !isReservationActive">
 				<div class="info">
@@ -66,8 +66,8 @@
 		</div>
 		
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
-			<div class="wrapper">
-				<a class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
+			<ul class="wrapper">
+				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
 							
 					<!-- image -->
 					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
@@ -90,8 +90,8 @@
 					
 					<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
 						
-				</a>
-			</div>
+				</div>
+			</ul>
 			<!-- No results / no content when searched query not found-->
         	<div class="no-content" ng-show="results.reservations.length==0 && textInQueryBox!='' && isReservationActive">
 				<div class="info">
