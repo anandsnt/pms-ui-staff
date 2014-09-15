@@ -17,6 +17,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			that.myDom.find("#new-payment").addClass("hidden");
 			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
 		};
+		
     	
     };
     
@@ -38,17 +39,32 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 	};
     
     this.dataUpdated=function(){
+    	
     	$("#setOverlay").hide();
     	$("#new-payment").removeClass("hidden");
     	if (that.swipedCardData) {
 			that.populateSwipedCard();
 	   };
-    	
+	  
+	  setTimeout(function(){
+	  	   if($("#registrationcard_main").attr("data-should-show-authorize") == "yes"){
+		   		$("#authorize-card").parent().parent().show();
+		   		$("#authorize-card").parent().addClass("checked");
+		   		$("#auth-card").addClass("checked");
+		   		$("#authorize-card").attr("checked", true);
+		   } else {
+		   		$("#authorize-card").parent().parent().hide();
+		   		$("#authorize-card").parent().removeClass("checked");
+		   		$("#auth-card").removeClass("checked");
+		   		$("#authorize-card").attr("checked", false);
+		   }
+	  }, 500);
+	  
     	
     };
 	this.populateSwipedCard = function() {
 		
-		$('#payment-form-section').addClass('disable-clicks');
+		$('.payment-form-section').addClass('disable-clicks');
 		var swipedCardData = this.swipedCardData;
 		// inject the values to payment modal
         // inject payment type
@@ -220,6 +236,11 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var $pan = $('#pan').val();
 		var $etb = $('#etb').val();
 		
+		var authorizeCard = "false";
+		if(that.myDom.find("#authorize-card").parent().hasClass("checked")){
+			authorizeCard = "true";
+		}
+		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
 		var errorMessage = "";
@@ -258,6 +279,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 				etb: $etb
 		    };
 		    sntapp.regCardData = data;
+		    sntapp.regCardData.authorizeCard = authorizeCard;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
 		}
