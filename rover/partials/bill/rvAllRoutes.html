@@ -2,7 +2,10 @@
          <div class="info" ng-show = "routes.length == 0">
             <strong class="h1" translate>ROUTES_EMPTY_MESSAGE</strong>
          </div>
-         <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable">
+         <span class="h2 message bill-routing-header" ng-show = "routes.length > 0" translate>
+		  BILL_ROUTING_HEADER
+		</span>
+         <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable bill-routing-list">
 			   <ul class="wrapper">
 			      
 			      <li ng-repeat = "route in routes" >
