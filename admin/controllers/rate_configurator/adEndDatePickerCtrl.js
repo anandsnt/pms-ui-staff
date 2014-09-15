@@ -1,4 +1,4 @@
-admin.controller('adEndDatePickerController',['$scope','ngDialog','$rootScope','$filter',function($scope,ngDialog,$rootScope,$filter){
+admin.controller('adEndDatePickerController',['$scope','ngDialog','$rootScope','$filter','$rootScope',function($scope,ngDialog,$rootScope,$filter,$rootScope){
 
 $scope.setUpData = function(){
     $scope.dateOptions = {
@@ -6,7 +6,7 @@ $scope.setUpData = function(){
         changeMonth: true,
         minDate: tzIndependentDate($rootScope.businessDate),
         onSelect: function(dateText, inst) {
-            $scope.rateData.end_date_for_display = $filter('date')(tzIndependentDate($scope.rateData.end_date), 'MM-dd-yyyy');
+            $scope.rateData.end_date_for_display = $filter('date')(tzIndependentDate($scope.rateData.end_date), $rootScope.dateFormat);
             ngDialog.close();
         }
     }
