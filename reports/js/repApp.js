@@ -16,6 +16,7 @@ var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngSt
 reports.config([
     '$datepickerProvider',
     function($datepickerProvider, $rootScope) {
+        console.log("rooototototototot")console.log($rootScope)
         angular.extend($datepickerProvider.defaults, {
             dateFormat: 'MM-dd-yyyy',
             startWeek: 0,
