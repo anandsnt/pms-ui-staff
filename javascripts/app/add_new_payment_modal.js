@@ -49,16 +49,18 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 	  setTimeout(function(){
 	  	   if($("#registrationcard_main").attr("data-should-show-authorize") == "yes"){
 		   		$("#authorize-card").parent().parent().show();
-		   		$("#authorize-card").parent().addClass("checked");
-		   		$("#auth-card").addClass("checked");
-		   		$("#authorize-card").attr("checked", true);
-		   } else {
-		   		$("#authorize-card").parent().parent().hide();
 		   		$("#authorize-card").parent().removeClass("checked");
 		   		$("#auth-card").removeClass("checked");
 		   		$("#authorize-card").attr("checked", false);
+		   } else {
+		   	    $("#authorize-card").parent().parent().hide();
+		   		$("#authorize-card").parent().addClass("checked");
+		   		$("#auth-card").addClass("checked");
+		   		$("#authorize-card").attr("checked", true);
+		   	
+		   		
 		   }
-	  }, 500);
+	  }, 300);
 	  
     	
     };
@@ -236,9 +238,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var $pan = $('#pan').val();
 		var $etb = $('#etb').val();
 		
-		var authorizeCard = "false";
+		var doNotauthorizeCard = "false";
 		if(that.myDom.find("#authorize-card").parent().hasClass("checked")){
-			authorizeCard = "true";
+			doNotauthorizeCard = "true";
 		}
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
@@ -279,7 +281,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 				etb: $etb
 		    };
 		    sntapp.regCardData = data;
-		    sntapp.regCardData.authorizeCard = authorizeCard;
+		    sntapp.regCardData.doNotauthorizeCard = doNotauthorizeCard;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
 		}
