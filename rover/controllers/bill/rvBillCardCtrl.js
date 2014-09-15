@@ -145,6 +145,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 	$scope.calculatedWidth = width;
 	/*
+	 * Get the title for the billing info button, 
+	 * on the basis of routes available or not
+	 */
+	$scope.getBillingInfoTitle = function(){
+		if($scope.reservationBillData.routing_array.length > 0)
+			return $filter('translate')('BILLING_INFO_TITLE');
+		else
+			return $filter('translate')('ADD_BILLING_INFO_TITLE');
+	}
+
+	/*
 	 * Adding class for active bill
 	 */
 	$scope.showActiveBill = function(index){
