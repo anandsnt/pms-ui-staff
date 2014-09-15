@@ -292,11 +292,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	var parseOldBillValue = parseInt(oldBillValue)-1;
 		var newBillValue = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].billValue;
 		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
+		var id  = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].id;
 		var dataToMove = {
 			"reservation_id" : $scope.reservationBillData.reservation_id,
 			"to_bill" : newBillValue,
 			"from_bill" : oldBillValue,
-			"transaction_id" : transactionId
+			"transaction_id" : transactionId,
+			"id":id
 		};
 		/*
 		 * Success Callback of move action
@@ -473,6 +475,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
 		// pass down active bill no
+		
 		$scope.passActiveBillNo = activeBillNo;
 
 		// translating this logic as such from old Rover
