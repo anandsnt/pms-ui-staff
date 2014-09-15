@@ -7,7 +7,7 @@ sntRover.controller('RVReportsMainCtrl', [
 	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
-
+console.log($rootScope);
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
 		    hide: true,
