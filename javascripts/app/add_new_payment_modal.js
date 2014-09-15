@@ -162,13 +162,17 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 					primarySpan = '<span id="primary_credit" class="primary"><span class="value primary">Primary</span></span>';
 				}
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
-				var	$add = 
-			        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
-			        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
-			        'Ending with<span class="value number">'+$endingWith+'</span></span>'+
-					'<span class="date">Date<span class="value date">'+$newDate+'</span>'+
-					'</span><span class="name">Name<span class="value name">'+$guestName+'</span>'+
-					'</span></a>';
+				var $add = '';
+				if(data.data!=undefined){
+					$add = 
+				        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
+				        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
+				        'Ending with<span class="value number">'+$endingWith+'</span></span>'+
+						'<span class="date">Date<span class="value date">'+$newDate+'</span>'+
+						'</span><span class="name">Name<span class="value name">'+$guestName+'</span>'+
+						'</span></a>';
+				}
+				
 				
 			    $("#payment_tab").prepend($add);
 			}			
