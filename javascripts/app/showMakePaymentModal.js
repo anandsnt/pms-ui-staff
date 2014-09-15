@@ -88,7 +88,8 @@ var ShowMakePaymentModal = function(backDom) {
 				ksn: that.myDom.find("#ksn").val(),
 				pan: that.myDom.find("#pan").val(),
 				etb: that.myDom.find("#etb").val(),
-				"user_id" :user_id
+				"user_id" :user_id,
+				is_deposit: true
 		    };
 
 		    that.addNewCardToReservation(data);
