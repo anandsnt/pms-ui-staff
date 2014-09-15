@@ -41,7 +41,7 @@ console.log($rootScope);
 
 		$scope.getFromOptions = function(item) {
 		    return {
-		        dateFormat: 'mm-dd-yy',
+		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
@@ -59,7 +59,7 @@ console.log($rootScope);
 
 		$scope.getUntilOptions = function(item) {
 		    return {
-		        dateFormat: 'mm-dd-yy',
+		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,

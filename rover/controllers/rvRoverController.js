@@ -62,6 +62,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
+    $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     console.log("currency code   : "+hotelDetails.currency.value);
     console.log("currency symbol : "+$rootScope.currencySymbol);
     console.log("date format     : "+$rootScope.dateFormat);

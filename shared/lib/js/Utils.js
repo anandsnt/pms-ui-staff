@@ -380,13 +380,17 @@ var escapeNull = function(value, replaceWith){
 
 var DateFormatInfoMappings = {
     
-    'MM-DD-YYYY': 'MM-dd-yyyy',
-    'MM/DD/YYYY': 'MM/dd/yyyy',
-    'DD-MM-YYYY': 'dd-MM-yyyy',
-    'DD/MM/YYYY': 'dd/MM/yyyy'
+    'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
+    'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
+    'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
+    'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
     
 };
 
 var getDateFormat = function(dateFormat) {
-    return DateFormatInfoMappings[dateFormat];
+    return DateFormatInfoMappings[dateFormat][0];
+};
+
+var getJqDateFormat = function(dateFormat) {
+    return DateFormatInfoMappings[dateFormat][1];
 };
