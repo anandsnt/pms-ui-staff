@@ -49,16 +49,18 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 	  setTimeout(function(){
 	  	   if($("#registrationcard_main").attr("data-should-show-authorize") == "yes"){
 		   		$("#authorize-card").parent().parent().show();
-		   		$("#authorize-card").parent().addClass("checked");
-		   		$("#auth-card").addClass("checked");
-		   		$("#authorize-card").attr("checked", true);
-		   } else {
-		   		$("#authorize-card").parent().parent().hide();
 		   		$("#authorize-card").parent().removeClass("checked");
 		   		$("#auth-card").removeClass("checked");
 		   		$("#authorize-card").attr("checked", false);
+		   } else {
+		   	    $("#authorize-card").parent().parent().hide();
+		   		$("#authorize-card").parent().addClass("checked");
+		   		$("#auth-card").addClass("checked");
+		   		$("#authorize-card").attr("checked", true);
+		   	
+		   		
 		   }
-	  }, 500);
+	  }, 300);
 	  
     	
     };
@@ -160,13 +162,17 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 					primarySpan = '<span id="primary_credit" class="primary"><span class="value primary">Primary</span></span>';
 				}
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
-				var	$add = 
-			        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
-			        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
-			        'Ending with<span class="value number">'+$endingWith+'</span></span>'+
-					'<span class="date">Date<span class="value date">'+$newDate+'</span>'+
-					'</span><span class="name">Name<span class="value name">'+$guestName+'</span>'+
-					'</span></a>';
+				var $add = '';
+				if(data.data!=undefined){
+					$add = 
+				        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
+				        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
+				        'Ending with<span class="value number">'+$endingWith+'</span></span>'+
+						'<span class="date">Date<span class="value date">'+$newDate+'</span>'+
+						'</span><span class="name">Name<span class="value name">'+$guestName+'</span>'+
+						'</span></a>';
+				}
+				
 				
 			    $("#payment_tab").prepend($add);
 			}			
@@ -236,9 +242,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var $pan = $('#pan').val();
 		var $etb = $('#etb').val();
 		
-		var authorizeCard = "false";
+		var doNotauthorizeCard = "false";
 		if(that.myDom.find("#authorize-card").parent().hasClass("checked")){
-			authorizeCard = "true";
+			doNotauthorizeCard = "true";
 		}
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
@@ -260,6 +266,10 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 		var reservationStatus = $('#registration-content').attr('data-reservation-status');
 		
 		refreshVerticalScroll('#cc-payment');
+		var add_to_guest_card = "false";
+		if(that.myDom.find("#add-in-guest-card").parent().hasClass("checked")){
+			add_to_guest_card = "true";
+		}
 		//If it is a check-in reservation using card swipe from registration card, 
 		//do not update the server with card details. 
 		//Instead, save the details locally and pass the information while cheking in 
@@ -279,7 +289,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 				etb: $etb
 		    };
 		    sntapp.regCardData = data;
-		    sntapp.regCardData.authorizeCard = authorizeCard;
+		    sntapp.regCardData.doNotauthorizeCard = doNotauthorizeCard;
+		    sntapp.regCardData.add_to_guest_card = add_to_guest_card;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
 		}
@@ -317,10 +328,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			var reservation_id = getReservationId();
 			that.save_inprogress = true;
 			var webservice = new WebServiceInterface();
-			var add_to_guest_card = "false";
-			if(that.myDom.find("#add-in-guest-card").parent().hasClass("checked")){
-				add_to_guest_card = "true";
-			}
+			
 			
 		    var data = {
 				    reservation_id: reservation_id,

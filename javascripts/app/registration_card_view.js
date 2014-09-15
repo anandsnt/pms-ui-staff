@@ -286,7 +286,7 @@ var RegistrationCardView = function(viewDom) {
 		else {
 			var no_post_room_charge = that.myDom.find("#no-post-room-charge-value").attr("data-no-post");
 			if(isSwipeHappenedDuringCheckin){
-				if(sntapp.regCardData.authorizeCard == "true"){
+				
 					var data = {
 						"is_promotions_and_email_set" : is_promotions_and_email_set,
 						"signature" : signature,
@@ -299,16 +299,24 @@ var RegistrationCardView = function(viewDom) {
 						"name_on_card": sntapp.regCardData.name_on_card,
 						"card_expiry": sntapp.regCardData.card_expiry,	
 						"credit_card" : sntapp.regCardData.credit_card,
-						"no_post": no_post_room_charge 	
+						"no_post": no_post_room_charge 	,
+						"add_to_guest_card": sntapp.regCardData.add_to_guest_card
 					};
-				} else {
-					var data = {
-						"is_promotions_and_email_set" : is_promotions_and_email_set,
-						"signature" : signature,
-						"reservation_id" : that.reservation_id,
-						"no_post": no_post_room_charge 	
-					};
-				}
+					if(sntapp.regCardData.doNotauthorizeCard == "true"){
+						data.do_not_cc_auth = true;
+					} else {
+						data.do_not_cc_auth = false;
+					}
+					
+					
+				// } else {
+					// var data = {
+						// "is_promotions_and_email_set" : is_promotions_and_email_set,
+						// "signature" : signature,
+						// "reservation_id" : that.reservation_id,
+						// "no_post": no_post_room_charge 	
+					// };
+				// }
 				
 			} else {
 				var data = {
