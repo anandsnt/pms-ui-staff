@@ -75,6 +75,8 @@
 	"REGISTRATION" : "Registration",
 
     "BILLING_INFO_TITLE" : "Billing Information",
+    "ADD_BILLING_INFO_TITLE" : "Add Billing Information",
+    "BILL_ROUTING_HEADER" : "Bill routing",
     "CONFIRMATION_LABEL" : "Confirmation",
     "ROUTES_EMPTY_MESSAGE": "Bill Routing not defined",
     "ADD_ROUTES_LABEL" : "ADD ROUTES",
