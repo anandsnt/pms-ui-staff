@@ -210,9 +210,11 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			if ( pickerId === 'From' ) {
 				$scope.singleAddon.begin_date_for_display = "";
+				$scope.singleAddon.begin_date = null;
 			}
 			else{
 				$scope.singleAddon.end_date_for_display   = "";
+				$scope.singleAddon.end_date = null;
 			};
 
 		};
