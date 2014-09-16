@@ -4,6 +4,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
+
+		$scope.dimensionsLookup = {
+			resizableMaxHeight: resizableMaxHeight,
+			cardTabContentOffset : 170, // Height of the tab menu and the header above.			
+		};
+
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
@@ -133,6 +139,16 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$scope.$apply();
 				}
 				$scope.guestCardHeight = $(this).height();
+				/**
+				 * CICO-9564 -- Scrolls in the card section on dragging
+				 */
+				$scope.$broadcast('CONTACTINFOLOADED');
+				$scope.$broadcast('REFRESHLIKESSCROLL');
+				$scope.$broadcast('contactTabActive');
+				$scope.$broadcast('contractTabActive');
+				$scope.$broadcast('refreshAccountsScroll');
+
+
 			},
 			stop: function(event, ui) {
 				preventClicking = true;

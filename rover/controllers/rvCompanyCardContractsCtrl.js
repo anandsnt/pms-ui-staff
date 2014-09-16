@@ -18,22 +18,32 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * 1. When the tab is activated, refresh scroll.
 		 * 2. Scroll is actually on a sub-scope created by ng-include.
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
-		 */
+		 */		
+		
 		$scope.$on("ContactTabActivated", function() {
 			setTimeout(function() {
 				refreshScroller();
 			}, 500);
 		});
 
-		$scope.setScroller('companyCardContractsCtrl'); 
+		$scope.myScrollOptions = {
+			'cardContractsScroll': {
+				snap: false,
+				scrollbars: 'custom',
+				vScroll: true,
+				vScrollbar: true,
+				hideScrollbar: false
+			}
+		}
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.
 			if ($scope.currentSelectedTab === 'cc-contracts') {
-				$scope.refreshScroller('companyCardContractsCtrl');
+				$scope.myScroll['cardContractsScroll'].refresh();
 			}
 		};
 
+		$scope.$on("refreshContractsScroll", refreshScroller);
 		/**** Scroll related code ends here. ****/
 
 

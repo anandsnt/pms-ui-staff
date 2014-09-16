@@ -22,9 +22,13 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			else if($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts'){
 				$scope.$broadcast("saveArAccount");
 			}	
-			else if(tabToSwitch == 'cc-ar-accounts'){
+			if (tabToSwitch == 'cc-ar-accounts') {
 				$scope.$broadcast("arAccountTabActive");
-			};
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+			if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}

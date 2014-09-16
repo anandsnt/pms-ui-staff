@@ -1,5 +1,5 @@
-sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
-  function($scope, RVContactInfoSrv, ngDialog, dateFilter) {
+sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout',
+  function($scope, RVContactInfoSrv, ngDialog, dateFilter, $timeout) {
     BaseCtrl.call(this, $scope);
     /**
      * storing to check if data will be updated
@@ -145,18 +145,15 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
-    
+
     $scope.setScroller('contact_info');
 
-    $scope.$on('CONTACTINFOLOADED', function(event) {
-      setTimeout(function() {
-          $scope.refreshScroller('contact_info');
-
-        },
-        1500);
-      $scope.$on('REFRESHLIKESSCROLL', function() {
+    var refreshContactsScroll = function() {
+      $timeout(function() {
         $scope.refreshScroller('contact_info');
-      });
-    });
+      }, 700);
+    }
+    $scope.$on('CONTACTINFOLOADED', refreshContactsScroll);
+    $scope.$on('REFRESHLIKESSCROLL', refreshContactsScroll);
   }
 ]);

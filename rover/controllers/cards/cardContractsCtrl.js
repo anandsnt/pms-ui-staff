@@ -7,6 +7,8 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		$scope.addData = {};
 		$scope.contractList.contractSelected = "";
 		$scope.contractList.current_contracts = [];
+		$scope.contractList.future_contracts = [];
+		$scope.contractList.history_contracts = [];
 		$scope.contractList.isAddMode = false;
 		$scope.errorMessage = "";
 		var contractInfo = {};
@@ -25,6 +27,14 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
 		 */
 
+		var refreshScroller = function() {
+			//Refresh only if this DOM is visible.
+			if ($scope.currentSelectedTab === 'cc-contracts') {
+				$scope.$parent.myScroll['cardContractsScroll'].refresh();
+			}
+		};
+
+
 
 		$scope.$on("contractTabActive", function() {
 			setTimeout(function() {
@@ -32,23 +42,26 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			}, 500);
 		});
 
-		$scope.$parent.myScroll = [];
-
-		$scope.$parent.myScrollOptions = {
-			'companyCardContractsCtrl': {
-				scrollbars: true,
-				scrollY: true,
+		$scope.myScrollOptions = {
+			'cardContractsScroll': {
 				snap: false,
+				scrollbars: 'custom',
+				vScroll: true,
+				vScrollbar: true,
 				hideScrollbar: false
 			}
-		};
+		}
+
 
 		var refreshScroller = function() {
 			//Refresh only if this DOM is visible.
 			if ($scope.currentSelectedTab === 'cc-contracts') {
-				$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+				$scope.myScroll['cardContractsScroll'].refresh();
 			}
 		};
+
+		$scope.$on("refreshContractsScroll", refreshScroller);
+
 
 		/**** Scroll related code ends here. ****/
 
@@ -517,7 +530,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			if ($scope.addData.selected_type == "%") {
 				$scope.addData.rate_value = parseInt($scope.addData.rate_value);
 			} else {
-				$scope.addData.rate_value = parseFloat($scope.addData.rate_value).toFixed(2);
+				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';
 			}
 		});
 
