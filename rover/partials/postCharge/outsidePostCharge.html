@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show">
-	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended">
+	<form method="post" action="post-charge" id="post-charge" name="post-charge" class="modal-content post-charge extended extended-post-charge">
 	    <button class="modal-close dark-title" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close"></span></button>
 	
 	    <!-- Inner confirmation popups. When includimg them, make sure they're part of the 'modal-content' form/div -->
@@ -38,14 +38,14 @@
 		    		<!-- 1.search -->
 		    		<div ng-show="!isCardAttched">
 			        	<figure class="guest-image">
-				            <img src="/assets/avatar-female.png" alt="" />
+				            <img src="/assets/avatar-trans.png" alt="" />
 				            <span class="search-indicator"></span>
 				        </figure>
 				        <div class="card-search-form">
 				            <div class="holder">
 				                <div class="entry">
-				                    <input ng-click="showHideInitialSearchScreen()" ng-model="search.room" placeholder="{{'ROOM_NUMBER' | translate}}" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
-									<input ng-click="showHideInitialSearchScreen()" ng-model="search.guest_company_agent" placeholder="{{'GUEST_COMPANY_AGENT' | translate}}" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
+				                    <input ng-click="showHideInitialSearchScreen()" ng-keydown="keyDownRoom()" ng-blur="keyBlurRoom()" ng-model="search.room" placeholder="{{'ROOM_NUMBER' | translate}}" value="" type="text" class="masked-input fixed h1" rv-delay-textbox delay="1000" ng-class="(roomSearchStatus) ? 'searchTextOrange': ''" function-to-fire="searchForResults"/>
+									<input ng-click="showHideInitialSearchScreen()" ng-keydown="keyDownGuestCompany()" ng-blur="keyBlurGuestCompany()" ng-model="search.guest_company_agent" placeholder="{{'GUEST_COMPANY_AGENT' | translate}}" value="" type="text" ng-class="(guestCompanySearchStatus) ? 'searchTextOrange': ''"  class="query masked-input fixed long-name h1" rv-delay-textbox delay="1000" function-to-fire="searchForResults"/>
 				                </div>               
 				            </div>
 				        </div>
@@ -91,7 +91,7 @@
 		    <div class="cards-content">
 		    	<div class="card-search card-content" ng-class="{'display-card-search': showSearchScreen}">
 		    		<!-- Initially, when no results -->
-		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content" ng-show="showInitialSearchScreen">
+		    		<div id="search-guests-for-charge-no-results" class="search-cards no-content show-initial-search" ng-show="showInitialSearchScreen" >
 		                <div class="info">
 		                    <span class="icon-no-content icon-guest"></span>
 		                    <strong class="h1" translate>SEARCH_NORMAL</strong>
@@ -179,7 +179,7 @@
 					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>
 			</div>
-			<div id="items-listing" class="scrollable">
+			<div id="items-listing" class="scrollable" ng-iscroll="items_list">
 				<ul id="search-item-results" class="wrapper">
 					<li id="items-list" ng-repeat="each in fetchedItems" ng-show="each.show" ng-click="addItem(each)">
 						<a class="button white">
@@ -221,7 +221,7 @@
 				</div>
 			</div>
 			<div id="items-added" ng-show="isAnyChosen()">
-				<div id="items-summary" class="scrollable">
+				<div id="items-summary" class="scrollable"  ng-iscroll="items_summary">
 					
 					<ul class="wrapper">
 						<li ng-repeat="each in fetchedItems" ng-show="each.isChosen" ng-class="{'selected': each.item_name === selectedChargeItem.item_name}" ng-click="selectUnselect(each)">
