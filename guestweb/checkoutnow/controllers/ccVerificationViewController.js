@@ -128,7 +128,7 @@
 
     $scope.goToNextStep = function(){
         
-        $scope.isFetching = true;
+        //$scope.isFetching = true;
         var cardExpiryDate = $scope.yearSelected+"-"+$scope.monthSelected+"-"+"01"
         var data = {'reservation_id':$rootScope.reservationID,'session_id':MLISessionId,'card_expiry':cardExpiryDate};
         ccVerificationService.verifyCC(data).then(function(response) {
@@ -161,7 +161,7 @@
        var sessionDetails = {};
             
        $scope.callback = function(response){
-          $scope.isFetching = false;
+         // $scope.isFetching = false;
           $scope.$apply();
           if(response.status ==="ok"){     
               MLISessionId = response.session;

@@ -1576,87 +1576,82 @@
 						.pull-left;
 					}
 
-					ul,
 					.button {
-						.pull-right;
-					}
+                        font-size: 14px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        margin-top: 10px;
+                        .pull-left;
+                    }
 
-					li {
-						display: inline-block;
-						margin: 5px 0 0 0;
-						line-height: 1em;
-						vertical-align: middle;
-						min-width: 95px;
-						height: 45px;
-						background: rgba(0,0,0,.05);
-						.pull-left;
-						.box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
-						#border-radius > .top();
+                    ul {
+                    	.pull-right;
+                    
 
-						a {
-							color: @grey4;
-							text-transform: uppercase;
-							padding: 10px;
-							.float;
-							.show;
-							.no-transition;
-
-							.price {
-								font-weight: 600;
-								.pull-left;
-
-								span {
-									font-size: 14px;
-									font-weight: 400;
-									.show;
-								}
-							}
-
-							.card-logo,
-							.payment {
-								font-size: 12px;
-								line-height: 12px;
-								margin-left: 30px;
-								text-align: right;
-								.pull-left;
-								.size(20px,40px);
-								.opacity(50);
-
-								img {
-									width: 100%;
-									height: auto;
-									margin-top: 2px;
-								}
-							}
-						}
-
-						&.ui-tabs-active,
-						&.active {
+						li {
+							display: inline-block;
+							margin: 5px 0 0 0;
 							line-height: 1em;
-							margin-top: 0;
-							height: 50px;
-							background: rgba(0,0,0,.1);
-							.box-shadow(none);
+							vertical-align: middle;
+							min-width: 95px;
+							height: 45px;
+							background: rgba(0,0,0,.05);
+							.pull-left;
+							.box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
+							#border-radius > .top();
 
 							a {
-								color: @textColor;
+								color: @grey4;
+								text-transform: uppercase;
+								padding: 10px;
+								.float;
+								.show;
+								.no-transition;
+
+								.price {
+									font-weight: 600;
+									.pull-left;
+
+									span {
+										font-size: 14px;
+										font-weight: 400;
+										.show;
+									}
+								}
 
 								.card-logo,
-								.payment { .opacity(100); }
+								.payment {
+									font-size: 12px;
+									line-height: 12px;
+									margin-left: 30px;
+									text-align: right;
+									.pull-left;
+									.size(20px,40px);
+									.opacity(50);
+
+									img {
+										width: 100%;
+										height: auto;
+										margin-top: 2px;
+									}
+								}
 							}
-						}
-					}
 
-					.button {
-						line-height: 50px;
-						margin: 5px 0 0 10px;
-						.square(45px);
-						#border-radius > .bottom(0);
-						.box-shadow(none);
+							&.ui-tabs-active,
+							&.active {
+								line-height: 1em;
+								margin-top: 0;
+								height: 50px;
+								background: rgba(0,0,0,.1);
+								.box-shadow(none);
 
-						&:hover,
-						&:active {
-							.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+								a {
+									color: @textColor;
+
+									.card-logo,
+									.payment { .opacity(100); }
+								}
+							}
 						}
 					}
 				}
@@ -4869,6 +4864,10 @@
 .close-but{
   display: inline-block !important;
   width: 35% !important;
+}
+
+.cards-list-height{
+  height:280px !important;
 }
 /* 6. IE
 ==========================================================*/
