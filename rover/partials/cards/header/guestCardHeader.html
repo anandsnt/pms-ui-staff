@@ -9,6 +9,9 @@
       <div class="entry" ng-click="openGuestCard()">
         <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field />
         <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field />
+        <strong class="status">
+          {{guestCardData.contactInfo.title}}
+        </strong>
       </div>
     </div>
     <div class="holder data">
