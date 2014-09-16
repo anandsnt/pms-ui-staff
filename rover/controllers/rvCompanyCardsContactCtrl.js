@@ -10,6 +10,14 @@ sntRover.controller('companyCardDetailsContactCtrl', ['$scope', 'RVCompanyCardSr
 			}, 500);
 		});
 
+		$scope.$on("setCardContactErrorMessage", function($event, errorMessage) {
+			$scope.errorMessage = errorMessage;			
+		});
+
+		$scope.$on("clearCardContactErrorMessage", function() {
+			$scope.errorMessage = "";			
+		});
+
 		var refreshScroller = function() {
 			$scope.refreshScroller('companyCardDetailsContactCtrl');
 		};

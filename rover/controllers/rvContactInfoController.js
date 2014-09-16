@@ -1,5 +1,5 @@
-sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
-  function($scope, RVContactInfoSrv, ngDialog, dateFilter) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter) {
     BaseCtrl.call(this, $scope);
     /**
      * storing to check if data will be updated
@@ -117,7 +117,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
      * watch and update formatted date for display
      */
     $scope.$watch('guestCardData.contactInfo.birthday', function() {
-      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
     });
     /**
      * to handle click actins outside this tab
@@ -145,10 +145,8 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
-    var scrollerOptions = {
-      click: true,
-    };
-    $scope.setScroller('contact_info', scrollerOptions);
+    
+    $scope.setScroller('contact_info');
 
     $scope.$on('CONTACTINFOLOADED', function(event) {
       setTimeout(function() {

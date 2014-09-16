@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv) {
+sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv', '$filter',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter) {
+		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 
 
@@ -60,13 +61,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
 			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
-				ngDialog.open({
-					template: '/assets/partials/reservation/alerts/rvEmailWarning.html',
-					closeByDocument: true,
-					className: 'ngdialog-theme-default1',
-					scope: $scope
-				});
-
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 				return false;
 
 			}
@@ -121,7 +116,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			var stateParams = {
 				id: $scope.reservationData.reservationId,
 				confirmationId: $scope.reservationData.confirmNum,
-				isrefresh: true
+				isrefresh: true,
+				justCreatedRes: true
 			}
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 
@@ -172,6 +168,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$scope.reservationData.confirmNum = '';
 			// Set flag to retain the card details
 			$scope.reservationData.isSameCard = true;
+			$scope.otherData.reservationCreated = true;
 
 			$state.go('rover.reservation.search');
 		};
@@ -199,6 +196,31 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		}
+
+		/**
+		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
+		 */
+		
+	    $scope.openBillingInformation = function(){
+
+	    	
+	    	$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
+	    	$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
+	    	$scope.reservationData.reservation_status = $scope.reservationData.status;
+	    	if($scope.reservationData.guest.id != null){
+	    		$scope.reservationData.user_id = $scope.reservationData.guest.id ;
+	    	}else{
+	    		$scope.reservationData.user_id = $scope.reservationData.company.id ;
+	    	}
+	    	
+		      ngDialog.open({
+		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+		        controller: 'rvBillingInformationPopupCtrl',
+		        className: 'ngdialog-theme-default',
+		        scope: $scope
+		      });
+	    }
 
 		$scope.init();
 

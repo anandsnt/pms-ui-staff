@@ -1,12 +1,12 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
+
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
 
         var title = $filter('translate')('RESERVATION_TITLE');
         $scope.setTitle(title);
-
 
         //setting the main header of the screen
         $scope.heading = "Reservations";
@@ -171,7 +171,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 businessDate: baseSearchData.businessDate,
                 additionalEmail: "",
                 isGuestPrimaryEmailChecked: false,
-                isGuestAdditionalEmailChecked: false
+                isGuestAdditionalEmailChecked: false,
+                reservationCreated: false
             };
 
             $scope.guestCardData = {};
@@ -249,8 +250,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
                     if (dateIter != $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id != '') {
                         var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
-                        var numAdults = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
-                        var numChildren = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
+                        var numAdults = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.adults);
+                        var numChildren = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.children);
 
                         if (rateToday.single == null && rateToday.double == null && rateToday.extra_adult == null && rateToday.child == null) {
                             rateConfigured = false;
@@ -631,11 +632,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
-            // stay
-            var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
-            var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = reservationDetails.reservation_card.arrival_date;
+            $scope.reservationData.departureDate = reservationDetails.reservation_card.departure_date;
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             /** CICO-6135
@@ -732,21 +730,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
 
             });
-            // appending departure date for UI handling since its not in API response
-            $scope.reservationData.stayDays.push({
-                date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
-                dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
-                day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
-            });
+            
+            // appending departure date for UI handling since its not in API response IFF not a day reservation
+            if (parseInt($scope.reservationData.numNights) > 0) {
+                $scope.reservationData.stayDays.push({
+                    date: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd'),
+                    dayOfWeek: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'EEE'),
+                    day: dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'dd')
+                });
 
-            $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
-                guests: {
-                    adults: "",
-                    children: "",
-                    infants: ""
-                },
-                rate: {
-                    id: ""
+                $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate($scope.reservationData.departureDate), 'yyyy-MM-dd')] = {
+                    guests: {
+                        adults: "",
+                        children: "",
+                        infants: ""
+                    },
+                    rate: {
+                        id: ""
+                    }
                 }
             }
 
@@ -769,12 +770,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
-            // Find if midstay
+            // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
+                /**
+                 * CICO-8504
+                 * Initialize occupancy to the last day
+                 * If midstay update it to that day's
+                 * 
+                 */
+                var lastDaydetails = _.last(reservationDetails.reservation_card.stay_dates);
+                $scope.reservationData.rooms[0].numAdults = lastDaydetails.adults;
+                $scope.reservationData.rooms[0].numChildren = lastDaydetails.children;
+                $scope.reservationData.rooms[0].numInfants = lastDaydetails.infants;
+
                 var currentDayDetails = _.where(reservationDetails.reservation_card.stay_dates, {
-                    date: $rootScope.businessDate
+                    date: dateFilter(new tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
                 });
+
                 if (currentDayDetails.length > 0) {
                     $scope.reservationData.rooms[0].numAdults = currentDayDetails[0].adults;
                     $scope.reservationData.rooms[0].numChildren = currentDayDetails[0].children;
@@ -865,6 +878,31 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 isVaryingRates: self.isVaryingRates
             }
         })();
+
+        /**
+         *   Validation conditions
+         *
+         *   Either adults or children can be 0,
+         *   but one of them will have to have a value other than 0.
+         *
+         *   Infants should be excluded from this validation.
+         */
+        $scope.validateOccupant = function(room, from) {
+
+            // just in case
+            if (!room) {
+                return;
+            };
+
+            var numAdults = parseInt(room.numAdults),
+                numChildren = parseInt(room.numChildren);
+
+            if (from === 'adult' && (numAdults === 0 && numChildren === 0)) {
+                room.numChildren = 1;
+            } else if (from === 'children' && (numChildren === 0 && numAdults === 0)) {
+                room.numAdults = 1;
+            }
+        };
 
         $scope.initReservationData();
     }

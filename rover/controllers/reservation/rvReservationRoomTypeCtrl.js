@@ -51,6 +51,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			rateFilterText: "",
 			dateModeActiveDate: "",
 			restrictedContractedRates: {},
+			datesContainerWidth: $(window).width() - 180,
 			dateButtonContainerWidth: $scope.reservationData.stayDays.length * 80,
 			suppressedRates: []
 		};
@@ -87,11 +88,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		});
 
 		$scope.setScroller('stayDates', {
-			snap: false,
-			scrollbars: true,
 			scrollX: true,
-			hideScrollbar: false,
-			click: true
+			scrollY: false
 		});
 
 
@@ -948,9 +946,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 				//step4 : sort the rates within each room
 				value.rates.sort(function(a, b) {
-					if (value.total[a].total < value.total[b].total)
+					var averageA = parseFloat(value.total[a].average);
+					var averageB = parseFloat(value.total[b].average);
+					if (averageA < averageB)
 						return -1;
-					if (value.total[a].total > value.total[b].total)
+					if (averageA > averageB)
 						return 1;
 					return 0;
 				});
@@ -1149,10 +1149,30 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.updateDayOccupancy = function(occupants) {
 			$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests[occupants] = parseInt($scope.stateCheck.selectedStayDate.guests[occupants]);
-			if ($scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
-				//repopulate the room and rates to suit the current day
-				init();
+			/**
+			 * CICO-8504
+			 * In case of multiple rates selected, the side bar and the reservation summary need to showcase the first date's occupancy!
+			 *
+			 */
+			if ($scope.reservationData.arrivalDate == $scope.stateCheck.dateModeActiveDate) {
+				var occupancy = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests;
+				$scope.reservationData.rooms[$scope.activeRoom].numAdults = occupancy.adults;
+				$scope.reservationData.rooms[$scope.activeRoom].numChildren = occupancy.children;
+				$scope.reservationData.rooms[$scope.activeRoom].numInfants = occupancy.infants;
 			}
+
+			if (!$scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
+				$scope.preferredType = "";
+				// TODO : Reset other stuff as well
+				$scope.stateCheck.rateSelected.oneDay = false;
+				$scope.stateCheck.rateSelected.allDays = false;
+				_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate) {
+					stayDate.rate = {
+						id: ""
+					}
+				});
+			}
+			init();
 		}
 
 		init(true);
