@@ -204,8 +204,8 @@ sntRover.controller('RVPostChargeController',
 					item.count = 1;
 					newCount++;
 				}
-				//alert(newCount);
-				if(newCount > 1){
+			
+				if(newCount > 1 && $rootScope.multiplePostingNumber){
 					$scope.billNumber = $rootScope.multiplePostingNumber;
 				}
 
