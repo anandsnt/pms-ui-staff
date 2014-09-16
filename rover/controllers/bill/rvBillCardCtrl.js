@@ -13,7 +13,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-
+  	$rootScope.multiplePostingNumber = "";
 
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -483,7 +483,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// translating this logic as such from old Rover
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
 		$scope.fetchTotalBal = false;
-
 		var callback = function(data) {
 		    $scope.$emit( 'hideLoader' );
 
