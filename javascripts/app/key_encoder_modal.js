@@ -430,7 +430,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 					that.showKeyPrintSuccess();
 					return true;
 				}
-
+				that.myDom.find('#key-status .status').removeClass('pending error').addClass('success').text('Key and Band created successfully');
 				that.printKeyStatus[index-1].printed = true;
 				that.myDom.find('#key' + index).closest('label').addClass('printed');
 				that.myDom.find('#create-key').text('Print key '+ (index+1));				
