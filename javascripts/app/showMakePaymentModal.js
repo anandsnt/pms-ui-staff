@@ -270,7 +270,7 @@ var ShowMakePaymentModal = function(backDom) {
 	this.successCallbackPaymentOnReservation = function(data){
 		var depositBalanceOnStayCard = parseInt($("#outstandingAmount").attr("data-outstanding-amount")) - parseInt(that.myDom.find("#amount").val());
 		backDom.find("#deposit_balance").html("");
-		backDom.find("#deposit_balance").html("Deposit / Balance $"+depositBalanceOnStayCard.toFixed(2));
+		backDom.find("#deposit_balance").html("Deposit/Balance $"+depositBalanceOnStayCard.toFixed(0));
 		that.hidePaymentModal();
 		sntapp.activityIndicator.hideActivityIndicator();
 	};
