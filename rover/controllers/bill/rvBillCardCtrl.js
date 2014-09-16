@@ -281,7 +281,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 };
 	 $scope.moveToBillActionfetchSuccessCallback = function(data){
 	 	$scope.fetchSuccessCallback(data);
-	 	$scope.setActiveBill($scope.movedIndex);
+	 	//$scope.setActiveBill($scope.movedIndex);
 	 };
 	 /*
 	  * MOve fees item from one bill to another

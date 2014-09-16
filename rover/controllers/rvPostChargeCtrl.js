@@ -523,6 +523,7 @@ sntRover.controller('RVPostChargeController',
 			
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
+				$scope.billNumber = "1";// set as per requirement in CICO-6094
 				if(data.isFromOut){
 					$scope.billNumber = 1;
 				}
