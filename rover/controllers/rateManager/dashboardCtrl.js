@@ -1,10 +1,33 @@
-sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter', '$vault',  function($scope,$window,dateFilter, $filter, $vault){
-    
+sntRover
+.constant('filterDefaults', Object.create(null, {
+    DATE_RANGE_PLACEHOLDER: {
+        enumerable: true,
+        value: 'Select a Date'
+    },
+    DATE_FORMAT: {
+        enumerable: true,
+        value: 'MM-dd-yyyy'
+    }
+}))
+.controller('RMDashboradCtrl', ['filterDefaults', '$scope','$window','dateFilter', '$filter', '$vault',  function(filterDefaults, $scope, $window, dateFilter, $filter, $vault) {
     BaseCtrl.call(this, $scope);
 
     // reseting search params to $vault
     // MUST else there will be problems with back button working
     $vault.set('searchType', '');
+
+    /* UI options like column width are computed here 
+       A property, and a function to compute the same are given below
+    */
+    var DEFAULT_COLUMN_WIDTH = 200,
+        DEFAULT_TABLE_WIDTH = 4000,
+        DEFAULT_TABLE_WIDTH = 400;
+
+    $scope.uiOptions = {
+        tableHeight : DEFAULT_TABLE_WIDTH,
+        columnWidth : DEFAULT_COLUMN_WIDTH,
+        tableWidth : DEFAULT_TABLE_WIDTH
+    };
 
     var title = $filter('translate')('RATE_MANAGER_TITLE');
 	$scope.setTitle(title);
@@ -17,9 +40,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     $scope.backbuttonEnabled = false;
     
     //left side menu class, based on which it will appear or not
-    $scope.currentLeftMenuClass = 'slide_right';
-    
-
+    $scope.currentLeftMenuClass = 'slide_right';    
 	$scope.currentFilterData =	{
             filterConfigured: false,
             begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
@@ -32,22 +53,10 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
             rates : [],
             rates_selected_list : [],
             name_cards : [],
-            selected_date_range : "Select Date Range",
+            selected_date_range : filterDefaults.DATE_RANGE_PLACEHOLDER, //"Select Date Range",
             allRates: []
    	};
 
-    /* UI options like column width are computed here 
-       A property, and a function to compute the same are given below
-    */
-    var DEFAULT_COLUMN_WIDTH = 200;
-    var DEFAULT_TABLE_WIDTH = 4000;
-    var DEFAULT_TABLE_WIDTH = 400;
-    $scope.uiOptions={
-        tableHeight : DEFAULT_TABLE_WIDTH,
-        columnWidth : DEFAULT_COLUMN_WIDTH,
-        tableWidth : DEFAULT_TABLE_WIDTH,
-        
-    };
     $scope.$on("computeColumWidth", function(){
         var FILTER_OPTIONS_WIDTH = 5;
         var FIRST_COLUMN_WIDTH = 220;

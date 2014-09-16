@@ -87,7 +87,7 @@
 					<hr/>
 
 					<div class="entry table-search1">
-						<label class="search-text" >NAME CARD, IATA # OR CORPORATE ID</label>
+						<label for="company-card" class="search-text" >NAME CARD, IATA # OR CORPORATE ID</label>
 						<span type="submit" name="submit" class="icons icon-search1"></span>
 						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
 					</div>
@@ -125,7 +125,7 @@
 	</div>
 	<div class="entry action-filter">
 		<div class="actions float">
-			<button class="button green" type="button" ng-click="showRatesBtnClicked()" >Show Rates</button>
+			<button class="button green" type="button" ng-click="showRatesBtnClicked()" ng-disabled="toggleShowRates()">Show Rates</button>
 		</div>
 	</div>
 </div>

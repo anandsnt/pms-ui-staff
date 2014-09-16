@@ -1,5 +1,10 @@
-sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngDialog',
-    function($scope, RMFilterOptionsSrv, ngDialog) {
+sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilterOptionsSrv', 'ngDialog',
+    function(filterDefaults, $scope, RMFilterOptionsSrv, ngDialog) {
+        'use strict';
+
+        /*CACHE PROPERTY REFERENCES TO REDUCE OBJECT PROPERTY ACCESS BURDEN*/
+        var filterData = $scope.currentFilterData;
+
         BaseCtrl.call(this, $scope);
         /*
          * Method to fetch all filter options
@@ -42,16 +47,14 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
         $scope.$on('$viewContentLoaded', function() {
             setTimeout(function() {
                     $scope.$parent.myScroll['filter_details'].refresh();
-                },
-                3000);
-
+            }, 3000);
         });
 
         $scope.refreshFilterScroll = function() {
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);
-        }
+        };
 
         $scope.fetchFilterOptions = function() {
             var fetchRatesSuccessCallback = function(data) {
@@ -66,6 +69,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             };
             $scope.invokeApi(RMFilterOptionsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback);
         };
+
         $scope.fetchFilterOptions();
 
         $scope.clickedAllRates = function() {
@@ -103,23 +107,35 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
         * Filter the allrates based on the rate type selected.
         */
         var calculateRatesList = function() {
-            $scope.currentFilterData.rates = [];
-            var rateTypeSelected = $scope.currentFilterData.rate_type_selected_list;
+            var rates = filterData.rates = [],
+                rateTypeSelected = filterData.rate_type_selected_list;
+
+            //$scope.currentFilterData.rates = [];
+            //var rateTypeSelected = $scope.currentFilterData.rate_type_selected_list;
+
             //If no rate type is selected, we should show all rates.
-            if(rateTypeSelected.length == 0) {
-                $scope.currentFilterData.rates = dclone($scope.currentFilterData.allRates);
+            if(rateTypeSelected.length === 0) {
+                //$scope.currentFilterData.rates = dclone($scope.currentFilterData.allRates);
+                rates = dclone(filterData.allRates);
             }
-            for (var j in rateTypeSelected) {
-                for (var i in $scope.currentFilterData.allRates) {
-                    if ($scope.currentFilterData.allRates[i].rate_type == null ||
-                        $scope.currentFilterData.allRates[i].rate_type == undefined) {
-                        continue;
-                    }
-                    if ($scope.currentFilterData.allRates[i].rate_type.id == rateTypeSelected[j].id) {
-                        $scope.currentFilterData.rates.push($scope.currentFilterData.allRates[i]);
+
+            //for(var j in rateTypeSelected) {
+            for (var j = 0, jlen = rateTypeSelected.length; j < jlen; j++) {
+                //for (var i in $scope.currentFilterData.allRates) {
+                for(var i = 0, ilen = filterData.allRates.length, rate = filterData.allRates[i]; i < ilen; i++) {
+                    if(_.isObject(rate.rate_type)) {
+                        /*if ($scope.currentFilterData.allRates[i].rate_type == null ||
+                            $scope.currentFilterData.allRates[i].rate_type == undefined) {
+                            continue;
+                        }
+                        if (filterData.allRates[i].rate_type.id == rateTypeSelected[j].id) {
+                            filterData.rates.push(filterData.allRates[i]);
+                        }*/
+                        if(rate.rate_type.id === rateTypeSelected[j].id) {
+                            filterData.rates.push(rate);
+                        }
                     }
                 }
-
             }
         };
 
@@ -198,7 +214,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
                 $scope.$parent.myScroll['nameOnCard'].refresh();
             }, 300);
 
-        }
+        };
 
 
         /**
@@ -206,13 +222,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
          * if not fouund in the data, it will request for webservice
          */
         var displayFilteredResults = function() {
-            if ($scope.companySearchText != '' && $scope.companyLastSearchText != $scope.companySearchText) {
+            if ($scope.companySearchText !== '' && $scope.companyLastSearchText != $scope.companySearchText) {
 
                 var successCallBackOfCompanySearch = function(data) {
                     $scope.$emit("hideLoader");
                     $scope.companyCardResults = data.accounts;
                     refreshScroller();
-                }
+                };
                 var paramDict = {
                     'query': $scope.companySearchText.trim()
                 };
@@ -229,11 +245,11 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             // reset company card result array
             $scope.companyCardResults = [];
             $scope.refreshFilterScroll();
-        }
+        };
 
-        $scope.hideCompanyCardSearchResults = function(){
+        $scope.hideCompanyCardSearchResults = function() {
             $scope.companyCardResults = [];
-        }
+        };
 
         $scope.deleteCards = function(id) {
             angular.forEach($scope.currentFilterData.name_cards, function(item, index) {
@@ -244,8 +260,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             $scope.companySearchText = "";                       
             $scope.refreshFilterScroll();
         };
-
-
 
         $scope.deleteRate = function(id) {
             if (id === "ALL") {
@@ -269,6 +283,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             });
         };
 
+        /*$scope.$watch('currentFilterData.selected_date_range', function() {
+            $scope.toggleShowRates = ($scope.currentFilterData.selected_date_range === $scope.filterDefaults.DATE_RANGE_PLACEHOLDER);
+        });*/
+
+        $scope.toggleShowRates = function() {
+            return ($scope.currentFilterData.selected_date_range === $scope.filterDefaults.DATE_RANGE_PLACEHOLDER);
+        };
 
         $scope.$on('closeFilterPopup', function() {
             $scope.companyCardResults = [];

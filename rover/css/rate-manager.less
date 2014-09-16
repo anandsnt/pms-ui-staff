@@ -230,7 +230,7 @@
   }
   .filter-options {
     display:block;
-    width: 230px;
+    width: 255px; /*230px;*/
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
@@ -253,11 +253,13 @@
         background-position: 7px -689px !important;
       }
     }
-    #rmDateRange, #rmRateType, #rmRate{
-       color: #9D9D9D;font-style: italic;
+    #rmDateRange::-webkit-input-placeholder, 
+    #rmRateType::-webkit-input-placeholder, 
+    #rmRate::-webkit-input-placeholder {
+       color: #9D9D9D;
+       font-style: italic;
        font-size:15px ;
-    }
-    
+    }  
     .has-datepicker.entry .ui-datepicker-trigger {
       left: 0px !important;
       top: 23px !important;
@@ -937,7 +939,7 @@
   }
   .slide_left {
     position: absolute;
-    left: -225px;
+    left: -255px; /*-225px;*/
     /*-webkit-transition-duration: .5s;
     -moz-transition-duration: .5s;
     -o-transition-duration: .5s;
@@ -1334,7 +1336,7 @@ padding-top: 80px;
     width:230px;
     button {
       height:40px;
-      width:190px;
+      width: 215px; /*190px;*/
     }
   }
 
@@ -1348,7 +1350,7 @@ padding-top: 80px;
       margin-top: 15px;
     }
     a.leftMenuHandle{
-      left:210px;
+      left: 235px; /*210px;*/
       top:-10px;
     }
 
