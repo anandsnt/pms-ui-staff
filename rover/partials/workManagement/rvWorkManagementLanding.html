@@ -1,4 +1,108 @@
-<section id="workManagement" class="content create-reservation scrollable" role="main">
-	  <a ui-sref="rover.workManagement.multiSheet" type="button" class="button green"> Mangage Work Sheets</a>
-	  <button ng-click="showCreateWorkSheetDialog()" type="button" class="button green">Create Work Sheet </button>
+<!-- Search form -->
+<form method="get" action="" name="work-management-search-form" id="work-management-search-form" class="search-form has-options" role="search">
+    <div class="entry search">
+        <a href="#" id="work-management-clear-query" class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </a>
+        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <input name="work-management-query" id="work-management-query" class="query" placeholder="Search by Room No. or Employee Name" type="search" autocomplete="off" />
+    </div>
+    <div class="entry options">
+        <div class="select">
+            <select id="work-type" name="work-type">
+                <option value="">All Work Types</option>
+                <option value="daily-cleaning" selected>Daily Cleaning</option>
+                ...
+            </select>
+        </div>
+        <div class="has-datepicker">
+            <input name="work-management-range" id="work-management-range" type="text" class="datepicker" value="{today}" readonly />
+        </div>
+    </div>
+</form> 
+
+<!-- Search panel : EMPTY -->
+<section id="work-management-search" class="content scrollable no-results hidden" role="complementary">
+    <div class="wrapper">
+        <ul id="work-management-search-results" class="search-results">
+            <li class="no-content">
+                <div class="info">
+                    <span class="icon-no-content icon-search"></span>
+                    <strong class="h1">Find Room or Employee</strong>
+                    <span class="h2">Search by <strong>Room Number</strong> or <strong>Employee Name</strong></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- Search panel : SEARCH BY NAME -->
+<section id="work-management-search" class="content scrollable showing-search" role="complementary">
+    <div class="wrapper">
+        <ul id="work-management-search-results" class="search-results">
+            <!-- Maid in room -->
+            <li class="employee">
+                <a href="{link}">
+                    <div class="data">
+                        <h2>{Maid First and Last Name}</h2>
+                    </div>
+                    <div class="stayovers">{stayover rooms cleaned}/{total stayover rooms}</div>
+                    <div class="departures">{departure rooms cleaned}/{total departure rooms}</div>
+                    <div class="shift">{shift completed time}/{total shift time}</div>
+                    <div class="location room">{room number}</div>
+                </a>
+            </li>
+            <!-- Maid on floor -->
+            <li class="employee">
+                <a href="{link}">
+                    <div class="data">
+                        <h2>{Maid First and Last Name}</h2>
+                    </div>
+                    <div class="stayovers">{stayover rooms cleaned}/{total stayover rooms}</div>
+                    <div class="departures">{departure rooms cleaned}/{total departure rooms}</div>
+                    <div class="shift">{shift completed time}/{total shift time}</div>
+                    <div class="location floor">{floor number}<sup>{st, nd, rd or th}</sup> floor</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section> 
+
+<!-- Search panel : SEARCH BY ROOM NUMBER -->
+<section id="work-management-search" class="content scrollable showing-search" role="complementary">
+    <div class="wrapper">
+        <ul id="work-management-search-results" class="search-results">
+            {same as in room-status/room-status.html, lines 71-105}
+        </ul>
+    </div>
+</section> 
+
+<!-- Work Management -->
+<section id="work-management" class="content scrollable" role="main">
+    <div class="wrapper">
+        <div class="dashboard-block data">
+            <ul>
+                <li>Departures to clean<span class="red">{value}</span></li>
+                <li>Total <i>Hours</i><span class="red">{time}</span></li>
+                <li>Total Staff Required<span class="red">{value}</span></li>
+                <li>Total Rooms Assigned<span class="red">{value}</span></li>
+                <li>Total Rooms Completed<span class="red">{value}</span></li>
+            </ul>
+        </div>
+        <div class="dashboard-block data">
+            <ul>
+                <li>Stayovers to clean<span class="orange">{value}</span></li>
+                <li>Total <i>Hours</i><span class="orange">{time}</span></li>
+                <li>Total Staff Required<span class="orange">{value}</span></li>
+                <li>Total Rooms Assigned<span class="orange">{value}</span></li>
+                <li>Total Rooms Completed<span class="orange">{value}</span></li>
+            </ul>
+        </div>
+        <div class="dashboard-block buttons">
+            <ul class="actions">
+                <li><a href="{link}" class="button blue">Manage Work Sheets</a></li>
+                <li><a href="{link}" class="button green open-modal">Create Work Sheet</a></li>
+            </ul>
+        </div>
+    </div>
 </section>
