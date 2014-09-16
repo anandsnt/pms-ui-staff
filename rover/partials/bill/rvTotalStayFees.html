@@ -7,7 +7,7 @@
 		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle has-arrow with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 			<span class="title"> <span translate>GUEST_BALANCE</span>:
 				<em class="label"> <span translate>AS_OF</span>
-					{{totalFees.fees_date | date:'MM-dd-yyyy'}}
+					{{totalFees.fees_date |date:dateFormat}}
 				</em> 
 			</span> 
 			<span class="value" ng-show="totalFees.balance_amount!='SR'" ng-class="getBalanceClass(totalFees.balance_amount)">
@@ -38,7 +38,7 @@
 		<a class="toggle signature-toggle has-arrow"> 
 			<span class="icons icon-signature"></span> 
 			<span translate>SIGNED</span> 
-			<em class="label"> {{reservationBillData.signature_details.signed_date_time}} </em> 
+			<em class="label"> {{reservationBillData.signature_details.signed_date | date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> 
 		</a>
 	</div>
 	
@@ -66,7 +66,9 @@
 		</a>
 		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> {{billData.guest_or_company_name}} </h3>
 		
-		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''"> {{billData.credit_card_details.payment_type_description}}<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a></h3>
+		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''">	   <span>{{billData.credit_card_details.payment_type_description}}</span>
+			<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
+		</h3>
 		
 		<h3 ng-show="billData.credit_card_details.payment_type ==''"> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a></h3>
 	</div>
@@ -74,8 +76,8 @@
 	<div class="details signature-wrapper" ng-show="showSignedSignature">
 		<figure>
 			<img src="{{reservationBillData.signature_details.signed_image}}" alt="">
-		</figure>
-		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date_time}}</em> </span>
+		</figure>dateFormat{{krish}}
+		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
 	</div>
 
 	<!-- Bill Total Stay Fees -->
@@ -105,7 +107,7 @@
 						<a ng-click="clickedPrint()" class="button with-icon only-icon blue"> 
 							<span class="icons icon-print"></span> 
 						</a> <span translate>STAY_FEES_AS_OF</span>
-					 		{{totalFeesArray.fees_date | date:'MM-dd-yy'}}	):
+					 		{{totalFeesArray.fees_date | date:dateFormat}}	):
 					 </td>
 					 <td colspan="3" class="total-value" >
 						<strong ng-hide="totalFeesArray.total_amount == 'SR'"> 
@@ -126,7 +128,7 @@
 				<!-- Show balance -->
 				<tr class="active" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
 					<td colspan="2" class="total-label"> <span translate>BALANCE_AS_OF</span>
-					{{totalFeesArray.fees_date | date:'MM-dd-yy'}}
+					{{totalFeesArray.fees_date |date:dateFormat}}
 					): </td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
 						<strong> 
@@ -147,7 +149,7 @@
 				</tr>
 				<tr class="active" ng-show="showGuestBalance(reservationBillData.reservation_status)">
 					<td colspan="2" class="total-label"> <span translate>GUEST_BALANCE_AS_OF</span>
-						{{totalFeesArray.fees_date | date:'MM-dd-yy'}}):
+						{{totalFeesArray.fees_date |date:dateFormat}}):
 					</td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
 						<strong> 
@@ -165,7 +167,7 @@
 			</tfoot>
 			<tbody>
 				<tr class="active edit" ng-repeat="feesData in totalFeesArray.fees_details">
-					<td> {{feesData.date | date:'MM-dd-yyyy'}}</td>
+					<td> {{feesData.date |date:dateFormat}}</td>
 					<td> 
 						<span ng-repeat="description in feesData.description">
 							{{description.charge_code}}
@@ -204,7 +206,7 @@
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
-							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10 && isStandAlone">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 							
 						</select>
 					</div>

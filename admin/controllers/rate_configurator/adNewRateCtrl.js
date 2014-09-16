@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails','$filter',
-    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails,$filter) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails','$filter','$rootScope',
+    function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails,$filter, $rootScope) {
 
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
@@ -159,7 +159,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
             if($scope.rateData.end_date){
-                 $scope.rateData.end_date_for_display = ($scope.rateData.end_date.length>0)? $filter('date')(new Date($scope.rateData.end_date), 'MM-dd-yyyy'):"";
+                 $scope.rateData.end_date_for_display = ($scope.rateData.end_date.length>0)? $filter('date')(new Date($scope.rateData.end_date), $rootScope.dateFormat):"";
             }
             else{
                 $scope.rateData.end_date_for_display ="";
