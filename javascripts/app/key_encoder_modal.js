@@ -552,8 +552,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			var message = 'Key creation failed!';
 		}
 		sntapp.activityIndicator.hideActivityIndicator();
-		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('error').text(message);
+		that.myDom.find('#room-status, #key-status').removeClass('connecting connected').addClass('not-connected completed');
+		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
