@@ -326,7 +326,6 @@ var RegistrationCardView = function(viewDom) {
 					"no_post": no_post_room_charge 	
 				};
 			}
-		
 			var webservice = new WebServiceInterface();
 
 			var url = '/staff/checkin';
@@ -341,8 +340,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.completeCheckinSuccess = function(data) {
-		hello = that.myDom.find("#checkin-button");
-
+		
 		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
 		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
