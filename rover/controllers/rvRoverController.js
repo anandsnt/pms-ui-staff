@@ -51,6 +51,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
+    $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
     /*
@@ -60,6 +61,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+    $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
+    $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
+    console.log("currency code   : "+hotelDetails.currency.value);
+    console.log("currency symbol : "+$rootScope.currencySymbol);
+    console.log("date format     : "+$rootScope.dateFormat);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
 
 

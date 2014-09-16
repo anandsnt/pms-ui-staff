@@ -476,7 +476,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					"company_logo": "",
 					"account_number": null,
 					"accounts_receivable_number": null,
-					"billing_information": "Test"
+					"billing_information": null
 				},
 				"primary_contact_details": {
 					"contact_first_name": null,

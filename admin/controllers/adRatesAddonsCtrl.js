@@ -189,7 +189,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			if ( $scope.dateNeeded === 'From' ) {
 	            $scope.singleAddon.begin_date = chosenDate;
 	            // convert system date to MM-dd-yyyy format
-				$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate(chosenDate), 'MM-dd-yyyy');
+				$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 				
 
 	            // if user moved begin_date in a way
@@ -198,11 +198,11 @@ admin.controller('ADRatesAddonsCtrl', [
 	            // so that user may not submit invalid dates
 	            if ( tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0 ) {
 	                $scope.singleAddon.end_date = chosenDate
-	                $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), 'MM-dd-yyyy');
+	                $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 	            }
 			} else {
 				  $scope.singleAddon.end_date = chosenDate
-	              $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), 'MM-dd-yyyy');
+	              $scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
 			}
 		});
 
@@ -210,9 +210,11 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			if ( pickerId === 'From' ) {
 				$scope.singleAddon.begin_date_for_display = "";
+				$scope.singleAddon.begin_date = null;
 			}
 			else{
 				$scope.singleAddon.end_date_for_display   = "";
+				$scope.singleAddon.end_date = null;
 			};
 
 		};
@@ -258,13 +260,13 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.singleAddon.begin_date = $scope.businessDate;
 					$scope.singleAddon.begin_date_for_display = "";
 				}else{
-					$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), 'MM-dd-yyyy');
+					$scope.singleAddon.begin_date_for_display = $filter('date')(tzIndependentDate($scope.singleAddon.begin_date), $rootScope.dateFormat);
 				}
 				if ( !$scope.singleAddon.end_date ) {
 					$scope.singleAddon.end_date = $scope.businessDate;
 					$scope.singleAddon.end_date_for_display = "";
 				}else{
-					$scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), 'MM-dd-yyyy');
+					$scope.singleAddon.end_date_for_display   = $filter('date')(tzIndependentDate($scope.singleAddon.end_date), $rootScope.dateFormat);
 				};
 
 				// convert system date to MM-dd-yyyy format
