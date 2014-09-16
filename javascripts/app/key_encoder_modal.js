@@ -430,7 +430,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 					that.showKeyPrintSuccess();
 					return true;
 				}
-
+				that.myDom.find('#key-status .status').removeClass('pending error').addClass('success').text('Key, Band created successfully');
 				that.printKeyStatus[index-1].printed = true;
 				that.myDom.find('#key' + index).closest('label').addClass('printed');
 				that.myDom.find('#create-key').text('Print key '+ (index+1));				
@@ -552,7 +552,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			var message = 'Key creation failed!';
 		}
 		sntapp.activityIndicator.hideActivityIndicator();
-		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
+		that.myDom.find('#room-status, #key-status').removeClass('connecting connected').addClass('not-connected completed');
 		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
