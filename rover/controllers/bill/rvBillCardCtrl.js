@@ -1122,8 +1122,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 
 	var refreshListWithData = function(data){
-		$scope.reservationBillData = data; 
-		reservationBillData = data;
+		$scope.init(data);
 		//expand list
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
 		$scope.calculateHeightAndRefreshScroll();
