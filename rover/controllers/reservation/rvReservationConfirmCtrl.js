@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv) {
+sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv', '$filter',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 
@@ -61,7 +61,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
 			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
-				$scope.errorMessage = ['Please enter a valid email address '];
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 				return false;
 
 			}
