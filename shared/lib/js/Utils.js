@@ -388,9 +388,20 @@ var DateFormatInfoMappings = {
 };
 
 var getDateFormat = function(dateFormat) {
-    return DateFormatInfoMappings[dateFormat][0];
+    
+    if(typeof dateFormat === 'undefined'){
+        return DateFormatInfoMappings['MM-DD-YYYY'][0];
+    }
+    else{
+        return DateFormatInfoMappings[dateFormat][0];
+    }
 };
 
 var getJqDateFormat = function(dateFormat) {
-    return DateFormatInfoMappings[dateFormat][1];
+    if(typeof dateFormat === 'undefined'){
+        return DateFormatInfoMappings['MM-DD-YYYY'][1];
+    }
+    else{
+        return DateFormatInfoMappings[dateFormat][1];
+    }
 };
