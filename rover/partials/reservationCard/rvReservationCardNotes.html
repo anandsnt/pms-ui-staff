@@ -24,7 +24,7 @@
                     <h4> {{note.username}} </h4>
                     <time datetime="T">
                         <span class="time"> {{note.posted_time}}</span>
-                        <span class="date">{{note.posted_date}} </span>
+                        <span class="date">{{note.posted_date | date:dateFormat}} </span>
                     </time>
                     <span class="topic"> {{note.topic}} </span>
                     <button id="delete_note" class="icons icon-trash" ng-click="deleteReservationNote($index)" >Delete post</button>
