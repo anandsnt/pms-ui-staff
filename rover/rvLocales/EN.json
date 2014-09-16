@@ -194,7 +194,10 @@
     "DELETE_POST":"Delete post",
     "CONTACT":"Contact",
     "DELETE_ACCOUNT":"Delete Account",
-    "DELETE_AR_ACCOUNT":"Delete AR Account?"
+    "DELETE_AR_ACCOUNT":"Delete AR Account?",
+    "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
+    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first"
+
 	
 ,    
     
@@ -676,4 +679,5 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"}
+    "POST_CHARGES_LABEL": "Post Room Charges"
+}

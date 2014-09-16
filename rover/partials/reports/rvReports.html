@@ -160,9 +160,9 @@
 								<tr>
 									<td colspan="{{ leftColSpan }}">
 										From
-										<span>{{ displayedReport.fromDate }}</span>
+										<span>{{ displayedReport.fromDate | date:dateFormat }}</span>
 										To
-										<span>{{ displayedReport.untilDate }}</span>
+										<span>{{ displayedReport.untilDate | date:dateFormat }}</span>
 										<br>
 										<div ng-if="chosenReport.chosenCico">
 											Transaction type
@@ -175,7 +175,7 @@
 									</td>
 									<td colspan="{{ rightColSpan }}">
 										Business date
-										<span>{{ userInfo.business_date | date:'MM-dd-yyyy' }}</span>
+										<span>{{ userInfo.business_date | date:dateFormat }}</span>
 										<br>
 										User
 										<span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
