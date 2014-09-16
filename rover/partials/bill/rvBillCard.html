@@ -23,9 +23,11 @@
 					{{setNightsString()}} 
 				</span>
 				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span> 
-				 {{reservationBillData.checkin_date | date:dayAndDate}} </span>
-				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span> 
-				{{reservationBillData.checkout_date | date:dayAndDate}} </span>
+				 {{reservationBillData.checkin_date | date:fulldayInWeek}}
+				 {{reservationBillData.checkin_date | date:dateFormat}} </span>
+				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
+				{{reservationBillData.checkout_date | date:fulldayInWeek}} 
+				{{reservationBillData.checkout_date | date:dateFormat}} </span>
 			</div>
 		</div>
 
@@ -109,7 +111,7 @@
 									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>
-							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10">
+							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10 && isStandAlone">
 							<a class="button with-icon brand-colors ng-binding ui-tabs-anchor add-new-bill-button" ng-click="createNewBill()"> 
 								<span class="icons icon-plus"></span> 
 							</a>

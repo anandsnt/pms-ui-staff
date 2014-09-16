@@ -24,10 +24,13 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
     $rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
+
  	$rootScope.isCCOnFile = ($attrs.isCcAttached ==='true')? true:false;
  	$rootScope.mliMerchatId = $attrs.mliMerchatId;
  	$rootScope.isRoomVerified =  false;
- 	
+ 	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
+ 	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
+
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
  	

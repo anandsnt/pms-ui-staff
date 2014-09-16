@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv) {
+sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv', '$filter',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter) {
+		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 
 
@@ -60,13 +61,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
 			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
-				ngDialog.open({
-					template: '/assets/partials/reservation/alerts/rvEmailWarning.html',
-					closeByDocument: true,
-					className: 'ngdialog-theme-default1',
-					scope: $scope
-				});
-
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 				return false;
 
 			}
@@ -121,7 +116,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			var stateParams = {
 				id: $scope.reservationData.reservationId,
 				confirmationId: $scope.reservationData.confirmNum,
-				isrefresh: true
+				isrefresh: true,
+				justCreatedRes: true
 			}
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 

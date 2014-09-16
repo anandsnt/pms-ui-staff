@@ -32,7 +32,7 @@
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
  <h3 translate="" class="actions-end-of-day-text" translate>END_OF_DAY</h3>
   <div class="end-of-day-message">
-  {{'BUSSINESS_DAY_MSG_1' | translate}} <span class="current-bussiness-date">{{businessDate}}</span> {{'BUSSINESS_DAY_MSG_2' | translate}} <span class="next-bussiness-date">{{nextBusinessDate}}</span>
+  {{'BUSSINESS_DAY_MSG_1' | translate}} <span class="current-bussiness-date">{{businessDate | date:dateFormat}}</span> {{'BUSSINESS_DAY_MSG_2' | translate}} <span class="next-bussiness-date">{{nextBusinessDate | date:dateFormat}}</span>
   </div>
 	<div class="actions float padding-30">
 		<button type="button" ng-click="startEndOfDayProcess()" class="button" ng-class="{'green':startProcessEnabled}" ng-disabled="!startProcessEnabled" translate>

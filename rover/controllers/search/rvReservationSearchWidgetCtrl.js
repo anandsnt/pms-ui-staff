@@ -413,35 +413,40 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
       };
       
       
-      $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
-       var mappedStatus = "room-number";
-       if(reservation_status == 'CHECKING_IN'){
-     
-	      	switch(roomReadyStatus) {
-	
-				case "INSPECTED":
-					mappedStatus += ' room-green';
-					break;
-				case "CLEAN":
-					if (checkinInspectedOnly == "true") {
-						mappedStatus += ' room-orange';
-						break;
-					} else {
-						mappedStatus += ' room-green';
-						break;
+    $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
+       	var mappedStatus = "room-number";
+
+       	if(reservation_status == 'CHECKING_IN'){
+       		if(roomReadyStatus != ''){
+       			if(fostatus == 'VACANT'){
+			      	switch(roomReadyStatus) {
+						case "INSPECTED":
+							mappedStatus += ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								mappedStatus += ' room-orange';
+								break;
+							} else {
+								mappedStatus += ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							mappedStatus += " room-orange";
+							break;
+			
+						case "DIRTY":
+							mappedStatus += " room-red";
+							break;
 					}
-					break;
-				case "PICKUP":
-					mappedStatus += " room-orange";
-					break;
-	
-				case "DIRTY":
-					mappedStatus += " room-red";
-					break;
-	
-			}
-	       }
-	   	 return mappedStatus;
-   };
+       			} else {
+       				mappedStatus += " room-red";
+       			}
+       		}
+	    }
+
+	   	return mappedStatus;
+   	};
 
 }]);

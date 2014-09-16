@@ -39,6 +39,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
 	}
+	$scope.printData = {};
 	//This value changes when clicks on pay button
 	$scope.fromViewToPaymentPopup = "billcard";
 	//options fo signature plugin
@@ -63,7 +64,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	}
 	
 	$scope.init = function(reservationBillData){
-		/*
+		
+				/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
 		 * To handle move to bill action
 		 * Added same value to two different key because angular is two way binding
@@ -290,11 +292,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	var parseOldBillValue = parseInt(oldBillValue)-1;
 		var newBillValue = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].billValue;
 		var transactionId = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].transaction_id;
+		var id  = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details[feesIndex].id;
 		var dataToMove = {
 			"reservation_id" : $scope.reservationBillData.reservation_id,
 			"to_bill" : newBillValue,
 			"from_bill" : oldBillValue,
-			"transaction_id" : transactionId
+			"transaction_id" : transactionId,
+			"id":id
 		};
 		/*
 		 * Success Callback of move action
@@ -428,6 +432,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.clickedPayButton = function(){
 
+	 	// To check for ar account details in case of direct bills		
+		if($scope.isArAccountNeeded( $scope.currentActiveBill)){
+			return;
+		}
+
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
@@ -466,6 +475,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservation_id = $scope.reservationBillData.reservation_id;
 
 		// pass down active bill no
+		
 		$scope.passActiveBillNo = activeBillNo;
 
 		// translating this logic as such from old Rover
@@ -486,6 +496,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 	};
+
+	$scope.$on('paymentTypeUpdated', function() {
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	}); 
 
 	// just fetch the bills again ;)
 	var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
@@ -826,7 +840,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 
-		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 
 		if(!$scope.isAllBillsReviewed){
@@ -1230,6 +1243,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	
 	};
+	
+
 	//print bill
 	$scope.clickedPrint = function(){
 		printBill();
@@ -1244,10 +1259,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	// print the page
 	var printBill = function() {
+		var data = {
+				"reservation_id" : $scope.reservationBillData.reservation_id,
+				"bill_number" : reservationBillData.bills[$scope.currentActiveBill].bill_number
+		};
+		var printDataFetchSuccess = function(successData){
+			$scope.$emit('hideLoader');
+			$scope.printData = successData;
+			$scope.errorMessage = "";
 		/*
 		*	=====[ READY TO PRINT ]=====
 		*/
-
 		// this will show the popup with full bill
 	    $timeout(function() {
 	    	/*
@@ -1260,15 +1282,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        };
 	    }, 100);
 
+		};
+		var printDataFailureCallback = function(errorData){
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+
+
 	    /*
 	    *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 	    */
 
-		};
+	};
 
 	 
 	 $scope.$on('PAYMENT_SUCCESS', function(event) {
-		
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	}); 

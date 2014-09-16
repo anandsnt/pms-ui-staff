@@ -84,6 +84,6 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
    //scroller is not appearing after coming back from other screens
    setTimeout(function(){
       $scope.refreshScroller('dashboard_scroller');
-   }, 200);
+   }, 500);
 
 }]);

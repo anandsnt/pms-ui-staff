@@ -119,7 +119,6 @@ sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParam
 			}
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
-				penalty: parseFloat($scope.ngDialogData.penalty),
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				id: $scope.reservationData.reservation_card.reservation_id
 			}
