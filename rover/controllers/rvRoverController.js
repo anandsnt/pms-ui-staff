@@ -51,6 +51,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
+    $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
     /*
@@ -60,6 +61,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+    $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
+    $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
+    console.log("currency code   : "+hotelDetails.currency.value);
+    console.log("currency symbol : "+$rootScope.currencySymbol);
+    console.log("date format     : "+$rootScope.dateFormat);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
 
 
@@ -555,7 +561,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     * Handles the bussiness date change completion
     */
     $rootScope.showBussinessDateChangedPopup = function() {
-
+        $rootScope.isBussinessDateChanging = false;
         // Hide loading message
         $scope.$emit('hideLoader');
         // if(!$rootScope.isBussinessDateChanged){
@@ -582,7 +588,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
     },
     response: function (response) {
         // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started && !$rootScope.isCurrentUserChangingBussinessDate){
+        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
            $rootScope.$emit('bussinessDateChangeInProgress');
         }       
         return response || $q.when(response);

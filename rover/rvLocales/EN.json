@@ -194,7 +194,10 @@
     "DELETE_POST":"Delete post",
     "CONTACT":"Contact",
     "DELETE_ACCOUNT":"Delete Account",
-    "DELETE_AR_ACCOUNT":"Delete AR Account?"
+    "DELETE_AR_ACCOUNT":"Delete AR Account?",
+    "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
+    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first"
+
 	
 ,    
     
@@ -235,7 +238,7 @@
 
 	"OWS_ERROR_MSG": "The PMS Interface is not responding. StayNTouch Apps have been disabled until a connection has been re-established. Please continue to re-try or contact your PMS vendor.",
 	
-	"ROOM_STATUS": "Rooms Status",
+	"ROOM_STATUS": "Room Status",
 	"ENTER_ROOM_NUMBER": "Enter Room Number",
 	"FILTER_ROOMS": "Filter rooms",
 	"CLEAR_QUERY": "Clear query",
@@ -306,7 +309,8 @@
     "AMOUNT": "Amount",
     "WINDOW": "Window",
 
-    "NEW_ACCOUNT_RECEIVABLE": "New Account Receivable",
+    "NEW_ACCOUNT_RECEIVABLE": "Create Account Receivable",
+    "AR_ACCOUNT_NIL": "Account Receivable Not Created",
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
@@ -351,7 +355,7 @@
     "RETURN_TO_DASHBOARD": "return to dashboard",
     "CREATE_NEW_FOR_GUEST": "create new for this guest",
     "CANCEL_RESERVATION": "Cancel Reservation",
-    "STAY_CARD_TITLE" : "Staycard",
+    "STAY_CARD_TITLE" : "Stay Card",
     "CODE": "Code",
     "TYPE" : "Type",
     "RESERVATION_TYPE_LABEL":"Reservation type",
@@ -500,9 +504,9 @@
     "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
     "CHARGE_PENALTY" : "Charge Penalty",
     "PROCEED" : "Proceed",
-    "CANCELATION_REASON" : "Cancelation reason",
+    "CANCELLATION_REASON" : "Cancellation Reason",
     "OPTIONAL" : "Optional",
-    "CANCELATION_REASON_PLACEHOLDER" : "Cancelling because...",	
+    "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",
@@ -631,6 +635,8 @@
 	"REGISTRATION" : "Registration",
 
     "BILLING_INFO_TITLE" : "Billing Information",
+    "ADD_BILLING_INFO_TITLE" : "Add Billing Information",
+    "BILL_ROUTING_HEADER" : "Bill routing",
     "CONFIRMATION_LABEL" : "Confirmation",
     "ROUTES_EMPTY_MESSAGE": "Bill Routing not defined",
     "ADD_ROUTES_LABEL" : "ADD ROUTES",
@@ -674,5 +680,4 @@
     "UNIT":"unit",
     "AT":"at",
     "POST_CHARGES_LABEL": "Post Room Charges"
-
 }
