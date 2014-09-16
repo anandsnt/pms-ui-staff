@@ -59,8 +59,8 @@ $scope.continueClicked = function(){
 	};
 	var startProcessSuccess = function(data){
 		$scope.$emit('hideLoader');
-		$rootScope.businessDate = data.hotel_business_date;
-		$rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
+		// $rootScope.businessDate = data.hotel_business_date;
+		// $rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
 		$rootScope.isCurrentUserChangingBussinessDate = false;
 		$state.go('rover.dashboard', {}, {reload: true});
 		ngDialog.close();

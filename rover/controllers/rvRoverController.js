@@ -564,15 +564,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $rootScope.isBussinessDateChanging = false;
         // Hide loading message
         $scope.$emit('hideLoader');
-        // if(!$rootScope.isBussinessDateChanged){
-        //     $rootScope.isBussinessDateChanged = true;
+        if(!$rootScope.isBussinessDateChanged){
+             $rootScope.isBussinessDateChanged = true;
             ngDialog.open({
               template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               closeByDocument: false,
               scope: $scope
           });
-        // }        
+        }        
     };
 
   }
