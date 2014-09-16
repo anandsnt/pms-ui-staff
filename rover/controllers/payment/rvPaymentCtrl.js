@@ -226,6 +226,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			}
 			
 		}
+		$rootScope.$broadcast('paymentTypeUpdated');
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
