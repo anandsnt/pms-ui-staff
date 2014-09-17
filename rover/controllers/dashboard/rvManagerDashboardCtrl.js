@@ -78,6 +78,19 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
         var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
         return valueToReturn;
    };
+
+   /**
+   * function to check whether the object is empty or not
+   * @param {Object} Js Object
+   * @return Boolean
+   */
+   $scope.isEmptyObject = function(obj){
+      for(var key in obj) {
+        return false;
+      }
+      return true;
+   };
+
    $scope.$on("UPDATE_MANAGER_DASHBOARD", function(){
    		 $scope.$emit("UpdateHeading", 'DASHBOARD_MANAGER_HEADING'); 
    });

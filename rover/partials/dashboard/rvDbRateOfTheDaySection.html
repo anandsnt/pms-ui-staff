@@ -5,24 +5,34 @@
         <li>
         	Today
         	<span class="rate">{{statisticsData.rate_of_day.today.name}}</span>
-        	<span class="value" ng-show="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
+        	<span class="value" ng-if="escapeNull(statisticsData.rate_of_day.today.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.today.amount | number : 2}}
-            </span>          
+            </span>  
+            <span class="value" ng-if="isEmptyObject(statisticsData.rate_of_day.today)">
+                CLOSED
+            </span>              
+                   
         </li>
         <li>
         	{{tomorrow|date:monthAndDate}}
         	<span class="rate">{{statisticsData.rate_of_day.tomorrow.name}}</span>
-            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.tomorrow.amount)!==''">
+            <span class="value" ng-if="escapeNull(statisticsData.rate_of_day.tomorrow.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.tomorrow.amount | number : 2}}
-            </span>            
+            </span> 
+            <span class="value" ng-if="isEmptyObject(statisticsData.rate_of_day.tomorrow)">
+                CLOSED
+            </span>                        
         </li>
         <li>
         	{{dayAfterTomorrow|date:monthAndDate}}
         	<span class="rate">{{statisticsData.rate_of_day.day_after_tomorrow.name}}</span>
 
-            <span class="value" ng-show="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount)!==''">
+            <span class="value" ng-if="escapeNull(statisticsData.rate_of_day.day_after_tomorrow.amount)!==''">
                 {{currencySymbol}}{{statisticsData.rate_of_day.day_after_tomorrow.amount | number : 2}}
-            </span>            
+            </span> 
+            <span class="value" ng-if="isEmptyObject(statisticsData.rate_of_day.day_after_tomorrow)">
+                CLOSED
+            </span>                        
         </li>      
     </ul>
 </div>
