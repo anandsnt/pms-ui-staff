@@ -69,7 +69,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "images": data.images,
 			    "bill_no": "",
 			    "entity_type": "RESERVATION",
-			    "has_accompanying_guests" : ( data.images.length >1 ) ? "true" : "false",
+			    "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "is_new" : true
@@ -131,7 +131,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to get the class for the 'li' according to the entity role
     */
 	$scope.getEntityRole = function(route){
-    	if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'false')
+    	if(route.entity_type == 'RESERVATION' &&  !route.has_accompanying_guests)
     		return 'guest';
     	else if(route.entity_type == 'RESERVATION')
     		return 'accompany';
@@ -144,7 +144,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to get the class for the 'icon' according to the entity role
     */
     $scope.getEntityIconClass = function(route){
-        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'true')
+        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests )
             return 'accompany';
     	else if(route.entity_type == 'RESERVATION' || route.entity_type == 'COMPANY_CARD')
             return '';
