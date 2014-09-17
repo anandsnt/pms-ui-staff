@@ -16,11 +16,24 @@
 		<!-- Show balance -->
 		<div class="balance break" ng-show="displayBalance(reservationData.reservation_card.reservation_status)">
 			<span class="label">Balance</span>
-			<!-- if balance is zero, show balance in green color -->
-			<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
-				{{currencySymbol}} 
-				{{ reservationData.reservation_card.balance_amount | number:2 }}
+			<!-- In connected PMS, we should indicate if it is having suppressed rate -->
+			<span ng-if="isStandAlone == true">
+				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="!reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
+					{{currencySymbol}} 
+					{{ reservationData.reservation_card.balance_amount | number:2 }}
+				</span>
+				<span class="h1" ng-if ="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
+					SR
+				</span>
 			</span>
+			<span ng-if="isStandAlone == false">
+				<!-- if balance is zero, show balance in green color -->
+				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
+					{{currencySymbol}} 
+					{{ reservationData.reservation_card.balance_amount | number:2 }}
+				</span>
+			</span>
+			
 		</div>
 		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
 		<a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">

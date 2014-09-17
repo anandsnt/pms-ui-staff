@@ -76,7 +76,8 @@
 	"CONTINUE": "continue",
 	"RESTRICTIONS": "Restrictions",
 	"RESTRICTION": "Restriction",
-	"CANCEL": "cancel"
+	"CANCEL": "cancel",
+	"SUPPRESSED_RATES_TEXT": "SR"
 
 
 
@@ -194,7 +195,10 @@
     "DELETE_POST":"Delete post",
     "CONTACT":"Contact",
     "DELETE_ACCOUNT":"Delete Account",
-    "DELETE_AR_ACCOUNT":"Delete AR Account?"
+    "DELETE_AR_ACCOUNT":"Delete AR Account?",
+    "COMPANY_SAVE_PROMPT" :"Please save Company Card first",
+    "TA_SAVE_PROMPT" : "Please save Travel Agent Card first"
+
 	
 ,    
     
@@ -306,7 +310,8 @@
     "AMOUNT": "Amount",
     "WINDOW": "Window",
 
-    "NEW_ACCOUNT_RECEIVABLE": "New Account Receivable",
+    "NEW_ACCOUNT_RECEIVABLE": "Create Account Receivable",
+    "AR_ACCOUNT_NIL": "Account Receivable Not Created",
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
     "CREATE_AR_ACCOUNT": "Create Account",
@@ -675,4 +680,5 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"}
+    "POST_CHARGES_LABEL": "Post Room Charges"
+}
