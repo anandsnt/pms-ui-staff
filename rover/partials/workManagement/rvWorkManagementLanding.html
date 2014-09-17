@@ -1,3 +1,5 @@
+
+<div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Search form -->
 <form method="get" action="" name="work-management-search-form" id="work-management-search-form" class="search-form has-options" role="search">
     <div class="entry search">
@@ -12,7 +14,6 @@
             <select id="work-type" name="work-type">
                 <option value="">All Work Types</option>
                 <option value="daily-cleaning" selected>Daily Cleaning</option>
-                ...
             </select>
         </div>
         <div class="has-datepicker">
@@ -22,7 +23,7 @@
 </form> 
 
 <!-- Search panel : EMPTY -->
-<section id="work-management-search" class="content scrollable no-results hidden" role="complementary">
+<section id="work-management-search" class="content scrollable no-results hidden" role="complementary" ng-if="stateVariables.searching">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">
             <li class="no-content">
@@ -37,7 +38,7 @@
 </section>
 
 <!-- Search panel : SEARCH BY NAME -->
-<section id="work-management-search" class="content scrollable showing-search" role="complementary">
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">
             <!-- Maid in room -->
@@ -69,40 +70,80 @@
 </section> 
 
 <!-- Search panel : SEARCH BY ROOM NUMBER -->
-<section id="work-management-search" class="content scrollable showing-search" role="complementary">
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">
-            {same as in room-status/room-status.html, lines 71-105}
+           <li class="room">
+			<a href="{link}"> <!-- Add class="with-image" if room is occupied -->
+				<div class="data">
+					<h2 class="{room-status or out}">{room-number}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+					<span class="room-status {room-status}">{room-status}</span>
+				</div>
+				<!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
+				<div class="reservation-status">
+					<!-- {reservation-status} can be check-out(for due out or departed) or inhouse(for stayover) -->
+					<div class="current {reservation-status}">
+						<span class="guest-status {reservation-status}">{reservation-status}</span>
+						<!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
+						<span>{departure-time}</span>
+					</div>
+					<!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
+					<div class="next {reservation-status}">
+						<span class="guest-status {reservation-status}">{reservation-status}</span>
+						<!-- Show only if applicable, {arrival-time} can only be time -->
+						<span>{arrival-time}</span>
+					</div>
+				</div>
+				<!-- Show if room is assigned or ooo/oos -->
+				<div class="additional-info">
+					<!-- Show only if room is assigned -->
+					<span class="assigned">{Employee name}</span>
+					<!-- Show only if room is not in service -->
+					<span class="service-status">{ooo or oos}</span>
+				</div>
+				<!-- Show only if room is occupied -->
+				<figure class="guest-image">
+					<!-- If VIP, add here: <span class="vip">VIP</span> -->
+					<img src="{image}" alt="" />
+				</figure>
+			</a>
+		</li>
+
         </ul>
     </div>
 </section> 
-
+	
 <!-- Work Management -->
-<section id="work-management" class="content scrollable" role="main">
+<section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching">
     <div class="wrapper">
         <div class="dashboard-block data">
             <ul>
-                <li>Departures to clean<span class="red">{value}</span></li>
-                <li>Total <i>Hours</i><span class="red">{time}</span></li>
-                <li>Total Staff Required<span class="red">{value}</span></li>
-                <li>Total Rooms Assigned<span class="red">{value}</span></li>
-                <li>Total Rooms Completed<span class="red">{value}</span></li>
+                <li>Departures to clean<span class="red">{{workStats.departures.clean}}</span></li>
+                <li>Total <i>Hours</i><span class="red">{{workStats.departures.total_hours}}</span></li>
+                <li>Total Staff Required<span class="red">{{workStats.departures.total_maids_required}}</span></li>
+                <li>Total Rooms Assigned<span class="red">{{workStats.departures.total_rooms_assigned}}</span></li>
+                <li>Total Rooms Completed<span class="red">{{workStats.departures.total_rooms_completed}}</span></li>
             </ul>
         </div>
         <div class="dashboard-block data">
             <ul>
-                <li>Stayovers to clean<span class="orange">{value}</span></li>
-                <li>Total <i>Hours</i><span class="orange">{time}</span></li>
-                <li>Total Staff Required<span class="orange">{value}</span></li>
-                <li>Total Rooms Assigned<span class="orange">{value}</span></li>
-                <li>Total Rooms Completed<span class="orange">{value}</span></li>
+                <li>Stayovers to clean<span class="orange">{{workStats.stay_overs.clean}}</span></li>
+                <li>Total <i>Hours</i><span class="orange">{{workStats.stay_overs.total_hours}}</span></li>
+                <li>Total Staff Required<span class="orange">{{workStats.stay_overs.total_maids_required}}</span></li>
+                <li>Total Rooms Assigned<span class="orange">{{workStats.stay_overs.total_rooms_assigned}}</span></li>
+                <li>Total Rooms Completed<span class="orange">{{workStats.stay_overs.total_rooms_completed}}</span></li>
             </ul>
         </div>
         <div class="dashboard-block buttons">
             <ul class="actions">
-                <li><a href="{link}" class="button blue">Manage Work Sheets</a></li>
-                <li><a href="{link}" class="button green open-modal">Create Work Sheet</a></li>
+                <li><a ui-sref="rover.workManagement.multiSheet" class="button blue">Manage Work Sheets</a></li>
+                <li><button ng-click="showCreateWorkSheetDialog()" class="button green open-modal">Create Work Sheet</button></li>
             </ul>
         </div>
     </div>
 </section>
+
+<!-- <section id="workManagement" class="content create-reservation scrollable" role="main">
+	  <a ui-sref="rover.workManagement.multiSheet" type="button" class="button green"> Mangage Work Sheets</a>
+	  <button ng-click="showCreateWorkSheetDialog()" type="button" class="button green">Create Work Sheet </button>
+</section> -->
