@@ -94,13 +94,15 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	* remove the parent reservation from the search results
 	*/
 	$scope.excludeActivereservationFromsSearch = function(){
+		var filteredResults = [];
 	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if(($scope.results.reservations[i].id == $scope.reservationData.reservation_id) || !($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT'))
+	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT')){
 
-	  				$scope.results.reservations.splice(i, 1);
-	  				break;
+	  				filteredResults.push($scope.results.reservations[i]);
+	  				
 	  			}
 	  		}
+	  		$scope.results.reservations = filteredResults;
 	};
 	
 	/**

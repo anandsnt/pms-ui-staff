@@ -27,7 +27,7 @@
 				<!-- Available credit card -->
 				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && attachedPaymentTypes.existing_payments.length > 0">
 					<div class="wrapper">
-						<div class="payment" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes.existing_payments" ng-click = "selectedEntity.selected_payment = paymentType.value">
+						<div class="payment" ng-show = "!isAddPayment && showPayment && paymentType.is_credit_card" ng-repeat="paymentType in attachedPaymentTypes.existing_payments" ng-click = "selectedEntity.selected_payment = paymentType.value">
 							<!-- add class active when selected -->
 							<figure class="card-logo">
 								<img src="/assets/{{paymentType.card_code}}.png" alt="" />
