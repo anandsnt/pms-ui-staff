@@ -30,7 +30,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 	 * on the basis of routes available or not
 	 */
 	$scope.getBillingInfoTitle = function(){
-		if($scope.reservationData.has_bill_routings)
+		if($scope.reservationData.is_routing_available)
 			return $filter('translate')('BILLING_INFO_TITLE');
 		else
 			return $filter('translate')('ADD_BILLING_INFO_TITLE');

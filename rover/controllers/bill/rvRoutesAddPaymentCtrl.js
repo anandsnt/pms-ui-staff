@@ -94,10 +94,8 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 		$scope.savePayment = function(){
 			
 			var successCallback = function(data) {
-                
-                $scope.attachedPaymentTypes.existing_payments.push(data);
-                $scope.$parent.$emit('hideLoader');
                 $scope.showPaymentList();
+                $scope.$parent.fetchAttachedPaymentTypes();                
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
