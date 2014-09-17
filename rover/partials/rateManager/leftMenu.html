@@ -112,7 +112,7 @@
 							<div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
 							<div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
 							<img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
-							<h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
+							<h4 style="font-size: 16px; font-weight: bold;" ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
 						</li>
 					</ul>
 				</div>
