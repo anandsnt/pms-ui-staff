@@ -1,13 +1,16 @@
 sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', '$filter',
 		function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv, $filter){
 	BaseCtrl.call(this, $scope);
-	var that = this;
+	
+	that = this;
+	shahul = $scope;
+
 
 	this.setStatusAndMessage = function(message, status){
 		$scope.statusMessage = message;
 		$scope.status = status;
 	};
-	
+			
 	$scope.init = function(){
 		var reservationStatus = "";
 		$scope.data = {};
@@ -69,6 +72,11 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.printKeyStatus = [];
 		that.isAdditional = false;
 		
+		//whether we need to create smartband along with key creation
+		that.isSmartbandCreateWithKeyWrite = "true";
+		//variable to maintain last successful ID from card reader, will use for smartband creation
+		that.lastSuccessfulCardIDReaded = '';
+
 		$scope.buttonText = $filter('translate')('KEY_PRINT_BUTTON_TEXT');
 		//Initally we check if the device is connected
 		$scope.showDeviceConnectingMessge();
@@ -195,7 +203,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS');
 		that.showKeyPrintFailure(message);
 	};
-	/*
+	/* 
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(uID){
@@ -211,6 +219,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	    }
 	    if(typeof uID !== 'undefined'){
 	    	postParams.uid = uID;
+	    	that.lastSuccessfulCardIDReaded = uID;
 	    }else{
 	    	postParams.uid = "";
 
@@ -284,7 +293,18 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			'successCallBack': function(data){
 				$scope.$emit('hideLoader');
 				that.setStatusAndMessage($filter('translate')('KEY_CREATED_STATUS'), 'success');							
-
+				//if the setting of smart band create along with key creation enabled, we will create a smartband with open room charge
+    			if(that.isSmartbandCreateWithKeyWrite == "true" && that.lastSuccessfulCardIDReaded != ''){
+    				var data = {};
+    				//since there is not UI for adding first name & last name, we are setting as Blank, please see the comments of the story CICO-9315
+    				data.first_name = '';
+    				data.last_name  = '';
+    				//setting as OPEN ROOM charge
+    				data.is_fixed = false;
+    				//setting smartband account number as last read ID from card reader
+    				data.account_number = that.lastSuccessfulCardIDReaded;
+    				return that.addNewSmartbandWithKey(data, index);
+    			}
 				that.numOfKeys--;
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
@@ -320,7 +340,106 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}
 
 	};	
+	/**
+	* Set the selected band type - fixed room/open charge to the band
+	*/
+	this.writeBandType = function(dataParams){
+		that.setStatusAndMessage($filter('translate')('WRITING_BAND_TYPE'), 'pending');		
+		var data = dataParams;
+		var index = dataParams.index;
+		var args = [];
+		var bandType = '00000002';
+		if(data.is_fixed){
+			bandType = '00000001';
+		}
+		args.push(bandType);
+		args.push(data.account_number);
+		args.push('19');//Block Address - hardcoded
 
+		var options = {
+			//Cordova write success callback
+			'successCallBack': function(){
+				that.numOfKeys--;
+				if(that.numOfKeys == 0){
+					$scope.$emit('hideLoader');
+					that.showKeyPrintSuccess();
+					return true;
+				}
+				that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_SUCCESSFULLY'), 'success');					
+				that.printKeyStatus[index-1].printed = true;
+				$scope.printedKeysCount = index;
+				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.$apply();				
+				$scope.$emit('hideLoader');	
+				return;				
+			},
+			'failureCallBack': function(message){
+				sntapp.activityIndicator.hideActivityIndicator();
+				that.numOfKeys--;
+				if(that.numOfKeys > 0){		
+					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE'), 'error');					
+					that.printKeyStatus[index-1].printed = true;
+					$scope.printedKeysCount = index;
+					$scope.buttonText = 'Print key '+ (index+1);
+					$scope.$apply();
+				}
+				else {
+					var message = $filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE');
+					that.showKeyPrintFailure(message);					
+				}				
+				return;				
+			},
+			arguments: args
+		};
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.setBandTypeDebug(options);
+		}
+		else{
+			sntapp.cardReader.setBandType(options);
+		}
+
+	};		
+	/**
+	* function used to add smartband, mainly for smartband creation while key writing
+	*/
+	this.addNewSmartbandWithKey = function(data, index){		
+		that.setStatusAndMessage($filter('translate')('ADDING_BAND'), 'pending');
+		//success call back of smartband's api call for creation
+		var successCallbackOfAddNewSmartband_ = function(data){
+			that.setStatusAndMessage($filter('translate')('BAND_ADDED'), 'success');
+			$scope.$emit('showLoader');
+			var params = {};
+			params.index = index;
+			params.is_fixed = data.is_fixed;
+			params.account_number = data.account_number;
+			that.writeBandType (params);
+		};
+
+		//failure call back of smartband's api call for creation
+		var failureCallbackOfAddNewSmartband = function(errorMessage){
+			that.setStatusAndMessage($filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage, 'error');			
+			$scope.$emit('hideLoader');
+			that.numOfKeys--;
+			if(that.numOfKeys > 0){
+				that.printKeyStatus[index-1].printed = true;
+				$scope.printedKeysCount = index;
+				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.$apply();			
+			}
+			else {
+				var message = $filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage;
+				that.showKeyPrintFailure(message);
+				
+				$scope.$apply(); 				
+
+			}
+		};			
+
+		var reservationId = $scope.reservationData.reservation_card.reservation_id;						
+		data.index = index;
+		data.reservationId = reservationId;		
+		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, JSON.stringify(data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
+	};
 	var showPrintKeyOptions = function (){
 		$scope.$emit('hideLoader');
 		$scope.deviceConnecting = false;
