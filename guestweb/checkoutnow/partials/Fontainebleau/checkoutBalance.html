@@ -19,16 +19,18 @@
 </div>
 <!-- top section starts here-->
 <div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
-<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel">
-	Check-Out
+<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel ">
+	<span class="blue-text">Check-Out</span>
 	<p class="leadtext balance-container">
-		<span class="lightcontent chekout-time">Your balance is:</span>
-		<span class="balancevalue">{{ billData.currency}}{{billData.balance}}</span>
+		<span class="lightcontent chekout-time">
+			<span class="black-text">Your balance is:</span>
+		</span>
+		<span class="balancevalue black-text">{{ billData.currency}}{{billData.balance}}</span>
 	</p>
 
-	<div class="viewbill-toggle">
-		<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow.png" alt="" />&nbsp;&nbsp;VIEW BILL</a>
-		<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  />&nbsp;&nbsp;VIEW BILL</a>
+	<div class="viewbill-toggle blue-text">
+		<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow.png" alt="" /><span class="blue-text">&nbsp;&nbsp;VIEW BILL</span></a>
+		<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  /><span class="blue-text">&nbsp;&nbsp;VIEW BILL</span></a>
 	</div>
 	<div class="showbill-wrap" ng-show="showBill" >
 		<div class="trans-rel-wrap">
@@ -106,10 +108,10 @@
 </div>
 <div class="col-md-6 no-padding now-later-options no-screen-attach">
 	<div class="row">
-		<div class="col-xs-12 accept-charges-button single">
+		<div class="col-xs-12 accept-charges-button single blue-bg">
 			<div class="rel-wrapper">
 				<a ng-click="gotToNextStep()"></a>
-				<div class="row checkout-later-text">
+				<div class="row checkout-later-text white-text">
 					Accept charges and check out
 				</div>
 				<div class="row  icontop">
