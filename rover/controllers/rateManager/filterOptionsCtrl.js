@@ -6,6 +6,9 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         var filterData = $scope.currentFilterData;
 
         BaseCtrl.call(this, $scope);
+
+        $scope.defaults = filterDefaults;
+
         /*
          * Method to fetch all filter options
          */
@@ -283,12 +286,8 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             });
         };
 
-        /*$scope.$watch('currentFilterData.selected_date_range', function() {
-            $scope.toggleShowRates = ($scope.currentFilterData.selected_date_range === $scope.filterDefaults.DATE_RANGE_PLACEHOLDER);
-        });*/
-
         $scope.toggleShowRates = function() {
-            return ($scope.currentFilterData.selected_date_range === $scope.filterDefaults.DATE_RANGE_PLACEHOLDER);
+            return (_.isEmpty($scope.currentFilterData.selected_date_range));
         };
 
         $scope.$on('closeFilterPopup', function() {

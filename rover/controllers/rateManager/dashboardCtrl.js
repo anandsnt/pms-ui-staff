@@ -2,7 +2,7 @@ sntRover
 .constant('filterDefaults', Object.create(null, {
     DATE_RANGE_PLACEHOLDER: {
         enumerable: true,
-        value: 'Select a Date'
+        value: 'Select Date Range'
     },
     DATE_FORMAT: {
         enumerable: true,
@@ -53,7 +53,7 @@ sntRover
             rates : [],
             rates_selected_list : [],
             name_cards : [],
-            selected_date_range : filterDefaults.DATE_RANGE_PLACEHOLDER, //"Select Date Range",
+            selected_date_range : '', //"Select Date Range",
             allRates: []
    	};
 
