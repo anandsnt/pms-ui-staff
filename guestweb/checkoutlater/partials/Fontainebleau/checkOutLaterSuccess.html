@@ -32,14 +32,15 @@
 			
 			<div ng-show="!returnHome && posted && success && !netWorkError" class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign">
-					Thank you.
+					<span class="blue-text">Thank you.</span>
 					<p class="leadtext">
 						<em class="lightcontent chekout-late-final base-text">The following will appear on your bill.</em>
 					</p>
-					<p class="latecheckout-charged centeralign">Late Check Out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{ lateCheckOut.amount | currency }}</p>
+					<p class="latecheckout-charged centeralign">
+						<span class="black-text">Late Check Out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{ lateCheckOut.amount | currency }}</span></p>
 				</div>
 				<div class="col-md-6 no-padding now-later-options">
-					<a ui-sref="checkOutConfirmation" class="link-btn with-bg">Back to check-out screen</a>
+					<a ui-sref="checkOutConfirmation" class="link-btn with-bg blue-bg">Back to check-out screen</a>
 				</div>
 			</div>
 			
