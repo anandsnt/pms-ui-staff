@@ -1,5 +1,5 @@
-sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter) {
+sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout) {
 		BaseCtrl.call(this, $scope);
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
@@ -27,45 +27,18 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
 		 */
 
-		var refreshScroller = function() {
-			//Refresh only if this DOM is visible.
-			if ($scope.currentSelectedTab === 'cc-contracts') {
-				$scope.$parent.myScroll['cardContractsScroll'].refresh();
-			}
-		};
-
-
-
-		$scope.$on("contractTabActive", function() {
-			setTimeout(function() {
-				refreshScroller();
-			}, 500);
-		});
-
-		$scope.myScrollOptions = {
-			'cardContractsScroll': {
-				snap: false,
-				scrollbars: 'custom',
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
-
+		$scope.setScroller('cardContractsScroll');
 
 		var refreshScroller = function() {
-			//Refresh only if this DOM is visible.
-			if ($scope.currentSelectedTab === 'cc-contracts') {
+			$timeout(function() {
 				$scope.myScroll['cardContractsScroll'].refresh();
-			}
+			}, 500);
 		};
 
 		$scope.$on("refreshContractsScroll", refreshScroller);
-
+		$scope.$on("contractTabActive", refreshScroller);
 
 		/**** Scroll related code ends here. ****/
-
-
 
 		clientWidth = $(window).width();
 		clientHeight = $(window).height();

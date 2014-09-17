@@ -1,26 +1,19 @@
 sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout',
 	function($scope, RVCompanyCardSrv, $timeout) {
 
-		$scope.$parent.myScrollOptions = {
-			'cardAccountsScroller': {
-				snap: false,
-				scrollbars: 'custom',
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+		BaseCtrl.call(this, $scope);
+
+		$scope.setScroller('cardAccountsScroller');
 
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.myScroll['cardAccountsScroller'].refresh();
-			}, 700)
+			}, 500)
 		};
 
 		$scope.$on('refreshAccountsScroll', refreshScroller);
 
 		var init = function() {
-			BaseCtrl.call(this, $scope);			
 			$scope.ARData = {};
 			$scope.ARData.note = "";
 		};
@@ -32,7 +25,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		});
 
 		var updateArAccount = function() {
-
 			var successCallbackOfsaveARDetails = function(data) {
 				$scope.$emit("hideLoader");
 				if ($scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {

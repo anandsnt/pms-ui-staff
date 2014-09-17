@@ -1,5 +1,5 @@
-sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
-  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout) {
 
     BaseCtrl.call(this, $scope);
     /**

@@ -7,7 +7,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		$scope.dimensionsLookup = {
 			resizableMaxHeight: resizableMaxHeight,
-			cardTabContentOffset : 170, // Height of the tab menu and the header above.			
+			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
 		};
 
 		$scope.cardVisible = false;
@@ -142,11 +142,14 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				/**
 				 * CICO-9564 -- Scrolls in the card section on dragging
 				 */
-				$scope.$broadcast('CONTACTINFOLOADED');
-				$scope.$broadcast('REFRESHLIKESSCROLL');
-				$scope.$broadcast('contactTabActive');
-				$scope.$broadcast('contractTabActive');
-				$scope.$broadcast('refreshAccountsScroll');
+				if ($scope.UICards[0] === "guest-card") {
+					$scope.$broadcast('CONTACTINFOLOADED');
+					$scope.$broadcast('REFRESHLIKESSCROLL');
+				} else {
+					$scope.$broadcast('contactTabActive');
+					$scope.$broadcast('contractTabActive');
+					$scope.$broadcast('refreshAccountsScroll');
+				}
 
 
 			},
