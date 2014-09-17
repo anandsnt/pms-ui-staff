@@ -24,8 +24,11 @@
 	<div class="overview" ng-click="toggleFeesDetails($parent.$index)" ng-show="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 		<p>
 			<span class="title"> <span translate>GUEST_BALANCE</span>: <em class="label"></em> </span>
-			<span class="value"> 
+			<span class="value" ng-show="!reservationBillData.is_rate_suppressed_present_in_stay_dates"> 
 				{{currencySymbol}}	0.00 
+			</span>
+			<span class="value" ng-show="reservationBillData.is_rate_suppressed_present_in_stay_dates" translate> 
+				SUPPRESSED_RATES_TEXT
 			</span>
 			<a class="button with-icon green" ng-click='showAdvancedBillDialog()' ng-show="showPayButton"> 
 				<span class="icons icon-wallet"></span> {{ 'PAY' | translate }}</span>  
