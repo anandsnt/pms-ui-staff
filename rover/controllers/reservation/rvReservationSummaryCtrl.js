@@ -204,6 +204,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.viewState.reservationStatus.confirm = true;
+				$scope.reservationData.has_bill_routings = false;
 				$scope.viewState.reservationStatus.number = data.id;
 				// Change mode to stay card as the reservation has been made!
 				$scope.viewState.identifier = "CONFIRM";
@@ -231,6 +232,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var updateSuccess = function(data) {
 				$scope.viewState.identifier = "UPDATED";
+				$scope.reservationData.has_bill_routings = data.has_bill_routings;
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum

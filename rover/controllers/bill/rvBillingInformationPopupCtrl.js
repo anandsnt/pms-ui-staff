@@ -89,7 +89,8 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		        }],
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
-                "is_new" : true
+                "is_new" : true,
+                "selected_payment" : ""
 			};
 			if(data.account_type === 'COMPANY'){
 				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
