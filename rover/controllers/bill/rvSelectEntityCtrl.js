@@ -93,9 +93,9 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
   	/**
 	* remove the parent reservation from the search results
 	*/
-	$scope.excludeParentreservationFromSearch = function(){
+	$scope.excludeActivereservationFromsSearch = function(){
 	  	for(var i = 0; i < $scope.results.reservations.length; i++){
-	  		if($scope.results.reservations[i].id == $scope.reservationData.reservation_id){
+	  		if(($scope.results.reservations[i].id == $scope.reservationData.reservation_id) || !($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT'))
 
 	  				$scope.results.reservations.splice(i, 1);
 	  				break;
@@ -110,7 +110,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
         $scope.$emit('hideLoader');
         $scope.results.reservations = [];
 		$scope.results.reservations = data;
-		$scope.excludeParentreservationFromSearch();
+		$scope.excludeActivereservationFromsSearch();
 		console.log(data);
 		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
 	};
@@ -149,8 +149,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
 		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
-		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 &&
-		              (value.reservation_status == 'CHECKING_IN' || value.reservation_status == 'CHECKEDIN' || value.reservation_status == 'CHECKING_OUT'))
+		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
 		              {
 		                 $scope.results.reservations[i].is_row_visible = true;
 		                 totalCountOfFound++;
