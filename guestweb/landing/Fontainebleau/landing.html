@@ -11,28 +11,28 @@
 	<div class="container"> 
 		<!-- top section starts here-->
 		<div class="row check-inout-wrapper">
-			<div class="col-md-6 headtext centeralign">
-				Ready to check out? 
-				<p class="centeralign leadtext">Check out time is at {{checkoutTime}}. <strong>Request a late check-out if you need more time!</strong></p>
+			<div class="col-md-6 headtext centeralign blue-text">
+				Late Checkout? 
+				<p class="centeralign leadtext">Check out time is at {{checkoutTime}}. <strong class="grey-text">Request a late check-out if you need more time!</strong></p>
 			</div>
 
 			<div class="col-md-6 no-padding now-later-options">
 				<div class="row">
-					<div class="col-xs-6 checkoutnow">
+					<div class="col-xs-6 checkoutnow light-blue-bg">
 						<div class="rel-wrapper">
 							<a ui-sref="checkOutConfirmation"></a>
-							<div class="row"> Check out<br/> now.</div>
+							<div class="row"> Check-out<br/> now.</div>
 							<div class="row icontop">
 								<img src="/assets/img/checkout_icon.png" width="48" height="48" alt="">
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-6 checkoutlater">
+					<div class="col-xs-6 checkoutlater blue-bg">
 						<div class="rel-wrapper">
 							<a ui-sref="checkOutLaterOptions"></a>
-							<div class="row checkout-later-text">Check out<br/>later.</div>
-							<div class="row icontop">
-								<img src="/assets/img/late-checkout_icon.png" width="48" height="48" alt=""/>
+							<div class="row checkout-later-text white-text">Check-out<br/>later.</div>
+							<div class="row icontop checkoutlater-icon">
+								<img src="/assets/img/Galleria/checkoutlater_smalll.png" width="48" height="48" alt=""/>
 							</div>
 						</div>
 					</div>
