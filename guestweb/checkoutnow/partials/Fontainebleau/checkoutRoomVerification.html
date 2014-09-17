@@ -21,19 +21,19 @@
 		<div class="row checkin-wrapper">
 			<div class="col-md-6 headtext centeralign blue-text">
 					Ready to check out?
-					<p class="leadtext checkout-time-container room-number-message">
+					<p class="leadtext checkout-time-container room-number-message margin-10">
 						<span class="lightcontent chekout-time grey-text">To start please enter your room number:</span>
 					</p>
 				</div>
 			<div class="verti-ruler"></div>
 			<!-- top section ends here-->
 			<div class="col-md-6 pad-lf-60 cabin-number">
-				<form >
+				<form class="centeralign">
 				<div class="row cabin_number_field">
-					<p class="cabin-number-text grey-text">Room Number</p>
-					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow"/> 
+					<p class="lightcontent chekout-time grey-text">Room Number</p>
+					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input"/> 
 				</div>								
-						<button class="checkin-button continue-button blue-bg" ng-click="continueButtonClicked()">
+						<button class="checkin-button continue-button blue-bg room-verification-continue" ng-click="continueButtonClicked()">
 							<span class="continue-text white-text">Continue</span>
 						</button>				
 				</form>
