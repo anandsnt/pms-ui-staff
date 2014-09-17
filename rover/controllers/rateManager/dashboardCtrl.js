@@ -9,7 +9,7 @@ sntRover
         value: 'MM-dd-yyyy'
     }
 }))
-.controller('RMDashboradCtrl', ['filterDefaults', '$scope','$window','dateFilter', '$filter', '$vault',  function(filterDefaults, $scope, $window, dateFilter, $filter, $vault) {
+.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter', '$vault',  function($scope, $window, dateFilter, $filter, $vault) {
     BaseCtrl.call(this, $scope);
 
     // reseting search params to $vault
@@ -104,7 +104,7 @@ sntRover
         $scope.displayMode = "CALENDAR";
         angular.copy($scope.currentFilterData.rates_selected_list, $scope.ratesDisplayed);
         $scope.$broadcast("setCalendarModeRateType");
-    }
+    };
 
     $scope.$on("enableBackbutton", function(){
         $scope.backbuttonEnabled = true;
@@ -121,7 +121,7 @@ sntRover
       else{
         $scope.currentLeftMenuClass = 'slide_right';
       }
-    }
+    };
 
     /*
     * function to handle click
@@ -130,6 +130,6 @@ sntRover
     $scope.rateManagerContentClick = function($event){
 
        $scope.$broadcast('closeFilterPopup');
-    }
+    };
 
 }]);
