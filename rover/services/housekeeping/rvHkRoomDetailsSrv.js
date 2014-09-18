@@ -1,8 +1,9 @@
 sntRover.service('RVHkRoomDetailsSrv', [
 	'$http',
 	'$q',
+	'rvBaseWebSrvV2',
 	'$window',
-	function($http, $q, $window) {
+	function($http, $q, rvBaseWebSrvV2, $window) {
 
 		this.fetch = function(id){
 			var deferred = $q.defer();
@@ -49,6 +50,66 @@ sntRover.service('RVHkRoomDetailsSrv', [
 	    			deferred.reject(response);
 	    		}
 	        });
+			return deferred.promise;
+		};
+
+
+		/* NOTE: using the new API structure */
+
+		// room service status list (will be cached)
+		var roomServiceStatusList = [];
+		this.fetchRoomServiceStatusList = function() {
+			var deferred = $q.defer(),
+				url = 'api/room_services/status_list';
+
+			if ( roomServiceStatusList.length ) {
+				deferred.resolve(roomServiceStatusList);
+			} else {
+				rvBaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						roomServiceStatusList = data.results;
+						deferred.resolve(roomServiceStatusList);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+		// maintenance reasons (will be cached)
+		var maintenanceReasonsList = [];
+		this.fetchMaintenanceReasonsList = function() {
+			var deferred = $q.defer(),
+				url = 'api/maintenance_reasons';
+
+			if ( maintenanceReasonsList.length ) {
+				deferred.resolve(maintenanceReasonsList);
+			} else {
+				rvBaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						maintenanceReasonsList = data.maintenance_reasons;
+						deferred.resolve(maintenanceReasonsList);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+		// save oo/os to server
+		this.postRoomServiceStatus = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/room_services';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data){
+					deferred.reject(data);
+				});
+
 			return deferred.promise;
 		};
 	}

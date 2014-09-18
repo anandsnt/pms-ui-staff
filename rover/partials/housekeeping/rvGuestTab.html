@@ -31,8 +31,8 @@
   <div class="wrapper">
     <strong class="h2">
       {{ data.room_details.current_room_reservation_status }}.
-      <span class="green" ng-if="false">Arriving at arrival_time,</span>
-      <span class="red" ng-if="data.room_details.reservation_status == 'CHECKEDIN'">Departing at {{ data.room_details.dept_date }}.</span>
+      <span class="green" ng-if="data.room_details.current_room_reservation_status == 'DUE IN'">Arriving at {{ data.room_details.arrival_time }}.</span>
+      <span class="red" ng-if="data.room_details.current_room_reservation_status == 'ARRIVED'">Departing at {{ data.room_details.departure_time }}.</span>
     </strong>
     <figure class="guest-image">
       <img src="{{ data.room_details.avatar_src }}" alt="">
