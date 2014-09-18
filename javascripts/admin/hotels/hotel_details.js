@@ -188,6 +188,7 @@ var HotelDetailsView = function(domRef) {
 			that.myDom.find(".is-pms-tokenized").remove();
 			that.myDom.find(".re-invite").remove();
 			that.myDom.find('.is-kiosk-entity-id').remove();
+			that.myDom.find('#div-do-not-update-video-checkout').remove();
 		}
 	};
 	//to update or create new hotel
@@ -244,6 +245,10 @@ var HotelDetailsView = function(domRef) {
 		if (that.myDom.find("#div-kiosk-entity-id-checkin-checkout").hasClass("on")) {
 			isUseKioskEntityIdCheckinCheckout = true;
 		}
+		doNotUpdateVideoCheckout = false;
+		if (that.myDom.find("#div-do-not-update-video-checkout").hasClass("on")) {
+			doNotUpdateVideoCheckout = true;
+		}
 
 		var mliHotelCode = that.myDom.find('#mli-hotel-code').val();
 		var mliChainCode = $('#mli-chain-code').val();
@@ -270,7 +275,7 @@ var HotelDetailsView = function(domRef) {
 		if ($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 			var checkinToInspectedRoomsOnly = "true";
 		}
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout,mliGatewayUrl,mliMerchantId,mliApiVersion,mliApiKey,mliSiteCode, dayImportFreq, nightImportFreq, termsAndConditions);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout,mliGatewayUrl,mliMerchantId,mliApiVersion,mliApiKey,mliSiteCode, dayImportFreq, nightImportFreq, termsAndConditions, doNotUpdateVideoCheckout);
 		var type = event.data[0];
 		if (type == "create") {
 			var url = '/admin/hotels';
@@ -314,7 +319,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout,mliGatewayUrl,mliMerchantId,mliApiVersion,mliApiKey,mliSiteCode, dayImportFreq, nightImportFreq, termsAndConditions) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout,mliGatewayUrl,mliMerchantId,mliApiVersion,mliApiKey,mliSiteCode, dayImportFreq, nightImportFreq, termsAndConditions, doNotUpdateVideoCheckout) {
 		if (that.currentView == "snt-admin-view") {
 			data = {
 				hotel_name: hotelName,
@@ -361,7 +366,8 @@ var HotelDetailsView = function(domRef) {
 				mli_api_key:mliApiKey,
 				mli_site_code:mliSiteCode,
 				day_import_freq: dayImportFreq,
-				night_import_freq: nightImportFreq
+				night_import_freq: nightImportFreq, 
+				do_not_update_video_checkout: doNotUpdateVideoCheckout
 			};
 		} else {
 			data = {
