@@ -89,6 +89,21 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 	      $scope.refreshScroller('cards_search_scroller');                  
 	    }
   	};	
+
+  	/**
+	* remove the parent reservation from the search results
+	*/
+	$scope.excludeActivereservationFromsSearch = function(){
+		var filteredResults = [];
+	  	for(var i = 0; i < $scope.results.reservations.length; i++){
+	  		if(($scope.results.reservations[i].id != $scope.reservationData.reservation_id) && ($scope.results.reservations[i].reservation_status == 'CHECKING_IN' || $scope.results.reservations[i].reservation_status == 'CHECKEDIN' || $scope.results.reservations[i].reservation_status == 'CHECKING_OUT')){
+
+	  				filteredResults.push($scope.results.reservations[i]);
+	  				
+	  			}
+	  		}
+	  		$scope.results.reservations = filteredResults;
+	};
 	
 	/**
 	* Success call back of data fetch from webservice
@@ -97,6 +112,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
         $scope.$emit('hideLoader');
         $scope.results.reservations = [];
 		$scope.results.reservations = data;
+		$scope.excludeActivereservationFromsSearch();
 		console.log(data);
 		setTimeout(function(){$scope.refreshScroller('res_search_scroller');}, 750);
 	};
@@ -135,7 +151,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
 		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
 		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
 		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
-		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0)
+		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0 )
 		              {
 		                 $scope.results.reservations[i].is_row_visible = true;
 		                 totalCountOfFound++;

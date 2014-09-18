@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv) {
+sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv', '$filter',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter) {
+		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 
 
@@ -23,6 +24,17 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			};
 
 		};
+
+		/*
+	 * Get the title for the billing info button, 
+	 * on the basis of routes available or not
+	 */
+	$scope.getBillingInfoTitle = function(){
+		if($scope.reservationData.is_routing_available)
+			return $filter('translate')('BILLING_INFO_TITLE');
+		else
+			return $filter('translate')('ADD_BILLING_INFO_TITLE');
+	}
 
 		/**
 		 * Function to check if the the check-in time is selected by the user.
@@ -60,13 +72,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
 			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
-				ngDialog.open({
-					template: '/assets/partials/reservation/alerts/rvEmailWarning.html',
-					closeByDocument: true,
-					className: 'ngdialog-theme-default1',
-					scope: $scope
-				});
-
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 				return false;
 
 			}
@@ -121,7 +127,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			var stateParams = {
 				id: $scope.reservationData.reservationId,
 				confirmationId: $scope.reservationData.confirmNum,
-				isrefresh: true
+				isrefresh: true,
+				justCreatedRes: true
 			}
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 

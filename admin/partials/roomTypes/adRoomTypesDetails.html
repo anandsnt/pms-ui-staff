@@ -22,6 +22,7 @@
 			 <div class="entry full-width">
 				<label for="room-type-picture"> {{ 'CHOOSE_FILE' | translate }} </label>
 				<div class="file-upload with-preview">
+					<span class="input">{{fileName}}</span>
 					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						{{ 'PICTURE' | translate }}
