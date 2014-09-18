@@ -14,7 +14,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
-		}
+		};
 
 		$scope.displayTime = function(status) {
 			var display = false;
@@ -246,7 +246,7 @@ sntRover.controller('reservationActionsController', [
 					})()
 				})
 			});
-		}
+		};
 
 		/**
 		 * This method handles cancelling an exisiting reservation or
@@ -279,18 +279,18 @@ sntRover.controller('reservationActionsController', [
 					}
 					promptCancel(cancellationCharge, nights);
 
-				}
+				};
 				var onCancellationDetailsFetchFailure = function(error) {
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = error;
-				}
+				};
 
 				var params = {
 					id: $scope.reservationData.reservation_card.reservation_id
 				};
 
 				$scope.invokeApi(RVReservationCardSrv.fetchCancellationPolicies, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
-			}
+			};
 
 			/**
 			 * If the reservation is within cancellation period, no action will take place.
@@ -299,7 +299,7 @@ sntRover.controller('reservationActionsController', [
 			 */
 
 			checkCancellationPolicy();
-		}
+		};
 
 		$scope.openSmartBands = function() {
 			ngDialog.open({
@@ -340,6 +340,17 @@ sntRover.controller('reservationActionsController', [
 					"userId": $scope.guestCardData.userId
 				});
 			}
+		};
+		/*
+		 * Show Deposit/Balance Modal
+		 */
+		$scope.showDepositBalanceModal = function(){
+			ngDialog.open({
+					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
+					controller: 'RVDepositBalanceController',
+					className: 'ngdialog-theme-default1',
+					scope: $scope
+				});
 		};
 	}
 ]);
