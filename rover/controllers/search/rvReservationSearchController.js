@@ -6,7 +6,7 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 	*/
 
 	var that = this;
-  BaseCtrl.call(this, $scope);
+    BaseCtrl.call(this, $scope);
   	$scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms  = true;
   //changing the header

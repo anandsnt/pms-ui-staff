@@ -10,7 +10,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
        * TODO: Fix this bug in ng-translate and implement in this here.
        */
       setTimeout(function() {
-        $translate('NA')
+        $translate('NA');
       }, 1000); //Word around.
     } else {
       $translate.use('EN');
