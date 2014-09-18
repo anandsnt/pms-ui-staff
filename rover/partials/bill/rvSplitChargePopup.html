@@ -20,7 +20,7 @@
                         <span class="switch-icon">{{currencySymbol}}</span>
                     </label>
                 </div>
-                <input name="split-value" id="split-value" placeholder="Enter split value" ng-model="splitValue" type="text" />
+                <input name="split-value" id="split-value" placeholder="{{'ENTER_SPLIT_VALUE_PLACEHOLDER' | translate}}" ng-model="splitValue" type="text" />
             </div>
             <!-- Preview, hidden until split value is defined -->
             <div id="split-preview" class="entry full-width notice" ng-hide="splitValue.length === 0 || !splitValue">

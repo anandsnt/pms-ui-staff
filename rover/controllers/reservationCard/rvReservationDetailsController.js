@@ -1,23 +1,40 @@
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv',
 	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv) {
 
-		// pre setup for back button
-		var titleDict = {
-			'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
-			'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
-			'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
-			'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
-			'VIP': 'DASHBOARD_SEARCH_VIP',
-			'NORMAL_SEARCH': 'SEARCH_NORMAL'
-		};
-		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+		// pre setups for back button
+		var backTitle,
+			backParam,
+			titleDict = {
+				'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
+				'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
+				'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
+				'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+				'VIP': 'DASHBOARD_SEARCH_VIP',
+				'NORMAL_SEARCH': 'SEARCH_NORMAL'
+			};
+
+		// if we just created a reservation and came straight to staycard
+		// we should show the back button with the default text "Find Reservations"	
+		if ( $stateParams.justCreatedRes ) {
+			backTitle = titleDict['NORMAL_SEARCH'];
+			backParam = {};
+		} else {
+			backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
+			backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+		}
 
 		// setup a back button
 		$rootScope.setPrevState = {
 			title: $filter('translate')(backTitle),
-			name: 'rover.search',
-			param: backParam
+			scope: $scope,
+			callback: 'goBackSearch'
+		};
+
+		// we need to update any changes to the room
+		// before going back to search results
+		$scope.goBackSearch = function() {
+			$scope.updateSearchCache();
+			$state.go('rover.search', backParam);
 		};
 
 
@@ -34,7 +51,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.reservationData = reservationDetails;
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
-		var updateSearchCache = function() {
+		$scope.updateSearchCache = function() {
 			// room related details
 			var data = {
 				'room': $scope.reservationData.reservation_card.room_number,
@@ -52,13 +69,10 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		// update any room related data to search service also
-		updateSearchCache();
+		$scope.updateSearchCache();
 
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
-		if ($scope.reservationData.reservation_card.currency_code != null) {
-			$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
-		}
 		$scope.selectedLoyalty = {};
 		$scope.$emit('HeaderChanged', $filter('translate')('STAY_CARD_TITLE'));
 		$scope.$watch(
@@ -167,7 +181,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
-			updateSearchCache();
+			$scope.updateSearchCache();
 		};
 		/*
 		 * Fetch reservation details on selecting or clicking each reservation from reservations list
@@ -266,7 +280,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
-			updateSearchCache();
+			$scope.updateSearchCache();
 			$scope.$emit('hideLoader');
 		};
 		$scope.isWakeupCallAvailable = function() {

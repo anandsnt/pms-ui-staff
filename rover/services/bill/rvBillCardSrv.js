@@ -13,6 +13,19 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 		return deferred.promise;
 	};
+
+	this.fetchBillPrintData = function(params){
+		var deferred = $q.defer();
+		var url = 'staff/bills/print_guest_bill';
+			RVBaseWebSrv.postJSON(url, params).then(function(data) {
+				console.log(data);
+		   	 	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
 	
 	this.movetToAnotherBill = function(data){
 		var deferred = $q.defer();
@@ -146,6 +159,18 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 	this.sendEmail = function(data){
 		var deferred = $q.defer();
 		var url = 'api/reservations/email_guest_bill.json';
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
+
+	this.createAnotherBill = function(data){
+		var deferred = $q.defer();
+		var url = '/api/bills/create_bill';
 			BaseWebSrvV2.postJSON(url, data).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){

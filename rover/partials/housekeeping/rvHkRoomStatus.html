@@ -28,9 +28,8 @@
   <span id="icon"></span>
   <span id="ref-text" translate>PULL_REFRESH</span>
 </div>
-
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable">
+<section id="rooms" class="content scrollable" div-touch-move-stop-propogate>
    <ul class="wrapper" ng-hide="noResultsFound==rooms.length">
       <li ng-repeat="room in rooms" ng-if="room.display_room" >
          <a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">

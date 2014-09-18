@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems',
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -51,7 +51,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
-
+    $rootScope.fulldayInWeek = "EEEE";
+    $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
+    $rootScope.isCurrentUserChangingBussinessDate = false;
     /*
      * hotel Details
      */
@@ -59,6 +61,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+    $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
+    $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
+    console.log("currency code   : "+hotelDetails.currency.value);
+    console.log("currency symbol : "+$rootScope.currencySymbol);
+    console.log("date format     : "+$rootScope.dateFormat);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
 
 
@@ -148,7 +155,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             action: ""
           }, {
             title: "MENU_POST_CHARGES",
-            action: ""
+            action: "",
+            actionPopup:true,
+             menuIndex:"postcharges"
           }, {
             title: "MENU_CASHIER",
             action: ""
@@ -266,7 +275,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }];
 
     }
-    
 
     $scope.$on("updateSubMenu", function(idx, item) {
       if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
@@ -326,9 +334,23 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.menuOpen = false;
       $scope.showSubMenu = false;
     };
+	$scope.fetchAllItemsSuccessCallback = function(data){
+		$scope.$emit('hideLoader');
 
+		$scope.fetchedData = data;
+
+		ngDialog.open({
+			template: '/assets/partials/postCharge/outsidePostCharge.html',
+			controller: 'RVOutsidePostChargeController',
+			scope: $scope
+		});
+	};
     $scope.subMenuAction = function(subMenu){
       $scope.toggleDrawerMenu();
+      if(subMenu === "postcharges"){
+      	$scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
+      	
+      }
       if(subMenu === "endOfDay"){
          ngDialog.open({
             template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
@@ -506,7 +528,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
   /**
-    * Handles the bussiness date change
+    * Handles the bussiness date change in progress
     */
     $rootScope.showBussinessDateChangingPopup = function() {
 
@@ -524,6 +546,34 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           });
         }        
     };
+ 
+    $rootScope.$on('bussinessDateChangeInProgress',function(){
+      $rootScope.showBussinessDateChangingPopup();
+    });     
+
+    $scope.goToDashboard = function(){
+      ngDialog.close();
+      // to reload app in case the bussiness date is changed
+      $state.go('rover.dashboard', {}, {reload: true});
+    }
+
+     /**
+    * Handles the bussiness date change completion
+    */
+    $rootScope.showBussinessDateChangedPopup = function() {
+        $rootScope.isBussinessDateChanging = false;
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        // if(!$rootScope.isBussinessDateChanged){
+        //     $rootScope.isBussinessDateChanged = true;
+            ngDialog.open({
+              template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
+              className: 'ngdialog-theme-default1 modal-theme1',
+              closeByDocument: false,
+              scope: $scope
+          });
+        // }        
+    };
 
   }
 ]);
@@ -531,23 +581,25 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 // adding an OWS check Interceptor here and bussiness date change
 // but should be moved to higher up above in root level
 sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
+  
   return {
     request: function (config) {
       return config;
     },
     response: function (response) {
+        // if manual bussiness date change is in progress alert user.
+        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
+           $rootScope.$emit('bussinessDateChangeInProgress');
+        }       
         return response || $q.when(response);
     },
     responseError: function(rejection) {
+      if(rejection.status == 430){
+         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+      }
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
-      //Need to review the bussiness date changing notification process
-      // else if(rejection.status == 700){
-      //   $rootScope.showBussinessDateChangingPopup();
-      //   $rootScope.isBussinessDateChanging = true;
-      //   //need to unset this once change is done and set new bussiness date
-      // }
       return $q.reject(rejection);
     }
   };
