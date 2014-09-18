@@ -74,11 +74,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		index = $scope.selectedUpgradeIndex;
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
-			if($scope.clickedButton == "checkinButton"){
-				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-			} else {
-				$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
-			}
+			$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
 		};
 		var errorCallbackselectUpgrade = function(error){
 			$scope.$emit('hideLoader');
@@ -88,9 +84,11 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_no = parseInt($scope.upgradesList[index].upgrade_room_number, 10);
 		params.upsell_amount_id = parseInt($scope.upgradesList[index].upsell_amount_id, 10);
+		$scope.selectedUpgrade.room_id = $scope.upgradesList[index].room_id;
 		$scope.selectedUpgrade.room_no = $scope.upgradesList[index].upgrade_room_number;
 		$scope.selectedUpgrade.room_type_name = $scope.upgradesList[index].upgrade_room_type_name;
 		$scope.selectedUpgrade.room_type_code = $scope.upgradesList[index].upgrade_room_type;
+		$scope.selectedUpgrade.room_type_level = parseInt($scope.upgradesList[index].room_type_level);
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
 	};

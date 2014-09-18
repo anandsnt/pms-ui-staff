@@ -50,12 +50,16 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			}
 		});
 
-		//setting the heading of the screen to "Search"
-		$scope.heading = "Stay Card";
+		//setting the heading of the screen to "Search"		
 		$scope.menuImage = "back-arrow";
 
 		$scope.$on('HeaderChanged', function(event, data) {
-			$scope.heading = data;
+			/**
+			 * CICO-9081
+			 * $scope.heading = value was creating a heading var in local scope! Hence the title was not being set for the page.
+			 * Changing code to refer the parent's heading variable to override this behaviour.
+			 */			
+			$scope.$parent.heading = data;
 		});
 
 		$scope.$on('SHOWPAYMENTLIST', function(event, data) {
@@ -68,6 +72,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			ngDialog.open({
 				template: '/assets/partials/payment/rvShowPaymentList.html',
 				controller: 'RVShowPaymentListCtrl',
+				className: '',
 				scope: $scope
 			});
 		};

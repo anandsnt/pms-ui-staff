@@ -20,7 +20,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		else{
 			$scope.toDate = tzIndependentDate($rootScope.businessDate);
 		};*/
-
+		
 		filterData.begin_date = _.isEmpty(filterData.begin_date) ? dateFilter(new Date(from_date.setMonth(from_date.getMonth() - 1)), filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.begin_date);
 		filterData.end_date = _.isEmpty(filterData.end_date) ? dateFilter(new Date(to_date.setDate(to_date.getDate() + 1)), filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.end_date);
 

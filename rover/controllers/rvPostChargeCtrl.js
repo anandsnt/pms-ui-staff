@@ -3,8 +3,9 @@ sntRover.controller('RVPostChargeController',
 		'$rootScope',
 		'$scope',
 		'RVChargeItems',
-		'$timeout',
-		function($rootScope, $scope, RVChargeItems, $timeout) {
+		'RVSearchSrv',
+		'$timeout','RVBillCardSrv',
+		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,RVBillCardSrv) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -15,11 +16,20 @@ sntRover.controller('RVPostChargeController',
 			$scope.fetchedChargeCodes = $scope.fetchedData.non_item_linked_charge_codes;
 			$scope.selectedChargeItem = null;
 			$scope.isResultOnFetchedItems = true;
-			//$scope.isResultOnFetchedChargecode = false;
+			$scope.isOutsidePostCharge = false;
 			
+			var scrollerOptions = {click: true};
+  			$scope.setScroller ('items_list', scrollerOptions);
+  			$scope.setScroller ('items_summary', scrollerOptions);
 			// set the default bill number
-			$scope.billNumber = $scope.fetchedData.bill_numbers[0];
-
+			$scope.successGetBillDetails = function(data){
+				$scope.$emit( 'hideLoader' );
+				data.isFromOut = false;
+				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
+			};
+			if(!$scope.passActiveBillNo && $scope.reservation_id){
+				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+			}
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 
@@ -41,7 +51,8 @@ sntRover.controller('RVPostChargeController',
 					} else {
 						item.show = false;
 					}
-				}
+				}	
+				$scope.refreshScroller('items_list');				
 			};
 
 			// filter the items based on the search query
@@ -99,7 +110,7 @@ sntRover.controller('RVPostChargeController',
 						}
 							
 					}
-					
+				$scope.refreshScroller('items_list');					
 				//}
 			};
 
@@ -116,13 +127,15 @@ sntRover.controller('RVPostChargeController',
 				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
 					$scope.fetchedChargeCodes[i].show = true;
 				};
+				$scope.refreshScroller('items_summary');	
+				$scope.refreshScroller('items_list');	
 			};
 
 			// make favorite selected by default
 			// must have delay
 			$timeout(function() {
 				$scope.chargeGroup = 'FAV';
-				$scope.filterbyChargeGroup();
+				$scope.filterbyChargeGroup();				
 			}, 500);
 
 
@@ -132,7 +145,6 @@ sntRover.controller('RVPostChargeController',
 			$scope.chosenChargedItem = null;
 
 			$scope.net_total_price = 0;
-
 			// set the default toggle to 'QTY'
 			$scope.calToggle = 'QTY';
 
@@ -189,6 +201,7 @@ sntRover.controller('RVPostChargeController',
 				$scope.selectedChargeItem = item;
 
 				calNetTotalPrice();
+				$scope.refreshScroller('items_summary');
 			};
 
 			/**
@@ -210,6 +223,7 @@ sntRover.controller('RVPostChargeController',
 
 				// recalculate net price
 				calNetTotalPrice();
+				$scope.refreshScroller('items_summary');
 			};
 
 			/**
@@ -463,18 +477,82 @@ sntRover.controller('RVPostChargeController',
 					total: $scope.net_total_price,
 					items: items
 				};
+				/****    CICO-6094    **/
+				var needToCreateNewBill = false;
+				if($scope.billNumber > $scope.fetchedData.bill_numbers.length){
+					needToCreateNewBill = true;
+				}
+				/****    CICO-6094    **/
 
 				var callback = function(data) {
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
-					//$scope.$emit('postcharge.added', $scope.net_total_price);
-					$scope.$emit('postcharge.added', data.total_balance_amount);
-
-					$scope.closeDialog();
+					if(!$scope.isOutsidePostCharge){
+						$scope.$emit('postcharge.added', data.total_balance_amount);
+						$scope.closeDialog();
+					}
+					else{
+						$scope.$emit( 'CHARGEPOSTED' );
+					}
 				};
-
-				$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+				/****    CICO-6094    **/
+				if(!needToCreateNewBill){
+					$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+				}
+				else{
+						var billData ={
+						"reservation_id" : $scope.reservation_id,
+						"bill_number" : $scope.billNumber
+						};
+					/*
+					 * Success Callback of create bill action
+					 */
+					var createBillSuccessCallback = function(){
+						$scope.$emit('hideLoader');			
+						//Fetch data again to refresh the screen with new data
+						$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+					};
+					$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+				}
+				/****    CICO-6094    **/
 			};
+			
+			$scope.searchByRoomNumber = function(){
+				$scope.invokeApi(RVSearchSrv.fetch, {});
+			};
+			
+			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
+				$scope.fetchedData.bill_numbers = data.bills;
+				// if(data.isFromOut){
+					$scope.billNumber = 1;
+				// }
+			});
+			
+			$scope.$on('POSTCHARGE', function(event, data) {
+			   $scope.postCharges();
+			   $scope.isOutsidePostCharge = true;
+			});
+			
+			$scope.$on('RESETPOSTCHARGE', function(event, data) {
+			    $scope.selectedChargeItem = null;
+				$scope.selectedChargeItem = null;
+				$scope.isResultOnFetchedItems = false;
+				$scope.fetchedData.bill_numbers = [];
+				
+				for (var i = 0, j = $scope.fetchedItems.length; i < j; i++) {
+					if($scope.fetchedItems[i].isChosen) {
+						$scope.fetchedItems[i].isChosen = false;
+						$scope.fetchedItems[i].count = 0;
+					}
+				}
+				
+				for (var i = 0, j = $scope.fetchedChargeCodes.length; i < j; i++) {
+					if ( $scope.fetchedChargeCodes[i].isChosen ){
+						 $scope.fetchedChargeCodes[i].isChosen = false;
+						 $scope.fetchedChargeCodes[i].count = 0;
+					}
+				}
+			});
 		}
 	]
 );

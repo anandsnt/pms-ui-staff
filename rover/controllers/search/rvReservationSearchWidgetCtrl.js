@@ -16,6 +16,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	// these varibales will be used to various conditiopns for ui rendering
 	$scope.isLateCheckoutList = false;
+	$scope.swipeNoResults = false;
 
 	//showSearchResultsAre
 	$scope.showSearchResultsArea = false;
@@ -48,6 +49,21 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	} else {
 		$vault.set('searchQuery', '');
 	}
+
+
+	// dont remove yet
+	// setting up back to dashboard
+	// this must be set only for switching b/w
+	// dashboard and search results by clicking the search in dashboard
+	// if ( !$stateParams.hasOwnProperty('type') ) {
+	// 	$rootScope.setPrevState = {
+	// 		title: $filter('translate')('DASHBOARD'),
+	// 		callback: 'clearResults',
+	// 		scope: $scope,
+	// 		noStateChange: true,
+	// 		hide: true
+	// 	};
+	// }
 
 
 
@@ -99,10 +115,18 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
   	* reciever function to show/hide the search result area.
   	*/
   	$scope.$on("showSearchResultsArea", function(event, searchAreaVisibilityStatus){
-  		$scope.showSearchResultsArea = searchAreaVisibilityStatus; 
+  		$scope.showSearchResultsArea = searchAreaVisibilityStatus;
+
   		// if it is hiding, we need to clear the search text
   		if(!searchAreaVisibilityStatus) {
   			$scope.textInQueryBox = '';
+
+  			// hide the dashboard back button (dont remove yet)
+  			// $rootScope.setPrevState.hide = true;
+  		} else {
+
+  			// show the dashboard back button (dont remove yet)
+  			// $rootScope.setPrevState.hide = false;
   		}
   	});
 
@@ -111,8 +135,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	*/
 	$scope.queryEntered = function(){
 		$scope.isSwiped = false;
+		$scope.swipeNoResults = false;
 		var queryText = $scope.textInQueryBox;
-
+		$scope.$emit("UPDATE_MANAGER_DASHBOARD");
 		//inoreder to prevent unwanted results showing while tyeping..
 		if(!$scope.isTyping){
 			$scope.isTyping = true;
@@ -195,17 +220,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		//we are showing the search area
 		$scope.$emit("showSearchResultsArea", true);		
 		refreshScroller();
-
-		// set the prev state here only, not outside
-		// else it will override any other declarations by other controllers
-		if ( !$stateParams.hasOwnProperty('type') ) {
-			$rootScope.setPrevState = {
-				title: $filter('translate')('DASHBOARD'),
-				callback: 'clearResults',
-				scope: $scope,
-				noStateChange: true
-			};
-		}
 	};
 
 
@@ -304,10 +318,11 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	  	$scope.textInQueryBox = "";
 	  	$scope.$emit("SearchResultsCleared");
 	  	
+	  	// dont remove yet
 	  	// Gotacha!! Only when we are dealing with 'noStateChange'
-	  	if ( !!$rootScope.setPrevState.noStateChange ) {
-	  	    $rootScope.setPrevState.hide = true;
-	  	};
+	  	// if ( !!$rootScope.setPrevState.noStateChange ) {
+	  	//     $rootScope.setPrevState.hide = true;
+	  	// };
 
 	  	// reset the query saved into vault
 	  	$vault.set('searchQuery', '');
@@ -326,14 +341,22 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	//Relaunch the reservation details screen when the ows connection retry succeeds
 	$scope.$on('OWSConnectionRetrySuccesss', function(event){
 	  $scope.goToReservationDetails($scope.currentReservationID, $scope.currentConfirmationID);
-	});	
+	});
+
 	$scope.searchSwipeSuccessCallback = function(searchByCCResults){
-		 $rootScope.setPrevState.hide = false;
+
+		// show back to dashboard button (dont remove yet)
+		// $rootScope.setPrevState.hide = false;
+
+
+		$scope.$emit("UpdateHeading", swipeHeadingInSearch);
+		
 		 $scope.$emit('hideLoader');
 		 $scope.isSwiped = true;
 		 data = searchByCCResults;
 		 if(data.length == 0){
 		 	$scope.$emit("updateDataFromOutside", data);  
+		 	$scope.swipeNoResults = true;
 		 	$scope.focusOnSearchText();
 		 } else if(data.length == 1){
 		 		var reservationID = data[0].id;
@@ -345,12 +368,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		 }
 
 	};
+	var swipeHeadingInSearch = '';
 	$scope.$on('SWIPEHAPPENED', function(event, data){
 	 	var ksn = data.RVCardReadTrack2KSN;
   		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
 			ksn = data.RVCardReadETBKSN;
 		}
-
+		var cardNumber = data.RVCardReadMaskedPAN.substr(data.RVCardReadMaskedPAN.length - 4);
+		swipeHeadingInSearch = 'Reservations with card '+cardNumber;
+		
 		//var url = '/staff/payments/search_by_cc';
 		var swipeData = {
 			'et2' : data.RVCardReadTrack2,
@@ -366,13 +392,16 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	 
 	 $scope.showNoMatches = function(resultLength, queryLength, isTyping, isSwiped){
 	 	var showNoMatchesMessage = false;
-	 	if(isSwiped && resultLength == 0){
-	 		showNoMatchesMessage = true;
-	 	} else {
-	 		if(resultLength == 0 && queryLength>=3 && !isTyping){
-	 			showNoMatchesMessage = true;
-	 		}
+	 	if(!$scope.swipeNoResults){
+	 		if(isSwiped && resultLength == 0){
+		 		showNoMatchesMessage = true;
+		 	} else {
+		 		if(resultLength == 0 && queryLength>=3 && !isTyping){
+		 			showNoMatchesMessage = true;
+		 		}
+		 	}
 	 	}
+	 	
 	 	return showNoMatchesMessage;
 	 };
 	 $scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn){
@@ -384,35 +413,40 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
       };
       
       
-      $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
-       var mappedStatus = "room-number";
-       if(reservation_status == 'CHECKING_IN'){
-     
-	      	switch(roomReadyStatus) {
-	
-				case "INSPECTED":
-					mappedStatus += ' room-green';
-					break;
-				case "CLEAN":
-					if (checkinInspectedOnly == "true") {
-						mappedStatus += ' room-orange';
-						break;
-					} else {
-						mappedStatus += ' room-green';
-						break;
+    $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
+       	var mappedStatus = "room-number";
+
+       	if(reservation_status == 'CHECKING_IN'){
+       		if(roomReadyStatus != ''){
+       			if(fostatus == 'VACANT'){
+			      	switch(roomReadyStatus) {
+						case "INSPECTED":
+							mappedStatus += ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								mappedStatus += ' room-orange';
+								break;
+							} else {
+								mappedStatus += ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							mappedStatus += " room-orange";
+							break;
+			
+						case "DIRTY":
+							mappedStatus += " room-red";
+							break;
 					}
-					break;
-				case "PICKUP":
-					mappedStatus += " room-orange";
-					break;
-	
-				case "DIRTY":
-					mappedStatus += " room-red";
-					break;
-	
-			}
-	       }
-	   	 return mappedStatus;
-   };
+       			} else {
+       				mappedStatus += " room-red";
+       			}
+       		}
+	    }
+
+	   	return mappedStatus;
+   	};
 
 }]);

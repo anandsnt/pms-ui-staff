@@ -94,7 +94,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// change date format for all
 			for (var i = 0, j = results.length; i < j; i++) {
-			    results[i][0] = $filter('date')(results[i][0], 'MM-dd-yyyy');
+			    results[i][0] = $filter('date')(results[i][0], $rootScope.dateFormat);
 
 			    if ( $scope.chosenReport.title === 'Late Check Out' ) {
 

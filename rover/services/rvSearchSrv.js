@@ -1,4 +1,4 @@
-sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVBaseWebSrv, $vault){
+sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
 	
 	var self = this;
 	
@@ -50,6 +50,10 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 
 				if ( data['fostatus'] ) {
 					self.data[i]['fostatus'] = data['fostatus'];
+				}
+
+				if ( data['room_ready_status'] ) {
+					self.data[i]['room_ready_status'] = data['room_ready_status'];
 				}
 
 				if ( data['is_reservation_queued'] ) {
@@ -114,6 +118,22 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 		}, function(data) {
 			deferred.reject(data);
 		});
+		return deferred.promise;
+	};
+	this.fetchReservationsToPostCharge = function(dataToSrv){
+		var deferred = $q.defer();
+		if(dataToSrv.refreshApi){
+			var url = 'api/reservations/search_reservation';
+			rvBaseWebSrvV2.postJSON(url, dataToSrv.postData).then(function(data) {
+				deferred.resolve(data);
+				self.reservationsList = data;
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			deferred.resolve(self.reservationsList);
+		}
+		
 		return deferred.promise;
 	};
 

@@ -24,12 +24,12 @@
 			<span class="guest-status small-icon check-in" translate>CHECK_IN</span>
 
 			{{getSimplifiedDayName(stayDetails.details.arrival_date)}}
-			{{stayDetails.details.arrival_date|date:mmddyyyyFormat}}
+			{{stayDetails.details.arrival_date|date:dateFormat}}
 		</span>
 		<span class="date" ng-class="{'overlay' : stayDetails.isOverlay }">
 			<span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
 			{{getSimplifiedDayName(stayDetails.details.departure_date)}}
-			{{stayDetails.details.departure_date|date:mmddyyyyFormat}}
+			{{stayDetails.details.departure_date|date:dateFormat}}
 		</span>
 	</div>
 

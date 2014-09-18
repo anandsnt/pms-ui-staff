@@ -1,5 +1,5 @@
-sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
-  function($scope, RVContactInfoSrv, ngDialog, dateFilter) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter) {
     BaseCtrl.call(this, $scope);
     /**
      * storing to check if data will be updated
@@ -15,6 +15,20 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
 
     $scope.saveContactInfo = function(newGuest) {
       var saveUserInfoSuccessCallback = function(data) {
+        /**
+         *  CICO-9169
+         *  Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
+         *  -- To have the primary email id in app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
+         */
+        $scope.reservationData.guest.email = $scope.guestCardData.contactInfo.email;
+        if ($scope.reservationData.guest.email && $scope.reservationData.guest.email.length > 0) {
+          $scope.otherData.isGuestPrimaryEmailChecked = true;
+        } else {
+          // Handles cases where Guest with email is replaced with a Guest w/o an email address!
+          $scope.otherData.isGuestPrimaryEmailChecked = false;
+        }
+        // CICO-9169
+
         var avatarImage = getAvatharUrl(dataToUpdate.title);
         $scope.$emit("CHANGEAVATAR", avatarImage);
         $scope.$emit('hideLoader');
@@ -89,9 +103,9 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         'data': dataToUpdate,
         'userId': $scope.guestCardData.contactInfo.user_id
       };
-      if (!dataUpdated && !newGuest)
+      if (!dataUpdated && !newGuest) {
         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
-      else if (newGuest) {
+      } else if (newGuest) {
         if (typeof data.data.is_opted_promotion_email == 'undefined') {
           data.data.is_opted_promotion_email = false;
         }
@@ -103,7 +117,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
      * watch and update formatted date for display
      */
     $scope.$watch('guestCardData.contactInfo.birthday', function() {
-      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
     });
     /**
      * to handle click actins outside this tab
@@ -131,10 +145,8 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
-    var scrollerOptions = {
-      click: true,
-    };
-    $scope.setScroller('contact_info', scrollerOptions);
+    
+    $scope.setScroller('contact_info');
 
     $scope.$on('CONTACTINFOLOADED', function(event) {
       setTimeout(function() {

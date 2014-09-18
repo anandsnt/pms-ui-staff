@@ -48,11 +48,13 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 */
 	$scope.addNewClicked = function() {
 
-		$scope.isAdd = true;
+		$scope.currentClickedElement = -1;
 		$scope.isAddTax = false;
 		var fetchNewDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
+			$scope.isAdd = true;
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.prefetchData.linked_charge_codes = [];
@@ -65,7 +67,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	 */
 	$scope.editSelected = function(index, value) {
 		$scope.isAddTax = false;
-		$scope.currentClickedElement = index;
+		$scope.isAdd = false;
 		$scope.editId = value;
 		var data = {
 			'editId' : value
@@ -73,12 +75,14 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 
 		var editSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
+			$scope.currentClickedElement = index;
 			$scope.prefetchData = {};
+			$scope.selected_payment_type.id = -1;
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.isEdit = true;
 			$scope.isAdd = false;
-			$scope.checkAmountPrecision();
+			$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
 			
 			// Generating calculation rules list.
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {
@@ -343,24 +347,6 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 	$scope.changeSelectedPaymentType = function() {
 		$scope.prefetchData.selected_payment_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].value;
 		$scope.prefetchData.is_cc_type = $scope.prefetchData.payment_types[$scope.selected_payment_type.id].is_cc_type;
-	};
-	
-	/*
-	 * Function to handle data change in 'Contract selected_type' in Add mode
-	 * on selecting "$" , rate value must be float with 2 decimals.
-	 * on selecting "%" , rate value must be integer
-	 */
-	$scope.$watch('prefetchData.selected_amount_symbol', function() {
-		$scope.checkAmountPrecision();
-	});
-	// Method to check precision for tax amount.
-	$scope.checkAmountPrecision = function(){
-		if ($scope.prefetchData.selected_amount_symbol === '%' && $scope.prefetchData.amount !=="") {
-			$scope.prefetchData.amount = parseInt($scope.prefetchData.amount).toString();
-		}
-		else if($scope.prefetchData.selected_amount_symbol === '$' && $scope.prefetchData.amount !==""){
-			$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
-		}
 	};
 	
 }]);

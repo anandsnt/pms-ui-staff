@@ -12,10 +12,9 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     var that = this;
     $scope.shouldShowLateCheckout = true;
     BaseCtrl.call(this, $scope);
-	
+
     var init =  function(){
 	
-       
 		
           //setting the heading of the screen
         $scope.heading = "DASHBOARD_HEADING";
@@ -24,7 +23,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.userDetails   = dashBoarddata.userDetails;
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
-        $scope.currencySymbol=dashBoarddata.userDetails.currency_code;  
         $rootScope.adminRole = dashBoarddata.userDetails.user_role;
 
         //update left nav bar
@@ -82,7 +80,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
             }
         }
         else{
-            $scope.errorMessage = 'We arr unable to redirect to dashboard, Please set Dashboard against this user and try again!!';
+            $scope.errorMessage = 'We are unable to redirect to dashboard, Please set Dashboard against this user and try again!!';
         }
    };
 
@@ -151,7 +149,8 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         var data = {};
         data.is_late_checkout_only = true;      
         $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    };    
+    };  
+
 }]);
 
     

@@ -198,5 +198,77 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+
+		this.fetchArAccountDetails = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/'+id+'/ar_details';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.fetchArAccountNotes = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/'+id+'/ar_notes';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.saveARNote = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/accounts/save_ar_note';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.saveARDetails = function(data) {
+			var deferred = $q.defer();
+			var url = 'api/accounts/save_ar_details';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+
+
+		this.deleteARNote = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/accounts/delete_ar_note';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.deleteArAccount = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = 'api/accounts/'+id+'/delete_ar_detail';
+			rvBaseWebSrvV2.deleteJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 	}
 ]);

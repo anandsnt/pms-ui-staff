@@ -329,3 +329,79 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
+
+
+function getTextWidth(text){
+        // create a dummy span, we'll use this to measure text.          
+        var tester = $('<span>'),
+
+          // get the computed style of the input
+         elemStyle = window.document.defaultView
+          .getComputedStyle(tester[0], '');
+
+        // apply any styling that affects the font to the tester span.
+        tester.css({
+          'font-family': elemStyle.fontFamily,
+          'line-height': elemStyle.lineHeight,
+          'font-size': elemStyle.fontSize,
+          'font-weight': elemStyle.fontWeight,
+          'width': 'auto',
+          'position': 'absolute',
+          'top': '-99999px',
+          'left': '-99999px'
+        });
+
+        // put the tester next to the input temporarily.
+        $('body').append(tester);
+
+        // update the text of the tester span
+        tester.text(text);
+
+        // measure!
+        var r = tester[0].getBoundingClientRect();
+
+        var w = r.width;
+
+        // remove the tester.
+        tester.remove();
+        return w;
+}
+
+//function that converts a null value to a desired string.
+//if no replace value is passed, it returns an empty string
+var escapeNull = function(value, replaceWith){
+    var newValue = "";
+    if((typeof replaceWith != "undefined") && (replaceWith != null)){
+        newValue = replaceWith;
+    }
+    var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+    return valueToReturn;
+};
+
+var DateFormatInfoMappings = {
+    
+    'MM-DD-YYYY': ['MM-dd-yyyy','mm-dd-yy'],
+    'MM/DD/YYYY': ['MM/dd/yyyy','mm/dd/yy'],
+    'DD-MM-YYYY': ['dd-MM-yyyy','dd-mm-yy'],
+    'DD/MM/YYYY': ['dd/MM/yyyy','dd/mm/yy']
+    
+};
+
+var getDateFormat = function(dateFormat) {
+    
+    if(typeof dateFormat === 'undefined'){
+        return DateFormatInfoMappings['MM-DD-YYYY'][0];
+    }
+    else{
+        return DateFormatInfoMappings[dateFormat][0];
+    }
+};
+
+var getJqDateFormat = function(dateFormat) {
+    if(typeof dateFormat === 'undefined'){
+        return DateFormatInfoMappings['MM-DD-YYYY'][1];
+    }
+    else{
+        return DateFormatInfoMappings[dateFormat][1];
+    }
+};

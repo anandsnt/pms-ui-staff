@@ -9,6 +9,7 @@
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/ui-utils.min.js
+//=require ../shared/lib/js/bindonce.js
 
 //=require_tree ../shared/lib/js/signature
 //=require ../shared/lib/js/iscroll.js
@@ -21,7 +22,7 @@
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 
-//=require ../shared/lib/js/acute-select.js
+//=require ../shared/directives/acuteSelect/acute-select.js
 //=require_tree ../shared
 //=require ../shared/lib/js/date.js
 //=require_tree ../rover/rvRouters/

@@ -121,12 +121,13 @@ sntRover.controller('RVroomAssignmentController',[
 	//success call of un-assigningb rooms
 	var successCallbackOfUnAssignRoom = function(data){
 		$scope.$emit('hideLoader');
+		$scope.reservationData.reservation_card.room_id = '';
 		$scope.reservationData.reservation_card.room_number = '';
 		$scope.reservationData.reservation_card.is_upsell_available = true;
-	
-		$scope.reservationData.reservation_card.room_type_description = '';
-		$scope.reservationData.reservation_card.room_type_code = '';
-					
+
+		$scope.reservationData.reservation_card.room_status = '';
+		$scope.reservationData.reservation_card.fo_status = '';
+		$scope.reservationData.reservation_card.room_ready_status = '';					
 		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 		updateSearchCache();
 		$scope.backToStayCard();
@@ -156,6 +157,7 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
+			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
@@ -210,15 +212,23 @@ sntRover.controller('RVroomAssignmentController',[
 	* Listener to update the reservation details on upgrade selection
 	*/
 	$scope.$on('upgradeSelected', function(event, data){
+			$scope.reservationData.reservation_card.room_id = data.room_id;
 			$scope.reservationData.reservation_card.room_number = data.room_no;
 			$scope.reservationData.reservation_card.room_type_description = data.room_type_name;
 			$scope.reservationData.reservation_card.room_type_code = data.room_type_code;
 			$scope.reservationData.reservation_card.room_status = "READY";
 			$scope.reservationData.reservation_card.fo_status = "VACANT";
 			$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
-			$scope.reservationData.reservation_card.is_upsell_available = false;
+			// CICO-7904 : Remove option for Standalone PMS as the user should be able to upgrade reservation as many times as required
+			if(!$rootScope.isStandAlone || parseInt(data.room_type_level) == 3){
+				$scope.reservationData.reservation_card.is_upsell_available = false;
+			}
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-			$scope.backToStayCard();
+			if($scope.clickedButton == "checkinButton"){
+				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+			} else {
+				$scope.backToStayCard();
+			}			
 	});
 
 	/**
