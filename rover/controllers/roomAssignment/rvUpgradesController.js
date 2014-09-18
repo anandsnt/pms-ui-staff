@@ -88,6 +88,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		$scope.selectedUpgrade.room_no = $scope.upgradesList[index].upgrade_room_number;
 		$scope.selectedUpgrade.room_type_name = $scope.upgradesList[index].upgrade_room_type_name;
 		$scope.selectedUpgrade.room_type_code = $scope.upgradesList[index].upgrade_room_type;
+		$scope.selectedUpgrade.room_type_level = parseInt($scope.upgradesList[index].room_type_level);
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
 	};
