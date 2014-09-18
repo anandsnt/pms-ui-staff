@@ -30,6 +30,7 @@ var ICareServicesView = function(domRef){
 		dataToPost.icare.account_preamble = that.myDom.find('#account-prefix').val();
 		dataToPost.icare.account_length = that.myDom.find('#account-length').val();
 		dataToPost.icare.pms_alert_code = that.myDom.find('#pms-alert-code').val();
+		dataToPost.icare.combined_key_room_charge_create = that.myDom.find('#combined-key-room-charge-create').is(":checked");
 		var webservice = new NewWebServiceInterface();
 		var url = '/api/hotel_settings/change_settings';
 	    var options = { 

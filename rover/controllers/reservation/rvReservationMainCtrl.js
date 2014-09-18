@@ -905,5 +905,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         $scope.initReservationData();
+
+        $scope.$on('REFRESHACCORDIAN', function() { 
+            $scope.$broadcast('GETREFRESHACCORDIAN');
+        });
     }
 ]);
