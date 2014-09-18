@@ -23,7 +23,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			};
 			var data = {
 				'userId': $scope.guestCardData.contactInfo.user_id,
-				'isRefresh': $stateParams.isrefresh
+				'isRefresh': $stateParams.isrefresh || 'true'
 			};
 			$scope.invokeApi(RVLikesSrv.fetchLikes, data, $scope.fetchLikesSuccessCallback, fetchLikesFailureCallback, 'NONE');
 		};
