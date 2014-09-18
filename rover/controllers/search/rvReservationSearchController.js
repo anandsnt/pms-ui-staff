@@ -31,6 +31,7 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
   } else {
       heading = headingDict['NORMAL_SEARCH'];
   }
+  
 
   // set up a back button
   if($stateParams.type!='' && $stateParams.type != null){

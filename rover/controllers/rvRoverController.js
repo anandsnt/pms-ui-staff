@@ -577,50 +577,39 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      /**
     * successcall back of late checkout click button's webserive call
     */
-    var successCallbackOfLateCheckoutFetch = function(data){
-        $scope.$emit('hideLoader');
-        $scope.$broadcast("updateDashboardSearchDataFromExternal", data);
-
-        // we have to show the seach results area
-        $scope.$broadcast("showSearchResultsArea", true);
-        // we are hiding the dashboard
-        $scope.$broadcast("showDashboardArea", false);
-
-        //setting the backbutton & showing the caption
-        $scope.$emit("UpdateSearchBackbuttonCaption", "Dashboard");
-
-        //updating type
-        var lateCheckoutType = "LATE_CHECKOUT";
-        $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
-
-        //updating the heading
-        $scope.$emit( "UpdateHeading", "DASHBOARD_SEARCH_LATECHECKOUT");
-    };
+    // var successCallbackOfLateCheckoutFetch = function(data){
+        // $scope.$emit('hideLoader');
+        // $scope.$broadcast("updateDashboardSearchDataFromExternal", data);
+// 
+        // // we have to show the seach results area
+        // $scope.$broadcast("showSearchResultsArea", true);
+        // // we are hiding the dashboard
+        // $scope.$broadcast("showDashboardArea", false);
+// 
+        // //setting the backbutton & showing the caption
+        // $scope.$emit("UpdateSearchBackbuttonCaption", "Dashboard");
+// 
+        // //updating type
+        // var lateCheckoutType = "LATE_CHECKOUT";
+        // $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
+// 
+        // //updating the heading
+        // $scope.$emit( "UpdateHeading", "DASHBOARD_SEARCH_LATECHECKOUT");
+    // };
 
 
     /**
     * function to execute on clicking latecheckout button
     */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event){
-        // event.preventDefault();
-        // var data = {};
-        // data.is_late_checkout_only = true;      
-        // $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    	
-    	 	var type = "LATE_CHECKOUT";
-	        $state.go('rover.search', {'type': type});
+	 	var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {'type': type});
 	    
     };
     
     $scope.clickedOnQueuedRoomsIcon = function(event){
-        // event.preventDefault();
-        // var data = {};
-        // data.is_late_checkout_only = true;      
-        // $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    	
-    	 	var type = "QUEUED_ROOMS";
-	        $state.go('rover.search', {'type': type});
-	    
+	 	var type = "QUEUED_ROOMS";
+        $state.go('rover.search', {'type': type});
     };
     
 
