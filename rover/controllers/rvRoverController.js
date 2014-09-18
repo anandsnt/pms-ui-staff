@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', 
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -574,40 +574,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     
     
     
-     /**
-    * successcall back of late checkout click button's webserive call
-    */
-    // var successCallbackOfLateCheckoutFetch = function(data){
-        // $scope.$emit('hideLoader');
-        // $scope.$broadcast("updateDashboardSearchDataFromExternal", data);
-// 
-        // // we have to show the seach results area
-        // $scope.$broadcast("showSearchResultsArea", true);
-        // // we are hiding the dashboard
-        // $scope.$broadcast("showDashboardArea", false);
-// 
-        // //setting the backbutton & showing the caption
-        // $scope.$emit("UpdateSearchBackbuttonCaption", "Dashboard");
-// 
-        // //updating type
-        // var lateCheckoutType = "LATE_CHECKOUT";
-        // $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
-// 
-        // //updating the heading
-        // $scope.$emit( "UpdateHeading", "DASHBOARD_SEARCH_LATECHECKOUT");
-    // };
-
+     
 
     /**
     * function to execute on clicking latecheckout button
     */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event){
+    	
 	 	var type = "LATE_CHECKOUT";
         $state.go('rover.search', {'type': type});
 	    
     };
     
     $scope.clickedOnQueuedRoomsIcon = function(event){
+    	
 	 	var type = "QUEUED_ROOMS";
         $state.go('rover.search', {'type': type});
     };

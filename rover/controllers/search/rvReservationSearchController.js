@@ -100,4 +100,5 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 	$scope.$on("UPDATE_MANAGER_DASHBOARD", function(){
    		 $scope.heading = headingDict['NORMAL_SEARCH'];
    });
+   $stateParams.type = "";
 }]);
