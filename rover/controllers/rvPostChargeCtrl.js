@@ -523,9 +523,9 @@ sntRover.controller('RVPostChargeController',
 			
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
-				if(data.isFromOut){
+				// if(data.isFromOut){
 					$scope.billNumber = 1;
-				}
+				// }
 			});
 			
 			$scope.$on('POSTCHARGE', function(event, data) {
