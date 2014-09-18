@@ -54,7 +54,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showInitialSearchScreen = false;
 				$scope.$emit( 'hideLoader' );
 				$scope.reservationsArray = data;
-				console.log("successssssssssssssssssssss")
+				
 				oldSearchGuestText = $scope.search.guest_company_agent;
 				oldSearchRoomValue = $scope.search.room;
 				angular.forEach($scope.reservationsArray, function(value, key) {
@@ -99,11 +99,11 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.showSearchScreen = false;
 			};
 			$scope.showHideInitialSearchScreen = function(){
-				if($scope.reservationsArray.length == 0){
+				// if($scope.reservationsArray.length == 0){
 					$scope.showInitialSearchScreen = true;
 					$scope.showSearchScreen = true;
 					$scope.itemsVisible = false;
-				}
+				// }
 				
 			};
 			$scope.successGetBillDetails = function(data){
@@ -253,7 +253,7 @@ sntRover.controller('RVOutsidePostChargeController',
 				if(!$scope.isCardAttched){
 					$scope.noGuestOrRoomSelected = true;
 				}
-				else if($scope.cardAttached.reservation_status !== 'CHECKEDIN'){
+				else if($scope.cardAttached.reservation_status === 'CHECKING_IN' || $scope.cardAttached.reservation_status === 'RESERVED'){
 					$scope.guestHasNotCheckedin = true;
 				}
 				else {

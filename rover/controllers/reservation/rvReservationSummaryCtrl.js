@@ -171,6 +171,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			//addons
 
+
 			data.addons = [];
 
 			_.each($scope.reservationData.rooms[0].addons, function(addon) {
@@ -179,7 +180,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					quantity: addon.quantity
 
 				});
+
 			})
+
 
 			data.company_id = $scope.reservationData.company.id;
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -201,6 +204,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.viewState.reservationStatus.confirm = true;
+				$scope.reservationData.is_routing_available = false;
 				$scope.viewState.reservationStatus.number = data.id;
 				// Change mode to stay card as the reservation has been made!
 				$scope.viewState.identifier = "CONFIRM";
@@ -228,6 +232,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var updateSuccess = function(data) {
 				$scope.viewState.identifier = "UPDATED";
+				$scope.reservationData.is_routing_available = data.is_routing_available;
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum

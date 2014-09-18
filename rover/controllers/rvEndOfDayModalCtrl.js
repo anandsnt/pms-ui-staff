@@ -7,10 +7,10 @@ $scope.errorMessage='';
 $scope.isLoggedIn = false;
 $scope.startProcess = false;
 $scope.startProcessEnabled = true;
-$scope.businessDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
+$scope.businessDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
 $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
 $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
-$scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, 'MM-dd-yyyy');
+$scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, $rootScope.dateFormat);
 $scope.isTimePastMidnight = true;
 
 /*
