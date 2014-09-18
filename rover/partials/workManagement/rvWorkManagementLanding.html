@@ -7,7 +7,7 @@
             <span class="icons icon-clear-search">Clear query</span>
         </a>
         <button type="submit" name="submit" class="icons icon-search">Search</button>
-        <input name="work-management-query" id="work-management-query" class="query" placeholder="Search by Room No. or Employee Name" type="search" autocomplete="off" />
+        <input name="work-management-query" id="work-management-query" ng-model="stateVariables.searchQuery" class="query" placeholder="Search by Room No. or Employee Name" type="search" autocomplete="off" rv-delay-textbox  delay="1000" function-to-fire="workManagementSearch"/>
     </div>
     <div class="entry options">
         <div class="select">

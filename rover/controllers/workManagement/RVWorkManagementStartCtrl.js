@@ -1,6 +1,5 @@
-sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state',
-    function($rootScope, $scope, ngDialog, $state) {
-
+sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics',
+    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics) {
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementCreatePopup.html',
@@ -12,31 +11,17 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
 
         $scope.stateVariables = {
             searching: false,
+            searchQuery: "",
             roomSearch: false, // Search can be either for rooms or an employee
             viewingDate: {
                 date: "",
                 day: 25,
-                month: September,
+                month: 'September',
                 year: 2014
             }
         };
 
-        $scope.workStats = {
-            "departures": {
-                "clean": 30,
-                "total_hours": "03.45",
-                "total_maids_required": 12,
-                "total_rooms_assigned": 2,
-                "total_rooms_completed": 3
-            },
-            "stay_overs": {
-                "clean": 12,
-                "total_hours": "1.45",
-                "total_maids_required": 12,
-                "total_rooms_assigned": 2,
-                "total_rooms_completed": 3
-            }
-        };
+        $scope.workStats = wmStatistics;
 
         $scope.closeDialog = function() {
             ngDialog.close();
@@ -46,5 +31,16 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             $state.go('rover.workManagement.new');
             $scope.closeDialog();
         }
+
+
+        $scope.workManagementSearch = function() {
+            if ($scope.stateVariables.searchQuery.length > 0) {
+                $scope.stateVariables.searching = true;
+            } else {
+                $scope.stateVariables.searching = false;
+            }
+            $scope.$apply();
+        }
+
     }
 ]);
