@@ -129,7 +129,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: ""
+						action: "staff#/staff/workmanagement/start"
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -178,7 +178,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: ""
+						action: "staff#/staff/workmanagement/start"						
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -385,7 +385,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				$scope.isStandAlone = true;
 			setupLeftMenu();
 			$rootScope.businessDate = data.business_date;
-			$rootScope.currencySymbol = data.currency.symbol;
+			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
+			$rootScope.dateFormat = getDateFormat(data.date_format.value);
+		    console.log("currency code   : "+data.currency.value);
+		    console.log("currency symbol : "+$rootScope.currencySymbol);
+		    console.log("date format     : "+$rootScope.dateFormat);
 			$scope.$emit('hideLoader');
 
 		};
