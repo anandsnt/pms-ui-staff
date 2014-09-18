@@ -11,6 +11,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
     var that = this;
     $scope.shouldShowLateCheckout = true;
+    $scope.shouldShowQueuedRooms  = true;
     BaseCtrl.call(this, $scope);
 	
     var init =  function(){
@@ -117,39 +118,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     }
 
 
-    /**
-    * successcall back of late checkout click button's webserive call
-    */
-    var successCallbackOfLateCheckoutFetch = function(data){
-        $scope.$emit('hideLoader');
-        $scope.$broadcast("updateDashboardSearchDataFromExternal", data);
-
-        // we have to show the seach results area
-        $scope.$broadcast("showSearchResultsArea", true);
-        // we are hiding the dashboard
-        $scope.$broadcast("showDashboardArea", false);
-
-        //setting the backbutton & showing the caption
-        $scope.$emit("UpdateSearchBackbuttonCaption", "Dashboard");
-
-        //updating type
-        var lateCheckoutType = "LATE_CHECKOUT";
-        $scope.$broadcast("updateDashboardSearchTypeFromExternal", lateCheckoutType);
-
-        //updating the heading
-        $scope.$emit( "UpdateHeading", "DASHBOARD_SEARCH_LATECHECKOUT");
-    };
-
-
-    /**
-    * function to execute on clicking latecheckout button
-    */
-    $scope.clickedOnHeaderLateCheckoutIcon = function(event){
-        event.preventDefault();
-        var data = {};
-        data.is_late_checkout_only = true;      
-        $scope.invokeApi(RVSearchSrv.fetch, data, successCallbackOfLateCheckoutFetch);
-    };  
+     
 
 }]);
 
