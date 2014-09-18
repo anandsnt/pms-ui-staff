@@ -347,7 +347,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.showDepositBalanceModal = function(){
 			ngDialog.open({
 					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
-					controller: 'RVDepositBalanceController',
+					controller: 'RVDepositBalanceCtrl',
 					className: 'ngdialog-theme-default1',
 					scope: $scope
 				});
