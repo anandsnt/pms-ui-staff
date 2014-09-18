@@ -12,7 +12,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     var that = this;
     $scope.shouldShowLateCheckout = true;
     BaseCtrl.call(this, $scope);
-	
+
     var init =  function(){
 	
 		
@@ -80,7 +80,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
             }
         }
         else{
-            $scope.errorMessage = 'We arr unable to redirect to dashboard, Please set Dashboard against this user and try again!!';
+            $scope.errorMessage = 'We are unable to redirect to dashboard, Please set Dashboard against this user and try again!!';
         }
    };
 
