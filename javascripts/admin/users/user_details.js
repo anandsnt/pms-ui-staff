@@ -82,6 +82,8 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
+  	postData.is_housekeeping_only = that.myDom.find("#hk-function-only").is(":checked");
+  	console.log("is_housekeeping_only="+postData.is_housekeeping_only);
   	// to handle image uploaded or not
   	if(that.myDom.find("#file-preview").attr("changed") == "changed")
   		postData.user_photo = that.myDom.find("#file-preview").attr("src");
@@ -117,6 +119,8 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
+  	postData.is_housekeeping_only = that.myDom.find("#hk-function-only").is(":checked");
+  	console.log("is_housekeeping_only="+postData.is_housekeeping_only);
   	// to handle image uploaded or not
   	if(that.myDom.find("#file-preview").attr("changed") == "changed")
   		postData.user_photo = that.myDom.find("#file-preview").attr("src");
