@@ -60,7 +60,10 @@ var RegistrationCardView = function(viewDom) {
         }
         
       	if(shouldShowPaymentPopUp){
+      		$("#registrationcard_main").attr("data-should-show-authorize", "yes");
 			that.addNewPaymentModal({}, {should_show_overlay: true});
+		} else {
+			$("#registrationcard_main").attr("data-should-show-authorize", "no");
 		}
 									
 	};
@@ -73,6 +76,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#complete-checkout-button").addClass("hidden");
 		that.myDom.find(".review").addClass("hidden");
 		that.myDom.find("#terms-and-conditions").addClass("hidden");
+		that.myDom.find(".room-charge-enable").addClass("hidden");
 	};
 	
 	this.executeLoadingAnimation = function() {
@@ -159,6 +163,9 @@ var RegistrationCardView = function(viewDom) {
 	    	event.preventDefault();
 	    	return that.showTermsAndConditionsModal();
 	    }
+	    if(getParentWithSelector(event, "#room-charge-btn")){
+	    	return that.roomChargeBtnClicked();
+	    }	    
 	    
 	};
 	this.showTermsAndConditionsModal = function(){
@@ -277,28 +284,48 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else {
+			var no_post_room_charge = that.myDom.find("#no-post-room-charge-value").attr("data-no-post");
 			if(isSwipeHappenedDuringCheckin){
-				var data = {
-					"is_promotions_and_email_set" : is_promotions_and_email_set,
-					"signature" : signature,
-					"reservation_id" : that.reservation_id,
-					"payment_type": sntapp.regCardData.payment_type,
-					"mli_token": sntapp.regCardData.mli_token,
-					"et2": sntapp.regCardData.et2,
-					"ksn": sntapp.regCardData.ksn,
-					"pan": sntapp.regCardData.pan,
-					"name_on_card": sntapp.regCardData.name_on_card,
-					"card_expiry": sntapp.regCardData.card_expiry,	
-					"credit_card" : sntapp.regCardData.credit_card 	
-				};
+				
+					var data = {
+						"is_promotions_and_email_set" : is_promotions_and_email_set,
+						"signature" : signature,
+						"reservation_id" : that.reservation_id,
+						"payment_type": sntapp.regCardData.payment_type,
+						"mli_token": sntapp.regCardData.mli_token,
+						"et2": sntapp.regCardData.et2,
+						"ksn": sntapp.regCardData.ksn,
+						"pan": sntapp.regCardData.pan,
+						"name_on_card": sntapp.regCardData.name_on_card,
+						"card_expiry": sntapp.regCardData.card_expiry,	
+						"credit_card" : sntapp.regCardData.credit_card,
+						"no_post": no_post_room_charge 	,
+						"add_to_guest_card": sntapp.regCardData.add_to_guest_card
+					};
+					if(sntapp.regCardData.doNotauthorizeCard == "true"){
+						data.do_not_cc_auth = true;
+					} else {
+						data.do_not_cc_auth = false;
+					}
+					
+					
+				// } else {
+					// var data = {
+						// "is_promotions_and_email_set" : is_promotions_and_email_set,
+						// "signature" : signature,
+						// "reservation_id" : that.reservation_id,
+						// "no_post": no_post_room_charge 	
+					// };
+				// }
+				
 			} else {
 				var data = {
 					"is_promotions_and_email_set" : is_promotions_and_email_set,
 					"signature" : signature,
-					"reservation_id" : that.reservation_id
+					"reservation_id" : that.reservation_id,
+					"no_post": no_post_room_charge 	
 				};
 			}
-		
 			var webservice = new WebServiceInterface();
 
 			var url = '/staff/checkin';
@@ -313,8 +340,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.completeCheckinSuccess = function(data) {
-		console.log("completeCheckinSuccess");
-
+		
 		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
 		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
@@ -337,12 +363,15 @@ var RegistrationCardView = function(viewDom) {
 		}
 		
 		else if(keySettings == "encode"){
-			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);
-			keyEncoderModal.initialize();
+			var isSmartbandCreateWithKeyWrite = that.myDom.find("#checkin-button").attr("data-smartband-create-with-key-writing");			
+			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);			
 			keyEncoderModal.params = {
 				"origin" : views.BILLCARD,
-				"reservationStatus" : reservationStatus
+				"reservationStatus" : reservationStatus,
+				"isSmartbandCreateWithKeyWrite": isSmartbandCreateWithKeyWrite
+				
 			};
+			keyEncoderModal.initialize();
 			
 		}
 
@@ -602,5 +631,18 @@ var RegistrationCardView = function(viewDom) {
 			that.myDom.find(activeTab).removeClass('active');
 		}
 	};
+	
+	// Room charge disable button click
+	this.roomChargeBtnClicked = function(){
+		that.myDom.find("#no-post-room-charge-value").attr("data-no-post", "true");
+
+		
+        that.myDom.find("#room-charge-btn").removeClass("green").addClass("red");
+		that.myDom.find("#room-charge-btn").text("ROOM CHARGE DISABLED");
+		that.myDom.find("#room-charge-btn").attr("disabled", true);
+		
+
+	};
+
 };
 

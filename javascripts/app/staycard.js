@@ -1,5 +1,4 @@
 var StayCard = function(viewDom){
-  console.log("test console message");
   BaseView.call(this);
   var that = this;
   
@@ -93,7 +92,7 @@ var StayCard = function(viewDom){
            return new AddNewPaymentModal(fromPage, domElement, params);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-       // if addNewPaymentModal instance exist, but the dom is removed
+       // if addNewPaymentModal instance exist, but the dom is removedsuccessCallBackHandler
          sntapp.updateViewInst('addNewPaymentModal', function() {
            return new AddNewPaymentModal(fromPage, domElement, params);
         });
@@ -104,6 +103,11 @@ var StayCard = function(viewDom){
         sntapp.getViewInst('addNewPaymentModal').params = params;
       }
       sntapp.getViewInst('addNewPaymentModal').dataUpdated();
+    };
+    /* Function for listening from swipe in staycard, guestcard, billcard */
+    var respondToSwipeInPaymentModal = function (fromPage, domElement, params){
+      sntapp.getViewInst('ShowMakePaymentModal').swipedCardData = swipedCardData;
+      sntapp.getViewInst('ShowMakePaymentModal').renderSwipedData();
     };
     
 
@@ -116,20 +120,22 @@ var StayCard = function(viewDom){
         // respond to StayCardView
         case 'StayCardView':
         var confirmationNum = getCurrentConfirmation();
-        console.log("staycard")
           respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
           break;
 
         //respond to GuestBillView
         case 'GuestBillView':
-         console.log("GuestBillView")
+
+          var shouldShowAuthorize = $("#registrationcard_main").attr("data-should-show-authorize");
+
           //To get the current bill number we are re-using the bill card view object
           var regCardView = sntapp.getViewInst('registrationCardView');
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
           
           var params = { 
             "bill_number" : regCardView.getActiveBillNumber(), 
-            "origin":views.BILLCARD
+            "origin":views.BILLCARD,
+            "shouldShowAuthorize": shouldShowAuthorize
             };
           // $("#setOverlay").hide();
           respondToSwipe(views.BILLCARD, domElement, params);
@@ -138,24 +144,26 @@ var StayCard = function(viewDom){
 
         //respond to GuestCardView
         case 'GuestCardView':
-          console.log("GuestCardView")
           respondToSwipe("guest", $("#cc-payment"), {});
 
           break;
-
+    case 'StayCardDepositModal':
+          var confirmationNum = getCurrentConfirmation();
+            respondToSwipeInPaymentModal("StayCardDepositModal", $("#reservation-"+confirmationNum), {});
+          break;
         // do nothing
         default:
-        	/*
-        	 * Temp work around. It is found that sntapp.cardSwipeCurrView is being assigned as null from many places.
-        	 * To minimise the changes & bugs caused, we check for StayCard's presence explicitly and do actions accordingly
-        	 * 
-        	 */
-        	if(that.myDom.is(':visible')){
-        		// Do as in stay card.
-        		var confirmationNum = getCurrentConfirmation();
-		        respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
-        	}
-        	  
+          /*
+           * Temp work around. It is found that sntapp.cardSwipeCurrView is being assigned as null from many places.
+           * To minimise the changes & bugs caused, we check for StayCard's presence explicitly and do actions accordingly
+           * 
+           */
+          if(that.myDom.is(':visible')){
+            // Do as in stay card.
+            var confirmationNum = getCurrentConfirmation();
+            respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
+          }
+            
           break;
       }
     };
@@ -200,8 +208,26 @@ var StayCard = function(viewDom){
     // Change reservation
     if(getParentWithSelector(event, ".reservations-tabs li a")) {
         return that.reservationListItemClicked(event);
-    }    
-
+    }   
+    
+    // Click REMOVE FROM QUEUE or PUT IN QUEUE buttons 
+  if(getParentWithSelector(event, "#reservation-queue")) {
+        return that.reservationQueueHandler(event);
+    }
+    if(getParentWithSelector(event, "#deposit_balance")) {
+       sntapp.setViewInst('ShowMakePaymentModal', function(){
+           return new ShowMakePaymentModal();
+       });
+       var showMakePaymentModal = new ShowMakePaymentModal(that.myDom);
+       showMakePaymentModal.initialize();
+    // setWakeUpCallModal.params = {
+      // "reservation_id" : that.reservation_id
+    // };
+    // setWakeUpCallModal.backDom = that.myDom;
+    // setWakeUpCallModal.type = "POST";
+    
+    
+    }
   };
 
   // function for closing the drawer if is open
@@ -388,4 +414,66 @@ var StayCard = function(viewDom){
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     };
+
+    this.queueSaveFailed = function(errorMessage){
+      sntapp.activityIndicator.hideActivityIndicator();
+      sntapp.notification.showErrorMessage(errorMessage, that.myDom); 
+    };
+    // Success callback for queue
+    this.queueSaveSuccess = function(data,params){
+      
+      var myConfirmationNo = getCurrentConfirmation();
+      
+      if(that.myDom.find("#reservation-queue").hasClass('red-text')){
+        // Change button "Remove from Queue" to "Put in Queue"
+        that.myDom.find("#reservation-queue").removeClass('red-text').addClass('blue-text');
+        that.myDom.find("#reservation-queue").text("Put in Queue");
+        that.myDom.find("#reservation-queue-status").val("false");
+        
+        // Update on search results
+    $("#search-results a" ).each(function() {
+      if($(this).find('.confirmation').text() === myConfirmationNo ){
+        $(this).find('.status').removeClass('queued');
+      }
+    });
+        
+      }
+      else if(that.myDom.find("#reservation-queue").hasClass('blue-text')){
+        // Change button "Put in Queue" to "Remove from Queue"
+        that.myDom.find("#reservation-queue").removeClass('blue-text').addClass('red-text');
+        that.myDom.find("#reservation-queue").text("Remove from Queue");
+        that.myDom.find("#reservation-queue-status").val("true");
+        
+        // Update on search results
+        $("#search-results a" ).each(function() {
+      if($(this).find('.confirmation').text() === myConfirmationNo ){
+        $(this).find('.status').addClass('queued');
+      }
+    });
+        
+      }
+    };
+    
+    //Update resevation with the selected room.
+    this.reservationQueueHandler = function(e){
+    
+      var reservation_id = $('#reservation_id').val();
+      var is_queue_reservation = $('#reservation-queue-status').val() == "true" ? false : true;
+      var postParams = {};
+      postParams.status = is_queue_reservation;
+      
+    var webservice = new WebServiceInterface();
+    var successCallBackParams = { 'reservationId': reservation_id };
+      
+      var options = { requestParameters: postParams,
+              successCallBack : that.queueSaveSuccess,
+              successCallBackParameters: successCallBackParams,
+              failureCallBack: that.queueSaveFailed,
+              loader: 'blocker'
+      };
+      
+      var url = '/api/reservations/'+reservation_id+'/queue';
+      webservice.postJSON(url, options);
+    };
+    
 };

@@ -1,4 +1,4 @@
-sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog){
+sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVPaymentSrv', 'ngDialog', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVPaymentSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -154,7 +154,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.availableBillingGroups = data;
                 if(data.length == 0)
                     $scope.isBillingGroup = false;
-                if($scope.reservationData.reservation_id == $scope.selectedEntity.id){
+                if($scope.selectedEntity.entity_type == 'COMPANY_CARD' || $scope.selectedEntity.entity_type == 'TRAVEL_AGENT'){
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
                 }else{
@@ -192,7 +192,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.errorMessage = errorMessage;
             };
            
-            $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
+            $scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservation_id, successCallback, errorCallback);
     };
 
     /**
