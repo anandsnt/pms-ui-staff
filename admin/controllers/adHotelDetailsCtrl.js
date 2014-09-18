@@ -172,7 +172,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.doNotUpdateVideoToggleClicked = function(){
-		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
+		$scope.data.do_not_update_video_checkout = ($scope.data.do_not_update_video_checkout == 'true') ? 'false' : 'true';
 	};
 
 	/**
