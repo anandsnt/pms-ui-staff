@@ -26,6 +26,7 @@
 					SR
 				</span>
 			</span>
+			
 			<span ng-if="isStandAlone == false">
 				<!-- if balance is zero, show balance in green color -->
 				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
@@ -35,6 +36,9 @@
 			</span>
 			
 		</div>
+		<a id="deposit_balance" class="button brand-colors">
+				Deposit/Balance	$246
+			</a>
 		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
 		<a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">
 			Add-ons
