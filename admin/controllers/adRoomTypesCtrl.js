@@ -5,6 +5,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.roomTypeData = {};
 	$scope.successMessage = "";
 	$scope.errorMessage ="";	
+	$scope.fileName = "Choose File....";
 
    /*
     * To fetch list of room types

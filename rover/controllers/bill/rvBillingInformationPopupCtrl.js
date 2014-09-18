@@ -24,6 +24,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		return $scope.isInitialPage? $filter('translate')('ADD_ROUTES_LABEL') : $filter('translate')('ALL_ROUTES_LABEL');		
 	}
     /**
+    * function to set the reload option
+    param option is boolean
+    */
+    $scope.setReloadOption = function(option){
+        $scope.isReloadNeeded = option;
+    }
+    /**
     * function to handle the click 'all routes' and 'add routes' button
     */
 	$scope.headerButtonClicked = function(){
@@ -47,20 +54,22 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
-        if(type === 'ATTACHED_ENTITY'){
+        if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
         	$scope.selectedEntity = $scope.attachedEntities[index];
-            $scope.selectedEntity.is_new = false; 
+            $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false; 
+            $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
         }
         else if(type === 'RESERVATIONS'){
         	var data = $scope.results.reservations[index];
         	$scope.selectedEntity = {
 			    "id": data.id,
 			    "reservation_status" : data.reservation_status,
+                "is_opted_late_checkout" : data.is_opted_late_checkout,
 			    "name": data.firstname + " " + data.lastname,
 			    "images": data.images,
 			    "bill_no": "",
 			    "entity_type": "RESERVATION",
-			    "has_accompanying_guests" : ( data.images.length >1 ) ? "true" : "false",
+			    "has_accompanying_guests" : ( data.images.length >1 ) ? true : false,
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
                 "is_new" : true
@@ -74,15 +83,16 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			    "id": data.id,
 			    "name": data.account_name,
 			    "bill_no": "",
-			    "images": {
-		            "primary": data.company_logo,
-		            "secondary": ""
-		        },
+			    "images": [{
+                    "is_primary":true, 
+		            "guest_image": data.company_logo,
+		        }],
 			    "attached_charge_codes": [],
 			    "attached_billing_groups": [],
-                "is_new" : true
+                "is_new" : true,
+                "selected_payment" : ""
 			};
-			if(data.data.account_type === 'COMPANY'){
+			if(data.account_type === 'COMPANY'){
 				$scope.selectedEntity.entity_type = 'COMPANY_CARD';
 			}
 			else{
@@ -91,11 +101,38 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			console.log($scope.selectedEntity);
         }
 	}
+    /*
+    * function used in template to map the reservation status to the view expected format
+    */
+    $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
+      var viewStatus = "";
+      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+        viewStatus = "late-check-out";
+        return viewStatus;
+      }
+      if("RESERVED" == reservationStatus){
+        viewStatus = "arrival";
+      }else if("CHECKING_IN" == reservationStatus){
+        viewStatus = "check-in";
+      }else if("CHECKEDIN" == reservationStatus){
+        viewStatus = "inhouse";
+      }else if("CHECKEDOUT" == reservationStatus){
+        viewStatus = "departed";
+      }else if("CHECKING_OUT" == reservationStatus){
+        viewStatus = "check-out";
+      }else if("CANCELED" == reservationStatus){
+        viewStatus = "cancel";
+      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+        viewStatus = "no-show";
+      }
+      return viewStatus;
+  };
+
      /**
     * function to get the class for the 'li' according to the entity role
     */
 	$scope.getEntityRole = function(route){
-    	if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'false')
+    	if(route.entity_type == 'RESERVATION' &&  !route.has_accompanying_guests)
     		return 'guest';
     	else if(route.entity_type == 'RESERVATION')
     		return 'accompany';
@@ -108,7 +145,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to get the class for the 'icon' according to the entity role
     */
     $scope.getEntityIconClass = function(route){
-        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests == 'true')
+        if(route.entity_type == 'RESERVATION' &&  route.has_accompanying_guests )
             return 'accompany';
     	else if(route.entity_type == 'RESERVATION' || route.entity_type == 'COMPANY_CARD')
             return '';
@@ -139,18 +176,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     * function to save the new route
     */
     $scope.saveRoute = function(){
-            var successCallback = function(data) {
-                $scope.$emit('hideLoader');
-                $scope.isReloadNeeded = true;
-                $scope.headerButtonClicked();
-            };
-            var errorCallback = function(errorMessage) {
-                $scope.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
-            };
-           $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
-           
-           $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
+            $rootScope.$broadcast('routeSaveClicked');
     };
 	
 }]);

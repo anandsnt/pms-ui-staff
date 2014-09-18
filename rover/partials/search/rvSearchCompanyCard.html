@@ -11,9 +11,8 @@
     </form>
 
     <section id="search-cards-wrapper" class="content scrollable">
-
         <!-- Results / content -->
-        <div class="wrapper1" ng-iscroll="comapany_card_scroll" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
+        <div class="cards-results-scrollable scrollable" ng-iscroll="company_card_scroll" ng-iscroll-delay="1000">
             <ul id="search-cards-results" class="search-results" >
                  <li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type})" class="card-result company-card" data-transition="inner-page">

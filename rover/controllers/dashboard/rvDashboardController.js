@@ -23,7 +23,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         $scope.userDetails   = dashBoarddata.userDetails;
         $scope.statisticsData = dashBoarddata.dashboardStatistics;
         $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
-        $scope.currencySymbol=dashBoarddata.userDetails.currency_code;  
         $rootScope.adminRole = dashBoarddata.userDetails.user_role;
 
         //update left nav bar
