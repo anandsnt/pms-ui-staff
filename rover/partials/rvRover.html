@@ -9,7 +9,8 @@
 
 	when closed, strip the classes so you end up with the default state: <div id="availability">
 -->
-	<div id="availability" ng-controller="rvAvailabilityButtonController" 
+<!-- we will not show availability feature as discussed with Nikci by Ganesh  for 3pms  -->
+	<div ng-show="isStandAlone" id="availability" ng-controller="rvAvailabilityButtonController" 
 		ng-class="{	'availability-open': showAvailability, 
 					'availability-closing': isClosing}">
 		<a href="#availability" class="availability-toggle " ng-class="{'active': showAvailability}" ng-click="clickedOnAvailabilityButton()">Menu</a> <!-- Add class "active" when open -->
