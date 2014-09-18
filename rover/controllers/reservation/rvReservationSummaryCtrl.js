@@ -144,25 +144,25 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var stay = [];
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
-				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
+				// if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
 					stay.push({
 						date: date,
 						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
 						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-						adults_count: parseInt(staydata.guests.adults),
-						children_count: parseInt(staydata.guests.children),
-						infants_count: parseInt(staydata.guests.infants)
+						adults_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.adults :  parseInt(staydata.guests.adults),
+						children_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.children :  parseInt(staydata.guests.children),
+						infants_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.infants :  parseInt(staydata.guests.infants)
 					});
-				} else if (date != $scope.reservationData.departureDate) {
-					stay.push({
-						date: date,
-						rate_id: staydata.rate.id,
-						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-						adults_count: parseInt(staydata.guests.adults),
-						children_count: parseInt(staydata.guests.children),
-						infants_count: parseInt(staydata.guests.infants)
-					});
-				}
+				// } else if (date != $scope.reservationData.departureDate) {
+				// 	stay.push({
+				// 		date: date,
+				// 		rate_id: staydata.rate.id,
+				// 		room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+				// 		adults_count: parseInt(staydata.guests.adults),
+				// 		children_count: parseInt(staydata.guests.children),
+				// 		infants_count: parseInt(staydata.guests.infants)
+				// 	});
+				// }
 			});
 
 			//	end of payload changes
