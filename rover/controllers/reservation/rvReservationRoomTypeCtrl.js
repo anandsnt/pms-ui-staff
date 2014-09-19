@@ -534,6 +534,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			});
+
+			$scope.$emit("REFRESHACCORDIAN");
 		}
 
 		$scope.showAllRooms = function() {
