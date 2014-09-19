@@ -71,6 +71,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
+		 $scope.reviewStatusArray = [];
 		angular.forEach(reservationBillData.bills, function(value, key) {
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
