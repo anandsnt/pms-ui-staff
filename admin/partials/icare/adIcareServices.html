@@ -10,6 +10,7 @@
 
 				<fieldset class="holder full-width">
 					<ad-toggle-button is-checked="icare.icare_enabled" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
+					<ad-toggle-button is-checked="icare.combined_key_room_charge_create" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
 				</fieldset>
 
 				<fieldset class="holder left">
@@ -25,7 +26,6 @@
 				</fieldset>
 				
 				<fieldset class="holder right">
-					<ad-toggle-button is-checked="icare.combined_key_room_charge_create" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
 					<ad-dropdown label="Debit Charge Code" div-class="full-width" label-in-drop-down="Debit Charge Code" list="icare.charge_codes" selected-Id="icare.icare_debit_charge_code_id"  required='yes' ></ad-dropdown>
 					<ad-dropdown label="Credit Charge Code" div-class="full-width" label-in-drop-down="Credit Charge Code" list="icare.charge_codes" selected-Id="icare.icare_credit_charge_code_id"  required='yes' ></ad-dropdown>
 				</fieldset>
