@@ -8,20 +8,8 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$scope.$emit('setHeading', 'Reservations');
 			$scope.$parent.hideSidebar = true;
 			$scope.isConfirmationEmailSent = ($scope.otherData.isGuestPrimaryEmailChecked || $scope.otherData.isGuestAdditionalEmailChecked) ? true : false;
-			$scope.$parent.myScrollOptions = {
-				'reservationSummary': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false,
-					preventDefault: false
-				},
-				'paymentInfo': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false,
-					preventDefault: false
-				},
-			};
+			$scope.setScroller('reservationSummary');
+			$scope.setScroller('paymentInfo');
 
 		};
 

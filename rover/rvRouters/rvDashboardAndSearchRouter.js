@@ -50,6 +50,8 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     if( oldType != null && oldType!= '' ) {
                         if(oldType == "LATE_CHECKOUT"){
                             dataDict.is_late_checkout_only = true;
+                        } else if(oldType == "QUEUED_ROOMS"){
+                        	dataDict.is_queued_rooms_only = true;
                         }
                         else if(oldType == "VIP"){
                             dataDict.vip = true;

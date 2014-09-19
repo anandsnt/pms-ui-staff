@@ -24,18 +24,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
-
-			$scope.$parent.myScrollOptions = {
-				'reservationSummary': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false
-				},
-				'paymentInfo': {
-					scrollbars: true,
-					hideScrollbar: false,
-				},
-			};
+			$scope.setScroller('reservationSummary');
+			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
 
 		}
@@ -336,9 +326,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.refreshPaymentScroller = function() {
-			setTimeout(function() {
-				$scope.$parent.myScroll['paymentInfo'].refresh();
-			}, 0);
+			$scope.refreshScroller('paymentInfo');
 		};
 
 		/*

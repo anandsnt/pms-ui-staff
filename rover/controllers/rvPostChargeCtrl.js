@@ -29,6 +29,8 @@ sntRover.controller('RVPostChargeController',
 			};
 			if(!$scope.passActiveBillNo && $scope.reservation_id){
 				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+			}else{
+				$scope.fetchedData.bill_numbers = [];
 			}
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {

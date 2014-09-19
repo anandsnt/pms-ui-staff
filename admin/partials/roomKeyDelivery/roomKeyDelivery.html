@@ -4,87 +4,88 @@
 			<h2 translate>ROOM_KEY_DELIVERY_SETUP</h2>
 			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" translate>BACK</a>
 		</header>
-		
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		
-		<form style="overflow-y:auto;" name="room-delivery-view" method="post" class="form float">
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			
-			<fieldset class="holder left">
-				<div class="form-title">
-					<h3><span translate>ZEST</span> {{'CHECKINS' | translate}} </h3>
-				</div>
+			<form style="overflow-y:auto;" name="room-delivery-view" method="post" class="form float">
 				
-				<div class="entry full-width">
-					<div class="boxes">
-						<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}">
-							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}"></span>
-							<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
-							{{'DELIVER_QR_CODE_FOR_ROOM_KEY' | translate }}
-						</label>
-						<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}">
-							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}"></span>
-							<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="smartphone" name="guest-zest" id="type2" class="change-data">
-							{{'DELIVER_QR_CODE_TO_GUESTZEST_APP' | translate }}	
-						</label>
-						<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'front_desk'}">
-							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'front_desk'}"></span>
-							<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="front_desk" name="guest-zest" id="type3" class="change-data">
-							{{'DELIVER_MSG_TO_GUEST' | translate }}
-						</label>
+				<fieldset class="holder left">
+					<div class="form-title">
+						<h3><span translate>ZEST</span> {{'CHECKINS' | translate}} </h3>
 					</div>
-				</div>
-				
-			</fieldset>
-			
-			<fieldset class="holder right">
-				<div class="form-title">
-					<h3><span>ROVER</span> {{'CHECKINS' | translate}} </h3>
-				</div>
-				
-				<div class="entry full-width">
-					<div class="boxes">
-						<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'email'}">
-							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'email'}"></span>
-							<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
-							{{'DELIVER_QR_CODE_FOR_ROOM_KEY' | translate }}
-						</label>
-						<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'encode'}">
-							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'encode'}"></span>
-							<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="encode" name="guest-zest" id="type2" class="change-data">
-							{{'MAKE_KEY_FOR_RFID_READER' | translate }}
-						</label>
-						<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'qr_code_tablet'}">
-							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'qr_code_tablet'}"></span>
-							<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="qr_code_tablet" name="guest-zest" id="type3" class="change-data">
-							{{'SHOW_QR_CODE_FOR_ROOM_KEY' | translate }}
-						</label>
+					
+					<div class="entry full-width">
+						<div class="boxes">
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}"></span>
+								<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
+								{{'DELIVER_QR_CODE_FOR_ROOM_KEY' | translate }}
+							</label>
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}"></span>
+								<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="smartphone" name="guest-zest" id="type2" class="change-data">
+								{{'DELIVER_QR_CODE_TO_GUESTZEST_APP' | translate }}	
+							</label>
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'front_desk'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'front_desk'}"></span>
+								<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="front_desk" name="guest-zest" id="type3" class="change-data">
+								{{'DELIVER_MSG_TO_GUEST' | translate }}
+							</label>
+						</div>
 					</div>
+					
+				</fieldset>
+				
+				<fieldset class="holder right">
+					<div class="form-title">
+						<h3><span>ROVER</span> {{'CHECKINS' | translate}} </h3>
+					</div>
+					
+					<div class="entry full-width">
+						<div class="boxes">
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'email'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'email'}"></span>
+								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
+								{{'DELIVER_QR_CODE_FOR_ROOM_KEY' | translate }}
+							</label>
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'encode'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'encode'}"></span>
+								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="encode" name="guest-zest" id="type2" class="change-data">
+								{{'MAKE_KEY_FOR_RFID_READER' | translate }}
+							</label>
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'qr_code_tablet'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'qr_code_tablet'}"></span>
+								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="qr_code_tablet" name="guest-zest" id="type3" class="change-data">
+								{{'SHOW_QR_CODE_FOR_ROOM_KEY' | translate }}
+							</label>
+						</div>
+					</div>
+					
+				</fieldset>
+				
+				<div class="entry full-width" ng-show="isRoverCheckinRFID">
+					
+					<ad-dropdown label="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" label-in-drop-down="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" list="data.key_systems" selected-Id='data.selected_key_system' required = "yes"></ad-dropdown>
+
+		    		<ad-textbox value="data.key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
+
+					<ad-textbox value="data.key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+		    		
+		    		<ad-textbox value="data.key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
+		    		<ad-textbox value="data.key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+
 				</div>
 				
-			</fieldset>
-			
-			<div class="entry full-width" ng-show="isRoverCheckinRFID">
-				
-				<ad-dropdown label="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" label-in-drop-down="{{'ROOM_KEY_SYSTEM_VENDOR' | translate }}" list="data.key_systems" selected-Id='data.selected_key_system' required = "yes"></ad-dropdown>
-
-	    		<ad-textbox value="data.key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
-
-				<ad-textbox value="data.key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-	    		
-	    		<ad-textbox value="data.key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-	    		<ad-textbox value="data.key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-			</div>
-			
-			<div class="actions float">
-				<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>
-					CANCEL
-				</button>
-				<button type="button" ng-click="save()" class="button green" translate>
-					SAVE_CHANGES
-				</button>
-			</div>
-		</form>
+				<div class="actions float">
+					<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>
+						CANCEL
+					</button>
+					<button type="button" ng-click="save()" class="button green" translate>
+						SAVE_CHANGES
+					</button>
+				</div>
+			</form>
+		</section>
 	</div>
 </section>

@@ -162,9 +162,8 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
 			$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
-			if($scope.roomType != $scope.reservationData.reservation_card.room_type_code){
-				$scope.reservationData.reservation_card.is_upsell_available = false;
-			}
+			// CICO-7904 and CICO-9628 : update the upsell availability to staycard		
+			$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
 			if(typeof $scope.selectedRoomType != 'undefined'){
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
@@ -219,10 +218,8 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.reservationData.reservation_card.room_status = "READY";
 			$scope.reservationData.reservation_card.fo_status = "VACANT";
 			$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
-			// CICO-7904 : Remove option for Standalone PMS as the user should be able to upgrade reservation as many times as required
-			if(!$rootScope.isStandAlone || parseInt(data.room_type_level) == 3){
-				$scope.reservationData.reservation_card.is_upsell_available = false;
-			}
+			// CICO-7904 and CICO-9628 : update the upsell availability to staycard			
+			$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			if($scope.clickedButton == "checkinButton"){
 				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
