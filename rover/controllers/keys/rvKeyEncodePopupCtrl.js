@@ -73,7 +73,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		that.isAdditional = false;
 		
 		//whether we need to create smartband along with key creation
-		that.isSmartbandCreateWithKeyWrite = "true";
+		that.isSmartbandCreateWithKeyWrite = $scope.isSmartbandCreateWithKeyWrite; //coming from popup initialization
 		//variable to maintain last successful ID from card reader, will use for smartband creation
 		that.lastSuccessfulCardIDReaded = '';
 
@@ -374,7 +374,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				return;				
 			},
 			'failureCallBack': function(message){
-				sntapp.activityIndicator.hideActivityIndicator();
+				$scope.$emit('hideLoader');
 				that.numOfKeys--;
 				if(that.numOfKeys > 0){		
 					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE'), 'error');					
@@ -428,17 +428,13 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			}
 			else {
 				var message = $filter('translate')('KEY_CREATED_BAND_ADDING_FAILED') + ': ' + errorMessage;
-				that.showKeyPrintFailure(message);
-				
-				$scope.$apply(); 				
-
+				that.showKeyPrintFailure(message);				
 			}
 		};			
-
 		var reservationId = $scope.reservationData.reservation_card.reservation_id;						
 		data.index = index;
 		data.reservationId = reservationId;		
-		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, JSON.stringify(data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
+		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
 	};
 	var showPrintKeyOptions = function (){
 		$scope.$emit('hideLoader');

@@ -1,7 +1,7 @@
 sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog',  function($state, $rootScope, $scope, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
-	
+	testScope = $scope;
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = "";
 		if(reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){

@@ -54,7 +54,9 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 	*/
 	this.addNewSmartBand = function(params){
 		var deferred = $q.defer();
-		var reservationID = params.reservationID;
+		console.log(JSON.stringify(params))
+		console.log(params.reservationId);
+		var reservationId = params.reservationId;
 		//we are removing the unwanted keys and that will be posted to API
  		var unWantedKeysToRemove = ['reservationId', 'index'];
 		var data = dclone(params, unWantedKeysToRemove);
