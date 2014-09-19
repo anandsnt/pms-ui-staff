@@ -4,32 +4,33 @@
 			<h2 translate> RESERVATION_TYPE_LABEL </h2>
 			<span class="count"> ({{data.length}})</span>
 		</header>
-
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
-
-		<table id="reservation-types" class="grid">
-
-			<tbody>
-
-				<tr ng-repeat = "resevationtype in data" >
-
-					<td width = "50%" ><strong>{{resevationtype.name}}</strong><em translate> SYSTEM_DEFINED_LABEL</em></td>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 
-					<td class="activate" >
-						<div class="entry" >
-						<label ></label>
-						<div class="switch-button single" ng-click="saveReservationType($index)" ng-class="{ on : resevationtype.is_active}" >
-							<input type="checkbox" ng-model="resevationtype.is_active"  value="" name=""  id="">
-							<span class="switch-icon"></span>
+			<table id="reservation-types" class="grid">
 
-						</div>
-					</div></td>
+				<tbody>
 
-				</tr>
+					<tr ng-repeat = "resevationtype in data" >
 
-			</tbody>
-		</table>
+						<td width = "50%" ><strong>{{resevationtype.name}}</strong><em translate> SYSTEM_DEFINED_LABEL</em></td>
+
+
+						<td class="activate" >
+							<div class="entry" >
+							<label ></label>
+							<div class="switch-button single" ng-click="saveReservationType($index)" ng-class="{ on : resevationtype.is_active}" >
+								<input type="checkbox" ng-model="resevationtype.is_active"  value="" name=""  id="">
+								<span class="switch-icon"></span>
+
+							</div>
+						</div></td>
+
+					</tr>
+
+				</tbody>
+			</table>
+		</section>
 	</div>
 </section>
