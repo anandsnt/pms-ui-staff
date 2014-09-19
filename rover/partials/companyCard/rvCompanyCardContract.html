@@ -1,4 +1,4 @@
-<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'" style="height:90%;">
+<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div id="cc-contracts-header" class="tab-header">
         <div class="entry">
@@ -29,10 +29,8 @@
         </div>
     </div>
     
-    <div id="cc-contracts-content" class="tab-details" ng-iscroll="companyCardContractsCtrl" ng-iscroll-delay="1000" style="height:80%">
-    	
+    <div id="cc-contracts-content" class="tab-details scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">    	
     	<div class="wrapper" ng-class="{'overlay':hasOverlay==true}">
-
             <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3" translate>DETAILS</strong>
                 <div class="entry margin">
@@ -193,9 +191,7 @@
 		        <div class="occgraph-outer" style='width: 100%'>
 		            <highchart id="occGraphContainer" config="highchartsNG"></highchart>
 		        </div>
-		    </div>
-    
-        </div>
-    
+		    </div>    
+        </div>    
     </div>
 </div>

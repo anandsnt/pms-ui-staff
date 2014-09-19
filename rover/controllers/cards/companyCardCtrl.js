@@ -15,21 +15,28 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
+
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 				if ($scope.viewState.isAddNewCard) {
 					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
 				} else {
 					saveContactInformation($scope.contactInformation);
-					$scope.$broadcast("contractTabActive");
 				}
 			}
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
 			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
-			} else if (tabToSwitch == 'cc-ar-accounts') {
+			}
+
+			if (tabToSwitch == 'cc-ar-accounts') {
 				$scope.$broadcast("arAccountTabActive");
-			};
+			} else if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("contractTabActive");
+			} else if (tabToSwitch == 'cc-contact-info') {
+				$scope.$broadcast("contactTabActive");
+			}
+
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
