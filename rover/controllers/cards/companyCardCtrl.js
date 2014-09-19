@@ -116,7 +116,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			if (isNew === true) {
 				$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
 				$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
-				$scope.contactInformation.account_details.company_corp_id = $scope.searchData.companyCard.companyCorpId;
+				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
 			}
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {

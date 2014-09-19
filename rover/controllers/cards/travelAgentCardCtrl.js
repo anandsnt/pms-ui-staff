@@ -111,7 +111,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			if (isNew === true) {
 				$scope.contactInformation.account_details.account_name = $scope.searchData.travelAgentCard.travelAgentName;
 				$scope.contactInformation.address_details.city = $scope.searchData.travelAgentCard.travelAgentCity;
-				$scope.contactInformation.account_details.corporate_id = $scope.searchData.travelAgentCard.travelAgentIATA;
+				$scope.contactInformation.account_details.account_number = $scope.searchData.travelAgentCard.travelAgentIATA;
 			}
 
 			$scope.$broadcast("contactTabActive");
