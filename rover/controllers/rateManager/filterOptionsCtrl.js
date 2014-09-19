@@ -128,14 +128,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             if(filterData.isResolved) {
                 if (id === "ALL") {
                     filterData.rate_type_selected_list = [];
+                } else {
+                    angular.forEach(filterData.rate_type_selected_list, function(item, index) {
+                        if (item.id === id) {
+                            filterData.rate_type_selected_list.splice(index, 1);
+                        }
+                    });
                 }
-
-                angular.forEach(filterData.rate_type_selected_list, function(item, index) {
-                    if (item.id === id) {
-                        filterData.rate_type_selected_list.splice(index, 1);
-                    }
-                });
-            
                 calculateRatesList();
             }
 
