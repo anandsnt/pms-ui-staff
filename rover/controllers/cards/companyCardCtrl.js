@@ -284,18 +284,13 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 
 sntRover.controller('companyResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
-		$scope.$parent.myScrollOptions = {
-			'companyResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+		BaseCtrl.call(this, $scope);
+		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('companyResultScroll', scrollerOptionsForGraph);
+
 		$scope.$on("refreshCompaniesScroll", function() {
 			$timeout(function() {
-				$scope.$parent.myScroll['companyResultScroll'].refresh();
+				$scope.refreshScroller('companyResultScroll');	
 			}, 500);
 		})
 	}

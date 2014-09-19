@@ -100,4 +100,5 @@
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
-    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date"
+    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
+    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address"

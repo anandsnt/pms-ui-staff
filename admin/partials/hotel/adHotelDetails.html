@@ -171,6 +171,17 @@
 					</select>
 				</div>
 			</div>
+			
+			<div class="entry">
+				<label for="hotel-time-zone"> Hotel Date Format <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.hotel_date_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+						<option value=""> Hotel Date Format </option>
+						<option ng-repeat="formats in data.date_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_date_format">{{formats.value}}</option>
+					</select>
+				</div>
+			</div>
+			
 			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
 				<label for="hotel-pms-type"> PMS Type </label>
 				<div class="select">

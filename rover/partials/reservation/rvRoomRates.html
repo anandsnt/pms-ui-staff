@@ -115,7 +115,10 @@
                                     </tfoot>
                                     <tbody>
                                         <tr ng-repeat="day in displayData.dates">
-                                            <td>{{day.obj | date: dayAndDateCS }}</td>
+                                            <td>
+                                                {{day.obj | date: fulldayInWeek }},
+                                                {{day.obj | date: dateFormat }}
+                                            </td>
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
@@ -191,7 +194,10 @@
                             </tfoot>
                             <tbody>
                                 <tr ng-repeat="day in displayData.dates">
-                                    <td>{{day.obj | date: dayAndDateCS }}</td>
+                                    <td>
+                                        {{day.obj | date: fulldayInWeek }},
+                                        {{day.obj | date: dateFormat }}
+                                    </td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>
