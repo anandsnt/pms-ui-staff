@@ -564,4 +564,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		});
 
 	}
+<<<<<<< HEAD
 ]);
+=======
+
+
+	
+]);
+>>>>>>> CICO-9348
