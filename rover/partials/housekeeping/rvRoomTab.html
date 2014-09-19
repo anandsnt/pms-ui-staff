@@ -10,37 +10,37 @@
   <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
   <!-- 3.A  Room Tab - Room in service -->
-  <div id="room-content" class="room-content" ng-if="!alreadyOoOs && roomServices.room_service_status_id == 1">
+  <div id="room-content" class="room-content" ng-if="inService && !showForm">
     <strong class="h2">In Service</strong>
     <span class="icon-no-content icon-ok"></span>
   </div>
 
-  <div id="room-content" class="room-content" ng-if="alreadyOoOs && roomServices.room_service_status_id != 1">
+  <div id="room-content" class="room-content" ng-if="!inService && !showForm">
     <strong class="h2">{{ ooOsTitle }}</strong>
     <span class="icon-no-content icon-out"></span>
   </div>
 
   <!-- 3.B Room Tab - Room is OOO or OOS -->
-  <form method="post" action="" name="room-content" id="room-content" class="room-content scrollable" ng-if="!alreadyOoOs && roomServices.room_service_status_id != 1">
+  <form method="post" action="" name="room-content" id="room-content" class="room-content scrollable" ng-if="showForm">
     <strong class="h2">{{ ooOsTitle }}</strong>
     <div id="dates" class="row">
       <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
       <div id="out-from" class="entry">
         <label id="room-out-from-label" for="room-out-from">From <span>day of the week, or today/tomorrow</span></label>
-        <div class="entry-data">
-          <input name="room-out-from" id="room-out-from" type="text" class="datepicker" value="ooo/oos from date" readonly />
-          <strong id="room-out-from-day" class="day">ooo/oos from day</strong>
-          <span id="room-out-from-month" class="month">ooo/oos from month</span>
-          <span id="room-out-from-year" class="year">ooo/oos from year</span>
+        <div class="entry-data" class="ui-datepicker-trigger">
+          <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="roomServices.from_date" ui-date-format readonly>
+          <strong id="room-out-from-day" class="day">{{ roomServices.from_date | date:'dd' }}</strong>
+          <span id="room-out-from-month" class="month">{{ roomServices.from_date | date:'MMMM' }}</span>
+          <span id="room-out-from-year" class="year">{{ roomServices.from_date | date:'yyyy' }}</span>
         </div>
       </div>
       <div id="out-to" class="entry">
         <label id="room-out-to-label" for="room-out-to">To <span>day of the week, or today/tomorrow</span></label>
-        <div class="entry-data">
-          <input name="room-out-to" id="room-out-to" type="text" class="datepicker" value="ooo/oos to date" readonly />
-          <strong id="room-out-to-day" class="day">ooo/oos to date</strong>
-          <span id="room-out-to-month" class="month">ooo/oos to date</span>
-          <span id="room-out-to-year" class="year">ooo/oos to date</span>
+        <div class="entry-data" class="ui-datepicker-trigger">
+          <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="toDateOptions" ng-model="roomServices.to_date" ui-date-format readonly>
+          <strong id="room-out-to-day" class="day">{{ roomServices.to_date | date:'dd' }}</strong>
+          <span id="room-out-to-month" class="month">{{ roomServices.from_date | date:'MMMM' }}</span>
+          <span id="room-out-to-year" class="year">{{ roomServices.from_date | date:'yyyy' }}</span>
         </div>
       </div>
     </div>
