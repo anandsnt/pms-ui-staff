@@ -277,19 +277,14 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 
 sntRover.controller('travelAgentResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
-		$scope.$parent.myScrollOptions = {
-			'travelAgentResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+		BaseCtrl.call(this, $scope);
+		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('travelAgentResultScroll', scrollerOptionsForGraph);
+
 		$scope.$on("refreshTravelAgentScroll", function() {
 			$timeout(function() {
-				$scope.$parent.myScroll['travelAgentResultScroll'].refresh();
+				$scope.refreshScroller('travelAgentResultScroll');	
 			}, 500);
-		})
+		});
 	}
 ]);
