@@ -60,16 +60,14 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         };
 
         $scope.fetchFilterOptions = function() {
-            $scope.currentFilterData.isPending = true;
-
             var fetchRatesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
-                $scope.currentFilterData.allRates = data.results;
-                $scope.currentFilterData.rates = data.results;
 
-                if($scope.currentFilterData.rate_types.length > 0) {
-                    $scope.currentFilterData.isPending = false;
-                    $scope.currentFilterData.isResolved = true;
+                filterData.allRates = data.results;
+                filterData.rates = data.results;
+
+                if(filterData.rate_types.length > 0) {
+                    filterData.isResolved = true;
                 }
             };
 
@@ -77,11 +75,12 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             
             var fetchRateTypesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
-                $scope.currentFilterData.rate_types = data;
 
-                if($scope.currentFilterData.allRates.length > 0 && $scope.currentFilterData.rates.length > 0) {
-                    $scope.currentFilterData.isPending = false;
-                    $scope.currentFilterData.isResolved = true;
+                filterData.rate_types = data;
+
+                if(filterData.allRates.length > 0 && 
+                   filterData.rates.length > 0) {
+                    filterData.isResolved = true;
                 }
             };
 
@@ -92,52 +91,15 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
         $scope.clickedAllRates = function() {
             //If allrates option is selected, unset all rates and rate types
-            if($scope.currentFilterData.is_checked_all_rates) {
-                $scope.currentFilterData.rate_type_selected_list = [];
-                $scope.currentFilterData.rates_selected_list = [];
+            if(filterData.is_checked_all_rates) {
+                filterData.rate_type_selected_list = [];
+                filterData.rates_selected_list = [];
             }
 
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);
         };
-
-        $scope.$watch('currentFilterData.rate_type_selected', function() {
-            //var isDataExists = false;
-            var rate_to_push,
-                selected_id = +filterData.rate_type_selected,
-                types = filterData.rate_types,
-                selected_list = filterData.rate_type_selected_list;
-
-            if(filterData.isResolved) {
-                /*angular.forEach($scope.currentFilterData.rate_type_selected_list, function(item, index) {
-                    if (item.id === $scope.currentFilterData.rate_type_selected) {
-                        isDataExists = true;
-                    }
-                });
-
-                if (!isDataExists) {*/
-
-                if(!_.findWhere(selected_list, { id: selected_id })) {
-                    rate_to_push = _.findWhere(types, { id: selected_id });
-
-                    if(rate_to_push) {
-                        selected_list.push(rate_to_push);
-                    }
-
-                    /*angular.forEach($scope.currentFilterData.rate_types, function(item, index) {
-                        if (item.id == $scope.currentFilterData.rate_type_selected) {
-                            $scope.currentFilterData.rate_type_selected_list.push(item);
-                        }
-                    });*/
-                }
-
-                //$scope.currentFilterData.rate_type_selected = '';
-                filterData.rate_type_selected = '';
-
-                calculateRatesList();
-            }
-        });
 
         /**
         * Filter the allrates based on the rate type selected.
@@ -147,27 +109,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 rateTypeSelected = filterData.rate_type_selected_list,
                 allRates = filterData.allRates;
 
-            //$scope.currentFilterData.rates = [];
-            //var rateTypeSelected = $scope.currentFilterData.rate_type_selected_list;
-
-            //If no rate type is selected, we should show all rates.
             if(rateTypeSelected.length === 0) {
-                //$scope.currentFilterData.rates = dclone($scope.currentFilterData.allRates);
                 rates = dclone(allRates);
             }
 
-            //for(var j in rateTypeSelected) {
             for (var j = 0, jlen = rateTypeSelected.length, rate_sel = rateTypeSelected[j]; j < jlen; rate_sel = rateTypeSelected[++j]) {
-                //for (var i in $scope.currentFilterData.allRates) {
                 for(var i = 0, ilen = allRates.length, rate = allRates[i]; i < ilen; rate = allRates[++i]) {
                     if(_.isObject(rate.rate_type)) {
-                        /*if ($scope.currentFilterData.allRates[i].rate_type == null ||
-                            $scope.currentFilterData.allRates[i].rate_type == undefined) {
-                            continue;
-                        }
-                        if (filterData.allRates[i].rate_type.id == rateTypeSelected[j].id) {
-                            filterData.rates.push(filterData.allRates[i]);
-                        }*/
                         if(rate.rate_type.id === rate_sel.id) {
                             rates.push(rate);
                         }
@@ -177,17 +125,17 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         };
 
         $scope.deleteSelectedRateType = function(id) {
-            if (id === "ALL") {
-                $scope.currentFilterData.rate_type_selected_list = [];
-            }
-
-            angular.forEach($scope.currentFilterData.rate_type_selected_list, function(item, index) {
-                if (item.id === id) {
-                    $scope.currentFilterData.rate_type_selected_list.splice(index, 1);
-                }
-            });
-
             if(filterData.isResolved) {
+                if (id === "ALL") {
+                    filterData.rate_type_selected_list = [];
+                }
+
+                angular.forEach(filterData.rate_type_selected_list, function(item, index) {
+                    if (item.id === id) {
+                        filterData.rate_type_selected_list.splice(index, 1);
+                    }
+                });
+            
                 calculateRatesList();
             }
 
@@ -199,33 +147,31 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         * Duplicates are not allowed in the list.
         */
         $scope.$watch('currentFilterData.rate_selected', function() {
-            //var isDataExists = false;
-            var selected_rates = filterData.rates_selected_list,
-                rates = filterData.rates,
-                selected_id = +rate_selected,
-                rate_to_push;
+            if(filterData.isResolved && !_.isEmpty(filterData.rate_selected)) {
+                _update(filterData.rates_selected_list, filterData.rates, filterData.rate_selected);
 
-            if(filterData.isResolved) {
-                if(!_.findWhere(selected_rates, { id: selected_id })) {
-                    rate_to_push = _.findWhere(rates, { id: selected_id });
-
-                    selected_rates.push(rate_to_push);
-                }
-                /*angular.forEach($scope.currentFilterData.rates_selected_list, function(item, index) {
-                    if (item.id == $scope.currentFilterData.rate_selected) {
-                        isDataExists = true;
-                    }
-                });
-                if (!isDataExists) {
-                    angular.forEach($scope.currentFilterData.rates, function(item, index) {
-                        if (item.id == $scope.currentFilterData.rate_selected) {
-                            $scope.currentFilterData.rates_selected_list.push(item);
-                        }
-                    });
-                }
-                $scope.currentFilterData.rate_selected = '';*/
+                filterData.rate_selected = '';
             }
         });
+
+        $scope.$watch('currentFilterData.rate_type_selected', function() {
+            if(filterData.isResolved && !_.isEmpty(filterData.rate_type_selected)) {
+                _update(filterData.rate_type_selected_list, filterData.rate_types, filterData.rate_type_selected);
+
+                filterData.rate_type_selected = '';
+
+                calculateRatesList();
+            }
+        });
+
+        var _update = function(sel_list, orig_list, sel_id) {
+            var selected_id = { id: +sel_id }, item;
+
+            if(!_.findWhere(sel_list, selected_id) &&
+               (item = _.findWhere(orig_list, selected_id))) {
+                    sel_list.push(item);              
+            }   
+        };
 
         /**
          * company card search text entered
@@ -316,15 +262,16 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
 
         $scope.deleteRate = function(id) {
             if (id === "ALL") {
-                $scope.currentFilterData.rates_selected_list = [];
+                filterData.rates_selected_list = [];
+            } else {
+                angular.forEach(filterData.rates_selected_list, function(item, index) {
+                    if (item.id == id) {
+                        filterData.rates_selected_list.splice(index, 1);
+                    }
+                });
             }
-            angular.forEach($scope.currentFilterData.rates_selected_list, function(item, index) {
-                if (item.id == id) {
-                    $scope.currentFilterData.rates_selected_list.splice(index, 1);
-                }
-            });
-            $scope.refreshFilterScroll();
 
+            $scope.refreshFilterScroll();
         };
 
         $scope.showCalendar = function() {
@@ -337,7 +284,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
         };
 
         $scope.toggleShowRates = function() {
-            return (_.isEmpty($scope.currentFilterData.selected_date_range));
+            return (_.isEmpty(filterData.selected_date_range));
         };
 
         $scope.$on('closeFilterPopup', function() {

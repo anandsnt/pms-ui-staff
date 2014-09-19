@@ -4,10 +4,6 @@ sntRover
         enumerable: true,
         value: 'Select Date Range'
     },
-    DATE_FORMAT: {
-        enumerable: true,
-        value: 'MM-dd-yyyy'
-    },
     UI_DATE_FORMAT: {
         enumerable: true,
         value: 'yyyy-MM-dd'
@@ -35,6 +31,9 @@ sntRover
         DEFAULT_TABLE_WIDTH = 4000,
         DEFAULT_TABLE_WIDTH = 400;
 
+    /*Considering base model class for later refactoring to avoid
+      firing observer code before model has resolved...
+    */
     var Model = function(params) {
         this.isPending = false;
         this.isResolved = false;
@@ -48,12 +47,9 @@ sntRover
         }
     };
 
-    Model.prototype = Object.create(null, { 
-        constructor: {
-            enumberable: true,
-            value: Model
-        }
-    });
+    Model.prototype = {
+        constructor: Model
+    };
 
     $scope.uiOptions = {
         tableHeight : DEFAULT_TABLE_WIDTH,

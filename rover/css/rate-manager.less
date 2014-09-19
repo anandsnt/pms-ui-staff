@@ -230,7 +230,7 @@
   }
   .filter-options {
     display:block;
-    width: 255px; /*230px;*/
+    width: 265px; /*230px;*/
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
@@ -267,7 +267,13 @@
       left: 0px !important;
       top: 23px !important;
     }
-
+    select#rmRate:first-child,
+    select#rmRateType:first-child
+     {
+       color: #9D9D9D;
+       font-style: italic;
+       font-size:15px ;      
+    }
   }
   .calendar, .graph {
     display: block;
@@ -911,7 +917,7 @@
 
   .leftMenuHandle {
     position:absolute;
-    left: 230px;
+    left: 245px; /*230px;*/
     top:20px; 
     background-color: #DDDDDD;
     // background-image: url("/assets/main-navigation.png"), url("/assets/texture-dark.png");
@@ -942,7 +948,7 @@
   }
   .slide_left {
     position: absolute;
-    left: -255px; /*-225px;*/
+    left: -265px; /*-225px;*/
     /*-webkit-transition-duration: .5s;
     -moz-transition-duration: .5s;
     -o-transition-duration: .5s;
@@ -1319,7 +1325,7 @@ padding-top: 80px;
   span.half-border{
     color: #9D9D9D;
     span.or{
-      margin:12px;
+      margin: 22px; /*12px;*/
       font-size:12px;
     }
   }
@@ -1336,10 +1342,10 @@ padding-top: 80px;
     text-align:center; 
     padding:15px; 
     bottom:0px; 
-    width:230px;
+    width: 265px; /*230px;*/
     button {
       height:40px;
-      width: 215px; /*190px;*/
+      width: 235px; /*215px;*/ /*190px;*/
     }
   }
 
@@ -1353,7 +1359,7 @@ padding-top: 80px;
       margin-top: 15px;
     }
     a.leftMenuHandle{
-      left: 235px; /*210px;*/
+      left: 245px; /*210px;*/
       top:-10px;
     }
 
@@ -1460,7 +1466,7 @@ padding-top: 80px;
   position: fixed;
   width: 380px;
   overflow-y: hidden;
-  left: 200px;
+  left: 240px; /*200px;*/
   .search-results{
     background: #FCFCFC;
     padding: 0;
