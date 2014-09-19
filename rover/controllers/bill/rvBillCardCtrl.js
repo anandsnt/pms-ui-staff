@@ -897,7 +897,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
 		}
-		else if ($rootScope.isStandAlone && totalBal > 0) {
+		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
 			$scope.clickedPayButton();
 		}
 		else{
