@@ -55,6 +55,7 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 
     //dont show Latecheckout icon
     $scope.shouldShowLateCheckout = false; 
+    $scope.shouldShowQueuedRooms  = false;
 
     /**
     *   a recievder function to show erorr message in the dashboard
