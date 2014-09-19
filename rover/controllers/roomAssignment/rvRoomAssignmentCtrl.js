@@ -23,6 +23,7 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 		
 	BaseCtrl.call(this, $scope);
+	var oldRoomType = '';
 	$scope.errorMessage = '';
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 	$scope.setTitle(title);
@@ -63,7 +64,7 @@ sntRover.controller('RVroomAssignmentController',[
 		params.reservation_id = $stateParams.reservation_id;
 		params.room_type = $scope.roomType;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
-
+		
 	};
 
 	$scope.getCurrentRoomType = function(){
@@ -99,10 +100,18 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 		}else{
-			$scope.assignRoom();
+			if(oldRoomType !== $scope.roomType){
+				$scope.openApplyChargeDialog();
+			} else {
+				$scope.assignRoom();
+			}
+			
 		}
 		
 
+	};
+	$scope.openApplyChargeDialog = function(){
+		
 	};
 
 	$scope.occupancyDialogSuccess = function(){
@@ -545,21 +554,21 @@ sntRover.controller('RVroomAssignmentController',[
 		}
 	};
 	$scope.init = function(){
-	$scope.roomTypes = roomPreferences.room_types;
-	$scope.roomFeatures = roomPreferences.room_features;
-	$scope.rooms = roomsList.rooms;
-	$scope.addPredefinedFilters();
-	$scope.setSelectedFiltersList();
-	$scope.reservation_occupancy = roomsList.reservation_occupancy;
-	$scope.setRoomsListWithPredefinedFilters();
-	$scope.applyFilterToRooms();
-	$scope.clickedButton = $stateParams.clickedButton;
-	$scope.assignedRoom = "";
-	$scope.reservationData = $scope.$parent.reservation;
-	$scope.roomType = $stateParams.room_type; 
-	$scope.isStandAlone = $rootScope.isStandAlone;
-	$scope.isFiltersVisible = false;
-	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
+		$scope.roomTypes = roomPreferences.room_types;
+		$scope.roomFeatures = roomPreferences.room_features;
+		$scope.rooms = roomsList.rooms;
+		$scope.addPredefinedFilters();
+		$scope.setSelectedFiltersList();
+		$scope.reservation_occupancy = roomsList.reservation_occupancy;
+		$scope.setRoomsListWithPredefinedFilters();
+		$scope.applyFilterToRooms();
+		$scope.clickedButton = $stateParams.clickedButton;
+		$scope.assignedRoom = "";
+		$scope.reservationData = $scope.$parent.reservation;
+		oldRoomType = $scope.roomType = $stateParams.room_type; 
+		$scope.isStandAlone = $rootScope.isStandAlone;
+		$scope.isFiltersVisible = false;
+		$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 	};
 	$scope.init();
 	
