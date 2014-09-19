@@ -66,7 +66,12 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement.start', {
             url: '/start',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementLanding.html',
-            controller: 'RVWorkManagementStartCtrl'
+            controller: 'RVWorkManagementStartCtrl',
+            resolve: {
+                wmStatistics: function(RVWorkManagementSrv) {
+                    return RVWorkManagementSrv.fetchStatistics();
+                }
+            }
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {
