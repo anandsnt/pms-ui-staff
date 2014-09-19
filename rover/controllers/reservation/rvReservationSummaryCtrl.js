@@ -24,18 +24,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
-
-			$scope.$parent.myScrollOptions = {
-				'reservationSummary': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false
-				},
-				'paymentInfo': {
-					scrollbars: true,
-					hideScrollbar: false,
-				},
-			};
+			$scope.setScroller('reservationSummary');
+			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
 
 		}
@@ -144,25 +134,25 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var stay = [];
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
-				if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
+				// if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
 					stay.push({
 						date: date,
 						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
 						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-						adults_count: parseInt(staydata.guests.adults),
-						children_count: parseInt(staydata.guests.children),
-						infants_count: parseInt(staydata.guests.infants)
+						adults_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.adults :  parseInt(staydata.guests.adults),
+						children_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.children :  parseInt(staydata.guests.children),
+						infants_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.infants :  parseInt(staydata.guests.infants)
 					});
-				} else if (date != $scope.reservationData.departureDate) {
-					stay.push({
-						date: date,
-						rate_id: staydata.rate.id,
-						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-						adults_count: parseInt(staydata.guests.adults),
-						children_count: parseInt(staydata.guests.children),
-						infants_count: parseInt(staydata.guests.infants)
-					});
-				}
+				// } else if (date != $scope.reservationData.departureDate) {
+				// 	stay.push({
+				// 		date: date,
+				// 		rate_id: staydata.rate.id,
+				// 		room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+				// 		adults_count: parseInt(staydata.guests.adults),
+				// 		children_count: parseInt(staydata.guests.children),
+				// 		infants_count: parseInt(staydata.guests.infants)
+				// 	});
+				// }
 			});
 
 			//	end of payload changes
@@ -170,6 +160,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.stay_dates = stay;
 
 			//addons
+
 
 			data.addons = [];
 
@@ -179,7 +170,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					quantity: addon.quantity
 
 				});
+
 			})
+
 
 			data.company_id = $scope.reservationData.company.id;
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -201,6 +194,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.viewState.reservationStatus.confirm = true;
+				$scope.reservationData.is_routing_available = false;
 				$scope.viewState.reservationStatus.number = data.id;
 				// Change mode to stay card as the reservation has been made!
 				$scope.viewState.identifier = "CONFIRM";
@@ -228,6 +222,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var updateSuccess = function(data) {
 				$scope.viewState.identifier = "UPDATED";
+				$scope.reservationData.is_routing_available = data.is_routing_available;
 				$state.go('rover.reservation.staycard.mainCard.reservationConfirm', {
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
@@ -331,9 +326,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.refreshPaymentScroller = function() {
-			setTimeout(function() {
-				$scope.$parent.myScroll['paymentInfo'].refresh();
-			}, 0);
+			$scope.refreshScroller('paymentInfo');
 		};
 
 		/*

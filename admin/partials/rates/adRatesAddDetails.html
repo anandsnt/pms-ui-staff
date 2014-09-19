@@ -1,7 +1,7 @@
 <!-- Header Collapse View -->
-<div ng-hide="rateMenu ==='Details'">
+<div ng-hide="rateMenu ==='Details'" ng-click="$emit('changeMenu','Details')" class="cursor_pointer">
 	<em class="rate_step_title">Rate</em>&nbsp;<span class="italic_text">Details</span>
-	<div ng-click="$emit('changeMenu','Details')"  class="cursor_pointer rate_additional_details_pointers"><img src="/assets/arrow-down.png">
+	<div class="rate_additional_details_pointers"><img src="/assets/arrow-down.png">
 	</div>
 </div>
 
@@ -97,7 +97,7 @@
 		<button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
 			Step 2 - Select Room Types
 		</button>
-		<button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
+		<button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()) }">
 			Save
 		</button>
 	</div>

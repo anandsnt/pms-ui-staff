@@ -20,69 +20,70 @@
 				</div>
 			</div>
 		</header>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-		
-		
-		<span class="count-show">Show</span>
-		<div class="select table-count rates-table-count">
-			<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
-		</div>
-		<span class="count-entries">entries</span>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 			
-		<div class="entry table-search">
-			<span class="search-text">Search</span>
-			<span class="icons icon-search" name="submit" type="submit"></span>
-	    	<input type="search" ng-model="searchTerm" ng-enter = "searchEntered()" autocomplete="off" placeholder="" />
-	    </div>
-		
+			
+			<span class="count-show">Show</span>
+			<div class="select table-count rates-table-count">
+				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
+			</div>
+			<span class="count-entries">entries</span>
+				
+			<div class="entry table-search">
+				<span class="search-text">Search</span>
+				<span class="icons icon-search" name="submit" type="submit"></span>
+				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+		    </div>
+			
 
-		<div id="new-form-holder"></div>
-		<!--ng-table component -->
-		<table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
-			<tbody>
-				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
-					<td data-title="'Name'" sortable="'rate'" header-class="width-25" ng-hide="currentClickedElement == $index">
-						<a class="edit-data" ng-click="editRatesClicked(rate.id, $index)" >
-							<strong> {{rate.name}}</strong>
-						</a>
-					</td>
+			<div id="new-form-holder"></div>
+			<!--ng-table component -->
+			<table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
+				<tbody>
+					<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
+						<td data-title="'Name'" sortable="'rate'" header-class="width-25" ng-hide="currentClickedElement == $index">
+							<a class="edit-data" ng-click="editRatesClicked(rate.id, $index)" >
+								<strong> {{rate.name}}</strong>
+							</a>
+						</td>
 
-					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-20" ng-hide="currentClickedElement == $index">
-						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.based_on.id, 'based_on_rate_id', rate.based_on.name)" ng-mouseleave="mouseLeavePopover()">
-							{{rate.based_on.name}}
-							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.based_on.id, 'basedOn')">
+						<td data-title="'Based on'"  sortable="'based_on'" header-class="width-20" ng-hide="currentClickedElement == $index">
+							<span qtip category='rateType' url='/api/rates.json?based_on_rate_id={{rate.based_on.id}}' title="Rate based on {{rate.based_on.name}}">
+								{{rate.based_on.name}}
+							</span>
+						</td>
+						<td data-title="'Type'" sortable="'rate_type'" header-class="width-15" ng-hide="currentClickedElement == $index">
+							<span qtip category='rateType' url='/api/rates.json?rate_type_id={{rate.rate_type.id}}' title="{{rate.rate_type.name}}">
+								<strong>{{rate.rate_type.name}}</strong>
+							</span>
+						</td>
+						<td data-title="'Date Ranges'" header-class="width-15" class = "center_align" ng-hide="currentClickedElement == $index">
+							<span ng-show="rate.date_range_count > 0" qtip title="{{rate.name}} - RATE DATE RANGES" category='dateRange' url='/api/rates/{{rate.id}}/rate_date_ranges'>
+								{{rate.date_range_count}}
+							</span>
+							<span ng-show="rate.date_range_count == 0">
+								{{rate.date_range_count}}
+							</span>
+						</td>
+						<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
+							<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
+								<div class="switch-button single" ng-class="{'on': rate.status}">
+									<input type="checkbox"  ng-checked="rate.status">
+									<span class="switch-icon"></span>
+								</div>
 							</div>
-						</span>
-					</td>
-					<td data-title="'Type'" sortable="'rate_type'" header-class="width-15" ng-hide="currentClickedElement == $index">
-						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.rate_type.id,'rate_type_id', rate.rate_type.name)" ng-mouseleave="mouseLeavePopover()">
-							<strong>{{rate.rate_type.name}}</strong>
-							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.rate_type.id, 'rateType')">				</div>
-						</span>
-					</td>
-					<td data-title="'Date Ranges'" header-class="width-15" class = "center_align" ng-hide="currentClickedElement == $index">
-						<span class= "tooltip-wrapper " ng-mouseenter="showDateRanges($index, rate.id,'rate_id', rate.date_range_count)" ng-mouseleave="mouseLeavePopover()">
-						{{rate.date_range_count}}
-							<div ng-show = "rate.date_range_count > 0" class="tooltip" ng-include="getPopoverTemplate($index, rate.id, 'dateRange')">
-						</span>
-					</td>
-					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
-						<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
-							<div class="switch-button single" ng-class="{'on': rate.status}">
-								<input type="checkbox"  ng-checked="rate.status">
-								<span class="switch-icon"></span>
-							</div>
-						</div>
-						<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
-					</td>
-					<td header-class="width-10" ng-hide="currentClickedElement == $index">
-						 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)"  ng-hide="false">&nbsp;</span>
-					</td>
-					<td colspan="6" header-class="width-0" ng-include="getTemplateUrl($index, rate.id)"></td> 
-				</tr>
-			</tbody>
-		</table>
+							<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
+						</td>
+						<td header-class="width-10" ng-hide="currentClickedElement == $index">
+							 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate)" ng-hide="false">&nbsp;</span>
+						</td>
+						<td colspan="6" header-class="width-0" ng-include="getTemplateUrl($index, rate.id)"></td> 
+					</tr>
+				</tbody>
+			</table>
+		</section>
 		<!--end -->
 
 		<!--Custom pagination footer goes here-->
@@ -111,4 +112,3 @@
 </section>
 
 <div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
-
