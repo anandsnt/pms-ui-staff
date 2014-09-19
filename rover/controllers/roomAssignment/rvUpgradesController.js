@@ -74,6 +74,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		index = $scope.selectedUpgradeIndex;
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
+			$scope.selectedUpgrade.is_upsell_available = data.is_upsell_available;
 			$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
 		};
 		var errorCallbackselectUpgrade = function(error){

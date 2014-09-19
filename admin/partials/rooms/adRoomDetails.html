@@ -11,6 +11,7 @@
 				</h2>
 				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">{{ 'BACK_TO_ROOMS' | translate }}</a>
 			</header>
+			<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="edit-room" id="edit-room" data-room-id="{{data.room_id}}" class="form float">
 				<fieldset class="holder left">
@@ -86,6 +87,7 @@
 				<button type="button" id="update" class="button green add-data-inline" ng-click="updateRoomDetails()">{{ 'SAVE_CHANGES' | translate }}</button>
 			</div>
 		</form>
+		</section>
 	</div>
 
 

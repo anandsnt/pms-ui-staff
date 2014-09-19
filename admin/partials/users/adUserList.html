@@ -9,6 +9,7 @@
 				<a id="find_existing_user" class="action link" ng-show="isAdminSnt" ui-sref="admin.linkexisting({id:hotelId})" >Link Existing</a>
 				<a id="go_back" data-type="load-details" class="action back" ng-show="isAdminSnt" ui-sref="admin.snthoteldetails({action:'edit',id:hotelId})">Back</a>
 			</header>
+			<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<table id="users_list_table" class="grid datatable table" ng-table="tableParams">
 				<tr ng-repeat="user in $data">
@@ -30,6 +31,7 @@
 					</td>
 				</tr>
 			</table>
+		</section>
 		</section>
 	</div>
 </section>

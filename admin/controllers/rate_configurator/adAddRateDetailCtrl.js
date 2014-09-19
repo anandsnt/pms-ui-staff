@@ -54,7 +54,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
          */
 
         $scope.isFormValid = function () {
-            if (!$scope.rateData.name || !$scope.rateData.description || !$scope.rateData.rate_type.id) {
+            if (!$scope.rateData.name || !$scope.rateData.description || !$scope.rateData.rate_type.id || !$scope.rateData.charge_code_id) {
                 return false;
             }
             if (($scope.rateData.name.length <= 0) || ($scope.rateData.description.length <= 0) || ($scope.rateData.rate_type.id.length <= 0)) {
