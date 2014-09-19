@@ -111,7 +111,12 @@ sntRover.controller('RVroomAssignmentController',[
 
 	};
 	$scope.openApplyChargeDialog = function(){
-		
+		ngDialog.open({
+	          template: '/assets/partials/roomAssignment/rvApplyRoomCharge.html',
+	          controller: 'rvApplyRoomChargeCtrl',
+	          className: 'ngdialog-theme-default',
+	          scope: $scope
+        });
 	};
 
 	$scope.occupancyDialogSuccess = function(){
@@ -159,7 +164,7 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 
 		$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
-	}
+	};
 		
 	/**
 	* function to assign the new room for the reservation

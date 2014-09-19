@@ -10,18 +10,18 @@
 		<div class="holder float"></div>
 		<div class="entry full-width">
 			<label for="room-type-charge"> Charge Amount (IN
-				$
-				) <strong></strong> </label>
-			<input type="number" value="" placeholder="Enter the room type charge" name="room-type-charge" id="room-type-charge">
+				{{currencySymbol}}
+				) {{noChargeDisabled}}===={{chargeDisabled}}<strong></strong> </label>
+			<input type="text" ng-model="roomCharge" rv-delay-textbox delay="1000" function-to-fire="enableDisableButtons"  placeholder="Enter the room type charge" >
 		</div>
 		<div class="actions float is-disabled">
 			<button type="button" id="cancel-room-type-charge-modal" class="button blank modal-close">
 				CANCEL
 			</button>
-			<button type="button" id="nocharge" class="button green">
+			<button type="button" id="nocharge" class="button green" ng-disabled="noChargeDisabled" ng-click="clickedNoChargeButton()">
 				NO CHARGE
 			</button>
-			<button type="button" id="ok" disabled="" class="button green">
+			<button type="button" id="ok" class="button green" ng-disabled="chargeDisabled" ng-click="clickChargeButton()">
 				CHARGE
 			</button>
 		</div>
