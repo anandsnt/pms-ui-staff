@@ -80,10 +80,10 @@ angular.module('housekeepingModule', [])
             controller: 'RVWorkManagementMultiSheetCtrl'
         });
 
-        $stateProvider.state('rover.workManagement.new', {
+        $stateProvider.state('rover.workManagement.singleSheet', {
             url: '/new',
-            templateUrl: '/assets/partials/workManagement/rvWorkManagementNewWorkSheet.html',
-            controller: 'RVWorkManagementNewWorkSheetCtrl'
+            templateUrl: '/assets/partials/workManagement/rvWorkManagementSingleSheet.html',
+            controller: 'RVWorkManagementSingleSheetCtrl'
         });
 
 
