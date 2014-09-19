@@ -1,6 +1,7 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv', 'ngDialog', '$state', '$timeout',
     function($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state, $timeout) {
         //expand first set
+        $scope.otherData = $scope.otherData || {}; //To fix countless consule errors caused by 'otherData' being undefined but used as an object...
         $scope.currentClickedSet = 0;
         $scope.setChanged = false;
         $scope.init = function() {

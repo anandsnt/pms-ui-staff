@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', 
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -10,7 +10,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
        * TODO: Fix this bug in ng-translate and implement in this here.
        */
       setTimeout(function() {
-        $translate('NA')
+        $translate('NA');
       }, 1000); //Word around.
     } else {
       $translate.use('EN');
@@ -63,11 +63,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
-    console.log("currency code   : "+hotelDetails.currency.value);
-    console.log("currency symbol : "+$rootScope.currencySymbol);
-    console.log("date format     : "+$rootScope.dateFormat);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
-
+	$rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 
 
     //set flag if standalone PMS
@@ -574,6 +571,27 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           });
         // }        
     };
+    
+    
+    
+     
+
+    /**
+    * function to execute on clicking latecheckout button
+    */
+    $scope.clickedOnHeaderLateCheckoutIcon = function(event){
+    	
+	 	var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {'type': type});
+	    
+    };
+    
+    $scope.clickedOnQueuedRoomsIcon = function(event){
+    	
+	 	var type = "QUEUED_ROOMS";
+        $state.go('rover.search', {'type': type});
+    };
+    
 
   }
 ]);

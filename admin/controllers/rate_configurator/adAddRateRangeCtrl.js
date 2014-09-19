@@ -25,31 +25,29 @@ admin
         $scope.setUpData = function () {
             var dLastSelectedDate = '',
                 lastSelectedDate = '',
-                businessDate = tzIndependentDate($rootScope.businessDate),
-                _alignDatesFrom = function() {
+                businessDate = tzIndependentDate($rootScope.businessDate);
+
+            $scope.fromDateOptions = _.extend({ 
+                minDate: businessDate,
+                onSelect: function() {
                     if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
                         $scope.end_date = $scope.begin_date;
-                    }                   
-                },
-                _alignDatesTo = function() {
-                    if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
-                        $scope.begin_date = $scope.end_date;
-                    }                   
+                    }  
                 }
+            }, rateFilterDefaults.OPTIONS);
 
-            $scope.fromDateOptions = _.extend(rateFilterDefaults.OPTIONS, { 
+            $scope.toDateOptions = _.extend({
                 minDate: businessDate,
-                onSelect: _alignDatesFrom
-            });
-
-            $scope.toDateOptions = _.extend(rateFilterDefaults.OPTIONS, {
-                minDate: businessDate,
-                onSelect: _alignDatesTo
-            });
+                onSelect: function() {
+                     if(tzIndependentDate($scope.begin_date) > tzIndependentDate($scope.end_date)) {
+                        $scope.begin_date = $scope.end_date;
+                    }                     
+                }
+            }, rateFilterDefaults.OPTIONS);
 
             $scope.Sets = [createDefaultSet("Set 1")];
             $scope.begin_date = $filter('date')(businessDate, rateFilterDefaults.DATE_FORMAT); 
-            $scope.end_date = $filter('date')(new Date(businessDate.setDate(businessDate.getDate() + 1)), rateFilterDefaults.DATE_FORMAT);
+            $scope.end_date = $scope.begin_date; //$filter('date')(businessDate, rateFilterDefaults.DATE_FORMAT);
 
             try
             { //Handle exception, in case of NaN, initially.
@@ -67,7 +65,7 @@ admin
                 dLastSelectedDate = new Date(/*dLastSelectedDate.getTime()*/ tzIndependentDate(lastSelectedDate).getTime() + 24*60*60*1000);
 
                 $scope.begin_date = $filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
-                $scope.end_date = $filter('date')((new Date(dLastSelectedDate)).setDate(dLastSelectedDate.getDate() + 1), rateFilterDefaults.DATE_FORMAT);
+                $scope.end_date = $scope.begin_date; //$filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
             }
         };
 

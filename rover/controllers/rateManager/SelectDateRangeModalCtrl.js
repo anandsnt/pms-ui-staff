@@ -9,7 +9,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 
 	$scope.setUpData = function() {		
 		filterData.begin_date = _.isEmpty(filterData.begin_date) ? dateFilter(from_date, filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.begin_date);
-		filterData.end_date = _.isEmpty(filterData.end_date) ? dateFilter(new Date(to_date.setDate(to_date.getDate() + 1)), filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.end_date);
+		filterData.end_date = _.isEmpty(filterData.end_date) ? dateFilter(to_date, filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.end_date);
 
 		$scope.fromDateOptions = {
 			changeYear: true,
@@ -26,7 +26,7 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 		$scope.toDateOptions = {
 			changeYear: true,
 			changeMonth: true,
-			minDate: new Date((new Date(from_date)).setDate(from_date.getDate() + 1)), 
+			minDate: from_date,
 			yearRange: "0:+10",
 			onSelect: function() {
 				if(tzIndependentDate(filterData.begin_date) > tzIndependentDate(filterData.end_date)) {
