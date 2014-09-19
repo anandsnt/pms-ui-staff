@@ -441,7 +441,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
-	 	
+	 	$scope.removeDirectPayment = true;
 	 	 ngDialog.open({
               template: '/assets/partials/pay/rvPaymentModal.html',
               className: 'ngdialog-theme-default1 modal-theme1',
