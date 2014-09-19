@@ -7,8 +7,9 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationCardSrv',
 	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
+	'RVDepositBalanceSrv',
 	'$filter',
-	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv, $filter) {
+	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv, RVDepositBalanceSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -345,12 +346,26 @@ sntRover.controller('reservationActionsController', [
 		 * Show Deposit/Balance Modal
 		 */
 		$scope.showDepositBalanceModal = function(){
+			var reservationId = $scope.reservationData.reservation_card.reservation_id;
+			var dataToSrv = {
+				"reservationId": reservationId
+			};
+			$scope.invokeApi(RVDepositBalanceSrv.getDepositBalanceData, dataToSrv, $scope.successCallBackFetchDepositBalance);
+			
+			
+		};
+		$scope.successCallBackFetchDepositBalance = function(data){
+			console.log("reached here")
+			// $scope.depositBalanceData = data;
+			$scope.depositBalanceData = data;
+			
 			ngDialog.open({
 					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
 					controller: 'RVDepositBalanceCtrl',
 					className: 'ngdialog-theme-default1',
 					scope: $scope
 				});
+			
 		};
 	}
 ]);
