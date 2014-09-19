@@ -7,7 +7,9 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		var refreshScroller = function() {
 			$timeout(function() {
-				$scope.myScroll['cardAccountsScroller'].refresh();
+				if ($scope.myScroll && $scope.myScroll['cardAccountsScroller']) {
+					$scope.myScroll['cardAccountsScroller'].refresh();
+				}
 				$scope.refreshScroller('cardAccountsScroller');
 			}, 500)
 		};

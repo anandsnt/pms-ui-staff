@@ -19,17 +19,19 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * 2. Scroll is actually on a sub-scope created by ng-include.
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
 		 */
-		
+
 		$scope.setScroller('cardContractsScroll');
 
 		var refreshScroller = function() {
 			$timeout(function() {
-				$scope.myScroll['cardContractsScroll'].refresh();
+				if ($scope.myScroll && $scope.myScroll['cardContractsScroll']) {
+					$scope.myScroll['cardContractsScroll'].refresh();
+				}
 				$scope.refreshScroller('cardContractsScroll');
 			}, 500);
 		};
 
-		$scope.$on("ContactTabActivated",refreshScroller);
+		$scope.$on("ContactTabActivated", refreshScroller);
 		$scope.$on("refreshContractsScroll", refreshScroller);
 
 		/**** Scroll related code ends here. ****/
