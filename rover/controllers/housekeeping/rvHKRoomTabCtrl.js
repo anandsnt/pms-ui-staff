@@ -10,9 +10,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		// oo/os save request param object
-		$scope.roomServices = {
-			room_id: $stateParams.id
-		};
+		$scope.roomServices = { room_id: $stateParams.id };
 
 		// original room status when user opened room tab
 		// var originalStatusId = rooms[$stateParams.id].room_reservation_hk_status;
@@ -64,6 +62,10 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		// set the default dates for to date
 		$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );
 
+		$scope.formDateChanged = function() {
+			$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($scope.roomServices.from_date), 'yyyy-MM-dd' );
+		};
+
 		// from date options for date picker
 		$scope.fromDateOptions = {
 			dateFormat: $rootScope.jqDateFormat,
@@ -73,7 +75,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			minDate: tzIndependentDate( $rootScope.businessDate ),
 			beforeShow: function(input, inst) {
 				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay" class="transparent">').insertAfter('#ui-datepicker-div');
 			},
 			onClose: function(dateText, inst) {
 				$('#ui-datepicker-div');
@@ -82,20 +84,14 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		};
 		
 		// to date options for date picker
-		$scope.toDateOptions = {
-			dateFormat: $rootScope.jqDateFormat,
-			numberOfMonths: 1,
-			changeYear: true,
-			changeMonth: true,
-			minDate: tzIndependentDate( $rootScope.businessDate ),
-			beforeShow: function(input, inst) {
-				$('#ui-datepicker-div');
-				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-			},
-			onClose: function(dateText, inst) {
-				$('#ui-datepicker-div');
-				$('#ui-datepicker-overlay').remove();
-			}
+		$scope.getToDateOptions = function(item) {
+		    return {
+		        dateFormat: $rootScope.jqDateFormat,
+		        numberOfMonths: 1,
+		        changeYear: true,
+		        changeMonth: true,
+		        minDate: tzIndependentDate( $scope.roomServices.from_date )
+		    }
 		};
 
 
@@ -127,6 +123,15 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 				// room is defnetly not in service
 				$scope.inService = false;
+
+				// change the original status
+				originalStatusId = $scope.roomServices.room_service_status_id;
+
+				// reset dates and reason and comment
+				$scope.roomServices.from_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );
+				$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );
+				$scope.roomServices.reason_id = '';
+				$scope.roomServices.comment = '';
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.roomServices, callback);
 		};

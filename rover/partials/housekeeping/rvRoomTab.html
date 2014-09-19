@@ -26,21 +26,23 @@
     <div id="dates" class="row">
       <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
       <div id="out-from" class="entry">
-        <label id="room-out-from-label" for="room-out-from">From <span>day of the week, or today/tomorrow</span></label>
-        <div class="entry-data" class="ui-datepicker-trigger">
-          <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="roomServices.from_date" ui-date-format readonly>
+        <label id="room-out-from-label" for="room-out-from">From <span>{{ getSimplifiedDayName(roomServices.from_date) }}</span></label>
+        <div class="entry-data" ng-click="">
+          <input name="room-out-from" id="room-out-from" type="text" class="datepicker" ui-date="fromDateOptions" ng-model="roomServices.from_date" ng-change="formDateChanged()" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+
           <strong id="room-out-from-day" class="day">{{ roomServices.from_date | date:'dd' }}</strong>
           <span id="room-out-from-month" class="month">{{ roomServices.from_date | date:'MMMM' }}</span>
           <span id="room-out-from-year" class="year">{{ roomServices.from_date | date:'yyyy' }}</span>
         </div>
       </div>
       <div id="out-to" class="entry">
-        <label id="room-out-to-label" for="room-out-to">To <span>day of the week, or today/tomorrow</span></label>
+        <label id="room-out-to-label" for="room-out-to">To <span>{{ getSimplifiedDayName(roomServices.to_date) }}</span></label>
         <div class="entry-data" class="ui-datepicker-trigger">
-          <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="toDateOptions" ng-model="roomServices.to_date" ui-date-format readonly>
+          <input name="room-out-to" id="room-out-to" type="text" class="datepicker" ui-date="getToDateOptions()" ng-model="roomServices.to_date" ui-date-format readonly style="display:block!important;position:static!important;margin:0!important;opacity:0">
+
           <strong id="room-out-to-day" class="day">{{ roomServices.to_date | date:'dd' }}</strong>
-          <span id="room-out-to-month" class="month">{{ roomServices.from_date | date:'MMMM' }}</span>
-          <span id="room-out-to-year" class="year">{{ roomServices.from_date | date:'yyyy' }}</span>
+          <span id="room-out-to-month" class="month">{{ roomServices.to_date | date:'MMMM' }}</span>
+          <span id="room-out-to-year" class="year">{{ roomServices.to_date | date:'yyyy' }}</span>
         </div>
       </div>
     </div>
