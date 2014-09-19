@@ -534,4 +534,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		});
 
 	}
+
+
+	
 ]);
