@@ -4,21 +4,23 @@
 		<h2>{{ 'EDIT' | translate }} {{ 'HOTEL_ANNOUNCEMENTS' | translate }}</h2>
 		<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()">{{ 'BACK' | translate }}</a>
 	</header>
-	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<form style="overflow-y:auto;" name="edit-hotel-announcement" method="post" class="form float">
-		<fieldset class="holder column">
+	<section class="content-scroll">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<form style="overflow-y:auto;" name="edit-hotel-announcement" method="post" class="form float">
+			<fieldset class="holder column">
 
-			<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_welcome_message" name = "guest-zest-welcome-message" id = "guest-zest-welcome-message" label = "{{ 'ZEST_WELCOME_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Welcome Message" maxlength="200"></ad-textarea>
+				<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_welcome_message" name = "guest-zest-welcome-message" id = "guest-zest-welcome-message" label = "{{ 'ZEST_WELCOME_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Welcome Message" maxlength="200"></ad-textarea>
 
-			<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_checkout_complete_message" name = "guest-zest-checkout-message" id = "guest-zest-checkout-message" label = "{{ 'ZEST_CHECKOUT_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Checkout Message" maxlength="200" ></ad-textarea>
+				<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_checkout_complete_message" name = "guest-zest-checkout-message" id = "guest-zest-checkout-message" label = "{{ 'ZEST_CHECKOUT_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Checkout Message" maxlength="200" ></ad-textarea>
 
-			<ad-textarea rows="4" div-class="full-width" value="data.key_delivery_email_message" name = "guest-zest-checkout-message" id = "guest-zest-key-delivery-email-message" label = "{{ 'KEY_DELIVERY_EMAIL_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Checkout Message" maxlength="500"></ad-textarea>
+				<ad-textarea rows="4" div-class="full-width" value="data.key_delivery_email_message" name = "guest-zest-checkout-message" id = "guest-zest-key-delivery-email-message" label = "{{ 'KEY_DELIVERY_EMAIL_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Checkout Message" maxlength="500"></ad-textarea>
 
-		</fieldset>
-		<div class="actions float">
-			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>CANCEL</button>
-			<button type="button" id="save_hotel_announcement" class="button green" ng-click="save()" translate>SAVE_CHANGES</button>
-		</div>
-	</form>
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>CANCEL</button>
+				<button type="button" id="save_hotel_announcement" class="button green" ng-click="save()" translate>SAVE_CHANGES</button>
+			</div>
+		</form>
+	</section>
 </div>
 </section>
