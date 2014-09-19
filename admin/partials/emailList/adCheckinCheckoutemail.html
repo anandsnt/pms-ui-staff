@@ -3,43 +3,45 @@
 			<h2>{{emailTitle}}</h2>
 			<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()" translate>BACK_TO_SETUP</a>
 		</header>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-		
-		<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 			
-			<table id="guests" class="grid datatable table" ng-table="tableParams">
-				<tr ng-repeat="emailData in $data">
-					<td header-class="width-5 padding-checkbox" style="text-align: left; " header="'ng-table/headers/checkbox.html'">
-						<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
-					</td>
-					<td header-class="width-30" data-title="'Name'" sortable="'first_name'"><a class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>
-					<td header-class="width-30" data-title="'guest Email'" sortable="'email'"> {{emailData.email}}  </td>
-					<td header-class="width-20" data-title="'Room'" sortable="'room_number'"><span class="number"> {{emailData.room_number}} </span></td>
-					
-				</tr>
+			<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
+				
+				<table id="guests" class="grid datatable table" ng-table="tableParams">
+					<tr ng-repeat="emailData in $data">
+						<td header-class="width-5 padding-checkbox" style="text-align: left; " header="'ng-table/headers/checkbox.html'">
+							<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
+						</td>
+						<td header-class="width-30" data-title="'Name'" sortable="'first_name'"><a class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>
+						<td header-class="width-30" data-title="'guest Email'" sortable="'email'"> {{emailData.email}}  </td>
+						<td header-class="width-20" data-title="'Room'" sortable="'room_number'"><span class="number"> {{emailData.room_number}} </span></td>
+						
+					</tr>
 
-			</table>
+				</table>
 
-			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
-			
-		<div class="entry radio-check">
-		<label class="checkbox" ng-class="{'checked': isAllOptionsSelected()}">
-		<span class="icon-form icon-checkbox" ng-class="{'checked': isAllOptionsSelected()}"></span>	
-		<input type="checkbox" ng-checked="isAllOptionsSelected()" ng-click="toggleAllOptions()">
-		<strong ng-show = "required=='yes'">*</strong>
-	    </label>
-		</div>
-
-			</script>
-
-
-			<div class="actions float">
-				<button type="button" ng-click="backActionFromEmail()" class="button blank" translate>CANCEL</button>
-				<button type="button" ng-disabled="disableSave" class="button grey" ng-show="disableSave">{{saveButtonTitle}}</button>
-
-			<button type="button" ng-disabled="disableSave" ng-click="sendMailClicked()" class="button blue" ng-hide="disableSave">{{saveButtonTitle}}</button>
+				<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+				
+			<div class="entry radio-check">
+			<label class="checkbox" ng-class="{'checked': isAllOptionsSelected()}">
+			<span class="icon-form icon-checkbox" ng-class="{'checked': isAllOptionsSelected()}"></span>	
+			<input type="checkbox" ng-checked="isAllOptionsSelected()" ng-click="toggleAllOptions()">
+			<strong ng-show = "required=='yes'">*</strong>
+		    </label>
 			</div>
-		</form>
+
+				</script>
+
+
+				<div class="actions float">
+					<button type="button" ng-click="backActionFromEmail()" class="button blank" translate>CANCEL</button>
+					<button type="button" ng-disabled="disableSave" class="button grey" ng-show="disableSave">{{saveButtonTitle}}</button>
+
+				<button type="button" ng-disabled="disableSave" ng-click="sendMailClicked()" class="button blue" ng-hide="disableSave">{{saveButtonTitle}}</button>
+				</div>
+			</form>
+		</section>
 	</div>
 	</section>

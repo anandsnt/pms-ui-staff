@@ -72,8 +72,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		for(i = 0; i < occupanyData.results.length; i++){	
 			var actual = escapeNull(occupanyData.results[i].actual) == "" ? 0 : occupanyData.results[i].actual;
 			var target = escapeNull(occupanyData.results[i].target) == "" ? 0 : occupanyData.results[i].target;
-			occupanciesActual.push((actual / roomAvailabilityData.physical_count) * 100);
-			occupanciesTargeted.push((target / roomAvailabilityData.physical_count) * 100);
+			occupanciesActual.push(actual);
+			occupanciesTargeted.push(target);
 			if(target > 0) {
 				IsOccupancyTargetSetBetween = true;
 			}

@@ -14,7 +14,7 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     */
     $scope.clickedOnGuestsToday = function(event, type) {
         $state.go('rover.search', {'type': type});
-    }  	
+    };
 
 
 

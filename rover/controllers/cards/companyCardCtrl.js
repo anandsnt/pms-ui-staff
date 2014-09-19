@@ -123,7 +123,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 			if (isNew === true) {
 				$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
 				$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
-				$scope.contactInformation.account_details.company_corp_id = $scope.searchData.companyCard.companyCorpId;
+				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
 			}
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
@@ -291,18 +291,13 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCard
 
 sntRover.controller('companyResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
-		$scope.$parent.myScrollOptions = {
-			'companyResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+		BaseCtrl.call(this, $scope);
+		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('companyResultScroll', scrollerOptionsForGraph);
+
 		$scope.$on("refreshCompaniesScroll", function() {
 			$timeout(function() {
-				$scope.$parent.myScroll['companyResultScroll'].refresh();
+				$scope.refreshScroller('companyResultScroll');	
 			}, 500);
 		})
 	}

@@ -94,16 +94,14 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 		$scope.savePayment = function(){
 			
 			var successCallback = function(data) {
-                
-                $scope.attachedPaymentTypes.push(data);
-                $scope.$parent.$emit('hideLoader');
                 $scope.showPaymentList();
+                $scope.$parent.fetchAttachedPaymentTypes();                
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
                 $scope.errorMessage = errorMessage[0];
             };
-			$scope.saveData.user_id = $scope.reservationData.user_id;
+			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
 			var expiry_year =  2000 + parseInt($scope.saveData.card_expiry_year) ;
 			$scope.saveData.card_expiry = expiry_year + "-"+ $scope.saveData.card_expiry_month+"-01";
