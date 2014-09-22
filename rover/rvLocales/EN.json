@@ -219,6 +219,8 @@
     "DASHBOARD_HOUSEKEEPING_HEADING": "Housekeeping Dashboard",
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
+    "QUEUED_ROOMS_TITLE": "Queued Reservations"
+,
     "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
     "ENTER_PASSWORD": "Enter your Password",
     "PASSWORD": "Password",
@@ -432,7 +434,8 @@
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
-    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date"
+    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
+    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",

@@ -1,5 +1,5 @@
  <form method="post" ng-controller="RVGuestCardLoyaltyController"  id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
-     <div id="loyaltyList" ng-iscroll='loyaltyList' ng-iscroll-delay='50' class="scroll-guest-tab">
+     <div id="loyaltyList" ng-iscroll='loyaltyList' ng-iscroll-delay='50' class="scroll-guest-tab" style="height:{{guestCardHeight - dimensionsLookup.cardTabContentOffset}}px">
         <div class="wrapper">
             <div class="entry full-width">
                 <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>

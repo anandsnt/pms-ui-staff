@@ -35,6 +35,10 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
         };
 
+        $scope.refreshScroll = function(){
+            $scope.$parent.myScroll['reservation-settings'].refresh();
+        };
+
         $scope.accordionInitiallyNotCollapsedOptions = {
             header: 'a.toggle',
             heightStyle: 'content',
@@ -84,6 +88,10 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.$on('closeSidebar', function(){
             $scope.reservationSettingsWidth = resizableMinWidth;
             $scope.reservationSettingsVisible = false;
+        });
+
+        $scope.$on('GETREFRESHACCORDIAN', function() { 
+            setTimeout(function(){$scope.refreshScroll();}, 3000);
         });
     }
 ]);
