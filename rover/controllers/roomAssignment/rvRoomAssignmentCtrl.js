@@ -41,7 +41,7 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
-	$scope.getRooms = function(index){
+	$scope.getRooms = function(isOldRoomType){
 		$scope.selectedRoomType = $scope.getCurrentRoomType();
 		var successCallbackGetRooms = function(data){
 			$scope.rooms = data.rooms;
@@ -60,7 +60,13 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = error;
 		};
+		if(isOldRoomType!=undefined){
+			if(isOldRoomType){
+				$scope.roomType = oldRoomType;
+			}
+		}
 		var params = {};
+		//console.log("....."+$scope.roomType)
 		params.reservation_id = $stateParams.reservation_id;
 		params.room_type = $scope.roomType;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);

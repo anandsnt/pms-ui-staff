@@ -60,8 +60,9 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 		$scope.assignRoom();
 	};
 	$scope.clickedCancelButton = function(){
-		$scope.roomType = $scope.oldRoomType;
-		$scope.getRooms();
+		
+		console.log(">>>"+$scope.roomType)
+		$scope.getRooms(true);
 		$scope.closeDialog();
 	};
 	
