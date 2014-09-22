@@ -4,7 +4,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		
+		var x = $rootScope.currencySymbol;
+		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value:"S", name:"amount" } ];		
 		$scope.addData = {};
 
 		$scope.contractList.contractSelected = "";
@@ -15,6 +16,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.errorMessage = "";
 		var contractInfo = {};
 		var ratesList = [];
+
+		sajith = $scope;
 
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -376,7 +379,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.addData.account_type = $stateParams.type;
 			}
-			$scope.addData.types = [ { value:"%",name:"percent" },{ value:$rootScope.currencySymbol,name:"amount" } ];
+			
 		};
 		// Cancel Add New mode
 		$scope.CancelAddNewContract = function() {
@@ -392,15 +395,14 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.AddNewContract = function() {
 			
 
-			var selected_type = JSON.parse(JSON.stringify($scope.addData.selected_type));
-			console.log(selected_type);
+			console.log("Sajith Here");
+			console.log($scope.addData.selected_type);
 
 			var dataToPost = {};
 			dataToPost = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights','types']);
-			dataToPost['selected_type'] = selected_type;
-
-			console.log(dataToPost);
-			console.log(selected_type);
+			console.log(dataToPost.selected_type);
+			console.log($scope.addData.selected_type);
+			console.log("Sajith ends here");
 
 			var saveContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -417,12 +419,18 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				var account_id = $stateParams.id;
 			}
+			console.log($scope.addData.selected_type);
+			console.log(dataToPost.selected_type);
+			console.log("Sajith before post here");
 			if (account_id) {
 				$scope.invokeApi(RVCompanyCardSrv.addNewContract, {
 					"account_id": account_id,
 					"postData": dataToPost
 				}, saveContractSuccessCallback, saveContractFailureCallback);
 			}
+			console.log($scope.addData.selected_type);
+			console.log(dataToPost.selected_type);
+			console.log("Sajith ends here");
 		};
 
 		/**
