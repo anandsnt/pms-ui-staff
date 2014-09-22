@@ -42,7 +42,14 @@
 			</tr>
 
 			<tr ng-repeat="rate in calendarData.data" ng-class="{'last': $last}">
-				<td class="first-row"><span>{{rate.name}}</span><span> <img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate)" /> </span></td>
+				<td class="first-row">
+					<div style="cursor: pointer;" ng-click="goToRoomTypeCalendarView(rate)" >
+						<span>{{rate.name}}</span>
+						<span> 
+							<img src="/assets/arrow-down.png" /> 
+						</span>
+					</div>
+				</td>
 				<td ng-repeat="date in calendarData.dates" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
