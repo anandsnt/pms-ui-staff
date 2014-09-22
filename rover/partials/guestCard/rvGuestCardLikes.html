@@ -1,6 +1,6 @@
 <form outside-click-handler  ng-controller="RVLikesController" name="likes" method="post" id="likes"   class="form card-tab scrollable" ng-show="current == 'guest-like'"   >
 
-    <div id="guest_likes"  ng-iscroll='likes_info' ng-iscroll-delay="1000" class="guest-likes-scroll" ng-iscroll-form='true' >      
+    <div id="guest_likes"  ng-iscroll='likes_info' ng-iscroll-delay="1000" class="guest-likes-scroll" ng-iscroll-form='true' style="height:{{guestCardHeight - dimensionsLookup.cardTabContentOffset}}px">      
     <div class="wrapper" >
         <div style="display: table;width:100%;border-collapse: collapse;">
         <div style="display: table-cell; vertical-align: top;">

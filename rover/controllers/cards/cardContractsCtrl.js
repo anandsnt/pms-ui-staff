@@ -1,5 +1,5 @@
-sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter',
-	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter) {
+sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCardSrv', '$stateParams', 'ngDialog', 'dateFilter', '$timeout',
+	function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter, $timeout) {
 		BaseCtrl.call(this, $scope);
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
@@ -7,6 +7,8 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		$scope.addData = {};
 		$scope.contractList.contractSelected = "";
 		$scope.contractList.current_contracts = [];
+		$scope.contractList.future_contracts = [];
+		$scope.contractList.history_contracts = [];
 		$scope.contractList.isAddMode = false;
 		$scope.errorMessage = "";
 		var contractInfo = {};
@@ -25,34 +27,18 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
 		 */
 
-
-		$scope.$on("contractTabActive", function() {
-			setTimeout(function() {
-				refreshScroller();
-			}, 500);
-		});
-
-		$scope.$parent.myScroll = [];
-
-		$scope.$parent.myScrollOptions = {
-			'companyCardContractsCtrl': {
-				scrollbars: true,
-				scrollY: true,
-				snap: false,
-				hideScrollbar: false
-			}
-		};
+		$scope.setScroller('cardContractsScroll');
 
 		var refreshScroller = function() {
-			//Refresh only if this DOM is visible.
-			if ($scope.currentSelectedTab === 'cc-contracts') {
-				$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
-			}
+			$timeout(function() {
+				$scope.myScroll['cardContractsScroll'].refresh();
+			}, 500);
 		};
 
+		$scope.$on("refreshContractsScroll", refreshScroller);
+		$scope.$on("contractTabActive", refreshScroller);
+
 		/**** Scroll related code ends here. ****/
-
-
 
 		clientWidth = $(window).width();
 		clientHeight = $(window).height();
@@ -517,7 +503,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			if ($scope.addData.selected_type == "%") {
 				$scope.addData.rate_value = parseInt($scope.addData.rate_value);
 			} else {
-				$scope.addData.rate_value = parseFloat($scope.addData.rate_value).toFixed(2);
+				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';
 			}
 		});
 
