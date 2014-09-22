@@ -9,7 +9,7 @@
 //= require ../guestweb/scripts/util.js
 
 //= require ../guestweb/scripts/app.js
-//= require ../guestweb/scripts/app_router_galleria.js
+//= require ../guestweb/scripts/app_router_fontainebleau.js
 //= require ../guestweb/scripts/app_config.js
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater
