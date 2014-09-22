@@ -79,6 +79,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
+		 $scope.reviewStatusArray = [];
 		angular.forEach(reservationBillData.bills, function(value, key) {
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
@@ -448,7 +449,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	// $scope.fromViewToPaymentPopup = "paybutton";
 	 	// $scope.addNewPaymentModal();
 	 	$scope.paymentModalOpened = true;
-	 	
+	 	$scope.removeDirectPayment = true;
 	 	 ngDialog.open({
               template: '/assets/partials/pay/rvPaymentModal.html',
               className: 'ngdialog-theme-default1 modal-theme1',
@@ -905,7 +906,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
 		}
-		else if ($rootScope.isStandAlone && totalBal > 0) {
+		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
 			$scope.clickedPayButton();
 		}
 		else{

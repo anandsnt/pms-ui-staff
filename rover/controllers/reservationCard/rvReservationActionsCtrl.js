@@ -14,7 +14,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
-		}
+		};
 
 		$scope.displayTime = function(status) {
 			var display = false;

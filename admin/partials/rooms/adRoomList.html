@@ -13,22 +13,23 @@
 		    </span>
 			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="data.is_add_available === 'yes'">{{ 'ADD_NEW' | translate }}</a>
 		</header>
-
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<table id="rooms" class="grid datatable" ng-table="roomList">
-			<tbody>
-				<tr ng-repeat="room in $data" room-id="{{room.room_id}}">
-					<td data-title="'Room Number'" sortable="'room_number'">
-						<a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
-							{{room.room_number}}
-						</a>
-					</td>
-					<td data-title="'Room Type'" sortable="'room_type'">
-						{{room.room_type}}
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<table id="rooms" class="grid datatable" ng-table="roomList">
+				<tbody>
+					<tr ng-repeat="room in $data" room-id="{{room.room_id}}">
+						<td data-title="'Room Number'" sortable="'room_number'">
+							<a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
+								{{room.room_number}}
+							</a>
+						</td>
+						<td data-title="'Room Type'" sortable="'room_type'">
+							{{room.room_type}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 	</section>
 </div>
 </section>

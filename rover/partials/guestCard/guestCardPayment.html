@@ -1,5 +1,5 @@
 <form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
-	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='1000' class="scroll-guest-tab">
+	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='1000' class="scroll-guest-tab" style="height:{{guestCardHeight - dimensionsLookup.cardTabContentOffset}}px">
 		<div class="wrapper">
 					<!-- Credit cards on file -->
 					<div class="entry full-width">
