@@ -1,6 +1,6 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Worksheet content -->
-<section id="worksheet-content" class="content worksheet-content" role="main">
+<section id="worksheet-content" class="content worksheets" role="main">
 
     <!-- Worksheet header -->
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
@@ -42,7 +42,7 @@
     </form>
 
     <!-- Single worksheet - unassigned rooms -->
-    <div class="unassigned-rooms">
+    <div class="unassigned-rooms single-sheet">
         <h2>Unassigned</h2>
         <div class="worksheet-actions">
             <div class="select">
@@ -68,7 +68,7 @@
         <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable">
             <ul class="sortable wrapper">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room">
+                <li class="worksheet-room single-sheet unassigned">
                     <h3 class="{room-status}">{Room number}</h3>
                     <div class="reservation-status">
                         <div class="current {reservation-status}">
@@ -94,7 +94,7 @@
     </div>
 
     <!-- Single worksheet - assigned rooms -->
-    <div class="assigned-rooms">
+    <div class="assigned-rooms single-sheet">
         <h2>Assigned</h2>
         <ul class="worksheet-summary">
             <li>Time Allocated <span>{value}</span></li>
@@ -116,7 +116,7 @@
             <!-- 2. Existing sheet, with rooms assigned -->
             <ul class="sortable wrapper">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room">
+                <li class="worksheet-room single-sheet assigned">
                     <h3 class="{room-status}">{Room number}</h3>
                     <div class="reservation-status">
                         <div class="current {reservation-status}">
