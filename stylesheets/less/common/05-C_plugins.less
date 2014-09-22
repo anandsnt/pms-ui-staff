@@ -45,7 +45,7 @@
 		width: 100%;
 		height: 100%;
 		background: rgba(0,0,0,.5);
-		z-index: 9999;
+		z-index: 9990;
 
 		&.transparent { background: transparent; }
 	}
@@ -74,19 +74,33 @@
 	}
 
 	.ui-datepicker {
-		top: 50% !important;
-		left: 50% !important;
+		top: 0% !important;
+		left: 0% !important;
 		padding: 10px;
-		margin: -185px 0 0 -240px;
-		width: 480px;
-		z-index: 99999 !important;
+		margin: 0;
+		z-index: 9999 !important;
+		.square(100%);
 		.background(@white);
 		.hide;
 
 		.ui-datepicker-header,
-		.ui-datepicker-calendar {
+		.ui-datepicker-calendar,
+		.ui-datepicker-buttonpane {
 			position: relative;
 			width: 100%;
+		}
+
+		.ui-datepicker-buttonpane {
+			text-align: center;
+			padding-top: 20px;
+
+			button {
+				display: inline-block;
+				.button;
+
+				&.ui-datepicker-current { margin-right: 20px; .button.blue; }
+				&.ui-datepicker-close { .button.green; }
+			}
 		}
 
 		.ui-datepicker-header {
@@ -101,6 +115,12 @@
 				vertical-align: middle;
 				text-align: center;
 				text-transform: uppercase;
+
+				.select {
+					display: inline-block;
+					min-width: 80px;
+					max-width: 120px;
+				}
 
 				select {
 					font-weight: 400;
@@ -199,7 +219,7 @@
 				}
 			}
 		}
-		
+
 		&.ui-datepicker-inline {
 			position: static;
 			top: auto !important;
@@ -209,64 +229,86 @@
 		}
 
 		&.ui-datepicker-multi-2 {
-			width: 980px !important;
-			margin-left: -480px;
+			width: 100% !important;
 
 			.ui-datepicker-group {
-				width: 480px;
-				.pull-left;
-			}
+				.hide;
 
-			.ui-datepicker-buttonpane {
-				clear: both;
-				width: 100%;
-				.show;
-
-				.ui-datepicker-current { .hide; }
-				
-				.ui-datepicker-close {
-					.button;
-					.green;
-				}
+				&.ui-datepicker-group-first { .show; }
 			}
 		}
+	}
 
-		&.reservation {
-			top: 460px !important;
-			background-image: none;
-			padding: 20px;
-			.box-shadow();
-			#border-radius > .rounded();
+	@media only screen and (min-width: 768px) {
+		.ui-datepicker {
+			top: 50% !important;
+			left: 50% !important;
+			margin: -185px 0 0 -240px;
+			.size(auto, 480px);
 
-			.ui-datepicker-header {
-				background-color: @grey1;
+			.ui-datepicker-buttonpane { .hide; }
+
+			&.ui-datepicker-multi-2 {
+				width: 980px !important;
+				margin-left: -480px;
+
+				.ui-datepicker-group {
+					width: 480px;
+					.show;
+					.pull-left;
+				}
+
+				.ui-datepicker-buttonpane {
+					clear: both;
+					width: 100%;
+					.show;
+
+					.ui-datepicker-current { .hide; }
+					
+					.ui-datepicker-close {
+						.button;
+						.green;
+					}
+				}
 			}
 
-			.ui-datepicker-group {
-				width: 460px;
-				.pull-left;
+			&.reservation {
+				top: 460px !important;
+				background-image: none;
+				padding: 20px;
+				.box-shadow();
+				#border-radius > .rounded();
 
-				&.ui-datepicker-group-first { margin-right: 20px; }
+				.ui-datepicker-header {
+					background-color: @grey1;
+				}
+
+				.ui-datepicker-group {
+					width: 460px;
+					.pull-left;
+
+					&.ui-datepicker-group-first { margin-right: 20px; }
+				}
+
+				&:after {
+	                content: "";
+	                position: absolute;
+	                top: -15px;
+	                width: 0; 
+	                height: 0; 
+	                border-bottom: 15px solid @white;
+	                border-left: 15px solid transparent;
+	                border-right: 15px solid transparent;
+	            }
+
+	            &.arriving {
+	            	&:after { left: 360px; }
+	            }
+
+	            &.departing {
+	            	&:after { right: 230px; }
+	            }
 			}
-
-			&:after {
-                content: "";
-                position: absolute;
-                top: -15px;
-                width: 0; 
-                height: 0; 
-                border-bottom: 15px solid @white;
-                border-left: 15px solid transparent;
-                border-right: 15px solid transparent;
-            }
-
-            &.arriving {
-            	&:after { left: 360px; }
-            }
-
-            &.departing {
-            	&:after { right: 230px; }
-            }
 		}
 	}
 
@@ -276,12 +318,9 @@
 		position: fixed;
 		top: 50%;
 		left: 50%;
-		height: auto;
 		z-index: 9999;
 		visibility: hidden;
-		.backface-visibility(hidden);
-		.transform3d(-50%, -50%, 0);
-		#border-radius > .rounded(3px);
+		.translate3d(-50%, -50%, 0);
 
 		#modal-close {
 			position: absolute;
@@ -312,7 +351,7 @@
 			z-index: 9990;
 			.background(@white);
 			#border-radius > .rounded(3px);
-			.transformScale(0.7);
+			.scale3d(0.5, 0.5, 1);
 			.opacity(0);
 			.transition;
 
@@ -340,7 +379,6 @@
 
 	                	&.data-off {
 	                		.switch-icon { .gradient(@redStart, @redEnd); }
-
 	                	}
 
 	                	&.data-on {
@@ -372,6 +410,12 @@
 
 				&.notice { margin-top: 0; }
 				&.solo { margin: 0; }
+			}
+
+			.notice {
+				font-size: 16px;
+				line-height: 24px;
+				font-weight: 400;
 			}
 
 			.text:not(.value) {
@@ -470,14 +514,14 @@
 
 		&.modal-show { 
 			visibility: visible; 
- 
+
 			.modal-content {
-				.transformScale(1);
+				.scale3d(1, 1, 1);
 				.opacity(100);
 			}
 		}
 
-		&.keyboard-lock { .transform3d(-50%, -15%, 0); }
+		&.keyboard-lock { .translate3d(-50%, -15%, 0); }
 
 		/* Custom positioning ***/
 		&[data-position="bottom-right"]{
@@ -485,7 +529,7 @@
 			left: auto;
 			bottom: 0;
 			right: 0;
-			.transform3d(0, 0, 0);
+			.translate3d(0, 0, 0);
 		}
 
 		&.ui-draggable { cursor: move; }
@@ -494,21 +538,15 @@
 	#modal-overlay,
 	.inline-modal-overlay {
 		position: fixed;
-		width: 100%;
-		height: 100%;
-		visibility: hidden;
 		top: 0;
 		left: 0;
-		z-index: 0;
-		opacity: 0;
 		background: rgba(0,0,0,0.5);
+		z-index: 9990;
+		.opacity(0);
+		.square(100%);
 		.transition;
 
-		&.modal-show { 
-			opacity: 1;
-			visibility: visible;
-			z-index: 9990;
-		}
+		&.modal-show { .opacity(100); }
 	}
 
 /* 6. IE
