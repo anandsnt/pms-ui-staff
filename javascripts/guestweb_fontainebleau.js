@@ -7,7 +7,7 @@
 //=require ../guestweb/static/lib/js/ui-bootstrap-tpls-0.10.0.js
 //=require ../guestweb/static/lib/js/angular-ui-router.js
 //= require ../guestweb/scripts/app.js
-//= require ../guestweb/scripts/app_router_galleria.js
+//= require ../guestweb/scripts/app_router_fontainebleau.js
 //= require ../guestweb/scripts/app_config.js
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater
