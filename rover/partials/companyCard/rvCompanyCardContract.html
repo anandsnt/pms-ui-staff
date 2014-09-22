@@ -58,13 +58,13 @@
                 
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
                 <div class="entry has-datepicker">
                     <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
@@ -132,13 +132,13 @@
 	                
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{addData.begin_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{addData.begin_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
                 <div class="entry has-datepicker">
                     <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{addData.end_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{addData.end_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
