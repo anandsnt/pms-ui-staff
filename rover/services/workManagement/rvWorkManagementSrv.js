@@ -7,24 +7,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.fetchStatistics = function() {
 			var deferred = $q.defer(),
-				url = '/api/accounts';
+				url = '/api/work_statistics';
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve({
-					"departures": {
-						"clean": 152,
-						"total_hours": "03.45",
-						"total_maids_required": 12,
-						"total_rooms_assigned": 2,
-						"total_rooms_completed": 3
-					},
-					"stay_overs": {
-						"clean": 12,
-						"total_hours": "1.45",
-						"total_maids_required": 12,
-						"total_rooms_assigned": 2,
-						"total_rooms_completed": 3
-					}
-				});
+				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
 			});
