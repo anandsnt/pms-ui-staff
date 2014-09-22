@@ -25,7 +25,7 @@ sntRover.controller('RVWorkManagementCreateDatePickerController', ['$scope', '$r
 			$scope.dateOptions = {
 				changeYear: true,
 				changeMonth: true,
-				maxDate: tzIndependentDate($rootScope.businessDate),
+				minDate: tzIndependentDate($rootScope.businessDate),
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
 					$("#" + ngDialog.latestID).remove();
