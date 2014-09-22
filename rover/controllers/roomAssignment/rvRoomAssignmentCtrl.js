@@ -182,6 +182,19 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
+			
+			if(data.data.is_room_auto_assigned == true){
+				
+				// ngDialog.open({
+			          // template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			          // controller: 'rvRoomAlreadySelectedCtrl',
+			          // className: 'ngdialog-theme-default',
+			          // scope: $scope
+		        // });
+			// }, 700);	
+			}
+			
+			
 			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
@@ -204,7 +217,18 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
-			$scope.errorMessage = error;
+			setTimeout(function(){
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAlreadySelected.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
+			}, 700);
+		
+			
+			
+			//$scope.errorMessage = error;
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);

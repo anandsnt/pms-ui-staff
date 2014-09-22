@@ -9,5 +9,10 @@ sntRover.controller('rvRoomAlreadySelectedCtrl',['$scope','$state',
 		$scope.assignRoom();
 	};
 	
+	$scope.clickedCloseButtonAlreadySelected = function(){
+		$scope.getRooms(true);
+		$scope.closeDialog();
+	};
+	
 	
 }]);
