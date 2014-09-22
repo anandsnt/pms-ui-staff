@@ -16,4 +16,9 @@
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     
-    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) "
+    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
+    "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
+    "SENT_TO_QUEUE":"SENT TO QUEUE",
+    "YES_SMALL":"Yes",
+    "NO_SMALL":"No",
+    "MINUTES_PRIOR_TO_ETA":"XX MINUTES PRIOR TO ARRIVAL TIME (ETA)"
