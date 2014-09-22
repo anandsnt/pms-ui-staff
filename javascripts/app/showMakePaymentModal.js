@@ -25,6 +25,9 @@ var ShowMakePaymentModal = function(backDom) {
 		setTimeout(function(){
 			createVerticalScroll('#available-cards');
 		}, 300);
+		that.myDom.find("#card-number").attr("readonly", true);
+		that.myDom.find("#expiry-month").attr("readonly", true);
+		that.myDom.find("#expiry-year").attr("readonly", true);
 	};
 	this.activateMakePaymentButton = function(){
 		if($("#card-number").val()!=''){
