@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state',
-function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state','$rootScope',
+function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -58,6 +58,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.prefetchData = data;
 			$scope.addIDForPaymentTypes();
 			$scope.prefetchData.linked_charge_codes = [];
+			$scope.prefetchData.symbolList = [ { value:"%",name:"percent" },{ value:$rootScope.currencySymbol,name:"amount" } ];
 		};
 		$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
 	};
@@ -83,6 +84,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state) {
 			$scope.isEdit = true;
 			$scope.isAdd = false;
 			$scope.prefetchData.amount = parseFloat($scope.prefetchData.amount).toFixed(2);
+			$scope.prefetchData.symbolList = [ { value:"%",name:"percent" },{ value:$rootScope.currencySymbol,name:"amount" } ];
 			
 			// Generating calculation rules list.
 			angular.forEach($scope.prefetchData.linked_charge_codes,function(item, index) {

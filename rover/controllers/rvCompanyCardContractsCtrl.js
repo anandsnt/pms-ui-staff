@@ -4,7 +4,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
+		
 		$scope.addData = {};
+
 		$scope.contractList.contractSelected = "";
 		$scope.contractList.current_contracts = [];
 		$scope.contractList.future_contracts = [];
@@ -358,11 +360,13 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			//Setup data for Add mode
 			$scope.hasOverlay = false;
 			$scope.contractList.isAddMode = true;
+			
 			$scope.addData.occupancy = [];
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
 			$scope.addData.selected_symbol = "+";
-			$scope.addData.selected_type = "$";
+			$scope.addData.selected_type = "amount";
+
 			$scope.addData.rate_value = 0;
 			var myDate = new Date($rootScope.businessDate);
 			myDate.setDate(myDate.getDate() + 1);
@@ -372,6 +376,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.addData.account_type = $stateParams.type;
 			}
+			$scope.addData.types = [ { value:"%",name:"percent" },{ value:$rootScope.currencySymbol,name:"amount" } ];
 		};
 		// Cancel Add New mode
 		$scope.CancelAddNewContract = function() {
@@ -385,8 +390,17 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * To add new contracts
 		 */
 		$scope.AddNewContract = function() {
+			
 
-			var data = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+			var selected_type = JSON.parse(JSON.stringify($scope.addData.selected_type));
+			console.log(selected_type);
+
+			var dataToPost = {};
+			dataToPost = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights','types']);
+			dataToPost['selected_type'] = selected_type;
+
+			console.log(dataToPost);
+			console.log(selected_type);
 
 			var saveContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -406,7 +420,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			if (account_id) {
 				$scope.invokeApi(RVCompanyCardSrv.addNewContract, {
 					"account_id": account_id,
-					"postData": data
+					"postData": dataToPost
 				}, saveContractSuccessCallback, saveContractFailureCallback);
 			}
 		};
@@ -491,7 +505,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * on selecting "%" , rate value must be integer
 		 */
 		$scope.$watch('addData.selected_type', function() {
-			if ($scope.addData.selected_type == "%") {
+			if ($scope.addData.selected_type == "percent") {
 				$scope.addData.rate_value = parseInt($scope.addData.rate_value);
 			} else {
 				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';

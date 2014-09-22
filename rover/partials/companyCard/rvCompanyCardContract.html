@@ -122,8 +122,9 @@
                     </div>
                     <input ng-model="addData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{addData.rate_value | number:2}}" type="text" />
                     <div class="select">
+                        {{addData.selected_type}}
                         <select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="addData.selected_type">
-                            <option ng-repeat="type in ['%','$']"  ng-selected="type===addData.selected_type" value="{{type}}">{{type}}</option>
+                            <option ng-repeat="type in addData.types"  ng-selected="type.name==addData.selected_type" value="{{type.name}}">{{type.value}}</option>
                         </select>
                     </div>
                     
