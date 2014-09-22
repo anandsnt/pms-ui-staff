@@ -15,7 +15,7 @@
 			<input type="text" ng-model="roomCharge" rv-delay-textbox delay="1000" function-to-fire="enableDisableButtons"  placeholder="Enter the room type charge" >
 		</div>
 		<div class="actions float is-disabled">
-			<button type="button" id="cancel-room-type-charge-modal" class="button blank modal-close">
+			<button type="button" id="cancel-room-type-charge-modal" class="button blank modal-close" ng-click="clickedCancelButton()">
 				CANCEL
 			</button>
 			<button type="button" id="nocharge" class="button green" ng-disabled="noChargeDisabled" ng-click="clickedNoChargeButton()">

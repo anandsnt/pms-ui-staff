@@ -5,7 +5,8 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 	$scope.noChargeDisabled = false;
 	$scope.chargeDisabled   = true;
 	$scope.roomCharge       = '';
-	console.log($scope);
+//	console.log($scope);
+	console.log($scope.oldRoomType+":::::::::::::::::"+$scope.roomType);
 	$scope.enableDisableButtons = function(){
 		
 		// setTimeout(function(){
@@ -57,6 +58,11 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 	$scope.clickedNoChargeButton = function(){
 		$scope.closeDialog();
 		$scope.assignRoom();
+	};
+	$scope.clickedCancelButton = function(){
+		$scope.roomType = $scope.oldRoomType;
+		$scope.getRooms();
+		$scope.closeDialog();
 	};
 	
 }]);
