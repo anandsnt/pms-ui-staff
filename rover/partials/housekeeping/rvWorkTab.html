@@ -22,7 +22,7 @@
     <!-- 2.B Work Tab - Room is dirty -->
     <div ng-if="checkShow('dirty') && !isCleaning">
       <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
-      <button type="button" class="button blue" ng-click="startCleaning()">Start</button> 
+      <button type="button" class="button blue action" ng-click="startCleaning()">Start</button> 
       <!-- Show this only if room is assigned to staff memeber -->
       <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>Full name</a>
     </div>
@@ -30,7 +30,7 @@
     <!-- 2.C Work Tab - Room is pickup -->
     <div ng-if="checkShow('pickup') && !isCleaning">
       <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
-      <button type="button" class="button blue" ng-click="startCleaning()">Start</button>
+      <button type="button" class="button blue action" ng-click="startCleaning()">Start</button>
       <!-- Show this only if room is assigned to staff memeber -->
       <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>Full name</a>
     </div>
