@@ -1,5 +1,6 @@
 sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv',
     function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv) {
+        
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementCreatePopup.html',
@@ -14,36 +15,36 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             searchQuery: "",
             employeeSearch: false, // Search can be either for rooms or an employee
             viewingDate: {
-                date: "",
-                day: 25,
-                month: 'September',
-                year: 2014
+                date: $rootScope.businessDate,
+                newWorkSheetDate : $rootScope.businessDate              
             },
             searchResults: []
         };
 
         var dummyRoomResults = [{
-            roomNumber : 45,
-            roomStatus : "room_status",
-            reservationStatus : "reservation_status",
-            departureTime : "departure-time"
-        },{
-            roomNumber : 65,
-            roomStatus : "room_status",
-            reservationStatus : "reservation_status",
-            departureTime : "departure-time"
+            roomNumber: 45,
+            roomStatus: "room_status",
+            reservationStatus: "INHOUSE",
+            departureTime: "06:54",
+            arrivalTime: "12:34"
+        }, {
+            roomNumber: 65,
+            roomStatus: "room_status",
+            reservationStatus: "CHECK-IN",
+            departureTime: "06:54",
+            arrivalTime: "12:34"
         }]
 
         var dummyEmnployeeResults = [{
-            roomNumber : 45,
-            roomStatus : "room_status",
-            reservationStatus : "reservation_status",
-            departureTime : "departure-time"
-        },{
-            roomNumber : 65,
-            roomStatus : "room_status",
-            reservationStatus : "reservation_status",
-            departureTime : "departure-time"
+            roomNumber: 45,
+            roomStatus: "room_status",
+            reservationStatus: "reservation_status",
+            departureTime: "departure-time"
+        }, {
+            roomNumber: 65,
+            roomStatus: "room_status",
+            reservationStatus: "reservation_status",
+            departureTime: "departure-time"
         }]
 
         $scope.workStats = wmStatistics;
@@ -53,11 +54,11 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         }
 
         $scope.continueCreateWorkSheet = function() {
-            $state.go('rover.workManagement.new');
+            $state.go('rover.workManagement.singleSheet');
             $scope.closeDialog();
         }
 
-        $scope.showWorkSheet = function(){
+        $scope.showWorkSheet = function() {
             $state.go('rover.workManagement.singleSheet');
         }
 
@@ -68,7 +69,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 $scope.stateVariables.searchResults = [];
                 if (searchKey.match(/[0-9]/)) {
                     var onRoomSearchSuccess = function(data) {
-                        console.log(data);
+                        $scope.stateVariables.searchResults = dummyRoomResults;
                         $scope.stateVariables.searching = true;
                         $scope.stateVariables.employeeSearch = false;
                         $scope.$emit('hideLoader');
@@ -93,10 +94,20 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 }
 
             } else {
+                $scope.stateVariables.searchResults = [];
                 $scope.stateVariables.searching = false;
             }
             $scope.$apply();
         }
 
+        $scope.showCalendar = function(controller) {
+            ngDialog.open({
+                template: '/assets/partials/workManagement/popups/rvWorkManagementSearchDateFilter.html',
+                controller: controller,
+                className: 'ngdialog-theme-default single-date-picker',
+                closeByDocument: true,
+                scope: $scope
+            });
+        }
     }
 ]);
