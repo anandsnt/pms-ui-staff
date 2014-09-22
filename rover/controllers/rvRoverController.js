@@ -122,18 +122,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_AVAILABILITY",
-          action: "",
-          iconClass: "icon-availability",
-          submenu: [{
-            title: "MENU_HOUSE_STATUS",
-            action: ""
-          }, {
-            title: "MENU_AVAILABILITY",
-            action: ""
-          }]
-        }, {
+        }, 
+        // {
+        //   title: "MENU_AVAILABILITY",
+        //   action: "",
+        //   iconClass: "icon-availability",
+        //   submenu: [{
+        //     title: "MENU_HOUSE_STATUS",
+        //     action: ""
+        //   }, {
+        //     title: "MENU_AVAILABILITY",
+        //     action: ""
+        //   }]
+        // }, 
+        {
           title: "MENU_FRONT_DESK",
           //hidden: true,
           action: "",
