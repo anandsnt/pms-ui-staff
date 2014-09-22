@@ -1,11 +1,11 @@
 /* 1. ROOT
 ==========================================================*/
-	.backface-visibility(@value: hidden) {
-  		-webkit-backface-visibility: @value;
-		-moz-backface-visibility: @value;
-		backface-visibility: @value;
-  	}
-
+	.backface-visibility(@value) {
+        -webkit-backface-visibility: @value;
+        -moz-backface-visibility: @value;
+        backface-visibility: @value;
+    }
+    
 /* Global transitions		==============================*/
 	.transition (@property: all, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90)) {
 		-webkit-transition: @property @duration @easing;
@@ -31,19 +31,20 @@
 		transform: rotate(@degrees);
 	}
 
-	.transform3d(@x, @y, @z) {
+	.translate3d(@x, @y, @z) {
 		-webkit-transform: translate3d(@x, @y, @z);
 		-moz-transform: translate3d(@x, @y, @z);
 		-ms-transform: translate3d(@x, @y, @z);
 		transform: translate3d(@x, @y, @z);
 	}
 
-	.transformScale(@zoom) {
-		-webkit-transform: scale(@zoom);
-		-moz-transform: scale(@zoom);
-		-ms-transform: scale(@zoom);
-		transform: scale(@zoom);
-	}
+	.scale3d(@x, @y, @z) {
+        -webkit-transform: scale3d(@x, @y, @z);
+        -moz-transform: scale3d(@x, @y, @z);
+        -ms-transform: scale3d(@x, @y, @z);
+        -o-transform: scale3d(@x, @y, @z);
+        transform: scale3d(@x, @y, @z);
+    }
 
 /* Global animations		==============================*/
 	#fade {

@@ -1,0 +1,124 @@
+<!-- Worksheet content -->
+<section id="worksheet-content" class="content worksheet-content" role="main">
+
+    <!-- Worksheet header -->
+    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
+        <div class="entry maid">
+            <label for="worksheet-employee">Maid</label>
+            <div class="select">
+                <select id="worksheet-employee" name="worksheet-employee">
+                    <option value="">Select Employee</option>
+                    <option value="{Selected Employee}">{Selected Employee}</option>
+                    <option value="{Employee 2}">{Employee 2}</option>
+                    ...  
+                </select>
+            </div>
+        </div>
+        <div class="entry task">
+            <label for="worksheet-work-type">Task</label>
+            <div class="select">
+                <select id="worksheet-work-type" name="worksheet-work-type">
+                    <option value="">All Work Types</option>
+                    <option value="daily-cleaning" selected>Daily Cleaning</option>
+                    ...
+                </select>
+            </div>
+        </div>
+        <div class="entry shift">
+            <label for="worksheet-shift">Shift</label>
+            <div class="select">
+                <select id="worksheet-shift" name="worksheet-shift">
+                    <option value="full" selected>Full 08:00</option>
+                    <option value="half">Half 04:00</option>
+                    ...
+                </select>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="button green">Save</button>
+            <button type="button" class="button grey">Print</button>
+            <button type="button" class="button red">Delete</button>
+        </div>
+    </form>
+
+    <!-- Single worksheet - unassigned rooms -->
+    <div class="unassigned-rooms">
+        <h2>Unassigned</h2>
+        <div class="worksheet-actions">
+            <div class="select">
+                <select id="worksheet-unassigned-room-status" name="worksheet-unassigned-room-status">
+                    <option value="" selected>All unassigned</option>
+                    <option value="dirty">Unassigned &amp; Dirty</option>
+                    <option value="pickup">Unassigned &amp; Pickup</option>
+                    ...
+                </select>
+            </div>
+        </div>
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable">
+            <ul class="wrapper">
+                <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
+                <li class="worksheet-room">
+                    <h3 class="{room-status}">{Room number}</h3>
+                    <div class="reservation-status">
+                        <div class="current {reservation-status}">
+                            <span class="guest-status {reservation-status}">{reservation-status}</span>
+                            <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
+                            <span>{departure-time}</span>
+                        </div>
+                        <div class="next {reservation-status}">
+                            <span class="guest-status {reservation-status}">{reservation-status}</span>
+                            <!-- Show only if applicable, {arrival-time} can only be time -->
+                            <span>{arrival-time}</span>
+                        </div>
+                    </div>
+                    <!-- If VIP guest 
+                    <span class="vip">VIP</span>-->
+                    <!-- If room is queued 
+                    <span class="icon icon-queued">Room queued</span>-->
+                    <button type="button" class="button green">Assign Room</button>
+                </li>                
+            </ul>
+        </div>  
+    </div>
+
+    <!-- Single worksheet - assigned rooms -->
+    <div class="assigned-rooms">
+        <h2>Assigned</h2>
+        <ul class="worksheet-summary">
+            <li>Time Allocated <span>{value}</span></li>
+            <li>Departures <span>{value}</span></li>
+            <li>Stayovers <span>{value}</span></li>
+            <li>Completed<span>{value}/{total}</span></li>
+        </ul> 
+        <div id="worksheet-assigned-rooms" class="worksheet-content scrollable">
+            <ul class="wrapper">
+                <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
+                <li class="worksheet-room">
+                    <h3 class="{room-status}">{Room number}</h3>
+                    <div class="reservation-status">
+                        <div class="current {reservation-status}">
+                            <span class="guest-status {reservation-status}">{reservation-status}</span>
+                            <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
+                            <span>{departure-time}</span>
+                        </div>
+                        <div class="next {reservation-status}">
+                            <span class="guest-status {reservation-status}">{reservation-status}</span>
+                            <!-- Show only if applicable, {arrival-time} can only be time -->
+                            <span>{arrival-time}</span>
+                        </div>
+                    </div>
+                    <!-- If VIP guest 
+                    <span class="vip">VIP</span>-->
+                    <!-- If room is queued 
+                    <span class="icon icon-queued">Room queued</span>-->
+                    
+                    <!-- If room not cleaned -->
+                    <button type="button" class="button red">Unassign Room</button>
+                    <!-- If room cleaned/inspected 
+                    <span class="no-action">Room {clean or inspected}</span> -->
+                </li>
+                ...
+            </ul>
+        </div>  
+    </div>
+</section>

@@ -38,31 +38,21 @@
 </section>
 
 <!-- Search panel : SEARCH BY NAME -->
-<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching">
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching && stateVariables.employeeSearch">
     <div class="wrapper">
-        <ul id="work-management-search-results" class="search-results">
-            <!-- Maid in room -->
+        <ul id="work-management-search-results" class="search-results">            
             <li class="employee">
-                <a href="{link}">
+                <a ng-click="showWorkSheet()">
                     <div class="data">
                         <h2>{Maid First and Last Name}</h2>
                     </div>
                     <div class="stayovers">{stayover rooms cleaned}/{total stayover rooms}</div>
                     <div class="departures">{departure rooms cleaned}/{total departure rooms}</div>
                     <div class="shift">{shift completed time}/{total shift time}</div>
+                    <!-- Maid in room -->
                     <div class="location room">{room number}</div>
-                </a>
-            </li>
-            <!-- Maid on floor -->
-            <li class="employee">
-                <a href="{link}">
-                    <div class="data">
-                        <h2>{Maid First and Last Name}</h2>
-                    </div>
-                    <div class="stayovers">{stayover rooms cleaned}/{total stayover rooms}</div>
-                    <div class="departures">{departure rooms cleaned}/{total departure rooms}</div>
-                    <div class="shift">{shift completed time}/{total shift time}</div>
-                    <div class="location floor">{floor number}<sup>{st, nd, rd or th}</sup> floor</div>
+                    <!-- Maid on floor -->
+                    <!-- <div class="location floor">{floor number}<sup>{st, nd, rd or th}</sup> floor</div> -->
                 </a>
             </li>
         </ul>
@@ -70,11 +60,11 @@
 </section> 
 
 <!-- Search panel : SEARCH BY ROOM NUMBER -->
-<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching">
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching && !stateVariables.employeeSearch">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">
            <li class="room">
-			<a href="{link}"> <!-- Add class="with-image" if room is occupied -->
+			<a ng-click="showWorkSheet()"> <!-- Add class="with-image" if room is occupied -->
 				<div class="data">
 					<h2 class="{room-status or out}">{room-number}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
 					<span class="room-status {room-status}">{room-status}</span>

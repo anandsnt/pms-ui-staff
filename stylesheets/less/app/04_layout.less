@@ -145,7 +145,7 @@ body { overflow: hidden; }
 		top: 50px;
 		.calc-height(100, 50);
 
-		/* With search bar ***/
+		/* HK search ***/
 		&#rooms {
 			top: 170px;
 			.calc-height(100, 170);
@@ -206,17 +206,19 @@ body { overflow: hidden; }
     	}
     }
 
-
 	/* 768px+		 		==============================*/
 	@media only screen and (min-width: 768px) {
 		.content {
-			
+			top: 60px;
+			.calc-height(100, 60);
+
 			/* With search bar ***/
 			&#dashboard,
 			&#dashboard-search,
 			&#search,
 			&#find-cards,
-			&#search-cards-wrapper {
+			&#work-management-search,
+			&#work-management {
 				top: 120px;
 				.calc-height(100, 120);
 			}
@@ -245,34 +247,33 @@ body { overflow: hidden; }
 			&#guest-info {
 				top: 110px;
 				.calc-height(100, 130);
-
 			}
 
 			/* Stay Card / Reservations ***/
 			&.stay-card-inner,
 			&.reservations-inner {
 				top: 150px;
-				.calc-height(100, 150); /* %, px */
+				.calc-height(100, 150);
 			}
 
 			/* Social Lobby ***/
 			&.social-lobby-content {
 				top: 120px;
-				.calc-height(100, 180); /* %, px */
+				.calc-height(100, 180);
 			}
 
 			/* Messages ***/
 			&.messages-content {
 				top: 60px;
-				.calc-height(100, 120); /* %, px */
+				.calc-height(100, 120);
 			}
 
 			/* Reviews ***/
 			&.reviews-content {
 				top: 60px;
-				.calc-height(100, 60); /* %, px */
+				.calc-height(100, 60);
 			}
-		}	
+		}
 	}
 
 /* App screen transitions 	==============================*/
@@ -713,6 +714,14 @@ body { overflow: hidden; }
 
 						&:first-child { margin-right: 10px; }
 					}
+
+					.has-datepicker {
+						position: relative;
+						.pull-left;
+						.calc-width(50, 5);
+
+						input { width: 100%; }
+					}
 				}
 			}
 
@@ -726,6 +735,8 @@ body { overflow: hidden; }
 					}
 				}
 			}
+
+			&.hidden { display: block !important; }
 		}
 
 		&.has-filters {
@@ -886,8 +897,6 @@ body { overflow: hidden; }
 					}
 				}
 			}
-
-			&.hidden { display: block !important; }
 		}
 	}
 
@@ -898,6 +907,18 @@ body { overflow: hidden; }
 
 			.entry {
 				.query { padding-left: 40px; }
+
+				/*&#lobby-search,
+				&#messages-search {
+					padding-left: 10px;
+					border-left: 1px solid rgba(0,0,0,.1);
+					
+					.icon-search { left: 20px }
+					#query { position: static; }
+				}
+
+				&#lobby-search { .calc-width(100, 60);  }
+				&#messages-search { .calc-width(100, 110);  }*/
 			}
 
 			.add-new-button { 
@@ -908,8 +929,17 @@ body { overflow: hidden; }
 				.pull-right;
 			}
 
+			&.has-options {
+				.entry {
+					&.options {
+						input,
+						select { min-height: 39px; height: 39px; }
+					}
+				}
+			}
+
 			&.has-filters {
-				
+
 				&.has-options {
 					.entry {
 						&.search { .calc-width(50, 50); }
@@ -1255,6 +1285,8 @@ body { overflow: hidden; }
 				a { 
 					color: @green;
 					font-weight: 600;
+
+					&.no-add { color: @orange; }
 				}
 			}
 
@@ -1393,6 +1425,8 @@ body { overflow: hidden; }
 			}
 		}
 
+		> .wrapper { padding: 20px; }
+
 		&.check-in {
 			.reservation-header {
 				.data {
@@ -1469,6 +1503,130 @@ body { overflow: hidden; }
 			@media @highdpi { background-size: 40px; }
 		}
 	}
+
+/* Dashboard block			==============================*/
+	
+	.dashboard-block {
+		padding-bottom: 20px;
+	    margin-bottom: 20px;
+
+	    ul {
+	        li {
+	            margin-bottom: 10px;
+	            .show;
+	        }
+
+	        &:not(.actions) { width: 100%; }
+	    }
+
+		.data,
+		&.data {
+            li {
+                line-height: 36px;
+                vertical-align: middle;
+                padding-bottom: 5px;
+                margin-bottom: 5px;
+                text-transform: uppercase;
+                width: 100%;
+                border-bottom: 1px solid rgba(0,0,0,.1);
+
+                strong,
+                span {
+                    line-height: 1em;
+                    color: @textColor;
+                    .show;
+                    .pull-right;
+
+                    &.green { color: @green; }
+                    &.red { color: @red; }
+                    &.blue { color: @blue; }
+                    &.yellow { color: @yellow; }
+                    &.orange { color: @logoPrimary; }
+
+                    &.no-data {
+                        font-size: 1em;
+                        line-height: 30px;
+                        color: @grey4;
+                        text-transform: none;
+                        font-weight: 400;
+                        font-style: italic;
+                    }
+                }
+
+                strong { font-size: 36px; }
+
+                span {
+                    font-size: 30px;
+                    font-weight: 300;                                
+                }
+
+                &:last-child {
+                    padding-bottom: 0;
+                    margin-bottom: 0;
+                    border-bottom: 0;
+                }
+            }
+        }
+	}
+
+	/* 768px+               ==============================*/
+    @media only screen and (min-width: 768px) {
+        .dashboard-block {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            .flex(center);
+            .float;
+
+            ul {
+                li {
+                    margin-bottom: 0;
+                    .pull-left;
+                }
+            }
+
+           	.data,
+           	&.data {
+                li {
+                    text-align: center;
+                    line-height: 1em;
+                    margin: 0 40px 0 0;
+                    border-bottom: 0;
+                    padding-bottom: 0;
+                    color: @grey3;
+                    .calc-width(20, 32);
+
+                    strong,
+                    span {
+                        font-size: 48px;
+                        font-weight: 300;
+                        float: none;
+
+                        &.no-data {
+                            font-size: 16px;
+                            line-height: 1em;
+                            padding: 16px 0;
+                        }
+                    }
+
+                    i { .show; }
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+        }
+    }
+
+    /* 1360px+               ==============================*/
+    @media only screen and (min-width: 1360px) {
+    	.dashboard-block {
+           	.data,
+           	&.data {
+                li {
+                    i { display: inline; }
+                }
+            }
+        }
+    }
 	
 /* 6. IE
 ==========================================================*/
