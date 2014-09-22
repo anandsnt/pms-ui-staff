@@ -57,6 +57,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    	// single calculate the class required
 					    	// will require additional call from details page
 					    	room.roomStatusClass = this.setRoomStatusClass(room);
+
+					    	room.reservationStatusClass = this.setReservationStatusClass(room);
 					    }
 
 					    deferred.resolve(this.roomList);
@@ -120,31 +122,48 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
 		this.setRoomStatusClass = function(room){
-
 			if(this.roomList.checkin_inspected_only == "true"){
 				if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-					return 'room-clean';
+					return 'clean';
 				}
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
+					return 'pickup';
 				}
 			}
 			else {
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-					return 'room-clean';
+					return 'clean';
 				}
 				if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
+					return 'pickup';
 				}
 			}
 
-			if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
-				return 'room-dirty';
+			if( (room.hk_status.value == 'DIRTY') && !room.is_occupied ) {
+				return 'dirty';
 			}
-			if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-				return 'room-out';
+			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ){
+				return 'out';
 			}
+
 			return '';
+		};
+
+		// Moved from ctrl to srv as this is calculated only once
+		// keept as msg so that it can be called from crtl if needed
+		this.setReservationStatusClass = function(room){
+			if ( room.room_reservation_status == 'Due Out' || room.room_reservation_status == 'Departed' ) {
+				return 'check-out';
+			} else if ( room.room_reservation_status == 'STAYOVER' ) {
+				return 'inhouse';
+			}
+
+			if ( room.room_reservation_status == 'Arrival' || room.room_reservation_status == 'Arrived' ) {
+				return 'check-in';
+			}
+
+			// room not allocated
+			return 'no-show';
 		};
 
 		// when user edit the room on details page
