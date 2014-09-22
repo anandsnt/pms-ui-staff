@@ -21,6 +21,9 @@
             for (var i=15; i<=300; i=i+15){
               $scope.prior_minutes.push(i);
             }
+            $scope.excludedRateCodes=[];
+            $scope.excludedBlockCodes=[];
+
       };
 
       $scope.init();
@@ -47,8 +50,8 @@
           //$scope.checkinData.is_sent_to_que_flag = ($scope.checkinData.is_sent_to_que=== 'true') ? true:false;
 $scope.checkinData.is_precheckin_only_flag = true;
 $scope.checkinData.is_sent_to_que_flag = true;
-
-
+$scope.checkinData.rate_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
+$scope.checkinData.block_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
           $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
              $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
           })
@@ -100,5 +103,24 @@ $scope.checkinData.is_sent_to_que_flag = true;
      };
     $scope.invokeApi(adCheckinSrv.save, uploadData,saveCheckinDetailsSuccessCallback,saveCheckinDetailsFailureCallback);
   };
+  $scope.clickExcludeRateCode = function(){
+    //Removing the selected room type from dropdown of room type list.
+    angular.forEach($scope.checkinData.rate_codes,function(item, index) {
+    if((item.value == $scope.checkinData.selected_rate_code) && ( $scope.excludedRateCodes.indexOf(item) == -1) ){
+      $scope.excludedRateCodes.push(item);
+    }
+    });
+   
+    $scope.checkinData.selected_rate_code = "";
+};
+  $scope.deleteRateCode = function(id){
+    //Removing the selected room type from dropdown of room type list.
+    angular.forEach($scope.checkinData.rate_codes,function(item, index) {
+    if(item.value == id){
+      $scope.excludedRateCodes.splice(index,1);
+    }
+    });
+   
+};
 
 }]);
