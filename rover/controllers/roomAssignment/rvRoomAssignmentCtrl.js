@@ -66,7 +66,6 @@ sntRover.controller('RVroomAssignmentController',[
 			}
 		}
 		var params = {};
-		//console.log("....."+$scope.roomType)
 		params.reservation_id = $stateParams.reservation_id;
 		params.room_type = $scope.roomType;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
@@ -84,6 +83,9 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
+	
+		
+		
 		var showOccupancyMessage = false;
 		if($scope.filteredRooms[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
 				if($scope.filteredRooms[index].room_max_occupancy < $scope.reservation_occupancy){
@@ -99,6 +101,8 @@ sntRover.controller('RVroomAssignmentController',[
 		
 		$scope.assignedRoom = $scope.filteredRooms[index];
 		if(showOccupancyMessage){
+	    //if(true){
+	    	$scope.oldRoomType = oldRoomType;
 			ngDialog.open({
                   template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
                   controller: 'rvMaximumOccupancyDialogController',
@@ -114,7 +118,6 @@ sntRover.controller('RVroomAssignmentController',[
 			}
 			
 		}
-		
 
 	};
 	$scope.openApplyChargeDialog = function(){
@@ -127,7 +130,8 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 
 	$scope.occupancyDialogSuccess = function(){
-		$scope.assignRoom();			
+		//$scope.assignRoom();	
+		$scope.openApplyChargeDialog();		
 	};
 	// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 	var updateSearchCache = function() {

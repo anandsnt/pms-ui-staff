@@ -5,8 +5,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 	$scope.noChargeDisabled = false;
 	$scope.chargeDisabled   = true;
 	$scope.roomCharge       = '';
-//	console.log($scope);
-	console.log($scope.oldRoomType+":::::::::::::::::"+$scope.roomType);
+
 	$scope.enableDisableButtons = function(){
 		
 		// setTimeout(function(){
@@ -27,7 +26,6 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 		
 	};
 	$scope.clickChargeButton = function(){
-		
 		var data = {
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"room_no": $scope.assignedRoom.room_number,
@@ -51,17 +49,32 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 		
 	};
 	$scope.successCallbackUpgrade = function(data){
+
 		$scope.$emit('hideLoader');
-		$scope.closeDialog();
-		$scope.assignRoom();
+		console.log("dddddd===========")
+		console.log(data)
+		if(data.data.is_room_auto_assigned == true){
+			$scope.roomAssignedByOpera = data.data.room;
+			
+			setTimeout(function(){
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
+			}, 700);
+		} else {
+			$scope.closeDialog();
+		    $scope.assignRoom();
+		}
+
 	};
 	$scope.clickedNoChargeButton = function(){
 		$scope.closeDialog();
 		$scope.assignRoom();
 	};
 	$scope.clickedCancelButton = function(){
-		
-		console.log(">>>"+$scope.roomType)
 		$scope.getRooms(true);
 		$scope.closeDialog();
 	};
