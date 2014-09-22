@@ -297,6 +297,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.$broadcast('resetCalendar');
         };
 
+        $scope.goBackToRates = function($event) {
+            $state.go('admin.rates');
+        };
+
         $scope.shouldShowAddNewDateRange = function() {
             if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
                 return false;

@@ -179,7 +179,8 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             if ($scope.companySearchText.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-
+            } else if($scope.companySearchText.length === 1) {
+                $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
             } else if($scope.companySearchText.length > 2){
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
