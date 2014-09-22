@@ -1,39 +1,46 @@
-<div class="room-actions dual-select">
-  <div class="select">
-    <select id="work-type" name="work-type">
-      <option value="">All Work Types</option>
-      <option value="daily-cleaning" selected>Daily Cleaning</option>
-    </select>
+<div ng-controller="RVHKWorkTabCtrl">
+  <div class="room-actions dual-select">
+    <div class="select">
+      <select id="work-type" name="work-type" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList">
+        <option value="">All Work Types</option>
+      </select>
+    </div>
+    <div class="select">
+      <!-- Disable when cleaning in progrees. -->
+      <select id="room-status" name="room-status" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-disabled="isCleaning"></select>
+    </div>
   </div>
-  <div class="select">
-    <!-- Disable when cleaning in progrees. -->
-    <select id="room-status" name="room-status">
-        <option value="clean">Clean</option>
-        <option value="dirty">Dirty</option>
-        <option value="pickup">Pickup</option>
-        <option value="inspected">Inspected</option>
-    </select>
+
+  <div id="room-content" class="room-content">
+
+    <!-- 2.A Work Tab - Room is clean -->
+    <div ng-if="checkShow('clean')">
+      <strong class="h2">Room is clean.</strong>
+      <span class="icon-no-content icon-ok"></span> 
+    </div>
+    
+    <!-- 2.B Work Tab - Room is dirty -->
+    <div ng-if="checkShow('dirty') && !isCleaning">
+      <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
+      <button type="button" class="button blue" ng-click="startCleaning()">Start</button> 
+      <!-- Show this only if room is assigned to staff memeber -->
+      <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>Full name</a>
+    </div>
+
+    <!-- 2.C Work Tab - Room is pickup -->
+    <div ng-if="checkShow('pickup') && !isCleaning">
+      <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
+      <button type="button" class="button blue" ng-click="startCleaning()">Start</button>
+      <!-- Show this only if room is assigned to staff memeber -->
+      <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>Full name</a>
+    </div>
+    
+    <!-- 2.D Work Tab - Room cleaning in progress -->
+    <div ng-if="isCleaning">
+      <strong class="h2">Work is in Progress.</strong>
+      <span class="progress"></span>
+      <button type="button" class="button green action" ng-click="doneCleaning()">Done!</button>
+    </div>
+
   </div>
-</div>
-<div id="room-content" class="room-content">
-  <!-- 2.A Work Tab - Room is clean 
-  <strong class="h2">Room is clean.</strong>
-  <span class="icon-no-content icon-ok"></span> -->
-
-  <!-- 2.B Work Tab - Room is dirty 
-  <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
-  <button type="button" class="button blue">Start</button> 
-  <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>{Employe First and Last Name}</a> // Show this only if room is assigned to staff memeber
-  -->
-
-  <!-- 2.C Work Tab - Room is pickup 
-  <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
-  <button type="button" class="button blue">Start</button>
-  <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>{Employe First and Last Name}</a> // Show this only if room is assigned to staff memeber
-  -->
-
-  <!-- 2.D Work Tab - Room cleaning in progress -->
-  <strong class="h2">Work is in Progress.</strong>
-  <span class="progress"></span>
-  <button type="button" class="button green action">Done!</button>
 </div>

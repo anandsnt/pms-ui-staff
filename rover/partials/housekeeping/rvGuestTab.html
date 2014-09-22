@@ -1,5 +1,5 @@
 <!-- 1.A Guest Tab - Room vacant, not queued -->
-<div class="no-content" ng-if="data.room_details.is_occupied == 'false'">
+<div class="no-content" ng-if="roomDetails.is_occupied == 'false'">
   <div class="info">
     <span class="icon-no-content icon-room"></span>
     <strong class="h1" translate>ROOM_IS_VACANT.</strong>
@@ -10,9 +10,9 @@
 <div id="room-content" class="room-content">
   <strong class="h2">Room is queued.</strong>
   <figure class="guest-image">
-    <img src="{{ data.room_details.avatar_src }}" alt="">
+    <img src="{{ roomDetails.avatar_src }}" alt="">
   </figure>
-  <p>Queued for <em>{{ data.room_details.guest_name }}</em></p>
+  <p>Queued for <em>{{ roomDetails.guest_name }}</em></p>
 </div> -->
 
 <!-- 1.C Guest Tab - Room Occupied -->
@@ -27,19 +27,19 @@
     </select>
   </div>
 </div>
-<div class="room-content scrollable" ng-if="data.room_details.is_occupied == 'true'">
+<div class="room-content scrollable" ng-if="roomDetails.is_occupied == 'true'">
   <div class="wrapper">
     <strong class="h2">
-      {{ data.room_details.current_room_reservation_status }}.
-      <span class="green" ng-if="data.room_details.current_room_reservation_status == 'DUE IN'">Arriving at {{ data.room_details.arrival_time }}.</span>
-      <span class="red" ng-if="data.room_details.current_room_reservation_status == 'ARRIVED'">Departing at {{ data.room_details.departure_time }}.</span>
+      {{ roomDetails.current_room_reservation_status }}.
+      <span class="green" ng-if="roomDetails.current_room_reservation_status == 'DUE IN'">Arriving at {{ roomDetails.arrival_time }}.</span>
+      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED'">Departing at {{ roomDetails.departure_time }}.</span>
     </strong>
     <figure class="guest-image">
-      <img src="{{ data.room_details.avatar_src }}" alt="">
+      <img src="{{ roomDetails.avatar_src }}" alt="">
     </figure>
     <h2>
       <span class="guest-status {{ guestViewStatus }}"></span>
-      <span class="name">{{ data.room_details.guest_name }}</span>
+      <span class="name">{{ roomDetails.guest_name }}</span>
     </h2>
   </div>
 </div>

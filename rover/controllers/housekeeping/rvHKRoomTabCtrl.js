@@ -9,21 +9,26 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		// keep ref to room details in local scope
+		var updateRoom = $scope.$parent.updateRoom;
+		$scope.roomDetails = $scope.$parent.roomDetails;
+
 		// oo/os save request param object
-		$scope.roomServices = { room_id: $stateParams.id };
+		$scope.roomServices = { room_id: $scope.roomDetails.id };
 
 		// original room status when user opened room tab
-		// var originalStatusId = rooms[$stateParams.id].room_reservation_hk_status;
-		var originalStatusId = 3;
+		var originalStatusId = $scope.roomDetails.room_reservation_hk_status;
 
-		// hope so
+		// in service id, what if it changes in future?
 		var inServiceId = 1;
 
-		// by default room is in service
+		// by default lets assume room is in service
 		$scope.inService = true;
 
 		// by default dont show the form
 		$scope.showForm = false;
+
+
 
 		// fetch room service status list
 		$scope.roomServiceStatusList = [];
@@ -41,10 +46,12 @@ sntRover.controller('RVHKRoomTabCtrl', [
 			// find and update ooOsTitle
 			$scope.ooOsTitle = item.description;
 
-			// check if room in service
+			// check and update if room in service
 			$scope.inService = $scope.roomServices.room_service_status_id != inServiceId ? false : true;
 		};
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomServiceStatusList, {}, rsslCallback);
+
+
 
 		// fetch maintenance reasons list
 		$scope.maintenanceReasonsList = [];
@@ -62,7 +69,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		// set the default dates for to date
 		$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );
 
-		$scope.formDateChanged = function() {
+		$scope.fromDateChanged = function() {
 			$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($scope.roomServices.from_date), 'yyyy-MM-dd' );
 		};
 
@@ -124,8 +131,9 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				// room is defnetly not in service
 				$scope.inService = false;
 
-				// change the original status
+				// change the original status and update the 'room_reservation_hk_status' in parent
 				originalStatusId = $scope.roomServices.room_service_status_id;
+				updateRoom( 'room_reservation_hk_status', $scope.roomServices.room_service_status_id );
 
 				// reset dates and reason and comment
 				$scope.roomServices.from_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );

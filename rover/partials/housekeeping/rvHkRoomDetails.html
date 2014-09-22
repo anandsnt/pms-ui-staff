@@ -12,10 +12,10 @@
     <section id="room-details" class="content">
       
       <!-- {room-status} can be clean, dirty, pickup, inspected or out -->
-      <header id="room-header" class="room-header clean" role="banner" > 
+      <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner"> 
           <div class="icons icon-room">
-            <h1>{{ data.room_details.current_room_no }}</h1>
-            <span>{{ data.room_details.room_type.name }}</span>
+            <h1>{{ roomDetails.current_room_no }}</h1>
+            <span>{{ roomDetails.room_type.name }}</span>
           </div>
           <ul id="room-detail-options" class="display">
             <li ng-class="{ 'active': openTab === 'Guest' }" ng-click="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>

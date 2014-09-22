@@ -5,18 +5,21 @@ sntRover.service('RVHkRoomDetailsSrv', [
 	'$window',
 	function($http, $q, rvBaseWebSrvV2, $window) {
 
+		this.roomDetails = {};
+
 		this.fetch = function(id){
 			var deferred = $q.defer();
 			var url = '/house/room/' + id + '.json';
 
 			$http.get(url).success(function(response, status) {
 				if(response.status == "success"){
-			    	deferred.resolve(response.data);
+					this.roomDetails = response.data.room_details;
+			    	deferred.resolve(this.roomDetails);
 			    }else{
 			    	deferred.reject(response);
 			    }
 
-			}).error(function(response, status) {
+			}.bind(this)).error(function(response, status) {
 				if(status == 401){ // 401- Unauthorized
 					// so lets redirect to login page
 					$window.location.href = '/house/logout' ;
@@ -109,6 +112,27 @@ sntRover.service('RVHkRoomDetailsSrv', [
 				}.bind(this), function(data){
 					deferred.reject(data);
 				});
+
+			return deferred.promise;
+		};
+
+		// get all all WorkTypes
+		var workTypesList = [];
+		this.getWorkTypes = function() {
+			var deferred = $q.defer(),
+				url = 'api/work_types';
+
+			if ( workTypesList.length ) {
+				deferred.resolve(workTypesList);
+			} else {
+				rvBaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						workTypesList = data.results;
+						deferred.resolve(workTypesList);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
 
 			return deferred.promise;
 		};
