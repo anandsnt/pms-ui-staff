@@ -15,3 +15,4 @@
 //= require_tree ../guestweb/checkoutlater
 //= require_tree ../guestweb/checkoutnow
 //= require_tree ../guestweb/checkin
+//= require_tree ../guestweb/ccAndRoom
