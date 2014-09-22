@@ -66,25 +66,29 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 filterData.allRates = data.results;
                 filterData.rates = data.results;
 
-                if(filterData.rate_types.length > 0) {
+                /*if(filterData.rate_types.length > 0) {
                     filterData.isResolved = true;
-                }
-            };
-
-            $scope.invokeApi(RMFilterOptionsSrv.fetchRates, {}, fetchRatesSuccessCallback);
-            
-            var fetchRateTypesSuccessCallback = function(data) {
+                }*/
+            },
+            fetchRateTypesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
                 filterData.rate_types = data;
 
-                if(filterData.allRates.length > 0 && 
+                /*if(filterData.allRates.length > 0 && 
                    filterData.rates.length > 0) {
                     filterData.isResolved = true;
-                }
+                }*/
             };
 
-            $scope.invokeApi(RMFilterOptionsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback);
+            $scope.invokeApi(RMFilterOptionsSrv.fetchRates, {}, fetchRatesSuccessCallback).then(function(data) {
+                filterData.isPending = true;
+                filterData.isResolved = false;
+                return $scope.invokeApi(RMFilterOptionsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback);
+            }).then(function(data) {
+                filterData.isPending = false;
+                filterData.isResolved = true;
+            });         
         };
 
         $scope.fetchFilterOptions();

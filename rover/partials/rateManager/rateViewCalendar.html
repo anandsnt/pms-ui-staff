@@ -4,12 +4,12 @@
 		<thead>
 			<tr>
 				<th width="220" style="{width:th.width}" class="first-row">
-				<button ng-click="openCloseAllRestrictions('remove')" class="button green" ng-class="{'open': calendarData.disableOpenAllBtn}" ng-disabled="calendarData.disableOpenAllBtn">
-					Open All
-				</button>
-				<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
-					Close All
-				</button></th>
+					<button ng-click="openCloseAllRestrictions('remove')" class="button green" ng-class="{'open': calendarData.disableOpenAllBtn}" ng-disabled="calendarData.disableOpenAllBtn">
+						Open All
+					</button>
+					<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
+						Close All
+					</button></th>
 				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" class="cell">
 					<div class="date-header">
 						<span class="week-day">{{date| date:'EEEE'}}</span>
@@ -26,7 +26,7 @@
 
 				<td ng-repeat="date in calendarData.dates" class="cell" >
 					<div class="cell-container" >
-						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
+						<div style="cursor: pointer;" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
 							<div>
 								<div>
 									<div>
@@ -52,7 +52,7 @@
 				</td>
 				<td ng-repeat="date in calendarData.dates" class="cell" >
 					<div class="cell-container" >
-						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
+						<div style="cursor: pointer;" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
 							<div>
 								<div>
 									<div>
