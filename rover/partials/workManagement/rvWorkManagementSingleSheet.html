@@ -1,5 +1,6 @@
+<div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Worksheet content -->
-<section id="worksheet-content" class="content worksheet-content" role="main">
+<section id="worksheet-content" class="content worksheets" role="main">
 
     <!-- Worksheet header -->
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
@@ -18,7 +19,6 @@
             <label for="worksheet-work-type">Task</label>
             <div class="select">
                 <select id="worksheet-work-type" name="worksheet-work-type">
-                    <option value="">All Work Types</option>
                     <option value="daily-cleaning" selected>Daily Cleaning</option>
                     ...
                 </select>
@@ -42,22 +42,33 @@
     </form>
 
     <!-- Single worksheet - unassigned rooms -->
-    <div class="unassigned-rooms">
+    <div class="unassigned-rooms single-sheet">
         <h2>Unassigned</h2>
         <div class="worksheet-actions">
             <div class="select">
-                <select id="worksheet-unassigned-room-status" name="worksheet-unassigned-room-status">
+                <select id="worksheet-unassigned-room-status" name="worksheet-unassigned-room-status"><!-- Add class="placeholder" if value="" is selected -->
                     <option value="" selected>All unassigned</option>
                     <option value="dirty">Unassigned &amp; Dirty</option>
                     <option value="pickup">Unassigned &amp; Pickup</option>
                     ...
                 </select>
             </div>
+            <div class="select">
+                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor"><!-- Add class="placeholder" if value="" is selected -->
+                    <option value="" selected>All floors</option>
+                    <option value="1">1st Floor</option>
+                    <option value="2">2nd Floor</option>
+                    <option value="3">3rd Floor</option>
+                    <option value="4">4th Floor</option>
+                    <option value="5">5th Floor</option>
+                    <option value="6">6th Floor</option>
+                </select>
+            </div>
         </div>
         <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable">
-            <ul class="wrapper">
+            <ul class="sortable wrapper">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room">
+                <li class="worksheet-room single-sheet unassigned">
                     <h3 class="{room-status}">{Room number}</h3>
                     <div class="reservation-status">
                         <div class="current {reservation-status}">
@@ -76,13 +87,14 @@
                     <!-- If room is queued 
                     <span class="icon icon-queued">Room queued</span>-->
                     <button type="button" class="button green">Assign Room</button>
-                </li>                
+                </li>
+                ....
             </ul>
         </div>  
     </div>
 
     <!-- Single worksheet - assigned rooms -->
-    <div class="assigned-rooms">
+    <div class="assigned-rooms single-sheet">
         <h2>Assigned</h2>
         <ul class="worksheet-summary">
             <li>Time Allocated <span>{value}</span></li>
@@ -91,9 +103,20 @@
             <li>Completed<span>{value}/{total}</span></li>
         </ul> 
         <div id="worksheet-assigned-rooms" class="worksheet-content scrollable">
-            <ul class="wrapper">
+            <!-- 1. New sheet, no rooms assigned 
+            <ul class="sortable wrapper placeholder"></ul>
+            <div id="initial-no-content" class="no-content">
+                <div class="info">
+                    <span class="icon-no-content icon-housekeeping"></span>
+                    <strong class="h1">No room assigned.</strong>
+                    <span class="h2">Drag and drop rooms to assign.</span> 
+                </div>
+            </div>-->
+
+            <!-- 2. Existing sheet, with rooms assigned -->
+            <ul class="sortable wrapper">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room">
+                <li class="worksheet-room single-sheet assigned">
                     <h3 class="{room-status}">{Room number}</h3>
                     <div class="reservation-status">
                         <div class="current {reservation-status}">

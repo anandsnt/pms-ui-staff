@@ -5,7 +5,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope',
 		$rootScope.setPrevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
-		}
+		}		
+
+		$scope.selectEmployee = function(data){
+			console.log(data);
+		};
 
 		$scope.employeeList = [{
 			name: "Maid 1",
@@ -18,7 +22,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope',
 			ticked: false
 		}, {
 			name: "Maid 4",
-			maker: "(Apple)",
 			ticked: false
 		}, {
 			name: "Maid 5",
@@ -34,7 +37,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope',
 			ticked: false
 		}, {
 			name: "Maid 9",
-			maker: "(Apple)",
 			ticked: false
 		}, {
 			name: "Maid 10",

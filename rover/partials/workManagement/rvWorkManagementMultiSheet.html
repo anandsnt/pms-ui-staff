@@ -1,22 +1,13 @@
-<!-- Worksheet content -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div multi-select input-model="modernWebBrowsers" button-label="icon name" item-label="icon name maker" tick-property="ticked"></div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<section id="worksheet-content" class="content worksheet-content" role="main">
+
+
+<!-- Worksheet content -->
+<section id="worksheet-content" class="content worksheets" role="main">
+
     <!-- Worksheet header -->
-   
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
-        <div class="entry">
-            <label id="worksheet-date-label" for="worksheet-date">Date</label>
+        <div class="entry date">
+            <label for="worksheet-date">Date</label>
             <div class="entry-data">
                 <input name="worksheet-date" id="worksheet-date" type="text" class="datepicker" value="{date}" readonly />
                 <strong id="worksheet-date-day" class="day">{day}</strong>
@@ -24,20 +15,20 @@
                 <span id="worksheet-date-year" class="year">{year}</span>
             </div>
         </div>
-        <div class="select">
-            <select id="worksheet-employees" name="worksheet-employees" class="placeholder">
-                <option value="" selected>Select up to 6 employees</option>
-                <option value="{Employee 1}">{Employee 1}</option>
-                <option value="{Employee 2}">{Employee 2}</option>
-                ...  
-            </select>
+        <div class="entry employees">
+            <label for="worksheet-employees">Employees</label>
+            <!-- MOdified angular multi select template based on https://raw.githubusercontent.com/isteven/angular-multi-select/master/angular-multi-select.js, lines 71-106 -->
+            <div multi-select input-model="employeeList" button-label="icon name" item-label="icon name maker"  on-item-click="$scope.selectEmployee(data)" tick-property="ticked"></div>
         </div>
-        <div class="select">
-            <select id="worksheet-work-type" name="worksheet-work-type">
-                <option value="">All Work Types</option>
-                <option value="daily-cleaning" selected>Daily Cleaning</option>
-                ...
-            </select>
+        <div class="entry task">
+            <label for="worksheet-work-type">Work Type</label>
+            <div class="select">
+                <select id="worksheet-work-type" name="worksheet-work-type">
+                    <option value="">All Work Types</option>
+                    <option value="daily-cleaning" selected>Daily Cleaning</option>
+                    ...
+                </select>
+            </div>
         </div>
         <div class="actions">
             <button type="button" class="button green">Save</button>
@@ -53,11 +44,11 @@
             <span class="icons icon-filter"></span>
             Filter rooms
         </a>
-        <div id="sheet-unassigned-rooms" class="sheet-content scrollable">
-            <ul class="wrapper">
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable">
+            <ul class="wrapper sortable">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room">
-                    <h2 class="{room-status}">{Room number}</h2>
+                <li class="worksheet-room multi-sheet unassigned">
+                    <h3>{Room number}</h3>
                     <span class="guest {guest-status}">{out or time}</span> |
                     <span class="room {room-status}">{room-status}</span>
                 </li>
@@ -67,49 +58,49 @@
     </div>
 
     <!-- Multiple worksheets - assigned rooms -->
-    <div class="assigned-rooms">
-
-        <!-- When no employees selected
-        <div id="worksheet-assigned-rooms" class="assigned-rooms multi-sheet no-content">
-            <div class="info">
-                <span class="icon-no-content icon-housekeeping"></span>
-                <strong class="h1">No employees selected.</strong>
-                <span class="h2">Select employees to assign rooms.</span> 
-            </div>
-        </div> -->
-
-        <!-- When employees selected -->
-        <div id="worksheet-assigned-rooms" class="assigned-rooms multi-sheet">
-            <div id="{employee-id}" class="sheet-content">
-                <a href="{single-sheet-link}" class="button brand-colors">{Employee First & Last Name}</a>
-                <ul class="data">
-                    <li class="shift">
-                        <span class="completed">{time}</span>
-                        <span class="total">{time}</span>
-                    </li>
-                    <li class="departures">
-                        <span class="completed">{value}</span>
-                        <span class="total">{value}</span>
-                    </li>
-                    <li class="stayovers">
-                        <span class="completed">{value}</span>
-                        <span class="total">{value}</span>
-                    </li>
-                </ul>
-                <div class="scrollable">
-                    <ul class="wrapper">
-                        <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                        <li class="worksheet-room">
-                            <h2 class="{room-status}">{Room number}</h2>
-                            <span class="current {guest-status}">{departure-time}</span>
-                            <span class="room-status {room-status}">{room-status}</span>
-                        </li>
-                        .. repeat for all assigned room to this employee
-                    </ul>
-                </div>
-            </div>
-            ... repleat for all selected employees
+    <!-- When 0 employees selected
+    <div class="assigned-rooms multi-sheet no-content">
+        <div class="info">
+            <span class="icon-no-content icon-housekeeping"></span>
+            <strong class="h1">No employees selected.</strong>
+            <span class="h2">Select employees to assign rooms.</span> 
         </div>
+    </div> -->
 
+    <!-- When employees selected -->
+    <div class="assigned-rooms multi-sheet">
+        <div class="sheet-content">
+            <a href="{single-sheet-link}" class="button brand-colors">{Employee First & Last Name}</a>
+            <ul class="data">
+                <li class="shift">
+                    <span class="completed">{time}</span>
+                    <span class="total">{time}</span>
+                </li>
+                <li class="departures">
+                    <span class="completed">{value}</span>
+                    <span class="total">{value}</span>
+                </li>
+                <li class="stayovers">
+                    <span class="completed">{value}</span>
+                    <span class="total">{value}</span>
+                </li>
+            </ul>
+            <div id="{employee-id}" class="worksheet-content scrollable">
+                <ul class="wrapper sortable">
+                    <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
+                    <li class="worksheet-room multi-sheet assigned">
+                        <h3>{Room number}</h3>
+                        <span class="guest {guest-status}">{departure-time}</span>
+                        <span class="room {room-status}">{room-status}</span>
+                    </li>
+                    <!-- .. repeat for all assigned room to this employee -->
+                </ul>
+            </div>
+        </div>
+        <!-- ... repleat for all selected employees -->
+
+        <!-- We can show up to 6 employees in here. When selected employee count is between 1 and 6, 
+        fill in the difference to 6 by adding: <div class="sheet-placeholder"></div> for each empty spot on the screen. 
+        For example, if you select 2 employees, you should have 4 '.sheet-placeholder' elements on the screen --> 
     </div>
 </section>

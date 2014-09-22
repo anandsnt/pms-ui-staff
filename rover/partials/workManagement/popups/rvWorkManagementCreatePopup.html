@@ -1,6 +1,41 @@
-<div id="modal" class="modal-show">
+<div id="modal" class="modal-show" ng-cloak>
 	<div class="modal-content">
-		<button ng-click="continueCreateWorkSheet()" type="button" class="button green">Continue </button>
-		<button ng-click="closeDialog()" type="button" class="button blank">Cancel </button>
+		<form method="post" action="" id="create-worksheet" name="create-worksheet" class="modal-content form new-worksheet">
+			<button class="modal-close" id="modal-close" ng-click="closeDialog()" type="button"><span class="icons icon-close invert"></span></button>
+
+			<span class="h2 message">New Work Sheet</span>
+
+			<div class="entry full-width">
+				<div class="select">
+					<select id="work-type" name="work-type" class="placeholder">
+						<option value="" selected>Select Work Type</option>
+						<option value="daily-cleaning">Daily Cleaning</option>
+						...
+					</select>
+				</div>
+			</div>
+			<div class="entry full-width">
+				<div class="select">
+					<select id="employee" name="employee" class="placeholder">
+						<option value="" selected>Select Employee</option>
+						<option value="{Employee 1}">{Employee 1}</option>
+						<option value="{Employee 2}">{Employee 2}</option>
+						...
+					</select>
+				</div>
+			</div>
+<!-- 			<div class="entry full-width has-datepicker">
+				<input name="new-sheet-date" id="new-sheet-date" type="text" class="datepicker" value="{today}" readonly />
+			</div> -->
+			<div class="entry has-datepicker entry full-width">
+	            <input id="rmDateRange" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+	            <button ng-click="showCalendar('RVWorkManagementCreateDatePickerController')" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
+	        </div>
+
+			<div class="actions">
+				<button ng-click="continueCreateWorkSheet()"  type="button" class="button green">Continue</button>
+				<button ng-click="closeDialog()" type="button" class="button blank modal-close">Cancel</button> 
+			</div>
+		</form>
 	</div>
 </div>
