@@ -1,7 +1,5 @@
 sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog',  function($state, $rootScope, $scope, ngDialog){
 	BaseCtrl.call(this, $scope);
-	
-	
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = "";
 		if(reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
@@ -76,8 +74,8 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 	
 	// To handle click of key icon.
-	$scope.clickedIconKey = function(){
-		
+	$scope.clickedIconKey = function(event){
+		event.stopPropagation();
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
 		
 		if(keySettings === "email"){
