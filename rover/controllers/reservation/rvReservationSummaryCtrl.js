@@ -104,8 +104,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if ($scope.reservationData.paymentType.type != null) {
-				data.payment_type = {};
+			data.payment_type = {};
+			if ($scope.reservationData.paymentType.type !== null && !isEmpty($scope.reservationData.paymentType.type)) {
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
 				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
@@ -125,7 +125,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			// MLI Integration.
-			if ($scope.reservationData.paymentType.type != null) {
+			if ($scope.reservationData.paymentType.type !== null) {
 				if ($scope.reservationData.paymentType.type.value === "CC") {
 					data.payment_type.session_id = $scope.data.MLIData.session;
 				}
