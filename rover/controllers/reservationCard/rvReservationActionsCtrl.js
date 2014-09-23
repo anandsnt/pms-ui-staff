@@ -7,8 +7,10 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationCardSrv',
 	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
+	'RVSearchSrv',
 	'$filter',
-	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv, $filter) {
+	function($rootScope, $scope, ngDialog, RVChargeItems, $state, 
+		RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv,RVSearchSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -181,6 +183,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.showPutInQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
+			console.log($scope.reservationData);
 			var displayPutInQueue = false;
 			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
 				if (isQueueRoomsOn == "true" && isReservationQueued == "false") {
@@ -203,13 +206,57 @@ sntRover.controller('reservationActionsController', [
 		$scope.successPutInQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "true";
+			// var data = {
+				// 'room': $scope.reservationData.reservation_card.room_number,
+				// 'reservation_status': $scope.reservationData.reservation_card.reservation_status,
+				// 'roomstatus': $scope.reservationData.reservation_card.room_status,
+				// 'fostatus': $scope.reservationData.reservation_card.fo_status,
+				// 'room_ready_status': $scope.reservationData.reservation_card.room_ready_status,
+				// 'is_reservation_queued': $scope.reservationData.reservation_card.is_reservation_queued,
+				// 'is_queue_rooms_on': $scope.reservationData.reservation_card.is_queue_rooms_on,
+				// 'late_checkout_time': $scope.reservationData.reservation_card.late_checkout_time,
+				// 'is_opted_late_checkout': $scope.reservationData.reservation_card.is_opted_late_checkout,
+			// };
+			console.log($scope.reservationData)
+			 // {
+            // "id": 38431,
+            // "confirmation": "4866254",
+            // "guest_detail_id": 17799,
+            // "room": null,
+            // "group": null,
+            // "reservation_status": "CHECKING_IN",
+            // "roomstatus": "NOTREADY",
+            // "fostatus": "",
+            // "lastname": "Alex",
+            // "firstname": "Shaun",
+            // "location": "",
+            // "vip": 0,
+            // "images": [
+                // {
+                    // "is_primary": true,
+                    // "guest_image": "http://localhost:3000/assets/avatar-trans.png"
+                // }
+            // ],
+            // "room_ready_status": "",
+            // "is_reservation_queued": "true",
+            // "is_opted_late_checkout": false,
+            // "late_checkout_time": null,
+            // "use_inspected": "true",
+            // "use_pickup": "true",
+            // "checkin_inspected_only": "false",
+            // "is_queue_rooms_on": "true"
+        // }
+			RVSearchSrv.addResultToData();
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
 
 		$scope.successRemoveFromQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "false";
-			$scope.$emit("UPDATED_QUEUE_STATUS", $scope.reservationData.reservation_card.reservation_id);
+			
+			RVSearchSrv.removeResultFromData($scope.reservationData.reservation_card.reservation_id);
+			$scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'remove');
+			
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
 
