@@ -553,7 +553,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.goToDashboard = function(){
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      $state.go('rover.dashboard', {}, {reload: true});
+     // $state.go('rover.dashboard', {}, {reload: true});
+      $window.location.reload();
     }
 
      /**
@@ -563,15 +564,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $rootScope.isBussinessDateChanging = false;
         // Hide loading message
         $scope.$emit('hideLoader');
-        // if(!$rootScope.isBussinessDateChanged){
-        //     $rootScope.isBussinessDateChanged = true;
+        if(!$rootScope.isBussinessDateChanged){
+             $rootScope.isBussinessDateChanged = true;
             ngDialog.open({
               template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               closeByDocument: false,
               scope: $scope
           });
-        // }        
+        }        
     };
     
     
