@@ -47,7 +47,7 @@ $scope.yesClick = function(){
 $scope.continueClicked = function(){
 	
 	$scope.startProcessEnabled = false;
-	
+	$scope.$emit('showLoader');
 // explicitly handled error callback to set $scope.startProcessEnabled
 	var startProcessFailure = function(data){
 		$scope.$emit('hideLoader');
@@ -59,10 +59,10 @@ $scope.continueClicked = function(){
 	};
 	var startProcessSuccess = function(data){
 		$scope.$emit('hideLoader');
-		$rootScope.businessDate = data.hotel_business_date;
-		$rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
+		// $rootScope.businessDate = data.hotel_business_date;
+		// $rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
 		$rootScope.isCurrentUserChangingBussinessDate = false;
-		$state.go('rover.dashboard', {}, {reload: true});
+		//$state.go('rover.dashboard', {}, {reload: true});
 		ngDialog.close();
 	}
 	$rootScope.isCurrentUserChangingBussinessDate = true;
