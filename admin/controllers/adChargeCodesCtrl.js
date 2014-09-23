@@ -187,7 +187,7 @@ function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $ro
 			}
 	    });
 		//var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
-		var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types"];
+		var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types","symbolList"];
 		var postData = dclone($scope.prefetchData, unwantedKeys);
 		
 		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
