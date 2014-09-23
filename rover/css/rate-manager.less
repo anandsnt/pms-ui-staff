@@ -1070,6 +1070,7 @@ padding-top: 80px;
     }
 
     .toggle-expand{
+     cursor: pointer;
      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 
      float: right;
@@ -1095,12 +1096,13 @@ padding-top: 80px;
       float:left;
       width:80%;
       h2{
-        width:170px;
+        width: auto; /*170px;*/
+        height: auto;
         font-size: 28px;
         font-weight: 700;
         overflow:hidden;
         text-overflow: ellipsis;
-        white-space:nowrap;
+        //white-space:nowrap;
         &.title-expanded{
             font-size: 28px;
            font-weight: 700;  
@@ -1110,6 +1112,7 @@ padding-top: 80px;
       em{
          font-size: 15px;
          font-style: italic !important;
+         display: block;
       }
     }
   }
@@ -1156,7 +1159,7 @@ padding-top: 80px;
         cursor: alias;
         position: absolute;
         right:0;
-        top:10px;
+        top: 15px; /*10px;*/
         line-height: 15px;
       }
       &.text{

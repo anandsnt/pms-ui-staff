@@ -8,10 +8,10 @@
 		<div>
 			<ul>
 				<li class="restriction-type"
-				ng-repeat="restrictionType in data.restrictionTypes"
-				ng-hide="restrictionType.isOnRate"
-				ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}"
-				style="cursor: pointer;">
+					ng-repeat="restrictionType in data.restrictionTypes"
+					ng-hide="restrictionType.isOnRate"
+					ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}"
+					style="cursor: pointer;">
 				<div class="restrictions-container" ng-click="toggleRestrictions(restrictionType.id, restrictionType.days,$index)">
 					<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
 					<span class="text">{{restrictionType.description}}</span>
