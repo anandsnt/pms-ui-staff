@@ -36,3 +36,20 @@ sntRover.controller('RVWorkManagementCreateDatePickerController', ['$scope', '$r
 
 	}
 ]);
+
+
+sntRover.controller('RVWorkManagementMultiDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter',
+	function($scope, $rootScope, ngDialog, dateFilter) {
+		$scope.setUpData = function() {
+			$scope.dateOptions = {
+				changeYear: true,
+				changeMonth: true,				
+				yearRange: "-100:+0",
+				onSelect: function(dateText, inst) {
+					ngDialog.close();
+				}
+			}
+		};
+		$scope.setUpData();
+	}
+]);

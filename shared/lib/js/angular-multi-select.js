@@ -489,7 +489,10 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         if (tempMaxLabels > 0) {
                             $scope.varButtonLabel += ', ... ';
                         }
-                        $scope.varButtonLabel += '(Total: ' + $scope.selectedItems.length + ')';                        
+                        // $scope.varButtonLabel += '(Total: ' + $scope.selectedItems.length + ')';                        
+                        // CICO-9120
+                        $scope.varButtonLabel += ' ' + $scope.selectedItems.length + ' selected ...';                        
+
                     }
                 }
                 $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );                
