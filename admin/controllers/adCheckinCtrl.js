@@ -113,9 +113,32 @@ $scope.checkinData.block_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"val
    
     $scope.checkinData.selected_rate_code = "";
 };
+
+  $scope.clickExcludeBlockCode = function(){
+    //Removing the selected room type from dropdown of room type list.
+    angular.forEach($scope.checkinData.block_codes,function(item, index) {
+    if((item.value == $scope.checkinData.selected_block_code) && ( $scope.excludedBlockCodes.indexOf(item) == -1) ){
+      $scope.excludedBlockCodes.push(item);
+    }
+    });
+   
+    $scope.checkinData.selected_block_code = "";
+};
+
+
+  $scope.deleteBlockCode = function(id){
+    //Removing the selected room type from dropdown of room type list.
+    angular.forEach($scope.excludedBlockCodes,function(item, index) {
+    if(item.value == id){
+      $scope.excludedBlockCodes.splice(index,1);
+    }
+    });
+   
+};
+
   $scope.deleteRateCode = function(id){
     //Removing the selected room type from dropdown of room type list.
-    angular.forEach($scope.checkinData.rate_codes,function(item, index) {
+    angular.forEach($scope.excludedRateCodes,function(item, index) {
     if(item.value == id){
       $scope.excludedRateCodes.splice(index,1);
     }

@@ -17,7 +17,8 @@
 					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only_flag"></ad-checkbox>	
 
 					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only_flag"></ad-checkbox>	
-					
+				</fieldset>
+				<fieldset class="holder right">	
 					<div id="options" class="entry full-width" ng-hide="hideAddOption">
 						<label>
 							{{ 'SENT_TO_QUEUE' | translate}}
@@ -80,22 +81,20 @@
 						</div>
 
 					</div>
-	
+				</fieldset>
+					<fieldset class="holder full-width">
 
 						<ad-dropdown label="{{'RATE_CODES_TO_EXCLUDE_FROM_CHECKIN' | translate}}" label-in-drop-down="{{'SELECT_RATE_CODE' | translate}}" list="checkinData.rate_codes" selected-Id='checkinData.selected_rate_code' selbox-class="placeholder" ng-style="full-width"></ad-dropdown>
 
-						<div>
-							<button class="button green ng-scope" id="add-room-type" ng-click="clickExcludeRateCode()" translate="">EXCLUDE_RATE_CODES</button>
+						<div class="entry" style="padding-left:2%;"><label>&nbsp;&nbsp;</label>
+							<button translate="" ng-click="clickExcludeRateCode()"  class="button green" translate="">EXCLUDE_RATE_CODES</button>
 						</div>
 
-					<div class="entry full-width">
+					<div class="entry full-width" ng-show="excludedRateCodes.length>0">
 						<div class='entry' >
-								<label> <h4 translate>RATE_CODES</h4> </label>
+								<label> <h4 translate>EXCLUDED_RATE_CODES</h4> </label>
 						</div>
-
-
-						<div id='room-type-details' ng-repeat="rateCode in excludedRateCodes">
-								
+						<div id='room-type-details' ng-repeat="rateCode in excludedRateCodes">								
 							<div class="entry full-width room-type-details" >
 								<div class="entry">
 									<span class="align-text-center"> {{rateCode.name}} </span>
@@ -105,30 +104,36 @@
 										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteRateCode(rateCode.value)"></a>
 									</span>
 								</div>
-							</div>
-								
+							</div>								
 						</div>
-
-
 					</div>
 
-					<div class="entry full-width">
-						<label>{{'BLOCK_CODES_EXCLUDE_FROM_CHECKIN' | translate}}</label>
-						<div class="select select-col col1-3" style="width: 52%;">
+					<ad-dropdown label="{{'BLOCK_CODES_EXCLUDE_FROM_CHECKIN' | translate}}" label-in-drop-down="{{'SELECT_RATE_CODE' | translate}}" list="checkinData.block_codes" selected-Id='checkinData.selected_block_code' selbox-class="placeholder" ng-style="full-width" style="margin-right: 1px;"></ad-dropdown>
 
-							<select ng-options="block_code for block_code  in block_codes" ng-model="checkinData.checkin_alert_primetime">
-							</select>
-
-						</div>
-					
-							<div>
-								<button class="button green ng-scope" id="add-room-type" ng-click="clickAddRoomType()" translate="">EXCLUDE_BLOCK_CODES</button>
-							</div>
+					<div class="entry" style="padding-left:2%;"><label>&nbsp;&nbsp;</label>
+						<button translate="" ng-click="clickExcludeBlockCode()"  class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
 					</div>
-			
 
+					<div class="entry full-width" ng-show="excludedBlockCodes.length>0">
+						<div class='entry' >
+								<label> <h4 translate>EXCLUDED_BLOCK_CODES</h4> </label>
+						</div>
+						<div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">								
+							<div class="entry full-width room-type-details" >
+								<div class="entry">
+									<span class="align-text-center"> {{blockCode.name}} </span>
+								</div>
+								<div class="entry">
+									<span class="entry">
+										<a class="icons icon-delete large-icon align-text-center" ng-click="deleteBlockCode(blockCode.value)"></a>
+									</span>
+								</div>
+							</div>								
+						</div>
+					</div>		
 
-
+				</fieldset>	
+				<fieldset class="holder left">
 					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = ""></ad-textarea>
 
 				</fieldset>
