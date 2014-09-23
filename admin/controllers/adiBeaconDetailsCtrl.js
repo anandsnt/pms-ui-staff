@@ -11,7 +11,8 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
       $scope.isBeaconLinked = false;
     };
     $scope.displayMessage = $scope.addmode ? "Add new iBeacon" :"Edit iBeacon";
-    $scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
+    // $scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
+    $scope.isIpad = true;
     $scope.errorMessage = "";
     $scope.successMessage = "";
 
@@ -88,7 +89,7 @@ if(!$scope.addmode){
       $scope.$emit('hideLoader');
       $scope.errorMessage = [data.RVError];
       $scope.$apply();
-
+      $scope.isBeaconLinked = false;
     };
     var args = [];
 
@@ -109,7 +110,11 @@ if(!$scope.addmode){
     try{
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
-    catch(er){};
+    catch(er){
+      var error = {};
+      error.RVError = er;
+      failedLinkage(error);
+    };
   };
 
   $scope.saveBeacon = function(){
