@@ -1,4 +1,4 @@
-<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'" style="height:90%;">
+<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div id="cc-contracts-header" class="tab-header">
         <div class="entry">
@@ -29,10 +29,8 @@
         </div>
     </div>
     
-    <div id="cc-contracts-content" class="tab-details" ng-iscroll="companyCardContractsCtrl" ng-iscroll-delay="1000" style="height:80%">
-    	
+    <div id="cc-contracts-content" class="tab-details scrollable" ng-iscroll="cardContractsScroll" ng-iscroll-delay="1000">    	
     	<div class="wrapper" ng-class="{'overlay':hasOverlay==true}">
-
             <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3" translate>DETAILS</strong>
                 <div class="entry margin">
@@ -53,20 +51,20 @@
                     <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value | number:2}}" type="text" />
                     <div class="select">
                         <select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="contractData.selected_type">
-                            <option ng-repeat="type in ['%','$']"  ng-selected="type===contractData.selected_type" value="{{type}}">{{type}}</option>
+                            <option ng-repeat="type in rateValueTypes"  ng-selected="type.name==contractData.selected_type" value="{{type.name}}">{{type.value}}</option>
                         </select>
                     </div>
                 </div>
                 
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
                 <div class="entry has-datepicker">
                     <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :dateFormat }}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
@@ -125,7 +123,7 @@
                     <input ng-model="addData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{addData.rate_value | number:2}}" type="text" />
                     <div class="select">
                         <select iscroll-stop-propagation name="company-rate-adjust-1" ng-model="addData.selected_type">
-                            <option ng-repeat="type in ['%','$']"  ng-selected="type===addData.selected_type" value="{{type}}">{{type}}</option>
+                            <option ng-repeat="type in rateValueTypes"  ng-selected="type.name==addData.selected_type" value="{{type.name}}">{{type.value}}</option>
                         </select>
                     </div>
                     
@@ -133,13 +131,13 @@
 	                
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{addData.begin_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{addData.begin_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
                 <div class="entry has-datepicker">
                     <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{addData.end_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{addData.end_date | date :dateFormat}}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
@@ -193,9 +191,7 @@
 		        <div class="occgraph-outer" style='width: 100%'>
 		            <highchart id="occGraphContainer" config="highchartsNG"></highchart>
 		        </div>
-		    </div>
-    
-        </div>
-    
+		    </div>    
+        </div>    
     </div>
 </div>
