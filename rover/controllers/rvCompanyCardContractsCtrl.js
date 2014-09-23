@@ -392,7 +392,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.AddNewContract = function() {
 
 			var dataToPost = {};
-			dataToPost = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights','types']);
+			dataToPost = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 
 			var saveContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
