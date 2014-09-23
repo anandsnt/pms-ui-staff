@@ -1,11 +1,7 @@
 sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngDialog', 'RVKeyPopupSrv', '$filter',
 		function($rootScope, $scope,$state, ngDialog, RVKeyPopupSrv, $filter){
 	BaseCtrl.call(this, $scope);
-	
-	that = this;
-	shahul = $scope;
-
-
+	var that = this;
 	this.setStatusAndMessage = function(message, status){
 		$scope.statusMessage = message;
 		$scope.status = status;
