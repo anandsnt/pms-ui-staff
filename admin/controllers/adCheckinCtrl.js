@@ -1,4 +1,4 @@
-admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state','rateCodeData', function($scope,$rootScope,adCheckinSrv,$state,rateCodeData){
+admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state','rateCodeData','blockCodeData', function($scope,$rootScope,adCheckinSrv,$state,rateCodeData,blockCodeData){
 
   $scope.errorMessage = '';
 
@@ -24,7 +24,7 @@ $scope.init = function(){
   $scope.excludedRateCodes=[];
   $scope.excludedBlockCodes=[];
   $scope.rate_codes = rateCodeData.results;
-  $scope.block_codes = rateCodeData.results;
+  $scope.block_codes = blockCodeData.block_codes;
 
 };
 

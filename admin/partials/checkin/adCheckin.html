@@ -130,7 +130,7 @@
 									SELECT_BLOCK_CODE
 								</option>
 								<option ng-repeat='row in block_codes' value='{{row.id}}'  ng-selected="row.id==checkinData.selected_block_code" >
-									{{row.name}}
+									{{row.group_code}}
 								</option>
 							</select>
 						</div>
@@ -148,7 +148,7 @@
 						<div id='room-type-details' ng-repeat="blockCode in excludedBlockCodes">								
 							<div class="entry full-width room-type-details" >
 								<div class="entry">
-									<span class="align-text-center"> {{blockCode.name}} </span>
+									<span class="align-text-center"> {{blockCode.group_code}} </span>
 								</div>
 								<div class="entry">
 									<span class="entry">

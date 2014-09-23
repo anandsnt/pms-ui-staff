@@ -47,6 +47,21 @@ this.getRateCodes = function(data){
 	return deferred.promise;
 };
 
+/*
+* To get block codes
+* 
+*/	
+this.getBlockCodes = function(data){
+	var deferred = $q.defer();
+	var url = '/api/groups.json';		
+	ADBaseWebSrvV2.getJSON(url,data).then(function(data) {
+		deferred.resolve(data);
+	},function(data){
+		deferred.reject(data);
+	});
+	return deferred.promise;
+};
+
 
 
 }]);

@@ -196,6 +196,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			resolve: {
 				rateCodeData: function(adCheckinSrv) {
 					return adCheckinSrv.getRateCodes();
+				},
+				blockCodeData : function(adCheckinSrv){
+					return adCheckinSrv.getBlockCodes();
 				}
 			}
 		});
