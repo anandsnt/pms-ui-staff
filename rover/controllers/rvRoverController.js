@@ -592,6 +592,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $state.go('rover.search', {'type': type});
     };
     
+    $scope.$on('UPDATED_QUEUE_STATUS', function(event, data){
+    	console.log("reached rover");
+    	$scope.$broadcast('UPDATE_RESULTS_ON_REMOVE_FROM_QUEUE', data);
+    });
+    
 
   }
 ]);

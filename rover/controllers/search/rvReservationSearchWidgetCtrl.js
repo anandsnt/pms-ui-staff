@@ -461,5 +461,10 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	   	return mappedStatus;
    	};
+   	
+   	$scope.$on("UPDATE_RESULTS_ON_REMOVE_FROM_QUEUE", function(event, data){
+   		console.log("at last reached here");
+   		console.log(data);
+   	});
 
 }]);
