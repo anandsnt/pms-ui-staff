@@ -46,10 +46,11 @@ $scope.fetchCheckinDetails = function(){
     $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true:false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
+    //$scope.checkinData.is_precheckin_only_flag = ($scope.checkinData.is_precheckin_only=== 'true') ? true:false;
+    //$scope.checkinData.is_sent_to_que_flag = ($scope.checkinData.is_sent_to_que=== 'true') ? true:false;
 
 /* TO BE CHANGED*/
-//$scope.checkinData.is_precheckin_only_flag = ($scope.checkinData.is_precheckin_only=== 'true') ? true:false;
-//$scope.checkinData.is_sent_to_que_flag = ($scope.checkinData.is_sent_to_que=== 'true') ? true:false;
+
 $scope.checkinData.is_precheckin_only_flag = true;
 $scope.checkinData.is_sent_to_que_flag = true;
 $scope.checkinData.rate_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];

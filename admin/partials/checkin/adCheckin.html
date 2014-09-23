@@ -82,13 +82,13 @@
 
 					</div>
 				</fieldset>
-					<fieldset class="holder full-width">
+				<fieldset class="holder full-width">
 
-						<ad-dropdown label="{{'RATE_CODES_TO_EXCLUDE_FROM_CHECKIN' | translate}}" label-in-drop-down="{{'SELECT_RATE_CODE' | translate}}" list="checkinData.rate_codes" selected-Id='checkinData.selected_rate_code' selbox-class="placeholder" ng-style="full-width"></ad-dropdown>
+					<ad-dropdown label="{{'RATE_CODES_TO_EXCLUDE_FROM_CHECKIN' | translate}}" label-in-drop-down="{{'SELECT_RATE_CODE' | translate}}" list="checkinData.rate_codes" selected-Id='checkinData.selected_rate_code' selbox-class="placeholder" ng-style="full-width"></ad-dropdown>
 
-						<div class="entry" style="padding-left:2%;"><label>&nbsp;&nbsp;</label>
-							<button translate="" ng-click="clickExcludeRateCode()"  class="button green" translate="">EXCLUDE_RATE_CODES</button>
-						</div>
+					<div class="entry entry-padding-left"><label>&nbsp;&nbsp;</label>
+						<button translate="" ng-click="clickExcludeRateCode()"  class="button green" translate="">EXCLUDE_RATE_CODES</button>
+					</div>
 
 					<div class="entry full-width" ng-show="excludedRateCodes.length>0">
 						<div class='entry' >
@@ -108,9 +108,9 @@
 						</div>
 					</div>
 
-					<ad-dropdown label="{{'BLOCK_CODES_EXCLUDE_FROM_CHECKIN' | translate}}" label-in-drop-down="{{'SELECT_RATE_CODE' | translate}}" list="checkinData.block_codes" selected-Id='checkinData.selected_block_code' selbox-class="placeholder" ng-style="full-width" style="margin-right: 1px;"></ad-dropdown>
+					<ad-dropdown label="{{'BLOCK_CODES_EXCLUDE_FROM_CHECKIN' | translate}}" label-in-drop-down="{{'SELECT_BLOCK_CODE' | translate}}" list="checkinData.block_codes" selected-Id='checkinData.selected_block_code' selbox-class="placeholder" ng-style="full-width" style="margin-right: 1px;"></ad-dropdown>
 
-					<div class="entry" style="padding-left:2%;"><label>&nbsp;&nbsp;</label>
+					<div class="entry entry-padding-left" ><label>&nbsp;&nbsp;</label>
 						<button translate="" ng-click="clickExcludeBlockCode()"  class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
 					</div>
 
@@ -133,12 +133,21 @@
 					</div>		
 
 				</fieldset>	
-				<fieldset class="holder left">
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = ""></ad-textarea>
 
-				</fieldset>
-				<fieldset class="holder right">
+				<fieldset class="holder left">
+
+					<ad-textbox value="checkinData.max_webcheckin" label = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}"  styleclass="full-width" maxlength="4"></ad-textbox>
+
+					<ad-textbox value="checkinData.pre_checkin_email_title" label = "{{'PRE_CHECK_IN_EMAIL_TITLE' | translate}}" placeholder = ""  styleclass="full-width" ></ad-textbox>
+
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_body" label = "{{ 'PRE_CHECK_IN_TOP_BODY' | translate}}" placeholder = ""></ad-textarea>
+
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.pre_checkin_email_bottom_body" label = "{{ 'PRE_CHECK_IN_BOTTOM_BODY' | translate}}" placeholder = ""></ad-textarea>
+
 					
+				</fieldset>
+
+				<fieldset class="holder right">
 
 					<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="{{ 'WEB_CHECKIN_STAFF_ALERT' | translate}}"></ad-toggle-button>
 
@@ -164,6 +173,8 @@
 						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
 
 					</div>
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = ""></ad-textarea>
+
 				</fieldset>
 				<div class="actions float">
 					<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
