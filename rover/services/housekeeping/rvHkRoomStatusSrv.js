@@ -2,7 +2,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
 	'$window',
-	function($http, $q, $window) {
+	'BaseWebSrvV2',
+	function($http, $q, $window, BaseWebSrvV2) {
 
 		this.roomList = {};
 		
@@ -27,7 +28,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 					"floorFilterSingle": '',
 					"floorFilterStart": '',
 					"floorFilterEnd": '',
-					'showAllFloors': true
+					'showAllFloors': true,
+					'filterByWorkType': '',
+					'filterByEmployee': ''
 				};
 		}
 
@@ -58,7 +61,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    	// will require additional call from details page
 					    	room.roomStatusClass = this.setRoomStatusClass(room);
 
-					    	room.reservationStatusClass = this.setReservationStatusClass(room);
+					    	// set the leaveStatusClass or enterStatusClass value
+					    	this.setReservationStatusClass(room);
 					    }
 
 					    deferred.resolve(this.roomList);
@@ -107,6 +111,29 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		}
 
+		// fetch all room types
+		var that = this;
+		this.allRoomTypes = {};
+		this.fetchAllRoomTypes = function(){
+			var url =  'api/room_types?exclude_pseudo=true&exclude_suite=true';	
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					angular.forEach(data.results, function(roomType, i) {
+						roomType.isSelected = false;
+						that.allRoomTypes[roomType.id] = roomType;
+					});
+					deferred.resolve(this.allRoomTypes);
+				}, function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
 		};
@@ -153,17 +180,18 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// keept as msg so that it can be called from crtl if needed
 		this.setReservationStatusClass = function(room){
 			if ( room.room_reservation_status == 'Due Out' || room.room_reservation_status == 'Departed' ) {
-				return 'check-out';
+				room.leaveStatusClass = 'check-out';
 			} else if ( room.room_reservation_status == 'STAYOVER' ) {
-				return 'inhouse';
+				room.leaveStatusClass = 'inhouse';
+			} else {
+				room.leaveStatusClass = 'no-show';
 			}
 
 			if ( room.room_reservation_status == 'Arrival' || room.room_reservation_status == 'Arrived' ) {
-				return 'check-in';
+				room.enterStatusClass = 'check-in';
+			} else {
+				room.enterStatusClass = 'no-show';
 			}
-
-			// room not allocated
-			return 'no-show';
 		};
 
 		// when user edit the room on details page

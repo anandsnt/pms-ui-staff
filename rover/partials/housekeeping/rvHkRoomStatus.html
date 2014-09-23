@@ -30,18 +30,13 @@
             </select>
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
-        <div class="select" ng-hide="filterByWorkType == ''">
+        <div class="select" ng-hide="!filterByWorkType">
             <select id="employees" name="employees" class="placeholder" ng-model="filterByEmployee">
                 <option value="" selected>All Employees</option>
                 <option value="emp1">Employee 1</option>
                 <option value="emp2">Employee 2</option>
             </select>
         </div>
-    </div>
-
-    <div id="filter-actions" class="filter-actions">
-      <button class="button blank" ng-show="isFilterChcked()" ng-click="clearFilters()" type="button" translate>CLEAR</button>
-      <button type="button" class="button green" ng-click="filterDoneButtonPressed()" translate>APPLY</button>
     </div>
 </form>
 
@@ -61,19 +56,18 @@
             <h2 class="{{ room.roomStatusClass }}">{{ room.room_no }}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
             <span class="room-status {{ room.roomStatusClass }}">{{ room.description }}</span>
           </div>
-          <!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
           <div class="reservation-status">
-            <!-- {reservation-status} can be check-out(for due out or departed) or inhouse(for stayover) -->
-            <div class="current {{ room.reservationStatusClass }}">
-              <span class="guest-status {{ room.reservationStatusClass }}">{{ room.room_reservation_status }}</span>
+            <!-- {leaveStatusClass} can be check-out(for due out or departed) or inhouse(for stayover) --> 
+            <div class="current {{ room.leaveStatusClass }}">
+              <span class="guest-status {{ room.leaveStatusClass }}">{{ room.room_reservation_status }}</span>
               <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-              <span>{departure-time}</span>
+              <span>{{ room.departure_time }} <label ng-if="room.room_reservation_status=='Departed'">OUT</label></span>
             </div>
-            <!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
-            <div class="next {{ room.reservationStatusClass }}">
-              <span class="guest-status {{ room.reservationStatusClass }}">{{ room.room_reservation_status }}</span>
+            <!-- {enterStatusClass} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
+            <div class="next {{ room.enterStatusClass }}">
+              <span class="guest-status {{ room.enterStatusClass }}">{{ room.room_reservation_status }}</span>
               <!-- Show only if applicable, {arrival-time} can only be time -->
-              <span>{arrival-time}</span>
+              <span>{{ room.arrival_time }}</span>
             </div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
@@ -264,6 +258,17 @@
                         <label translate>SHOW_DEPARTED</label>
                     </label>
                 </div>
+            </div>
+
+            <div class="holder" ng-if="isStandAlone">
+              <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
+              <div class="entry radio-check" ng-repeat= "roomType in allRoomTypes" >
+                <label class="checkbox">
+                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : roomType.isSelected}"></span>
+                  <input type="checkbox" ng-model="roomType.isSelected" name="room-filters">
+                  <label>{{ roomType.name }}</label>
+                </label>
+              </div>
             </div>
         </div>
     </div>
