@@ -103,6 +103,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		
 	};
 
+
 	// update the guest details of cached data
 	this.updateGuestDetails = function(guestid, data) {
 		if ( !self.data ) {
