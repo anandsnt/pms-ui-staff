@@ -91,7 +91,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
 				$scope.refreshScroller();
 			}
-			$scope.$emit('computeColumWidth');
+			$scope.$broadcast('computColumnWidth'); //$emit('computeColumWidth');
 			
 		};
 
@@ -205,7 +205,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		params.details.push(item);
 
 		$scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
-	}
+	};
 
 	/**
 	* Update the calendar to the 'Rate view' and refresh the calendar
@@ -237,7 +237,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	$scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type, isForAllData){	
 		$scope.popupData.selectedDate = date;
 		$scope.popupData.selectedRate = rate;
-		if(rate == ""){
+		if(rate === ""){
 			$scope.popupData.selectedRate = $scope.currentSelectedRate.id;
 		}
 		$scope.popupData.selectedRoomType = roomType;
@@ -282,7 +282,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	   		ret = true;
    		}
    		return ret;
-   	}
+   	};
 	
 	$scope.refreshCalendar = function(){
 		loadTable();

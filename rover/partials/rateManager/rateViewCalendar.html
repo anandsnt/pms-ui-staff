@@ -3,14 +3,16 @@
 	<table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
 		<thead>
 			<tr>
-				<th width="220" style="{width:th.width}" class="first-row">
+				<!--<th width="220" style="{width:th.width}" class="first-row">-->
+				<th width="220" style="width: {{uiOptions.columnWidth}}" class="first-row">
 					<button ng-click="openCloseAllRestrictions('remove')" class="button green" ng-class="{'open': calendarData.disableOpenAllBtn}" ng-disabled="calendarData.disableOpenAllBtn">
 						Open All
 					</button>
 					<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
 						Close All
 					</button></th>
-				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" class="cell">
+				<!--<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" class="cell">-->
+				<th width="{{uiOptions.columnWidth}}"   style="width:{{uiOptions.columnWidth}}"  ng-repeat="date in calendarData.dates" class="cell">
 					<div class="date-header">
 						<span class="week-day">{{date| date:'EEEE'}}</span>
 						<span>{{date| date:'MMMM dd'}}</span>

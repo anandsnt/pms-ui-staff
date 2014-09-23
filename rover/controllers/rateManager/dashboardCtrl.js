@@ -113,17 +113,22 @@ sntRover
   
         var mywidth = totalwidth/parseInt($scope.currentFilterData.zoom_level_selected);
         var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
+        
         numColumns = numColumns/(24*60*60*1000) + 1;
+        
         if (numColumns < parseInt($scope.currentFilterData.zoom_level_selected)){
           numColumns = parseInt($scope.currentFilterData.zoom_level_selected);
         }
 
         var columsTotalWidth = numColumns * mywidth;
+
         if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
+        
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
-        
+
+             
     });
 
     $scope.ratesDisplayed = [];
