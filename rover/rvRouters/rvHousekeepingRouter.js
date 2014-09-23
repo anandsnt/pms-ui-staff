@@ -81,7 +81,7 @@ angular.module('housekeepingModule', [])
         });
 
         $stateProvider.state('rover.workManagement.singleSheet', {
-            url: '/new',
+            url: '/worksheet/:date/:id',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementSingleSheet.html',
             controller: 'RVWorkManagementSingleSheetCtrl'
         });

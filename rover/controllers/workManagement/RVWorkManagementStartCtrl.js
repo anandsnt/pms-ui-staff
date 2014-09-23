@@ -1,6 +1,6 @@
 sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv',
     function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv) {
-        
+
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementCreatePopup.html',
@@ -15,10 +15,14 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             searchQuery: "",
             employeeSearch: false, // Search can be either for rooms or an employee
             viewingDate: {
-                date: $rootScope.businessDate,
-                newWorkSheetDate : $rootScope.businessDate              
+                date: $rootScope.businessDate
             },
-            searchResults: []
+            searchResults: [],
+            newSheet: {
+                user_id: "",
+                work_type_id: "",
+                date: $rootScope.businessDate,
+            }
         };
 
         var dummyRoomResults = [{
@@ -54,8 +58,18 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         }
 
         $scope.continueCreateWorkSheet = function() {
-            $state.go('rover.workManagement.singleSheet');
-            $scope.closeDialog();
+            var onCreateSuccess = function(data) {
+                    $scope.$emit('hideLoader');
+                    $state.go('rover.workManagement.singleSheet', {
+                        id: data.id,
+                        date: data.date
+                    });
+                    $scope.closeDialog();
+                },
+                onCreateFailure = function(data) {
+                    $scope.$emit('hideLoader');
+                }
+            $scope.invokeApi(RVWorkManagementSrv.createWorkSheet, $scope.stateVariables.newSheet, onCreateSuccess, onCreateFailure);
         }
 
         $scope.showWorkSheet = function() {
@@ -104,6 +118,16 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             ngDialog.open({
                 template: '/assets/partials/workManagement/popups/rvWorkManagementSearchDateFilter.html',
                 controller: controller,
+                className: 'ngdialog-theme-default single-date-picker',
+                closeByDocument: true,
+                scope: $scope
+            });
+        }
+
+        $scope.showCreateCalendar = function() {
+            ngDialog.open({
+                template: '/assets/partials/workManagement/popups/rvWorkManagementCreateDatePicker.html',
+                controller: 'RVWorkManagementCreateDatePickerController',
                 className: 'ngdialog-theme-default single-date-picker',
                 closeByDocument: true,
                 scope: $scope

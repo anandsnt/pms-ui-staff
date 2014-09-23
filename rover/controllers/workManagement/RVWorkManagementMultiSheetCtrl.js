@@ -21,14 +21,14 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				var notTicked = _.where($scope.employeeList, {
 					ticked: false
 				});
-				_.each(notTicked,function(d){
+				_.each(notTicked, function(d) {
 					d.checkboxDisabled = true;
 				})
-			} else{
+			} else {
 				var disabledEntries = _.where($scope.employeeList, {
-					checkboxDisabled : true
+					checkboxDisabled: true
 				});
-				_.each(disabledEntries,function(d){
+				_.each(disabledEntries, function(d) {
 					d.checkboxDisabled = false;
 				})
 			}
@@ -58,47 +58,5 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				scope: $scope
 			});
 		}
-
-		$scope.employeeList = [{
-			name: "Maid 1",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 2",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 3",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 4",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 5",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 6",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 7",
-			ticked: false,
-			checkboxDisabled: true
-		}, {
-			name: "Maid 8",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 9",
-			ticked: false,
-			checkboxDisabled: false
-		}, {
-			name: "Maid 10",
-			ticked: false,
-			checkboxDisabled: false
-		}];
 	}
 ]);
