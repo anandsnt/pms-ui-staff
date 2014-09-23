@@ -98,7 +98,7 @@ sntRover.controller('RVUpgradesController',['$scope', '$rootScope', '$state', '$
 				$scope.reservationData.reservation_card.fo_status = "VACANT";
 				$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
 				// CICO-7904 and CICO-9628 : update the upsell availability to staycard		
-				$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available;
+				$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
 				RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 				if($scope.clickedButton == "checkinButton"){
 					$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});

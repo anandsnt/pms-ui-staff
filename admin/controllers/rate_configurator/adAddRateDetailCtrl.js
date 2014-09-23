@@ -1,5 +1,5 @@
-admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDialog',
-    function ($scope, ADRatesAddDetailsSrv,ngDialog) {
+admin.controller('ADaddRatesDetailCtrl', ['$scope','$rootScope', 'ADRatesAddDetailsSrv','ngDialog',
+    function ($scope, $rootScope, ADRatesAddDetailsSrv,ngDialog) {
 
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
