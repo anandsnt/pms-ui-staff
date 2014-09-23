@@ -21,6 +21,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    name: 'rover.dashboard'
 		}
 
+		// set title in header
+		$scope.setTitle( $filter('translate')('ROOM_STATUS') );
+		$scope.heading = $filter('translate')('ROOM_STATUS');
+	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
+
 		$scope.filterOpen = false;
 
 		$scope.query = '';
@@ -30,8 +35,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.showQueued = false;
 
 		$scope.noResultsFound = 0;
-
-		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );

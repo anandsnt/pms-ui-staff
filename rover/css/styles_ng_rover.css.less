@@ -733,9 +733,32 @@ Padding for the ows error popup
 
 
 /* Rooms page               ==============================*/
-    
+.content#rooms {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
+  }
+}
+
     /* Rooms listing ***/
-    #rooms {
+    /*#rooms {
         li {
             margin: 0;         
             a {
@@ -849,12 +872,12 @@ Padding for the ows error popup
                 }
             }
         }
-    }
+    }*/
 
     /* Rooms page               ==============================*/
         
         /* Rooms listing ***/
-        #rooms {
+        /*#rooms {
             li {           
                 a {
                     color: @textColor;
@@ -900,11 +923,11 @@ Padding for the ows error popup
                     }
                 }
             }
-        }    
+        } */   
             /* Rooms page               ==============================*/
         
         /* Rooms listing ***/
-        #rooms {
+        /*#rooms {
             .wrapper { padding: 0 20px; }
 
             li {
@@ -923,7 +946,7 @@ Padding for the ows error popup
                 top: 0;
                 bottom: 0;
             }
-        }
+        }*/
 
 
 /* 

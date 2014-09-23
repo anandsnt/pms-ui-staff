@@ -17,6 +17,10 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		    name: 'rover.housekeeping.roomStatus'
 		}
 
+		$scope.setTitle( $filter('translate')('ROOM_DETAILS') );
+		$scope.heading = $filter('translate')('ROOM_DETAILS');
+	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
+
 		// /** Method for getting the guest status icon class
 		//   @return the guest status icon class  
 		// */
