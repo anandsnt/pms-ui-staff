@@ -4,6 +4,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
+		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];
 		$scope.addData = {};
 		$scope.contractList.contractSelected = "";
 		$scope.contractList.current_contracts = [];
@@ -369,7 +370,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
 			$scope.addData.selected_symbol = "+";
-			$scope.addData.selected_type = "$";
+			$scope.addData.selected_type = "amount";
 			$scope.addData.rate_value = 0;
 			var myDate = new Date($rootScope.businessDate);
 			myDate.setDate(myDate.getDate() + 1);
@@ -488,7 +489,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 * on selecting "%" , rate value must be integer
 		 */
 		$scope.$watch('contractData.selected_type', function() {
-			if ($scope.contractData.selected_type == "%") {
+			if ($scope.contractData.selected_type == "percent") {
 				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
 			} else {
 				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
@@ -500,7 +501,7 @@ sntRover.controller('cardContractsCtrl', ['$rootScope', '$scope', 'RVCompanyCard
 		 * on selecting "%" , rate value must be integer
 		 */
 		$scope.$watch('addData.selected_type', function() {
-			if ($scope.addData.selected_type == "%") {
+			if ($scope.addData.selected_type == "percent") {
 				$scope.addData.rate_value = parseInt($scope.addData.rate_value);
 			} else {
 				$scope.addData.rate_value = $scope.addData.rate_value ? parseFloat($scope.addData.rate_value).toFixed(2) : '';

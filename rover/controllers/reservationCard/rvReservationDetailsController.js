@@ -15,7 +15,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		// if we just created a reservation and came straight to staycard
 		// we should show the back button with the default text "Find Reservations"	
-		if ( $stateParams.justCreatedRes ) {
+		if ( $stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
 			backTitle = titleDict['NORMAL_SEARCH'];
 			backParam = {};
 		} else {
