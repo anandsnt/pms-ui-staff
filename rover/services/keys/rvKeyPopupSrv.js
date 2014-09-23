@@ -1,4 +1,4 @@
-sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2){
 	/*
 	 * Service function to get data for Email popup
 	 */	
@@ -54,8 +54,6 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 	*/
 	this.addNewSmartBand = function(params){
 		var deferred = $q.defer();
-		console.log(JSON.stringify(params))
-		console.log(params.reservationId);
 		var reservationId = params.reservationId;
 		//we are removing the unwanted keys and that will be posted to API
  		var unWantedKeysToRemove = ['reservationId', 'index'];
@@ -63,7 +61,7 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 		
 		var url = '/api/reservations/' + reservationId + '/smartbands';
 		
-		RVBaseWebSrv.postJSON(url, params).then(function(data) {
+		rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

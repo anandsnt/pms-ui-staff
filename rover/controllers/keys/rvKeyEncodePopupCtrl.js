@@ -100,7 +100,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				$scope.showDeviceConnectingMessge();
 			}
 		}, 1000);
-
 		if(secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK){
 			$scope.deviceConnecting = false;
 			$scope.keysPrinted = false;
@@ -125,7 +124,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = false;
-
 		var callBack = {
 			'successCallBack': showPrintKeyOptions,
 			'failureCallBack': showDeviceNotConnected			
@@ -195,12 +193,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		}		
 	};
 	
-	that.showUIDFetchFailedMsg = function(){
+	that.showUIDFetchFailedMsg = function(errorObject){
 		$scope.$emit('hideLoader');
 		//Asynchrounous action. so we need to notify angular that a change has occured. 
 		//It lets you to start the digestion cycle explicitly
 		$scope.$apply();
-		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS');
+		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS') + errorObject['RVErrorDesc'];
 		that.showKeyPrintFailure(message);
 	};
 	/* 
@@ -209,8 +207,13 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	this.callKeyFetchAPI = function(uID){
 		$scope.$emit('hideLoader'); 
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
-	    var reservationId = $scope.reservationData.reservation_card.reservation_id;
-
+		var reservationId = '';
+		if('reservation_card' in $scope.reservationData){
+	    	reservationId = $scope.reservationData.reservation_card.reservation_id;
+		}
+		else if('reservationId' in $scope.reservationData){
+			reservationId = $scope.reservationData.reservationId;
+		}
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
 	    if(!that.isAdditional){
@@ -318,13 +321,13 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 
 				
 			},
-			'failureCallBack': function(){
+			'failureCallBack': function(errorObject){
 				$scope.$emit('hideLoader');
 				if(that.numOfKeys > 0){
-					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG'), 'error');					
+					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG') + ': '  + errorObject['RVErrorDesc'], 'error');					
 				}
 				else {
-					var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
+					var message = $filter('translate')('KEY_CREATION_FAILED_STATUS') + ': '  + errorObject['RVErrorDesc'];
 					that.showKeyPrintFailure(message);
 				}
 				$scope.$apply(); 
@@ -344,7 +347,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	* Set the selected band type - fixed room/open charge to the band
 	*/
 	this.writeBandType = function(dataParams){
-		that.setStatusAndMessage($filter('translate')('WRITING_BAND_TYPE'), 'pending');		
+		that.setStatusAndMessage($filter('translate')('WRITING_BAND_TYPE'), 'pending');	
 		var data = dataParams;
 		var index = dataParams.index;
 		var args = [];
@@ -353,12 +356,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			bandType = '00000001';
 		}
 		args.push(bandType);
-		args.push(data.account_number);
+		args.push(that.lastSuccessfulCardIDReaded);
 		args.push('19');//Block Address - hardcoded
-
 		var options = {
 			//Cordova write success callback
-			'successCallBack': function(){
+			'successCallBack': function(data){
+				$scope.$emit('hideLoader');	
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
 					$scope.$emit('hideLoader');
@@ -369,22 +372,21 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key '+ (index+1);
-				$scope.$apply();				
-				$scope.$emit('hideLoader');	
+				$scope.$apply();								
 				return;				
 			},
-			'failureCallBack': function(message){
+			'failureCallBack': function(errorObject){
 				$scope.$emit('hideLoader');
 				that.numOfKeys--;
 				if(that.numOfKeys > 0){		
-					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE'), 'error');					
+					that.setStatusAndMessage($filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': ' + errorObject['RVErrorDesc'], 'error');					
 					that.printKeyStatus[index-1].printed = true;
 					$scope.printedKeysCount = index;
 					$scope.buttonText = 'Print key '+ (index+1);
 					$scope.$apply();
 				}
 				else {
-					var message = $filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE');
+					var message = $filter('translate')('KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE') + ': '  + errorObject['RVErrorDesc'];
 					that.showKeyPrintFailure(message);					
 				}				
 				return;				
@@ -402,7 +404,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	/**
 	* function used to add smartband, mainly for smartband creation while key writing
 	*/
-	this.addNewSmartbandWithKey = function(data, index){		
+	this.addNewSmartbandWithKey = function(data, index){
+		var is_fixed = data.is_fixed;
 		that.setStatusAndMessage($filter('translate')('ADDING_BAND'), 'pending');
 		//success call back of smartband's api call for creation
 		var successCallbackOfAddNewSmartband_ = function(data){
@@ -410,7 +413,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 			$scope.$emit('showLoader');
 			var params = {};
 			params.index = index;
-			params.is_fixed = data.is_fixed;
+			params.is_fixed = is_fixed;
 			params.account_number = data.account_number;
 			that.writeBandType (params);
 		};
@@ -431,7 +434,13 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 				that.showKeyPrintFailure(message);				
 			}
 		};			
-		var reservationId = $scope.reservationData.reservation_card.reservation_id;						
+		var reservationId = '';
+		if('reservation_card' in $scope.reservationData){
+	    	reservationId = $scope.reservationData.reservation_card.reservation_id;
+		}
+		else if('reservationId' in $scope.reservationData){
+			reservationId = $scope.reservationData.reservationId;
+		}				
 		data.index = index;
 		data.reservationId = reservationId;		
 		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	

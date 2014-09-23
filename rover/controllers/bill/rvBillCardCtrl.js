@@ -68,8 +68,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	* @return Boolean
 	*/
 	var isSmartBandKeyCreationAlongWithKeyCreationEnabled = function(){
-		return $scope.reservationBillData.icare_enabled == "true" && 
-				$scope.reservationBillData.combined_key_room_charge_create == "true";
+		return ($scope.reservationBillData.icare_enabled == "true" && 
+				$scope.reservationBillData.combined_key_room_charge_create == "true") ? "true": "false";
 	};
 	$scope.init = function(reservationBillData){
 		
