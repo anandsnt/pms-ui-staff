@@ -4,9 +4,9 @@ sntRover.controller('rvRoomAlreadySelectedCtrl',['$scope','$state',
 	BaseCtrl.call(this, $scope);
 
 	$scope.clickedCloseButton = function(){
-		console.log("close button")
+		console.log("kkkk===close button")
 		$scope.closeDialog();
-		$scope.assignRoom();
+		$scope.goToNextView();
 	};
 	
 	$scope.clickedCloseButtonAlreadySelected = function(){

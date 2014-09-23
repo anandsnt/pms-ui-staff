@@ -8,8 +8,7 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 
 	$scope.enableDisableButtons = function(){
 		
-		// setTimeout(function(){
-		//	$scope.search.guest_company_agent.length
+
 			console.log($scope.roomCharge.length)
 			if($scope.roomCharge.length === 0){
 				console.log("=====***********=====================");
@@ -22,10 +21,10 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 				
 				
 			}
-		// }, 1000);
 		
 	};
 	$scope.clickChargeButton = function(){
+		
 		var data = {
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"room_no": $scope.assignedRoom.room_number,
@@ -52,29 +51,13 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 
 		$scope.$emit('hideLoader');
 		$scope.closeDialog();
-		// console.log("dddddd===========")
-		// console.log(data)
-		// if(data.data.is_room_auto_assigned == true){
-			// $scope.roomAssignedByOpera = data.data.room;
-// 			
-			// setTimeout(function(){
-				// ngDialog.open({
-			          // template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			          // controller: 'rvRoomAlreadySelectedCtrl',
-			          // className: 'ngdialog-theme-default',
-			          // scope: $scope
-		        // });
-			// }, 700);
-		// } else {
-			// $scope.closeDialog();
-		    // $scope.assignRoom();
-		// }
+		$scope.goToNextView();
+
+
 
 	};
 	$scope.clickedNoChargeButton = function(){
-		// $scope.closeDialog();
-		// $scope.assignRoom();
-		
+			
 		var data = {
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"room_no": $scope.assignedRoom.room_number

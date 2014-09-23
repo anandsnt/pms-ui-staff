@@ -182,16 +182,18 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
-			
-			if(data.data.is_room_auto_assigned == true){
-				
-				// ngDialog.open({
-			          // template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			          // controller: 'rvRoomAlreadySelectedCtrl',
-			          // className: 'ngdialog-theme-default',
-			          // scope: $scope
-		        // });
-			// }, 700);	
+			$scope.$emit('hideLoader');
+			//if(data.data.is_room_auto_assigned == true){
+			if(true){	
+				//$scope.roomAssignedByOpera = data.data.room;
+				$scope.roomAssignedByOpera = 234;
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
+		        return false;
 			}
 			
 			
@@ -235,6 +237,22 @@ sntRover.controller('RVroomAssignmentController',[
 		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
 		
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
+	};
+	$scope.goToNextView = function(){
+		console.log("-----------next view----------------");
+		$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
+		$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+		$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
+		$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
+		$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
+			
+		if($scope.clickedButton == "checkinButton"){
+			$scope.$emit('hideLoader');
+			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		} else {
+			$scope.$emit('hideLoader');
+			$scope.backToStayCard();
+		}
 	};
 
 	/**
