@@ -7,6 +7,7 @@
     .limit-width{
       width: 60%;
       padding-top: 6px;
+      vertical-align: middle !important;
     }
 
     table.rate-calendar{
@@ -350,7 +351,7 @@
       padding: 0 20px;
       /*CICO-8633*/
       vertical-align: middle; //text-top;
-      padding-top: 10px;
+      padding-top: 0px; //10px;
       &.actions {
         //padding-top: 10px;
       }
@@ -386,6 +387,8 @@
         &:first-child {
           width: 85%;
           float: left;
+          cursor: pointer;
+
           &.expanded{
             color: #f6991b;
             font-weight: 600;
@@ -414,6 +417,10 @@
 
     &.exp{
         background-color: #d2d2d2;
+    }
+
+    .cell-content {
+        cursor: pointer;
     }
   }
 
@@ -459,6 +466,7 @@
       border-radius: 3px;
       & > div {
         & > div {
+          cursor: pointer;
           padding: 0;
           & > div:first-child {
             border-bottom: 1px solid #e7e7e7;
@@ -478,6 +486,7 @@
             text-align: left;
             padding: 0 10px;
             line-height: 16px;  
+            cursor: pointer;
 
             span {
               float: right;
@@ -513,8 +522,9 @@
 
         display: table-cell;
         /*CICO-8633*/
-        vertical-align: top; //middle;
-        padding: 0 10px;
+        vertical-align: middle; //top;
+        padding: 6px 10px 0px;
+        //padding: 0 10px;
         .rate-single {
           width: 25px;
           height: 25px;
@@ -759,7 +769,8 @@
         background: none repeat scroll 0 0 #393c41;
         color: #FCFCFC;
         display: block;
-        height: 100px;
+        /*CICO-8633*/
+        min-height: 100px; //height: 100px;
         margin-top: -17px;
         padding: 20px;
         width: 100%;
@@ -1096,7 +1107,7 @@ padding-top: 80px;
       float:left;
       width:80%;
       h2{
-        width: auto; /*170px;*/
+        width: 170px;
         height: auto;
         font-size: 28px;
         font-weight: 700;
@@ -1104,8 +1115,9 @@ padding-top: 80px;
         text-overflow: ellipsis;
         //white-space:nowrap;
         &.title-expanded{
-            font-size: 28px;
-           font-weight: 700;  
+           font-size: 28px;
+           font-weight: 700; 
+           min-width: 170px; 
         width:100%        
         }
       }

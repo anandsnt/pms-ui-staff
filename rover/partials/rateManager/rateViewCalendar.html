@@ -25,7 +25,7 @@
 
 				<td ng-repeat="date in calendarData.dates" class="cell" >
 					<div class="cell-container" >
-						<div style="cursor: pointer;" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
+						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
 							<div>
 								<div>
 									<div>
@@ -42,7 +42,7 @@
 
 			<tr ng-repeat="rate in calendarData.data" ng-class="{'last': $last}">
 				<td class="first-row">
-					<div style="cursor: pointer;" ng-click="goToRoomTypeCalendarView(rate)" >
+					<div ng-click="goToRoomTypeCalendarView(rate)" >
 						<span>{{rate.name}}</span>
 						<span> 
 							<img src="/assets/arrow-down.png" /> 
@@ -51,7 +51,7 @@
 				</td>
 				<td ng-repeat="date in calendarData.dates" class="cell" >
 					<div class="cell-container" >
-						<div style="cursor: pointer;" class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
+						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
 							<div>
 								<div>
 									<div>

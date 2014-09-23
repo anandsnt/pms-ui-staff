@@ -183,6 +183,6 @@ sntRover
     };
 
     $scope.$on('resize', function(e, wDim) {
-        computeColWidthOnResize(wDim.windowWidth, wDim.windowHeight);
+        computeColWidthOnResize();
     });
 }]);
