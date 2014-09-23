@@ -44,7 +44,7 @@
 
 				<div class="select select-col col1-2 " style="float: right;">
 					<select class="placeholder" disabled="disabled" class="styled">
-						<option selected>{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
+						<option selected>{{currencySymbol}}</option>
 					</select>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 				</div>
 				<div class="select select-col col1-3">
 					<select class="styled" ng-model="rateData.based_on.type">
-						<option value="amount" >{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
+						<option value="amount" >{{currencySymbol}}</option>
 						<option value="percent">%</option>
 					</select>
 				</div>

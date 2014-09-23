@@ -118,6 +118,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 				isrefresh: true,
 				justCreatedRes: true
 			}
+			$scope.otherData.reservationCreated = true;
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 
 		};

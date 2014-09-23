@@ -63,6 +63,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.setTitle($filter('translate')('GUEST_BILL_TITLE'));
 	}
 	
+	/**
+	* function to get smartband creation along with key creation enabled
+	* @return Boolean
+	*/
+	var isSmartBandKeyCreationAlongWithKeyCreationEnabled = function(){
+		return ($scope.reservationBillData.icare_enabled == "true" && 
+				$scope.reservationBillData.combined_key_room_charge_create == "true") ? "true": "false";
+	};
 	$scope.init = function(reservationBillData){
 		
 				/*
@@ -762,6 +770,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
+			$scope.isSmartbandCreateWithKeyWrite = isSmartBandKeyCreationAlongWithKeyCreationEnabled();
 			ngDialog.open({
 			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 			    controller: 'RVKeyEncodePopupCtrl',
