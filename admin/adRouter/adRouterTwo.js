@@ -192,7 +192,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.checkin', {
 			templateUrl: '/assets/partials/checkin/adCheckin.html',
 			controller: 'ADCheckinCtrl',
-			url : '/checkin'
+			url : '/checkin',
+			resolve: {
+				rateCodeData: function(adCheckinSrv) {
+					return adCheckinSrv.getRateCodes();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.checkout', {

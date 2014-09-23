@@ -1,4 +1,4 @@
-admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state', function($scope,$rootScope,adCheckinSrv,$state){
+admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state','rateCodeData', function($scope,$rootScope,adCheckinSrv,$state,rateCodeData){
 
   $scope.errorMessage = '';
 
@@ -23,6 +23,8 @@ $scope.init = function(){
   }
   $scope.excludedRateCodes=[];
   $scope.excludedBlockCodes=[];
+  $scope.rate_codes = rateCodeData.results;
+  $scope.block_codes = rateCodeData.results;
 
 };
 
@@ -52,8 +54,8 @@ $scope.fetchCheckinDetails = function(){
 //$scope.checkinData.is_sent_to_que_flag = ($scope.checkinData.is_sent_to_que=== 'true') ? true:false;
 $scope.checkinData.is_precheckin_only_flag = true;
 $scope.checkinData.is_sent_to_que_flag = true;
-$scope.checkinData.rate_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
-$scope.checkinData.block_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
+//$scope.checkinData.rate_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
+//$scope.checkinData.block_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
 /* TO BE CHANGED*/
 
 $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
@@ -110,8 +112,9 @@ $scope.saveCheckin = function(){
 
 // to add to excluded rate codes
 $scope.clickExcludeRateCode = function(){
-  angular.forEach($scope.checkinData.rate_codes,function(item, index) {
-    if((item.value == $scope.checkinData.selected_rate_code) && ( $scope.excludedRateCodes.indexOf(item) == -1) ){
+  angular.forEach($scope.rate_codes,function(item, index) {
+  
+    if((item.id == $scope.checkinData.selected_rate_code) && ( $scope.excludedRateCodes.indexOf(item) == -1) ){
       $scope.excludedRateCodes.push(item);
     }
   });
@@ -121,8 +124,8 @@ $scope.clickExcludeRateCode = function(){
 
 // to add to excluded block codes
 $scope.clickExcludeBlockCode = function(){
-  angular.forEach($scope.checkinData.block_codes,function(item, index) {
-    if((item.value == $scope.checkinData.selected_block_code) && ( $scope.excludedBlockCodes.indexOf(item) == -1) ){
+  angular.forEach($scope.block_codes,function(item, index) {
+    if((item.id == $scope.checkinData.selected_block_code) && ( $scope.excludedBlockCodes.indexOf(item) == -1) ){
       $scope.excludedBlockCodes.push(item);
     }
   });     
@@ -132,7 +135,7 @@ $scope.clickExcludeBlockCode = function(){
 //remove exclude block code
 $scope.deleteBlockCode = function(id){
   angular.forEach($scope.excludedBlockCodes,function(item, index) {
-    if(item.value == id){
+    if(item.id == id){
       $scope.excludedBlockCodes.splice(index,1);
     }
   });
@@ -141,7 +144,7 @@ $scope.deleteBlockCode = function(id){
 //remove exclude rate code
 $scope.deleteRateCode = function(id){
   angular.forEach($scope.excludedRateCodes,function(item, index) {
-    if(item.value == id){
+    if(item.id == id){
       $scope.excludedRateCodes.splice(index,1);
     }
   });

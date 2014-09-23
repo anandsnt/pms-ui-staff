@@ -1,4 +1,4 @@
-admin.service('adCheckinSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('adCheckinSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2){
 /*
 * To fetch checkin
 * @return {object} checkin details
@@ -30,6 +30,23 @@ this.save = function(data){
 	});
 	return deferred.promise;
 };
+
+
+/*
+* To get Rate codes
+* 
+*/	
+this.getRateCodes = function(data){
+	var deferred = $q.defer();
+	var url = '/api/rates.json';		
+	ADBaseWebSrvV2.getJSON(url,data).then(function(data) {
+		deferred.resolve(data);
+	},function(data){
+		deferred.reject(data);
+	});
+	return deferred.promise;
+};
+
 
 
 }]);
