@@ -105,9 +105,9 @@ body.ngdialog-open {
 	
 .calendar-modal .ngdialog-content{
     /*commenting since it breaking the calendar popup on rate config*/
-	  /*margin-left: 20% !important;
+	 /* margin-left: 20% !important;*/
     width: 75% !important;
-    padding: 0px !important;
+   /* padding: 0px !important;
     margin-top: -5% !important;*/
 }
 
