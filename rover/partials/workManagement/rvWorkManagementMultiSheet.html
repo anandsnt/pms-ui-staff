@@ -8,17 +8,17 @@
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
         <div class="entry date">
             <label for="worksheet-date">Date</label>
-            <div class="entry-data">
+            <div class="entry-data" ng-click="showCalendar('RVWorkManagementMultiDatePickerController')">
                 <input name="worksheet-date" id="worksheet-date" type="text" class="datepicker" value="{date}" readonly />
-                <strong id="worksheet-date-day" class="day">{day}</strong>
-                <span id="worksheet-date-month" class="month">{month}</span>
-                <span id="worksheet-date-year" class="year">{year}</span>
-            </div>
+                <strong id="worksheet-date-day" class="day">{{multiSheetState.selectedDate | date : 'dd'}}</strong>
+                <span id="worksheet-date-month" class="month">{{multiSheetState.selectedDate | date : 'MMMM'}}</span>
+                <span id="worksheet-date-year" class="year">{{multiSheetState.selectedDate | date : 'yyyy'}}</span>
+            </div>            
         </div>
         <div class="entry employees">
             <label for="worksheet-employees">Employees</label>
             <!-- MOdified angular multi select template based on https://raw.githubusercontent.com/isteven/angular-multi-select/master/angular-multi-select.js, lines 71-106 -->
-            <div multi-select input-model="employeeList" button-label="icon name" item-label="icon name maker"  on-item-click="$scope.selectEmployee(data)" tick-property="ticked"></div>
+            <div multi-select input-model="employeeList" button-label="icon name" item-label="icon name maker"  max-labels="0" on-item-click="selectEmployee(data)" tick-property="ticked" disable-property="checkboxDisabled"></div>
         </div>
         <div class="entry task">
             <label for="worksheet-work-type">Work Type</label>
@@ -40,7 +40,7 @@
     <!-- Multiple worksheets - unassigned rooms -->
     <div class="unassigned-rooms multi-sheet">
         <h2>Unassigned</h2>
-        <a href="{link}" class="filter button open-modal white with-icon only-icon">
+        <a ng-click="showFilter()" class="filter button open-modal white with-icon only-icon">
             <span class="icons icon-filter"></span>
             Filter rooms
         </a>
@@ -51,26 +51,25 @@
                     <h3>{Room number}</h3>
                     <span class="guest {guest-status}">{out or time}</span> |
                     <span class="room {room-status}">{room-status}</span>
-                </li>
-                ....
+                </li>                
             </ul>
         </div>  
     </div>
 
     <!-- Multiple worksheets - assigned rooms -->
-    <!-- When 0 employees selected
-    <div class="assigned-rooms multi-sheet no-content">
+    <!-- When 0 employees selected-->
+    <div class="assigned-rooms multi-sheet no-content" ng-if="multiSheetState.selectedEmployees.length === 0">
         <div class="info">
             <span class="icon-no-content icon-housekeeping"></span>
             <strong class="h1">No employees selected.</strong>
             <span class="h2">Select employees to assign rooms.</span> 
         </div>
-    </div> -->
+    </div> 
 
     <!-- When employees selected -->
-    <div class="assigned-rooms multi-sheet">
-        <div class="sheet-content">
-            <a href="{single-sheet-link}" class="button brand-colors">{Employee First & Last Name}</a>
+    <div class="assigned-rooms multi-sheet" ng-if="multiSheetState.selectedEmployees.length > 0">
+        <div ng-repeat="employee in multiSheetState.selectedEmployees" class="sheet-content">
+            <a href="{single-sheet-link}" class="button brand-colors">{{employee.name}}</a>
             <ul class="data">
                 <li class="shift">
                     <span class="completed">{time}</span>
@@ -98,7 +97,7 @@
             </div>
         </div>
         <!-- ... repleat for all selected employees -->
-
+        <div class="sheet-placeholder" ng-repeat="placeholder in multiSheetState.placeHolders"></div> 
         <!-- We can show up to 6 employees in here. When selected employee count is between 1 and 6, 
         fill in the difference to 6 by adding: <div class="sheet-placeholder"></div> for each empty spot on the screen. 
         For example, if you select 2 employees, you should have 4 '.sheet-placeholder' elements on the screen --> 
