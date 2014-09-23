@@ -45,8 +45,8 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHkRoomDetails.html',
             controller: 'RVHkRoomDetailsCtrl',
             resolve: {
-                roomDetailsData: function(RVHkRoomDetailsSrv, $stateParams) {
-                    return RVHkRoomDetailsSrv.fetch($stateParams.id);
+                roomDetailsData: function(RVHkRoomDetailsSrv, $stateParams, $rootScope) {
+                    return RVHkRoomDetailsSrv.fetch($stateParams.id, $rootScope.businessDate);
                 }
             }
         });

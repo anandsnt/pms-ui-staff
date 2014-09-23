@@ -7,9 +7,9 @@ sntRover.service('RVHkRoomDetailsSrv', [
 
 		this.roomDetails = {};
 
-		this.fetch = function(id){
+		this.fetch = function(id, businessDate){
 			var deferred = $q.defer();
-			var url = '/house/room/' + id + '.json';
+			var url = '/house/room/' + id + '.json?date=' + businessDate;
 
 			$http.get(url).success(function(response, status) {
 				if(response.status == "success"){
