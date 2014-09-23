@@ -9,18 +9,18 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
-       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkoutBalance.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutBalance.html',
 	    title: 'Balance - Checkout Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
-       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkOutStatus.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkOutStatus.html',
 		title: 'Status - Checkout Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
-       	templateUrl: '/assets/checkoutnow/partials/Galleria/checkoutConfirmation.html',
+       	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutConfirmation.html',
 		title: 'Confirm - Checkout Now'
     });
 
@@ -28,17 +28,17 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
     $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
-	 	templateUrl: '/assets/landing/Galleria/landing.html',
+	 	templateUrl: '/assets/landing/Fontainebleau/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Checkout'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
-		templateUrl: '/assets/checkoutlater/partials/Galleria/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/Fontainebleau/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Checkout Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
-		templateUrl: '/assets/checkoutlater/partials/Galleria/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/Fontainebleau/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Checkout Later'
 	 });
@@ -47,27 +47,27 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/checkin/partials/Galleria/checkInConfirmation.html',
+	 	templateUrl: '/assets/checkin/partials/Fontainebleau/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check In'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
-	 	templateUrl: '/assets/checkin/partials/Galleria/checkInReservationDetails.html',
+	 	templateUrl: '/assets/checkin/partials/Fontainebleau/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
 	 	title: 'Details - Check In'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
-	 	templateUrl: '/assets/checkin/partials/Galleria/checkinUpgradeRoom.html',
+	 	templateUrl: '/assets/checkin/partials/Fontainebleau/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
 	    title: 'Upgrade - Check In'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
-	 	templateUrl: '/assets/checkin/partials/Galleria/checkInKeys.html',
+	 	templateUrl: '/assets/checkin/partials/Fontainebleau/checkInKeys.html',
 	 	controller : 'checkInKeysController',
 	 	title: 'Keys - Check In'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/checkin/partials/Galleria/checkinSuccess.html',
+	 	templateUrl: '/assets/checkin/partials/Fontainebleau/checkinSuccess.html',
 	 	title: 'Status - Check In'
 	 });
 
@@ -76,12 +76,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 
 	 $stateProvider.state('checkoutRoomVerification', {
 	 	url: '/checkoutRoomVerification',
-	 	templateUrl: '/assets/checkoutnow/partials/checkoutRoomVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
 	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
-	 	templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerification.html',
+	 	templateUrl: '/assets/checkoutnow/partials/Fontainebleau/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
