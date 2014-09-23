@@ -110,7 +110,8 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 		}else{
-			if(oldRoomType !== $scope.roomType){
+			//if(oldRoomType !== $scope.roomType){
+			if(true){
 				$scope.oldRoomType = oldRoomType;
 				$scope.openApplyChargeDialog();
 			} else {
@@ -183,10 +184,10 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
 			$scope.$emit('hideLoader');
-			//if(data.data.is_room_auto_assigned == true){
-			if(true){	
-				//$scope.roomAssignedByOpera = data.data.room;
-				$scope.roomAssignedByOpera = 234;
+			if(data.data.is_room_auto_assigned == true){
+			
+				$scope.roomAssignedByOpera = data.data.room;
+				//$scope.roomAssignedByOpera = 234;
 				ngDialog.open({
 			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
 			          controller: 'rvRoomAlreadySelectedCtrl',
@@ -239,7 +240,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 	$scope.goToNextView = function(){
-		console.log("-----------next view----------------");
+	
 		$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 		$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 		$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;

@@ -8,19 +8,8 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 
 	$scope.enableDisableButtons = function(){
 		
-
-			console.log($scope.roomCharge.length)
-			if($scope.roomCharge.length === 0){
-				console.log("=====***********=====================");
-				$scope.noChargeDisabled = false;
-				$scope.chargeDisabled   = true;
-			} else {
-				console.log("========++++++******************+++++==================");
-				$scope.noChargeDisabled = true;
-				$scope.chargeDisabled   = false;
-				
-				
-			}
+		return !isNaN($scope.roomCharge) && $scope.roomCharge.length > 0;
+			
 		
 	};
 	$scope.clickChargeButton = function(){
