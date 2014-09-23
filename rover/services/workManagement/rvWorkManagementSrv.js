@@ -42,6 +42,17 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.createWorkSheet = function(params){
+			var deferred = $q.defer();
+			var url = 'api/work_sheets';
+			RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 		this.searchEmployees = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/accounts';

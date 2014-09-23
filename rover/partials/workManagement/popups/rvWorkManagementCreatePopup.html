@@ -7,29 +7,26 @@
 
 			<div class="entry full-width">
 				<div class="select">
-					<select id="work-type" name="work-type" class="placeholder">
+					<!-- <select id="work-type" name="work-type" class="placeholder">
 						<option value="" selected>Select Work Type</option>
 						<option value="daily-cleaning">Daily Cleaning</option>
 						...
-					</select>
+					</select> -->
+					<select ng-model="stateVariables.newSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
+                		<option value="" selected>Select a Work Type</option>
+            		</select>
 				</div>
 			</div>
 			<div class="entry full-width">
 				<div class="select">
-					<select id="employee" name="employee" class="placeholder">
-						<option value="" selected>Select Employee</option>
-						<option value="{Employee 1}">{Employee 1}</option>
-						<option value="{Employee 2}">{Employee 2}</option>
-						...
-					</select>
+					<select ng-model="stateVariables.newSheet.user_id" ng-options="employee.id as employee.name for employee in employeeList">
+						<option value="" translate selected>Select Employee</option>
+					</select>					
 				</div>
 			</div>
-<!-- 			<div class="entry full-width has-datepicker">
-				<input name="new-sheet-date" id="new-sheet-date" type="text" class="datepicker" value="{today}" readonly />
-			</div> -->
 			<div class="entry has-datepicker entry full-width">
-	            <input id="rmDateRange" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
-	            <button ng-click="showCalendar('RVWorkManagementCreateDatePickerController')" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
+	            <input id="rmDateRange" placeholder="{{stateVariables.newSheet.date | date : dateFormat}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+	            <button ng-click="showCreateCalendar()" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
 	        </div>
 
 			<div class="actions">
