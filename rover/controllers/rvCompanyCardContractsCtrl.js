@@ -4,8 +4,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.highchartsNG = {};
 		$scope.contractList = {};
 		$scope.contractData = {};
-		var x = $rootScope.currencySymbol;
-		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value:"S", name:"amount" } ];		
+		$scope.rateValueTypes = [ { value:"%",name:"percent" },{ value: $rootScope.currencySymbol, name:"amount" } ];		
 		$scope.addData = {};
 
 		$scope.contractList.contractSelected = "";
@@ -16,8 +15,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.errorMessage = "";
 		var contractInfo = {};
 		var ratesList = [];
-
-		sajith = $scope;
 
 		/* Items related to ScrollBars
 		 * 1. When the tab is activated, refresh scroll.
@@ -393,16 +390,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * To add new contracts
 		 */
 		$scope.AddNewContract = function() {
-			
-
-			console.log("Sajith Here");
-			console.log($scope.addData.selected_type);
 
 			var dataToPost = {};
 			dataToPost = dclone($scope.addData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights','types']);
-			console.log(dataToPost.selected_type);
-			console.log($scope.addData.selected_type);
-			console.log("Sajith ends here");
 
 			var saveContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -419,18 +409,13 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				var account_id = $stateParams.id;
 			}
-			console.log($scope.addData.selected_type);
-			console.log(dataToPost.selected_type);
-			console.log("Sajith before post here");
+			
 			if (account_id) {
 				$scope.invokeApi(RVCompanyCardSrv.addNewContract, {
 					"account_id": account_id,
 					"postData": dataToPost
 				}, saveContractSuccessCallback, saveContractFailureCallback);
 			}
-			console.log($scope.addData.selected_type);
-			console.log(dataToPost.selected_type);
-			console.log("Sajith ends here");
 		};
 
 		/**
@@ -501,7 +486,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 * on selecting "%" , rate value must be integer
 		 */
 		$scope.$watch('contractData.selected_type', function() {
-			if ($scope.contractData.selected_type == "%") {
+			if ($scope.contractData.selected_type == "percent") {
 				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
 			} else {
 				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
