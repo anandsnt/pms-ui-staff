@@ -554,7 +554,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.goToDashboard = function(){
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      $state.go('rover.dashboard', {}, {reload: true});
+     // $state.go('rover.dashboard', {}, {reload: true});
+      $window.location.reload();
     }
 
      /**
