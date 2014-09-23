@@ -7,17 +7,15 @@ sntRover
     UI_DATE_FORMAT: {
         enumerable: true,
         value: 'yyyy-MM-dd'
-    },
-    UI_DATE_OPTIONS: {
-        enumerable: true,
-        value: {
-            changeYear: true,
-            changeMonth: true,
-            yearRange: '-1:+10'
-        }
     }
 }))
-.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter', '$vault',  function($scope, $window, dateFilter, $filter, $vault) {
+.constant('rateGridDefaults', Object.create(null, {
+    RESIZE_DEBOUNCE_INTERVAL: {
+        enumerable: true,
+        value: 100
+    }
+}))
+.controller('RMDashboradCtrl', ['rateGridDefaults', '$scope','$window','dateFilter', '$filter', '$vault',  function(rateGridDefaults, $scope, $window, dateFilter, $filter, $vault) {
     BaseCtrl.call(this, $scope);
 
     // reseting search params to $vault
@@ -103,7 +101,7 @@ sntRover
             allRates: []
    	};*/
 
-    $scope.$on("computeColumWidth", function(){
+    var computeColWidth = function(){
         var FILTER_OPTIONS_WIDTH = 5;
         var FIRST_COLUMN_WIDTH = 220;
         var COLUMN_BORDER_WIDTH = 20;
@@ -127,9 +125,10 @@ sntRover
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
+    },
+    computeColWidthOnResize = _.throttle(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL);
 
-             
-    });
+    $scope.$on("computeColumWidth", computeColWidth);
 
     $scope.ratesDisplayed = [];
 
@@ -183,4 +182,7 @@ sntRover
        $scope.$broadcast('closeFilterPopup');
     };
 
+    $scope.$on('resize', function(e, wDim) {
+        computeColWidthOnResize(wDim.windowWidth, wDim.windowHeight);
+    });
 }]);

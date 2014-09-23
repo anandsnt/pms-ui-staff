@@ -91,8 +91,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
 				$scope.refreshScroller();
 			}
-			$scope.$broadcast('computColumnWidth'); //$emit('computeColumWidth');
-			
+
+			$scope.$emit('computeColumWidth');			
 		};
 
 		//Set the current business date value to the service. Done for calculating the history dates
@@ -289,5 +289,4 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	};
 
 	$scope.init();
-  
 }]);
