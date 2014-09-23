@@ -5,8 +5,7 @@ admin.controller('ADiBeaconSettingsCtrl',['$scope', '$state', 'ngTableParams','a
 		$scope.errorMessage = "";
 		$scope.successMessage = "";
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
-		// $scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
-		$scope.isIpad = true;
+		$scope.isIpad = navigator.userAgent.match(/iPad/i) != null && window.cordova;
 		$scope.data = [];
 	};
 	$scope.init();
