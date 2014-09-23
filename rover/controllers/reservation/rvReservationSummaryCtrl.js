@@ -104,7 +104,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if (!isEmpty($scope.reservationData.paymentType.type)) {
+			if ($scope.reservationData.paymentType.type != null) {
 				data.payment_type = {};
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
@@ -125,8 +125,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			// MLI Integration.
-			if ($scope.reservationData.paymentType.type.value === "CC") {
-				data.payment_type.session_id = $scope.data.MLIData.session;
+			if ($scope.reservationData.paymentType.type != null) {
+				if ($scope.reservationData.paymentType.type.value === "CC") {
+					data.payment_type.session_id = $scope.data.MLIData.session;
+				}
 			}
 
 			//	CICO-8320
@@ -299,9 +301,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		$scope.submitReservation = function() {
 
-			if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
-				$scope.errorMessage = ["There is a problem with your credit card"];
-				return false;
+			if($scope.reservationData.paymentType.type != null){
+				if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
+					$scope.errorMessage = ["There is a problem with your credit card"];
+					return false;
+				}
 			}
 			$scope.proceedCreatingReservation();
 

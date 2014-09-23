@@ -13,7 +13,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-
+  	$rootScope.multiplePostingNumber = "";
 
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -290,7 +290,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 };
 	 $scope.moveToBillActionfetchSuccessCallback = function(data){
 	 	$scope.fetchSuccessCallback(data);
-	 	$scope.setActiveBill($scope.movedIndex);
+	 	//$scope.setActiveBill($scope.movedIndex);
 	 };
 	 /*
 	  * MOve fees item from one bill to another
@@ -485,12 +485,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		// pass down active bill no
 		
-		$scope.passActiveBillNo = activeBillNo;
+		//$scope.passActiveBillNo = activeBillNo;
+
+		$scope.billNumber = activeBillNo;
 
 		// translating this logic as such from old Rover
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
 		$scope.fetchTotalBal = false;
-
 		var callback = function(data) {
 		    $scope.$emit( 'hideLoader' );
 
@@ -1132,8 +1133,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 
 	var refreshListWithData = function(data){
-		$scope.reservationBillData = data; 
-		reservationBillData = data;
+		$scope.init(data);
 		//expand list
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
 		$scope.calculateHeightAndRefreshScroll();
