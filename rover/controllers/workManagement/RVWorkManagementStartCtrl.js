@@ -15,7 +15,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             searchQuery: "",
             employeeSearch: false, // Search can be either for rooms or an employee
             viewingDate: {
-                date: $rootScope.businessDate
+                date: $rootScope.businessDate,
+                work_type_id: ""
             },
             searchResults: [],
             newSheet: {
