@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout',
-	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout) {
+sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state',
+	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state) {
 		BaseCtrl.call(this, $scope);
 		$scope.setHeading("Work Sheet No." + $stateParams.id + ", " + $stateParams.date);
 		$rootScope.setPrevState = {
@@ -23,6 +23,9 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				departures: 0,
 				stayovers: 0,
 				completed: 0
+			},
+			filters: {
+				selectedFloor: ""
 			}
 		};
 
@@ -47,12 +50,27 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			refreshView();
 		}
 
+		$scope.deletWorkSheet = function() {
+			var onDeleteSuccess = function(data) {
+					$state.go('rover.workManagement.start');
+					$scope.$emit("hideLoader");
+				},
+				onDeleteFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.$emit("hideLoader");
+				};
+			$scope.invokeApi(RVWorkManagementSrv.deleteWorkSheet, {
+				"id": $stateParams.id
+			}, onDeleteSuccess, onDeleteFailure);
+		}
+
 		$scope.saveWorkSheet = function() {
 			var assignedRooms = [],
 				onSaveSuccess = function(data) {
 					$scope.$emit("hideLoader");
 				},
-				onSaveFailure = function(data) {
+				onSaveFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
 					$scope.$emit("hideLoader");
 				};
 
@@ -91,7 +109,8 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 						refreshView();
 						$scope.$emit('hideLoader');
 					},
-					onFetchFailure = function(data) {
+					onFetchFailure = function(errorMessage) {
+						$scope.errorMessage = errorMessage;
 						$scope.$emit('hideLoader');
 					}
 				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
@@ -101,7 +120,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				}, onFetchSuccess, onFetchFailure);
 			}
 		}
-
 		init();
 	}
 ]);

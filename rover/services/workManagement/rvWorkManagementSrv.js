@@ -84,6 +84,17 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			return deferred.promise;
 		}
 
+		this.deleteWorkSheet = function(params) {
+			var deferred = $q.defer();
+			var url = 'api/work_sheets/' + params.id;
+			RVBaseWebSrvV2.deleteJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
 		this.fetchWorkSheetDetails = function(params) {
 			var deferred = $q.defer();
 			var url = 'api/work_assignments';

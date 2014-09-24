@@ -1,36 +1,36 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Worksheet content -->
 <section id="worksheet-content" class="content worksheets" role="main">
-
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Worksheet header -->
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
         <div class="entry maid">
             <label for="worksheet-employee">Maid</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList">
-                        <option value="" translate selected>Select Employee</option>
+                <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee" >
+                        <option value="">Select Employee</option>
                 </select>
             </div>
         </div>
         <div class="entry task">
             <label for="worksheet-work-type">Task</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
-                   <option value="" selected>Select a Work Type</option>
+                <select ng-model="singleState.workSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type"}" >
+                   <option value="">Select a Work Type</option>
                 </select>
             </div>
         </div>
         <div class="entry shift">
             <label for="worksheet-shift">Shift</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.shift_id" ng-options="shift.id as shift.name for shift in shifts">                   
+                <select ng-model="singleState.workSheet.shift_id" ng-options="shift.id as shift.name for shift in shifts" id="worksheet-shift" name="worksheet-shift" >                   
                 </select>
             </div>
         </div>
         <div class="actions">
             <button type="button" class="button green" ng-click="saveWorkSheet()">Save</button>
             <button type="button" class="button grey">Print</button>
-            <button type="button" class="button red">Delete</button>
+            <button type="button" class="button red" ng-click="deletWorkSheet()">Delete</button>
         </div>
     </form>
 
@@ -47,19 +47,12 @@
                 </select>
             </div>
             <div class="select">
-                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor"><!-- Add class="placeholder" if value="" is selected -->
+                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="singleState.filters.selectedFloor" ng-class="{'placeholder': singleState.filters.selectedFloor == ''}" ng-options="floor.id as floor.description for floor in floors">
                     <option value="" selected>All floors</option>
-                    <option value="1">1st Floor</option>
-                    <option value="2">2nd Floor</option>
-                    <option value="3">3rd Floor</option>
-                    <option value="4">4th Floor</option>
-                    <option value="5">5th Floor</option>
-                    <option value="6">6th Floor</option>
-                </select>
+                </select>                
             </div>
-        </div>
-        <!-- ng-iscroll="workSheetUnassigned" -->
-        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" >
+        </div>        
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned">
             <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:' .worksheet-room.single-sheet.assigned '}">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
                 <li class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassigned" 
