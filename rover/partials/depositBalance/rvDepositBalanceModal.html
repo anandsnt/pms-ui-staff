@@ -11,65 +11,53 @@
 			<ul id="expenses" class="expenses">
 				<li>
 					Room Cost
-					<span> $
-						184.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.room_cost}} </span>
 				</li>
 				<li>
 					Packages
-					<span> $
-						55.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.packages}} </span>
 				</li>
 				<li class="total">
 					Sub Total
-					<span> $
-						239.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.sub_total}} </span>
 				</li>
 				<li>
 					Fees
-					<span> $
-						7.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.fees}} </span>
 				</li>
 				<li class="total">
 					Stay Total
-					<span> $
-						246.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.stay_total}} </span>
 				</li>
 				<li>
 					Nightly Charge
-					<span> $
-						0.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.nightly_charges}} </span>
 				</li>
 				<li class="total final">
 					Total Cost of Stay
-					<span> $
-						246.00 </span>
+					<span> {{currencySymbol}}{{depositBalanceData.data.total_cost_of_stay}} </span>
 				</li>
 				<li class="deposit">
 					Deposit Paid
-					<span class="green"> $
-						0.00 </span>
+					<span class="green"> {{currencySymbol}}{{depositBalanceData.data.deposit_paid}} </span>
 				</li>
 				<li class="balance">
 					Outstanding Stay Total
-					<span class="red"> $
-						246.00 </span>
-					<span id="merchantId" data-merchantid="TESTSTAYNTOUCH01" class="hidden"></span>
-					<span id="outstandingAmount" data-outstanding-amount="246.00" class="hidden"></span>
-					<span id="isSwiped" data-is-swiped="false" class="hidden"></span>
+					<span class="red"> {{currencySymbol}}{{depositBalanceData.data.outstanding_stay_total}} </span>
+			
 				</li>
 			</ul>
 		</fieldset>
-		<!-- Right side -->ggg
-		{{depositBalanceData}}
+		<!-- Right side -->
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
 			<div class="entry full-width">
 				<div id="notification-message"></div>
 			</div>
 			<div class="entry amount">
-				<label for="amount"> Amount to pay (<span></span>$
+				<label for="amount"> Amount to pay (<span></span>currencySymbol
 					) </label>
-				<input type="text" value="246.00" name="amount" id="amount">
+				<input type="text" value="depositBalanceData.data.outstanding_stay_total" name="amount" id="amount">
 			</div>
 			<!-- Show these options only if there are existing cards -->
 			<ul id="make-payment-options" class="modal-options">
@@ -82,7 +70,7 @@
 			</ul>
 			<!-- Select cards, if exsist -->
 			<div id="select-make-payment-card" class="select-card hidden">
-				<div id="available-cards" data-selected-payment="2293" data-is-existing-card="no" class="cards-list scrollable cards-list-height">
+				<div id="available-cards" data-is-existing-card="no" class="cards-list scrollable cards-list-height">
 					<div id="available-cards-wrapper" class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 						<!-- Selected card -->
 						<label payment-id="2292" class="active-item item-payment primary">
@@ -105,24 +93,24 @@
 				<div class="holder">
 					<div class="entry margin">
 						<label for="card-number">Card number</label>
-						<input type="text" value="" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number" readonly="readonly">
+						<input type="text" ng-model="depositBalanceNewCardData.cardNumber" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number">
 					</div>
 					<div class="entry">
 						<label for="expiry-month"> Expiration date (<span>MM/YY</span>) </label>
-						<input type="text" value="" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month" readonly="readonly">
-						<input type="text" value="" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" readonly="readonly">
+						<input type="text" ng-model="depositBalanceNewCardData.expiryMonth" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month">
+						<input type="text" ng-model="depositBalanceNewCardData.expiryYear" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" >
 					</div>
 					<div class="entry margin">
 						<label for="name-on-card">Name on card</label>
-						<input type="text" value="" placeholder="Enter name on card" name="name-on-card" id="name-on-card">
+						<input type="text" ng-model="depositBalanceNewCardData.cardHolderName" placeholder="Enter name on card" name="name-on-card" id="name-on-card">
 					</div>
 					<div class="entry">
 						<label for="ccv">CCV</label>
-						<input type="text" value="" size="4" placeholder="CCV" name="ccv" maxlength="3" id="ccv">
+						<input type="text" ng-model="depositBalanceNewCardData.ccv" size="4" placeholder="CCV" name="ccv" maxlength="3" id="ccv">
 					</div>
 					<div class="entry full-width">
 						<label id="add-in-guest-card" class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-							<input type="checkbox" value="1" name="checkin" id="add-in-guest-card">
+							<input type="checkbox"  name="checkin" id="add-in-guest-card">
 							Add to Guest Card </label>
 					</div>
 				</div>
@@ -131,7 +119,7 @@
 				<button type="button" id="close" class="button blank modal-close">
 					Close
 				</button>
-				<button type="button" id="make-payment" class="button grey modal-close" disabled="disabled">
+				<button type="button" ng-click="clickedMakePayment()" id="make-payment" class="button grey modal-close" disabled="disabled">
 					Make Payment
 				</button>
 			</div>

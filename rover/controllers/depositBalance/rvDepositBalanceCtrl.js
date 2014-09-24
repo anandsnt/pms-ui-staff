@@ -1,9 +1,12 @@
 sntRover.controller('RVDepositBalanceCtrl',['$scope','ngDialog', '$rootScope', 'RVDepositBalanceSrv','$stateParams', 
 	function($scope, ngDialog, $rootScope, RVDepositBalanceSrv, $stateParams){
 	BaseCtrl.call(this, $scope);
-	console.log(">>>>>>>>>>>>>>>>>>>>>>>>");
-	console.log($scope);
-	
+
+	//$scope.depositBalanceData = $scope.
+	$scope.depositBalanceNewCardData = {};
+	$scope.clickedMakePayment = function(){
+		
+	};
 	// $scope.init = function(){
 // 	
 		// var reservationId = $stateParams.id;
