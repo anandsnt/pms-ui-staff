@@ -48,13 +48,37 @@ $scope.fetchCheckinDetails = function(){
     $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true:false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
+    
+
+
+   // $scope.checkinData.excluded_rate_codes
+
+   angular.forEach($scope.rate_codes,function(rate, index) {
+    angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
+      if(rate.id == excludedrate.id){
+        $scope.excludedRateCodes.push(rate);
+      }
+    });
+   });
+
+  angular.forEach($scope.block_codes,function(rate, index) {
+    angular.forEach($scope.checkinData.excluded_block_codes,function(excludedrate, index) {
+      if(rate.id == excludedrate.id){
+        $scope.excludedBlockCodes.push(rate);
+      }
+    });
+   });
+
+
+
+
     //$scope.checkinData.is_precheckin_only_flag = ($scope.checkinData.is_precheckin_only=== 'true') ? true:false;
     //$scope.checkinData.is_sent_to_que_flag = ($scope.checkinData.is_sent_to_que=== 'true') ? true:false;
 
 /* TO BE CHANGED*/
 
-$scope.checkinData.is_precheckin_only_flag = true;
-$scope.checkinData.is_sent_to_que_flag = true;
+// $scope.checkinData.is_precheckin_only_flag = true;
+// $scope.checkinData.is_sent_to_que_flag = true;
 //$scope.checkinData.rate_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
 //$scope.checkinData.block_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
 /* TO BE CHANGED*/
@@ -90,6 +114,19 @@ $scope.saveCheckin = function(){
   $scope.checkinData.is_notify_on_room_ready = ($scope.checkinData.is_notify_on_room_ready_flag) ?'true':'false';
   $scope.checkinData.require_cc_for_checkin_email = ($scope.checkinData.require_cc_for_checkin_email_flag) ? 'true':'false';
 
+  var excluded_rate_codes = [];
+  var excluded_block_codes = [];
+
+   angular.forEach($scope.excludedRateCodes,function(excludedrate, index) {
+      excluded_rate_codes.push(excludedrate.id);
+    });
+   angular.forEach($scope.excludedBlockCodes,function(excludedrate, index) {
+      excluded_block_codes.push(excludedrate.id);
+    });
+
+
+
+
   var uploadData = {
     'checkin_alert_message': $scope.checkinData.checkin_alert_message,
     'checkin_staff_alert_option':$scope.checkinData.checkin_staff_alert_option,
@@ -99,7 +136,19 @@ $scope.saveCheckin = function(){
     'is_send_checkin_staff_alert':$scope.checkinData.is_send_checkin_staff_alert,
     'prime_time':$scope.checkinData.checkin_alert_primetime,
     'checkin_alert_time':$scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute,
-    'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email
+    'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
+
+    'is_precheckin_only_flag':$scope.checkinData.is_precheckin_only_flag,
+    'is_sent_to_que_flag':$scope.checkinData.is_sent_to_que_flag,
+    'excluded_rate_codes':excluded_rate_codes,
+    'excluded_block_codes':excluded_block_codes,
+    'pre_checkin_email_title':$scope.checkinData.pre_checkin_email_title,
+    'pre_checkin_email_body': $scope.checkinData.pre_checkin_email_body,
+    'pre_checkin_email_bottom_body': $scope.checkinData.pre_checkin_email_bottom_body,
+    'prior_to_arrival':$scope.checkinData.prior_to_arrival,
+    'max_webcheckin':$scope.checkinData.max_webcheckin
+
+
   };
   var saveCheckinDetailsFailureCallback = function(data) {
     $scope.$emit('hideLoader');
@@ -117,6 +166,7 @@ $scope.clickExcludeRateCode = function(){
   
     if((item.id == $scope.checkinData.selected_rate_code) && ( $scope.excludedRateCodes.indexOf(item) == -1) ){
       $scope.excludedRateCodes.push(item);
+      //$scope.checkinData.excludedRateCodes.push(item.id);
     }
   });
 
@@ -128,6 +178,7 @@ $scope.clickExcludeBlockCode = function(){
   angular.forEach($scope.block_codes,function(item, index) {
     if((item.id == $scope.checkinData.selected_block_code) && ( $scope.excludedBlockCodes.indexOf(item) == -1) ){
       $scope.excludedBlockCodes.push(item);
+      //$scope.checkinData.excludedBlockCodes.push(item.id);
     }
   });     
   $scope.checkinData.selected_block_code = "";
@@ -138,6 +189,7 @@ $scope.deleteBlockCode = function(id){
   angular.forEach($scope.excludedBlockCodes,function(item, index) {
     if(item.id == id){
       $scope.excludedBlockCodes.splice(index,1);
+      //$scope.checkinData.excludedBlockCodes.splice(index,1);
     }
   });
 
@@ -147,6 +199,8 @@ $scope.deleteRateCode = function(id){
   angular.forEach($scope.excludedRateCodes,function(item, index) {
     if(item.id == id){
       $scope.excludedRateCodes.splice(index,1);
+     // $scope.checkinData.excludedRateCodes.splice(index,1);
+      
     }
   });
 
