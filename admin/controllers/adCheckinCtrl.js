@@ -13,7 +13,7 @@ $rootScope.previousStateParam = '1';
 $scope.init = function(){
   $scope.checkinData = {};
   $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-  $scope.minutes = -["00","15","30","45"];
+  $scope.minutes = ["00","15","30","45"];
   $scope.primeTimes = ["AM","PM"];
   $scope.isLoading = true;
   $scope.hideAlertOption = false;
@@ -30,21 +30,8 @@ $scope.init = function(){
 
 $scope.init();
 
-/*
-* To fetch checkin details
-*/
-$scope.fetchCheckinDetails = function(){
-
-  var fetchCheckinDetailsFailureCallback = function(data) {
-    $scope.$emit('hideLoader');
-    $scope.isLoading = false;
-
-  };
-  var fetchCheckinDetailsSuccessCallback = function(data) {
-    $scope.$emit('hideLoader');
-    $scope.isLoading = false;
-    $scope.checkinData = data;
-    $scope.checkinData.is_send_alert_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
+var setUpData = function(){
+   $scope.checkinData.is_send_alert_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
     $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
     $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true:false;
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
@@ -67,19 +54,37 @@ $scope.fetchCheckinDetails = function(){
       });
      });
 
-$scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
-  $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
-})
+    $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
+      $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
+    })
 
-$scope.$watch('checkinData.is_precheckin_only',function(){
-  $scope.hideAddOption = $scope.checkinData.is_precheckin_only ? false : true;
-})
+    $scope.$watch('checkinData.is_precheckin_only',function(){
+      $scope.hideAddOption = $scope.checkinData.is_precheckin_only ? false : true;
+    })
 
-$scope.$watch('checkinData.is_sent_to_queue',function(){
-  $scope.hidePriorMinutes = ($scope.checkinData.is_sent_to_queue === 'yes') ? false : true;
-})
-//to be confirmed 
-$scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
+    $scope.$watch('checkinData.is_sent_to_queue',function(){
+      $scope.hidePriorMinutes = ($scope.checkinData.is_sent_to_queue === 'yes') ? false : true;
+    })
+    //to be confirmed 
+    $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
+}
+
+/*
+* To fetch checkin details
+*/
+$scope.fetchCheckinDetails = function(){
+
+  var fetchCheckinDetailsFailureCallback = function(data) {
+    $scope.$emit('hideLoader');
+    $scope.isLoading = false;
+
+  };
+  var fetchCheckinDetailsSuccessCallback = function(data) {
+    $scope.$emit('hideLoader');
+    $scope.isLoading = false;
+    $scope.checkinData = data;
+    setUpData();
+   
 };
 $scope.invokeApi(adCheckinSrv.fetch, {},fetchCheckinDetailsSuccessCallback,fetchCheckinDetailsFailureCallback);
 };
