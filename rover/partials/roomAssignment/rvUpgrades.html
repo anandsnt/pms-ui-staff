@@ -18,7 +18,8 @@
             $ {{upgrade.upsell_amount}} <span translate>PER_NIGHT_LABEL</span>
             </a>
             <figure class="room-image">
-               <img src="{{upgrade.room_type_image}}" onerror="this.src=''" alt="" image-load image-loaded="imageLoaded()">
+               <img ng-src="{{upgrade.room_type_image}}" onerror="this.src=''" alt="" image-load image-loaded="imageLoaded()" ng-if="upgrade.room_type_image !== ''">
+               <img ng-src="/assets/bedroom-blank.png" alt="" ng-if="upgrade.room_type_image === ''">
             </figure>
          </li>
       </ul>

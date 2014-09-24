@@ -13,7 +13,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-
+  	$rootScope.multiplePostingNumber = "";
 
 	
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -63,6 +63,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.setTitle($filter('translate')('GUEST_BILL_TITLE'));
 	}
 	
+	/**
+	* function to get smartband creation along with key creation enabled
+	* @return Boolean
+	*/
+	var isSmartBandKeyCreationAlongWithKeyCreationEnabled = function(){
+		return ($scope.reservationBillData.icare_enabled == "true" && 
+				$scope.reservationBillData.combined_key_room_charge_create == "true") ? "true": "false";
+	};
 	$scope.init = function(reservationBillData){
 		
 				/*
@@ -282,7 +290,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 };
 	 $scope.moveToBillActionfetchSuccessCallback = function(data){
 	 	$scope.fetchSuccessCallback(data);
-	 	$scope.setActiveBill($scope.movedIndex);
+	 	//$scope.setActiveBill($scope.movedIndex);
 	 };
 	 /*
 	  * MOve fees item from one bill to another
@@ -477,12 +485,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		// pass down active bill no
 		
-		$scope.passActiveBillNo = activeBillNo;
+		//$scope.passActiveBillNo = activeBillNo;
+
+		$scope.billNumber = activeBillNo;
 
 		// translating this logic as such from old Rover
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
 		$scope.fetchTotalBal = false;
-
 		var callback = function(data) {
 		    $scope.$emit( 'hideLoader' );
 
@@ -761,6 +770,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		//Display the key encoder popup
 		else if(keySettings === "encode"){
+			$scope.isSmartbandCreateWithKeyWrite = isSmartBandKeyCreationAlongWithKeyCreationEnabled();
 			ngDialog.open({
 			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 			    controller: 'RVKeyEncodePopupCtrl',
@@ -1123,8 +1133,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 
 	var refreshListWithData = function(data){
-		$scope.reservationBillData = data; 
-		reservationBillData = data;
+		$scope.init(data);
 		//expand list
 		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
 		$scope.calculateHeightAndRefreshScroll();

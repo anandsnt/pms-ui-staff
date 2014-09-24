@@ -4,7 +4,7 @@
             <div class="select">
                 <!-- number of options should match the number of bills created -->
                 <select name="post-charge-to-bill" ng-model="billNumberSelected">
-                	<option ng-repeat="bills in billsArray" value="{{bills.bill_number}}" ng-selected="{{bills.bill_number == currentActiveBill}}">{{bills.bill_number}}</option>
+                	<option ng-repeat="bills in billsArray" value="{{bills.bill_number}}" ng-selected="{{bills.bill_number == billNumberSelected}}">{{bills.bill_number}}</option>
                 </select>
             </div>
         </strong>
