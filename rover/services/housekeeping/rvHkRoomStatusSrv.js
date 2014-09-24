@@ -124,7 +124,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 						roomType.isSelected = false;
 						that.allRoomTypes[roomType.id] = roomType;
 					});
-					deferred.resolve(this.allRoomTypes);
+					deferred.resolve(that.allRoomTypes);
 				}, function(data){
 					deferred.reject(data);
 				});
@@ -134,18 +134,39 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 
 		// fetch all HK cleaning staffs
-		this.HKMaids = [];
+		var HKMaids = [];
 		this.fetchHKMaids = function() {
 			var url = "/api/work_statistics/employees_list";
 			var deferred = $q.defer();
 
-			if ( this.HKWorkStaff.length ) {
-				deferred.resolve(this.HKWorkStaff);
+			if ( HKMaids.length ) {
+				deferred.resolve(HKMaids);
 			} else {
 				BaseWebSrvV2.getJSON(url)
 					.then(function(data) {
-						this.HKWorkStaff = data.results;
-						deferred.resolve(this.HKWorkStaff);
+						HKMaids = data.results;
+						deferred.resolve(HKMaids);
+					}, function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+		// get all all WorkTypes
+		var workTypesList = [];
+		this.getWorkTypes = function() {
+			var deferred = $q.defer(),
+				url = 'api/work_types';
+
+			if ( workTypesList.length ) {
+				deferred.resolve(workTypesList);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						workTypesList = data.results;
+						deferred.resolve(workTypesList);
 					}.bind(this), function(data){
 						deferred.reject(data);
 					});

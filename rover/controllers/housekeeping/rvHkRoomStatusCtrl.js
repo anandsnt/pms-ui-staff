@@ -46,21 +46,31 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noResultsFound = 0;
 
+
+
+
 		// default values for these
 		// for a HK staff the filterByEmployee value must be defalut to that
 		// and filter the rooms accordingly
-		$scope.filterByWorkType = '';
-		$scope.filterByEmployee = '';
-
-
 
 		// fetch all the HK work staff
+		$scope.filterByWorkType = '';
+		$scope.workTypes = [];
+		var wtCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.workTypes = data;
+		};
+		$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
+
+		// fetch all the HK work staff
+		$scope.filterByEmployee = '';
 		$scope.HKMaids = [];
 		var hkmCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.HKMaids = data;
 		};
-		$scope.invokeApi(RVHkRoomDetailsSrv.fetchHKMaids, {}, hkmCallback);
+		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
+
 
 
 
@@ -113,29 +123,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var fetchRooms = function() {
 
-			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
-				$scope.$emit('showLoader');
+			// //Fetch the roomlist if necessary
+			// if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
+			// 	$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-					.then(function(data) {
-						$scope.showPickup = data.use_pickup;
-						$scope.showInspected = data.use_inspected;
-						$scope.showQueued = data.is_queue_rooms_on;
-						afterFetch( data );
-					}, function() {
-						$scope.$emit('hideLoader');
-					});	
-			} else {
-				$timeout(function() {
+			// 	RVHkRoomStatusSrv.fetch($rootScope.businessDate)
+			// 		.then(function(data) {
+			// 			$scope.showPickup = data.use_pickup;
+			// 			$scope.showInspected = data.use_inspected;
+			// 			$scope.showQueued = data.is_queue_rooms_on;
+			// 			afterFetch( data );
+			// 		}, function() {
+			// 			$scope.$emit('hideLoader');
+			// 		});	
+			// } else {
+			// 	$timeout(function() {
 
-					// show loader as we will be slicing the rooms
-					// in smaller and bigger parts and show smaller first
-					// and rest after a delay
-					$scope.$emit('showLoader');
-					afterFetch( fetchedRoomList );
-				}, 1);
-			}
+			// 		// show loader as we will be slicing the rooms
+			// 		// in smaller and bigger parts and show smaller first
+			// 		// and rest after a delay
+			// 		$scope.$emit('showLoader');
+			// 		afterFetch( fetchedRoomList );
+			// 	}, 1);
+			// }
 		};
 
 		fetchRooms();
