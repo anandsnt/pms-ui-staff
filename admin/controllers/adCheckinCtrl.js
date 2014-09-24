@@ -50,38 +50,21 @@ $scope.fetchCheckinDetails = function(){
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
     
 
+    angular.forEach($scope.rate_codes,function(rate, index) {
+      angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
+        if(rate.id == excludedrate.id){
+          $scope.excludedRateCodes.push(rate);
+        }
+      });
+     });
 
-   // $scope.checkinData.excluded_rate_codes
-
-   angular.forEach($scope.rate_codes,function(rate, index) {
-    angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
-      if(rate.id == excludedrate.id){
-        $scope.excludedRateCodes.push(rate);
-      }
-    });
-   });
-
-  angular.forEach($scope.block_codes,function(rate, index) {
-    angular.forEach($scope.checkinData.excluded_block_codes,function(excludedrate, index) {
-      if(rate.id == excludedrate.id){
-        $scope.excludedBlockCodes.push(rate);
-      }
-    });
-   });
-
-
-
-
-    //$scope.checkinData.is_precheckin_only_flag = ($scope.checkinData.is_precheckin_only=== 'true') ? true:false;
-    //$scope.checkinData.is_sent_to_que_flag = ($scope.checkinData.is_sent_to_que=== 'true') ? true:false;
-
-/* TO BE CHANGED*/
-
-// $scope.checkinData.is_precheckin_only_flag = true;
-// $scope.checkinData.is_sent_to_que_flag = true;
-//$scope.checkinData.rate_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
-//$scope.checkinData.block_codes=[{"value":"1", "name":"aaa", "code":"AAA"}, {"value":"2", "name":"bbb", "code":"BBB"}];
-/* TO BE CHANGED*/
+    angular.forEach($scope.block_codes,function(rate, index) {
+      angular.forEach($scope.checkinData.excluded_block_codes,function(excludedrate, index) {
+        if(rate.id == excludedrate.id){
+          $scope.excludedBlockCodes.push(rate);
+        }
+      });
+     });
 
 $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
   $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
@@ -117,15 +100,13 @@ $scope.saveCheckin = function(){
   var excluded_rate_codes = [];
   var excluded_block_codes = [];
 
-   angular.forEach($scope.excludedRateCodes,function(excludedrate, index) {
+  angular.forEach($scope.excludedRateCodes,function(excludedrate, index) {
       excluded_rate_codes.push(excludedrate.id);
-    });
-   angular.forEach($scope.excludedBlockCodes,function(excludedrate, index) {
+  });
+
+  angular.forEach($scope.excludedBlockCodes,function(excludedrate, index) {
       excluded_block_codes.push(excludedrate.id);
-    });
-
-
-
+  });
 
   var uploadData = {
     'checkin_alert_message': $scope.checkinData.checkin_alert_message,
@@ -148,8 +129,8 @@ $scope.saveCheckin = function(){
     'prior_to_arrival':$scope.checkinData.prior_to_arrival,
     'max_webcheckin':$scope.checkinData.max_webcheckin
 
-
   };
+
   var saveCheckinDetailsFailureCallback = function(data) {
     $scope.$emit('hideLoader');
   };
@@ -157,6 +138,7 @@ $scope.saveCheckin = function(){
   var saveCheckinDetailsSuccessCallback = function(data) {
     $scope.$emit('hideLoader');
   };
+
   $scope.invokeApi(adCheckinSrv.save, uploadData,saveCheckinDetailsSuccessCallback,saveCheckinDetailsFailureCallback);
 };
 
@@ -166,7 +148,6 @@ $scope.clickExcludeRateCode = function(){
   
     if((item.id == $scope.checkinData.selected_rate_code) && ( $scope.excludedRateCodes.indexOf(item) == -1) ){
       $scope.excludedRateCodes.push(item);
-      //$scope.checkinData.excludedRateCodes.push(item.id);
     }
   });
 
@@ -178,7 +159,6 @@ $scope.clickExcludeBlockCode = function(){
   angular.forEach($scope.block_codes,function(item, index) {
     if((item.id == $scope.checkinData.selected_block_code) && ( $scope.excludedBlockCodes.indexOf(item) == -1) ){
       $scope.excludedBlockCodes.push(item);
-      //$scope.checkinData.excludedBlockCodes.push(item.id);
     }
   });     
   $scope.checkinData.selected_block_code = "";
@@ -189,7 +169,6 @@ $scope.deleteBlockCode = function(id){
   angular.forEach($scope.excludedBlockCodes,function(item, index) {
     if(item.id == id){
       $scope.excludedBlockCodes.splice(index,1);
-      //$scope.checkinData.excludedBlockCodes.splice(index,1);
     }
   });
 
@@ -198,9 +177,7 @@ $scope.deleteBlockCode = function(id){
 $scope.deleteRateCode = function(id){
   angular.forEach($scope.excludedRateCodes,function(item, index) {
     if(item.id == id){
-      $scope.excludedRateCodes.splice(index,1);
-     // $scope.checkinData.excludedRateCodes.splice(index,1);
-      
+      $scope.excludedRateCodes.splice(index,1);      
     }
   });
 
