@@ -61,7 +61,8 @@
             <div class="current {{ room.leaveStatusClass }}">
               <span class="guest-status {{ room.leaveStatusClass }}">{{ room.room_reservation_status }}</span>
               <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-              <span>{{ room.departure_time }} <label ng-if="room.room_reservation_status=='Departed'">OUT</label></span>
+              <span ng-if="room.room_reservation_status == 'Departed'">OUT</span>
+              <span ng-if="room.room_reservation_status != 'Departed'">{{ room.departure_time }}</span>
             </div>
             <!-- {enterStatusClass} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
             <div class="next {{ room.enterStatusClass }}">
@@ -71,11 +72,13 @@
             </div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
-          <div class="additional-info">
-            <!-- Show only if room is assigned -->
-            <span class="assigned">Employee name</span>
+          <div ng-if="room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3" class="additional-info">
+            <!-- Show only if room is assigned -->            
+            <span ng-if="room.assignee_maid" class="assigned">{{ room.assignee_maid }}</span>
+            <span ng-if="!room.assignee_maid" class="unassigned">Unassigned</span>
             <!-- Show only if room is not in service -->
-            <span class="service-status">ooo or oos</span>
+            <span ng-if="room.room_reservation_hk_status == 2" class="service-status">Out of Service</span>
+            <span ng-if="room.room_reservation_hk_status == 3" class="service-status">Out of Order</span>
           </div>
           <!-- Show only if room is occupied -->
           <figure class="guest-image" ng-if="room.is_occupied">

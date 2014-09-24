@@ -60,7 +60,18 @@ angular.module('housekeepingModule', [])
             abstract: true,
             url: '/workmanagement',
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
-            controller: 'RVWorkManagementCtrl'
+            controller: 'RVWorkManagementCtrl',
+            resolve: {
+                employees: function(RVWorkManagementSrv) {
+                    return RVWorkManagementSrv.fetchMaids();
+                },
+                workTypes: function(RVWorkManagementSrv) {
+                    return RVWorkManagementSrv.fetchWorkTypes();
+                },
+                shifts : function(RVWorkManagementSrv) {
+                    return RVWorkManagementSrv.fetchShifts();
+                }
+            }
         });
 
         $stateProvider.state('rover.workManagement.start', {
@@ -83,7 +94,14 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement.singleSheet', {
             url: '/worksheet/:date/:id',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementSingleSheet.html',
-            controller: 'RVWorkManagementSingleSheetCtrl'
+            controller: 'RVWorkManagementSingleSheetCtrl',
+            resolve: {
+                wmWorkSheet: function(RVWorkManagementSrv, $stateParams) {
+                    return RVWorkManagementSrv.fetchWorkSheet({
+                        id: $stateParams.id
+                    });
+                }
+            }
         });
 
 

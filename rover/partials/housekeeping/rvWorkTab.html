@@ -19,12 +19,12 @@
       <span class="icon-no-content icon-ok"></span> 
     </div>
     
-    <!-- 2.B Work Tab - Room is dirty -->
+    <!-- 2.B Work Tab - Room is dirty -->  assigned_maid
     <div ng-if="checkShow('dirty') && !isCleaning">
       <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
       <button type="button" class="button blue action" ng-click="startCleaning()">Start</button> 
       <!-- Show this only if room is assigned to staff memeber -->
-      <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>Full name</a>
+      <a href="{link-to-worksheet}" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ assigned_maid }}</a>
     </div>
 
     <!-- 2.C Work Tab - Room is pickup -->

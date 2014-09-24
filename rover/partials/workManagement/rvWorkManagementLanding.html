@@ -11,9 +11,8 @@
     </div>
     <div class="entry options">
         <div class="select">
-            <select id="work-type" name="work-type">
-                <option value="">All Work Types</option>
-                <option value="daily-cleaning" selected>Daily Cleaning</option>
+            <select ng-model="stateVariables.viewingDate.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
+                <option value="" selected>Select a Work Type</option>
             </select>
         </div>
         <div class="entry has-datepicker">
