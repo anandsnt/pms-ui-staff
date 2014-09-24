@@ -267,6 +267,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
       }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
         viewStatus = "no-show";
       }
+      else if("PRE_CHECKIN" == reservationStatus){
+      	viewStatus = "pre-check-in";
+      }
       return viewStatus;
   };
 

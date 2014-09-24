@@ -10,7 +10,11 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 		if ( useCache && !!self.data ) {
 			deferred.resolve( self.data );
 		} else {
-			RVBaseWebSrv.getJSON(url, dataToSend).then(function(data) {
+
+		// to remove the if and keep else
+			if(dataToSend.status =="PRECHECKIN"){
+				var sampleUrl = '/ui/show?format=json&json_input=preckin/preckin.json';
+				RVBaseWebSrv.getJSON(sampleUrl).then(function(data) {
 				for(var i = 0; i < data.length; i++){
 					data[i].is_row_visible = true;
 				}
@@ -20,6 +24,11 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			},function(data){
 				deferred.reject(data);
 			});
+
+			}
+			else{
+
+			}
 		}		
 		
 		return deferred.promise;		
