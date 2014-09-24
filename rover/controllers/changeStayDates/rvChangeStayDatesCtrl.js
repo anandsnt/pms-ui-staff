@@ -234,55 +234,40 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.refreshScroller();
 		};
 
-		//function to show room details, total, avg.. after successful checking for room available
+				//function to show room details, total, avg.. after successful checking for room available
 		$scope.showRoomAvailable = function() {
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
 			$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-			var numNightsWithoutSR = $scope.calendarNightDiff; 
-			$scope.isStayRatesSuppressed = false;
+
 			//calculating the total rate / avg.rate
 			$scope.totRate = 0;
-			var checkinRate;
-			var stayRangeRatesSuppressed = true;
-
+			var checkinRate = '';
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-				
+
 				//we have to add rate between the calendar checkin date & calendar checkout date only
-				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime()
-			 	&& tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
-
-					if(this.is_sr == "false"){
-						stayRangeRatesSuppressed = false;
-						$scope.totRate += parseFloat(this.rate);
-					} else {
-						numNightsWithoutSR --;// Findout the number of days having no suppressed rate
-					}
+				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
+					$scope.totRate += escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
-
 				//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
-				if ($scope.calendarNightDiff == 0 && tzIndependentDate(this.date).getTime() == $scope.checkinDateInCalender.getTime()) {
-					stayRangeRatesSuppressed = this.is_sr == "true" ? true: false;
-					checkinRate = this.is_sr == "true" ? $filter('translate')('SUPPRESSED_RATES_TEXT'): $scope.escapeNull(this.rate);
+				if (this.date == ($scope.stayDetails.details.arrival_date)) {
+					checkinRate = $scope.escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
 
 			});
-
 			//calculating the avg. rate
-			if (numNightsWithoutSR > 0) {
-				$scope.avgRate = Math.round(parseInt($scope.totRate) / numNightsWithoutSR + 0.00001);
+			if ($scope.calendarNightDiff > 0) {
+				$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100);
 			} else {
-				$scope.totRate = Math.round((parseInt(checkinRate) + 0.00001));;
-				$scope.avgRate = Math.round((parseInt($scope.totRate) + 0.00001));
-			}
-			//If the entair stay range has suppressed rate, then we display the avg daily rate and total staycost as SR
-			if(stayRangeRatesSuppressed){
-				$scope.isStayRatesSuppressed = true;
+				$scope.totRate = checkinRate;
+				$scope.avgRate = Math.round(($scope.totRate + 0.00001));
 			}
 			//we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
 			$scope.refreshScroller();
 		}
+
+		
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
 			$scope.roomSelected = roomNumber;

@@ -69,7 +69,8 @@
                     </div>
                 </div>
             </div>
-            <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
+            <!-- Functionality of radio buttons will be defined later. So hiding the demographics section - CICO-9461. -->
+            <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions" ng-hide="true">
                 <a class="settings-title toggle has-arrow active">
                     <span class="title" translate>CODES_LABEL</span>
                     <span class="value">0</span>

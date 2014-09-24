@@ -24,18 +24,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
 			$scope.$emit('setHeading', 'Guest Details & Payment');
-
-			$scope.$parent.myScrollOptions = {
-				'reservationSummary': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false
-				},
-				'paymentInfo': {
-					scrollbars: true,
-					hideScrollbar: false,
-				},
-			};
+			$scope.setScroller('reservationSummary');
+			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
 
 		}
@@ -114,8 +104,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if (!isEmpty($scope.reservationData.paymentType.type)) {
-				data.payment_type = {};
+			data.payment_type = {};
+			if ($scope.reservationData.paymentType.type !== null && !isEmpty($scope.reservationData.paymentType.type)) {
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
 				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
@@ -135,8 +125,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			// MLI Integration.
-			if ($scope.reservationData.paymentType.type.value === "CC") {
-				data.payment_type.session_id = $scope.data.MLIData.session;
+			if ($scope.reservationData.paymentType.type !== null) {
+				if ($scope.reservationData.paymentType.type.value === "CC") {
+					data.payment_type.session_id = $scope.data.MLIData.session;
+				}
 			}
 
 			//	CICO-8320
@@ -309,9 +301,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		$scope.submitReservation = function() {
 
-			if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
-				$scope.errorMessage = ["There is a problem with your credit card"];
-				return false;
+			if($scope.reservationData.paymentType.type != null){
+				if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
+					$scope.errorMessage = ["There is a problem with your credit card"];
+					return false;
+				}
 			}
 			$scope.proceedCreatingReservation();
 
@@ -336,9 +330,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.refreshPaymentScroller = function() {
-			setTimeout(function() {
-				$scope.$parent.myScroll['paymentInfo'].refresh();
-			}, 0);
+			$scope.refreshScroller('paymentInfo');
 		};
 
 		/*

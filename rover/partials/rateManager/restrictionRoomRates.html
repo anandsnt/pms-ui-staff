@@ -20,7 +20,7 @@
 		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.single_amnt_diff" ng-disabled="data.single == undefined">
 				<option value="%">%</option>
-				<option value="$">$</option>
+				<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 			</select> </span>
 		<br clear="all">
 		
@@ -43,12 +43,12 @@
 		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.double_amnt_diff" ng-disabled="data.double == undefined">
 				<option value='%'>%</option>
-				<option value='$'>$</option>
+				<option value='{{currencySymbol}}'>{{currencySymbol}}</option>
 			</select> </span>
 	</div>
 
 	<div class="price-fields">
-		<label> EXTRA ADULT (+$)</label>
+		<label> EXTRA ADULT (+{{currencySymbol}})</label>
 		<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
 				<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != ''}" ng-model="data.extra_adult" ng-disabled="data.extra_adult_extra_amnt!='' || 'data.extra_adult == undefined'" force-decimal-zero-dir>
 			</span> <span class="or"> OR</span> </span>
@@ -63,12 +63,12 @@
 		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.extra_adult_amnt_diff" ng-disabled = 'data.extra_adult == undefined'>
 				<option value="%">%</option>
-				<option value="$">$</option>
+				<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 			</select> </span>
 	</div>
 
 	<div class="price-fields last-price-fields">
-		<label> CHILD (+$)</label>
+		<label> CHILD (+{{currencySymbol}})</label>
 		<span ng-if = "!popupData.all_data_selected"> <span class="inp-field-before-or">
 				<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != ''}" ng-model="data.child" ng-disabled="data.child_extra_amnt!='' || 'data.child == undefined'" force-decimal-zero-dir>
 			</span> <span class="or"> OR</span> </span>
@@ -83,7 +83,7 @@
 		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.child_amnt_diff" ng-disabled = 'data.child == undefined'>
 				<option value="%">%</option>
-				<option value="$">$</option>
+				<option value="{{currencySymbol}}">{{currencySymbol}}</option>
 			</select> </span>
 	</div>
 </div>

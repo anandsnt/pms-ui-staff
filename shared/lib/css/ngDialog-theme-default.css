@@ -62,7 +62,10 @@
   padding-bottom: 160px;
   padding-top: 160px;
 }
-
+/* added from QBurst to fix  vertical scroll */
+.ngdialog.ngdialog-theme-default.single-calendar-modal {
+  overflow: hidden;
+}
 .ngdialog.ngdialog-theme-default.ngdialog-closing .ngdialog-content {
   -webkit-animation: ngdialog-flyout .5s;
   animation: ngdialog-flyout .5s;

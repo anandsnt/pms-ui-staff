@@ -4,8 +4,8 @@ sntRover.controller('RVPostChargeController',
 		'$scope',
 		'RVChargeItems',
 		'RVSearchSrv',
-		'$timeout','RVBillCardSrv',
-		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,RVBillCardSrv) {
+		'$timeout','RVBillCardSrv','ngDialog',
+		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,RVBillCardSrv,ngDialog) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -21,6 +21,12 @@ sntRover.controller('RVPostChargeController',
 			var scrollerOptions = {click: true};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
+
+  			$scope.closeDialog = function(){
+  				ngDialog.close();
+  				$rootScope.multiplePostingNumber = "";
+  			};
+
 			// set the default bill number
 			$scope.successGetBillDetails = function(data){
 				$scope.$emit( 'hideLoader' );
@@ -29,6 +35,8 @@ sntRover.controller('RVPostChargeController',
 			};
 			if(!$scope.passActiveBillNo && $scope.reservation_id){
 				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+			}else{
+				$scope.fetchedData.bill_numbers = [];
 			}
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
@@ -185,15 +193,22 @@ sntRover.controller('RVPostChargeController',
 			*	2. track the item as selected
 			*	3. update the net total price
 			*/
+			var newCount = 0;
 			$scope.addItem = function(item) {
 				// it is already added
 				if ( item.isChosen ) {
 					item.count++;
+					newCount++;
 				}
 				// adding to the list
 				else {
 					item.isChosen = true;
 					item.count = 1;
+					newCount++;
+				}
+			
+				if(newCount > 1 && $rootScope.multiplePostingNumber){
+					$scope.billNumber = $rootScope.multiplePostingNumber;
 				}
 
 				item.total_price = item.modifiedPrice * item.count;
@@ -483,13 +498,13 @@ sntRover.controller('RVPostChargeController',
 					needToCreateNewBill = true;
 				}
 				/****    CICO-6094    **/
-
 				var callback = function(data) {
+					$rootScope.multiplePostingNumber = dclone($scope.billNumber,[]);
 					$scope.$emit( 'hideLoader' );
 					// update the price in staycard
 					if(!$scope.isOutsidePostCharge){
 						$scope.$emit('postcharge.added', data.total_balance_amount);
-						$scope.closeDialog();
+						ngDialog.close();
 					}
 					else{
 						$scope.$emit( 'CHARGEPOSTED' );
@@ -523,9 +538,10 @@ sntRover.controller('RVPostChargeController',
 			
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
-				// if(data.isFromOut){
-					$scope.billNumber = 1;
-				// }
+
+				if(!$scope.billNumber){
+					$scope.billNumber = "1";// set as per requirement in CICO-6094
+				}
 			});
 			
 			$scope.$on('POSTCHARGE', function(event, data) {
