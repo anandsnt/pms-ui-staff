@@ -92,14 +92,17 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     $stateProvider.state('preCheckinTripDetails', {
     	url: '/tripDetails',
 	 	templateUrl: '/assets/preCheckin/partials/preCheckinTripDetails.html',
+	 	controller : 'preCheckinTripDetailsController',
 	 	title: 'Trip Details'
 	 }).state('preCheckinStayDetails', {
 	 	url: '/stayDetails',
 		templateUrl: '/assets/preCheckin/partials/preCheckinStayDetails.html',
+		controller : 'preCheckinStayDetailsController',
 		title: 'Stay Details'
 	}).state('preCheckinStatus', {
 		url: '/preCheckinStatus',
 		templateUrl: '/assets/preCheckin/partials/preCheckinStatus.html',
+		controller : 'preCheckinStatusController',
 		title: 'Status - Pre Check-In'
 	 });
 
