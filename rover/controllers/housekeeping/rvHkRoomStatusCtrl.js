@@ -52,7 +52,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// default values for these
 		// for a HK staff the filterByEmployee value must be defalut to that
 		// and filter the rooms accordingly
-
 		// fetch all the HK work staff
 		$scope.filterByWorkType = '';
 		$scope.workTypes = [];
@@ -72,7 +71,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
 		// TODO: for user specific the room must be filtered based on the choosen user
 		// {{ userInfo.first_name }} {{ userInfo.last_name }} === maid name
-
 
 
 
@@ -252,6 +250,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			RVHkRoomStatusSrv.allRoomTypes = $scope.allRoomTypes;
 		};
 
+		// when user changes the employee filter
+		$scope.applyEmpfilter = function() {
+			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+			$scope.calculateFilters();
+
+			$scope.refreshScroll();
+
+			// save the current edited filter to RVHkRoomStatusSrv
+			// so that they can exist even after HKSearchCtrl init
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+		};
+
 
 		/**
 		*  A method which checks the filter option status and see if the room should be displayed
@@ -271,6 +281,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
+
+				// Filter by employee name
+				if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
+					room.display_room = false;
+					$scope.noResultsFound++;
+					continue;
+				};
 
 				//Filter by Floors
 				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
