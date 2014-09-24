@@ -33,19 +33,15 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 
 sntRover.controller('guestResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
-		$scope.$parent.myScrollOptions = {
-			'guestResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+
+		BaseCtrl.call(this, $scope);
+		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('guestResultScroll', scrollerOptionsForGraph);
+
 		$scope.$on("refreshGuestScroll", function() {
 			$timeout(function() {
-				$scope.$parent.myScroll['guestResultScroll'].refresh();
+				$scope.refreshScroller('guestResultScroll');	
 			}, 500);
-		})
+		});
 	}
 ]);

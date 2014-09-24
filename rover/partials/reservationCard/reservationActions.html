@@ -1,4 +1,5 @@
 <div class="reservation-actions" ng-controller="reservationActionsController">
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Resevation is checking-in -->
 		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
@@ -7,29 +8,32 @@
 		
 		<button type="button" ng-click="removeFromQueue(reservationData.reservation_card.reservation_id)" class="button white red-text" ng-show="showRemoveFromQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Remove from Queue</button>
 		
-		<!-- Show checkin time -->
-		<div class="icons check-in" ng-show="displayArrivalTime(reservationData.reservation_card.reservation_status)" ng-class="getTimeColor(reservationData.reservation_card.arrival_time)"> 
-			{{reservationData.reservation_card.arrival_time}}
-		</div>
-		
 		<a class="button red" ng-click="goToCheckoutButton(reservationData.reservation_card.reservation_id, 'checkoutButton', reservationData.reservation_card.smartband_has_balance)" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
-		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
-			 {{reservationData.reservation_card.late_checkout_time}}
-		</div>
-		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !='' && !reservationData.reservation_card.is_opted_late_checkout">
-			 {{reservationData.reservation_card.departure_time}}
-		</div>
-		<!-- Reservation is checking out -->
+		
+    	<!-- Reservation is checking out -->
 		<!-- Show balance -->
 		<div class="balance break" ng-show="displayBalance(reservationData.reservation_card.reservation_status)">
 			<span class="label">Balance</span>
-			<!-- if balance is zero, show balance in green color -->
-			<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
-				{{currencySymbol}} 
-				{{ reservationData.reservation_card.balance_amount | number:2 }}
+			<!-- In connected PMS, we should indicate if it is having suppressed rate -->
+			<span ng-if="isStandAlone == true">
+				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)" ng-if ="!reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
+					{{currencySymbol}} 
+					{{ reservationData.reservation_card.balance_amount | number:2 }}
+				</span>
+				<span class="h1" ng-if ="reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates"> 
+					SR
+				</span>
 			</span>
+			<span ng-if="isStandAlone == false">
+				<!-- if balance is zero, show balance in green color -->
+				<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
+					{{currencySymbol}} 
+					{{ reservationData.reservation_card.balance_amount | number:2 }}
+				</span>
+			</span>
+			
 		</div>
 		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
 		<a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">
@@ -39,11 +43,11 @@
 
 		<a class="button white red-text hidden">Cancel reservation</a>
 		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:guestCardData.userId})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available == 'true' &&isStandAlone">
 			View bill / Routing
 		</a>
 		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:guestCardData.userId})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available == 'true' && isStandAlone">View bill</a>
 		
 		<!-- show add charge -->
 		
@@ -52,7 +56,11 @@
 		<!-- show smartbands -->
 		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled)">SmartBands</a>
 
-	
-	
+		<!-- show cancel / reinstate reservation -->
+		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
+		<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
+		<a ng-if="(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate)))" class="button white red-text bottom" ng-click="toggleCancellation()" translate>
+			CANCEL_RESERVATION
+		</a>
 	
 	</div>

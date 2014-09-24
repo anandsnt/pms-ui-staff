@@ -45,22 +45,24 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if($scope.isStandAlone){
 				$scope.menu = [{
 					title: "MENU_DASHBOARD",
-					action: "/staff",
+					action: "staff#/staff/dashboard/",
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
-				}, {
-					title: "MENU_AVAILABILITY",
-					action: "",
-					iconClass: "icon-availability",
-					submenu: [{
-						title: "MENU_HOUSE_STATUS",
-						action: ""
-					}, {
-						title: "MENU_AVAILABILITY",
-						action: ""
-					}]
-				}, {
+				}, 
+				// {
+				// 	title: "MENU_AVAILABILITY",
+				// 	action: "",
+				// 	iconClass: "icon-availability",
+				// 	submenu: [{
+				// 		title: "MENU_HOUSE_STATUS",
+				// 		action: ""
+				// 	}, {
+				// 		title: "MENU_AVAILABILITY",
+				// 		action: ""
+				// 	}]
+				// }, 
+				{
 					title: "MENU_FRONT_DESK",
 					//hidden: true,
 					action: "",
@@ -72,7 +74,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					},
 					{
 						title: "MENU_CREATE_RESERVATION",
-						action: "staff#/staff/reservation/search",
+						action: "staff#/staff/staycard/search",
 						standAlone : true
 					}, {
 						title: "MENU_ROOM_ASSIGNMENT",
@@ -125,7 +127,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus",
+						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
@@ -150,14 +152,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				}, {
 					title: "MENU_REPORTS",
-					action: "",
+					action: "staff#/staff/reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
 			} else {
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
-					action: "/staff",
+					action: "staff#/staff/dashboard/",
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
@@ -174,7 +176,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus",
+						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
@@ -185,7 +187,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					}]
 				},{
 					title: "MENU_REPORTS",
-					action: "",
+					action: "staff#/staff/reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
@@ -385,7 +387,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				$scope.isStandAlone = true;
 			setupLeftMenu();
 			$rootScope.businessDate = data.business_date;
-			$rootScope.currencySymbol = data.currency.symbol;
+			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
+			$rootScope.dateFormat = getDateFormat(data.date_format.value);
+		    console.log("currency code   : "+data.currency.value);
+		    console.log("currency symbol : "+$rootScope.currencySymbol);
+		    console.log("date format     : "+$rootScope.dateFormat);
 			$scope.$emit('hideLoader');
 
 		};

@@ -50,6 +50,8 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     if( oldType != null && oldType!= '' ) {
                         if(oldType == "LATE_CHECKOUT"){
                             dataDict.is_late_checkout_only = true;
+                        } else if(oldType == "QUEUED_ROOMS"){
+                        	dataDict.is_queued_rooms_only = true;
                         }
                         else if(oldType == "VIP"){
                             dataDict.vip = true;
@@ -79,17 +81,17 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             }          
         });
         $stateProvider.state('rover.dashboard.manager', {
-            url: '/dashboard/manager',
+            url: '/manager',
             templateUrl: '/assets/partials/dashboard/rvManagerDashboard.html',
             controller: 'RVmanagerDashboardController',                       
         });
         $stateProvider.state('rover.dashboard.frontoffice', {
-            url: '/dashboard/frontoffice',
+            url: '/frontoffice',
             templateUrl: '/assets/partials/dashboard/rvFrontDeskDashboard.html',
             controller: 'RVfrontDeskDashboardController',                       
         }); 
         $stateProvider.state('rover.dashboard.housekeeping', {
-            url: '/dashboard/housekeeping',  //TODO: check can we reduced it to hk?
+            url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController',                       
         });           

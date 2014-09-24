@@ -30,13 +30,13 @@
                          <span ng-show="room.varyingOccupancy" translate>VAR_OCCUPANCY</span>
                         <div class="select adults">
                             <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="updateOccupancy($index);checkOccupancyLimit()">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="validateOccupant(room, 'adult');updateOccupancy($index);checkOccupancyLimit()">
                                 <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                             </select>
                         </div>
                         <div class="select children">
                             <label for="room-{{index+1}}-children" class="label" translate>CHILDREN</label>
-                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="updateOccupancy($index);checkOccupancyLimit()">
+                            <select ng-disabled="room.varyingOccupancy" iscroll-stop-propagation name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="validateOccupant(room, 'children');updateOccupancy($index);checkOccupancyLimit()">
                                 <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                             </select>
                         </div>
@@ -57,9 +57,11 @@
                                 <li>
                                     <em>{{room.rateName}}</em>
                                     <span class="price">
-                                        {{currencySymbol}}{{room.rateAvg | number : 0}}
+                                        <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 0}}</label>
+                                        <label ng-if="room.isSuppressed">SR</label>
                                         <span translate>AVG_NIGHT</span>
-                                        <span class="total">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
+                                        <span class="total" ng-if="room.isSuppressed">SR</span>
+                                        <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 0}}</span>
                                     </span>
                                 </li>
                             </ul>
@@ -67,7 +69,8 @@
                     </div>
                 </div>
             </div>
-            <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
+            <!-- Functionality of radio buttons will be defined later. So hiding the demographics section - CICO-9461. -->
+            <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions" ng-hide="true">
                 <a class="settings-title toggle has-arrow active">
                     <span class="title" translate>CODES_LABEL</span>
                     <span class="value">0</span>
@@ -152,7 +155,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.marketsEnabled">
                         <label for="market" translate>MARKET_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
@@ -161,7 +164,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.sourcesEnabled">
                         <label for="source" translate>SOURCE_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
@@ -170,7 +173,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-if="otherData.originsEnabled">
                         <label for="origin" translate>ORIGIN_BOOKING_LABEL</label>
                         <div class="select">
                             <select iscroll-stop-propagation name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">

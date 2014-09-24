@@ -1,9 +1,65 @@
-sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter',  function($scope,$window,dateFilter, $filter){
-    
+sntRover
+.constant('filterDefaults', Object.create(null, {
+    DATE_RANGE_PLACEHOLDER: {
+        enumerable: true,
+        value: 'Select Date Range'
+    },
+    UI_DATE_FORMAT: {
+        enumerable: true,
+        value: 'yyyy-MM-dd'
+    },
+    UI_DATE_OPTIONS: {
+        enumerable: true,
+        value: {
+            changeYear: true,
+            changeMonth: true,
+            yearRange: '-1:+10'
+        }
+    }
+}))
+.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filter', '$vault',  function($scope, $window, dateFilter, $filter, $vault) {
     BaseCtrl.call(this, $scope);
+
+    // reseting search params to $vault
+    // MUST else there will be problems with back button working
+    $vault.set('searchType', '');
+
+    /* UI options like column width are computed here 
+       A property, and a function to compute the same are given below
+    */
+    var DEFAULT_COLUMN_WIDTH = 200,
+        DEFAULT_TABLE_WIDTH = 4000,
+        DEFAULT_TABLE_WIDTH = 400;
+
+    /*Considering base model class for later refactoring to avoid
+      firing observer code before model has resolved...
+    */
+    var Model = function(params) {
+        this.isPending = false;
+        this.isResolved = false;
+        this.isRejected = false;
+        this.isDirty = false;
+        this.isSaved = false;
+        this.isNew = true;
+
+        if(_.isObject(params)) {
+            _.extend(this, params);
+        }
+    };
+
+    Model.prototype = {
+        constructor: Model
+    };
+
+    $scope.uiOptions = {
+        tableHeight : DEFAULT_TABLE_WIDTH,
+        columnWidth : DEFAULT_COLUMN_WIDTH,
+        tableWidth : DEFAULT_TABLE_WIDTH
+    };
 
     var title = $filter('translate')('RATE_MANAGER_TITLE');
 	$scope.setTitle(title);
+    $scope.heading = title;
 	
     $scope.$emit("updateRoverLeftMenu","rateManager");
 
@@ -13,10 +69,25 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     $scope.backbuttonEnabled = false;
     
     //left side menu class, based on which it will appear or not
-    $scope.currentLeftMenuClass = 'slide_right';
-    
+    $scope.currentLeftMenuClass = 'slide_right';  
 
-	$scope.currentFilterData =	{
+    $scope.currentFilterData = new Model({
+        filterConfigured: false,
+        begin_date: '',
+        end_date: '',
+        zoom_level: [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
+        zoom_level_selected : "3",
+        is_checked_all_rates: true,
+        rate_types: [],
+        rate_type_selected_list: [],
+        rates: [],
+        rates_selected_list: [],
+        name_cards: [],
+        selected_date_range: '', 
+        allRates: []
+    });  
+	
+    /*$scope.currentFilterData =	{
             filterConfigured: false,
             begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
             end_date : "",//dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
@@ -28,22 +99,10 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
             rates : [],
             rates_selected_list : [],
             name_cards : [],
-            selected_date_range : "Select Date Range",
+            selected_date_range : '', //"Select Date Range",
             allRates: []
-   	};
+   	};*/
 
-    /* UI options like column width are computed here 
-       A property, and a function to compute the same are given below
-    */
-    var DEFAULT_COLUMN_WIDTH = 200;
-    var DEFAULT_TABLE_WIDTH = 4000;
-    var DEFAULT_TABLE_WIDTH = 400;
-    $scope.uiOptions={
-        tableHeight : DEFAULT_TABLE_WIDTH,
-        columnWidth : DEFAULT_COLUMN_WIDTH,
-        tableWidth : DEFAULT_TABLE_WIDTH,
-        
-    };
     $scope.$on("computeColumWidth", function(){
         var FILTER_OPTIONS_WIDTH = 5;
         var FIRST_COLUMN_WIDTH = 220;
@@ -91,7 +150,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
         $scope.displayMode = "CALENDAR";
         angular.copy($scope.currentFilterData.rates_selected_list, $scope.ratesDisplayed);
         $scope.$broadcast("setCalendarModeRateType");
-    }
+    };
 
     $scope.$on("enableBackbutton", function(){
         $scope.backbuttonEnabled = true;
@@ -108,7 +167,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
       else{
         $scope.currentLeftMenuClass = 'slide_right';
       }
-    }
+    };
 
     /*
     * function to handle click
@@ -117,6 +176,6 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', '$filte
     $scope.rateManagerContentClick = function($event){
 
        $scope.$broadcast('closeFilterPopup');
-    }
+    };
 
 }]);

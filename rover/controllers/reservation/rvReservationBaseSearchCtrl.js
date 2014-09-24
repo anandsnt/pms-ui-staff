@@ -22,8 +22,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                 //They are added to the reservation by default later on, 
                 //but should be copied to the Search screen as well
                 $scope.viewState.reservationStatus.confirm = false;
-                $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
-                $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
+                if($scope.reservationDetails.guestCard.id != ''){
+                    $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
+                    $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
+                }
                 $scope.companySearchText = (function() {
                     if ($scope.reservationData.company.id != null && $scope.reservationData.company.id != "") {
                         return $scope.reservationData.company.name;
@@ -66,8 +68,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
             // to make sure that the number of
-            // dates the guest stays must not be less than 1
-            if (dayDiff < 1) {
+            // dates the guest stays must not be less than ZERO [In order to handle day reservations!]
+            if (dayDiff < 0) {
 
                 // user tried set the departure date
                 // before the arriaval date
@@ -143,30 +145,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
 
 
 
-        /**
-         *   Validation conditions
-         *
-         *   Either adults or children can be 0,
-         *   but one of them will have to have a value other than 0.
-         *
-         *   Infants should be excluded from this validation.
-         */
-        $scope.validateOccupant = function(room, from) {
-
-            // just in case
-            if (!room) {
-                return;
-            };
-
-            var numAdults = parseInt(room.numAdults),
-                numChildren = parseInt(room.numChildren);
-
-            if (from === 'adult' && (numAdults === 0 && numChildren === 0)) {
-                room.numChildren = 1;
-            } else if (from === 'children' && (numChildren === 0 && numAdults === 0)) {
-                room.numAdults = 1;
-            }
-        };
+      
 
 
 
@@ -300,6 +279,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                 $('#ui-datepicker-overlay').remove();
             }
         };
+
+        /**
+        Fix for CICO-9573: ng: Rover: Create Reservation - Guest Card details are not refreshed when user tries to create reservation against another guest
+        **/
+        $scope.reservationGuestSearchChanged = function(){
+            // check whether guest card attached and remove if attached.
+            $scope.reservationDetails.guestCard.id = '';
+        }
 
     }
 ]);

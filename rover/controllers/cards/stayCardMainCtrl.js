@@ -29,6 +29,21 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.guestCard.futureReservations = data.future_reservation_count;
 
+				/**
+				 *	CICO-9169
+				 * 	Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
+				 *  -- To have the primary email id in app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
+				 */
+
+				if (data.email && data.email.length > 0) {
+					$scope.otherData.isGuestPrimaryEmailChecked = true;
+				} else {
+					// Handles cases where Guest with email is replaced with a Guest w/o an email address!
+					$scope.otherData.isGuestPrimaryEmailChecked = false;
+				}
+
+				//	CICO-9169
+
 				var contactInfoData = {
 					'contactInfo': data,
 					'countries': $scope.countries,
@@ -91,6 +106,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
+		
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
@@ -100,6 +116,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
+				
 			};
 			//	companycard defaults to search mode 
 			// 	Hence, do API call only if a company card ID is returned
@@ -388,7 +405,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if (!isEmpty($scope.reservationData.paymentType.type)) {
+			if (!isEmpty($scope.reservationData.paymentType.type) && $scope.reservationData.paymentType.type.id != null) {
 				data.payment_type = {};
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
@@ -459,7 +476,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					"company_logo": "",
 					"account_number": null,
 					"accounts_receivable_number": null,
-					"billing_information": "Test"
+					"billing_information": null
 				},
 				"primary_contact_details": {
 					"contact_first_name": null,

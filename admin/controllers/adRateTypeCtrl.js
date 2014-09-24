@@ -148,9 +148,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		if(!$scope.mouseEnterPopover){
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
-			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess);
+			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess, undefined, 'NOOP');
 		}
-
 	};
 
 	/**

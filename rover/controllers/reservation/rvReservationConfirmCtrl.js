@@ -1,27 +1,28 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv) {
+sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv', '$filter',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter) {
+		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
+
 
 		$scope.init = function() {
 			$scope.$emit('setHeading', 'Reservations');
 			$scope.$parent.hideSidebar = true;
 			$scope.isConfirmationEmailSent = ($scope.otherData.isGuestPrimaryEmailChecked || $scope.otherData.isGuestAdditionalEmailChecked) ? true : false;
-			$scope.$parent.myScrollOptions = {
-				'reservationSummary': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false,
-					preventDefault: false
-				},
-				'paymentInfo': {
-					scrollbars: true,
-					snap: false,
-					hideScrollbar: false,
-					preventDefault: false
-				},
-			};
+			$scope.setScroller('reservationSummary');
+			$scope.setScroller('paymentInfo');
 
 		};
+
+		/*
+	 * Get the title for the billing info button, 
+	 * on the basis of routes available or not
+	 */
+	$scope.getBillingInfoTitle = function(){
+		if($scope.reservationData.is_routing_available)
+			return $filter('translate')('BILLING_INFO_TITLE');
+		else
+			return $filter('translate')('ADD_BILLING_INFO_TITLE');
+	}
 
 		/**
 		 * Function to check if the the check-in time is selected by the user.
@@ -59,13 +60,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 */
 		$scope.sendConfirmationClicked = function(isEmailValid) {
 			if ($scope.reservationData.guest.sendConfirmMailTo == "" || !isEmailValid) {
-				ngDialog.open({
-					template: '/assets/partials/reservation/alerts/rvEmailWarning.html',
-					closeByDocument: true,
-					className: 'ngdialog-theme-default1',
-					scope: $scope
-				});
-
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 				return false;
 
 			}
@@ -120,8 +115,10 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			var stateParams = {
 				id: $scope.reservationData.reservationId,
 				confirmationId: $scope.reservationData.confirmNum,
-				isrefresh: true
+				isrefresh: true,
+				justCreatedRes: true
 			}
+			$scope.otherData.reservationCreated = true;
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 
 		};
@@ -171,6 +168,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$scope.reservationData.confirmNum = '';
 			// Set flag to retain the card details
 			$scope.reservationData.isSameCard = true;
+			$scope.otherData.reservationCreated = true;
 
 			$state.go('rover.reservation.search');
 		};
@@ -198,6 +196,31 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
 		}
+
+		/**
+		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
+		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
+		 */
+		
+	    $scope.openBillingInformation = function(){
+
+	    	
+	    	$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
+	    	$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
+	    	$scope.reservationData.reservation_status = $scope.reservationData.status;
+	    	if($scope.reservationData.guest.id != null){
+	    		$scope.reservationData.user_id = $scope.reservationData.guest.id ;
+	    	}else{
+	    		$scope.reservationData.user_id = $scope.reservationData.company.id ;
+	    	}
+	    	
+		      ngDialog.open({
+		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
+		        controller: 'rvBillingInformationPopupCtrl',
+		        className: 'ngdialog-theme-default',
+		        scope: $scope
+		      });
+	    }
 
 		$scope.init();
 

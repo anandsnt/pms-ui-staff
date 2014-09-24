@@ -13,11 +13,11 @@
          </span>
          <span class="date">
          <span class="guest-status small-icon check-in">check-in</span>
-         {{headerData.arrival_date}}
+         {{headerData.arrival_date|date:dateFormat}}
          </span>
          <span class="date">
          <span class="guest-status small-icon check-out">check-out</span>
-         {{headerData.departure_date}}
+         {{headerData.departure_date|date:dateFormat}}
          </span>
       </div>
    </div>
@@ -41,7 +41,8 @@
                   $ {{upgrade.upsell_amount}} per night
                   </a>
                   <figure class="room-image">
-                     <img src="{{upgrade.room_type_image}}" alt="">
+                     <img ng-src="{{upgrade.room_type_image}}" alt="" ng-if="upgrade.room_type_image !== ''">
+                     <img ng-src="/assets/bedroom-blank.png" alt="" ng-if="upgrade.room_type_image === ''">
                   </figure>
                </li>
                

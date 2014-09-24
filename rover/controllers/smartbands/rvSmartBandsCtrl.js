@@ -51,6 +51,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
        $scope.smartBands.push(newData);
        $scope.smartBandLength = $scope.smartBands.length;
        
+       $scope.writeBandType();
+       
 	};
 	
 	$scope.fetchSuccessKeyRead = function(accountNumber){
@@ -79,12 +81,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
       	   window.scrollTo(0,0);
         }, 700);
 		var blankKeys = "";
-		if($scope.smartBandData.firstName == '' || $scope.smartBandData.firstName == null){
-			blankKeys = "First Name";		
-		}
-		if($scope.smartBandData.lastName == '' || $scope.smartBandData.lastName == null){			
-			blankKeys = blankKeys == '' ? "Last Name" : (blankKeys + ", " + 'Last Name');
-		}
+
 		if($scope.isFixedAmount){	
 			if($scope.smartBandData.fixedAmount == '' || $scope.smartBandData.fixedAmount == null){			
 				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");
@@ -209,5 +206,49 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			$scope.seeAllBands();
 		}
 		
+	};
+	/*
+	 * Set the selected band type - fixed room/open charge to the band
+	 * 
+	 */
+	$scope.writeBandType = function(){
+		var args = [];
+		var bandType = '00000002';
+		if(that.data.is_fixed){
+			bandType = '00000001';
+		}
+		args.push(bandType);
+		args.push(that.data.account_number);
+		args.push('19');//Block Address - hardcoded
+
+		var options = {
+			//Cordova write success callback
+			'successCallBack': function(){
+				sntapp.activityIndicator.hideActivityIndicator();
+				that.myDom.find(".success").show();
+				that.myDom.find("#button-area").show();	
+				that.myDom.find("#not-ready-status").hide();
+				that.myDom.find("#cancel").hide();			
+				that.parentController.showButton('see-all-band-button');
+				that.parentController.myDom.find('#see-all-band-button').unbind('click');
+				that.parentController.myDom.find('#see-all-band-button').on('click', that.clickedOnSeeAllBands);
+				
+			},
+			'failureCallBack': function(message){
+				sntapp.activityIndicator.hideActivityIndicator();
+				if(message == undefined || message == ''){
+					message = 'Failed to write the band type';
+				}
+				that.failureCallbackOfSaveAction(message);
+				
+			},
+			arguments: args
+		};
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.setBandTypeDebug(options);
+		}
+		else{
+			sntapp.cardReader.setBandType(options);
+		}
 	};
 }]);

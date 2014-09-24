@@ -3,6 +3,7 @@
 		<h2>{{displayMessage}}</h2>
 		<a ng-click="goBackToPreviousState()" class="action back" translate="BACK"></a>
 	</header>
+	<section class="content-scroll">
 	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"  ></div>
 	<!--- form starts here -->
@@ -16,7 +17,7 @@
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || !addmode || isBeaconLinked" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode &&  !isBeaconLinked}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || isBeaconLinked" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode &&  !isBeaconLinked, 'red' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && !addmode &&  !isBeaconLinked}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
@@ -68,7 +69,12 @@
 					<span class="file-preview"><img ng-src="{{data.picture}}" id="file-preview" alt=""> </span>
 				</div> 
 			</fieldset>
-			<fieldset class="holder right">
+			
+			<fieldset class="holder left" ng-show="data.type !='PROMOTION'">
+				<ad-textbox inputtype="text" styleclass="full-width" value="data.message" label = "{{ 'MESSAGE' | translate }}" placeholder = "{{'ENTER_MESSAGE'|translate}}" required="no"></ad-textbox>
+			</fieldset>
+
+			<fieldset class="holder right" ng-hide="data.type !='PROMOTION'">
 				<ad-textbox inputtype="text" styleclass="full-width" value="data.title" label = "{{ 'TITLE' | translate }}" placeholder = "{{'ENTER_TITLE'|translate}}" required="no"></ad-textbox>
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.description" label = "{{ 'DESCRIPTION' | translate }}" maxlength="200" placeholder = "{{'ENTER_DESCRIPTION'|translate}}"></ad-textarea>
 			</fieldset>
@@ -78,6 +84,7 @@
 				<button type="button" ng-click="saveBeacon()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
 			</div>
 		</form>
+		</section>
 <!--- form ends here -->
 	</div>
 </section>
