@@ -7,7 +7,7 @@
 			</span>
 		</h3>		
 		<!-- The credit card selection popup is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
-		<a class="next-view open-modal" ng-show="reservationData.reservation_card.payment_method_used == 'CC'" ng-click="openPaymentList()">
+		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view open-modal" ng-show="reservationData.reservation_card.payment_method_used == 'CC'" ng-click="openPaymentList()">
 			<figure class="card-logo">
 				<img ng-src="/assets/{{reservationData.reservation_card.payment_details.card_type_image}}" alt="">
 			</figure> 
@@ -25,11 +25,11 @@
 			</a>
 		</div>
 
-		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used !== 'CC' && reservationData.reservation_card.payment_method_used !== ''" ng-click="openPaymentList()">
+		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used !== 'CC' && reservationData.reservation_card.payment_method_used !== ''" ng-click="openPaymentList()">
 	  			<span class="value code"></span>
 	  			{{ reservationData.reservation_card.payment_method_description }}
 		</a>
-		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used === ''" ng-click="openPaymentList()">
+		<a ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="next-view" ng-show="reservationData.reservation_card.payment_method_used === ''" ng-click="openPaymentList()">
 	  			<span class="value code"></span>
 	  			{{ 'NOT_DEFINED' | translate }}
 		</a>
