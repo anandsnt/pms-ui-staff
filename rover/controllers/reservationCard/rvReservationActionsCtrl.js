@@ -356,6 +356,7 @@ sntRover.controller('reservationActionsController', [
 		};
 		$scope.successCallBackFetchDepositBalance = function(data){
 			console.log("reached here")
+			$scope.$emit('hideLoader');
 			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
 			
