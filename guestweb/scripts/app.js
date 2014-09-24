@@ -33,8 +33,15 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
- 	
- 	if($rootScope.isCheckedin){
+
+
+
+	/* To be deleted */
+	$rootScope.isPrecheckin = true;
+	if($rootScope.isPrecheckin){
+ 		$location.path('/tripDetails');
+ 	}
+ 	else if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}
     else if($attrs.isCheckin ==='true'){
@@ -46,6 +53,24 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	else{
 		$location.path('/checkoutRoomVerification');
 	};
+
+
+	/*to be deleted */
+
+	/* to remove comment */
+ 	
+ // 	if($rootScope.isCheckedin){
+ // 		$location.path('/checkinSuccess');
+ // 	}
+ //    else if($attrs.isCheckin ==='true'){
+ // 		$location.path('/checkinConfirmation');
+ // 	}
+ //  	else if($rootScope.isCheckedout)	{
+	// 	$location.path('/checkOutStatus');	
+	// }
+	// else{
+	// 	$location.path('/checkoutRoomVerification');
+	// };
 
 }]);
 
