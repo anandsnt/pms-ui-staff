@@ -58,13 +58,14 @@
                 </select>
             </div>
         </div>
-        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned">
+        <!-- ng-iscroll="workSheetUnassigned" -->
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" >
             <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:' .worksheet-room.single-sheet.assigned '}">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
                 <li class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassigned" 
                         data-drag = "true"
-                        jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"  class="non-assigned-room-types li-draggable">
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}">
                     <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
                     <div class="reservation-status">
                         <div class="current {{room.reservation_status}}" ng-class="{'inhouse': room.reservation_status == 'stayover'}">
