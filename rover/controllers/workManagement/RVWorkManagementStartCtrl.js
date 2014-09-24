@@ -40,18 +40,6 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             arrivalTime: "12:34"
         }]
 
-        var dummyEmnployeeResults = [{
-            roomNumber: 45,
-            roomStatus: "room_status",
-            reservationStatus: "reservation_status",
-            departureTime: "departure-time"
-        }, {
-            roomNumber: 65,
-            roomStatus: "room_status",
-            reservationStatus: "reservation_status",
-            departureTime: "departure-time"
-        }]
-
         $scope.workStats = wmStatistics;
 
         $scope.closeDialog = function() {
@@ -99,12 +87,13 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         console.log(data);
                         $scope.stateVariables.searching = true;
                         $scope.stateVariables.employeeSearch = true;
+                        $scope.stateVariables.searchResults = data;
                         $scope.$emit('hideLoader');
                     }
                     $scope.invokeApi(RVWorkManagementSrv.searchEmployees, {
                         key: searchKey,
                         date: $scope.stateVariables.viewingDate.date,
-                        workType: $scope.stateVariables.selectedWorkType
+                        workType: $scope.stateVariables.viewingDate.work_type_id
                     }, onEmployeeSearchSuccess);
                 }
 

@@ -104,7 +104,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}		
+		}
 
 		/**
 		 * Method to search Employees from the Work Management Landing page
@@ -113,9 +113,18 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.searchEmployees = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/accounts';
+				/**
+				 * SAMPLE API CALL
+				 * /api/work_statistics/employee?query=nic&date=2014-06-30&work_type_id=1
+				 */
+				url = '/api/work_statistics/employee?query=' + params.key + '&date=' + params.date;
+
+			if (params.workType) {
+				url += '&work_type_id=' + params.workType;
+			}
+
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve({});
+				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
 			});
