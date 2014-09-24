@@ -70,6 +70,9 @@ angular.module('housekeepingModule', [])
                 },
                 shifts : function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchShifts();
+                },
+                floors: function(RVHkRoomStatusSrv){
+                    return RVHkRoomStatusSrv.fetch_floors();
                 }
             }
         });
