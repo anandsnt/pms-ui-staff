@@ -11,6 +11,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// additional check since the router resolve may fail
 		if ( !fetchedRoomList ) {
 			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
+			console.log( fetchedRoomList );
 		};
 
 		/*var successCallback = function(data){

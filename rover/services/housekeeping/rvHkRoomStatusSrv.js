@@ -214,5 +214,27 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.roomStatusClass       = this.setRoomStatusClass(matchedRoom);
 		};
 
+
+		this.updateEachHKItem = function(id, key, value) {
+
+			// first find the exact room
+			var room = _.find(this.roomList.rooms, function(room) {
+				return parseInt(room.id) === updatedRoom.id;
+			});
+
+			// if room not found
+			if ( !room ) {
+				return
+			};
+
+			// if the requested key in room, update its value
+			if ( room.hasOwnProperty(key) ) {
+				room[key] = value;
+			} else {
+				console.log( 'propery ' + key + ' cannot be found on RVHkRoomStatusSrv!' );
+			}
+
+		};
+
 	}
 ]);

@@ -42,6 +42,11 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		};
 
 
+		$scope.roomStatusChanged = function() {
+			updateRoom( 'current_hk_status', $scope.roomDetails.current_hk_status );
+		};
+
+
 		// start cleaning 
 		$scope.startCleaning = function() {
 			$scope.isCleaning = true;

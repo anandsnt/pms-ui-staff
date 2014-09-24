@@ -142,6 +142,35 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 		$scope.roomDetails = roomDetailsData;
 
+		// few getters and setters for saving the room details to room status page
+		$scope.updateRoom = function(key, value) {
+			if ( $scope.roomDetails.hasOwnProperty(key) ) {
+				$scope.roomDetails[key] = value;
+
+				// map details key/value into status key/value
+				var dKey = key,
+					dValue = value;
+
+				if ( key == 'current_hk_status' ) {
+					// get the exact entry from hk_status_list
+					var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
+						return item.value == value;
+					});
+					// update dKey and dValue
+					dKey = 'hk_status';
+					dValue = {
+						value: hkStatusItem.value,
+						description: hkStatusItem.description
+					}
+				};
+
+				// update the same back to room status service
+				RVHkRoomStatusSrv.updateEachHKItem( $scope.roomDetails.id, dKey, dValue );
+			} else {
+				console.log( 'propery ' + key + ' cannot be found on RVHkRoomDetailsSrv!' );
+			}
+		};
+
 
 		/** Method for getting the guest status icon class
 		  @return the guest status icon class  
@@ -175,18 +204,6 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		};
 		
 		$scope.guestViewStatus = getGuestStatusMapped( $scope.roomDetails.reservation_status, $scope.roomDetails.is_late_checkout );
-
-		// few getters and setters
-		$scope.updateRoom = function(key, value) {
-			if ( $scope.roomDetails.hasOwnProperty(key) ) {
-				$scope.roomDetails[key] = value;
-
-				// update the same back room listing (status) service
-			} else {
-				console.log( 'propery ' + key + ' cannot be found!' );
-			}
-		};
-
 
 		$scope.getHeaderColor = function() {
 			// if room is out
