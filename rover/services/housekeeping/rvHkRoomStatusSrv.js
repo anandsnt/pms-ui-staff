@@ -2,7 +2,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
 	'$window',
-	function($http, $q, $window) {
+	'BaseWebSrvV2',
+	function($http, $q, $window, BaseWebSrvV2) {
 
 		this.roomList = {};
 		
@@ -27,7 +28,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 					"floorFilterSingle": '',
 					"floorFilterStart": '',
 					"floorFilterEnd": '',
-					'showAllFloors': true
+					'showAllFloors': true,
+					'filterByWorkType': '',
+					'filterByEmployee': ''
 				};
 		}
 
@@ -57,6 +60,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    	// single calculate the class required
 					    	// will require additional call from details page
 					    	room.roomStatusClass = this.setRoomStatusClass(room);
+
+					    	// set the leaveStatusClass or enterStatusClass value
+					    	this.setReservationStatusClass(room);
 					    }
 
 					    deferred.resolve(this.roomList);
@@ -105,6 +111,29 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		}
 
+		// fetch all room types
+		var that = this;
+		this.allRoomTypes = {};
+		this.fetchAllRoomTypes = function(){
+			var url =  'api/room_types?exclude_pseudo=true&exclude_suite=true';	
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					angular.forEach(data.results, function(roomType, i) {
+						roomType.isSelected = false;
+						that.allRoomTypes[roomType.id] = roomType;
+					});
+					deferred.resolve(this.allRoomTypes);
+				}, function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
 		};
@@ -120,31 +149,49 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
 		this.setRoomStatusClass = function(room){
-
 			if(this.roomList.checkin_inspected_only == "true"){
 				if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-					return 'room-clean';
+					return 'clean';
 				}
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
+					return 'pickup';
 				}
 			}
 			else {
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-					return 'room-clean';
+					return 'clean';
 				}
 				if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
+					return 'pickup';
 				}
 			}
 
-			if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
-				return 'room-dirty';
+			if( (room.hk_status.value == 'DIRTY') && !room.is_occupied ) {
+				return 'dirty';
 			}
-			if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-				return 'room-out';
+			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ){
+				return 'out';
 			}
+
 			return '';
+		};
+
+		// Moved from ctrl to srv as this is calculated only once
+		// keept as msg so that it can be called from crtl if needed
+		this.setReservationStatusClass = function(room){
+			if ( room.room_reservation_status == 'Due Out' || room.room_reservation_status == 'Departed' ) {
+				room.leaveStatusClass = 'check-out';
+			} else if ( room.room_reservation_status == 'STAYOVER' ) {
+				room.leaveStatusClass = 'inhouse';
+			} else {
+				room.leaveStatusClass = 'no-show';
+			}
+
+			if ( room.room_reservation_status == 'Arrival' || room.room_reservation_status == 'Arrived' ) {
+				room.enterStatusClass = 'check-in';
+			} else {
+				room.enterStatusClass = 'no-show';
+			}
 		};
 
 		// when user edit the room on details page
@@ -165,6 +212,28 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.hk_status.description = newDescription;
 			matchedRoom.description           = newDescription;
 			matchedRoom.roomStatusClass       = this.setRoomStatusClass(matchedRoom);
+		};
+
+
+		this.updateEachHKItem = function(id, key, value) {
+
+			// first find the exact room
+			var room = _.find(this.roomList.rooms, function(room) {
+				return parseInt(room.id) === updatedRoom.id;
+			});
+
+			// if room not found
+			if ( !room ) {
+				return
+			};
+
+			// if the requested key in room, update its value
+			if ( room.hasOwnProperty(key) ) {
+				room[key] = value;
+			} else {
+				console.log( 'propery ' + key + ' cannot be found on RVHkRoomStatusSrv!' );
+			}
+
 		};
 
 	}
