@@ -38,7 +38,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		
 		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
-			var url = '/house/search.json?date=' + businessDate;
+			var url = '/house/search.json';
 			
 			$http.get(url)
 				.success(function(response, status) {
@@ -262,7 +262,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 			// first find the exact room
 			var room = _.find(this.roomList.rooms, function(room) {
-				return parseInt(room.id) === updatedRoom.id;
+				return parseInt(room.id) === id;
 			});
 
 			// if room not found

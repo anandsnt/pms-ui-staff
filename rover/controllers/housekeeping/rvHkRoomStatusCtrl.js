@@ -70,6 +70,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.HKMaids = data;
 		};
 		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
+		// TODO: for user specific the room must be filtered based on the choosen user
+		// {{ userInfo.first_name }} {{ userInfo.last_name }} === maid name
 
 
 
@@ -122,30 +124,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		var fetchRooms = function() {
+			//Fetch the roomlist if necessary
+			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
+				$scope.$emit('showLoader');
 
-			// //Fetch the roomlist if necessary
-			// if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
-			// 	$scope.$emit('showLoader');
+				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
+					.then(function(data) {
+						$scope.showPickup = data.use_pickup;
+						$scope.showInspected = data.use_inspected;
+						$scope.showQueued = data.is_queue_rooms_on;
+						afterFetch( data );
+					}, function() {
+						$scope.$emit('hideLoader');
+					});	
+			} else {
+				$timeout(function() {
 
-			// 	RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-			// 		.then(function(data) {
-			// 			$scope.showPickup = data.use_pickup;
-			// 			$scope.showInspected = data.use_inspected;
-			// 			$scope.showQueued = data.is_queue_rooms_on;
-			// 			afterFetch( data );
-			// 		}, function() {
-			// 			$scope.$emit('hideLoader');
-			// 		});	
-			// } else {
-			// 	$timeout(function() {
-
-			// 		// show loader as we will be slicing the rooms
-			// 		// in smaller and bigger parts and show smaller first
-			// 		// and rest after a delay
-			// 		$scope.$emit('showLoader');
-			// 		afterFetch( fetchedRoomList );
-			// 	}, 1);
-			// }
+					// show loader as we will be slicing the rooms
+					// in smaller and bigger parts and show smaller first
+					// and rest after a delay
+					$scope.$emit('showLoader');
+					afterFetch( fetchedRoomList );
+				}, 1);
+			}
 		};
 
 		fetchRooms();
