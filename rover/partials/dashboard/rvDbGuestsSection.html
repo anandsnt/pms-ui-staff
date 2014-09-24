@@ -1,14 +1,14 @@
 <div bindonce="statisticsData" id="dashboard-guests" class="dashboard-block buttons" ng-controller="rvDashboardGuestWidgetController">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <h3>Guests</h3>    
-    <ul class="actions col5">
+    <ul class="actions" ng-class="{'col5': statisticsData.guests.is_pre_checkin_only}">
         <li>
             <a class="button green" ng-click="clickedOnGuestsToday($event, 'DUEIN')" >
                 <strong bo-text="statisticsData.guests.checking_in"></strong> 
                 Arrivals
             </a>
         </li>
-        <li>
+        <li ng-show="statisticsData.guests.is_pre_checkin_only">
             <a ng-click="clickedOnGuestsToday($event, 'PRECHECKIN')" class="button orange">
             <strong bo-text="statisticsData.guests.pre_check_in"></strong>Pre Check In</a>
         </li>

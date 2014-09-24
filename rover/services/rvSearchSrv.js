@@ -27,8 +27,17 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 
 			}
 			else{
+				RVBaseWebSrv.getJSON(url,dataToSend).then(function(data) {
+					for(var i = 0; i < data.length; i++){
+						data[i].is_row_visible = true;
+					}
 
-			}
+					self.data = data;
+					deferred.resolve(data);
+				},function(data){
+					deferred.reject(data);
+				});
+				}
 		}		
 		
 		return deferred.promise;		
