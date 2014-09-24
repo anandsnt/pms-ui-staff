@@ -169,6 +169,7 @@
           }
           else{
             $modal.open($scope.cardErrorOpts);
+            $scope.isFetching = false;
           }
         
        }

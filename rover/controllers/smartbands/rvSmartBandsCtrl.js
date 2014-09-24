@@ -81,12 +81,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
       	   window.scrollTo(0,0);
         }, 700);
 		var blankKeys = "";
-		if($scope.smartBandData.firstName == '' || $scope.smartBandData.firstName == null){
-			blankKeys = "First Name";		
-		}
-		if($scope.smartBandData.lastName == '' || $scope.smartBandData.lastName == null){			
-			blankKeys = blankKeys == '' ? "Last Name" : (blankKeys + ", " + 'Last Name');
-		}
+
 		if($scope.isFixedAmount){	
 			if($scope.smartBandData.fixedAmount == '' || $scope.smartBandData.fixedAmount == null){			
 				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");

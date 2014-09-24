@@ -23,9 +23,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
 					// based on search values from base screen
 					// init respective search
-					if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
-						$scope.openGuestCard();
-						$scope.searchGuest();
+					if($scope.reservationDetails.guestCard.id == ''){
+						if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
+							$scope.openGuestCard();
+							$scope.searchGuest();
+						}
 					}
 					if (searchData.company.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {

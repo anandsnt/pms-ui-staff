@@ -2,7 +2,6 @@ var CardOperation = function(){
 	// class for handling operations with payment device
 	
 	var that = this;
-	
 	// function for start reading from device 
 	// Note down: Currently it is recursive
 	
@@ -75,12 +74,11 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
-		
+			
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
-	
 							if(successCallBackParameters !== null){
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
@@ -158,7 +156,7 @@ var CardOperation = function(){
 	*/
 	this.setBandType = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "setBandType";		
+		options['action'] = "setBandType";	
 		that.callCordovaService(options);			
 	};
 
@@ -223,7 +221,6 @@ var CardOperation = function(){
 
 	//function for linking iBeacon
 	this.linkiBeacon = function(options){	
-		alert("gtfgh");
 		options['service'] = "RVCardPlugin";
 		options['action'] = "writeBeaconID";
 		that.callCordovaService(options);

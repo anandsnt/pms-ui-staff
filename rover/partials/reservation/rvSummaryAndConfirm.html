@@ -24,7 +24,7 @@
                         {{getSimplifiedDayName(reservationData.arrivalDate)}}, {{reservationData.arrivalDate | date:dateFormat}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
-                                <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -41,7 +41,7 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -49,7 +49,7 @@
                                 </select>
                             </div>
                             <div class="select ampm">
-                                <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -61,7 +61,7 @@
                         {{getSimplifiedDayName(reservationData.departureDate)}}, {{reservationData.departureDate | date:dateFormat}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
-                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
+                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -78,7 +78,7 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm">
+                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -86,7 +86,7 @@
                                 </select>
                             </div>
                             <div class="select ampm">
-                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm">
+                                <select iscroll-stop-propagation name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
