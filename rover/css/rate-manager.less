@@ -230,7 +230,7 @@
   }
   .filter-options {
     display:block;
-    width: 230px;
+    width: 265px; /*230px;*/
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
@@ -239,13 +239,13 @@
     hr.half-left { width:25%; height:1px; margin:10px 2px 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
     hr.half-right{ width:25%; height:1px; margin:10px 25px 0 0; float:right; border:1px solid rgba(0, 0, 0, 0.1)}
     .rates-box{ 
-      margin:10px 0 10px;
+      margin: 10px 0 10px;
       width:100%;
       .rate-data{
         width:80% !important;
         float:left;
-        padding: 4px 0;
-        text-indent: 10px;
+        padding: 4px 0 4px 4px; /*4px 0*/
+        /*text-indent: 10px;*/
       }
       .delete_small{
         width:15%;
@@ -253,16 +253,27 @@
         background-position: 7px -689px !important;
       }
     }
-    #rmDateRange, #rmRateType, #rmRate{
-       color: #9D9D9D;font-style: italic;
+    #rmDateRange::-webkit-input-placeholder, 
+    #rmRateType::-webkit-input-placeholder, 
+    #rmRate::-webkit-input-placeholder,
+    #rmDateRange::-moz-placeholder, 
+    #rmRateType::-moz-placeholder, 
+    #rmRate::-moz-placeholder {
+       color: #9D9D9D;
+       font-style: italic;
        font-size:15px ;
-    }
-    
+    }  
     .has-datepicker.entry .ui-datepicker-trigger {
       left: 0px !important;
       top: 23px !important;
     }
-
+    select#rmRate:first-child,
+    select#rmRateType:first-child
+     {
+       color: #9D9D9D;
+       font-style: italic;
+       font-size:15px ;      
+    }
   }
   .calendar, .graph {
     display: block;
@@ -728,7 +739,7 @@
       background-color: rgba(0, 0, 0, 0.15);;
     }
 
-    dialog{
+    .rate-dialog-tag {
       color:#000;
       .header{
         background: none repeat scroll 0 0 #393c41;
@@ -906,7 +917,7 @@
 
   .leftMenuHandle {
     position:absolute;
-    left: 230px;
+    left: 245px; /*230px;*/
     top:20px; 
     background-color: #DDDDDD;
     // background-image: url("/assets/main-navigation.png"), url("/assets/texture-dark.png");
@@ -937,7 +948,7 @@
   }
   .slide_left {
     position: absolute;
-    left: -225px;
+    left: -265px; /*-225px;*/
     /*-webkit-transition-duration: .5s;
     -moz-transition-duration: .5s;
     -o-transition-duration: .5s;
@@ -1314,7 +1325,7 @@ padding-top: 80px;
   span.half-border{
     color: #9D9D9D;
     span.or{
-      margin:12px;
+      margin: 22px; /*12px;*/
       font-size:12px;
     }
   }
@@ -1331,10 +1342,10 @@ padding-top: 80px;
     text-align:center; 
     padding:15px; 
     bottom:0px; 
-    width:230px;
+    width: 265px; /*230px;*/
     button {
       height:40px;
-      width:190px;
+      width: 235px; /*215px;*/ /*190px;*/
     }
   }
 
@@ -1348,7 +1359,7 @@ padding-top: 80px;
       margin-top: 15px;
     }
     a.leftMenuHandle{
-      left:210px;
+      left: 245px; /*210px;*/
       top:-10px;
     }
 
@@ -1396,7 +1407,7 @@ padding-top: 80px;
           padding-bottom:15px;
           input{
             width: 100%;
-            font-size: 14px;
+            font-size: 16px; /*14px;*/
           }
         }
 
@@ -1455,7 +1466,7 @@ padding-top: 80px;
   position: fixed;
   width: 380px;
   overflow-y: hidden;
-  left: 200px;
+  left: 246px; /*200px;*/
   .search-results{
     background: #FCFCFC;
     padding: 0;

@@ -192,7 +192,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			if($scope.passData.is_swiped){
 				$scope.paymentData.reservation_card.payment_details.is_swiped = true;
 			}
-			$scope.paymentData.reservation_card.payment_method_used = 'CC';
+
+			$scope.paymentData.reservation_card.payment_method_used = $scope.saveData.payment_type;
+			$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
 			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
@@ -226,6 +228,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			}
 			
 		}
+		$rootScope.$broadcast('paymentTypeUpdated');
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");

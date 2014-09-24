@@ -55,6 +55,7 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 
     //dont show Latecheckout icon
     $scope.shouldShowLateCheckout = false; 
+    $scope.shouldShowQueuedRooms  = false;
 
     /**
     *   a recievder function to show erorr message in the dashboard
@@ -85,5 +86,5 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
    //scroller is not appearing after coming back from other screens
     setTimeout(function(){
       $scope.refreshScroller('dashboard_scroller');
-    }, 200);
+    }, 500);
 }]);

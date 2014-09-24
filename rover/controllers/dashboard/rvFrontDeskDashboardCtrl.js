@@ -52,8 +52,9 @@ sntRover.controller('RVfrontDeskDashboardController',['$scope', '$rootScope', fu
 
     //show Latecheckout icon
     $scope.shouldShowLateCheckout = true; 
+    $scope.shouldShowQueuedRooms  = true;
     //scroller is not appearing after coming back from other screens
     setTimeout(function(){
       $scope.refreshScroller('dashboard_scroller');
-    }, 200);
+    }, 500);
 }]);

@@ -214,6 +214,18 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.refreshScroller();
 		};
 
+		//function to show restricted stay range div- only available for non-standalone PMS
+		this.showRestrictedStayRange = function() {
+			$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
+			$scope.refreshScroller();
+		};
+
+		//function to show not available room types div
+		this.showRoomNotAvailable = function() {
+			$scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE';
+			$scope.refreshScroller();
+		};
+
 		// function to show room list
 		that.showRoomTypeAvailable = function(data) {
 			$scope.availableRooms = data.rooms;
@@ -222,7 +234,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.refreshScroller();
 		};
 
-		//function to show room details, total, avg.. after successful checking for room available
+				//function to show room details, total, avg.. after successful checking for room available
 		$scope.showRoomAvailable = function() {
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
@@ -235,11 +247,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 				//we have to add rate between the calendar checkin date & calendar checkout date only
 				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
-					$scope.totRate += parseFloat(this.rate);
+					$scope.totRate += escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
 				//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
 				if (this.date == ($scope.stayDetails.details.arrival_date)) {
-					checkinRate = $scope.escapeNull(this.rate) == "" ? "" : parseInt(this.rate);
+					checkinRate = $scope.escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
 
 			});
@@ -254,6 +266,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
 			$scope.refreshScroller();
 		}
+
+		
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
 			$scope.roomSelected = roomNumber;
@@ -439,6 +453,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			}
 		};
 
+
 		$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
 			var events = [];
 			var currencyCode = $scope.stayDetails.calendarDetails.currency_code;
@@ -450,8 +465,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				calEvt = {};
 				//Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(this.date);
-				if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-					calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
+				if (this.is_sr == "true") {
+					calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 				} else {
 					calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
 				}
@@ -474,8 +489,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 						events.push(calEvt);
 						//checkout-event
 						calEvt = {};
-						if ($scope.stayDetails.calendarDetails.is_rates_suppressed == "true") {
-							calEvt.title = $scope.stayDetails.calendarDetails.text_rates_suppressed;
+						if (this.is_sr == "true") {
+							calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 						} else {
 							calEvt.title = getCurrencySymbol(currencyCode) + Math.round(this.rate);
 						}

@@ -1,17 +1,27 @@
 sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RVReservationCardSrv', '$stateParams', 'reservationListData', 'reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', '$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', '$state', 'RVSearchSrv', '$vault', 'RVReservationSummarySrv',
 	function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv) {
 
-		// pre setup for back button
-		var titleDict = {
-			'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
-			'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
-			'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
-			'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
-			'VIP': 'DASHBOARD_SEARCH_VIP',
-			'NORMAL_SEARCH': 'SEARCH_NORMAL'
-		};
-		var backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-		var backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+		// pre setups for back button
+		var backTitle,
+			backParam,
+			titleDict = {
+				'DUEIN': 'DASHBOARD_SEARCH_CHECKINGIN',
+				'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
+				'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
+				'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+				'VIP': 'DASHBOARD_SEARCH_VIP',
+				'NORMAL_SEARCH': 'SEARCH_NORMAL'
+			};
+
+		// if we just created a reservation and came straight to staycard
+		// we should show the back button with the default text "Find Reservations"	
+		if ( $stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
+			backTitle = titleDict['NORMAL_SEARCH'];
+			backParam = {};
+		} else {
+			backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
+			backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+		}
 
 		// setup a back button
 		$rootScope.setPrevState = {
@@ -63,9 +73,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.$parent.$parent.reservation = reservationDetails;
 		$scope.reservationnote = "";
-		if ($scope.reservationData.reservation_card.currency_code != null) {
-			$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
-		}
 		$scope.selectedLoyalty = {};
 		$scope.$emit('HeaderChanged', $filter('translate')('STAY_CARD_TITLE'));
 		$scope.$watch(
@@ -116,18 +123,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.setScroller('resultDetails');
 
 		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
-		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.package_description;
-		// var multipleRatesPresent = false;
-		// var multipleRates = [];
-		// angular.forEach($scope.reservationData.reservation_card.stay_dates, function(item, index) {
-		// 	multipleRates.push(item.rate_id);
-		// });
-
-		// if (multipleRates.reduce(function(a, b) {
-		// 	return (a === b) ? true : false;
-		// })) {
-		// 	$scope.reservationData.rateDescriptionADR = "Multiple Rates Selected";
-		// };
+		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.rate_name;
 
 		//CICO-7078 : Initiate company & travelagent card info
 		//temporarily store the exiting card ids
@@ -329,7 +325,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				return true;
 			}
 			return false;
-		}
+		};
 
 		$scope.extendNights = function() {
 			// TODO : This following LOC has to change if the room number changes to an array
@@ -355,14 +351,25 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.goToRoomAndRates = function(state) {
-			$state.go('rover.reservation.staycard.mainCard.roomType', {
-				from_date: reservationMainData.arrivalDate,
-				to_date: reservationMainData.departureDate,
-				view: state,
-				fromState: $state.current.name,
-				company_id: $scope.$parent.reservationData.company.id,
-				travel_agent_id: $scope.$parent.reservationData.travelAgent.id
-			});
+			if($rootScope.isStandAlone){
+				$state.go('rover.reservation.staycard.mainCard.roomType', {
+					from_date: reservationMainData.arrivalDate,
+					to_date: reservationMainData.departureDate,
+					view: state,
+					fromState: $state.current.name,
+					company_id: $scope.$parent.reservationData.company.id,
+					travel_agent_id: $scope.$parent.reservationData.travelAgent.id
+				});
+			} else {
+				$state.go('rover.reservation.staycard.billcard', {
+					reservationId:$scope.reservationData.reservation_card.reservation_id,
+					clickedButton: "viewBillButton",
+					userId:$scope.guestCardData.userId
+				});
+			}
+			
+			
+			//rover.reservation.staycard.billcard({reservationId:$scope.reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:$scope.guestCardData.userId})
 		};
 
 		$scope.modifyCheckinCheckoutTime = function() {
@@ -378,16 +385,16 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				} else {
 					$scope.reservationData.reservation_card.departure_time = null;
 				}
-			}
+			};
 			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
-			}
+			};
 
 			if (($scope.reservationParentData.checkinTime.hh != '' && $scope.reservationParentData.checkinTime.mm != '') || ($scope.reservationParentData.checkoutTime.hh != '' && $scope.reservationParentData.checkoutTime.mm != '') || ($scope.reservationParentData.checkinTime.hh == '' && $scope.reservationParentData.checkinTime.mm == '') || ($scope.reservationParentData.checkoutTime.hh == '' && $scope.reservationParentData.checkoutTime.mm == '')) {
 				var postData = $scope.computeReservationDataforUpdate();
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
-		}
+		};
 	}
 
 ]);

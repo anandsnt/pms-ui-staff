@@ -1,4 +1,7 @@
-<div class="title">{{popoverRates.total_count}}&nbsp;<span ng-show="popoverRates.total_count > 1">Rates Based on</span><span ng-hide="popoverRates.total_count > 1">Rate Based on</span>&nbsp;{{popoverRates.results[0].based_on.name}}</div>
-<ul >
-	<li ng-repeat = "rate in popoverRates.results" ui-sref="admin.rateDetails({ rateId: rate.id })">{{rate.name}}</li>									
+<div class="title">{{popoverRates.total_count}}
+	<span ng-show="popoverRates.total_count > 1">Rates Based on</span><span ng-hide="popoverRates.total_count > 1">Rate Based on</span>
+	<label ng-click="editRatesClicked(popoverRates.results[0].based_on.id, '')">{{popoverRates.results[0].based_on.name}}</label>
+</div>
+<ul>
+	<li ng-repeat = "rate in popoverRates.results" ng-click="editRatesClicked(rate.id, $index)">{{rate.name}}</li>			
 </ul>

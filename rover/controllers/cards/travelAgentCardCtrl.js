@@ -1,5 +1,5 @@
-sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout', 'RVCompanyCardSrv','ngDialog',
-	function($scope,$rootScope, $timeout, RVCompanyCardSrv,ngDialog) {
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter',
+	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
@@ -10,7 +10,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			$event.stopImmediatePropagation();
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 				if ($scope.viewState.isAddNewCard) {
-					$scope.errorMessage = ["Please save Travel Agent Card first"];
+					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('TA_SAVE_PROMPT')]);
 				} else {
 					saveContactInformation($scope.contactInformation);
 					$scope.$broadcast("contractTabActive");
@@ -18,19 +18,92 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			}
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
-			}
-			else if($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts'){
+			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
-			}	
-			else if(tabToSwitch == 'cc-ar-accounts'){
+			}
+			
+			if (tabToSwitch == 'cc-ar-accounts') {
 				$scope.$broadcast("arAccountTabActive");
-			};
+			} else if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("contractTabActive");
+			} else if (tabToSwitch == 'cc-contact-info') {
+				$scope.$broadcast("contactTabActive");
+			}
+
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
 		};
 
 		var presentContactInfo = {};
+		/*-------AR account starts here-----------*/
+
+		$scope.showARTab = function($event) {
+			$scope.isArTabAvailable = true;
+			$scope.$broadcast('setgenerateNewAutoAr', true);
+			$scope.switchTabTo($event, 'cc-ar-accounts');
+		};
+		$scope.$on('ARNumberChanged', function(e, data) {
+			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
+		});
+
+		$scope.deleteArAccount = function() {
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
+				className: 'ngdialog-theme-default1 calendar-single1',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
+		$scope.deleteARAccountConfirmed = function() {
+			var successCallbackOfdeleteArAccount = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.isArTabAvailable = false;
+				$scope.$broadcast('setgenerateNewAutoAr', false);
+				$scope.$broadcast('ArAccountDeleted');
+				$scope.contactInformation.account_details.accounts_receivable_number = "";
+				ngDialog.close();
+			};
+			var dataToSend = {
+				"id": $scope.reservationDetails.travelAgent.id
+			};
+			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
+		};
+
+		$scope.clikedDiscardDeleteAr = function() {
+			ngDialog.close();
+		};
+
+		var callCompanyCardServices = function() {
+			var param = {
+				'id': $scope.reservationDetails.travelAgent.id
+			};
+			var successCallbackFetchArNotes = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.arAccountNotes = data;
+				$scope.$broadcast('ARDetailsRecieved');
+			};
+			var fetchARNotes = function() {
+				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
+			}
+
+			var successCallbackFetchArDetails = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.arAccountDetails = data;
+				if ($scope.arAccountDetails.is_use_main_contact !== false) {
+					$scope.arAccountDetails.is_use_main_contact = true;
+				}
+				if ($scope.arAccountDetails.is_use_main_address !== false) {
+					$scope.arAccountDetails.is_use_main_address = true;
+				}
+				fetchARNotes();
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
+
+		};
+
+		/*-------AR account ends here-----------*/
 
 		$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
 			$scope.searchMode = false;
@@ -45,13 +118,14 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			if (isNew === true) {
 				$scope.contactInformation.account_details.account_name = $scope.searchData.travelAgentCard.travelAgentName;
 				$scope.contactInformation.address_details.city = $scope.searchData.travelAgentCard.travelAgentCity;
-				$scope.contactInformation.account_details.corporate_id = $scope.searchData.travelAgentCard.travelAgentIATA;
+				$scope.contactInformation.account_details.account_number = $scope.searchData.travelAgentCard.travelAgentIATA;
 			}
 
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
+			callCompanyCardServices();
 		});
 
 
@@ -69,6 +143,8 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 
 		$scope.$on("travelAgentDetached", function() {
 			$scope.searchMode = true;
+			$scope.isArTabAvailable = false;
+			$scope.$broadcast('setgenerateNewAutoAr', false);
 		});
 
 		/**
@@ -80,11 +156,9 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} 
-			else if (document.getElementById("cc-ar-accounts") != null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab == 'cc-ar-accounts') {
+			} else if (document.getElementById("cc-ar-accounts") != null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab == 'cc-ar-accounts') {
 				return;
-			}
-			else if (!$scope.viewState.isAddNewCard && document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
+			} else if (!$scope.viewState.isAddNewCard && document.getElementById("travel-agent-card-header") != null && getParentWithSelector($event, document.getElementById("travel-agent-card-header"))) {
 				$scope.$emit("saveContactInformation");
 				$rootScope.$broadcast("saveArAccount");
 			}
@@ -114,6 +188,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			$rootScope.$broadcast("saveArAccount");
 		});
 
+
 		/**
 		 * success callback of save contact data
 		 */
@@ -121,6 +196,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			$scope.$emit("hideLoader");
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
+			callCompanyCardServices();
 			//New Card Handler
 			if ($scope.viewState.isAddNewCard && typeof data.id != "undefined") {
 				if ($scope.viewState.identifier == "STAY_CARD" || ($scope.viewState.identifier == "CREATION" && $scope.viewState.reservationStatus.confirm)) {
@@ -200,96 +276,20 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope','$rootScope', '$timeout',
 			}
 		};
 
-		/*-------AR account starts here-----------*/
 
-		$scope.showARTab = function($event) {
-			$scope.isArTabAvailable = true;
-		};
-		$scope.$on('ARNumberChanged',function(e,data){
-			$scope.contactInformation.account_details.accounts_receivable_number  = data.newArNumber;
-		});
-
-		$scope.deleteArAccount = function(){
-			ngDialog.open({
-				 template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
-				 className: 'ngdialog-theme-default1 calendar-single1',
-				 closeByDocument: false,
-				 scope: $scope
-			});		
-		};
-
-		$scope.deleteARAccountConfirmed = function(){
-			var successCallbackOfdeleteArAccount = function(){
-				$scope.$emit('hideLoader');
-				$scope.isArTabAvailable = false;
-				var bool = $scope.arAccountDetails.is_auto_assign_ar_numbers;
-				var arNumber = $scope.arAccountDetails.ar_number;
-				$scope.arAccountDetails = {};
-				$scope.arAccountDetails.is_use_main_contact = true;
-				$scope.arAccountDetails.is_use_main_address = true;
-				$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
-				$scope.arAccountDetails.ar_number = arNumber;
-				$scope.contactInformation.account_details.accounts_receivable_number = "";
-				ngDialog.close();
-			};
-			var dataToSend = {"id":$scope.reservationDetails.travelAgent.id};
-			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
-		};
-
-		$scope.clikedDiscardDeleteAr = function(){
-				ngDialog.close();
-		};
-
-		var callCompanyCardServices =  function(param){
-			var successCallbackFetchArNotes = function(data){
-					$scope.$emit("hideLoader");
-					$scope.arAccountNotes = data;
-					$scope.$broadcast('ARDetailsRecieved');
-				};
-				var fetchARNotes = function(){
-					$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-				}
-
-				var successCallbackFetchArDetails = function(data){
-					$scope.$emit("hideLoader");
-					$scope.arAccountDetails = data;
-					if($scope.arAccountDetails.is_use_main_contact !== false){
-						$scope.arAccountDetails.is_use_main_contact = true;
-					}
-					if($scope.arAccountDetails.is_use_main_address !== false){
-						$scope.arAccountDetails.is_use_main_address = true;
-					}
-					fetchARNotes();
-				};
-				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);		
-
-			};
-		var param = {
-						'id': $scope.reservationDetails.travelAgent.id
-					};
-		callCompanyCardServices(param);
-
-
-	
-	/*-------AR account ends here-----------*/
 	}
 ]);
 
 sntRover.controller('travelAgentResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
-		$scope.$parent.myScrollOptions = {
-			'travelAgentResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+		BaseCtrl.call(this, $scope);
+		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('travelAgentResultScroll', scrollerOptionsForGraph);
+
 		$scope.$on("refreshTravelAgentScroll", function() {
 			$timeout(function() {
-				$scope.$parent.myScroll['travelAgentResultScroll'].refresh();
+				$scope.refreshScroller('travelAgentResultScroll');	
 			}, 500);
-		})
+		});
 	}
 ]);

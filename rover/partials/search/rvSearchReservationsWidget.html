@@ -63,7 +63,7 @@
 							</span>
 
 
-							<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+							<span class="room-status" ng-show="(getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN' && row.room != '')"  >{{row.fostatus}}</span>
 						</a>
 					</li>
 					<li class="no-content" ng-show="showNoMatches(results.length, textInQueryBox.trim().length, isTyping, isSwiped)" >
@@ -78,10 +78,16 @@
 							.
 						</div>
 					</li>
-					<li class="no-content" ng-show="results.length == 0 && searchType != 'default' && (isLateCheckoutList && textInQueryBox=='')">
+					<li class="no-content" ng-show="results.length == 0 && (isLateCheckoutList && textInQueryBox=='')">
 						<div class="info">
 							<span class="icon-no-content icon-search"></span>
 							<strong class="h1">No guests opted for late checkout </strong>
+						</div>
+					</li>
+					<li class="no-content" ng-show="results.length == 0 && (isQueueReservationList && textInQueryBox=='')">
+						<div class="info">
+							<span class="icon-no-content icon-search"></span>
+							<strong class="h1">No guests opted for queue reservations </strong>
 						</div>
 					</li>
 					<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<3 && !swipeNoResults">

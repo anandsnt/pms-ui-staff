@@ -1,5 +1,6 @@
-sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter',
-  function($scope, RVContactInfoSrv, ngDialog, dateFilter) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout) {
+
     BaseCtrl.call(this, $scope);
     /**
      * storing to check if data will be updated
@@ -117,7 +118,7 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
      * watch and update formatted date for display
      */
     $scope.$watch('guestCardData.contactInfo.birthday', function() {
-      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+      $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
     });
     /**
      * to handle click actins outside this tab
@@ -145,18 +146,15 @@ sntRover.controller('RVContactInfoController', ['$scope', 'RVContactInfoSrv', 'n
         scope: $scope
       });
     };
-    
+
     $scope.setScroller('contact_info');
 
-    $scope.$on('CONTACTINFOLOADED', function(event) {
-      setTimeout(function() {
-          $scope.refreshScroller('contact_info');
-
-        },
-        1500);
-      $scope.$on('REFRESHLIKESSCROLL', function() {
+    var refreshContactsScroll = function() {
+      $timeout(function() {
         $scope.refreshScroller('contact_info');
-      });
-    });
+      }, 700);
+    }
+    $scope.$on('CONTACTINFOLOADED', refreshContactsScroll);
+    $scope.$on('REFRESHLIKESSCROLL', refreshContactsScroll);
   }
 ]);

@@ -116,6 +116,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
+				
 			};
 			//	companycard defaults to search mode 
 			// 	Hence, do API call only if a company card ID is returned
@@ -475,7 +476,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					"company_logo": "",
 					"account_number": null,
 					"accounts_receivable_number": null,
-					"billing_information": "Test"
+					"billing_information": null
 				},
 				"primary_contact_details": {
 					"contact_first_name": null,

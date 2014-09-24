@@ -16,6 +16,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	// these varibales will be used to various conditiopns for ui rendering
 	$scope.isLateCheckoutList = false;
+	$scope.isQueueReservationList = false;
 	$scope.swipeNoResults = false;
 
 	//showSearchResultsAre
@@ -49,7 +50,17 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	} else {
 		$vault.set('searchQuery', '');
 	}
-
+	
+	if($stateParams.type == "LATE_CHECKOUT"){
+	  	$scope.isLateCheckoutList = true;
+	} else{
+	  	$scope.isLateCheckoutList = false;
+	}
+	if($stateParams.type == "QUEUED_ROOMS"){
+	  	$scope.isQueueReservationList = true;
+	} else{
+	  	$scope.isQueueReservationList = false;
+	}
 
 	// dont remove yet
 	// setting up back to dashboard
@@ -136,6 +147,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	$scope.queryEntered = function(){
 		$scope.isSwiped = false;
 		$scope.swipeNoResults = false;
+		$scope.isLateCheckoutList = false;
+	    $scope.isQueueReservationList = false;
 		var queryText = $scope.textInQueryBox;
 		$scope.$emit("UPDATE_MANAGER_DASHBOARD");
 		//inoreder to prevent unwanted results showing while tyeping..
@@ -413,35 +426,40 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
       };
       
       
-      $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
-       var mappedStatus = "room-number";
-       if(reservation_status == 'CHECKING_IN'){
-     
-	      	switch(roomReadyStatus) {
-	
-				case "INSPECTED":
-					mappedStatus += ' room-green';
-					break;
-				case "CLEAN":
-					if (checkinInspectedOnly == "true") {
-						mappedStatus += ' room-orange';
-						break;
-					} else {
-						mappedStatus += ' room-green';
-						break;
+    $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus, roomReadyStatus, checkinInspectedOnly){
+       	var mappedStatus = "room-number";
+
+       	if(reservation_status == 'CHECKING_IN'){
+       		if(roomReadyStatus != ''){
+       			if(fostatus == 'VACANT'){
+			      	switch(roomReadyStatus) {
+						case "INSPECTED":
+							mappedStatus += ' room-green';
+							break;
+						case "CLEAN":
+							if (checkinInspectedOnly == "true") {
+								mappedStatus += ' room-orange';
+								break;
+							} else {
+								mappedStatus += ' room-green';
+								break;
+							}
+							break;
+						case "PICKUP":
+							mappedStatus += " room-orange";
+							break;
+			
+						case "DIRTY":
+							mappedStatus += " room-red";
+							break;
 					}
-					break;
-				case "PICKUP":
-					mappedStatus += " room-orange";
-					break;
-	
-				case "DIRTY":
-					mappedStatus += " room-red";
-					break;
-	
-			}
-	       }
-	   	 return mappedStatus;
-   };
+       			} else {
+       				mappedStatus += " room-red";
+       			}
+       		}
+	    }
+
+	   	return mappedStatus;
+   	};
 
 }]);

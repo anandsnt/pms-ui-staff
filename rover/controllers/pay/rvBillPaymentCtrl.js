@@ -362,7 +362,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.guestPaymentList.push(dataToGuestList);
 		}
 		
-		$scope.showInitialScreen();
+		$scope.showInitialScreen();z
 	};
 	
 	$scope.$on('PAYMENTSWIPEHAPPENED', function(event, data){
