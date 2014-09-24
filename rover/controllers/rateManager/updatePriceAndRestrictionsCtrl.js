@@ -16,7 +16,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
 
         $scope.updatePopupWidth();
-
     };
 
     $scope.$parent.myScrollOptions = {
@@ -275,24 +274,36 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
         return mixed;
     }
-        /**
+    /**
     * Click handler for restriction on/off buttons
     * Enable disable restriction. 
     */
-    $scope.onOffRestrictions = function(id, toEnable, days,selectedIndex){
+    $scope.toggleRestrictions = function(id, days, selectedIndex) {
+        var action = $scope.data.restrictionTypes[id].isRestrictionEnabled;
+        
+        $scope.onOffRestrictions(id, (action) ? 'DISABLE' : 'ENABLE', days,selectedIndex);
+    };
+    /**
+    * Click handler for restriction on/off buttons
+    * Enable disable restriction. 
+    */
+    $scope.onOffRestrictions = function(id, action, days,selectedIndex){
         $scope.data.showEditView = false;
         $scope.restrictionsList.selectedIndex = selectedIndex;
 
-        angular.forEach($scope.data.restrictionTypes, function(value, key){
-            value.showEdit =  false;
-        });
+    	angular.forEach($scope.data.restrictionTypes, function(value, key){
+    		value.showEdit =  false;
+    	});
 
+        /*Prompt the user for number of days
+         * Only if enabling a restriction.
+         */
         var shouldShowEdit =false;
-        if($scope.data.restrictionTypes[id].hasEdit && toEnable){
+        if($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE"){
             shouldShowEdit = true;
         }
 
-        if($scope.popupData.all_data_selected && toEnable && $scope.data.restrictionTypes[id].isMixed){
+        if($scope.popupData.all_data_selected && action === "ENABLE" && $scope.data.restrictionTypes[id].isMixed){
             shouldShowEdit = true;
         }
 
@@ -303,12 +314,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             $scope.updatePopupWidth();
             return false;
         }
-        if(toEnable){
+        if(action === "ENABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
             $scope.data.restrictionTypes[id].hasChanged = true; 
             $scope.data.restrictionTypes[id].isMixed = false; 
         }
-        else{
+        if(action === "DISABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
             $scope.data.restrictionTypes[id].hasChanged = true; 
             $scope.data.restrictionTypes[id].isMixed = false;
@@ -517,6 +528,4 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
     $scope.init();
         
-       
-    
 }]);

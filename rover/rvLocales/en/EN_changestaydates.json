@@ -33,7 +33,8 @@
 	"CONTINUE": "continue",
 	"RESTRICTIONS": "Restrictions",
 	"RESTRICTION": "Restriction",
-	"CANCEL": "cancel"
+	"CANCEL": "cancel",
+	"SUPPRESSED_RATES_TEXT": "SR"
 
 
 

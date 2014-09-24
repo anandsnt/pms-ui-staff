@@ -39,7 +39,7 @@
                     <li ng-repeat="guest in guests">
                         <a ng-click="selectGuest(guest, $event)">
                             <figure class="guest-image">
-                                <img src="{{ guest.image }}" alt="" />
+                                <img ng-src="{{ guest.image }}" alt="" />
                             </figure>
                             <div class="data">
                                 <h2>
@@ -50,7 +50,7 @@
                                 </h2>
                                 <span class="confirmation">{{ guest.address.postalCode}}</span>
                                 <span class="icons icon-location">
-                                    <span class="no-right-margin" ng-bind-html="'{{guest.address.city}}'|highlight:guestCity:false"></span>
+                                    <span class="no-right-margin" ng-bind-html="'{{guest.address.city}}'|highlight:searchData.guestCard.guestCity:false"></span>
                                     <span class="no-right-margin comma" ng-hide="guest.address.city == null">, </span>
                                     <span class="no-right-margin">{{ guest.address.state }}</span>
                                 </span>

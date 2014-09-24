@@ -1,0 +1,20 @@
+<div id="modal" class="modal-show" role="dialog">
+   <form method="post" action="billing-information" id="billing-information" name="billing-information" class="modal-content billing-information">
+      <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
+      <div class="modal-header">
+         <h1 translate>BILLING_INFO_TITLE</h1>
+
+         <em><span translate>CONFIRMATION_LABEL</span> #{{reservationData.confirm_no}}</em>
+         <button type="button" id="new-route" class="button" ng-class = "{'green': isInitialPage, 'white':!isInitialPage}" ng-click="headerButtonClicked()">{{getHeaderButtonLabel()}}</button>
+      </div>
+
+      <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+      <!-- Billing Info Content -->
+      <div ng-if = "isInitialPage" class="billing-info-body" ng-include="'/assets/partials/bill/rvAllRoutes.html'" ></div>
+
+      <div ng-if = "(!isInitialPage && !isEntitySelected)" class="billing-info-entity" ng-include="'/assets/partials/bill/rvSelectEntity.html'"></div>
+
+      <div ng-if = "(!isInitialPage && isEntitySelected)" class="billing-info-body" ng-include="'/assets/partials/bill/rvRouteDetails.html'"  > </div>
+      
+   </form>
+</div>

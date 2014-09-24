@@ -418,12 +418,32 @@ body { overflow: hidden; }
 ==========================================================*/
 
 /* Content title            ==============================*/
+
+    @media only screen and (max-width : 1024px) {
+        .content-title {
+            left: 17.741935483870968%;
+        }
+    }
+
+    @media only screen and (min-width : 1025px) {
     .content-title {
-        position: relative;
-        min-height: 40px;
-        vertical-align: middle;
-        margin-bottom: 30px;
+            left: 19.35483870967742% 
+        }
+    }
+
+    .content-title {
         border-bottom: 1px solid rgba(0,0,0,.1);
+        position: fixed;
+        background-image: url(http://localhost:3000/assets/texture.png);
+        background-position-x: initial;
+        background-position-y: initial;
+        background-size: initial;
+        background-repeat-x: repeat;
+        background-repeat-y: repeat;
+        background-attachment: initial;
+        background-origin: initial;
+        background-clip: initial;
+        background-color: rgb(252, 252, 252);
 
         h2,
         .count,
@@ -442,6 +462,7 @@ body { overflow: hidden; }
         }
 
         .action {
+            margin-top: 2px;
             font-size: 16px;
             font-weight: 600;
             text-transform: uppercase;
@@ -480,7 +501,7 @@ body { overflow: hidden; }
 
         /* Filters ***/
         .filters {
-            margin-top: -10px;
+            /*margin-top: -10px;*/
             .pull-right;
 
             .filter {
@@ -537,7 +558,7 @@ body { overflow: hidden; }
         border-collapse: separate; 
         border-spacing: 0 10px;
         margin-bottom:0;
-        
+
         th,
         td {
             padding: 0 20px;
@@ -862,7 +883,7 @@ body { overflow: hidden; }
                 transform: translateY(0px);
     }
     .tooltip {
-        z-index:1000;
+        z-index:1150;
         background: #fff;
         top: 25%;
         color: #fff;
@@ -947,14 +968,6 @@ body { overflow: hidden; }
 
 .lte8 .tooltip-wrapper:hover .tooltip {
     display: block;
-}
-
-#rate-types table tr:not(.edit-data) th, table tr:not(.edit-data) td{
-    overflow: visible !important;
-}
-
-#rate-types table tr:not(.edit-data) th, table tr:not(.edit-data) td{
-    overflow: visible !important;
 }
 
 .pager {

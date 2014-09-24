@@ -9,13 +9,12 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	BaseCtrl.call(this, $scope);
 	
-	$scope.selectedView = 'graph';
+	$scope.selectedView = 'grid';
 	$scope.page.title = "Availability";
 
 	$scope.setSelectedView = function(selectedView){
 		$scope.$emit("showLoader");
-		$scope.selectedView = selectedView;		
-		$scope.$broadcast("changedRoomAvailableData");
+		$scope.selectedView = selectedView;				
 	};
 
 	$scope.loadSelectedView = function(){
@@ -24,7 +23,7 @@ sntRover.controller('roomAvailabilityMainController', [
 		}
 		else if($scope.selectedView == 'graph'){
 			return '/assets/partials/availability/roomAvailabilityGraphStatus.html';
-		}
+		}		
 	}
 
 
@@ -37,7 +36,7 @@ sntRover.controller('roomAvailabilityMainController', [
 
 	//default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
-
+	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.fullMonthFullDayFullYear );
 
 
 

@@ -1,18 +1,24 @@
 <!-- Header Collapse View -->
 <div ng-hide="detailsMenu ==='additionalDetails'">
- <div class="form-title">
-            <h3 class="rate_additional_details_heading">ADDITIONAL DETAILS </h3>
-            <div ng-click="changeDetailsMenu('additionalDetails')"  class="cursor_pointer rate_additional_details_pointers"><img src="/assets/arrow-down.png"></div>
+    <div class="form-title cursor_pointer" ng-click="changeDetailsMenu('additionalDetails')">
+        <div class="rate_additional_details_heading">
+            ADDITIONAL DETAILS
+            <div class="cursor_pointer rate_additional_details_pointers">
+                <img src="/assets/arrow-down.png">
+            </div>
+        </div>
   </div>
 </div>
-
 <!-- Expanded View -->
 <div ng-show="detailsMenu ==='additionalDetails'" class="form_add_new_rate" >
-  <div class="form-title">
-            <h3 class="rate_additional_details_heading">ADDITIONAL DETAILS </h3>
-            <div ng-click="changeDetailsMenu('')"  class="cursor_pointer rate_additional_details_pointers"><img src="/assets/arrow-up.png"></div>
+    <div class="form-title cursor_pointer " ng-click="changeDetailsMenu('')">
+        <div class="rate_additional_details_heading">
+            ADDITIONAL DETAILS
+            <div class="cursor_pointer rate_additional_details_pointers">
+                <img src="/assets/arrow-up.png">
+            </div>
+        </div>       
   </div>
-	
 	 <!-- <fieldset class="holder full-width"> -->
 	 	<fieldset class="holder left">
                 <div class="entry has-datepicker margin">
@@ -26,7 +32,6 @@
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="deleteEndDate()">&nbsp;</span>
                     </div>
                 </div>
-
 	 		   <div class="entry full-width">
 	 		   	<div class="entry" ng-hide="!rateTypesDetails.is_use_markets">
                 <label>Market</label>
@@ -49,8 +54,8 @@
 	 	</fieldset>
 	 	<fieldset class="holder right">
 	 		<ad-toggle-button is-checked="rateData.is_commission_on" label="COMMISSION"></ad-toggle-button>
-	 		<ad-toggle-button is-checked="rateData.is_suppress_rate_on" label="DISCOUNT ALLOWED"></ad-toggle-button>
-	 		<ad-toggle-button is-checked="rateData.is_discount_allowed_on" label="SUPPRESS RATE"></ad-toggle-button>
+	 		<ad-toggle-button is-checked="rateData.is_discount_allowed_on" label="DISCOUNT ALLOWED"></ad-toggle-button>
+	 		<ad-toggle-button is-checked="rateData.is_suppress_rate_on" label="SUPPRESS RATE"></ad-toggle-button>
 	 	</fieldset>
 	 <!-- </fieldset> -->
 

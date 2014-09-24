@@ -16,4 +16,5 @@
     "DASHBOARD_MANAGER_HEADING": "Manager Dashboard",
     "DASHBOARD_HOUSEKEEPING_HEADING": "Housekeeping Dashboard",
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
-    "SHOWING_DASHBOARD_TITLE": "Showing Dashboard"
+    "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
+    "QUEUED_ROOMS_TITLE": "Queued Reservations"

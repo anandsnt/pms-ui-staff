@@ -7,6 +7,7 @@
     .limit-width{
       width: 60%;
       padding-top: 6px;
+      vertical-align: middle !important;
     }
 
     table.rate-calendar{
@@ -19,7 +20,8 @@
     span.left{
       float:left;
       font-size: 26px;
-      line-height: 60px;
+      line-height: 50px; /*60px;*/
+      cursor: pointer;
     }
     
      tr {
@@ -62,7 +64,8 @@
   .occupancy-graph-container{
     position: absolute;
     .filter-options{
-
+      /*CICO-8633*/
+      padding: 0 30px 0 30px;
       background:none !important;
 
       h3 {
@@ -70,7 +73,8 @@
       }
 
       .entry{
-        padding-bottom:7px;
+        /*CICO-8633*/
+        padding-bottom: 10px;
       }
 
       hr {
@@ -85,6 +89,7 @@
 
     .entry.radio-check{
       //CICO-8633 margin : 0 0 20px 0; 
+
       label{
        height : 40px;
        //padding-top: 10px;                                                                                                                                                                                          
@@ -107,7 +112,8 @@
 }
 
 .occgraph-outer{
-  left: 240px;
+/*CICO-8863*/
+  left: 265px; //240px;
   clear:both;
 } 
 .topbar {
@@ -169,7 +175,8 @@
       box-shadow: none;
       height: 100%;
       text-align: center;
-      vertical-align: middle;
+      /*CICO-8633*/
+      vertical-align: top; //middle;
       &.cl-gr-button {
         background: image-url("app/cal_graph_icon.png") no-repeat scroll center center #F5F5F5;
       }
@@ -230,7 +237,7 @@
   }
   .filter-options {
     display:block;
-    width: 230px;
+    width: 265px; /*230px;*/
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
@@ -239,13 +246,13 @@
     hr.half-left { width:25%; height:1px; margin:10px 2px 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
     hr.half-right{ width:25%; height:1px; margin:10px 25px 0 0; float:right; border:1px solid rgba(0, 0, 0, 0.1)}
     .rates-box{ 
-      margin:10px 0 10px;
+      margin: 10px 0 10px;
       width:100%;
       .rate-data{
         width:80% !important;
         float:left;
-        padding: 4px 0;
-        text-indent: 10px;
+        padding: 4px 0 4px 4px; /*4px 0*/
+        /*text-indent: 10px;*/
       }
       .delete_small{
         width:15%;
@@ -253,16 +260,27 @@
         background-position: 7px -689px !important;
       }
     }
-    #rmDateRange, #rmRateType, #rmRate{
-       color: #9D9D9D;font-style: italic;
+    #rmDateRange::-webkit-input-placeholder, 
+    #rmRateType::-webkit-input-placeholder, 
+    #rmRate::-webkit-input-placeholder,
+    #rmDateRange::-moz-placeholder, 
+    #rmRateType::-moz-placeholder, 
+    #rmRate::-moz-placeholder {
+       color: #9D9D9D;
+       font-style: italic;
        font-size:15px ;
-    }
-    
+    }  
     .has-datepicker.entry .ui-datepicker-trigger {
       left: 0px !important;
       top: 23px !important;
     }
-
+    select#rmRate:first-child,
+    select#rmRateType:first-child
+     {
+       color: #9D9D9D;
+       font-style: italic;
+       font-size:15px ;      
+    }
   }
   .calendar, .graph {
     display: block;
@@ -270,7 +288,8 @@
 
     .cal-cell{
       text-align:center; 
-      vertical-align:middle;
+      /*CICO-8633*/
+      vertical-align: top; //middle;
       line-height: 20px;
     }
     .iScrollHorizontalScrollbar {
@@ -317,8 +336,11 @@
   table {
   }
   
-  tr {
+  th.first-row {
+    vertical-align: top !important;
+  }
 
+  tr {
     &.last{
       .cell-content{
          border-bottom : 10px solid #e8e8e8;
@@ -331,10 +353,11 @@
     .first-row {
       text-align: right;
       padding: 0 20px;
-      vertical-align: text-top;
-      padding-top: 30px;
+      /*CICO-8633*/
+      vertical-align: middle; //text-top;
+      padding-top: 0px; //10px;
       &.actions {
-        padding-top: 20px;
+        //padding-top: 10px;
       }
       img {
         cursor: pointer;
@@ -345,6 +368,8 @@
         color: #fcfcfc;
         padding: 0 5px;
         margin-left: 10px;
+        //margin-top: -20px;
+        vertical-align: top;
         text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
 
         border-radius: 1px;
@@ -366,6 +391,8 @@
         &:first-child {
           width: 85%;
           float: left;
+          cursor: pointer;
+
           &.expanded{
             color: #f6991b;
             font-weight: 600;
@@ -395,6 +422,10 @@
     &.exp{
         background-color: #d2d2d2;
     }
+
+    .cell-content {
+        cursor: pointer;
+    }
   }
 
   .cell {
@@ -420,9 +451,10 @@
     border-top : 5px solid #e8e8e8;
     border-bottom : 5px solid #e8e8e8;
     background-color: none;
-    height : 80px;
-    line-height : 80px; /* Trick for vertical alligh*/
+    height : 60px; /*80px;*/
+    line-height : 60px; /*80px;*/ /* Trick for vertical alligh*/
     font-size : 20px;
+    pointer: cursor;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -438,6 +470,7 @@
       border-radius: 3px;
       & > div {
         & > div {
+          cursor: pointer;
           padding: 0;
           & > div:first-child {
             border-bottom: 1px solid #e7e7e7;
@@ -457,6 +490,7 @@
             text-align: left;
             padding: 0 10px;
             line-height: 16px;  
+            cursor: pointer;
 
             span {
               float: right;
@@ -491,8 +525,10 @@
       & > div {
 
         display: table-cell;
-        vertical-align: middle;
-        padding: 0 10px;
+        /*CICO-8633*/
+        vertical-align: middle; //top;
+        padding: 6px 10px 0px;
+        //padding: 0 10px;
         .rate-single {
           width: 25px;
           height: 25px;
@@ -519,11 +555,12 @@
     border-bottom : 5px solid #e8e8e8;
 
     background-color: #3b3f43;    
-    height : 80px;
+    height : 70px; /*80px;*/
     font-size : 18px;
     text-align: center;
     white-space: pre-line;
-    vertical-align: middle;
+    /*CICO-8633*/
+    vertical-align: top; //middle;
     display:table;
     width: 100%;
     color: #fcfcfc;
@@ -536,7 +573,8 @@
   }
   th .date-header span { 
     font-size: 14px;    
-    vertical-align: middle;
+    /*CICO-8633*/
+    vertical-align: top; //middle;
     display: block;
     &.week-day{
       margin-top: 10px;
@@ -570,7 +608,7 @@
     padding-right: 20px;
     padding-bottom : 10px;
         // padding-top : 10px;
-        font-size: 14px;
+        font-size: 16px; /*14px;*/
         font-weight: normal;
         float:left;
       }
@@ -602,7 +640,8 @@
         }
         
         table {
-          width: 70%;
+          /*CICO-8633*/
+          width: 80%; //70%;
           margin: auto;
           background: url('/assets/texture.png') repeat scroll 0 0 #fcfcfc;
           box-shadow: 0 0 3px rgba(0,0,0,0.1);
@@ -617,12 +656,21 @@
               padding-top:30px;
             }
             td {
-              padding:20px 10px;
+              /*CICO-8633*/
+              padding: 10px 10px; //20px 10px;
               font-size:15px !important;
               font-weight:bold !important;
               color:#202123;
               text-align: center !important;
             
+            }
+          }
+
+          tr:first-child {
+            td {
+              > h1 {
+                padding-top: 30px;
+              }
             }
           }
         }
@@ -717,6 +765,7 @@
       float: right;
       text-align: center;
       z-index: 10000;
+      margin-right: 10px;
     }
     .status-on{
       background-color: #89bd55;
@@ -728,13 +777,14 @@
       background-color: rgba(0, 0, 0, 0.15);;
     }
 
-    dialog{
+    .rate-dialog-tag {
       color:#000;
       .header{
         background: none repeat scroll 0 0 #393c41;
         color: #FCFCFC;
         display: block;
-        height: 100px;
+        /*CICO-8633*/
+        min-height: 100px; //height: 100px;
         margin-top: -17px;
         padding: 20px;
         width: 100%;
@@ -906,7 +956,7 @@
 
   .leftMenuHandle {
     position:absolute;
-    left: 230px;
+    left: 245px; /*230px;*/
     top:20px; 
     background-color: #DDDDDD;
     // background-image: url("/assets/main-navigation.png"), url("/assets/texture-dark.png");
@@ -937,7 +987,7 @@
   }
   .slide_left {
     position: absolute;
-    left: -225px;
+    left: -265px; /*-225px;*/
     /*-webkit-transition-duration: .5s;
     -moz-transition-duration: .5s;
     -o-transition-duration: .5s;
@@ -1045,6 +1095,7 @@ padding-top: 80px;
     }
 
     .toggle-expand{
+     cursor: pointer;
      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 
      float: right;
@@ -1070,21 +1121,24 @@ padding-top: 80px;
       float:left;
       width:80%;
       h2{
-        width:170px;
+        width: 170px;
+        height: auto;
         font-size: 28px;
         font-weight: 700;
         overflow:hidden;
         text-overflow: ellipsis;
-        white-space:nowrap;
+        //white-space:nowrap;
         &.title-expanded{
-            font-size: 28px;
-           font-weight: 700;  
+           font-size: 28px;
+           font-weight: 700; 
+           min-width: 170px; 
         width:100%        
         }
       }
       em{
          font-size: 15px;
          font-style: italic !important;
+         display: block;
       }
     }
   }
@@ -1131,7 +1185,7 @@ padding-top: 80px;
         cursor: alias;
         position: absolute;
         right:0;
-        top:10px;
+        top: 15px; /*10px;*/
         line-height: 15px;
       }
       &.text{
@@ -1314,7 +1368,7 @@ padding-top: 80px;
   span.half-border{
     color: #9D9D9D;
     span.or{
-      margin:12px;
+      margin: 22px; /*12px;*/
       font-size:12px;
     }
   }
@@ -1331,10 +1385,10 @@ padding-top: 80px;
     text-align:center; 
     padding:15px; 
     bottom:0px; 
-    width:230px;
+    width: 265px; /*230px;*/
     button {
       height:40px;
-      width:190px;
+      width: 235px; /*215px;*/ /*190px;*/
     }
   }
 
@@ -1348,7 +1402,7 @@ padding-top: 80px;
       margin-top: 15px;
     }
     a.leftMenuHandle{
-      left:210px;
+      left: 245px; /*210px;*/
       top:-10px;
     }
 
@@ -1396,7 +1450,7 @@ padding-top: 80px;
           padding-bottom:15px;
           input{
             width: 100%;
-            font-size: 14px;
+            font-size: 16px; /*14px;*/
           }
         }
 
@@ -1455,7 +1509,7 @@ padding-top: 80px;
   position: fixed;
   width: 380px;
   overflow-y: hidden;
-  left: 200px;
+  left: 246px; /*200px;*/
   .search-results{
     background: #FCFCFC;
     padding: 0;
