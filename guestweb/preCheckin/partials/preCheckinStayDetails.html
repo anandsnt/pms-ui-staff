@@ -1,0 +1,69 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+
+			<div class="row checkin-wrapper">
+
+				<div class="col-md-6 pad-rt-60">
+					<div class="chekin-heading centeralign blue-text">
+						Stay Details
+					</div>
+					<div class="date-container">
+						<div class="row ">
+							<div class="expiry-month-container">
+								<p class="cabin-number-text grey-text">Expiration Date</p>
+								<div class="select-style">
+									<select ng-model="monthSelected"
+									ng-options="month.value as month.name for month in months">
+									<option value="">Month</option>
+								</select>
+							</div>
+						</div>
+						</div>
+					</div>
+						<div class="row cabin_number_field">
+					<p class="lightcontent chekout-time grey-text">Room Number</p>
+					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input"/> 
+				</div>	
+
+					<!-- top section ends here-->
+				</div>
+
+					<div class="verti-ruler"></div>
+
+					<div class="col-md-6 pad-lf-60">					
+						<button class="checkin-button blue-bg" ui-sref="preCheckinStatus">
+							<span class="white-text">Check-In</span>
+							<img src="/assets/img/Galleria/checkin-white-icon-large.png" width="60" height="60" alt=""/>
+						</button>
+					</div>
+
+				</div>
+
+				<div class="row checkin-wrapper no-top-margin">
+					<div class="col-md-6 error-callus">
+						<div class="lightcontent">
+
+							ERRORS? <a href="tel: {{hotelPhone}}"><u class="blue-text">CALL US AT  <a href="tel: {{hotelPhone}}"class="white-alert-link-tag blue-text">{{hotelPhone}}.</a></u></a>
+
+						</div>
+					</div>
+					<div class="verti-ruler"></div>
+				</div>
+			
+		</div>
+		<!-- checkinbtn section ends here-->
+	</div>
+
+</div>
