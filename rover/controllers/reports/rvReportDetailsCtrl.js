@@ -18,10 +18,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
-			var totals = $scope.$parent.totals,
-				headers = $scope.$parent.headers,
-				subHeaders = $scope.$parent.subHeaders,
-				results = $scope.$parent.results,
+			var totals          = $scope.$parent.totals,
+				headers         = $scope.$parent.headers,
+				subHeaders      = $scope.$parent.subHeaders,
+				results         = $scope.$parent.results,
 				resultsTotalRow = $scope.$parent.resultsTotalRow;
 
 

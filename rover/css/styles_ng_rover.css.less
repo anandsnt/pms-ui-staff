@@ -618,13 +618,6 @@ untill angular is ready to activate it */
 * Angular UI-States Animations
 */
 
-.room-number {    
-    line-height: initial !important;
-}
-
-.room-status {    
-    line-height: 64px !important;
-}
 
 .iScrollVerticalScrollbar .iScrollIndicator {
     background: none repeat scroll 0 0 #FFB319;
@@ -740,9 +733,60 @@ Padding for the ows error popup
 
 
 /* Rooms page               ==============================*/
-    
+.content#rooms {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
+  }
+}
+
+.content#filter-options {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
+  }
+}
+
+#pull-refresh-notify {
+  display: none;
+}
+
     /* Rooms listing ***/
-    #rooms {
+    /*#rooms {
         li {
             margin: 0;         
             a {
@@ -856,12 +900,12 @@ Padding for the ows error popup
                 }
             }
         }
-    }
+    }*/
 
     /* Rooms page               ==============================*/
         
         /* Rooms listing ***/
-        #rooms {
+        /*#rooms {
             li {           
                 a {
                     color: @textColor;
@@ -907,11 +951,11 @@ Padding for the ows error popup
                     }
                 }
             }
-        }    
+        } */   
             /* Rooms page               ==============================*/
         
         /* Rooms listing ***/
-        #rooms {
+        /*#rooms {
             .wrapper { padding: 0 20px; }
 
             li {
@@ -930,7 +974,7 @@ Padding for the ows error popup
                 top: 0;
                 bottom: 0;
             }
-        }
+        }*/
 
 
 /* 

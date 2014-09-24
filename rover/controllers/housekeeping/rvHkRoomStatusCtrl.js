@@ -11,7 +11,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// additional check since the router resolve may fail
 		if ( !fetchedRoomList ) {
 			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
+			console.log( fetchedRoomList );
 		};
+
+		/*var successCallback = function(data){
+			//$scope.allRoomTypes = data;
+		};*/
+		$scope.allRoomTypes = RVHkRoomStatusSrv.allRoomTypes;
+		if( isEmptyObject(RVHkRoomStatusSrv.allRoomTypes) ){
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchAllRoomTypes, {}, '', '', 'NONE');
+		}
+
 
 		BaseCtrl.call(this, $scope);
 
@@ -20,6 +30,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    title: $filter('translate')('DASHBOARD'),
 		    name: 'rover.dashboard'
 		}
+
+		// set title in header
+		$scope.setTitle( $filter('translate')('ROOM_STATUS') );
+		$scope.heading = $filter('translate')('ROOM_STATUS');
+	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
 		$scope.filterOpen = false;
 
@@ -31,7 +46,33 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noResultsFound = 0;
 
-		$scope.$emit("updateRoverLeftMenu", "roomStatus");
+
+
+
+		// default values for these
+		// for a HK staff the filterByEmployee value must be defalut to that
+		// and filter the rooms accordingly
+		// fetch all the HK work staff
+		$scope.filterByWorkType = '';
+		$scope.workTypes = [];
+		var wtCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.workTypes = data;
+		};
+		$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
+
+		// fetch all the HK work staff
+		$scope.filterByEmployee = '';
+		$scope.HKMaids = [];
+		var hkmCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.HKMaids = data;
+		};
+		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
+		// TODO: for user specific the room must be filtered based on the choosen user
+		// {{ userInfo.first_name }} {{ userInfo.last_name }} === maid name
+
+
 
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );
@@ -81,12 +122,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		var fetchRooms = function() {
-
 			//Fetch the roomlist if necessary
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch()
+				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
 					.then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
@@ -207,6 +247,19 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
 			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+			RVHkRoomStatusSrv.allRoomTypes = $scope.allRoomTypes;
+		};
+
+		// when user changes the employee filter
+		$scope.applyEmpfilter = function() {
+			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+			$scope.calculateFilters();
+
+			$scope.refreshScroll();
+
+			// save the current edited filter to RVHkRoomStatusSrv
+			// so that they can exist even after HKSearchCtrl init
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
 
@@ -216,13 +269,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.calculateFilters = function(source) {
 			var source = source || $scope.rooms;
 			$scope.noResultsFound = 0;
+			var allRoomTypesUnSelected = true;
+
+			//If all room types are unselected, we should show all rooms.
+			angular.forEach($scope.allRoomTypes, function(roomType, id) {
+				if( roomType.isSelected ){
+					allRoomTypesUnSelected = false;					
+				}
+				return false;
+			});
+
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
+
+				// Filter by employee name
+				if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
+					room.display_room = false;
+					$scope.noResultsFound++;
+					continue;
+				};
 
 				//Filter by Floors
 				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
 				if ($scope.currentFilters.floorFilterStart || $scope.currentFilters.floorFilterEnd || $scope.currentFilters.floorFilterSingle) {
-
 					if (room.floor.floor_number == null) {
 						room.display_room = false;
 						$scope.noResultsFound++;
@@ -247,6 +316,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.noResultsFound++;
 					continue;
 				}
+
+				// filter by room type
+				if ( !!room.room_type.id ) {
+					if ( !allRoomTypesUnSelected && !$scope.allRoomTypes[room.room_type.id].isSelected ){
+						room.display_room = false;
+						$scope.noResultsFound++;
+						continue;
+					}
+				};
+				
 
 				// filter by status in filter section, HK_STATUS
 				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service']) ) {
@@ -402,12 +481,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		*   @return {Boolean} false if none of the filter is checked
 		*/
 		$scope.isFilterChcked = function() {
-
-			// use _.find rather than _.each
-			// _.each cannot be broken out of with 'break;'
-			return _.find($scope.currentFilters, function(filter) {
-						return filter ? true : false;
-					});
+			var key, ret;
+			for (key in $scope.currentFilters) {
+				if ( key != 'showAllFloors' && !!$scope.currentFilters[key] ) {
+					ret = true;
+					break;
+				} else {
+					ret = false;
+				}
+			}
+			return ret;
 		}
 
 		/**
@@ -419,7 +502,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var ret = false;
 
 			for (var i = 0, j = filterArray.length; i < j; i++) {
-				if($scope.currentFilters[filterArray[i]] === true){
+				if( $scope.currentFilters[filterArray[i]] === true ){
 					ret = true;
 					break;
 				}
@@ -434,6 +517,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.clearFilters = function() {
 			_.each($scope.currentFilters, function(value, key, list) {
 				list[key] = false;
+			});
+
+			angular.forEach($scope.allRoomTypes, function(roomType, id) {
+				roomType.isSelected = false;
 			});
 
 			// this is the default state

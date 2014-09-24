@@ -1,50 +1,26 @@
 <div class="page inner-page page-current" id="page-inner-first">
-    <header class="nav-bar float">
-        <!-- Missing back to prev -->
-        <div class="actions-back button white">
-          <a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
-        </div>
-
-        <!-- Title -->
-        <h1 class="h2" translate>ROOM_DETAILS</h1>
-    </header>
+    <div ng-include="'/assets/partials/common/header.html'"></div>
     <!-- Rooms details -->
     <section id="room-details" class="content">
-
-        <header id="room-header" ng-class= "{'inspected-clean': isGreen, 'dirty': isRed, '': isOutOfService, 'pickup': isOrange, 'occupied': isDefaultRoomColor}">
-            <h1 class="icons icon-room">{{ data.room_details.current_room_no }}</h1>
-            <div class="select">
-                <div ng-show = "shouldDisable()" style = "height:100%; z-index:999; width : 100%; position:absolute;"></div>
-                <select ng-model="currentHKStatus"
-                    ng-disabled="shouldDisable()"
-                    ng-options="opt as opt.description for opt in data.room_details.hk_status_list" ng-change="updateHKStatus()">
-                    <option value="" disabled translate>ROOM_STATUS</option>
-                </select>
-            </div>
+      
+      <!-- {room-status} can be clean, dirty, pickup, inspected or out -->
+      <header id="room-header" class="room-header {{ getHeaderColor() }}" role="banner"> 
+          <div class="icons icon-room">
+            <h1>{{ roomDetails.current_room_no }}</h1>
+            <span ng-if="isStandAlone">{{ roomDetails.room_type.name }}</span>
+          </div>
+          <ul id="room-detail-options" class="display">
+            <li ng-class="{ 'active': openTab === 'Guest' }" ng-click="tabSwitch('Guest')"><span class="icons icon-navbar icon-hk-guest">Guest</span></li>
+            <li ng-class="{ 'active': openTab === 'Work' }" ng-click="tabSwitch('Work')"><span class="icons icon-navbar icon-hk-work">Work</span></li>
+            <li ng-class="{ 'active': openTab === 'Room' }" ng-click="tabSwitch('Room')"><span class="icons icon-navbar icon-hk-room">Room</span></li>
+          </ul>
         </header>
+        
+        <div ng-if="openTab === 'Guest'" ng-include="'/assets/partials/housekeeping/rvGuestTab.html'" class="room-info"></div>
 
-        <div id="guest-info" ng-show="data.room_details.is_occupied == 'true'">
-            <div class="wrapper">
-                  <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
-                  <figure class="guest-image">
-                      <img alt="" src="{{ data.room_details.avatar_src }}">
-                      <span ng-show="data.room_details.is_vip == 'true'" class="vip" translate>VIP</span>            
-                  </figure>
-                  <h2>
-                      <span class="guest-status {{guestViewStatus}}"></span>
-                      <span class="name">{{ data.room_details.guest_name }}</span>
-                  </h2>
-                  <em class="status" ng-hide="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out {{data.room_details.dept_date}}</em>
-                  <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today<span ng-show="data.room_details.is_late_checkout == 'true'"> ({{data.room_details.late_checkout_time}}) </span></em>
-              </div>
-        </div>
+        <div ng-if="openTab === 'Work'" ng-include="'/assets/partials/housekeeping/rvWorkTab.html'" class="room-info"></div>
 
-        <div id="guest-info" class="no-content" ng-show="data.room_details.is_occupied == 'false'">
-            <div class="info">
-                <span class="icons icon-vacant"></span>
-                <strong class="h1" translate>ROOM_IS_VACANT</strong>
-            </div>
-        </div>     
+        <div ng-if="openTab === 'Room'" ng-include="'/assets/partials/housekeeping/rvRoomTab.html'" class="room-info"></div>
         
     </section>
 </div>
