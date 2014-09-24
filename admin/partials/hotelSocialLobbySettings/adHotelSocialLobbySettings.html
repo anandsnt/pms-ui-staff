@@ -4,25 +4,27 @@
 			<h2 translate>SOCIAL_LOBBY_SETUP</h2>
 			<a id="go_back" data-type="load-details" class="action back" ng-click="goBackToPreviousState()" translate> BACK</a>
 		</header>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
-			<fieldset class="holder column">
-				<div></div>
-				
-				<ad-toggle-button label="{{'SOCIAL_LOBBY' | translate}}" is-checked="data.is_social_lobby_on" ></ad-toggle-button>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
+				<fieldset class="holder column">
+					<div></div>
+					
+					<ad-toggle-button label="{{'SOCIAL_LOBBY' | translate}}" is-checked="data.is_social_lobby_on" ></ad-toggle-button>
 
-				<ad-toggle-button label="{{'MY_GROUP' | translate}}" is-checked="data.is_my_group_on" ></ad-toggle-button>
+					<ad-toggle-button label="{{'MY_GROUP' | translate}}" is-checked="data.is_my_group_on" ></ad-toggle-button>
 
-				<ad-dropdown label="{{'ARRIVAL_GRACE_DAYS' | translate}}"  list="arrival_grace_days_list" selected-Id='data.arrival_grace_days'  id="arrival-grace-days"></ad-dropdown>
+					<ad-dropdown label="{{'ARRIVAL_GRACE_DAYS' | translate}}"  list="arrival_grace_days_list" selected-Id='data.arrival_grace_days'  id="arrival-grace-days"></ad-dropdown>
 
-				<ad-dropdown label="{{'DEPARTURE_GRACE_DAYS' | translate}}" list="departure_grace_days_list" selected-Id='data.departure_grace_days'  id="departure-grace-days"></ad-dropdown>
-				
-				
-			</fieldset>
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>CANCEL</button>
-				<button type="button" id="save_social_lobby" class="button green" ng-click="save()" translate>SAVE_CHANGES</button>
-			</div>
-		</form>
+					<ad-dropdown label="{{'DEPARTURE_GRACE_DAYS' | translate}}" list="departure_grace_days_list" selected-Id='data.departure_grace_days'  id="departure-grace-days"></ad-dropdown>
+					
+					
+				</fieldset>
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>CANCEL</button>
+					<button type="button" id="save_social_lobby" class="button green" ng-click="save()" translate>SAVE_CHANGES</button>
+				</div>
+			</form>
+		</section>
 	</div>
 </section>

@@ -8,69 +8,69 @@
 			</span>
 			<a id="add-new-button" class="action add" ng-click="addNew()">{{ 'ADD_NEW' | translate }}</a>
 		</header>
-		
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-		<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
+			<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
 
-		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
-			<thead>
-				<tr>
-					 
-           <th  ng-class="{
-           			'sortable': currentClickedAddon == -1,
-                    'sort-asc': tableParams.isSortBy('name', 'asc'),
-                    'sort-desc': tableParams.isSortBy('name', 'desc')
-                  }"
-                  
-                    ng-click="sortByName()" rowspan="2">
-                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>NAME</span></div>
-                </th>
-                <th  ng-class="{
-                	'sortable': currentClickedAddon == -1,
-                    'sort-asc': tableParams.isSortBy('description', 'asc'),
-                    'sort-desc': tableParams.isSortBy('description', 'desc')
-                  }"
-                  
-                    ng-click="sortByDescription()" rowspan="2">
-                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>DESCRIPTION</span></div>
-                </th>                		
-				<th class="" ><span class="addon-header" translate> ACTIVE </span></th>
-				<th  class=""><span class="addon-header" translate> DELETE </span> </th>								
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in  data track by $index">
-					<td header-class="width-30" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
-						<a class="edit-data-inline">{{ item.name }}</a>
-					</td>
+			<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
+				<thead>
+					<tr>
+						 
+	           <th  ng-class="{
+	           			'sortable': currentClickedAddon == -1,
+	                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+	                    'sort-desc': tableParams.isSortBy('name', 'desc')
+	                  }"
+	                  
+	                    ng-click="sortByName()" rowspan="2">
+	                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>NAME</span></div>
+	                </th>
+	                <th  ng-class="{
+	                	'sortable': currentClickedAddon == -1,
+	                    'sort-asc': tableParams.isSortBy('description', 'asc'),
+	                    'sort-desc': tableParams.isSortBy('description', 'desc')
+	                  }"
+	                  
+	                    ng-click="sortByDescription()" rowspan="2">
+	                    <div><i class="glyphicon glyphicon-user" ></i> <span translate>DESCRIPTION</span></div>
+	                </th>                		
+					<th class="" ><span class="addon-header" translate> ACTIVE </span></th>
+					<th  class=""><span class="addon-header" translate> DELETE </span> </th>								
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in  data track by $index">
+						<td header-class="width-30" ng-click="editSingle()" ng-hide="currentClickedAddon === $index" >
+							<a class="edit-data-inline">{{ item.name }}</a>
+						</td>
 
-					<td header-class="width-50" ng-hide="currentClickedAddon === $index" >	
-						{{ item.description }}
-					</td>
+						<td header-class="width-50" ng-hide="currentClickedAddon === $index" >	
+							{{ item.description }}
+						</td>
 
-					<td header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
-						<div class="entry">
-							<div class="switch-button single"
-									ng-class="{ on: item.activated }">
-								<input type = "checkbox"
-										id = "rates-addons"
-										name = "rates-addons"
-										ng-click = "switchActivation()">
-								<span class="switch-icon"></span>
+						<td header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon === $index">
+							<div class="entry">
+								<div class="switch-button single"
+										ng-class="{ on: item.activated }">
+									<input type = "checkbox"
+											id = "rates-addons"
+											name = "rates-addons"
+											ng-click = "switchActivation()">
+									<span class="switch-icon"></span>
+								</div>
 							</div>
-						</div>
-					</td>
+						</td>
 
-					<td header-class="width-10" class="delete" ng-hide="currentClickedAddon === $index">
-						<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this addon</a>		
-					</td>
+						<td header-class="width-10" class="delete" ng-hide="currentClickedAddon === $index">
+							<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this addon</a>		
+						</td>
 
-					<td colspan="4" ng-include="getTemplateUrl()" ng-show="currentClickedAddon === $index"></td>
-				</tr>
-			</tbody>
-		</table>
-
+						<td colspan="4" ng-include="getTemplateUrl()" ng-show="currentClickedAddon === $index"></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 		<!--Custom pagination footer goes here-->
 		<script type="text/ng-template" id="custom/pager">
 			<div class="pager" ng-show="totalCount > 0">
