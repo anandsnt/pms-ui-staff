@@ -23,15 +23,15 @@
 						<label>
 							{{ 'SENT_TO_QUEUE' | translate}}
 						</label>
-						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_que== true}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_que=='yes'}"></span>
-							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_que"  >
+						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_queue== true}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue=='yes'}"></span>
+							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_queue"  >
 							{{ 'YES_SMALL' | translate}}
 						</label>
 
-						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_que}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_que == 'no'}"></span>
-							<input type="radio" value="no" ng-model="checkinData.is_sent_to_que" >
+						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_queue}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_queue == 'no'}"></span>
+							<input type="radio" value="no" ng-model="checkinData.is_sent_to_queue" >
 							{{ 'NO_SMALL' | translate}}
 						</label>
 
