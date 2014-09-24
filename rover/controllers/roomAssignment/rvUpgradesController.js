@@ -74,6 +74,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		index = $scope.selectedUpgradeIndex;
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
+			$scope.selectedUpgrade.is_upsell_available = data.is_upsell_available;
 			$scope.$emit('upgradeSelected', $scope.selectedUpgrade);
 		};
 		var errorCallbackselectUpgrade = function(error){
@@ -88,6 +89,7 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		$scope.selectedUpgrade.room_no = $scope.upgradesList[index].upgrade_room_number;
 		$scope.selectedUpgrade.room_type_name = $scope.upgradesList[index].upgrade_room_type_name;
 		$scope.selectedUpgrade.room_type_code = $scope.upgradesList[index].upgrade_room_type;
+		$scope.selectedUpgrade.room_type_level = parseInt($scope.upgradesList[index].room_type_level);
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
 	};

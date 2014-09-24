@@ -66,14 +66,16 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	$scope.savePaymentMethod = function() {
 		
 		var successCallbackSave = function(data){
+			
 			if($scope.currentClickedElement === "new"){
 				$scope.addData.id = data.id;
-				$scope.data.payments.push($scope.addData);
+				var obj = { 'id': data.id , 'description' : data.name , 'value': data.value };
+				$scope.data.payments.push(obj);
 			}
 			else{
 				//To update data with new value
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].description = $scope.editData.description;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].value = $scope.editData.value;
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].description = data.name;
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].value = data.value;
 	    	}	
     		$scope.$emit('hideLoader');
     		$scope.currentClickedElement = -1;

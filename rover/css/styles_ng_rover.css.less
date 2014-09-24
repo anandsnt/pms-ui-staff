@@ -1300,7 +1300,9 @@ Padding for the ows error popup
     top:0px !important;    
   }
 }
-
+#modal .modal-content.key-delivery #key-status.print-key .status.error{
+  height: auto !important;
+}
 
 
 /*-----CICO-6094 implementing horizontal scroll starts here-------*/
@@ -1376,6 +1378,7 @@ Padding for the ows error popup
     text-transform: uppercase;
 }
 
+
 /*-----CICO-6080 Adding the styles for the routing list header-------*/
 #modal .modal-content .bill-routing-header {
   padding-top : 30px;
@@ -1388,4 +1391,19 @@ Padding for the ows error popup
 /*-----CICO-6080 Adding cursor pointer to the entity div-------*/
 .entity {
    cursor: pointer;
+
 }
+
+/*-----CICO-9319 Hiding CC options for other payment methods-------*/
+.paymentMethodSelect {
+   min-width: 320px;
+
+}
+
+
+#main-menu {
+  li .menu-item {
+    width: 100%;   height: 100%;   display: block; padding-top :0;
+  }
+}
+

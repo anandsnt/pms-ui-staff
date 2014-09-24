@@ -23,6 +23,7 @@ sntRover.controller('RVroomAssignmentController',[
 	};
 		
 	BaseCtrl.call(this, $scope);
+	var oldRoomType = '';
 	$scope.errorMessage = '';
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 	$scope.setTitle(title);
@@ -40,7 +41,7 @@ sntRover.controller('RVroomAssignmentController',[
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
-	$scope.getRooms = function(index){
+	$scope.getRooms = function(isOldRoomType){
 		$scope.selectedRoomType = $scope.getCurrentRoomType();
 		var successCallbackGetRooms = function(data){
 			$scope.rooms = data.rooms;
@@ -59,11 +60,16 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = error;
 		};
+		if(isOldRoomType!=undefined){
+			if(isOldRoomType){
+				$scope.roomType = oldRoomType;
+			}
+		}
 		var params = {};
 		params.reservation_id = $stateParams.reservation_id;
 		params.room_type = $scope.roomType;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
-
+		
 	};
 
 	$scope.getCurrentRoomType = function(){
@@ -77,6 +83,9 @@ sntRover.controller('RVroomAssignmentController',[
 	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(index){
+	
+		
+		
 		var showOccupancyMessage = false;
 		if($scope.filteredRooms[index].room_max_occupancy != null && $scope.reservation_occupancy != null){
 				if($scope.filteredRooms[index].room_max_occupancy < $scope.reservation_occupancy){
@@ -92,6 +101,8 @@ sntRover.controller('RVroomAssignmentController',[
 		
 		$scope.assignedRoom = $scope.filteredRooms[index];
 		if(showOccupancyMessage){
+	    //if(true){
+	    	$scope.oldRoomType = oldRoomType;
 			ngDialog.open({
                   template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
                   controller: 'rvMaximumOccupancyDialogController',
@@ -99,14 +110,30 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 		}else{
-			$scope.assignRoom();
+			console.log(oldRoomType +"!=="+ $scope.roomType);
+			if(oldRoomType !== $scope.roomType){
+			//if(true){
+				$scope.oldRoomType = oldRoomType;
+				$scope.openApplyChargeDialog();
+			} else {
+				$scope.assignRoom();
+			}
+			
 		}
-		
 
+	};
+	$scope.openApplyChargeDialog = function(){
+		ngDialog.open({
+	          template: '/assets/partials/roomAssignment/rvApplyRoomCharge.html',
+	          controller: 'rvApplyRoomChargeCtrl',
+	          className: 'ngdialog-theme-default',
+	          scope: $scope
+        });
 	};
 
 	$scope.occupancyDialogSuccess = function(){
-		$scope.assignRoom();			
+		//$scope.assignRoom();	
+		$scope.openApplyChargeDialog();		
 	};
 	// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 	var updateSearchCache = function() {
@@ -150,21 +177,34 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 
 		$scope.invokeApi(RVRoomAssignmentSrv.UnAssignRoom, params, successCallbackOfUnAssignRoom, failureCallBackOfUnAssignRoom);
-	}
+	};
 		
 	/**
 	* function to assign the new room for the reservation
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
+			$scope.$emit('hideLoader');
+			if(data.is_room_auto_assigned == true){
+			
+				$scope.roomAssignedByOpera = data.room;
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
+		        return false;
+			}
+			
+			
 			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
 			$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
-			if($scope.roomType != $scope.reservationData.reservation_card.room_type_code){
-				$scope.reservationData.reservation_card.is_upsell_available = false;
-			}
+			// CICO-7904 and CICO-9628 : update the upsell availability to staycard		
+			$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
 			if(typeof $scope.selectedRoomType != 'undefined'){
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
@@ -180,13 +220,40 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
-			$scope.errorMessage = error;
+			setTimeout(function(){
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAlreadySelected.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
+			}, 700);
+		
+			
+			
+			//$scope.errorMessage = error;
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
 		
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
+	};
+	$scope.goToNextView = function(){
+	
+		$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
+		$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+		$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
+		$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
+		$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
+			
+		if($scope.clickedButton == "checkinButton"){
+			$scope.$emit('hideLoader');
+			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		} else {
+			$scope.$emit('hideLoader');
+			$scope.backToStayCard();
+		}
 	};
 
 	/**
@@ -219,7 +286,8 @@ sntRover.controller('RVroomAssignmentController',[
 			$scope.reservationData.reservation_card.room_status = "READY";
 			$scope.reservationData.reservation_card.fo_status = "VACANT";
 			$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
-			$scope.reservationData.reservation_card.is_upsell_available = false;
+			// CICO-7904 and CICO-9628 : update the upsell availability to staycard			
+			$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 			if($scope.clickedButton == "checkinButton"){
 				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
@@ -544,21 +612,21 @@ sntRover.controller('RVroomAssignmentController',[
 		}
 	};
 	$scope.init = function(){
-	$scope.roomTypes = roomPreferences.room_types;
-	$scope.roomFeatures = roomPreferences.room_features;
-	$scope.rooms = roomsList.rooms;
-	$scope.addPredefinedFilters();
-	$scope.setSelectedFiltersList();
-	$scope.reservation_occupancy = roomsList.reservation_occupancy;
-	$scope.setRoomsListWithPredefinedFilters();
-	$scope.applyFilterToRooms();
-	$scope.clickedButton = $stateParams.clickedButton;
-	$scope.assignedRoom = "";
-	$scope.reservationData = $scope.$parent.reservation;
-	$scope.roomType = $stateParams.room_type; 
-	$scope.isStandAlone = $rootScope.isStandAlone;
-	$scope.isFiltersVisible = false;
-	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
+		$scope.roomTypes = roomPreferences.room_types;
+		$scope.roomFeatures = roomPreferences.room_features;
+		$scope.rooms = roomsList.rooms;
+		$scope.addPredefinedFilters();
+		$scope.setSelectedFiltersList();
+		$scope.reservation_occupancy = roomsList.reservation_occupancy;
+		$scope.setRoomsListWithPredefinedFilters();
+		$scope.applyFilterToRooms();
+		$scope.clickedButton = $stateParams.clickedButton;
+		$scope.assignedRoom = "";
+		$scope.reservationData = $scope.$parent.reservation;
+		oldRoomType = $scope.roomType = $stateParams.room_type; 
+		$scope.isStandAlone = $rootScope.isStandAlone;
+		$scope.isFiltersVisible = false;
+		$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 	};
 	$scope.init();
 	
