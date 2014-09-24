@@ -371,6 +371,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.savePayment();
 		}
 		else{
+			
+			/* in case the payment type is cc first we fetch MLI sesionId using card details and then save*/
 			if(parseInt($scope.saveData.selected_payment_type) ===0){
 				if($scope.saveData.card_number.length>0){
 					$scope.fetchMLISessionId();

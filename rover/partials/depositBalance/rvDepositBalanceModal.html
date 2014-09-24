@@ -51,13 +51,11 @@
 		<!-- Right side -->
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
-			<div class="entry full-width">
-				<div id="notification-message"></div>
-			</div>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div class="entry amount">
-				<label for="amount"> Amount to pay (<span></span>currencySymbol
+				<label for="amount"> Amount to pay (<span></span>{{currencySymbol}}
 					) </label>
-				<input type="text" value="depositBalanceData.data.outstanding_stay_total" name="amount" id="amount">
+				<input type="text" ng-model="makePaymentData.amount" value="{{depositBalanceData.data.outstanding_stay_total}}" name="amount" id="amount">
 			</div>
 			<!-- Show these options only if there are existing cards -->
 			<ul id="make-payment-options" class="modal-options">
@@ -119,7 +117,7 @@
 				<button type="button" id="close" class="button blank modal-close">
 					Close
 				</button>
-				<button type="button" ng-click="clickedMakePayment()" id="make-payment" class="button grey modal-close" disabled="disabled">
+				<button type="button" ng-click="clickedMakePayment()" id="make-payment" class="button grey modal-close" >
 					Make Payment
 				</button>
 			</div>
