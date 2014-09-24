@@ -73,13 +73,20 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		}
 
 		var init = function() {
-			if ($scope.singleState.workSheet.user_id !== "") {
+			if (true) {
 				var onFetchSuccess = function(data) {
 						$scope.singleState.unassigned = data.unassigned;
-						var assignedRooms = [];
-						_.each(data.work_sheets[0].work_assignments,function(room){
-							assignedRooms.push(room.room);
-						})
+						var assignedRooms = [],
+							worksheets = _.where(data.work_sheets, {
+								work_sheet_id: parseInt($stateParams.id)
+							});
+
+						if (worksheets.length > 0) {
+							_.each(worksheets[0].work_assignments, function(room) {
+								assignedRooms.push(room.room);
+							});
+						}
+
 						$scope.singleState.assigned = assignedRooms;
 						refreshView();
 						$scope.$emit('hideLoader');
