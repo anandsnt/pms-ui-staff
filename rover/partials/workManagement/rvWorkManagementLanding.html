@@ -22,35 +22,20 @@
     </div>
 </form> 
 
-<!-- Search panel : EMPTY -->
-<section id="work-management-search" class="content scrollable no-results hidden" role="complementary" ng-if="stateVariables.searching">
-    <div class="wrapper">
-        <ul id="work-management-search-results" class="search-results">
-            <li class="no-content">
-                <div class="info">
-                    <span class="icon-no-content icon-search"></span>
-                    <strong class="h1">Find Room or Employee</strong>
-                    <span class="h2">Search by <strong>Room Number</strong> or <strong>Employee Name</strong></span>
-                </div>
-            </li>
-        </ul>
-    </div>
-</section>
-
 <!-- Search panel : SEARCH BY NAME -->
-<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching && stateVariables.employeeSearch">
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">            
-            <li class="employee">
-                <a ng-click="showWorkSheet()">
+            <li class="employee" ng-repeat="maid in stateVariables.searchResults.maids">
+                <a ng-click="showWorkSheet(maid.work_sheet_id)">
                     <div class="data">
-                        <h2>{Maid First and Last Name}</h2>
+                        <h2>{{maid.full_name}}</h2>
                     </div>
-                    <div class="stayovers">{stayover rooms cleaned}/{total stayover rooms}</div>
-                    <div class="departures">{departure rooms cleaned}/{total departure rooms}</div>
-                    <div class="shift">{shift completed time}/{total shift time}</div>
+                    <div class="stayovers"><span>{{maid.stayovers.total_rooms_completed}}/{{maid.stayovers.total_rooms_assigned}}</span>stayovers</div>
+                    <div class="departures"><span>{{maid.departures.total_rooms_completed}}/{{maid.departures.total_rooms_assigned}}</span>departures</div>
+                    <!-- <div class="shift">{shift completed time}/{total shift time}</div> -->
                     <!-- Maid in room -->
-                    <div class="location room">{room number}</div>
+                    <!-- <div class="location room">{room number}</div> -->
                     <!-- Maid on floor -->
                     <!-- <div class="location floor">{floor number}<sup>{st, nd, rd or th}</sup> floor</div> -->
                 </a>
@@ -60,7 +45,7 @@
 </section> 
 
 <!-- Search panel : SEARCH BY ROOM NUMBER -->
-<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-if="stateVariables.searching && !stateVariables.employeeSearch">
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && !stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">
            <li class="room" ng-repeat="room in stateVariables.searchResults">
@@ -102,6 +87,21 @@
         </ul>
     </div>
 </section> 
+
+<!-- Search panel : EMPTY -->
+<section id="work-management-search" class="content scrollable no-results" role="complementary" ng-show="stateVariables.noSearchResults">
+    <div class="wrapper">
+        <ul id="work-management-search-results" class="search-results">
+            <li class="no-content">
+                <div class="info">
+                    <span class="icon-no-content icon-search"></span>
+                    <strong class="h1">Find Room or Employee</strong>
+                    <span class="h2">Search by <strong>Room Number</strong> or <strong>Employee Name</strong></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
 	
 <!-- Work Management -->
 <section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching">

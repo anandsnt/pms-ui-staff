@@ -14,11 +14,15 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             searching: false,
             searchQuery: "",
             employeeSearch: false, // Search can be either for rooms or an employee
+            noSearchResults: false,
             viewingDate: {
                 date: $rootScope.businessDate,
                 work_type_id: ""
             },
-            searchResults: [],
+            searchResults: {
+                maids: [],
+                rooms: []
+            },
             newSheet: {
                 user_id: "",
                 work_type_id: "",
@@ -61,20 +65,23 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             $scope.invokeApi(RVWorkManagementSrv.createWorkSheet, $scope.stateVariables.newSheet, onCreateSuccess, onCreateFailure);
         }
 
-        $scope.showWorkSheet = function() {
-            $state.go('rover.workManagement.singleSheet');
+        $scope.showWorkSheet = function(id) {
+            if (id) {
+                $state.go('rover.workManagement.singleSheet', {
+                    date: $scope.stateVariables.viewingDate.date,
+                    id: id
+                });
+            }
         }
-
 
         $scope.workManagementSearch = function() {
             if ($scope.stateVariables.searchQuery.length > 0) {
                 var searchKey = $scope.stateVariables.searchQuery;
-                $scope.stateVariables.searchResults = [];
                 if (searchKey.match(/[0-9]/)) {
                     var onRoomSearchSuccess = function(data) {
-                        $scope.stateVariables.searchResults = dummyRoomResults;
-                        $scope.stateVariables.searching = true;
                         $scope.stateVariables.employeeSearch = false;
+                        $scope.stateVariables.searching = true;
+                        // $scope.stateVariables.searchResults = dummyRoomResults;
                         $scope.$emit('hideLoader');
                     }
                     $scope.invokeApi(RVWorkManagementSrv.searchRooms, {
@@ -87,7 +94,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         console.log(data);
                         $scope.stateVariables.searching = true;
                         $scope.stateVariables.employeeSearch = true;
-                        $scope.stateVariables.searchResults = data;
+                        $scope.stateVariables.searchResults.maids = data;
+                        $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.maids.length === 0;
                         $scope.$emit('hideLoader');
                     }
                     $scope.invokeApi(RVWorkManagementSrv.searchEmployees, {
@@ -98,7 +106,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 }
 
             } else {
-                $scope.stateVariables.searchResults = [];
+                $scope.stateVariables.searchResults.maids = [];
+                $scope.stateVariables.searchResults.rooms = [];
                 $scope.stateVariables.searching = false;
             }
             $scope.$apply();

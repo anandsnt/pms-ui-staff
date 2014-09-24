@@ -135,7 +135,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			}
 
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve(data);
+				deferred.resolve(data.results);
 			}, function(data) {
 				deferred.reject(data);
 			});
