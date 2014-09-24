@@ -4,6 +4,20 @@
 			<span class="icons icon-close invert"></span>
 		</button>
 		<div class="h3 message" ng-bind-html="popupMessage"></div>
+		<div class="status" ng-if="status === 'success'">
+		   <label for="room-status">Room Status</label>
+		   <div class="switch-button" ng-class="{'on': roomStatusNotReady}">
+		      <input id="room-status" name="room-status" type="checkbox" value="not-ready" ng-model="roomStatusNotReady">
+		      <label class="data-off">
+			      <span class="switch-icon">Not Ready</span>
+			      <span class="value">Ready</span>
+		      </label>
+		      <label class="data-on">
+			      <span class="value">Not Ready</span>
+			      <span class="switch-icon">Ready</span>
+		      </label>
+		   </div>
+		</div>
 		<button id="ok" class="button modal-close" ng-class="{'red':status==='error','green':status === 'success'}" ng-click="okButtonClicked()">
 			Ok
 		</button>
