@@ -10,11 +10,11 @@
 			<form style="overflow-y:auto;" class="form float" >
 				<fieldset class="holder left">
 
-					<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only_flag"></ad-toggle-button>
+					<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}" is-disabled="checkinData.is_precheckin_only"></ad-toggle-button>
 
-					<ad-toggle-button is-checked="checkinData.is_precheckin_only_flag" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"  div-class="full-width"></ad-toggle-button>
+					<ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"  div-class="full-width"></ad-toggle-button>
 
-					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only_flag"></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only"></ad-checkbox>	
 
 					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ></ad-checkbox>	
 				</fieldset>
@@ -23,15 +23,15 @@
 						<label>
 							{{ 'SENT_TO_QUEUE' | translate}}
 						</label>
-						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_que_flag== true}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_que_flag=='yes'}"></span>
-							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_que_flag"  >
+						<label class="radio" ng-class="{'checked':checkinData.is_sent_to_que== true}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_que=='yes'}"></span>
+							<input type="radio" value="yes" ng-model="checkinData.is_sent_to_que"  >
 							{{ 'YES_SMALL' | translate}}
 						</label>
 
-						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_que_flag}">
-							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_que_flag == 'no'}"></span>
-							<input type="radio" value="no" ng-model="checkinData.is_sent_to_que_flag" >
+						<label class="radio" ng-class="{'checked':!checkinData.is_sent_to_que}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.is_sent_to_que == 'no'}"></span>
+							<input type="radio" value="no" ng-model="checkinData.is_sent_to_que" >
 							{{ 'NO_SMALL' | translate}}
 						</label>
 

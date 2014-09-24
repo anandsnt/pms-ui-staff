@@ -70,12 +70,12 @@ $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
   $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
 })
 
-$scope.$watch('checkinData.is_precheckin_only_flag',function(){
-  $scope.hideAddOption = $scope.checkinData.is_precheckin_only_flag ? false : true;
+$scope.$watch('checkinData.is_precheckin_only',function(){
+  $scope.hideAddOption = $scope.checkinData.is_precheckin_only ? false : true;
 })
 
-$scope.$watch('checkinData.is_sent_to_que_flag',function(){
-  $scope.hidePriorMinutes = ($scope.checkinData.is_sent_to_que_flag === 'yes') ? false : true;
+$scope.$watch('checkinData.is_sent_to_que',function(){
+  $scope.hidePriorMinutes = ($scope.checkinData.is_sent_to_que === 'yes') ? false : true;
 })
 //to be confirmed 
 $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
@@ -119,8 +119,8 @@ $scope.saveCheckin = function(){
     'checkin_alert_time':$scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
 
-    'is_precheckin_only_flag':$scope.checkinData.is_precheckin_only_flag,
-    'is_sent_to_que_flag':$scope.checkinData.is_sent_to_que_flag,
+    'is_precheckin_only':$scope.checkinData.is_precheckin_only,
+    'is_sent_to_que':$scope.checkinData.is_sent_to_que,
     'excluded_rate_codes':excluded_rate_codes,
     'excluded_block_codes':excluded_block_codes,
     'pre_checkin_email_title':$scope.checkinData.pre_checkin_email_title,
