@@ -57,6 +57,8 @@ sntRover.service('RVHkRoomDetailsSrv', [
 		};
 
 
+
+
 		/* NOTE: using the new API structure */
 
 		// room service status list (will be cached)
@@ -107,6 +109,24 @@ sntRover.service('RVHkRoomDetailsSrv', [
 				url = 'api/room_services';
 
 			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+		// save the room back to in sevice
+		this.putRoomInService = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/room_services/' + params.roomId,
+				options = {
+					"room_service_status_id" : params.inServiceID
+				}
+
+			rvBaseWebSrvV2.putJSON(url, options)
 				.then(function(data) {
 					deferred.resolve(data);
 				}.bind(this), function(data){

@@ -36,9 +36,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		this.currentFilters = this.initFilters();
 		
-		this.fetch = function(){
+		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
-			var url = '/house/search.json';
+			var url = '/house/search.json?date=' + businessDate;
 			
 			$http.get(url)
 				.success(function(response, status) {
@@ -128,6 +128,28 @@ sntRover.service('RVHkRoomStatusSrv', [
 				}, function(data){
 					deferred.reject(data);
 				});
+
+			return deferred.promise;
+		};
+
+
+		// fetch all HK cleaning staffs
+		this.HKMaids = [];
+		this.fetchHKMaids = function() {
+			var url = "/api/work_statistics/employees_list";
+			var deferred = $q.defer();
+
+			if ( this.HKWorkStaff.length ) {
+				deferred.resolve(this.HKWorkStaff);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						this.HKWorkStaff = data.results;
+						deferred.resolve(this.HKWorkStaff);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
 
 			return deferred.promise;
 		};

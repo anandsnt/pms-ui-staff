@@ -52,6 +52,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.filterByWorkType = '';
 		$scope.filterByEmployee = '';
 
+
+
+		// fetch all the HK work staff
+		$scope.HKMaids = [];
+		var hkmCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.HKMaids = data;
+		};
+		$scope.invokeApi(RVHkRoomDetailsSrv.fetchHKMaids, {}, hkmCallback);
+
+
+
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );
 
@@ -105,7 +117,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch()
+				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
 					.then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
