@@ -172,7 +172,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			"card_name":cardHolderName,
 			"is_primary":false,
 			"id":data.id,
-			"payment_type":data.payment_type,
+			"payment_type":data.payment_name,
 			"payment_type_id":payment_type_id
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
