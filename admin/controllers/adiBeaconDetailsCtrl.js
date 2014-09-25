@@ -81,7 +81,7 @@ if(!$scope.addmode){
   $scope.linkiBeacon =  function(){
     var successfullyLinked = function(data){
       $scope.isBeaconLinked = true;
-      if(!$scop.addmode){
+      if(!$scope.addmode){
         $scope.linkBeacon();
       }else{
         $scope.$emit('hideLoader');
