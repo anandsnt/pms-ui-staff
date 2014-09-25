@@ -1,5 +1,6 @@
 sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$state','ngDialog','RVKeyPopupSrv','$filter', function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter){
 	BaseCtrl.call(this, $scope);
+	console.log($scope.viewFromBillScreen);
 	// Set up data for view
 	var setupData = function(){
 		var reservationId = "";
@@ -20,7 +21,8 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$stat
 	    	if(reservationStatus == 'CHECKING_IN' ){
 				$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 				$scope.data.colorCodeClass = 'check-in';
-				$scope.data.colorCodeClassForClose = 'green';
+				if($scope.viewFromBillScreen) $scope.data.colorCodeClassForClose = 'hidden';
+				else $scope.data.colorCodeClassForClose = 'green';
 			}
 			else if(reservationStatus == 'CHECKEDIN' ){
 				$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');

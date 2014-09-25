@@ -693,6 +693,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.$emit('hideLoader');
 				
 		var keySettings = $scope.reservationBillData.key_settings;
+		$scope.viewFromBillScreen = true;
 		$scope.fromView = "checkin";
 		//show email popup
 		if(keySettings === "email"){
@@ -700,7 +701,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
 				 controller: 'RVKeyEmailPopupController',
-				 className: 'ngdialog-theme-default1',
+				 className: '',
 				 closeByDocument: false,
 				 scope: $scope
 			});
@@ -710,7 +711,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
 				 controller: 'RVKeyQRCodePopupController',
-				 className: 'ngdialog-theme-default1',
+				 className: '',
 				 closeByDocument: false,
 				 scope: $scope
 			});
@@ -722,7 +723,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 			    controller: 'RVKeyEncodePopupCtrl',
-			    className: 'ngdialog-theme-default1',
+			    className: '',
 			    closeByDocument: false,
 			    scope: $scope
 			});
