@@ -9,10 +9,13 @@
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<form name="icare-services" method="post" class="form float" action="">
 
-				<fieldset class="holder full-width">
-					<ad-toggle-button is-checked="icare.icare_enabled" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
-					<ad-toggle-button is-checked="icare.combined_key_room_charge_create" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
-				</fieldset>
+					<fieldset class="holder left">
+						<ad-toggle-button is-checked="icare.icare_enabled" label="iCare ON/OFF" div-class="full-width"></ad-toggle-button>
+					</fieldset>
+					<fieldset class="holder right">
+						<ad-toggle-button is-checked="icare.save_customer_info" label="Save Guest Name To iCare" div-class="full-width"></ad-toggle-button>
+						<ad-toggle-button is-checked="icare.combined_key_room_charge_create" label="Combined Key / Room Charge Create" div-class="full-width"></ad-toggle-button>
+					</fieldset>
 
 					<fieldset class="holder left">
 						<ad-textbox value="icare.icare_url" name = "access-url" label = "ACCESS URL" placeholder = "Enter access url" required = "yes" styleclass="full-width"></ad-textbox>
