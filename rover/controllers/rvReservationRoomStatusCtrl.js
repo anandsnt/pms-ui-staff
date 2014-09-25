@@ -60,7 +60,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
-		if(reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
+		if(reservationStatus == 'CHECKING_IN' || reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
 			showKey = true;
 		}
 		return showKey;
