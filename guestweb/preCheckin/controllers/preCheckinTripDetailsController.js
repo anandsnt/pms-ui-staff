@@ -1,30 +1,20 @@
 
 (function() {
-	var preCheckinTripDetailsController = function($scope, checkoutNowService,$rootScope,$state) {
+	var preCheckinTripDetailsController = function($scope, preCheckinSrv,$rootScope,$state) {
 
-	$scope.pageValid = false;
-
-	// if($rootScope.isCheckedin){
-	// 	$state.go('checkinSuccess');
-	// }
-	// else if($rootScope.isCheckin){
-	// 	$state.go('checkinConfirmation');
-	// }
-	// else if(!$rootScope.isRoomVerified && !$rootScope.isCheckedout){
-	// 	$state.go('checkoutRoomVerification');
-	// }
-	// else{
-	// 	$scope.pageValid = true;
-	// }		
-
-	if($scope.pageValid){
-	
- }
+    $scope.isLoading = true;
+	// preCheckinSrv.fetchTripDetails().then(function(response) {
+	// 		$scope.isLoading = false;	
+	// 		$scope.success = (response.status != "failure") ? true : false;    	
+	// 	},function(){
+	// 		$scope.netWorkError = true;
+	// 		$$scope.isLoading = false;
+	// });
 };
 
 var dependencies = [
 '$scope',
-'checkoutNowService','$rootScope','$state',
+'preCheckinSrv','$rootScope','$state',
 preCheckinTripDetailsController
 ];
 

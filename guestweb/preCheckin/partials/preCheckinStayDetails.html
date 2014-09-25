@@ -25,7 +25,7 @@
 
 							<div class="expiry-year-container eta-comtainer">
 								<div class="select-style">
-									<select ng-model="yearSelected"
+									<select ng-model="stayDetails.hour"
 									ng-options="hour as hour  for hour in hours">
 									<option value="">HH</option>
 								</select>
@@ -33,7 +33,7 @@
 							</div>
 							<div class="expiry-year-container eta-comtainer">
 								<div class="select-style">
-									<select ng-model="yearSelected"
+									<select ng-model="stayDetails.minute"
 									ng-options="minute as minute  for minute in minutes">
 									<option value="">MM</option>
 								</select>
@@ -41,7 +41,7 @@
 							</div>
 							<div class="expiry-year-container eta-comtainer">
 								<div class="select-style">
-									<select>
+									<select ng-model="stayDetails.primeTime">
 										<option value="AM" selected="" >AM</option>
 										<option value="PM" >PM</option>
 									</select>
@@ -52,18 +52,18 @@
 
 					<div class="row cabin_number_field">
 						<p class="lightcontent  grey-text">Let us know any requests or comments</p>
-						<textarea rows="5" cols="50" ng-model="roomNumber" class = "col-xs-12 textArea shadow grey-text" placeholder="Comments here">
+						<textarea rows="5" cols="50" ng-model="stayDetails.comment" class = "col-xs-12 textArea shadow grey-text" placeholder="Comments here">
 						</textarea>
 					</div>	
 
 					<div class="row cabin_number_field">
 						<p class="lightcontent grey-text">Mobile Number</p>
-						<input type="numbers" ng-model="roomNumber" class = "col-xs-12 textBox shadow grey-text" placeholder="(      )  -  "/> 
+						<input type="numbers" ng-model="stayDetails.mobile" class = "col-xs-12 textBox shadow grey-text" placeholder="(      )  -  "/> 
 					</div>
 
 					<div class="row cabin_number_field">
 						<p class="lightcontent  grey-text">
-							(We'll text you as soon as your room is ready.)
+							(We'll text you as soon as your room is available.)
 						</p>
 					</div>
 
@@ -73,7 +73,8 @@
 					<div class="verti-ruler"></div>
 
 					<div class="col-md-6 pad-lf-60">					
-						<button class="checkin-button pre-checkin-btn blue-bg" ui-sref="preCheckinStatus">
+						<button class="checkin-button pre-checkin-btn blue-bg"
+						ng-click="postStayDetails()">
 							<span class="white-text">Confirm Pre Check-in</span>
 							
 						</button>

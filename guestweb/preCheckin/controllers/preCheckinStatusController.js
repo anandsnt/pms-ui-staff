@@ -1,30 +1,22 @@
 (function() {
-	var preCheckinStatusController = function($scope, checkoutNowService,$rootScope,$state) {
+	var preCheckinStatusController = function($scope, preCheckinSrv,$rootScope,$state) {
 
-	$scope.pageValid = false;
+	$scope.isLoading = true;
+	// preCheckinSrv.completePrecheckin().then(function(response) {
+	// 		$scope.isLoading = false;	
+	// 		$scope.success = (response.status != "failure") ? true : false;    	
+	// 	},function(){
+	// 		$scope.netWorkError = true;
+	// 		$$scope.isLoading = false;
+	// });
 
-	// if($rootScope.isCheckedin){
-	// 	$state.go('checkinSuccess');
-	// }
-	// else if($rootScope.isCheckin){
-	// 	$state.go('checkinConfirmation');
-	// }
-	// else if(!$rootScope.isRoomVerified && !$rootScope.isCheckedout){
-	// 	$state.go('checkoutRoomVerification');
-	// }
-	// else{
-	// 	$scope.pageValid = true;
-	// }		
-
-	if($scope.pageValid){
-	
- }
 };
 
 var dependencies = [
 '$scope',
-'checkoutNowService','$rootScope','$state',
-preCheckinTripDetailsController
+'preCheckinSrv','$rootScope','$state',
+preCheckinStatusController
 ];
 
-snt.con
+snt.controller('preCheckinStatusController', dependencies);
+})();
