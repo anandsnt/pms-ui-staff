@@ -135,7 +135,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 			}
 
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve(data);
+				deferred.resolve(data.results);
 			}, function(data) {
 				deferred.reject(data);
 			});
@@ -149,9 +149,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		 */
 		this.searchRooms = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/accounts';
+				url = '/house/search.json?query=' + params.key + '&date=' + params.date;
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve();
+				deferred.resolve(data.data.rooms);
 			}, function(data) {
 				deferred.reject(data);
 			});

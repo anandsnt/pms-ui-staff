@@ -114,10 +114,21 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 			// show form only for the other OO or OS
 			// eg: if original status was OO them show form only when user choose OS
-			$scope.showForm = false;
 			if ( !$scope.inService ) {
 				$scope.showForm = $scope.roomServices.room_service_status_id != originalStatusId ? true : false;
-			};
+			} else {
+				$scope.showForm = false;
+
+				var callback = function() {
+					$scope.$emit('hideLoader');
+
+					// change the original status and update the 'room_reservation_hk_status' in parent
+					originalStatusId = $scope.roomServices.room_service_status_id;
+					updateRoom( 'room_reservation_hk_status', 1 );
+				};
+
+				$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, { roomId: $scope.roomDetails.id, inServiceID: 1 }, callback);
+			}
 		};
 
 		// when user try to save a oo/os form
