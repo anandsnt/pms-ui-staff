@@ -148,7 +148,7 @@
 									</li>
 
 									<!-- packages -->
-									<li class="active package" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+									<li class="active package summarychargegroup" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
 										<a class="toggle dual-toggle" ng-class="{'active': $index == showAddonIndex}"> 
 											<span class="day"> {{addons.title}} </span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
@@ -157,7 +157,7 @@
 									</li>
 
 									<!-- Group items tab -->
-									<li class="active expense" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
+									<li class="active expense summarychargegroup" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
 										<a class="toggle dual-toggle"  ng-class="{'active': $index == showGroupItemIndex}"> 
 											<span class="expense"> {{groupItems.title}} </span> 
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
