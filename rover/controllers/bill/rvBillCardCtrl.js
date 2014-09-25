@@ -1294,11 +1294,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	    		controller: 'RVTermsAndConditionsDialogCtrl',
 	    		scope : $scope
 	    	});
-
-		var termsAndConditionsFetchSuccess = function(){
-
-		}
-		$scope.invokeApi(RVBillCardSrv.fetchTermsAndConditions,billData,createBillSuccessCallback);
 	}
 
 }]);

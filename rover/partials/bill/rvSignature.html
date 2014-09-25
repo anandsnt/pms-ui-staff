@@ -7,10 +7,10 @@
 		</div>
 	</div>
 	<div class="entry">
-		<label id="terms-and-conditions" for="terms" class="checkbox inline" ng-click = "termsAndConditionsClicked()">
+		<label id="terms-and-conditions" for="terms" class="checkbox inline" >
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
 			<input type="checkbox" ng-model="saveData.termsAndConditions">
-			{{ 'T_AND_C_TEXT' | translate }} </label>
+			<span class = "agree-terms-and-conditions" ng-click = "termsAndConditionsClicked()">{{ 'T_AND_C_TEXT' | translate }}</span> </label>
 		<label id="subscribe-via-email" for="subscribe" class="checkbox inline checked">
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.promotions}"></span>
 			<input type="checkbox" value="1" name="checkin" checked="" ng-model="saveData.promotions">
