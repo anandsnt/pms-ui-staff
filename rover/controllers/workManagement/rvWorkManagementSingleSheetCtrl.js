@@ -65,9 +65,18 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		}
 
 		$scope.saveWorkSheet = function() {
+			if (!$scope.singleState.workSheet.work_type_id) {
+				$scope.errorMessage = ['Please select a work type.'];
+				return false;
+			}
+			if (!$scope.singleState.workSheet.user_id) {
+				$scope.errorMessage = ['Please select a employee.'];
+				return false;
+			}
 			var assignedRooms = [],
 				onSaveSuccess = function(data) {
 					$scope.$emit("hideLoader");
+					$scope.clearErrorMessage();
 				},
 				onSaveFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
