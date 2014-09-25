@@ -1,9 +1,4 @@
-
-<<<<<<< HEAD
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar','acute.select', 'documentTouchMovePrevent', 'divTouchMoveStopPropogate', 'pasvaz.bindonce']);
-=======
 var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar','acute.select', 'documentTouchMovePrevent', 'divTouchMoveStopPropogate', 'multi-select', 'ngDragDrop']);
->>>>>>> CICO-8605
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
@@ -176,4 +171,3 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		$rootScope.returnBack = false;
 	});
 }]);
-

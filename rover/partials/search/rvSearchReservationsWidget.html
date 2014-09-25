@@ -34,46 +34,7 @@
 							<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 								{{row.late_checkout_time}}
 							</span>
-<<<<<<< HEAD
-							<span ng-show="results.length==0 && showAddNewGuestButton"> or  <a>Add a New Guest <a/> </span>
-							.
-						</div>
-					</li>
-					<li class="no-content" ng-show="results.length == 0 && (isLateCheckoutList && textInQueryBox=='')">
-						<div class="info">
-							<span class="icon-no-content icon-search"></span>
-							<strong class="h1">No guests opted for late checkout </strong>
-						</div>
-					</li>
-					<li class="no-content" ng-show="results.length == 0 && (isQueueReservationList && textInQueryBox=='')">
-						<div class="info">
-							<span class="icon-no-content icon-search"></span>
-							<strong class="h1">No guests opted for queue reservations </strong>
-						</div>
-					</li>
-					<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<3 && !swipeNoResults">
-						<div class="info">
-							<span class="icon-no-content icon-search"></span>
-							<strong class="h1">Find Guests</strong>
-							<span class="h2">
-								Search by
-								<strong>Name</strong>,
-								<strong>Group</strong>,
-								<strong>Room No.</strong>
-								or
-								<strong>Confirmation No.</strong>
-							</span>
-						</div>
-					</li>
-					<li class="no-content" ng-show="swipeNoResults">
-						<div class="info">
-							<span class="icon-no-content icon-search" ></span>
-							<strong class="h1">No matches </strong>
-							<span class="h2">Enter different search criteria to find reservation / guest. 
-								
-=======
 							<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
->>>>>>> CICO-8605
 							</span>
 						</div>	
 						<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >

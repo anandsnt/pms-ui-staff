@@ -36,7 +36,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		this.currentFilters = this.initFilters();
 		
-		this.fetch = function(){
+		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
 			var url = '/house/search.json';
 			
@@ -124,10 +124,53 @@ sntRover.service('RVHkRoomStatusSrv', [
 						roomType.isSelected = false;
 						that.allRoomTypes[roomType.id] = roomType;
 					});
-					deferred.resolve(this.allRoomTypes);
+					deferred.resolve(that.allRoomTypes);
 				}, function(data){
 					deferred.reject(data);
 				});
+
+			return deferred.promise;
+		};
+
+
+		// fetch all HK cleaning staffs
+		var HKMaids = [];
+		this.fetchHKMaids = function() {
+			var url = "/api/work_statistics/employees_list";
+			var deferred = $q.defer();
+
+			if ( HKMaids.length ) {
+				deferred.resolve(HKMaids);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						HKMaids = data.results;
+						deferred.resolve(HKMaids);
+					}, function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+		// get all all WorkTypes
+		var workTypesList = [];
+		this.getWorkTypes = function() {
+			var deferred = $q.defer(),
+				url = 'api/work_types';
+
+			if ( workTypesList.length ) {
+				deferred.resolve(workTypesList);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						workTypesList = data.results;
+						deferred.resolve(workTypesList);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
 
 			return deferred.promise;
 		};
@@ -219,7 +262,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 			// first find the exact room
 			var room = _.find(this.roomList.rooms, function(room) {
-				return parseInt(room.id) === updatedRoom.id;
+				return parseInt(room.id) === id;
 			});
 
 			// if room not found

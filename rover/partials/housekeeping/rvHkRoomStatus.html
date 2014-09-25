@@ -23,18 +23,14 @@
     
     <div class="entry options">
         <div class="select">
-            <select id="work-type" name="work-type" ng-model="filterByWorkType">
+            <select id="work-type" name="work-type" ng-model="filterByWorkType" ng-options="work.id as work.name for work in workTypes">
                 <option value="">All Work Types</option>
-                <option value="daily-cleaning" selected>Daily Cleaning</option>
-                <option value="other-cleaning" selected>Other Cleaning</option>
             </select>
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
         <div class="select" ng-hide="!filterByWorkType">
-            <select id="employees" name="employees" class="placeholder" ng-model="filterByEmployee">
-                <option value="" selected>All Employees</option>
-                <option value="emp1">Employee 1</option>
-                <option value="emp2">Employee 2</option>
+            <select id="employees" name="employees" class="placeholder" ng-model="filterByEmployee" ng-options="user.maid_name for user in HKMaids" ng-change ="applyEmpfilter()">
+                <option value="">All Employees</option>
             </select>
         </div>
     </div>
