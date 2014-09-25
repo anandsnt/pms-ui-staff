@@ -29,7 +29,7 @@
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in calendarData.all_rates[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
+										<span ng-repeat="restriction in calendarData.all_rates[date] track by restriction.id" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
 									</div>
 								</div>
 							</div>
@@ -40,7 +40,7 @@
 				</td>
 			</tr>
 
-			<tr ng-repeat="rate in calendarData.data" ng-class="{'last': $last}">
+			<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}">
 				<td class="first-row">
 					<div ng-click="goToRoomTypeCalendarView(rate)" >
 						<span>{{rate.name}}</span>
@@ -55,7 +55,7 @@
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in rate[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
+										<span ng-repeat="restriction in rate[date] track by restriction.id" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
 									</div>
 								</div>
 							</div>
