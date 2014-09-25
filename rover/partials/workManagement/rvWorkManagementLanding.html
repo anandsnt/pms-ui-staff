@@ -51,7 +51,7 @@
            <li class="room" ng-repeat="room in stateVariables.searchResults.rooms">
 			<a ng-click="onRoomSelect(room)" ng-class="{'with-image': room.is_occupied}"> <!-- Add class="with-image" if room is occupied -->
 				<div class="data">
-					<h2 class="{{room.hk_status.value}}">{{room.room_no}}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+					<h2 class="{{room.hk_status.value}}" ng-class="{'out' : room.hk_status.value == 'OO' || room.hk_status.value == 'OS'}">{{room.room_no}}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
 					<span class="room-status {{room.hk_status.value}}">{{room.hk_status.value}}</span>
 				</div>
 				<!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
@@ -70,12 +70,12 @@
 					</div>
 				</div>
 				<!-- Show if room is assigned or ooo/oos -->
-				<div class="additional-info" ng-if="room.assignee_maid != null">
+				<div class="additional-info" ng-if="room.assignee_maid != null || room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
 					<!-- Show only if room is assigned -->
 					<span class="assigned">{{room.assignee_maid}}</span>
 					<!-- Show only if room is not in service -->
-					<span class="service-status">
-                        <!-- {ooo or oos} -->
+					<span class="service-status" ng-if="room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
+                        {{room.hk_status.value}}
                     </span>
 				</div>
 

@@ -75,7 +75,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             if (room.work_sheet_id) {
                 $state.go('rover.workManagement.singleSheet', {
                     date: $scope.stateVariables.viewingDate.date,
-                    id: id
+                    id: room.work_sheet_id
                 });
             } else { //Assign the room to an employee
                 ngDialog.open({
