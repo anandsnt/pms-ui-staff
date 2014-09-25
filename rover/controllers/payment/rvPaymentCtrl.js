@@ -164,13 +164,16 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
 		var cardHolderName = $scope.saveData.name_on_card;
+		var payment_type_id = $scope.saveData.payment_type == "CC"?1:0;
 		var newDataToGuest = {
 			"card_code": cardCode.toLowerCase(),
 			"mli_token": cardNumber.substr(cardNumber.length - 4),
 			"card_expiry":expiryDate,
 			"card_name":cardHolderName,
 			"is_primary":false,
-			"id":data.id
+			"id":data.id,
+			"payment_type":data.payment_name,
+			"payment_type_id":payment_type_id
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 	};
@@ -222,7 +225,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 					"card_expiry":expiryDate,
 					"card_name":cardHolderName,
 					"is_primary":false,
-					"id": data.id
+					"id": data.id,
+					"payment_type":data.payment_type,
+					"payment_type_id":payment_type_id
 				};
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 			}
