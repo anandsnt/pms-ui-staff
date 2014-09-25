@@ -8,6 +8,7 @@
 				<span class='band-holder' >  {{bands.first_name}} {{bands.last_name}}</span>
 				<span class='charge' ng-show="bands.is_fixed"> {{currencySymbol}}  {{bands.amount}} </span>
 				<span class='charge' ng-show="!bands.is_fixed">OPEN ROOM CHARGE </span>
+				<span class='account-num'>{{bands.account_number.substr(bands.account_number.length - 4);}}</span>
 			</li>
 			
 		</ul>
