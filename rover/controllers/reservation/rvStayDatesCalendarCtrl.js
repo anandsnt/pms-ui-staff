@@ -6,7 +6,6 @@ sntRover.controller('RVStayDatesCalendarCtrl', ['$state',
 	'$filter',
 	'ngDialog',
 	function($state, $stateParams, $rootScope, $scope, RVStayDatesCalendarSrv, $filter, ngDialog) {
-		$s = $scope;
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
 		var that = this;

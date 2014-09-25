@@ -6,8 +6,9 @@
 		<div class="h3 message" ng-bind-html="popupMessage"></div>
 		<div class="status" ng-if="status === 'success'">
 		   <label for="room-status">Room Status</label>
-		   <div class="switch-button" ng-class="{'on': roomStatusNotReady}">
-		      <input id="room-status" name="room-status" type="checkbox" value="not-ready" ng-model="roomStatusNotReady">
+		   {{flag.roomStatusReady}}
+		   <div class="switch-button" ng-class="{'on': flag.roomStatusReady}">
+		      <input id="room-status" name="room-status" type="checkbox" value="not-ready" ng-model="flag.roomStatusReady">
 		      <label class="data-off">
 			      <span class="switch-icon">Not Ready</span>
 			      <span class="value">Ready</span>
