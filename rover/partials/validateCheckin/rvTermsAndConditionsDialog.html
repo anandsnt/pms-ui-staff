@@ -1,0 +1,16 @@
+<div id="modal" role="dialog" class="modal-show">
+   <form action="" class="modal-content terms" id="terms-and-conditions" method="post" name="terms-and-conditions">
+      <button class="modal-close" id="modal-close" type="button" ng-click = "clickCancel()">
+      	<span class="icons icon-close invert"></span>
+      </button>
+      <div class="head_terms_and_conditions" translate>TERMS_AND_CONDITIONS_LABEL</div>
+      <div class="scrollable" id="terms-content">
+         <div class="wrapper" style="transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1); -webkit-transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1); transform: translate(0px, 0px) translateZ(0px);">
+         </div>
+      </div>
+      <div class="actions">
+         <button class="button red modal-close" id="disagree-button" type="button" ng-click = "clickCancel()" translate>DISAGREE_BUTTON_LABEL</button>
+         <button class="button green modal-close" id="agree-button" type="button" ng-click = "agreeButtonClicked()" translate>AGREE_BUTTON_LABEL</button>
+      </div>
+   </form>
+</div>

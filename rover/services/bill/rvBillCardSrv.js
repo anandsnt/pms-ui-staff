@@ -179,6 +179,22 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 		return deferred.promise;
 	};
+
+	/*
+		* Get the terms and conditions for the hotel
+		*/
+	this.fetchTermsAndConditions = function(hotelId) {
+		
+		var deferred = $q.defer();
+		var url = '/api/charge_codes';
+			BaseWebSrvV2.getJSON(url, hotelId).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
 	
    
 }]);

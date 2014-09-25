@@ -1282,4 +1282,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 	}
 		
+
+	/*
+	*Open the terms and conditions dialog after fetching
+	*the terms and conditions text from the server
+	*/
+	$scope.termsAndConditionsClicked = function(){
+		ngDialog.open({
+	    		template: '/assets/partials/validateCheckin/rvTermsAndConditionsDialog.html',
+	    		className: 'ngdialog-theme-default',
+	    		controller: 'RVTermsAndConditionsDialogCtrl',
+	    		scope : $scope
+	    	});
+
+		var termsAndConditionsFetchSuccess = function(){
+
+		}
+		$scope.invokeApi(RVBillCardSrv.fetchTermsAndConditions,billData,createBillSuccessCallback);
+	}
+
 }]);
