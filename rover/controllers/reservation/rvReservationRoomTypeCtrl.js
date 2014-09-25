@@ -549,6 +549,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.selectedRoomType = $scope.selectedRoomType == val.id ? -1 : val.id;
 			$scope.refreshScroll();
 		}
+		
+		// Fix for CICO-9536
+		// Expected Result: Only one single room type can be applied to a reservation.
+		// However, the user should be able to change the room type for the first night on the Stay Dates screen,
+		// while the reservation is not yet checked in. The control should be disabled for any subsequent nights.
+		$scope.resetRates = function(){
+			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate, idx) {
+				stayDate.rate.id = '';
+                stayDate.rate.name ='';
+            });
+            $scope.stateCheck.rateSelected.allDays = false;
+		}
 
 		$scope.filterRooms = function() {
 			if ($scope.stateCheck.preferredType == null || $scope.stateCheck.preferredType == '' || typeof $scope.stateCheck.preferredType == 'undefined') {
