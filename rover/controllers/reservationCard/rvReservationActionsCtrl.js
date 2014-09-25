@@ -315,7 +315,9 @@ sntRover.controller('reservationActionsController', [
 		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled) {
 			var showSmartBand = false;
 			if (icareEnabled) {
-				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN' || reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' || reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'CHECKEDOUT') {
+				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN' 
+					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' 
+					|| reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'CHECKEDOUT') {
 					showSmartBand = true;
 				}
 			}
