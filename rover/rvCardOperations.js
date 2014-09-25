@@ -80,14 +80,14 @@ var CardOperation = function(){
 						// if success call back require any parameters
 						function(data){
 							if(successCallBackParameters !== null){
-								alert("cordoveexec---DATA----"+JSON.stringify(data));
-								alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
+								//alert("cordoveexec---DATA----"+JSON.stringify(data));
+								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
 							else{
-								alert("cordoveexec---DATA ||----"+JSON.stringify(data));
-								alert("cordoveexec---successparama 2----"+JSON.stringify(successCallBackParameters));
+								//alert("cordoveexec---DATA ||----"+JSON.stringify(data));
+								//alert("cordoveexec---successparama 2----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data);
 								that.callRecursively(options);
 							}
@@ -95,7 +95,7 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
-							alert("error");
+							//alert("error");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}

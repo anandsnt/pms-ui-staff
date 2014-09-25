@@ -364,6 +364,7 @@ sntRover.controller('reservationActionsController', [
 					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
 					controller: 'RVDepositBalanceCtrl',
 					className: 'ngdialog-theme-default1',
+					closeByDocument: false,
 					scope: $scope
 				});
 			

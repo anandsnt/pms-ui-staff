@@ -15,9 +15,16 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
 console.log($scope);
+
+
+
+	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
+		value.isSelected = false;
+	});
 	//$scope.depositBalanceData = $scope.
 	var MLISessionId = "";
 	var swipedData = {};
+	var selectedPaymentIdFromList = '';
 	$scope.addCardActive = true;
 	try {
 			HostedForm.setMerchant($rootScope.MLImerchantId);
@@ -26,19 +33,23 @@ console.log($scope);
 	$scope.depositBalanceNewCardData = {};
 	$scope.isSwiped = false;
 	$scope.makePaymentData = {};
+	$scope.makePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
+	$scope.makePaymentButtonActive = false;
 	/*
 	 * Function to handle click on make payment button
 	 * If new card is added, then first we need to add the credit card and on success we make the payment
 	 * We should handle manual entry of new card, swiped card and select already existing cards
 	 */
 	$scope.clickedMakePayment = function(){
-		console.log($scope.depositBalanceNewCardData);
+		
 		
 		if($scope.isSwiped){
 			//$scope.handleSwipedData();
 			$scope.savePayment("swiped");
-		} else {
+		} else if($scope.addCardActive){
 			$scope.handleMLISessionId();
+		} else {
+			$scope.savePayment("selectedCard");
 		}
 		
 	};
@@ -91,57 +102,89 @@ console.log($scope);
 	 * Function to save payment
 	 */
 	$scope.savePayment = function(type){
+
 		if(type === "manual"){
 			  var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";
               var dataToApiToAddNewCard = {
 	              	"session_id" : MLISessionId,
 	              	"user_id" :$scope.guestCardData.userId,
 	              	"card_expiry": cardExpiry,
-	              	"is_deposit": true
+	              	"is_deposit": true,
+	              	"add_to_guest_card": $scope.makePaymentData.addToGuestCard
               };
-             // $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
+              $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		} else if(type == "swiped"){
+
+
 			var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";
+			
 			var dataToApiToAddNewCard = {
 				    card_expiry: cardExpiry,
 				    name_on_card: $scope.depositBalanceNewCardData.cardHolderName,
 				    payment_type: "CC",
-				    payment_credit_type: swipedData.cardType,
-				    credit_card: swipedData.cardType,
+				    payment_credit_type: swipedData.credit_card,
+				    credit_card: swipedData.credit_card,
 					mli_token: swipedData.token,
-				    et2: swipedData.getTokenFrom.et2,
-					ksn: swipedData.getTokenFrom.ksn,
-					pan: swipedData.getTokenFrom.pan,
-					etb: swipedData.getTokenFrom.etb,
+				    et2: swipedData.et2,
+					ksn: swipedData.ksn,
+					pan: swipedData.pan,
+					// etb: swipedData.getTokenFrom.etb,
 					user_id :$scope.guestCardData.userId,
-					is_deposit: true
+					is_deposit: true,
+					add_to_guest_card: $scope.makePaymentData.addToGuestCard
 			    };
-		     alert(dataToApiToAddNewCard);
-		   
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
+		 } else if(type === "selectedCard"){
+		 	var dataToMakePaymentApi = {
+				"payment_id": selectedPaymentIdFromList,
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
+				"amount": $scope.makePaymentData.amount
+			};
 		
-		}
-		  $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
+		//	alert(JSON.stringify(dataToMakePaymentApi));
+			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+		 }
+		 // dataToApiToAddNewCard
+		 // add_to_guest_card
+		  
 	};
 	/*
 	 * Success callback of save payment. 
 	 * Do make payment on success
 	 */
 	$scope.successSavePayment = function(data){
+		// alert("make payment success");
+		// alert(JSON.stringify(data));
+		// alert("resid---"+$scope.reservationData.reservation_card.reservation_id);
+		// alert("amount---"+$scope.makePaymentData.amount);
+		// alert("----------------")
+		var paymentId = '';
+		if($scope.isSwiped){
+			paymentId = data.id;
+		} else {
+			paymentId = data.data.id;
+		}
+		//alert("------pay----------"+paymentId)
+		//$scope.makePaymentData.amount
 		var dataToMakePaymentApi = {
-			"payment_id": data.data.id,
+			"payment_id": paymentId,
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"amount": $scope.makePaymentData.amount
 		};
-		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToApiToDoPayment);
+		
+	//	alert(JSON.stringify(dataToMakePaymentApi));
+		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
 	};
 	/*
 	 * To render the values on fields during swipe
 	 * Disable fields on swipe
 	 */
 	$scope.$on("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", function(event, data){
-		alert(JSON.stringify(data));
+		//alert(JSON.stringify(data));
 		swipedData = data;
 		$scope.isSwiped = true;
+		$scope.addCardActive = true;
+		$scope.makePaymentButtonActive = true;
 		$scope.depositBalanceNewCardData.cardNumber  = data.card_number;
 		$scope.depositBalanceNewCardData.expiryMonth = data.card_expiry.slice(-2);;
 		$scope.depositBalanceNewCardData.expiryYear  = data.card_expiry.substring(0, 2);;
@@ -155,35 +198,61 @@ console.log($scope);
 	 */
 	$scope.clickedAddCard = function(){
 		$scope.addCardActive = true;
+		$scope.isSwiped = false;
+		$scope.makePaymentButtonActive = false;
+		$scope.depositBalanceNewCardData.cardNumber  = "";
+		$scope.depositBalanceNewCardData.expiryMonth = "";
+		$scope.depositBalanceNewCardData.expiryYear  = "";
+		$scope.depositBalanceNewCardData.cardHolderName  = "";
+		angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
+			value.isSelected = false;
+		});
 	};
 	/*
 	 * Show existing payments Active and show screen
 	 */
 	$scope.clickedShowExistingCard = function(){
 		$scope.addCardActive = false;
+		$scope.isSwiped = false;
+		$scope.makePaymentButtonActive = false;
+		$scope.depositBalanceNewCardData.cardNumber  = "";
+		$scope.depositBalanceNewCardData.expiryMonth = "";
+		$scope.depositBalanceNewCardData.expiryYear  = "";
+		$scope.depositBalanceNewCardData.cardHolderName  = "";
 	};
 	$scope.selectPayment = function(paymentId){
+		selectedPaymentIdFromList = paymentId;
+		$scope.isSwiped = false;
+		$scope.makePaymentButtonActive = true;
+		angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
+			value.isSelected = false;
+			if(value.value === selectedPaymentIdFromList){
+				value.isSelected = true;
+			}
+		});
 		
 	};
-	// $scope.handleSwipedData = function(){
-		// var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";
-		// var dataToApiToAddNewCard = {
-			    // card_expiry: cardExpiry,
-			    // name_on_card: $scope.depositBalanceNewCardData.cardHolderName,
-			    // payment_type: "CC",
-			    // payment_credit_type: swipedData.cardType,
-			    // credit_card: swipedData.cardType,
-				// mli_token: swipedData.token,
-			    // et2: swipedData.getTokenFrom.et2,
-				// ksn: swipedData.getTokenFrom.ksn,
-				// pan: swipedData.getTokenFrom.pan,
-				// etb: swipedData.getTokenFrom.etb,
-				// user_id :$scope.guestCardData.userId,
-				// is_deposit: true
-		    // };
-		     // alert(dataToApiToAddNewCard);
-		     // $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
-// 		   
-	// };
+	$scope.showMakePaymentButtonStatus = function(){
+		var buttonClass = "";
+		if($scope.makePaymentButtonActive){
+			buttonClass = "green";
+		} else {
+			buttonClass = "grey";
+		}
+		return buttonClass;
+	};
+	$scope.showMakePaymentButtonActive = function(){
+		if($scope.depositBalanceNewCardData.cardNumber !== ""){
+			$scope.makePaymentButtonActive = true;
+		} else {
+			$scope.makePaymentButtonActive = false;
+		}
+	};
+	
+	$scope.closeDepositModal = function(){
+		$scope.isDepositBalanceScreenOpened = false;
+		$scope.closeDialog();
+	};
+
 	
 }]);
