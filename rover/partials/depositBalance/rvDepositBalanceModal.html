@@ -59,27 +59,34 @@
 			</div>
 			<!-- Show these options only if there are existing cards -->
 			<ul id="make-payment-options" class="modal-options">
-				<li id="existing-cards">
+				<li id="existing-cards" ng-class="{'active': !addCardActive}" ng-click="clickedShowExistingCard()">
 					Existing Cards
 				</li>
-				<li id="add-new-card" class="active">
+				<li id="add-new-card" ng-class="{'active': addCardActive}" ng-click="clickedAddCard()">
 					Add New Card
 				</li>
 			</ul>
 			<!-- Select cards, if exsist -->
-			<div id="select-make-payment-card" class="select-card hidden">
+			<div id="select-make-payment-card" class="select-card" ng-hide="addCardActive">
 				<div id="available-cards" data-is-existing-card="no" class="cards-list scrollable cards-list-height">
-					<div id="available-cards-wrapper" class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+					<div id="available-cards-wrapper" class="wrapper" >
 						<!-- Selected card -->
-						<label payment-id="2292" class="active-item item-payment primary">
+						<label class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">
 							<figure class="card-logo">
-								<img src="/assets/ds.png" alt="">
-							</figure> <span class="number"> Ending with <span class="value number"> 0016 </span> </span> <span class="date"> Date <span class="value date"> 12/17 </span> </span> <span class="primary"> <span id="primary-2292" class="value primary primary-selected"></span> </span> </label>
-						<label payment-id="2310" class="active-item item-payment primary">
-							<figure class="card-logo">
-								<img src="/assets/ax.png" alt="">
-							</figure> <span class="number"> Ending with <span class="value number"> 8431 </span> </span> <span class="date"> Date <span class="value date"> 12/17 </span> </span> <span class="primary"> <span id="primary-2310" class="value primary primary-selected"></span> </span> </label>
-						<!-- repeat ... this is same as in {modals/pay-bill/card-attached.html}, lines 70, 89 -->
+								<img src="/assets/{{existingPayments.card_code}}.png" alt="">
+							</figure> 
+							<span class="number"> Ending with 
+								<span class="value number"> {{existingPayments.ending_with}} </span> 
+							</span> 
+							<span class="date"> Date 
+									<span class="value date"> {{existingPayments.expiry_date}} </span> 
+							</span> 
+							<span class="primary"> 
+								<span class="value primary primary-selected">
+									
+								</span> 
+							</span> 
+						</label>
 					</div>
 					<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
 						<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
@@ -87,16 +94,16 @@
 				</div>
 			</div>
 			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
-			<div id="new-make-payment-card" class="new-card">
+			<div id="new-make-payment-card" class="new-card" ng-show="addCardActive">
 				<div class="holder">
 					<div class="entry margin">
 						<label for="card-number">Card number</label>
-						<input type="text" ng-model="depositBalanceNewCardData.cardNumber" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number">
+						<input type="text" ng-disabled="isSwiped" ng-model="depositBalanceNewCardData.cardNumber" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number">
 					</div>
 					<div class="entry">
 						<label for="expiry-month"> Expiration date (<span>MM/YY</span>) </label>
-						<input type="text" ng-model="depositBalanceNewCardData.expiryMonth" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month">
-						<input type="text" ng-model="depositBalanceNewCardData.expiryYear" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" >
+						<input type="text" ng-disabled="isSwiped" ng-model="depositBalanceNewCardData.expiryMonth" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month">
+						<input type="text" ng-disabled="isSwiped" ng-model="depositBalanceNewCardData.expiryYear" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" >
 					</div>
 					<div class="entry margin">
 						<label for="name-on-card">Name on card</label>
