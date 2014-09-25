@@ -88,6 +88,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
 
+    $scope.isDepositBalanceScreenOpened = false;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(){
+    	$scope.isDepositBalanceScreenOpened = true;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**
