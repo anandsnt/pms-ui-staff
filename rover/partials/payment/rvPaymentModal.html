@@ -4,7 +4,7 @@
 	</button>
 	<strong class="new-form-title" translate>NEW_PAYMENT_METHOD</strong>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div class="entry full-width">
+	<div class="entry full-width paymentMethodSelect">
 	    <label for="payment-type" translate>PAYMENT_TYPE</label>
 	    <div class="select">
 
@@ -17,7 +17,7 @@
 	
 		</div>
 	</div>
-	<div class="entry full-width">
+	<div class="entry full-width" ng-hide = "saveData.selected_payment_type != '0'">
 	    <label for="credit-card" translate>SELECT_CREDIT_CARD_LABEL</label>
 	    <div class="select">
 	    	<select ng-disabled="shouldShowDisabled" ng-model="saveData.credit_card" class="placeholder">
@@ -28,7 +28,7 @@
 			
 		</div>
 	</div>
-	<div class="holder float">
+	<div class="holder float" ng-hide = "saveData.selected_payment_type != '0'">
 		<div class="entry">
 		    <label for="card-number-set1" translate>CARD_NUMBER</label>
 		    <input type="text" ng-readonly="shouldShowDisabled" maxlength="16" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
@@ -44,7 +44,7 @@
 		    <input type="text" ng-readonly="shouldShowDisabled" size="2" maxlength="2" value="" placeholder="YY" ng-model="saveData.card_expiry_year">
 		</div>
 	</div>
-	<div class="entry full-width">
+	<div class="entry full-width" ng-hide = "saveData.selected_payment_type != '0'">
 	    <label for="name-on-card" translate>NAME_ON_CARD</label>
 	    <input type="text" ng-readonly="shouldShowDisabled" ng-model="saveData.name_on_card" value="{{saveData.name_on_card}}" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
 	</div>	

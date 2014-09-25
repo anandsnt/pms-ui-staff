@@ -110,6 +110,7 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 		}else{
+			console.log(oldRoomType +"!=="+ $scope.roomType);
 			if(oldRoomType !== $scope.roomType){
 			//if(true){
 				$scope.oldRoomType = oldRoomType;
