@@ -29,6 +29,15 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}
 		};
 
+		$scope.reservationStatus = {
+			"Due out": "check-out",
+			"Departed": "check-out",
+			"STAYOVER": "inhouse",
+			"Not Reserved": "no-show",
+			"Arrival": "check-in",
+			"Arrived": "check-in"
+		}
+
 		var refreshView = function() {
 			$scope.refreshScroller("workSheetUnassigned");
 			$scope.refreshScroller("workSheetAssigned");
@@ -50,6 +59,10 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			refreshView();
 		}
 
+		$scope.printWorkSheet = function(){
+			window.print();
+		}
+
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
 					$state.go('rover.workManagement.start');
@@ -65,9 +78,18 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 		}
 
 		$scope.saveWorkSheet = function() {
+			if (!$scope.singleState.workSheet.work_type_id) {
+				$scope.errorMessage = ['Please select a work type.'];
+				return false;
+			}
+			if (!$scope.singleState.workSheet.user_id) {
+				$scope.errorMessage = ['Please select a employee.'];
+				return false;
+			}
 			var assignedRooms = [],
 				onSaveSuccess = function(data) {
 					$scope.$emit("hideLoader");
+					$scope.clearErrorMessage();
 				},
 				onSaveFailure = function(errorMessage) {
 					$scope.errorMessage = errorMessage;
@@ -90,35 +112,37 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}, onSaveSuccess, onSaveFailure);
 		}
 
+		$scope.onWorkTypeChange = function() {
+			init();
+		}
+
 		var init = function() {
-			if (true) {
-				var onFetchSuccess = function(data) {
-						$scope.singleState.unassigned = data.unassigned;
-						var assignedRooms = [],
-							worksheets = _.where(data.work_sheets, {
-								work_sheet_id: parseInt($stateParams.id)
-							});
+			var onFetchSuccess = function(data) {
+					$scope.singleState.unassigned = data.unassigned;
+					var assignedRooms = [],
+						worksheets = _.where(data.work_sheets, {
+							work_sheet_id: parseInt($stateParams.id)
+						});
 
-						if (worksheets.length > 0) {
-							_.each(worksheets[0].work_assignments, function(room) {
-								assignedRooms.push(room.room);
-							});
-						}
-
-						$scope.singleState.assigned = assignedRooms;
-						refreshView();
-						$scope.$emit('hideLoader');
-					},
-					onFetchFailure = function(errorMessage) {
-						$scope.errorMessage = errorMessage;
-						$scope.$emit('hideLoader');
+					if (worksheets.length > 0) {
+						_.each(worksheets[0].work_assignments, function(room) {
+							assignedRooms.push(room.room);
+						});
 					}
-				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
-					"date": $stateParams.date,
-					"employee_ids": [$scope.singleState.workSheet.user_id],
-					"work_type_id": $scope.singleState.workSheet.work_type_id
-				}, onFetchSuccess, onFetchFailure);
-			}
+
+					$scope.singleState.assigned = assignedRooms;
+					refreshView();
+					$scope.$emit('hideLoader');
+				},
+				onFetchFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.$emit('hideLoader');
+				}
+			$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
+				"date": $stateParams.date,
+				"employee_ids": [$scope.singleState.workSheet.user_id],
+				"work_type_id": $scope.singleState.workSheet.work_type_id
+			}, onFetchSuccess, onFetchFailure);
 		}
 		init();
 	}
