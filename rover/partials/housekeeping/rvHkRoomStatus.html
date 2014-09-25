@@ -69,9 +69,9 @@
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
-            <!-- Show only if room is assigned -->            
+            <!-- Show only if room is assigned -->   <!-- if the room is departed or stayover -->         
             <span ng-if="room.assignee_maid" class="assigned">{{ room.assignee_maid }}</span>
-            <span ng-if="!room.assignee_maid" class="unassigned">Unassigned</span>
+            <span ng-if="!room.assignee_maid && (room.room_reservation_status == 'Departed' || room.room_reservation_status == 'STAYOVER')" class="unassigned">Unassigned</span>
             
             <!-- Show only if room is not in service -->
             <span ng-if="room.room_reservation_hk_status == 2" class="service-status">Out of Service</span>
