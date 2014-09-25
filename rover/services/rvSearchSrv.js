@@ -11,23 +11,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			deferred.resolve( self.data );
 		} else {
 
-		// to remove the if and keep else
-			if(dataToSend.status =="PRECHECKIN"){
-				var sampleUrl = '/ui/show?format=json&json_input=preckin/preckin.json';
-				RVBaseWebSrv.getJSON(sampleUrl).then(function(data) {
-				for(var i = 0; i < data.length; i++){
-					data[i].is_row_visible = true;
-				}
-
-				self.data = data;
-				deferred.resolve(data);
-			},function(data){
-				deferred.reject(data);
-			});
-
-			}
-			else{
-				RVBaseWebSrv.getJSON(url,dataToSend).then(function(data) {
+					RVBaseWebSrv.getJSON(url,dataToSend).then(function(data) {
 					for(var i = 0; i < data.length; i++){
 						data[i].is_row_visible = true;
 					}
@@ -37,8 +21,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 				},function(data){
 					deferred.reject(data);
 				});
-				}
-		}		
+		}	
 		
 		return deferred.promise;		
 	};
