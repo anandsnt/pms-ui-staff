@@ -4,24 +4,31 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
+	
+		
 		dataToSend.fakeDataToAvoidCache = new Date();
 		var url =  'search.json';
 
 		if ( useCache && !!self.data ) {
 			deferred.resolve( self.data );
 		} else {
+			RVBaseWebSrv.getJSON(url, dataToSend).then(function(data) {
+				for(var i = 0; i < data.length; i++){
+					data[i].is_row_visible = true;
+				}
 
-					RVBaseWebSrv.getJSON(url,dataToSend).then(function(data) {
-					for(var i = 0; i < data.length; i++){
-						data[i].is_row_visible = true;
-					}
-
-					self.data = data;
-					deferred.resolve(data);
-				},function(data){
-					deferred.reject(data);
-				});
-		}	
+				if(dataToSend.is_queued_rooms_only == true){
+					self.lastSearchedType = "queued";
+				} else {
+					self.lastSearchedType = "others";
+				}
+				
+				self.data = data;
+				deferred.resolve(data);
+			},function(data){
+				deferred.reject(data);
+			});
+		}		
 		
 		return deferred.promise;		
 	};
@@ -81,6 +88,21 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			}
 		};
 	};
+	this.removeResultFromData = function(reservationId){
+		
+        if(self.lastSearchedType === "queued"){
+        	for (var i = 0, j = self.data.length; i < j; i++) {
+        		
+				if ( self.data[i]['id'] === reservationId ) {
+					self.data.splice(i, 1);
+					break;
+					
+				}
+			}
+        }
+		
+	};
+
 
 	// update the guest details of cached data
 	this.updateGuestDetails = function(guestid, data) {
