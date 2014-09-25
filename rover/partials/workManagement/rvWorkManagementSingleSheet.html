@@ -61,17 +61,20 @@
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}">
                     <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
                     <div class="reservation-status">
-                        <div class="current {{reservationStatus[room.reservation_status]}}">
-                            <span class="guest-status {{reservationStatus[room.reservation_status]}}">{{room.reservation_status}}</span>
+
+                        <div class="current {{departureClass[room.reservation_status]}}">
+                            <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                            <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
+                            <span ng-hide="room.reservation_status != 'Departed'">{{room.checkout_time}}</span>
                             <span ng-show="room.reservation_status == 'Departed'">OUT</span>
                         </div>
-                        <div ng-show="room.checkin_time" class="next {{reservationStatus[room.reservation_status]}}">
-                            <span class="guest-status {{reservationStatus[room.reservation_status]}}">{{room.reservation_status}}</span>
+
+                        <div class="next {{arrivalClass[room.reservation_status]}}">
+                            <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {arrival-time} can only be time -->
                             <span>{{room.checkin_time}}</span>
                         </div>
+
                     </div>
                      <!-- If VIP guest  -->
                     <span class="vip" ng-show='room.is_vip'>VIP</span>
@@ -111,16 +114,16 @@
                             data-drag = "true"
                             jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
                             data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"  class="non-assigned-room-types li-draggable">
-                        <h3 class="{{reservationStatus[room.reservation_status]}}">{{room.room_no}}</h3>
+                        <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
                         <div class="reservation-status">
-                            <div class="current {{reservationStatus[room.reservation_status]}}">
-                                <span class="guest-status {{reservationStatus[room.reservation_status]}}">{{room.reservation_status}}</span>
+                            <div class="current {{departureClass[room.reservation_status]}}">
+                                <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                                <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
+                                <span ng-hide="room.reservation_status != 'Departed'">{{room.checkout_time}}</span>
                                 <span ng-show="room.reservation_status == 'Departed'">OUT</span>
                             </div>
-                            <div ng-show="room.checkin_time" class="next {{reservationStatus[room.reservation_status]}}">
-                                <span class="guest-status {{reservationStatus[room.reservation_status]}}">{{room.reservation_status}}</span>
+                            <div class="next {{arrivalClass[room.reservation_status]}}">
+                                <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {arrival-time} can only be time -->
                                 <span>{{room.checkin_time}}</span>
                             </div>

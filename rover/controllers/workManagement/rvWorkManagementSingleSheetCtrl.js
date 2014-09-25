@@ -1,7 +1,7 @@
 sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state',
 	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state) {
 		BaseCtrl.call(this, $scope);
-		$scope.setHeading("Work Sheet No." + $stateParams.id + ", " + $stateParams.date);
+		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $stateParams.date);
 		$rootScope.setPrevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
@@ -28,15 +28,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				selectedFloor: ""
 			}
 		};
-
-		$scope.reservationStatus = {
-			"Due out": "check-out",
-			"Departed": "check-out",
-			"STAYOVER": "inhouse",
-			"Not Reserved": "no-show",
-			"Arrival": "check-in",
-			"Arrived": "check-in"
-		}
 
 		var refreshView = function() {
 			$scope.refreshScroller("workSheetUnassigned");
