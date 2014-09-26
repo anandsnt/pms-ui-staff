@@ -37,8 +37,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
     	if(reservationStatus == 'CHECKING_IN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 			$scope.data.colorCodeClass = 'check-in';
-			if($scope.viewFromBillScreen) $scope.data.colorCodeClassForClose = 'hidden';
-			else $scope.data.colorCodeClassForClose = 'green';
+			$scope.data.colorCodeClassForClose = 'green';
 		}
 		else if(reservationStatus == 'CHECKEDIN' ){
 			$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
