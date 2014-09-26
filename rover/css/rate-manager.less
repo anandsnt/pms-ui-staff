@@ -268,11 +268,8 @@
       }
     }
     #rmDateRange::-webkit-input-placeholder, 
-    #rmRateType::-webkit-input-placeholder, 
-    #rmRate::-webkit-input-placeholder,
-    #rmDateRange::-moz-placeholder, 
-    #rmRateType::-moz-placeholder, 
-    #rmRate::-moz-placeholder {
+    #rmDateRange::-moz-placeholder
+    {
        color: #9D9D9D;
        font-style: italic;
        font-size:15px ;
@@ -281,9 +278,9 @@
       left: 0px !important;
       top: 23px !important;
     }
-    select#rmRate:first-child,
-    select#rmRateType:first-child
-     {
+    #rmRate,
+    #rmRateType
+    {
        color: #9D9D9D;
        font-style: italic;
        font-size:15px ;      
@@ -342,18 +339,15 @@
 .rate-calendar{
   table {
   }
-  
-  th.first-row {
-    vertical-align: top !important;
-  }
 
   tr {
     &.last{
+      /*CICO-8633*/
       .cell-content{
-         border-bottom : 10px solid #e8e8e8;
+         //border-bottom : 10px solid rgba(0,0,0, 0.05); //#e8e8e8;
 
         &.exp{
-           border-bottom : 10px solid #d8d8d8;
+           border-bottom : 10px solid rgba(0,0,0, 0.05); //#d8d8d8;
         } 
       }
     }
@@ -418,13 +412,16 @@
   }
   th, td {
     margin: 0px 10px 0px 10px;
-    vertical-allign: middle;
-    padding-right: 10px;
+    vertical-align: middle;
+    //padding-right: 10px;
+  }
+  thead tr th:not(:first-child) {
+    padding: 5px 10px 5px 10px;
   }
 
-
   .cell-container{
-    background-color: #e8e8e8;
+    /*CICO-8633*/
+    background-color: rgba(0,0,0, 0.05);
 
     &.exp{
         background-color: #d2d2d2;
@@ -453,24 +450,24 @@
   }
 
   .cell-content{
-    border-left : 10px solid #e8e8e8;
-    border-right : 10px solid #e8e8e8;
-    border-top : 5px solid #e8e8e8;
-    border-bottom : 5px solid #e8e8e8;
+    /*CICO-8633*/
     background-color: none;
+    padding: 5px 10px 5px 10px; 
     height : 60px; /*80px;*/
     line-height : 60px; /*80px;*/ /* Trick for vertical alligh*/
     font-size : 20px;
     pointer: cursor;
+
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+
     &.exp {
       height: auto;
-      border-left : 10px solid rgb(216, 216, 216);
+      /*border-left : 10px solid rgb(216, 216, 216);
       border-right : 10px solid rgb(216, 216, 216);
       border-top : 5px solid rgb(216, 216, 216);
-      border-bottom : 5px solid rgb(216, 216, 216);
+      border-bottom : 5px solid rgb(216, 216, 216);*/
       line-height: normal;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
@@ -517,9 +514,9 @@
       height: 100%;
       background: none repeat scroll 0 0 #FCFCFC;
       border-radius: 4px;
-      -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
-      -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
-      box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
+      -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
+      -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
+      box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
 
       .rate-single {
           width: 25px;
@@ -527,15 +524,13 @@
           line-height: normal;
           padding-left: 10px;
           font-weight: lighter;
-          color: #333;       }
-
+          color: #333;       
+      }
       & > div {
-
         display: table-cell;
         /*CICO-8633*/
         vertical-align: middle; //top;
         padding: 6px 10px 0px;
-        //padding: 0 10px;
         .rate-single {
           width: 25px;
           height: 25px;
@@ -555,18 +550,11 @@
     }
 
   }
-  .date-header {
-    border-left : 10px solid #e8e8e8;
-    border-right : 10px solid #e8e8e8;
-    border-top : 10px solid #e8e8e8;
-    border-bottom : 5px solid #e8e8e8;
-
-    background-color: #3b3f43;    
-    height : 70px; /*80px;*/
+  .date-header { 
     font-size : 18px;
     text-align: center;
-    white-space: pre-line;
     /*CICO-8633*/
+    white-space: pre-line;
     vertical-align: top; //middle;
     display:table;
     width: 100%;
@@ -575,14 +563,20 @@
     text-transform: uppercase;
   }
   th .date-header {
+    /*CICO-8633*/
+    padding: 10px 10px 5px 10px;
     background-color : #393c41;
     border-radius: 3px;
+    font-weight: 600;
+    line-height: 1em;
+    white-space: normal;
   }
-  th .date-header span { 
-    font-size: 14px;    
+  th .date-header span {
     /*CICO-8633*/
-    vertical-align: top; //middle;
+    font-size: 14px;   
+    vertical-align: top;
     display: block;
+
     &.week-day{
       margin-top: 10px;
     }
@@ -1189,7 +1183,8 @@ padding-top: 80px;
     span{
       display: inline-block;
       &.restriction-status{
-        cursor: alias;
+        /*CICO-8633*/
+        //cursor: alias;
         position: absolute;
         right:0;
         top: 15px; /*10px;*/
@@ -1563,6 +1558,8 @@ padding-top: 80px;
     float: left;
     margin: 12px 0;
     clear: none;
+    font-weight: 600;
+    font-size: 16px;
   }
 }
 

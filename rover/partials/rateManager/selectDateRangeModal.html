@@ -1,4 +1,4 @@
-<div id="modal" class="rm-calendar-popup modal-show">
+<!--<div id="modal" class="rm-calendar-popup modal-show">
 	<form ng-cloak class="form grey-texture-bg-color">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<fieldset class="holder full-width grey-texture-bg-color" style="margin-bottom:0px;">
@@ -25,5 +25,33 @@
 					ng-disabled="toggleUpdate()"
 					ng-class="{ grey : toggleUpdate() }">Ok</button>
 		</div>
+	</form>
+</div>-->
+
+<div id="modal" class="rm-calendar-popup modal-show">
+	<form ng-cloak method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form date-range-update">
+	    <button id="modal-close" class="modal-close" type="button" ng-click="cancelClicked()">
+	    	<span class="icons icon-close invert"></span>
+	    </button>
+	    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	    <span class="message h2">Date Range Update</span>
+
+	    <fieldset class="holder left">
+	    	<strong class="h3">From <span>{{fromDate| date:'MMMM dd, y'}}</span></strong>
+	    	<div ui-date="fromDateOptions" ng-model="fromDate" ui-date-format="yy-mm-dd"></div>
+	    </fieldset>
+	    <fieldset class="holder right">
+	    	<strong class="h3">To <span>{{toDate | date:'MMMM dd, y'}}</span></strong>
+	    	<div ui-date="toDateOptions" ng-model="toDate" ui-date-format="yy-mm-dd"></div>
+	    </fieldset>
+	    <div class="actions">
+	        <button type="button" class="button blank" ng-click="cancelClicked()">Cancel</button>
+			<button class="button green" 
+					ng-click="updateClicked()" 
+					type="button"
+					disabled="disabled" 
+					ng-disabled="toggleUpdate()"
+					ng-class="{ grey : toggleUpdate() }">Set Range</button>
+	    </div>
 	</form>
 </div>
