@@ -180,18 +180,15 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		return deferred.promise;
 	};
 
-	/*
-		* Get the terms and conditions for the hotel
-		*/
-	this.fetchTermsAndConditions = function(hotelId) {
-		
+	this.changeHousekeepingStatus = function(data){
+
 		var deferred = $q.defer();
-		var url = '/api/charge_codes';
-			BaseWebSrvV2.getJSON(url, hotelId).then(function(data) {
-			   	 deferred.resolve(data);
-			},function(data){
-			    deferred.reject(data);
-			});	
+		var url = '/house/change_house_keeping_status.json';
+		BaseWebSrvV2.postJSON(url, data).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
 
 		return deferred.promise;
 	};
