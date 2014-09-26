@@ -26,7 +26,10 @@
 							<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
 								<em>{{ratetype.rate_count}} rates</em>
 								<span ng-class="{ 'tooltip-indicator': ratetype.rate_count > 0 }">
-									<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,ratetype.id)"></div>
+									<div ng-show = "popoverRates.total_count > 0" 
+										 class="tooltip" 
+										 ng-class="{'polarize': $index >= halfwayPoint}" 
+										 ng-include="getPopoverTemplate($index,ratetype.id)"></div>
 								</span>
 							</span>
 						</td>

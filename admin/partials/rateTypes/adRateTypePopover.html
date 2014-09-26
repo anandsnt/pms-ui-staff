@@ -1,4 +1,5 @@
-<div class="title">{{popoverRates.total_count}} {{popoverRates.results[0].rate_type.name}}</div>
+<div ng-show="$index < halfwayPoint" class="title">{{popoverRates.total_count}} {{popoverRates.results[0].rate_type.name}}</div>
 <ul>
     <li ng-repeat = "rate in popoverRates.results" ui-sref="admin.rateDetails({ rateId: rate.id })" ng-click="showLoader()">{{rate.name}}</li>
 </ul>
+<div ng-show="$index >= halfwayPoint" class="title">{{popoverRates.total_count}} {{popoverRates.results[0].rate_type.name}}</div>

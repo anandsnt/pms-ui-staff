@@ -1,5 +1,7 @@
 admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv',
 function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
+	$scope.halfwayPoint = 0;
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.rateTypeData = {};
@@ -11,6 +13,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	var fetchSuccess = function(data) {
 		$scope.data = data;
 		$scope.$emit('hideLoader');
+
+		$scope.halfwayPoint = data.length >> 1;
 	};
 
 	$scope.invokeApi(ADRateTypeSrv.fetch, {}, fetchSuccess);

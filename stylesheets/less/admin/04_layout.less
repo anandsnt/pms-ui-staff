@@ -927,6 +927,7 @@ body { overflow: hidden; }
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }
+
         /* This bridges the gap so you can mouse into the tooltip without it disappearing */
         &:before {
             bottom: -14px;
@@ -955,6 +956,31 @@ body { overflow: hidden; }
             -ms-transform:rotate(90deg); /* IE 9 */
             -webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
         } 
+    }
+    /*CICO-8634 - Inverted popup for rate types*/
+    .polarize {
+        top: initial;
+        bottom: -10px;   
+
+        .title {
+            -webkit-border-top-left-radius: 0px;
+            -webkit-border-top-right-radius: 0px;
+            -moz-border-radius-topleft: 0px;
+            -moz-border-radius-topright: 0px;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;  
+            -webkit-border-bottom-left-radius: 5px;
+            -webkit-border-bottom-right-radius: 5px;
+            -moz-border-radius-bottomleft: 5px;
+            -moz-border-radius-bottomright: 5px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;                    
+        }  
+
+        &:after {
+            top: initial;
+            bottom: 12px;            
+        }   
     }
 }
   
