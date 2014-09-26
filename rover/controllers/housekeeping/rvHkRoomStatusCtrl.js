@@ -55,22 +55,31 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// fetch all the HK work staff
 		$scope.filterByWorkType = '';
 		$scope.workTypes = [];
+		var defaultWorkType;
 		var wtCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.workTypes = data;
+
+			// this is temporary
+			defaultWorkType = data[0].id;
 		};
 		$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
 
 		// fetch all the HK work staff
 		$scope.filterByEmployee = '';
 		$scope.HKMaids = [];
+		var defaultMaid;
 		var hkmCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.HKMaids = data;
+
+			// TODO: for user specific the room must be filtered based on the choosen user
+			defaultMaid = _.find($scope.HKMaids, function(item) {
+				return item.maid_name == $rootScope.userName;
+			});
 		};
 		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
-		// TODO: for user specific the room must be filtered based on the choosen user
-		// {{ userInfo.first_name }} {{ userInfo.last_name }} === maid name
+		
 
 
 
@@ -114,6 +123,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.$emit( 'hideLoader' );
 
 				$scope.noScroll = false;
+
+				// show the user related rooms only
+				$scope.filterByEmployee = defaultMaid;
+				$scope.filterByWorkType = defaultWorkType;
+				$scope.applyEmpfilter();
 
 			// execute this after this much time
 			// as the animation is in progress
