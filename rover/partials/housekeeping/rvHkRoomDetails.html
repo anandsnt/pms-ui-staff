@@ -18,7 +18,25 @@
         
         <div ng-if="openTab === 'Guest'" ng-include="'/assets/partials/housekeeping/rvGuestTab.html'" class="room-info"></div>
 
+<<<<<<< HEAD
         <div ng-if="openTab === 'Work'" ng-include="'/assets/partials/housekeeping/rvWorkTab.html'" class="room-info"></div>
+=======
+        <div id="guest-info" ng-show="data.room_details.is_occupied == 'true'">
+            <div class="wrapper">
+                  <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
+                  <figure class="guest-image">
+                      <img alt="" ng-src="{{ data.room_details.avatar_src }}">
+                      <span ng-show="data.room_details.is_vip == 'true'" class="vip" translate>VIP</span>            
+                  </figure>
+                  <h2>
+                      <span class="guest-status {{guestViewStatus}}"></span>
+                      <span class="name">{{ data.room_details.guest_name }}</span>
+                  </h2>
+                  <em class="status" ng-hide="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out {{data.room_details.dept_date}}</em>
+                  <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today<span ng-show="data.room_details.is_late_checkout == 'true'"> ({{data.room_details.late_checkout_time}}) </span></em>
+              </div>
+        </div>
+>>>>>>> ng-develop
 
         <div ng-if="openTab === 'Room'" ng-include="'/assets/partials/housekeeping/rvRoomTab.html'" class="room-info"></div>
         

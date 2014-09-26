@@ -45,6 +45,7 @@
 
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" div-touch-move-stop-propogate>
+<<<<<<< HEAD
   <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
     <li class="room" ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" ng-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
@@ -96,6 +97,33 @@
       </div>
     </li>
   </ul> 
+=======
+   <ul class="wrapper" ng-hide="noResultsFound==rooms.length">
+      <li ng-repeat="room in rooms" ng-if="room.display_room" >
+         <a class="{{ room.roomStatusClass }}" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })">
+            <h2 class="room-number">{{ room.room_no }}</h2>
+            <figure class="guest-image">
+               <span ng-if="room.is_vip" class="vip" translate>VIP</span>
+               <img ng-src="{{room.avatar_src}}">
+            </figure>
+            <p class="room-stats-wrap">
+              <span class="room-status">{{ room.description }}</span>
+              <span class="fo-status">{{ room.room_reservation_status }}</span>
+            </p>
+         </a>
+      </li>
+   </ul>
+          <!-- Empty -->
+    <ul id="dashboard-search-results" class="search-results wrapper" ng-show="noResultsFound==rooms.length" >
+      <li class="no-content">
+        <div class="info">
+          <span class="icon-no-content icon-room"></span>
+          <strong class="h1">Find Rooms</strong>
+          <span class="h2">Search by <strong>Room Number</strong></span>
+        </div>
+      </li>
+    </ul> 
+>>>>>>> ng-develop
 </section>
 
 <!-- Rooms filters -->

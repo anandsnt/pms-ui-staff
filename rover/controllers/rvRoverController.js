@@ -54,6 +54,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
+    $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*
      * hotel Details
      */
@@ -87,6 +88,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
 
+    $scope.isDepositBalanceScreenOpened = false;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(){
+    	$scope.isDepositBalanceScreenOpened = true;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**
@@ -418,7 +423,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         ngDialog.open({
           template: '/assets/partials/settings/rvStaffSettingModal.html',
           controller: 'RVStaffsettingsModalController',
-          className: 'ngdialog-theme-plain calendar-modal'
+          className: 'calendar-modal'
         });
       }
     };
@@ -432,6 +437,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	//alert("-----------------------");
+    	//alert(JSON.stringify(data));
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
@@ -554,7 +561,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       // to reload app in case the bussiness date is changed
      // $state.go('rover.dashboard', {}, {reload: true});
       $window.location.reload();
-    }
+    };
 
      /**
     * Handles the bussiness date change completion
