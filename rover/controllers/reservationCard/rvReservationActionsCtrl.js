@@ -381,12 +381,13 @@ sntRover.controller('reservationActionsController', [
 		$scope.showDepositBalance = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithoutSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+				console.log("isrates==="+isRatesSuppressed)
 				if(!isRatesSuppressed){
 					showDepositBalanceButtonWithoutSR = true;
 				}
 				
 			}
-			return true;
+			return showDepositBalanceButtonWithoutSR;
 		};
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
@@ -396,7 +397,7 @@ sntRover.controller('reservationActionsController', [
 				}
 				
 			}
-			return true;
+			return showDepositBalanceButtonWithSR;
 		};
 	}
 ]);
