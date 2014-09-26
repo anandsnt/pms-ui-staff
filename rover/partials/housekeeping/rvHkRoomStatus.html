@@ -36,7 +36,7 @@
             <h2 class="room-number">{{ room.room_no }}</h2>
             <figure class="guest-image">
                <span ng-if="room.is_vip" class="vip" translate>VIP</span>
-               <img src="{{room.avatar_src}}">
+               <img ng-src="{{room.avatar_src}}">
             </figure>
             <p class="room-stats-wrap">
               <span class="room-status">{{ room.description }}</span>
