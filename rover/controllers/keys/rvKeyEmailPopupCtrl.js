@@ -1,5 +1,5 @@
-sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', '$state', function($rootScope, $scope, ngDialog, RVKeyPopupSrv, $state){
-	
+sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', '$state','$filter', function($rootScope, $scope, ngDialog, RVKeyPopupSrv, $state, $filter){
+	BaseCtrl.call(this, $scope);
 	// Set up data for view
 	var setupData = function(){
 		var reservationId = "";
@@ -20,17 +20,17 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	    	
 	    	// To check reservation status and select corresponding texts and classes.
 	    	if(reservationStatus == 'CHECKING_IN' ){
-				$scope.data.reservationStatusText = 'Check in Complete';
+				$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
 				$scope.data.colorCodeClass = 'check-in';
-				$scope.data.colorCodeClassForClose = 'hidden';
+				$scope.data.colorCodeClassForClose = 'green';
 			}
 			else if(reservationStatus == 'CHECKEDIN' ){
-				$scope.data.reservationStatusText = 'In House';
+				$scope.data.reservationStatusText = $filter('translate')('KEY_INHOUSE_STATUS');
 				$scope.data.colorCodeClass = 'inhouse';
 				$scope.data.colorCodeClassForClose = 'blue';
 			}
 			else if(reservationStatus == 'CHECKING_OUT'){
-				$scope.data.reservationStatusText = 'Checking Out';
+				$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKOUT_STATUS');
 				$scope.data.colorCodeClass = 'check-out';
 				$scope.data.colorCodeClassForClose = 'red';
 			}
@@ -55,7 +55,10 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	$scope.goToSearch = function(){
 		$scope.closeDialog();
 		$state.go('rover.search');
-		
+	};
+	// Close popup
+	$scope.closeDialog = function(){
+		ngDialog.close();
 	};
 	
 }]);
