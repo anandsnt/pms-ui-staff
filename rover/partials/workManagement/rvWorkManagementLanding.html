@@ -24,7 +24,7 @@
 
 <!-- Search panel : SEARCH BY NAME -->
 <section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
-    <div class="wrapper" style="height:100%" ng-iscroll="roomSearchResults">
+    <div class="wrapper scrollable" style="height:100%" ng-iscroll="maidsSearchResults">
         <ul id="work-management-search-results" class="search-results">            
             <li class="employee" ng-repeat="maid in stateVariables.searchResults.maids">
                 <a ng-click="showWorkSheet(maid.work_sheet_id)">
@@ -46,7 +46,7 @@
 
 <!-- Search panel : SEARCH BY ROOM NUMBER -->
 <section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && !stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
-    <div class="wrapper" style="height:100%" ng-iscroll="maidsSearchResults">
+    <div class="wrapper scrollable" style="height:100%" ng-iscroll="roomsSearchResults">
         <ul id="work-management-search-results" class="search-results">
            <li class="room" ng-repeat="room in stateVariables.searchResults.rooms">
 			<a ng-click="onRoomSelect(room)" ng-class="{'with-image': room.is_occupied}"> <!-- Add class="with-image" if room is occupied -->

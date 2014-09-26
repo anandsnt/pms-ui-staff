@@ -1,6 +1,7 @@
-sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv',
-    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv) {
+sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv', '$timeout',
+    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv, $timeout) {
         $scope.setHeading("Work Management");
+        BaseCtrl.call(this, $scope);
 
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
@@ -11,7 +12,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             });
         }
 
-        $scope.setScroller('roomSearchResults');
+        $scope.setScroller('roomsSearchResults');
         $scope.setScroller('maidsSearchResults');
 
         $scope.stateVariables = {
@@ -132,7 +133,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         $scope.stateVariables.employeeSearch = false;
                         $scope.stateVariables.searchResults.rooms = rooms;
                         $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.rooms.length === 0;
-                        $scope.refreshScroller('roomSearchResults');
+                        $scope.refreshScroller('roomsSearchResults');
                         $scope.$emit('hideLoader');
                     }
                     $scope.invokeApi(RVWorkManagementSrv.searchRooms, {

@@ -39,15 +39,16 @@
         <h2>Unassigned</h2>
         <div class="worksheet-actions">
             <div class="select">
-                <select id="worksheet-unassigned-room-status" name="worksheet-unassigned-room-status"><!-- Add class="placeholder" if value="" is selected -->
+                <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus" ng-class="{'placeholder': singleState.filters.selectedFloor == ''}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
+                    <!-- Add class="placeholder" if value="" is selected -->
                     <option value="" selected>All unassigned</option>
-                    <option value="dirty">Unassigned &amp; Dirty</option>
-                    <option value="pickup">Unassigned &amp; Pickup</option>
+                    <option value="DIRTY">Unassigned &amp; Dirty</option>
+                    <option value="PICKUP">Unassigned &amp; Pickup</option>
                     ...
                 </select>
             </div>
             <div class="select">
-                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="singleState.filters.selectedFloor" ng-class="{'placeholder': singleState.filters.selectedFloor == ''}" ng-options="floor.id as floor.description for floor in floors">
+                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="singleState.filters.selectedFloor" ng-class="{'placeholder': singleState.filters.selectedFloor == ''}" ng-options="floor.floor_number as floor.description for floor in floors" ng-change="startLoader();filterRooms();">
                     <option value="" selected>All floors</option>
                 </select>                
             </div>
@@ -55,7 +56,7 @@
         <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned">
             <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:' .worksheet-room.single-sheet.assigned '}">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassigned" 
+                <li class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}">
