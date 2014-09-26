@@ -13,25 +13,20 @@ admin.service('ADDailyWorkAssignmentSrv', [
     	* @param {object}
     	* @return {object} defer promise
     	*/  
-    	this.fetchTaskType = function() {
+    	this.fetchWorkType = function() {
     	    var deferred = $q.defer(),
-    	        url      = '';
+    	        url      = 'api/work_types';
 
-    	    // ADBaseWebSrvV2.getJSON(url, params)
-    	    //     .then(function(data) {
-    	    //         deferred.resolve(data);
-    	    //     }, function(errorMessage) {
-    	    //         deferred.reject(errorMessage);
-    	    //     });
-
-			// temp, delete later
-			this.taskType = [{
-				name: 'Daily Cleaning',
-				is_system_defined: true,
-				activated: true
-			}];
-			deferred.resolve(this.taskType);
-			// temp, delete later
+    	    ADBaseWebSrvV2.getJSON(url)
+    	        .then(function(data) {
+                    // since not avail from server
+                    _.each(data.results, function(item) {
+                        item.is_system_defined = false;
+                    });
+    	            deferred.resolve(data.results);
+    	        }, function(errorMessage) {
+    	            deferred.reject(errorMessage);
+    	        });
 
     	    return deferred.promise;
     	};
@@ -46,12 +41,12 @@ admin.service('ADDailyWorkAssignmentSrv', [
     	    var deferred = $q.defer(),
     	        url      = '';
 
-    	    // ADBaseWebSrvV2.getJSON(url, params)
-    	    //     .then(function(data) {
-    	    //         deferred.resolve(data);
-    	    //     }, function(errorMessage) {
-    	    //         deferred.reject(errorMessage);
-    	    //     });
+    	    ADBaseWebSrvV2.getJSON(url, params)
+    	        .then(function(data) {
+    	            deferred.resolve(data);
+    	        }, function(errorMessage) {
+    	            deferred.reject(errorMessage);
+    	        });
 
 			// temp, delete later
             console.log( this.taskType );
@@ -63,84 +58,142 @@ admin.service('ADDailyWorkAssignmentSrv', [
     	    return deferred.promise;
     	};
 
+        /*
+        * To delete a work type
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.deleteWorkType = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/work_types/' + params.id;
+
+            ADBaseWebSrvV2.deleteJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+        * To update a work type
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.putWorkType = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/work_types/' + params.id,
+                params   = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.putJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+        * To add a new work type
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.postWorkType = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/work_types/',
+                params   = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+
+
 
 
     	/*
-    	* To fetch task types
-    	* 
-    	* @param {object}
-    	* @return {object} defer promise
-    	*/  
-    	this.fetchTaskList = function() {
-    	    var deferred = $q.defer(),
-    	        url      = '';
+        * To fetch work shifts
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.fetchWorkShift = function() {
+            var deferred = $q.defer(),
+                url      = 'api/shifts/';
 
-    	    // ADBaseWebSrvV2.getJSON(url, params)
-    	    //     .then(function(data) {
-    	    //         deferred.resolve(data);
-    	    //     }, function(errorMessage) {
-    	    //         deferred.reject(errorMessage);
-    	    //     });
+            ADBaseWebSrvV2.getJSON(url)
+                .then(function(data) {
+                    // since not avail from server
+                    _.each(data.results, function(item) {
+                        item.is_system_defined = false;
+                    });
+                    deferred.resolve(data.results);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
 
-			// temp, delete later
-			this.taskList = [{
-				name: 'Clean Departures',
-				task_type: 'Daily Cleaning',
-				room_type: 'ALL',
-				resv_status: 'ALL',
-				fo_status: 'ALL',
-				task_completion_time: '03:30',
-				task_completion_hk_status: '',
-				is_system_defined: true,
-			}, {
-				name: 'Clean Stayovers',
-				task_type: 'Daily Cleaning',
-				room_type: 'ALL',
-				resv_status: 'ALL',
-				fo_status: 'ALL',
-				task_completion_time: '03:30',
-				task_completion_hk_status: '',
-				is_system_defined: true,
-			}];
-			deferred.resolve(this.taskList);
-			// temp, delete later
+            return deferred.promise;
+        };
 
-    	    return deferred.promise;
-    	};
+        /*
+        * To delete a work shift
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.deleteWorkShift = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/shifts/' + params.id;
+
+            ADBaseWebSrvV2.deleteJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+        * To add a new work shift
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.postWorkShift = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/shifts/',
+                params   = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
 
 
 
-    	/*
-    	* To fetch task types
-    	* 
-    	* @param {object}
-    	* @return {object} defer promise
-    	*/  
-    	this.fetchMaidShift = function() {
-    	    var deferred = $q.defer(),
-    	        url      = '';
 
-    	    // ADBaseWebSrvV2.getJSON(url, params)
-    	    //     .then(function(data) {
-    	    //         deferred.resolve(data);
-    	    //     }, function(errorMessage) {
-    	    //         deferred.reject(errorMessage);
-    	    //     });
 
-			// temp, delete later
-			this.maidShift = [{
-				name: 'Full Shift',
-				is_system_defined: true,
-				duration: '05:30'
-			}, {
-				name: 'Half Shift',
-				is_system_defined: true,
-				duration: '03:00'
-			}];
-			deferred.resolve(this.maidShift);
-			// temp, delete later
 
-    	    return deferred.promise;
-    	};
+
 	}
 ]);
