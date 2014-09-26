@@ -16,14 +16,13 @@
             <label for="worksheet-work-type">Task</label>
             <div class="select">
                 <select ng-model="singleState.workSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChange()">
-                   <option value="">Select a Work Type</option>
                 </select>
             </div>
         </div>
         <div class="entry shift">
             <label for="worksheet-shift">Shift</label>
             <div class="select">
-                <select ng-model="singleState.workSheet.shift_id" ng-options="shift.id as shift.name for shift in shifts" id="worksheet-shift" name="worksheet-shift" >                   
+                <select ng-model="singleState.workSheet.shift_id" ng-options="shift.id as shift.display_name for shift in shifts" id="worksheet-shift" name="worksheet-shift" >                   
                 </select>
             </div>
         </div>
@@ -39,16 +38,15 @@
         <h2>Unassigned</h2>
         <div class="worksheet-actions">
             <div class="select">
-                <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus" ng-class="{'placeholder': singleState.filters.selectedFloor == ''}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
+                <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus" ng-class="{'placeholder': !singleState.filters.selectedFloor}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
                     <!-- Add class="placeholder" if value="" is selected -->
                     <option value="" selected>All unassigned</option>
                     <option value="DIRTY">Unassigned &amp; Dirty</option>
                     <option value="PICKUP">Unassigned &amp; Pickup</option>
-                    ...
                 </select>
             </div>
             <div class="select">
-                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="singleState.filters.selectedFloor" ng-class="{'placeholder': singleState.filters.selectedFloor == ''}" ng-options="floor.floor_number as floor.description for floor in floors" ng-change="startLoader();filterRooms();">
+                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="singleState.filters.selectedFloor" ng-class="{'placeholder': !singleState.filters.selectedFloor}" ng-options="floor.floor_number as floor.description for floor in floors" ng-change="startLoader();filterRooms();">
                     <option value="" selected>All floors</option>
                 </select>                
             </div>
