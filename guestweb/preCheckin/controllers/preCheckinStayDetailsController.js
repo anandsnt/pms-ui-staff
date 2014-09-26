@@ -14,7 +14,7 @@
 	      controller: ccVerificationModalCtrl,
 	      resolve: {
 	        errorMessage:function(){
-	          return "Please select an estimated arrival time";
+	          return "Please select a valid estimated arrival time";
 	        }
 	      }
 	    };
