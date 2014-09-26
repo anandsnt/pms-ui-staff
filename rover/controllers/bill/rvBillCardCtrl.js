@@ -388,7 +388,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 			swipedTrackDataForCheckin = data;
 	 		}
 	 	}
-	 	alert(JSON.stringify(swipedTrackDataForCheckin));
 	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
 	 	if(data === undefined){
 	 		   
@@ -776,7 +775,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        	});
 			} else {
-				var cardExpiry = "01-"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-20"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2);
+				var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
 				if($scope.isSwipeHappenedDuringCheckin){
 	 				var data = {
 						"is_promotions_and_email_set" : $scope.saveData.promotions,
@@ -798,8 +797,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 						"reservation_id" : $scope.reservationBillData.reservation_id	
 					};
 	 		    }
-	 		    alert("data to checkin==============");
-	 		    alert(JSON.stringify(data));
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}
