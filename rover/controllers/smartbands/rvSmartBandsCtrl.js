@@ -40,7 +40,6 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.showSmartBandListView = false;
 	}; 
 	$scope.createSmartBandSuccess = function(data){
-		console.log("createSmartBandSuccess");
 		$scope.$emit( 'hideLoader' );
 
        	that.newBandInfo = {
