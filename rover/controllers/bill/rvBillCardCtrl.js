@@ -36,7 +36,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.paymentModalOpened = false;
 	$scope.showPayButton = false;
 	$scope.paymentModalSwipeHappened = false;
-
+	$scope.isSwipeHappenedDuringCheckin = false;
 	//Scope variable to set active bill
 	$scope.currentActiveBill = 0;
 	//Scope variable used for show/hide rate per day when clicks on each day in calender 
@@ -55,7 +55,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showBillingInfo = false;
 	$scope.showIncomingBillingInfo = false;
 	$scope.reservationBillData = reservationBillData;
-
+	//To send track details on checkin button;
+	var swipedTrackDataForCheckin = {};
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
 	}
@@ -382,6 +383,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 };
 	 $scope.addNewPaymentModal = function(data){
 	 	//Current active bill is index - adding 1 to get billnumber
+	 	if($scope.clickedButton == "checkinButton"){
+	 		if(!$scope.paymentModalSwipeHappened){
+	 			swipedTrackDataForCheckin = data;
+	 		}
+	 	}
+	 	alert(JSON.stringify(swipedTrackDataForCheckin));
 	 	var billNumber = parseInt($scope.currentActiveBill)+parseInt(1);
 	 	if(data === undefined){
 	 		   
@@ -415,6 +422,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
          		//Below code used for closing please swipe modal popup
          		$scope.closeDialog();
          		data.token = tokenData;
+         		swipedTrackDataForCheckin.tokenDataValue = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationBillData.reservation_id,
 		  	 		"fromView": $scope.fromViewToPaymentPopup,
@@ -431,6 +439,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		  	 		"is_swiped": true   // Commenting for now
 		  	 	};
 	         	var paymentData = $scope.reservationBillData;
+	         	if($scope.clickedButton == "checkinButton"){
+	         		$scope.isSwipeHappenedDuringCheckin = true;
+	         	}
 	  	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	};
          	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
@@ -765,11 +776,30 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        	});
 			} else {
-				var data = {
-					"is_promotions_and_email_set" : $scope.saveData.promotions,
-					"signature" : signatureData,
-					"reservation_id" : $scope.reservationBillData.reservation_id	
-				};
+				var cardExpiry = "01-"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-20"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2);
+				if($scope.isSwipeHappenedDuringCheckin){
+	 				var data = {
+						"is_promotions_and_email_set" : $scope.saveData.promotions,
+						"signature" : signatureData,
+						"reservation_id" : $scope.reservationBillData.reservation_id,
+					    "payment_type": "CC",	
+ 						"mli_token": swipedTrackDataForCheckin.tokenDataValue,
+						"et2": swipedTrackDataForCheckin.RVCardReadTrack2,
+						"ksn": swipedTrackDataForCheckin.RVCardReadTrack2KSN,
+						"pan": swipedTrackDataForCheckin.RVCardReadMaskedPAN,
+						"name_on_card": swipedTrackDataForCheckin.RVCardReadCardName,
+						"card_expiry": cardExpiry,	
+						"credit_card" : swipedTrackDataForCheckin.RVCardReadCardType	
+					};
+	 		    } else {
+	 		    	var data = {
+						"is_promotions_and_email_set" : $scope.saveData.promotions,
+						"signature" : signatureData,
+						"reservation_id" : $scope.reservationBillData.reservation_id	
+					};
+	 		    }
+	 		    alert("data to checkin==============");
+	 		    alert(JSON.stringify(data));
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
 			
 			}
@@ -805,7 +835,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}else{
 			return false;
 		}
-	}
+	};
 
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
@@ -960,7 +990,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
         className: 'ngdialog-theme-default',
         scope: $scope
       });
-    }
+    };
 
 	/*
 	 * to show the advance bill confirmation dialog
@@ -1291,7 +1321,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.moveToBillActionfetchSuccessCallback);
 		};
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
-	}
+	};
 		
 
 	/*
@@ -1306,6 +1336,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	    		controller: 'RVTermsAndConditionsDialogCtrl',
 	    		scope : $scope
 	    	});
-	}
+	};
 
 }]);
