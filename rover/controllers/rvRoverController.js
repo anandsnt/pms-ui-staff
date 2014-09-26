@@ -86,6 +86,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
+    $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
 
     $scope.searchBackButtonCaption = '';
 
