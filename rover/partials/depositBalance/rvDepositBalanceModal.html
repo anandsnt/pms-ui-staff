@@ -68,7 +68,7 @@
 			</ul>
 			<!-- Select cards, if exsist -->
 			<div id="select-make-payment-card" class="select-card" ng-hide="addCardActive">
-				<div id="available-cards" data-is-existing-card="no" class="cards-list scrollable cards-list-height">
+				<div id="available-cards" ng-iscroll='available-cards' ng-iscroll-delay='50'  data-is-existing-card="no" class="cards-list scrollable cards-list-height">
 					<div id="available-cards-wrapper" class="wrapper" >
 						<!-- Selected card -->
 						<label class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">

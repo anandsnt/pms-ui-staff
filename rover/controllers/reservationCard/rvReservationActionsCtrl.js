@@ -25,10 +25,19 @@ sntRover.controller('reservationActionsController', [
 			return display;
 		};
 
-		$scope.displayBalance = function(status) {
+		$scope.displayBalance = function(status, balance) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
-				display = true;
+			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+				if(status == 'CHECKING_IN' || status == 'RESERVED'){
+					if (balance == 0 || balance == 0.00 || balance == 0.0) {
+						display = false;
+					} else {
+						display = true;
+					}
+				} else {
+					display = true;
+				}
+				
 			}
 			return display;
 		};
@@ -355,7 +364,7 @@ sntRover.controller('reservationActionsController', [
 			
 		};
 		$scope.successCallBackFetchDepositBalance = function(data){
-			console.log("reached here")
+
 			$scope.$emit('hideLoader');
 			// $scope.depositBalanceData = data;
 			$scope.depositBalanceData = data;
@@ -368,6 +377,26 @@ sntRover.controller('reservationActionsController', [
 					scope: $scope
 				});
 			
+		};
+		$scope.showDepositBalance = function(reservationStatus, isRatesSuppressed){
+			var showDepositBalanceButtonWithoutSR = false;
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+				if(!isRatesSuppressed){
+					showDepositBalanceButtonWithoutSR = true;
+				}
+				
+			}
+			return true;
+		};
+		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
+			var showDepositBalanceButtonWithSR = false;
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+				if(isRatesSuppressed){
+					showDepositBalanceButtonWithSR = true;
+				}
+				
+			}
+			return true;
 		};
 	}
 ]);
