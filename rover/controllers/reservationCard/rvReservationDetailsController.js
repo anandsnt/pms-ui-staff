@@ -152,7 +152,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					$scope.refreshScroller('resultDetails');
 				},
 				timeoutSpan);
-		}
+		};
 
 
 		$scope.$on('$viewContentLoaded', function() {
@@ -209,15 +209,25 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var paymentData = $scope.reservationData;
 				$scope.showAddNewPaymentModal(passData, paymentData);
 			} else {
-
+				var ksn = data.RVCardReadTrack2KSN;
+          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+					ksn = data.RVCardReadETBKSN;
+				}
 
 				var getTokenFrom = {
-					'et2': data.RVCardReadTrack2,
-					'ksn': data.RVCardReadTrack2KSN,
+					'ksn': ksn,
 					'pan': data.RVCardReadMaskedPAN
 				};
-
+				
+				if(data.RVCardReadTrack2!=''){
+					getTokenFrom.et2 = data.RVCardReadTrack2;
+				} else if(data.RVCardReadETB !=""){
+					getTokenFrom.etb = data.RVCardReadETB;
+				}
+				
+				
 				var tokenizeSuccessCallback = function(tokenData) {
+					
 					data.token = tokenData;
 					var passData = {
 						"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -229,11 +239,19 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 						"et2": data.RVCardReadTrack2,
 						'ksn': data.RVCardReadTrack2KSN,
 						'pan': data.RVCardReadMaskedPAN,
+						'etb': data.RVCardReadETB,
 						'token': tokenData,
 						"is_swiped": true // Commenting for now
 					};
 					var paymentData = $scope.reservationData;
-					$scope.showAddNewPaymentModal(passData, paymentData);
+					
+					if($scope.isDepositBalanceScreenOpened){
+						
+						$scope.$broadcast("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", passData);
+					} else{
+						$scope.showAddNewPaymentModal(passData, paymentData);
+					}
+					
 				};
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			}
@@ -255,6 +273,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * Handle swipe action in reservationdetails card
 		 */
 		$scope.$on('SWIPEHAPPENED', function(event, data) {
+			
 			if (!$scope.isGuestCardVisible) {
 				$scope.openAddNewPaymentModel(data);
 			}

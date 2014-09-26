@@ -4,6 +4,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData = {};
 	$scope.guestPaymentList = {};
 	$scope.saveData.add_to_guest_card = false;
+	$scope.do_not_cc_auth = false;
 
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
@@ -234,6 +235,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 		}
 		$rootScope.$broadcast('paymentTypeUpdated');
+		if($scope.passData.showDoNotAuthorize){
+			$rootScope.$broadcast('cc_auth_updated', $scope.do_not_cc_auth);
+		}
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
@@ -376,6 +380,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				}
 		}
 		else{
+			
+			/* in case the payment type is cc first we fetch MLI sesionId using card details and then save*/
 			if(parseInt($scope.saveData.selected_payment_type) ===0){
 				if($scope.saveData.card_number.length>0){
 					$scope.fetchMLISessionId();

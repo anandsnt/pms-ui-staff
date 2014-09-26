@@ -344,6 +344,7 @@
 "WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
 "CHECKOUT_NOT_SUCESSFULL":"Only when check out is NOT successful",
 "EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
+"EMAIL_ACCOUNTS_LABEL2":"EMAIL ACCOUNTS TO RECEIVE LATE CHECK OUT ALERT ONLY (Seperated by semicolon [;]) ",
 "BACK_TO_SETUP":"Back to setup",
 "SOCIAL_LOBBY_SETUP":"Social Lobby Setup",
 "SOCIAL_LOBBY":"Social Lobby",

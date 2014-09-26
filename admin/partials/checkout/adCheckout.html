@@ -93,6 +93,8 @@
 
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.emails" label = "{{'EMAIL_ACCOUNTS_LABEL' | translate}}" placeholder = ""></ad-textarea>
 
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.staff_emails_for_late_checkouts" label = "{{'EMAIL_ACCOUNTS_LABEL2' | translate}}" placeholder = ""></ad-textarea>
+
 			</fieldset>
 			<fieldset class="holder right">
 				<div class="entry third-quarter">
@@ -151,7 +153,7 @@
 					</div>
 			</fieldset>
 			<div class="actions float">
-				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline" translate>CANCEL</button>
+				<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>CANCEL</button>
 				<button type="button" ng-click="saveCheckout()" class="button green" translate>SAVE_CHANGES</button>
 			</div>
 		</form>
