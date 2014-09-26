@@ -55,6 +55,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showBillingInfo = false;
 	$scope.showIncomingBillingInfo = false;
 	$scope.reservationBillData = reservationBillData;
+	$scope.roomChargeEnabled = false;
 
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
@@ -155,7 +156,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
-		
+		/*
+		 * set the status for the room charge no post button, 
+		 * on the basis of payment type
+		 */
+		 $scope.roomChargeEnabled = ($scope.reservationBillData.bills[0].credit_card_details.payment_type == "CC");
 		// $timeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
         // }, 500);		
