@@ -9,6 +9,8 @@
 					<span class='smartband-icon'></span>
 					<span class='band-holder'> {{remainingBands.first_name}} {{remainingBands.last_name}}</span>
 					<span class='charge'> {{currencySymbol}} {{remainingBands.amount}} </span>
+					<!-- Display last 4 digits of the account number -->
+					<span class='account-num'>{{remainingBands.account_number.substr(remainingBands.account_number.length - 4)}}</span>
 				</li>
 				
 			</ul>
