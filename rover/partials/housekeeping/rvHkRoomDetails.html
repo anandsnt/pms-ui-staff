@@ -27,7 +27,7 @@
             <div class="wrapper">
                   <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
                   <figure class="guest-image">
-                      <img alt="" src="{{ data.room_details.avatar_src }}">
+                      <img alt="" ng-src="{{ data.room_details.avatar_src }}">
                       <span ng-show="data.room_details.is_vip == 'true'" class="vip" translate>VIP</span>            
                   </figure>
                   <h2>
