@@ -28,8 +28,7 @@ var Search = function(domRef) {
 			var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
 			that.myDomElement.find('#search-title').html(newSearchTitleHtml);
 			this.fetchSearchData(search_url, "", type);
-		}
-		if (type == "QUEUE_ROOMS") {
+		} else if (type == "QUEUE_ROOMS") {
 			that.myDomElement.find("#no-results").html("");
 			var search_url = "search.json?is_queued_rooms_only=true";
 			searchTitle = "Queued Reservations";
