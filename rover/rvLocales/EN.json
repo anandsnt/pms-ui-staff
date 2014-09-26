@@ -592,6 +592,7 @@
     "PRICE": "Price",
     "PACKAGE": "Package",
     "INCL": "INCL",
+    "EXCL": "EXCL",
     "EXPENSE": "Expense",
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
