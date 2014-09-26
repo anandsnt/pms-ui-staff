@@ -156,5 +156,21 @@ sntRover.service('RVHkRoomDetailsSrv', [
 
 			return deferred.promise;
 		};
+
+
+		// room work time fetch record api
+		this.recordTime = function() {
+			var deferred = $q.defer(),
+				url = '/api/work_assignments/record_time';
+
+			rvBaseWebSrvV2.postJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}.bind(this), function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);

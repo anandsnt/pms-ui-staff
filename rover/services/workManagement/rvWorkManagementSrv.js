@@ -6,6 +6,7 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		// 3. Shifts
 
 
+
 		this.fetchMaids = function() {
 			var deferred = $q.defer();
 			var url = 'api/work_statistics/employees_list';
@@ -24,7 +25,6 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		this.fetchWorkTypes = function() {
 			var deferred = $q.defer();
 			var url = 'api/work_types';
-			//var url = 'api/work_statistics/employees_list';			
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data.results);
 			}, function(data) {
@@ -34,13 +34,17 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		}
 
 		this.fetchShifts = function() {
-			return [{
-				id: 1,
-				name: "Full 08:00"
-			}, {
-				id: 2,
-				name: "Half 04:00"
-			}]
+			var deferred = $q.defer();
+			var url = 'api/shifts';
+			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+				_.each(data.results, function(shift) {
+					shift.display_name = shift.name + "(" + shift.time + ")";
+				})
+				deferred.resolve(data.results);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
 		}
 
 
