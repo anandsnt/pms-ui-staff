@@ -45,17 +45,17 @@ console.log($scope);
 	 */
 	$scope.clickedMakePayment = function(){
 		
-		alert("kkkkkkkkkkkk");
+		
 		if($scope.isSwiped){
 			//$scope.handleSwipedData();
-				alert("inside isswiped");
+				
 			$scope.savePayment("swiped");
 			
 		} else if($scope.addCardActive){
-			alert("handleMLISessionId");
+			
 			$scope.handleMLISessionId();
 		} else {
-			alert("selectedCard");
+			
 			$scope.savePayment("selectedCard");
 		}
 		
