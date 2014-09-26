@@ -4,8 +4,9 @@
       	<span class="icons icon-close invert"></span>
       </button>
       <div class="head_terms_and_conditions" translate>TERMS_AND_CONDITIONS_LABEL</div>
-      <div class="scrollable" id="terms-content">
-         <div class="wrapper" >
+      <div class="scrollable" ng-iscroll='termsandconditions' ng-iscroll-delay='50'  id="terms-content">
+         <div class="wrapper" ng-bind-html = "termsAndConditionsText">
+         
          </div>
       </div>
       <div class="actions">

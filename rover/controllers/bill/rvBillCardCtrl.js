@@ -1,5 +1,5 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce){
 
 	
 	BaseCtrl.call(this, $scope);	
@@ -1288,6 +1288,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	*the terms and conditions text from the server
 	*/
 	$scope.termsAndConditionsClicked = function(){
+		$scope.termsAndConditionsText = $sce.trustAsHtml($rootScope.termsAndConditionsText);
 		ngDialog.open({
 	    		template: '/assets/partials/validateCheckin/rvTermsAndConditionsDialog.html',
 	    		className: 'ngdialog-theme-default',
