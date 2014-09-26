@@ -191,7 +191,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			return $filter('translate')('BILLING_INFO_TITLE');
 		else
 			return $filter('translate')('ADD_BILLING_INFO_TITLE');
-	}
+	};
 
 	/*
 	 * Adding class for active bill
@@ -394,14 +394,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			 	var paymentData = $scope.reservationBillData;
 			 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 	} else {
+  	 		var ksn = data.RVCardReadTrack2KSN;
+      		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+				ksn = data.RVCardReadETBKSN;
+			}
+
+			var getTokenFrom = {
+				'ksn': ksn,
+				'pan': data.RVCardReadMaskedPAN
+			};
+			
+			if(data.RVCardReadTrack2!=''){
+				getTokenFrom.et2 = data.RVCardReadTrack2;
+			} else if(data.RVCardReadETB !=""){
+				getTokenFrom.etb = data.RVCardReadETB;
+			}
   	 		
-  	 		
-           var  getTokenFrom = {
-	              'et2': data.RVCardReadTrack2,
-	              'ksn': data.RVCardReadTrack2KSN,
-	              'pan': data.RVCardReadMaskedPAN
-	           };
-         
+          
          	var tokenizeSuccessCallback = function(tokenData){
          		//Below code used for closing please swipe modal popup
          		$scope.closeDialog();
@@ -414,8 +423,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		  	 		"name_on_card": data.RVCardReadCardName,
 		  	 		"card_expiry":data.RVCardReadExpDate,
 		  	 		"et2": data.RVCardReadTrack2,
-	             	 'ksn': data.RVCardReadTrack2KSN,
+	             	'ksn': data.RVCardReadTrack2KSN,
 	              	'pan': data.RVCardReadMaskedPAN,
+	              	'etb': data.RVCardReadETB,
 	              	'token': tokenData,
 	              	"fromBill" : billNumber,
 		  	 		"is_swiped": true   // Commenting for now
