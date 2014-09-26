@@ -534,6 +534,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			});
+
+			$scope.$emit("REFRESHACCORDIAN");
 		}
 
 		$scope.showAllRooms = function() {
@@ -546,6 +548,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.setSelectedType = function(val) {
 			$scope.selectedRoomType = $scope.selectedRoomType == val.id ? -1 : val.id;
 			$scope.refreshScroll();
+		}
+		
+		// Fix for CICO-9536
+		// Expected Result: Only one single room type can be applied to a reservation.
+		// However, the user should be able to change the room type for the first night on the Stay Dates screen,
+		// while the reservation is not yet checked in. The control should be disabled for any subsequent nights.
+		$scope.resetRates = function(){
+			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate, idx) {
+				stayDate.rate.id = '';
+                stayDate.rate.name ='';
+            });
+            $scope.stateCheck.rateSelected.allDays = false;
 		}
 
 		$scope.filterRooms = function() {
@@ -1149,6 +1163,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.updateDayOccupancy = function(occupants) {
 			$scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests[occupants] = parseInt($scope.stateCheck.selectedStayDate.guests[occupants]);
+			/**
+			 * CICO-8504
+			 * In case of multiple rates selected, the side bar and the reservation summary need to showcase the first date's occupancy!
+			 *
+			 */
+			if ($scope.reservationData.arrivalDate == $scope.stateCheck.dateModeActiveDate) {
+				var occupancy = $scope.reservationData.rooms[$scope.activeRoom].stayDates[$scope.stateCheck.dateModeActiveDate].guests;
+				$scope.reservationData.rooms[$scope.activeRoom].numAdults = occupancy.adults;
+				$scope.reservationData.rooms[$scope.activeRoom].numChildren = occupancy.children;
+				$scope.reservationData.rooms[$scope.activeRoom].numInfants = occupancy.infants;
+			}
+
 			if (!$scope.checkOccupancyLimit($scope.stateCheck.dateModeActiveDate)) {
 				$scope.preferredType = "";
 				// TODO : Reset other stuff as well

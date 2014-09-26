@@ -1,5 +1,5 @@
-sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSrv', '$timeout','ngDialog',
-	function($scope,$rootScope, RVCompanyCardSrv, $timeout,ngDialog) {
+sntRover.controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
@@ -15,23 +15,28 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
+
 			if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
 				if ($scope.viewState.isAddNewCard) {
-					$scope.errorMessage = ["Please save Company Card first"];
+					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
 				} else {
 					saveContactInformation($scope.contactInformation);
-					$scope.$broadcast("contractTabActive");
 				}
 			}
 			if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
 				$scope.$broadcast("contactTabActive");
-			}
-			else if($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts'){
+			} else if ($scope.currentSelectedTab == 'cc-ar-accounts' && tabToSwitch !== 'cc-ar-accounts') {
 				$scope.$broadcast("saveArAccount");
-			}	
-			else if(tabToSwitch == 'cc-ar-accounts'){
+			}
+
+			if (tabToSwitch == 'cc-ar-accounts') {
 				$scope.$broadcast("arAccountTabActive");
-			};	
+			} else if (tabToSwitch == 'cc-contracts') {
+				$scope.$broadcast("contractTabActive");
+			} else if (tabToSwitch == 'cc-contact-info') {
+				$scope.$broadcast("contactTabActive");
+			}
+
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.currentSelectedTab = tabToSwitch;
 			}
@@ -40,69 +45,71 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
-			$scope.$broadcast('setgenerateNewAutoAr',true);
+			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo($event, 'cc-ar-accounts');
 
 		};
-		$scope.$on('ARNumberChanged',function(e,data){
-			$scope.contactInformation.account_details.accounts_receivable_number  = data.newArNumber;
+		$scope.$on('ARNumberChanged', function(e, data) {
+			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
 		});
 
-		$scope.deleteArAccount = function(){
+		$scope.deleteArAccount = function() {
 			ngDialog.open({
-				 template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
-				 className: 'ngdialog-theme-default1 calendar-single1',
-				 closeByDocument: false,
-				 scope: $scope
-			});		
+				template: '/assets/partials/companyCard/rvCompanyCardDeleteARaccountPopup.html',
+				className: 'ngdialog-theme-default1 calendar-single1',
+				closeByDocument: false,
+				scope: $scope
+			});
 		};
 
-		$scope.deleteARAccountConfirmed = function(event){
-			var successCallbackOfdeleteArAccount = function(data){
+		$scope.deleteARAccountConfirmed = function(event) {
+			var successCallbackOfdeleteArAccount = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.isArTabAvailable = false;
 				$scope.$broadcast('ArAccountDeleted');
 				$scope.contactInformation.account_details.accounts_receivable_number = "";
 				//$scope.generateNewAutoAr = false;
-				$scope.$broadcast('setgenerateNewAutoAr',false);
+				$scope.$broadcast('setgenerateNewAutoAr', false);
 				ngDialog.close();
 			};
-			var dataToSend = {"id":$scope.reservationDetails.companyCard.id};
+			var dataToSend = {
+				"id": $scope.reservationDetails.companyCard.id
+			};
 			$scope.invokeApi(RVCompanyCardSrv.deleteArAccount, dataToSend, successCallbackOfdeleteArAccount);
 		};
 
-		$scope.clikedDiscardDeleteAr = function(){
-				ngDialog.close();
+		$scope.clikedDiscardDeleteAr = function() {
+			ngDialog.close();
 		};
-		var callCompanyCardServices =  function(){
-				var param = {
-					'id': $scope.reservationDetails.companyCard.id
-				};
-				var successCallbackFetchArNotes = function(data){
-						$scope.$emit("hideLoader");
-						$scope.arAccountNotes = data;
-						$scope.$broadcast('ARDetailsRecieved');
-					};
-					var fetchARNotes = function(){
-						$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
-					}
+		var callCompanyCardServices = function() {
+			var param = {
+				'id': $scope.reservationDetails.companyCard.id
+			};
+			var successCallbackFetchArNotes = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.arAccountNotes = data;
+				$scope.$broadcast('ARDetailsRecieved');
+			};
+			var fetchARNotes = function() {
+				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
+			}
 
-					var successCallbackFetchArDetails = function(data){
-						$scope.$emit("hideLoader");
-						$scope.arAccountDetails = data;
-						if($scope.arAccountDetails.is_use_main_contact !== false){
-							$scope.arAccountDetails.is_use_main_contact = true;
-						}
-						if($scope.arAccountDetails.is_use_main_address !== false){
-							$scope.arAccountDetails.is_use_main_address = true;
-						}
-						fetchARNotes();
-					};
-					$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);		
+			var successCallbackFetchArDetails = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.arAccountDetails = data;
+				if ($scope.arAccountDetails.is_use_main_contact !== false) {
+					$scope.arAccountDetails.is_use_main_contact = true;
+				}
+				if ($scope.arAccountDetails.is_use_main_address !== false) {
+					$scope.arAccountDetails.is_use_main_address = true;
+				}
+				fetchARNotes();
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
 
-		};	
+		};
 
-	
+
 		/*-------AR account ends here-----------*/
 
 		$scope.$on('companyCardAvailable', function(obj, isNew) {
@@ -116,7 +123,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 			if (isNew === true) {
 				$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
 				$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
-				$scope.contactInformation.account_details.company_corp_id = $scope.searchData.companyCard.companyCorpId;
+				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
 			}
 			$scope.$broadcast("contactTabActive");
 			$timeout(function() {
@@ -129,7 +136,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 		$scope.$on("companyCardDetached", function() {
 			$scope.searchMode = true;
 			$scope.isArTabAvailable = false;
-			$scope.$broadcast('setgenerateNewAutoAr',false);
+			$scope.$broadcast('setgenerateNewAutoAr', false);
 		});
 
 		$scope.$on("companySearchInitiated", function() {
@@ -158,15 +165,13 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 				return;
 			} else if (document.getElementById("cc-contracts") != null && getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} 
-			else if (document.getElementById("cc-ar-accounts") != null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab == 'cc-ar-accounts') {
+			} else if (document.getElementById("cc-ar-accounts") != null && getParentWithSelector($event, document.getElementById("cc-ar-accounts")) && $scope.currentSelectedTab == 'cc-ar-accounts') {
 				return;
-			}
-			else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
+			} else if (!$scope.viewState.isAddNewCard && document.getElementById("company-card-header") != null && getParentWithSelector($event, document.getElementById("company-card-header"))) {
 				$scope.$emit("saveContactInformation");
 				$rootScope.$broadcast("saveArAccount");
 			}
-			
+
 		};
 
 		/**
@@ -246,7 +251,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
-		
+
 
 		/**
 		 * function used to save the contact data, it will save only if there is any
@@ -286,18 +291,13 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope','$rootScope','RVCompanyCardSr
 
 sntRover.controller('companyResults', ['$scope', '$timeout',
 	function($scope, $timeout) {
-		$scope.$parent.myScrollOptions = {
-			'companyResultScroll': {
-				snap: false,
-				scrollbars: true,
-				vScroll: true,
-				vScrollbar: true,
-				hideScrollbar: false
-			}
-		}
+		BaseCtrl.call(this, $scope);
+		var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+  		$scope.setScroller ('companyResultScroll', scrollerOptionsForGraph);
+
 		$scope.$on("refreshCompaniesScroll", function() {
 			$timeout(function() {
-				$scope.$parent.myScroll['companyResultScroll'].refresh();
+				$scope.refreshScroller('companyResultScroll');	
 			}, 500);
 		})
 	}

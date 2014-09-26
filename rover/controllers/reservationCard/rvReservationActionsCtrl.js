@@ -7,14 +7,16 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationCardSrv',
 	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
+	'RVSearchSrv',
 	'$filter',
-	function($rootScope, $scope, ngDialog, RVChargeItems, $state, RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv, $filter) {
+	function($rootScope, $scope, ngDialog, RVChargeItems, $state, 
+		RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv,RVSearchSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
 		$scope.actionsCheck = {
 			firstDate: $scope.reservationParentData.arrivalDate == $rootScope.businessDate
-		}
+		};
 
 		$scope.displayTime = function(status) {
 			var display = false;
@@ -191,6 +193,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.showRemoveFromQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
+			
 			var displayPutInQueue = false;
 			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
 				if (isQueueRoomsOn == "true" && isReservationQueued == "true") {
@@ -203,12 +206,17 @@ sntRover.controller('reservationActionsController', [
 		$scope.successPutInQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "true";
+			$scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'add');
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
 
 		$scope.successRemoveFromQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "false";
+			
+			RVSearchSrv.removeResultFromData($scope.reservationData.reservation_card.reservation_id);
+			$scope.$emit('UPDATE_QUEUE_ROOMS_COUNT', 'remove');
+			
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
 
@@ -246,7 +254,7 @@ sntRover.controller('reservationActionsController', [
 					})()
 				})
 			});
-		}
+		};
 
 		/**
 		 * This method handles cancelling an exisiting reservation or
@@ -279,18 +287,18 @@ sntRover.controller('reservationActionsController', [
 					}
 					promptCancel(cancellationCharge, nights);
 
-				}
+				};
 				var onCancellationDetailsFetchFailure = function(error) {
 					$scope.$emit('hideLoader');
 					$scope.errorMessage = error;
-				}
+				};
 
 				var params = {
 					id: $scope.reservationData.reservation_card.reservation_id
 				};
 
 				$scope.invokeApi(RVReservationCardSrv.fetchCancellationPolicies, params, onCancellationDetailsFetchSuccess, onCancellationDetailsFetchFailure);
-			}
+			};
 
 			/**
 			 * If the reservation is within cancellation period, no action will take place.
@@ -299,7 +307,7 @@ sntRover.controller('reservationActionsController', [
 			 */
 
 			checkCancellationPolicy();
-		}
+		};
 
 		$scope.openSmartBands = function() {
 			ngDialog.open({

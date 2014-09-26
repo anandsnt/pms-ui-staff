@@ -1,5 +1,6 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog', '$filter', 'RVCompanyCardSrv', '$state', 'dateFilter', 'baseSearchData',
     function($scope, $rootScope, baseData, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData) {
+
         BaseCtrl.call(this, $scope);
 
         $scope.$emit("updateRoverLeftMenu", "createReservation");
@@ -73,7 +74,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateTotal: 0,
                     addons: [],
                     varyingOccupancy: false,
-                    stayDates: {}
+                    stayDates: {},
+                    isOccupancyCheckAlerted: false
                 }],
                 totalTaxAmount: 0,
                 totalStayCost: 0,
@@ -306,18 +308,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max == null || roomPref.max >= currOccupancy) {
                     return true;
                 }
-
-                ngDialog.open({
-                    template: '/assets/partials/reservation/alerts/occupancy.html',
-                    className: 'ngdialog-theme-default',
-                    scope: $scope,
-                    closeByDocument: false,
-                    closeByEscape: false,
-                    data: JSON.stringify({
-                        roomType: roomPref.name,
-                        roomMax: roomPref.max
-                    })
-                });
+                // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
+                if(!$scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted || $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted != activeRoom){
+                    ngDialog.open({
+                        template: '/assets/partials/reservation/alerts/occupancy.html',
+                        className: 'ngdialog-theme-default',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        data: JSON.stringify({
+                            roomType: roomPref.name,
+                            roomMax: roomPref.max
+                        })
+                    });
+                    // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
+                    $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted = activeRoom;
+                }
                 return true;
             } else {
                 // TODO: 7641
@@ -631,11 +637,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.confirmNum = reservationDetails.reservation_card.confirmation_num;
             $scope.reservationData.reservationId = reservationDetails.reservation_card.reservation_id;
 
-            // stay
-            var arrivalDateParts = reservationDetails.reservation_card.arrival_date.split(' ')[1].split('-');
-            var departureDateParts = reservationDetails.reservation_card.departure_date.split(' ')[1].split('-');
-            $scope.reservationData.arrivalDate = dateFilter(new tzIndependentDate(arrivalDateParts[2] + "-" + arrivalDateParts[0] + "-" + arrivalDateParts[1]), 'yyyy-MM-dd');
-            $scope.reservationData.departureDate = dateFilter(new tzIndependentDate(departureDateParts[2] + "-" + departureDateParts[0] + "-" + departureDateParts[1]), 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = reservationDetails.reservation_card.arrival_date;
+            $scope.reservationData.departureDate = reservationDetails.reservation_card.departure_date;
             $scope.reservationData.numNights = reservationDetails.reservation_card.total_nights;
 
             /** CICO-6135
@@ -752,13 +755,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     }
                 }
             }
-
-            if (reservationDetails.reservation_card.payment_method_used != "") {
+            if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
                 $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
             }
 
-            console.log('$scope.reservationData model - 2', $scope.reservationData);
 
             /* CICO-6069
              *  Comments from story:
@@ -772,12 +773,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.rooms[0].numChildren = arrivalDateDetails[0].children;
             $scope.reservationData.rooms[0].numInfants = arrivalDateDetails[0].infants;
 
-            // Find if midstay
+            // Find if midstay or later
             if (new tzIndependentDate($scope.reservationData.arrivalDate) < new tzIndependentDate($rootScope.businessDate)) {
                 $scope.reservationData.midStay = true;
+                /**
+                 * CICO-8504
+                 * Initialize occupancy to the last day
+                 * If midstay update it to that day's
+                 * 
+                 */
+                var lastDaydetails = _.last(reservationDetails.reservation_card.stay_dates);
+                $scope.reservationData.rooms[0].numAdults = lastDaydetails.adults;
+                $scope.reservationData.rooms[0].numChildren = lastDaydetails.children;
+                $scope.reservationData.rooms[0].numInfants = lastDaydetails.infants;
+
                 var currentDayDetails = _.where(reservationDetails.reservation_card.stay_dates, {
                     date: dateFilter(new tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd')
                 });
+
                 if (currentDayDetails.length > 0) {
                     $scope.reservationData.rooms[0].numAdults = currentDayDetails[0].adults;
                     $scope.reservationData.rooms[0].numChildren = currentDayDetails[0].children;
@@ -895,5 +908,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         $scope.initReservationData();
+
+        $scope.$on('REFRESHACCORDIAN', function() { 
+            $scope.$broadcast('GETREFRESHACCORDIAN');
+        });
     }
 ]);

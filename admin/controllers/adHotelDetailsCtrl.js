@@ -65,6 +65,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.data = data;
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
+			$scope.hotelTemplateLogoPrefetched = data.hotel_template_logo;
 			if($scope.data.check_in_time.primetime == "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
 				$scope.data.check_in_time.primetime = "AM";
 				$scope.data.check_in_primetime ="AM";
@@ -134,22 +135,33 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		// Hotel Admin -To save Edit data
 		else{
 			
-			if($scope.data.hotel_template_logo.indexOf("data:")!= -1){
-				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages"];
-			} else {
-				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages", "hotel_template_logo"];
-			}
-			
+
+		/*********** Commented out to fix CICO-8508 ****************************/	
+		//template logo was not updating when existing image was removed
+		/********************************************************************/		
+			// if($scope.data.hotel_template_logo.indexOf("data:")!= -1){
+				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats"];
+			// } else {
+			// 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages", "hotel_template_logo"];
+			// }
 			
 			
 			var data = dclone($scope.data, unwantedKeys);
 			if($scope.hotelLogoPrefetched == data.hotel_logo){ 
 				data.hotel_logo = "";
 			}
+			if($scope.hotelTemplateLogoPrefetched == data.hotel_template_logo){
+				data.hotel_template_logo = "";
+			}
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go('admin.dashboard', {menu: 0});
 				$scope.$emit('hotelNameChanged',{"new_name":$scope.data.hotel_name});
+				angular.forEach($scope.data.currency_list,function(item, index) {
+		       		if (item.id == $scope.data.default_currency) {
+		       			$rootScope.currencySymbol = getCurrencySign(item.code);
+				 	}
+	       		});
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
@@ -160,6 +172,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     */
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
+	};
+	/**
+    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    */
+	$scope.doNotUpdateVideoToggleClicked = function(){
+		$scope.data.do_not_update_video_checkout = ($scope.data.do_not_update_video_checkout == 'true') ? 'false' : 'true';
 	};
 
 	/**

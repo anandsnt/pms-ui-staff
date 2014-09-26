@@ -37,7 +37,10 @@
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms($event)">
+            <select ng-model="stateCheck.preferredType" 
+            ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'" 
+            ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" 
+            ng-change="filterRooms($event); resetRates();">
                 <option value="" translate>RESV_ALL_ROOMS</option>
             </select>
         </div>
@@ -115,7 +118,10 @@
                                     </tfoot>
                                     <tbody>
                                         <tr ng-repeat="day in displayData.dates">
-                                            <td>{{day.obj | date: dayAndDateCS }}</td>
+                                            <td>
+                                                {{day.obj | date: fulldayInWeek }},
+                                                {{day.obj | date: dateFormat }}
+                                            </td>
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td ng-if="displayData.allRates[rate].is_suppress_rate_on">SR</td>
                                             <td ng-if="!displayData.allRates[rate].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
@@ -191,7 +197,10 @@
                             </tfoot>
                             <tbody>
                                 <tr ng-repeat="day in displayData.dates">
-                                    <td>{{day.obj | date: dayAndDateCS }}</td>
+                                    <td>
+                                        {{day.obj | date: fulldayInWeek }},
+                                        {{day.obj | date: dateFormat }}
+                                    </td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td ng-if="displayData.allRates[rate.rate.id].is_suppress_rate_on">SR</td>
                                     <td ng-if="!displayData.allRates[rate.rate.id].is_suppress_rate_on">{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>

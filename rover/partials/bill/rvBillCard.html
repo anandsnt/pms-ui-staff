@@ -8,7 +8,7 @@
 		<div class="reservation-header" >
 			<div class="actions">
 				<!-- Billing information -->
-				<a class="button blue" ng-click="openBillingInformation()" translate>BILLING_INFO_TITLE</a>
+				<a class="button blue" ng-click="openBillingInformation()" ng-show = "isStandAlone" translate>{{getBillingInfoTitle()}}</a>
 			</div>
 						
 			<!-- Other header details -->
@@ -23,9 +23,11 @@
 					{{setNightsString()}} 
 				</span>
 				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span> 
-				 {{reservationBillData.checkin_date | date:dayAndDate}} </span>
-				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span> 
-				{{reservationBillData.checkout_date | date:dayAndDate}} </span>
+				 {{reservationBillData.checkin_date | date:fulldayInWeek}}
+				 {{reservationBillData.checkin_date | date:dateFormat}} </span>
+				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
+				{{reservationBillData.checkout_date | date:fulldayInWeek}} 
+				{{reservationBillData.checkout_date | date:dateFormat}} </span>
 			</div>
 		</div>
 
@@ -109,7 +111,7 @@
 									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>
-							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10">
+							<li class="add-new-bill-li" ng-show="reservationBillData.bills.length<10 && isStandAlone">
 							<a class="button with-icon brand-colors ng-binding ui-tabs-anchor add-new-bill-button" ng-click="createNewBill()"> 
 								<span class="icons icon-plus"></span> 
 							</a>
@@ -122,7 +124,7 @@
 					<div ng-class="{'hidden': $index!=currentActiveBill}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills" style="position: static">
 						<div class="bill-summary-wrapper">
 							<!-- TODO: IMPLEMENT HORIZONTAL SCROLL -->
-							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'  >
+							<div class="scrollable" ng-iscroll='billDays' ng-iscroll-delay='50'>
 								<ul class="wrapper" style="width: {{calculatedWidth}}px;">
 									<li class="add-new" ng-click="openPostCharge(billData.bill_number)">
 										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
@@ -134,8 +136,8 @@
 											<span class="day"> {{days.date | date:'EEE'}} </span> 
 											<span class="date"> {{days.date | date:'dd'}} </span> 
 											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date"><span translate>CHECK_IN</span></span> 
-											<span class="price" ng-show="reservationBillData.is_rates_suppressed">{{reservationBillData.text_rates_suppressed}}</span>
-											<span class="price" ng-hide="reservationBillData.is_rates_suppressed">{{currencySymbol}}{{days.amount | number: precisonZero}}</span> 
+											<span class="price" ng-show="days.amount == 'SR'">SR</span>
+											<span class="price" ng-hide="days.amount == 'SR'">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>  
 										</a>
 										<!-- For checkout date -->
 										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
@@ -146,7 +148,7 @@
 									</li>
 
 									<!-- packages -->
-									<li class="active package" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+									<li class="active package summarychargegroup" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
 										<a class="toggle dual-toggle" ng-class="{'active': $index == showAddonIndex}"> 
 											<span class="day"> {{addons.title}} </span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
@@ -155,7 +157,7 @@
 									</li>
 
 									<!-- Group items tab -->
-									<li class="active expense" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
+									<li class="active expense summarychargegroup" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
 										<a class="toggle dual-toggle"  ng-class="{'active': $index == showGroupItemIndex}"> 
 											<span class="expense"> {{groupItems.title}} </span> 
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
@@ -169,10 +171,12 @@
 							<!-- Bill item per day -Summary -->
 							<div class="summary-expanded float" ng-class="{'hidden': $index != dayRates}" ng-repeat="billItem in billData.days">
 								<a class="toggle has-arrow" ng-click="showRoomDetails($index)" ng-class="{'active': $index == showRoomDetailsIndex}">
-									<div class="price" ng-show="reservationBillData.is_rates_suppressed">
-										{{reservationBillData.text_rates_suppressed}}<span translate>+ FEES</span>
+									<div class="price" ng-show="reservationBillData.is_rate_suppressed_present_in_stay_dates">
+										{{'SUPPRESSED_RATES_TEXT' | translate}}
+
+										<span translate>+ FEES</span>
 									</div>
-									<div class="price" ng-hide="reservationBillData.is_rates_suppressed">
+									<div class="price" ng-hide="reservationBillData.is_rate_suppressed_present_in_stay_dates">
 										{{currencySymbol}}{{billItem.amount | number: precisonTwo}}<span translate>+ <span translate>FEES</span>
 									</div>
 									<div class="rate">

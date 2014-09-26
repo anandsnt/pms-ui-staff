@@ -3,6 +3,7 @@
 		<h2>{{displayMessage}}</h2>
 		<a ng-click="goBackToPreviousState()" class="action back" translate="BACK"></a>
 	</header>
+	<section class="content-scroll">
 	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"  ></div>
 	<!--- form starts here -->
@@ -16,7 +17,7 @@
 			</div>
 			<div class="entry">
 				<label>&nbsp;&nbsp;</label>
-				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || !addmode || isBeaconLinked" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode &&  !isBeaconLinked}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
+				<button type="button" ng-disabled="data.uuid.length===0 || !isIpad || isBeaconLinked" class="button" ng-class="{ 'brand-colors' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && addmode &&  !isBeaconLinked, 'red' :data.proximity_id.length>0 && data.minor_id.length>0 && data.major_id.length>0 && isIpad && !addmode &&  !isBeaconLinked}" translate="LINK_BEACON" ng-click="linkiBeacon()"></button>
 			</div> 	
 		</fieldset>
 		<fieldset class="holder right">
@@ -83,6 +84,7 @@
 				<button type="button" ng-click="saveBeacon()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
 			</div>
 		</form>
+		</section>
 <!--- form ends here -->
 	</div>
 </section>

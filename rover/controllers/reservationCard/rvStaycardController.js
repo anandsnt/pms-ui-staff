@@ -72,6 +72,7 @@ sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog
 			ngDialog.open({
 				template: '/assets/partials/payment/rvShowPaymentList.html',
 				controller: 'RVShowPaymentListCtrl',
+				className: '',
 				scope: $scope
 			});
 		};

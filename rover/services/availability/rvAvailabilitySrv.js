@@ -48,7 +48,7 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 
 			bookableRooms.push(roomAvailabilityData.physical_count - roomAvailabilityData.results[i].house.out_of_order);
 
-			availableRooms.push(roomAvailabilityData.results[i].house.availability - roomAvailabilityData.results[i].house.out_of_order - roomAvailabilityData.results[i].house.sold);
+			availableRooms.push(roomAvailabilityData.results[i].house.availability);
 			//web service response is arrogant!!, requested to change. no use :(
 			for(var j = 0; j < roomAvailabilityData.results[i].room_types.length; j++){
 				var id = roomAvailabilityData.results[i].room_types[j].id;
@@ -72,8 +72,8 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		for(i = 0; i < occupanyData.results.length; i++){	
 			var actual = escapeNull(occupanyData.results[i].actual) == "" ? 0 : occupanyData.results[i].actual;
 			var target = escapeNull(occupanyData.results[i].target) == "" ? 0 : occupanyData.results[i].target;
-			occupanciesActual.push((actual / roomAvailabilityData.physical_count) * 100);
-			occupanciesTargeted.push((target / roomAvailabilityData.physical_count) * 100);
+			occupanciesActual.push(actual);
+			occupanciesTargeted.push(target);
 			if(target > 0) {
 				IsOccupancyTargetSetBetween = true;
 			}

@@ -7,10 +7,10 @@ $scope.errorMessage='';
 $scope.isLoggedIn = false;
 $scope.startProcess = false;
 $scope.startProcessEnabled = true;
-$scope.businessDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
+$scope.businessDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
 $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
 $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
-$scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, 'MM-dd-yyyy');
+$scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, $rootScope.dateFormat);
 $scope.isTimePastMidnight = true;
 
 /*
@@ -23,16 +23,20 @@ $scope.cancelClicked = function(){
  * verify credentials
  */
 $scope.login = function(){
-	
+	$rootScope.$broadcast('showLoader');
 	var loginSuccess = function(data){
-		$scope.$emit('hideLoader');
+		$rootScope.$broadcast('hideLoader');
 		$scope.isLoggedIn = true;
 		// verify if hotel time is past midnight or not
 		$scope.isTimePastMidnight = (data.is_show_warning ==="true") ? false: true;
 	}	
+	var loginFailure = function(data){
+		$rootScope.$broadcast('hideLoader');
+		$scope.errorMessage = data;	
+	}
 	var data = {"password":$scope.password};
 
-	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess);  
+	$scope.invokeApi(RVEndOfDayModalSrv.login,data,loginSuccess,loginFailure);  
 	
 };
 $scope.startEndOfDayProcess = function(){
@@ -44,13 +48,14 @@ $scope.yesClick = function(){
 	$scope.isTimePastMidnight = true
 }
 
+var Resheil = $scope;
 $scope.continueClicked = function(){
 	
 	$scope.startProcessEnabled = false;
-	
+	$rootScope.$broadcast('showLoader');
 // explicitly handled error callback to set $scope.startProcessEnabled
 	var startProcessFailure = function(data){
-		$scope.$emit('hideLoader');
+		$rootScope.$broadcast('hideLoader');
 		$scope.startProcess = false;
 		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
@@ -58,14 +63,11 @@ $scope.continueClicked = function(){
 
 	};
 	var startProcessSuccess = function(data){
-		$scope.$emit('hideLoader');
-		$rootScope.businessDate = data.hotel_business_date;
-		$rootScope.$broadcast("bussinessDateChanged",$rootScope.businessDate);
-		$rootScope.isCurrentUserChangingBussinessDate = false;
-		$state.go('rover.dashboard', {}, {reload: true});
+		$rootScope.$broadcast('hideLoader');
+		$rootScope.isCurrentUserChangingBussinessDate = true;
+		$rootScope.isBussinessDateChanging = true;
 		ngDialog.close();
 	}
-	$rootScope.isCurrentUserChangingBussinessDate = true;
 	$scope.invokeApi(RVEndOfDayModalSrv.startProcess,{},startProcessSuccess,startProcessFailure); 
 };
 

@@ -49,18 +49,20 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
-				}, {
-					title: "MENU_AVAILABILITY",
-					action: "",
-					iconClass: "icon-availability",
-					submenu: [{
-						title: "MENU_HOUSE_STATUS",
-						action: ""
-					}, {
-						title: "MENU_AVAILABILITY",
-						action: ""
-					}]
-				}, {
+				}, 
+				// {
+				// 	title: "MENU_AVAILABILITY",
+				// 	action: "",
+				// 	iconClass: "icon-availability",
+				// 	submenu: [{
+				// 		title: "MENU_HOUSE_STATUS",
+				// 		action: ""
+				// 	}, {
+				// 		title: "MENU_AVAILABILITY",
+				// 		action: ""
+				// 	}]
+				// }, 
+				{
 					title: "MENU_FRONT_DESK",
 					//hidden: true,
 					action: "",
@@ -385,7 +387,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				$scope.isStandAlone = true;
 			setupLeftMenu();
 			$rootScope.businessDate = data.business_date;
-			$rootScope.currencySymbol = data.currency.symbol;
+			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
+			$rootScope.dateFormat = getDateFormat(data.date_format.value);
+		    console.log("currency code   : "+data.currency.value);
+		    console.log("currency symbol : "+$rootScope.currencySymbol);
+		    console.log("date format     : "+$rootScope.dateFormat);
 			$scope.$emit('hideLoader');
 
 		};

@@ -1,29 +1,24 @@
-sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','dateFilter','$rootScope', function($scope,  ngDialog, $filter, dateFilter,$rootScope){
+sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', 
+	function(filterDefaults, $scope,  ngDialog, $filter, dateFilter, $rootScope) {
+	'use strict';
 
-	$scope.setUpData = function(){
+	var filterData = $scope.currentFilterData,
+		businessDate = tzIndependentDate($rootScope.businessDate),
+		from_date = tzIndependentDate($rootScope.businessDate), //new Date(),
+		to_date = new Date((new Date(from_date)).setMonth(from_date.getMonth() + 1));
 
-		if($scope.currentFilterData.begin_date.length > 0){
-			$scope.fromDate = $scope.currentFilterData.begin_date;
-		}else{
-			$scope.fromDate =tzIndependentDate($rootScope.businessDate);
-		};
-		if($scope.currentFilterData.end_date.length > 0){
-			$scope.toDate = $scope.currentFilterData.end_date
-		}
-		else{
-			$scope.toDate = tzIndependentDate($rootScope.businessDate);
-		};
-		
+	$scope.setUpData = function() {		
+		filterData.begin_date = _.isEmpty(filterData.begin_date) ? dateFilter(from_date, filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.begin_date);
+		filterData.end_date = _.isEmpty(filterData.end_date) ? dateFilter(new Date(to_date.setDate(to_date.getDate() + 1)), filterDefaults.UI_DATE_FORMAT) : tzIndependentDate(filterData.end_date);
 
 		$scope.fromDateOptions = {
 			changeYear: true,
 			changeMonth: true,
-			minDate: tzIndependentDate($rootScope.businessDate),
+			minDate: new Date((new Date(from_date)).setYear(from_date.getYear() + 1899)), 
 			yearRange: "0:+10",
 			onSelect: function() {
-
-				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
-					$scope.toDate = $scope.fromDate;
+				if(tzIndependentDate(filterData.begin_date) > tzIndependentDate(filterData.end_date)) {
+					filterData.end_date = filterData.begin_date;
 				}
 			}
 		};
@@ -31,27 +26,29 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
 		$scope.toDateOptions = {
 			changeYear: true,
 			changeMonth: true,
-			minDate: tzIndependentDate($rootScope.businessDate),
+			minDate: new Date((new Date(from_date)).setDate(from_date.getDate() + 1)), 
 			yearRange: "0:+10",
 			onSelect: function() {
-
-				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
-					$scope.fromDate = $scope.toDate;
+				if(tzIndependentDate(filterData.begin_date) > tzIndependentDate(filterData.end_date)) {
+					filterData.begin_date = filterData.end_date;
 				}
 			}
 		};
 
-		$scope.errorMessage='';
+		$scope.errorMessage = '';
 	};
 
 	$scope.setUpData();
-	$scope.updateClicked = function(){
-		$scope.currentFilterData.begin_date = $scope.fromDate;
-		$scope.currentFilterData.end_date = $scope.toDate;
-		$scope.currentFilterData.selected_date_range = dateFilter($scope.currentFilterData.begin_date, 'MM-dd-yyyy') + " to " + dateFilter($scope.currentFilterData.end_date, 'MM-dd-yyyy');
+
+	$scope.updateClicked = function() {
+		filterData.selected_date_range = dateFilter(filterData.begin_date, $rootScope.dateFormat) +
+										 ' to ' + 
+										 dateFilter(filterData.end_date, $rootScope.dateFormat);
+
 		ngDialog.close();
 	};
-	$scope.cancelClicked = function(){
+
+	$scope.cancelClicked = function() {
 		ngDialog.close();
 	};
 }]);

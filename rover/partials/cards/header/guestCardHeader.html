@@ -25,7 +25,7 @@
 </section>
 <section ng-if="searchMode">
   <figure class="guest-image" ng-click="switchCard('guest-card')">
-    <img src="{{ cardHeaderImage }}" alt="" />
+    <img ng-src="{{ cardHeaderImage }}" alt="" />
     <span class="search-indicator"></span>
   </figure>
   <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">

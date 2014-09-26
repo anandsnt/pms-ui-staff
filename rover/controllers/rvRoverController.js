@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', 
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -10,7 +10,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
        * TODO: Fix this bug in ng-translate and implement in this here.
        */
       setTimeout(function() {
-        $translate('NA')
+        $translate('NA');
       }, 1000); //Word around.
     } else {
       $translate.use('EN');
@@ -51,6 +51,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
     $rootScope.fullYear = "yyyy";
+    $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
     /*
@@ -60,8 +61,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
     $rootScope.businessDate = hotelDetails.business_date;
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+    $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
+    $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
-
+	$rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 
 
     //set flag if standalone PMS
@@ -77,9 +80,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
-
     $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
-      $scope.userInfo.business_date = newBussinessDate
+      $scope.userInfo.business_date = newBussinessDate;
     });
 
     //Default Dashboard
@@ -119,18 +121,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_AVAILABILITY",
-          action: "",
-          iconClass: "icon-availability",
-          submenu: [{
-            title: "MENU_HOUSE_STATUS",
-            action: ""
-          }, {
-            title: "MENU_AVAILABILITY",
-            action: ""
-          }]
-        }, {
+        }, 
+        // {
+        //   title: "MENU_AVAILABILITY",
+        //   action: "",
+        //   iconClass: "icon-availability",
+        //   submenu: [{
+        //     title: "MENU_HOUSE_STATUS",
+        //     action: ""
+        //   }, {
+        //     title: "MENU_AVAILABILITY",
+        //     action: ""
+        //   }]
+        // }, 
+        {
           title: "MENU_FRONT_DESK",
           //hidden: true,
           action: "",
@@ -548,26 +552,58 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.goToDashboard = function(){
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      $state.go('rover.dashboard', {}, {reload: true});
+     // $state.go('rover.dashboard', {}, {reload: true});
+      $window.location.reload();
     }
 
      /**
     * Handles the bussiness date change completion
     */
     $rootScope.showBussinessDateChangedPopup = function() {
-
+        $rootScope.isBussinessDateChanging = false;
         // Hide loading message
         $scope.$emit('hideLoader');
-        // if(!$rootScope.isBussinessDateChanged){
-        //     $rootScope.isBussinessDateChanged = true;
+        if(!$rootScope.isBussinessDateChanged){
+             $rootScope.isBussinessDateChanged = true;
             ngDialog.open({
               template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               closeByDocument: false,
               scope: $scope
           });
-        // }        
+        }        
     };
+    
+    
+    
+     
+
+    /**
+    * function to execute on clicking latecheckout button
+    */
+    $scope.clickedOnHeaderLateCheckoutIcon = function(event){
+    	
+	 	var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {'type': type});
+	    
+    };
+    
+    $scope.clickedOnQueuedRoomsIcon = function(event){
+    	
+	 	var type = "QUEUED_ROOMS";
+        $state.go('rover.search', {'type': type});
+    };
+    
+    $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data){
+    	if(data == "remove"){
+    		$scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count)-parseInt(1);
+    	} else {
+    		$scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count)+parseInt(1);
+    	}
+    	
+    });
+   
+    
 
   }
 ]);
@@ -582,7 +618,7 @@ sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
     },
     response: function (response) {
         // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && response.data.is_eod_manual_started && !$rootScope.isCurrentUserChangingBussinessDate){
+        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
            $rootScope.$emit('bussinessDateChangeInProgress');
         }       
         return response || $q.when(response);
