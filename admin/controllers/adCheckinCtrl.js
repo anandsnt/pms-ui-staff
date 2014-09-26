@@ -37,6 +37,7 @@ var setUpData = function(){
     $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
     
     $scope.checkinData.is_sent_to_queue = ($scope.checkinData.is_sent_to_queue === 'true')? "yes":"no";
+    $scope.checkinData.is_precheckin_only = ($scope.checkinData.is_precheckin_only === 'true')? true:false;
 
     angular.forEach($scope.rate_codes,function(rate, index) {
       angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
@@ -125,7 +126,7 @@ $scope.saveCheckin = function(){
     'checkin_alert_time':$scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
 
-    'is_precheckin_only':$scope.checkinData.is_precheckin_only,
+    'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',
     'is_sent_to_queue':$scope.checkinData.is_sent_to_queue ==='yes'? 'true':'false',
     'excluded_rate_codes':excluded_rate_codes,
     'excluded_block_codes':excluded_block_codes,
