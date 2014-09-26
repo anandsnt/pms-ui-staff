@@ -59,8 +59,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 				'checkout_staff_alert_option':$scope.checkoutData.checkout_staff_alert_option,
 				'emails':$scope.checkoutData.emails,
 				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
-				 'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
-				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email
+				'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
+				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email,
+                'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts
 			};
 
         var saveCheckoutDetailsFailureCallback = function(data) {
