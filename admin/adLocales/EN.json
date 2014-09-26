@@ -272,6 +272,7 @@
 "USE_INSPECTED_ROOM_STATUS":"Use Inspected room status",
 "USE_PICKUP_ROOM_STATUS":"Use Pick-up room status",
 "ENABLE_QUEUE_ROOMS":"Enable Queue Rooms",
+"EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT":"EMAIL ACCOUNTS TO RECEIVE QUEUE RESERVATION ALERT",
 "CHECK_IN_TO_INSPECTED_ROOMS_ONLY":"Check in to inspected rooms only",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",    
