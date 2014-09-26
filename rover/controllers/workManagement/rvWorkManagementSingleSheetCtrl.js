@@ -114,10 +114,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			refreshView();
 		}
 
-		$scope.printWorkSheet = function() {
-			window.print();
-		}
-
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
 					$state.go('rover.workManagement.start');

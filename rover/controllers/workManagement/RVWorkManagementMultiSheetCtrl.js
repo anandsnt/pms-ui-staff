@@ -1,11 +1,49 @@
-sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog',
-	function($rootScope, $scope, ngDialog) {
+sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams) {
 		$scope.setHeading("Work Management");
 
 		$rootScope.setPrevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start',
 
+		}
+
+		$scope.setScroller('unAssignedRoomList');
+
+
+		var init = function() {
+				$scope.multiSheetState.selectedEmployees = [];
+				_.each($scope.employeeList, function(employee) {
+					if (employee.ticked) {
+						$scope.multiSheetState.selectedEmployees.push(employee);
+					}
+				});
+				updateView();
+				$scope.filterUnassigned();
+				refreshView();
+			},
+			refreshView = function() {
+				$scope.refreshScroller('unAssignedRoomList');
+			}
+
+		$scope.multiSheetState = {
+			selectedDate: $stateParams.date || $rootScope.businessDate,
+			selectedEmployees: [],
+			unassigned: [],
+			unassignedFiltered: [],
+			header: {
+				work_type_id: $scope.workTypes[0].id
+			},
+			filters: {
+				selectedFloor: "",
+				selectedStatus: ""
+			},
+			assignments: {}
+		}
+
+		$scope.closeDialog = function() {
+			$scope.errorMessage = "";
+			ngDialog.close();
 		}
 
 		$scope.selectEmployee = function(data) {
@@ -33,11 +71,30 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				})
 			}
 
+			updateView();
 		};
 
-		$scope.multiSheetState = {
-			selectedDate: $rootScope.businessDate,
-			selectedEmployees: []
+		$scope.filterUnassigned = function() {
+			$scope.multiSheetState.unassignedFiltered = [];
+			if (!$scope.multiSheetState.filters.selectedStatus && !$scope.multiSheetState.filters.selectedFloor) {
+				$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned;
+
+			} else if (!$scope.multiSheetState.filters.selectedStatus) {
+				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
+					floor_number: $scope.multiSheetState.filters.selectedFloor
+				});
+			} else if (!$scope.multiSheetState.filters.selectedFloor) {
+				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
+					current_status: $scope.multiSheetState.filters.selectedStatus
+				});
+			} else { //Both Filters
+				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
+					current_status: $scope.multiSheetState.filters.selectedStatus,
+					floor_number: $scope.multiSheetState.filters.selectedFloor
+				});
+			}
+			refreshView();
+			$scope.closeDialog();
 		}
 
 		$scope.showCalendar = function(controller) {
@@ -58,5 +115,93 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				scope: $scope
 			});
 		}
+
+		$scope.onCancel = function() {
+			$state.go('rover.workManagement.start');
+		}
+
+		$scope.navigateToIndvl = function(id) {
+			if (id) {
+				$state.go('rover.workManagement.singleSheet', {
+					date: $scope.multiSheetState.selectedDate,
+					id: id
+				});
+			}
+		}
+
+		var updateView = function() {
+			var onFetchSuccess = function(data) {
+					$scope.multiSheetState.unassigned = data.unassigned;
+					$scope.filterUnassigned();
+					$scope.multiSheetState.assignments = {};
+					_.each(data.work_sheets, function(worksheet) {
+						if (!$scope.multiSheetState.assignments[worksheet.employee_id]) {
+							$scope.multiSheetState.assignments[worksheet.employee_id] = {};
+							$scope.multiSheetState.assignments[worksheet.employee_id].rooms = [];
+							$scope.multiSheetState.assignments[worksheet.employee_id].summary = {
+								shift: {
+									completed: "00:00",
+									total: worksheet.shift
+								},
+								stayovers: {
+									total: 0,
+									completed: 0
+								},
+								departures: {
+									total: 0,
+									completed: 0
+								}
+							}
+							$scope.multiSheetState.assignments[worksheet.employee_id].worksheetId = worksheet.work_sheet_id;
+						}
+
+						var assignmentDetails = $scope.multiSheetState.assignments[worksheet.employee_id];
+
+						_.each(worksheet.work_assignments, function(workAssignment) {
+							if (workAssignment.room) {
+								if ($scope.departureClass[workAssignment.room.reservation_status] == "check-out") {
+									assignmentDetails.summary.departures.total++;
+									if (workAssignment.room.current_status == "CLEAN" || workAssignment.room.current_status == "INSPECTED") {
+										assignmentDetails.summary.departures.completed++;
+									}
+								} else if ($scope.departureClass[workAssignment.room.reservation_status] == "in-house") {
+									assignmentDetails.summary.stayovers.total++;
+									if (workAssignment.room.current_status == "CLEAN" || workAssignment.room.current_status == "INSPECTED") {
+										assignmentDetails.summary.stayovers.completed++;
+									}
+								}
+								assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, workAssignment.room.time_allocated);
+								assignmentDetails.rooms.push(workAssignment.room);
+							}
+						})
+
+					});
+					refreshView();
+					$scope.$emit('hideLoader');
+				},
+				onFetchFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.$emit('hideLoader');
+				};
+
+			var selectedEmployees = [];
+			_.each($scope.employeeList, function(employee) {
+				if (employee.ticked) {
+					selectedEmployees.push(employee.id);
+				}
+			});
+
+			$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
+				"date": $scope.multiSheetState.selectedDate,
+				"employee_ids": selectedEmployees,
+				"work_type_id": $scope.multiSheetState.header.work_type_id
+			}, onFetchSuccess, onFetchFailure);
+		}
+
+		$scope.onDateChanged = function() {
+			updateView();
+		}
+
+		init();
 	}
 ]);

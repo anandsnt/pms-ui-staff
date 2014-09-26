@@ -64,7 +64,7 @@
                         <div class="current {{departureClass[room.reservation_status]}}">
                             <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                            <span ng-hide="room.reservation_status != 'Departed'">{{room.checkout_time}}</span>
+                            <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
                             <span ng-show="room.reservation_status == 'Departed'">OUT</span>
                         </div>
 
@@ -118,7 +118,7 @@
                             <div class="current {{departureClass[room.reservation_status]}}">
                                 <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                                <span ng-hide="room.reservation_status != 'Departed'">{{room.checkout_time}}</span>
+                                <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
                                 <span ng-show="room.reservation_status == 'Departed'">OUT</span>
                             </div>
                             <div class="next {{arrivalClass[room.reservation_status]}}">
