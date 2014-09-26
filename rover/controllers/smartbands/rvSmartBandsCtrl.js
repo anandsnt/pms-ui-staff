@@ -15,9 +15,9 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	//Used to not to call list API again
 	$scope.firstTimeClick = true;
 	$scope.showBandEditScreen = false;
+	var that = this;
 	$scope.addNewSmartband = function(){
 		if($scope.selectedReservationStatus !== 'CHECKEDOUT'){
-			console.log("inside");
 			$scope.errorMessage = '';
 			$scope.showSmartBandListView = false;
 			$scope.showAddNewSmartBandScreen = true;
@@ -40,19 +40,21 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		$scope.showSmartBandListView = false;
 	}; 
 	$scope.createSmartBandSuccess = function(data){
+		console.log("createSmartBandSuccess");
 		$scope.$emit( 'hideLoader' );
-		$scope.showSuccess = true;
-		var newData = {
+
+       	that.newBandInfo = {
             "id": data.id,
             "first_name": $scope.smartBandData.firstName,
             "last_name": $scope.smartBandData.lastName,
             "is_fixed": $scope.isFixedAmount,
-            "amount": $scope.smartBandData.fixedAmount
-       };
-       $scope.smartBands.push(newData);
-       $scope.smartBandLength = $scope.smartBands.length;
+            "amount": $scope.smartBandData.fixedAmount,
+            "account_number" : data.account_number
+       	};
+       	$scope.smartBands.push(that.newBandInfo);
+       	$scope.smartBandLength = $scope.smartBands.length;
        
-       $scope.writeBandType();
+       	$scope.writeBandType();
        
 	};
 	
@@ -214,34 +216,28 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	 */
 	$scope.writeBandType = function(){
 		var args = [];
+		//Fixed amount - bandtype code : 00000001
+		//Open room charge - bandtype code : 00000002
 		var bandType = '00000002';
-		if(that.data.is_fixed){
+		if(that.newBandInfo.is_fixed){ 
 			bandType = '00000001';
 		}
 		args.push(bandType);
-		args.push(that.data.account_number);
+		args.push(that.newBandInfo.account_number);
 		args.push('19');//Block Address - hardcoded
 
 		var options = {
 			//Cordova write success callback
 			'successCallBack': function(){
-				sntapp.activityIndicator.hideActivityIndicator();
-				that.myDom.find(".success").show();
-				that.myDom.find("#button-area").show();	
-				that.myDom.find("#not-ready-status").hide();
-				that.myDom.find("#cancel").hide();			
-				that.parentController.showButton('see-all-band-button');
-				that.parentController.myDom.find('#see-all-band-button').unbind('click');
-				that.parentController.myDom.find('#see-all-band-button').on('click', that.clickedOnSeeAllBands);
-				
+				$scope.$emit( 'hideLoader' );
+				$scope.showSuccess = true;
+		
 			},
 			'failureCallBack': function(message){
-				sntapp.activityIndicator.hideActivityIndicator();
 				if(message == undefined || message == ''){
 					message = 'Failed to write the band type';
 				}
-				that.failureCallbackOfSaveAction(message);
-				
+				$scope.createSmartBandFailure(message)
 			},
 			arguments: args
 		};
