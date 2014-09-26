@@ -55,7 +55,8 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
     }); 
 
     //show Latecheckout icon
-    $scope.shouldShowLateCheckout = true; 
+    $scope.shouldShowLateCheckout = true;
+    $scope.shouldShowQueuedRooms  = true;
 
     /**
     *   a recievder function to show erorr message in the dashboard

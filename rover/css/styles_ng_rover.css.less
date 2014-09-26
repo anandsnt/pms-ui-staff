@@ -1256,7 +1256,9 @@ Padding for the ows error popup
     top:0px !important;    
   }
 }
-
+#modal .modal-content.key-delivery #key-status.print-key .status.error{
+  height: auto !important;
+}
 
 
 /*-----CICO-6094 implementing horizontal scroll starts here-------*/
@@ -1332,6 +1334,7 @@ Padding for the ows error popup
     text-transform: uppercase;
 }
 
+
 /*-----CICO-6080 Adding the styles for the routing list header-------*/
 #modal .modal-content .bill-routing-header {
   padding-top : 30px;
@@ -1344,4 +1347,56 @@ Padding for the ows error popup
 /*-----CICO-6080 Adding cursor pointer to the entity div-------*/
 .entity {
    cursor: pointer;
+
+}
+
+/*-----CICO-9319 Hiding CC options for other payment methods-------*/
+.paymentMethodSelect {
+   min-width: 320px;
+
+}
+/*-----CICO-9179 setting max width for summary box items-------*/
+.summarychargegroup {
+   max-width: 104px;
+
+}
+
+
+#main-menu {
+  li .menu-item {
+    width: 100%;   height: 100%;   display: block; padding-top :0;
+  }
+}
+
+//CICO-9595 setting the height and width for the terms and conditions dialog
+#modal .modal-content.terms {
+  width: 480px !important;
+  height: 600px !important;
+}
+
+#modal .modal-content.terms .actions {
+  margin-top: 20px;
+  text-align: center;
+}
+#modal .modal-content.terms .actions .button {
+  display: inline-block;
+  width: auto;
+}
+.head_terms_and_conditions {
+  text-align: center;
+  font-weight: bold;
+}
+#modal .modal-content.terms .scrollable {
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  height: 480px;
+}
+.agree-terms-and-conditions {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.termsandconditions-checkbox{
+  width: 30px !important;
 }

@@ -119,4 +119,7 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
+    "DISAGREE_BUTTON_LABEL":"Disagree",
+    "AGREE_BUTTON_LABEL":"Agree"

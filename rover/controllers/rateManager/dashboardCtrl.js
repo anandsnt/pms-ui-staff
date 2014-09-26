@@ -59,6 +59,7 @@ sntRover
 
     var title = $filter('translate')('RATE_MANAGER_TITLE');
 	$scope.setTitle(title);
+    $scope.heading = title;
 	
     $scope.$emit("updateRoverLeftMenu","rateManager");
 

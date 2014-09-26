@@ -2,6 +2,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 	
 	
 	var that = this;
+	akhila = that;
     this.usersArray = {};
 
     this.departmentsArray = [];
@@ -102,7 +103,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		var url = '/admin/users';
 		
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
-			newDataToArray.id = data.id;
+			newDataToArray.id = data.user_id;
 			that.addToUsersArray(newDataToArray);
 		    deferred.resolve(data);
 		},function(data){
@@ -181,8 +182,11 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBa
 		
 		var deferred = $q.defer();
 		var url = '/admin/users/'+data.id;
+		var itemToRemove = data.index;
+		delete data["index"];
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
+			that.usersArray.users.splice(itemToRemove, 1);
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

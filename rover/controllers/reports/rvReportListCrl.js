@@ -70,6 +70,14 @@ sntRover.controller('RVReportListCrl', [
                 // sort by options
                 reportList[i].sortByOptions = reportList[i]['sort_fields']
 
+                // CICO-8010: for Yotel make "date" default sort by filter
+                if ( reportList[i].title === 'Check In / Check Out' || reportList[i].title === 'Late Check Out' ) {
+                    sortDate = _.find(reportList[i]['sort_fields'], function(item) {
+                        return item.value === 'DATE';
+                    });
+                    reportList[i].chosenSortBy = sortDate.value;
+                };
+
                 // set the untilDate to current businessDate
                 reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
 
