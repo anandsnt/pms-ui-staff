@@ -5,11 +5,16 @@
 //=require ../shared/lib/js/angular-route.js
 //=require ../shared/lib/js/angular-ui-router.js
 //=require ../shared/lib/js/angular-animate.js
+
+
+//=require ../shared/lib/js/angular-dragdrop.min.js
+
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/ui-utils.min.js
 //=require ../shared/lib/js/bindonce.js
+
 
 //=require_tree ../shared/lib/js/signature
 //=require ../shared/lib/js/iscroll.js

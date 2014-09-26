@@ -8,8 +8,7 @@
 
 			<div class="entry full-width">
 				<div class="select">
-					<select ng-model="stateVariables.newSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
-                		<option value="" selected>Select a Work Type</option>
+					<select ng-model="stateVariables.newSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" ng-selected="$index == 1">
             		</select>
 				</div>
 			</div>

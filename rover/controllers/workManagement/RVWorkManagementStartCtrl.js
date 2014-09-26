@@ -1,6 +1,7 @@
-sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv',
-    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv) {
+sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv', '$timeout',
+    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv, $timeout) {
         $scope.setHeading("Work Management");
+        BaseCtrl.call(this, $scope);
 
         $scope.showCreateWorkSheetDialog = function() {
             ngDialog.open({
@@ -10,6 +11,9 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 scope: $scope
             });
         }
+
+        $scope.setScroller('roomsSearchResults');
+        $scope.setScroller('maidsSearchResults');
 
         $scope.stateVariables = {
             searching: false,
@@ -27,7 +31,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             },
             newSheet: {
                 user_id: "",
-                work_type_id: "",
+                work_type_id: $scope.workTypes[0].id, // Default to daily cleaning [Assuming it comes in as first entry]
                 date: $rootScope.businessDate,
             },
             assignRoom: {
@@ -75,7 +79,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             if (room.work_sheet_id) {
                 $state.go('rover.workManagement.singleSheet', {
                     date: $scope.stateVariables.viewingDate.date,
-                    id: id
+                    id: room.work_sheet_id
                 });
             } else { //Assign the room to an employee
                 ngDialog.open({
@@ -129,6 +133,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         $scope.stateVariables.employeeSearch = false;
                         $scope.stateVariables.searchResults.rooms = rooms;
                         $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.rooms.length === 0;
+                        $scope.refreshScroller('roomsSearchResults');
                         $scope.$emit('hideLoader');
                     }
                     $scope.invokeApi(RVWorkManagementSrv.searchRooms, {
@@ -140,6 +145,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                         $scope.stateVariables.employeeSearch = true;
                         $scope.stateVariables.searchResults.maids = maids;
                         $scope.stateVariables.noSearchResults = $scope.stateVariables.searchResults.maids.length === 0;
+                        $scope.refreshScroller('maidsSearchResults');
                         $scope.$emit('hideLoader');
                     }
                     $scope.invokeApi(RVWorkManagementSrv.searchEmployees, {
@@ -152,6 +158,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             } else {
                 $scope.stateVariables.searchResults.maids = [];
                 $scope.stateVariables.searchResults.rooms = [];
+                $scope.stateVariables.lastSearchQuery = "";
                 $scope.stateVariables.searching = false;
             }
             $scope.$apply();

@@ -24,7 +24,7 @@
 
 <!-- Search panel : SEARCH BY NAME -->
 <section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
-    <div class="wrapper">
+    <div class="wrapper scrollable" style="height:100%" ng-iscroll="maidsSearchResults">
         <ul id="work-management-search-results" class="search-results">            
             <li class="employee" ng-repeat="maid in stateVariables.searchResults.maids">
                 <a ng-click="showWorkSheet(maid.work_sheet_id)">
@@ -46,36 +46,44 @@
 
 <!-- Search panel : SEARCH BY ROOM NUMBER -->
 <section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && !stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
-    <div class="wrapper">
+    <div class="wrapper scrollable" style="height:100%" ng-iscroll="roomsSearchResults">
         <ul id="work-management-search-results" class="search-results">
            <li class="room" ng-repeat="room in stateVariables.searchResults.rooms">
 			<a ng-click="onRoomSelect(room)" ng-class="{'with-image': room.is_occupied}"> <!-- Add class="with-image" if room is occupied -->
-				<div class="data">
-					<h2 class="{{room.hk_status.value}}">{{room.room_no}}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+				
+                <div class="data">
+					<h2 class="{{room.hk_status.value}}" ng-class="{'out' : room.hk_status.value == 'OO' || room.hk_status.value == 'OS'}">{{room.room_no}}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
 					<span class="room-status {{room.hk_status.value}}">{{room.hk_status.value}}</span>
 				</div>
+
 				<!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
 				<div class="reservation-status">
-					<!-- {reservation-status} can be check-out(for due out or departed) or inhouse(for stayover) -->
-					<div class="current {reservation-status}" ng-show="room.reservationStatus == 'CHECK-OUT' || room.reservationStatus == 'INHOUSE'">
-						<span class="guest-status {{room.reservationStatus}}">{{room.reservationStatus}}</span>
+					
+                    <!-- {reservation-status} can be check-out(for due out or departed) or inhouse(for stayover) -->
+					<div class="current {{departureClass[room.room_reservation_status]}}">
+						<span class="guest-status {{departureClass[room.room_reservation_status]}}">{{room.room_reservation_status}}</span>
 						<!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-						<span>{{room.departureTime}}</span>
+						<span ng-if="room.room_reservation_status == 'Departed'">OUT</span>
+                        <span ng-if="room.room_reservation_status != 'Departed'">{{ room.departure_time }}</span>
 					</div>
+
 					<!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
-					<div class="next {reservation-status}" ng-show="room.reservationStatus == 'CHECK-IN' || room.reservationStatus == 'NO-SHOW'">
-						<span class="guest-status {{room.reservationStatus}}">{{room.reservationStatus}}</span>
+					<div class="next {{arrivalClass[room.room_reservation_status]}}">
+						<span class="guest-status {{arrivalClass[room.room_reservation_status]}}">{{room.room_reservation_status}}</span>
 						<!-- Show only if applicable, {arrival-time} can only be time -->
-						<span>{{room.arrivalTime}}</span>
+						<span>{{room.arrival_time}}</span>
 					</div>
 				</div>
+
 				<!-- Show if room is assigned or ooo/oos -->
-				<div class="additional-info" ng-if="room.assignee_maid != null">
+				<div class="additional-info" ng-if="room.assignee_maid || room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
 					<!-- Show only if room is assigned -->
 					<span class="assigned">{{room.assignee_maid}}</span>
+                    <span ng-if="!room.assignee_maid" class="unassigned">Unassigned</span>
 					<!-- Show only if room is not in service -->
-					<span class="service-status">
-                        <!-- {ooo or oos} -->
+					<span class="service-status" ng-if="room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
+                        <span ng-if="room.hk_status.value == 'OS'" class="service-status">Out of Service</span>
+                        <span ng-if="room.hk_status.value == 'OO'" class="service-status">Out of Order</span>
                     </span>
 				</div>
 
