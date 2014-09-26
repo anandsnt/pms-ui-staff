@@ -12,13 +12,31 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 
     $scope.init = function(){
     	$scope.checkoutData = {};
-      	$scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-        $scope.minutes = ["00","15","30","45"];
+      	$scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
+        $scope.minutes = ["MM","00","15","30","45"];
         $scope.primeTimes = ["AM","PM"];
         $scope.isLoading = true;
     };
 
     $scope.init();
+
+    /*
+    * To fetch array after slicing from the index of the given value
+    */
+    $scope.getArrayAfterValue = function(value){
+        if(typeof value != 'undefined'){
+            var index = $scope.hours.indexOf(value);
+            var arrayAfterValue = ["HH"];
+            for(var i = index+1; i < $scope.hours.length; i++){
+                arrayAfterValue.push($scope.hours[i]);
+            }
+            
+            return arrayAfterValue;
+        }else{
+            return [];
+        }
+        
+    }
 	
   /*
     * To fetch checkin details
@@ -56,6 +74,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
 			var uploadData = {
 				'checkout_email_alert_time':$scope.checkoutData.checkout_email_alert_time_hour+":"+$scope.checkoutData.checkout_email_alert_time_minute,
+                'alternate_checkout_email_alert_time':$scope.checkoutData.alternate_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_checkout_email_alert_time_minute,
+                'weekends_checkout_email_alert_time':$scope.checkoutData.weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.weekends_checkout_email_alert_time_minute,
+                'alternate_weekends_checkout_email_alert_time':$scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute,
 				'checkout_staff_alert_option':$scope.checkoutData.checkout_staff_alert_option,
 				'emails':$scope.checkoutData.emails,
 				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
