@@ -432,6 +432,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	alert(JSON.stringify(data));
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
@@ -554,7 +555,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       // to reload app in case the bussiness date is changed
      // $state.go('rover.dashboard', {}, {reload: true});
       $window.location.reload();
-    }
+    };
 
      /**
     * Handles the bussiness date change completion

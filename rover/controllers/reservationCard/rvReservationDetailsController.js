@@ -152,7 +152,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					$scope.refreshScroller('resultDetails');
 				},
 				timeoutSpan);
-		}
+		};
 
 
 		$scope.$on('$viewContentLoaded', function() {

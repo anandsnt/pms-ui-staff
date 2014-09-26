@@ -145,7 +145,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 				deferred.reject(data);
 			});
 			return deferred.promise;
-		}
+		};
 
 		this.tokenize = function(data) {
 			var deferred = $q.defer();
