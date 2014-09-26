@@ -151,7 +151,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			name: '',
 			hours: '',
 			mins: '',
-			time: '',
 			hotel_id: $rootScope.hotelId
 		}
 
@@ -167,10 +166,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			} else {
 				$scope.workShiftForm = 'edit';
 				$scope.workShiftClickedElement = typeIndex;
+
+				var time = this.item.time;
+				console.log(time.split(':')[0]);
+				console.log(time.split(':')[1]);
 				$scope.eachWorkShift = {
 					name: this.item.name,
-					hour: this.item.time.split(':')[0],
-					mins: this.item.time.split(':')[1],
+					hour: time.split(':')[0],
+					mins: time.split(':')[1],
 					hotel_id: $rootScope.hotelId,
 					id: this.item.id
 				}
@@ -227,6 +230,31 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			}
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback);
+		};
+
+		$scope.updateWorkShift = function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+				
+				$scope.workShiftClickedElement = -1;
+				$scope.eachWorkShift = {
+					name: '',
+					hours: '',
+					mins: '',
+					hotel_id: $rootScope.hotelId
+				}
+
+				fetchWorkShift();
+			};
+
+			var params = {
+				name: $scope.eachWorkShift.name,
+				time: $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
+				hotel_id: $rootScope.hotelId,
+				id: $scope.eachWorkShift.id
+			}
+
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
 	}
 ]);

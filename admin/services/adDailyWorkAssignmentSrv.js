@@ -189,6 +189,27 @@ admin.service('ADDailyWorkAssignmentSrv', [
             return deferred.promise;
         };
 
+        /*
+        * To update a work shift
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.putWorkShift = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/shifts/' + params.id,
+                params   = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.putJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
 
 
 
