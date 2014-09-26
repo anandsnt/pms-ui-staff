@@ -6,9 +6,6 @@
 //=require ../shared/lib/js/angular-ui-router.js
 //=require ../shared/lib/js/angular-animate.js
 
-
-//=require ../shared/lib/js/angular-dragdrop.js
-
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
