@@ -423,7 +423,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         ngDialog.open({
           template: '/assets/partials/settings/rvStaffSettingModal.html',
           controller: 'RVStaffsettingsModalController',
-          className: 'ngdialog-theme-plain calendar-modal'
+          className: 'calendar-modal'
         });
       }
     };
