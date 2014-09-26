@@ -158,7 +158,9 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	$scope.mouseLeavePopover = function(){
 		$scope.popoverRates = "";
 		$scope.mouseEnterPopover = false; 
-	}
+	};
 
-
+	$scope.showLoader = function() {
+		$scope.$emit('showLoader');
+	};
 }]);
