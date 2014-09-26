@@ -191,7 +191,6 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 		});	
 
 		return deferred.promise;
-
 	};
 	
    
