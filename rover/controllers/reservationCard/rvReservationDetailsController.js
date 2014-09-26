@@ -244,7 +244,14 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 						"is_swiped": true // Commenting for now
 					};
 					var paymentData = $scope.reservationData;
-					$scope.showAddNewPaymentModal(passData, paymentData);
+					
+					if($scope.isDepositBalanceScreenOpened){
+						
+						$scope.$broadcast("SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN", passData);
+					} else{
+						$scope.showAddNewPaymentModal(passData, paymentData);
+					}
+					
 				};
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			}
@@ -266,6 +273,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		 * Handle swipe action in reservationdetails card
 		 */
 		$scope.$on('SWIPEHAPPENED', function(event, data) {
+			
 			if (!$scope.isGuestCardVisible) {
 				$scope.openAddNewPaymentModel(data);
 			}

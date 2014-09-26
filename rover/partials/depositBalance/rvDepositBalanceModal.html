@@ -1,0 +1,136 @@
+<div role="dialog" id="modal" class="modal-show">
+	
+	<form name="deposit-balance" method="post" id="deposit-balance" class="modal-content form deposit-balance" action="{action}">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDepositModal()">
+			<span class="icons icon-close invert"> </span>
+		</button>
+		<!-- Left side -->
+		
+		<fieldset class="content-left">
+			<strong class="h2 message">Balance</strong>
+			<ul id="expenses" class="expenses">
+				<li>
+					Room Cost
+					<span> {{currencySymbol}}{{depositBalanceData.data.room_cost}} </span>
+				</li>
+				<li>
+					Packages
+					<span> {{currencySymbol}}{{depositBalanceData.data.packages}} </span>
+				</li>
+				<li class="total">
+					Sub Total
+					<span> {{currencySymbol}}{{depositBalanceData.data.sub_total}} </span>
+				</li>
+				<li>
+					Fees
+					<span> {{currencySymbol}}{{depositBalanceData.data.fees}} </span>
+				</li>
+				<li class="total">
+					Stay Total
+					<span> {{currencySymbol}}{{depositBalanceData.data.stay_total}} </span>
+				</li>
+				<li>
+					Nightly Charge
+					<span> {{currencySymbol}}{{depositBalanceData.data.nightly_charges}} </span>
+				</li>
+				<li class="total final">
+					Total Cost of Stay
+					<span> {{currencySymbol}}{{depositBalanceData.data.total_cost_of_stay}} </span>
+				</li>
+				<li class="deposit">
+					Deposit Paid
+					<span class="green"> {{currencySymbol}}{{depositBalanceData.data.deposit_paid}} </span>
+				</li>
+				<li class="balance">
+					Outstanding Stay Total
+					<span class="red"> {{currencySymbol}}{{depositBalanceData.data.outstanding_stay_total}} </span>
+			
+				</li>
+			</ul>
+		</fieldset>
+		<!-- Right side -->
+		<fieldset class="content-right">
+			<strong class="h2 message">Deposit</strong>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div class="entry amount">
+				<label for="amount"> Amount to pay (<span></span>{{currencySymbol}}
+					) </label>
+				<input type="text" ng-model="makePaymentData.amount" value="{{makePaymentData.amount}}" name="amount" id="amount">
+			</div>
+			<!-- Show these options only if there are existing cards -->
+			<ul id="make-payment-options" class="modal-options">
+				<li id="existing-cards" ng-class="{'active': !addCardActive}" ng-click="clickedShowExistingCard()">
+					Existing Cards
+				</li>
+				<li id="add-new-card" ng-class="{'active': addCardActive}" ng-click="clickedAddCard()">
+					Add New Card
+				</li>
+			</ul>
+			<!-- Select cards, if exsist -->
+			<div id="select-make-payment-card" class="select-card" ng-hide="addCardActive">
+				<div id="available-cards" ng-iscroll='available-cards' ng-iscroll-delay='50'  data-is-existing-card="no" class="cards-list scrollable cards-list-height">
+					<div id="available-cards-wrapper" class="wrapper" >
+						<!-- Selected card -->
+						<label class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">
+							<figure class="card-logo">
+								<img src="/assets/{{existingPayments.card_code}}.png" alt="">
+							</figure> 
+							<span class="number"> Ending with 
+								<span class="value number"> {{existingPayments.ending_with}} </span> 
+							</span> 
+							<span class="date"> Date 
+									<span class="value date"> {{existingPayments.expiry_date}} </span> 
+							</span> 
+							<span class="primary"> 
+								<span class="value primary primary-selected" ng-show="existingPayments.isSelected">
+									SELECTED
+								</span> 
+							</span> 
+						</label>
+					</div>
+					<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+						<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+					</div>
+				</div>
+			</div>
+			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
+			<div id="new-make-payment-card" class="new-card" ng-show="addCardActive">
+				<div class="holder">
+					<div class="entry margin">
+						<label for="card-number">Card number</label>
+						<input type="text" ng-keydown="showMakePaymentButtonActive()" ng-readonly="isSwiped" ng-model="depositBalanceNewCardData.cardNumber" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number">
+					</div>
+					<div class="entry">
+						<label for="expiry-month"> Expiration date (<span>MM/YY</span>) </label>
+						<input type="text" ng-readonly="isSwiped" ng-model="depositBalanceNewCardData.expiryMonth" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month">
+						<input type="text" ng-readonly="isSwiped" ng-model="depositBalanceNewCardData.expiryYear" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" >
+					</div>
+					<div class="entry margin">
+						<label for="name-on-card">Name on card</label>
+						<input type="text" ng-model="depositBalanceNewCardData.cardHolderName" placeholder="Enter name on card" name="name-on-card" id="name-on-card">
+					</div>
+					<div class="entry">
+						<label for="ccv">CCV</label>
+						<input type="text" ng-model="depositBalanceNewCardData.ccv" size="4" placeholder="CCV" name="ccv" maxlength="3" id="ccv">
+					</div>
+					<div class="entry full-width">
+			            <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': depositBalanceNewCardData.addToGuestCard}">
+			                <span class="icon-form icon-checkbox" ng-class="{'checked': depositBalanceNewCardData.addToGuestCard}"></span>
+			                <input ng-model="depositBalanceNewCardData.addToGuestCard" id="add-in-guest-card" value="1" type="checkbox" />
+			                {{'ADD_TO_GUEST_CARD' | translate}}
+			            </label>
+			        </div>
+					
+				</div>
+			</div>
+			<div class="actions">
+				<button type="button" id="close" class="button blank modal-close" ng-click="closeDepositModal()">
+					Close
+				</button>
+				<button type="button" ng-disabled="makePaymentButtonActive" ng-class="showMakePaymentButtonStatus()" ng-click="clickedMakePayment()" id="make-payment" class="button modal-close" >
+					Make Payment =={{makePaymentButtonActive}}
+				</button>
+			</div>
+		</fieldset>
+	</form>
+</div>

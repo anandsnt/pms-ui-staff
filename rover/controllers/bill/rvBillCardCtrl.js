@@ -1,5 +1,5 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce){
 
 	
 	BaseCtrl.call(this, $scope);	
@@ -703,6 +703,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.$emit('hideLoader');
 				
 		var keySettings = $scope.reservationBillData.key_settings;
+		$scope.viewFromBillScreen = true;
 		$scope.fromView = "checkin";
 		//show email popup
 		if(keySettings === "email"){
@@ -710,7 +711,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
 				 controller: 'RVKeyEmailPopupController',
-				 className: 'ngdialog-theme-default1',
+				 className: '',
 				 closeByDocument: false,
 				 scope: $scope
 			});
@@ -720,7 +721,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
 				 controller: 'RVKeyQRCodePopupController',
-				 className: 'ngdialog-theme-default1',
+				 className: '',
 				 closeByDocument: false,
 				 scope: $scope
 			});
@@ -732,7 +733,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			ngDialog.open({
 			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 			    controller: 'RVKeyEncodePopupCtrl',
-			    className: 'ngdialog-theme-default1',
+			    className: '',
 			    closeByDocument: false,
 			    scope: $scope
 			});
@@ -1292,4 +1293,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 	}
 		
+
+	/*
+	*Open the terms and conditions dialog after fetching
+	*the terms and conditions text from the server
+	*/
+	$scope.termsAndConditionsClicked = function(){
+		$scope.termsAndConditionsText = $sce.trustAsHtml($rootScope.termsAndConditionsText);
+		ngDialog.open({
+	    		template: '/assets/partials/validateCheckin/rvTermsAndConditionsDialog.html',
+	    		className: 'ngdialog-theme-default',
+	    		controller: 'RVTermsAndConditionsDialogCtrl',
+	    		scope : $scope
+	    	});
+	}
+
 }]);

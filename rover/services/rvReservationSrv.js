@@ -150,6 +150,7 @@ sntRover.service('RVReservationCardSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBase
 		this.tokenize = function(data) {
 			var deferred = $q.defer();
 			var url = '/staff/payments/tokenize';
+			alert(JSON.stringify(data));
 			RVBaseWebSrv.postJSON(url, data).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
