@@ -48,10 +48,14 @@ console.log($scope);
 		
 		if($scope.isSwiped){
 			//$scope.handleSwipedData();
+				
 			$scope.savePayment("swiped");
+			
 		} else if($scope.addCardActive){
+			
 			$scope.handleMLISessionId();
 		} else {
+			
 			$scope.savePayment("selectedCard");
 		}
 		
@@ -131,7 +135,7 @@ console.log($scope);
 				    et2: swipedData.et2,
 					ksn: swipedData.ksn,
 					pan: swipedData.pan,
-					// etb: swipedData.getTokenFrom.etb,
+					etb: swipedData.etb,
 					user_id :$scope.guestCardData.userId,
 					is_deposit: true,
 					add_to_guest_card: $scope.makePaymentData.addToGuestCard

@@ -62,7 +62,7 @@
 		<a class="button white green-text" ng-click="openPostCharge()" ng-show="displayAddCharge(reservationData.reservation_card.reservation_status)">Add Charge</a>
 		
 		<!-- show smartbands -->
-		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled)">SmartBands</a>
+		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
 
 		<!-- show cancel / reinstate reservation -->
 		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
