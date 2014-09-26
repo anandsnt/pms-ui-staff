@@ -179,6 +179,20 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', 
 
 		return deferred.promise;
 	};
+
+	this.changeHousekeepingStatus = function(data){
+
+		var deferred = $q.defer();
+		var url = '/house/change_house_keeping_status.json';
+		BaseWebSrvV2.postJSON(url, data).then(function(data) {
+		   	 deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+
+		return deferred.promise;
+
+	};
 	
    
 }]);

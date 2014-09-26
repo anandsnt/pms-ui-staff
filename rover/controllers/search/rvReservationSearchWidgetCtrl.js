@@ -461,5 +461,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	   	return mappedStatus;
    	};
+   	
+   
 
 }]);
