@@ -391,6 +391,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		swipeHeadingInSearch = 'Reservations with card '+cardNumber;
 		
 		//var url = '/staff/payments/search_by_cc';
+		
 		var swipeData = {
 			'et2' : data.RVCardReadTrack2,
 			'ksn' : ksn,
@@ -461,5 +462,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	   	return mappedStatus;
    	};
+   	
+   
 
 }]);

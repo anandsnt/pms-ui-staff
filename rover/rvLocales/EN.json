@@ -291,7 +291,7 @@
     "HOW_MANY_KEYS" : "How many keys?",
     "KEY_PRINTED" : "Keys printed!",
     "KEY_CONNECTED_STATUS" : "Connected to Key Card Reader!",
-    "KEY_CHECKIN_STATUS" : "Check in Complete",
+    "KEY_CHECKIN_STATUS" : "Checking In",
     "KEY_INHOUSE_STATUS" : "In House",
     "KEY_CHECKOUT_STATUS" : "Checking Out",
     "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
@@ -359,7 +359,8 @@
     "ADD_NEW_CARD":"Add New Card",
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
-    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined"
+    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
 ,    
     
     "RESERVATION_SUMMARY": "Reservation summary",
@@ -542,7 +543,7 @@
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
-    "DASHBOARD_SEARCH_INHOUSE": "In-House",
+    "DASHBOARD_SEARCH_INHOUSE": "Stayovers",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
     "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation"
@@ -592,6 +593,7 @@
     "PRICE": "Price",
     "PACKAGE": "Package",
     "INCL": "INCL",
+    "EXCL": "EXCL",
     "EXPENSE": "Expense",
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
@@ -691,5 +693,10 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
+    "DISAGREE_BUTTON_LABEL":"Disagree",
+    "AGREE_BUTTON_LABEL":"Agree",
+    "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"
 }

@@ -110,6 +110,7 @@ sntRover.controller('RVroomAssignmentController',[
                   scope: $scope
                 });
 		}else{
+			console.log(oldRoomType +"!=="+ $scope.roomType);
 			if(oldRoomType !== $scope.roomType){
 			//if(true){
 				$scope.oldRoomType = oldRoomType;
@@ -184,21 +185,12 @@ sntRover.controller('RVroomAssignmentController',[
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
 			$scope.$emit('hideLoader');
-			if(data.is_room_auto_assigned == true){
 			
-				$scope.roomAssignedByOpera = data.room;
-				ngDialog.open({
-			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			          controller: 'rvRoomAlreadySelectedCtrl',
-			          className: 'ngdialog-theme-default',
-			          scope: $scope
-		        });
-		        return false;
-			}
+			
 			
 			
 			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
-			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+			
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
 			$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
@@ -208,14 +200,31 @@ sntRover.controller('RVroomAssignmentController',[
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
 			}			
-			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-			if($scope.clickedButton == "checkinButton"){
-				$scope.$emit('hideLoader');
-				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+
+			if(data.is_room_auto_assigned == true){
+
+				$scope.roomAssignedByOpera = data.room;
+
+				$scope.reservationData.reservation_card.room_number = data.room;
+
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
 			} else {
-				$scope.$emit('hideLoader');
-				$scope.backToStayCard();
+				$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+				if($scope.clickedButton == "checkinButton"){
+					$scope.$emit('hideLoader');
+					$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				} else {
+					$scope.$emit('hideLoader');
+					$scope.backToStayCard();
+				}
 			}
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+			
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
@@ -239,13 +248,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 	$scope.goToNextView = function(){
-	
-		$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
-		$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
-		$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
-		$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
-		$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
-			
+
 		if($scope.clickedButton == "checkinButton"){
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});

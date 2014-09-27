@@ -1350,6 +1350,17 @@ Padding for the ows error popup
 
 }
 
+/*-----CICO-9319 Hiding CC options for other payment methods-------*/
+.paymentMethodSelect {
+   min-width: 320px;
+
+}
+/*-----CICO-9179 setting max width for summary box items-------*/
+.summarychargegroup {
+   max-width: 104px;
+
+}
+
 
 #main-menu {
   li .menu-item {
@@ -1357,3 +1368,53 @@ Padding for the ows error popup
   }
 }
 
+//CICO-9595 setting the height and width for the terms and conditions dialog
+#modal .modal-content.terms {
+  width: 480px !important;
+  height: 600px !important;
+}
+
+#modal .modal-content.terms .actions {
+  margin-top: 20px;
+  text-align: center;
+}
+#modal .modal-content.terms .actions .button {
+  display: inline-block;
+  width: auto;
+}
+.head_terms_and_conditions {
+  text-align: center;
+  font-weight: bold;
+}
+#modal .modal-content.terms .scrollable {
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  height: 480px;
+}
+.agree-terms-and-conditions {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.termsandconditions-checkbox{
+  width: 30px !important;
+}
+
+//CICO-9586 setting the styles for the no post button
+.no-post-button {
+  border-radius: 3px !important;
+  width: auto !important;
+  line-height: 30px !important;
+  height: auto !important;
+  float: left !important;
+  margin: 10px 10 10 0px !important; 
+}
+
+.payment-checkbox-container{
+  float: left !impotant;
+}
+.payment-checkbox{
+  float:left !important;
+  width:50%;
+}

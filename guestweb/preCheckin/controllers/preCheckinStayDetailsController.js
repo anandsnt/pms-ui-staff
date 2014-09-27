@@ -43,7 +43,22 @@
 	// 		$scope.netWorkError = true;
 	// 		$$scope.isLoading = false;
 	// });
-			$state.go('preCheckinStatus');
+		 var hour = parseInt($scope.stayDetails.hour);
+		 if ($scope.stayDetails.primeTime == 'PM' && hour < 12) {
+		 	hour = hour+ 12;		      
+		 }
+		 else if ($scope.stayDetails.primeTime == 'AM' && hour == 12) {
+		    hour = hour-12;
+		 }
+		 hour = (hour <10)?("0"+hour): hour
+		 var dataTosend = {
+		 	"time":  hour+":"+$scope.stayDetails.minute,
+		 	"comment":$scope.stayDetails.comment,
+		 	"mobile":$scope.stayDetails.mobile,
+		 	"reservation_id":$rootScope.reservationID
+		 }
+		 console.log(dataTosend);
+		// $state.go('preCheckinStatus');
 
 		}
 		
