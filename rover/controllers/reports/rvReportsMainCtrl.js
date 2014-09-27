@@ -1,10 +1,9 @@
 sntRover.controller('RVReportsMainCtrl', [
 	'$rootScope',
 	'$scope',
-	'reportsResponse',
 	'RVreportsSrv',
 	'$filter',
-	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter) {
+	function($rootScope, $scope, RVreportsSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -24,8 +23,17 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = 'Stats & Reports';
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
-		$scope.reportList = reportsResponse.results;
-		$scope.reportCount = reportsResponse.total_count;
+		// $scope.reportList = reportsResponse.results;
+		// $scope.reportCount = reportsResponse.total_count;
+		$scope.reportList = {};
+		$scope.reportCount = {};
+
+		var callback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.reportList = data.results;
+			$scope.reportCount = data.total_count;
+		};
+		$scope.invokeApi(RVreportsSrv.fetchReportList, {}, callback);
 
 		$scope.showReportDetails = false;
 
