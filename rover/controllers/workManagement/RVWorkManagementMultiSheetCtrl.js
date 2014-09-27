@@ -238,6 +238,10 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			updateView();
 		}
 
+		$scope.onWorkTypeChanged = function() {
+			updateView();
+		}
+
 		$scope.saveMultiSheet = function() {
 			var assignedRooms = [],
 				onSaveSuccess = function(data) {
