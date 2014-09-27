@@ -1068,6 +1068,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * open popup for edit/split/remove transaction
 	 */
 	$scope.openActionsPopup = function(id,desc,amount,type,credits){
+
+		$scope.errorMessage = "";
 		//hide edit and remove options in case type is  payment
 		$scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
 		$scope.selectedTransaction = {};
