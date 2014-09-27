@@ -67,7 +67,10 @@
 		<a class="button with-icon green" ng-click='clickedAddUpdateCCButton()' ng-show="billData.credit_card_details.payment_type == 'CC'"> 
 			<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}</span>  
 		</a>
-		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> {{billData.guest_or_company_name}} </h3>
+		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> 
+			<span>{{billData.guest_or_company_name}}</span>
+			<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a> 
+		</h3>
 		
 		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''">	   <span>{{billData.credit_card_details.payment_type_description}}</span>
 			<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
@@ -79,7 +82,7 @@
 	<div class="details signature-wrapper" ng-show="showSignedSignature">
 		<figure>
 			<img src="{{reservationBillData.signature_details.signed_image}}" alt="">
-		</figure>dateFormat{{krish}}
+		</figure>
 		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
 	</div>
 

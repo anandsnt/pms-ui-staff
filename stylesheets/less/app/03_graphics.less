@@ -360,6 +360,52 @@
 		}
 	}
 
+/* Menu & availability toggle	==========================*/
+	.icon-toggle,
+	.icon-availability {
+		overflow: hidden;
+		background-image: @iconMenu, @darkTexture;
+		background-repeat: no-repeat, repeat;
+		.hide-text;
+		.square(40px);
+		.show;
+		.no-transition;
+
+		@media @highdpi {
+			background-image: @iconMenu2x, @darkTexture;
+			background-size: 40px;
+		}
+	}
+
+	&.icon-toggle {
+		background-position: 0 -70px, 0 0;
+		#border-radius > .right();
+
+		&.active { 
+			background-color: @logoGradientStart; 
+			.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+		}
+
+		@media only screen and (min-width: 768px) {
+			background-color: @logoGradientStart;
+			background-position: 0 -10px, 0 0;
+			.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+
+			&:hover,
+			&.active { background-position: 0 -70px, 0 0; }
+		}
+	}
+
+	&.icon-availability {
+		background-color: @grey2;//edited from qburst
+		background-image: url(/assets/rovermenu.png); //qburst
+		background-repeat: no-repeat, repeat;
+		background-position: 5 -495px, 0 0;
+		#border-radius > .left();
+		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));		
+		&:hover,&.active { background-position: 5 -545px, 0 0; }
+	}
+
 /* Arrow icons			==================================*/
 	.has-arrow {
 		background-position: 95% 50%;

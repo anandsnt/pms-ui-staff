@@ -3,7 +3,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.smartBandData = {};
 	$scope.bandData = {};
-	$scope.selectedReservationStatus = $scope.reservationData.reservation_card;
+	$scope.selectedReservationStatus = $scope.reservationData.reservation_card.reservation_status;
 	$scope.smartBandData.firstName = JSON.parse(JSON.stringify($scope.data.guest_details.first_name));
 	$scope.smartBandData.lastName = JSON.parse(JSON.stringify($scope.data.guest_details.last_name));
 	$scope.smartBandLength = 0;
@@ -16,7 +16,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	$scope.firstTimeClick = true;
 	$scope.showBandEditScreen = false;
 	$scope.addNewSmartband = function(){
-		if($scope.selectedReservationStatus != 'CHECKED_OUT'){
+		if($scope.selectedReservationStatus !== 'CHECKEDOUT'){
+			console.log("inside");
 			$scope.errorMessage = '';
 			$scope.showSmartBandListView = false;
 			$scope.showAddNewSmartBandScreen = true;
@@ -81,12 +82,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
       	   window.scrollTo(0,0);
         }, 700);
 		var blankKeys = "";
-		if($scope.smartBandData.firstName == '' || $scope.smartBandData.firstName == null){
-			blankKeys = "First Name";		
-		}
-		if($scope.smartBandData.lastName == '' || $scope.smartBandData.lastName == null){			
-			blankKeys = blankKeys == '' ? "Last Name" : (blankKeys + ", " + 'Last Name');
-		}
+
 		if($scope.isFixedAmount){	
 			if($scope.smartBandData.fixedAmount == '' || $scope.smartBandData.fixedAmount == null){			
 				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");
@@ -164,7 +160,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	 * @param {int} id of the band
 	 */
 	$scope.editBandDetails = function(id){
-		if($scope.selectedReservationStatus != 'CHECKED_OUT'){
+		if($scope.selectedReservationStatus !== 'CHECKEDOUT'){
 			$scope.bandEditId = id;
 			$scope.invokeApi(RVSmartBandSrv.getSmartBandDetails, id, $scope.getSmartBandSuccess);
 		}

@@ -46,6 +46,7 @@ sntRover.controller('RVWorkManagementMultiDatePickerController', ['$scope', '$ro
 				changeMonth: true,				
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
+					$scope.onDateChanged();
 					ngDialog.close();
 				}
 			}

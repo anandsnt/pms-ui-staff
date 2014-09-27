@@ -68,10 +68,10 @@ angular.module('housekeepingModule', [])
                 workTypes: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchWorkTypes();
                 },
-                shifts : function(RVWorkManagementSrv) {
+                shifts: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchShifts();
                 },
-                floors: function(RVHkRoomStatusSrv){
+                floors: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetch_floors();
                 }
             }
@@ -89,7 +89,7 @@ angular.module('housekeepingModule', [])
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {
-            url: '/multisheet',
+            url: '/multisheet/:date',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementMultiSheet.html',
             controller: 'RVWorkManagementMultiSheetCtrl'
         });

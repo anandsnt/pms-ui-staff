@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', 
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
       $translate.use(hotelDetails.language.value);
@@ -10,7 +10,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
        * TODO: Fix this bug in ng-translate and implement in this here.
        */
       setTimeout(function() {
-        $translate('NA')
+        $translate('NA');
       }, 1000); //Word around.
     } else {
       $translate.use('EN');
@@ -54,6 +54,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
+    $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*
      * hotel Details
      */
@@ -63,11 +64,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
-    console.log("currency code   : "+hotelDetails.currency.value);
-    console.log("currency symbol : "+$rootScope.currencySymbol);
-    console.log("date format     : "+$rootScope.dateFormat);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
-
+	$rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 
 
     //set flag if standalone PMS
@@ -83,14 +81,18 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
-
     $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
-      $scope.userInfo.business_date = newBussinessDate
+      $scope.userInfo.business_date = newBussinessDate;
     });
 
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
+    $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
 
+    $scope.isDepositBalanceScreenOpened = false;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(){
+    	$scope.isDepositBalanceScreenOpened = true;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**
@@ -125,18 +127,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_AVAILABILITY",
-          action: "",
-          iconClass: "icon-availability",
-          submenu: [{
-            title: "MENU_HOUSE_STATUS",
-            action: ""
-          }, {
-            title: "MENU_AVAILABILITY",
-            action: ""
-          }]
-        }, {
+        }, 
+        // {
+        //   title: "MENU_AVAILABILITY",
+        //   action: "",
+        //   iconClass: "icon-availability",
+        //   submenu: [{
+        //     title: "MENU_HOUSE_STATUS",
+        //     action: ""
+        //   }, {
+        //     title: "MENU_AVAILABILITY",
+        //     action: ""
+        //   }]
+        // }, 
+        {
           title: "MENU_FRONT_DESK",
           //hidden: true,
           action: "",
@@ -420,7 +424,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         ngDialog.open({
           template: '/assets/partials/settings/rvStaffSettingModal.html',
           controller: 'RVStaffsettingsModalController',
-          className: 'ngdialog-theme-plain calendar-modal'
+          className: 'calendar-modal'
         });
       }
     };
@@ -434,6 +438,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	//alert("-----------------------");
+    	//alert(JSON.stringify(data));
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
@@ -554,8 +560,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.goToDashboard = function(){
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      $state.go('rover.dashboard', {}, {reload: true});
-    }
+     // $state.go('rover.dashboard', {}, {reload: true});
+      $window.location.reload();
+    };
 
      /**
     * Handles the bussiness date change completion
@@ -564,16 +571,47 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $rootScope.isBussinessDateChanging = false;
         // Hide loading message
         $scope.$emit('hideLoader');
-        // if(!$rootScope.isBussinessDateChanged){
-        //     $rootScope.isBussinessDateChanged = true;
+        if(!$rootScope.isBussinessDateChanged){
+             $rootScope.isBussinessDateChanged = true;
             ngDialog.open({
               template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               closeByDocument: false,
               scope: $scope
           });
-        // }        
+        }        
     };
+    
+    
+    
+     
+
+    /**
+    * function to execute on clicking latecheckout button
+    */
+    $scope.clickedOnHeaderLateCheckoutIcon = function(event){
+    	
+	 	var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {'type': type});
+	    
+    };
+    
+    $scope.clickedOnQueuedRoomsIcon = function(event){
+    	
+	 	var type = "QUEUED_ROOMS";
+        $state.go('rover.search', {'type': type});
+    };
+    
+    $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data){
+    	if(data == "remove"){
+    		$scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count)-parseInt(1);
+    	} else {
+    		$scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count)+parseInt(1);
+    	}
+    	
+    });
+   
+    
 
   }
 ]);

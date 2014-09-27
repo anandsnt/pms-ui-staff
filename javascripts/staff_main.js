@@ -1,5 +1,5 @@
 //=require ../shared/lib/js/jquery.js
-//=require ../shared/lib/js/jquery-ui-1.10.4.min.js
+//=require ../shared/lib/js/jquery-ui.min.js
 //=require ../shared/lib/js/jquery.ui.touch-punch.js
 //=require ../shared/lib/js/angular.min.js
 //=require ../shared/lib/js/angular-route.js
@@ -13,6 +13,7 @@
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/ui-utils.min.js
+//=require ../shared/lib/js/bindonce.js
 
 
 //=require_tree ../shared/lib/js/signature

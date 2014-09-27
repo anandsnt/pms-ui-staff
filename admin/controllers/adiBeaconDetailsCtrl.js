@@ -6,6 +6,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.addmode = ($stateParams.action === "add")? true : false;
     if(!$scope.addmode){
       $scope.beaconId = $stateParams.action;
+      $scope.isBeaconLinked = beaconDetails.is_linked;
     }
     else{
       $scope.isBeaconLinked = false;
@@ -79,16 +80,22 @@ if(!$scope.addmode){
 
   $scope.linkiBeacon =  function(){
     var successfullyLinked = function(data){
-      $scope.$emit('hideLoader');
-      $scope.successMessage = data.RVSuccess;
       $scope.isBeaconLinked = true;
+      if(!$scope.addmode){
+        $scope.linkBeacon();
+      }else{
+        $scope.$emit('hideLoader');
+        $scope.successMessage = data.RVSuccess;
+      }  
+      
       $scope.$apply();
+
     };
     var failedLinkage = function(data){
       $scope.$emit('hideLoader');
       $scope.errorMessage = [data.RVError];
       $scope.$apply();
-
+      $scope.isBeaconLinked = false;
     };
     var args = [];
 
@@ -109,15 +116,25 @@ if(!$scope.addmode){
     try{
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
-    catch(er){};
+    catch(er){
+      var error = {};
+      error.RVError = er;
+      failedLinkage(error);
+    };
   };
 
   $scope.saveBeacon = function(){
 
       var updateData ={};
-      var updateBeaconSuccess = function(){
-        $scope.$emit('hideLoader');
-        $state.go('admin.ibeaconSettings');
+      var updateBeaconSuccess = function(data){
+        if(!$scope.addmode){
+          $scope.$emit('hideLoader');
+          else$state.go('admin.ibeaconSettings');
+        }else{
+          $scope.beaconId = data.id;
+          $scope.linkBeacon();
+        }
+        
       };
       var updateBeaconFailure = function(data){
         $scope.$emit('hideLoader');
@@ -151,5 +168,24 @@ if(!$scope.addmode){
         $scope.invokeApi(adiBeaconSettingsSrv.updateBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
       }
   };
+
+  $scope.linkBeacon = function(){
+    var linkBeaconSuccess = function(){
+        $scope.$emit('hideLoader');
+        if($scope.addmode){          
+          $state.go('admin.ibeaconSettings');
+        }else{
+          $scope.successMessage = data.RVSuccess;
+        }
+    }
+    var linkBeaconFailure = function(){
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = data;
+    }
+    var data = {};
+    data.id = $scope.beaconId;
+    data.is_linked = $scope.isBeaconLinked;
+    $scope.invokeApi(adiBeaconSettingsSrv.setLink,data,linkBeaconSuccess,linkBeaconFailure);
+  }
 
 }]);
