@@ -302,9 +302,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.eachTaskList = {
 			name: '',
 			work_type_id: '',
-			room_type_id: '',
-			reservation_status: '',
-			fo_status: '',
+			room_type_ids: [],
+			front_office_status_ids: [],
+			reservation_statuses_ids: [],
+			is_occupied: '',
+			is_vacant: '',
 			hours: '',
 			mins: '',
 			ref_housekeeping_status_id: ''
@@ -319,9 +321,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.eachTaskList = {
 					name: '',
 					work_type_id: '',
-					room_type_id: '',
-					reservation_status: '',
-					fo_status: '',
+					room_type_ids: [],
+					front_office_status_ids: [],
+					reservation_statuses_ids: [],
+					is_occupied: '',
+					is_vacant: '',
 					hours: '',
 					mins: '',
 					ref_housekeeping_status_id: ''
@@ -331,15 +335,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.taskListClickedElement = typeIndex;
 
 				var time = this.item.completion_time;
-				var resStatus = this.item.is_occupied ? 3 : '';
-				var foStatus   = this.item.is_vacant ? 1 : 2;
 				$scope.eachTaskList = {
 					name: this.item.name,
-					work_type_id: this.item.name,
-					room_type_id: this.item.name,
-					reservation_status: resStatus,
-					fo_status: foStatus,
-					hour: time.split(':')[0],
+					work_type_id: this.item.work_type_id,
+					room_type_ids: this.item.room_type_ids,
+					front_office_status_ids: this.item.front_office_status_ids,
+					reservation_statuses_ids: this.item.reservation_statuses_ids,
+					is_occupied: this.item.is_occupied,
+					is_vacant: this.item.is_vacant,
+					hours: time.split(':')[0],
 					mins: time.split(':')[1],
 					ref_housekeeping_status_id: this.item.ref_housekeeping_status_id,
 					id: this.item.id
@@ -352,9 +356,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			$scope.eachTaskList = {
 				name: '',
 				work_type_id: '',
-				room_type_id: '',
-				reservation_status: '',
-				fo_status: '',
+				room_type_ids: [],
+				front_office_status_ids: [],
+				reservation_statuses_ids: [],
+				is_occupied: '',
+				is_vacant: '',
 				hours: '',
 				mins: '',
 				ref_housekeeping_status_id: ''
@@ -369,9 +375,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.eachTaskList = {
 					name: '',
 					work_type_id: '',
-					room_type_id: '',
-					reservation_status: '',
-					fo_status: '',
+					room_type_ids: [],
+					front_office_status_ids: [],
+					reservation_statuses_ids: [],
+					is_occupied: '',
+					is_vacant: '',
 					hours: '',
 					mins: '',
 					ref_housekeeping_status_id: ''
@@ -391,9 +399,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.eachTaskList = {
 					name: '',
 					work_type_id: '',
-					room_type_id: '',
-					reservation_status: '',
-					fo_status: '',
+					room_type_ids: [],
+					front_office_status_ids: [],
+					reservation_statuses_ids: [],
+					is_occupied: '',
+					is_vacant: '',
 					hours: '',
 					mins: '',
 					ref_housekeeping_status_id: ''
@@ -402,16 +412,18 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				fetchTaskList();
 			};
 
-			var isOccupied = $scope.eachTaskList.reservation_status == 3 || $scope.eachTaskList.reservation_status == 4 ? true : false;
-			var isVacant   = $scope.eachTaskList.fo_status == 1 ? true : false;
+			var isOccupied = _.find($scope.eachTaskList.reservation_statuses_ids, function(item) {
+				return item == 3 || item == 4;
+			});
 			var params = {
-			    name: $scope.eachTaskList.name,
-			    work_type_id: $scope.eachTaskList.work_type_id,
-			    room_type_id: $scope.eachTaskList.room_type_id,
-			    is_occupied: isOccupied,
-			    is_vacant: isVacant,
-			    completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
-			    ref_housekeeping_status_id: $scope.eachTaskList.ref_housekeeping_status_id,
+				name: $scope.eachTaskList.name,
+				work_type_id: $scope.eachTaskList.work_type_id,
+				room_type_ids: $scope.eachTaskList.room_type_ids,
+				front_office_status_ids: $scope.eachTaskList.front_office_status_ids,
+				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
+				is_occupied: $scope.eachTaskList.name,
+				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+				ref_housekeeping_status_id: $scope.eachTaskList.ref_housekeeping_status_id
 			}
 
 			console.log( params );	
@@ -437,14 +449,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				fetchTaskList();
 			};
 
-			var isOccupied = $scope.eachTaskList.reservation_status == 3 || $scope.eachTaskList.reservation_status == 4 ? true : false;
-			var isVacant   = $scope.eachTaskList.fo_status == 1 ? true : false;
 			var params = {
 			    name: $scope.eachTaskList.name,
 			    work_type_id: $scope.eachTaskList.work_type_id,
 			    room_type_id: $scope.eachTaskList.room_type_id,
-			    is_occupied: isOccupied,
-			    is_vacant: isVacant,
 			    completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
 			    ref_housekeeping_status_id: $scope.eachTaskList.ref_housekeeping_status_id,
 			    id: $scope.eachTaskList.id
