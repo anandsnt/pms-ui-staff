@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="actions">
-            <button type="button" class="button green">Save</button>
+            <button type="button" ng-click="saveMultiSheet()" class="button green">Save</button>
             <button type="button" ng-click="printWorkSheet()" class="button grey">Print</button>
             <button type="button" ng-click="onCancel()" class="button blank">Cancel</button>
         </div>
@@ -39,11 +39,15 @@
             <span class="icons icon-filter"></span>
             Filter rooms
         </a>
-        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll=
-        "unAssignedRoomList">
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" 
+            ng-iscroll="unAssignedRoomList"
+            data-drop="true" 
+            jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" 
+            data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.assigned'}">
+
             <ul class="wrapper sortable" >
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li id="unassigned-1-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
+                <li id="unassigned-UA-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
@@ -85,10 +89,10 @@
                     <span class="total">{{multiSheetState.assignments[employee.id].summary.stayovers.total}}</span>
                 </li>
             </ul>
-            <div id="{{employee.id}" class="worksheet-content scrollable" 
+            <div id="{{employee.id}}" class="worksheet-content scrollable" 
                 data-drop="true" 
-                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" 
-                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned'}">
+                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped, \'{{employee.id}}\')'}" 
+                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned,.worksheet-room.multi-sheet.assigned'}">
 
                 <ul class="wrapper sortable">
                     <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->

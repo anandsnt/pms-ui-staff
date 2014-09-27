@@ -101,10 +101,18 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $stateParams.date);
 
-		$rootScope.setPrevState = {
+		var prevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
-		};
+		}
+		if ($stateParams.from == 'multiple') {
+			prevState = {
+				title: ('Manage Worksheets'),
+				name: 'rover.workManagement.multiSheet'
+			}
+		}
+
+		$rootScope.setPrevState = prevState;
 
 		$scope.setScroller("workSheetUnassigned");
 		$scope.setScroller("workSheetAssigned");
