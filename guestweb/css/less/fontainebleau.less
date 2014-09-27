@@ -143,9 +143,17 @@ background: #0aadf0;
 		left:81% !important;
 	}
 }
-
+@media screen and (max-width: 900px) {
+ 	.pre-checkin-container-padding{
+ 		padding:0% 5% !important;
+ 	}
+}
 
 @media screen and (min-width: 900px) {
+
+	.pre-checkin-container-padding{
+ 		padding:0% !important;
+ 	}
 
 	.img-responsive.img-center {
 	    max-height: 95px;
@@ -166,7 +174,14 @@ background: #0aadf0;
 	    border-top: 1px solid #656565 !important;
 	}
 	.jumbotron .checkin-wrapper-top{
-		padding: 5% 0;
+		padding: 5% 30%;
 		margin:0 auto;
+	}
+	
+	.checkout-status{
+		.msg-body,.preckin-status-header{
+			width:100%;
+			padding:0%;
+		}
 	}
 }

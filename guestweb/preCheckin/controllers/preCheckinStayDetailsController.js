@@ -58,7 +58,7 @@
 		 	"reservation_id":$rootScope.reservationID
 		 }
 		 console.log(dataTosend);
-		// $state.go('preCheckinStatus');
+		 $state.go('preCheckinStatus');
 
 		}
 		
