@@ -19,7 +19,7 @@
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isLoading || netWorkError">
 			<!-- top section starts here-->
-			<div class="row checkin-wrapper-top">
+			<div class="row checkin-wrapper-top" style="margin-bottom:5%;">
 				<div class="pad-rt-60 pre-checkin-container-padding">
 					<div class="chekin-heading centeralign blue-text">
 						Stay Details
@@ -27,7 +27,7 @@
 					<div class="date-container">
 						<div class="row cabin_number_field ">
 							<p class="lightcontent grey-text">Estimated arrival time</p>
-							<div class="expiry-year-container eta-comtainer">
+							<div class="expiry-year-container eta-container">
 								<div class="select-style">
 									<select ng-model="stayDetails.hour"
 									ng-options="hour as hour  for hour in hours">
@@ -35,7 +35,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="expiry-year-container eta-comtainer">
+						<div class="expiry-year-container eta-container">
 							<div class="select-style">
 								<select ng-model="stayDetails.minute"
 								ng-options="minute as minute  for minute in minutes">
@@ -43,7 +43,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="expiry-year-container eta-comtainer">
+					<div class="expiry-year-container eta-container">
 						<div class="select-style arrival-time">
 							<select ng-model="stayDetails.primeTime">
 								<option value="AM" selected="" >AM</option>
@@ -68,18 +68,21 @@
 					(We'll text you as soon as your room is available.)
 				</p>
 			</div>
-			<!-- top section ends here-->
-	<!-- 	</div>
-		<div class="verti-ruler"></div>
-		<div class="col-md-6 pad-lf-60">	 -->				
-			<button class="checkin-button pre-checkin-btn blue-bg pre-checkin-button"
-			ng-click="postStayDetails()">
-			<span class="white-text">Confirm Pre Check-in</span>
-		</button>
+			<div class="row cabin_number_field">			
+				<button class="checkin-button pre-checkin-btn blue-bg pre-checkin-button"
+				ng-click="postStayDetails()">
+					<span class="white-text">Confirm Pre Check-in</span>
+				</button>
+			</div>
 	</div>
+</div>	
+<div class="row checkin-wrapper no-top-margin">
+	<div class="col-md-6 error-callus">
+		&nbsp;
+	</div>
+	<div class="verti-ruler"></div>
 </div>						
 </div>
 <!-- pre-checkinbtn section ends here-->
 </div>
 
-</div>
