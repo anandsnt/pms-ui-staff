@@ -271,13 +271,41 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		fetchTaskList();
 
+		var additionalAPIs = function() {
+			var rtCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.roomTypesList = data;
+			};
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchRoomTypes, {}, rtCallback);
+
+			var resHkCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.resHkStatusList = data;
+			};
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchResHkStatues, {}, resHkCallback);
+
+			var foCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.foStatusList = data;
+			};
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchFoStatues, {}, foCallback);
+
+			var hksCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.HkStatusList = data;
+			};
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchHkStatues, {}, hksCallback);
+		};
+		additionalAPIs();
+
 		$scope.eachTaskList = {
 			name: '',
 			work_type_id: '',
 			room_type_id: '',
-			is_occupied: '',
-			is_vacant: '',
-			completion_time: '',
+			reservation_status: '',
+			fo_status: '',
+			hours: '',
+			mins: '',
 			ref_housekeeping_status_id: ''
 		}
 
@@ -291,8 +319,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					name: '',
 					work_type_id: '',
 					room_type_id: '',
-					is_occupied: '',
-					is_vacant: '',
+					reservation_status: '',
+					fo_status: '',
 					hours: '',
 					mins: '',
 					ref_housekeeping_status_id: ''
@@ -306,8 +334,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					name: '',
 					work_type_id: '',
 					room_type_id: '',
-					is_occupied: '',
-					is_vacant: '',
+					reservation_status: '',
+					fo_status: '',
 					hour: time.split(':')[0],
 					mins: time.split(':')[1],
 					ref_housekeeping_status_id: ''

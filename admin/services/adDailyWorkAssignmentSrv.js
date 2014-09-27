@@ -120,7 +120,94 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
 
-    	/*
+	    /*
+        * fetch additional APIs and preserve
+        *
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        var roomTypesList = [];
+        this.fetchRoomTypes = function() {
+            var deferred = $q.defer(),
+                url      = 'api/room_types/';
+
+            if ( roomTypesList.length ) {
+                deferred.resolve(roomTypesList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        roomTypesList = data.results
+                        deferred.resolve(roomTypesList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        var resHkStatusList = [];
+        this.fetchResHkStatues = function() {
+            var deferred = $q.defer(),
+                url      = '/api/reservation_hk_statuses';
+
+            if ( resHkStatusList.length ) {
+                deferred.resolve(resHkStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        resHkStatusList = data.results
+                        deferred.resolve(resHkStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        var foStatusList = [];
+        this.fetchFoStatues = function() {
+            var deferred = $q.defer(),
+                url      = '/api/front_office_statuses';
+
+            if ( foStatusList.length ) {
+                deferred.resolve(foStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        foStatusList = data.results
+                        deferred.resolve(foStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        var HkStatusList = [];
+        this.fetchHkStatues = function() {
+            var deferred = $q.defer(),
+                url      = '/api/house_keeping_statuses';
+
+            if ( HkStatusList.length ) {
+                deferred.resolve(HkStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        HkStatusList = data.results
+                        deferred.resolve(HkStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+
+        /*
         * To fetch work shifts
         * 
         * @param {object}
