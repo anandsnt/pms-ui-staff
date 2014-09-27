@@ -1,11 +1,9 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
-
-
 <!-- Worksheet content -->
 <section id="worksheet-content" class="content worksheets" role="main">
-
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Worksheet header -->
-    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
+    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">            
         <div class="entry date">
             <label for="worksheet-date">Date</label>
             <div class="entry-data" ng-click="showCalendar('RVWorkManagementMultiDatePickerController')">
@@ -23,17 +21,14 @@
         <div class="entry task">
             <label for="worksheet-work-type">Work Type</label>
             <div class="select">
-                <select id="worksheet-work-type" name="worksheet-work-type">
-                    <option value="">All Work Types</option>
-                    <option value="daily-cleaning" selected>Daily Cleaning</option>
-                    ...
+                <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChanged()">
                 </select>
             </div>
         </div>
         <div class="actions">
-            <button type="button" class="button green">Save</button>
-            <button type="button" class="button grey">Print</button>
-            <button type="button" class="button blank">Cancel</button>
+            <button type="button" ng-click="saveMultiSheet()" class="button green">Save</button>
+            <button type="button" ng-click="printWorkSheet()" class="button grey">Print</button>
+            <button type="button" ng-click="onCancel()" class="button blank">Cancel</button>
         </div>
     </form>
 
@@ -44,13 +39,23 @@
             <span class="icons icon-filter"></span>
             Filter rooms
         </a>
-        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable">
-            <ul class="wrapper sortable">
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" 
+            ng-iscroll="unAssignedRoomList"
+            data-drop="true" 
+            jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" 
+            data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.assigned'}">
+
+            <ul class="wrapper sortable" >
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room multi-sheet unassigned">
-                    <h3>{Room number}</h3>
-                    <span class="guest {guest-status}">{out or time}</span> |
-                    <span class="room {room-status}">{room-status}</span>
+                <li id="unassigned-UA-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+                    <h3>{{room.room_no}}</h3>
+                    <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time!= null">{{ room.checkout_time}}  | </span>
+                    <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time == null">{{ reservationStatus[room.reservation_status]}}  | </span>
+                    <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT  | </span>
+                    <span class="room {{room.current_status}}">{{room.current_status}}</span>
                 </li>                
             </ul>
         </div>  
@@ -69,28 +74,38 @@
     <!-- When employees selected -->
     <div class="assigned-rooms multi-sheet" ng-if="multiSheetState.selectedEmployees.length > 0">
         <div ng-repeat="employee in multiSheetState.selectedEmployees" class="sheet-content">
-            <a href="{single-sheet-link}" class="button brand-colors">{{employee.name}}</a>
+            <a ng-click="navigateToIndvl(multiSheetState.assignments[employee.id].worksheetId)" class="button brand-colors">{{employee.maid_name}}</a>
             <ul class="data">
                 <li class="shift">
-                    <span class="completed">{time}</span>
-                    <span class="total">{time}</span>
+                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.shift.completed}}</span>
+                    <span class="total">{{multiSheetState.assignments[employee.id].summary.shift.total}}</span>
                 </li>
                 <li class="departures">
-                    <span class="completed">{value}</span>
-                    <span class="total">{value}</span>
+                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.departures.completed}}</span>
+                    <span class="total">{{multiSheetState.assignments[employee.id].summary.departures.total}}</span>
                 </li>
                 <li class="stayovers">
-                    <span class="completed">{value}</span>
-                    <span class="total">{value}</span>
+                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.stayovers.completed}}</span>
+                    <span class="total">{{multiSheetState.assignments[employee.id].summary.stayovers.total}}</span>
                 </li>
             </ul>
-            <div id="{employee-id}" class="worksheet-content scrollable">
+            <div id="{{employee.id}}" class="worksheet-content scrollable" 
+                data-drop="true" 
+                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped, \'{{employee.id}}\')'}" 
+                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned,.worksheet-room.multi-sheet.assigned'}">
+
                 <ul class="wrapper sortable">
                     <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                    <li class="worksheet-room multi-sheet assigned">
-                        <h3>{Room number}</h3>
-                        <span class="guest {guest-status}">{departure-time}</span>
-                        <span class="room {room-status}">{room-status}</span>
+                    <li id="assigned-{{employee.id}}-{{$index}}" class="worksheet-room multi-sheet assigned" ng-repeat="room in multiSheetState.assignments[employee.id].rooms"
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+
+                        <h3>{{room.room_no}}</h3>
+                        <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time!= null">{{ room.checkout_time}}  | </span>
+                        <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time == null">{{ reservationStatus[room.reservation_status]}}  | </span>
+                        <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT  | </span>
+                        <span class="room {{room.current_status}}">{{room.current_status}}</span>
                     </li>
                     <!-- .. repeat for all assigned room to this employee -->
                 </ul>

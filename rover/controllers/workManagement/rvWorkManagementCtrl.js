@@ -41,5 +41,23 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"STAYOVER": "inhouse",
 			"Not Reserved": "no-show",
 		}
+
+		$scope.printWorkSheet = function() {
+			window.print();
+		}
+
+		$scope.addDuration= function(augend, addend) {
+			if (!addend) {
+				return augend;
+			}
+			var existing = augend.split(":"),
+				current = addend.split(":"),
+				sumMinutes = parseInt(existing[1]) + parseInt(current[1]),
+				sumHours = (parseInt(existing[0]) + parseInt(current[0]) + parseInt(sumMinutes / 60)).toString();
+
+			return (sumHours.length < 2 ? "0" + sumHours : sumHours) +
+				":" +
+				((sumMinutes % 60).toString().length < 2 ? "0" + (sumMinutes % 60).toString() : (sumMinutes % 60).toString());
+		}
 	}
 ]);

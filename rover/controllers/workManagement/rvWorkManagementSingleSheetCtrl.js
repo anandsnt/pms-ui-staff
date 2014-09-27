@@ -19,9 +19,22 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			filters: {
 				selectedFloor: "",
 				selectedStatus: ""
+			},
+			dimensions: {
+				unassigned: $("#worksheet-unassigned-rooms").width() - 40,
+				assigned: $("#worksheet-assigned-rooms").width() - 40
 			}
 		};
 
+		$scope.dropToUnassign = function(event, dropped) {
+			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+			$scope.unAssignRoom($scope.singleState.assigned[indexOfDropped]);
+		}
+
+		$scope.dropToAssign = function(event, dropped) {
+			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+			$scope.assignRoom($scope.singleState.unassigned[indexOfDropped]);
+		}
 
 		var refreshView = function() {
 				$scope.refreshScroller("workSheetUnassigned");
@@ -88,10 +101,18 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 
 		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $stateParams.date);
 
-		$rootScope.setPrevState = {
+		var prevState = {
 			title: ('Work Management'),
 			name: 'rover.workManagement.start'
-		};
+		}
+		if ($stateParams.from == 'multiple') {
+			prevState = {
+				title: ('Manage Worksheets'),
+				name: 'rover.workManagement.multiSheet'
+			}
+		}
+
+		$rootScope.setPrevState = prevState;
 
 		$scope.setScroller("workSheetUnassigned");
 		$scope.setScroller("workSheetAssigned");
@@ -112,10 +133,6 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.singleState.unassigned.push(room);
 			summarizeAssignment();
 			refreshView();
-		}
-
-		$scope.printWorkSheet = function() {
-			window.print();
 		}
 
 		$scope.deletWorkSheet = function() {
