@@ -284,14 +284,15 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"RELEASE_REFRESH": "Release to refesh...",
+	"ROOM_TYPE_FILTER_TITLE": "Room Type",    "PRINT_ROOM_KEY" : "Print Room Key",
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
     "KEY_PRINTED" : "Keys printed!",
     "KEY_CONNECTED_STATUS" : "Connected to Key Card Reader!",
-    "KEY_CHECKIN_STATUS" : "Check in Complete",
+    "KEY_CHECKIN_STATUS" : "Checking In",
     "KEY_INHOUSE_STATUS" : "In House",
     "KEY_CHECKOUT_STATUS" : "Checking Out",
     "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
@@ -691,5 +692,8 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
+    "DISAGREE_BUTTON_LABEL":"Disagree",
+    "AGREE_BUTTON_LABEL":"Agree"
 }

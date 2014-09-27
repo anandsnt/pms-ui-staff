@@ -368,9 +368,16 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		 
 		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 || $scope.directPayment)){
-			$scope.savePayment();
+			if($scope.saveData.selected_payment_type !== '' && $scope.saveData.selected_payment_type !== 'selectpayment'){
+					$scope.savePayment();
+				}else{
+					// Client side validation for non CC payment types
+	    			$scope.errorMessage = ["Please select the payment type"];
+				}
 		}
 		else{
+			
+			/* in case the payment type is cc first we fetch MLI sesionId using card details and then save*/
 			if(parseInt($scope.saveData.selected_payment_type) ===0){
 				if($scope.saveData.card_number.length>0){
 					$scope.fetchMLISessionId();
@@ -381,7 +388,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	    		}
 			}	
 			else{
-			    $scope.savePayment();
+				if($scope.saveData.selected_payment_type !== '' && $scope.saveData.selected_payment_type !== 'selectpayment'){
+					$scope.savePayment();
+				}else{
+					// Client side validation for non CC payment types
+	    			$scope.errorMessage = ["Please select the payment type"];
+				}
+			    
 			}
 		}
 		

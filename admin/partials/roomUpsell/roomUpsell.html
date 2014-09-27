@@ -25,7 +25,7 @@
 						<h3><span translate>DAILY_UPSELL</span> {{'TARGETS' | translate}} </h3>
 					</div>
 
-					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_amount"   label = "{{'TARGET' | translate}} [{{currency_code}}]" ></ad-textbox>
+					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_amount"   label = "{{'TARGET' | translate}} [{{currencySymbol}}]" ></ad-textbox>
 
 					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_rooms"   label = "{{'ROOMS' | translate}}" ></ad-textbox>
 
@@ -53,17 +53,17 @@
 					
 
 
-					<ad-textbox value="upsellData.upsell_amounts[0].amount"   label = "Level 1 to 2  p/night [{{currency_code}}]" ></ad-textbox>
+					<ad-textbox value="upsellData.upsell_amounts[0].amount"   label = "Level 1 to 2  p/night [{{currencySymbol}}]" ></ad-textbox>
 
 					<input type="hidden" value="1" name="level_from_1" id="level_from_1">
 					<input type="hidden" value="3" name="level_to_1" id="level_to_1">
 
-					<ad-textbox value="upsellData.upsell_amounts[1].amount"   label = "Level 1 to 3  p/night [{{currency_code}}]" ></ad-textbox>
+					<ad-textbox value="upsellData.upsell_amounts[1].amount"   label = "Level 1 to 3  p/night [{{currencySymbol}}]" ></ad-textbox>
 
 					<input type="hidden" value="2" name="level_from_2" id="level_from_2">
 					<input type="hidden" value="3" name="level_to_2" id="level_to_2">
 
-					<ad-textbox value="upsellData.upsell_amounts[2].amount"   label = "Level 2 to 3  p/night [{{currency_code}}]" ></ad-textbox>
+					<ad-textbox value="upsellData.upsell_amounts[2].amount"   label = "Level 2 to 3  p/night [{{currencySymbol}}]" ></ad-textbox>
 
 					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
 					<input type="hidden" value="3" name="total_level_count" id="total_level_count">

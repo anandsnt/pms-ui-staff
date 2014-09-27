@@ -133,7 +133,7 @@
         </div>
         <div class="dashboard-block buttons">
             <ul class="actions">
-                <li><a ui-sref="rover.workManagement.multiSheet" class="button blue">Manage Work Sheets</a></li>
+                <li><a ui-sref="rover.workManagement.multiSheet({ date : stateVariables.viewingDate.date })" class="button blue">Manage Work Sheets</a></li>
                 <li><button ng-click="showCreateWorkSheetDialog()" class="button green open-modal">Create Work Sheet</button></li>
             </ul>
         </div>

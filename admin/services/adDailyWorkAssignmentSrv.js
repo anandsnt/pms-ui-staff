@@ -120,92 +120,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
 
-	    /*
-        * fetch additional APIs and preserve
-        *
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        var roomTypesList = [];
-        this.fetchRoomTypes = function() {
-            var deferred = $q.defer(),
-                url      = 'api/room_types/';
-
-            if ( roomTypesList.length ) {
-                deferred.resolve(roomTypesList);
-            } else {
-                ADBaseWebSrvV2.getJSON(url)
-                    .then(function(data) {
-                        roomTypesList = data.results
-                        deferred.resolve(roomTypesList);
-                    }, function(errorMessage) {
-                        deferred.reject(errorMessage);
-                    });
-            }
-
-            return deferred.promise;
-        };
-
-        var resHkStatusList = [];
-        this.fetchResHkStatues = function() {
-            var deferred = $q.defer(),
-                url      = '/api/reservation_hk_statuses';
-
-            if ( resHkStatusList.length ) {
-                deferred.resolve(resHkStatusList);
-            } else {
-                ADBaseWebSrvV2.getJSON(url)
-                    .then(function(data) {
-                        resHkStatusList = data.results
-                        deferred.resolve(resHkStatusList);
-                    }, function(errorMessage) {
-                        deferred.reject(errorMessage);
-                    });
-            }
-
-            return deferred.promise;
-        };
-
-        var foStatusList = [];
-        this.fetchFoStatues = function() {
-            var deferred = $q.defer(),
-                url      = '/api/front_office_statuses';
-
-            if ( foStatusList.length ) {
-                deferred.resolve(foStatusList);
-            } else {
-                ADBaseWebSrvV2.getJSON(url)
-                    .then(function(data) {
-                        foStatusList = data.results
-                        deferred.resolve(foStatusList);
-                    }, function(errorMessage) {
-                        deferred.reject(errorMessage);
-                    });
-            }
-
-            return deferred.promise;
-        };
-
-        var HkStatusList = [];
-        this.fetchHkStatues = function() {
-            var deferred = $q.defer(),
-                url      = '/api/house_keeping_statuses';
-
-            if ( HkStatusList.length ) {
-                deferred.resolve(HkStatusList);
-            } else {
-                ADBaseWebSrvV2.getJSON(url)
-                    .then(function(data) {
-                        HkStatusList = data.results
-                        deferred.resolve(HkStatusList);
-                    }, function(errorMessage) {
-                        deferred.reject(errorMessage);
-                    });
-            }
-
-            return deferred.promise;
-        };
-
 
         /*
         * To fetch work shifts
@@ -299,6 +213,92 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
         /*
+        * fetch additional APIs and preserve
+        *
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        var roomTypesList = [];
+        this.fetchRoomTypes = function() {
+            var deferred = $q.defer(),
+                url      = 'api/room_types/';
+
+            if ( roomTypesList.length ) {
+                deferred.resolve(roomTypesList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        roomTypesList = data.results
+                        deferred.resolve(roomTypesList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        var resHkStatusList = [];
+        this.fetchResHkStatues = function() {
+            var deferred = $q.defer(),
+                url      = '/api/reservation_hk_statuses';
+
+            if ( resHkStatusList.length ) {
+                deferred.resolve(resHkStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        resHkStatusList = data.reservation_statuses;
+                        deferred.resolve(resHkStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        var foStatusList = [];
+        this.fetchFoStatues = function() {
+            var deferred = $q.defer(),
+                url      = '/api/front_office_statuses';
+
+            if ( foStatusList.length ) {
+                deferred.resolve(foStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        foStatusList = data.front_office_statuses
+                        deferred.resolve(foStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        var HkStatusList = [];
+        this.fetchHkStatues = function() {
+            var deferred = $q.defer(),
+                url      = '/api/house_keeping_statuses';
+
+            if ( HkStatusList.length ) {
+                deferred.resolve(HkStatusList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url)
+                    .then(function(data) {
+                        HkStatusList = data.house_keeping_statuses
+                        deferred.resolve(HkStatusList);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
+            return deferred.promise;
+        };
+
+        /*
         * To fetch task lists
         * 
         * @param {object}
@@ -311,6 +311,67 @@ admin.service('ADDailyWorkAssignmentSrv', [
             ADBaseWebSrvV2.getJSON(url)
                 .then(function(data) {
                     deferred.resolve(data.results);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+        * To delete a Task list item
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.deleteTaskListItem = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/tasks/' + params.id;
+
+            ADBaseWebSrvV2.deleteJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+        * To add a Task list item
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.postTaskListItem = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/tasks/';
+
+            ADBaseWebSrvV2.postJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
+        * To update a Task list item
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.putTaskListItem = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/tasks/' + params.id,
+                params   = _.omit(params, 'id');
+
+            ADBaseWebSrvV2.putJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });

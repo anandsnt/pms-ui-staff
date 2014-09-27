@@ -281,6 +281,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var resHkCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.resHkStatusList = data;
+				console.log( $scope.resHkStatusList )
 			};
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchResHkStatues, {}, resHkCallback);
 
@@ -330,17 +331,127 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.taskListClickedElement = typeIndex;
 
 				var time = this.item.completion_time;
+				var resStatus = this.item.is_occupied ? 3 : '';
+				var foStatus   = this.item.is_vacant ? 1 : 2;
+				$scope.eachTaskList = {
+					name: this.item.name,
+					work_type_id: this.item.name,
+					room_type_id: this.item.name,
+					reservation_status: resStatus,
+					fo_status: foStatus,
+					hour: time.split(':')[0],
+					mins: time.split(':')[1],
+					ref_housekeeping_status_id: this.item.ref_housekeeping_status_id,
+					id: this.item.id
+				}
+			}
+		};
+
+		$scope.closeTaskListForm = function() {
+			$scope.taskListClickedElement = -1;
+			$scope.eachTaskList = {
+				name: '',
+				work_type_id: '',
+				room_type_id: '',
+				reservation_status: '',
+				fo_status: '',
+				hours: '',
+				mins: '',
+				ref_housekeeping_status_id: ''
+			}
+		};
+
+		$scope.deleteTaskListItem = function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+				
+				$scope.taskListClickedElement = -1;
 				$scope.eachTaskList = {
 					name: '',
 					work_type_id: '',
 					room_type_id: '',
 					reservation_status: '',
 					fo_status: '',
-					hour: time.split(':')[0],
-					mins: time.split(':')[1],
+					hours: '',
+					mins: '',
 					ref_housekeeping_status_id: ''
 				}
-			}
+
+				fetchTaskList();
+			};
+
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteTaskListItem, {id: this.item.id}, callback);
 		};
+
+		$scope.addTaskListItem = function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+				
+				$scope.taskListClickedElement = -1;
+				$scope.eachTaskList = {
+					name: '',
+					work_type_id: '',
+					room_type_id: '',
+					reservation_status: '',
+					fo_status: '',
+					hours: '',
+					mins: '',
+					ref_housekeeping_status_id: ''
+				}
+
+				fetchTaskList();
+			};
+
+			var isOccupied = $scope.eachTaskList.reservation_status == 3 || $scope.eachTaskList.reservation_status == 4 ? true : false;
+			var isVacant   = $scope.eachTaskList.fo_status == 1 ? true : false;
+			var params = {
+			    name: $scope.eachTaskList.name,
+			    work_type_id: $scope.eachTaskList.work_type_id,
+			    room_type_id: $scope.eachTaskList.room_type_id,
+			    is_occupied: isOccupied,
+			    is_vacant: isVacant,
+			    completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+			    ref_housekeeping_status_id: $scope.eachTaskList.ref_housekeeping_status_id,
+			}
+
+			console.log( params );	
+
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
+		};
+
+		$scope.updateTaskListItem = function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.taskListClickedElement = -1;
+				$scope.eachTaskList = {
+					name: '',
+					work_type_id: '',
+					room_type_id: '',
+					reservation_status: '',
+					fo_status: '',
+					hours: '',
+					mins: '',
+					ref_housekeeping_status_id: ''
+				}
+
+				fetchTaskList();
+			};
+
+			var isOccupied = $scope.eachTaskList.reservation_status == 3 || $scope.eachTaskList.reservation_status == 4 ? true : false;
+			var isVacant   = $scope.eachTaskList.fo_status == 1 ? true : false;
+			var params = {
+			    name: $scope.eachTaskList.name,
+			    work_type_id: $scope.eachTaskList.work_type_id,
+			    room_type_id: $scope.eachTaskList.room_type_id,
+			    is_occupied: isOccupied,
+			    is_vacant: isVacant,
+			    completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+			    ref_housekeeping_status_id: $scope.eachTaskList.ref_housekeeping_status_id,
+			    id: $scope.eachTaskList.id
+			}
+
+			console.log( params );
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
+		}
 	}
 ]);

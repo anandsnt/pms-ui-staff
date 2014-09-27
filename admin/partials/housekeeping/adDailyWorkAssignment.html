@@ -59,7 +59,7 @@
 						<span>{{ item.completion_time }}</span>
 					</td>
 					<td class="delete" ng-if="!item.is_system_defined" ng-hide="taskListClickedElement == $index">
-						<a ng-if="!item.is_system_defined" ng-click="deleteTaskItem()" class="icons icon-delete large-icon delete_item"></a>
+						<a ng-if="!item.is_system_defined" ng-click="deleteTaskListItem()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
 					<td colspan="4" ng-show="taskListClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></td>
 				</tr>
