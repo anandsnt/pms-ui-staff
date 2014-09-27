@@ -18,31 +18,16 @@
 	        }
 	      }
 	    };
-
-
 	};
-	init();
-	$scope.isLoading = true;
-	
+	init();	
 
 	$scope.postStayDetails = function(){
-	
+		$scope.isLoading = true;
 		if(!$scope.stayDetails.hour  || !$scope.stayDetails.minute  ||!$scope.stayDetails.primeTime){
 			$modal.open($scope.errorOpts); // error modal popup
 		}
 		else{
-			//call
-
-			// preCheckinSrv.completePrecheckin().then(function(response) {
-	// 		$scope.isLoading = false;	
-	// 		var success = (response.status != "failure") ? true : false;
-			// if(success){
-			// 	$state.go('checkinReservationDetails');
-			// }    	
-	// 	},function(){
-	// 		$scope.netWorkError = true;
-	// 		$$scope.isLoading = false;
-	// });
+		//change format to 24 hours
 		 var hour = parseInt($scope.stayDetails.hour);
 		 if ($scope.stayDetails.primeTime == 'PM' && hour < 12) {
 		 	hour = hour+ 12;		      
@@ -52,19 +37,20 @@
 		 }
 		 hour = (hour <10)?("0"+hour): hour
 		 var dataTosend = {
-		 	"time":  hour+":"+$scope.stayDetails.minute,
-		 	"comment":$scope.stayDetails.comment,
-		 	"mobile":$scope.stayDetails.mobile,
-		 	"reservation_id":$rootScope.reservationID
-		 }
-		 console.log(dataTosend);
-		 $state.go('preCheckinStatus');
+		 	"arrival_time":  hour+":"+$scope.stayDetails.minute,
+		 	"comments":$scope.stayDetails.comment,
+		 	"mobile":$scope.stayDetails.mobile
+		 }		
 
-		}
-		
-	}
-	
-
+		preCheckinSrv.postStayDetails(dataTosend).then(function(response) {
+					$scope.isLoading = false;	
+					$state.go('preCheckinStatus');
+				},function(){
+					$scope.netWorkError = true;
+					$scope.isLoading = false;
+			});
+		}		
+	}	
 };
 
 var dependencies = [

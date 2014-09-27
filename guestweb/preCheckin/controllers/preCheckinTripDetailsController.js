@@ -1,11 +1,11 @@
 
 (function() {
-	var preCheckinTripDetailsController = function($scope, preCheckinSrv,$rootScope,$state) {
+	var preCheckinTripDetailsController = function($scope, preCheckinSrv) {
 
     $scope.isLoading = true;
 	preCheckinSrv.fetchTripDetails().then(function(response) {
 			$scope.isLoading = false;	
-			$scope.success = (response.status != "failure") ? true : false;    	
+			$scope.tripDetails = response;
 		},function(){
 			$scope.netWorkError = true;
 			$scope.isLoading = false;
@@ -14,7 +14,7 @@
 
 var dependencies = [
 '$scope',
-'preCheckinSrv','$rootScope','$state',
+'preCheckinSrv',
 preCheckinTripDetailsController
 ];
 

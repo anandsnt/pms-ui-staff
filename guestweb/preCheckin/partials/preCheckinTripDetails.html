@@ -23,7 +23,7 @@
 			<div class="row checkin-wrapper-top">
 				<div class="pad-rt-60 pre-checkin-container-padding">
 					<div class="reservation-id centeralign">
-						<span class="res-conf-no grey-text">RESERVATION #3213213</span>
+						<span class="res-conf-no grey-text">RESERVATION #{{reservationID}}</span>
 					</div>
 					<div class="chekin-heading centeralign blue-text">
 						Your Trip Details
@@ -35,7 +35,7 @@
 									ARRIVAL DATE
 								</div>
 								<div class="dateContent centeralign-date">
-									Jan.23 ,2014
+									{{tripDetails.arrival_date}}
 								</div>
 							</div>
 							<div class="col-xs-6  reservation-dates rightalign">
@@ -43,7 +43,7 @@
 									DEPARTURE DATE
 								</div>
 								<div class="dateContent centeralign-date">
-									Jan.25 ,2014
+									{{tripDetails.departure_date}}
 								</div>
 							</div>
 						</div>
@@ -55,11 +55,11 @@
 						<div class="row">
 							<div class=" reservation-dates">
 								<div class="lightcontent">
-									ROOM TYPE <span class="upgrades-label grey-text" ng-show="ShowupgradedLabel">UPGRADED!</span>
+									ROOM TYPE
 								</div>
 							</div>
 							<div class="room_details grey-text">
-								Standard King Room
+								{{tripDetails.room_type}}
 							</div>
 						</div>
 						<div class="row">
@@ -69,7 +69,7 @@
 								</div>
 							</div>
 							<div class="room_details grey-text">
-								Best Available Rate
+								{{tripDetails.rate}}
 							</div>
 						</div>
 					</div>					

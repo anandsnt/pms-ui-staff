@@ -1,16 +1,14 @@
 (function() {
 var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 
-	var tripDetails = {};
-
+	
+	var reservationId = $rootScope.reservationID;
 	//fetch trip details
 	var fetchTripDetails = function() {
-		var deferred = $q.defer();
-		var reservationId = $rootScope.reservationID;		
-		var url = 'api/reservations/reservationId/web_checkin_reservation_details';
+		var deferred = $q.defer();		
+		var url = '/api/reservations/'+reservationId+'/web_checkin_reservation_details';
 		$http.get(url).success(function(response) {
-			this.tripDetails = response;
-			deferred.resolve(this.bills);
+			deferred.resolve(response);
 		}.bind(this))
 		.error(function() {
 			deferred.reject();
@@ -18,30 +16,29 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 		return deferred.promise;
 	};
 
+	//post staydetails
 	var postStayDetails = function(data) {
-				var deferred = $q.defer();
-				var url = '/guest_web/search.json';
-				parameters = {'reservation_id':$rootScope.reservationID};
-				$http.post(url,data).success(function(response) {
-					deferred.resolve(this.responseData);
-				}.bind(this))
-				.error(function() {
-					deferred.reject();
-				});
-				return deferred.promise;
+		var deferred = $q.defer();
+		var url = '/api/reservations/'+reservationId+'/update_stay_details';
+		$http.post(url,data).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
 	};
 
 	var completePrecheckin = function(data) {
-				var deferred = $q.defer();
-				var url = '/guest_web/search.json';
-				parameters = {'reservation_id':$rootScope.reservationID};
-				$http.post(url).success(function(response) {
-					deferred.resolve(this.responseData);
-				}.bind(this))
-				.error(function() {
-					deferred.reject();
-				});
-				return deferred.promise;
+		var deferred = $q.defer();
+		var url = '/api/reservations/'+reservationId+'/pre_checkin';
+		$http.post(url).success(function(response) {
+			deferred.resolve(response);
+		}.bind(this))
+		.error(function() {
+			deferred.reject();
+		});
+		return deferred.promise;
 	};
 
 	return {
