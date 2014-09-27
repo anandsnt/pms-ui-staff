@@ -11,8 +11,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		scope: $scope
 	};
 
-	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
+  	$scope.setScroller('billDays', scrollerOptionsForGraph);
   	$rootScope.multiplePostingNumber = "";
 
 	
@@ -471,7 +472,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * To show vertical scroll
 	  */
 	 $scope.setScroller('registration-content');
-	 $scope.setScroller('billDays');
+	 
 	 
 	 /*
 	  * Refresh scroll once page is loaded.
