@@ -157,6 +157,11 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 				$scope.$emit('hideLoader');
 				$state.go('admin.dashboard', {menu: 0});
 				$scope.$emit('hotelNameChanged',{"new_name":$scope.data.hotel_name});
+				angular.forEach($scope.data.currency_list,function(item, index) {
+		       		if (item.id == $scope.data.default_currency) {
+		       			$rootScope.currencySymbol = getCurrencySign(item.code);
+				 	}
+	       		});
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
@@ -167,6 +172,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     */
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
+	};
+	/**
+    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    */
+	$scope.doNotUpdateVideoToggleClicked = function(){
+		$scope.data.do_not_update_video_checkout = ($scope.data.do_not_update_video_checkout == 'true') ? 'false' : 'true';
 	};
 
 	/**

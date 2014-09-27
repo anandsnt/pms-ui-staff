@@ -84,6 +84,19 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2',
 			});	
 		return deferred.promise;
 	};
+	/*
+	 * Make payment from deposit balance modal
+	 */
+	this.makePaymentOnDepositBalance = function(dataToApiToDoPayment){
+		var deferred = $q.defer();
+		var url = 'staff/reservation/post_payment';
+		RVBaseWebSrv.postJSON(url, dataToApiToDoPayment).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
 	
 	
 	

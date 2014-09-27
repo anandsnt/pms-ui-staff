@@ -25,6 +25,9 @@ var ShowMakePaymentModal = function(backDom) {
 		setTimeout(function(){
 			createVerticalScroll('#available-cards');
 		}, 300);
+		that.myDom.find("#card-number").attr("readonly", true);
+		that.myDom.find("#expiry-month").attr("readonly", true);
+		that.myDom.find("#expiry-year").attr("readonly", true);
 	};
 	this.activateMakePaymentButton = function(){
 		if($("#card-number").val()!=''){
@@ -269,8 +272,11 @@ var ShowMakePaymentModal = function(backDom) {
 	};
 	this.successCallbackPaymentOnReservation = function(data){
 		var depositBalanceOnStayCard = parseInt($("#outstandingAmount").attr("data-outstanding-amount")) - parseInt(that.myDom.find("#amount").val());
-		backDom.find("#deposit_balance").html("");
-		backDom.find("#deposit_balance").html("Deposit/Balance $"+depositBalanceOnStayCard.toFixed(0));
+		var isRatesSuppressed = backDom.find("#stay-card-total-stay-cost").attr("data-is-rates-suppressed");
+		if(isRatesSuppressed !== "true"){
+			backDom.find("#deposit_balance").html("");
+			backDom.find("#deposit_balance").html("Deposit/Balance $"+depositBalanceOnStayCard.toFixed(0));
+		}
 		that.hidePaymentModal();
 		sntapp.activityIndicator.hideActivityIndicator();
 	};

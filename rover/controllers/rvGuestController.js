@@ -4,6 +4,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
+
+		$scope.dimensionsLookup = {
+			resizableMaxHeight: resizableMaxHeight,
+			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
+		};
+
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
@@ -17,9 +23,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '' || searchData.company.id != null || searchData.travelAgent.id != null) {
 					// based on search values from base screen
 					// init respective search
-					if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
-						$scope.openGuestCard();
-						$scope.searchGuest();
+					if($scope.reservationDetails.guestCard.id == ''){
+						if ($scope.searchData.guestCard.guestFirstName != '' || $scope.searchData.guestCard.guestLastName != '') {
+							$scope.openGuestCard();
+							$scope.searchGuest();
+						}
 					}
 					if (searchData.company.id != null) {
 						if ($scope.searchData.guestCard.guestFirstName == '' && $scope.searchData.guestCard.guestLastName == '') {
@@ -133,6 +141,19 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 					$scope.$apply();
 				}
 				$scope.guestCardHeight = $(this).height();
+				/**
+				 * CICO-9564 -- Scrolls in the card section on dragging
+				 */
+				if ($scope.UICards[0] === "guest-card") {
+					$scope.$broadcast('CONTACTINFOLOADED');
+					$scope.$broadcast('REFRESHLIKESSCROLL');
+				} else {
+					$scope.$broadcast('contactTabActive');
+					$scope.$broadcast('contractTabActive');
+					$scope.$broadcast('refreshAccountsScroll');
+				}
+
+
 			},
 			stop: function(event, ui) {
 				preventClicking = true;

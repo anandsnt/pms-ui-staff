@@ -49,15 +49,36 @@ sntRover.controller('RVHKWorkTabCtrl', [
 
 		// start cleaning 
 		$scope.startCleaning = function() {
-			$scope.isCleaning = true;
+			var callback = function() {
+				$scope.$emit('hideLoader');
+				$scope.isCleaning = true;
+			};
+
+			var params = {
+				room_id: $scope.roomDetails.id,
+				work_sheet_id: $scope.roomDetails.work_sheet_id
+			}
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
 		};
 
 		// done cleaning
 		$scope.doneCleaning = function() {
-			$scope.isCleaning = false;
+			var callback = function() {
+				$scope.$emit('hideLoader');
+
+				$scope.isCleaning = false;
 			
-			// update the 'cuurent_hk_status' to 'CLEAN'
-			updateRoom( 'current_hk_status', 'CLEAN' );
+				// update the 'cuurent_hk_status' to 'CLEAN'
+				updateRoom( 'current_hk_status', 'CLEAN' );
+			};
+
+			var params = {
+				room_id: $scope.roomDetails.id,
+				work_sheet_id: $scope.roomDetails.work_sheet_id
+			}
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
 		};
 	}
 ]);
