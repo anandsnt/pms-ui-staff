@@ -4,8 +4,7 @@ sntRover.controller('RVWorkManagementSearchDatePickerController', ['$scope', '$r
 		$scope.setUpData = function() {
 			$scope.dateOptions = {
 				changeYear: true,
-				changeMonth: true,
-				maxDate: tzIndependentDate($rootScope.businessDate),
+				changeMonth: true,				
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
 					ngDialog.close();

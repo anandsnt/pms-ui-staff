@@ -36,7 +36,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             },
             assignRoom: {
                 user_id: "",
-                work_type_id: "",
+                work_type_id: $scope.workTypes[0].id, // Default to daily cleaning [Assuming it comes in as first entry],
                 rooms: []
             }
         };
@@ -118,7 +118,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 "assignments": [{
                     "assignee_id": $scope.stateVariables.assignRoom.user_id,
                     "room_ids": $scope.stateVariables.assignRoom.rooms,
-                    "work_sheet_id": ""
+                    "work_sheet_id": "",
+                    "from_search": true
                 }]
             }, onAssignSuccess, onAssignFailure);
         }

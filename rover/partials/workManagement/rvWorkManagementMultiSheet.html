@@ -43,7 +43,10 @@
         "unAssignedRoomList">
             <ul class="wrapper sortable" >
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered">
+                <li id="unassigned-1-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
                     <h3>{{room.room_no}}</h3>
                     <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time!= null">{{ room.checkout_time}}  | </span>
                     <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time == null">{{ reservationStatus[room.reservation_status]}}  | </span>
@@ -82,10 +85,18 @@
                     <span class="total">{{multiSheetState.assignments[employee.id].summary.stayovers.total}}</span>
                 </li>
             </ul>
-            <div id="{{employee.id}" class="worksheet-content scrollable">
+            <div id="{{employee.id}" class="worksheet-content scrollable" 
+                data-drop="true" 
+                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" 
+                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned'}">
+
                 <ul class="wrapper sortable">
                     <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                    <li class="worksheet-room multi-sheet assigned" ng-repeat="room in multiSheetState.assignments[employee.id].rooms">
+                    <li id="assigned-{{employee.id}}-{{$index}}" class="worksheet-room multi-sheet assigned" ng-repeat="room in multiSheetState.assignments[employee.id].rooms"
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+
                         <h3>{{room.room_no}}</h3>
                         <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time!= null">{{ room.checkout_time}}  | </span>
                         <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time == null">{{ reservationStatus[room.reservation_status]}}  | </span>
