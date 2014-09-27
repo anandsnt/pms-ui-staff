@@ -21,7 +21,7 @@
         <div class="entry task">
             <label for="worksheet-work-type">Work Type</label>
             <div class="select">
-                <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChange()">
+                <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChanged()">
                 </select>
             </div>
         </div>
