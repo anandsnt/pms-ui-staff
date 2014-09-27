@@ -122,9 +122,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.setScroller('resultDetails');
 
-		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
-		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.rate_name;
-
 		//CICO-7078 : Initiate company & travelagent card info
 		//temporarily store the exiting card ids
 		var existingCards = {
