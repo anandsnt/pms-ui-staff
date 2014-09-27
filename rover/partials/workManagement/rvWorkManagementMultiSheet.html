@@ -1,11 +1,9 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
-
-
 <!-- Worksheet content -->
 <section id="worksheet-content" class="content worksheets" role="main">
-
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Worksheet header -->
-    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
+    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">            
         <div class="entry date">
             <label for="worksheet-date">Date</label>
             <div class="entry-data" ng-click="showCalendar('RVWorkManagementMultiDatePickerController')">

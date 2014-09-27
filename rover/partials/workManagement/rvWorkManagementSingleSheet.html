@@ -1,4 +1,3 @@
-<div ng-include="'/assets/partials/common/header.html'"></div>
 <!-- Worksheet content -->
 <section id="worksheet-content" class="content worksheets" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -52,15 +51,16 @@
             </div>
         </div>        
         <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned">
-            <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:' .worksheet-room.single-sheet.assigned '}">
+            <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" data-jqyoui-options="{accept: '.worksheet-room.single-sheet.assigned'}" >
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
+                <li id="unassigned-{{$index}}" class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}">
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}"
+                        style="width:{{singleState.dimensions.unassigned}}px">
+
                     <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
                     <div class="reservation-status">
-
                         <div class="current {{departureClass[room.reservation_status]}}">
                             <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
@@ -93,8 +93,8 @@
             <li>Departures <span>{{singleState.summary.departures}}</span></li>
             <li>Stayovers <span>{{singleState.summary.stayovers}}</span></li>
             <li>Completed<span>{{singleState.summary.completed}} / {{singleState.assigned.length}}</span></li>
-        </ul> 
-        <div id="worksheet-assigned-rooms" class="worksheet-content scrollable" data-drop="true" data-jqyoui-options ng-iscroll="workSheetAssigned">
+        </ul>         
+        <div id="worksheet-assigned-rooms" class="worksheet-content scrollable" data-drop="true" jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" data-jqyoui-options="{accept: '.worksheet-room.single-sheet.unassigned'}" ng-iscroll="workSheetAssigned">
             <section>
                 <!-- 1. New sheet, no rooms assigned -->
                 <ul class="sortable wrapper placeholder" ng-if="singleState.assigned.length === 0"></ul>
@@ -108,11 +108,13 @@
 
                 <!-- 2. Existing sheet, with rooms assigned -->
                 <ul class="sortable wrapper" ng-if="singleState.assigned.length > 0" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.worksheet-room.single-sheet.unassigned'}">
-                    <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
+                    <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->                    
                     <li class="worksheet-room single-sheet assigned" ng-repeat="room in singleState.assigned" 
-                            data-drag = "true"
-                            jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
-                            data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"  class="non-assigned-room-types li-draggable">
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}" id="unassigned-{{$index}}" 
+                        style="width:{{singleState.dimensions.assigned}}px">
+
                         <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
                         <div class="reservation-status">
                             <div class="current {{departureClass[room.reservation_status]}}">
