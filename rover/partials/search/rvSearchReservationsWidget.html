@@ -52,6 +52,8 @@
 									{{row.late_checkout_time}}
 								</span>
 
+								 <span class="pre-checkin-time" ng-hide="escapeNull(row.estimated_time_of_arrival)==''&&row.reservation_status!='PRE_CHECKIN'">{{row.estimated_time_of_arrival}}</span>
+
 								<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
 								</span>
 							</div>	
