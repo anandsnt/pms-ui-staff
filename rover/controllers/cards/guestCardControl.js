@@ -1,6 +1,7 @@
 sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv',
 	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
 		$scope.searchMode = true;
+		$scope.guestCardData.selectedLoyaltyLevel = "";
 
 		if ($scope.reservationDetails.guestCard.id != null && $scope.reservationDetails.guestCard.id != "") {
 			$scope.searchMode = false;
@@ -27,6 +28,10 @@ sntRover.controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout'
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
+		});
+
+		$scope.$on("loyaltyLevelAvailable", function($event, level) {
+			$scope.guestCardData.selectedLoyaltyLevel = level;
 		});
 	}
 ]);
