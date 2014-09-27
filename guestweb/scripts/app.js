@@ -3,7 +3,7 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
-//store basic details as rootscope variables
+	//store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
 	$rootScope.hotelName     = $attrs.hotelName;
@@ -30,19 +30,18 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isRoomVerified =  false;
  	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
  	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
+ 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
 
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-
-
-
-	/* To be deleted */
-	$rootScope.isPrecheckin = true;
-	if($rootScope.isPrecheckin){
- 		$location.path('/tripDetails');
- 	}
- 	else if($rootScope.isCheckedin){
+	
+	//navigate to different pages
+	
+ 	if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
+ 	}
+ 	else if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
+ 		$location.path('/tripDetails');
  	}
     else if($attrs.isCheckin ==='true'){
  		$location.path('/checkinConfirmation');
@@ -54,23 +53,6 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 		$location.path('/checkoutRoomVerification');
 	};
 
-
-	/*to be deleted */
-
-	/* to remove comment */
- 	
- // 	if($rootScope.isCheckedin){
- // 		$location.path('/checkinSuccess');
- // 	}
- //    else if($attrs.isCheckin ==='true'){
- // 		$location.path('/checkinConfirmation');
- // 	}
- //  	else if($rootScope.isCheckedout)	{
-	// 	$location.path('/checkOutStatus');	
-	// }
-	// else{
-	// 	$location.path('/checkoutRoomVerification');
-	// };
 
 }]);
 
