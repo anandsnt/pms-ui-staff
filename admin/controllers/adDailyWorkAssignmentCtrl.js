@@ -168,8 +168,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workShiftClickedElement = typeIndex;
 
 				var time = this.item.time;
-				console.log(time.split(':')[0]);
-				console.log(time.split(':')[1]);
 				$scope.eachWorkShift = {
 					name: this.item.name,
 					hour: time.split(':')[0],
@@ -255,6 +253,66 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			}
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
+		};
+
+
+
+
+
+
+		// fetch task list
+		var fetchTaskList = function() {
+			var callback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.taskList = data;
+			};
+
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchTaskList, {}, callback);
+		};
+		fetchTaskList();
+
+		$scope.eachTaskList = {
+			name: '',
+			work_type_id: '',
+			room_type_id: '',
+			is_occupied: '',
+			is_vacant: '',
+			completion_time: '',
+			ref_housekeeping_status_id: ''
+		}
+
+		$scope.taskListForm = 'add';
+
+		$scope.openTaskListForm = function(typeIndex) {
+			if ( typeIndex == 'new' ) {
+				$scope.taskListForm = 'add';
+				$scope.taskListClickedElement = 'new';
+				$scope.eachTaskList = {
+					name: '',
+					work_type_id: '',
+					room_type_id: '',
+					is_occupied: '',
+					is_vacant: '',
+					hours: '',
+					mins: '',
+					ref_housekeeping_status_id: ''
+				}
+			} else {
+				$scope.taskListForm = 'edit';
+				$scope.taskListClickedElement = typeIndex;
+
+				var time = this.item.completion_time;
+				$scope.eachTaskList = {
+					name: '',
+					work_type_id: '',
+					room_type_id: '',
+					is_occupied: '',
+					is_vacant: '',
+					hour: time.split(':')[0],
+					mins: time.split(':')[1],
+					ref_housekeeping_status_id: ''
+				}
+			}
 		};
 	}
 ]);

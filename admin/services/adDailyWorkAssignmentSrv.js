@@ -3,10 +3,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
     'ADBaseWebSrvV2',
     function($q, ADBaseWebSrvV2) {
 
-    	this.taskType = [];
-    	this.taskList = [];
-    	this.maidShift = [];
-
     	/*
     	* To fetch task types
     	* 
@@ -215,6 +211,24 @@ admin.service('ADDailyWorkAssignmentSrv', [
 
 
 
+        /*
+        * To fetch task lists
+        * 
+        * @param {object}
+        * @return {object} defer promise
+        */  
+        this.fetchTaskList = function() {
+            var deferred = $q.defer(),
+                url      = 'api/tasks/';
 
+            ADBaseWebSrvV2.getJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data.results);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
 	}
 ]);

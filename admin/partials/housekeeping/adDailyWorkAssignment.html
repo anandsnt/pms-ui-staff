@@ -37,29 +37,35 @@
 
 
 
+
 		<header class="content-title float" style="position:static;margin:0;">
-			<h2 translate>Tasks List</h2>
+			<h2 translate>Task List</h2>
 			<span class="count">({{ taskList.length }})</span>
-			<a id="add-new-button" class="action add ng-scope" ng-click="addNew('taskList')" translate="">Add Task</a>
+			<a id="add-new-button" class="action add ng-scope" ng-click="openTaskListForm('new')" translate="">Add Task</a>
 		</header>
-		<div id="new-form-holder" ng-show="taskListClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddTaskType.html'"></div>
-		<table id="tasks-list" class="grid">
+		<div id="new-form-holder" ng-show="taskListClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></div>
+		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in taskList">
-					<td width="50%" ng-click="editTaskType()" ng-hide="taskListClickedElement == $index">
-						<a>{{ item.name }}</a>
+					<td width="25%" ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
+						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
+						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
 						<em ng-if="item.is_system_defined">{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
-					<td ng-click="editTaskType()" ng-hide="taskListClickedElement == $index">
-						<span>{{ item.task_type }}</span>
+					<td width="25%" ng-hide="taskListClickedElement == $index">
+						<span>{{ item.work_type_id }}</span>
 					</td>
-					<td class="delete" ng-hide="taskListClickedElement == $index">
-						<a ng-if="!item.is_system_defined" ng-click="deleteItem('taskList')" class="icons icon-delete large-icon delete_item"></a>
+					<td ng-hide="taskListClickedElement == $index">
+						<span>{{ item.completion_time }}</span>
 					</td>
-					<td colspan="3" ng-show="taskListClickedElement == $index" ng-include="getTemplateUrl('taskList', $index, item.id)"></td>
+					<td class="delete" ng-if="!item.is_system_defined" ng-hide="taskListClickedElement == $index">
+						<a ng-if="!item.is_system_defined" ng-click="deleteTaskItem()" class="icons icon-delete large-icon delete_item"></a>
+					</td>
+					<td colspan="4" ng-show="taskListClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></td>
 				</tr>
 			</tbody>
 		</table>
+
 
 
 
