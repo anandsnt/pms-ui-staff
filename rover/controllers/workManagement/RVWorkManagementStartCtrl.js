@@ -81,7 +81,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     date: $scope.stateVariables.viewingDate.date,
                     id: room.work_sheet_id
                 });
-            } else { //Assign the room to an employee
+            } else { //Assign the room to an employee          
                 ngDialog.open({
                     template: '/assets/partials/workManagement/popups/rvWorkManagementAssignRoom.html',
                     className: 'ngdialog-theme-default',
@@ -105,6 +105,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     $scope.$emit('hideLoader');
                     $scope.stateVariables.assignRoom.user_id = "";
                     $scope.stateVariables.assignRoom.work_type_id = "";
+                    var workSheet = data.touched_work_sheets && data.touched_work_sheets[0] && data.touched_work_sheets[0].work_sheet_id;
+                    $scope.showWorkSheet(workSheet);
                     $scope.closeDialog();
                 },
                 onAssignFailure = function(errorMessage) {
