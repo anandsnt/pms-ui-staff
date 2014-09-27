@@ -6,8 +6,8 @@ var preCheckinSrv = function($q,baseWebService,$rootScope,$http) {
 	//fetch trip details
 	var fetchTripDetails = function() {
 		var deferred = $q.defer();
-		var url = '/guest_web/home/bill_details.json';
-		parameters = {'reservation_id':$rootScope.reservationID};
+		var reservationId = $rootScope.reservationID;		
+		var url = 'api/reservations/reservationId/web_checkin_reservation_details';
 		$http.get(url).success(function(response) {
 			this.tripDetails = response;
 			deferred.resolve(this.bills);
