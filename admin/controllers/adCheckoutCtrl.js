@@ -51,7 +51,17 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 			$scope.$emit('hideLoader');
             $scope.isLoading = false;
 			$scope.checkoutData = data;
-			 $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;
+            $scope.checkoutData.checkout_email_alert_time_hour = $scope.checkoutData.checkout_email_alert_time_hour == null? "HH":$scope.checkoutData.checkout_email_alert_time_hour;
+            $scope.checkoutData.weekends_checkout_email_alert_time_hour = $scope.checkoutData.weekends_checkout_email_alert_time_hour == null? "HH":$scope.checkoutData.weekends_checkout_email_alert_time_hour;
+            $scope.checkoutData.alternate_checkout_email_alert_time_hour = $scope.checkoutData.alternate_checkout_email_alert_time_hour == null? "HH":$scope.checkoutData.alternate_checkout_email_alert_time_hour;            
+            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour == null? "HH":$scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour;
+
+            $scope.checkoutData.checkout_email_alert_time_minute = $scope.checkoutData.checkout_email_alert_time_minute == null? "MM":$scope.checkoutData.checkout_email_alert_time_minute;
+            $scope.checkoutData.weekends_checkout_email_alert_time_minute = $scope.checkoutData.weekends_checkout_email_alert_time_minute == null? "MM":$scope.checkoutData.weekends_checkout_email_alert_time_minute;
+            $scope.checkoutData.alternate_checkout_email_alert_time_minute = $scope.checkoutData.alternate_checkout_email_alert_time_minute == null? "MM":$scope.checkoutData.alternate_checkout_email_alert_time_minute;
+            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute == null? "MM":$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
+			 
+             $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;       
 			 $scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
 			 $scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
 		};
