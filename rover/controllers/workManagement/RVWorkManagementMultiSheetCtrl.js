@@ -192,25 +192,85 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			if (id) {
 				$state.go('rover.workManagement.singleSheet', {
 					date: $scope.multiSheetState.selectedDate,
-					id: id
+					id: id,
+					from: 'multiple'
 				});
 			}
 		}
 
-		$scope.dropToAssign = function(event, dropped) {
-			var assigned = parseInt($(dropped.draggable).attr('id').split('-')[0]);
-			var assignedTo = parseInt($(dropped.draggable).attr('id').split('-')[1]);
+		$scope.dropToAssign = function(event, dropped, assignTo) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
-			console.log({
-				assigned: assigned,
-				assignedTo: assignedTo,
-				indexOfDropped: indexOfDropped
-			});
+			var assignee = $(dropped.draggable).attr('id').split('-')[1];
+			var assignTo = parseInt($(event.target).attr('id'));
+			if (parseInt(assignee) !== assignTo) {
+				if (assignee == "UA") {
+					//remove from 'unassigned','unassignedFiltered' and push to 'assignTo'
+					var droppedRoom = $scope.multiSheetState.unassignedFiltered[indexOfDropped];
+					$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
+					$scope.multiSheetState.unassigned.splice(_.indexOf($scope.multiSheetState.unassigned, _.find($scope.multiSheetState.unassigned, function(item) {
+						return item === droppedRoom;
+					})), 1);
+					$scope.filterUnassigned();
+				} else { //==Shuffling Assigned
+					//remove from 'assignee' and push to 'assignTo'
+					var roomList = $scope.multiSheetState.assignments[assignee].rooms;
+					var droppedRoom = roomList[indexOfDropped];
+					$scope.multiSheetState.assignments[assignTo].rooms.push(droppedRoom);
+					roomList.splice(_.indexOf(roomList, _.find(roomList, function(item) {
+						return item === droppedRoom;
+					})), 1);
+				}
+			}
+		}
 
+		$scope.dropToUnassign = function(event, dropped) {
+			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
+			var assignee = $(dropped.draggable).attr('id').split('-')[1];
+			//remove from "assignee" and add "unassigned"
+			var roomList = $scope.multiSheetState.assignments[assignee].rooms;
+			var droppedRoom = roomList[indexOfDropped];
+			$scope.multiSheetState.unassigned.push(droppedRoom);
+			roomList.splice(indexOfDropped, 1);
+			$scope.filterUnassigned();
 		}
 
 		$scope.onDateChanged = function() {
 			updateView();
+		}
+
+		$scope.onWorkTypeChanged = function() {
+			updateView();
+		}
+
+		$scope.saveMultiSheet = function() {
+			var assignedRooms = [],
+				onSaveSuccess = function(data) {
+					$scope.$emit("hideLoader");
+					$scope.clearErrorMessage();
+				},
+				onSaveFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.$emit("hideLoader");
+				};
+
+			var assignments = [];
+			_.each($scope.multiSheetState.selectedEmployees, function(employee) {
+				var assignment = {};
+				assignment.assignee_id = employee.id;
+				assignment.work_sheet_id = $scope.multiSheetState.assignments[employee.id].worksheetId;
+				assignment.room_ids = [];
+				_.each($scope.multiSheetState.assignments[employee.id].rooms, function(room) {
+					assignment.room_ids.push(room.id);
+				})
+				assignments.push(assignment);
+			});
+
+			$scope.invokeApi(RVWorkManagementSrv.saveWorkSheet, {
+				"date": $scope.multiSheetState.selectedDate,
+				"task_id": $scope.multiSheetState.header.work_type_id,
+				"order": "",
+				"assignments": assignments
+			}, onSaveSuccess, onSaveFailure);
 		}
 
 		init();
