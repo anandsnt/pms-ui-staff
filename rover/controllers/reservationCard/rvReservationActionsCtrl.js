@@ -340,12 +340,12 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
-		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled) {
+		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled, hasSmartbandsAttached) {
 			var showSmartBand = false;
 			if (icareEnabled) {
 				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN' 
 					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' 
-					|| reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'CHECKEDOUT') {
+					|| reservationStatus == 'NOSHOW_CURRENT' || (reservationStatus == 'CHECKEDOUT' && hasSmartbandsAttached)) {
 					showSmartBand = true;
 				}
 			}
@@ -402,7 +402,7 @@ sntRover.controller('reservationActionsController', [
 			var showDepositBalanceButtonWithoutSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
 
-				if(!isRatesSuppressed){
+				if(isRatesSuppressed == "false"){
 					showDepositBalanceButtonWithoutSR = true;
 				}
 				
@@ -412,7 +412,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
-				if(isRatesSuppressed){
+				if(isRatesSuppressed == "true"){
 					showDepositBalanceButtonWithSR = true;
 				}
 				

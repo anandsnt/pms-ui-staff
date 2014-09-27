@@ -122,9 +122,6 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 
 		$scope.setScroller('resultDetails');
 
-		//CICO-6081 In case of multiple rates selected, show multiple rates selected in the ADR button
-		$scope.reservationData.rateDescriptionADR = $scope.reservationData.reservation_card.rate_name;
-
 		//CICO-7078 : Initiate company & travelagent card info
 		//temporarily store the exiting card ids
 		var existingCards = {
@@ -152,7 +149,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 					$scope.refreshScroller('resultDetails');
 				},
 				timeoutSpan);
-		}
+		};
 
 
 		$scope.$on('$viewContentLoaded', function() {
@@ -209,15 +206,25 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var paymentData = $scope.reservationData;
 				$scope.showAddNewPaymentModal(passData, paymentData);
 			} else {
-
+				var ksn = data.RVCardReadTrack2KSN;
+          		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+					ksn = data.RVCardReadETBKSN;
+				}
 
 				var getTokenFrom = {
-					'et2': data.RVCardReadTrack2,
-					'ksn': data.RVCardReadTrack2KSN,
+					'ksn': ksn,
 					'pan': data.RVCardReadMaskedPAN
 				};
-
+				
+				if(data.RVCardReadTrack2!=''){
+					getTokenFrom.et2 = data.RVCardReadTrack2;
+				} else if(data.RVCardReadETB !=""){
+					getTokenFrom.etb = data.RVCardReadETB;
+				}
+				
+				
 				var tokenizeSuccessCallback = function(tokenData) {
+					
 					data.token = tokenData;
 					var passData = {
 						"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -229,6 +236,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 						"et2": data.RVCardReadTrack2,
 						'ksn': data.RVCardReadTrack2KSN,
 						'pan': data.RVCardReadMaskedPAN,
+						'etb': data.RVCardReadETB,
 						'token': tokenData,
 						"is_swiped": true // Commenting for now
 					};
