@@ -26,13 +26,13 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
       /** as per CICO-9089 **/      
-      if(rejection.status === 503 || rejection.status === 504){
+      if(rejection.status === 503 || rejection.status === 504 || status === 404){
         $window.location.href = '/500';
       }
       if(rejection.status === 502){
         $rootScope.showOWSError && $rootScope.showOWSError();
         return;        
-      }
+      }     
       /* 
       we can't handle 500, 501 since we need to show custom error messages on that scope.
          

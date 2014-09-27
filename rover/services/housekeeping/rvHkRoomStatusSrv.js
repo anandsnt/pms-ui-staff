@@ -1,11 +1,11 @@
 sntRover.service('RVHkRoomStatusSrv', [
-	'$http',
+	'RVBaseWebSrv',
+	'rvBaseWebSrvV2',
 	'$q',
-	'$window',
-	function($http, $q, $window) {
+	function(RVBaseWebSrv, rvBaseWebSrvV2, $q) {
 
 		this.roomList = {};
-		
+		var self = this;
 		this.initFilters = function(){
 			return {	
 					"dirty" : false,
@@ -33,46 +33,35 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		this.currentFilters = this.initFilters();
 		
-		this.fetch = function(){
+		this.fetch = function(){			
 			var deferred = $q.defer();
 			var url = '/house/search.json';
-			
-			$http.get(url)
-				.success(function(response, status) {
-					if(response.status == "success"){
-					    this.roomList = response.data;
 
-					    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
-					    	var room = this.roomList.rooms[i];
+			RVBaseWebSrv.getJSON(url).then(
+				function(response) {
+					self.roomList = response;
+				    for (var i = 0, j = self.roomList.rooms.length; i < j; i++) {
+				    	var room = self.roomList.rooms[i];
 
-					    	// lets set this so that we can avoid
-					    	room.display_room = true;
+				    	// lets set this so that we can avoid
+				    	room.display_room = true;
 
-					    	// reduce scope search
-					    	room.description = room.hk_status.description
-					    	
-					    	room.is_occupied = room.is_occupied == 'true' ? true : false;
-					    	room.is_vip = room.is_vip == 'true' ? true : false;
+				    	// reduce scope search
+				    	room.description = room.hk_status.description
+				    	
+				    	room.is_occupied = room.is_occupied == 'true' ? true : false;
+				    	room.is_vip = room.is_vip == 'true' ? true : false;
 
-					    	// single calculate the class required
-					    	// will require additional call from details page
-					    	room.roomStatusClass = this.setRoomStatusClass(room);
-					    }
-
-					    deferred.resolve(this.roomList);
-					}else{
-					}
-					
-				}.bind(this))
-				.error(function(response, status) {
-				    if(status == 401){ 
-				    	// 401- Unauthorized
-		    			// so lets redirect to login page
-						$window.location.href = '/house/logout' ;
-		    		}else{
-		    			deferred.reject(response);
-		    		}
-				});
+				    	// single calculate the class required
+				    	// will require additional call from details page
+				    	room.roomStatusClass = self.setRoomStatusClass(room);
+				    }
+				    deferred.resolve(self.roomList);
+				},
+				function(errorMessage){
+					deferred.reject(errorMessage);
+				}
+			);	
 
 			return deferred.promise;
 		}
@@ -81,26 +70,15 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.fetch_floors = function(){
 			var deferred = $q.defer();
 			var url = '/api/floors.json';
-			
-			$http.get(url)
-				.success(function(response, status) {
-					if(response.floors){
-					    this.floorList = response.floors;
-					    deferred.resolve(this.floorList);
-					}else{
-					}
-					
-					
-				}.bind(this))
-				.error(function(response, status) {
-				    if(status == 401){ 
-				    	// 401- Unauthorized
-		    			// so lets redirect to login page
-						$window.location.href = '/house/logout' ;
-		    		}else{
-		    			deferred.reject(response);
-		    		}
-				});
+			rvBaseWebSrvV2.getJSON(url).then(
+				function(data) {
+			 		self.floorList = data.floors;
+					deferred.resolve(self.floorList);
+				},
+				function(errorMessage){
+					deferred.reject(errorMessage);
+				}
+			);		
 
 			return deferred.promise;
 		}

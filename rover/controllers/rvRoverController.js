@@ -523,7 +523,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         if(!$rootScope.isOWSErrorShowing){
             $rootScope.isOWSErrorShowing = true;
             ngDialog.open({
-              template: '/assets/partials/housekeeping/hkOWSError.html',
+              template: '/assets/partials/housekeeping/rvHkOWSError.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               controller: 'RVHKOWSErrorCtrl',
               closeByDocument: false,

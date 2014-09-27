@@ -23,11 +23,12 @@
 >
    </div>
 </form>
-
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <div id="pull-refresh-notify">
   <span id="icon"></span>
   <span id="ref-text" translate>PULL_REFRESH</span>
 </div>
+
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" div-touch-move-stop-propogate>
    <ul class="wrapper" ng-hide="noResultsFound==rooms.length">
