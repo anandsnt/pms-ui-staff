@@ -319,26 +319,6 @@ admin.service('ADDailyWorkAssignmentSrv', [
         };
 
         /*
-        * To fetch a single task lists
-        * 
-        * @param {object}
-        * @return {object} defer promise
-        */  
-        this.fetchSingleTask = function(params) {
-            var deferred = $q.defer(),
-                url      = 'api/tasks/' + params.id;
-
-            ADBaseWebSrvV2.getJSON(url)
-                .then(function(data) {
-                    deferred.resolve(data.results);
-                }, function(errorMessage) {
-                    deferred.reject(errorMessage);
-                });
-
-            return deferred.promise;
-        };
-
-        /*
         * To delete a Task list item
         * 
         * @param {object}
@@ -368,7 +348,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             var deferred = $q.defer(),
                 url      = 'api/tasks/';
 
-            ADBaseWebSrvV2.postJSON(url)
+            ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {
@@ -389,7 +369,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
                 url      = 'api/tasks/' + params.id,
                 params   = _.omit(params, 'id');
 
-            ADBaseWebSrvV2.putJSON(url)
+            ADBaseWebSrvV2.putJSON(url, params)
                 .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {
