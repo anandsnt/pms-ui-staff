@@ -11,8 +11,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		scope: $scope
 	};
 
-	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: false};
+	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
+  	$scope.setScroller('billDays', scrollerOptionsForGraph);
   	$rootScope.multiplePostingNumber = "";
 
 	
@@ -192,6 +193,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.roomChargeEnabled = false;
 		}
 	};
+
+	$scope.getNoPostButtonTiltle = function(){
+		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
+	}
+
+	$scope.noPostButtonClicked = function(){
+		$scope.reservationBillData.no_post = "true";
+		$scope.setNoPostStatus();
+	}
 
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
@@ -487,8 +497,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 /*
 	  * To show vertical scroll
 	  */
-	 $scope.setScroller('registration-content');
-	 $scope.setScroller('billDays');
+	  var scrollOptions =  {click: true};
+	 $scope.setScroller('registration-content', scrollOptions);
+	 
 	 
 	 /*
 	  * Refresh scroll once page is loaded.
@@ -814,7 +825,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        	});
 			} else {
-
 				var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
 				if($scope.isSwipeHappenedDuringCheckin){
 	 				var data = {
@@ -1106,6 +1116,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * open popup for edit/split/remove transaction
 	 */
 	$scope.openActionsPopup = function(id,desc,amount,type,credits){
+
+		$scope.errorMessage = "";
 		//hide edit and remove options in case type is  payment
 		$scope.hideRemoveAndEdit  = (type == "PAYMENT") ? true : false;
 		$scope.selectedTransaction = {};

@@ -54,11 +54,11 @@
 			<input type="checkbox" ng-model="saveData.add_to_guest_card" >
 			<span class="guest_card_promotions" translate>ADD_TO_GUEST_CARD</span> 
 		</label>
-		<label class="checkbox add-to-guest payment-checkbox" ng-show="passData.showDoNotAuthorize && saveData.selected_payment_type == '0'"  ng-class="{'checked': do_not_cc_auth}" >
+		<!-- <label class="checkbox add-to-guest payment-checkbox" ng-show="passData.showDoNotAuthorize && saveData.selected_payment_type == '0'"  ng-class="{'checked': do_not_cc_auth}" >
         	<span class="icon-form icon-checkbox" ng-class="{'checked': do_not_cc_auth}"></span>
 			<input type="checkbox" ng-model="do_not_cc_auth" >
 			<span class="guest_card_promotions" translate>DO_NOT_AUTHORIZE</span> 
-		</label>
+		</label> -->
 	</div>
 	<div class="actions float">
 		<button class="button blank modal-close" id="cancel" type="button" ng-click="closeDialog()" translate>CANCEL</button>

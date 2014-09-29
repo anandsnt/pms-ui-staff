@@ -402,7 +402,7 @@ sntRover.controller('reservationActionsController', [
 			var showDepositBalanceButtonWithoutSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
 
-				if(!isRatesSuppressed){
+				if(isRatesSuppressed == "false"){
 					showDepositBalanceButtonWithoutSR = true;
 				}
 				
@@ -412,7 +412,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
 			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
-				if(isRatesSuppressed){
+				if(isRatesSuppressed == "true"){
 					showDepositBalanceButtonWithSR = true;
 				}
 				
