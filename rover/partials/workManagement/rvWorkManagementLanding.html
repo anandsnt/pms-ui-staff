@@ -4,15 +4,15 @@
 <form method="get" action="" name="work-management-search-form" id="work-management-search-form" class="search-form has-options" role="search">
     <div class="entry search">
         <a href="#" id="work-management-clear-query" class="clear-query">
-            <span class="icons icon-clear-search">Clear query</span>
+            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </a>
-        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
         <input name="work-management-query" id="work-management-query" ng-model="stateVariables.searchQuery" class="query" placeholder="Search by Room No. or Employee Name" type="search" autocomplete="off" rv-delay-textbox  delay="1000" function-to-fire="workManagementSearch"/>
     </div>
     <div class="entry options">
         <div class="select">
             <select ng-model="stateVariables.viewingDate.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
-                <option value="" selected>Select a Work Type</option>
+                <option value="" selected>{{'SELECT_WORK_TYPE' | translate}}</option>
             </select>
         </div>
         <div class="entry has-datepicker">
@@ -82,13 +82,13 @@
                     <span ng-if="!room.assignee_maid" class="unassigned">Unassigned</span>
 					<!-- Show only if room is not in service -->
 					<span class="service-status" ng-if="room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
-                        <span ng-if="room.hk_status.value == 'OS'" class="service-status">Out of Service</span>
-                        <span ng-if="room.hk_status.value == 'OO'" class="service-status">Out of Order</span>
+                        <span ng-if="room.hk_status.value == 'OS'" class="service-status" translate>OS</span>
+                        <span ng-if="room.hk_status.value == 'OO'" class="service-status" translate>OO</span>
                     </span>
 				</div>
 
                 <img ng-src="room.avatar_src" alt="" ng-show="room.is_occupied && room.is_vip"/>
-                <span class="vip" ng-show="room.is_occupied && room.is_vip">VIP</span>
+                <span class="vip" ng-show="room.is_occupied && room.is_vip" translate>VIP</span>
 			</a>
 		</li>
         </ul>
@@ -102,8 +102,8 @@
             <li class="no-content">
                 <div class="info">
                     <span class="icon-no-content icon-search"></span>
-                    <strong class="h1">Find Room or Employee</strong>
-                    <span class="h2">Search by <strong>Room Number</strong> or <strong>Employee Name</strong></span>
+                    <strong class="h1" translate>FIND_ROOM_MAID</strong>
+                    <span class="h2">Search by <strong>{{'ROOM_NUMBER' | translate}}</strong> or <strong>{{'EMPLOYEE_NAME' | translate}}</strong></span>
                 </div>
             </li>
         </ul>
@@ -115,20 +115,20 @@
     <div class="wrapper">
         <div class="dashboard-block data">
             <ul>
-                <li>Departures to clean<span class="red">{{workStats.departures.clean}}</span></li>
-                <li>Total <i>Hours</i><span class="red">{{workStats.departures.total_hours}}</span></li>
-                <li>Total Staff Required<span class="red">{{workStats.departures.total_maids_required}}</span></li>
-                <li>Total Rooms Assigned<span class="red">{{workStats.departures.total_rooms_assigned}}</span></li>
-                <li>Total Rooms Completed<span class="red">{{workStats.departures.total_rooms_completed}}</span></li>
+                <li>{{'DEP_TO_CLEAN' | translate}}<span class="red">{{workStats.departures.clean}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="red">{{workStats.departures.total_hours}}</span></li>
+                <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="red">{{workStats.departures.total_maids_required}}</span></li>
+                <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="red">{{workStats.departures.total_rooms_assigned}}</span></li>
+                <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="red">{{workStats.departures.total_rooms_completed}}</span></li>
             </ul>
         </div>
         <div class="dashboard-block data">
             <ul>
                 <li>Stayovers to clean<span class="orange">{{workStats.stayovers.clean}}</span></li>
-                <li>Total <i>Hours</i><span class="orange">{{workStats.stayovers.total_hours}}</span></li>
-                <li>Total Staff Required<span class="orange">{{workStats.stayovers.total_maids_required}}</span></li>
-                <li>Total Rooms Assigned<span class="orange">{{workStats.stayovers.total_rooms_assigned}}</span></li>
-                <li>Total Rooms Completed<span class="orange">{{workStats.stayovers.total_rooms_completed}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="orange">{{workStats.stayovers.total_hours}}</span></li>
+                <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="orange">{{workStats.stayovers.total_maids_required}}</span></li>
+                <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_assigned}}</span></li>
+                <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_completed}}</span></li>
             </ul>
         </div>
         <div class="dashboard-block buttons">
@@ -139,8 +139,3 @@
         </div>
     </div>
 </section>
-
-<!-- <section id="workManagement" class="content create-reservation scrollable" role="main">
-	  <a ui-sref="rover.workManagement.multiSheet" type="button" class="button green"> Mangage Work Sheets</a>
-	  <button ng-click="showCreateWorkSheetDialog()" type="button" class="button green">Create Work Sheet </button>
-</section> -->
