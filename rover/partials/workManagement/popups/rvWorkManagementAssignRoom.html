@@ -4,11 +4,10 @@
 		<form method="post" action="" id="create-worksheet" name="create-worksheet" class="modal-content form new-worksheet">
 			<button class="modal-close" id="modal-close" ng-click="closeDialog()" type="button"><span class="icons icon-close invert"></span></button>
 
-			<span class="h2 message">Assign Room</span>
-
+			<span class="h2 message">Assign Room</span>		
 			<div class="entry full-width">
 				<div class="select">
-					<select ng-model="stateVariables.assignRoom.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
+					<select ng-model="stateVariables.assignRoom.work_type_id" ng-options="workType.id as workType.name for workType in ngDialogData.workTypes" ng-disabled="ngDialogData.workTypes.length < 2">
             		</select>
 				</div>
 			</div>

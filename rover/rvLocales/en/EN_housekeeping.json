@@ -51,4 +51,20 @@
 
 	"PULL_REFRESH": "Pull down to refesh...",
 	"RELEASE_REFRESH": "Release to refesh...",
-	"ROOM_TYPE_FILTER_TITLE": "Room Type"
+	"ROOM_TYPE_FILTER_TITLE": "Room Type",
+
+	"SELECT_WORK_TYPE" : "Select a Work Type",
+	"OO" : "Out of Order",
+	"OS" : "Out of Service",
+	"FIND_ROOM_MAID" : "Find Room or Employee",
+
+	"DEP_TO_CLEAN" : "Departures to clean",
+	"SO_TO_CLEAN" : "Departures to clean",
+	"TOTAL" : "Total",
+	"TOTAL_STAFF_REQUIRED" : "Total Staff Required",
+	"TOTAL_ROOMS_ASSIGNED" : "Total Rooms Assigned",
+	"TOTAL_ROOMS_COMPLETED" : "Total Rooms Completed",
+
+	"MANAGE_WS" : "Manage Work Sheets",
+	"CREATE_WS" : "Create Work Sheet",
+	"EMPLOYEE_NAME": "Employee name"

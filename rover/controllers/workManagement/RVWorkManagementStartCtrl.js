@@ -53,7 +53,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                     $scope.$emit('hideLoader');
                     $state.go('rover.workManagement.singleSheet', {
                         id: data.id,
-                        date: data.date
+                        date: data.date,
+                        from: "START"
                     });
                     $scope.closeDialog();
                 },
@@ -69,7 +70,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             if (id) {
                 $state.go('rover.workManagement.singleSheet', {
                     date: $scope.stateVariables.viewingDate.date,
-                    id: id
+                    id: id,
+                    from: "START"
                 });
             }
         }
@@ -79,14 +81,21 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             if (room.work_sheet_id) {
                 $state.go('rover.workManagement.singleSheet', {
                     date: $scope.stateVariables.viewingDate.date,
-                    id: room.work_sheet_id
+                    id: room.work_sheet_id,
+                    from: "START"
                 });
-            } else { //Assign the room to an employee          
+            } else { //Assign the room to an employee
+                $scope.stateVariables.assignRoom.work_type_id = room.work_type_ids[0];
                 ngDialog.open({
                     template: '/assets/partials/workManagement/popups/rvWorkManagementAssignRoom.html',
                     className: 'ngdialog-theme-default',
                     closeByDocument: true,
-                    scope: $scope
+                    scope: $scope,
+                    data: JSON.stringify({
+                        workTypes: _.filter($scope.workTypes, function(wT) {
+                            return room.work_type_ids.indexOf(wT.id) > -1;
+                        })
+                    })
                 });
             }
         }

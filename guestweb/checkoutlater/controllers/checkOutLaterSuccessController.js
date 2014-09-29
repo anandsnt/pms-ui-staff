@@ -77,7 +77,7 @@
 	 	if($scope.success === true){
 			$scope.posted = true;	
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
-		 	$rootScope.checkoutTimessage = "Your new check out time is ";
+		 	$rootScope.checkoutTimessage = "Your new check-out time is ";
 		 	$rootScope.isLateCheckoutAvailable = false;
 		}
 	    else{

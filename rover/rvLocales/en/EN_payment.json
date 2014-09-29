@@ -46,4 +46,5 @@
     "ADD_NEW_CARD":"Add New Card",
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
-    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined"
+    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
