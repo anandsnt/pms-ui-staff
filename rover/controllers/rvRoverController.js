@@ -423,7 +423,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         ngDialog.open({
           template: '/assets/partials/settings/rvStaffSettingModal.html',
           controller: 'RVStaffsettingsModalController',
-          className: 'ngdialog-theme-plain calendar-modal'
+          className: 'calendar-modal'
         });
       }
     };
@@ -437,8 +437,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
-    	//alert("-----------------------");
     	//alert(JSON.stringify(data));
+
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 

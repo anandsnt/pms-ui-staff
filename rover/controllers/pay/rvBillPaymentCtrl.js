@@ -308,6 +308,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		     	"et2": swipedCardData.RVCardReadTrack2,
 		     	"ksn": swipedCardData.RVCardReadTrack2KSN,
 		     	"pan": swipedCardData.RVCardReadMaskedPAN,
+		     	'etb': swipedCardData.RVCardReadETB,
 		     	"mli_token": token,
 		     	"payment_type": "CC",
 		     	"credit_card": swipedCardData.RVCardReadCardType,
@@ -368,11 +369,21 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.$on('PAYMENTSWIPEHAPPENED', function(event, data){
 		 $scope.showAddNewCreditCard('swipe');
 	     swipedCardData = data;
+	     
+	     var ksn = data.RVCardReadTrack2KSN;
+  		 if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
+			ksn = data.RVCardReadETBKSN;
+		 }
 		 var getTokenFrom = {
-	              'et2': data.RVCardReadTrack2,
-	              'ksn': data.RVCardReadTrack2KSN,
+	              'ksn': ksn,
 	              'pan': data.RVCardReadMaskedPAN
 	           };
+	    if(data.RVCardReadTrack2!=''){
+			getTokenFrom.et2 = data.RVCardReadTrack2;
+		} else if(data.RVCardReadETB !=""){
+			getTokenFrom.etb = data.RVCardReadETB;
+		}
+  	 		
 	    var tokenizeSuccessCallback = function(tokenData){
 	    	token = tokenData;
 	    	$scope.$emit("hideLoader");
