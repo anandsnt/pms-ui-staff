@@ -234,7 +234,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			'successCallBack': function(){
 				$scope.$emit( 'hideLoader' );
 				$scope.showSuccess = true;
-				$scope.$apply();
+				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 				that.lastSuccessfulIDReaded = '';
 			},
 			'failureCallBack': function(message){
@@ -243,7 +243,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				}
 				that.lastSuccessfulIDReaded = ''
 				$scope.createSmartBandFailure(message);
-				$scope.$apply();
+				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 			},
 			arguments: args
 		};
