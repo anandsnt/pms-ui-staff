@@ -480,7 +480,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 /*
 	  * To show vertical scroll
 	  */
-	 $scope.setScroller('registration-content');
+	  var scrollOptions =  {click: true};
+	 $scope.setScroller('registration-content', scrollOptions);
 	 
 	 
 	 /*
