@@ -8,9 +8,20 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
 	'RVHkRoomDetailsSrv',
 	'RVSearchSrv',
+	'RVDepositBalanceSrv',
 	'$filter',
-	function($rootScope, $scope, ngDialog, RVChargeItems, $state, 
-		RVReservationCardSrv, RVReservationSummarySrv, RVHkRoomDetailsSrv,RVSearchSrv, $filter) {
+	function($rootScope, 
+		$scope, 
+		ngDialog, 
+		RVChargeItems,
+		$state, 
+		RVReservationCardSrv,
+		RVReservationSummarySrv,
+		RVHkRoomDetailsSrv,
+		RVSearchSrv,
+		RVDepositBalanceSrv, 
+		$filter) {
+
 
 		BaseCtrl.call(this, $scope);
 
@@ -26,10 +37,19 @@ sntRover.controller('reservationActionsController', [
 			return display;
 		};
 
-		$scope.displayBalance = function(status) {
+		$scope.displayBalance = function(status, balance) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
-				display = true;
+			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+				if(status == 'CHECKING_IN' || status == 'RESERVED'){
+					if (balance == 0 || balance == 0.00 || balance == 0.0) {
+						display = false;
+					} else {
+						display = true;
+					}
+				} else {
+					display = true;
+				}
+				
 			}
 			return display;
 		};
@@ -320,12 +340,12 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
-		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled) {
+		$scope.showSmartBandsButton = function(reservationStatus, icareEnabled, hasSmartbandsAttached) {
 			var showSmartBand = false;
 			if (icareEnabled) {
 				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN' 
 					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' 
-					|| reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'CHECKEDOUT') {
+					|| reservationStatus == 'NOSHOW_CURRENT' || (reservationStatus == 'CHECKEDOUT' && hasSmartbandsAttached)) {
 					showSmartBand = true;
 				}
 			}
@@ -350,6 +370,54 @@ sntRover.controller('reservationActionsController', [
 					"userId": $scope.guestCardData.userId
 				});
 			}
+		};
+		/*
+		 * Show Deposit/Balance Modal
+		 */
+		$scope.showDepositBalanceModal = function(){
+			var reservationId = $scope.reservationData.reservation_card.reservation_id;
+			var dataToSrv = {
+				"reservationId": reservationId
+			};
+			$scope.invokeApi(RVDepositBalanceSrv.getDepositBalanceData, dataToSrv, $scope.successCallBackFetchDepositBalance);
+			
+			
+		};
+		$scope.successCallBackFetchDepositBalance = function(data){
+
+			$scope.$emit('hideLoader');
+			// $scope.depositBalanceData = data;
+			$scope.depositBalanceData = data;
+			
+			ngDialog.open({
+					template: '/assets/partials/depositBalance/rvDepositBalanceModal.html',
+					controller: 'RVDepositBalanceCtrl',
+					className: 'ngdialog-theme-default1',
+					closeByDocument: false,
+					scope: $scope
+				});
+			
+		};
+		$scope.showDepositBalance = function(reservationStatus, isRatesSuppressed){
+			var showDepositBalanceButtonWithoutSR = false;
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+
+				if(isRatesSuppressed == "false"){
+					showDepositBalanceButtonWithoutSR = true;
+				}
+				
+			}
+			return showDepositBalanceButtonWithoutSR;
+		};
+		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
+			var showDepositBalanceButtonWithSR = false;
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+				if(isRatesSuppressed == "true"){
+					showDepositBalanceButtonWithSR = true;
+				}
+				
+			}
+			return showDepositBalanceButtonWithSR;
 		};
 	}
 ]);
