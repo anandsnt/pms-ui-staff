@@ -1,9 +1,9 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv', 'ngDialog', '$state', '$timeout',
     function($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state, $timeout) {
         //expand first set
-        $scope.otherData = $scope.otherData || {}; //To fix countless consule errors caused by 'otherData' being undefined but used as an object...
         $scope.currentClickedSet = 0;
         $scope.setChanged = false;
+
         $scope.init = function() {
             // in edit mode last date range data will be expanded and details can't fetch by click
             // so intiating fetch data
@@ -36,16 +36,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         $scope.getDateRangeData = function(id) {
             // webservice call to fetch each date range details
             fetchData(id);
-            $scope.$emit('changeMenu', id)
+            $scope.$emit('changeMenu', id);
         };
 
         /**
          * @retun true {Boolean} If all the sets are saved
          */
         $scope.isAllSetsSaved = function() {
-            if ($scope.data.sets != undefined) {
+            if ($scope.data.sets) {
                 var isSaved = true;
-                if ($scope.data.sets[$scope.data.sets.length - 1].id == null) {
+                if ($scope.data.sets[$scope.data.sets.length - 1].id === null) {
                     isSaved = false;
                 }
                 return isSaved;
@@ -79,25 +79,25 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             //The day will be enabled in current set, 
             //only if it is not enabled in any other sets in current date range 
             for (var i in $scope.data.sets) {
-                if ($scope.data.sets[i].monday == true) {
+                if ($scope.data.sets[i].monday === true) {
                     newSet.monday = false;
                 }
-                if ($scope.data.sets[i].tuesday == true) {
+                if ($scope.data.sets[i].tuesday === true) {
                     newSet.tuesday = false;
                 }
-                if ($scope.data.sets[i].wednesday == true) {
+                if ($scope.data.sets[i].wednesday === true) {
                     newSet.wednesday = false;
                 }
-                if ($scope.data.sets[i].thursday == true) {
+                if ($scope.data.sets[i].thursday === true) {
                     newSet.thursday = false;
                 }
-                if ($scope.data.sets[i].friday == true) {
+                if ($scope.data.sets[i].friday === true) {
                     newSet.friday = false;
                 }
-                if ($scope.data.sets[i].saturday == true) {
+                if ($scope.data.sets[i].saturday === true) {
                     newSet.saturday = false;
                 }
-                if ($scope.data.sets[i].sunday == true) {
+                if ($scope.data.sets[i].sunday === true) {
                     newSet.sunday = false;
                 }
             }
@@ -107,12 +107,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             //Crate the room rates array based on the available room_types 
             for (var i in $scope.rateData.room_types) {
                 var roomType = {};
+
                 roomType.id = $scope.rateData.room_types[i].id;
                 roomType.name = $scope.rateData.room_types[i].name;
                 roomType.child = '';
                 roomType.double = '';
                 roomType.extra_adult = '';
                 roomType.single = '';
+
                 newSet.room_rates.push(roomType);
             }
 
@@ -129,10 +131,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.data = updateSetsForAllSelectedRoomTypes(data);
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function(value, key) {
-                    room_rates = []
+                    room_rates = [];
                     if (value.room_rates.length === 0) {
                         angular.forEach($scope.rateData.room_types, function(room_type, key) {
-                            data = {
+                            var data = {
                                 "id": room_type.id,
                                 "name": room_type.name,
                                 "single": "",
@@ -140,7 +142,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 "extra_adult": "",
                                 "child": "",
                                 "isSaved": false
-                            }
+                            };
+
                             room_rates.push(data);
                         });
                         value.room_rates = room_rates;
@@ -211,9 +214,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
             var saveSetSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
+
                 $scope.data.sets[index].isSaved = true;
-                if (typeof data.id != 'undefined' && data.id != '')
+
+                if (typeof data.id !== 'undefined' && data.id !=='') {
                     $scope.data.sets[index].id = data.id;
+                }
             };
 
             var saveSetFailureCallback = function(errorMessage) {
@@ -221,13 +227,15 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.errorMessage = errorMessage;
                 $scope.$emit("errorReceived", errorMessage);
             };
+
             if($scope.otherData.rateSavePromptOpen){$scope.otherData.setChanged = false;$scope.closeDialog();}
             // API request do not require all keys except room_types
-            var unwantedKeys = ["room_types"];
-            var setData = dclone($scope.data.sets[index], unwantedKeys);
+            var unwantedKeys = ["room_types"],
+                setData = dclone($scope.data.sets[index], unwantedKeys);
+
             setData.dateRangeId = dateRangeId;
             //if set id is null, then it is a new set - save it
-            if (setData.id == null) {
+            if (setData.id === null) {
                 $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback);
                 //Already existing set - update
             } else {
@@ -254,7 +262,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         $scope.confirmDeleteSet = function(id, index, setName) {
 
             //if set id is null, then it is a new set - not saved, so delete directly
-            if (id == null || typeof id == 'undefined') {
+            if (id === null || typeof id === 'undefined') {
                 $scope.data.sets.pop();
                 $scope.setCurrentClickedSet($scope.data.sets.length - 1);
                 return false;
@@ -279,21 +287,23 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.checkFieldEntered = function(index) {
             var enableSetUpdateButton = true;
+
+            //$scope.data.sets[index].isEnabled = true;
             // if($scope.rateData.id == ""){
-            /*angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
-                if (value.hasOwnProperty("single") && value.single != "") {
+            angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
+                if (value.hasOwnProperty("single")) {//} && value.single != "") {
                     enableSetUpdateButton = true;
                 }
-                if (value.hasOwnProperty("double") && value.double != "") {
+                if (value.hasOwnProperty("double")) { //} && value.double != "") {
                     enableSetUpdateButton = true;
                 }
-                if (value.hasOwnProperty("extra_adult") && value.extra_adult != "") {
+                if (value.hasOwnProperty("extra_adult")) { //} && value.extra_adult != "") {
                     enableSetUpdateButton = true;
                 }
-                if (value.hasOwnProperty("child") && value.child != "") {
+                if (value.hasOwnProperty("child")) { //} && value.child != "") {
                     enableSetUpdateButton = true;
                 }
-            });*/
+            });
             // }
 
             if (enableSetUpdateButton && $scope.otherData.setChanged) {
@@ -331,7 +341,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     return false;
                 }
                 if (date_range_end_date && $scope.hotel_business_date) {
-                    return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
+                    return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date);
                 }
             }
             return true;
@@ -341,7 +351,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.otherData.activeDateRange = dateRange;
             $scope.otherData.activeDateRangeIndex = index;
             $scope.otherData.setChanged = true;
-        }
+        };
 
         var showRateSetChangeSaveDialog = function() {
             if(!$scope.otherData.rateSavePromptOpen){
@@ -353,24 +363,23 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     scope: $scope
                 });
             }
-
-        }
+        };
 
         $scope.closeDateRangeGrid = function(dateRange, index) {
             if ($scope.otherData.setChanged) {
                 showRateSetChangeSaveDialog();
             } else {
-                $scope.$emit('changeMenu', '')
+                $scope.$emit('changeMenu', '');
             }
-        }
+        };
 
         $scope.discardRateSetChange = function() {
             $scope.otherData.setChanged = false;
             $scope.otherData.rateSavePromptOpen = false;
             $scope.closeDialog();
-        }
+        };
 
-        $scope.$on("goBackToRates", function(event) {
+        $scope.$on("backToRatesClicked", function(event) {
             event.preventDefault();
             showRateSetChangeSaveDialog();
             return false;

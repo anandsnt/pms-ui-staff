@@ -3,6 +3,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
+             $scope.otherData = $scope.otherData || {}; //To fix countless consule errors caused by 'otherData' being undefined but used as an object...
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
@@ -297,9 +298,17 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.$broadcast('resetCalendar');
         };
 
-        $scope.goBackToRates = function($event) {
-            $state.go('admin.rates');
-        };
+        $scope.backToRates = function(event){
+            event.preventDefault();
+            if(Object.prototype.hasOwnProperty.call($scope, 'otherData') && 
+               $scope.otherData.setChanged){     
+                $scope.$broadcast('backToRatesClicked', event);
+            }
+            else{
+                $state.go('admin.rates');
+            }
+        }
+
 
         $scope.shouldShowAddNewDateRange = function() {
             if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
