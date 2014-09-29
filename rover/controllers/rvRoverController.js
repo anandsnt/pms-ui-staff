@@ -80,9 +80,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
 
-
     $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
-      $scope.userInfo.business_date = newBussinessDate
+      $scope.userInfo.business_date = newBussinessDate;
     });
 
     //Default Dashboard
@@ -594,6 +593,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	 	var type = "QUEUED_ROOMS";
         $state.go('rover.search', {'type': type});
     };
+    
+    $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data){
+    	if(data == "remove"){
+    		$scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count)-parseInt(1);
+    	} else {
+    		$scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count)+parseInt(1);
+    	}
+    	
+    });
+   
     
 
   }

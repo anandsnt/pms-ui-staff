@@ -36,6 +36,26 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.paymentModalOpened = false;
 	$scope.showPayButton = false;
 	$scope.paymentModalSwipeHappened = false;
+
+	//Scope variable to set active bill
+	$scope.currentActiveBill = 0;
+	//Scope variable used for show/hide rate per day when clicks on each day in calender 
+	$scope.dayRates = -1;
+	//Scope variable used to show addon data
+	$scope.showAddonIndex = -1;
+	//Scope variable used to show group data
+	$scope.showGroupItemIndex = -1;
+	//Scope variable used to show room details
+	$scope.showRoomDetailsIndex = -1;
+	$scope.showActiveBillFeesDetails = 0;
+	$scope.showFeesDetails = true;
+	$scope.moveToBill = 0;
+	//Variable used to show signed signature
+	$scope.showSignedSignature = false;
+	$scope.showBillingInfo = false;
+	$scope.showIncomingBillingInfo = false;
+	$scope.reservationBillData = reservationBillData;
+
 	if($rootScope.isStandAlone){
 		$scope.showPayButton = true;
 	}
@@ -70,6 +90,31 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var isSmartBandKeyCreationAlongWithKeyCreationEnabled = function(){
 		return ($scope.reservationBillData.icare_enabled == "true" && 
 				$scope.reservationBillData.combined_key_room_charge_create == "true") ? "true": "false";
+	};
+
+	/*
+	 * calculate Height of bill screen
+	 */
+
+	$scope.calculateHeightAndRefreshScroll = function() {
+		
+		var width = 0;
+
+		width = parseInt(width)+parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
+		if($scope.reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
+			width = parseInt(width)+parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
+		}
+		if($scope.reservationBillData.bills[$scope.currentActiveBill].group_items != undefined){
+			width = parseInt(width)+parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].group_items.length*114);
+		}
+		$scope.calculatedWidth = width;
+
+		$timeout(function(){
+			$scope.refreshScroller('registration-content');
+			$scope.refreshScroller('billDays');
+			$scope.refreshScroller('bill-tab-scroller');
+		}, 1000);
+		
 	};
 	$scope.init = function(reservationBillData){
 		
@@ -111,9 +156,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		
-		$timeout(function(){
+		// $timeout(function(){
      		$scope.calculateHeightAndRefreshScroll();
-        }, 500);		
+        // }, 500);		
 	};
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
@@ -128,30 +173,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		return (reservationBillData.number_of_nights > 1)?$filter('translate')('NIGHTS'):$filter('translate')('NIGHT');
 	};
 	
-	//Scope variable to set active bill
-	$scope.currentActiveBill = 0;
-	//Scope variable used for show/hide rate per day when clicks on each day in calender 
-	$scope.dayRates = -1;
-	//Scope variable used to show addon data
-	$scope.showAddonIndex = -1;
-	//Scope variable used to show group data
-	$scope.showGroupItemIndex = -1;
-	//Scope variable used to show room details
-	$scope.showRoomDetailsIndex = -1;
-	$scope.showActiveBillFeesDetails = 0;
-	$scope.showFeesDetails = true;
-	$scope.moveToBill = 0;
-	//Variable used to show signed signature
-	$scope.showSignedSignature = false;
-	$scope.showBillingInfo = false;
-	$scope.showIncomingBillingInfo = false;
-	
 	 width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
      if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
     	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
      }
      if(reservationBillData.bills[$scope.currentActiveBill].group_items != undefined){
-    	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].group_items.length*70);
+    	width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].group_items.length*114);
      }
 		
 	$scope.calculatedWidth = width;
@@ -642,85 +669,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.calculateHeightAndRefreshScroll();
 	};
 	
-
-	
-	
-	/*
-	 * calculate Height of bill screen
-	 */
-
-	$scope.calculateHeightAndRefreshScroll = function() {
-
-
-		// NO MORE CALCULATING THE HEIGHT ONLY WIDTH
-		 
-		// var height = 0;
-		// if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails){
-		// 	//height = parseInt(height) + parseInt(41);//For table title
-		// 	if(reservationBillData.bills[$scope.currentActiveBill].total_fees.length > 0){
-		// 		countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(5);
-		// 	}
-		// 	height = parseInt(height) + parseInt(countFeesElements*73.5);
-		// 	if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].total_amount){
-		// 		height = parseInt(height) + parseInt(45);
-		// 	}
-		// 	if(reservationBillData.bills[$scope.currentActiveBill].total_fees[0] && reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount){
-		// 		height = parseInt(height) + parseInt(45);
-		// 	}
-		// }
-		// else{
-		// 	//If Total fees toggle is closed.
-		// 	height = parseInt(height) + parseInt(150);
-		// }
-		// if($scope.dayRates!=-1){
-		// 	height = parseInt(height) + parseInt(50);
-		// }
-		// if($scope.showRoomDetailsIndex!=-1){
-		// 	height = parseInt(height) + parseInt(roomTypeDescriptionLength);
-		// }
-		// if($scope.showAddonIndex!=-1){
-		// 	height = parseInt(height) + parseInt(addOnExpandedHeight);
-		// }
-		// if($scope.showGroupItemIndex!=-1){
-		// 	height = parseInt(height) + parseInt(groupItemExpandedHeight);
-		// }
-		// if($scope.clickedButton == "checkinButton" || $scope.clickedButton == "checkoutButton"){
-		// 	height = parseInt(height) + parseInt(50);//For checkin or checkout buttons
-		// 	if((parseInt(reservationBillData.bills.length)-1) == $scope.currentActiveBill && $scope.reservationBillData.required_signature_at !== "NO_SIGNATURE"){
-		// 		//For siganture Pad.
-		// 		if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails) height = parseInt(height) + parseInt(200);
-	 //     		else height = parseInt(height) + parseInt(350);
-	 //     	}
-	 //    };
-	 //    if($scope.showBillingInfo){
-	 //        var routingLength =	($scope.reservationBillData.routing_array.length*32);
-	 //    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
-	 //    }
-	 //    if($scope.showIncomingBillingInfo){
-	 //        var routingLength =	($scope.reservationBillData.incoming_routing_array.length*32);
-	 //    	height = parseInt(height) + parseInt(routingLength) + parseInt(30);
-	 //    }
-	    
-		// $scope.calculatedHeight = height;
-		
-		var width = 0;
-
-		width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
-		if(reservationBillData.bills[$scope.currentActiveBill].addons != undefined){
-			width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].addons.length*70);
-		}
-		if(reservationBillData.bills[$scope.currentActiveBill].group_items != undefined){
-			width = parseInt(width)+parseInt(reservationBillData.bills[$scope.currentActiveBill].group_items.length*70);
-		}
-		$scope.calculatedWidth = width;
-
-		$timeout(function(){
-			$scope.refreshScroller('registration-content');
-			$scope.refreshScroller('billDays');
-			$scope.refreshScroller('bill-tab-scroller');
-		}, 1000);
-		
-	};
 	// To enable scroll
 	$scope.enableScroll = function(){
 		$scope.$parent.myScroll['registration-content'].enable();
