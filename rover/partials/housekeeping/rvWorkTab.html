@@ -1,13 +1,13 @@
 <div ng-controller="RVHKWorkTabCtrl">
   <div class="room-actions dual-select">
     <div class="select">
-      <select id="work-type" name="work-type" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList">
+      <select id="work-type" name="work-type" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList" disabled>
         <option value="">All Work Types</option>
       </select>
     </div>
     <div class="select">
       <!-- Disable when cleaning in progrees. -->
-      <select id="room-status" name="room-status" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-disabled="isCleaning" ng-change="roomStatusChanged()"></select>
+      <select id="room-status" name="room-status" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-disabled="isCleaning" ng-change="roomStatusChanged()" disabled></select>
     </div>
   </div>
 

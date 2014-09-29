@@ -47,13 +47,10 @@
 		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in taskList">
-					<td width="25%" ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
+					<td width="50%" ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
 						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
 						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
 						<em ng-if="item.is_system_defined">{{ 'SYSTEM_DEFINED' | translate }}</em>
-					</td>
-					<td width="25%" ng-hide="taskListClickedElement == $index">
-						<span>{{ item.work_type_id }}</span>
 					</td>
 					<td ng-hide="taskListClickedElement == $index">
 						<span>{{ item.completion_time }}</span>

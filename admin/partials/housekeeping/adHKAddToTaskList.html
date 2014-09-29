@@ -25,18 +25,18 @@
 			</div>
 
 			<div class="entry full-width">
-				<label>Room Type <strong> * </strong></label>
+				<label>Room Type (Choose one or many) <strong> * </strong></label>
 				<div class="select">
-					<select ng-model="eachTaskList.room_type_id" ng-options="item.id as item.name for item in roomTypesList">
+					<select multiple ng-multiple ng-model="eachTaskList.room_type_ids" ng-options="item.id as item.name for item in roomTypesList" size="3" style="height:auto">
 						<option value="" class="placeholder">Choose room type</option>
 					</select>
 				</div>
 			</div>
 
 			<div class="entry full-width">
-				<label>Reservation status</label>
+				<label>Reservation status (Choose one or many)</label>
 				<div class="select">
-					<select ng-model="eachTaskList.reservation_status" ng-options="item.id as item.description for item in resHkStatusList">
+					<select multiple ng-multiple ng-model="eachTaskList.reservation_statuses_ids" ng-options="item.id as item.description for item in resHkStatusList" size="3" style="height:auto">
 						<option value="" class="placeholder">Choose reservation status</option>
 					</select>
 				</div>
@@ -45,9 +45,9 @@
 
 		<fieldset class="holder right float">
 			<div class="entry full-width">
-				<label>Fo status</label>
+				<label>Fo status (Choose one or many)</label>
 				<div class="select">
-					<select ng-model="eachTaskList.fo_status" ng-options="item.id as item.description for item in foStatusList">
+					<select multiple ng-multiple ng-model="eachTaskList.front_office_status_ids" ng-options="item.id as item.description for item in foStatusList" size="2" style="height:auto">
 						<option value="" class="placeholder">Choose fo status</option>
 					</select>
 				</div>
@@ -74,7 +74,7 @@
 			<div class="entry full-width">
 				<label>Task completion HK status</label>
 				<div class="select">
-					<select ng-model="eachTaskList.ref_housekeeping_status_id" ng-options="item.id as item.description for item in HkStatusList">
+					<select ng-model="eachTaskList.task_completion_hk_status_id" ng-options="item.id as item.description for item in HkStatusList">
 						<option value="" class="placeholder">Choose hk status</option>
 					</select>
 				</div>
@@ -84,10 +84,10 @@
 		<div class="actions float">
 			<button type="button" class="button blank edit-data-inline" ng-click="closeTaskListForm()" translate>CANCEL</button>
 
-			<button ng-if="workShiftForm == 'add'" type="button" class="button green edit-data-inline" ng-click="addTaskListItem()" translate>SAVE_CHANGES</button>
-			<button ng-if="workShiftForm == 'edit'" type="button" class="button green edit-data-inline" ng-click="updateTaskListItem()" translate>SAVE_CHANGES</button>
+			<button ng-if="taskListForm == 'add'" type="button" class="button green edit-data-inline" ng-click="addTaskListItem()" translate>SAVE_CHANGES</button>
+			<button ng-if="taskListForm == 'edit'" type="button" class="button green edit-data-inline" ng-click="updateTaskListItem()" translate>SAVE_CHANGES</button>
 
-			<button ng-if="workShiftForm == 'edit'" ng-hide="chosenItem.newItem" type="button" class="button red edit-data-inline" ng-click="deleteTaskListItem()" translate>DELETE</button>
+			<button ng-if="taskListForm == 'edit'" ng-hide="chosenItem.newItem" type="button" class="button red edit-data-inline" ng-click="deleteTaskListItem()" translate>DELETE</button>
 		</div>
 	</form>
 </div>

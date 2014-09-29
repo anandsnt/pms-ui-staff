@@ -16,7 +16,7 @@
         <div class="entry employees">
             <label for="worksheet-employees">Employees</label>
             <!-- MOdified angular multi select template based on https://raw.githubusercontent.com/isteven/angular-multi-select/master/angular-multi-select.js, lines 71-106 -->
-            <div multi-select input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" tick-property="ticked" disable-property="checkboxDisabled"></div>
+            <div multi-select input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" on-open="onEmployeeListOpened()" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
         </div>
         <div class="entry task">
             <label for="worksheet-work-type">Work Type</label>
@@ -91,8 +91,9 @@
             </ul>
             <div id="{{employee.id}}" class="worksheet-content scrollable" 
                 data-drop="true" 
-                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped, \'{{employee.id}}\')'}" 
-                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned,.worksheet-room.multi-sheet.assigned'}">
+                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" 
+                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned,.worksheet-room.multi-sheet.assigned'}"
+                ng-iscroll="assignedRoomList-{{$index}}">
 
                 <ul class="wrapper sortable">
                     <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->

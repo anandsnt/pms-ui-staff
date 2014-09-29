@@ -348,7 +348,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
             var deferred = $q.defer(),
                 url      = 'api/tasks/';
 
-            ADBaseWebSrvV2.postJSON(url)
+            ADBaseWebSrvV2.postJSON(url, params)
                 .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {
@@ -369,7 +369,7 @@ admin.service('ADDailyWorkAssignmentSrv', [
                 url      = 'api/tasks/' + params.id,
                 params   = _.omit(params, 'id');
 
-            ADBaseWebSrvV2.putJSON(url)
+            ADBaseWebSrvV2.putJSON(url, params)
                 .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {

@@ -8,10 +8,20 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'fetchedRoomList',
 	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, fetchedRoomList) {
 
+
+		// TODO: RESTRUCTURE THE CODE TO PROPER SECTIONS
+		// 1. stateChange  should keep filters or reset them?
+		// 2. fetch housemaid list, work type list, floor type etc and possible cashing in srv
+		// 3. should fetch room list again or not
+		// 4. all filters and things
+		// 5. calculate filters, check possiblity of moving it to a seperate module its too big!
+		// 6. pull down to refresh
+		// 7. performance enhancement
+
+
 		// additional check since the router resolve may fail
 		if ( !fetchedRoomList ) {
 			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
-			console.log( fetchedRoomList );
 		};
 
 		/*var successCallback = function(data){
@@ -60,7 +70,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.$emit('hideLoader');
 			$scope.workTypes = data;
 
-			// this is temporary
+			// chose the first work type for now
 			defaultWorkType = data[0].id;
 		};
 		$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
@@ -124,11 +134,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				$scope.noScroll = false;
 
-				// show the user related rooms only
-				$scope.filterByEmployee = defaultMaid;
-				$scope.filterByWorkType = defaultWorkType;
-				$scope.applyEmpfilter();
-
 			// execute this after this much time
 			// as the animation is in progress
 			}, 200);
@@ -137,7 +142,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var fetchRooms = function() {
 			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
+			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
+
 				$scope.$emit('showLoader');
 
 				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
@@ -145,12 +151,31 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
 						$scope.showQueued = data.is_queue_rooms_on;
+
+						// show the user related rooms only
+						$scope.filterByWorkType = defaultWorkType;
+						$scope.filterByEmployee = defaultMaid;
+
+						// update filterByWorkType filter to first item
+						$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+
+						// update filterByEmployee filter
+						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+
 						afterFetch( data );
 					}, function() {
 						$scope.$emit('hideLoader');
 					});	
 			} else {
 				$timeout(function() {
+
+					// restore the filterByWorkType from previous chosen value
+					$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
+
+					// restore the filterByEmployee from previous chosen value
+					$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
+						return item.maid_name == $scope.currentFilters.filterByEmployee
+					});
 
 					// show loader as we will be slicing the rooms
 					// in smaller and bigger parts and show smaller first
@@ -265,6 +290,27 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		};
 
 		// when user changes the employee filter
+		$scope.applyWorkTypefilter = function() {
+			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+
+			// if work type is null reset filter by employee
+			if ( !$scope.currentFilters.filterByWorkType ) {
+				$scope.filterByEmployee = '';
+				$scope.applyEmpfilter();
+			} else {
+				// call caluculate filter in else since
+				// resetting filterByEmployee will call applyEmpfilter 
+				// which in turn will call calculateFilters
+				$scope.calculateFilters();
+				$scope.refreshScroll();
+			}
+
+			// save the current edited filter to RVHkRoomStatusSrv
+			// so that they can exist even after HKSearchCtrl init
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+		};
+
+		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
 			$scope.calculateFilters();
@@ -295,6 +341,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
+
+				// any matched work type ids of room to chosen work type id
+				var workTypeMatch = _.find(room.work_type_ids, function(id) {
+					return id == $scope.currentFilters.filterByWorkType;
+				});
+
+				// Filter by work type
+				if ( !!$scope.currentFilters.filterByWorkType && !workTypeMatch ) {
+					room.display_room = false;
+					$scope.noResultsFound++;
+					continue;
+				};
 
 				// Filter by employee name
 				if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {

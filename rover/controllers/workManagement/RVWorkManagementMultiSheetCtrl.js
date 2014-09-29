@@ -1,30 +1,22 @@
 sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout',
 	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout) {
+		BaseCtrl.call(this, $scope);
 		$scope.setHeading("Work Management");
 
 		$rootScope.setPrevState = {
 			title: ('Work Management'),
-			name: 'rover.workManagement.start',
-		}
+			name: 'rover.workManagement.start'
+		};
 
-		var init = function() {
-				$scope.setScroller('unAssignedRoomList');
+		$scope.setScroller('unAssignedRoomList');
+		$scope.setScroller('assignedRoomList-1');
+		$scope.setScroller('assignedRoomList-2');
+		$scope.setScroller('assignedRoomList-3');
+		$scope.setScroller('assignedRoomList-4');
+		$scope.setScroller('assignedRoomList-5');
+		$scope.setScroller('assignedRoomList-0');
 
-				$scope.multiSheetState.selectedEmployees = [];
-				_.each($scope.employeeList, function(employee) {
-					if (employee.ticked) {
-						$scope.multiSheetState.selectedEmployees.push(employee);
-					}
-				});
-				updateView();
-				$scope.filterUnassigned();
-				refreshView();
-			},
-			refreshView = function() {
-				$timeout(function() {
-					$scope.refreshScroller('unAssignedRoomList');
-				}, 1000);
-			},
+		var selectionHistory = [],
 			updateView = function() {
 				var onFetchSuccess = function(data) {
 						$scope.multiSheetState.unassigned = data.unassigned;
@@ -47,7 +39,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 										total: 0,
 										completed: 0
 									}
-								}
+								};
 								$scope.multiSheetState.assignments[worksheet.employee_id].worksheetId = worksheet.work_sheet_id;
 							}
 
@@ -55,21 +47,21 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 							_.each(worksheet.work_assignments, function(workAssignment) {
 								if (workAssignment.room) {
-									if ($scope.departureClass[workAssignment.room.reservation_status] == "check-out") {
+									if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
 										assignmentDetails.summary.departures.total++;
-										if (workAssignment.room.current_status == "CLEAN" || workAssignment.room.current_status == "INSPECTED") {
+										if (workAssignment.room.current_status === "CLEAN" || workAssignment.room.current_status === "INSPECTED") {
 											assignmentDetails.summary.departures.completed++;
 										}
 									} else if ($scope.departureClass[workAssignment.room.reservation_status] == "in-house") {
 										assignmentDetails.summary.stayovers.total++;
-										if (workAssignment.room.current_status == "CLEAN" || workAssignment.room.current_status == "INSPECTED") {
+										if (workAssignment.room.current_status === "CLEAN" || workAssignment.room.current_status === "INSPECTED") {
 											assignmentDetails.summary.stayovers.completed++;
 										}
 									}
 									assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, workAssignment.room.time_allocated);
 									assignmentDetails.rooms.push(workAssignment.room);
 								}
-							})
+							});
 
 						});
 						refreshView();
@@ -92,10 +84,32 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					"employee_ids": selectedEmployees,
 					"work_type_id": $scope.multiSheetState.header.work_type_id
 				}, onFetchSuccess, onFetchFailure);
+			},
+			init = function() {
+				$scope.multiSheetState.selectedEmployees = [];
+				_.each($scope.employeeList, function(employee) {
+					if (employee.ticked) {
+						$scope.multiSheetState.selectedEmployees.push(employee);
+					}
+				});
+				updateView();
+				$scope.filterUnassigned();
+				refreshView();
+			},
+			refreshView = function() {
+				$scope.refreshScroller('unAssignedRoomList');
+				for (var list = 0; list < $scope.multiSheetState.selectedEmployees.length; list++) {
+					$scope.refreshScroller('assignedRoomList-' + list);
+				}
 			};
 
+		/**
+		 * Object holding all scope variables
+		 * @type {Object}
+		 */
 		$scope.multiSheetState = {
 			selectedDate: $stateParams.date || $rootScope.businessDate,
+			maxColumns: 6, // Hardcoded to 6 for now ==> Max no of worksheets that are loaded at an instance
 			selectedEmployees: [],
 			unassigned: [],
 			unassignedFiltered: [],
@@ -114,16 +128,19 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			ngDialog.close();
 		}
 
+		/**
+		 * Handles RESTRICTING selected employees not to exceed $scope.multiSheetState.maxColumns
+		 */
 		$scope.selectEmployee = function(data) {
 			$scope.multiSheetState.selectedEmployees = _.where($scope.employeeList, {
 				ticked: true
 			});
-			$scope.multiSheetState.placeHolders = _.range(6 - $scope.multiSheetState.selectedEmployees.length);;
+			$scope.multiSheetState.placeHolders = _.range($scope.multiSheetState.maxColumns - $scope.multiSheetState.selectedEmployees.length);;
 
 			/**
-			 * Need to disable selection of more than 6 employees
+			 * Need to disable selection of more than "$scope.multiSheetState.maxColumns" employees
 			 */
-			if ($scope.multiSheetState.selectedEmployees.length > 5) {
+			if ($scope.multiSheetState.selectedEmployees.length >= $scope.multiSheetState.maxColumns) {
 				var notTicked = _.where($scope.employeeList, {
 					ticked: false
 				});
@@ -138,10 +155,15 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					d.checkboxDisabled = false;
 				})
 			}
-
-			updateView();
 		};
 
+		/**
+		 * Apply filter on the array of unassigned rooms
+		 * Currently two filters are present
+		 * 	a. room status
+		 * 	b. floor
+		 * Handling either/both
+		 */
 		$scope.filterUnassigned = function() {
 			$scope.multiSheetState.unassignedFiltered = [];
 			if (!$scope.multiSheetState.filters.selectedStatus && !$scope.multiSheetState.filters.selectedFloor) {
@@ -198,7 +220,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			}
 		}
 
-		$scope.dropToAssign = function(event, dropped, assignTo) {
+		/**
+		 * Assign room to the respective maid on drop
+		 * @param  {Event} event
+		 * @param  {Draggable} dropped  Dropped room draggable
+		 */
+		$scope.dropToAssign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
 			var assignee = $(dropped.draggable).attr('id').split('-')[1];
 			var assignTo = parseInt($(event.target).attr('id'));
@@ -223,6 +250,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			}
 		}
 
+		/**
+		 * Unassign room to the respective maid on drop
+		 * @param  {Event} event
+		 * @param  {Draggable} dropped  Dropped room draggable
+		 */
 		$scope.dropToUnassign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[2]);
 			var assignee = $(dropped.draggable).attr('id').split('-')[1];
@@ -242,10 +274,36 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			updateView();
 		}
 
+		/**
+		 * UPDATE the view IFF the list has been changed
+		 */
+		$scope.onEmployeeListClosed = function() {
+			var x = [];
+			_.each($scope.employeeList, function(employee) {
+				if (employee.ticked) x.push(employee.id);
+			})
+			if ($(x).not(selectionHistory).length !== 0 || $(selectionHistory).not(x).length !== 0) {
+				updateView();
+			}
+			selectionHistory = [];
+			_.each($scope.employeeList, function(employee) {
+				if (employee.ticked) selectionHistory.push(employee.id);
+			})
+		}
+
+		/**
+		 * Saves the current state of the Multi sheet view
+		 */
 		$scope.saveMultiSheet = function() {
 			var assignedRooms = [],
 				onSaveSuccess = function(data) {
 					$scope.$emit("hideLoader");
+					//Update worksheet Ids
+					if (data.touched_work_sheets && data.touched_work_sheets.length) {
+						_.each(data.touched_work_sheets, function(wS) {
+							$scope.multiSheetState.assignments[wS.assignee_id].worksheetId = wS.work_sheet_id;
+						})
+					}
 					$scope.clearErrorMessage();
 				},
 				onSaveFailure = function(errorMessage) {
