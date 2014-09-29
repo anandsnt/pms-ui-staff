@@ -34,9 +34,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
+
+	console.log($attrs);
 	
 	//navigate to different pages
-	
+
+	if($attrs.isPreCheckedIn === "true"){
+		$location.path('/preCheckinComleted');
+	}	
  	if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}
