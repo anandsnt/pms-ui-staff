@@ -14,7 +14,7 @@
 					<td width="50%" ng-click="openWorkTypeForm($index)" ng-hide="workTypeClickedElement == $index">
 						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
 						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
-						<em ng-if="item.is_system_defined">{{ 'SYSTEM_DEFINED' | translate }}</em>
+						<em ng-if="item.is_system">{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
 					<td class="delete" ng-if="!item.is_system_defined" ng-hide="workTypeClickedElement == $index">
 						<a ng-if="!item.is_system_defined" ng-click="deleteWorkType()" class="icons icon-delete large-icon delete_item"></a>
