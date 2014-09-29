@@ -310,7 +310,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			is_vacant: '',
 			hours: '',
 			mins: '',
-			ref_housekeeping_status_id: ''
+			task_completion_hk_status_id: ''
 		};
 
 		$scope.taskListForm = 'add';
@@ -329,7 +329,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					is_vacant: '',
 					hours: '',
 					mins: '',
-					ref_housekeeping_status_id: ''
+					task_completion_hk_status_id: ''
 				};
 			} else {
 				$scope.taskListForm = 'edit';
@@ -348,7 +348,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					is_vacant: this.item.is_vacant,
 					hours: !!time ? time.split(':')[0] : '',
 					mins: !!time ? time.split(':')[1] : '',
-					ref_housekeeping_status_id: this.item.ref_housekeeping_status_id,
+					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
 					id: this.item.id
 				}
 				console.log( $scope.eachTaskList );
@@ -367,7 +367,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_vacant: '',
 				hours: '',
 				mins: '',
-				ref_housekeeping_status_id: ''
+				task_completion_hk_status_id: ''
 			};
 		};
 
@@ -386,7 +386,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					is_vacant: '',
 					hours: '',
 					mins: '',
-					ref_housekeeping_status_id: ''
+					task_completion_hk_status_id: ''
 				};
 
 				fetchTaskList();
@@ -410,7 +410,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					is_vacant: '',
 					hours: '',
 					mins: '',
-					ref_housekeeping_status_id: ''
+					task_completion_hk_status_id: ''
 				}
 
 				fetchTaskList();
@@ -427,7 +427,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
 				is_occupied: !!isOccupied ? true : false,
 				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
-				task_completion_hk_status_id: $scope.eachTaskList.ref_housekeeping_status_id
+				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
 			}
 
 			console.log( params );	
@@ -447,7 +447,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					fo_status: '',
 					hours: '',
 					mins: '',
-					ref_housekeeping_status_id: ''
+					task_completion_hk_status_id: ''
 				}
 
 				fetchTaskList();
@@ -464,7 +464,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
 				is_occupied: !!isOccupied ? true : false,
 				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
-				task_completion_hk_status_id: $scope.eachTaskList.ref_housekeeping_status_id,
+				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
 				id: $scope.eachTaskList.id
 			}
 
