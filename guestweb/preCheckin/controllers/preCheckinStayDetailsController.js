@@ -25,6 +25,7 @@
 		$scope.isLoading = true;
 		if(!$scope.stayDetails.hour  || !$scope.stayDetails.minute  ||!$scope.stayDetails.primeTime){
 			$modal.open($scope.errorOpts); // error modal popup
+			$scope.isLoading = false;
 		}
 		else{
 		//change format to 24 hours
