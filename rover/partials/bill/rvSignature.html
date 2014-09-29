@@ -40,10 +40,15 @@
 				</div>
 			</div>
 		</div>
-		
-		<div class="entry" ng-show="($index+1) === reservationBillData.bills.length">
+		<!-- 
+			CICO-9597 : While required_signature_at is not 'CHECKOUT',
+						#terms-and-conditions field is making hidden and
+		    			acceptCharges always chekcked or saveData.acceptCharges = true.
+		-->
+		<div class="entry" ng-show="($index+1) === reservationBillData.bills.length" ng-class="{ 'hidden': reservationBillData.required_signature_at !== 'CHECKOUT' }">
 			<label id="terms-and-conditions" for="terms" class="checkbox inline">
-				<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.acceptCharges}"></span>
+				<span ng-if="reservationBillData.required_signature_at !== 'CHECKOUT'" class="icon-form icon-checkbox" ng-class="{'checked': true}">{{saveData.acceptCharges = true}}</span>
+				<span ng-if="reservationBillData.required_signature_at === 'CHECKOUT'" class="icon-form icon-checkbox" ng-class="{'checked': saveData.acceptCharges }"></span>
 				<input type="checkbox" ng-model="saveData.acceptCharges">
 				{{ 'ACCEPT_CHARGE_TEXT' | translate }} </label>
 		</div>
