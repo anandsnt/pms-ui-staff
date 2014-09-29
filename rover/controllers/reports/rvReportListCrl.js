@@ -79,13 +79,19 @@ sntRover.controller('RVReportListCrl', [
                 };
 
                 // set the untilDate to current businessDate
-                reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
+                // reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
 
                 // HACK: set the default value for from date to a week ago from business date
                 // so that calender will open in the corresponding month, rather than today
-                var today = new Date( reportList[i].untilDate );
-                var weekAgo = today.setDate(today.getDate() - 7);
+                // AS PER ECMCAScript the standard format is 'YYYY-MM-DDTHH:mm:ss.sssZ' Check bug: CICO-9749
+                var today = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
+                var y = today.split('-')[0] * 1;
+                var m = today.split('-')[1] * 1;
+                var d = today.split('-')[2] * 1;
+                var weekAgo = new Date(y, m, d - 7);
+
                 reportList[i].fromDate = $filter('date')(weekAgo, 'MM-dd-yyyy');
+                reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
 			}
 
             $scope.refreshScroller( 'report-list-scroll' );

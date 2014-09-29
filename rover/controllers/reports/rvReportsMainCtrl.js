@@ -2,8 +2,9 @@ sntRover.controller('RVReportsMainCtrl', [
 	'$rootScope',
 	'$scope',
 	'RVreportsSrv',
+	'reportsResponse',
 	'$filter',
-	function($rootScope, $scope, RVreportsSrv, $filter) {
+	function($rootScope, $scope, RVreportsSrv, reportsResponse, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -23,17 +24,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.heading = 'Stats & Reports';
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
-		// $scope.reportList = reportsResponse.results;
-		// $scope.reportCount = reportsResponse.total_count;
-		$scope.reportList = {};
-		$scope.reportCount = {};
-
-		var callback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.reportList = data.results;
-			$scope.reportCount = data.total_count;
-		};
-		$scope.invokeApi(RVreportsSrv.fetchReportList, {}, callback);
+		$scope.reportList = reportsResponse.results;
+		$scope.reportCount = reportsResponse.total_count;
 
 		$scope.showReportDetails = false;
 
@@ -48,12 +40,14 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.getFromOptions = function(item) {
+			var item = angular.copy(item);
+			console.log(item.untilDate);
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        maxDate: tzIndependentDate( item.untilDate ),
+		        maxDate: item.untilDate,
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
@@ -66,13 +60,15 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.getUntilOptions = function(item) {
+			var item = angular.copy(item);
+			console.log(item.fromDate);
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        minDate: tzIndependentDate( item.fromDate ),
-		        maxDate: tzIndependentDate( $rootScope.businessDate ),
+		        minDate: item.fromDate,
+		        maxDate: $rootScope.businessDate,
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
