@@ -197,10 +197,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.getNoPostButtonTiltle = function(){
 		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
 	}
-
+	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
-		$scope.reservationBillData.no_post = "true";
-		$scope.setNoPostStatus();
+		if(buttonClicked)
+			return;
+		buttonClicked = true;
+		setTimeout(function(){
+	     		buttonClicked = false;
+	        }, 200);
+		$scope.roomChargeEnabled = !$scope.roomChargeEnabled;
 	}
 
 	$scope.init(reservationBillData);
