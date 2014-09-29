@@ -213,8 +213,9 @@ admin
             var anyOneDayisChecked = false;
             angular.forEach($scope.Sets, function (set, key) {
                 angular.forEach(set.days, function (day, key) {
-                    if (day.checked)
+                    if (day.checked) {
                         anyOneDayisChecked = true;
+                    }
                 });
             });
 

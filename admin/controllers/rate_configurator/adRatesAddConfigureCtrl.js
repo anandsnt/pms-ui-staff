@@ -278,9 +278,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-            var enableSetUpdateButton = false;
+            var enableSetUpdateButton = true;
             // if($scope.rateData.id == ""){
-            angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
+            /*angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
                 if (value.hasOwnProperty("single") && value.single != "") {
                     enableSetUpdateButton = true;
                 }
@@ -293,8 +293,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 if (value.hasOwnProperty("child") && value.child != "") {
                     enableSetUpdateButton = true;
                 }
-            });
+            });*/
             // }
+
             if (enableSetUpdateButton && $scope.otherData.setChanged) {
                 $scope.data.sets[index].isEnabled = true;
             } else {
@@ -369,7 +370,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             $scope.closeDialog();
         }
 
-        $scope.$on("backToRatesClicked", function(event) {
+        $scope.$on("goBackToRates", function(event) {
             event.preventDefault();
             showRateSetChangeSaveDialog();
             return false;
