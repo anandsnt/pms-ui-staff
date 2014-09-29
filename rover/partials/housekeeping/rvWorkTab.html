@@ -1,7 +1,7 @@
 <div ng-controller="RVHKWorkTabCtrl">
   <div class="room-actions dual-select">
     <div class="select">
-      <select id="work-type" name="work-type" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList">
+      <select id="work-type" name="work-type" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList" disabled>
         <option value="">All Work Types</option>
       </select>
     </div>
