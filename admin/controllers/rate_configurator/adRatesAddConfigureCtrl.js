@@ -390,6 +390,21 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             return false;
         });
 
+        $scope.collapse = function(index) {
+            var setLength = $scope.data.sets.length;
+
+            if(setLength > 1) {
+                if(index === 0) {
+                    $scope.setCurrentClickedSet(1);
+                } else if(index === setLength) {
+                    $scope.setCurrentClickedSet(setLength - 1);
+                } else {
+                    $scope.setCurrentClickedSet(index + 1);
+                }
+            } else {
+                $emit('changeMenu','');
+            }
+        }
 
         $scope.init();
     }
