@@ -8,10 +8,20 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'fetchedRoomList',
 	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, fetchedRoomList) {
 
+
+		// TODO: RESTRUCTURE THE CODE TO PROPER SECTIONS
+		// 1. stateChange  should keep filters or reset them?
+		// 2. fetch housemaid list, work type list, floor type etc and possible cashing in srv
+		// 3. should fetch room list again or not
+		// 4. all filters and things
+		// 5. calculate filters, check possiblity of moving it to a seperate module its too big!
+		// 6. pull down to refresh
+		// 7. performance enhancement
+
+
 		// additional check since the router resolve may fail
 		if ( !fetchedRoomList ) {
 			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
-			console.log( fetchedRoomList );
 		};
 
 		/*var successCallback = function(data){
@@ -90,16 +100,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var afterFetch = function(data) {
 			$scope.noScroll = true;
 
-			// show the user related rooms only
-			$scope.filterByWorkType = defaultWorkType;
-			$scope.filterByEmployee = defaultMaid;
-
-			// update filterByWorkType filter to first item
-			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
-
-			// update filterByEmployee filter
-			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
-
 			// apply the filter first
 			$scope.calculateFilters(data.rooms);
 
@@ -142,20 +142,40 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		var fetchRooms = function() {
 			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
+			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
+
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
+				RVHkRoomStatusSrv.fetch()
 					.then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
 						$scope.showQueued = data.is_queue_rooms_on;
+
+						// show the user related rooms only
+						$scope.filterByWorkType = defaultWorkType;
+						$scope.filterByEmployee = defaultMaid;
+
+						// update filterByWorkType filter to first item
+						$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+
+						// update filterByEmployee filter
+						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+
 						afterFetch( data );
 					}, function() {
 						$scope.$emit('hideLoader');
 					});	
 			} else {
 				$timeout(function() {
+
+					// restore the filterByWorkType from previous chosen value
+					$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
+
+					// restore the filterByEmployee from previous chosen value
+					$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
+						return item.maid_name == $scope.currentFilters.filterByEmployee
+					});
 
 					// show loader as we will be slicing the rooms
 					// in smaller and bigger parts and show smaller first

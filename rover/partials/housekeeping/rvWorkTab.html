@@ -7,7 +7,7 @@
     </div>
     <div class="select">
       <!-- Disable when cleaning in progrees. -->
-      <select id="room-status" name="room-status" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-disabled="isCleaning" ng-change="roomStatusChanged()"></select>
+      <select id="room-status" name="room-status" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-disabled="isCleaning" ng-change="roomStatusChanged()" disabled></select>
     </div>
   </div>
 
