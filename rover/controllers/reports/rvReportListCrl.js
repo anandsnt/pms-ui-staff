@@ -87,11 +87,14 @@ sntRover.controller('RVReportListCrl', [
                 var weekAgo = today.setDate(today.getDate() - 7);
                 reportList[i].fromDate = $filter('date')(weekAgo, 'MM-dd-yyyy');
 			}
+
+            $scope.refreshScroller( 'report-list-scroll' );
 		}( $scope.$parent.reportList );
 
 		// show hide filter toggle
 		$scope.toggleFilter = function() {
 		    this.item.show_filter = this.item.show_filter ? false : true;
+            $scope.refreshScroller( 'report-list-scroll' );
 		};
 
         $scope.setnGenReport = function() {
