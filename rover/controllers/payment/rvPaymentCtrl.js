@@ -235,9 +235,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 		}
 		$rootScope.$broadcast('paymentTypeUpdated');
-		if($scope.passData.showDoNotAuthorize){
-			$rootScope.$broadcast('cc_auth_updated', $scope.do_not_cc_auth);
-		}
+		//To be implemented once the feature ready for the standalone
+		// if($scope.passData.showDoNotAuthorize){
+		// 	$rootScope.$broadcast('cc_auth_updated', $scope.do_not_cc_auth);
+		// }
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");

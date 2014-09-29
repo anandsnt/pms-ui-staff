@@ -185,6 +185,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 	}
 
+	$scope.getNoPostButtonTiltle = function(){
+		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
+	}
+
+	$scope.noPostButtonClicked = function(){
+		$scope.reservationBillData.no_post = "true";
+		$scope.setNoPostStatus();
+	}
+
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
 		ngDialog.open({
@@ -790,7 +799,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					"is_promotions_and_email_set" : $scope.saveData.promotions,
 					"signature" : signatureData,
 					"reservation_id" : $scope.reservationBillData.reservation_id,
-					"do_not_cc_auth" : $scope.do_not_cc_auth,
 					"no_post" : !$scope.roomChargeEnabled
 				};
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinFailureCallback);
