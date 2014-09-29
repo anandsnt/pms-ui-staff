@@ -197,10 +197,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.getNoPostButtonTiltle = function(){
 		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
 	}
-
+	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
-		$scope.reservationBillData.no_post = "true";
-		$scope.setNoPostStatus();
+		if(buttonClicked)
+			return;
+		buttonClicked = true;
+		setTimeout(function(){
+	     		buttonClicked = false;
+	        }, 200);
+		$scope.roomChargeEnabled = !$scope.roomChargeEnabled;
 	}
 
 	$scope.init(reservationBillData);
@@ -825,8 +830,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        	});
 			} else {
-				var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
+				
 				if($scope.isSwipeHappenedDuringCheckin){
+					var cardExpiry = "20"+swipedTrackDataForCheckin.RVCardReadExpDate.substring(0, 2)+"-"+swipedTrackDataForCheckin.RVCardReadExpDate.slice(-2)+"-01";
 	 				var data = {
 						"is_promotions_and_email_set" : $scope.saveData.promotions,
 						"signature" : signatureData,
