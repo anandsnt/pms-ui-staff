@@ -12,8 +12,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
+	var scrollerOptionForSummary = {scrollX: true };
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-  	$scope.setScroller('billDays', scrollerOptionsForGraph);
+  	$scope.setScroller('billDays', scrollerOptionForSummary);
   	$rootScope.multiplePostingNumber = "";
 
 	
