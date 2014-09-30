@@ -74,8 +74,9 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 		};
 		 $scope.invokeApi(RVSmartBandSrv.createSmartBand, dataToApi, $scope.createSmartBandSuccess, $scope.createSmartBandFailure);
 	};
-	$scope.fetchFailedKeyRead = function(){
+	$scope.fetchFailedKeyRead = function(errorObject){
 		$scope.$emit( 'hideLoader' );
+		
 	};
 	$scope.clickContinueButton = function(){
 		document.activeElement.blur();
