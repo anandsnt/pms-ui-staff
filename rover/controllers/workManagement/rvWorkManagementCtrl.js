@@ -3,6 +3,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 
 		$scope.setHeading = function(headingText) {
 			$scope.heading = headingText;
+			$scope.setTitle(headingText);
 		}
 
 		$scope.setHeading("Work Management");

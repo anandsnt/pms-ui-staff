@@ -92,7 +92,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                             '<button type="submit" name="submit" class="icons icon-search" ng-click="inputLabel.labelFilter=\'\';updateFilter();prepareGrouping();prepareIndex();select( \'clear\', $event )">&times;</button> ' +
                             '<input placeholder="Search by Employee Name" type="search" autocomplete="off" ng-click="select( \'filter\', $event )" ng-model="inputLabel.labelFilter" ng-change="updateFilter();$scope.getFormElements();" class="query" />' +
                         '</div>' +
-                        '<div  id="multi-select-options" class="entry scrollable">' +
+                        '<div  id="multi-select-options" class="entry scrollable" ng-iscroll-delay=3000 ng-iscroll="multiSelectEmployees">' +
                             '<div class="wrapper">' +               
                                 // '<div ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"' +
                                 //     'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"' +
@@ -134,6 +134,10 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             prevTabIndex            = 0;
             helperItems             = [];
             helperItemsLength       = 0;
+
+            //CICO-9120 Need to get the scroller working!
+            // This works but is a shoddy code... Revisit later 
+            var refreshScroller = $scope.$parent.refreshScroller;
 
             // If user specify a height, call this function
             $scope.setHeight = function() {
@@ -198,7 +202,10 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 $timeout( function() {
                     $scope.getFormElements();               
                 },0);
+               
+                refreshScroller("multiSelectEmployees");
             };
+
 
             // List all the input elements.
             // This function will be called everytime the filter is updated. Not good for performance, but oh well..
@@ -630,6 +637,8 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
                     // open callback
                     $scope.onOpen( { data: element } );
+                    
+                    refreshScroller("multiSelectEmployees");
                 }                            
             }
             

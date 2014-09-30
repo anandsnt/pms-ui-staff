@@ -83,7 +83,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
 						$scope.singleState.summary.stayovers++;
 					}
-					if (room.current_status == "CLEAN" || room.current_status == "INSPECTED") {
+					if (room.hk_complete) {
 						$scope.singleState.summary.completed++;
 					}
 					// Add up the allocated time
@@ -155,7 +155,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				return false;
 			}
 			if (!$scope.singleState.workSheet.user_id) {
-				$scope.errorMessage = ['Please select a employee.'];
+				$scope.errorMessage = ['Please select an employee.'];
 				return false;
 			}
 			var assignedRooms = [],
