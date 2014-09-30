@@ -42,7 +42,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.isSwipeHappenedDuringCheckin = false;
 
 	$scope.do_not_cc_auth = false;
-
+	var isAlreadyShownPleaseSwipeForCheckingIn = false;
 
 	//Scope variable to set active bill
 	$scope.currentActiveBill = 0;
@@ -159,7 +159,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.reviewStatusArray.push(data);
 			
 	     });
-	     if($scope.clickedButton == "checkinButton"){
+	     if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
+	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
 	     	setTimeout(function(){
 	     		$scope.openPleaseSwipe();
 	        }, 200);
@@ -508,7 +509,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 /*
 	  * To show vertical scroll
 	  */
-	  var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }};
+	  var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
 	 $scope.setScroller('registration-content', scrollOptions);
 	 
 	 
@@ -1304,7 +1305,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorData;
 		};
-		console.log(data);
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	
 	};
