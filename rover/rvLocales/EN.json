@@ -359,7 +359,8 @@
     "ADD_NEW_CARD":"Add New Card",
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
-    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined"
+    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
 ,    
     
     "RESERVATION_SUMMARY": "Reservation summary",
@@ -592,6 +593,7 @@
     "PRICE": "Price",
     "PACKAGE": "Package",
     "INCL": "INCL",
+    "EXCL": "EXCL",
     "EXPENSE": "Expense",
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
@@ -694,5 +696,7 @@
     "POST_CHARGES_LABEL": "Post Room Charges",
     "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
     "DISAGREE_BUTTON_LABEL":"Disagree",
-    "AGREE_BUTTON_LABEL":"Agree"
+    "AGREE_BUTTON_LABEL":"Agree",
+    "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"
 }
