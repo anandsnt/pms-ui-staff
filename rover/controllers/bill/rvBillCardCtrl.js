@@ -11,10 +11,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		scope: $scope
 	};
 
-	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
-	var scrollerOptionForSummary = {scrollX: true };
-  	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-  	$scope.setScroller('billDays', scrollerOptionForSummary);
+	var scrollerOptionsForGraphAndSummary = {scrollX: true, preventDefault: true, mouseWheel: false};
+	
+  	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraphAndSummary);
+  	$scope.setScroller('billDays', scrollerOptionsForGraphAndSummary);
   	$rootScope.multiplePostingNumber = "";
 
 	
@@ -198,14 +198,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.getNoPostButtonTiltle = function(){
 		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
 	}
-	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
-		if(buttonClicked)
-			return;
-		buttonClicked = true;
-		setTimeout(function(){
-	     		buttonClicked = false;
-	        }, 200);
+		
 		$scope.roomChargeEnabled = !$scope.roomChargeEnabled;
 	}
 
@@ -514,7 +508,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 /*
 	  * To show vertical scroll
 	  */
-	  var scrollOptions =  {click: true};
+	  var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }};
 	 $scope.setScroller('registration-content', scrollOptions);
 	 
 	 
