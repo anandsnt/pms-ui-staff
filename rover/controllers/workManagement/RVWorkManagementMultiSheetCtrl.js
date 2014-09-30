@@ -9,6 +9,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		};
 
 		$scope.setScroller('unAssignedRoomList');
+		$scope.setScroller("multiSelectEmployees");
 		$scope.setScroller('assignedRoomList-1');
 		$scope.setScroller('assignedRoomList-2');
 		$scope.setScroller('assignedRoomList-3');
