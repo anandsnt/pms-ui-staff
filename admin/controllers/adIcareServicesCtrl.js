@@ -27,7 +27,7 @@ function($scope, $rootScope, $state,  $stateParams, ADICareServicesSrv) {
     var successCallbackSave = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = "";
-			$scope.goBack();
+			$scope.goBackToPreviousState();
 	};
 	var failureCallbackSave = function(data) {
 			$scope.$emit('hideLoader');

@@ -20,6 +20,7 @@
     "PRICE": "Price",
     "PACKAGE": "Package",
     "INCL": "INCL",
+    "EXCL": "EXCL",
     "EXPENSE": "Expense",
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
@@ -119,4 +120,9 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
+    "DISAGREE_BUTTON_LABEL":"Disagree",
+    "AGREE_BUTTON_LABEL":"Agree",
+    "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"

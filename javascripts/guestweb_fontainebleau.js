@@ -1,3 +1,4 @@
+
 //=require ../shared/lib/js/underscore.min.js
 //=require ../shared/lib/js/less-1.4.1.min.js
 //=require ../shared/lib/js/jquery.js
@@ -16,3 +17,4 @@
 //= require_tree ../guestweb/checkoutnow
 //= require_tree ../guestweb/checkin
 //= require_tree ../guestweb/ccAndRoom
+//= require_tree ../guestweb/preCheckin
