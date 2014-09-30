@@ -1,54 +1,32 @@
 sntRover.service('RVHkRoomDetailsSrv', [
-	'$http',
+	'RVBaseWebSrv',
 	'$q',
-	'$window',
-	function($http, $q, $window) {
+	function(RVBaseWebSrv, $q) {
 
 		this.fetch = function(id){
 			var deferred = $q.defer();
 			var url = '/house/room/' + id + '.json';
-
-			$http.get(url).success(function(response, status) {
-				if(response.status == "success"){
-			    	deferred.resolve(response.data);
-			    }else{
-			    	deferred.reject(response);
-			    }
-
-			}).error(function(response, status) {
-				if(status == 401){ // 401- Unauthorized
-					// so lets redirect to login page
-					$window.location.href = '/house/logout' ;
-				}else{
-					deferred.reject(response);
-				}
+			RVBaseWebSrv.getJSON(url).then(function(response) {
+				deferred.resolve(response);
+			},
+			function(errorMessage){
+				deferred.reject(errorMessage);
 			});
 			return deferred.promise;
 		};
 
-		this.updateHKStatus = function(roomNo, hkStatusId){
+		this.updateHKStatus = function( params){
+			var roomNo = params.roomNo;
+			var hkStatusId = params.hkstatusId;
 			var deferred = $q.defer();
 			var url = '/house/change_house_keeping_status.json';
 			var postData = {'hkstatus_id' : hkStatusId, 'room_no': roomNo}
-
-			$http({
-	            url: url,
-	            method: "POST",
-	            data: postData,
-	        }).success(function (response, status) {
-				if(response.status == "success"){
-	        		deferred.resolve(response.data);
-	        	}else{
-	        		deferred.reject(response);
-	        	}
-	        }).error(function (response, status) {
-			    if(status == 401){ // 401- Unauthorized
-	    			// so lets redirect to login page
-					$window.location.href = '/house/logout' ;
-	    		}else{
-	    			deferred.reject(response);
-	    		}
-	        });
+			RVBaseWebSrv.postJSON(url, postData).then(function(response) {
+				deferred.resolve(response.data);
+			},
+			function(errorMessage){
+				deferred.reject(errorMessage);
+			});
 			return deferred.promise;
 		};
 	}

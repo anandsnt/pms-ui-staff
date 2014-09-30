@@ -426,8 +426,6 @@
             }
 
             .dashboard-block {
-                padding-bottom: 20px;
-                margin-bottom: 20px;
             
                 h3 {
                     font-size: 21px;
@@ -451,84 +449,14 @@
                     &.red { color: @red; }
                 }
 
-                ul {
-                    li {
-                        margin-bottom: 10px;
-                        .show;
-                    }
+                &:last-child {
+                    padding-bottom: 0;
+                    margin-bottom: 0;
                 }
 
                 &.buttons {
                     .actions { .hide; }
-                    .data { 
-                        .show; 
-
-                        li {
-                            line-height: 36px;
-                            vertical-align: middle;
-                            padding-bottom: 5px;
-                            margin-bottom: 5px;
-                            text-transform: uppercase;
-                            width: 100%;
-                            border-bottom: 1px solid rgba(0,0,0,.1);
-
-                            strong {
-                                font-size: 36px;
-                                line-height: 1em;
-                                color: @textColor;
-                                .show;
-                                .pull-right;
-
-                                &.green { color: @green; }
-                                &.red { color: @red; }
-                                &.blue { color: @blue; }
-                                &.yellow { color: @yellow; }
-                            }
-
-                            &:last-child {
-                                padding-bottom: 0;
-                                margin-bottom: 0;
-                                border-bottom: 0;
-                            }
-                        }
-
-                    }
-                }
-
-                &.data {
-                    li {
-                        line-height: 36px;
-                        vertical-align: middle;
-                        padding-bottom: 5px;
-                        margin-bottom: 5px;
-                        text-transform: uppercase;
-                        width: 100%;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
-
-                        span {
-                            font-size: 30px;
-                            font-weight: 300;
-                            line-height: 1em;
-                            color: @textColor;
-                            .show;
-                            .pull-right;
-
-                            &.no-data {
-                                font-size: 1em;
-                                line-height: 30px;
-                                color: @grey4;
-                                text-transform: none;
-                                font-weight: 400;
-                                font-style: italic;
-                            }
-                        }
-
-                        &:last-child {
-                            padding-bottom: 0;
-                            margin-bottom: 0;
-                            border-bottom: 0;
-                        }
-                    }
+                    .data { .show; }
                 }
 
                 &.rate-of-day {
@@ -558,7 +486,7 @@
             }
         }
     }
-    
+
     #dashboard-search {
         z-index: 999;
         .background(@white);
@@ -593,10 +521,6 @@
                 }
 
                 .dashboard-block {
-                    margin-bottom: 40px;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-                    .flex(center);
-                    .float;
 
                     h3 {
                         font-size: 24px;
@@ -605,7 +529,6 @@
                         text-align: right;
                         #pixel-to-percent > .width(260, 1888);
                         .pull-left;
-
                     }
 
                     h4 {
@@ -627,59 +550,44 @@
                     }
 
                     &.buttons {
-                        .actions { .show; }
                         .data { .hide; }
 
-                        li {
-                            margin-right: 40px;
-                            height: 130px;
-                            .calc-width(25, 30);
+                        .actions { 
+                            .show; 
 
-                            .button {
-                                padding: 30px 20px 0 20px;
-                                line-height: 1em;
-                                .square(100%);
-                                .show;
+                            li {
+                                margin-right: 40px;
+                                height: 130px;
+                                .calc-width(25, 30);
 
-                                strong {
-                                    font-size: 48px;
-                                    line-height: 48px;
-                                    font-weight: 700;
-                                    overflow: hidden;
-                                    .show;
-                                }
-
-                                span { .show; }
-                            }
-
-                            &:last-child { margin-right: 0; }
-                        }
-                    }
-
-                    &.data {
-                        li {
-                            text-align: center;
-                            line-height: 1em;
-                            margin-right: 40px;
-                            border-bottom: 0;
-                            padding-bottom: 0;
-                            margin-bottom: 0;
-                            color: @grey3;
-                            .calc-width(20, 32);
-
-                            span {
-                                font-size: 48px;
-                                font-weight: 300;
-                                float: none;
-
-                                &.no-data {
-                                    font-size: 16px;
+                                .button {
+                                    padding: 30px 20px 0 20px;
                                     line-height: 1em;
-                                    padding: 16px 0;
+                                    .square(100%);
+                                    .show;
+
+                                    strong {
+                                        font-size: 48px;
+                                        line-height: 48px;
+                                        font-weight: 700;
+                                        overflow: hidden;
+                                        .show;
+                                    }
+
+                                    span { .show; }
                                 }
+
+                                &:last-child { margin-right: 0; }
                             }
 
-                            &:last-child { margin-right: 0; }
+                            &.col5 {
+                                li { 
+                                    margin-right: 20px;
+                                    .calc-width(20, 16); 
+
+                                    &:last-child { margin-right: 0; }
+                                }
+                            }
                         }
                     }
 
@@ -735,6 +643,12 @@
                                         line-height: 30px;
                                         padding: 0;
                                     }
+                                }
+
+                                &:last-child {
+                                    padding-bottom: 0;
+                                    margin-bottom: 0;
+                                    border-bottom: 0;
                                 }
                             }
                         }
@@ -808,6 +722,7 @@
                     .square(30px);
                 }
 
+                .pre-checkin-time,
                 .late-checkout-time {
                     font-weight: 600;
                     line-height: 50px;
@@ -2193,6 +2108,7 @@
                     &.ui-tabs-active {
                         a {
                             .guest-status {
+                                &.pre-check-in { background-color: @orange; }
                                 &.check-in,
                                 &.arrival { background-color: @green; }
                                 &.check-out,
