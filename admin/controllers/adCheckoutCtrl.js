@@ -27,7 +27,7 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
         if(typeof value != 'undefined'){
             var index = $scope.hours.indexOf(value);
             var arrayAfterValue = ["HH"];
-            for(var i = index+1; i < $scope.hours.length; i++){
+            for(var i = index; i < $scope.hours.length; i++){
                 arrayAfterValue.push($scope.hours[i]);
             }
             
@@ -70,6 +70,26 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 
 	$scope.fetchCheckoutDetails();
 
+    /*
+    * To validate the time entries
+    * @param {data} 
+    *
+    */
+
+    $scope.validateAlertTimings = function(){
+        if($scope.checkoutData.checkout_email_alert_time_hour=='HH' || $scope.checkoutData.checkout_email_alert_time_minute == 'MM'){
+            $scope.checkoutData.checkout_email_alert_time_hour = 'HH';
+            $scope.checkoutData.checkout_email_alert_time_minute = 'MM';
+            $scope.checkoutData.alternate_checkout_email_alert_time_hour = 'HH';
+            $scope.checkoutData.alternate_checkout_email_alert_time_minute = 'MM';
+        }
+        if($scope.weekends_checkout_email_alert_time_hour == 'HH' || $scope.weekends_checkout_email_alert_time_minute == 'MM'){
+            $scope.weekends_checkout_email_alert_time_minute = 'MM';
+            $scope.weekends_checkout_email_alert_time_hour = 'HH';
+            $scope.alternate_weekends_checkout_email_alert_time_minute = 'MM';
+            $scope.alternate_weekends_checkout_email_alert_time_hour = 'HH';
+        }
+    }
 
   /*
     * To save checkout details
@@ -82,7 +102,8 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
     	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true':'false';
 			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true':'false';
 			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
-			var uploadData = {
+			$scope.validateAlertTimings();
+            var uploadData = {
 				'checkout_email_alert_time':$scope.checkoutData.checkout_email_alert_time_hour+":"+$scope.checkoutData.checkout_email_alert_time_minute,
                 'alternate_checkout_email_alert_time':$scope.checkoutData.alternate_checkout_email_alert_time_hour+":"+$scope.checkoutData.alternate_checkout_email_alert_time_minute,
                 'weekends_checkout_email_alert_time':$scope.checkoutData.weekends_checkout_email_alert_time_hour+":"+$scope.checkoutData.weekends_checkout_email_alert_time_minute,
