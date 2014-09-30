@@ -28,7 +28,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		// by default dont show the form
 		$scope.showForm = false;
 
-
+		// scroll
+		$scope.setScroller( 'room-tab-scroll', {click: true, preventDefault: false} );
 
 		// fetch room service status list
 		$scope.roomServiceStatusList = [];
@@ -48,6 +49,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 			// check and update if room in service
 			$scope.inService = $scope.roomServices.room_service_status_id != inServiceId ? false : true;
+			$scope.refreshScroller( 'room-tab-scroll' );
 		};
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchRoomServiceStatusList, {}, rsslCallback);
 
@@ -58,6 +60,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		var mrlCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.maintenanceReasonsList = data;
+			$scope.refreshScroller( 'room-tab-scroll' );
 		};
 		$scope.invokeApi(RVHkRoomDetailsSrv.fetchMaintenanceReasonsList, {}, mrlCallback);
 
@@ -129,6 +132,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 				$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, { roomId: $scope.roomDetails.id, inServiceID: 1 }, callback);
 			}
+			$scope.refreshScroller( 'room-tab-scroll' );
 		};
 
 		// when user try to save a oo/os form
@@ -151,6 +155,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );
 				$scope.roomServices.reason_id = '';
 				$scope.roomServices.comment = '';
+				$scope.refreshScroller( 'room-tab-scroll' );
 			};
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.roomServices, callback);
 		};

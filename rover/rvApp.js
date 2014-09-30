@@ -171,4 +171,3 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		$rootScope.returnBack = false;
 	});
 }]);
-
