@@ -80,7 +80,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	};
 	$scope.fetchFailedKeyRead = function(errorObject){
 		$scope.$emit( 'hideLoader' );
-		
+		$scope.errorMessage = errorObject.RVErrorDesc;
 	};
 	$scope.clickContinueButton = function(){
 		document.activeElement.blur();
@@ -238,7 +238,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 				that.lastSuccessfulIDReaded = '';
 			},
-			'failureCallBack': function(message){
+			'failureCallBack': function(errorObject){
+				var message = errorObject.RVErrorDesc;
 				if(message == undefined || message == ''){
 					message = 'Failed to write the band type';
 				}
