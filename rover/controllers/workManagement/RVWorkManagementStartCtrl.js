@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'wmStatistics', 'RVWorkManagementSrv', '$timeout',
-    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, wmStatistics, RVWorkManagementSrv, $timeout) {
+sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'RVWorkManagementSrv', '$timeout',
+    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, RVWorkManagementSrv, $timeout) {
         $scope.setHeading("Work Management");
         BaseCtrl.call(this, $scope);
 
@@ -15,6 +15,21 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         $scope.setScroller('roomsSearchResults');
         $scope.setScroller('maidsSearchResults');
 
+        var setStats = function() {
+            var onFetchSuccess = function(wmStatistics) {
+                    $scope.$emit('hideLoader');
+                    $scope.workStats = wmStatistics;
+                },
+                onFetchFailure = function(errorMessage) {
+                    $scope.errorMessage = "";
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            $scope.invokeApi(RVWorkManagementSrv.fetchStatistics, $scope.stateVariables.viewingDate, onFetchSuccess, onFetchFailure);
+        }
+
+
+
         $scope.stateVariables = {
             searching: false,
             searchQuery: "",
@@ -23,7 +38,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             noSearchResults: false,
             viewingDate: {
                 date: $rootScope.businessDate,
-                work_type_id: ""
+                work_type_id: $scope.workTypes[0].id // Default to daily cleaning [Assuming it comes in as first entry]
             },
             searchResults: {
                 maids: [],
@@ -41,7 +56,6 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             }
         };
 
-        $scope.workStats = wmStatistics;
 
         $scope.closeDialog = function() {
             $scope.errorMessage = "";
@@ -195,5 +209,17 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 scope: $scope
             });
         }
+
+        $scope.onWorkTypeChanged = function() {
+            setStats();
+        }
+
+        $scope.onViewDateChanged = function() {
+            setStats();
+        }
+
+        setStats();
+
+
     }
 ]);

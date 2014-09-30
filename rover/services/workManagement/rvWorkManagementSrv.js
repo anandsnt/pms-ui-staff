@@ -53,9 +53,9 @@ sntRover.service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2',
 		 * Method used to fetch the statistics to populate the Work Management Landing Screen
 		 * @return Object The statistics returned from API call
 		 */
-		this.fetchStatistics = function() {
+		this.fetchStatistics = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/work_statistics';
+				url = '/api/work_statistics?date=' + params.date + '&work_type_id=' + params.work_type_id;
 			RVBaseWebSrvV2.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
