@@ -78,9 +78,8 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i].chosenSortBy = sortDate.value;
                 };
 
-                // set the untilDate to current businessDate
-                // reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
-
+                
+                
                 // HACK: set the default value for from date to a week ago from business date
                 // so that calender will open in the corresponding month, rather than today
                 // AS PER ECMCAScript the standard format is 'YYYY-MM-DDTHH:mm:ss.sssZ' Check bug: CICO-9749

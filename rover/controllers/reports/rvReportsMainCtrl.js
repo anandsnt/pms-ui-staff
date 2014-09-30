@@ -41,7 +41,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.getFromOptions = function(item) {
 			var item = angular.copy(item);
-			console.log(item.untilDate);
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
@@ -61,7 +60,6 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.getUntilOptions = function(item) {
 			var item = angular.copy(item);
-			console.log(item.fromDate);
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
@@ -133,7 +131,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		    	per_page:    resultPerPageOverride || $scope.resultsPerPage
 		    }
 
-		    var callback = function(response) {
+		    var frdCallback = function(response) {
 		    	if ( changeView ) {
 		    		$rootScope.setPrevState.hide = false;
 		    		$scope.showReportDetails = true;
@@ -163,7 +161,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		    	}
 		    };
 
-           	$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
+           	$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, frdCallback);
 		};
 	}
 ]);
