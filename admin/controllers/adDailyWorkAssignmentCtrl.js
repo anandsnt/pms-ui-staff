@@ -23,11 +23,14 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		fetchWorkType();
 
-		$scope.eachWorkType = {
-			name: '',
-			is_active: true,
-			hotel_id: $rootScope.hotelId
-		}
+		var resetEachWorkType = function() {
+			$scope.eachWorkType = {
+				name: '',
+				is_active: true,
+				hotel_id: $rootScope.hotelId
+			};
+		};
+		resetEachWorkType();
 
 		$scope.workTypeForm = 'add';
 
@@ -35,7 +38,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			if ( typeIndex == 'new' ) {
 				$scope.workTypeForm = 'add';
 				$scope.workTypeClickedElement = 'new';
-				$scope.eachWorkType.name = '';
+				resetEachWorkType();
 			} else {
 				$scope.workTypeForm = 'edit';
 				$scope.workTypeClickedElement = typeIndex;
@@ -50,11 +53,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.closeWorkTypeForm = function() {
 			$scope.workTypeClickedElement = -1;
-			$scope.eachWorkType = {
-				name: '',
-				is_active: true,
-				hotel_id: $rootScope.hotelId
-			}
+			resetEachWorkType();
 		};
 
 		$scope.deleteWorkType = function() {
@@ -62,11 +61,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workTypeClickedElement = -1;
-				$scope.eachWorkType = {
-					name: '',
-					is_active: true,
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkType();
 
 				fetchWorkType();
 			};
@@ -79,11 +74,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workTypeClickedElement = -1;
-				$scope.eachWorkType = {
-					name: '',
-					is_active: true,
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkType();
 
 				fetchWorkType();
 			};
@@ -96,11 +87,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workTypeClickedElement = -1;
-				$scope.eachWorkType = {
-					name: '',
-					is_active: true,
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkType();
 
 				fetchWorkType();
 			};
@@ -113,11 +100,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workTypeClickedElement = -1;
-				$scope.eachWorkType = {
-					name: '',
-					is_active: true,
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkType();
 
 				fetchWorkType();
 			};
@@ -136,6 +119,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 
 
+
+
 		// fetch maid work shift
 		var fetchWorkShift = function() {
 			var callback = function(data) {
@@ -147,12 +132,15 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		fetchWorkShift();
 
-		$scope.eachWorkShift = {
-			name: '',
-			hours: '',
-			mins: '',
-			hotel_id: $rootScope.hotelId
-		}
+		var resetEachWorkShift = function() {
+			$scope.eachWorkShift = {
+				name: '',
+				hours: '',
+				mins: '',
+				hotel_id: $rootScope.hotelId
+			};
+		};
+		resetEachWorkShift();
 
 		$scope.workShiftForm = 'add';
 
@@ -160,9 +148,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			if ( typeIndex == 'new' ) {
 				$scope.workShiftForm = 'add';
 				$scope.workShiftClickedElement = 'new';
-				$scope.eachWorkShift.name = '';
-				$scope.eachWorkShift.hours = '';
-				$scope.eachWorkShift.mins = '';
+				resetEachWorkShift();
 			} else {
 				$scope.workShiftForm = 'edit';
 				$scope.workShiftClickedElement = typeIndex;
@@ -180,12 +166,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 		$scope.closeWorkShiftForm = function() {
 			$scope.workShiftClickedElement = -1;
-			$scope.eachWorkShift = {
-				name: '',
-				hours: '',
-				mins: '',
-				hotel_id: $rootScope.hotelId
-			}
+			resetEachWorkShift();
 		};
 
 		$scope.deleteWorkShift = function() {
@@ -193,12 +174,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workShiftClickedElement = -1;
-				$scope.eachWorkShift = {
-					name: '',
-					hours: '',
-					mins: '',
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkShift();
 
 				fetchWorkShift();
 			};
@@ -211,12 +187,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workShiftClickedElement = -1;
-				$scope.eachWorkShift = {
-					name: '',
-					hours: '',
-					mins: '',
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkShift();
 
 				fetchWorkShift();
 			};
@@ -235,12 +206,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.workShiftClickedElement = -1;
-				$scope.eachWorkShift = {
-					name: '',
-					hours: '',
-					mins: '',
-					hotel_id: $rootScope.hotelId
-				}
+				resetEachWorkShift();
 
 				fetchWorkShift();
 			};
@@ -254,6 +220,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
+
+
 
 
 
@@ -282,7 +250,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var resHkCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.resHkStatusList = data;
-				console.log( $scope.resHkStatusList )
 			};
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.fetchResHkStatues, {}, resHkCallback);
 
@@ -300,63 +267,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 		additionalAPIs();
 
-		$scope.eachTaskList = {
-			name: '',
-			work_type_id: '',
-			room_type_ids: [],
-			front_office_status_ids: [],
-			reservation_statuses_ids: [],
-			is_occupied: '',
-			is_vacant: '',
-			hours: '',
-			mins: '',
-			task_completion_hk_status_id: ''
-		};
-
-		$scope.taskListForm = 'add';
-
-		$scope.openTaskListForm = function(typeIndex) {
-			if ( typeIndex == 'new' ) {
-				$scope.taskListForm = 'add';
-				$scope.taskListClickedElement = 'new';
-				$scope.eachTaskList = {
-					name: '',
-					work_type_id: '',
-					room_type_ids: [],
-					front_office_status_ids: [],
-					reservation_statuses_ids: [],
-					is_occupied: '',
-					is_vacant: '',
-					hours: '',
-					mins: '',
-					task_completion_hk_status_id: ''
-				};
-			} else {
-				$scope.taskListForm = 'edit';
-				$scope.taskListClickedElement = typeIndex;
-
-				console.log( 'DEBUG' );
-				var time = this.item.completion_time;
-				console.log( this.item );
-				$scope.eachTaskList = {
-					name: this.item.name,
-					work_type_id: this.item.work_type_id,
-					room_type_ids: this.item.room_type_ids,
-					front_office_status_ids: this.item.front_office_status_ids,
-					reservation_statuses_ids: this.item.reservation_statuses_ids,
-					is_occupied: this.item.is_occupied,
-					is_vacant: this.item.is_vacant,
-					hours: !!time ? time.split(':')[0] : '',
-					mins: !!time ? time.split(':')[1] : '',
-					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
-					id: this.item.id
-				}
-				console.log( $scope.eachTaskList );
-			}
-		};
-
-		$scope.closeTaskListForm = function() {
-			$scope.taskListClickedElement = -1;
+		var resetEachTaskList = function() {
 			$scope.eachTaskList = {
 				name: '',
 				work_type_id: '',
@@ -370,24 +281,47 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id: ''
 			};
 		};
+		resetEachTaskList();
+
+		$scope.taskListForm = 'add';
+
+		$scope.openTaskListForm = function(typeIndex) {
+			if ( typeIndex == 'new' ) {
+				$scope.taskListForm = 'add';
+				$scope.taskListClickedElement = 'new';
+				resetEachTaskList();
+			} else {
+				$scope.taskListForm = 'edit';
+				$scope.taskListClickedElement = typeIndex;
+
+				var time = this.item.completion_time;
+				$scope.eachTaskList = {
+					name: this.item.name,
+					work_type_id: this.item.work_type_id,
+					room_type_ids: this.item.room_type_ids,
+					front_office_status_ids: this.item.front_office_status_ids,
+					reservation_statuses_ids: this.item.reservation_statuses_ids,
+					is_occupied: this.item.is_occupied,
+					is_vacant: this.item.is_vacant,
+					hours: !!time ? time.split(':')[0] : '',
+					mins: !!time ? time.split(':')[1] : '',
+					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
+					id: this.item.id
+				}
+			}
+		};
+
+		$scope.closeTaskListForm = function() {
+			$scope.taskListClickedElement = -1;
+			resetEachTaskList();
+		};
 
 		$scope.deleteTaskListItem = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				
 				$scope.taskListClickedElement = -1;
-				$scope.eachTaskList = {
-					name: '',
-					work_type_id: '',
-					room_type_ids: [],
-					front_office_status_ids: [],
-					reservation_statuses_ids: [],
-					is_occupied: '',
-					is_vacant: '',
-					hours: '',
-					mins: '',
-					task_completion_hk_status_id: ''
-				};
+				resetEachTaskList();
 
 				fetchTaskList();
 			};
@@ -400,18 +334,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.taskListClickedElement = -1;
-				$scope.eachTaskList = {
-					name: '',
-					work_type_id: '',
-					room_type_ids: [],
-					front_office_status_ids: [],
-					reservation_statuses_ids: [],
-					is_occupied: '',
-					is_vacant: '',
-					hours: '',
-					mins: '',
-					task_completion_hk_status_id: ''
-				}
+				resetEachTaskList();
 
 				fetchTaskList();
 			};
@@ -430,8 +353,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
 			}
 
-			console.log( params );	
-
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
 		};
 
@@ -439,16 +360,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.taskListClickedElement = -1;
-				$scope.eachTaskList = {
-					name: '',
-					work_type_id: '',
-					room_type_id: '',
-					reservation_status: '',
-					fo_status: '',
-					hours: '',
-					mins: '',
-					task_completion_hk_status_id: ''
-				}
+				resetEachTaskList();
 
 				fetchTaskList();
 			};
@@ -468,7 +380,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				id: $scope.eachTaskList.id
 			}
 
-			console.log( params );
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
 		}
 	}
