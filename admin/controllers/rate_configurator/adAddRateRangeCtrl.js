@@ -45,16 +45,24 @@ admin
                 }
             }, rateFilterDefaults.OPTIONS);
 
-            $scope.Sets = [createDefaultSet("Set 1")];
-            $scope.begin_date = $filter('date')(businessDate, rateFilterDefaults.DATE_FORMAT); 
-            $scope.end_date = $scope.begin_date; //$filter('date')(businessDate, rateFilterDefaults.DATE_FORMAT);
+            $scope.Sets = [];
+            $scope.Sets.push(createDefaultSet("Set 1"));
+//if no date is selected .Make bussiness date as default CICO-8703
+
+            if(!$scope.begin_date){
+                $scope.begin_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            }
+            if(!$scope.end_date){
+                $scope.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            }
+         
 
             try
             { //Handle exception, in case of NaN, initially.
                 lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
             }
             catch(e) { }
-            
+
             /* For new dateranges, fromdate should default 
              * to one day past the enddate of the last daterange
              * TODO: Only if lastDate > businessDate
@@ -66,7 +74,8 @@ admin
 
                 $scope.begin_date = $filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
                 $scope.end_date = $scope.begin_date; //$filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
-            }
+             }
+
         };
 
         /*
