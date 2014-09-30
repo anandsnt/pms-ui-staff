@@ -402,7 +402,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     $scope.setCurrentClickedSet(index + 1);
                 }
             } else {
-                $emit('changeMenu','');
+                $scope.$emit('changeMenu','');
             }
         }
 
