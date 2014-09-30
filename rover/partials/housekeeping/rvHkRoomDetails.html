@@ -24,10 +24,11 @@
         </header>
 
         <div id="guest-info" ng-show="data.room_details.is_occupied == 'true'">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="wrapper">
                   <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
                   <figure class="guest-image">
-                      <img alt="" src="{{ data.room_details.avatar_src }}">
+                      <img alt="" ng-src="{{ data.room_details.avatar_src }}">
                       <span ng-show="data.room_details.is_vip == 'true'" class="vip" translate>VIP</span>            
                   </figure>
                   <h2>
@@ -40,6 +41,7 @@
         </div>
 
         <div id="guest-info" class="no-content" ng-show="data.room_details.is_occupied == 'false'">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="info">
                 <span class="icons icon-vacant"></span>
                 <strong class="h1" translate>ROOM_IS_VACANT</strong>
