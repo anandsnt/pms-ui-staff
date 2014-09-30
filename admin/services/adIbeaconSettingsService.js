@@ -150,5 +150,19 @@ this.addBeaconDetails = function(data){
 	});
 	return deferred.promise;
 };
+/*
+* To set the link status for ibeacon
+*  @param {object} 
+*/
+this.setLink = function(data){
+	var deferred = $q.defer();
+	var url = 'api/beacons/link.json';		
+	ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+		deferred.resolve(data);
+	},function(data){
+		deferred.reject(data);
+	});
+	return deferred.promise;
+};
 
 }]);

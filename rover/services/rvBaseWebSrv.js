@@ -46,9 +46,7 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 		    	deferred.reject(response.errors);
 			}
 		}).error(function(response, status) {
-			console.log(status);
 			var urlStart = url.split('?')[0];
-			console.log(urlStart)
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if(status == 406){ // 406- Network error
@@ -60,7 +58,7 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 			}
 			else if(urlStart != '/api/availability' && status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
 				$window.location.href = '/500' ;
-			}else if(urlStart != '/api/availability' && status == 404){ // 500- Internal Server Error
+			}else if(status == 404){ // 404- Not found, Ideally this case should not happen
 				$window.location.href = '/500' ;
 			}	
 			else if(status == 401){ // 401- Unauthorized

@@ -70,6 +70,12 @@ sntRover.controller('RVReportListCrl', [
                 // sort by options
                 reportList[i].sortByOptions = reportList[i]['sort_fields']
 
+                // CICO-8010: for Yotel make "date" default sort by filter
+                sortDate = _.find(reportList[i]['sort_fields'], function(item) {
+                    return item.value === 'DATE';
+                });
+                reportList[i].chosenSortBy = sortDate.value;
+
                 // set the untilDate to current businessDate
                 reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
 
@@ -79,11 +85,14 @@ sntRover.controller('RVReportListCrl', [
                 var weekAgo = today.setDate(today.getDate() - 7);
                 reportList[i].fromDate = $filter('date')(weekAgo, 'MM-dd-yyyy');
 			}
+
+            $scope.refreshScroller( 'report-list-scroll' );
 		}( $scope.$parent.reportList );
 
 		// show hide filter toggle
 		$scope.toggleFilter = function() {
 		    this.item.show_filter = this.item.show_filter ? false : true;
+            $scope.refreshScroller( 'report-list-scroll' );
 		};
 
         $scope.setnGenReport = function() {

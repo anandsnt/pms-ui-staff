@@ -13,7 +13,7 @@ admin.directive('adTextbox', function($timeout) {
             styleclass: '@styleclass',
             inputtype: '@inputtype',
             readonly: '@readonly',
-            maxlength: '@maxlength',
+            maxlength: '=maxlength',
             disabled: '=disabled'
 
 	    },

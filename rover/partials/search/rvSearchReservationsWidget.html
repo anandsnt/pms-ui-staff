@@ -52,11 +52,13 @@
 									{{row.late_checkout_time}}
 								</span>
 
+								 <span class="pre-checkin-time" ng-hide="escapeNull(row.estimated_time_of_arrival)==''&&row.reservation_status!='PRE_CHECKIN'">{{row.estimated_time_of_arrival}}</span>
+
 								<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
 								</span>
 							</div>	
 
-							<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
+							<span  ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
 								<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
 									{{row.room}}
 								</span>			

@@ -55,7 +55,7 @@
 									value="singleRule.amount"
 									name="amount"
 									id="amount"
-									label="Amount"
+									label="Amount[{{ currencySymbol }}]"
 									placeholder="{{'ENTER_THE_AMT'|translate}}"
 									required="yes"></ad-textbox>
 							</div>
@@ -68,7 +68,7 @@
 									<div class="select">
 										<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.amount_type">
 											<option value="" data-text="Not set" class="placeholder">Choose amount type</option>
-											<option value="amount">{{'AMOUNT'|translate}}[{{ currencySym }}]</option>
+											<option value="amount">{{'AMOUNT'|translate}}[{{ currencySymbol }}]</option>
 											<option value="percent" translate>PERCENTAGE</option>
 											<option value="day" translate>NIGHTS</option>
 										</select>
