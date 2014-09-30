@@ -38,7 +38,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		
 		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
-			var url = '/house/search.json';
+			var url = '/house/search.json?date='+ businessDate;
 			
 			$http.get(url)
 				.success(function(response, status) {

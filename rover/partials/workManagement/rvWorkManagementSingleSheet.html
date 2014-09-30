@@ -4,49 +4,49 @@
     <!-- Worksheet header -->
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
         <div class="entry maid">
-            <label for="worksheet-employee">Maid</label>
+            <label for="worksheet-employee" translate>MAID</label>
             <div class="select">
                 <select ng-model="singleState.workSheet.user_id" ng-options="employee.id as employee.maid_name for employee in employeeList" id="worksheet-employee" name="worksheet-employee" >
-                        <option value="">Select Employee</option>
+                        <option value="">{{'SELECT_EMPLOYEE'| translate}}</option>
                 </select>
             </div>
         </div>
         <div class="entry task">
-            <label for="worksheet-work-type">Task</label>
+            <label for="worksheet-work-type" translate>TASK</label>
             <div class="select">
                 <select ng-model="singleState.workSheet.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChange()">
                 </select>
             </div>
         </div>
         <div class="entry shift">
-            <label for="worksheet-shift">Shift</label>
+            <label for="worksheet-shift" translate>SHIFT</label>
             <div class="select">
                 <select ng-model="singleState.workSheet.shift_id" ng-options="shift.id as shift.display_name for shift in shifts" id="worksheet-shift" name="worksheet-shift" >                   
                 </select>
             </div>
         </div>
         <div class="actions">
-            <button type="button" class="button green" ng-click="saveWorkSheet()">Save</button>
-            <button type="button" class="button grey" ng-click="printWorkSheet()">Print</button>
-            <button type="button" class="button red" ng-click="deletWorkSheet()">Delete</button>
+            <button type="button" class="button green" ng-click="saveWorkSheet()">{{'SAVE' | translate}}</button>
+            <button type="button" class="button grey" ng-click="printWorkSheet()">{{'PRINT' | translate}}</button>
+            <button type="button" class="button red" ng-click="deletWorkSheet()">{{'DELETE' | translate}}</button>
         </div>
     </form>
 
     <!-- Single worksheet - unassigned rooms -->
     <div class="unassigned-rooms single-sheet">
-        <h2>Unassigned</h2>
+        <h2 translate>UNASSIGNED</h2>
         <div class="worksheet-actions">
             <div class="select">
                 <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus" ng-class="{'placeholder': !singleState.filters.selectedFloor}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
                     <!-- Add class="placeholder" if value="" is selected -->
-                    <option value="" selected>All unassigned</option>
-                    <option value="DIRTY">Unassigned &amp; Dirty</option>
-                    <option value="PICKUP">Unassigned &amp; Pickup</option>
+                    <option value="" selected>{{ 'ALL_UNASSIGNED'| translate}}</option>
+                    <option value="DIRTY">{{ 'UNASSIGNED'| translate}} &amp; Dirty</option>
+                    <option value="PICKUP">{{'UNASSIGNED' | translate}} &amp; Pickup</option>
                 </select>
             </div>
             <div class="select">
                 <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="singleState.filters.selectedFloor" ng-class="{'placeholder': !singleState.filters.selectedFloor}" ng-options="floor.floor_number as floor.description for floor in floors" ng-change="startLoader();filterRooms();">
-                    <option value="" selected>All floors</option>
+                    <option value="" selected>{{ 'ALL_FLOORS'| translate}}</option>
                 </select>                
             </div>
         </div>        
@@ -65,7 +65,7 @@
                             <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
                             <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
-                            <span ng-show="room.reservation_status == 'Departed'">OUT</span>
+                            <span ng-show="room.reservation_status == 'Departed'" translate>OUT</span>
                         </div>
 
                         <div class="next {{arrivalClass[room.reservation_status]}}">
@@ -76,10 +76,10 @@
 
                     </div>
                      <!-- If VIP guest  -->
-                    <span class="vip" ng-show='room.is_vip'>VIP</span>
+                    <span class="vip" ng-show='room.is_vip' translate>VIP</span>
                     <!-- If room is queued 
                     <span class="icon icon-queued">Room queued</span>-->
-                    <button type="button" class="button green" ng-click="assignRoom(room)">Assign Room</button>
+                    <button type="button" class="button green" ng-click="assignRoom(room)" translate>ASSIGN_LABEL</button>
                 </li>                
             </ul>
         </div>  
@@ -89,10 +89,10 @@
     <div class="assigned-rooms single-sheet">
         <h2>Assigned</h2>
         <ul class="worksheet-summary">
-            <li>Time Allocated <span>{{singleState.summary.timeAllocated}}</span></li>
-            <li>Departures <span>{{singleState.summary.departures}}</span></li>
-            <li>Stayovers <span>{{singleState.summary.stayovers}}</span></li>
-            <li>Completed<span>{{singleState.summary.completed}} / {{singleState.assigned.length}}</span></li>
+            <li>{{'TIME_ALLOCATED' | translate}} <span>{{singleState.summary.timeAllocated}}</span></li>
+            <li>{{'DASHBOARD_SEARCH_CHECKINGOUT' | translate}} <span>{{singleState.summary.departures}}</span></li>
+            <li>{{'STAYOVERS' | translate}} <span>{{singleState.summary.stayovers}}</span></li>
+            <li>{{'COMPLETED' | translate}}<span>{{singleState.summary.completed}} / {{singleState.assigned.length}}</span></li>
         </ul>         
         <div id="worksheet-assigned-rooms" class="worksheet-content scrollable" data-drop="true" jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" data-jqyoui-options="{accept: '.worksheet-room.single-sheet.unassigned'}" ng-iscroll="workSheetAssigned">
             <section>
@@ -101,8 +101,8 @@
                 <div id="initial-no-content" class="no-content" ng-if="singleState.assigned.length === 0">
                     <div class="info">
                         <span class="icon-no-content icon-housekeeping"></span>
-                        <strong class="h1">No room assigned.</strong>
-                        <span class="h2">Drag and drop rooms to assign.</span> 
+                        <strong class="h1" translate>NO_ROOM_ASSIGNED</strong>
+                        <span class="h2" translate>DRAG_DROP_TO_ASSIGN</span> 
                     </div>
                 </div>
 
@@ -121,7 +121,7 @@
                                 <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
                                 <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
-                                <span ng-show="room.reservation_status == 'Departed'">OUT</span>
+                                <span ng-show="room.reservation_status == 'Departed'" translate>OUT</span>
                             </div>
                             <div class="next {{arrivalClass[room.reservation_status]}}">
                                 <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                          <!-- If VIP guest  -->
-                        <span class="vip" ng-show='room.is_vip'>VIP</span>
+                        <span class="vip" ng-show='room.is_vip' translate>VIP</span>
                         <!-- If room is queued 
                         <span class="icon icon-queued">Room queued</span>-->
                         
