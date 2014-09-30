@@ -18,7 +18,11 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
         }       
         return response || $q.when(response);
     },
-    responseError: function(rejection) {    
+    responseError: function(rejection) {
+      if(status == 401){ // 401- Unauthorized
+        // so lets redirect to login page
+        $window.location.href = '/logout' ;
+      }   
       if(rejection.status == 430){
          $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
       }
