@@ -86,7 +86,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
        * change date format for API call
        */
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-      dataToUpdate.birthday = $scope.birthdayText;
+      dataToUpdate.birthday = $scope.guestCardData.contactInfo.birthday;
       var dataUpdated = false;
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
@@ -141,8 +141,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       ngDialog.open({
         template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
         controller: 'RVContactInfoDatePickerController',
-        className: 'ngdialog-theme-default single-date-picker',
-        closeByDocument: true,
+        className: 'single-date-picker',
         scope: $scope
       });
     };
