@@ -12,6 +12,9 @@ background: none !important;
 .cabin_number_field{
 	width:85% !important;	
 	text-align: left !important;
+	p{
+	margin-bottom: 0;
+	}
 }
 
 .blue-bg{
@@ -102,8 +105,57 @@ background: #0aadf0;
 	.header{
 		padding:5px !important;
 	}
-	.jumbotron .check-inout-wrapper{
+	.jumbotron .check-inout-wrapper, .jumbotron .checkin-wrapper{
 		border-bottom: 1px solid #656565 !important;
 	    border-top: 1px solid #656565 !important;
 	}
+	
+}
+.payment{
+	p{
+	margin-bottom:0;
+	}
+}
+.checkout-late-sucess{
+	p{
+		padding-top:0 !important;
+	}
+	em{
+	font-size:18px !important;
+
+	}
+}
+
+/* Desktop */
+
+@media (min-width: 990px){
+
+	.chekout-time{
+		font-size: 21px !important;
+	}
+	.continue-button{
+		margin-top: 10%;
+	}
+	.check-inout-wrapper{
+		.headtext{
+			margin-top:60px;
+		}
+		.leadtext{
+			width: 430px; 
+			margin-left: 100px;
+		}
+	}
+	.no-thanks-text{
+		font-size: 22px;
+	}
+	.no-padding{
+		margin-top:60px;
+	}
+	.latecheckout-charged{
+		margin-top: 20px;
+	}
+	.accept-charges-button.single .rel-wrapper {
+    	padding: 27px 75px 30px;
+  }
+
 }
