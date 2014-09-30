@@ -79,22 +79,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			}, 200);
 		};
 
+		/***
+		* success callback of fetch rooms
+		* @params {object}
+		* return 		
+		*/		
+		var successCallbackOfFetchRooms = function(data){
+			$scope.$emit('hideLoader');
+			$scope.showPickup = data.use_pickup;
+			$scope.showInspected = data.use_inspected;
+			$scope.showQueued = data.is_queue_rooms_on;
+			afterFetch( data );	
+		};
 
 		var fetchRooms = function() {
 
 			//Fetch the roomlist if necessary
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
-				$scope.$emit('showLoader');
-
-				RVHkRoomStatusSrv.fetch()
-					.then(function(data) {
-						$scope.showPickup = data.use_pickup;
-						$scope.showInspected = data.use_inspected;
-						$scope.showQueued = data.is_queue_rooms_on;
-						afterFetch( data );
-					}, function() {
-						$scope.$emit('hideLoader');
-					});	
+				$scope.invokeApi(RVHkRoomStatusSrv.fetch, {}, successCallbackOfFetchRooms);
 			} else {
 				$timeout(function() {
 
@@ -109,16 +111,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		fetchRooms();
 
+		var successCallbackofFetchFloors = function(data){
+			$scope.$emit('hideLoader');
+			$scope.floors = data;
+		};
+
 		var fetchFloors = function() {
 			//Fetch the roomlist if necessary
-
-			$scope.$emit('showLoader');
-			RVHkRoomStatusSrv.fetch_floors().then(function(data) {
-				$scope.$emit('hideLoader');
-				$scope.floors = data;
-			}, function() {
-				$scope.$emit('hideLoader');
-			});
+			$scope.invokeApi(RVHkRoomStatusSrv.fetch_floors, {}, successCallbackofFetchFloors);
 		}
 
 		fetchFloors();

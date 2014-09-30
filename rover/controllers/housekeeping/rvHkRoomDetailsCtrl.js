@@ -107,18 +107,19 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 		$scope.calculateColorCodes();		
 		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status, $scope.data.room_details.is_late_checkout);
-
+		
+		var successCallbackOfUpdateHKStatus = function(data){
+			$scope.$emit('hideLoader');
+			$scope.data.room_details.current_hk_status = $scope.currentHKStatus.value;
+			$scope.calculateColorCodes();
+			RVHkRoomStatusSrv.updateHKStatus( $scope.data.room_details );
+		}
 		$scope.updateHKStatus = function(){	
-			$scope.$emit('showLoader');	
-			RVHkRoomDetailsSrv.updateHKStatus($scope.data.room_details.current_room_no, $scope.currentHKStatus.id).then(function(data) {
-				$scope.$emit('hideLoader');
-				$scope.data.room_details.current_hk_status = $scope.currentHKStatus.value;
-				$scope.calculateColorCodes();
-
-				RVHkRoomStatusSrv.updateHKStatus( $scope.data.room_details );
-			}, function(){
-				$scope.$emit('hideLoader');
-			});
+			var data = {
+				'roomNo': $scope.data.room_details.current_room_no, 
+				'hkstatusId': $scope.currentHKStatus.id
+			}
+			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, successCallbackOfUpdateHKStatus);
 		};
 
 
