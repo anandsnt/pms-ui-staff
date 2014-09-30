@@ -83,7 +83,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
 						$scope.singleState.summary.stayovers++;
 					}
-					if (room.current_status == "CLEAN" || room.current_status == "INSPECTED") {
+					if (room.hk_complete) {
 						$scope.singleState.summary.completed++;
 					}
 					// Add up the allocated time

@@ -49,12 +49,12 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								if (workAssignment.room) {
 									if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
 										assignmentDetails.summary.departures.total++;
-										if (workAssignment.room.current_status === "CLEAN" || workAssignment.room.current_status === "INSPECTED") {
+										if (workAssignment.room.hk_complete) {
 											assignmentDetails.summary.departures.completed++;
 										}
 									} else if ($scope.departureClass[workAssignment.room.reservation_status] == "in-house") {
 										assignmentDetails.summary.stayovers.total++;
-										if (workAssignment.room.current_status === "CLEAN" || workAssignment.room.current_status === "INSPECTED") {
+										if (workAssignment.room.hk_complete) {
 											assignmentDetails.summary.stayovers.completed++;
 										}
 									}
@@ -101,6 +101,34 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				for (var list = 0; list < $scope.multiSheetState.selectedEmployees.length; list++) {
 					$scope.refreshScroller('assignedRoomList-' + list);
 				}
+			},
+			updateSummary = function(employeeId) {
+				var assignmentDetails = $scope.multiSheetState.assignments[employeeId];
+				assignmentDetails.summary.shift.completed = "00:00";
+				assignmentDetails.summary.stayovers = {
+					total: 0,
+					completed: 0
+				};
+				assignmentDetails.summary.departures = {
+					total: 0,
+					completed: 0
+				};
+
+				_.each(assignmentDetails.rooms, function(room) {
+					if ($scope.departureClass[room.reservation_status] === "check-out") {
+						assignmentDetails.summary.departures.total++;
+						if (room.hk_complete) {
+							assignmentDetails.summary.departures.completed++;
+						}
+					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
+						assignmentDetails.summary.stayovers.total++;
+						if (room.hk_complete) {
+							assignmentDetails.summary.stayovers.completed++;
+						}
+					}
+					assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, room.time_allocated);
+				});
+				refreshView();
 			};
 
 		/**
@@ -238,6 +266,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						return item === droppedRoom;
 					})), 1);
 					$scope.filterUnassigned();
+					updateSummary(assignTo);
 				} else { //==Shuffling Assigned
 					//remove from 'assignee' and push to 'assignTo'
 					var roomList = $scope.multiSheetState.assignments[assignee].rooms;
@@ -246,6 +275,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 					roomList.splice(_.indexOf(roomList, _.find(roomList, function(item) {
 						return item === droppedRoom;
 					})), 1);
+					updateSummary(assignTo);
+					updateSummary(assignee);
 				}
 			}
 		}
@@ -264,6 +295,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.multiSheetState.unassigned.push(droppedRoom);
 			roomList.splice(indexOfDropped, 1);
 			$scope.filterUnassigned();
+			updateSummary(assignee);
 		}
 
 		$scope.onDateChanged = function() {
