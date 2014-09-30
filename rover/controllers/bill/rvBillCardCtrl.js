@@ -314,11 +314,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	}
 	 };
 	 $scope.toggleFeesDetails = function(billIndex){
-	 	var length = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length;
-	 	if(length>0){
-	 	 	$scope.reservationBillData.bills[billIndex].isOpenFeesDetails = !$scope.reservationBillData.bills[billIndex].isOpenFeesDetails;
-	 	 	$scope.calculateHeightAndRefreshScroll();
-	 	}
+	 	var length = 0;
+	 	if(typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined'){
+	 		length = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length;
+		 	if(length>0){
+		 	 	$scope.reservationBillData.bills[billIndex].isOpenFeesDetails = !$scope.reservationBillData.bills[billIndex].isOpenFeesDetails;
+		 	 	$scope.calculateHeightAndRefreshScroll();
+		 	}
+		}
 	 };
 	 /*
 	  * Success callback of fetch - After moving fees item from one bill to another
@@ -365,15 +368,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  * @param {bool} - new data added along with bill data for each bill 
 	  */
 	 $scope.showFeesDetailsOpenClose = function(openCloseStatus){
-	 	var length = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length;
-	 	var openCloseClass = " "; 
+	 	var length = 0;
+	 	var openCloseClass = " ";
+
+	 	if(typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined'){
+	 		length = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length;
+	 	}
 	    if(openCloseStatus && length===0){
 	     	openCloseClass = " ";
 	    }
 	    else if(openCloseStatus && length>0){
 	    	openCloseClass = "has-arrow active";
 	    }
-	    else{
+	    else if(!openCloseStatus && length>0){
 	    	openCloseClass = "has-arrow";
 	    }
 	    return openCloseClass;
