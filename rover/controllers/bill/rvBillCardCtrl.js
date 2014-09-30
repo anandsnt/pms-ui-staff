@@ -14,7 +14,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// Setup ng-scroll for 'registration-content' , 'bill-tab-scroller' , 'billDays'
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
 	var scrollerOptionForSummary = {scrollX: true };
-	var scrollOptions =  {click: true};
+	var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
   	$scope.setScroller('billDays', scrollerOptionForSummary);
@@ -36,7 +36,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.isSwipeHappenedDuringCheckin = false;
 
 	$scope.do_not_cc_auth = false;
-
+	var isAlreadyShownPleaseSwipeForCheckingIn = false;
 
 	//Scope variable to set active bill
 	$scope.currentActiveBill = 0;
@@ -134,7 +134,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.reviewStatusArray.push(data);
 			
 	     });
-	     if($scope.clickedButton == "checkinButton"){
+	     if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
+	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
 	     	setTimeout(function(){
 	     		$scope.openPleaseSwipe();
 	        }, 200);

@@ -18,6 +18,7 @@ sntRover.directive('resize', function ($window) {
                 };
             };
 
+            scope.$emit('resize', { width: scope.windowWidth, height: scope.windowHeight });
         }, true);
 
         w.bind('resize', function () {

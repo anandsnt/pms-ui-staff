@@ -66,25 +66,29 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
                 filterData.allRates = data.results;
                 filterData.rates = data.results;
 
-                if(filterData.rate_types.length > 0) {
+                /*if(filterData.rate_types.length > 0) {
                     filterData.isResolved = true;
-                }
-            };
-
-            $scope.invokeApi(RMFilterOptionsSrv.fetchRates, {}, fetchRatesSuccessCallback);
-            
-            var fetchRateTypesSuccessCallback = function(data) {
+                }*/
+            },
+            fetchRateTypesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
                 filterData.rate_types = data;
 
-                if(filterData.allRates.length > 0 && 
+                /*if(filterData.allRates.length > 0 && 
                    filterData.rates.length > 0) {
                     filterData.isResolved = true;
-                }
+                }*/
             };
 
-            $scope.invokeApi(RMFilterOptionsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback);
+            $scope.invokeApi(RMFilterOptionsSrv.fetchRates, {}, fetchRatesSuccessCallback).then(function(data) {
+                filterData.isPending = true;
+                filterData.isResolved = false;
+                return $scope.invokeApi(RMFilterOptionsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback);
+            }).then(function(data) {
+                filterData.isPending = false;
+                filterData.isResolved = true;
+            });         
         };
 
         $scope.fetchFilterOptions();
@@ -128,14 +132,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             if(filterData.isResolved) {
                 if (id === "ALL") {
                     filterData.rate_type_selected_list = [];
+                } else {
+                    angular.forEach(filterData.rate_type_selected_list, function(item, index) {
+                        if (item.id === id) {
+                            filterData.rate_type_selected_list.splice(index, 1);
+                        }
+                    });
                 }
-
-                angular.forEach(filterData.rate_type_selected_list, function(item, index) {
-                    if (item.id === id) {
-                        filterData.rate_type_selected_list.splice(index, 1);
-                    }
-                });
-            
                 calculateRatesList();
             }
 
@@ -180,7 +183,8 @@ sntRover.controller('RMFilterOptionsCtrl', ['filterDefaults', '$scope', 'RMFilte
             if ($scope.companySearchText.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-
+            } else if($scope.companySearchText.length === 1) {
+                $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
             } else if($scope.companySearchText.length > 2){
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();

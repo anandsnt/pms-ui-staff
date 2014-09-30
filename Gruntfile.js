@@ -171,12 +171,5 @@ module.exports = function(grunt) {
 
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
-    grunt.registerTask('server', ['shell', 'watch'])
-    /*grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-angular-templates');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-bower-task');
-    grunt.loadNpmTasks('grunt-contrib-concat');*/
-
+    grunt.registerTask('server', ['clean', 'ngtemplates', 'shell', 'watch'])
 };
