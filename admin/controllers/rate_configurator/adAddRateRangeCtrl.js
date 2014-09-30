@@ -11,7 +11,15 @@ admin.controller('ADAddRateRangeCtrl', ['$scope',
 
             $scope.Sets = [];
             $scope.Sets.push(createDefaultSet("Set 1"));
-            $scope.begin_date= tzIndependentDate($rootScope.businessDate);
+
+//if no date is selected .Make bussiness date as default CICO-8703
+
+            if(!$scope.begin_date){
+                $scope.begin_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            }
+            if(!$scope.end_date){
+                $scope.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            }
          
             var dLastSelectedDate = '';
             var lastSelectedDate = '';
