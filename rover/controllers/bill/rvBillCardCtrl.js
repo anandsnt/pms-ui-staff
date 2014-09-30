@@ -11,10 +11,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		scope: $scope
 	};
 
-	var scrollerOptionsForGraphAndSummary = {scrollX: true, preventDefault: true, mouseWheel: false};
-	
-  	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraphAndSummary);
-  	$scope.setScroller('billDays', scrollerOptionsForGraphAndSummary);
+	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
+	var scrollerOptionForSummary = {scrollX: true };
+	var scrollOptions =  {click: true};
+	$scope.setScroller('registration-content', scrollOptions);
+  	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
+  	$scope.setScroller('billDays', scrollerOptionForSummary);
   	$rootScope.multiplePostingNumber = "";
 
 	
@@ -109,7 +111,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 */
 
 	$scope.calculateHeightAndRefreshScroll = function() {
-		
+		/*
 		var width = 0;
 
 		width = parseInt(width)+parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].days.length*100)+parseInt(85);//85-Add button
@@ -120,7 +122,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			width = parseInt(width)+parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].group_items.length*114);
 		}
 		$scope.calculatedWidth = width;
-
+		*/
 		$timeout(function(){
 			$scope.refreshScroller('registration-content');
 			$scope.refreshScroller('billDays');
@@ -198,8 +200,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.getNoPostButtonTiltle = function(){
 		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
 	}
+	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
-		
+		if(buttonClicked)
+			return;
+		buttonClicked = true;
+		setTimeout(function(){
+	     		buttonClicked = false;
+	        }, 200);
 		$scope.roomChargeEnabled = !$scope.roomChargeEnabled;
 	}
 
@@ -505,12 +513,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	
 	 	
 	 };
-	 /*
-	  * To show vertical scroll
-	  */
-	  var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }};
-	 $scope.setScroller('registration-content', scrollOptions);
-	 
 	 
 	 /*
 	  * Refresh scroll once page is loaded.
