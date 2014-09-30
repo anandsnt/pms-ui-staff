@@ -155,7 +155,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				return false;
 			}
 			if (!$scope.singleState.workSheet.user_id) {
-				$scope.errorMessage = ['Please select a employee.'];
+				$scope.errorMessage = ['Please select an employee.'];
 				return false;
 			}
 			var assignedRooms = [],

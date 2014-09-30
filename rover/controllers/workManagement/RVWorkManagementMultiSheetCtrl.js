@@ -22,7 +22,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				var onFetchSuccess = function(data) {
 						$scope.multiSheetState.unassigned = data.unassigned;
 						$scope.filterUnassigned();
-						$scope.multiSheetState.assignments = {};
+						// $scope.multiSheetState.assignments = {};
 						_.each(data.work_sheets, function(worksheet) {
 							if (!$scope.multiSheetState.assignments[worksheet.employee_id]) {
 								$scope.multiSheetState.assignments[worksheet.employee_id] = {};
@@ -42,28 +42,26 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 									}
 								};
 								$scope.multiSheetState.assignments[worksheet.employee_id].worksheetId = worksheet.work_sheet_id;
-							}
+								var assignmentDetails = $scope.multiSheetState.assignments[worksheet.employee_id];
 
-							var assignmentDetails = $scope.multiSheetState.assignments[worksheet.employee_id];
-
-							_.each(worksheet.work_assignments, function(workAssignment) {
-								if (workAssignment.room) {
-									if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
-										assignmentDetails.summary.departures.total++;
-										if (workAssignment.room.hk_complete) {
-											assignmentDetails.summary.departures.completed++;
+								_.each(worksheet.work_assignments, function(workAssignment) {
+									if (workAssignment.room) {
+										if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
+											assignmentDetails.summary.departures.total++;
+											if (workAssignment.room.hk_complete) {
+												assignmentDetails.summary.departures.completed++;
+											}
+										} else if ($scope.departureClass[workAssignment.room.reservation_status] == "in-house") {
+											assignmentDetails.summary.stayovers.total++;
+											if (workAssignment.room.hk_complete) {
+												assignmentDetails.summary.stayovers.completed++;
+											}
 										}
-									} else if ($scope.departureClass[workAssignment.room.reservation_status] == "in-house") {
-										assignmentDetails.summary.stayovers.total++;
-										if (workAssignment.room.hk_complete) {
-											assignmentDetails.summary.stayovers.completed++;
-										}
+										assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, workAssignment.room.time_allocated);
+										assignmentDetails.rooms.push(workAssignment.room);
 									}
-									assignmentDetails.summary.shift.completed = $scope.addDuration(assignmentDetails.summary.shift.completed, workAssignment.room.time_allocated);
-									assignmentDetails.rooms.push(workAssignment.room);
-								}
-							});
-
+								});
+							}
 						});
 						refreshView();
 						$scope.$emit('hideLoader');
@@ -79,6 +77,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						selectedEmployees.push(employee.id);
 					}
 				});
+
+				$scope.multiSheetState.placeHolders = _.range($scope.multiSheetState.maxColumns - selectedEmployees.length);
 
 				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
 					"date": $scope.multiSheetState.selectedDate,
@@ -164,7 +164,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			$scope.multiSheetState.selectedEmployees = _.where($scope.employeeList, {
 				ticked: true
 			});
-			$scope.multiSheetState.placeHolders = _.range($scope.multiSheetState.maxColumns - $scope.multiSheetState.selectedEmployees.length);;
+			$scope.multiSheetState.placeHolders = _.range($scope.multiSheetState.maxColumns - $scope.multiSheetState.selectedEmployees.length);
 
 			/**
 			 * Need to disable selection of more than "$scope.multiSheetState.maxColumns" employees

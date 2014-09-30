@@ -121,7 +121,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 return false;
             }
             if (!$scope.stateVariables.assignRoom.user_id) {
-                $scope.errorMessage = ['Please select a employee.'];
+                $scope.errorMessage = ['Please select an employee.'];
                 return false;
             }
             var onAssignSuccess = function(data) {

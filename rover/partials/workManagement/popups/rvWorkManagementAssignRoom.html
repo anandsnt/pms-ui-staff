@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="actions">
-				<button ng-click="assignRoom()"  type="button" class="button green">Assign</button>
+				<button ng-click="assignRoom()"  type="button" ng-disabled="!stateVariables.assignRoom.user_id" ng-class="{'grey' : !stateVariables.assignRoom.user_id}" class="button green">Assign</button>
 				<button ng-click="closeDialog()" type="button" class="button blank modal-close">Cancel</button> 
 			</div>
 		</form>
