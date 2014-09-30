@@ -4,7 +4,7 @@
 </div>
 <div class="total-stay-fees float">
 	<div class="overview" ng-repeat="totalFees in billData.total_fees" >
-		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle has-arrow with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
+		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 			<span class="title"> <span translate>GUEST_BALANCE</span>:
 				<em class="label"> <span translate>AS_OF</span>
 					{{totalFees.fees_date |date:dateFormat}}
@@ -87,7 +87,7 @@
 	</div>
 
 	<!-- Bill Total Stay Fees -->
-	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
+	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails && totalFeesArray.fees_details.length>0 ">
 
 		<table class="total-fees">
 			<thead>
