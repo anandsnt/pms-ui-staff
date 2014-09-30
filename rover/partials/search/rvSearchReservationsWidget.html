@@ -8,7 +8,7 @@
 	        <button type="submit" name="submit" class="icons icon-search">Search</button>
 	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
 	        ng-keyup="queryEntered()" ng-focus="focusOnSearchText()"
-	        ng-model="textInQueryBox" >
+	        ng-model="textInQueryBox" ng-blur="focusedOutOfSearchText()" >
 	      	
 	    </div>
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	

@@ -175,6 +175,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	}; //end of query entered
 
 	/**
+	* fnction to execute on focused out event of search textbox is using that feature in dahbaord
+	*/
+	$scope.focusedOutOfSearchText = function(event){
+		if($scope.results.length == 0){
+			$scope.$emit("SEARCH_BOX_FOCUSED_OUT");
+		}
+	};
+
+	/**
 	* function to perform filering on results.
 	* if not fouund in the data, it will request for webservice
 	*/
