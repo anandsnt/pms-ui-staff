@@ -97,7 +97,7 @@ font-family: 'Source Sans Pro';
 }
 
 .no-border {
-  border: 0 none !important;
+  	border: 0 none !important;
 }
 
 a,
@@ -1051,52 +1051,52 @@ margin-top: 35px !important;
 }
 
 
-  input[type=checkbox]
+input[type=checkbox]
 {
- /* Double-sized Checkboxes */
- -ms-transform: scale(1.5); /* IE */
- -moz-transform: scale(1.5); /* FF */
- -webkit-transform: scale(1.5); /* Safari and Chrome */
- -o-transform: scale(1.5); /* Opera */
- padding: 10px;
-  margin: 4px 0 0 4px !important;
+	 /* Double-sized Checkboxes */
+	 -ms-transform: scale(1.5); /* IE */
+	 -moz-transform: scale(1.5); /* FF */
+	 -webkit-transform: scale(1.5); /* Safari and Chrome */
+	 -o-transform: scale(1.5); /* Opera */
+	 padding: 10px;
+	  margin: 4px 0 0 4px !important;
 }
 .upgrade-details .upgrades-btn{
-  cursor: pointer;
-  background-color:#d8422f;
-  color: #fff !important;
-  margin-top: 0px!important;
-  text-align:center;
-  height: 95px;
-  padding: 13px 0 0;
-  p{
-    font-size: 11px !important;
-    font-weight: 600;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  img{
-    width: 34px;
-    height: 34px;
-  }
+	  cursor: pointer;
+	  background-color:#d8422f;
+	  color: #fff !important;
+	  margin-top: 0px!important;
+	  text-align:center;
+	  height: 95px;
+	  padding: 13px 0 0;
+	  p{
+	    font-size: 11px !important;
+	    font-weight: 600;
+	    margin-top: 10px;
+	    margin-bottom: 10px;
+	  }
+	  img{
+	    width: 34px;
+	    height: 34px;
+	  }
 }
 
 .proceed-to-checkin {
-  cursor: pointer;
-  line-height: 1;
-  font-size:17px;
-  font-family: 'Source Sans Pro';
-  padding: 20px 20px 15px;
-  margin-top: 15px;
-  text-align:right;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  img {
-    width: 14px;
-    margin: -1px 0 0 10px;
-  }
+	  cursor: pointer;
+	  line-height: 1;
+	  font-size:17px;
+	  font-family: 'Source Sans Pro';
+	  padding: 20px 20px 15px;
+	  margin-top: 15px;
+	  text-align:right;
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+	  img {
+	    width: 14px;
+	    margin: -1px 0 0 10px;
+	  }
 }
 
 .apply_charges {
@@ -1122,10 +1122,8 @@ margin-top: 35px !important;
   color:#b59f64;
 }
 .date-picker-back{
-
   padding-left : 5px !important;
   color:  #9c9c9c !important;
-
 }
 
 .departure-date{
@@ -1295,8 +1293,6 @@ margin-top: 35px !important;
     font-weight: 600 !important;
 }
 
-
-
 .checkin-button{
   padding: 40px ;
   margin: 15px 0 0;
@@ -1331,8 +1327,6 @@ margin-top: 35px !important;
     padding: 0;
     overflow: hidden;
   }
-
-
 
 
 /* ----------------------- execusive styling for checkout desktops and tablets portrait mode -------------------*/
@@ -1639,6 +1633,29 @@ body > div[ng-view] {
     font-size: 23px;
     border:none;
   }
+  	.check-inout-wrapper{
+		
+		.leadtext{
+			width: 485px; 
+			margin-left: 76px;
+		}
+	}
+	.checkout-late-sucess{
+		p{
+			padding-top:0 !important;
+		}
+		em{
+			font-size:18px !important;
+
+		}
+	}
+	
+	.continue-button{
+		margin-top: 10%;
+	}
+	.accept-charges-button.single .rel-wrapper {
+    	padding: 27px 75px 30px;
+ 	 }
 
 }
 
@@ -1847,7 +1864,7 @@ body > div[ng-view] {
 
 .chekout-time{
 
- font-size: 18px !important;
+ font-size: 21px !important;
  color: #FFFFFF !important;
 
 }
@@ -1858,130 +1875,119 @@ body > div[ng-view] {
 }
 
 
-
 /* checkin mobile media queries */
 
 @media (max-width: 900px) {
 
-.circle-text {
-    width:119% !important;
-    margin-bottom:10px;
-}
+	.circle-text {
+		width:119% !important;
+		margin-bottom:10px;
+	}
 
-.col-md-6.headtext.centeralign.extra-head-pad{
+	.col-md-6.headtext.centeralign.extra-head-pad{
+		padding-left: 30px;
+		padding-right: 30px;
+	}
 
-padding-left: 30px;
-padding-right: 30px;
+	.row .applycharge {
+		font-size: 10px;
+	}
 
-}
+	.res-conf-no, .row .reservation-dates .lightcontent,.row .lightcontent{
+		font-size: 12px;
+	}
 
-.row .applycharge {
+	.row .reservation-dates .dateContent  {
+		font-size:19px;
+	}
 
-    font-size: 10px;
-}
-.res-conf-no, .row .reservation-dates .lightcontent,.row .lightcontent{
+	.room_details {
+		font-size: 18px;
+		padding-bottom: 5px;
+		margin-top:-5px;
+	}
 
-  font-size: 12px;
-}
- .row .reservation-dates .dateContent  {
+	.row .date-container {
+		margin:5px;
+	}
 
-  font-size:19px;
- }
+	.row .reservation-id {
+		margin-bottom: 0px;
+	}
 
-.room_details {
-    font-size: 18px;
-    padding-bottom: 5px;
-    margin-top:-5px;
-}
+	.chekin-heading {
+		font-size: 30px;
+	}
 
-.row .date-container {
+	.centeralign-date {
+		text-align: center !important;
+	}
 
-    margin:5px;
-}
+	.checkin-button{
+		max-height: 100px;
+		padding-top: 20px;
+	}
+	.checkin-button span {
+		font-size: 35px;
+		font-weight: 300;
+	}
+	.checkin-button img {
+		height: 50px;
+		margin-left: 10px;
+		margin-top: -18px;
+		width: 50px;
+	}
+	.col-md-6.pad-lf-60.carousel-view{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
 
-.row .reservation-id {
+	.proceed-to-checkin {
+		font-size: 15px;
+		padding: 10px 20px 5px;
+	}
 
-    margin-bottom: 0px;
-}
-.chekin-heading {
-    font-size: 30px;
-}
+	.key-wrap .key-for-image {
+		width: 55px;
+	}
 
-.centeralign-date {
-text-align: center !important;
-}
+	.key-wrap .key-for-txt {
+		margin-left: 72px;
+		font-size: 22px;
+	}
 
-.checkin-button{
-  max-height: 100px;
-  padding-top: 20px;
-}
-.checkin-button span {
+	.key-wrap .key-for-room {
+		font-size: 50px;
+		margin-left: 72px;
+	}
 
-    font-size: 35px;
-    font-weight: 300;
+	.qr-code-image {
+		border-radius: 0px;
+	}
 
-}
-.checkin-button img {
-    height: 50px;
-    margin-left: 10px;
-    margin-top: -18px;
-    width: 50px;
-}
-.col-md-6.pad-lf-60.carousel-view{
-    padding-left: 0px;
-    padding-right: 0px;
-}
+	.col-md-6.pad-lf-60.qr-code-container {
+		padding-left: 0;
+		padding-right: 0;
+	}
 
-.proceed-to-checkin {
+	.qr-code-image .qr-code-info {
+		padding-left:15px;
+	}
 
-    font-size: 15px;
-    padding: 10px 20px 5px;
-  }
+	.key-wrap{
+		max-height:100px;
+	}
 
+	.chekout-time{
+		 font-size: 18px !important;
+		 color: #FFFFFF !important;
 
-
-
-.key-wrap .key-for-image {
-
-    width: 55px;
-}
-
-.key-wrap .key-for-txt {
-
-    margin-left: 72px;
-   font-size: 22px;
-}
-
-.key-wrap .key-for-room {
-    font-size: 50px;
-    margin-left: 72px;
-}
-
-.qr-code-image {
-    border-radius: 0px;
-}
-
-.col-md-6.pad-lf-60.qr-code-container {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.qr-code-image .qr-code-info {
-
-   padding-left:15px;
-}
-
-.key-wrap{
-  max-height:100px;
-}
+	}
 }
 
 .right-text{
   text-align:right;
 }
-
-
-
 
 .circle-text {
     width:100%;
@@ -2011,8 +2017,6 @@ text-align: center !important;
     color:white;
 
 }
-
-
 
 .alert-link-tag,.alert-link-tag:hover {
     color: #0030E2 !important;
@@ -2116,13 +2120,13 @@ text-align: center !important;
   padding: 0 22%; 
 }
 .cc-number-description{
-  padding:0 10%;
-  font-size:13px;
-  .ccv-headings{
-    font-weight:bold;
-    font-size: 15px;
-    margin-top: 10px;
-  }
+	  padding:0 10%;
+	  font-size:13px;
+	  .ccv-headings{
+	    font-weight:bold;
+	    font-size: 15px;
+	    margin-top: 10px;
+	  }
 }
 
 .room-error{
@@ -2179,13 +2183,4 @@ text-align: center !important;
   line-height:24px;
   font-size: 15px;
   font-weight: lighter;
-}
-.checkout-late-sucess{
-  p{
-    padding-top:0 !important;
-  }
-  em{
-  font-size:18px !important;
-
-  }
 }
