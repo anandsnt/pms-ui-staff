@@ -54,8 +54,7 @@ admin
             }
             if(!$scope.end_date){
                 $scope.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
-            }
-         
+            }       
 
             try
             { //Handle exception, in case of NaN, initially.
@@ -128,33 +127,6 @@ admin
                 setDetails.sunday = set.days[6].checked;
                 setData.push(setDetails);
             });
-
-            /*var dateRangeData = {
-                'id': $scope.rateData.id,
-                'data': {
-                    'begin_date': $scope.begin_date,
-                    'end_date': $scope.end_date ,
-                    'sets': setData
-                }
-            };*/
-
-            /*var postDateRangeSuccessCallback = function (data) {
-                var dateData = {};
-
-                dateData.id = data.id;
-                dateData.begin_date = dateRangeData.data.begin_date;
-                dateData.end_date = dateRangeData.data.end_date;
-                $scope.rateData.date_ranges.push(dateData);
-
-                // activate last saved date range view
-                $scope.$emit("changeMenu", data.id);
-                $scope.$emit('hideLoader');
-            };
-
-            var postDateRangeFailureCallback = function (data) {
-                $scope.$emit('hideLoader');
-                $scope.$emit("errorReceived", data);
-            };*/
 
             $scope.invokeApi(ADRatesRangeSrv.postDateRange, dateRangeData, postDateRangeSuccessCallback, postDateRangeFailureCallback);
         };
