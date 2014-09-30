@@ -41,12 +41,12 @@ sntRover.controller('reservationActionsController', [
 			var display = false;
 			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
 				if(status == 'CHECKING_IN' || status == 'RESERVED'){
-					if (balance == 0 || balance == 0.00 || balance == 0.0) {
-						display = false;
-					} else {
-						display = true;
-					}
-				} else {
+					/*	As per CICO-9795 : 
+						Balance field should NOT show when the guest is NOT checked in.
+					*/
+					display = false;
+				}
+				else {
 					display = true;
 				}
 				
