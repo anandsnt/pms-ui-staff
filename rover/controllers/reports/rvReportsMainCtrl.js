@@ -20,8 +20,9 @@ sntRover.controller('RVReportsMainCtrl', [
 		    noStateChange: true
 		};
 
-		$scope.setTitle( 'Stats & Reports' );
-		$scope.heading = 'Stats & Reports';
+		var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+		$scope.setTitle( listTitle );
+		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
 		$scope.reportList = reportsResponse.results;
@@ -36,7 +37,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.goBackReportList = function() {
 			$rootScope.setPrevState.hide = true;
 			$scope.showReportDetails = false;
-			$scope.heading = 'Stats & Reports';
+			$scope.heading = listTitle;
 		};
 
 		$scope.getFromOptions = function(item) {
@@ -64,7 +65,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		        changeYear: true,
 		        changeMonth: true,
 		        // minDate: tzIndependentDate( item.fromDate ),
-		        // maxDate: tzIndependentDate( $rootScope.businessDate ),
+		        maxDate: tzIndependentDate( $rootScope.businessDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
