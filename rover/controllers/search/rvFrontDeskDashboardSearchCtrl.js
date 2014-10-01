@@ -37,7 +37,10 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
             backToDashboard();
         }
   	};
-
+    
+    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
+        backToDashboard();
+    });
     /**
     * function used to back onto dashboard screen
     */
