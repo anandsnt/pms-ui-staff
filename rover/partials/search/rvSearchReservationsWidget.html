@@ -8,7 +8,7 @@
 	        <button type="submit" name="submit" class="icons icon-search">Search</button>
 	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
 	        ng-keyup="queryEntered()" ng-focus="focusOnSearchText()"
-	        ng-model="textInQueryBox" >
+	        ng-model="textInQueryBox" ng-blur="focusedOutOfSearchText()" >
 	      	
 	    </div>
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
@@ -58,7 +58,7 @@
 								</span>
 							</div>	
 
-							<span  ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
+							<span  class= "room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
 								<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
 									{{row.room}}
 								</span>			
