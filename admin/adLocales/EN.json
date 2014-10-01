@@ -155,7 +155,7 @@
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     
-
+    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
     "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
     "SENT_TO_QUEUE":"SENT TO QUEUE",
     "YES_SMALL":"Yes",
@@ -173,9 +173,8 @@
     "PRE_CHECK_IN_EMAIL_TITLE":"PRE CHECK IN - EMAIL TITLE ",
     "PRE_CHECK_IN_TOP_BODY":"PRE CHECK IN - TOP BODY",
     "PRE_CHECK_IN_BOTTOM_BODY":"PRE CHECK IN - BOTTOM BODY",
-    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields",
-
-"EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ","iCARE_ON_OFF": "iCare ON/OFF",
+    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields"
+,"iCARE_ON_OFF": "iCare ON/OFF",
 "SAVE_GUEST_NAME_TO_ICARE": "Save Guest Name To iCare",
 "COMBINED_KEY_ROOM_CHARGE": "Combined Key / Room Charge Create",
 "ICARE_ACCESS_URL":"ACCESS URL",
@@ -192,7 +191,6 @@
 "iCARE_CREDIT_CHARGE_CODE": "Credit Charge Code",
 "FIXED_BAND_PMS_ALERT_CODE": "PMS ALERT CODE",
 "ENTER_FIXED_BAND_PMS_ALERT_CODE": "Enter PMS Aert Code"
-
 
 ,
 	"PAYMENT_METHODS": "Payment Methods",
@@ -314,6 +312,7 @@
 "ENABLE_QUEUE_ROOMS":"Enable Queue Rooms",
 "EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT":"EMAIL ACCOUNTS TO RECEIVE QUEUE RESERVATION ALERT",
 "CHECK_IN_TO_INSPECTED_ROOMS_ONLY":"Check in to inspected rooms only",
+"ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",    
     
