@@ -175,6 +175,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	}; //end of query entered
 
 	/**
+	* fnction to execute on focused out event of search textbox is using that feature in dahbaord
+	*/
+	$scope.focusedOutOfSearchText = function(event){
+		if($scope.results.length == 0){
+			$scope.$emit("SEARCH_BOX_FOCUSED_OUT");
+		}
+	};
+
+	/**
 	* function to perform filering on results.
 	* if not fouund in the data, it will request for webservice
 	*/
@@ -266,6 +275,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
         viewStatus = "cancel";
       }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
         viewStatus = "no-show";
+      }
+      else if("PRE_CHECKIN" == reservationStatus){
+      	viewStatus = "pre-check-in";
       }
       return viewStatus;
   };
@@ -391,6 +403,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		swipeHeadingInSearch = 'Reservations with card '+cardNumber;
 		
 		//var url = '/staff/payments/search_by_cc';
+		
 		var swipeData = {
 			'et2' : data.RVCardReadTrack2,
 			'ksn' : ksn,
@@ -461,5 +474,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	   	return mappedStatus;
    	};
+   	
+   
 
 }]);

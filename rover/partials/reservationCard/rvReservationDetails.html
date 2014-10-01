@@ -172,7 +172,7 @@
 			<div ng-include="'/assets/partials/reservationCard/rvReservationCardLoyalty.html'" ng-controller="rvReservationCardLoyaltyController"></div>
 			
 			<!-- Additional Details -->
-			<div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'"  ng-controller="rvReservationAdditionalController"></div>				
+			<div ng-include="'/assets/partials/reservationCard/rvReservationAdditional.html'"  ng-controller="rvReservationAdditionalController" ng-if="isStandAlone"></div>				
 
 			<!-- Notes -->
 			<div ng-include="'/assets/partials/reservationCard/rvReservationCardNotes.html'"  ng-controller="rvReservationCardNotesController"></div>

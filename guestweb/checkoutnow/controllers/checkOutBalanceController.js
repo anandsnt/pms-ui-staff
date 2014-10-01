@@ -30,6 +30,7 @@
 		//fetch data to display
 		BillService.fetchBillData().then(function(billData) {
 			$scope.billData = billData.data.bill_details;
+			$scope.roomNo = billData.data.room_number;
 			$scope.isFetching = false;
 			if($scope.billData)
 				$scope.optionsAvailable = true;

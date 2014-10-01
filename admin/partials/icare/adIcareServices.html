@@ -9,25 +9,31 @@
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<form name="icare-services" method="post" class="form float" action="">
 
-					<fieldset class="holder full-width">
-						<ad-toggle-button is-checked="icare.icare_enabled" label="iCare ON/OFF" divClass="full-width"></ad-toggle-button>
+					<fieldset class="holder left">
+						<ad-toggle-button is-checked="icare.icare_enabled" label="{{'iCARE_ON_OFF' | translate}}" div-class="full-width"></ad-toggle-button>
+					</fieldset>
+					<fieldset class="holder right">
+						<ad-toggle-button is-checked="icare.save_customer_info" label=" {{'SAVE_GUEST_NAME_TO_ICARE' | translate}}" div-class="full-width"></ad-toggle-button>
+						<ad-toggle-button is-checked="icare.combined_key_room_charge_create" label="{{'COMBINED_KEY_ROOM_CHARGE'| translate}}" div-class="full-width"></ad-toggle-button>
 					</fieldset>
 
 					<fieldset class="holder left">
-						<ad-textbox value="icare.icare_url" name = "access-url" label = "ACCESS URL" placeholder = "Enter access url" required = "yes" styleclass="full-width"></ad-textbox>
+						<ad-textbox value="icare.icare_url" name = "access-url" label = "{{'ICARE_ACCESS_URL'| translate}}" placeholder = "{{'ENTER_ICARE_ACCESS_URL'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
 			
-						<ad-textbox value="icare.icare_username" name = "icare-username" label = "iCARE USERNAME" placeholder = "Enter icare username" required = "yes" styleclass="full-width"></ad-textbox>
+						<ad-textbox value="icare.icare_username" name = "icare-username" label = "{{'iCARE_USERNAME'| translate}}" placeholder = "{{'ENTER_iCARE_USERNAME'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
 			
-						<ad-textbox value="icare.icare_password" name = "icare-password" label = "iCARE PASSWORD" placeholder = "Enter icare password" required = "yes" styleclass="full-width" inputtype="password"></ad-textbox>
+						<ad-textbox value="icare.icare_password" name = "icare-password" label = "{{'iCARE_PASSWORD'| translate}}" placeholder = "{{'ENTER_iCARE_PASSWORD'| translate}}" required = "yes" styleclass="full-width" inputtype="password"></ad-textbox>
 			
-						<ad-textbox value="icare.icare_account_preamble" name = "account-prefix" label = "ACCOUNT PRE-FIX" placeholder = "Enter account pre-fix" styleclass="full-width"></ad-textbox>
+						<ad-textbox value="icare.icare_account_preamble" name = "account-prefix" label = "{{'iCARE_ACCOUNT_PRE_FIX'| translate}}" placeholder = "{{'ENTER_iCARE_ACCOUNT_PRE_FIX'| translate}}" styleclass="full-width"></ad-textbox>
 			
-						<ad-textbox value="icare.icare_account_length" name = "account-length" label = "ACCOUNT LENGTH" placeholder = "Enter account length" required = "yes" styleclass="full-width"></ad-textbox>
+						<ad-textbox value="icare.icare_account_length" name = "account-length" label = "{{'iCARE_ACCOUNT_LENGTH'| translate}}" placeholder = "{{'iCARE_ACCOUNT_LENGTH'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
 					</fieldset>
 					
 					<fieldset class="holder right">
-						<ad-dropdown label="Debit Charge Code" div-class="full-width" label-in-drop-down="Debit Charge Code" list="icare.charge_codes" selected-Id="icare.icare_debit_charge_code_id"  required='yes' ></ad-dropdown>
-						<ad-dropdown label="Credit Charge Code" div-class="full-width" label-in-drop-down="Credit Charge Code" list="icare.charge_codes" selected-Id="icare.icare_credit_charge_code_id"  required='yes' ></ad-dropdown>
+						<ad-dropdown label="Debit Charge Code" div-class="full-width" label-in-drop-down="{{'iCARE_DEBIT_CHARGE_CODE'| translate}}" list="icare.charge_codes" selected-Id="icare.icare_debit_charge_code_id"  required='yes' ></ad-dropdown>
+						<ad-dropdown label="Credit Charge Code" div-class="full-width" label-in-drop-down="{{'iCARE_CREDIT_CHARGE_CODE'| translate}}" list="icare.charge_codes" selected-Id="icare.icare_credit_charge_code_id"  required='yes' ></ad-dropdown>
+						<ad-textbox value="icare.pms_alert_code" name = "account-length" label = "{{'FIXED_BAND_PMS_ALERT_CODE'| translate}}" placeholder = "{{'ENTER_FIXED_BAND_PMS_ALERT_CODE'| translate}}" required = "yes" styleclass="full-width"></ad-textbox>
+						
 					</fieldset>
 						
 					<div class="actions float">
