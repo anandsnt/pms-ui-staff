@@ -23,11 +23,12 @@
 >
    </div>
 </form>
-
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <div id="pull-refresh-notify">
   <span id="icon"></span>
   <span id="ref-text" translate>PULL_REFRESH</span>
 </div>
+
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" div-touch-move-stop-propogate>
    <ul class="wrapper" ng-hide="noResultsFound==rooms.length">
@@ -36,7 +37,7 @@
             <h2 class="room-number">{{ room.room_no }}</h2>
             <figure class="guest-image">
                <span ng-if="room.is_vip" class="vip" translate>VIP</span>
-               <img src="{{room.avatar_src}}">
+               <img ng-src="{{room.avatar_src}}">
             </figure>
             <p class="room-stats-wrap">
               <span class="room-status">{{ room.description }}</span>

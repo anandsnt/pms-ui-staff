@@ -54,6 +54,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
+    $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*
      * hotel Details
      */
@@ -87,6 +88,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
 
+    $scope.isDepositBalanceScreenOpened = false;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(){
+    	$scope.isDepositBalanceScreenOpened = true;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**
@@ -418,7 +423,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         ngDialog.open({
           template: '/assets/partials/settings/rvStaffSettingModal.html',
           controller: 'RVStaffsettingsModalController',
-          className: 'ngdialog-theme-plain calendar-modal'
+          className: 'calendar-modal'
         });
       }
     };
@@ -516,15 +521,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         if(!$rootScope.isOWSErrorShowing){
             $rootScope.isOWSErrorShowing = true;
             ngDialog.open({
-              template: '/assets/partials/hkOWSError.html',
+              template: '/assets/partials/housekeeping/rvHkOWSError.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               controller: 'RVHKOWSErrorCtrl',
               closeByDocument: false,
               scope: $scope
           });
         }        
-    };
-
+    };    
   /**
     * Handles the bussiness date change in progress
     */
@@ -533,7 +537,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         // Hide loading message
         $scope.$emit('hideLoader');
         //if already shown no need to show again and again
-        if(!$rootScope.isBussinessDateChanging){
+        if(!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone){
             $rootScope.isBussinessDateChanging = true;
             ngDialog.open({
               template: '/assets/partials/common/bussinessDateChangingPopup.html',
@@ -554,7 +558,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       // to reload app in case the bussiness date is changed
      // $state.go('rover.dashboard', {}, {reload: true});
       $window.location.reload();
-    }
+    };
 
      /**
     * Handles the bussiness date change completion
@@ -608,33 +612,3 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
   }
 ]);
 
-// adding an OWS check Interceptor here and bussiness date change
-// but should be moved to higher up above in root level
-sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
-  
-  return {
-    request: function (config) {
-      return config;
-    },
-    response: function (response) {
-        // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
-           $rootScope.$emit('bussinessDateChangeInProgress');
-        }       
-        return response || $q.when(response);
-    },
-    responseError: function(rejection) {
-      if(rejection.status == 430){
-         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
-      }
-      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
-        $rootScope.showOWSError && $rootScope.showOWSError();
-      }
-      return $q.reject(rejection);
-    }
-  };
-});
-
-sntRover.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('httpInterceptor');
-});

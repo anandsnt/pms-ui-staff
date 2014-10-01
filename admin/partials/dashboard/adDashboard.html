@@ -13,7 +13,7 @@
                   class="icon-admin-menu {{submenu.icon_class}}" 
 
                   data-drag="{{bookMarks.length<=7&&!submenu.is_bookmarked}}"
-                  data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" 
+                  data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 
 
                   jqyoui-draggable="{index: {{$index}}, placeholder:'keep', animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}" 
 

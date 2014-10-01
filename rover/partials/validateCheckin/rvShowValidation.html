@@ -3,10 +3,9 @@
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
-		<div class="h3 message" ng-bind-html="popupMessage"></div>
-		<div class="status" ng-if="status === 'success'">
+		<div class="h3 message">{{popupMessage}}</div>
+		<div class="status" ng-if="status === 'success' && reservationBillData.enable_room_status_at_checkout">
 		   <label for="room-status">Room Status</label>
-		   {{flag.roomStatusReady}}
 		   <div class="switch-button" ng-class="{'on': flag.roomStatusReady}">
 		      <input id="room-status" name="room-status" type="checkbox" value="not-ready" ng-model="flag.roomStatusReady">
 		      <label class="data-off">

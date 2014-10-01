@@ -38,6 +38,11 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
 
+	/*To fix the unassign button flasing issue during checkin
+	*/
+	$scope.roomAssgnment = {};
+	$scope.roomAssgnment.inProgress = false;
+
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
@@ -184,22 +189,10 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
-			$scope.$emit('hideLoader');
-			if(data.is_room_auto_assigned == true){
-			
-				$scope.roomAssignedByOpera = data.room;
-				ngDialog.open({
-			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
-			          controller: 'rvRoomAlreadySelectedCtrl',
-			          className: 'ngdialog-theme-default',
-			          scope: $scope
-		        });
-		        return false;
-			}
-			
+			$scope.$emit('hideLoader');			
 			
 			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
-			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+			
 			$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
 			$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
 			$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
@@ -209,17 +202,39 @@ sntRover.controller('RVroomAssignmentController',[
 				$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
 				$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
 			}			
-			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-			if($scope.clickedButton == "checkinButton"){
-				$scope.$emit('hideLoader');
-				$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+
+			if(data.is_room_auto_assigned == true){
+
+				$scope.roomAssignedByOpera = data.room;
+
+				$scope.reservationData.reservation_card.room_number = data.room;
+
+				ngDialog.open({
+			          template: '/assets/partials/roomAssignment/rvRoomHasAutoAssigned.html',
+			          controller: 'rvRoomAlreadySelectedCtrl',
+			          className: 'ngdialog-theme-default',
+			          scope: $scope
+		        });
 			} else {
-				$scope.$emit('hideLoader');
-				$scope.backToStayCard();
+				if($scope.clickedButton == "checkinButton"){
+					$scope.$emit('hideLoader');
+					$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+				} else {
+					$scope.$emit('hideLoader');
+					$scope.backToStayCard();
+				}
+				$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			}
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+			setTimeout(function(){
+				$scope.roomAssgnment.inProgress = false;	
+				}, 
+			3000);
+			
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
+			$scope.roomAssgnment.inProgress = false;
 			setTimeout(function(){
 				ngDialog.open({
 			          template: '/assets/partials/roomAssignment/rvRoomHasAlreadySelected.html',
@@ -236,17 +251,11 @@ sntRover.controller('RVroomAssignmentController',[
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
-		
+		$scope.roomAssgnment.inProgress = true;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 	$scope.goToNextView = function(){
-	
-		$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
-		$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
-		$scope.reservationData.reservation_card.room_status = $scope.assignedRoom.room_status;
-		$scope.reservationData.reservation_card.fo_status = $scope.assignedRoom.fo_status;
-		$scope.reservationData.reservation_card.room_ready_status = $scope.assignedRoom.room_ready_status;
-			
+
 		if($scope.clickedButton == "checkinButton"){
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
