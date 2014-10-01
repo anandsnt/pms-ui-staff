@@ -3,10 +3,10 @@
 // but should be moved to higher up above in root level
 
 angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
-  '$rootScope', 
-  '$q', 
+  '$rootScope',
+  '$q',
   '$window', function ($rootScope, $q, $window) {
-  
+
   return {
     request: function (config) {
       return config;
@@ -15,31 +15,31 @@ angular.module('sharedHttpInterceptor', []).factory('sharedHttpInterceptor', [
         // if manual bussiness date change is in progress alert user.
         if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
            $rootScope.$emit('bussinessDateChangeInProgress');
-        }       
+        }
         return response || $q.when(response);
     },
     responseError: function(rejection) {
-      if(status == 401){ // 401- Unauthorized
+      if(rejection.status === 401){ // 401- Unauthorized
         // so lets redirect to login page
         $window.location.href = '/logout' ;
-      }   
+      }
       if(rejection.status == 430){
          $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
       }
       if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
         $rootScope.showOWSError && $rootScope.showOWSError();
       }
-      /** as per CICO-9089 **/      
-      if(rejection.status === 503 || rejection.status === 504 || status === 404){
+      /** as per CICO-9089 **/
+      if(rejection.status === 503 || rejection.status === 504){
         $window.location.href = '/500';
       }
       if(rejection.status === 502){
         $rootScope.showOWSError && $rootScope.showOWSError();
-        return;        
-      }     
-      /* 
+        return;
+      }
+      /*
       we can't handle 500, 501 since we need to show custom error messages on that scope.
-         
+
       **/
       return $q.reject(rejection);
     }
