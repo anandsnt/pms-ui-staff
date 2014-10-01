@@ -7,6 +7,7 @@
     .limit-width{
       width: 60%;
       padding-top: 6px;
+      vertical-align: middle !important;
     }
 
     table.rate-calendar{
@@ -19,7 +20,8 @@
     span.left{
       float:left;
       font-size: 26px;
-      line-height: 60px;
+      line-height: 50px; /*60px;*/
+      cursor: pointer;
     }
     
      tr {
@@ -169,7 +171,8 @@
       box-shadow: none;
       height: 100%;
       text-align: center;
-      vertical-align: middle;
+      /*CICO-8633*/
+      vertical-align: top; //middle;
       &.cl-gr-button {
         background: image-url("app/cal_graph_icon.png") no-repeat scroll center center #F5F5F5;
       }
@@ -281,7 +284,8 @@
 
     .cal-cell{
       text-align:center; 
-      vertical-align:middle;
+      /*CICO-8633*/
+      vertical-align: top; //middle;
       line-height: 20px;
     }
     .iScrollHorizontalScrollbar {
@@ -328,8 +332,11 @@
   table {
   }
   
-  tr {
+  th.first-row {
+    vertical-align: top !important;
+  }
 
+  tr {
     &.last{
       .cell-content{
          border-bottom : 10px solid #e8e8e8;
@@ -342,10 +349,11 @@
     .first-row {
       text-align: right;
       padding: 0 20px;
-      vertical-align: text-top;
-      padding-top: 30px;
+      /*CICO-8633*/
+      vertical-align: middle; //text-top;
+      padding-top: 0px; //10px;
       &.actions {
-        padding-top: 20px;
+        //padding-top: 10px;
       }
       img {
         cursor: pointer;
@@ -356,6 +364,8 @@
         color: #fcfcfc;
         padding: 0 5px;
         margin-left: 10px;
+        //margin-top: -20px;
+        vertical-align: top;
         text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
 
         border-radius: 1px;
@@ -377,6 +387,8 @@
         &:first-child {
           width: 85%;
           float: left;
+          cursor: pointer;
+
           &.expanded{
             color: #f6991b;
             font-weight: 600;
@@ -406,6 +418,10 @@
     &.exp{
         background-color: #d2d2d2;
     }
+
+    .cell-content {
+        cursor: pointer;
+    }
   }
 
   .cell {
@@ -431,9 +447,10 @@
     border-top : 5px solid #e8e8e8;
     border-bottom : 5px solid #e8e8e8;
     background-color: none;
-    height : 80px;
-    line-height : 80px; /* Trick for vertical alligh*/
+    height : 60px; /*80px;*/
+    line-height : 60px; /*80px;*/ /* Trick for vertical alligh*/
     font-size : 20px;
+    pointer: cursor;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -449,6 +466,7 @@
       border-radius: 3px;
       & > div {
         & > div {
+          cursor: pointer;
           padding: 0;
           & > div:first-child {
             border-bottom: 1px solid #e7e7e7;
@@ -468,6 +486,7 @@
             text-align: left;
             padding: 0 10px;
             line-height: 16px;  
+            cursor: pointer;
 
             span {
               float: right;
@@ -502,8 +521,10 @@
       & > div {
 
         display: table-cell;
-        vertical-align: middle;
-        padding: 0 10px;
+        /*CICO-8633*/
+        vertical-align: middle; //top;
+        padding: 6px 10px 0px;
+        //padding: 0 10px;
         .rate-single {
           width: 25px;
           height: 25px;
@@ -530,11 +551,12 @@
     border-bottom : 5px solid #e8e8e8;
 
     background-color: #3b3f43;    
-    height : 80px;
+    height : 70px; /*80px;*/
     font-size : 18px;
     text-align: center;
     white-space: pre-line;
-    vertical-align: middle;
+    /*CICO-8633*/
+    vertical-align: top; //middle;
     display:table;
     width: 100%;
     color: #fcfcfc;
@@ -547,7 +569,8 @@
   }
   th .date-header span { 
     font-size: 14px;    
-    vertical-align: middle;
+    /*CICO-8633*/
+    vertical-align: top; //middle;
     display: block;
     &.week-day{
       margin-top: 10px;
@@ -581,7 +604,7 @@
     padding-right: 20px;
     padding-bottom : 10px;
         // padding-top : 10px;
-        font-size: 14px;
+        font-size: 16px; /*14px;*/
         font-weight: normal;
         float:left;
       }
@@ -728,6 +751,7 @@
       float: right;
       text-align: center;
       z-index: 10000;
+      margin-right: 10px;
     }
     .status-on{
       background-color: #89bd55;
@@ -745,7 +769,8 @@
         background: none repeat scroll 0 0 #393c41;
         color: #FCFCFC;
         display: block;
-        height: 100px;
+        /*CICO-8633*/
+        min-height: 100px; //height: 100px;
         margin-top: -17px;
         padding: 20px;
         width: 100%;
@@ -1056,6 +1081,7 @@ padding-top: 80px;
     }
 
     .toggle-expand{
+     cursor: pointer;
      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 
      float: right;
@@ -1081,21 +1107,24 @@ padding-top: 80px;
       float:left;
       width:80%;
       h2{
-        width:170px;
+        width: 170px;
+        height: auto;
         font-size: 28px;
         font-weight: 700;
         overflow:hidden;
         text-overflow: ellipsis;
-        white-space:nowrap;
+        //white-space:nowrap;
         &.title-expanded{
-            font-size: 28px;
-           font-weight: 700;  
+           font-size: 28px;
+           font-weight: 700; 
+           min-width: 170px; 
         width:100%        
         }
       }
       em{
          font-size: 15px;
          font-style: italic !important;
+         display: block;
       }
     }
   }
@@ -1142,7 +1171,7 @@ padding-top: 80px;
         cursor: alias;
         position: absolute;
         right:0;
-        top:10px;
+        top: 15px; /*10px;*/
         line-height: 15px;
       }
       &.text{

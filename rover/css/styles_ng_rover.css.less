@@ -618,9 +618,10 @@ untill angular is ready to activate it */
 * Angular UI-States Animations
 */
 
-.room-number {    
+//To fix issue CICO-9737
+/*.room-number {    
     line-height: initial !important;
-}
+}*/
 
 .room-status {    
     line-height: 64px !important;
@@ -1367,6 +1368,13 @@ Padding for the ows error popup
     width: 100%;   height: 100%;   display: block; padding-top :0;
   }
 }
+// Solve the select box design issue in post charge pop-up
+.post-charge {
+  .select:after{
+    z-index: 9 !important;
+  }
+}
+
 
 //CICO-9595 setting the height and width for the terms and conditions dialog
 #modal .modal-content.terms {
