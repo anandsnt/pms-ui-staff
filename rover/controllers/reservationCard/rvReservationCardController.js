@@ -131,6 +131,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 * @param {string} current clicked confirmation number
 		 */
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
+			// CICO-9709 - Reintiate reservation main data
+			$scope.initReservationData();
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
 					"confirmationId": currentConfirmationNumber,

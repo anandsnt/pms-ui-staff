@@ -15,7 +15,10 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	//Used to not to call list API again
 	$scope.firstTimeClick = true;
 	$scope.showBandEditScreen = false;
+	
 	var that = this;
+	//since smartband api is returning reversed id, we are using a vairble to keep that locally and use that for band type writing.
+	that.lastSuccessfulIDReaded = '';
 	$scope.addNewSmartband = function(){
 		if($scope.selectedReservationStatus !== 'CHECKEDOUT'){
 			$scope.errorMessage = '';
@@ -59,12 +62,13 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	
 	$scope.fetchSuccessKeyRead = function(accountNumber){
 		$scope.$emit( 'hideLoader' );
+		that.lastSuccessfulIDReaded = accountNumber;
 		var postData = {
 			'first_name': $scope.smartBandData.firstName,
 			'last_name': $scope.smartBandData.lastName,
 			'account_number': accountNumber,
 			'is_fixed': $scope.isFixedAmount
-		};
+		};		
 		if($scope.isFixedAmount){
 			postData.amount = $scope.smartBandData.fixedAmount;
 		};
@@ -83,7 +87,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
       	   window.scrollTo(0,0);
         }, 700);
 		var blankKeys = "";
-
+		that.lastSuccessfulIDReaded = '';
 		if($scope.isFixedAmount){	
 			if($scope.smartBandData.fixedAmount == '' || $scope.smartBandData.fixedAmount == null){			
 				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");
@@ -222,7 +226,7 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			bandType = '00000001';
 		}
 		args.push(bandType);
-		args.push(that.newBandInfo.account_number);
+		args.push(that.lastSuccessfulIDReaded);
 		args.push('19');//Block Address - hardcoded
 
 		var options = {
@@ -230,13 +234,16 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 			'successCallBack': function(){
 				$scope.$emit( 'hideLoader' );
 				$scope.showSuccess = true;
-		
+				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
+				that.lastSuccessfulIDReaded = '';
 			},
 			'failureCallBack': function(message){
 				if(message == undefined || message == ''){
 					message = 'Failed to write the band type';
 				}
-				$scope.createSmartBandFailure(message)
+				that.lastSuccessfulIDReaded = ''
+				$scope.createSmartBandFailure(message);
+				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 			},
 			arguments: args
 		};

@@ -247,12 +247,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_SEARCH",
-          action: "rover.search",
-          menuIndex: "search",
-          submenu: [],
-          iconClass: "icon-dashboard"
         }, 
          {
           title: "MENU_HOUSEKEEPING",
@@ -263,9 +257,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_ROOM_STATUS",
             action: "rover.housekeeping.roomStatus",
             menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: ""
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
@@ -521,15 +512,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         if(!$rootScope.isOWSErrorShowing){
             $rootScope.isOWSErrorShowing = true;
             ngDialog.open({
-              template: '/assets/partials/hkOWSError.html',
+              template: '/assets/partials/housekeeping/rvHkOWSError.html',
               className: 'ngdialog-theme-default1 modal-theme1',
               controller: 'RVHKOWSErrorCtrl',
               closeByDocument: false,
               scope: $scope
           });
         }        
-    };
-
+    };    
   /**
     * Handles the bussiness date change in progress
     */
@@ -538,7 +528,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         // Hide loading message
         $scope.$emit('hideLoader');
         //if already shown no need to show again and again
-        if(!$rootScope.isBussinessDateChanging){
+        if(!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone){
             $rootScope.isBussinessDateChanging = true;
             ngDialog.open({
               template: '/assets/partials/common/bussinessDateChangingPopup.html',
@@ -613,33 +603,3 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
   }
 ]);
 
-// adding an OWS check Interceptor here and bussiness date change
-// but should be moved to higher up above in root level
-sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
-  
-  return {
-    request: function (config) {
-      return config;
-    },
-    response: function (response) {
-        // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
-           $rootScope.$emit('bussinessDateChangeInProgress');
-        }       
-        return response || $q.when(response);
-    },
-    responseError: function(rejection) {
-      if(rejection.status == 430){
-         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
-      }
-      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
-        $rootScope.showOWSError && $rootScope.showOWSError();
-      }
-      return $q.reject(rejection);
-    }
-  };
-});
-
-sntRover.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('httpInterceptor');
-});

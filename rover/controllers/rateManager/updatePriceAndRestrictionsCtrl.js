@@ -278,6 +278,15 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
     * Click handler for restriction on/off buttons
     * Enable disable restriction. 
     */
+    $scope.toggleRestrictions = function(id, days, selectedIndex) {
+        var action = $scope.data.restrictionTypes[id].isRestrictionEnabled;
+        
+        $scope.onOffRestrictions(id, (action) ? 'DISABLE' : 'ENABLE', days,selectedIndex);
+    };
+    /**
+    * Click handler for restriction on/off buttons
+    * Enable disable restriction. 
+    */
     $scope.onOffRestrictions = function(id, action, days,selectedIndex){
         $scope.data.showEditView = false;
         $scope.restrictionsList.selectedIndex = selectedIndex;
@@ -305,12 +314,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScop
             $scope.updatePopupWidth();
             return false;
         }
-        if(action == "ENABLE"){
+        if(action === "ENABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
             $scope.data.restrictionTypes[id].hasChanged = true; 
             $scope.data.restrictionTypes[id].isMixed = false; 
         }
-        if(action == "DISABLE"){
+        if(action === "DISABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
             $scope.data.restrictionTypes[id].hasChanged = true; 
             $scope.data.restrictionTypes[id].isMixed = false;

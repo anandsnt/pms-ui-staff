@@ -267,7 +267,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 				controller: 'contractStartCalendarCtrl',
-				className: 'ngdialog-theme-default calendar-single1',
+				className: 'calendar-single1',
 				scope: $scope
 			});
 		};
@@ -276,7 +276,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 				controller: 'contractEndCalendarCtrl',
-				className: 'ngdialog-theme-default calendar-single1',
+				className: 'calendar-single1',
 				scope: $scope
 			});
 		};
