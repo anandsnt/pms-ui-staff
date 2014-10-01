@@ -37,7 +37,9 @@ sntRover.controller('rvFrontDeskDashboardSearchController',['$scope', '$state', 
             backToDashboard();
         }
   	};
-    
+    /**
+    * recieved event from search controller on focusedout.
+    */
     $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
         backToDashboard();
     });
