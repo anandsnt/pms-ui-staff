@@ -220,6 +220,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 if (typeof data.id !== 'undefined' && data.id !=='') {
                     $scope.data.sets[index].id = data.id;
                 }
+
+                $scope.data.sets[index].isEnabled = false;
+                $scope.otherData.setChanged = false;
+                //}
             };
 
             var saveSetFailureCallback = function(errorMessage) {
@@ -286,9 +290,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-            var enableSetUpdateButton = true;
-
-            //$scope.data.sets[index].isEnabled = true;
+            var enableSetUpdateButton = false;
             // if($scope.rateData.id == ""){
             angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
                 if (value.hasOwnProperty("single")) {//} && value.single != "") {
@@ -306,12 +308,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             });
             // }
 
-            if (enableSetUpdateButton && $scope.otherData.setChanged) {
+            if ($scope.otherData.setChanged) { //enableSetUpdateButton && $scope.otherData.setChanged) {
                 $scope.data.sets[index].isEnabled = true;
             } else {
                 $scope.data.sets[index].isEnabled = false;
             }
-            return enableSetUpdateButton;
+
+            return $scope.data.sets[index].isEnabled; //enableSetUpdateButton;
         };
 
         $scope.popupCalendar = function() {
@@ -392,6 +395,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.collapse = function(index) {
             var setLength = $scope.data.sets.length;
+
+            $scope.data.sets[index].isEnabled = false;
+            $scope.otherData.setChanged = false;
 
             if(setLength > 1) {
                 if(index === 0) {
