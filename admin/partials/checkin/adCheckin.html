@@ -14,12 +14,41 @@
 
 					<ad-toggle-button is-checked="checkinData.is_precheckin_only" label="{{ 'PRE_CHECK_IN_ONLY' | translate}}"  div-class="full-width"></ad-toggle-button>
 
-					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only"></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width" is-disabled="checkinData.is_precheckin_only" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
 
-					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width" ng-show="!checkinData.is_precheckin_only"></ad-checkbox>	
 				</fieldset>
 				<fieldset class="holder right">	
-					<div id="options" class="entry full-width" ng-hide="hideAddOption">
+
+					<div class="entry full-width">
+						<label>
+							{{ 'EMAIL_TO_ALL_ARRIVALS' | translate}}
+						</label>
+						<div class="entry full-width float">
+							<div class="select select-col select-margin">
+								
+								<select ng-options="hour for hour  in hours" ng-model="checkinData.checkin_alert_time_hour">
+									<option style="display:none" value="">HH</option>
+								</select>
+							</div>
+							<div class="select select-col select-margin">
+								
+
+								<select ng-options="minute for minute  in minutes" ng-model="checkinData.checkin_alert_time_minute">
+									<option style="display:none" value="">MM</option>
+								</select>
+
+							</div>
+							<div class="select select-col select-margin">
+
+								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
+								</select>
+
+							</div>
+						</div>
+
+					</div>
+					<div id="options" class="entry" ng-hide="hideAddOption">
 						<label>
 							{{ 'SENT_TO_QUEUE' | translate}}
 						</label>
@@ -38,7 +67,7 @@
 					</div>
 
 
-					<div class="entry full-width" ng-hide="hidePriorMinutes ||hideAddOption">
+					<div class="entry" ng-hide="hidePriorMinutes ||hideAddOption">
 						<label>
 							{{ 'MINUTES_PRIOR_TO_ETA' | translate}}
 						</label>
@@ -50,36 +79,6 @@
 								</select>
 							</div>
 						</div>
-					</div>
-				
-
-					<div class="entry">
-						<label>
-							{{ 'EMAIL_TO_ALL_ARRIVALS' | translate}}
-						</label>
-						<div class="entry full-width float">
-							<div class="select select-col col1-3">
-								
-								<select ng-options="hour for hour  in hours" ng-model="checkinData.checkin_alert_time_hour">
-									<option style="display:none" value="">HH</option>
-								</select>
-							</div>
-							<div class="select select-col col1-3">
-								
-
-								<select ng-options="minute for minute  in minutes" ng-model="checkinData.checkin_alert_time_minute">
-									<option style="display:none" value="">MM</option>
-								</select>
-
-							</div>
-							<div class="select select-col col1-3">
-
-								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
-								</select>
-
-							</div>
-						</div>
-
 					</div>
 				</fieldset>
 				<fieldset class="holder full-width">
@@ -187,11 +186,11 @@
 						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
 
 					</div>
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = ""></ad-textarea>
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = "" ng-show="hideAddOption"></ad-textarea>
 
 				</fieldset>
 
-				<fieldset class="holder right">
+				<fieldset class="holder right" ng-hide="!checkinData.is_precheckin_only">
 
 					<ad-textbox value="checkinData.max_webcheckin" label = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}" placeholder = "{{'MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY' | translate}}"  styleclass="full-width" maxlength="4"></ad-textbox>
 
