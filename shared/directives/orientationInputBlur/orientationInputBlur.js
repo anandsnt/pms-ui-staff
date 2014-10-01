@@ -17,7 +17,7 @@ angular.module('orientationInputBlurModule', [])
 		                };
 
 		            if ( hasMatchMedia ) {
-		                media = $window.matchMedia( '(min-width: 500px)' );
+		                media = $window.matchMedia( '(orientation: landscape)' );
 		                media.addListener( blurEl );
 		            } else {
 		                $window.addEventListner( 'resize', blurEl, false );
