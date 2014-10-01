@@ -91,8 +91,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	    setTimeout(function(){
 	    	refreshScroller();
 	      	$scope.$apply(function(){$scope.isTyping = false;
-	      		if($scope.results.length > 0)
-	      			displayFilteredResults();
+	      		
 	      	});
 	    }, 100);
 	};
