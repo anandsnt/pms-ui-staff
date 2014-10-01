@@ -91,7 +91,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	    setTimeout(function(){
 	    	refreshScroller();
 	      	$scope.$apply(function(){$scope.isTyping = false;
-	      		displayFilteredResults();
+	      		if($scope.results.length > 0)
+	      			displayFilteredResults();
 	      	});
 	    }, 100);
 	};
@@ -107,7 +108,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		setTimeout(function(){
 	    	refreshScroller();
 	      	$scope.$apply(function(){$scope.isTyping = false;
-	      		displayFilteredResults();
 	      	});
 	    }, 100);
 	};
@@ -160,8 +160,13 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		//inoreder to prevent unwanted results showing while tyeping..
 		if(!$scope.isTyping){
 			$scope.isTyping = true;
-		}else
+		}else{
+			setTimeout(function(){
+	      		$scope.isTyping = false;
+	      		displayFilteredResults();
+	      	}, 100);
 			return;
+		}
 
 		//setting first letter as captial: soumya
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
@@ -220,6 +225,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		            $scope.results[i].is_row_visible = false;
 		          }  
 		        }
+		        $scope.isTyping = false;
 		        if(totalCountOfFound == 0){
 		        	 var dataDict = {'query': $scope.textInQueryBox.trim()};
 		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
