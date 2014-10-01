@@ -117,10 +117,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// guest emails to which confirmation emails should send
 			data.confirmation_emails = [];
-			if ($scope.otherData.isGuestPrimaryEmailChecked) {
+			if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email != "") {
 				data.confirmation_emails.push($scope.reservationData.guest.email);
 			}
-			if ($scope.otherData.isGuestAdditionalEmailChecked) {
+			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
 
@@ -300,13 +300,22 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Creates the reservation and on success, goes to the confirmation screen
 		 */
 		$scope.submitReservation = function() {
+			$scope.errorMessage = [];
+			// CICO-9794
+			if (($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email == "") || ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail == "")) {
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
+			}
 
 			if($scope.reservationData.paymentType.type != null){
 				if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-					return false;
+					$scope.errorMessage = [$filter('translate')('INVALID_CREDIT_CARD')];
 				}
 			}
+			
+			if($scope.errorMessage.length > 0){
+				return false;
+			}
+
 			$scope.proceedCreatingReservation();
 
 		};
