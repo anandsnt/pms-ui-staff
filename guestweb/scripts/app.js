@@ -34,8 +34,6 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-
-	console.log($attrs);
 	
 	//navigate to different pages
 
