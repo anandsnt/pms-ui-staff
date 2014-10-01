@@ -15,7 +15,7 @@
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<table id="rooms" class="grid datatable" ng-table="roomList">
+			<table id="rooms" class="grid datatable ng-table" ng-table="roomList">
 				<tbody>
 					<tr ng-repeat="room in $data" room-id="{{room.room_id}}">
 						<td data-title="'Room Number'" sortable="'room_number'">
