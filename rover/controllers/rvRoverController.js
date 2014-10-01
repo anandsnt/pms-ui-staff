@@ -537,7 +537,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         // Hide loading message
         $scope.$emit('hideLoader');
         //if already shown no need to show again and again
-        if(!$rootScope.isBussinessDateChanging){
+        if(!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone){
             $rootScope.isBussinessDateChanging = true;
             ngDialog.open({
               template: '/assets/partials/common/bussinessDateChangingPopup.html',
