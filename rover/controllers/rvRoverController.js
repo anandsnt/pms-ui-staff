@@ -257,9 +257,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_ROOM_STATUS",
             action: "rover.housekeeping.roomStatus",
             menuIndex: "roomStatus"
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
           }]
         },{
           title: "MENU_REPORTS",

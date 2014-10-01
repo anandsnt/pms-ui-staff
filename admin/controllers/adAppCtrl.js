@@ -172,9 +172,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_ROOM_STATUS",
 						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
-					}, {
-						title: "MENU_MAINTAENANCE",
-						action: ""
 					}]
 				},{
 					title: "MENU_REPORTS",
