@@ -55,7 +55,6 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
        	};
        	$scope.smartBands.push(that.newBandInfo);
        	$scope.smartBandLength = $scope.smartBands.length;
-       
        	$scope.writeBandType();
        
 	};
@@ -80,7 +79,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 	};
 	$scope.fetchFailedKeyRead = function(errorObject){
 		$scope.$emit( 'hideLoader' );
-		$scope.errorMessage = errorObject.RVErrorDesc;
+		$scope.errorMessage = [errorObject.RVErrorDesc];
+		$scope.$apply(); //since this function is calling from out of angular scope
 	};
 	$scope.clickContinueButton = function(){
 		document.activeElement.blur();
@@ -238,11 +238,8 @@ function($scope, $state, $stateParams, RVSmartBandSrv) {
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
 				that.lastSuccessfulIDReaded = '';
 			},
-			'failureCallBack': function(errorObject){
-				var message = errorObject.RVErrorDesc;
-				if(message == undefined || message == ''){
-					message = 'Failed to write the band type';
-				}
+			'failureCallBack': function(errorObject){				
+				var message = [errorObject.RVErrorDesc];			
 				that.lastSuccessfulIDReaded = ''
 				$scope.createSmartBandFailure(message);
 				$scope.$apply(); //since it is calling from outside of Angular scope, we need to call this one
