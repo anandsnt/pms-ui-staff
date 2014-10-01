@@ -29,6 +29,8 @@ sntRover.controller('RVReportListCrl', [
 				    reportList[i]['reportIconCls'] = 'icon-upsell';
 				} else if ( reportList[i]['title'] == 'Late Check Out' ) {
 				    reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                } else if ( reportList[i]['title'] == 'Web Check Out Conversion' ) {
+                    reportList[i]['reportIconCls'] = 'icon-check-out';
 				} else {
 				    reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
 				}
