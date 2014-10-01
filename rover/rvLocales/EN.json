@@ -361,7 +361,8 @@
     "ADD_CREDIT_CARD": "Add Credit Card",
     "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
     "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
-,    
+,	
+	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     
     "RESERVATION_SUMMARY": "Reservation summary",
     "ROOMS": "rooms",

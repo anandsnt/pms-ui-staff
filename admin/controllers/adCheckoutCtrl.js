@@ -83,11 +83,11 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             $scope.checkoutData.alternate_checkout_email_alert_time_hour = 'HH';
             $scope.checkoutData.alternate_checkout_email_alert_time_minute = 'MM';
         }
-        if($scope.weekends_checkout_email_alert_time_hour == 'HH' || $scope.weekends_checkout_email_alert_time_minute == 'MM'){
-            $scope.weekends_checkout_email_alert_time_minute = 'MM';
-            $scope.weekends_checkout_email_alert_time_hour = 'HH';
-            $scope.alternate_weekends_checkout_email_alert_time_minute = 'MM';
-            $scope.alternate_weekends_checkout_email_alert_time_hour = 'HH';
+        if($scope.checkoutData.weekends_checkout_email_alert_time_hour == 'HH' || $scope.checkoutData.weekends_checkout_email_alert_time_minute == 'MM'){
+            $scope.checkoutData.weekends_checkout_email_alert_time_minute = 'MM';
+            $scope.checkoutData.weekends_checkout_email_alert_time_hour = 'HH';
+            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = 'MM';
+            $scope.checkoutData.alternate_weekends_checkout_email_alert_time_hour = 'HH';
         }
     }
 
