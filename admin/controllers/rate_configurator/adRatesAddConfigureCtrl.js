@@ -290,7 +290,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         $scope.checkFieldEntered = function(index) {
-            var enableSetUpdateButton = false;
+            /*var enableSetUpdateButton = false;
             // if($scope.rateData.id == ""){
             angular.forEach($scope.data.sets[index].room_rates, function(value, key) {
                 if (value.hasOwnProperty("single")) {//} && value.single != "") {
@@ -305,7 +305,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 if (value.hasOwnProperty("child")) { //} && value.child != "") {
                     enableSetUpdateButton = true;
                 }
-            });
+            });*/
             // }
 
             if ($scope.otherData.setChanged) { //enableSetUpdateButton && $scope.otherData.setChanged) {
@@ -410,7 +410,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             } else {
                 $scope.$emit('changeMenu','');
             }
-        }
+        };
 
         $scope.init();
     }
