@@ -1,39 +1,39 @@
 sntRover.controller('RVReportListCrl', [
-	'$scope',
+    '$scope',
     '$rootScope',
     '$filter',
     'RVreportsSrv',
-	function($scope, $rootScope, $filter, RVreportsSrv) {
+    function($scope, $rootScope, $filter, RVreportsSrv) {
 
         BaseCtrl.call(this, $scope);
 
         $scope.setScroller( 'report-list-scroll', {click: true, preventDefault: false} );
 
-		/**
-		*	Post processing fetched data to modify and add additional data
-		*	Note: This is a self executing function
+        /**
+        *   Post processing fetched data to modify and add additional data
+        *   Note: This is a self executing function
         *   
         *   @param {Array} - reportList: which points to $scope.$parent.reportList, see end of this function
-		*/
-		var postProcess = function(reportList) {
-			var hasDateFilter,
-				hasCicoFilter,
-				hasUserFilter,
-				hasSortDate,
-				hasSortUser;
+        */
+        var postProcess = function(reportList) {
+            var hasDateFilter,
+                hasCicoFilter,
+                hasUserFilter,
+                hasSortDate,
+                hasSortUser;
 
-			for (var i = 0, j = reportList.length; i < j; i++) {
+            for (var i = 0, j = reportList.length; i < j; i++) {
 
-				// add report icon class
-				if ( reportList[i]['title'] == 'Upsell' ) {
-				    reportList[i]['reportIconCls'] = 'icon-upsell';
-				} else if ( reportList[i]['title'] == 'Late Check Out' ) {
-				    reportList[i]['reportIconCls'] = 'icon-late-check-out';
-				} else {
-				    reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
-				}
+                // add report icon class
+                if ( reportList[i]['title'] == 'Upsell' ) {
+                    reportList[i]['reportIconCls'] = 'icon-upsell';
+                } else if ( reportList[i]['title'] == 'Late Check Out' ) {
+                    reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                } else {
+                    reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
+                }
 
-				// include show_filter and set it to false
+                // include show_filter and set it to false
                 reportList[i]['show_filter'] = false;
 
                 // checking if has date filter
@@ -50,14 +50,14 @@ sntRover.controller('RVReportListCrl', [
                 reportList[i]['hasCicoFilter'] = hasCicoFilter ? true : false;
                 if (hasCicoFilter) {
                     reportList[i]['cicoOptions'] = [{
-                    	value: 'BOTH',
-                    	label: 'Show Check Ins and  Check Outs'
+                        value: 'BOTH',
+                        label: 'Show Check Ins and  Check Outs'
                     }, {
-                    	value: 'IN',
-                    	label: 'Show only Check Ins'
+                        value: 'IN',
+                        label: 'Show only Check Ins'
                     }, {
-                    	value: 'OUT',
-                    	label: 'Show only Check Outs'
+                        value: 'OUT',
+                        label: 'Show only Check Outs'
                     }];
                 };
 
@@ -76,34 +76,29 @@ sntRover.controller('RVReportListCrl', [
                 });
                 reportList[i].chosenSortBy = sortDate.value;
 
-                
-                
                 // HACK: set the default value for from date to a week ago from business date
                 // so that calender will open in the corresponding month, rather than today
-                // AS PER ECMCAScript the standard format is 'YYYY-MM-DDTHH:mm:ss.sssZ' Check bug: CICO-9749
-                var today = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd');
-                var y = today.split('-')[0] * 1;
-                var m = today.split('-')[1] * 1;
-                var d = today.split('-')[2] * 1;
-                var weekAgo = new Date(y, m, d - 7);
+                var today = new Date( $filter('date')($rootScope.businessDate, 'yyyy-MM-dd') );
+                var weekAgo = today.setDate(today.getDate() - 7);
 
                 reportList[i].fromDate = $filter('date')(weekAgo, 'MM-dd-yyyy');
                 reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
-			}
+                console.info(reportList[i].fromDate +' === '+ reportList[i].untilDate);
+            }
 
             $scope.refreshScroller( 'report-list-scroll' );
-		}( $scope.$parent.reportList );
+        }( $scope.$parent.reportList );
 
-		// show hide filter toggle
-		$scope.toggleFilter = function() {
-		    this.item.show_filter = this.item.show_filter ? false : true;
+        // show hide filter toggle
+        $scope.toggleFilter = function() {
+            this.item.show_filter = this.item.show_filter ? false : true;
             $scope.refreshScroller( 'report-list-scroll' );
-		};
+        };
 
         $scope.setnGenReport = function() {
             RVreportsSrv.setChoosenReport( this.item );
 
             $scope.genReport();
         };
-	}
+    }
 ]);

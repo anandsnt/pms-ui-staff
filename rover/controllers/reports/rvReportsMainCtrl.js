@@ -1,10 +1,10 @@
 sntRover.controller('RVReportsMainCtrl', [
 	'$rootScope',
 	'$scope',
-	'RVreportsSrv',
 	'reportsResponse',
+	'RVreportsSrv',
 	'$filter',
-	function($rootScope, $scope, RVreportsSrv, reportsResponse, $filter) {
+	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -40,13 +40,12 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.getFromOptions = function(item) {
-			var item = angular.copy(item);
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        maxDate: item.untilDate,
+		        // maxDate: tzIndependentDate( item.untilDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
@@ -59,14 +58,13 @@ sntRover.controller('RVReportsMainCtrl', [
 		};
 
 		$scope.getUntilOptions = function(item) {
-			var item = angular.copy(item);
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        minDate: item.fromDate,
-		        maxDate: $rootScope.businessDate,
+		        // minDate: tzIndependentDate( item.fromDate ),
+		        // maxDate: tzIndependentDate( $rootScope.businessDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
@@ -131,7 +129,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		    	per_page:    resultPerPageOverride || $scope.resultsPerPage
 		    }
 
-		    var frdCallback = function(response) {
+		    var callback = function(response) {
 		    	if ( changeView ) {
 		    		$rootScope.setPrevState.hide = false;
 		    		$scope.showReportDetails = true;
@@ -161,7 +159,7 @@ sntRover.controller('RVReportsMainCtrl', [
 		    	}
 		    };
 
-           	$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, frdCallback);
+           	$scope.invokeApi(RVreportsSrv.fetchReportDetails, params, callback);
 		};
 	}
 ]);
