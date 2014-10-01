@@ -7,7 +7,7 @@
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<table class="grid datatable table ng-table" ng-table="tableParams">
+			<table class="grid datatable table " ng-table="tableParams">
 				<tbody >
 					<tr ffp-id="{{item.id}}" ng-repeat = "item in ffp">
 						<td data-title="'Airline'" sortable="'airline'"><strong> {{item.airline}} </strong></td>
