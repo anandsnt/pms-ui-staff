@@ -17,6 +17,9 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
 
+    /**
+    * recieved event from search controller on focusedout.
+    */
     $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
         backToDashboard();
     });
