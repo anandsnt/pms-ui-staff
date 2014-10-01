@@ -24,8 +24,10 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
       'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
       'QUEUED_ROOMS': 'QUEUED_ROOMS_TITLE',
       'VIP': 'DASHBOARD_SEARCH_VIP',
-      'NORMAL_SEARCH': 'SEARCH_NORMAL'
+      'NORMAL_SEARCH': 'SEARCH_NORMAL',
+      'PRE_CHECKIN': 'PRE_CHECKIN'
   };
+
   if ($stateParams.type in headingDict){
       heading = headingDict[$stateParams.type];
   } else {
