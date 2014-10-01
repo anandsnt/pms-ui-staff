@@ -82,9 +82,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 
 		$scope.setScroller('room_types', {
-			click: true,
 			scrollbars: true,
-			hideScrollbar: false
+			hideScrollbar: false,
+			preventDefault: false
 		});
 
 		$scope.setScroller('stayDates', {

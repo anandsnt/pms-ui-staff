@@ -17,6 +17,10 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
 
+    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
+        backToDashboard();
+    });
+
   	//click function on search area, mainly for closing the drawer
   	$scope.clickedOnSearchArea = function($event){
         $scope.$emit("closeDrawer");

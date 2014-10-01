@@ -22,11 +22,15 @@
 						<td ng-hide="ratetype.system_defined ===true || currentClickedElement == $index" ng-click = "editRateTypes($index,ratetype.id)"><a class="edit-data-inline">{{ratetype.name}} </a>
 						</td>
 
-						<td ng-hide="currentClickedElement == $index">
+						<td ng-hide="currentClickedElement == $index" style="overflow: visible;">
 							<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
 								<em>{{ratetype.rate_count}} rates</em>
-								<span ng-class="{ 'tooltip-indicator': ratetype.rate_count > 0 }"></span>
-								<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,ratetype.id)"></div>
+								<span ng-class="{ 'tooltip-indicator': ratetype.rate_count > 0 }">
+									<div ng-show = "popoverRates.total_count > 0" 
+										 class="tooltip" 
+										 ng-class="{'polarize': $index >= halfwayPoint}" 
+										 ng-include="getPopoverTemplate($index,ratetype.id)"></div>
+								</span>
 							</span>
 						</td>
 						<td class="delete"  ng-hide="currentClickedElement ==$index"><a ng-hide="ratetype.system_defined ===true" id="3" ng-click="deleteRateType($index,ratetype.id)" class="icons icon-delete large-icon delete_item"  ></a></td>

@@ -426,6 +426,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
+		}else{
+			$translate.use('EN');
 		}
 
 	
