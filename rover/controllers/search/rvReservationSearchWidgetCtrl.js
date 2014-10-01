@@ -28,6 +28,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	//prevent unwanted result whoing while typeing
 	$scope.isTyping = false;
 	$scope.isSwiped = false;
+	$scope.firstSearch = true;
 
 
 	$scope.showAddNewGuestButton = false; //read cooment below :(
@@ -85,10 +86,14 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
         $scope.$emit('hideLoader');
 		$scope.results = data;
+		$scope.firstSearch = false;
 	    $scope.searchType = "default";
 	    setTimeout(function(){
 	    	refreshScroller();
-	      	$scope.$apply(function(){$scope.isTyping = false;});
+	      	$scope.$apply(function(){$scope.isTyping = false;
+	      		if($scope.results.length > 0)
+	      			displayFilteredResults();
+	      	});
 	    }, 100);
 	};
 
@@ -102,7 +107,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		$scope.errorMessage = errorMessage;
 		setTimeout(function(){
 	    	refreshScroller();
-	      	$scope.$apply(function(){$scope.isTyping = false;});
+	      	$scope.$apply(function(){$scope.isTyping = false;
+	      	});
 	    }, 100);
 	};
 
@@ -154,6 +160,12 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		//inoreder to prevent unwanted results showing while tyeping..
 		if(!$scope.isTyping){
 			$scope.isTyping = true;
+		}else{
+			setTimeout(function(){
+	      		$scope.isTyping = false;
+	      		displayFilteredResults();
+	      	}, 100);
+			return;
 		}
 
 		//setting first letter as captial: soumya
@@ -204,12 +216,13 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	      	}     
 	      	setTimeout(function(){
 	      		$scope.isTyping = false;
+	      		displayFilteredResults();
 	      	}, 200);
 			refreshScroller();    
 	    }
 	    else{
 
-		    if($scope.searchType == "default" &&  $scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.length > 0){
+		    if($scope.searchType == "default" &&  $scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.length > 0 && !$scope.firstSearch){
 		        var value = ""; 
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
@@ -229,6 +242,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		            $scope.results[i].is_row_visible = false;
 		          }  
 		        }
+		        $scope.isTyping = false;
 		        if(totalCountOfFound == 0){
 		        	 var dataDict = {'query': $scope.textInQueryBox.trim()};
 		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
