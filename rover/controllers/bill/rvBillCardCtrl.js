@@ -1284,8 +1284,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
-			console.log("printData")
-			console.log($scope.printData )
 		/*
 		*	=====[ READY TO PRINT ]=====
 		*/
