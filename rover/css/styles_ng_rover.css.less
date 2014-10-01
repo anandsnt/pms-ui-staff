@@ -582,6 +582,16 @@ button.icons.icon-search{
   z-index: 30;
 }
 
+.return-back .main-view.ng-enter,
+.return-back .main-view.ng-enter-active {
+  z-index: 30;
+}
+
+.return-back .main-view.ng-leave,
+.return-back .main-view.ng-leave-active {
+  z-index: 50;
+}
+
 /* to remove a slight delay in applying the animations
 on a slow performaing device, keep the entering view hidden
 untill angular is ready to activate it */
@@ -974,6 +984,13 @@ Padding for the ows error popup
 }
 
 .reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active,
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  display: block !important;
+}
+
+.reports-wrapper.ng-hide-remove,
 .reports-wrapper.ng-hide-add-active {
   z-index: 50;
 }
@@ -981,6 +998,16 @@ Padding for the ows error popup
 .reports-wrapper.ng-hide-remove,
 .reports-wrapper.ng-hide-add-active {
   z-index: 30;
+}
+
+.return-back .reports-wrapper.ng-hide-remove,
+.return-back .reports-wrapper.ng-hide-add-active {
+  z-index: 30;
+}
+
+.return-back .reports-wrapper.ng-hide-remove,
+.return-back .reports-wrapper.ng-hide-add-active {
+  z-index: 50;
 }
 
 /* normal app state animations */
