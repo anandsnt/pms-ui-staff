@@ -81,23 +81,23 @@
 						</div>
 					</div>
 				</fieldset>
+
+
 				<fieldset class="holder full-width">
-
-						<div class='entry'>
-							<label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
-							<div class='select'>
-								<select  class="placeholder" ng-model='checkinData.selected_rate_code'>
-									<option value="" translate>
-										SELECT_RATE_CODE
-									</option>
-									<option ng-repeat='row in rate_codes' value='{{row.id}}'  ng-selected="row.id==checkinData.selected_rate_code" >
-										{{row.name}}
-									</option>
-								</select>
-							</div>
-						</div>
-
-
+					<div class="entry">
+						<label translate>RATE_CODES_TO_EXCLUDE_FROM_CHECKIN</label>
+						<div     
+						multi-select
+						input-model="rate_codes"
+						button-label="name"
+						item-label="name"
+						tick-property="ticked"
+						max-labels="0"
+						default-label="None selected"
+						max-height="300px"
+						>
+					</div>
+					</div>
 					<div class="entry entry-padding-left"><label>&nbsp;&nbsp;</label>
 						<button translate="" ng-click="clickExcludeRateCode()"  class="button green" translate="">EXCLUDE_RATE_CODES</button>
 					</div>
@@ -119,22 +119,22 @@
 							</div>								
 						</div>
 					</div>
-
-
-					<div class='entry' style="margin-right: 1px;">
+				</fieldset>
+					<fieldset class="holder full-width">
+					<div class="entry">
 						<label translate>BLOCK_CODES_EXCLUDE_FROM_CHECKIN</label>
-						<div class='select'>
-							<select  class="placeholder" ng-model='checkinData.selected_block_code'>
-								<option value="" translate>
-									SELECT_BLOCK_CODE
-								</option>
-								<option ng-repeat='row in block_codes' value='{{row.id}}'  ng-selected="row.id==checkinData.selected_block_code" >
-									{{row.group_code}}
-								</option>
-							</select>
-						</div>
+						<div     
+						multi-select
+						input-model="block_codes"
+						button-label="group_code"
+						item-label="group_code"
+						tick-property="ticked"
+						max-labels="0"
+						default-label="None selected"
+						max-height="300px"
+						>
 					</div>
-
+					</div>
 
 					<div class="entry entry-padding-left" ><label>&nbsp;&nbsp;</label>
 						<button translate="" ng-click="clickExcludeBlockCode()"  class="button green" translate="">EXCLUDE_BLOCK_CODES</button>
