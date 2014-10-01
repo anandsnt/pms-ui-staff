@@ -1320,6 +1320,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
+			console.log("printData")
+			console.log($scope.printData )
 		/*
 		*	=====[ READY TO PRINT ]=====
 		*/
@@ -1328,8 +1330,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	    	/*
 	    	*	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
 	    	*/
+	    	// CICO-9569 to solve the hotel logo issue
+			$("header .logo").addClass('logo-hide');
+			$("header .h2").addClass('text-hide');
+
 
 	        $window.print();
+
+	        // CICO-9569 to solve the hotel logo issue
+			$("header .logo").removeClass('logo-hide');	 
+			$("header .h2").addClass('text-hide');
+
+
 	        if ( sntapp.cordovaLoaded ) {
 	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 	        };
