@@ -13,7 +13,7 @@
 		</div>
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p></p>
+			<p class="msg-head">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
 			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 		</div>
 
@@ -70,6 +70,16 @@
 							</div>
 							<div class="room_details grey-text">
 								{{tripDetails.rate}}
+							</div>
+						</div>
+						<div class="row">
+							<div class=" reservation-dates">
+								<div class="lightcontent grey-text">
+									AVERAGE RATE PER NIGHT
+								</div>
+							</div>
+							<div class="room_details grey-text">
+								{{currencySymbol}}{{tripDetails.rate}}
 							</div>
 						</div>
 					</div>					
