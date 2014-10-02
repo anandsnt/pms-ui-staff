@@ -140,10 +140,13 @@ sntRover.controller('RVPostChargeController',
 
 			// make favorite selected by default
 			// must have delay
-			$timeout(function() {
-				$scope.chargeGroup = 'FAV';
-				$scope.filterbyChargeGroup();				
-			}, 500);
+			// $timeout(function() {
+			// 	$scope.chargeGroup = 'FAV';
+			// 	$scope.filterbyChargeGroup();				
+			// }, 500);
+
+			$scope.chargeGroup = 'FAV';
+			$scope.filterbyChargeGroup();
 
 
 
@@ -541,6 +544,8 @@ sntRover.controller('RVPostChargeController',
 				$scope.fetchedData.bill_numbers = data.bills;
 
 				$scope.billNumber = "1";
+				$scope.chargeGroup = 'FAV';
+				$scope.filterbyChargeGroup();
 			});
 			
 			$scope.$on('POSTCHARGE', function(event, data) {
