@@ -216,6 +216,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"balance": data.reservation_balance,
 				"confirm_no" : $scope.paymentData.confirm_no 
 			};
+			//To update on reservation card payment section.
+			$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.paymentData.bills[billNumber].credit_card_details );
 			$rootScope.$broadcast('BALANCECHANGED', dataToUpdate);
 		}
 		if($scope.saveData.add_to_guest_card){ 

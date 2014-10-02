@@ -13,7 +13,7 @@
 		</div>
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p></p>
+			<p class="msg-head">Our apologies, something went wrong, please complete your pre check-in at our front desk.</p></p>
 			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 		</div>
 
@@ -72,6 +72,16 @@
 								{{tripDetails.rate}}
 							</div>
 						</div>
+						<div class="row">
+							<div class=" reservation-dates">
+								<div class="lightcontent grey-text">
+									AVERAGE RATE PER NIGHT
+								</div>
+							</div>
+							<div class="room_details grey-text">
+								{{currencySymbol}}{{tripDetails.rate_amount}}
+							</div>
+						</div>
 					</div>					
 						<button class="checkin-button pre-checkin-button blue-bg" ui-sref="preCheckinStayDetails">
 							<span class="white-text pre-check-in-text">Check-In</span>
@@ -79,13 +89,12 @@
 						</button>
 					</div>
 				</div>
-				<div class="row checkin-wrapper no-top-margin">
+				<div class="row no-top-margin">
 					<div class="col-md-6 error-callus">
 						<div class="lightcontent">
 							ERRORS? <a href="tel: {{hotelPhone}}"><u class="blue-text">CALL US AT  <a href="tel: {{hotelPhone}}"class="white-alert-link-tag blue-text">{{hotelPhone}}.</a></u></a>
 						</div>
 					</div>
-					<div class="verti-ruler"></div>
 				</div>			
 			</div>
 			<!-- checkinbtn section ends here-->

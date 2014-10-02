@@ -361,7 +361,8 @@
     "ADD_CREDIT_CARD": "Add Credit Card",
     "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
     "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
-,    
+,	
+	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     
     "RESERVATION_SUMMARY": "Reservation summary",
     "ROOMS": "rooms",
@@ -546,7 +547,8 @@
     "DASHBOARD_SEARCH_INHOUSE": "Stayovers",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
     "DASHBOARD_SEARCH_VIP": "VIPS",
-    "SEARCH_NORMAL": "Find Reservation"
+    "SEARCH_NORMAL": "Find Reservation",
+    "PRE_CHECKIN":"Pre Checkin In"
 ,
 
 

@@ -19,7 +19,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
     *   @param {string} webservice url
     *   @param {Object} data for webservice
     *   @return {promise}
-    */	
+    */
 
 	this.callWebService = function(httpMethod, url, params){
 		var deferred = $q.defer();
@@ -46,33 +46,30 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
 			}
 			else if(status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
 				$window.location.href = '/500' ;
-			}else if(status == 404){ // 500- Internal Server Error
-				$window.location.href = '/500' ;
-			}			
+			}
 			else if(status == 401){ // 401- Unauthorized
-				console.log('lets redirect');
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(response.errors);
 			}
-		    
+
 		});
-		return deferred.promise;	    	
+		return deferred.promise;
 	};
 
-   	this.getJSON = function(url, params){	
+   	this.getJSON = function(url, params){
     	return this.callWebService($http.get, url, params);
    	};
-    
+
    	this.putJSON = function(url, params){
    		return this.callWebService($http.put, url, params);
    	};
-    
+
    	this.postJSON = function(url, params){
    		return this.callWebService($http.post, url, params);
    	};
-    
+
    	this.deleteJSON = function(url, params){
    		return this.callWebService($http.delete, url, params);
    	};

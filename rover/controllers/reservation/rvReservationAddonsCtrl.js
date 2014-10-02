@@ -22,7 +22,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
         $scope.activeAddonCategoryId = -1;
         $scope.activeRoom = $scope.reservationData.rooms[0];
 
-        $scope.$emit('setHeading', 'Enhance Stay');
+        $scope.heading = 'Enhance Stay';
+        $scope.setHeadingTitle($scope.heading);
 
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.activeRoom.addons;

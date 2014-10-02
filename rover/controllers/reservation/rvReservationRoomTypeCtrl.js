@@ -82,9 +82,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 
 		$scope.setScroller('room_types', {
-			click: true,
-			scrollbars: true,
-			hideScrollbar: false
+			preventDefault: false
 		});
 
 		$scope.setScroller('stayDates', {
@@ -98,7 +96,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
-			$scope.$emit('setHeading', $scope.heading);
+			$scope.setHeadingTitle($scope.heading);
 
 			$scope.displayData.dates = [];
 			$scope.filteredRates = [];

@@ -247,12 +247,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_SEARCH",
-          action: "rover.search",
-          menuIndex: "search",
-          submenu: [],
-          iconClass: "icon-dashboard"
         }, 
          {
           title: "MENU_HOUSEKEEPING",
@@ -263,12 +257,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             title: "MENU_ROOM_STATUS",
             action: "rover.housekeeping.roomStatus",
             menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: ""
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
           }]
         },{
           title: "MENU_REPORTS",
