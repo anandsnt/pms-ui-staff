@@ -72,6 +72,8 @@ reports.controller('reporstList', [
                         $scope.reportList[i]['reportIconCls'] = 'icon-upsell';
                     } else if ($scope.reportList[i]['title'] == 'Late Check Out') {
                         $scope.reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                    } else if ($scope.reportList[i]['title'] == 'Web Check Out Conversion') {
+                        $scope.reportList[i]['reportIconCls'] = 'icon-check-out';
                     } else {
                         // lets have cico icon as
                         $scope.reportList[i]['reportIconCls'] = 'icon-check-in-check-out';

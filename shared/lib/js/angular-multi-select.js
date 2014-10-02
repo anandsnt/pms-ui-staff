@@ -32,44 +32,43 @@
  */
 
 angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$timeout', function ( $sce, $timeout ) {
-    return {
-        restrict: 
-            'AE',
-
-        replace: 
-            true,
-
-        scope: 
-        {   
-            // models
-            inputModel      : '=',
-            outputModel     : '=',
-
-            // settings based on attribute
-            buttonLabel     : '@',
-            defaultLabel    : '@',
-            directiveId     : '@',
-            helperElements  : '@',            
-            isDisabled      : '=',
-            itemLabel       : '@',
-            maxLabels       : '@',
-            orientation     : '@',
-            selectionMode   : '@',            
-                                                         
-            // settings based on input model property 
-            tickProperty    : '@',
-            disableProperty : '@',
-            groupProperty   : '@',
-            maxHeight       : '@',
-
-            // callbacks
-            onClose         : '&',            
-            onItemClick     : '&',
-            onOpen          : '&'                        
-        },
-
-        template: 
-            '<div class="select multi-select">' +        
+    var templates = {
+                default:'<span class="multiSelect inlineBlock">' +        
+                            '<button type="button" class="button multiSelectButton" ng-click="toggleCheckboxes( $event ); refreshSelectedItems(); refreshButton();" ng-bind-html="varButtonLabel">' +
+                            '</button>' +                              
+                            '<div class="checkboxLayer">' +                        
+                                '<form>' + 
+                                    '<div class="helperContainer" ng-if="displayHelper( \'filter\' ) || displayHelper( \'all\' ) || displayHelper( \'none\' ) || displayHelper( \'reset\' )">' +
+                                        '<div class="line" ng-if="displayHelper( \'all\' ) || displayHelper( \'none\' ) || displayHelper( \'reset\' )">' +
+                                            '<button type="button" ng-click="select( \'all\',   $event );"    class="helperButton" ng-if="!isDisabled && displayHelper( \'all\' )">   &#10003;&nbsp; Select All</button> ' +
+                                            '<button type="button" ng-click="select( \'none\',  $event );"   class="helperButton" ng-if="!isDisabled && displayHelper( \'none\' )">  &times;&nbsp; Select None</button>' +
+                                            '<button type="button" ng-click="select( \'reset\', $event );"  class="helperButton" ng-if="!isDisabled && displayHelper( \'reset\' )" style="float:right">&#8630;&nbsp; Reset</button>' +
+                                        '</div>' +
+                                        '<div class="line" style="position:relative" ng-if="displayHelper( \'filter\' )">' +
+                                            '<input placeholder="Search..." type="text" ng-click="select( \'filter\', $event )" ng-model="inputLabel.labelFilter" ng-change="updateFilter();$scope.getFormElements();" class="inputFilter" />' +
+                                            '<button type="button" class="clearButton" ng-click="inputLabel.labelFilter=\'\';updateFilter();prepareGrouping();prepareIndex();select( \'clear\', $event )">&times;</button> ' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="checkBoxContainer" style="{{setHeight();}}">' +
+                                        '<div ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"' +
+                                            'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"' +
+                                            'ng-click="syncItems( item, $event, $index );"' + 
+                                            'ng-mouseleave="removeFocusStyle( tabIndex );">' + 
+                                            '<div class="acol" ng-if="item[ spacingProperty ] > 0" ng-repeat="i in numberToArray( item[ spacingProperty ] ) track by $index">&nbsp;</div>' +              
+                                            '<div class="acol">' +
+                                                '<label>' +
+                                                    '<input class="checkbox focusable" type="checkbox" ng-disabled="itemIsDisabled( item )" ng-checked="item[ tickProperty ]" ng-click="syncItems( item, $event, $index )" />' +
+                                                    '<span ng-class="{disabled:itemIsDisabled( item )}" ng-bind-html="writeLabel( item, \'itemLabel\' )"></span>' +
+                                                '</label>' +                                
+                                            '</div>' +
+                                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 
+                                            '<span class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true">&#10004;</span>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</form>' +
+                            '</div>' +
+                        '</span>',
+                workmanagement:  '<div class="select multi-select">' +        
                 '<button type="button" class="multi-select-button" ng-click="toggleCheckboxes( $event ); refreshSelectedItems(); refreshButton();" ng-bind-html="varButtonLabel">' +
                 '</button>' +                              
                 '<div class="multi-select-options">' +                        
@@ -92,7 +91,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                             '<button type="submit" name="submit" class="icons icon-search" ng-click="inputLabel.labelFilter=\'\';updateFilter();prepareGrouping();prepareIndex();select( \'clear\', $event )">&times;</button> ' +
                             '<input placeholder="Search by Employee Name" type="search" autocomplete="off" ng-click="select( \'filter\', $event )" ng-model="inputLabel.labelFilter" ng-change="updateFilter();$scope.getFormElements();" class="query" />' +
                         '</div>' +
-                        '<div  id="multi-select-options" class="entry scrollable">' +
+                        '<div  id="multi-select-options" class="entry scrollable" ng-iscroll-delay=3000 ng-iscroll="multiSelectEmployees">' +
                             '<div class="wrapper">' +               
                                 // '<div ng-repeat="item in filteredModel | filter:removeGroupEndMarker" class="multiSelectItem"' +
                                 //     'ng-class="{selected: item[ tickProperty ], horizontal: orientationH, vertical: orientationV, multiSelectGroup:item[ groupProperty ], disabled:itemIsDisabled( item )}"' +
@@ -113,7 +112,48 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                         '</div>' +
                     '</form>' +
                 '</div>' +
-            '</div>',
+            '</div>'       
+            }
+    return {
+        restrict: 
+            'AE',
+
+        replace: 
+            true,
+
+        scope: 
+        {   
+            // models
+            inputModel      : '=',
+            outputModel     : '=',
+
+            // settings based on attribute
+            buttonLabel     : '@',
+            defaultLabel    : '@',
+            directiveId     : '@',
+            helperElements  : '@',            
+            isDisabled      : '=',
+            itemLabel       : '@',
+            maxLabels       : '@',
+            orientation     : '@',
+            selectionMode   : '@',
+            customTemplate  : "@",         
+                                                         
+            // settings based on input model property 
+            tickProperty    : '@',
+            disableProperty : '@',
+            groupProperty   : '@',
+            maxHeight       : '@',
+
+            // callbacks
+            onClose         : '&',            
+            onItemClick     : '&',
+            onOpen          : '&'                        
+        },
+
+        template: function($scope, attrs){
+            return templates[attrs.customTemplate] || templates.default;
+        },//templates.workmanagement,
 
         link: function ( $scope, element, attrs ) {           
 
@@ -134,6 +174,10 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             prevTabIndex            = 0;
             helperItems             = [];
             helperItemsLength       = 0;
+
+            //CICO-9120 Need to get the scroller working!
+            // This works but is a shoddy code... Revisit later 
+            var refreshScroller = $scope.$parent.refreshScroller;
 
             // If user specify a height, call this function
             $scope.setHeight = function() {
@@ -198,7 +242,11 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                 $timeout( function() {
                     $scope.getFormElements();               
                 },0);
+               
+                refreshScroller("multiSelectEmployees");
             };
+            
+
 
             // List all the input elements.
             // This function will be called everytime the filter is updated. Not good for performance, but oh well..
@@ -630,6 +678,8 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
 
                     // open callback
                     $scope.onOpen( { data: element } );
+                    
+                    refreshScroller("multiSelectEmployees");
                 }                            
             }
             

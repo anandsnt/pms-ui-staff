@@ -225,6 +225,7 @@
                                     th {
                                         &.rows-toggle {
                                             cursor: pointer;
+                                            padding-left: 40px;
                                             background: @arrowDown 100% 50% no-repeat;
 
                                             &.active { background-image: @arrowUp; }
@@ -578,6 +579,15 @@
 
                                 &:last-child { margin-right: 0; }
                             }
+
+                            &.col5 {
+                                li { 
+                                    margin-right: 20px;
+                                    .calc-width(20, 16); 
+
+                                    &:last-child { margin-right: 0; }
+                                }
+                            }
                         }
                     }
 
@@ -666,6 +676,7 @@
 
     .search-results {
         position: relative;
+        padding: 20px;
 
         li:not(.no-content) {
             margin: 0;           
@@ -703,6 +714,8 @@
                         h2 { color: @grey3; }
                     }
                 }
+
+                .highlight { color: @logoPrimary; }
             }
 
             &.reservation {
@@ -929,6 +942,7 @@
                         }     
                     }
                 }
+            }
 
                 &.room {
                     a {
@@ -1248,6 +1262,7 @@
                     position: absolute;
                     top: 0;
                     padding: 20px;
+                    cursor: pointer;
                     .size(90px, 100%);
                     .show;
 
@@ -1287,6 +1302,7 @@
                             clear: none;
                             padding: 0 5px;
                             margin-right: 5px;
+                            width: 150px;
                             .placeholder-text(30px, 40px, 700, rgba(255,255,255,.6), normal);
                             .show;
                             .pull-left;
@@ -1421,6 +1437,7 @@
                     &#travel-agent-card-header { background: @tacard @tacardTexture; }
 
                     &.first {
+                        cursor: default;
                         left: 0;
                         z-index: 10;
                         .calc-width(100, 180);
@@ -1809,6 +1826,11 @@
                                 top: 20px;
                                 left: 20px;
                                 font-weight: 400;
+                            }
+
+                            .temporary-graph {
+                                width: 100%;
+                                height: auto;
                             }
                         }
 
@@ -2497,6 +2519,7 @@
                     &.ui-tabs-active {
                         a {
                             .guest-status {
+                                &.pre-check-in { background-color: @orange; }
                                 &.check-in,
                                 &.arrival { background-color: @green; }
                                 &.check-out,
@@ -5904,15 +5927,9 @@
                             cursor: pointer;
                             background: transparent @calendar no-repeat 95% 12px;
                             .box-shadow(none);
-                            -webkit-transition: none;
-                            -moz-transition: none;
-                            -ms-transition: none;
-                            -o-transition: none;
-                            transition: none;
+                            .no-transition;
 
-                            &:hover {
-                                background-position: 95% -38px;
-                            }
+                            &:hover { background-position: 95% -38px; }
                         }
                     }
 
@@ -6151,6 +6168,7 @@
             overflow: hidden;
             background: @white;
             z-index: 90;
+            .size(50px, 100%);
             .box-shadow(0 1px 1px rgba(0,0,0,.1));
             .float;
             .show;
@@ -6170,9 +6188,9 @@
                 }
 
                 .button {
-                    .pull-left;
                     margin-right: 5px;
                     .square(40px);
+                    .pull-left;
 
                     &:last-child { margin-right: 0; }
                 }
@@ -6273,6 +6291,8 @@
                     td {
                         background: @white;
                         padding: 10px;
+                        white-space: normal;
+                        overflow: visible;
 
                         &.bold {
                             font-weight: bold;
@@ -6294,6 +6314,7 @@
                             font-size: 14px;
                             text-transform: uppercase;
                             text-align: left;
+                            vertical-align: top;
                             padding: 0;
 
                             span { color: @textColor; }
@@ -6341,6 +6362,7 @@
                                 font-size: 16px;
                                 line-height: 1em;
                                 font-weight: 600;
+
                                 &:last-child { text-align: left; }
                             }
                         }

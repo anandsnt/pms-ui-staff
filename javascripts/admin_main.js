@@ -14,12 +14,13 @@
 //=require ../shared/lib/js/date.js
 //=require ../shared/baseCtrl.js
 //=require ../shared/lib/js/ngDialog.min.js
+//=require ../shared/lib/js/angular-multi-select.js
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/Utils.js
 //=require_tree ../shared/directives/documentTouchMovePrevent
-//=require_tree ../shared/directives/tooltip
+//=require_tree ../shared/interceptors
 //=require_tree ../admin/adRouter
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
@@ -28,4 +29,5 @@
 //=require_tree ../admin/directives
 //=require_tree ../admin/services
 //=require ../shared/iBeaconOperations.js
+//=require_tree ../shared
 //=require ../rover/rvSntApp.js

@@ -15,7 +15,7 @@
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 	<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
 		<div id="new-form-holder"></div>
-		<table class="grid datatable" ng-table="tableParams">
+		<table class="grid datatable" ng-table="tableParams" template-pagination="nil">
 			<tbody>
 				<tr ng-repeat="item in $data">
 					<td data-title="'Code'" sortable="'charge_code'" ng-click="editSelected($index, item.value)" ng-hide="currentClickedElement == $index && isEdit">

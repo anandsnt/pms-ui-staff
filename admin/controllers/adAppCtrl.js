@@ -164,12 +164,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [],
 					iconClass: "icon-dashboard"
 				}, {
-					title: "MENU_SEARCH",
-					action: "staff#/staff/search/",
-					menuIndex: "search",
-					submenu: [],
-					iconClass: "icon-dashboard"
-				}, {
 					title: "MENU_HOUSEKEEPING",
 					//hidden: true,
 					action: "",
@@ -178,12 +172,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_ROOM_STATUS",
 						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
-					}, {
-						title: "MENU_TASK_MANAGEMENT",
-						action: "staff#/staff/workmanagement/start"						
-					}, {
-						title: "MENU_MAINTAENANCE",
-						action: ""
 					}]
 				},{
 					title: "MENU_REPORTS",
@@ -426,6 +414,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
+		}else{
+			$translate.use('EN');
 		}
 
 	
