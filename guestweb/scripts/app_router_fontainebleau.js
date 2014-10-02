@@ -49,9 +49,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
 	 	title: 'Check-in'
+	 }).state('checkinSuccess', {
+	 	url: '/checkinSuccess',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Check-in'
 	 });
-
-
+	 
 	 //room verification
 
 	 $stateProvider.state('checkoutRoomVerification', {

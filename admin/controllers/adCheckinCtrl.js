@@ -43,14 +43,16 @@ var setUpData = function(){
       angular.forEach($scope.checkinData.excluded_rate_codes,function(excludedrate, index) {
         if(rate.id == excludedrate){
           $scope.excludedRateCodes.push(rate);
+          rate.ticked = true;// for the multi-select implementation
         }
       });
      });
 
-    angular.forEach($scope.block_codes,function(rate, index) {
+    angular.forEach($scope.block_codes,function(block, index) {
       angular.forEach($scope.checkinData.excluded_block_codes,function(excludedblock, index) {
-        if(rate.id == excludedblock){
-          $scope.excludedBlockCodes.push(rate);
+        if(block.id == excludedblock){
+          $scope.excludedBlockCodes.push(block);
+          block.ticked = true;// for the multi-select implementation
         }
       });
      });
@@ -151,40 +153,53 @@ $scope.saveCheckin = function(){
 
 // to add to excluded rate codes
 $scope.clickExcludeRateCode = function(){
-  angular.forEach($scope.rate_codes,function(item, index) {
-  
-    if((item.id == $scope.checkinData.selected_rate_code) && ( $scope.excludedRateCodes.indexOf(item) == -1) ){
-      $scope.excludedRateCodes.push(item);
+  $scope.excludedRateCodes = [];
+  angular.forEach($scope.rate_codes, function( value, key ) {
+    if ( (value.ticked === true) && ( $scope.excludedRateCodes.indexOf(value) == -1)) {
+        $scope.excludedRateCodes.push(value);
     }
   });
-
-  $scope.checkinData.selected_rate_code = "";
 };
 
 // to add to excluded block codes
 $scope.clickExcludeBlockCode = function(){
-  angular.forEach($scope.block_codes,function(item, index) {
-    if((item.id == $scope.checkinData.selected_block_code) && ( $scope.excludedBlockCodes.indexOf(item) == -1) ){
-      $scope.excludedBlockCodes.push(item);
+
+  $scope.excludedBlockCodes = [];
+  angular.forEach($scope.block_codes, function( value, key ) {
+    if ( (value.ticked === true) && ( $scope.excludedBlockCodes.indexOf(value) == -1)) {
+        $scope.excludedBlockCodes.push(value);
     }
-  });     
-  $scope.checkinData.selected_block_code = "";
+  });
 };
 
 //remove exclude block code
 $scope.deleteBlockCode = function(id){
+  //remove from final array
   angular.forEach($scope.excludedBlockCodes,function(item, index) {
     if(item.id == id){
       $scope.excludedBlockCodes.splice(index,1);
+    }
+  });
+  //untick from list
+   angular.forEach($scope.block_codes,function(item, index) {
+    if(item.id == id){
+      item.ticked = false;
     }
   });
 
 };
 //remove exclude rate code
 $scope.deleteRateCode = function(id){
+  //remove from final array
   angular.forEach($scope.excludedRateCodes,function(item, index) {
     if(item.id == id){
       $scope.excludedRateCodes.splice(index,1);      
+    }
+  });
+  //untick from list
+  angular.forEach($scope.rate_codes,function(item, index) {
+    if(item.id == id){
+      item.ticked = false;
     }
   });
 

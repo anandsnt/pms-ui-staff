@@ -14,6 +14,7 @@
 //=require ../shared/lib/js/date.js
 //=require ../shared/baseCtrl.js
 //=require ../shared/lib/js/ngDialog.min.js
+//=require ../shared/lib/js/angular-multi-select.js
 //=require ../shared/lib/js/angular-sanitize.js
 //=require ../shared/lib/js/angular-translate.js
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
