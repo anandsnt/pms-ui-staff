@@ -10,6 +10,7 @@ sntRover.controller('reservationActionsController', [
 	'RVSearchSrv',
 	'RVDepositBalanceSrv',
 	'$filter',
+	'RVChargeItems',
 	function($rootScope, 
 		$scope, 
 		ngDialog, 
@@ -20,7 +21,8 @@ sntRover.controller('reservationActionsController', [
 		RVHkRoomDetailsSrv,
 		RVSearchSrv,
 		RVDepositBalanceSrv, 
-		$filter) {
+		$filter,
+		RVChargeItems) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -105,16 +107,22 @@ sntRover.controller('reservationActionsController', [
 			// api post param 'fetch_total_balance' must be 'true' when posted from 'staycard'
 			$scope.fetchTotalBal = true;
 
-			var callback = function(data) {
+			$scope.successGetBillDetails = function(data){
 				$scope.$emit('hideLoader');
-
-				$scope.fetchedData = data;
-
+				$scope.fetchedData.bill_numbers = data.bills;
+				$scope.billNumber = "1";
 				ngDialog.open({
 					template: '/assets/partials/postCharge/postCharge.html',
 					controller: 'RVPostChargeController',
 					scope: $scope
 				});
+				
+			};
+			var callback = function(data) {				
+
+				$scope.fetchedData = data;
+				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+				
 			};
 			$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 		};
