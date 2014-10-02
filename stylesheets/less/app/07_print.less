@@ -202,70 +202,33 @@ h4, .h4 { page-break-after: avoid; }
 
 /* Guest Bill*/	
 	.overview, .block-item,.action-select { .hide; }
-
-	#guest-card, #bills-tabs-nav{ .hide; }
+.logo-hide, .text-hide{.hide;}
+	#guest-card, #bills-tabs-nav, #signature-pad{ .hide; }
 
 	.reservation-header,.billing-information, .bill-summary-wrapper,.selectBill { .hide; }
 
-	.button, .total-stay-fees,.notice,.error error_message { .hide; }
+	.button, .total-stay-fees,.notice,.error error_message, button { .hide; }
 
-	.details{
+	.hotel_logo {
+		position: static;
+		top: auto;
+		right: auto;
+		text-align: center;
+		margin: 1cm auto .25cm auto;
+		.size(70px,316px);
 
-		height: auto !important;
-		overflow: auto !important;
-		border-top: 2px solid rgba(0,0,0,.1);
-
-		table{
-			table-layout: fixed;
-			border-collapse: collapse; 
-			margin-bottom: 0;
-			tr {	
-				page-break-after: always;
-				page-break-inside: avoid;
-					th{
-						padding-bottom:0.5cm !important;
-					}
-
-					th,
-					td {
-						page-break-after:always !important;
-						page-break-inside: avoid !important;
-						white-space: normal !important;
-						overflow: visible !important;
-						vertical-align: top !important;
-						line-height: 1.1;
-						padding: .2cm 1cm .2cm 0;
-						border-bottom: 1px solid rgba(0,0,0,.1);
-						min-width:14%;
-						max-width:29%;
-						width:29%;
-						font-size:15px
-					}
-			
-				}
-
-				tfoot {
-					tr {
-						page-break-after: always !important;
-						page-break-inside: avoid !important;
-						td {
-							page-break-after:always !important;
-							page-break-inside: avoid !important;
-							border-bottom: 0;
-							padding-top: 1cm !important;
-							font-size:15px;
-						}
-					}
-				}
-	
+		img { 
+			max-height: 70px;
+			max-width: 316px;
+		}
 	}
-}
+
+	
 .print-billcard{
 	display:block !important;
-	margin-top:-2cm;
-	padding-top:5px;
 
 	.guest-info{
+
 		table{
 				width:100%;
 				font-size:20px;
@@ -291,10 +254,8 @@ h4, .h4 { page-break-after: avoid; }
 						}
 
 
-						td {
-							page-break-after:always !important;
+						td {							
 							page-break-inside: avoid !important;
-							padding:0;
 						}
 					}
 		}

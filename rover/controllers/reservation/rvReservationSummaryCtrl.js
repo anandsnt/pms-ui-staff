@@ -23,7 +23,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.data.MLIData = {};
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
-			$scope.$emit('setHeading', 'Guest Details & Payment');
+			$scope.setHeadingTitle($scope.heading);
+
 			$scope.setScroller('reservationSummary');
 			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
@@ -137,14 +138,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var stay = [];
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
 				// if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
-					stay.push({
-						date: date,
-						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
-						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-						adults_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.adults :  parseInt(staydata.guests.adults),
-						children_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.children :  parseInt(staydata.guests.children),
-						infants_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.infants :  parseInt(staydata.guests.infants)
-					});
+				stay.push({
+					date: date,
+					rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+					room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+					adults_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
+					children_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
+					infants_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants)
+				});
 				// } else if (date != $scope.reservationData.departureDate) {
 				// 	stay.push({
 				// 		date: date,
@@ -306,13 +307,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 			}
 
-			if($scope.reservationData.paymentType.type != null){
+			if ($scope.reservationData.paymentType.type != null) {
 				if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
 					$scope.errorMessage = [$filter('translate')('INVALID_CREDIT_CARD')];
 				}
 			}
-			
-			if($scope.errorMessage.length > 0){
+
+			if ($scope.errorMessage.length > 0) {
 				return false;
 			}
 
