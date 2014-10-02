@@ -1,30 +1,22 @@
 /* 1. ROOT
 ==========================================================*/
 * { 
-	background: transparent !important; 
-	text-shadow: none !important; 
-	filter:none !important; 
-	-ms-filter: none !important; 
+    text-shadow: none !important; 
+    filter:none !important; 
+    -ms-filter: none !important; 
+    -webkit-print-color-adjust:exact;
 }
 
-@page { margin: .5cm; }
-
-html,
-body { 
-	height: auto !important;
-	overflow: visible;
-	background: none;
-	color: black;
-}
+@page { margin: 1cm 0.5cm; }
 
 html {
-	font-size: 12pt;
-	line-height: 1.3;
+    #font > .sans-serif(12pt, 400, 1.3);
+    color: @textColor;
+    background: transparent;
 }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-
 p, 
 h1, .h1,
 h2, .h2,
@@ -36,6 +28,9 @@ h2, .h2,
 h3, .h3,
 h4, .h4 { page-break-after: avoid; }
 
+q {quotes: none}
+q:before, q:after {content: ""}
+
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
 /* 4. LAYOUT
@@ -43,83 +38,103 @@ h4, .h4 { page-break-after: avoid; }
 	
 /* App screens				==============================*/
 	.container {
-		position: static;
-		top: 0 !important; 
-		left: 0 !important;
-		height: auto !important;
-		overflow: visible;
-		.box-shadow(none);
+        position: static;
+        top: 0 !important; 
+        left: 0 !important;
+        height: auto !important;
+        overflow: visible;
+        .box-shadow(none);
 
-		.page {
-			position: static;
-			top: 0 !important; 
-			left: 0 !important;
-			height: auto !important;
-			background: none;
-			overflow: visible;
-			.hide;
-			
-			/* Page inner container ***/
-			.content {
-				position: static;
-				top: 0 !important; 
-				left: 0 !important;
-				height: auto !important;
-				background: none;
-				overflow: visible;
-			}
+        .page {
+            position: static;
+            top: 0 !important; 
+            left: 0 !important;
+            height: auto !important;
+            background: transparent;
+            overflow: visible;
+            .hide;
+            
+            &.page-current { 
+                .show;
+                .box-shadow(none); 
+            }
 
-			&.page-current { 
-				.show;
-				.box-shadow(none); 
-			}
+            &.page-locked {
 
-			&.page-locked {
+                .nested-view {
+                    position: static;
+                    top: 0 !important; 
+                    left: 0 !important;
+                    height: auto !important;
+                    overflow: visible;
+                }
+            }
+        }
 
-				.nested-view {
-					position: static;
-					top: 0 !important; 
-					left: 0 !important;
-					height: auto !important;
-					overflow: visible;
-				}
-			}
-		}
-	}
+        /* Page inner container ***/
+        .content,
+        .main-view {
+            position: static;
+            top: 0 !important; 
+            left: 0 !important;
+            height: auto !important;
+            background: transparent !important;
+            overflow: visible;
+        }
+    }
+
+    .root-view,
+    .main-view { background: transparent !important; }
+
+    .wrapper { 
+        padding: 0 !important;
+        transform: translate(0px, 0px) !important;
+    }
+
+    .iScrollVerticalScrollbar,
+    .iScrollHorizontalScrollbar { .hide; }
 
 /* Navigation sidebar		==============================*/
-	#main-menu { .hide; }
+	#main-menu,
+    #availability { display: none !important; }
 
 /* Nav Bar 					==============================*/
 	.nav-bar {
+        position: relative;
+        height: auto;
+        padding: 0;
+        background: transparent;
+        margin-bottom: 1cm;
+        .box-shadow(none);
 
-		height: auto;
-		background: transparent;
-		.box-shadow(none);
+        .switch-button,
+        .back-button,
+        .show-mobile,
+        .icon-alert { display: none !important; }
 
-		.nav-toggle, 
-		.icon-alert,
-		.actions-back,
-		h1 span { .hide; }
+        h1 {
+            font-size: 18pt;
+            line-height: 1em;
 
-		.logo {
-			position: static;
-			top: auto;
-			right: auto;
-			text-align: center;
-			margin: 1cm auto .25cm auto;
-			.size(70px,316px);
+            span { 
+                font-size: 10pt; 
 
-			img { 
-				max-height: 70px;
-				max-width: 316px;
-			}
-		}
+                strong,
+                span { 
+                    display: inline; 
+                    font-weight: 400;
+                }
+            }
+        }
 
-		h1 {
-			margin-bottom: 1cm;
-		}
-	}
+        .logo {
+            margin: 0 auto;
+            .size(30px, 135px);
+            .show;
+
+            img { .size(100%, auto); }
+        }     
+    }
 
 /* 5. COMPONENTS
 ==========================================================*/
@@ -133,12 +148,14 @@ h4, .h4 { page-break-after: avoid; }
 		position: static !important;
 		height: auto !important;
 		overflow: auto !important;
+		background: transparent !important;
 	}
 
 	#report-details {
 		position: static !important;
 		height: auto !important;
 		overflow: auto !important;
+		background: transparent !important;
 
 		.report-header { .hide; }
 
@@ -162,9 +179,10 @@ h4, .h4 { page-break-after: avoid; }
 				table-layout: fixed;
 				border-collapse: collapse; 
 				margin-bottom: 0;
+
 				tr {	
-				page-break-after: always;
-				page-break-inside: avoid;
+					page-break-after: always;
+					page-break-inside: avoid;
 						
 					th,
 					td {
@@ -173,6 +191,7 @@ h4, .h4 { page-break-after: avoid; }
 						white-space: normal !important;
 						overflow: visible !important;
 						vertical-align: top !important;
+						background: transparent !important;
 						line-height: 1.1;
 						padding: .2cm 1cm .2cm 0;
 						border-bottom: 1px solid rgba(0,0,0,.1);
@@ -230,44 +249,135 @@ h4, .h4 { page-break-after: avoid; }
 	.guest-info{
 
 		table{
-				width:100%;
-				font-size:20px;
-				tr:first-child{
-					border-bottom: 1px solid black;
-					padding-bottom:.25cm;
+			width:100%;
+			font-size:20px;
+			tr:first-child{
+				border-bottom: 1px solid black;
+				padding-bottom:.25cm;
+			}
+			tr {
+				page-break-after: always !important;
+				page-break-inside: avoid !important;
+
+				td:first-child, td:last-child{
+					width:40%;
 				}
+				td:nth-child(2){
+					width:20%;
+				}
+				td:first-child{
+					text-align:left;
+				}
+				td:last-child{
+					text-align:right;
+				}
+
+
+				td {							
+					page-break-inside: avoid !important;
+				}
+			}
+        }
+    }
+
+	.details {
+		height: auto !important;
+		overflow: auto !important;
+		border-top: 2px solid rgba(0,0,0,.1);
+
+		table{
+			table-layout: fixed;
+			border-collapse: collapse; 
+			margin-bottom: 0;
+
+			tr {	
+				page-break-after: always;
+				page-break-inside: avoid;
+				
+				th{
+					padding-bottom:0.5cm !important;
+				}
+
+				th,
+				td {
+					page-break-after:always !important;
+					page-break-inside: avoid !important;
+					white-space: normal !important;
+					overflow: visible !important;
+					vertical-align: top !important;
+					line-height: 1.1;
+					padding: .2cm 1cm .2cm 0;
+					border-bottom: 1px solid rgba(0,0,0,.1);
+					min-width:14%;
+					max-width:29%;
+					width:29%;
+					font-size:15px
+				}
+			}
+
+			tfoot {
 				tr {
-						page-break-after: always !important;
+					page-break-after: always !important;
+					page-break-inside: avoid !important;
+					td {
+						page-break-after:always !important;
 						page-break-inside: avoid !important;
-
-						td:first-child, td:last-child{
-							width:40%;
-						}
-						td:nth-child(2){
-							width:20%;
-						}
-						td:first-child{
-							text-align:left;
-						}
-						td:last-child{
-							text-align:right;
-						}
-
-
-						td {							
-							page-break-inside: avoid !important;
-						}
+						border-bottom: 0;
+						padding-top: 1cm !important;
+						font-size:15px;
 					}
+				}
+			}
 		}
 	}
 
-	.bill-details{
-		table{
+	.print-billcard {
+		display:block !important;
+		margin-top:-2cm;
+		padding-top:5px;
+
+		.guest-info{
+			table{
+					width:100%;
+					font-size:20px;
+					tr:first-child{
+						border-bottom: 1px solid black;
+						padding-bottom:.25cm;
+					}
+					tr {
+							page-break-after: always !important;
+							page-break-inside: avoid !important;
+
+							td:first-child, td:last-child{
+								width:40%;
+							}
+							td:nth-child(2){
+								width:20%;
+							}
+							td:first-child{
+								text-align:left;
+							}
+							td:last-child{
+								text-align:right;
+							}
+
+
+							td {
+								page-break-after:always !important;
+								page-break-inside: avoid !important;
+								padding:0;
+							}
+						}
+			}
+		}
+
+		.bill-details{
+			table {
 			    border-collapse: collapse;
 				width:100%;
 				font-size:20px;
-				
-			tr {
+					
+				tr {
 					page-break-after: always !important;
 					page-break-inside: avoid !important;
 					th{
@@ -292,17 +402,16 @@ h4, .h4 { page-break-after: avoid; }
 					}
 				
 				}
-				
+			}
+		}
 
-		}
-		}
-	.amount-details{
-		table{
+		.amount-details{
+			table {
 			    border-collapse: collapse;
 				width:100%;
 				font-size:20px;
-				
-			tr {
+					
+				tr {
 					page-break-after: always !important;
 					page-break-inside: avoid !important;
 				
@@ -314,17 +423,354 @@ h4, .h4 { page-break-after: avoid; }
 						page-break-inside: avoid !important;
 						padding:.25cm .25cm 0;
 					}
-				
 				}
-				
-
+			}
 		}
-		}
-
-
-
+	}
 }
 
+/* Work Management          ==============================*/
+    #worksheet-content {
+        margin: 0 auto;
+        width: 75%;
+
+        .worksheet-header,
+        .unassigned-rooms,
+        .assigned-rooms h2,
+        .sheet-placeholder { .hide; }
+
+        /* Worksheet room ***/           
+        .worksheet-room {
+            position: relative;
+            text-align: left;
+            line-height: 30pt;
+            vertical-align: middle;
+            margin: 0;
+            height: 38pt;
+            overflow: hidden;
+            border-bottom: 1px solid @grey2;
+            page-break-after: auto;
+            page-break-inside: avoid;
+            .float;
+            
+            h3 {
+                font-size: 30pt;
+                line-height: 1em;
+                font-weight: 700;
+                margin: 0;
+                .size(30pt, 4cm);
+                .pull-left;
+                
+                &.clean,
+                &.inspected { color: @green; }
+                &.dirty,
+                &.pickup { color: @red; }
+                &.out { color: @grey3; }
+            }
+
+            &.single-sheet {
+                padding: 4pt 34pt 4pt 0 !important;
+
+                .reservation-status {
+                    margin-top: 3pt;
+                    .size(24pt, 6.5cm);
+                    .pull-left;
+
+                    .guest-status { 
+                        margin-right: 8pt;
+                        .square(24pt);
+
+                        &.check-in { background-position: 8px -112px; }
+                        &.check-out { background-position: 8px -152px; }
+                        &.inhouse { background-position: 8px -192px; }
+                        &.no-show { display: none !important; }
+                    }
+
+                    .current,
+                    .next { 
+                        font-size: 10pt;
+                        line-height: 24pt;
+                        text-transform: uppercase;
+                        .size(24pt, 50%);
+                        .pull-left;
+
+                        &.check-in { color: @green; }
+                        &.check-out { color: @red; }
+                        &.inhouse { color: @blue; }
+                    }
+                }
+
+                .icon-queued {
+                    background-position: 6px -4175px;
+                    margin-right: 4pt;
+                    .hide-text;
+                    .square(30pt);
+                    .show;
+                    .pull-right;
+                }
+                
+                .vip {
+                    font-size: 8pt;
+                    line-height: 20pt;
+                    margin: 5pt 4pt 0 0;
+                    .square(20pt);
+                    .pull-right;
+                }
+
+                .button,
+                .no-action {
+                    position: absolute;
+                    top: 4pt;
+                    left: auto !important;
+                    right: 0 !important;
+                    padding: 0;
+                    #border-radius > .rounded(0px);
+                    .box-shadow(none);
+                    .square(30pt);
+                    .hide-text;
+                    .no-transition;
+                    .show;
+
+                    &.green { .hide; }
+
+                    &.red { 
+                        background: transparent !important;
+                        border: 2px solid @grey3;
+                    }
+                }
+
+                .no-action { 
+                    background: transparent !important;
+                    border: 2px solid @green;
+
+                    &:after {
+                        content: "✔";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        text-indent: 0;
+                        text-align: center;
+                        font-size: 20pt;
+                        line-height: 30pt;
+                        color: @green;
+                        .square(100%);
+                        .show;
+                    }
+                }
+            }
+
+            &.multi-sheet {
+                color: #fff;
+                padding: 4pt 0 !important;
+
+                h3 { color: @textColor; }
+
+                .guest,
+                .room {
+                    position: relative;
+                    font-size: 10pt;
+                    line-height: 24pt;
+                    text-transform: uppercase;
+                    color: @textColor;
+                    margin-top: 3pt;
+                    .size(24pt, 5cm);
+                    .show;
+                }
+
+                .guest {
+                    padding-left: 30pt;   
+                    .pull-left;                 
+                    
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        background-image: @icons;
+                        background-repeat: no-repeat;
+                        .square(24pt);
+                        .show;
+                    }
+
+                    &.check-in {
+                        color: @green; 
+
+                        &:before {
+                            background-color: @green;
+                            background-position: 8px -112px; 
+                        }
+                    }
+
+                    &.check-out { 
+                        color: @red; 
+
+                        &:before {
+                            background-color: @red;
+                            background-position: 8px -152px;
+                        }
+                    }
+
+                    &.inhouse { 
+                        color: @blue; 
+
+                        &:before {
+                            background-color: @blue;
+                            background-position: 8px -192px;
+                        }
+                    }
+
+                    &.no-show { 
+                        &:before { .hide; }
+                    }
+                }
+
+                .room {
+                    padding-right: 34pt;
+                    text-align: left;
+                    color: @textColor;
+                    .pull-right;
+
+                    &:before {
+                        position: absolute;
+                        top: -3pt;
+                        right: 0;
+                        .square(30pt);
+                        .show;
+                    }
+
+                    &.clean,
+                    &.inspected { 
+                        color: @green; 
+
+                        &:before {
+                            content: "✔";
+                            text-align: center;
+                            font-size: 20pt;
+                            line-height: 30pt;
+                            color: @green;
+                            border: 2px solid @green;
+                            .show;
+                        }
+
+                    }
+
+                    &.dirty { color: @red; }
+                    &.pickup { color: @orange; }
+
+                    &.dirty,
+                    &.pickup {
+                        &:before { 
+                            content: "";
+                            border: 2px solid @grey3; 
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Assigned rooms ***/
+        .assigned-rooms {
+
+            .worksheet-content { border-top: 1px solid @grey2; }
+            
+            &.single-sheet {
+                
+                .worksheet-summary { 
+                    text-align: center;
+                    width: auto;
+                    margin: 0 auto 8pt;
+                    .show;
+
+                    li {
+                        display: inline-block;
+                        font-size: 10pt;
+                        line-height: 1em;
+                        text-align: center;
+                        color: @grey3;
+                        margin: 0 8pt 0 0;
+                        padding-right: 8pt;
+                        border-bottom: 0;
+                        border-right: 1px solid rgba(0,0,0,.1);
+                        width: auto;
+
+                        span { 
+                            font-size: 28pt;
+                            font-weight: 300;
+                            color: @textColor;
+                            float: none;
+                        }
+
+                        &:last-child {
+                            margin-right: 0;
+                            padding-right: 0;
+                            border-right: 0;
+                        }
+                    }
+                }
+            }
+
+            &.multi-sheet {
+            
+                .sheet-content {
+                    page-break-after: always;
+                    page-break-inside: auto;
+                    
+                    .button { 
+                        font-size: 21pt;
+                        text-transform: none;
+                        color: @textColor;
+                        padding: 0;
+                        margin-bottom: 8pt;
+                        #border-radius > .rounded(0px);
+                        .box-shadow(none);
+                        .no-transition;
+                        .show;
+
+                        &.brand-colors { background: transparent !important; }
+                    }
+
+                    .data {
+                        text-align: center;
+                        width: auto;
+                        margin: 0 auto 8pt;
+                        .show;  
+
+                        li {
+                            display: inline-block;
+                            font-size: 28pt;
+                            line-height: 1em;
+                            text-align: center;
+                            font-weight: 300;
+                            color: @textColor;
+                            margin: 0 1cm 0 0;
+                            padding: 0;
+                            border-bottom: 0;
+                            width: auto;
+
+                            span { 
+                                &.completed { margin-right: 8pt; }
+                                &.total { padding-left: 8pt; border-left: 1px solid @grey3; }
+                            }
+
+                            &.shift { 
+                                .total { color: @grey3; }
+                            }
+                            
+                            &.departures { 
+                                color: @red;
+                                .total { border-color: @red; }
+                            }
+                            
+                            &.stayovers { 
+                                color: @blue;
+                                .total { border-color: @blue; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 /* 6. IE
 ==========================================================*/

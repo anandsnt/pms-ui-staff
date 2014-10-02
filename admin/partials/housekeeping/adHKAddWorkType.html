@@ -1,0 +1,31 @@
+<div class="data-holder">
+	<form class="form single-field-form float">
+		<div class="form-title" style="margin-bottom: 20px;">
+			<h3>
+				<span ng-if="workTypeForm == 'add'">{{'ADD' | translate}}</span> 
+				<span ng-if="workTypeForm == 'edit'">{{'EDIT' | translate}}</span> 
+				 Work Type
+			</h3>
+			<em class="status"> <span translate="" class="ng-scope">All Fields</span> <span translate="" class="ng-scope">are mandatory!</span> </em>
+		</div>
+
+		<div class="entry"><input type="text" placeholder="Enter task type" ng-model="eachWorkType.name"></div>
+
+		<div class="actions float">
+			<button type="button" class="button blank edit-data-inline" ng-click="closeWorkTypeForm()" translate>
+				CANCEL 
+			</button>
+
+			<button ng-if="workTypeForm == 'add'" type="button" class="button green edit-data-inline" ng-click="addWorkType()" translate>
+				SAVE_CHANGES
+			</button>
+			<button ng-if="workTypeForm == 'edit'" type="button" class="button green edit-data-inline" ng-click="updateWorkType()" translate>
+				SAVE_CHANGES
+			</button>
+
+			<button ng-if="workTypeForm == 'edit'" ng-hide="chosenItem.newItem" type="button" class="button red edit-data-inline" ng-click="deleteWorkType()" translate>
+				DELETE
+			</button>
+		</div>
+	</form>
+</div>
