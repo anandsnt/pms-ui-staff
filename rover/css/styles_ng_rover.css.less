@@ -1008,6 +1008,13 @@ Padding for the ows error popup
 
 /* making sure we are not flickering */
 .reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add,
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  display: block !important;
+}
+
+.reports-wrapper.ng-hide-remove,
 .reports-wrapper.ng-hide-add {
   -webkit-backface-visibility: hidden;
   backface-visibility:hidden;
@@ -1017,13 +1024,23 @@ Padding for the ows error popup
 }
 
 .reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add-active {
-  z-index: 50;
+.reports-wrapper.ng-hide-remove-active {
+  z-index: 50 !important;
 }
 
-.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add,
 .reports-wrapper.ng-hide-add-active {
-  z-index: 30;
+  z-index: 30 !important;
+}
+
+.return-back .reports-wrapper.ng-hide-remove,
+.return-back .reports-wrapper.ng-hide-remove-active {
+  z-index: 30 !important;
+}
+
+.return-back .reports-wrapper.ng-hide-add,
+.return-back .reports-wrapper.ng-hide-add-active {
+  z-index: 30 !important;
 }
 
 /* normal app state animations */
