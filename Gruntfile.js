@@ -2,26 +2,31 @@
 
 module.exports = function(grunt) {
     var paths = {
-        dist: 'dev',
-        src: {
-            admin: 'admin/',
-            rover: 'rover/'
-        },
-        partials: {
-            admin: 'admin/partials/',
-            rover: 'rover/partials/'
-        }/*,
+            dist: 'dev',
+            src: {
+                admin: 'admin/',
+                rover: 'rover/'
+            },
+            partials: {
+                admin: 'admin/partials/',
+                rover: 'rover/partials/'
+            },
+            locales: {
+                adminEnglish: 'admin/adLocales/en/',
+                roverEnglish: 'rover/rvLocales/en'
+            }
+            /*,
         style: {
 
         }*/
-    },
-    connect = {
-        options: {
-            port: 9000,
-            hostname: 'localhost',
-            livereload: 35729
-        }
-    };
+        },
+        connect = {
+            options: {
+                port: 9000,
+                hostname: 'localhost',
+                livereload: 35729
+            }
+        };
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -153,7 +158,15 @@ module.exports = function(grunt) {
                 options: {
                     livereload: true
                 }
-            }/*,
+            },
+            locales: {
+                files: ['<%= paths.locales.adminEnglish %>/*.json', '<%= paths.locales.roverEnglish %>/*.json'],
+                tasks: ['concat'],
+                options: {
+                    livereload: true
+                }
+            }
+            /*,
             style: {
                 files: [],
                 tasks: [],

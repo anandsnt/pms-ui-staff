@@ -87,6 +87,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
+    $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function(){
@@ -212,7 +213,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "roomStatus"
           }, {
             title: "MENU_TASK_MANAGEMENT",
-            action: ""
+            action: "rover.workManagement.start"
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""

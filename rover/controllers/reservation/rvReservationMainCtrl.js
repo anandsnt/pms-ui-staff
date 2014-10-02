@@ -11,12 +11,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
-        // This is a temporary fix, has to be revisited as to why the heading is not changeable from the 
-        // inner controllers
-        $scope.$on("setHeading", function(e, value) {
-            $scope.heading = value;
-        });
-
         $scope.viewState = {
             isAddNewCard: false,
             pendingRemoval: {

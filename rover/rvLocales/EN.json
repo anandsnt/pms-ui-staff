@@ -284,7 +284,8 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"RELEASE_REFRESH": "Release to refesh...",
+	"ROOM_TYPE_FILTER_TITLE": "Room Type",    "PRINT_ROOM_KEY" : "Print Room Key",
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
@@ -465,7 +466,8 @@
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
-    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address"
+    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",

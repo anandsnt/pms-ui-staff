@@ -33,7 +33,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
     $scope.checkForHotelLoyaltyLevel = function(){
     	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
     		if($scope.loyaltyData.userMemberships.hotelLoyaltyProgram.membership_level != ""){
-    			$scope.$emit('loyaltyLevelAvailable', $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.membership_level);
+    			$scope.$emit('loyaltyLevelAvailable', $scope.loyaltyData.userMemberships.hotelLoyaltyProgram[i].membership_level);
     			break;
     		}
     	}
