@@ -131,7 +131,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: ""
+						action: "staff#/staff/workmanagement/start"
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""

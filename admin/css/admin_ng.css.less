@@ -740,13 +740,27 @@ td{
   margin-left:5px;
   color:#575757 !important;
 }
-//CICO-9442 Fix the close button issue
 
- .ui-datepicker-trigger-btn { 
-                    margin-left:36px;
-                    width:85% !important; 
-                     }
-//CICO-6445 On edit screens, position of right side buttons seems to change
+
+/*HK: Daily work assignment*/
+#daily-work-assignment .content-title {
+  margin-bottom: 0;
+}
+
+#daily-work-assignment .grid {
+  margin-bottom: 50px;
+}
+
+#daily-work-assignment .grid tbody tr td a {
+  display: inline-block;
+}
+
+.ui-datepicker-trigger-btn { 
+  margin-left:36px;
+  width:85% !important; 
+}
+
+/*CICO-6445 On edit screens, position of right side buttons seems to change*/
 .inline-edit{
   table{
     table-layout:auto !important;
@@ -755,4 +769,25 @@ td{
 .entry-padding-left{
   padding-left:2%;
 }
+.select-margin{
+  margin-right:3.333% !important;
+   width: 15%;
+}
 
+.select-med {
+  margin-right:3.333%;
+  width: 18%;
+}
+
+.label-checkout {
+  padding-top: 10px;
+}
+
+/* to handle width issue in multti select options */
+.multiSelect .multiSelectItem{
+  white-space:normal !important;
+}
+
+.multiSelect .show{
+   max-width:40% !important;
+}

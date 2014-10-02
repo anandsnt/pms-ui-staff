@@ -3,77 +3,125 @@
 			<h2 translate>GUEST_CHECKOUT_SETUP</h2>
 			<a ui-sref="admin.checkinCheckoutEmail({from:'checkout'})" class="action email" translate>SEND_CHECKOUT_EMAIL</a>
 			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" translate>BACK</a>
-		</header>
-		<section class="content-scroll">
+		</header
+>		<section class="content-scroll">
 					<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 					<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
-						<fieldset class="holder left">
-							<div class="entry third-quarter">
-								<label translate>
+						<fieldset>
+							<div class="entry full-width">
+							<label translate>
 									SEND_CHECKOUT_NOTIFICATON_EMAIL
 								</label>
-								<div class="entry full-width float">
-									<div class="select select-col col1-3">
-										<select ng-options="hour for hour  in hours" ng-model="checkoutData.checkout_email_alert_time_hour ">
-											<option  value="HH" translate>HH</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.checkout_email_alert_time_minute">
-											<option  value="MM" translate>MM</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-											<option value="AM" selected="" translate>AM</option>
-											<option value="PM" translate>PM</option>
-										</select>
-									</div>
-								</div>			
-
 							</div>
 
-							<div class="time-text">
+						</fieldset>
+						<fieldset>
+
+							<div class="entry">
+								<div class="select select-col select-med">
+									<select ng-options="hour for hour  in hours" ng-model="checkoutData.checkout_email_alert_time_hour ">
+										<option  value="HH" translate>HH</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select ng-options="minute for minute  in minutes" ng-model="checkoutData.checkout_email_alert_time_minute">
+										<option  value="MM" translate>MM</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+										<option value="AM" selected="" translate>AM</option>
+										<option value="PM" translate>PM</option>
+									</select>
+								</div>
+								<label class="label-checkout" translate>
 									AND
+								</label>
+							</div>
+							
+							<div class="entry">
+								<!-- <br> -->
+								<div class="select select-col select-med">
+									<select ng-options="hour for hour  in getArrayAfterValue(checkoutData.checkout_email_alert_time_hour)" ng-model="checkoutData.alternate_checkout_email_alert_time_hour" ng-disabled = "(checkoutData.checkout_email_alert_time_hour == 'HH' || checkoutData.checkout_email_alert_time_minute == 'MM')">
+										<option  value="HH" translate>HH</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select ng-options="minute for minute  in minutes" ng-model="checkoutData.alternate_checkout_email_alert_time_minute" ng-disabled = "(checkoutData.checkout_email_alert_time_hour == 'HH' || checkoutData.checkout_email_alert_time_minute == 'MM')">
+										<option  value="MM" translate>MM</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+										<option value="AM" selected="" translate>AM</option>
+										<option value="PM" translate>PM</option>
+									</select>
 								</div>
 
-							<div class="entry third-quarter">
-								
-								<div class="entry full-width float">
-									<div class="select select-col col1-3">
-										<select ng-options="hour for hour  in hours" ng-model="checkoutData.weekends_checkout_email_alert_time_hour">
-											<option  value="HH" translate>HH</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_checkout_email_alert_time_minute">
-											<option  value="MM" translate>MM</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-											<option value="AM" selected="" translate>AM</option>
-											<option value="PM" translate>PM</option>
-										</select>
-									</div>
-								</div>
+								<label class="label-checkout" translate>
+									ON_WEEKDAYS
+								</label>
 							</div>
 
-							<div class="time-text-second time-text-second-opt">
-									AND
+
+
+
+							<div class="entry">
+								<br>
+								<div class="select select-col select-med">
+									<select ng-options="hour for hour  in hours" ng-model="checkoutData.weekends_checkout_email_alert_time_hour">
+										<option  value="HH" translate>HH</option>
+									</select>
 								</div>
+								<div class="select select-col select-med">
+									<select ng-options="minute for minute  in minutes" ng-model="checkoutData.weekends_checkout_email_alert_time_minute">
+										<option  value="MM" translate>MM</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+										<option value="AM" selected="" translate>AM</option>
+										<option value="PM" translate>PM</option>
+									</select>
+								</div>
+								<label class="label-checkout" translate>
+									AND
+								</label>
+							</div>
+							
+							<div class="entry">
+								<br>
+								<div class="select select-col select-med">
+									<select ng-options="hour for hour  in getArrayAfterValue(checkoutData.weekends_checkout_email_alert_time_hour)" ng-model="checkoutData.alternate_weekends_checkout_email_alert_time_hour" ng-disabled = "(checkoutData.weekends_checkout_email_alert_time_hour == 'HH' || checkoutData.weekends_checkout_email_alert_time_minute == 'MM')">
+										<option  value="HH" translate>HH</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select ng-options="minute for minute  in minutes" ng-model="checkoutData.alternate_weekends_checkout_email_alert_time_minute" ng-disabled = "(checkoutData.weekends_checkout_email_alert_time_hour == 'HH' || checkoutData.weekends_checkout_email_alert_time_minute == 'MM')">
+										<option  value="MM" translate>MM</option>
+									</select>
+								</div>
+								<div class="select select-col select-med">
+									<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+										<option value="AM" selected="" translate>AM</option>
+										<option value="PM" translate>PM</option>
+									</select>
+								</div>
+
+								<label class="label-checkout" translate>
+									ON_SATURDAY_SUNDAY
+								</label>
+							</div>
 							
 							
+						</fieldset>
+
+						<fieldset class="holder left">
 							<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="{{'CC_GUARENTEED_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
-
-							
 							
 							<ad-checkbox is-checked="include_cash_reservationsy_flag" label=" {{'CASH_PAYMENT_LABEL' | translate}}" div-class="full-width"></ad-checkbox>	
-
 							
 							<ad-toggle-button is-checked="is_send_checkout_staff_alert_flag" label="{{'WEB_CHEKOUT_ALERT_LABEL' | translate}}"></ad-toggle-button>
-
-							
 
 							<div id="options" class="entry full-width" ng-show="is_send_checkout_staff_alert_flag">
 								
@@ -96,63 +144,10 @@
 
 							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.staff_emails_for_late_checkouts" label = "{{'EMAIL_ACCOUNTS_LABEL2' | translate}}" placeholder = ""></ad-textarea>
 
+
+
 						</fieldset>
-						<fieldset class="holder right">
-							<div class="entry third-quarter">
-								
-								<label class="label-height">
-
-								</label>
-								<div class="entry full-width float">
-									<div class="select select-col col1-3">
-										<select ng-options="hour for hour  in getArrayAfterValue(checkoutData.checkout_email_alert_time_hour)" ng-model="checkoutData.alternate_checkout_email_alert_time_hour" ng-disabled = "(checkoutData.checkout_email_alert_time_hour == 'HH' || checkoutData.checkout_email_alert_time_minute == 'MM')">
-											<option  value="HH" translate>HH</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.alternate_checkout_email_alert_time_minute" ng-disabled = "(checkoutData.checkout_email_alert_time_hour == 'HH' || checkoutData.checkout_email_alert_time_minute == 'MM')">
-											<option  value="MM" translate>MM</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-											<option value="AM" selected="" translate>AM</option>
-											<option value="PM" translate>PM</option>
-										</select>
-									</div>
-								</div>
-
-							</div>
-							<div class="time-text">
-									ON WEEKDAYS
-								</div>
-
-							<div class="entry third-quarter">
-								
-								<div class="entry full-width float">
-									<div class="select select-col col1-3">
-										<select ng-options="hour for hour  in getArrayAfterValue(checkoutData.weekends_checkout_email_alert_time_hour)" ng-model="checkoutData.alternate_weekends_checkout_email_alert_time_hour" ng-disabled = "(checkoutData.weekends_checkout_email_alert_time_hour == 'HH' || checkoutData.weekends_checkout_email_alert_time_minute == 'MM')">
-											<option  value="HH" translate>HH</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select ng-options="minute for minute  in minutes" ng-model="checkoutData.alternate_weekends_checkout_email_alert_time_minute" ng-disabled = "(checkoutData.weekends_checkout_email_alert_time_hour == 'HH' || checkoutData.weekends_checkout_email_alert_time_minute == 'MM')">
-											<option  value="MM" translate>MM</option>
-										</select>
-									</div>
-									<div class="select select-col col1-3">
-										<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-											<option value="AM" selected="" translate>AM</option>
-											<option value="PM" translate>PM</option>
-										</select>
-									</div>
-								</div>				
-
-							</div>
-							<div class="time-text-second">
-									ON SATURDAY/SUNDAY
-								</div>
-						</fieldset>
+						
 						<div class="actions float">
 							<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>CANCEL</button>
 							<button type="button" ng-click="saveCheckout()" class="button green" translate>SAVE_CHANGES</button>
