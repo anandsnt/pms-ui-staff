@@ -14,17 +14,17 @@ sntRover.controller('RVReportListCrl', [
         *   Note: This is a self executing function
         *   
         *   @param {Array} - reportList: which points to $scope.$parent.reportList, see end of this function
-        */
-        var postProcess = function(reportList) {
-            var hasDateFilter,
-                hasCicoFilter,
-                hasUserFilter,
-                hasSortDate,
-                hasSortUser;
+		*/
+		var postProcess = function(reportList) {
+			var hasDateFilter,
+				hasCicoFilter,
+				hasUserFilter,
+				hasSortDate,
+				hasSortUser;
 
-            for (var i = 0, j = reportList.length; i < j; i++) {
+			for (var i = 0, j = reportList.length; i < j; i++) {
 
-                // add report icon class
+				// add report icon class
                 if ( reportList[i]['title'] == 'Upsell' ) {
                     reportList[i]['reportIconCls'] = 'icon-upsell';
                 } else if ( reportList[i]['title'] == 'Late Check Out' ) {
@@ -33,7 +33,6 @@ sntRover.controller('RVReportListCrl', [
                     reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
                 }
 
-                // include show_filter and set it to false
                 reportList[i]['show_filter'] = false;
 
                 // checking if has date filter
