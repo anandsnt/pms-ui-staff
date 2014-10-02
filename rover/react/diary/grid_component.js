@@ -14,7 +14,12 @@
 
 */
 
-var Grid, GridRow, RowRenderer, GridRowItem;
+var Grid, GridRow, RowRenderer, GridRowItem, GridItemResize,
+	MODES = ['room-change', 'resize', 'resize-capture'];
+
+GridItemResize = React.createClass({
+
+});
 
 GridRowItem = React.createClass({
 	mixins: [Draggable],
@@ -31,7 +36,7 @@ GridRowItem = React.createClass({
 			px_per_ms = props.display.px_per_ms,
 			x_axis_origin = props.display.x_origin + props.display.x_0,
 			initial_state = Model({
-				mode: undefined,
+				mode: MODES[0],
 				start_time_ms: props.data.start_date.getTime(),
 				pos: Object.create(null, { top: { value: 0 } }),
 				dim: Object.create(null, { height: { value: '100%'} }),
@@ -39,7 +44,18 @@ GridRowItem = React.createClass({
 				time_span_ms: undefined,
 				time_span_intervals: undefined,
 				dragging: false,
-				rel: { x: 0, y: 0 }
+				y_offset: props.row_offset,
+				rel: { x: 0, y: 0 },
+				resize: {
+					active: false,
+					dragging: false,
+					left: undefined,
+					direction: undefined,
+					el: {
+						left: undefined,
+						right: undefined
+					}
+				}
 			});
 
 		initial_state.time_span_ms = initial_state.end_time_ms - initial_state.start_time_ms;
@@ -49,14 +65,14 @@ GridRowItem = React.createClass({
 		initial_state.dim.width = initial_state.time_span_ms * px_per_ms;
 
 		initial_state.pos.x = initial_state.pos.left;
-		initial_state.pos.y = 0;  //TODO Change to prop that relflects actual y offset from top of grid
+		initial_state.pos.y = 0;//initial_state.y_offset;  //TODO Change to prop that relflects actual y offset from top of grid
 
 		return initial_state;
 	},
-	/*componentWillMount: function() {
+	onClick: function(e) {
 
 	},
-	componentWillReceiveProps: function(nextProps) {
+	/*componentWillReceiveProps: function(nextProps) {
 
 	},
 	shouldComponentUpdate: function(nextProps, nextState) {
@@ -74,17 +90,17 @@ GridRowItem = React.createClass({
 			x_axis_origin =props.display.x_origin,
 			px_per_ms = props.display.px_per_ms;
 
-		return this.transferPropsTo(React.DOM.div({
+		return React.DOM.div({
 			onMouseDown: this.onMouseDown,
 			key: props.data.key,
 			className: props.className,
 			style: {
-				left: (!state.dragging ? state.pos.left : state.pos.x) + 'px',
-				top: (!state.dragging ? state.pos.top : 0) + 'px',
+				left: state.pos.left + 'px',
+				top: (!state.dragging ? state.pos.top : state.pos.y) + 'px',
 				height: state.dim.height,
 				width: (state.time_span_ms) * px_per_ms
 			}
-		}), this.props.children);	
+		});
 	}
 });
 
@@ -115,7 +131,7 @@ GridRow = React.createClass({
 			hourly_divs = [];
 
 		for(var i = 0; i < display.hours; i++) {
-			hourly_divs.push(React.DOM.div({ 
+			hourly_divs.push(React.DOM.span({ 
 				key: 		'date-time-' + i,
 				className: 	'hour',
 				style: {
@@ -138,7 +154,8 @@ GridRow = React.createClass({
 				key: 		reservation.key,
 				className: 	'reservation ' + reservation.status,
 				display: 	display,
-				data: 		reservation
+				data: 		reservation,
+				row_offset: props.row_number * display.row_height
 			});
 		}),
 		hourly_divs);
@@ -184,7 +201,7 @@ Grid = React.createClass({
 					x_scroll_delta: 0,
 					y_scroll_delta: 0,
 					x_scroll_offset: 0,
-					y_scroll_offset: 0,
+					y_scroll_offset: 0, //AKA Y OFFSET FROM ROOT TOP OF GRID
 					y_rel_load_trigger_right: undefined,
 					y_rel_load_trigger_left: undefined,
 					x_0: props.viewport.row_header_width,
@@ -199,15 +216,47 @@ Grid = React.createClass({
 	},
 	render: function() {
 		var props = this.props,
-			state = this.state;
+			state = this.state,
+			timeline,
+			hourly_divs = [],
+			interval_spans;
 
-		return React.DOM.ul({ 
+		/*CREATE TIMELINE*/
+		for(var i = 0; i < props.display.hours; i++) {
+			interval_spans = [];
+
+			for(var j = 0; j < props.display.intervals_per_hour; j++) {
+				interval_spans.push(React.DOM.span({
+					className: 'interval-' + (j + 1),
+					style: {
+						width: props.display.px_per_int
+					}
+				}));
+			}
+
+			hourly_divs.push(React.DOM.div({
+				className: 'segment',
+				style: {
+					width: props.display.px_per_hr
+				}
+			}, interval_spans));
+		}
+
+		timeline = React.DOM.div({
+			className: 'timeline',
+			style: {
+				height: props.viewport.timeline_header_height
+			}
+		}, hourly_divs);
+
+		return  React.DOM.ul({ 
 					className: 'grid' 
 				}, 
-				_.map(state.data.rows, function(row) {
+				_.map(state.data.rows, function(row, idx) {
 					return new GridRow({
 						key: row.key,
 						data: row,
+						row_number: idx,
 						className: 'grid-row',
 						display: _.extend(_.clone(props.display), state.display)					
 					});
