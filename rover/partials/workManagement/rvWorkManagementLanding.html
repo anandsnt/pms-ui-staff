@@ -11,8 +11,7 @@
     </div>
     <div class="entry options">
         <div class="select">
-            <select ng-model="stateVariables.viewingDate.work_type_id" ng-options="workType.id as workType.name for workType in workTypes">
-                <option value="" selected>{{'SELECT_WORK_TYPE' | translate}}</option>
+            <select ng-model="stateVariables.viewingDate.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" ng-change="onWorkTypeChanged()">                
             </select>
         </div>
         <div class="entry has-datepicker">

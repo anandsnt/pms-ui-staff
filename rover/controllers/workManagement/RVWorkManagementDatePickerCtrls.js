@@ -4,9 +4,10 @@ sntRover.controller('RVWorkManagementSearchDatePickerController', ['$scope', '$r
 		$scope.setUpData = function() {
 			$scope.dateOptions = {
 				changeYear: true,
-				changeMonth: true,				
+				changeMonth: true,
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
+					$scope.onViewDateChanged();
 					ngDialog.close();
 				}
 
@@ -42,7 +43,7 @@ sntRover.controller('RVWorkManagementMultiDatePickerController', ['$scope', '$ro
 		$scope.setUpData = function() {
 			$scope.dateOptions = {
 				changeYear: true,
-				changeMonth: true,				
+				changeMonth: true,
 				yearRange: "-100:+0",
 				onSelect: function(dateText, inst) {
 					$scope.onDateChanged();

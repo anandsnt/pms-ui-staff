@@ -248,6 +248,7 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
             
 
 
+
             // List all the input elements.
             // This function will be called everytime the filter is updated. Not good for performance, but oh well..
             $scope.getFormElements = function() {                     
