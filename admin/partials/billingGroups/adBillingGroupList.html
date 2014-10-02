@@ -9,7 +9,7 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div id="new-form-holder"></div>
 			<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl(-1)"></span>
-			<table id="brands" class="grid" ng-table="tableParams">
+			<table id="brands" class="grid" ng-table="tableParams" template-pagination="nil">
 				
 				<tbody>
 					<tr ng-repeat="billingGroup in billingGroupList" > 
