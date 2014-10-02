@@ -212,7 +212,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
-			$scope.paymentData.bills[billNumber].total_fees[0].balance_amount = data.reservation_balance;
 			var dataToUpdate = {
 				"balance": data.reservation_balance,
 				"confirm_no" : $scope.paymentData.confirm_no 
