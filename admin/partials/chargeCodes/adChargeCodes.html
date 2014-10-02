@@ -13,7 +13,7 @@
 		<section class="content-scroll">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-	<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
+	<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
 		<div id="new-form-holder"></div>
 		<table class="grid datatable" ng-table="tableParams" template-pagination="nil">
 			<tbody>
@@ -41,7 +41,7 @@
 						<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.value)">item.value</a>
 					</td>
 					
-					<td colspan="6" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEdit"></td>
+					<td colspan="6" ng-include="getTemplateUrl()" ng-if="currentClickedElement == $index && isEdit"></td>
 
 				</tr>
 			</tbody>
