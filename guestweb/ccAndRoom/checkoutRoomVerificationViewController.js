@@ -5,7 +5,14 @@
 	$rootScope.isRoomVerified =  false;
 	$scope.roomNumber = "";
 
-	if($rootScope.isCheckedin){
+
+	if($rootScope.isPreCheckedIn){
+		$state.go('preCheckinComleted');
+	}
+	else if($rootScope.isPrecheckinOnly){
+ 		$state.go('preCheckinTripDetails');
+ 	}
+	else if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
 	else if($rootScope.isCheckin){
