@@ -1,7 +1,6 @@
 SntRover
-.controller('DRdashboardCtrl', ['$scope', function($scope) {
-	console.log($scope);
-
+.controller('RVDiaryCtrl', ['$scope', function($scope) {
+	/*Current Mock Data for testing*/
 	$scope.data = [
 		{
 			id: 0,
