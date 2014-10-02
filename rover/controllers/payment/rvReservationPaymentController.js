@@ -1,4 +1,4 @@
-sntRover.controller('reservationPaymentController',['$scope', function($scope){
+sntRover.controller('reservationPaymentController',['$scope','$rootScope', function($scope,$rootScope){
 	$scope.getHasButtonClass = function(status){
 		
 		var hasButtonClass = "has-button";
@@ -17,4 +17,11 @@ sntRover.controller('reservationPaymentController',['$scope', function($scope){
 		return display;
 	
 	};
+	// Update while changing credit card from bill screen.
+	$rootScope.$on('UPDATEDPAYMENTLIST', function(event, data) {
+			$scope.reservationData.reservation_card.payment_details.card_type_image = data.card_code+".png";
+			$scope.reservationData.reservation_card.payment_details.card_number = data.card_number;
+			$scope.reservationData.reservation_card.payment_details.card_expiry = data.card_expiry;
+			$scope.reservationData.reservation_card.payment_details.is_swiped = data.is_swiped;
+	});
 }]);

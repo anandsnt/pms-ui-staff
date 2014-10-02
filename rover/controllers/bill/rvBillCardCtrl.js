@@ -556,12 +556,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 		// translating this logic as such from old Rover
 		// api post param 'fetch_total_balance' must be 'false' when posted from 'staycard'
+		// Also passing the available bills to the post charge modal 
 		$scope.fetchTotalBal = false;
 		var callback = function(data) {
 		    $scope.$emit( 'hideLoader' );
 
 		    $scope.fetchedData = data;
 
+		    var bills = [];
+		    for(var i = 0; i < $scope.reservationBillData.bills.length; i++ )
+		    	bills.push(i+1);
+
+		    $scope.fetchedData.bill_numbers = bills;
+		    
     		ngDialog.open({
         		template: '/assets/partials/postCharge/postCharge.html',
         		controller: 'RVPostChargeController',
