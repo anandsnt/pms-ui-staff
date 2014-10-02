@@ -225,7 +225,6 @@
                                     th {
                                         &.rows-toggle {
                                             cursor: pointer;
-                                            padding-left: 40px;
                                             background: @arrowDown 100% 50% no-repeat;
 
                                             &.active { background-image: @arrowUp; }
@@ -579,12 +578,10 @@
 
                                 &:last-child { margin-right: 0; }
                             }
-
                             &.col5 {
                                 li { 
                                     margin-right: 20px;
                                     .calc-width(20, 16); 
-
                                     &:last-child { margin-right: 0; }
                                 }
                             }
@@ -676,7 +673,6 @@
 
     .search-results {
         position: relative;
-        padding: 20px;
 
         li:not(.no-content) {
             margin: 0;           
@@ -714,8 +710,6 @@
                         h2 { color: @grey3; }
                     }
                 }
-
-                .highlight { color: @logoPrimary; }
             }
 
             &.reservation {
@@ -942,7 +936,6 @@
                         }     
                     }
                 }
-            }
 
                 &.room {
                     a {
@@ -1077,8 +1070,12 @@
                         .status {
                             width: 80px;
 
-                            .guest-status { margin-top: 10px;  }
+                            .guest-status { 
+                                margin-top: 10px;  
+                                .square(30px);
+                            }
 
+                            .pre-checkin-time,
                             .late-checkout-time {
                                 font-weight: 600;
                                 line-height: 50px;
@@ -1262,7 +1259,6 @@
                     position: absolute;
                     top: 0;
                     padding: 20px;
-                    cursor: pointer;
                     .size(90px, 100%);
                     .show;
 
@@ -1302,7 +1298,6 @@
                             clear: none;
                             padding: 0 5px;
                             margin-right: 5px;
-                            width: 150px;
                             .placeholder-text(30px, 40px, 700, rgba(255,255,255,.6), normal);
                             .show;
                             .pull-left;
@@ -1437,7 +1432,6 @@
                     &#travel-agent-card-header { background: @tacard @tacardTexture; }
 
                     &.first {
-                        cursor: default;
                         left: 0;
                         z-index: 10;
                         .calc-width(100, 180);
@@ -1826,11 +1820,6 @@
                                 top: 20px;
                                 left: 20px;
                                 font-weight: 400;
-                            }
-
-                            .temporary-graph {
-                                width: 100%;
-                                height: auto;
                             }
                         }
 
@@ -5849,14 +5838,14 @@
         padding: 20px;
 
         li {
-            padding: 15px;
+            padding: 0;
             .clickable;
             overflow: visible;
 
             .toggle-filter {
                 color: @textColor;
                 line-height: 1em;
-                padding: 0;
+                padding: 15px;
                 background-position: 98% 50%;
                 .float;
             }
@@ -5893,8 +5882,9 @@
 
             .configure-report {
                 background-color: @grey1;
-                    margin: 0;
-                    padding: 15px;
+                margin: 0 15px 15px 15px;
+                padding: 15px;
+                overflow: hidden;
                 #border-radius > .rounded();
                 .box-shadow();
                 .show;
@@ -5929,7 +5919,9 @@
                             .box-shadow(none);
                             .no-transition;
 
-                            &:hover { background-position: 95% -38px; }
+                            &:hover {
+                                background-position: 95% -38px;
+                            }
                         }
                     }
 
@@ -6158,6 +6150,7 @@
 
         &.content.stay-card-inner{
             top: 91px;
+            width: 100%;
             .calc-height(100, 91); /* %, px */
         }
 
@@ -6187,7 +6180,7 @@
                     }
                 }
 
-                .button {
+                .button {                    
                     margin-right: 5px;
                     .square(40px);
                     .pull-left;
@@ -6243,19 +6236,20 @@
 
                     &:nth-child(2) {
                         li { 
-                            float: none;
+                            .pull-right;
 
+                            &:last-child { margin-right: 20px; }
                             &:last-child { margin-right: 0; }
                         }
                     }
                 }
 
-                &.left-align {
+                /*&.left-align {
                     text-align: left;
                 }
                 &.right-align {
                     text-align: right;
-                }
+                }*/
             }
         }
 
@@ -6274,7 +6268,7 @@
                 font-size: 14px;
                 line-height: 21px;
                 text-transform: uppercase;
-                table-layout: fixed;
+                table-layout: auto;
                 border-collapse: separate; 
                 border-spacing: 0 10px;
                 margin: 0;
@@ -6284,8 +6278,8 @@
                         padding: 0 10px;
                         font-weight: 600;
                         min-width: 15%;
-            max-width: 30%;
-            width: 30%;
+                        max-width: 30%;
+                        &.align-right { text-align: right; }
                     }
 
                     td {
@@ -6295,7 +6289,7 @@
                         overflow: visible;
 
                         &.bold {
-                            font-weight: bold;
+                            font-weight: 600;
                         }
                     }
                     &.bottom-row {
@@ -6362,7 +6356,7 @@
                                 font-size: 16px;
                                 line-height: 1em;
                                 font-weight: 600;
-
+                                
                                 &:last-child { text-align: left; }
                             }
                         }
