@@ -18,18 +18,29 @@ var Grid, GridRow, RowRenderer, GridRowItem, GridItemResize,
 	MODES = ['room-change', 'resize', 'resize-capture'];
 
 GridItemResize = React.createClass({
+	mixins: [Resize],
+	getDefaultProps: function() {
 
+	},
+	getInitialState: function() {
+
+	},
+	render: function() {
+
+	}
 });
 
 GridRowItem = React.createClass({
 	mixins: [Draggable],
-	getDefaultProps: function() {
-		var defaults = {
-			data: null,
-			display: null
-		};
+	_resize: function(params) {
+		if(this.isMounted) {
 
-		return defaults;
+		}
+	},
+	/*Assume that physical dimensions change first, so we need to propagate them to the
+	  backing data and convert to the altered time frame. */
+	_syncData: function() {
+
 	},
 	getInitialState: function() {
 		var props = this.props,
@@ -45,17 +56,7 @@ GridRowItem = React.createClass({
 				time_span_intervals: undefined,
 				dragging: false,
 				y_offset: props.row_offset,
-				rel: { x: 0, y: 0 },
-				resize: {
-					active: false,
-					dragging: false,
-					left: undefined,
-					direction: undefined,
-					el: {
-						left: undefined,
-						right: undefined
-					}
-				}
+				rel: { x: 0, y: 0 }
 			});
 
 		initial_state.time_span_ms = initial_state.end_time_ms - initial_state.start_time_ms;
@@ -68,9 +69,6 @@ GridRowItem = React.createClass({
 		initial_state.pos.y = 0;//initial_state.y_offset;  //TODO Change to prop that relflects actual y offset from top of grid
 
 		return initial_state;
-	},
-	onClick: function(e) {
-
 	},
 	/*componentWillReceiveProps: function(nextProps) {
 
@@ -91,9 +89,10 @@ GridRowItem = React.createClass({
 			px_per_ms = props.display.px_per_ms;
 
 		return React.DOM.div({
-			onMouseDown: this.onMouseDown,
+			onMouseDown: this.__onMouseDown,
 			key: props.data.key,
 			className: props.className,
+			ref: 'item',
 			style: {
 				left: state.pos.left + 'px',
 				top: (!state.dragging ? state.pos.top : state.pos.y) + 'px',
@@ -105,16 +104,11 @@ GridRowItem = React.createClass({
 });
 
 GridRow = React.createClass({
-	getDefaultProps: function() {
-		return {
-			settings: {
-				display: {
-					x_offset: undefined,
-					y_offset: undefined,
-					x_origin: undefined
-				}
-			}
-		};
+	_removeItemFromSet: function(item) {
+
+	},
+	_syncData: function(obj) {
+
 	},
 	getInitialState: function() {
 		var props = this.props,
@@ -130,6 +124,7 @@ GridRow = React.createClass({
 			display = props.display,
 			hourly_divs = [];
 
+		/*Create hourly spans across each grid row*/
 		for(var i = 0; i < display.hours; i++) {
 			hourly_divs.push(React.DOM.span({ 
 				key: 		'date-time-' + i,
@@ -141,6 +136,7 @@ GridRow = React.createClass({
 			}));
 		}
 
+		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		props.key,
 			className: 	props.className,
@@ -155,7 +151,10 @@ GridRow = React.createClass({
 				className: 	'reservation ' + reservation.status,
 				display: 	display,
 				data: 		reservation,
-				row_offset: props.row_number * display.row_height
+				row_offset: props.row_number * display.row_height,
+				__onDragStart:  props.__onDragStart,
+				__onDragStop: props.__onDragStop,
+				__onMouseUp: props.__onDrop
 			});
 		}),
 		hourly_divs);
@@ -163,6 +162,24 @@ GridRow = React.createClass({
 });
 
 Grid = React.createClass({
+	/*Valid Drop target processing, look through all data and find rows without conflicting 
+	  time spans...*/
+	_getValidDropsTargets: function() {
+
+	},
+	__onDragStart: function(item) {
+		this.setState({
+			currentDragItem: item
+		});
+	},
+	__onDragStop: function() {
+		this.setState({
+			currentDragItem: undefined
+		});
+	},
+	__onDrop: function(target_row) {
+
+	},
 	getDefaultProps: function() {
 		var defaults = {
 				viewport: {
@@ -181,6 +198,9 @@ Grid = React.createClass({
 					px_per_ms: undefined,
 					px_per_int: undefined,
 					onScroll: null
+				},
+				filter: {
+					types: ['room', 'rate_type', 'start_time', 'status']
 				}											
 			},
 			viewport = defaults.viewport,
@@ -209,7 +229,9 @@ Grid = React.createClass({
 				},
 				data: {
 					rows: scope.data
-				}
+				},
+				currentDragItem: undefined,
+				currentResizeItem: undefined
 			};
 		
 		return initial_state;
@@ -219,7 +241,8 @@ Grid = React.createClass({
 			state = this.state,
 			timeline,
 			hourly_divs = [],
-			interval_spans;
+			interval_spans,
+			self = this;
 
 		/*CREATE TIMELINE*/
 		for(var i = 0; i < props.display.hours; i++) {
@@ -249,6 +272,7 @@ Grid = React.createClass({
 			}
 		}, hourly_divs);
 
+		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.ul({ 
 					className: 'grid' 
 				}, 
@@ -258,7 +282,13 @@ Grid = React.createClass({
 						data: row,
 						row_number: idx,
 						className: 'grid-row',
-						display: _.extend(_.clone(props.display), state.display)					
+						display: _.extend(_.clone(props.display), state.display),
+						filter: props.filter,
+						currentDragItem: state.currentDragItem,
+						currentResizeItem: state.currentResizeItem,
+						__onDragStart: self.__onDragStart,
+						__onDragStop: self.__onDragStop,
+						__onDrop: self.__onDrop					
 					});
 				})
 		);

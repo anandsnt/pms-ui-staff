@@ -20,4 +20,9 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             controller  : 'RMDashboradCtrl'
         });
         
+        $stateProvider.state('rover.diary', {
+            url: '/diary',
+            templateUrl: '/assets/partials/diary/rvDiary.html',
+            controller: 'RVDiaryCtrl'
+        });
 });
