@@ -20,4 +20,7 @@
 "GUEST_REVIEWS":"Guest Reviews",
 "NUMBER_OF_REVIEWS":"Number of reviews",
 "NUMBER_OF_REVIEWS_PLACEHOLDER":"Enter Number of reviews",
-"RATING_LIMIT":"Rating limit"
+"RATING_LIMIT":"Rating limit",
+"AND": "and",
+"ON_WEEKDAYS": "on weekdays",
+"ON_SATURDAY_SUNDAY": "on saturday /sunday"
