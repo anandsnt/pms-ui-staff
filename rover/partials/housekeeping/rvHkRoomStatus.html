@@ -19,8 +19,7 @@
       </div>
       
       <button type="submit" class="icons icon-search" translate>MENU_SEARCH</button>
-      <input name="query" id="query" ng-model="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="text" autocomplete="off" ng-change = "filterByQuery()"
->
+      <input name="query" id="query" ng-model="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="text" autocomplete="off" ng-change="filterByQuery()" orientation-input-blur>
    </div>
 </form>
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>

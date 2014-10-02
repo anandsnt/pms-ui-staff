@@ -9,7 +9,7 @@
 			
 			<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
 				
-				<table id="guests" class="grid datatable table" ng-table="tableParams">
+				<table id="guests" class="grid datatable table" ng-table="tableParams" template-pagination="nil">
 					<tr ng-repeat="emailData in $data">
 						<td header-class="width-5 padding-checkbox" style="text-align: left; " header="'ng-table/headers/checkbox.html'">
 							<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	

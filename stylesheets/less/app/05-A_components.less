@@ -5438,14 +5438,13 @@
         padding: 20px;
 
         li {
-            padding: 15px;
+            padding: 0;
             .clickable;
-            overflow: visible;
 
             .toggle-filter {
                 color: @textColor;
                 line-height: 1em;
-                padding: 0;
+                padding: 15px;
                 background-position: 98% 50%;
                 .float;
             }
@@ -5482,8 +5481,9 @@
 
             .configure-report {
                 background-color: @grey1;
-                    margin: 0;
-                    padding: 15px;
+                margin: 0 15px 15px 15px;
+                padding: 15px;
+                overflow: hidden;
                 #border-radius > .rounded();
                 .box-shadow();
                 .show;
@@ -5516,15 +5516,9 @@
                             cursor: pointer;
                             background: transparent @calendar no-repeat 95% 12px;
                             .box-shadow(none);
-                            -webkit-transition: none;
-                            -moz-transition: none;
-                            -ms-transition: none;
-                            -o-transition: none;
-                            transition: none;
+                            .no-transition;
 
-                            &:hover {
-                                background-position: 95% -38px;
-                            }
+                            &:hover { background-position: 95% -38px; }
                         }
                     }
 
@@ -5738,31 +5732,26 @@
     }
 
     @media (max-width: 999px) {
-    #report-update {
-          position: static;
-          height: auto;
+        #report-update {
+              position: static;
+              height: auto;
+          }
       }
-  }
-
-
 
     #report-details {
-        background-color: #fcfcfc;
-        background-image: @textureImage;
-        background-repeat: repeat;
 
         &.content.stay-card-inner{
             top: 91px;
-            .calc-height(100, 91); /* %, px */
+            width: 100%; 
+            .calc-height(100, 91);
         }
 
         .report-header {
-            width: 100%;
-            height: 50px;
             padding: 5px 20px;
             overflow: hidden;
             background: @white;
             z-index: 90;
+            .size(50px, 100%);
             .box-shadow(0 1px 1px rgba(0,0,0,.1));
             .float;
             .show;
@@ -5782,9 +5771,9 @@
                 }
 
                 .button {
-                    .pull-left;
                     margin-right: 5px;
                     .square(40px);
+                    .pull-left;
 
                     &:last-child { margin-right: 0; }
                 }
@@ -5837,25 +5826,26 @@
 
                     &:nth-child(2) {
                         li { 
-                            float: none;
+                            .pull-right; 
 
-                            &:last-child { margin-right: 0; }
+                            &:last-child { margin-right: 20px; }
+                            &:first-child { margin-right: 0; }
                         }
                     }
                 }
 
-                &.left-align {
+                /*&.left-align {
                     text-align: left;
                 }
                 &.right-align {
                     text-align: right;
-                }
+                }*/
             }
         }
 
         .report-content {
             position: relative;
-            .calc-height(100, 177); /* %, px */
+            .calc-height(100, 177);
 
             > .wrapper { padding: 0 20px 20px 20px; }
             > .iScrollVerticalScrollbar { 
@@ -5868,7 +5858,7 @@
                 font-size: 14px;
                 line-height: 21px;
                 text-transform: uppercase;
-                table-layout: fixed;
+                table-layout: auto;
                 border-collapse: separate; 
                 border-spacing: 0 10px;
                 margin: 0;
@@ -5877,25 +5867,26 @@
                     th {
                         padding: 0 10px;
                         font-weight: 600;
-                        min-width: 15%;
-            max-width: 30%;
-            width: 30%;
+                        white-space: normal;
+                        overflow: visible;
+
+                        &.align-right { text-align: right; }
                     }
 
                     td {
                         background: @white;
                         padding: 10px;
+                        white-space: normal;
+                        overflow: visible;
 
-                        &.bold {
-                            font-weight: bold;
-                        }
+                        &.bold { font-weight: 600; }
                     }
                     &.bottom-row {
-            th {
-              color: @grey4;
-              font-weight: 400;
-            }
-          }
+                        th {
+                          color: @grey4;
+                          font-weight: 400;
+                        }
+                      }
                 }
 
                 tfoot {
@@ -5906,6 +5897,7 @@
                             font-size: 14px;
                             text-transform: uppercase;
                             text-align: left;
+                            vertical-align: top;
                             padding: 0;
 
                             span { color: @textColor; }
@@ -5953,6 +5945,7 @@
                                 font-size: 16px;
                                 line-height: 1em;
                                 font-weight: 600;
+
                                 &:last-child { text-align: left; }
                             }
                         }

@@ -27,17 +27,16 @@ sntRover.controller('RVPostChargeController',
   				$rootScope.multiplePostingNumber = "";
   			};
 
-			// set the default bill number
-			$scope.successGetBillDetails = function(data){
-				$scope.$emit( 'hideLoader' );
-				data.isFromOut = false;
-				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
-			};
-			if(!$scope.passActiveBillNo && $scope.reservation_id){
-				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
-			}else{
-				$scope.fetchedData.bill_numbers = [];
-			}
+			// // set the default bill number
+			// $scope.successGetBillDetails = function(data){
+			// 	$scope.$emit( 'hideLoader' );
+			// 	data.isFromOut = false;
+			// 	$scope.$broadcast("UPDATED_BILLNUMBERS", data);
+			// };
+			// if(!$scope.isBillsFetched && $scope.reservation_id){
+			// 	$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+			// }
+			
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 
@@ -536,12 +535,12 @@ sntRover.controller('RVPostChargeController',
 				$scope.invokeApi(RVSearchSrv.fetch, {});
 			};
 			
+			//Will be invoked only if triggered from the menu. 
+			// So always the default bill no will be 1
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
 
-				if(!$scope.billNumber){
-					$scope.billNumber = "1";// set as per requirement in CICO-6094
-				}
+				$scope.billNumber = "1";
 			});
 			
 			$scope.$on('POSTCHARGE', function(event, data) {

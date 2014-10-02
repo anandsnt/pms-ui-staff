@@ -91,8 +91,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	    setTimeout(function(){
 	    	refreshScroller();
 	      	$scope.$apply(function(){$scope.isTyping = false;
-	      		if($scope.results.length > 0)
-	      			displayFilteredResults();
+	      		
 	      	});
 	    }, 100);
 	};
@@ -160,12 +159,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		//inoreder to prevent unwanted results showing while tyeping..
 		if(!$scope.isTyping){
 			$scope.isTyping = true;
-		}else{
-			setTimeout(function(){
-	      		$scope.isTyping = false;
-	      		displayFilteredResults();
-	      	}, 100);
-			return;
 		}
 
 		//setting first letter as captial: soumya
@@ -216,7 +209,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	      	}     
 	      	setTimeout(function(){
 	      		$scope.isTyping = false;
-	      		displayFilteredResults();
 	      	}, 200);
 			refreshScroller();    
 	    }
