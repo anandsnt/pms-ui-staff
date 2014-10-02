@@ -10,7 +10,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
 
-            $scope.$emit('setHeading', 'Reservations');
+            $scope.heading = 'Reservations';
+            $scope.setHeadingTitle($scope.heading);
+
             // Check flag to retain the card details
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
