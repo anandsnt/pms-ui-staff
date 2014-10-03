@@ -1,7 +1,7 @@
 <div class="reservation-actions" ng-controller="reservationActionsController">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Resevation is checking-in -->
-		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'|| reservationData.reservation_card.reservation_status == 'PRE_CHECKIN'">
+		<a class="button green" ng-click="goToCheckin()" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
 			Check in
 		</a>
 		<button type="button" ng-click="putInQueue(reservationData.reservation_card.reservation_id)" class="button white blue-text" ng-show="showPutInQueue(reservationData.reservation_card.is_queue_rooms_on, reservationData.reservation_card.is_reservation_queued, reservationData.reservation_card.reservation_status)">Put in Queue</button>
