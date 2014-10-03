@@ -947,24 +947,19 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if($scope.isArAccountNeeded(index)){
 			return;
 		}
-		
-		$scope.reviewStatusArray[index].reviewStatus = true;
-		$scope.findNextBillToReview();
-	};
-	
-	// To find next tab which is not reviewed before.
-	$scope.findNextBillToReview = function(){
-		var balance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
-		console.log("balance ="+balance);
-		console.log($scope.currentActiveBill);
-		console.log($scope.reservationBillData.bills.length);
-		console.log($scope.reviewStatusArray.length);
-		if(balance == 0.00 || balance == 0.00 || ($scope.currentActiveBill === $scope.reservationBillData.bills.length-1)){
-			console.log("balance is zero or last bill");
+		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
+		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		if(ActiveBillBalance == "0.00" || ActiveBillBalance == 0.00 || ($scope.currentActiveBill === $scope.reservationBillData.bills.length-1)){
+			$scope.reviewStatusArray[index].reviewStatus = true;
+			$scope.findNextBillToReview();
 		}
 		else{
 			$scope.clickedPayButton();
 		}
+	};
+	
+	// To find next tab which is not reviewed before.
+	$scope.findNextBillToReview = function(){
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
