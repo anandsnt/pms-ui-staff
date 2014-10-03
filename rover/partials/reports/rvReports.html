@@ -19,11 +19,11 @@
 						<div class="date-range" ng-if="item.hasDateFilter">
 							<label>Date range</label>
 							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date="getFromOptions(item)" ng-model="item.fromDate" ui-date-format readonly>
+								<input type="text" class="range-datepicker" ui-date="getFromOptions(item)" ng-model="item.fromDate" readonly>
 							</div>	
 							<span class="span-to"> To </span>
 							<div class="has-datepicker">
-								<input type="text" class="range-datepicker" ui-date="getUntilOptions(item)" ng-model="item.untilDate" ui-date-format readonly>
+								<input type="text" class="range-datepicker" ui-date="getUntilOptions(item)" ng-model="item.untilDate" readonly>
 							</div>
 						</div>
 
@@ -67,11 +67,11 @@
 				<div class="date-range" ng-if="chosenReport.hasDateFilter">
 					<label>Date range</label>
 					<div class="has-datepicker">
-						<input id="chosenReportFrom" type="text" class="range-datepicker" ui-date="getFromOptions(chosenReport)" ng-model="chosenReport.fromDate" ui-date-format readonly>
+						<input id="chosenReportFrom" type="text" class="range-datepicker" ui-date="getFromOptions(chosenReport)" ng-model="chosenReport.fromDate" readonly>
 					</div>
 					<span class="span-to">To</span>
 					<div class="has-datepicker">
-						<input id="chosenReportTo" type="text" class="range-datepicker" ui-date="getUntilOptions(chosenReport)" ng-model="chosenReport.untilDate" ui-date-format readonly>
+						<input id="chosenReportTo" type="text" class="range-datepicker" ui-date="getUntilOptions(chosenReport)" ng-model="chosenReport.untilDate" readonly>
 					</div>
 				</div>
 

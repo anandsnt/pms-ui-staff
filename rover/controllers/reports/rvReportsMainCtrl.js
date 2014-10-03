@@ -43,10 +43,11 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.getFromOptions = function(item) {
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
+		        // defaultDate: $rootScope.businessDate,
+		        maxDate: item.untilDate,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        // maxDate: tzIndependentDate( item.untilDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
@@ -61,11 +62,12 @@ sntRover.controller('RVReportsMainCtrl', [
 		$scope.getUntilOptions = function(item) {
 		    return {
 		        dateFormat: $rootScope.jqDateFormat,
+		        // defaultDate: $rootScope.businessDate,
+		        minDate: item.fromDate,
+		        maxDate: $rootScope.businessDate,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        // minDate: tzIndependentDate( item.fromDate ),
-		        maxDate: tzIndependentDate( $rootScope.businessDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
