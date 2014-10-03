@@ -405,6 +405,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.settingsClicked = function() {
       if ($scope.isHotelAdmin) {
+        //CICO-9816 bug fix
+        $('body').addClass('no-animation');
+        
         $scope.selectedMenuIndex = "settings";
         $window.location.href = "/admin";
       } else if ($scope.isHotelStaff) {
