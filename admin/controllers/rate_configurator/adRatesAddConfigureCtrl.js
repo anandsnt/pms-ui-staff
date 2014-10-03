@@ -318,7 +318,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
-                className: 'ngdialog-theme-default calendar-modal',
+                className: 'ngdialog-theme-default calendar-modal top-padding-20',
                 closeByDocument: false,
                 scope: $scope
             });
