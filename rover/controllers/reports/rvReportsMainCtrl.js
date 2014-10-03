@@ -110,8 +110,8 @@ sntRover.controller('RVReportsMainCtrl', [
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
 			var chosenReport = RVreportsSrv.getChoosenReport(),
-				fromDate     = tzIndependentDate( chosenReport.fromDate ),
-				untilDate    = tzIndependentDate( chosenReport.untilDate ),
+				fromDate     = chosenReport.fromDate,
+				untilDate    = chosenReport.untilDate,
 				changeView   = typeof changeView === 'boolean' ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
 				
