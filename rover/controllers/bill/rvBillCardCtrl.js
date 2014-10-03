@@ -116,7 +116,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		angular.forEach(reservationBillData.bills, function(value, key) {
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
-			if(key == 0){
+			if(key == 0 && $scope.clickedButton == "viewBillButton"){
 				value.isOpenFeesDetails = true;
 			}
 			value.hasFeesArray = true;
@@ -137,8 +137,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
 			
-	     });
-	     if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
+	    });
+	    if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
 	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
 	     	setTimeout(function(){
 	     		$scope.openPleaseSwipe();
