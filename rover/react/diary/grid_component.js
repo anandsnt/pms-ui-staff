@@ -14,8 +14,30 @@
 
 */
 
-var Timeline, Grid, GridRow, RowRenderer, GridRowItem, GridItemResize,
-	MODES = ['room-change', 'resize', 'resize-capture'];
+var DiaryContainer, Timeline, Grid, GridRowHeaders, GridRow, RowRenderer, GridRowItem, GridItemResize,
+	MODES = ['room-change', 'resize', 'resize-capture'],
+	SETTINGS = {
+		viewport: {
+			width: 1024,
+			height: 768,
+			row_header_width: 220,  //Relative starting point for left edge of grid
+			timeline_header_height: 60,
+			hours: 12
+		},				
+		display: {
+			width: undefined,
+			height: '100%',
+			hours: 48,
+			row_height: 80,
+			intervals_per_hour: 4, 
+			px_per_ms: undefined,
+			px_per_int: undefined,
+			onScroll: null
+		},
+		filter: {
+			types: ['room', 'rate_type', 'start_time', 'status']
+		}
+	};
 
 /*GridItemResize = React.createClass({
 	mixins: [Resize],
@@ -107,12 +129,19 @@ GridRowItem = React.createClass({
 			className: props.className,
 			ref: 'item',
 			style: {
-				left: state.pos.left + 'px',
+				left: (!state.dragging ? state.pos.left : state.pos.x) + 'px',
 				top: (!state.dragging ? state.pos.top : state.pos.y) + 'px',
 				height: state.dim.height,
 				width: (state.time_span_ms) * px_per_ms
 			}
-		});
+		}, 
+		React.DOM.span({
+			className: 'occupied ' + props.data.status,
+			value: props.data.guest_name
+		}),
+		React.DOM.span({
+			className: 'maintenance'
+		}));
 	}
 });
 
@@ -161,7 +190,7 @@ GridRow = React.createClass({
 		_.map(props.data.reservations, function(reservation) {
 			return new GridRowItem({
 				key: 		reservation.key,
-				className: 	'reservation ' + reservation.status,
+				className: 	'occupancy-block ',
 				display: 	display,
 				data: 		reservation,
 				row_offset: props.row_number * display.row_height,
@@ -171,6 +200,47 @@ GridRow = React.createClass({
 			});
 		}),
 		hourly_divs);
+	}
+});
+
+GridRowHeaders = React.createClass({
+	getDefaultProps: function() {
+		var defaults = SETTINGS,
+			display = defaults.display,
+			viewport = defaults.viewport;
+
+		display.width 		= display.hours / viewport.hours * viewport.width;
+		display.px_per_hr 	= viewport.width / viewport.hours;
+		display.px_per_int  = display.px_per_hr / display.intervals_per_hour;
+		display.px_per_ms 	= display.px_per_int / 900000;
+
+		return defaults;
+	},
+	getInitialState: function() {
+		var props = this.props,
+			scope = props.scope,
+			initial_state = {
+				display: {
+					x_scroll_delta: 0,
+					y_scroll_delta: 0,
+					x_scroll_offset: 0,
+					y_scroll_offset: 0, //AKA Y OFFSET FROM ROOT TOP OF GRID
+					y_rel_load_trigger_right: undefined,
+					y_rel_load_trigger_left: undefined,
+					x_0: props.viewport.row_header_width,
+					x_origin: scope.start_date.getTime()
+				},
+				data: {
+					rows: scope.data
+				},
+				currentDragItem: undefined,
+				currentResizeItem: undefined
+			};
+		
+		return initial_state;
+	},
+	render: function() {
+
 	}
 });
 
@@ -206,28 +276,7 @@ Grid = React.createClass({
 
 	},
 	getDefaultProps: function() {
-		var defaults = {
-				viewport: {
-					width: 1024,
-					height: 768,
-					row_header_width: 220,  //Relative starting point for left edge of grid
-					timeline_header_height: 60,
-					hours: 12
-				},				
-				display: {
-					width: undefined,
-					height: '100%',
-					hours: 48,
-					row_height: 80,
-					intervals_per_hour: 4, 
-					px_per_ms: undefined,
-					px_per_int: undefined,
-					onScroll: null
-				},
-				filter: {
-					types: ['room', 'rate_type', 'start_time', 'status']
-				}											
-			},
+		var defaults = SETTINGS,											
 			viewport = defaults.viewport,
 			display = defaults.display;
 
@@ -294,28 +343,7 @@ Grid = React.createClass({
 
 Timeline = React.createClass({
 	getDefaultProps: function() {
-		var defaults = {
-				viewport: {
-					width: 1024,
-					height: 768,
-					row_header_width: 220,  //Relative starting point for left edge of grid
-					timeline_header_height: 60,
-					hours: 12
-				},				
-				display: {
-					width: undefined,
-					height: '100%',
-					hours: 48,
-					row_height: 80,
-					intervals_per_hour: 4, 
-					px_per_ms: undefined,
-					px_per_int: undefined,
-					onScroll: null
-				},
-				filter: {
-					types: ['room', 'rate_type', 'start_time', 'status']
-				}											
-			},
+		var defaults = SETTINGS,
 			viewport = defaults.viewport,
 			display = defaults.display;
 

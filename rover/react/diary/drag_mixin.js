@@ -61,7 +61,7 @@ var Draggable = {
 
       this.setState({
         pos: { 
-          x: e.pageX - this.state.rel.x,
+          x: ((e.pageX - this.state.rel.x) / this.props.display.px_per_int).toFixed()*this.props.display.px_per_int,
           y: ((e.pageY - this.state.rel.y - this.state.y_offset) / 80).toFixed()*80
         }
       });

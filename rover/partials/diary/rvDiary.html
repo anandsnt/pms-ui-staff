@@ -135,40 +135,12 @@
                     <span class="switch-icon">H</span>
                     <span class="value">Open</span>
                 </label>
-            </div>
+            </div>->
             <ul class="room-titles">
-                <!-- Room available for selected time -->
-                <li>
-                    <span class="number">1</span>
-                    <span class="type">Twin</span>
+                <li ng-repeat="room in data track by room.id">
+                    <span class="number">{{room.number}}</span>
+                    <span class="type">{{room.type}}</span>
                 </li>
-                <!-- Room occupied for selected time -->
-                <li class="occupied">
-                    <span class="number">2</span>
-                    <span class="type">Twin</span>
-                </li>
-                <li>
-                    <span class="number">3</span>
-                    <span class="type">Twin</span>
-                </li>
-                <!-- Room is dirty -->
-                <li class="dirty">
-                    <span class="number">4</span>
-                    <span class="type">Standard</span>
-                </li>
-                <li>
-                    <span class="number">5</span>
-                    <span class="type">Twin</span>
-                </li>
-                <li class="occupied">
-                    <span class="number">6</span>
-                    <span class="type">Twin</span>
-                </li>
-                <li class="occupied">
-                    <span class="number">7</span>
-                    <span class="type">Premium</span>
-                </li>
-                ....
             </ul>
         </div>
 
@@ -351,7 +323,7 @@
                 </ul>
             </div>
             
-            <div class="viewport" ng-react-component="Grid" data="data"></div>
+            <div class="viewport reservations" ng-react-component="Grid" data="data"></div>
 
             <!-- Grid -->
             <!--<ul class="reservations">
