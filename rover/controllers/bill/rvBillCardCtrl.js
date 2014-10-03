@@ -103,6 +103,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.refreshScroller('registration-content');
 		}, 500);
 	};
+	$krish = $scope;
+	$scope.reviewStatusArray = [];
 	$scope.init = function(reservationBillData){
 		
 		/*
@@ -111,7 +113,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
-		 $scope.reviewStatusArray = [];
 		angular.forEach(reservationBillData.bills, function(value, key) {
 			//To handle fees open/close
 			value.isOpenFeesDetails = false;
@@ -122,13 +123,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			if(value.total_fees.length > 0){
 				value.hasFeesArray = false;
 				angular.forEach(value.total_fees[0].fees_details, function(feesValue, feesKey) {
+
 		        	feesValue.billValue = value.bill_number;//Bill value append with bill details
 		        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
 		     	});	
 			}
-	        
 	        var data = {};
+	        // Bill is reviewed(true) or not-reviewed(false).
 			data.reviewStatus = false;
+			// Bill is paid/zero-balance(true) or not-paid(false)
+			data.paymentStatus = (value.total_fees[0].balance_amount == "0.00") ? true : false;
 			data.billNumber = value.bill_number;
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
@@ -924,6 +928,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.showErrorPopup(errorMsg);
 		}
 		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
+			console.log($scope.reservationBillData.reservation_balance);
 			$scope.clickedPayButton();
 		}
 		else{
@@ -949,6 +954,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function(){
+		var balance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		console.log("balance ="+balance);
+		console.log($scope.currentActiveBill);
+		console.log($scope.reservationBillData.bills.length);
+		console.log($scope.reviewStatusArray.length);
+		if(balance == 0.00 || balance == 0.00 || ($scope.currentActiveBill === $scope.reservationBillData.bills.length-1)){
+			console.log("balance is zero or last bill");
+		}
+		else{
+			$scope.clickedPayButton();
+		}
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
