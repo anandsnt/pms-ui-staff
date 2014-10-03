@@ -9949,16 +9949,26 @@
             position: absolute;
             left: 0px;
             width: 240px;
+            box-sizing: border-box;
 
             .room-titles {
                 font-weight: 600;
                 text-align: right;
-                
-                .number {
 
-                }
-                .type {
+                li {
+                    height: 80px;
+                    padding-right: 8px;
+                    border-bottom: 1px solid rgba(0,0,0, 0.3);
 
+                    .number,
+                    .type {
+                        float: right;
+
+                        &:after {
+                            content: '';
+                            clear: both;
+                        }
+                    }
                 }
             }
         }
@@ -9987,6 +9997,8 @@
                 display: block;
                 width: 100%;
                 height: 80px;
+                margin: 0px;
+                padding: 0px;
                 border-bottom: 1px solid rgba(0,0,0, 0.55);
 
                 .hour {
@@ -9997,15 +10009,49 @@
                     border-right: 1px solid rgba(0,0,0, 0.25);
                 }
 
-                .reservation {
+                .occupancy-block {
                     display: block;
                     position: absolute;
-                    border: 1px solid rgba(0, 0, 0, 0.5);
-                    box-shadow: 3px 3px 6px #666;
-                    border-radius: 7px;
                     z-index: 1199;
                     box-sizing: border-box;
+
+                    .maintenance {
+    
+                    }
+
+                    .occupied {
+                        display:block;
+                        width: 100%;
+                        height: 100%;
+                    
+
+                        &.housekeeping {
+                            //background-color: #EC8E34; //#FFAF35
+                            background: linear-gradient(to top, #EC8E34, #FFAF35);
+                        }
+
+                        &.inhouse {
+                            //background-color: #64A7DE; //#7BCCEA
+                            background: linear-gradient(to top, #64A7DE, #7BCCEA);
+                        }
+
+                        &.check-in {
+                            //background-color: #61C92E; //#8AD82C
+                            background: linear-gradient(to top, #61C92E, #8AD82C);
+                        }
+
+                        &.check-out {
+                            background: linear-gradient(to top, #8AD82C, #8AD82C);
+                        }
+                    }
                 }
+            }
+
+            .grid-row:first-child {
+                display: block;
+                position: absolute;
+                left: 0px;
+                width: 240px;
             }
 
             .grid-row:nth-of-type(2n) {
@@ -10092,42 +10138,7 @@
         background-color: #666;
     }
 
-    .reservation {
 
-    }
-
-    .reservation.selected {
-        background-color: #C0D8E1;
-        border: 1px double #64a7de;
-    }
-
-    .reservation.dragging {
-        background-color: rgba(0,0,0,0.6);
-        border: 1px double #666;
-    }
-
-    .maintenance {
-        
-    }
-
-    .housekeeping {
-        background-color: #EC8E34; //#FFAF35
-        background: linear-gradient(to top, #EC8E34, #FFAF35);
-    }
-
-    .inhouse {
-        background-color: #64A7DE; //#7BCCEA
-        background: linear-gradient(to top, #64A7DE, #7BCCEA);
-    }
-
-    .check-in {
-        background-color: #61C92E; //#8AD82C
-        background: linear-gradient(to top, #61C92E, #8AD82C);
-    }
-
-    .check-out {
-        background-color: #eee;
-    }
 }
 /* 6. IE
 ==========================================================*/

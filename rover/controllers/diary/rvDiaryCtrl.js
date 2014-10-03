@@ -87,4 +87,5 @@ sntRover
 	];
 
 	$scope.start_date = new Date('09/30/2014 12:00 PM');
+	$scope.maintenance_span_int = 2;
 }]);

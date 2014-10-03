@@ -299,7 +299,8 @@ Grid = React.createClass({
 					y_rel_load_trigger_right: undefined,
 					y_rel_load_trigger_left: undefined,
 					x_0: props.viewport.row_header_width,
-					x_origin: scope.start_date.getTime()
+					x_origin: scope.start_date.getTime(),
+					maintenance_span_ms: scope.maintenance_span_ms
 				},
 				data: {
 					rows: scope.data
