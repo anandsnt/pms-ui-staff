@@ -8,7 +8,7 @@
 		<li class="menu-title">
 			MENU
 		</li>
-		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu admin-bar {{menuItem.iconClass}}" ng-hide="menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])"> 			
+		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu admin-bar {{menuItem.iconClass}}" ng-hide="menuItem.standAlone && !isStandAlone" > 			
 			<a href="{{menuItem.action}}" translate="{{menuItem.title}}">
 			</a>
 			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
