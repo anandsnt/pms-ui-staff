@@ -9944,176 +9944,193 @@
             }
         }
     }
+
     .diary-container {
+        box-sizing: border-box;
+
         .diary-rooms {
-            position: absolute;
-            left: 0px;
+            float: left;
             width: 240px;
-            box-sizing: border-box;
+            box-shadow: 5px 0px 11px #aaa;
+
+            .switch-button {
+                display: block;
+                height: 80px;
+            }
 
             .room-titles {
                 font-weight: 600;
-                text-align: right;
 
                 li {
                     height: 80px;
-                    padding-right: 8px;
+                    padding: 20px 20px;
+                    margin: 0px;
                     border-bottom: 1px solid rgba(0,0,0, 0.3);
 
                     .number,
                     .type {
-                        float: right;
-
-                        &:after {
-                            content: '';
-                            clear: both;
-                        }
+                        display: block;
+                        text-align: right;
                     }
                 }
             }
         }
-    }
-    .viewport {
-        display: block;
-        position: relative;
-        left: 240px;
-        width: 1024px;
-        height: 768px;
-        padding: 0px !important;
-        margin: 0px !important;
-        box-sizing: border-box;
-        overflow-x: scroll;
-        overflow-y: scroll;
-        z-index: 1099;
 
-        .grid {
-            position: relative;
-            display: block;
-            width: 500%;
-            height: 500%;
-
-            .grid-row {
-                position: relative;
-                display: block;
-                width: 100%;
-                height: 80px;
-                margin: 0px;
-                padding: 0px;
-                border-bottom: 1px solid rgba(0,0,0, 0.55);
-
-                .hour {
-                    display: block;
-                    float: left;
-                    width: 60px;
-                    height: 100%;
-                    border-right: 1px solid rgba(0,0,0, 0.25);
-                }
-
-                .occupancy-block {
-                    display: block;
-                    position: absolute;
-                    z-index: 1199;
-                    box-sizing: border-box;
-
-                    .maintenance {
-    
-                    }
-
-                    .occupied {
-                        display:block;
-                        width: 100%;
-                        height: 100%;
-                    
-
-                        &.housekeeping {
-                            //background-color: #EC8E34; //#FFAF35
-                            background: linear-gradient(to top, #EC8E34, #FFAF35);
-                        }
-
-                        &.inhouse {
-                            //background-color: #64A7DE; //#7BCCEA
-                            background: linear-gradient(to top, #64A7DE, #7BCCEA);
-                        }
-
-                        &.check-in {
-                            //background-color: #61C92E; //#8AD82C
-                            background: linear-gradient(to top, #61C92E, #8AD82C);
-                        }
-
-                        &.check-out {
-                            background: linear-gradient(to top, #8AD82C, #8AD82C);
-                        }
-                    }
-                }
-            }
-
-            .grid-row:nth-of-type(2n) {
-                background-color: rgba(0, 0, 0, 0.03);  
-            }
-
-            .grid-row:nth-of-type(2n + 1) {
-                background-color: rgba(0, 149, 238, 0.05);  
-            }
-
-
-        }
-
-        .grid:nth-child(2) {
-            margin-top: 60px;
-        }
-    }
-
-    .timeline {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        box-sizing: border-box;
-
-        .segment {
-            display: block;
+        .diary-grid {
             float: left;
-            height: 100%;
-            border-top: 1px solid #64a7de;
-            background-color: rgba(0,0,0, 0.1);
-            box-sizing: border-box;
 
-            span {
-                display: inline-block;
+            &::after {
+                content: '';
+                clear: both;
             }
 
-            .interval-1 {
-                height: 20px;
-                border-right: 1px dotted #7bccea;
+            .diary-timeline {
+                position: relative;
+                top: 0px;
+                left: 0px;
+                padding: 0px;
+                margin: 0px;
+                width: 1024px;
+                height: 80px;
+                overflow-x: scroll;
+
+                .timeline {
+                    position: absolute;
+                    top: 0px;
+                    left: 0px;
+                    height: 100%;
+                    width: 100%;
+                    background: linear-gradient(to right, #002d4a 30%, #fff);
+
+                    .segment {
+                        display: block;
+                        float: left;
+                        height: 100%;               
+                        box-sizing: border-box;
+
+                        span {
+                            display: inline-block;
+                        }
+
+                        .interval-1,
+                        .interval-2,
+                        .interval-3,
+                        .interval-4 {
+                            border-right: 1px solid #fff; 
+                        }
+
+                        .interval-1 {
+                            height: 20px;
+                        }
+
+                        .interval-2 {
+                            height: 30px;
+                        }
+
+                        .interval-3 {
+                            height: 20px;
+                        }
+
+                        .interval-4 {
+                            height: 100%;
+                        }
+
+                        &::first-child {
+                            border-left: 1px solid #fff; 
+                        }
+                    }
+
+                    &:after {
+                        content: '';
+                        clear: both;
+                    }
+                }
+            }
+
+            .reservations {
+                display: block;
+                position: relative;
+                width: 1024px;
+                height: 768px;
+                padding: 0px !important;
+                margin: 0px !important;
                 box-sizing: border-box;
-            }
+                overflow-x: scroll;
+                overflow-y: scroll;
+                z-index: 1099;
 
-            .interval-2 {
-                height: 30px;
-                border-right: 1px dotted #7bccea;
-                box-sizing: border-box;
-            }
+                .grid {
+                    position: relative;
+                    display: block;
+                    width: 500%;
+                    height: 500%;
 
-            .interval-3 {
-                height: 20px;
-                border-right: 1px dotted #7bccea;
-                box-sizing: border-box;
-            }
+                    .grid-row {
+                        position: relative;
+                        display: block;
+                        width: 100%;
+                        height: 80px;
+                        margin: 0px;
+                        padding: 0px;
+                        border-bottom: 1px solid rgba(0,0,0, 0.55);
 
-            .interval-4 {
-                height: 100%;
-                border-right: 1px dotted #7bccea;
-                box-sizing: border-box;
-            }
+                        .hour {
+                            display: block;
+                            float: left;
+                            width: 60px;
+                            height: 100%;
+                            border-right: 1px solid rgba(0,0,0, 0.25);
+                        }
 
-            &::first-child {
-                border-left: 1px solid #64a7de;
-            }
-        }
+                        .occupancy-block {
+                            display: block;
+                            position: absolute;
+                            z-index: 1199;
+                            box-sizing: border-box;
 
-        &:after {
-            content: '';
-            clear: both;
+                            .maintenance {
+            
+                            }
+
+                            .occupied {
+                                display:block;
+                                width: 100%;
+                                height: 100%;
+                            
+                                &.housekeeping {
+                                    background: linear-gradient(to top, #EC8E34, #FFAF35);
+                                }
+
+                                &.inhouse {
+                                    background: linear-gradient(to top, #64A7DE, #7BCCEA);
+                                }
+
+                                &.check-in {
+                                    background: linear-gradient(to top, #61C92E, #8AD82C);
+                                }
+
+                                &.check-out {
+                                    background: linear-gradient(to top, #8AD82C, #8AD82C);
+                                }
+                            }
+                        }
+                    }
+
+                    .grid-row:nth-of-type(2n) {
+                        background-color: rgba(0, 0, 0, 0.03);  
+                    }
+
+                    .grid-row:nth-of-type(2n + 1) {
+                        background-color: rgba(0, 149, 238, 0.05);  
+                    }
+
+
+                }
+
+                .grid:nth-child(2) {
+                    margin-top: 60px;
+                }
+            }
         }
     }
 

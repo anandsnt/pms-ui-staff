@@ -21,7 +21,7 @@ var DiaryContainer, Timeline, Grid, GridRowHeaders, GridRow, RowRenderer, GridRo
 			width: 1024,
 			height: 768,
 			row_header_width: 220,  //Relative starting point for left edge of grid
-			timeline_header_height: 60,
+			timeline_header_height: 80,
 			hours: 12
 		},				
 		display: {
@@ -410,6 +410,7 @@ Timeline = React.createClass({
 		timeline = React.DOM.div({
 			className: 'timeline',
 			style: {
+				width: props.display.width,
 				height: props.viewport.timeline_header_height
 			}
 		}, hourly_divs);
