@@ -1,8 +1,8 @@
 <div class="block-wrapper">
-    <span ng-show="reservationData.reservation_card.notes.reservation_notes.length == 0" class="block-title toggle has-arrow" ng-click="reservationNotesState.hideDetails = !reservationNotesState.hideDetails; refreshReservationDetailsScroller(100)">
+    <span ng-show="reservationData.reservation_card.notes.reservation_notes.length == 0" class="block-title toggle has-arrow" ng-click="reservationNotesState.hideDetails = !reservationNotesState.hideDetails; refreshReservationDetailsScroller(100)" ng-class="{'active': !reservationNotesState.hideDetails}">
         Add Notes
     </span>
-    <span ng-show="reservationData.reservation_card.notes.reservation_notes.length > 0" class="block-title toggle has-arrow" ng-click="reservationNotesState.hideDetails = !reservationNotesState.hideDetails; refreshReservationDetailsScroller(100)">
+    <span ng-show="reservationData.reservation_card.notes.reservation_notes.length > 0" class="block-title toggle has-arrow" ng-click="reservationNotesState.hideDetails = !reservationNotesState.hideDetails; refreshReservationDetailsScroller(100)" ng-class="{'active': !reservationNotesState.hideDetails}">
         Notes
     </span> 
     <div id="{notes-id}" class="block-item item-notes has-buttons" ng-class="{'hidden': reservationNotesState.hideDetails}"> <!-- Remove class hidden when 'a.toggle' is clicked -->
