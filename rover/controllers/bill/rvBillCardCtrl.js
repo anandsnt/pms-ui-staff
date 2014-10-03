@@ -103,6 +103,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.refreshScroller('registration-content');
 		}, 500);
 	};
+	$krish = $scope;
+	$scope.reviewStatusArray = [];
 	$scope.init = function(reservationBillData){
 		
 		/*
@@ -121,13 +123,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			if(value.total_fees.length > 0){
 				value.hasFeesArray = false;
 				angular.forEach(value.total_fees[0].fees_details, function(feesValue, feesKey) {
+
 		        	feesValue.billValue = value.bill_number;//Bill value append with bill details
 		        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
 		     	});	
 			}
-	        
 	        var data = {};
+	        // Bill is reviewed(true) or not-reviewed(false).
 			data.reviewStatus = false;
+			// Bill is paid/zero-balance(true) or not-paid(false)
+			data.paymentStatus = (value.total_fees[0].balance_amount == "0.00") ? true : false;
 			data.billNumber = value.bill_number;
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
@@ -923,6 +928,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.showErrorPopup(errorMsg);
 		}
 		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
+			console.log($scope.reservationBillData.reservation_balance);
 			$scope.clickedPayButton();
 		}
 		else{
@@ -941,9 +947,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if($scope.isArAccountNeeded(index)){
 			return;
 		}
-		
-		$scope.reviewStatusArray[index].reviewStatus = true;
-		$scope.findNextBillToReview();
+		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
+		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		if(ActiveBillBalance == "0.00" || ActiveBillBalance == 0.00 || ($scope.currentActiveBill === $scope.reservationBillData.bills.length-1)){
+			$scope.reviewStatusArray[index].reviewStatus = true;
+			$scope.findNextBillToReview();
+		}
+		else{
+			$scope.clickedPayButton();
+		}
 	};
 	
 	// To find next tab which is not reviewed before.
