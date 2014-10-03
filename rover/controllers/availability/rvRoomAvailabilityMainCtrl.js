@@ -58,7 +58,6 @@ sntRover.controller('roomAvailabilityMainController', [
 	*/
 	var successCallbackOfAvailabilityFetch = function(data){
 		$scope.$emit("hideLoader");
-		rvAvailabilitySrv.updateData(data);
 		$scope.$broadcast("changedRoomAvailableData");
 		// for this successcallback we are not hiding the activty indicator
 		// we will hide it only after template loading.
