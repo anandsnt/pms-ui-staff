@@ -147,14 +147,17 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			angular.forEach(data.results, function(item, index) {
 				itemDate = Date.parse(item.date);
 				toolTipLookUp[itemDate] = {};
+				
+				// NOTE :: Check if replaced harcoded 10 with item.actual
 				// var valueActual = Math.floor((Math.random() * 100) + 1);
 				var valueActual = item.actual || 0;
-				actualData.push([itemDate, parseInt(valueActual)]); // TODO :: replace harcoded 10 with item.actual
+				actualData.push([itemDate, parseInt(valueActual)]); 
 				toolTipLookUp[itemDate].actual = valueActual;
 
+				// NOTE :: Check if replaced harcoded 10 with item.target
 				// var valueTarget = Math.floor((Math.random() * 100) + 1);
 				var valueTarget = item.target || 0;
-				targetData.push([itemDate, parseInt(valueTarget)]); // TODO :: replace harcoded 10 with item.target
+				targetData.push([itemDate, parseInt(valueTarget)]); 
 				toolTipLookUp[itemDate].target = valueTarget;
 			});
 
