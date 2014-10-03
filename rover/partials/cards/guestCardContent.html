@@ -51,7 +51,7 @@
                                 <span class="confirmation">{{ guest.address.postalCode}}</span>
                                 <span class="icons icon-location">
                                     <span class="no-right-margin" ng-bind-html="'{{guest.address.city}}'|highlight:searchData.guestCard.guestCity:false"></span>
-                                    <span class="no-right-margin comma" ng-hide="guest.address.city == null">, </span>
+                                    <span class="no-right-margin comma" ng-hide="guest.address.city == null || guest.address.city == ''">, </span>
                                     <span class="no-right-margin">{{ guest.address.state }}</span>
                                 </span>
                                 <span class="icons icon-phone">{{ guest.phone }}</span>
