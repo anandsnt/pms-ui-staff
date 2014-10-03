@@ -14,10 +14,23 @@
 
 */
 
-var Grid, GridRow, RowRenderer, GridRowItem, GridItemResize,
+var Timeline, Grid, GridRow, RowRenderer, GridRowItem, GridItemResize,
 	MODES = ['room-change', 'resize', 'resize-capture'];
 
 /*GridItemResize = React.createClass({
+	mixins: [Resize],
+	getDefaultProps: function() {
+
+	},
+	getInitialState: function() {
+
+	},
+	render: function() {
+
+	}
+});*/
+
+/*GridItemDrag = React.createClass({
 	mixins: [Resize],
 	getDefaultProps: function() {
 
@@ -167,6 +180,18 @@ Grid = React.createClass({
 	_getValidDropsTargets: function() {
 
 	},
+	_checkStartTimeAgainstRow: function(start_time, row) {
+
+	},
+	_checkEndTimeAgainstRow: function(end_time, row) {
+
+	},
+	_filterRowsByStartTime: function(start_time) {
+
+	},
+	_filterRowsByEndTime: function(end_time) {
+
+	},
 	__onDragStart: function(item) {
 		this.setState({
 			currentDragItem: item
@@ -180,6 +205,94 @@ Grid = React.createClass({
 	__onDrop: function(target_row) {
 
 	},
+	getDefaultProps: function() {
+		var defaults = {
+				viewport: {
+					width: 1024,
+					height: 768,
+					row_header_width: 220,  //Relative starting point for left edge of grid
+					timeline_header_height: 60,
+					hours: 12
+				},				
+				display: {
+					width: undefined,
+					height: '100%',
+					hours: 48,
+					row_height: 80,
+					intervals_per_hour: 4, 
+					px_per_ms: undefined,
+					px_per_int: undefined,
+					onScroll: null
+				},
+				filter: {
+					types: ['room', 'rate_type', 'start_time', 'status']
+				}											
+			},
+			viewport = defaults.viewport,
+			display = defaults.display;
+
+		display.width 		= display.hours / viewport.hours * viewport.width;
+		display.px_per_hr 	= viewport.width / viewport.hours;
+		display.px_per_int  = display.px_per_hr / display.intervals_per_hour;
+		display.px_per_ms 	= display.px_per_int / 900000;
+
+		return defaults;
+	},
+	getInitialState: function() {
+		var props = this.props,
+			scope = props.scope,
+			initial_state = {
+				display: {
+					x_scroll_delta: 0,
+					y_scroll_delta: 0,
+					x_scroll_offset: 0,
+					y_scroll_offset: 0, //AKA Y OFFSET FROM ROOT TOP OF GRID
+					y_rel_load_trigger_right: undefined,
+					y_rel_load_trigger_left: undefined,
+					x_0: props.viewport.row_header_width,
+					x_origin: scope.start_date.getTime()
+				},
+				data: {
+					rows: scope.data
+				},
+				currentDragItem: undefined,
+				currentResizeItem: undefined
+			};
+		
+		return initial_state;
+	},
+	render: function() {
+		var props = this.props,
+			state = this.state,
+			timeline,
+			hourly_divs = [],
+			interval_spans,
+			self = this;
+
+		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
+		return  React.DOM.ul({ 
+					className: 'grid' 
+				}, 
+				_.map(state.data.rows, function(row, idx) {
+					return new GridRow({
+						key: row.key,
+						data: row,
+						row_number: idx,
+						className: 'grid-row',
+						display: _.extend(_.clone(props.display), state.display),
+						filter: props.filter,
+						currentDragItem: state.currentDragItem,
+						currentResizeItem: state.currentResizeItem,
+						__onDragStart: self.__onDragStart,
+						__onDragStop: self.__onDragStop,
+						__onDrop: self.__onDrop					
+					});
+				})
+		);
+	}
+});
+
+Timeline = React.createClass({
 	getDefaultProps: function() {
 		var defaults = {
 				viewport: {
@@ -273,26 +386,6 @@ Grid = React.createClass({
 		}, hourly_divs);
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
-		return  React.DOM.ul({ 
-					className: 'grid' 
-				}, 
-				_.map(state.data.rows, function(row, idx) {
-					return new GridRow({
-						key: row.key,
-						data: row,
-						row_number: idx,
-						className: 'grid-row',
-						display: _.extend(_.clone(props.display), state.display),
-						filter: props.filter,
-						currentDragItem: state.currentDragItem,
-						currentResizeItem: state.currentResizeItem,
-						__onDragStart: self.__onDragStart,
-						__onDragStop: self.__onDragStop,
-						__onDrop: self.__onDrop					
-					});
-				})
-		);
+		return timeline;
 	}
 });
-
-
