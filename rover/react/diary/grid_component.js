@@ -17,7 +17,7 @@
 var Grid, GridRow, RowRenderer, GridRowItem, GridItemResize,
 	MODES = ['room-change', 'resize', 'resize-capture'];
 
-GridItemResize = React.createClass({
+/*GridItemResize = React.createClass({
 	mixins: [Resize],
 	getDefaultProps: function() {
 
@@ -28,7 +28,7 @@ GridItemResize = React.createClass({
 	render: function() {
 
 	}
-});
+});*/
 
 GridRowItem = React.createClass({
 	mixins: [Draggable],
