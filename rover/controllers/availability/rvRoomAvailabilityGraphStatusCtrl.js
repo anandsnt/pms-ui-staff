@@ -223,7 +223,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					tooltip: {
 			            formatter: function () {
 			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
-			                       this.series.name +  ': ' + Math.round((this.y/100) * $scope.data.totalRooms) + "Rooms (" + this.y.toFixed(2) + "%)";
+			                       this.series.name +  ': ' + Math.round((this.y/100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
 			            }
 				    },	
 				},
