@@ -41,7 +41,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayBalance = function(status, balance) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'PRE_CHECKIN') {
 				if(status == 'CHECKING_IN' || status == 'RESERVED'){
 					/*	As per CICO-9795 : 
 						Balance field should NOT show when the guest is NOT checked in.
@@ -68,7 +68,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayAddon = function(status) {
 			var display = false;
-			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'PRE_CHECKIN') {
 				display = true;
 			}
 			return display;
@@ -77,7 +77,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.displayAddCharge = function(status) {
 			var display = false;
 
-			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'NOSHOW_CURRENT') {
+			if (status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'NOSHOW_CURRENT' || status == 'PRE_CHECKIN') {
 				display = true;
 			}
 			return display;
@@ -85,7 +85,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayArrivalTime = function(status) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT') {
+			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT' || status == 'PRE_CHECKIN') {
 				display = true;
 			}
 			return display;
@@ -212,7 +212,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.showPutInQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
 			var displayPutInQueue = false;
-			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
+			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT' || reservationStatus == 'PRE_CHECKIN') {
 				if (isQueueRoomsOn == "true" && isReservationQueued == "false") {
 					displayPutInQueue = true;
 				}
@@ -223,7 +223,7 @@ sntRover.controller('reservationActionsController', [
 		$scope.showRemoveFromQueue = function(isQueueRoomsOn, isReservationQueued, reservationStatus) {
 			
 			var displayPutInQueue = false;
-			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT') {
+			if (reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT'|| reservationStatus == 'PRE_CHECKIN') {
 				if (isQueueRoomsOn == "true" && isReservationQueued == "true") {
 					displayPutInQueue = true;
 				}
@@ -353,7 +353,7 @@ sntRover.controller('reservationActionsController', [
 			if (icareEnabled) {
 				if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN' 
 					|| reservationStatus == 'CHECKEDIN' || reservationStatus == 'CHECKING_OUT' 
-					|| reservationStatus == 'NOSHOW_CURRENT' || (reservationStatus == 'CHECKEDOUT' && hasSmartbandsAttached)) {
+					|| reservationStatus == 'NOSHOW_CURRENT' || (reservationStatus == 'CHECKEDOUT' && hasSmartbandsAttached)|| reservationStatus == 'PRE_CHECKIN') {
 					showSmartBand = true;
 				}
 			}
@@ -408,7 +408,7 @@ sntRover.controller('reservationActionsController', [
 		};
 		$scope.showDepositBalance = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithoutSR = false;
-			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'|| reservationStatus == 'PRE_CHECKIN'){
 
 				if(isRatesSuppressed == "false"){
 					showDepositBalanceButtonWithoutSR = true;
@@ -419,7 +419,7 @@ sntRover.controller('reservationActionsController', [
 		};
 		$scope.showDepositBalanceWithSr = function(reservationStatus, isRatesSuppressed){
 			var showDepositBalanceButtonWithSR = false;
-			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'){
+			if (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN'|| reservationStatus == 'PRE_CHECKIN'){
 				if(isRatesSuppressed == "true"){
 					showDepositBalanceButtonWithSR = true;
 				}
