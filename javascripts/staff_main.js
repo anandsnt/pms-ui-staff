@@ -34,8 +34,8 @@
 //=require_tree ../rover/rvRouters/
 //=require ../rover/rvApp.js
 
-
-
+//=require_tree ../rover/directives/ngReact
+//=require_tree ../rover/react
 
 //=require ../rover/rvRouter.js
 //=require ../rover/rvCardOperations.js

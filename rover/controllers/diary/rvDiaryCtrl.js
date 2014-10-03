@@ -1,7 +1,7 @@
-SntRover
+sntRover
 .controller('RVDiaryCtrl', [ '$scope','$window', function($scope, $window) {
 	BaseCtrl.call(this, $scope);
-	
+
 	/*Current Mock Data for testing*/
 	$scope.data = [
 		{
