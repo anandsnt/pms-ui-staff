@@ -140,8 +140,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 "single": "",
                                 "double": "",
                                 "extra_adult": "",
-                                "child": "",
-                                "isSaved": false
+                                "child": ""
                             };
 
                             room_rates.push(data);
@@ -182,6 +181,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         data.sets[j].room_rates[k].double = precisionTwo(roomRate.double);
                         data.sets[j].room_rates[k].extra_adult = precisionTwo(roomRate.extra_adult);
                         data.sets[j].room_rates[k].child = precisionTwo(roomRate.child);
+                        data.sets[j].isSaved = true;
 
                         if ($scope.rateData.room_types[i].id == roomRate.id) {
                             foundRoomType = true;
