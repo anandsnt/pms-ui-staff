@@ -1,3 +1,4 @@
+
 var sntRover = angular.module('sntRover',[
 		'ui.router', 
 		'ui.utils', 
@@ -23,7 +24,9 @@ var sntRover = angular.module('sntRover',[
 		'sharedHttpInterceptor', 
 		'orientationInputBlurModule',  
 		'multi-select', 		
-		'ngDragDrop']);
+		'ngDragDrop',
+		'iscrollStopPropagation']);
+
 
 //adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 sntRover.config(function ($httpProvider) {
