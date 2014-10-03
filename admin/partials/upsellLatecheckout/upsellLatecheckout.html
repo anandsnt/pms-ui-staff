@@ -34,7 +34,8 @@
 						<!-- charge code -->
 						<ad-dropdown label="{{'CHARGE_CODE' | translate}}" label-in-drop-down="{{'CHARGE_CODE' | translate}}" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes' selbox-class='placeholder'></ad-dropdown>
 
-						<div class="entry">
+						<!-- Hiding the field  according to CICO-9841 -->
+						<div class="entry" ng-show="false">
 							<label translate> SEND_UPSELL_ALERT_TO_ALL_GUESTS</label>
 							<div class="entry full-width float">
 
