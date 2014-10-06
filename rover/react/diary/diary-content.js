@@ -24,12 +24,14 @@ DiaryContent = React.createClass({
 	__onGridScroll: function(e) {
 		var el = e.currentTarget;
 
-		console.log('scroll event captured', e);
-
 		if(el) {
 			$('.timeline').css({ 'left': -el.scrollLeft + 'px'});
+			$('.room-titles').css({ 'top': -el.scrollTop + 'px'});
 		}
 	},
+	componentDidMount: function() {
+    	this.__onGridScroll = _.debounce(this.__onGridScroll, 100);
+  	},
 	getDefaultProps: function() {
 		var viewport = SETTINGS.viewport,
 			display = SETTINGS.display;

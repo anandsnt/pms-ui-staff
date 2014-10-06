@@ -5,9 +5,15 @@ var RoomPanel = React.createClass({
 		};
 	},
 	render: function() {
+		var self = this;
+
 		return React.DOM.div({
-			className: 'diary-rooms'
+			className: 'diary-rooms',
+			onScroll: self.props.__onGridScroll
 		},
+		React.DOM.div({
+			className: 'switch-button'
+		}),
 		Rooms({
 			data: this.state.data
 		}));

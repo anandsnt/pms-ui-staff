@@ -7,6 +7,9 @@ var Rooms = React.createClass({
 	render: function() {
 		return React.DOM.ul({
 			className: 'room-titles'
+			style: {
+				height: this.props.display.height
+			}
 		},
 		_.map(this.state.data, function(room) {
 			return Room({
