@@ -35,7 +35,21 @@
 //=require ../rover/rvApp.js
 
 //=require_tree ../rover/directives/ngReact
-//=require_tree ../rover/react
+
+//=require ../rover/react/diary/util.js
+//=require ../rover/react/diary/drag_mixin.js
+//=require ../rover/react/diary/resize_mixin.js
+//=require ../rover/react/diary/diary-grid-row-item.js
+//=require ../rover/react/diary/diary-grid-row.js
+//=require ../rover/react/diary/diary-room.js
+//=require ../rover/react/diary/diary-rooms.js
+//=require ../rover/react/diary/diary-room-panel.js
+//=require ../rover/react/diary/diary-grid.js
+//=require ../rover/react/diary/diary-timeline-occupancy.js
+//=require ../rover/react/diary/diary-timeline.js
+//=require ../rover/react/diary/diary-timeline-panel.js
+//=require ../rover/react/diary/diary-grid-panel.js
+//=require ../rover/react/diary/diary-content.js
 
 //=require ../rover/rvRouter.js
 //=require ../rover/rvCardOperations.js

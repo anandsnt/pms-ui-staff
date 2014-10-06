@@ -119,12 +119,13 @@
             <button type="button" class="button green">Update</button>
         </div>
     </form>
-
     <!-- Diary Content -->
-    <div class="diary-container">
 
+    <div class="" ng-react-component="DiaryContent"></div>
+    
+    <!--<div class="diary-container">
         <!-- Rooms -->
-        <div class="diary-rooms">
+        <!--<div class="diary-rooms">
             <div class="switch-button on">
                 <input name="diary-rooms-showing" id="diary-rooms-showing" value="" type="checkbox" checked />
                 <label class="data-off">
@@ -137,15 +138,14 @@
                 </label>
             </div>
             <ul class="room-titles">
-                <li ng-repeat="room in data track by room.id">
+                <!--<li ng-repeat="room in data track by room.id">
                     <span class="number">{{room.number}}</span>
                     <span class="type">{{room.type}}</span>
-                </li>
-            </ul>
+                </li>-->
+            <!--</ul>
         </div>
-
         <!-- Timeline + Grid -->
-        <div class="diary-grid">
+        <!--<div class="diary-grid">-->
 
             <!-- Timeline -->
             <!--<div class="diary-timeline">
@@ -197,9 +197,10 @@
                 </ul>-->
             <!--</div>-->
             
-            <div class="diary-timeline" ng-react-component="Timeline" data="data"></div>
+            <!--<div class="diary-timeline" ng-react-component="Timeline" data="data"></div>-->
 
-            <div class="viewport reservations" ng-react-component="Grid" data="data"></div>
+            <!--<div class="viewport reservations" ng-react-component="Grid" data="data"></div>-->
+
         </div>
     </div>
 </section>

@@ -14,7 +14,7 @@
 
 */
 
-var DiaryContainer, Timeline, Grid, GridRowHeaders, GridRow, RowRenderer, GridRowItem, GridItemResize,
+/*var DiaryContainer, Timeline, Grid, GridRowHeaders, GridRow, RowRenderer, GridRowItem, GridItemResize,
 	MODES = ['room-change', 'resize', 'resize-capture'],
 	SETTINGS = {
 		viewport: {
@@ -65,7 +65,7 @@ var DiaryContainer, Timeline, Grid, GridRowHeaders, GridRow, RowRenderer, GridRo
 	}
 });*/
 
-GridRowItem = React.createClass({
+/*GridRowItem = React.createClass({
 	mixins: [Draggable],
 	_resize: function(params) {
 		if(this.isMounted) {
@@ -74,7 +74,7 @@ GridRowItem = React.createClass({
 	},
 	/*Assume that physical dimensions change first, so we need to propagate them to the
 	  backing data and convert to the altered time frame. */
-	_syncData: function() {
+	/*_syncData: function() {
 
 	},
 	getInitialState: function() {
@@ -117,7 +117,7 @@ GridRowItem = React.createClass({
 	componentDidUpdate: function(prevProps, prevState) {
 
 	},*/
-	render: function() {
+	/*render: function() {
 		var props = this.props,
 			state = this.state,
 			x_axis_origin =props.display.x_origin,
@@ -167,7 +167,7 @@ GridRow = React.createClass({
 			hourly_divs = [];
 
 		/*Create hourly spans across each grid row*/
-		for(var i = 0; i < display.hours; i++) {
+		/*for(var i = 0; i < display.hours; i++) {
 			hourly_divs.push(React.DOM.span({ 
 				key: 		'date-time-' + i,
 				className: 	'hour',
@@ -179,7 +179,7 @@ GridRow = React.createClass({
 		}
 
 		/*Create grid row and insert each occupany item as child into that row*/
-		return React.DOM.li({
+		/*return React.DOM.li({
 			key: 		props.key,
 			className: 	props.className,
 			style: {
@@ -247,7 +247,7 @@ GridRowHeaders = React.createClass({
 Grid = React.createClass({
 	/*Valid Drop target processing, look through all data and find rows without conflicting 
 	  time spans...*/
-	_getValidDropsTargets: function() {
+	/*_getValidDropsTargets: function() {
 
 	},
 	_checkStartTimeAgainstRow: function(start_time, row) {
@@ -320,7 +320,7 @@ Grid = React.createClass({
 			self = this;
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
-		return  React.DOM.ul({ 
+		/*return  React.DOM.ul({ 
 					className: 'grid' 
 				}, 
 				_.map(state.data.rows, function(row, idx) {
@@ -387,7 +387,7 @@ Timeline = React.createClass({
 			self = this;
 
 		/*CREATE TIMELINE*/
-		for(var i = 0; i < props.display.hours; i++) {
+		/*for(var i = 0; i < props.display.hours; i++) {
 			interval_spans = [];
 
 			for(var j = 0; j < props.display.intervals_per_hour; j++) {
@@ -416,6 +416,7 @@ Timeline = React.createClass({
 		}, hourly_divs);
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
-		return timeline;
+		/*return timeline;
 	}
 });
+*/
