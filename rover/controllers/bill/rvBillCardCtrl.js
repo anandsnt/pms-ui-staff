@@ -131,8 +131,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        var data = {};
 	        // Bill is reviewed(true) or not-reviewed(false).
 			data.reviewStatus = false;
-			// Bill is paid/zero-balance(true) or not-paid(false)
-			data.paymentStatus = (value.total_fees[0].balance_amount == "0.00") ? true : false;
 			data.billNumber = value.bill_number;
 			data.billIndex = key;
 			$scope.reviewStatusArray.push(data);
