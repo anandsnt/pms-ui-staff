@@ -95,7 +95,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			// CICO - 8320 Rate to be handled in room level
 			// data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 			data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
-
 			//Guest details
 			data.guest_detail = {};
 			// Send null if no guest card is attached, empty string causes server internal error
@@ -115,6 +114,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 
 			}
+			
+			/**			
+			 * CICO-7077 Confirmation Mail to have tax details
+			 */
+
+			data.tax_details = [];
+			_.each($scope.reservationData.taxDetails, function(taxDetail) {
+				data.tax_details.push(taxDetail);
+			});
+			
+			data.tax_total = $scope.reservationData.totalTaxAmount;
+
 
 			// guest emails to which confirmation emails should send
 			data.confirmation_emails = [];
