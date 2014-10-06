@@ -40,43 +40,42 @@ sntRover.controller('RVReportsMainCtrl', [
 			$scope.heading = listTitle;
 		};
 
-		$scope.getFromOptions = function(item) {
-		    return {
-		        dateFormat: $rootScope.jqDateFormat,
-		        // defaultDate: $rootScope.businessDate,
-		        maxDate: item.untilDate,
-		        numberOfMonths: 1,
-		        changeYear: true,
-		        changeMonth: true,
-		        beforeShow: function(input, inst) {
-                    $('#ui-datepicker-div');
-                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-                },
-                onClose: function(dateText, inst) {
-                    $('#ui-datepicker-div');
-                    $('#ui-datepicker-overlay').remove();
-                }
-		    }
+		$scope.fromDateOptions = {
+			dateFormat: $rootScope.jqDateFormat,
+			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onSelect: function(value) {
+				$scope.untilDateOptions.minDate = value;
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
 		};
 
-		$scope.getUntilOptions = function(item) {
-		    return {
-		        dateFormat: $rootScope.jqDateFormat,
-		        // defaultDate: $rootScope.businessDate,
-		        minDate: item.fromDate,
-		        maxDate: $rootScope.businessDate,
-		        numberOfMonths: 1,
-		        changeYear: true,
-		        changeMonth: true,
-		        beforeShow: function(input, inst) {
-                    $('#ui-datepicker-div');
-                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-                },
-                onClose: function(dateText, inst) {
-                    $('#ui-datepicker-div');
-                    $('#ui-datepicker-overlay').remove();
-                }
-		    }
+		$scope.untilDateOptions = {
+			dateFormat: $rootScope.jqDateFormat,
+			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onSelect: function(value) {
+				$scope.fromDateOptions.maxDate = value;
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
 		};
 
 		// auto correct the CICO value;

@@ -29,9 +29,6 @@ sntRover.controller('RVReportListCrl', [
                 fromDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
                 untilDate    = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
-            console.log(fromDate +' '+ untilDate);
-            console.log('==============================');
-
 			for (var i = 0, j = reportList.length; i < j; i++) {
 
 				// add report icon class
@@ -86,10 +83,8 @@ sntRover.controller('RVReportListCrl', [
                 reportList[i].chosenSortBy = sortDate.value;
 
                 // set the from and untill dates
-                reportList[i].fromDate = $filter('date')(fromDate, $rootScope.dateFormat);
-                reportList[i].untilDate = $filter('date')(untilDate, $rootScope.dateFormat);
-
-                console.log(reportList[i].fromDate +' --- '+ reportList[i].untilDate);
+                reportList[i].fromDate = fromDate;
+                reportList[i].untilDate = untilDate;
             }
 
             $scope.refreshScroller( 'report-list-scroll' );
