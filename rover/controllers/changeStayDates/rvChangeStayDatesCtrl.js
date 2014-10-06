@@ -524,8 +524,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			return events;
 		};
 
-		this.initialise();
-
 		$scope.refreshScroller = function() {
 			setTimeout(function() {
 				$scope.myScroll['edit_staydate_updatedDetails'].refresh();
@@ -547,6 +545,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			$scope.refreshScroller();
 		});
+
+		this.initialise();
 
 	}
 ]);
