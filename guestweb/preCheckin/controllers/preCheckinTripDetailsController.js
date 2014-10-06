@@ -5,9 +5,16 @@
 
 	var extractArrivalTime = function(){
 		$rootScope.stayDetails = {}; 
-		$rootScope.stayDetails.hour = ($scope.tripDetails.arrival_time.length >0) ? $scope.tripDetails.arrival_time.substring(0,2):"";
-		$rootScope.stayDetails.minute = ($scope.tripDetails.arrival_time.length >0) ? $scope.tripDetails.arrival_time.substring(3,5):"";
-		$rootScope.stayDetails.primeTime = ($scope.tripDetails.arrival_time.length >0) ? $scope.tripDetails.arrival_time.substring(6,9):"";		
+		if($scope.tripDetails.arrival_time){
+			$rootScope.stayDetails.hour =  $scope.tripDetails.arrival_time.substring(0,2);
+			$rootScope.stayDetails.minute =  $scope.tripDetails.arrival_time.substring(3,5);
+			$rootScope.stayDetails.primeTime = $scope.tripDetails.arrival_time.substring(6,9);		
+		}
+		else{
+			$rootScope.stayDetails.hour =  "";
+			$rootScope.stayDetails.minute =  "";
+			$rootScope.stayDetails.primeTime = "";
+		}
 	}
 	
     $scope.isLoading = true;
