@@ -66,8 +66,18 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 				return false;
 
 			}
-			var postData = {};
+			var postData = {};			
 			postData.reservationId = $scope.reservationData.reservationId;
+			/**
+			 * CICO-7077 Confirmation Mail to have tax details
+			 */
+			postData.tax_details = [];
+			_.each($scope.reservationData.taxDetails, function(taxDetail) {
+				postData.tax_details.push(taxDetail);
+			});
+			
+			postData.tax_total = $scope.reservationData.totalTaxAmount;
+
 			postData.emails = [];
 			postData.emails.push($scope.reservationData.guest.sendConfirmMailTo);
 
