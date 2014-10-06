@@ -207,6 +207,17 @@
 		background-repeat: repeat;
 	}
 
+	.gradient-horizontal-three-colors(@startColor, @middleColor, @endColor) {
+		background-image: -moz-linear-gradient(left,  @startColor 0%, @middleColor 25%, @middleColor 25%, @middleColor 50%, @middleColor 75%, @endColor 100%);
+		background-image: -ms-linear-gradient(left,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
+		background-image: -webkit-gradient(linear, left top, right top, color-stop(0%,@startColor), color-stop(25%,@middleColor), color-stop(25%,@middleColor), color-stop(50%,@middleColor), color-stop(75%,@middleColor), color-stop(100%,@endColor));
+		background-image: -webkit-linear-gradient(left,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
+		background-image: -o-linear-gradient(left,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
+		background-image: linear-gradient(to right,  @startColor 0%,@middleColor 25%,@middleColor 25%,@middleColor 50%,@middleColor 75%,@endColor 100%);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
 	.gradient-with-image(@image, @startColor, @endColor) {
 		background-image: @image, -moz-linear-gradient(top, @startColor, @endColor);
 		background-image: @image, -ms-linear-gradient(top, @startColor, @endColor);

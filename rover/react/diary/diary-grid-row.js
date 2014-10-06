@@ -43,7 +43,7 @@ var GridRow = React.createClass({
 		_.map(this.state.data.reservations, function(reservation) {
 			return GridRowItem({
 				key: 		reservation.key,
-				className: 	'occupancy-block ',
+				className: 	'occupancy-block',
 				display: 	self.props.display,
 				data: 		reservation,
 				row_offset: self.props.row_number * self.props.display.row_height,

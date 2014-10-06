@@ -108,6 +108,11 @@ sntRover
 
 	$scope.start_date = new Date('09/30/2014 12:00 PM');
 	$scope.start_time = new Time($scope.start_date.toComponents().time);
+	
+	$scope.grid_dimensions = {
+		width: angular.element($window).width() - 120,
+		height: angular.element($window).height() - 230
+	};
 
 	$scope.maintenance_span_int = 2;
 }]);

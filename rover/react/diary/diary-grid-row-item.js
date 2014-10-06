@@ -11,22 +11,24 @@ var GridRowItem = React.createClass({
 
 	},
 	getInitialState: function() {
-		var props = this.props,
-			px_per_ms = this.props.display.px_per_ms,
-			x_axis_origin = this.props.display.x_origin + this.props.display.x_0,
-			initial_state = Model({
-				data: this.props.data,
-				//mode: MODES[0],
-				start_time_ms: this.props.data.start_date.getTime(),
-				pos: Object.create(null, { top: { value: 0 } }),
-				dim: Object.create(null, { height: { value: '100%'} }),
-				end_time_ms: this.props.data.end_date.getTime(),
-				time_span_ms: undefined,
-				time_span_intervals: undefined,
-				dragging: false,
-				y_offset: this.props.row_offset,
-				rel: { x: 0, y: 0 }
-			});
+		var props 			= this.props,
+			px_per_ms 		= props.display.px_per_ms,
+			x_axis_origin 	= props.display.x_origin + props.display.x_0,
+			initial_state 	= //Model({
+			{
+				data: 					props.data,
+				start_time_ms: 			props.data.start_date.getTime(),
+				pos: 					Object.create(null, { top: { value: 0 } }),
+				dim: 					Object.create(null, { height: { value: '100%'} }),
+				end_time_ms: 			props.data.end_date.getTime(),
+				time_span_ms: 			undefined,
+				time_span_intervals: 	undefined,
+				dragging: 				false,
+				y_offset: 				props.row_offset,
+				rel: 					Object.create(null, { x: { value: 0 }, y: { value: 0}})
+			};
+
+			//});
 
 		initial_state.time_span_ms = initial_state.end_time_ms - initial_state.start_time_ms;
 		initial_state.time_span_intervals = initial_state.time_span_ms / 9000000;
@@ -55,7 +57,10 @@ var GridRowItem = React.createClass({
 		var props = this.props,
 			state = this.state,
 			x_axis_origin =props.display.x_origin,
-			px_per_ms = props.display.px_per_ms;
+			px_per_int = props.display.px_per_int,
+			px_per_ms = props.display.px_per_ms,
+			maintenance_time_span = props.display.maintenance_int * px_per_int,
+			reservation_time_span = (state.time_span_ms) * px_per_ms;
 
 		return React.DOM.div({
 			onMouseDown: this.__onMouseDown,
@@ -66,15 +71,21 @@ var GridRowItem = React.createClass({
 				left: (!state.dragging ? state.pos.left : state.pos.x) + 'px',
 				top: (!state.dragging ? state.pos.top : state.pos.y) + 'px',
 				height: state.dim.height,
-				width: (state.time_span_ms) * px_per_ms
+				width: reservation_time_span + maintenance_time_span
 			}
 		}, 
 		React.DOM.span({
 			className: 'occupied ' + props.data.status,
+			style: {
+				width: reservation_time_span
+			},
 			value: props.data.guest_name
 		}),
 		React.DOM.span({
-			className: 'maintenance'
+			className: 'maintenence',
+			style: {
+				width: maintenance_time_span
+			}
 		}));
 	}
 });

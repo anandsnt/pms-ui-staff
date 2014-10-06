@@ -9899,7 +9899,672 @@
         }
     }
     
-/*Diary Styles*/
+/* Room Diary                ==============================*/
+.diary-content {
+    position: relative;
+    display: block;
+    
+    .diary-header {
+        position: relative;
+        height: 90px;
+        background: rgba(0,0,0,.1);
+        .float;
+
+        .entry {
+            padding: 10px 0 0 10px;
+            .pull-left;
+
+            label:not(.checkbox):not(.radio) {
+                font-size: 14px;
+                line-height: 1em;
+                text-transform: uppercase;
+                .show;
+            }
+
+            .faux-select,
+            select {
+                font-size: 18px;
+                height: 50px;
+            }
+
+            select { padding: 12px 10px; }
+
+            &.date { 
+                #pixel-to-percent > .width(380, 2048); 
+
+                .entry-data {
+                    background: @white @calendar no-repeat 92% 16px;
+                    background-size: 20px;
+                    position: relative;
+                    #border-radius > .rounded();
+                    .box-shadow();
+                    .size(50px, 100%);
+                    .show;
+
+                    input { .hide; }
+
+                    .ui-datepicker-trigger {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 99;
+                        cursor: pointer;
+                        .square(100%);
+                        .opacity(0);
+                    }
+
+                    .day,
+                    .month,
+                    .year { position: absolute; }
+
+                    .month,
+                    .year {
+                        left: 65px;
+                        font-size: 16px;
+                        line-height: 1em;
+                    }
+
+                    .day {
+                        top: 15px;
+                        left: 10px;
+                        font-size: 40px;
+                    }
+
+                    .month { top: 10px; }
+                    .year { top: 24px; }
+
+                    @media @highdpi {
+                        background-image: @calendar2x;
+                    }
+
+                    &:hover { background-position: 92% -34px; }
+                } 
+            }
+
+            &.time { 
+                #pixel-to-percent > .width(300, 2048); 
+
+                select {
+                    font-size: 24px;
+                    font-weight: 600;
+                    padding: 0 10px;
+
+                    option { 
+                        font-size: 16px; 
+                        font-weight: 400;
+                    }
+                }
+            }
+
+            &.room { #pixel-to-percent > .width(320, 2048); }
+
+            &.rate { 
+                position: relative;
+                #pixel-to-percent > .width(320, 2048); 
+
+                .faux-select { 
+                    position: relative;
+                    padding: 0 10px;
+                    line-height: 50px;
+                    cursor: pointer;
+                    z-index: 1030;
+                    .faux-clickable;
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        background: @white @selectArrow no-repeat 50% 50%;
+                        background-size: 6px 4px;
+                        pointer-events: none;
+                        z-index: 999;
+                        .size(100%, 25px);
+                        #border-radius > .right();
+                    }
+                }
+            }
+
+            &.switch { 
+                #pixel-to-percent > .width(240, 2048); 
+
+                .switch-button {
+                    #border-radius > .rounded();
+                    .size(50px, 100%);
+                    .show;
+
+                    .data-off,
+                    .data-on {
+                        font-size: 24px;
+                        
+                        line-height: 40px;
+                        height: 40px;
+                        
+                        .switch-icon { #border-radius > .rounded(); }
+
+                        .value { font-weight: 600; }
+
+                        &.data-off { 
+                            left: auto;
+                            right: 0;
+
+                            .switch-icon { margin: 0 5px 0 0; }
+                        }
+                        
+                        &.data-on { 
+                            left: auto;
+                            right: 100%;
+
+                            .switch-icon { margin: 0 0 0 5px; }
+                        }
+                    }
+
+                    &.on {
+                        .data-off { left: auto; right: -100%; }
+                        .data-on { left: auto; right: 0; }
+                    }
+                }
+
+                &.display {
+                    .switch-button {
+                        .data-off,
+                        .data-on {
+                            .switch-icon { .gradient(@blueStart, @blueEnd); }
+                        }
+                    }
+                }
+            }
+        }
+
+        .actions {
+            padding: 30px 10px 0;
+            .pull-right;
+
+            .button { line-height: 50px; }
+        }
+
+        /* Rate type search **/
+        .faux-select-options {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            z-index: 1020;
+            .calc-width(100, 10);
+            .faux-clickable;
+            .transition;
+            #fade > .in();
+
+            .header {
+                .radio {
+                    margin: 0;
+                    padding: 5px 0 5px 40px;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    .show;
+
+                    .icon-form { 
+                        top: 15px;
+                        left: 10px; 
+                    }
+
+                    .placeholder { 
+                        color: @grey3;
+                        font-style: italic;
+                        .hide;
+                    }
+
+                    &:last-child { border-bottom: 0; }
+                }
+            }           
+
+            &.showing-search {
+                width: 420px;
+
+                .header {
+                    .radio {
+                        .placeholder { display: inline-block; }
+                    }
+                }
+
+                .entry {
+                    position: relative;
+                    float: none;
+                    margin: 0;
+                    .size(50px, 100%);
+
+                    .icon-search {
+                        position: absolute;
+                        top: 15px;
+                        left: 15px;
+                        z-index: 99;
+                    }
+
+                    .query {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        font-size: 21px;
+                        font-weight: 700;
+                        line-height: 50px;
+                        padding-left: 40px;
+                        color: @logoPrimary; 
+                        z-index: 9;
+                        background: @grey1;
+                        .placeholder-text(18px, 50px, 600, @grey4, normal);
+                        .box-shadow(none);
+                        #border-radius > .rounded(0);
+
+                        &:focus,
+                        &:active { background: darken(@grey1, 10); }
+                    }
+
+                    .clear-query {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        z-index: 99;
+                        visibility: hidden;
+                        .square(50px);
+
+                        .icons {
+                            position: absolute;
+                            top: 15px;
+                            right: 15px;
+                            background-color: @grey3;
+                            background-position: 6px -693px;
+                            .hide-text;
+                            .square(20px);
+                            .opacity(0);
+                            .show;
+                            #fade > .out();
+                            #border-radius > .rounded(20px);
+                        }
+
+                        &.visible { 
+                            visibility: visible;
+
+                            .icons {
+                                .opacity(100); 
+                                #fade > .in(); 
+                            }
+                        }
+
+                        &:hover,
+                        &.active { 
+                            .icons { background-color: @logoPrimary; }
+                        }
+                    }
+                } 
+            }
+
+            &.hidden { #fade > .out(); }
+        }
+    }
+
+    .diary-container {
+        position: relative;
+        overflow: hidden;
+        .calc-height(100, 90);
+        .float; 
+
+        .diary-timeline {
+            position: fixed;
+            top: 150px;
+            left: 120px;
+            z-index: 99;
+            height: 80px;
+            background: darken(@darkBlue, 40);
+            cursor: default;
+            .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
+            .calc-width(100, 120);
+
+            .wrapper {
+                position: relative;
+                .gradient-horizontal-three-colors(darken(@darkBlue, 40), @blue, darken(@darkBlue, 40));
+                overflow: hidden;
+                .size(60px, 100%);
+                .float;
+
+                .segment {
+                    position: relative;
+                    display: block;
+                    float: left;
+                    height: 100%;               
+                    box-sizing: border-box;
+
+                    span {
+                        display: inline-block;
+                    }
+
+                    span.hour-display {
+                        position: absolute;
+                        top: 4px;
+                        left: 4px;
+                        color: #fff;
+                        font-weight: 600;
+                    }
+
+                    .interval-1,
+                    .interval-2,
+                    .interval-3,
+                    .interval-4 {
+                        border-right: 1px solid #fff; 
+                    }
+
+                    .interval-1 {
+                        height: 20px;
+                    }
+
+                    .interval-2 {
+                        height: 30px;
+                    }
+
+                    .interval-3 {
+                        height: 20px;
+                    }
+
+                    .interval-4 {
+                        height: 100%;
+                    }
+
+                    &::first-child {
+                        border-left: 1px solid #fff; 
+                    }
+                }
+            }
+
+            .occupancy {
+                background: @white;
+                overflow: hidden;
+                .size(20px, 100%);
+                .float;
+
+                li {
+                    line-height: 20px;
+                    vertical-align: middle;
+                    width: 80px;
+                    margin: 0;
+                    .pull-left;
+                }
+            }
+        }
+
+        .diary-toggle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px;
+            background: @grey1;
+            z-index: 9990;
+            .box-shadow(2px 5px 5px rgba(0,0,0,.15));
+            .size(90px, 120px);
+
+            .switch-button {
+                #border-radius > .rounded();
+                .size(70px, 100px);
+
+                input {
+                    min-height: 70px;
+                    line-height: 70px;
+                }
+
+                .data-off,
+                .data-on {
+                    padding: 5px;
+                    line-height: 30px;
+                    .size(70px, 100px);
+
+                    .switch-icon,
+                    .value {
+                        text-transform: uppercase;
+                        text-align: center;
+                        float: none;
+                        margin: 0;
+                        .show;
+                        #border-radius > .rounded();
+                        .size(30px, 100%);
+                    }
+
+                    &.data-off {
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    } 
+
+                    &.data-on {
+                        left: 0;
+                        right: 0;
+                        top: 100%;
+                    }
+                }
+
+                &.on {
+                    .data-off {
+                        left: 0;
+                        right: 0;
+                        top: -100%;
+                    }
+
+                    .data-on {
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    }
+                }
+            }
+        }
+
+        .diary-rooms {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 120px;
+            background: @grey1;
+            z-index: 9995;
+            cursor: default;
+            .box-shadow(2px 5px 5px rgba(0,0,0,.15));
+            .calc-height(100, 90);
+            .show; 
+
+            > .iScrollVerticalScrollbar {
+                right: auto;
+                top: 0;
+                bottom: 10px;
+                left: 10px;
+            }
+
+            .wrapper {
+                position: relative;
+                font-weight: 600;
+                overflow-y: scroll;
+                z-index: 1099;
+
+                li {
+                    margin: 5px 0 5px 10px;
+                    padding: 10px 5px;
+                    text-align: right;
+                    text-transform: uppercase;
+                    background: @white;
+                    overflow: hidden;
+
+                    span {
+                        line-height: 1em;
+                        .show;    
+
+                        &.number {
+                            font-size: 20px;
+                            font-weight: 600;
+                        }
+
+                        &.type { font-size: 13px; }
+                    }
+
+
+                    &.occupied { 
+                        color: @grey3;
+                        background: @grey1; }
+                    
+                    &.dirty { 
+                        color: @red;
+                        background: lighten(@red, 30); 
+                    }                
+
+                    &:first-child { margin-top: 0; }
+                    &:last-child { margin-bottom: 0; }
+                }
+            }
+        }
+
+        .diary-grid {
+            position: absolute;
+            top: 90px;
+            left: 120px;
+            z-index: 99;
+            .calc-height(100, 90);
+            .calc-width(100, 120);
+
+            > .iScrollVerticalScrollbar { .hide; }
+            > .iScrollHorizontalScrollbar { 
+                top: auto;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+            }
+
+           .wrapper {
+                display: block;
+                position: relative;
+                width: 1024px;
+                height: 768px;
+                padding: 0px !important;
+                margin: 0px !important;
+                box-sizing: border-box;
+                overflow-x: scroll;
+                overflow-y: scroll;
+                z-index: 1099;
+
+                .grid {
+                    position: relative;
+                    display: block;
+                    width: 500%;
+                    height: 500%;
+
+                    .grid-row {
+                        position: relative;
+                        margin: 5px 0;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+                        background: @white;
+                        //overflow: hidden;
+
+                        span {
+                            display: block;
+                        }
+
+                        .hour {
+                            display: block;
+                            float: left;
+                            width: 60px;
+                            height: 100%;
+                            border-right: 1px solid rgba(0,0,0, 0.25);
+                        }
+
+                        .occupancy-block {
+                            display: block;
+                            position: absolute;
+                            z-index: 1199;
+
+                            span {
+                                .pull-left; 
+                                .show;
+
+                                &.maintenence {
+                                    //width: 80px;
+                                    .gradient(@grey4, @gcard);
+                                }
+
+                                &.check-in,
+                                &.inhouse,
+                                &.check-out,
+                                &.housekeeping {
+                                    padding: 5px;
+                                    color: @white;
+                                }
+
+                                &.check-in { .gradient(@greenStart, @greenEnd); }
+                                &.inhouse { .gradient(@blueStart, @blueEnd); }
+
+                                &.check-out {
+                                    .gradient(@greenStart, @greenEnd);
+                                }
+
+                                &.housekeeping {
+                                    .gradient(@greenStart, @greenEnd);
+                                }                               
+                            }
+                        }
+                    }
+
+                    .grid-row:nth-of-type(2n) {
+                        background-color: rgba(0, 0, 0, 0.03);  
+                    }
+
+                    .grid-row:nth-of-type(2n + 1) {
+                        background-color: rgba(0, 149, 238, 0.05);  
+                    }
+                }
+
+                &:first-child { margin-top: 0; }
+                &:last-child { margin-bottom: 0; }
+            }
+        }
+
+        /* 12 hours grid ***/
+        &.hours-12 {
+
+            .diary-rooms {
+                li {
+                    height: 60px;
+                }
+            }
+
+            .diary-grid {
+                li {
+                    line-height: 60px;
+                    height: 60px;
+
+                    span {
+                        height: 60px;
+                    }
+                }
+            }
+        }
+
+        /* 24-hours grid ***/
+        &.hours-24 {
+
+            .diary-rooms {
+                li {
+                    height: 30px;
+                    margin: 0;
+                }
+            }
+
+            .diary-grid {
+                li {
+                    line-height: 30px;
+                    height: 30px;
+                    margin: 0;
+
+                    span {
+                        height: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Diary Styles
 .diary-content {
     position: relative;
     display: block;
@@ -9954,11 +10619,11 @@
             box-shadow: 5px 0px 11px #aaa;
             overflow: hidden;
 
-            /*.switch-button {
+            .switch-button {
                 display: block;
                 height: 80px;
                 z-index: 1199;
-            }*/
+            }
 
             .wrapper {
                 position: relative;
@@ -10057,7 +10722,7 @@
         .diary-grid {
             float: left;
             width: auto !important;
-
+            
             &::after {
                 content: '';
                 clear: both;
@@ -10167,7 +10832,8 @@
     .resize-bar.left {
         background-color: #666;
     }
-}
+}*/
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

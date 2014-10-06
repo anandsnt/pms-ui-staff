@@ -5,9 +5,11 @@ var TimelinePanel = React.createClass({
 		};
 	},
 	render: function() {
+		var self = this;
+
 		return React.DOM.div({
 			className: 'diary-timeline scrollable',
-			onScroll: this.props.__onGridScroll
+			onScroll: self.props.__onGridScroll
 		},
 		Timeline({
 			viewport: this.props.viewport,

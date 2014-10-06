@@ -17,8 +17,7 @@ var Timeline = React.createClass({
 			start_time = props.display.x_origin_start_time;		
 
 		(function() {
-			var time = start_time.hours,
-				ctime;
+			var time = start_time.hours;
 
 			for(var i = 0; i < props.display.hours; i++) {
 				segment_hour_display.push(time++ + ':00');

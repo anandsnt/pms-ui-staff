@@ -2,7 +2,7 @@ var DiaryContent, SETTINGS = {
 	viewport: {
 		width: 1024,
 		height: 768,
-		row_header_width: 220,  //Relative starting point for left edge of grid
+		row_header_width: 120,  //Relative starting point for left edge of grid
 		timeline_header_height: 80,
 		hours: 12
 	},				
@@ -10,10 +10,11 @@ var DiaryContent, SETTINGS = {
 		width: undefined,
 		height: '100%',
 		hours: 48,
-		row_height: 80,
+		row_height: 60,
 		intervals_per_hour: 4, 
 		px_per_ms: undefined,
-		px_per_int: undefined
+		px_per_int: undefined,
+		maintenance_int: 2
 	},
 	filter: {
 		types: ['room', 'rate_type', 'start_time', 'status']
@@ -21,6 +22,8 @@ var DiaryContent, SETTINGS = {
 };
 
 DiaryContent = React.createClass({
+	roomsPanelEl: undefined,
+	timelinePanelEl: undefined,
 	__onGridScroll: function(e) {
 		var el = e.currentTarget;
 
@@ -30,16 +33,13 @@ DiaryContent = React.createClass({
 		}
 	},
 	componentDidMount: function() {
+		this.roomsPanelEl = $('.diary-rooms .wrapper');
+		this.timelinePanelEl = $('.diary-timeline .wrapper');
     	this.__onGridScroll = _.debounce(this.__onGridScroll, 100);
   	},
 	getDefaultProps: function() {
 		var viewport = SETTINGS.viewport,
 			display = SETTINGS.display;
-
-		display.width 		= display.hours / viewport.hours * viewport.width;
-		display.px_per_hr 	= viewport.width / viewport.hours;
-		display.px_per_int  = display.px_per_hr / display.intervals_per_hour;
-		display.px_per_ms 	= display.px_per_int / 900000;
 
 		return { 
 			viewport: viewport, 
@@ -63,17 +63,26 @@ DiaryContent = React.createClass({
 					x_origin: scope.start_date.getTime(),
 					x_origin_start_time: scope.start_time
 				},
+				viewport: {
+					width: scope.grid_dimensions.width,
+					height: scope.grid_dimensions.height
+				},
 				data: scope.data,
 				currentDragItem: undefined,
 				currentResizeItem: undefined
 			};
 		
+		initial_state.display.width 		= props.display.hours / props.viewport.hours * initial_state.viewport.width;
+		initial_state.display.px_per_hr 	= initial_state.viewport.width / props.viewport.hours;
+		initial_state.display.px_per_int  	= initial_state.display.px_per_hr / props.display.intervals_per_hour;
+		initial_state.display.px_per_ms 	= initial_state.display.px_per_int / 900000;
+
 		return initial_state;
 	},
 	render: function() {
-		var display = _.extend(_.clone(this.props.display), this.state.display),
-			self = this;
+		var self = this;
 
+		_.extend(this.props.viewport, this.state.viewport);
 		_.extend(this.props.display, this.state.display);
 
 		return this.transferPropsTo(React.DOM.div({

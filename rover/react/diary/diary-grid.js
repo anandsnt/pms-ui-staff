@@ -40,6 +40,10 @@ var Grid = React.createClass({
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
 					className: 'wrapper',
+					style: {
+						width: this.props.viewport.width,
+						height: this.props.viewport.height
+					},
 					onScroll: self.props.__onGridScroll 
 				},
 				React.DOM.ul({ 

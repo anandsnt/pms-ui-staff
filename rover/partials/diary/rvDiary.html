@@ -17,9 +17,9 @@
 
 <section id="diary-content" class="content diary-content" role="main">
 
-    <!-- Diary header: SELECT ROOM MODE -->
+    <!-- Diary header -->
     <form method="post" action="" id="diary-header" name="diary-header" class="diary-header">
-        <div class="entry">
+        <div class="entry date">
             <label for="arrival-date">Date</label>
             <div class="entry-data">
                 <input name="arrival-date" id="arrival-date" type="text" class="datepicker" value="{date}" readonly />
@@ -28,66 +28,67 @@
                 <span id="arrival-date-year" class="year">{year}</span>
             </div>
         </div>
-        <div class="entry">
+        <div class="entry time">
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
                 <select id="arrival-time" name="arrival-time">
-                    <option value="01:00">01:00</option>
+                    <!--<option value="01:00">01:00</option>
                     <option value="02:00">02:00</option>
-                    ...  
+                    ... -->
+                    <option ng-repeat="arrival_time in arrival_times" value={{arrival_time}}>{{arrival_time}}</option> 
                 </select>
             </div>
         </div>
-        <div class="entry">
+        <div class="entry room">
             <label for="room-type">Room Type</label>
             <div class="select">
                 <select id="room-type" name="room-type">
                     <option value="" selected>All</option>
-                    <option value="{Room Type 1}">{Room Type 1}</option>
-                    <option value="{Room Type 2}">{Room Type 2}</option>
-                    ...  
+                    <!--<option value="{Room Type 1}">{Room Type 1}</option>
+                    <option value="{Room Type 2}">{Room Type 2}</option>-->
+                    <option ng-repeat="room_type in room_types" value={{room_type.id}}>{{room_type.name}}</option>
                 </select>
             </div>
         </div>
-        <div class="entry">
+        <div class="entry rate">
             <label for="rate-type">Rate Type</label>
             <div class="faux-select">
                 Standard Rate
             </div>
-        </div>
-        <div id="diary-rates" class="faux-select-options hidden">
-            <div class="header">
-                <!-- Standard Rate -->
-                <label class="radio inline">
-                    <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" checked />
-                    Standard
-                </label>
-                <label class="radio inline">
-                    <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" />
-                    Corporate 
-                    <span>Select Account</span>
-                </label>   
-                <!-- Corporate Rate is selected & defined
-                <label class="radio inline">
-                    <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" />
-                    Standard
-                </label>
-                <label class="radio inline checked">
-                    <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" checked />
-                    Corporate 
-                    <span>American Airlines</span>
-                    <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
-                    <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
-                </label> -->      
+            <div id="diary-rates" class="faux-select-options hidden">
+                <div class="header">
+                    <!-- Standard Rate -->
+                    <label class="radio inline">
+                        <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" checked />
+                        Standard
+                    </label>
+                    <label class="radio inline">
+                        <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" />
+                        Corporate 
+                        <span>Select Account</span>
+                    </label>   
+                    <!-- Corporate Rate is selected & defined
+                    <label class="radio inline">
+                        <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" />
+                        Standard
+                    </label>
+                    <label class="radio inline checked">
+                        <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" checked />
+                        Corporate 
+                        <span>American Airlines</span>
+                        <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
+                        <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
+                    </label> -->      
+                </div>
+                <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
+                <div class="entry search hidden">
+                    <a href="#" id="diary-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></a>
+                    <button type="submit" name="submit" class="icons icon-search">Search</button>
+                    <input name="diary-corporate-query" id="diary-corporate-query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" />
+                </div>
             </div>
-            <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
-            <div class="entry search">
-                <a href="#" id="diary-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></a>
-                <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input name="diary-corporate-query" id="diary-corporate--query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" />
-            </div>
         </div>
-        <div class="entry">
+        <div class="entry switch">
             <label for="diary-hours-days">Hours / Days</label>
             <div class="switch-button on">
                 <input name="diary-hours-days" id="diary-hours-days" value="" type="checkbox" checked />
@@ -101,8 +102,8 @@
                 </label>
             </div>
         </div>
-        <div class="entry">
-            <label for="diary-range">View Range <span>(Hours)</span></label>
+        <div class="entry switch display">
+            <label for="diary-range">Show <span>(Hours)</span></label>
             <div class="switch-button on">
                 <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked />
                 <label class="data-off">
@@ -119,9 +120,7 @@
             <button type="button" class="button green">Update</button>
         </div>
     </form>
+    
     <!-- Diary Content -->
-
-    <div class="" ng-react-component="DiaryContent">
-
-    </div>
+    <div class="component-wrapper" ng-react-component="DiaryContent"></div>
 </section>
