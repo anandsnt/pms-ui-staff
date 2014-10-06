@@ -10,7 +10,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 
 
 
-		$scope.data = rvAvailabilitySrv.getData();
+		$scope.data = rvAvailabilitySrv.getGridData();
 
 		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
@@ -32,7 +32,7 @@ sntRover.controller('rvRoomAvailabilityGridStatusController', [
 		* when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
 		*/
 		$scope.$on("changedRoomAvailableData", function(event){			
-			$scope.data = rvAvailabilitySrv.getData();
+			$scope.data = rvAvailabilitySrv.getGridData();
 			$scope.refreshScroller('room_availability_scroller');
 			$scope.hideMeBeforeFetching = true;
 			$scope.$emit("hideLoader");
