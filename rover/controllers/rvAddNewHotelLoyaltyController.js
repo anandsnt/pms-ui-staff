@@ -46,7 +46,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RV
 		user_membership.membership_card_number = $scope.userMembershipNumber;
 		user_membership.membership_class = $scope.userMembershipClass;
 		user_membership.membership_type = $scope.userMembershipType;
-		user_membership.membership_level = "";
+		user_membership.membership_level = $scope.userMembershipLevel;
 		$scope.newLoyalty = user_membership;
 
 		var data = {'user_id':$scope.$parent.guestCardData.userId,

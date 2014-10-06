@@ -1,11 +1,12 @@
 sntRover.service('RVHkRoomStatusSrv', [
-	'RVBaseWebSrv',
-	'rvBaseWebSrvV2',
+	'$http',
 	'$q',
-	function(RVBaseWebSrv, rvBaseWebSrvV2, $q) {
+	'$window',
+	'BaseWebSrvV2',
+	function($http, $q, $window, BaseWebSrvV2) {
 
 		this.roomList = {};
-		var self = this;
+		
 		this.initFilters = function(){
 			return {	
 					"dirty" : false,
@@ -27,41 +28,57 @@ sntRover.service('RVHkRoomStatusSrv', [
 					"floorFilterSingle": '',
 					"floorFilterStart": '',
 					"floorFilterEnd": '',
-					'showAllFloors': true
+					'showAllFloors': true,
+					'filterByWorkType': '',
+					'filterByEmployee': ''
 				};
 		}
 
 		this.currentFilters = this.initFilters();
 		
-		this.fetch = function(){			
+		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
-			var url = '/house/search.json';
+			var url = '/house/search.json?date='+ businessDate;
+			
+			$http.get(url)
+				.success(function(response, status) {
+					if(response.status == "success"){
+					    this.roomList = response.data;
 
-			RVBaseWebSrv.getJSON(url).then(
-				function(response) {
-					self.roomList = response;
-				    for (var i = 0, j = self.roomList.rooms.length; i < j; i++) {
-				    	var room = self.roomList.rooms[i];
+					    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
+					    	var room = this.roomList.rooms[i];
 
-				    	// lets set this so that we can avoid
-				    	room.display_room = true;
+					    	// lets set this so that we can avoid
+					    	room.display_room = true;
 
-				    	// reduce scope search
-				    	room.description = room.hk_status.description
-				    	
-				    	room.is_occupied = room.is_occupied == 'true' ? true : false;
-				    	room.is_vip = room.is_vip == 'true' ? true : false;
+					    	// reduce scope search
+					    	room.description = room.hk_status.description
+					    	
+					    	room.is_occupied = room.is_occupied == 'true' ? true : false;
+					    	room.is_vip = room.is_vip == 'true' ? true : false;
 
-				    	// single calculate the class required
-				    	// will require additional call from details page
-				    	room.roomStatusClass = self.setRoomStatusClass(room);
-				    }
-				    deferred.resolve(self.roomList);
-				},
-				function(errorMessage){
-					deferred.reject(errorMessage);
-				}
-			);	
+					    	// single calculate the class required
+					    	// will require additional call from details page
+					    	room.roomStatusClass = this.setRoomStatusClass(room);
+
+					    	// set the leaveStatusClass or enterStatusClass value
+					    	this.setReservationStatusClass(room);
+					    }
+
+					    deferred.resolve(this.roomList);
+					}else{
+					}
+					
+				}.bind(this))
+				.error(function(response, status) {
+				    if(status == 401){ 
+				    	// 401- Unauthorized
+		    			// so lets redirect to login page
+						$window.location.href = '/house/logout' ;
+		    		}else{
+		    			deferred.reject(response);
+		    		}
+				});
 
 			return deferred.promise;
 		}
@@ -70,18 +87,95 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.fetch_floors = function(){
 			var deferred = $q.defer();
 			var url = '/api/floors.json';
-			rvBaseWebSrvV2.getJSON(url).then(
-				function(data) {
-			 		self.floorList = data.floors;
-					deferred.resolve(self.floorList);
-				},
-				function(errorMessage){
-					deferred.reject(errorMessage);
-				}
-			);		
+			
+			$http.get(url)
+				.success(function(response, status) {
+					if(response.floors){
+					    this.floorList = response.floors;
+					    deferred.resolve(this.floorList);
+					}else{
+					}
+					
+					
+				}.bind(this))
+				.error(function(response, status) {
+				    if(status == 401){ 
+				    	// 401- Unauthorized
+		    			// so lets redirect to login page
+						$window.location.href = '/house/logout' ;
+		    		}else{
+		    			deferred.reject(response);
+		    		}
+				});
 
 			return deferred.promise;
 		}
+
+		// fetch all room types
+		var that = this;
+		this.allRoomTypes = {};
+		this.fetchAllRoomTypes = function(){
+			var url =  'api/room_types?exclude_pseudo=true&exclude_suite=true';	
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					angular.forEach(data.results, function(roomType, i) {
+						roomType.isSelected = false;
+						that.allRoomTypes[roomType.id] = roomType;
+					});
+					deferred.resolve(that.allRoomTypes);
+				}, function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+		// fetch all HK cleaning staffs
+		var HKMaids = [];
+		this.fetchHKMaids = function() {
+			var url = "/api/work_statistics/employees_list";
+			var deferred = $q.defer();
+
+			if ( HKMaids.length ) {
+				deferred.resolve(HKMaids);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						HKMaids = data.results;
+						deferred.resolve(HKMaids);
+					}, function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+		// get all all WorkTypes
+		var workTypesList = [];
+		this.getWorkTypes = function() {
+			var deferred = $q.defer(),
+				url = 'api/work_types';
+
+			if ( workTypesList.length ) {
+				deferred.resolve(workTypesList);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						workTypesList = data.results;
+						deferred.resolve(workTypesList);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+
 
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
@@ -98,31 +192,49 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
 		this.setRoomStatusClass = function(room){
-
 			if(this.roomList.checkin_inspected_only == "true"){
 				if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-					return 'room-clean';
+					return 'clean';
 				}
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
+					return 'pickup';
 				}
 			}
 			else {
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-					return 'room-clean';
+					return 'clean';
 				}
 				if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
+					return 'pickup';
 				}
 			}
 
-			if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
-				return 'room-dirty';
+			if( (room.hk_status.value == 'DIRTY') && !room.is_occupied ) {
+				return 'dirty';
 			}
-			if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-				return 'room-out';
+			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ){
+				return 'out';
 			}
+
 			return '';
+		};
+
+		// Moved from ctrl to srv as this is calculated only once
+		// keept as msg so that it can be called from crtl if needed
+		this.setReservationStatusClass = function(room){
+			if ( room.room_reservation_status == 'Due Out' || room.room_reservation_status == 'Departed' ) {
+				room.leaveStatusClass = 'check-out';
+			} else if ( room.room_reservation_status == 'STAYOVER' ) {
+				room.leaveStatusClass = 'inhouse';
+			} else {
+				room.leaveStatusClass = 'no-show';
+			}
+
+			if ( room.room_reservation_status == 'Arrival' || room.room_reservation_status == 'Arrived' ) {
+				room.enterStatusClass = 'check-in';
+			} else {
+				room.enterStatusClass = 'no-show';
+			}
 		};
 
 		// when user edit the room on details page
@@ -143,6 +255,28 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.hk_status.description = newDescription;
 			matchedRoom.description           = newDescription;
 			matchedRoom.roomStatusClass       = this.setRoomStatusClass(matchedRoom);
+		};
+
+
+		this.updateEachHKItem = function(id, key, value) {
+
+			// first find the exact room
+			var room = _.find(this.roomList.rooms, function(room) {
+				return parseInt(room.id) === id;
+			});
+
+			// if room not found
+			if ( !room ) {
+				return
+			};
+
+			// if the requested key in room, update its value
+			if ( room.hasOwnProperty(key) ) {
+				room[key] = value;
+			} else {
+				console.log( 'propery ' + key + ' cannot be found on RVHkRoomStatusSrv!' );
+			}
+
 		};
 
 	}
