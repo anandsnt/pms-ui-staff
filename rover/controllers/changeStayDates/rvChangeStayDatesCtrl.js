@@ -2,6 +2,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
+		$s = $scope;
 		
 		// set a back button on header
 		$rootScope.setPrevState = {
