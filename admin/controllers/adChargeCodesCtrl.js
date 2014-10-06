@@ -366,12 +366,37 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.deleteTaxFromCaluculationPolicy = function(index) {
 			/**
 			 * ==TODO==
-			 * 1. Make a DELETE request	
+			 * 1. Make a DELETE request
 			 * 		Remove the tax from the list in the repeater
 			 * 2. Redo the calucation policy filter on all of them
 			 * 		Get clarified with Product Team on how to handle the same
-			 * 3. Make a SAVE requset IFF REQUIRED [ Might need to check how to work on the a dependent tax deletion! ]		
+			 * 3. Make a SAVE requset IFF REQUIRED [ Might need to check how to work on the a dependent tax deletion! ]
 			 */
+
+			//1.
+			$scope.prefetchData.linked_charge_codes.splice(index, 1);
+
+			//2.
+			/**
+			 * 	Hi Nicole,
+					Regarding comment #2 in CICO-9576
+					In case there are 2 taxes added and the second tax has a calculation rule set as Base + Tax 1, and the user proceeds to delete the first tax, should we reset the already applied calculation rule as it depends on the deleted one?
+					Kindly clarify.
+				Thanks,
+				Dilip
+
+			 * 	Hi Dilip, 
+					Good point, yes, I would say that if taxes get deleted, the calculation rules should be reset for the user to adjust manually. 
+				Thanks,
+				Nicki
+			 */
+			_.each($scope.prefetchData.linked_charge_codes, function(tax) {
+				tax.selected_calculation_rule = 0;
+			});
+
+			//3.
+			//NA as there is a save changes button
+
 		}
 
 	}
