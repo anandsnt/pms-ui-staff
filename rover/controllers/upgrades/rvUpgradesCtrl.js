@@ -5,6 +5,7 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 
 		$rootScope.setPrevState = {
 			title: $filter('translate')('STAY_CARD'),
+			//As per CICO-9832
 			scope: $scope,
 			callback: 'backToStayCard'
 		}
