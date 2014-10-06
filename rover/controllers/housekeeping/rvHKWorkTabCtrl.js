@@ -16,14 +16,24 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		// default cleaning status
 		$scope.isCleaning = false;
 
-		// fetch maintenance reasons list
-		$scope.workTypesList = [];
-		var wtlCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.workTypesList = data;
-		};
-		$scope.invokeApi(RVHkRoomDetailsSrv.getWorkTypes, {}, wtlCallback);
+		// default room HK status
+		// will be changed only for connected
+		if ( !$rootScope.isStandAlone ) {
+			$scope.ooOsTitle = $scope.roomDetails.room_reservation_hk_status == 2 ? 'Out Of Service' :
+								$scope.roomDetails.room_reservation_hk_status == 3 ? 'Out Of Order' : false;
+		} else {
+			$scope.ooOsTitle = false;
+		}
 
+		// fetch maintenance reasons list
+		if ( $rootScope.isStandAlone ) {
+			$scope.workTypesList = [];
+			var wtlCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.workTypesList = data;
+			};
+			$scope.invokeApi(RVHkRoomDetailsSrv.getWorkTypes, {}, wtlCallback);
+		}
 
 		$scope.checkShow = function(from) {
 			if ( from == 'clean' && ($scope.roomDetails.current_hk_status == 'CLEAN' || $scope.roomDetails.current_hk_status == 'INSPECTED') ) {
@@ -42,8 +52,26 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		};
 
 
-		$scope.roomStatusChanged = function() {
-			updateRoom( 'current_hk_status', $scope.roomDetails.current_hk_status );
+		$scope.standaloneRoomStatusChanged = function() {
+			// nothing yet
+		};
+
+		$scope.connectedRoomStatusChanged = function() {
+			var callback = function(data){
+				$scope.$emit('hideLoader');
+				updateRoom( 'current_hk_status', $scope.roomDetails.current_hk_status );
+			}
+
+			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
+				return item.value == $scope.roomDetails.current_hk_status;
+			});
+
+			var data = {
+				'room_no': $scope.roomDetails.id, 
+				'hkstatus_id': hkStatusItem.id
+			}
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
 
