@@ -15,6 +15,7 @@ var RoomPanel = React.createClass({
 			className: 'switch-button'
 		}),
 		Rooms({
+			display: this.props.display,
 			data: this.state.data
 		}));
 	}

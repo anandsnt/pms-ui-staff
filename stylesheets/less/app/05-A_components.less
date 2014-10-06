@@ -9952,17 +9952,20 @@
             float: left;
             width: 240px;
             box-shadow: 5px 0px 11px #aaa;
+            overflow: hidden;
 
             .switch-button {
                 display: block;
                 height: 80px;
+                z-index: 1199;
             }
 
             .room-titles {
                 position: relative;
                 font-weight: 600;
                 overflow-y: scroll;
-
+                z-index: 1099;
+                
                 li {
                     height: 80px;
                     padding: 20px 20px;
