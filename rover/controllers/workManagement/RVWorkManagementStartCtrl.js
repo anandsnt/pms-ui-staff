@@ -186,6 +186,7 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 $scope.stateVariables.searchResults.rooms = [];
                 $scope.stateVariables.lastSearchQuery = "";
                 $scope.stateVariables.searching = false;
+                $scope.stateVariables.noSearchResults = false;
             }
             $scope.$apply();
         }
