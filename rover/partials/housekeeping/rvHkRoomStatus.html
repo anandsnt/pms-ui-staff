@@ -42,9 +42,20 @@
   <span id="ref-text" translate>PULL_REFRESH</span>
 </div>
 
+<ul id="my-worksheet-options" class="worksheet-options" ng-if="isStandAlone && isMaintenanceStaff">
+    <li ng-click="changeView('summary')" ng-class="{'active': currentView == 'summary'}">Summary</li>
+    <li ng-click="changeView('rooms')" ng-class="{'active': currentView == 'rooms'}">Rooms</li>
+</ul>
+
+<ul id="my-worksheet-summary" class="worksheet-summary" ng-if="isStandAlone && isMaintenanceStaff" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
+    <li>Time Allocated <span>{value}</span></li>
+    <li>Departures <span>{value}</span></li>
+    <li>Stayovers <span>{value}</span></li>
+    <li>Completed<span>{value}/{total}</span></li>
+</ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-class="{'no-options': !isStandAlone}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" ng-class="{'has-summary': isMaintenanceStaff, 'no-options': !isStandAlone, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
     <li class="room" ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" ng-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->

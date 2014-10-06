@@ -56,14 +56,22 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noResultsFound = 0;
 
-
-
-
 		// default values for these
 		// for a HK staff the filterByEmployee value must be defalut to that
 		// and filter the rooms accordingly
 		// fetch all the HK work staff
 		if ( $rootScope.isStandAlone ) {
+
+			// switching b/w summary and rooms on mobile view
+			if ( $rootScope.isMaintenanceStaff ) {
+				$scope.currentView = 'summary';
+			} else {
+				$scope.currentView = 'rooms';
+			}
+			$scope.changeView = function(view) {
+				$scope.currentView = view;
+			};
+
 			$scope.filterByWorkType = '';
 			$scope.workTypes = [];
 			var defaultWorkType;
@@ -151,7 +159,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.showInspected = data.use_inspected;
 						$scope.showQueued = data.is_queue_rooms_on;
 
-						if ( $rootScope.isStandAlone ) {
+						if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
 							// show the user related rooms only
 							$scope.filterByWorkType = defaultWorkType;
 							$scope.filterByEmployee = defaultMaid;
@@ -169,7 +177,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					});	
 			} else {
 				$timeout(function() {
-					if ( $rootScope.isStandAlone ) {
+					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
 						// restore the filterByWorkType from previous chosen value
 						$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
 
