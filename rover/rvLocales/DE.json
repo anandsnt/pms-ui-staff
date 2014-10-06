@@ -250,7 +250,14 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",	
+	"RELEASE_REFRESH": "Release to refesh...",
+	"ROOM_TYPE_FILTER_TITLE": "Room Type",
+
+	"FILTER_ROOMS" : "Filter rooms",
+	"UNASSIGNED" : "Unassigned",
+	"WORK_TYPE" : "Work Type",
+	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms.",	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",

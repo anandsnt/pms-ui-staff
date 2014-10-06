@@ -8,10 +8,30 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'fetchedRoomList',
 	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, fetchedRoomList) {
 
+
+		// TODO: RESTRUCTURE THE CODE TO PROPER SECTIONS
+		// 1. stateChange  should keep filters or reset them?
+		// 2. fetch housemaid list, work type list, floor type etc and possible cashing in srv
+		// 3. should fetch room list again or not
+		// 4. all filters and things
+		// 5. calculate filters, check possiblity of moving it to a seperate module its too big!
+		// 6. pull down to refresh
+		// 7. performance enhancement
+
+
 		// additional check since the router resolve may fail
 		if ( !fetchedRoomList ) {
 			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
 		};
+
+		/*var successCallback = function(data){
+			//$scope.allRoomTypes = data;
+		};*/
+		$scope.allRoomTypes = RVHkRoomStatusSrv.allRoomTypes;
+		if( isEmptyObject(RVHkRoomStatusSrv.allRoomTypes) ){
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchAllRoomTypes, {}, '', '', 'NONE');
+		}
+
 
 		BaseCtrl.call(this, $scope);
 
@@ -20,6 +40,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    title: $filter('translate')('DASHBOARD'),
 		    name: 'rover.dashboard'
 		}
+
+		// set title in header
+		$scope.setTitle( $filter('translate')('ROOM_STATUS') );
+		$scope.heading = $filter('translate')('ROOM_STATUS');
+	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
 		$scope.filterOpen = false;
 
@@ -31,7 +56,42 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noResultsFound = 0;
 
-		$scope.$emit("updateRoverLeftMenu", "roomStatus");
+
+
+
+		// default values for these
+		// for a HK staff the filterByEmployee value must be defalut to that
+		// and filter the rooms accordingly
+		// fetch all the HK work staff
+		$scope.filterByWorkType = '';
+		$scope.workTypes = [];
+		var defaultWorkType;
+		var wtCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.workTypes = data;
+
+			// chose the first work type for now
+			defaultWorkType = data[0].id;
+		};
+		$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
+
+		// fetch all the HK work staff
+		$scope.filterByEmployee = '';
+		$scope.HKMaids = [];
+		var defaultMaid;
+		var hkmCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.HKMaids = data;
+
+			// TODO: for user specific the room must be filtered based on the choosen user
+			defaultMaid = _.find($scope.HKMaids, function(item) {
+				return item.maid_name == $rootScope.userName;
+			});
+		};
+		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
+		
+
+
 
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );
@@ -81,22 +141,41 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		var fetchRooms = function() {
-
 			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.length) {
+			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
+
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch()
+				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
 					.then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
 						$scope.showQueued = data.is_queue_rooms_on;
+
+						// show the user related rooms only
+						$scope.filterByWorkType = defaultWorkType;
+						$scope.filterByEmployee = defaultMaid;
+
+						// update filterByWorkType filter to first item
+						$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+
+						// update filterByEmployee filter
+						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+
 						afterFetch( data );
 					}, function() {
 						$scope.$emit('hideLoader');
 					});	
 			} else {
 				$timeout(function() {
+
+					// restore the filterByWorkType from previous chosen value
+					$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
+
+					// restore the filterByEmployee from previous chosen value
+					$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
+						return item.maid_name == $scope.currentFilters.filterByEmployee
+					});
 
 					// show loader as we will be slicing the rooms
 					// in smaller and bigger parts and show smaller first
@@ -207,6 +286,40 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
 			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+			RVHkRoomStatusSrv.allRoomTypes = $scope.allRoomTypes;
+		};
+
+		// when user changes the employee filter
+		$scope.applyWorkTypefilter = function() {
+			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+
+			// if work type is null reset filter by employee
+			if ( !$scope.currentFilters.filterByWorkType ) {
+				$scope.filterByEmployee = '';
+				$scope.applyEmpfilter();
+			} else {
+				// call caluculate filter in else since
+				// resetting filterByEmployee will call applyEmpfilter 
+				// which in turn will call calculateFilters
+				$scope.calculateFilters();
+				$scope.refreshScroll();
+			}
+
+			// save the current edited filter to RVHkRoomStatusSrv
+			// so that they can exist even after HKSearchCtrl init
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+		};
+
+		// when user changes the employee filter
+		$scope.applyEmpfilter = function() {
+			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+			$scope.calculateFilters();
+
+			$scope.refreshScroll();
+
+			// save the current edited filter to RVHkRoomStatusSrv
+			// so that they can exist even after HKSearchCtrl init
+			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
 
@@ -216,13 +329,41 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.calculateFilters = function(source) {
 			var source = source || $scope.rooms;
 			$scope.noResultsFound = 0;
+			var allRoomTypesUnSelected = true;
+
+			//If all room types are unselected, we should show all rooms.
+			angular.forEach($scope.allRoomTypes, function(roomType, id) {
+				if( roomType.isSelected ){
+					allRoomTypesUnSelected = false;					
+				}
+				return false;
+			});
+
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
+
+				// any matched work type ids of room to chosen work type id
+				var workTypeMatch = _.find(room.work_type_ids, function(id) {
+					return id == $scope.currentFilters.filterByWorkType;
+				});
+
+				// Filter by work type
+				if ( !!$scope.currentFilters.filterByWorkType && !workTypeMatch ) {
+					room.display_room = false;
+					$scope.noResultsFound++;
+					continue;
+				};
+
+				// Filter by employee name
+				if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
+					room.display_room = false;
+					$scope.noResultsFound++;
+					continue;
+				};
 
 				//Filter by Floors
 				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
 				if ($scope.currentFilters.floorFilterStart || $scope.currentFilters.floorFilterEnd || $scope.currentFilters.floorFilterSingle) {
-
 					if (room.floor.floor_number == null) {
 						room.display_room = false;
 						$scope.noResultsFound++;
@@ -247,6 +388,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.noResultsFound++;
 					continue;
 				}
+
+				// filter by room type
+				if ( !!room.room_type.id ) {
+					if ( !allRoomTypesUnSelected && !$scope.allRoomTypes[room.room_type.id].isSelected ){
+						room.display_room = false;
+						$scope.noResultsFound++;
+						continue;
+					}
+				};
+				
 
 				// filter by status in filter section, HK_STATUS
 				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service']) ) {
@@ -402,12 +553,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		*   @return {Boolean} false if none of the filter is checked
 		*/
 		$scope.isFilterChcked = function() {
-
-			// use _.find rather than _.each
-			// _.each cannot be broken out of with 'break;'
-			return _.find($scope.currentFilters, function(filter) {
-						return filter ? true : false;
-					});
+			var key, ret;
+			for (key in $scope.currentFilters) {
+				if ( key != 'showAllFloors' && !!$scope.currentFilters[key] ) {
+					ret = true;
+					break;
+				} else {
+					ret = false;
+				}
+			}
+			return ret;
 		}
 
 		/**
@@ -419,7 +574,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var ret = false;
 
 			for (var i = 0, j = filterArray.length; i < j; i++) {
-				if($scope.currentFilters[filterArray[i]] === true){
+				if( $scope.currentFilters[filterArray[i]] === true ){
 					ret = true;
 					break;
 				}
@@ -434,6 +589,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.clearFilters = function() {
 			_.each($scope.currentFilters, function(value, key, list) {
 				list[key] = false;
+			});
+
+			angular.forEach($scope.allRoomTypes, function(roomType, id) {
+				roomType.isSelected = false;
 			});
 
 			// this is the default state

@@ -71,45 +71,45 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 		}
 
 		var formGraphData = function(){
- 				$scope.graphData = [{
-					name: 'Bookable Rooms',
-					data: $scope.data.bookableRooms,
-					yAxis: 0,
-					checked: false
-				}, {
-					name: 'Out of Order Rooms',
-					data: $scope.data.outOfOrderRooms,
-					yAxis: 0,
-					checked: false
-				}, {
-					name: 'Total Reserved',
-					data: $scope.data.reservedRooms,
-					yAxis: 0,
-					checked: true
-				}, {
-					name: 'Available Rooms',
-					data: $scope.data.availableRooms,
-					yAxis: 0,
-					checked: false
-				}, {
-					name: 'Occupancy Actual(%)',
-					data: $scope.data.occupanciesActual,
-					yAxis: 1,
-					checked: false,
-					marker: {
-						symbol: 'circle',
-						radius: 5
-					}
-				}];	
-				//we are adding occupancy target between if it has setuped in rate manager
-				if($scope.data.IsOccupancyTargetSetBetween){
-					$scope.graphData.push({
-						name: 'Occupancy Target(%)',
-						data: $scope.data.occupanciesTargeted,
-						yAxis: 1,
-						checked: false
-					});
+			$scope.graphData = [{
+				name: 'Bookable Rooms',
+				data: $scope.data.bookableRooms,
+				yAxis: 0,
+				checked: false
+			}, {
+				name: 'Out of Order Rooms',
+				data: $scope.data.outOfOrderRooms,
+				yAxis: 0,
+				checked: false
+			}, {
+				name: 'Total Reserved',
+				data: $scope.data.reservedRooms,
+				yAxis: 0,
+				checked: true
+			}, {
+				name: 'Available Rooms',
+				data: $scope.data.availableRooms,
+				yAxis: 0,
+				checked: false
+			}, {
+				name: 'Occupancy Actual',
+				data: $scope.data.occupanciesActual,
+				yAxis: 0,
+				checked: false,
+				marker: {
+					symbol: 'circle',
+					radius: 5
 				}
+			}];	
+			//we are adding occupancy target between if it has setuped in rate manager
+			if($scope.data.IsOccupancyTargetSetBetween){
+				$scope.graphData.push({
+					name: 'Occupancy Target',
+					data: $scope.data.occupanciesTargeted,
+					yAxis: 0,
+					checked: false
+				});
+			}
 
  		};
 
@@ -131,13 +131,9 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 
 
 		var doInitialOperation = function(){
-			$scope.data = rvAvailabilitySrv.getData();
+			$scope.data = rvAvailabilitySrv.getGraphData();
+
 			formGraphData();			
-			var mainDiff = parseInt($scope.data.totalRooms / 10);
-			var yAxisLabels = [];
-			for(var i = 0; i < parseInt($scope.data.totalRooms); i+=mainDiff){
-				yAxisLabels.push(i);
-			}
 			
 			Highcharts.theme = {
 				colors: colors,
@@ -171,24 +167,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					},
 					opposite: true
 				},
-				yAxis: [{
-					gridLineColor: '#dedede',
-					labels: {
-
-					},
-					lineColor: '#A0A0A0',
-					minorTickInterval: null,
-					tickColor: '#A0A0A0',
-					tickWidth: 1,
-					title: {
-						style: {
-							color: '#CCC',
-							fontWeight: 'bold',
-							fontSize: '12px',
-							fontFamily: 'Trebuchet MS, Verdana, sans-serif'
-						}
-					}
-				},
+				yAxis: [
 				{
 					gridLineColor: '#dedede',
 					labels: {
@@ -244,7 +223,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					tooltip: {
 			            formatter: function () {
 			                return '<b>' + dateFilter(this.x.dateObj, $rootScope.dayInWeek) + " " + dateFilter(this.x.dateObj, $rootScope.shortMonthAndDate) +'</b><br/>' +
-			                       this.series.name +  ': ' + this.y.toFixed(2);
+			                       this.series.name +  ': ' + Math.round((this.y/100) * $scope.data.totalRooms) + " Rooms (" + this.y.toFixed(2) + "%)";
 			            }
 				    },	
 				},
@@ -269,26 +248,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					tickPosition: 'inside',
 					tickWidth: 0
 				},
-				yAxis: [{
-					showLastLabel: true,
-    				endOnTick: true,
-					min: 0,
-					title:{
-						text: ''
-					},
-					labels: {
-						    align: 'left',
-                			x: 0,
-               				y: -2,
-					},
-					tickPosition: 'inside',
-					tickWidth: 0,
-					
-					floor : 0,
-					ceiling : $scope.data.totalRooms,
-					tickInterval : Math.ceil($scope.data.totalRooms/10),
-					minRange : $scope.data.totalRooms
-				},
+				yAxis: [
 				{
 					showLastLabel: true,
     				endOnTick: true,					
@@ -300,16 +260,19 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					minRange : 100,
 					tickInterval : 10,
 					labels: {
-						    align: 'right',
+						    align: 'left',
                 			x: 0,
                				y: -2,
                				style: {
 				            	color: '#f6981a',
+				         	},
+				         	formatter: function(){
+				         		return this.value + "%";
 				         	}
 					},
 					tickPosition: 'outside',
 					tickWidth: 0,					
-					opposite: true,			
+							
 				}
 				],
 				 						
@@ -344,7 +307,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 			$scope.$emit("hideLoader");
 		}
 
-		$scope.data = rvAvailabilitySrv.getData();
+		$scope.data = rvAvailabilitySrv.getGraphData();
   		//if already fetched we will show without calling the API
 		if(!isEmptyObject($scope.data)){
 			formGraphData();

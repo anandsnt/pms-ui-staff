@@ -131,7 +131,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: ""
+						action: "staff#/staff/workmanagement/start"
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -164,12 +164,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [],
 					iconClass: "icon-dashboard"
 				}, {
-					title: "MENU_SEARCH",
-					action: "staff#/staff/search/",
-					menuIndex: "search",
-					submenu: [],
-					iconClass: "icon-dashboard"
-				}, {
 					title: "MENU_HOUSEKEEPING",
 					//hidden: true,
 					action: "",
@@ -178,12 +172,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_ROOM_STATUS",
 						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
-					}, {
-						title: "MENU_TASK_MANAGEMENT",
-						action: ""
-					}, {
-						title: "MENU_MAINTAENANCE",
-						action: ""
 					}]
 				},{
 					title: "MENU_REPORTS",
@@ -197,12 +185,21 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		
 
 		$scope.$on("updateSubMenu", function(idx, item) {
+			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
+			if (item[1].action.split('#')[0] === "staff"){
+				$('body').addClass('no-animation');
+				$('#admin-header').css({'z-index':'0'});
+				$('section.content-scroll').css({'overflow':'visible'});
+			}
+
 			if (item && item[1] && item[1].submenu) {
 				$scope.showSubMenu = true;
 				$scope.activeSubMenu = item[1].submenu;
 			} else {
 				$scope.activeSubMenu = [];
 			}
+
+
 		});
 
 		if ($rootScope.adminRole == "hotel-admin") {
@@ -426,6 +423,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
+		}else{
+			$translate.use('EN');
 		}
 
 	
@@ -463,6 +462,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 		$scope.redirectToHotel = function(hotel_id) {
 			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
+				//CICO-9816 bug fix
+				$('body').addClass('no-animation');
+				$('#admin-header').css({'z-index':'0'});
+				$('section.content-scroll').css({'overflow':'visible'});
+
 				$window.location.href = "/admin";
 			}, function() {
 				console.log("error controller");

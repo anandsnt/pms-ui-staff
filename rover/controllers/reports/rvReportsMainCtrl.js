@@ -7,7 +7,7 @@ sntRover.controller('RVReportsMainCtrl', [
 	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
-console.log($rootScope);
+
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
 		    hide: true,
@@ -20,8 +20,9 @@ console.log($rootScope);
 		    noStateChange: true
 		};
 
-		$scope.setTitle( 'Stats & Reports' );
-		$scope.heading = 'Stats & Reports';
+		var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+		$scope.setTitle( listTitle );
+		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
 		$scope.reportList = reportsResponse.results;
@@ -36,7 +37,7 @@ console.log($rootScope);
 		$scope.goBackReportList = function() {
 			$rootScope.setPrevState.hide = true;
 			$scope.showReportDetails = false;
-			$scope.heading = 'Stats & Reports';
+			$scope.heading = listTitle;
 		};
 
 		$scope.getFromOptions = function(item) {
@@ -45,7 +46,7 @@ console.log($rootScope);
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        maxDate: tzIndependentDate( item.untilDate ),
+		        // maxDate: tzIndependentDate( item.untilDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
@@ -63,7 +64,7 @@ console.log($rootScope);
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
-		        minDate: tzIndependentDate( item.fromDate ),
+		        // minDate: tzIndependentDate( item.fromDate ),
 		        maxDate: tzIndependentDate( $rootScope.businessDate ),
 		        beforeShow: function(input, inst) {
                     $('#ui-datepicker-div');

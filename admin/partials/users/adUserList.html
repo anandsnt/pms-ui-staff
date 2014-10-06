@@ -11,7 +11,8 @@
 			</header>
 			<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<table id="users_list_table" class="grid datatable table" ng-table="tableParams">
+			<table id="users_list_table" class="grid datatable table" ng-table="tableParams"
+			template-pagination="nil">
 				<tr ng-repeat="user in $data">
 					<td data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId })"  class="title">{{user.full_name}} </a></td>
 					<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>

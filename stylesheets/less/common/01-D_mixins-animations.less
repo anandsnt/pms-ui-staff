@@ -1,5 +1,11 @@
 /* 1. ROOT
 ==========================================================*/
+	.backface-visibility(@value) {
+        -webkit-backface-visibility: @value;
+        -moz-backface-visibility: @value;
+        backface-visibility: @value;
+    }
+    
 /* Global transitions		==============================*/
 	.transition (@property: all, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90)) {
 		-webkit-transition: @property @duration @easing;
@@ -25,19 +31,20 @@
 		transform: rotate(@degrees);
 	}
 
-	.transform3d(@x, @y, @z) {
+	.translate3d(@x, @y, @z) {
 		-webkit-transform: translate3d(@x, @y, @z);
 		-moz-transform: translate3d(@x, @y, @z);
 		-ms-transform: translate3d(@x, @y, @z);
 		transform: translate3d(@x, @y, @z);
 	}
 
-	.transformScale(@zoom) {
-		-webkit-transform: scale(@zoom);
-		-moz-transform: scale(@zoom);
-		-ms-transform: scale(@zoom);
-		transform: scale(@zoom);
-	}
+	.scale3d(@x, @y, @z) {
+        -webkit-transform: scale3d(@x, @y, @z);
+        -moz-transform: scale3d(@x, @y, @z);
+        -ms-transform: scale3d(@x, @y, @z);
+        -o-transform: scale3d(@x, @y, @z);
+        transform: scale3d(@x, @y, @z);
+    }
 
 /* Global animations		==============================*/
 	#fade {
@@ -125,6 +132,14 @@
 				-o-animation: @animation @duration @easing @fill-mode;
 				animation: @animation @duration @easing @fill-mode;
 			}
+		}
+
+		.candystripe(@animation: candystripe, @duration: 2s, @easing: linear, @repeat: infinite) {
+			-webkit-animation: @animation @duration @easing @repeat;
+			-moz-animation: @animation @duration @easing @repeat;
+			-ms-animation: @animation @duration @easing @repeat;
+			-o-animation: @animation @duration @easing @repeat;
+			animation: @animation @duration @easing @repeat;
 		}
 	}
 
@@ -434,6 +449,28 @@
 		}
 		@keyframes moveToRight {
 			to { transform: translate3d(100%, 0, 0); }
+		}
+
+	/* candystripe ***/
+		@-webkit-keyframes candystripe {
+			0% { background-position: 0 0; }
+		    100% { background-position: 40px 40px; }
+		}
+		@-moz-keyframes candystripe {
+			0% { background-position: 0 0; }
+		    100% { background-position: 40px 40px; }
+		}
+		@-ms-keyframes candystripe {
+			0% { background-position: 0 0; }
+		    100% { background-position: 40px 40px; }
+		}
+		@-o-keyframes candystripe {
+			0% { background-position: 0 0; }
+		    100% { background-position: 40px 40px; }
+		}
+		@keyframes candystripe {
+			0% { background-position: 0 0; }
+		    100% { background-position: 40px 40px; }
 		}
 
 	/* fadeIn ***/
@@ -916,23 +953,23 @@
 	/* uiViewSlideOut ***/
 		@-webkit-keyframes uiViewSlideOut {
 			from { -webkit-transform: translate3d(0, 0, 0); }
-			to { -webkit-transform: translate3d(-50%, 0, 0); }
+			to { -webkit-transform: translate3d(-100%, 0, 0); }
 		}
 		@-moz-keyframes uiViewSlideOut {
 			from { -moz-transform: translate3d(0, 0, 0); }
-			to { -moz-transform: translate3d(-50%, 0, 0); }
+			to { -moz-transform: translate3d(-100%, 0, 0); }
 		}
 		@-ms-keyframes uiViewSlideOut {
 			from { -ms-transform: translate3d(0, 0, 0); }
-			to { -ms-transform: translate3d(-50%, 0, 0); }
+			to { -ms-transform: translate3d(-100%, 0, 0); }
 		}
 		@-o-keyframes uiViewSlideOut {
 			from { -o-transform: translate3d(0, 0, 0); }
-			to { -o-transform: translate3d(-50%, 0, 0); }
+			to { -o-transform: translate3d(-100%, 0, 0); }
 		}
 		@keyframes uiViewSlideOut {
 			from { transform: translate3d(0, 0, 0); }
-			to { transform: translate3d(-50%, 0, 0); }
+			to { transform: translate3d(-100%, 0, 0); }
 		}
 
 	/* uiViewSlideInRev ***/
@@ -960,23 +997,23 @@
 	/* uiViewSlideOutRev ***/
 		@-webkit-keyframes uiViewSlideOutRev {
 			from { -webkit-transform: translate3d(0, 0, 0); }
-			to { -webkit-transform: translate3d(50%, 0, 0); }
+			to { -webkit-transform: translate3d(100%, 0, 0); }
 		}
 		@-moz-keyframes uiViewSlideOutRev {
 			from { -moz-transform: translate3d(0, 0, 0); }
-			to { -moz-transform: translate3d(50%, 0, 0); }
+			to { -moz-transform: translate3d(100%, 0, 0); }
 		}
 		@-ms-keyframes uiViewSlideOutRev {
 			from { -ms-transform: translate3d(0, 0, 0); }
-			to { -ms-transform: translate3d(50%, 0, 0); }
+			to { -ms-transform: translate3d(100%, 0, 0); }
 		}
 		@-o-keyframes uiViewSlideOutRev {
 			from { -o-transform: translate3d(0, 0, 0); }
-			to { -o-transform: translate3d(50%, 0, 0); }
+			to { -o-transform: translate3d(100%, 0, 0); }
 		}
 		@keyframes uiViewSlideOutRev {
 			from { transform: translate3d(0, 0, 0); }
-			to { transform: translate3d(50%, 0, 0); }
+			to { transform: translate3d(100%, 0, 0); }
 		}
 
 /* Admin keyframes			=============================*/

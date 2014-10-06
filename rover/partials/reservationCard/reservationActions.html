@@ -37,7 +37,7 @@
 			
 		</div>
 		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button brand-colors" ng-click="showDepositBalanceModal()">
-			Deposit/Balance	{{currencySymbol}}{{reservationData.reservation_card.deposit_attributes.outstanding_stay_total}}
+			Deposit/Balance	{{currencySymbol}}{{reservationData.reservation_card.deposit_attributes.outstanding_stay_total | number:precisonZero}}
 		</a>
 		<a id="deposit_balance" ng-show="showDepositBalanceWithSr(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button brand-colors" ng-click="showDepositBalanceModal()">
 			Deposit/Balance	{{reservationData.reservation_card.text_rates_suppressed}}
@@ -47,15 +47,12 @@
 		<a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">
 			Add-ons
 		</a>
-		<!-- As Cancel functionality is currently not implemented, the 'Cancel' button should be hidden on the Stay Card until a later stage. -->
-
-		<a class="button white red-text hidden">Cancel reservation</a>
 		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:guestCardData.userId})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available == 'true' &&isStandAlone">
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available == 'true'">
 			View bill / Routing
 		</a>
 		
-		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton, userId:guestCardData.userId})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available == 'true' && isStandAlone">View bill</a>
+		<a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available == 'true'">View bill</a>
 		
 		<!-- show add charge -->
 		
@@ -65,9 +62,10 @@
 		<a class="button white blue-text" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
 
 		<!-- show cancel / reinstate reservation -->
+		<!-- Feature Only available for STANDALONE pms -->
 		<!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
 		<!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-		<a ng-if="(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate)))" class="button white red-text bottom" ng-click="toggleCancellation()" translate>
+		<a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom" ng-click="toggleCancellation()" translate>
 			CANCEL_RESERVATION
 		</a>
 	

@@ -49,13 +49,6 @@
 ==========================================================*/
 @import "less/app/06_ie.less"; 
 
-/* 7. MEDIA QUERIES
-==========================================================*/
-@media only print {
-    @import "less/app/07_print.less"; 
-}
-
-
 @import "less/app/08_smartband.less"; 
 
 // back button
@@ -133,11 +126,7 @@
 .container.menu-open .page-current, .container.menu-open .page-locked {
     animation: 0s ease 0s normal both 1 appMenuOpen;
  }
-
-
-
-
-/* ------------------date -picker ---------------------*/
+ /* ------------------date -picker ---------------------*/
 .pickdate-cell-bg{
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
 }
@@ -358,7 +347,6 @@ height: 410px;
 
 /*------------------date -picker ends here-------------------------- */
 
-
 .ui-match { color: #F6991B; margin-right: 0px !important;}
 .post-button {
   line-height: 50px !important;
@@ -463,8 +451,6 @@ button.icons.icon-search{
     background-repeat: no-repeat;
    top:15px;
 }
-
-
 
 }
 
@@ -582,6 +568,16 @@ button.icons.icon-search{
   z-index: 30;
 }
 
+.return-back .main-view.ng-enter,
+.return-back .main-view.ng-enter-active {
+  z-index: 30;
+}
+
+.return-back .main-view.ng-leave,
+.return-back .main-view.ng-leave-active {
+  z-index: 50;
+}
+
 /* to remove a slight delay in applying the animations
 on a slow performaing device, keep the entering view hidden
 untill angular is ready to activate it */
@@ -617,14 +613,6 @@ untill angular is ready to activate it */
 * ==================================
 * Angular UI-States Animations
 */
-
-.room-number {    
-    line-height: initial !important;
-}
-
-.room-status {    
-    line-height: 64px !important;
-}
 
 .iScrollVerticalScrollbar .iScrollIndicator {
     background: none repeat scroll 0 0 #FFB319;
@@ -738,11 +726,62 @@ Padding for the ows error popup
 
 }
 
-
 /* Rooms page               ==============================*/
-    
+.content#rooms {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
+  }
+}
+
+.content#filter-options {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
+  }
+}
+
+#pull-refresh-notify {
+  display: none;
+}
+
+
     /* Rooms listing ***/
-    #rooms {
+    /*#rooms {
         li {
             margin: 0;         
             a {
@@ -856,12 +895,12 @@ Padding for the ows error popup
                 }
             }
         }
-    }
+    }*/
 
     /* Rooms page               ==============================*/
         
         /* Rooms listing ***/
-        #rooms {
+        /*#rooms {
             li {           
                 a {
                     color: @textColor;
@@ -907,11 +946,11 @@ Padding for the ows error popup
                     }
                 }
             }
-        }    
+        } */   
             /* Rooms page               ==============================*/
         
         /* Rooms listing ***/
-        #rooms {
+        /*#rooms {
             .wrapper { padding: 0 20px; }
 
             li {
@@ -930,7 +969,7 @@ Padding for the ows error popup
                 top: 0;
                 bottom: 0;
             }
-        }
+        }*/
 
 
 /* 
@@ -964,6 +1003,13 @@ Padding for the ows error popup
 
 /* making sure we are not flickering */
 .reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add,
+.reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-add-active {
+  display: block !important;
+}
+
+.reports-wrapper.ng-hide-remove,
 .reports-wrapper.ng-hide-add {
   -webkit-backface-visibility: hidden;
   backface-visibility:hidden;
@@ -973,13 +1019,30 @@ Padding for the ows error popup
 }
 
 .reports-wrapper.ng-hide-remove,
+.reports-wrapper.ng-hide-remove-active,
+.reports-wrapper.ng-hide-add,
 .reports-wrapper.ng-hide-add-active {
-  z-index: 50;
+  display: block !important;
 }
 
 .reports-wrapper.ng-hide-remove,
 .reports-wrapper.ng-hide-add-active {
-  z-index: 30;
+  z-index: 50 !important;
+}
+
+.reports-wrapper.ng-hide-add,
+.reports-wrapper.ng-hide-add-active {
+  z-index: 30 !important;
+}
+
+.return-back .reports-wrapper.ng-hide-remove,
+.return-back .reports-wrapper.ng-hide-add-active {
+  z-index: 30 !important;
+}
+
+.return-back .reports-wrapper.ng-hide-add,
+.return-back .reports-wrapper.ng-hide-add-active {
+  z-index: 50 !important;
 }
 
 /* normal app state animations */
@@ -1367,6 +1430,13 @@ Padding for the ows error popup
     width: 100%;   height: 100%;   display: block; padding-top :0;
   }
 }
+// Solve the select box design issue in post charge pop-up
+.post-charge {
+  .select:after{
+    z-index: 9 !important;
+  }
+}
+
 
 //CICO-9595 setting the height and width for the terms and conditions dialog
 #modal .modal-content.terms {
@@ -1420,5 +1490,19 @@ Padding for the ows error popup
 .payment-checkbox{
   float:left !important;
   width:50%;
+
+}
+
+.no-animation   * { 
+  -webkit-transition: none !important; 
+  -moz-transition: none !important; 
+  -o-transition: none !important; 
+  -ms-transition: none !important; 
+  transition: none !important; 
+  -webkit-transform: none !important; 
+  -moz-transform: none !important; 
+  -ms-transform: none !important; 
+  -o-transform: none !important; 
+  transform: none !important; 
 }
 
