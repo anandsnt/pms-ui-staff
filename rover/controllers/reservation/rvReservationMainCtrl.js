@@ -348,6 +348,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.calculateTax = function(date, amount, taxes, roomIndex) {
             var taxInclusiveTotal = 0.0; //Per Night Inclusive Charges
             var taxExclusiveTotal = 0.0; //Per Night Exclusive Charges
+            var taxesLookUp = {};
             /* --The above two are required only for the room and rates section where we 
              *  do not display the STAY taxes
              */
@@ -385,15 +386,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     } else if (taxAmountType == "PERSON") {
                         multiplicity = parseInt(children) + parseInt(adults);
                     }
+
+                    var taxOnAmount = amount;
+
+                    // if (!!tax.calculation_rules.length) {
+                    //     _.each(tax.calculation_rules, function(tax) {
+                    //         taxOnAmount = parseFloat(taxOnAmount) + parseFloat(taxesLookUp[tax]);
+                    //     });
+                    // }
+
                     /*
                      *  THE TAX CALCULATION HAPPENS HERE
                      */
                     var taxCalculated = 0;
                     if (taxData.amount_symbol == '%' && parseFloat(taxData.amount) != 0.0) {
-                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * amount));
+                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
                     } else {
                         taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                     }
+
+                    taxesLookUp[taxData.id] = taxCalculated;
+
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
                         if (isInclusive) {
                             taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
@@ -591,6 +604,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 var taxAmount = 0;
                 _.each(taxApplied.taxDescription, function(description, index) {
                     if (description.postType == "NIGHT") {
+                        var nights = $scope.reservationData.numNights || 1;
                         if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
                             $scope.reservationData.taxDetails[description.id] = description;
                         } else {
