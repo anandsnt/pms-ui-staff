@@ -9954,18 +9954,18 @@
             box-shadow: 5px 0px 11px #aaa;
             overflow: hidden;
 
-            .switch-button {
+            /*.switch-button {
                 display: block;
                 height: 80px;
                 z-index: 1199;
-            }
+            }*/
 
-            .room-titles {
+            .wrapper {
                 position: relative;
                 font-weight: 600;
                 overflow-y: scroll;
                 z-index: 1099;
-                
+
                 li {
                     height: 80px;
                     padding: 20px 20px;
@@ -9981,6 +9981,70 @@
             }
         }
 
+        .diary-timeline {
+            float: left;
+            position: relative;
+            top: 0px;
+            left: 0px;
+            padding: 0px;
+            margin: 0px;
+            width: 1024px;
+            height: 80px;
+            overflow-x: scroll;
+
+            .wrapper {
+                position: relative;
+                top: 0px;
+                left: 0px;
+                height: 100%;
+                width: 100%;
+                background: linear-gradient(to right, #002d4a 30%, #fff);
+
+                .segment {
+                    display: block;
+                    float: left;
+                    height: 100%;               
+                    box-sizing: border-box;
+
+                    span {
+                        display: inline-block;
+                    }
+
+                    .interval-1,
+                    .interval-2,
+                    .interval-3,
+                    .interval-4 {
+                        border-right: 1px solid #fff; 
+                    }
+
+                    .interval-1 {
+                        height: 20px;
+                    }
+
+                    .interval-2 {
+                        height: 30px;
+                    }
+
+                    .interval-3 {
+                        height: 20px;
+                    }
+
+                    .interval-4 {
+                        height: 100%;
+                    }
+
+                    &::first-child {
+                        border-left: 1px solid #fff; 
+                    }
+                }
+
+                &:after {
+                    content: '';
+                    clear: both;
+                }
+            }
+        }
+
         .diary-grid {
             float: left;
 
@@ -9989,70 +10053,7 @@
                 clear: both;
             }
 
-            .diary-timeline {
-                position: relative;
-                top: 0px;
-                left: 0px;
-                padding: 0px;
-                margin: 0px;
-                width: 1024px;
-                height: 80px;
-                overflow-x: scroll;
-
-                .timeline {
-                    position: relative;
-                    top: 0px;
-                    left: 0px;
-                    height: 100%;
-                    width: 100%;
-                    background: linear-gradient(to right, #002d4a 30%, #fff);
-
-                    .segment {
-                        display: block;
-                        float: left;
-                        height: 100%;               
-                        box-sizing: border-box;
-
-                        span {
-                            display: inline-block;
-                        }
-
-                        .interval-1,
-                        .interval-2,
-                        .interval-3,
-                        .interval-4 {
-                            border-right: 1px solid #fff; 
-                        }
-
-                        .interval-1 {
-                            height: 20px;
-                        }
-
-                        .interval-2 {
-                            height: 30px;
-                        }
-
-                        .interval-3 {
-                            height: 20px;
-                        }
-
-                        .interval-4 {
-                            height: 100%;
-                        }
-
-                        &::first-child {
-                            border-left: 1px solid #fff; 
-                        }
-                    }
-
-                    &:after {
-                        content: '';
-                        clear: both;
-                    }
-                }
-            }
-
-            .reservations {
+            .wrapper {
                 display: block;
                 position: relative;
                 width: 1024px;

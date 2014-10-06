@@ -34,7 +34,7 @@ var Timeline = React.createClass({
 		}
 
 		timeline = React.DOM.div({
-			className: 'timeline',
+			className: 'wrapper',
 			style: {
 				width: props.display.width,
 				height: props.viewport.timeline_header_height

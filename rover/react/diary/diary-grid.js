@@ -39,7 +39,7 @@ var Grid = React.createClass({
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
-					className: 'viewport reservations',
+					className: 'wrapper',
 					onScroll: self.props.__onGridScroll 
 				},
 				React.DOM.ul({ 

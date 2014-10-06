@@ -84,6 +84,12 @@ DiaryContent = React.createClass({
 			data: this.state.data,
 			__onGridScroll: self.__onGridScroll
 		}),
+		TimelinePanel({
+			viewport: this.props.viewport,
+			display: this.props.display,
+			data: this.state.data,
+			__onGridScroll: self.__onGridScroll
+		}), 
 		GridPanel({
 			viewport: this.props.viewport,
 			display: this.props.display,

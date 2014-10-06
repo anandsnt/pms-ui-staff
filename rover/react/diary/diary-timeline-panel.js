@@ -8,7 +8,7 @@ var TimelinePanel = React.createClass({
 		var self = this;
 
 		return React.DOM.div({
-			className: 'diary-timeline'
+			className: 'diary-timeline scrollable'
 		},
 		new Timeline({
 			viewport: this.props.viewport,

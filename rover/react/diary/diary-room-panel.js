@@ -8,7 +8,7 @@ var RoomPanel = React.createClass({
 		var self = this;
 
 		return React.DOM.div({
-			className: 'diary-rooms',
+			className: 'diary-rooms scrollable',
 			onScroll: self.props.__onGridScroll
 		},
 		React.DOM.div({
