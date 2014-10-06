@@ -9901,8 +9901,6 @@
 
 /* Room Diary                ==============================*/
 .diary-content {
-    position: relative;
-    display: block;
     
     .diary-header {
         position: relative;
@@ -10382,39 +10380,41 @@
             }
 
             li {
+                position: relative;
+                width: 100%;
                 margin: 5px 0;
                 border-bottom: 1px solid rgba(0,0,0,.1);
                 background: @white;
                 overflow: hidden;
-                .float;
+                .show;
 
                 .occupancy-block {
-                    width: 400px;
-                    .pull-left; 
+                    position: absolute;
+                    z-index: 1199;
+                    .show;
                     .float;
 
                     span {
-                        .pull-left; 
+                        height: 100%;
+                        .pull-left;
                         .show;
 
-                        &.maintenence {
-                            width: 80px;
-                            .gradient(@grey4, @gcard);
-                        }
-
-                        &.check-in,
-                        &.inhouse {
-                            width: 320px;
+                        &.occupied {
+                            width: 80%; /* TEMP VALUE */
                             padding: 5px;
                             color: @white;
+
+                            &.check-in { .gradient(@greenStart, @greenEnd); }
+                            &.inhouse { .gradient(@blueStart, @blueEnd); }
+                            &.check-out { .gradient(@redStart, @redEnd); }
                         }
 
-                        &.check-in { .gradient(@greenStart, @greenEnd); }
-                        &.inhouse { .gradient(@blueStart, @blueEnd); }
+                        &.maintenance {
+                            width: 20%; /* TEMP VALUE */
+                            .gradient(@grey4, @gcard);
+                        }                       
                     }
                 }
-
-                
 
                 &:first-child { margin-top: 0; }
                 &:last-child { margin-bottom: 0; }
@@ -10425,19 +10425,13 @@
         &.hours-12 {
 
             .diary-rooms {
-                li {
-                    height: 60px;
-                }
+                li { height: 60px; }
             }
 
             .diary-grid {
                 li {
                     line-height: 60px;
                     height: 60px;
-
-                    span {
-                        height: 60px;
-                    }
                 }
             }
         }
@@ -10457,10 +10451,6 @@
                     line-height: 30px;
                     height: 30px;
                     margin: 0;
-
-                    span {
-                        height: 30px;
-                    }
                 }
             }
         }
