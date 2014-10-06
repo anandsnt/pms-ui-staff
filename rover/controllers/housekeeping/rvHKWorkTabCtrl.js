@@ -67,7 +67,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			});
 
 			var data = {
-				'room_no': $scope.roomDetails.id, 
+				'room_no': $scope.roomDetails.current_room_no, 
 				'hkstatus_id': hkStatusItem.id
 			}
 
