@@ -4,18 +4,15 @@
          <img src="/assets/img/back_icon.png " width="25" height="20" alt=""/>
          <div >BACK</div>
       </div>
-
       <div class="col-xs-8 centeralign departure-date">
          <p>DEPARTURE DATE</p>
          <p>{{date | date:'MMM dd'}}</p>
       </div>
-
       <div class="col-xs-2 date-picker-ok" ng-click = "doneBtnClick()">
          <img src="/assets/img/done_icon.png " width="25" height="20" alt=""/>
          <div>DONE</div>
       </div>
    </div>
-
    <div class="col-xs-12">
       <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
    </div>
