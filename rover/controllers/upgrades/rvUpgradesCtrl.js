@@ -4,7 +4,10 @@ sntRover.controller('RVUpgradesController', ['$scope', '$rootScope', '$state', '
 		BaseCtrl.call(this, $scope);
 
 		$rootScope.setPrevState = {
-			title: $filter('translate')('STAY_CARD')
+			title: $filter('translate')('STAY_CARD'),
+			//As per CICO-9832
+			scope: $scope,
+			callback: 'backToStayCard'
 		}
 
 		$scope.heading = 'Room Upgrades';
