@@ -4,6 +4,8 @@ var DiaryContent, SETTINGS = {
 		height: 768,
 		row_header_width: 120,  //Relative starting point for left edge of grid
 		timeline_header_height: 80,
+		timeline_height: 60,
+		timeline_occupancy_height: 20,
 		hours: 12
 	},				
 	display: {
@@ -24,6 +26,35 @@ var DiaryContent, SETTINGS = {
 DiaryContent = React.createClass({
 	roomsPanelEl: undefined,
 	timelinePanelEl: undefined,
+	_recalculateGridSize: function() {
+		var display_width,
+			px_per_hr,
+			px_per_int,
+			px_per_ms,
+			vw_width,
+			vw_height;
+
+		vw_width = $(window).width() - 120;
+		vw_height = $(window).height() - 230;
+
+		display_width = this.props.display.hours / this.props.viewport.hours * vw_width;
+		px_per_hr = vw_width / this.props.viewport.hours;
+		px_per_int = px_per_hr / this.props.display.intervals_per_hour;
+		px_per_ms = px_per_int / 900000;
+
+		this.setState({
+			viewport: {
+				width: vw_width,
+				height: vw_height
+			},
+			display: {
+				width: display_width,
+				px_per_hr: px_per_hr,
+				px_per_int: px_per_int,
+				px_per_ms: px_per_ms
+			}
+		});
+	},
 	__onGridScroll: function(e) {
 		var el = e.currentTarget;
 
@@ -35,7 +66,11 @@ DiaryContent = React.createClass({
 	componentDidMount: function() {
 		this.roomsPanelEl = $('.diary-rooms .wrapper');
 		this.timelinePanelEl = $('.diary-timeline .wrapper');
-    	this.__onGridScroll = _.debounce(this.__onGridScroll, 100);
+    	//this.__onGridScroll = _.debounce(this.__onGridScroll.bind(this), 100);
+
+    	$(window).on('resize', _.debounce(function(e) {
+    		this._recalculateGridSize();
+    	}.bind(this), 50));
   	},
 	getDefaultProps: function() {
 		var viewport = SETTINGS.viewport,

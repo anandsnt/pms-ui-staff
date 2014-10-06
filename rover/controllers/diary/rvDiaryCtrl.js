@@ -1,26 +1,6 @@
 sntRover
 .controller('RVDiaryCtrl', [ '$scope','$window', function($scope, $window) {
-	var currentDate = new Date();
-
 	BaseCtrl.call(this, $scope);
-
-	$scope.currentDate = Object.create(null, {
-		day: {
-			enumerable: true,
-			writable: true,
-			value: currentDate.getDate()
-		},
-		month: {
-			enumerable: true,
-			writable: true,
-			value: currentDate.getMonth()
-		},
-		year: {
-			enumerable: true,
-			writable: true,
-			value: currentDate.getFullYear()
-		}
-	});
 
 	/*Current Mock Data for testing*/
 	$scope.data = [
@@ -108,7 +88,25 @@ sntRover
 
 	$scope.start_date = new Date('09/30/2014 12:00 PM');
 	$scope.start_time = new Time($scope.start_date.toComponents().time);
-	
+
+	$scope.currentDate = Object.create(null, {
+		day: {
+			enumerable: true,
+			writable: true,
+			value: $scope.start_date.getDate()
+		},
+		month: {
+			enumerable: true,
+			writable: true,
+			value: $scope.start_date.getMonth()
+		},
+		year: {
+			enumerable: true,
+			writable: true,
+			value: $scope.start_date.getFullYear()
+		}
+	});
+
 	$scope.grid_dimensions = {
 		width: angular.element($window).width() - 120,
 		height: angular.element($window).height() - 230

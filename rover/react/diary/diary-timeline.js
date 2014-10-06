@@ -54,8 +54,7 @@ var Timeline = React.createClass({
 		return React.DOM.div({
 			className: 'wrapper',
 			style: {
-				width: props.display.width,
-				height: props.viewport.timeline_header_height
+				width: props.display.width
 			},
 			data: this.state.data
 		}, hourly_spans);
