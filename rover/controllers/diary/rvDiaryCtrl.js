@@ -1,6 +1,26 @@
 sntRover
 .controller('RVDiaryCtrl', [ '$scope','$window', function($scope, $window) {
+	var currentDate = new Date();
+
 	BaseCtrl.call(this, $scope);
+
+	$scope.currentDate = Object.create(null, {
+		day: {
+			enumerable: true,
+			writable: true,
+			value: currentDate.getDate()
+		},
+		month: {
+			enumerable: true,
+			writable: true,
+			value: currentDate.getMonth()
+		},
+		year: {
+			enumerable: true,
+			writable: true,
+			value: currentDate.getFullYear()
+		}
+	});
 
 	/*Current Mock Data for testing*/
 	$scope.data = [

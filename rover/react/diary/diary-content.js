@@ -78,6 +78,11 @@ DiaryContent = React.createClass({
 		return this.transferPropsTo(React.DOM.div({
 			className: 'diary-container'
 		},
+		TogglePanel({
+			viewport: this.props.viewport,
+			display: this.props.display,
+			data: this.state.data
+		}),
 		RoomPanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
