@@ -29,8 +29,7 @@
                     <span class="topic"> {{note.topic}} </span>
                     <button id="delete_note" class="icons icon-trash" ng-click="deleteReservationNote($index)" >Delete post</button>
                 </div>
-                <p>
-                    {{note.text}}
+                <p ng-bind-html="note.text">
                 </p>
             </li>            
         </ul>

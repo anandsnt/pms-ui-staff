@@ -41,7 +41,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayBalance = function(status, balance) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT') {
+			if (status == 'CHECKING_IN' || status == 'RESERVED' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' ) {
 				if(status == 'CHECKING_IN' || status == 'RESERVED'){
 					/*	As per CICO-9795 : 
 						Balance field should NOT show when the guest is NOT checked in.
@@ -85,7 +85,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.displayArrivalTime = function(status) {
 			var display = false;
-			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT') {
+			if (status == 'CHECKING_IN' || status == 'NOSHOW_CURRENT' ) {
 				display = true;
 			}
 			return display;
