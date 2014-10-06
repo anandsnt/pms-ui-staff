@@ -8,18 +8,19 @@ var GridPanel = React.createClass({
 		var self = this;
 
 		return React.DOM.div({
-			className: 'diary-grid',
-			onScroll: this.__onGridScroll
+			className: 'diary-grid'
 		}, 
 		TimelinePanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
-			data: this.state.data
+			data: this.state.data,
+			__onGridScroll: self.props.__onGridScroll
 		}), 
 		Grid({
 			viewport: this.props.viewport,
 			display: this.props.display,
-			data: this.state.data
+			data: this.state.data,
+			__onGridScroll: self.props.__onGridScroll
 		}));
 	}
 });

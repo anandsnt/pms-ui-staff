@@ -24,8 +24,10 @@ DiaryContent = React.createClass({
 	__onGridScroll: function(e) {
 		var el = e.currentTarget;
 
+		console.log('scroll event captured', e);
+
 		if(el) {
-			$('.timeline').css({ 'top': el.scrollTop + 'px'});
+			$('.timeline').css({ 'left': -el.scrollLeft + 'px'});
 		}
 	},
 	getDefaultProps: function() {
@@ -78,13 +80,13 @@ DiaryContent = React.createClass({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.state.data,
-			__onGridScroll: this.__onGridScroll.bind(this)
+			__onGridScroll: self.__onGridScroll
 		}),
 		GridPanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.state.data,
-			__onGridScroll: this.__onGridScroll.bind(this)
+			__onGridScroll: self.__onGridScroll
 		})), this.props.children);
 	}
 });

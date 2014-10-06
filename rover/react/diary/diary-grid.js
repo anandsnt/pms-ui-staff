@@ -39,10 +39,11 @@ var Grid = React.createClass({
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
-					className: 'viewport reservations'
+					className: 'viewport reservations',
+					onScroll: self.props.__onGridScroll 
 				},
 				React.DOM.ul({ 
-					className: 'grid' 
+					className: 'grid'
 				}, 
 				_.map(this.state.data, function(row, idx) {
 					return GridRow({
