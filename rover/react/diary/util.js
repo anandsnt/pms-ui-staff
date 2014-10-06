@@ -131,35 +131,41 @@ if(typeof Time === 'undefined') {
 		},
 		convertMillisecondsToTime: function(ms) {
 			return new Time(ms);
+		},
+		isAM: function() {
+			return (parseInt(start_time.hours / 12) === 0);
+		},
+		AMPM: function() {
+			return this.isAM() ? 'AM' : 'PM';
 		}
 	};
 }
 
-	function Observer() {
-		this.events = Object.create(null);
-	};
+function Observer() {
+	this.events = Object.create(null);
+};
 
-	Observer.prototype = {
-		observe: function observe(event, action, context) {
-			if(!ns.has(this.events, event)) {
-				this.events[event] = [];			
-			}	
-			
-			this.events[event].push({ action: action, context: context || this});
-		},
-		trigger: function trigger(event, data) {
-			var e;
-			if(ns.has(this.events, event)) {
-				for(var i = 0, len = this.events[event].length; i < len; i += 1) {
-					e = this.events[event][i];					
-					e.action.call(e.context, data);
-				}
+Observer.prototype = {
+	observe: function observe(event, action, context) {
+		if(!ns.has(this.events, event)) {
+			this.events[event] = [];			
+		}	
+		
+		this.events[event].push({ action: action, context: context || this});
+	},
+	trigger: function trigger(event, data) {
+		var e;
+		if(ns.has(this.events, event)) {
+			for(var i = 0, len = this.events[event].length; i < len; i += 1) {
+				e = this.events[event][i];					
+				e.action.call(e.context, data);
 			}
-		},
-		clear: function clear(event) {
-			if(ns.has(this.events, event)) {
-				this.events[event] = [];
-			}
-		},
-		constructor: Observer
-	};
+		}
+	},
+	clear: function clear(event) {
+		if(ns.has(this.events, event)) {
+			this.events[event] = [];
+		}
+	},
+	constructor: Observer
+};

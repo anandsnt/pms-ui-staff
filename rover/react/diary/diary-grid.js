@@ -43,7 +43,11 @@ var Grid = React.createClass({
 					onScroll: self.props.__onGridScroll 
 				},
 				React.DOM.ul({ 
-					className: 'grid'
+					className: 'grid',
+					style: {
+						width: this.props.display.width + 'px',
+						height: this.props.display.height + 'px'
+					}
 				}, 
 				_.map(this.state.data, function(row, idx) {
 					return GridRow({

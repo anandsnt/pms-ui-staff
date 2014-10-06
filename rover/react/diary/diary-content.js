@@ -25,8 +25,8 @@ DiaryContent = React.createClass({
 		var el = e.currentTarget;
 
 		if(el) {
-			$('.timeline').css({ 'left': -el.scrollLeft + 'px'});
-			$('.room-titles').css({ 'top': -el.scrollTop + 'px'});
+			$('.diary-timeline .wrapper').css({ 'left': -el.scrollLeft + 'px'});
+			$('.diary-rooms .wrapper').css({ 'top': -el.scrollTop + 'px'});
 		}
 	},
 	componentDidMount: function() {
@@ -60,7 +60,8 @@ DiaryContent = React.createClass({
 					y_rel_load_trigger_right: undefined,
 					y_rel_load_trigger_left: undefined,
 					x_0: props.viewport.row_header_width,
-					x_origin: scope.start_date.getTime()
+					x_origin: scope.start_date.getTime(),
+					x_origin_start_time: scope.start_time
 				},
 				data: scope.data,
 				currentDragItem: undefined,
@@ -76,7 +77,7 @@ DiaryContent = React.createClass({
 		_.extend(this.props.display, this.state.display);
 
 		return this.transferPropsTo(React.DOM.div({
-			className: 'diary-container'
+			className: 'diary-container hours-12'
 		},
 		TogglePanel({
 			viewport: this.props.viewport,

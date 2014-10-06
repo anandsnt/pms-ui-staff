@@ -10001,6 +10001,7 @@
                 background: linear-gradient(to right, #002d4a 30%, #fff);
 
                 .segment {
+                    position: relative;
                     display: block;
                     float: left;
                     height: 100%;               
@@ -10008,6 +10009,14 @@
 
                     span {
                         display: inline-block;
+                    }
+
+                    span.hour-display {
+                        position: absolute;
+                        top: 4px;
+                        left: 4px;
+                        color: #fff;
+                        font-weight: 600;
                     }
 
                     .interval-1,
@@ -10048,7 +10057,7 @@
         .diary-grid {
             float: left;
             width: auto !important;
-            
+
             &::after {
                 content: '';
                 clear: both;
@@ -10158,8 +10167,6 @@
     .resize-bar.left {
         background-color: #666;
     }
-
-
 }
 /* 6. IE
 ==========================================================*/

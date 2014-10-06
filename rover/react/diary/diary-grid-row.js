@@ -25,8 +25,8 @@ var GridRow = React.createClass({
 				key: 		'date-time-' + i,
 				className: 	'hour',
 				style: {
-					width: 	this.props.display.px_per_hr + 'px',
-					height: '100%'
+					width: 	this.props.display.px_per_hr + 'px' //,
+					//height: '100%'
 				}
 			}));
 		}
@@ -34,11 +34,11 @@ var GridRow = React.createClass({
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		this.props.key,
-			className: 	this.props.className,
-			style: {
-				width: 	this.props.display.width + 'px',
-				height: this.props.display.row_height + 'px'
-			}
+			className: 	this.props.className//,
+			//style: {
+				//width: 	this.props.display.width + 'px',
+				//height: this.props.display.row_height + 'px'
+			//}
 		}, 
 		_.map(this.state.data.reservations, function(reservation) {
 			return GridRowItem({
