@@ -149,8 +149,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
             }, onAssignSuccess, onAssignFailure);
         }
 
-        $scope.workManagementSearch = function() {
-            if ($scope.stateVariables.searchQuery.length > 0 && $scope.stateVariables.lastSearchQuery !== $scope.stateVariables.searchQuery) {
+        $scope.workManagementSearch = function(refresh) {
+            if (refresh || ($scope.stateVariables.searchQuery.length > 0 && $scope.stateVariables.lastSearchQuery !== $scope.stateVariables.searchQuery)) {
                 var searchKey = $scope.stateVariables.searchQuery;
                 $scope.stateVariables.lastSearchQuery = $scope.stateVariables.searchQuery;
                 $scope.stateVariables.searching = true;
@@ -187,8 +187,8 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
                 $scope.stateVariables.lastSearchQuery = "";
                 $scope.stateVariables.searching = false;
                 $scope.stateVariables.noSearchResults = false;
+                $scope.$apply();
             }
-            $scope.$apply();
         }
 
         $scope.showCalendar = function(controller) {
@@ -212,10 +212,16 @@ sntRover.controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDia
         }
 
         $scope.onWorkTypeChanged = function() {
+            if ($scope.stateVariables.searching) {
+                $scope.workManagementSearch(true);
+            }
             setStats();
         }
 
         $scope.onViewDateChanged = function() {
+            if ($scope.stateVariables.searching) {
+                $scope.workManagementSearch(true);
+            }
             setStats();
         }
 
