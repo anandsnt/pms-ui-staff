@@ -76,7 +76,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     /*
      * retrieve user info
      */
-     console.log(userInfoDetails)
     $scope.userInfo = userInfoDetails;
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
