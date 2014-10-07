@@ -910,8 +910,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			var bill = reservationBillData.bills[i];
 			totalBal += bill.total_amount * 1;
 		};
-		
-		if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
+
+		var finalBillBalance = "0.00";
+		if(typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !=='undefined'){
+			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		}
+
+		if(finalBillBalance !== "0.00"){
+			console.log("Final bill having balance to pay");
+			$scope.clickedPayButton();
+		}
+		else if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
 			// Popup to accept and save email address.
 			$scope.callBackMethodCheckout = function(){
 				$scope.saveData.isEmailPopupFlag = true ;
@@ -944,14 +953,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
 		}
-		else if($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount !== "0.00"){
-			console.log("Final bill having balance not 0.00");
-			$scope.clickedPayButton();
-		}
-		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
-			console.log("reservation_balance not 0.00"+$scope.reservationBillData.reservation_balance);
-			$scope.clickedPayButton();
-		}
 		else{
 			var data = {
 				"reservation_id" : $scope.reservationBillData.reservation_id,
@@ -983,9 +984,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.findNextBillToReview = function(){
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
 
-			var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
-			if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
-
+			if(typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined'){
+				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
+				if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
+			}
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
 				if($scope.reviewStatusArray.length == (i+1)) $scope.isAllBillsReviewed = true;
