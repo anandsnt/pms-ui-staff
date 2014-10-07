@@ -103,6 +103,21 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.refreshScroller('registration-content');
 		}, 500);
 	};
+	//Calculate the scroll width for bill tabs in all the cases
+	$scope.getWidthForBillTabsScroll = function(){
+		var width = 0;
+		if($scope.routingArrayCount > 0)
+			width = width + 200;
+		if($scope.incomingRoutingArrayCount > 0)
+			width = width + 275
+		if($scope.clickedButton == 'checkinButton')
+			width = width + 230;
+		if($scope.reservationBillData.bills.length < 10)
+			width = width + 40;
+		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
+		return width;
+		// return 2200;
+	};
 	
 	$scope.reviewStatusArray = [];
 	$scope.init = function(reservationBillData){
@@ -151,6 +166,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 */
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
+     	$scope.refreshScroller('bill-tab-scroller');
         
 	};
 
