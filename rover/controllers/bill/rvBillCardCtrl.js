@@ -103,8 +103,33 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.refreshScroller('registration-content');
 		}, 500);
 	};
+
+	//Calculate the scroll width for bill tabs in all the cases
+	$scope.getWidthForBillTabsScroll = function(){
+		var width = 0;
+		if($scope.routingArrayCount > 0)
+			width = width + 200;
+		if($scope.incomingRoutingArrayCount > 0)
+			width = width + 275
+		if($scope.clickedButton == 'checkinButton')
+			width = width + 230;
+		if($scope.reservationBillData.bills.length < 10)
+			width = width + 50;
+		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
+		return width;
+		// return 2200;
+	};
 	
+	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
+	angular.forEach(reservationBillData.bills, function(value, key) {
+		var data = {};
+        // Bill is reviewed(true) or not-reviewed(false).
+		data.reviewStatus = false;
+		data.billNumber = value.bill_number;
+		data.billIndex = key;
+		$scope.reviewStatusArray.push(data);
+	});	
 	$scope.init = function(reservationBillData){
 		
 		/*
@@ -128,13 +153,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
 		     	});	
 			}
-	        var data = {};
-	        // Bill is reviewed(true) or not-reviewed(false).
-			data.reviewStatus = false;
-			data.billNumber = value.bill_number;
-			data.billIndex = key;
-			$scope.reviewStatusArray.push(data);
-			
 	    });
 	    if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
 	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
@@ -151,6 +169,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 */
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
+     	$scope.refreshScroller('bill-tab-scroller');
         
 	};
 
@@ -927,7 +946,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
 			console.log($scope.reservationBillData.reservation_balance);
-			//$scope.clickedPayButton();
+			$scope.clickedPayButton();
 		}
 		else{
 			var data = {
@@ -959,6 +978,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function(){
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
+
+			var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
+			if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
+
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
 				if($scope.reviewStatusArray.length == (i+1)) $scope.isAllBillsReviewed = true;
@@ -1363,6 +1386,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');			
 			//Fetch data again to refresh the screen with new data
 			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.moveToBillActionfetchSuccessCallback);
+			// Update Review status array.
+			var data = {};
+			data.reviewStatus = false;
+			data.billNumber = ($scope.reservationBillData.bills.length+1).toString();
+			data.billIndex = $scope.reservationBillData.bills.length;
+			$scope.isAllBillsReviewed = false;
+			$scope.reviewStatusArray.push(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 	};

@@ -4,26 +4,36 @@ sntRover.controller('RVHKWorkTabCtrl', [
 	'$state',
 	'$stateParams',
 	'RVHkRoomDetailsSrv',
+	'RVHkRoomStatusSrv',
 	'$filter',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter) {
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
 		// keep ref to room details in local scope
-		var updateRoom = $scope.$parent.updateRoom;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		// default cleaning status
 		$scope.isCleaning = false;
 
-		// fetch maintenance reasons list
-		$scope.workTypesList = [];
-		var wtlCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.workTypesList = data;
-		};
-		$scope.invokeApi(RVHkRoomDetailsSrv.getWorkTypes, {}, wtlCallback);
+		// default room HK status
+		// will be changed only for connected
+		if ( !$rootScope.isStandAlone ) {
+			$scope.ooOsTitle = $scope.roomDetails.room_reservation_hk_status == 2 ? 'Out Of Service' :
+								$scope.roomDetails.room_reservation_hk_status == 3 ? 'Out Of Order' : false;
+		} else {
+			$scope.ooOsTitle = false;
+		}
 
+		// fetch maintenance reasons list
+		if ( $rootScope.isStandAlone ) {
+			$scope.workTypesList = [];
+			var wtlCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.workTypesList = data;
+			};
+			$scope.invokeApi(RVHkRoomDetailsSrv.getWorkTypes, {}, wtlCallback);
+		}
 
 		$scope.checkShow = function(from) {
 			if ( from == 'clean' && ($scope.roomDetails.current_hk_status == 'CLEAN' || $scope.roomDetails.current_hk_status == 'INSPECTED') ) {
@@ -42,8 +52,29 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		};
 
 
-		$scope.roomStatusChanged = function() {
-			updateRoom( 'current_hk_status', $scope.roomDetails.current_hk_status );
+		$scope.standaloneRoomStatusChanged = function() {
+			// nothing yet
+		};
+
+		$scope.connectedRoomStatusChanged = function() {
+			var callback = function(data){
+				$scope.$emit('hideLoader');
+				RVHkRoomStatusSrv.updateHKStatus({
+					id: $scope.roomDetails.id,
+					current_hk_status: $scope.roomDetails.current_hk_status
+				})
+			}
+
+			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
+				return item.value == $scope.roomDetails.current_hk_status;
+			});
+
+			var data = {
+				'room_no': $scope.roomDetails.current_room_no, 
+				'hkstatus_id': hkStatusItem.id
+			}
+
+			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
 

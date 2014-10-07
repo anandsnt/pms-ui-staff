@@ -30,15 +30,14 @@ sntRover.service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-		this.updateHKStatus = function(roomNo, hkStatusId){
+		this.updateHKStatus = function(data){
 			var deferred = $q.defer();
 			var url = '/house/change_house_keeping_status.json';
-			var postData = {'hkstatus_id' : hkStatusId, 'room_no': roomNo}
 
 			$http({
 	            url: url,
 	            method: "POST",
-	            data: postData,
+	            data: data,
 	        }).success(function (response, status) {
 				if(response.status == "success"){
 	        		deferred.resolve(response.data);

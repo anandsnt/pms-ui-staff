@@ -79,7 +79,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			if ( $scope.rooms.length == 0) {
 				$scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch()
+				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
 					.then(function(data) {
 						$scope.showPickup = data.use_pickup;
 						$scope.showInspected = data.use_inspected;
@@ -183,10 +183,14 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		* and need to show the dashboard area only if there is no data displaying
 		*/
 		$scope.focusedOutOnQueryBox = function(){
-			if(!$scope.isSearchResultsShowing){
-				$scope.query = "";
-				$scope.showSearchResultsArea = false;
-				$scope.$emit("showDashboardArea", true);
-			}
+
+			$timeout(function() {
+				if(!$scope.isSearchResultsShowing){
+					$scope.query = "";
+					$scope.showSearchResultsArea = false;
+					$scope.$emit("showDashboardArea", true);
+				}
+			}, 100);
+			
 		};
 }]);
