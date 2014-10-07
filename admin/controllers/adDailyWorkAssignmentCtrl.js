@@ -183,6 +183,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		};
 
 		$scope.addWorkShift = function() {
+
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
 				
@@ -190,6 +191,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				resetEachWorkShift();
 
 				fetchWorkShift();
+			}, onSaveFailure = function(errorMessage){
+				$scope.errorMessage = errorMessage;
+				$scope.$emit('hideLoader');
 			};
 
 			var params = {
@@ -198,7 +202,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				hotel_id: $rootScope.hotelId
 			}
 
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback);
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback, onSaveFailure);
 		};
 
 		$scope.updateWorkShift = function() {
