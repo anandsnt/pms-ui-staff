@@ -118,7 +118,6 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	 * @param {string} id of the selected payment method
 	 */
 	$scope.deletePaymentMethod = function(id) {
-		console.log("delete id"+id);
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.payments.splice($scope.currentClickedElement, 1);

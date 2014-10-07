@@ -1086,7 +1086,9 @@
                             }
 
                             &.queued {
-                                .icons;
+                                background-image: @icons;
+                                background-repeat: no-repeat;
+                                border: 0;
                                 .icons > .icon-queued;
                             }
                         }
@@ -9603,15 +9605,19 @@
                         .no-transition;
 
                         &.green { 
-                            .icons;
-                            .icons > .icon-assign-room;
+                            background-image: @icons;
                             background-color: @green; 
+                            background-repeat: no-repeat;
+                            border: 0;
+                            .icons > .icon-assign-room;
                         }
                         
                         &.red { 
-                            .icons;
-                            .icons > .icon-unassign-room;
+                            background-image: @icons;
                             background-color: @red; 
+                            background-repeat: no-repeat;
+                            border: 0;
+                            .icons > .icon-unassign-room; 
                         }
                         
                         &.no-action { background: @grey2; }

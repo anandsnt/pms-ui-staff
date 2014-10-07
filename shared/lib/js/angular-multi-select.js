@@ -245,8 +245,6 @@ angular.module( 'multi-select', ['ng'] ).directive( 'multiSelect' , [ '$sce', '$
                
                 refreshScroller("multiSelectEmployees");
             };
-            
-
 
 
             // List all the input elements.

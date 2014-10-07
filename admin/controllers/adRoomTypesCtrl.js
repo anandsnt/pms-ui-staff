@@ -31,7 +31,6 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		                                $scope.data.room_types;
 		                              
 		            $scope.orderedData =  orderedData;
-		            // console.log($scope.orderedData);
 		                       
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }

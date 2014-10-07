@@ -194,11 +194,10 @@ sntRover.controller('reservationActionsController', [
 					.then(function(data) {
 						// Rest of the things
 						$scope.$emit('hideLoader');
-
 						// update the room status to reservation card
-						$scope.reservationData.reservation_card.room_ready_status = data.room_details.current_hk_status;
-						$scope.reservationData.reservation_card.room_status = data.room_details.is_ready === "true" ? 'READY' : 'NOTREADY';
-						$scope.reservationData.reservation_card.fo_status = data.room_details.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
+						$scope.reservationData.reservation_card.room_ready_status = data.current_hk_status;
+						$scope.reservationData.reservation_card.room_status = data.is_ready === "true" ? 'READY' : 'NOTREADY';
+						$scope.reservationData.reservation_card.fo_status = data.is_occupied === "true" ? 'OCCUPIED' : 'VACANT';
 
 						afterRoomUpdate();
 					}, function() {

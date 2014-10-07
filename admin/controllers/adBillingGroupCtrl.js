@@ -93,7 +93,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
    $scope.deleteBillingGroup = function(index){
 		
 		var unwantedKeys = [];
-		console.log($scope.floorListData);
 		var param = $scope.billingGroupList[index].id;
     	var successCallbackSave = function(){
     		$scope.$emit('hideLoader');

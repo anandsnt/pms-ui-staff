@@ -257,6 +257,7 @@ sntRover.controller('rvRoomAvailabilityGraphStatusController', [
 					title:{
 						text: ''
 					},
+					max: 100,
 					minRange : 100,
 					tickInterval : 10,
 					labels: {

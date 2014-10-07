@@ -95,7 +95,7 @@
 </section> 
 
 <!-- Search panel : EMPTY -->
-<section id="work-management-search" class="content scrollable no-results" role="complementary" ng-show="stateVariables.noSearchResults">
+<section id="work-management-search" class="content scrollable no-results" role="complementary" ng-show="stateVariables.searching && stateVariables.noSearchResults">
     <div class="wrapper">
         <ul id="work-management-search-results" class="search-results">
             <li class="no-content">
@@ -110,7 +110,7 @@
 </section>
 	
 <!-- Work Management -->
-<section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching">
+<section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching && !stateVariables.noSearchResults">
     <div class="wrapper">
         <div class="dashboard-block data">
             <ul>

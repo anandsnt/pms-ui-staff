@@ -20,7 +20,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 				that.saveRoomsArray(data);
 				deferred.resolve(data);
 			},function(errorMessage){
-				console.log('failed');
 				deferred.reject(errorMessage);
 			});
 		}
@@ -143,7 +142,6 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 	     		
 	     	}
 	    });
-	   // console.log(JSON.stringify(that.roomsArray));
 	};
 	
    /*

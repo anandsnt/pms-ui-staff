@@ -396,9 +396,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.businessDate = data.business_date;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
-		    console.log("currency code   : "+data.currency.value);
-		    console.log("currency symbol : "+$rootScope.currencySymbol);
-		    console.log("date format     : "+$rootScope.dateFormat);
 			$scope.$emit('hideLoader');
 
 		};
@@ -479,7 +476,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 				$window.location.href = "/admin";
 			}, function() {
-				console.log("error controller");
 			});
 		};
 
