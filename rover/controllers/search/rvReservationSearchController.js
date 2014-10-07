@@ -6,8 +6,9 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 	*/
 
 	var that = this;
-  BaseCtrl.call(this, $scope);
-  
+    BaseCtrl.call(this, $scope);
+  	$scope.shouldShowLateCheckout = true;
+    $scope.shouldShowQueuedRooms  = true;
   //changing the header
 	$scope.heading = 'SEARCH_TITLE';
 	//updating the left side menu
@@ -21,21 +22,31 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
       'DUEOUT': 'DASHBOARD_SEARCH_CHECKINGOUT',
       'INHOUSE': 'DASHBOARD_SEARCH_INHOUSE',
       'LATE_CHECKOUT': 'DASHBOARD_SEARCH_LATECHECKOUT',
+      'QUEUED_ROOMS': 'QUEUED_ROOMS_TITLE',
       'VIP': 'DASHBOARD_SEARCH_VIP',
       'NORMAL_SEARCH': 'SEARCH_NORMAL'
-  }
+  };
   if ($stateParams.type in headingDict){
       heading = headingDict[$stateParams.type];
-      $rootScope.setPrevState = {
-        title: $filter( 'translate' )( 'DASHBOARD' ),
-        name: 'rover.dashboard'
-      };
   } else {
       heading = headingDict['NORMAL_SEARCH'];
   }
+  
 
+  // set up a back button
+  if($stateParams.type!='' && $stateParams.type != null){
+	  $rootScope.setPrevState = {
+	    title: $filter( 'translate' )( 'DASHBOARD' ),
+	    name: 'rover.dashboard'
+	  };
+  }
+  
   // saving/reseting search params to $vault
   $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
+
+  // resetting the scroll position to 0, so that it dont jump anywhere else
+  // check CICO-9247
+  $vault.set( 'result_showing_area', 0 );
 
 
 
@@ -83,4 +94,11 @@ sntRover.controller('rvReservationSearchController',['$scope', '$rootScope', '$s
 	$scope.$on("SearchResultsCleared", function(event, data){
 		$scope.heading = headingDict['NORMAL_SEARCH'];
 	});	
+	$scope.$on("UpdateHeading", function(event, data){
+		$scope.heading = data;
+	});
+	$scope.$on("UPDATE_MANAGER_DASHBOARD", function(){
+   		 $scope.heading = headingDict['NORMAL_SEARCH'];
+   });
+   $stateParams.type = "";
 }]);

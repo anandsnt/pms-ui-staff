@@ -68,7 +68,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 			rvBaseWebSrvV2.getJSON(url).then(function(data) {
 
-				if (data.selected_type == 'percent') {
+				/*if (data.selected_type == 'percent') {
 					data.selected_type = '%';
 					data.rate_value = data.rate_value != '' ? parseFloat(data.rate_value).toFixed(2) : '';
 				} else if (data.selected_type == 'amount') {
@@ -76,7 +76,7 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 					data.rate_value = data.rate_value != '' ? parseInt(data.rate_value) : '';
 				} else {
 					data.selected_type = '';
-				}
+				}*/
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
@@ -88,13 +88,13 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		 * service function used to update the contracts
 		 */
 		this.updateContract = function(data) {
-			if (data.postData.selected_type == '$') {
+			/*if (data.postData.selected_type == '$') {
 				data.postData.selected_type = 'amount';
 			} else if (data.postData.selected_type == '%') {
 				data.postData.selected_type = 'percent';
 			} else {
 				data.postData.selected_type = '';
-			}
+			}*/
 			var deferred = $q.defer();
 			var url = '/api/accounts/' + data.account_id + '/contracts/' + data.contract_id;
 			rvBaseWebSrvV2.putJSON(url, data.postData).then(function(data) {
@@ -109,13 +109,14 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 		 * service function used to add new contracts
 		 */
 		this.addNewContract = function(data) {
-			if (data.postData.selected_type == '$') {
+
+			/*if (data.postData.selected_type == '$') {
 				data.postData.selected_type = 'amount';
 			} else if (data.postData.selected_type == '%') {
 				data.postData.selected_type = 'percent';
 			} else {
 				data.postData.selected_type = '';
-			}
+			}*/
 			var deferred = $q.defer();
 			var url = '/api/accounts/' + data.account_id + '/contracts';
 			rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
@@ -191,6 +192,78 @@ sntRover.service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 			var deferred = $q.defer();
 			var url = '/api/accounts/';
 			rvBaseWebSrvV2.postJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+
+		this.fetchArAccountDetails = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/'+id+'/ar_details';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.fetchArAccountNotes = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = '/api/accounts/'+id+'/ar_notes';
+			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.saveARNote = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/accounts/save_ar_note';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.saveARDetails = function(data) {
+			var deferred = $q.defer();
+			var url = 'api/accounts/save_ar_details';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+
+
+		this.deleteARNote = function(data) {
+			var deferred = $q.defer();
+			var url = '/api/accounts/delete_ar_note';
+			rvBaseWebSrvV2.postJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}
+
+		this.deleteArAccount = function(data) {
+			var id = data.id;
+			var deferred = $q.defer();
+			var url = 'api/accounts/'+id+'/delete_ar_detail';
+			rvBaseWebSrvV2.deleteJSON(url).then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);

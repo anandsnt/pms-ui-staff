@@ -466,6 +466,15 @@ height: 410px;
     }
 }
 
+.confirm-save {
+    text-align: center;
+    .confirm-button {
+      margin: 0 auto;
+      padding: 10px 20%;
+      text-align: center;
+    }
+}
+
 .padding-right-ten {
   padding-right: 10px;
 }
@@ -554,6 +563,40 @@ height: 410px;
 .form .label-small-case label {
     text-transform: none;
 }
+
+/*Tooltip indicator sample...*/
+.tooltip-indicator {
+    display: inline-block;
+    border: none;
+    height: 22%;
+    width: 22%;
+    padding: 0px;
+    padding-left: 2%;
+    margin: 0px;
+    background-color: transparent;
+    background-image: url('/assets/admin/qm-icon.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: 5%;
+    position: relative;
+    cursor: pointer;
+}
+
+header.content-title a.action.back {
+    background-position: 0 -585px;  
+}
+
+section.content-scroll {
+    position: relative;
+    padding-top: 50px;
+    display: table;
+    width: 100%;
+    overflow: auto;
+    z-index: 1099;
+    .show;
+}
+
+/*END -- For Fixed Content Header Update*/
 
 .rate_end_delete{
   margin-left:51%;
@@ -687,7 +730,7 @@ td{
 }
 
 
-// HK: Daily work assignment
+/*HK: Daily work assignment*/
 #daily-work-assignment .content-title {
   margin-bottom: 0;
 }
@@ -698,4 +741,16 @@ td{
 
 #daily-work-assignment .grid tbody tr td a {
   display: inline-block;
+}
+
+.ui-datepicker-trigger-btn { 
+  margin-left:36px;
+  width:85% !important; 
+}
+
+/*CICO-6445 On edit screens, position of right side buttons seems to change*/
+.inline-edit{
+  table{
+    table-layout:auto !important;
+  }
 }

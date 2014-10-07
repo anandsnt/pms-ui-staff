@@ -1,9 +1,11 @@
-sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVBaseWebSrv, $vault){
+sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
 	
 	var self = this;
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
+	
+		
 		dataToSend.fakeDataToAvoidCache = new Date();
 		var url =  'search.json';
 
@@ -15,6 +17,12 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 					data[i].is_row_visible = true;
 				}
 
+				if(dataToSend.is_queued_rooms_only == true){
+					self.lastSearchedType = "queued";
+				} else {
+					self.lastSearchedType = "others";
+				}
+				
 				self.data = data;
 				deferred.resolve(data);
 			},function(data){
@@ -52,6 +60,10 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 					self.data[i]['fostatus'] = data['fostatus'];
 				}
 
+				if ( data['room_ready_status'] ) {
+					self.data[i]['room_ready_status'] = data['room_ready_status'];
+				}
+
 				if ( data['is_reservation_queued'] ) {
 					self.data[i]['is_reservation_queued'] = data['is_reservation_queued'];
 				}
@@ -76,6 +88,21 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 			}
 		};
 	};
+	this.removeResultFromData = function(reservationId){
+		
+        if(self.lastSearchedType === "queued"){
+        	for (var i = 0, j = self.data.length; i < j; i++) {
+        		
+				if ( self.data[i]['id'] === reservationId ) {
+					self.data.splice(i, 1);
+					break;
+					
+				}
+			}
+        }
+		
+	};
+
 
 	// update the guest details of cached data
 	this.updateGuestDetails = function(guestid, data) {
@@ -114,6 +141,22 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', '$vault', function($q, RVB
 		}, function(data) {
 			deferred.reject(data);
 		});
+		return deferred.promise;
+	};
+	this.fetchReservationsToPostCharge = function(dataToSrv){
+		var deferred = $q.defer();
+		if(dataToSrv.refreshApi){
+			var url = 'api/reservations/search_reservation';
+			rvBaseWebSrvV2.postJSON(url, dataToSrv.postData).then(function(data) {
+				deferred.resolve(data);
+				self.reservationsList = data;
+			}, function(data) {
+				deferred.reject(data);
+			});
+		} else {
+			deferred.resolve(self.reservationsList);
+		}
+		
 		return deferred.promise;
 	};
 

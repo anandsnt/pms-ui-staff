@@ -1,4 +1,4 @@
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar']);
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'highcharts-ng', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate','ui.date','ui.calendar', 'dashboardModule', 'companyCardModule', 'stayCardModule', 'housekeepingModule', 'reportsModule', 'cacheVaultModule', 'twoMonthscalendar','acute.select', 'documentTouchMovePrevent', 'divTouchMoveStopPropogate', 'multi-select', 'ngDragDrop']);
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
@@ -85,7 +85,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		// so what the hell, put them here
 		var options = $rootScope.setPrevState,
 			name    = !!options.name ? options.name : $_prevStateName,
-			param   = !!options.name && !!options.param ? options.param : $_prevStateParam,
+			param   = !!options.name && !!options.param ? options.param : (!!$_prevStateParam ? $_prevStateParam : {}),
 			reverse = typeof options.reverse === 'boolean' ? true : false;
 
 		// if currently disabled, return
@@ -106,7 +106,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		};
 
 		// check necessary as we can have a case where both can be null
-		if ( !!options.stateName || !!$_prevStateName ) {
+		if ( !!name ) {
 			$_mustRevAnim = reverse ? options.reverse : true;
 			$state.go( name, param );
 		};
@@ -171,4 +171,3 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 		$rootScope.returnBack = false;
 	});
 }]);
-

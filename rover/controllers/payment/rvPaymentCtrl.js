@@ -4,7 +4,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData = {};
 	$scope.guestPaymentList = {};
 	$scope.saveData.add_to_guest_card = false;
-	
+	$scope.do_not_cc_auth = false;
+
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
 	
@@ -164,13 +165,16 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
 		var cardHolderName = $scope.saveData.name_on_card;
+		var payment_type_id = $scope.saveData.payment_type == "CC"?1:0;
 		var newDataToGuest = {
 			"card_code": cardCode.toLowerCase(),
 			"mli_token": cardNumber.substr(cardNumber.length - 4),
 			"card_expiry":expiryDate,
 			"card_name":cardHolderName,
 			"is_primary":false,
-			"id":data.id
+			"id":data.id,
+			"payment_type":data.payment_name,
+			"payment_type_id":payment_type_id
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 	};
@@ -189,12 +193,21 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var cardHolderName = $scope.saveData.name_on_card;
 		
 		if($scope.passData.fromView == "staycard"){
-			$scope.paymentData.reservation_card.payment_method_used = 'CC';
+			if($scope.passData.is_swiped){
+				$scope.paymentData.reservation_card.payment_details.is_swiped = true;
+			}
+
+			$scope.paymentData.reservation_card.payment_method_used = $scope.saveData.payment_type;
+			$scope.paymentData.reservation_card.payment_method_description = data.payment_type;
 			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
+			
 		} else {
 			var billNumber = parseInt(billIndex) - parseInt(1);
+			if($scope.passData.is_swiped){
+				$scope.paymentData.bills[billNumber].credit_card_details.is_swiped = true;
+			}
 			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
 			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
@@ -213,12 +226,19 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 					"card_expiry":expiryDate,
 					"card_name":cardHolderName,
 					"is_primary":false,
-					"id": data.id
+					"id": data.id,
+					"payment_type":data.payment_type,
+					"payment_type_id":payment_type_id
 				};
 				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 			}
 			
 		}
+		$rootScope.$broadcast('paymentTypeUpdated');
+		//To be implemented once the feature ready for the standalone
+		// if($scope.passData.showDoNotAuthorize){
+		// 	$rootScope.$broadcast('cc_auth_updated', $scope.do_not_cc_auth);
+		// }
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
@@ -353,9 +373,16 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		 
 		if($scope.passData.is_swiped || (parseInt($scope.saveData.selected_payment_type) !==0 || $scope.directPayment)){
-			$scope.savePayment();
+			if($scope.saveData.selected_payment_type !== '' && $scope.saveData.selected_payment_type !== 'selectpayment'){
+					$scope.savePayment();
+				}else{
+					// Client side validation for non CC payment types
+	    			$scope.errorMessage = ["Please select the payment type"];
+				}
 		}
 		else{
+			
+			/* in case the payment type is cc first we fetch MLI sesionId using card details and then save*/
 			if(parseInt($scope.saveData.selected_payment_type) ===0){
 				if($scope.saveData.card_number.length>0){
 					$scope.fetchMLISessionId();
@@ -366,7 +393,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	    		}
 			}	
 			else{
-			    $scope.savePayment();
+				if($scope.saveData.selected_payment_type !== '' && $scope.saveData.selected_payment_type !== 'selectpayment'){
+					$scope.savePayment();
+				}else{
+					// Client side validation for non CC payment types
+	    			$scope.errorMessage = ["Please select the payment type"];
+				}
+			    
 			}
 		}
 		

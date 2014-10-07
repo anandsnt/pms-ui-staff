@@ -1,0 +1,121 @@
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<!-- Worksheet content -->
+<section id="worksheet-content" class="content worksheets" role="main">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <!-- Worksheet header -->
+    <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">            
+        <div class="entry date">
+            <label for="worksheet-date">Date</label>
+            <div class="entry-data" ng-click="showCalendar('RVWorkManagementMultiDatePickerController')">
+                <input name="worksheet-date" id="worksheet-date" type="text" class="datepicker" value="{date}" readonly />
+                <strong id="worksheet-date-day" class="day">{{multiSheetState.selectedDate | date : 'dd'}}</strong>
+                <span id="worksheet-date-month" class="month">{{multiSheetState.selectedDate | date : 'MMMM'}}</span>
+                <span id="worksheet-date-year" class="year">{{multiSheetState.selectedDate | date : 'yyyy'}}</span>
+            </div>            
+        </div>
+        <div class="entry employees">
+            <label for="worksheet-employees">Employees</label>
+            <!-- MOdified angular multi select template based on https://raw.githubusercontent.com/isteven/angular-multi-select/master/angular-multi-select.js, lines 71-106 -->
+            <div multi-select input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" on-open="onEmployeeListOpened()" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
+        </div>
+        <div class="entry task">
+            <label for="worksheet-work-type">Work Type</label>
+            <div class="select">
+                <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChanged()">
+                </select>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" ng-click="saveMultiSheet()" class="button green">Save</button>
+            <button type="button" ng-click="printWorkSheet()" class="button grey">Print</button>
+            <button type="button" ng-click="onCancel()" class="button blank">Cancel</button>
+        </div>
+    </form>
+
+    <!-- Multiple worksheets - unassigned rooms -->
+    <div class="unassigned-rooms multi-sheet">
+        <h2>Unassigned</h2>
+        <a ng-click="showFilter()" class="filter button open-modal white with-icon only-icon">
+            <span class="icons icon-filter"></span>
+            Filter rooms
+        </a>
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" 
+            ng-iscroll="unAssignedRoomList"
+            data-drop="true" 
+            jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" 
+            data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.assigned'}">
+
+            <ul class="wrapper sortable" >
+                <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
+                <li id="unassigned-UA-{{$index}}" class="worksheet-room multi-sheet unassigned" ng-repeat="room in multiSheetState.unassignedFiltered"
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+                    <h3>{{room.room_no}}</h3>
+                    <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time!= null">{{ room.checkout_time}}  | </span>
+                    <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time == null">{{ reservationStatus[room.reservation_status]}}  | </span>
+                    <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT  | </span>
+                    <span class="room {{room.current_status}}">{{room.current_status}}</span>
+                </li>                
+            </ul>
+        </div>  
+    </div>
+
+    <!-- Multiple worksheets - assigned rooms -->
+    <!-- When 0 employees selected-->
+    <div class="assigned-rooms multi-sheet no-content" ng-if="multiSheetState.selectedEmployees.length === 0">
+        <div class="info">
+            <span class="icon-no-content icon-housekeeping"></span>
+            <strong class="h1">No employees selected.</strong>
+            <span class="h2">Select employees to assign rooms.</span> 
+        </div>
+    </div> 
+
+    <!-- When employees selected -->
+    <div class="assigned-rooms multi-sheet" ng-if="multiSheetState.selectedEmployees.length > 0">
+        <div ng-repeat="employee in multiSheetState.selectedEmployees" class="sheet-content">
+            <a ng-click="navigateToIndvl(multiSheetState.assignments[employee.id].worksheetId)" class="button brand-colors">{{employee.maid_name}}</a>
+            <ul class="data">
+                <li class="shift">
+                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.shift.completed}}</span>
+                    <span class="total">{{multiSheetState.assignments[employee.id].summary.shift.total}}</span>
+                </li>
+                <li class="departures">
+                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.departures.completed}}</span>
+                    <span class="total">{{multiSheetState.assignments[employee.id].summary.departures.total}}</span>
+                </li>
+                <li class="stayovers">
+                    <span class="completed">{{multiSheetState.assignments[employee.id].summary.stayovers.completed}}</span>
+                    <span class="total">{{multiSheetState.assignments[employee.id].summary.stayovers.total}}</span>
+                </li>
+            </ul>
+            <div id="{{employee.id}}" class="worksheet-content scrollable" 
+                data-drop="true" 
+                jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" 
+                data-jqyoui-options="{accept: '.worksheet-room.multi-sheet.unassigned,.worksheet-room.multi-sheet.assigned'}"
+                ng-iscroll="assignedRoomList-{{$index}}">
+
+                <ul class="wrapper sortable">
+                    <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
+                    <li id="assigned-{{employee.id}}-{{$index}}" class="worksheet-room multi-sheet assigned" ng-repeat="room in multiSheetState.assignments[employee.id].rooms"
+                        data-drag = "true"
+                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
+
+                        <h3>{{room.room_no}}</h3>
+                        <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time!= null">{{ room.checkout_time}}  | </span>
+                        <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Departed' && room.checkout_time == null">{{ reservationStatus[room.reservation_status]}}  | </span>
+                        <span class="guest-status {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT  | </span>
+                        <span class="room {{room.current_status}}">{{room.current_status}}</span>
+                    </li>
+                    <!-- .. repeat for all assigned room to this employee -->
+                </ul>
+            </div>
+        </div>
+        <!-- ... repleat for all selected employees -->
+        <div class="sheet-placeholder" ng-repeat="placeholder in multiSheetState.placeHolders"></div> 
+        <!-- We can show up to 6 employees in here. When selected employee count is between 1 and 6, 
+        fill in the difference to 6 by adding: <div class="sheet-placeholder"></div> for each empty spot on the screen. 
+        For example, if you select 2 employees, you should have 4 '.sheet-placeholder' elements on the screen --> 
+    </div>
+</section>

@@ -1,10 +1,9 @@
 <!-- Company Card Tab 1 -->
 
 <form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'"   aria-labelledby="ui-id-1"
- role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="companyCardDetailsContactCtrl"
- style="height:90%;" ng-iscroll="companyCardDetailsContactCtrl" ng-iscroll-delay="2000">
-
-    <div class="wrapper cc-contact-info-height1" style="height:170%;">
+ role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="companyCardDetailsContactCtrl"  ng-iscroll="companyCardDetailsContactCtrl" ng-iscroll-delay="2000">
+    
+    <div class="wrapper cc-contact-info-height1" >
 
     	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -66,10 +65,17 @@
 
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
 
-            <rv-textbox value="contactInformation.account_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Accounts Receivable Number" ></rv-textbox>
-
             <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
 
+             <div class="entry margin">
+                <label for="company-card-arn">Accounts Receivable Number</label>
+                <input type="text" ng-model="contactInformation.account_details.accounts_receivable_number" placeholder="AR Number" ng-readonly="true" ng-disabled="true">
+            </div>
+            <div class="entry">
+              <label>&nbsp;</label>
+              <button ng-click="showARTab($event)" ng-hide="contactInformation.account_details.accounts_receivable_number || isArTabAvailable || !contactInformation.id" class="button green" translate>CREATE_ACCOUNT</button>
+              <button ng-click="deleteArAccount()" ng-show="contactInformation.account_details.accounts_receivable_number" class="button red" translate>DELETE_ACCOUNT</button>
+            </div>
 
             <strong class="h3 margin" translate>PRIMARY_CONTACT_DETAILS</strong>
 

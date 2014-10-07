@@ -136,12 +136,15 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     });
 
     $stateProvider.state('rover.reservation.staycard.billcard', {
-        url: '/billcard/:reservationId/:clickedButton',
+        url: '/billcard/:reservationId/:clickedButton/:userId',
         templateUrl: '/assets/partials/bill/rvBillCard.html',
         controller: 'RVbillCardController',
         resolve: {
             reservationBillData: function(RVBillCardSrv, $stateParams) {
                 return RVBillCardSrv.fetch($stateParams.reservationId);
+            },
+            chargeCodeData: function(RVBillCardSrv){
+                return RVBillCardSrv.fetchChargeCodes();
             }
         }
     });

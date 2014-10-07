@@ -18,10 +18,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
-			var totals = $scope.$parent.totals,
-				headers = $scope.$parent.headers,
-				subHeaders = $scope.$parent.subHeaders,
-				results = $scope.$parent.results,
+			var totals          = $scope.$parent.totals,
+				headers         = $scope.$parent.headers,
+				subHeaders      = $scope.$parent.subHeaders,
+				results         = $scope.$parent.results,
 				resultsTotalRow = $scope.$parent.resultsTotalRow;
 
 
@@ -94,7 +94,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// change date format for all
 			for (var i = 0, j = results.length; i < j; i++) {
-			    results[i][0] = $filter('date')(results[i][0], 'MM-dd-yyyy');
+			    results[i][0] = $filter('date')(results[i][0], $rootScope.dateFormat);
 
 			    if ( $scope.chosenReport.title === 'Late Check Out' ) {
 

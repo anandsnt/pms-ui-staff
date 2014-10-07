@@ -17,7 +17,6 @@ var GlobalApp = function(){
     	else{
     		that.browser = browser;
     	}
-    	
     	if(browser === 'rv_native' && !that.cordovaLoaded){
     	   //TODO: check URL
     		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
@@ -25,11 +24,9 @@ var GlobalApp = function(){
     		/* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
     		 * webview of iOS / Android.
     		 */ 
-    		 
     		var xhr=new XMLHttpRequest(); //TODO: IE support?
     		
     		xhr.onreadystatechange=function() {
-    
   				if (xhr.readyState==4 && xhr.status==200){
   					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
@@ -72,5 +69,5 @@ var GlobalApp = function(){
 };
 
 sntapp = new GlobalApp();
-// sntapp.enableCardSwipeDebug();
+sntapp.enableCardSwipeDebug();
 

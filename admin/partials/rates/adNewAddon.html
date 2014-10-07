@@ -64,7 +64,7 @@
                     <label>{{'FROM_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
-                    <button ng-click="popupCalendar('From')" class="ui-datepicker-trigger date-picker-small" type="button">
+                    <button ng-click="popupCalendar('From')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
                          ...
                     </button>
                     <div class="date-delete-wrapper">
@@ -77,7 +77,7 @@
                     <label>{{'TO_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
-                    <button ng-click="popupCalendar('To')" class="ui-datepicker-trigger date-picker-small" type="button">
+                    <button ng-click="popupCalendar('To')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">
                          ...
                     </button>
                     <div class="date-delete-wrapper">
@@ -122,14 +122,14 @@
 						value="singleAddon.amount"
 						name="amount"
 						id="amount"
-						label="{{'AMOUNT' | translate}}"
+						label="{{'AMOUNT' | translate}} [{{currencySymbol}}]"
 						placeholder="Enter the amount"
 						required="yes"></ad-textbox>
 				</div>
 				<div class="entry">
 					<div class="entry full-width">
 						<label for="amount-type-id">
-							{{'AMOUNT_TYPE' | translate}}
+							{{'AMOUNT_TYPE' | translate}} 
 							<strong>*</strong>
 						</label>
 						<div class="select">

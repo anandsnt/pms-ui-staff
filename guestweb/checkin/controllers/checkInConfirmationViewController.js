@@ -4,7 +4,7 @@
 
 
 	$scope.pageValid = false;
-
+	var dateToSend = '';
 	if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
 	}
@@ -34,7 +34,7 @@
 
 	//next button clicked actions
 	$scope.nextButtonClicked = function() {
-		var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
+		var data = {'departure_date':dateToSend,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
 		$scope.isPosting 		 = true;
 
 	//call service
@@ -65,10 +65,8 @@
 	// moved date picker controller logic
 	$scope.isCalender = false;
 	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
-	$scope.selectedDate = ($filter('date')($scope.date, 'MM-dd-yyyy'));
-	$scope.$watch('date',function(){
-		$scope.selectedDate = ($filter('date')($scope.date, 'MM-dd-yyyy'));
-	});
+	$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
+	
 	$scope.showCalender = function(){
 		$scope.isCalender = true;
 	};
@@ -76,7 +74,13 @@
 		$scope.isCalender = false;
 	};
 	$scope.dateChoosen = function(){
+		$scope.selectedDate = ($filter('date')($scope.date, $rootScope.dateFormat));
 		$rootScope.departureDate = $scope.selectedDate;
+
+		dateToSend = dclone($scope.date,[]);
+		dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
+		console.log("dateToSend"+dateToSend);
+		
 		$scope.closeCalender();
 	};
 }

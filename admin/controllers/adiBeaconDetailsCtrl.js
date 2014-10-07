@@ -6,6 +6,7 @@ admin.controller('ADiBeaconDetailsCtrl',['$scope','$stateParams','$rootScope','$
     $scope.addmode = ($stateParams.action === "add")? true : false;
     if(!$scope.addmode){
       $scope.beaconId = $stateParams.action;
+      $scope.isBeaconLinked = beaconDetails.is_linked;
     }
     else{
       $scope.isBeaconLinked = false;
@@ -67,26 +68,34 @@ if(!$scope.addmode){
     if($scope.data.status){
       $scope.data.status = false;
     }
-    else if($scope.data.description && $scope.data.title){
-      if($scope.data.description.length>0 && $scope.data.title.length>0){
-          $scope.data.status = ! $scope.data.status;
-      }
+    else if($scope.data.description.length>0 && $scope.data.title.length>0){
+      $scope.data.status = ! $scope.data.status;
     }
+    else if($scope.data.message.length>0){
+      $scope.data.status = ! $scope.data.status;
+    }
+
       
   };
 
   $scope.linkiBeacon =  function(){
     var successfullyLinked = function(data){
-      $scope.$emit('hideLoader');
-      $scope.successMessage = data.RVSuccess;
       $scope.isBeaconLinked = true;
+      if(!$scope.addmode){
+        $scope.linkBeacon();
+      }else{
+        $scope.$emit('hideLoader');
+        $scope.successMessage = data.RVSuccess;
+      }  
+      
       $scope.$apply();
+
     };
     var failedLinkage = function(data){
       $scope.$emit('hideLoader');
       $scope.errorMessage = [data.RVError];
       $scope.$apply();
-
+      $scope.isBeaconLinked = false;
     };
     var args = [];
 
@@ -107,23 +116,41 @@ if(!$scope.addmode){
     try{
       sntapp.iBeaconLinker.linkiBeacon(options);
     }
-    catch(er){};
+    catch(er){
+      var error = {};
+      error.RVError = er;
+      failedLinkage(error);
+    };
   };
 
   $scope.saveBeacon = function(){
 
       var updateData ={};
-      var updateBeaconSuccess = function(){
-        $scope.$emit('hideLoader');
-        $state.go('admin.ibeaconSettings');
+      var updateBeaconSuccess = function(data){
+        if(!$scope.addmode){
+          $scope.$emit('hideLoader');
+          else$state.go('admin.ibeaconSettings');
+        }else{
+          $scope.beaconId = data.id;
+          $scope.linkBeacon();
+        }
+        
       };
       var updateBeaconFailure = function(data){
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
       };
+      //unset title and description in case beacon is not promotion else unset message
+      if($scope.data.type !='PROMOTION'){
+          $scope.data.title = "";
+          $scope.data.description = "";
+      }
+      else{
+          $scope.data.message = "";
+      };
       var BeaconId = $scope.data.proximity_id+"-"+$scope.data.major_id+"-"+$scope.data.minor_id;
       if($scope.addmode){
-        var unwantedKeys = ["major_id","minor_id","proximity_id"];
+        var unwantedKeys = ["major_id","minor_id","proximity_id"];        
         updateData= dclone($scope.data, unwantedKeys);
         updateData.uuid = BeaconId;
         $scope.invokeApi(adiBeaconSettingsSrv.addBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
@@ -141,5 +168,24 @@ if(!$scope.addmode){
         $scope.invokeApi(adiBeaconSettingsSrv.updateBeaconDetails,updateData,updateBeaconSuccess,updateBeaconFailure);
       }
   };
+
+  $scope.linkBeacon = function(){
+    var linkBeaconSuccess = function(){
+        $scope.$emit('hideLoader');
+        if($scope.addmode){          
+          $state.go('admin.ibeaconSettings');
+        }else{
+          $scope.successMessage = data.RVSuccess;
+        }
+    }
+    var linkBeaconFailure = function(){
+        $scope.$emit('hideLoader');
+        $scope.errorMessage = data;
+    }
+    var data = {};
+    data.id = $scope.beaconId;
+    data.is_linked = $scope.isBeaconLinked;
+    $scope.invokeApi(adiBeaconSettingsSrv.setLink,data,linkBeaconSuccess,linkBeaconFailure);
+  }
 
 }]);

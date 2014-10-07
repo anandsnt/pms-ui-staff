@@ -1,13 +1,14 @@
 sntRover.controller('rvRoomAvailabilityGridStatusController', [
 	'$scope', 
-	'$timeout', 
 	'rvAvailabilitySrv', 
-	function($scope, $timeout, rvAvailabilitySrv){
+	function($scope, rvAvailabilitySrv){
 
 		BaseCtrl.call(this, $scope);
 
 		$scope.hideMeBeforeFetching = false;
 		$scope.showRoomTypeWiseAvailableRooms = false;
+
+
 
 		$scope.data = rvAvailabilitySrv.getData();
 

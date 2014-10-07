@@ -3,6 +3,7 @@
 		<h2>{{title}}</h2>
 		<a ng-click ="back()" class="action back">Back</a>
 	</header>
+	<section class="content-scroll">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
 	<form class="form float" >		
@@ -69,6 +70,13 @@
 						<input ng-model="data.required_signature_at"type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
 						No Signature Required </label>
 				</div>
+			</div>
+
+			<div class="entry full-width">
+				<label for="terms_and_conditions" translate>
+				TERMS_AND_CONDITIONS_LABEL
+				</label>
+				<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
 			</div>
 			
 		</fieldset>
@@ -171,6 +179,17 @@
 					</select>
 				</div>
 			</div>
+			
+			<div class="entry">
+				<label for="hotel-time-zone"> Hotel Date Format <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.hotel_date_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+						<option value=""> Hotel Date Format </option>
+						<option ng-repeat="formats in data.date_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_date_format">{{formats.value}}</option>
+					</select>
+				</div>
+			</div>
+			
 			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
 				<label for="hotel-pms-type"> PMS Type </label>
 				<div class="select">
@@ -224,7 +243,13 @@
 					<span class="switch-icon"></span>
 				</div>
 			</div>
-			
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+				<label for="do_not_update_video_checkout">Do not update video checkout</label>
+				<div class="switch-button single" ng-class="{ on : data.do_not_update_video_checkout == 'true' }" ng-click="doNotUpdateVideoToggleClicked()">
+					<input type="checkbox" value="{{data.do_not_update_video_checkout}}" name="do-not-update-video-checkout" id="do-not-update-video-checkout">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
 			<!-- <div class="entry">
 				<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
 				<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
@@ -395,4 +420,5 @@
 		</div>
 
 	</form>
+	</section>
 </div>

@@ -41,7 +41,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.getFromOptions = function(item) {
 		    return {
-		        dateFormat: 'mm-dd-yy',
+		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,
@@ -59,7 +59,7 @@ sntRover.controller('RVReportsMainCtrl', [
 
 		$scope.getUntilOptions = function(item) {
 		    return {
-		        dateFormat: 'mm-dd-yy',
+		        dateFormat: $rootScope.jqDateFormat,
 		        numberOfMonths: 1,
 		        changeYear: true,
 		        changeMonth: true,

@@ -10,15 +10,15 @@
 			<span id="room-type" data-room-type="DLK"> {{reservationData.reservation_card.room_type_description}} </span> </span>
 			<span class="nights"> <span class="guest-status nights"></span> {{reservationData.reservation_card.total_nights + " " + setNightsText()}}
 				 </span>
-			<span class="date"> <span class="guest-status small-icon check-in">check-in</span> {{reservationData.reservation_card.arrival_date}} </span>
-			<span class="date"> <span class="guest-status small-icon check-out">check-out</span> {{reservationData.reservation_card.departure_date}} </span>
+			<span class="date"> <span class="guest-status small-icon check-in">check-in</span> {{reservationData.reservation_card.arrival_date|date:dateFormat}} </span>
+			<span class="date"> <span class="guest-status small-icon check-out">check-out</span> {{reservationData.reservation_card.departure_date|date:dateFormat}} </span>
 		</div>
 
 	</div>
 	<div class="wrapper">
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Room assignment content -->
-		<div class="room-assignment-content" ng-class="{'has-room': !!reservationData.reservation_card.room_number}">
+		<div class="room-assignment-content" ng-class="{'has-room': !!reservationData.reservation_card.room_number && !roomAssgnment.inProgress}">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
@@ -65,7 +65,7 @@
 			</div>
 
 		</div>
-		<button id="unassign-room" class="button red" ng-show="reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && !!reservationData.reservation_card.room_number && isStandAlone" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
+		<button id="unassign-room" class="button red" ng-show="reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'RESERVED']) && !!reservationData.reservation_card.room_number && isStandAlone && !roomAssgnment.inProgress" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
 	</div>
 
 </section>

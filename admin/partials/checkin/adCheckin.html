@@ -5,80 +5,82 @@
 			<a ui-sref="admin.checkinCheckoutEmail({ from: 'checkin'})" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
 			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
 		</header>
-		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
-		<form style="overflow-y:auto;" class="form float" >
-			<fieldset class="holder left">
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+			<form style="overflow-y:auto;" class="form float" >
+				<fieldset class="holder left">
 
-				<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
+					<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="{{ 'SEND_CHECKIN_ALERT' | translate}}"></ad-toggle-button>
 
-				<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width"></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="{{ 'NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE' | translate}}" div-class="full-width"></ad-checkbox>	
 
-				<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>	
+					<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="{{ 'RESERVATION_CC_GUARANTEED' | translate}}" div-class="full-width"></ad-checkbox>	
 
-				<div class="entry">
-					<label>
-						{{ 'EMAIL_TO_ALL_ARRIVALS' | translate}}
-					</label>
-					<div class="entry full-width float">
-						<div class="select select-col col1-3">
-							
-							<select ng-options="hour for hour  in hours" ng-model="checkinData.checkin_alert_time_hour">
-								<option style="display:none" value="">HH</option>
-							</select>
+					<div class="entry">
+						<label>
+							{{ 'EMAIL_TO_ALL_ARRIVALS' | translate}}
+						</label>
+						<div class="entry full-width float">
+							<div class="select select-col col1-3">
+								
+								<select ng-options="hour for hour  in hours" ng-model="checkinData.checkin_alert_time_hour">
+									<option style="display:none" value="">HH</option>
+								</select>
+							</div>
+							<div class="select select-col col1-3">
+								
+
+								<select ng-options="minute for minute  in minutes" ng-model="checkinData.checkin_alert_time_minute">
+									<option style="display:none" value="">MM</option>
+								</select>
+
+							</div>
+							<div class="select select-col col1-3">
+
+								<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
+								</select>
+
+							</div>
 						</div>
-						<div class="select select-col col1-3">
-							
 
-							<select ng-options="minute for minute  in minutes" ng-model="checkinData.checkin_alert_time_minute">
-								<option style="display:none" value="">MM</option>
-							</select>
-
-						</div>
-						<div class="select select-col col1-3">
-
-							<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
-							</select>
-
-						</div>
 					</div>
+					
+					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = ""></ad-textarea>
 
+				</fieldset>
+				<fieldset class="holder right">
+					
+
+					<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="{{ 'WEB_CHECKIN_STAFF_ALERT' | translate}}"></ad-toggle-button>
+
+					<div id="options" class="entry full-width" ng-hide="hideAlertOption">
+
+						<label class="radio" ng-class="{'checked':checkinData.checkin_staff_alert_option=='all'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
+							<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="all" class="change-data">
+							{{ 'ALL' | translate}}
+							
+						</label>
+
+						<label class="radio" ng-class="{'checked':checkinData.require_cc_for_checkin_email_flag}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}"></span>
+							<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="not_success" class="change-data">
+							{{ 'ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL' | translate}}
+							
+						</label>
+
+					</div>
+					<div class="entry full-width">
+
+						<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
+
+					</div>
+				</fieldset>
+				<div class="actions float">
+					<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
+					<button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
 				</div>
-				
-				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.checkin_alert_message" label = "{{ 'CHECKIN_ALERT' | translate}}" placeholder = ""></ad-textarea>
-
-			</fieldset>
-			<fieldset class="holder right">
-				
-
-				<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="{{ 'WEB_CHECKIN_STAFF_ALERT' | translate}}"></ad-toggle-button>
-
-				<div id="options" class="entry full-width" ng-hide="hideAlertOption">
-
-					<label class="radio" ng-class="{'checked':checkinData.checkin_staff_alert_option=='all'}">
-						<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
-						<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="all" class="change-data">
-						{{ 'ALL' | translate}}
-						
-					</label>
-
-					<label class="radio" ng-class="{'checked':checkinData.require_cc_for_checkin_email_flag}">
-						<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}"></span>
-						<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="not_success" class="change-data">
-						{{ 'ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL' | translate}}
-						
-					</label>
-
-				</div>
-				<div class="entry full-width">
-
-					<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkinData.emails" label = "{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder = ""></ad-textarea>
-
-				</div>
-			</fieldset>
-			<div class="actions float">
-				<button type="button" ng-click="gotToDashboard()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
-				<button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
-			</div>
-		</form>
+			</form>
+		</section>
 	</div>
 	</section>

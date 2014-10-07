@@ -53,6 +53,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADBillingGroupCtrl',
 			url : '/billingGroups'
 		});
+		$stateProvider.state('admin.accountsReceivables', {
+			templateUrl: '/assets/partials/accountReceivables/adAccountReceivables.html',
+			controller: 'ADAccountReceivablesCtrl',
+			url : '/accountReceivables'
+		});
 
 		$stateProvider.state('admin.reservationTypes', {
 			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',

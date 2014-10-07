@@ -39,7 +39,6 @@
 	"SHOW_DEPARTED": "Show Departed",
 
 	"ROOM_DETAILS": "Room Details",
-	"ROOM_STATUS": "Room status",
 	"ROOM_IS_VACANT": "Room is vacant.",
 
 	"HK_FLOORS": "Floors",
@@ -51,4 +50,5 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh..."
+	"RELEASE_REFRESH": "Release to refesh...",
+	"ROOM_TYPE_FILTER_TITLE": "Room Type"

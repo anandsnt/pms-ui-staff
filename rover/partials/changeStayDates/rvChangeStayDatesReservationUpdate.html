@@ -38,11 +38,11 @@
 						</li>
 					</ul>
 					<p class="rate">
-						<span class="number" ng-show="stayDetails.calendarDetails.is_rates_suppressed =='false'">
+						<span class="number" ng-show="!isStayRatesSuppressed">
 							<span id="avg-daily-rate">{{currencySymbol}}{{avgRate}}</span>
 							/<strong id="total-stay-cost">{{currencySymbol}}{{totRate}}</strong>
 						</span>
-						<span class="number" ng-show="stayDetails.calendarDetails.is_rates_suppressed =='true'">
+						<span class="number" ng-show="isStayRatesSuppressed">
 							<span id="avg-daily-rate">SR</span>
 							<strong id="total-stay-cost"></strong>
 						</span>

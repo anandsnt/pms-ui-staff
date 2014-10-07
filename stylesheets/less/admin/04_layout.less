@@ -419,11 +419,9 @@ body { overflow: hidden; }
 
 /* Content title            ==============================*/
     .content-title {
-        position: relative;
-        min-height: 40px;
-        vertical-align: middle;
-        margin-bottom: 30px;
         border-bottom: 1px solid rgba(0,0,0,.1);
+        position: fixed;
+        background-image: @textureImage;
 
         h2,
         .count,
@@ -442,6 +440,7 @@ body { overflow: hidden; }
         }
 
         .action {
+            margin-top: 2px;
             font-size: 16px;
             font-weight: 600;
             text-transform: uppercase;
@@ -480,7 +479,7 @@ body { overflow: hidden; }
 
         /* Filters ***/
         .filters {
-            margin-top: -10px;
+            /*margin-top: -10px;*/
             .pull-right;
 
             .filter {
@@ -537,7 +536,7 @@ body { overflow: hidden; }
         border-collapse: separate; 
         border-spacing: 0 10px;
         margin-bottom:0;
-        
+
         th,
         td {
             padding: 0 20px;
@@ -862,7 +861,7 @@ body { overflow: hidden; }
                 transform: translateY(0px);
     }
     .tooltip {
-        z-index:1000;
+        z-index:1150;
         background: #fff;
         top: 25%;
         color: #fff;
@@ -947,14 +946,6 @@ body { overflow: hidden; }
 
 .lte8 .tooltip-wrapper:hover .tooltip {
     display: block;
-}
-
-#rate-types table tr:not(.edit-data) th, table tr:not(.edit-data) td{
-    overflow: visible !important;
-}
-
-#rate-types table tr:not(.edit-data) th, table tr:not(.edit-data) td{
-    overflow: visible !important;
 }
 
 .pager {
