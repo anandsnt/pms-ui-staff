@@ -1,4 +1,5 @@
-admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADOriginsSrv){
+admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv','$anchorScroll', '$timeout', '$location',
+ function($scope, ADOriginsSrv,  $anchorScroll, $timeout, $location){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
@@ -51,6 +52,10 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
     */
 	$scope.addNewClicked = function(){
 		$scope.currentClickedElement = 'new';
+		$timeout(function() {
+            $location.hash('add-new');
+            $anchorScroll();
+    	});
 	};
 	/*
     * To handle save button in add new box.

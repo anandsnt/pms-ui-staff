@@ -946,7 +946,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
 			console.log($scope.reservationBillData.reservation_balance);
-			//$scope.clickedPayButton();
+			$scope.clickedPayButton();
 		}
 		else{
 			var data = {
@@ -978,6 +978,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function(){
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
+
+			var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
+			if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
+
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
 				if($scope.reviewStatusArray.length == (i+1)) $scope.isAllBillsReviewed = true;
@@ -1387,6 +1391,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			data.reviewStatus = false;
 			data.billNumber = ($scope.reservationBillData.bills.length+1).toString();
 			data.billIndex = $scope.reservationBillData.bills.length;
+			$scope.isAllBillsReviewed = false;
 			$scope.reviewStatusArray.push(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);

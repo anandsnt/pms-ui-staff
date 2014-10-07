@@ -1,4 +1,5 @@
-admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv', function($scope, ADMaintenanceReasonsSrv){
+admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv', '$anchorScroll', '$timeout',  '$location',
+ function($scope, ADMaintenanceReasonsSrv, $anchorScroll, $timeout, $location){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 4);
@@ -48,6 +49,10 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     */
 	$scope.addNewClicked = function(){
 		$scope.currentClickedElement = 'new';
+		$timeout(function() {
+            $location.hash('add-new');
+            $anchorScroll();
+    	});
 	};
 	/*
     * To handle save button in add new box.
