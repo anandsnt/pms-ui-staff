@@ -103,6 +103,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.refreshScroller('registration-content');
 		}, 500);
 	};
+
 	//Calculate the scroll width for bill tabs in all the cases
 	$scope.getWidthForBillTabsScroll = function(){
 		var width = 0;
@@ -119,7 +120,16 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		// return 2200;
 	};
 	
+	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
+	angular.forEach(reservationBillData.bills, function(value, key) {
+		var data = {};
+        // Bill is reviewed(true) or not-reviewed(false).
+		data.reviewStatus = false;
+		data.billNumber = value.bill_number;
+		data.billIndex = key;
+		$scope.reviewStatusArray.push(data);
+	});	
 	$scope.init = function(reservationBillData){
 		
 		/*
@@ -143,13 +153,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
 		     	});	
 			}
-	        var data = {};
-	        // Bill is reviewed(true) or not-reviewed(false).
-			data.reviewStatus = false;
-			data.billNumber = value.bill_number;
-			data.billIndex = key;
-			$scope.reviewStatusArray.push(data);
-			
 	    });
 	    if($scope.clickedButton == "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn){
 	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
@@ -1379,6 +1382,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.$emit('hideLoader');			
 			//Fetch data again to refresh the screen with new data
 			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.moveToBillActionfetchSuccessCallback);
+			// Update Review status array.
+			var data = {};
+			data.reviewStatus = false;
+			data.billNumber = ($scope.reservationBillData.bills.length+1).toString();
+			data.billIndex = $scope.reservationBillData.bills.length;
+			$scope.reviewStatusArray.push(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 	};
