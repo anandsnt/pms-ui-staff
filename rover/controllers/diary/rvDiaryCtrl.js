@@ -456,7 +456,7 @@ sntRover
 		});
 	}
 
-	function checkReservationRanges(reservations, start_date, end_date) {
+	function check_reservation_ranges(reservations, start_date, end_date) {
 		var range_validated = true;
 
 		reservations.forEach(function(reservation, idx) {

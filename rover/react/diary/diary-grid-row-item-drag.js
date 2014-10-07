@@ -23,7 +23,7 @@ var GridRowItemDrag = React.createClass({
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y, 
 			distance = Math.abs(delta_x) + Math.abs(delta_y),
-			left, top, margin_top = this.props.display.row_height + 5;
+			left, top, margin_top = this.props.display.row_height + 11;
 
 		if(!this.state.dragging &&
 		   distance > 3) {
