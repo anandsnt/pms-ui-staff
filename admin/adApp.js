@@ -14,7 +14,6 @@ admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootSc
         $rootScope.previousStateParam = fromParams.menu;
 
         // spiting state names
-        console.log( from.name + ' --> ' + to.name );
     });
 }]);
 

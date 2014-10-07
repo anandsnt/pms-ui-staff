@@ -24,7 +24,7 @@ sntRover.service('RVreportsSrv', [
 				rvBaseWebSrvV2.getJSON(url)
 					.then(function(data) {
 						this.cacheReportList = data;
-						deferred.resolve(data);
+						deferred.resolve(this.cacheReportList);
 					}.bind(this), function(data){
 						deferred.reject(data);
 					});

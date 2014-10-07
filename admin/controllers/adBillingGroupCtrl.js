@@ -1,4 +1,5 @@
-admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 'ngTableParams','$filter',  function($scope, $state, ADBillingGroupSrv, ngTableParams, $filter){
+admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout', '$location',
+  function($scope, $state, ADBillingGroupSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -92,7 +93,6 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
    $scope.deleteBillingGroup = function(index){
 		
 		var unwantedKeys = [];
-		console.log($scope.floorListData);
 		var param = $scope.billingGroupList[index].id;
     	var successCallbackSave = function(){
     		$scope.$emit('hideLoader');
@@ -108,7 +108,7 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 	$scope.addBillingGroup = function(){
 		
 
-			var successCallbackSave = function(data){
+		var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
     		$scope.currentClickedElement = -1;
@@ -119,6 +119,10 @@ admin.controller('ADBillingGroupCtrl',['$scope', '$state', 'ADBillingGroupSrv', 
 				"selected_charge_codes" : []
 			};		
     		$scope.billingGroupData.available_charge_codes = data.available_charge_codes;
+    		$timeout(function() {
+	            $location.hash('new-form-holder');
+	            $anchorScroll();
+	    	});
     	};
     	$scope.invokeApi(ADBillingGroupSrv.getChargeCodes, {}, successCallbackSave);
 	};

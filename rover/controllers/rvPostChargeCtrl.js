@@ -528,6 +528,13 @@ sntRover.controller('RVPostChargeController',
 						$scope.$emit('hideLoader');			
 						//Fetch data again to refresh the screen with new data
 						$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+						// Update Review status array.
+						var data = {};
+						data.reviewStatus = false;
+						data.billNumber = $scope.billNumber;
+						data.billIndex = $scope.reservationBillData.bills.length;
+						$scope.isAllBillsReviewed = false;
+						$scope.reviewStatusArray.push(data);
 					};
 					$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 				}

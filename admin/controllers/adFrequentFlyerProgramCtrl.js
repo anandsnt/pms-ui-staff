@@ -18,9 +18,6 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 
-		            console.log( params.sorting() );
-		            console.log( params.orderBy() );
-
 		            var orderedData = params.sorting() ? $filter('orderBy')($scope.ffp, params.orderBy()) : $scope.ffp;
 
 		            $scope.ffp = orderedData;

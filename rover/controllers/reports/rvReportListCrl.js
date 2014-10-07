@@ -7,7 +7,7 @@ sntRover.controller('RVReportListCrl', [
 
         BaseCtrl.call(this, $scope);
 
-        $scope.setScroller( 'report-list-scroll', {click: true, preventDefault: false} );
+        $scope.setScroller( 'report-list-scroll', {preventDefault: false} );
 
         /**
         *   Post processing fetched data to modify and add additional data
@@ -21,6 +21,13 @@ sntRover.controller('RVReportListCrl', [
 				hasUserFilter,
 				hasSortDate,
 				hasSortUser;
+
+
+            // until date is business date and from date is a week ago
+            var businessDate = $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                dateParts    = businessDate.match(/(\d+)/g),
+                fromDate     = new Date(dateParts[0], dateParts[1] - 1, dateParts[2] - 7),
+                untilDate    = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
 			for (var i = 0, j = reportList.length; i < j; i++) {
 
@@ -75,14 +82,9 @@ sntRover.controller('RVReportListCrl', [
                 });
                 reportList[i].chosenSortBy = sortDate.value;
 
-                // HACK: set the default value for from date to a week ago from business date
-                // so that calender will open in the corresponding month, rather than today
-                var today = new Date( $filter('date')($rootScope.businessDate, 'yyyy-MM-dd') );
-                var weekAgo = today.setDate(today.getDate() - 7);
-
-                reportList[i].fromDate = $filter('date')(weekAgo, 'MM-dd-yyyy');
-                reportList[i].untilDate = $filter('date')($rootScope.businessDate, 'MM-dd-yyyy');
-                console.info(reportList[i].fromDate +' === '+ reportList[i].untilDate);
+                // set the from and untill dates
+                reportList[i].fromDate = fromDate;
+                reportList[i].untilDate = untilDate;
             }
 
             $scope.refreshScroller( 'report-list-scroll' );

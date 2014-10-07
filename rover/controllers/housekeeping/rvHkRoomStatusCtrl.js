@@ -56,42 +56,49 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noResultsFound = 0;
 
-
-
-
 		// default values for these
 		// for a HK staff the filterByEmployee value must be defalut to that
 		// and filter the rooms accordingly
 		// fetch all the HK work staff
-		$scope.filterByWorkType = '';
-		$scope.workTypes = [];
-		var defaultWorkType;
-		var wtCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.workTypes = data;
+		if ( $rootScope.isStandAlone ) {
 
-			// chose the first work type for now
-			defaultWorkType = data[0].id;
+			// switching b/w summary and rooms on mobile view
+			if ( $rootScope.isMaintenanceStaff ) {
+				$scope.currentView = 'summary';
+			} else {
+				$scope.currentView = 'rooms';
+			}
+			$scope.changeView = function(view) {
+				$scope.currentView = view;
+			};
+
+			$scope.filterByWorkType = '';
+			$scope.workTypes = [];
+			var defaultWorkType;
+			var wtCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.workTypes = data;
+
+				// chose the first work type for now
+				defaultWorkType = data[0].id;
+			};
+			$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
+
+			// fetch all the HK work staff
+			$scope.filterByEmployee = '';
+			$scope.HKMaids = [];
+			var defaultMaid;
+			var hkmCallback = function(data) {
+				$scope.$emit('hideLoader');
+				$scope.HKMaids = data;
+
+				// TODO: for user specific the room must be filtered based on the choosen user
+				defaultMaid = _.find($scope.HKMaids, function(item) {
+					return item.maid_name == $rootScope.userName;
+				});
+			};
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
 		};
-		$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
-
-		// fetch all the HK work staff
-		$scope.filterByEmployee = '';
-		$scope.HKMaids = [];
-		var defaultMaid;
-		var hkmCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.HKMaids = data;
-
-			// TODO: for user specific the room must be filtered based on the choosen user
-			defaultMaid = _.find($scope.HKMaids, function(item) {
-				return item.maid_name == $rootScope.userName;
-			});
-		};
-		$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
-		
-
-
 
 		// make sure any previous open filter is not showing
 		$scope.$emit( 'dismissFilterScreen' );
@@ -144,14 +151,37 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			//Fetch the roomlist if necessary
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
 
-				$scope.$emit('showLoader');
+				// $scope.$emit('showLoader');
 
-				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-					.then(function(data) {
-						$scope.showPickup = data.use_pickup;
-						$scope.showInspected = data.use_inspected;
-						$scope.showQueued = data.is_queue_rooms_on;
+				// RVHkRoomStatusSrv.fetch($rootScope.businessDate)
+				// 	.then(function(data) {
+				// 		$scope.showPickup = data.use_pickup;
+				// 		$scope.showInspected = data.use_inspected;
+				// 		$scope.showQueued = data.is_queue_rooms_on;
 
+				// 		if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+				// 			// show the user related rooms only
+				// 			$scope.filterByWorkType = defaultWorkType;
+				// 			$scope.filterByEmployee = defaultMaid;
+
+				// 			// update filterByWorkType filter to first item
+				// 			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+
+				// 			// update filterByEmployee filter
+				// 			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+				// 		}
+
+				// 		afterFetch( data );
+				// 	}, function() {
+				// 		$scope.$emit('hideLoader');
+				// 	});
+
+				var callback = function(data) {
+					$scope.showPickup = data.use_pickup;
+					$scope.showInspected = data.use_inspected;
+					$scope.showQueued = data.is_queue_rooms_on;
+
+					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
 						// show the user related rooms only
 						$scope.filterByWorkType = defaultWorkType;
 						$scope.filterByEmployee = defaultMaid;
@@ -161,22 +191,26 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 						// update filterByEmployee filter
 						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+					}
 
-						afterFetch( data );
-					}, function() {
-						$scope.$emit('hideLoader');
-					});	
+					afterFetch( data );
+
+					$scope.$emit('hideLoader');
+				};	
+
+				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
 			} else {
 				$timeout(function() {
+					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+						// restore the filterByWorkType from previous chosen value
+						$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
 
-					// restore the filterByWorkType from previous chosen value
-					$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
-
-					// restore the filterByEmployee from previous chosen value
-					$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
-						return item.maid_name == $scope.currentFilters.filterByEmployee
-					});
-
+						// restore the filterByEmployee from previous chosen value
+						$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
+							return item.maid_name == $scope.currentFilters.filterByEmployee
+						});
+					}
+					
 					// show loader as we will be slicing the rooms
 					// in smaller and bigger parts and show smaller first
 					// and rest after a delay
@@ -342,24 +376,27 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
 
-				// any matched work type ids of room to chosen work type id
-				var workTypeMatch = _.find(room.work_type_ids, function(id) {
-					return id == $scope.currentFilters.filterByWorkType;
-				});
+				if ( $rootScope.isStandAlone ) {
+					// any matched work type ids of room to chosen work type id
+					var workTypeMatch = _.find(room.work_type_ids, function(id) {
+						return id == $scope.currentFilters.filterByWorkType;
+					});
 
-				// Filter by work type
-				if ( !!$scope.currentFilters.filterByWorkType && !workTypeMatch ) {
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				};
+					// Filter by work type
+					if ( !!$scope.currentFilters.filterByWorkType && !workTypeMatch ) {
+						room.display_room = false;
+						$scope.noResultsFound++;
+						continue;
+					};
 
-				// Filter by employee name
-				if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
-					room.display_room = false;
-					$scope.noResultsFound++;
-					continue;
-				};
+					// Filter by employee name
+					if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
+						room.display_room = false;
+						$scope.noResultsFound++;
+						continue;
+					};
+				}
+				
 
 				//Filter by Floors
 				//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.
@@ -732,6 +769,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.WebkitTransition = '';
 				$notify.style.WebkitTransition = '';
 
+				$notify.classList.add('show');
+
 				// only bind 'touchmove' when required
 				$rooms.addEventListener('touchmove', touchMoveHandler, false);
 			};
@@ -773,6 +812,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener( touchMoveHandler );
+
+				$timeout(function() {
+					$notify.classList.remove('show');
+				}, 320);
 
 				loadNotify();
 			};

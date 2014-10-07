@@ -1,4 +1,5 @@
-admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngTableParams','$filter',  function($scope, $state, ADFloorSetupSrv, ngTableParams, $filter){
+admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
+ function($scope, $state, ADFloorSetupSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -9,12 +10,10 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     * To fetch list of room types
     */
 	$scope.listFloorTypes = function(){
-		console.log("upto list floors");
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
-			console.log($scope.data);
 			
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
@@ -71,7 +70,6 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
    $scope.saveFloor = function(){
 		
 		var unwantedKeys = [];
-		console.log($scope.floorListData);
 		var params = dclone($scope.floorListData, unwantedKeys);
 		
 	
@@ -100,7 +98,6 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
    $scope.deleteFloor = function(index){
 		
 		var unwantedKeys = [];
-		console.log($scope.floorListData);
 		var data = {};
 		 data.id = $scope.orderedData[index].id;
     	var successCallbackSave = function(){
@@ -124,6 +121,10 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 				"description":"",
 				"floortitle":""
 			};	
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
 
 	/*
