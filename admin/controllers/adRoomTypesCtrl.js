@@ -1,4 +1,4 @@
-admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$timeout', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter,$timeout){
+admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
