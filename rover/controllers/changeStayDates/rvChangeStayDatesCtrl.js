@@ -79,10 +79,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					if(!isFirstTime){
 						$scope.$apply(function(){
 							$scope.isChanging = true;
+							$scope.$emit("showLoader");
 						});
 						setTimeout(function(){
 							$scope.$apply(function(){
 								$scope.isChanging = false;
+								$scope.$emit("hideLoader");
 							});
 						}, 0);
 					}
