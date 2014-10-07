@@ -85,5 +85,13 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'CC verification'
 	 });
 
+	// pre checkin states
+
+    $stateProvider.state('preCheckinTripDetails', {
+    	url: '/tripDetails',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Pre Check-in'
+	});
+
 
 }]);
