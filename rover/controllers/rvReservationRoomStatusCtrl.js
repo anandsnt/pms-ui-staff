@@ -1,4 +1,4 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog',  function($state, $rootScope, $scope, ngDialog){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.getRoomClass = function(reservationStatus){
 		var reservationRoomClass = "";
@@ -60,7 +60,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
-		if(reservationStatus == 'CHECKING_IN' || reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
+		if((reservationStatus == 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number != '')|| reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
 			showKey = true;
 		}
 		return showKey;
@@ -91,13 +91,25 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			});
 		}
 		else if(keySettings === "qr_code_tablet"){
+
+			//Fetch and show the QR code in a popup
+			var	reservationId = $scope.reservationData.reservation_card.reservation_id;
+
+			var successCallback = function(data){
+				$scope.$emit('hideLoader');
+				$scope.data = data;
+				ngDialog.open({
+					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+					 controller: 'RVKeyQRCodePopupController',
+					 className: '',
+					 scope: $scope
+				});	
+			}
+
+			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
+
 			
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-				 controller: 'RVKeyQRCodePopupController',
-				 className: '',
-				 scope: $scope
-			});
+			
 		}
 		
 		//Display the key encoder popup

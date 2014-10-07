@@ -1,9 +1,7 @@
 sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$state','ngDialog','RVKeyPopupSrv','$filter', function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter){
 	BaseCtrl.call(this, $scope);
-	console.log($scope.viewFromBillScreen);
 	// Set up data for view
 	var setupData = function(){
-		var reservationId = "";
 		var reservationStatus = "";
 		if($scope.fromView == "checkin"){
 			reservationId = $scope.reservationBillData.reservation_id;
@@ -12,11 +10,10 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$stat
 			reservationId = $scope.reservationData.reservation_card.reservation_id;
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 		}
-		var successCallback = function(data){
-			$scope.$emit('hideLoader');
+	    var successCallback = function(data){
+	    	$scope.$emit('hideLoader');
 	    	$scope.data = {};
 	    	$scope.data = data;
-	    	
 	    	// To check reservation status and select corresponding texts and classes.
 	    	if(reservationStatus == 'CHECKING_IN' ){
 				$scope.data.reservationStatusText = $filter('translate')('KEY_CHECKIN_STATUS');
@@ -33,15 +30,13 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$stat
 				$scope.data.colorCodeClass = 'check-out';
 				$scope.data.colorCodeClassForClose = 'red';
 			}
+		
 			
-	    };
-	    
-	  	var failureCallback = function(data){
+		};
+		var failureCallback = function(data){
 	  		$scope.$emit('hideLoader');
 	    };
-		
-		$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback, failureCallback);  
-
+		$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback, failureCallback);
 	};
 	setupData();
 	

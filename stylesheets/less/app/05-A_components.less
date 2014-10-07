@@ -1086,7 +1086,9 @@
                             }
 
                             &.queued {
-                                .icons;
+                                background-image: @icons;
+                                background-repeat: no-repeat;
+                                border: 0;
                                 .icons > .icon-queued;
                             }
                         }
@@ -6814,19 +6816,14 @@
             }
 
             &#actions {
+                text-align: center;
                 margin-bottom: 0;
-                .float;
 
                 .button {
                     font-size: 24px;
                     line-height: 70px;
-                    .show;
                     #pixel-to-percent > .width(585, 1210);
-                    .pull-left;
-
-                    &.blue { #pixel-to-percent > .right-margin(40, 1210); }
                 }
-
             }
         }
     }
@@ -9608,15 +9605,19 @@
                         .no-transition;
 
                         &.green { 
-                            .icons;
-                            .icons > .icon-assign-room;
+                            background-image: @icons;
                             background-color: @green; 
+                            background-repeat: no-repeat;
+                            border: 0;
+                            .icons > .icon-assign-room;
                         }
                         
                         &.red { 
-                            .icons;
-                            .icons > .icon-unassign-room;
+                            background-image: @icons;
                             background-color: @red; 
+                            background-repeat: no-repeat;
+                            border: 0;
+                            .icons > .icon-unassign-room; 
                         }
                         
                         &.no-action { background: @grey2; }
