@@ -456,6 +456,21 @@ sntRover
 		});
 	}
 
+	function checkReservationRanges(reservations, start_date, end_date) {
+		var range_validated = true;
+
+		reservations.forEach(function(reservation, idx) {
+			if(start_date >= reservation.start_date && start_date <= reservation.end_date ||
+			   reservation.start_date >= start_date && reservation.end_date <= end_date ||
+			   end_date >= reservation.start_date && end_date <= reservation.end_date) {
+				range_validated = false;
+				return;
+			}
+		});
+
+		return range_validated;
+	}
+
 	function injectNewReservations(time_span, filter, data) {
 		var start_date = filter.arrival_date,
 			start_time = filter.arrival_time,
@@ -483,20 +498,6 @@ sntRover
 					rate: 'Not Defined',
 					temporary: true
 				};
-			},
-			check_reservation_ranges = function(reservations, start_date, end_date) {
-				var range_validated = true;
-
-				reservations.forEach(function(reservation, idx) {
-					if(start_date >= reservation.start_date && start_date <= reservation.end_date ||
-					   reservation.start_date >= start_date && reservation.end_date <= end_date ||
-					   end_date >= reservation.start_date && end_date <= reservation.end_date) {
-						range_validated = false;
-						return;
-					}
-				});
-
-				return range_validated;
 			};
 
 		data.forEach(function(item, idx) {

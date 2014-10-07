@@ -1,19 +1,10 @@
 var GridRow = React.createClass({
-	_removeItemFromSet: function(item) {
-
-	},
-	_syncData: function(obj) {
-
-	},
 	getInitialState: function() {
-		var props = this.props,
-			initial_state = Model({
-				x_rel_load_tigger_right: undefined,
-				x_rel_load_trigger_left: undefined,
-				data: this.props.data
-			});
-
-		return initial_state;
+		return {
+			x_rel_load_tigger_right: undefined,
+			x_rel_load_trigger_left: undefined,
+			data: this.props.data
+		};
 	},
 	render: function() {
 		var hourly_divs = [],
@@ -25,8 +16,7 @@ var GridRow = React.createClass({
 				key: 		'date-time-' + i,
 				className: 	'hour',
 				style: {
-					width: 	this.props.display.px_per_hr + 'px' //,
-					//height: '100%'
+					width: 	this.props.display.px_per_hr + 'px'
 				}
 			}));
 		}
@@ -34,11 +24,7 @@ var GridRow = React.createClass({
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		this.props.key,
-			className: 	this.props.className//,
-			//style: {
-				//width: 	this.props.display.width + 'px',
-				//height: this.props.display.row_height + 'px'
-			//}
+			className: 	this.props.className
 		}, 
 		_.map(this.state.data.reservations, function(reservation) {
 			return GridRowItem({
