@@ -12,7 +12,7 @@
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
 		</div>
-		<table id="likes" class="grid">
+		<table id="likes" class="grid" >
 			<tbody>
 				<tr  ng-repeat="like in  likeList.likes">
 					<td ng-click="editSelected($index,like.id,like.name,like.is_system_defined)" ng-hide="currentClickedElement == $index && isEditmode">

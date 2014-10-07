@@ -1,4 +1,5 @@
-admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv',  function($scope, $state, ADHotelLoyaltySrv){
+admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', '$anchorScroll', '$timeout',  '$location',
+  function($scope, $state, ADHotelLoyaltySrv, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -60,6 +61,10 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 		$scope.currentClickedElement = "new";
 		$scope.hotelLoyaltyData.levels  = [{'value':'','name':'', 'editProgress':false}];
 		$scope.isAddMode = true;
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
    /*
     * To get the template of edit screen

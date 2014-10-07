@@ -2,7 +2,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 	'$scope',
 	'$rootScope',
 	'ADDailyWorkAssignmentSrv',
-	function($scope, $rootScope, ADDailyWorkAssignmentSrv) {
+	'$anchorScroll', '$timeout',  '$location',
+	function($scope, $rootScope, ADDailyWorkAssignmentSrv , $anchorScroll, $timeout, $location) {
 
 		BaseCtrl.call(this, $scope);
 		
@@ -39,6 +40,11 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workTypeForm = 'add';
 				$scope.workTypeClickedElement = 'new';
 				resetEachWorkType();
+				$timeout(function() {
+		            $location.hash('new-form-holder-work-type');
+		            $anchorScroll();
+		    	});
+				
 			} else {
 				$scope.workTypeForm = 'edit';
 				$scope.workTypeClickedElement = typeIndex;
@@ -47,7 +53,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					is_active: this.item.is_active,
 					hotel_id: $rootScope.hotelId,
 					id: this.item.id
-				}
+				};
 			}
 		};
 
@@ -149,6 +155,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workShiftForm = 'add';
 				$scope.workShiftClickedElement = 'new';
 				resetEachWorkShift();
+				$timeout(function() {
+		            $location.hash('new-form-holder-work-shift');
+		            $anchorScroll();
+		    	});
 			} else {
 				$scope.workShiftForm = 'edit';
 				$scope.workShiftClickedElement = typeIndex;
@@ -160,7 +170,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					mins: !!time ? time.split(':')[1] : '',
 					hotel_id: $rootScope.hotelId,
 					id: this.item.id
-				}
+				};
 			}
 		};
 
@@ -196,7 +206,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				name: $scope.eachWorkShift.name,
 				time: $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
 				hotel_id: $rootScope.hotelId
-			}
+			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback);
 		};
@@ -216,7 +226,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				time: $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
 				hotel_id: $rootScope.hotelId,
 				id: $scope.eachWorkShift.id
-			}
+			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
@@ -290,6 +300,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.taskListForm = 'add';
 				$scope.taskListClickedElement = 'new';
 				resetEachTaskList();
+				$timeout(function() {
+		            $location.hash('new-form-holder-task-list');
+		            $anchorScroll();
+		    	});
 			} else {
 				$scope.taskListForm = 'edit';
 				$scope.taskListClickedElement = typeIndex;
@@ -307,7 +321,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 					mins: !!time ? time.split(':')[1] : '',
 					task_completion_hk_status_id: this.item.task_completion_hk_status_id,
 					id: this.item.id
-				}
+				};
 			}
 		};
 
@@ -351,7 +365,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				is_occupied: !!isOccupied ? true : false,
 				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
-			}
+			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postTaskListItem, params, callback);
 		};
@@ -378,9 +392,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
 				id: $scope.eachTaskList.id
-			}
+			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putTaskListItem, params, callback);
-		}
+		};
 	}
 ]);
