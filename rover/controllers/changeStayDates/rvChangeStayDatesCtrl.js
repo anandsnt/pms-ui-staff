@@ -16,12 +16,16 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.$emit('HeaderChanged', translatedHeading);
 		$scope.setTitle(translatedHeading);
 
+		//CICO-7897
+		$scope.isChanging = false;
+		var isFirstTime = true;
 		/**
 		 * setting the scroll options for the room list
 		 */
 		var scrollerOptions = {
 			preventDefault: false
 		};
+
 		$scope.setScroller('edit_staydate_updatedDetails', scrollerOptions);
 		$scope.setScroller('edit_staydate_calendar', scrollerOptions);
 
@@ -49,7 +53,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//calender options used by full calender, related settings are done here
 			$scope.fullCalendarOptions = {
 				height: 450,
-				editable: true,
 				header: {
 					left: 'prev',
 					center: 'title',
@@ -69,6 +72,20 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					if('startEditable' in event && 'ontouchstart' in document.documentElement){
 						element.draggable();
 					}									
+				},
+				//CICO-7897's 2nd fix
+				viewRender: function(event, element){
+					if(!isFirstTime){
+						$scope.$apply(function(){
+							$scope.isChanging = true;
+						});
+						setTimeout(function(){
+							$scope.$apply(function(){
+								$scope.isChanging = false;
+							});
+						}, 0);
+					}
+					isFirstTime = false;					
 				}
 			};
 			setTimeout(function() {
