@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope',
-	function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
+	function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.$emit("changedSelectedMenu", 5);
@@ -48,8 +48,13 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 */
 		$scope.addNewClicked = function() {
 
+
 			$scope.currentClickedElement = -1;
 			$scope.isAddTax = false;
+			$timeout(function() {
+	            $location.hash('new-form-holder');
+	            $anchorScroll();
+        	});
 			var fetchNewDetailsSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
@@ -66,6 +71,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					name: "amount"
 				}];
 			};
+
 			$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
 		};
 

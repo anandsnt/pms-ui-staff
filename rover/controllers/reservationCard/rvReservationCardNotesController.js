@@ -24,14 +24,18 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter',
                 return;
             }
             var successCallBackReservationNote = function(data) {
-                $scope.reservationnote = "";
-                data.topic = "GENERAL"; //$filter('translate')('DEFAULT_NOTE_TOPIC');
-                $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
-                $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+
+                if(!data.is_already_existing){
+                     $scope.reservationnote = "";
+                    data.topic = "GENERAL"; //$filter('translate')('DEFAULT_NOTE_TOPIC');
+                    $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
+                    $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+                    
+                    setTimeout(function() {
+                        $scope.$parent.myScroll['resultDetails'].refresh();
+                    }, 700);
+                }
                 $scope.$parent.$emit('hideLoader');
-                setTimeout(function() {
-                    $scope.$parent.myScroll['resultDetails'].refresh();
-                }, 700);
             };
 
             var params = {};
