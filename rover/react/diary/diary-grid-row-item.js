@@ -1,10 +1,5 @@
 var GridRowItem = React.createClass({
-	mixins: [Draggable],
-	_resize: function(params) {
-		if(this.isMounted) {
-
-		}
-	},
+	//mixins: [Draggable],
 	/*Assume that physical dimensions change first, so we need to propagate them to the
 	  backing data and convert to the altered time frame. */
 	_syncData: function() {
@@ -41,26 +36,15 @@ var GridRowItem = React.createClass({
 
 		return initial_state;
 	},
-	/*componentWillReceiveProps: function(nextProps) {
-
-	},
-	shouldComponentUpdate: function(nextProps, nextState) {
-
-	},
-	componentWillUpdate: function(nextProps, nextState) {
-
-	},
-	componentDidUpdate: function(prevProps, prevState) {
-
-	},*/
 	render: function() {
 		var props = this.props,
 			state = this.state,
-			x_axis_origin =props.display.x_origin,
+			x_axis_origin =props.display.x_origin - props.display.x_0,
 			px_per_int = props.display.px_per_int,
 			px_per_ms = props.display.px_per_ms,
 			maintenance_time_span = props.display.maintenance_int * px_per_int,
-			reservation_time_span = (state.time_span_ms) * px_per_ms;
+			reservation_time_span = (state.time_span_ms) * px_per_ms,
+			is_temp_reservation = (props.data.status === 'reservation');
 
 		return React.DOM.div({
 			onMouseDown: this.__onMouseDown,
@@ -68,19 +52,18 @@ var GridRowItem = React.createClass({
 			className: props.className,
 			ref: 'item',
 			style: {
-				left: (!state.dragging ? state.pos.left : state.pos.x) + 'px',
-				top: (!state.dragging ? state.pos.top : state.pos.y) + 'px',
+				left: (state.start_time_ms - x_axis_origin) * px_per_ms + 'px', //state.pos.left + 'px', //(!state.dragging ? state.pos.left : state.pos.x) + 'px',
+				top: state.pos.top + 'px', //(!state.dragging ? state.pos.top : state.pos.y) + 'px',
 				height: state.dim.height,
 				width: reservation_time_span + maintenance_time_span
 			}
 		}, 
 		React.DOM.span({
-			className: 'occupied ' + props.data.status,
+			className: ((!is_temp_reservation) ? 'occupied ' : '') + props.data.status,
 			style: {
 				width: reservation_time_span
-			},
-			value: props.data.guest_name
-		}),
+			}			
+		}, is_temp_reservation ? props.data.rate + '|' + props.data.type : props.data.guest_name),
 		React.DOM.span({
 			className: 'maintenence',
 			style: {

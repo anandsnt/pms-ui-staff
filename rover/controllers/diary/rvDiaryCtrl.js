@@ -418,6 +418,7 @@ sntRover
     };
        
 	$scope.onUpdate = function() {
+		clearNewReservations($scope.data);
 		injectNewReservations(Time({ hours: $scope.new_reservation_time_span }),
 							  $scope.filter,
 							  $scope.data);
@@ -441,6 +442,18 @@ sntRover
 		}
 	}
 
+	function clearNewReservations(data) {
+		var hop = Object.prototype.hasOwnProperty;
+
+		data.forEach(function(item) {
+			if(_.isArray(item.reservations)) {
+				if(hop.call(_.last(item.reservations), 'temporary')) {
+					item.reservations.pop();
+				}
+			}
+		});
+	}
+
 	function injectNewReservations(time_span, filter, data) {
 		var start_date = filter.arrival_date,
 			start_time = filter.arrival_time,
@@ -456,14 +469,17 @@ sntRover
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
 			start_id = getMaxId(-1, $scope.data, 0),
-			reservation = function(id, start_date, end_date) {
+			reservation = function(room, id, start_date, end_date) {
 				return {
 					id: id,
 					key: 'guest-status-' + id,
 					guest_name: 'Guest ' + id,
 					status: 'reservation',
 					start_date: start_date,
-					end_date: end_date
+					end_date: end_date,
+					room_type: room.type,
+					rate: 'Not Defined',
+					temporary: true
 				};
 			},
 			check_reservation_ranges = function(reservations, start_date, end_date) {
@@ -483,7 +499,7 @@ sntRover
 
 		data.forEach(function(item, idx) {
 			if(check_reservation_ranges(item.reservations, start, end)) { 
-				item.reservations.push(reservation(start_id++, start, end));
+				item.reservations.push(reservation(item, ++start_id, start, end));
 			}
 		});	
 	} 

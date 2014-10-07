@@ -24,7 +24,7 @@
             <div class="entry-data">
                 <input name="arrival-date" ui-date="dateOptions" id="arrival-date" type="text" class="datepicker" ng-model="filter.arrival_date" readonly />
                 <strong id="arrival-date-day" class="day">{{filter.arrival_date.getDate()}}</strong>
-                <span id="arrival-date-month" class="month">{{filter.arrival_date.getMonth() + 1}}</span>
+                <span id="arrival-date-month" class="month">{{filter.arrival_date.toComponents().monthName}}</span>
                 <span id="arrival-date-year" class="year">{{filter.arrival_date.getFullYear()}}</span>
             </div>
         </div>

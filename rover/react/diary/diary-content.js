@@ -72,6 +72,9 @@ DiaryContent = React.createClass({
     		this._recalculateGridSize();
     	}.bind(this), 50));
   	},
+  	componentWillUnmount: function() {
+  		$(window).off('resize');
+  	},
 	getDefaultProps: function() {
 		var viewport = SETTINGS.viewport,
 			display = SETTINGS.display;
