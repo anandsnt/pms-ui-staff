@@ -13,14 +13,14 @@ var GridRowItem = React.createClass({
 			{
 				data: 					props.data,
 				start_time_ms: 			props.data.start_date.getTime(),
-				pos: 					Object.create(null, { top: { value: 0 } }),
+				//pos: 					Object.create(null, { top: { value: 0 } }),
 				dim: 					Object.create(null, { height: { value: '100%'} }),
 				end_time_ms: 			props.data.end_date.getTime(),
 				time_span_ms: 			undefined,
 				time_span_intervals: 	undefined,
 				dragging: 				false,
-				y_offset: 				props.row_offset,
-				rel: 					Object.create(null, { x: { value: 0 }, y: { value: 0}})
+				y_offset: 				props.row_offset //,
+				//rel: 					Object.create(null, { x: { value: 0 }, y: { value: 0}})
 			};
 
 			//});
@@ -28,11 +28,11 @@ var GridRowItem = React.createClass({
 		initial_state.time_span_ms = initial_state.end_time_ms - initial_state.start_time_ms;
 		initial_state.time_span_intervals = initial_state.time_span_ms / 9000000;
 
-		initial_state.pos.left = (initial_state.start_time_ms - x_axis_origin) * px_per_ms;
-		initial_state.dim.width = initial_state.time_span_ms * px_per_ms;
+		//initial_state.pos.left = (initial_state.start_time_ms - x_axis_origin) * px_per_ms;
+		//initial_state.dim.width = initial_state.time_span_ms * px_per_ms;
 
-		initial_state.pos.x = initial_state.pos.left;
-		initial_state.pos.y = 0;//initial_state.y_offset;  //TODO Change to prop that relflects actual y offset from top of grid
+		//initial_state.pos.x = initial_state.pos.left;
+		//initial_state.pos.y = 0;//initial_state.y_offset;  //TODO Change to prop that relflects actual y offset from top of grid
 
 		return initial_state;
 	},
@@ -53,8 +53,8 @@ var GridRowItem = React.createClass({
 			ref: 'item',
 			style: {
 				left: (state.start_time_ms - x_axis_origin) * px_per_ms + 'px', //state.pos.left + 'px', //(!state.dragging ? state.pos.left : state.pos.x) + 'px',
-				top: state.pos.top + 'px', //(!state.dragging ? state.pos.top : state.pos.y) + 'px',
-				height: state.dim.height,
+				//top: state.pos.top + 'px', //(!state.dragging ? state.pos.top : state.pos.y) + 'px',
+				//height: state.dim.height,
 				width: reservation_time_span + maintenance_time_span
 			}
 		}, 
@@ -63,12 +63,12 @@ var GridRowItem = React.createClass({
 			style: {
 				width: reservation_time_span
 			}			
-		}, is_temp_reservation ? props.data.rate + '|' + props.data.type : props.data.guest_name),
+		}, is_temp_reservation ? props.data.rate + '|' + props.data.room_type : props.data.guest_name),
 		React.DOM.span({
 			className: 'maintenence',
 			style: {
 				width: maintenance_time_span
 			}
-		}));
+		}, ' '));
 	}
 });

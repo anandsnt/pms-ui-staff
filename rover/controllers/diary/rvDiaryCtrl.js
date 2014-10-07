@@ -386,6 +386,8 @@ sntRover
 		}
     };
 
+	$scope.room_types = _.uniq(_.pluck($scope.data));
+
     /*React callbacks for grid events*/
     $scope.onDragStart = function(component, data, event) {
 

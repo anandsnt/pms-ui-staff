@@ -24,7 +24,7 @@
             <div class="entry-data">
                 <input name="arrival-date" ui-date="dateOptions" id="arrival-date" type="text" class="datepicker" ng-model="filter.arrival_date" readonly />
                 <strong id="arrival-date-day" class="day">{{filter.arrival_date.getDate()}}</strong>
-                <span id="arrival-date-month" class="month">{{filter.arrival_date.toComponents().monthName}}</span>
+                <span id="arrival-date-month" class="month">{{filter.arrival_date.toComponents().date.monthName}}</span>
                 <span id="arrival-date-year" class="year">{{filter.arrival_date.getFullYear()}}</span>
             </div>
         </div>
@@ -32,10 +32,7 @@
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
                 <select id="arrival-time" name="arrival-time">
-                    <!--<option value="01:00">01:00</option>
-                    <option value="02:00">02:00</option>
-                    ... -->
-                    <option ng-repeat="arrival_time in arrival_times" value={{arrival_time}}>{{arrival_time}}</option> 
+                    <option ng-repeat="arrival_time in arrival_times" value={{arrival_time}} ng-model="filter.arrival_time">{{arrival_time}}</option> 
                 </select>
             </div>
         </div>
@@ -43,10 +40,8 @@
             <label for="room-type">Room Type</label>
             <div class="select">
                 <select id="room-type" name="room-type">
-                    <option value="" selected>All</option>
-                    <!--<option value="{Room Type 1}">{Room Type 1}</option>
-                    <option value="{Room Type 2}">{Room Type 2}</option>-->
-                    <option ng-repeat="room_type in room_types" value={{room_type.id}}>{{room_type.name}}</option>
+                    <option value="All" selected>All</option>
+                    <option ng-repeat="room_type in room_types" value={{room_type}} ng-model="filter.room_type">{{room_type}}</option>
                 </select>
             </div>
         </div>
