@@ -159,7 +159,6 @@ $scope.saveClick = function(){
 			 updateData.room_types.push(obj);
 		}
 	});
-	console.log(updateData);
    	var updateChainSuccessCallback = function(data) {
        	$scope.$emit('hideLoader');
        	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
@@ -179,7 +178,6 @@ $scope.saveClick = function(){
 		});
        	
    	};
-   	console.log(JSON.stringify(updateData));
    	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback, updateChainFailureCallback);
 
 };
