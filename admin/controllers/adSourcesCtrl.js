@@ -1,4 +1,5 @@
-admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADSourcesSrv){
+admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', '$anchorScroll', '$timeout', '$location',
+	function($scope, ADSourcesSrv, $anchorScroll, $timeout, $location){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
@@ -51,6 +52,10 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
     */
 	$scope.addNewClicked = function(){
 		$scope.currentClickedElement = 'new';
+		$timeout(function() {
+            $location.hash('add-new');
+            $anchorScroll();
+    	});
 	};
 	/*
     * To handle save button in add new box.
