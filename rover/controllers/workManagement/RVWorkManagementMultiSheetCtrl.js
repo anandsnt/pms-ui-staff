@@ -43,7 +43,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								};
 								$scope.multiSheetState.assignments[worksheet.employee_id].worksheetId = worksheet.work_sheet_id;
 								var assignmentDetails = $scope.multiSheetState.assignments[worksheet.employee_id];
-
 								_.each(worksheet.work_assignments, function(workAssignment) {
 									if (workAssignment.room) {
 										if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
@@ -61,6 +60,28 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 										assignmentDetails.rooms.push(workAssignment.room);
 									}
 								});
+							}
+						});
+
+						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
+							var employee = employee.id;
+							if (!$scope.multiSheetState.assignments[employee]) {
+								$scope.multiSheetState.assignments[employee] = {};
+								$scope.multiSheetState.assignments[employee].rooms = [];
+								$scope.multiSheetState.assignments[employee].summary = {
+									shift: {
+										completed: "00:00",
+										total: "00:00"
+									},
+									stayovers: {
+										total: 0,
+										completed: 0
+									},
+									departures: {
+										total: 0,
+										completed: 0
+									}
+								}
 							}
 						});
 						refreshView();
