@@ -7,7 +7,7 @@ sntRover.controller('RVReportListCrl', [
 
         BaseCtrl.call(this, $scope);
 
-        $scope.setScroller( 'report-list-scroll', {click: true, preventDefault: false} );
+        $scope.setScroller( 'report-list-scroll', {preventDefault: false} );
 
         /**
         *   Post processing fetched data to modify and add additional data

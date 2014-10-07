@@ -48,14 +48,14 @@
 </ul>
 
 <ul id="my-worksheet-summary" class="worksheet-summary" ng-if="isStandAlone && isMaintenanceStaff" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
-    <li>Time Allocated <span>{value}</span></li>
-    <li>Departures <span>{value}</span></li>
-    <li>Stayovers <span>{value}</span></li>
-    <li>Completed<span>{value}/{total}</span></li>
+    <li>Time Allocated <span>0</span></li> <!-- TODO: Need actual values for API -->
+    <li>Departures <span>0</span></li> <!-- TODO: Need actual values for API -->
+    <li>Stayovers <span>0</span></li> <!-- TODO: Need actual values for API -->
+    <li>Completed <span>0/0</span></li> <!-- TODO: Need actual values for API -->
 </ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-class="{'has-summary': isMaintenanceStaff, 'no-options': !isStandAlone, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" ng-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
     <li class="room" ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" ng-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
@@ -212,7 +212,7 @@
                 </div>
                 <div class="entry radio-check">
                     <label class="checkbox">
-                        <span class="icon-form icon-checkbox" ng-clas ="{'checked' : currentFilters.queued}"></span>
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.queued}"></span>
                         <input name="room-filters" type="checkbox" ng-model="currentFilters.queued">
                         <label translate>SHOW_QUEUED</label>
                     </label>
