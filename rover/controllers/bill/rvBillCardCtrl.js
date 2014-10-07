@@ -1387,6 +1387,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			data.reviewStatus = false;
 			data.billNumber = ($scope.reservationBillData.bills.length+1).toString();
 			data.billIndex = $scope.reservationBillData.bills.length;
+			$scope.isAllBillsReviewed = false;
 			$scope.reviewStatusArray.push(data);
 		};
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
