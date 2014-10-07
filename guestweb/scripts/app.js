@@ -30,19 +30,15 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isRoomVerified =  false;
  	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
  	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
- 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true')?true:false;
+ 	$rootScope.isPreCheckin = ($attrs.isPreCheckin ==='true')?true:false;
  	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
 	
+
 	//navigate to different pages
 
-
-	// if($attrs.isPreCheckedIn === 'true'){
-	// 	$location.path('/preCheckinComleted');
-	// }
-	// else 
-	if($attrs.isPrecheckinOnly  ==='true'){
+	if($attrs.isPreCheckin  ==='true'){
  		$location.path('/tripDetails');
  	}	
  	else if($rootScope.isCheckedin){
