@@ -2,6 +2,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
+		$s = $scope;
 		
 		// set a back button on header
 		$rootScope.setPrevState = {
@@ -529,8 +530,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			return events;
 		};
 
-		this.initialise();
-
 		$scope.refreshMyScroller = function() {
 			setTimeout(function() {
 				$scope.refreshScroller('edit_staydate_updatedDetails');
@@ -552,6 +551,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			$scope.refreshMyScroller();
 		});
+
+		this.initialise();
 
 	}
 ]);

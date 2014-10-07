@@ -2,8 +2,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
     function($scope, $rootScope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state, $timeout) {
         //expand first set
         $scope.currentClickedSet = 0;
-        $scope.setChanged = false;
-
         $scope.init = function() {
             // in edit mode last date range data will be expanded and details can't fetch by click
             // so intiating fetch data
@@ -181,7 +179,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         data.sets[j].room_rates[k].double = precisionTwo(roomRate.double);
                         data.sets[j].room_rates[k].extra_adult = precisionTwo(roomRate.extra_adult);
                         data.sets[j].room_rates[k].child = precisionTwo(roomRate.child);
-                        data.sets[j].isSaved = true;
+                        // CICO-9783
+                        data.sets[j].isSaved = $scope.otherData.isEdit;
 
                         if ($scope.rateData.room_types[i].id == roomRate.id) {
                             foundRoomType = true;

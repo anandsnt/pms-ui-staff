@@ -133,7 +133,8 @@
                 	<li ng-repeat="row in reservationData.taxDetails">
                         <!-- TODO : REMOVE THE ADDITIONAL INFO FROM THE BELOW LINE AFTER FUNCTIONAL TESTING-->
                 		<span class="label" translate> {{row.description}} </span>
-                		{{currencySymbol}}{{ row.amount | number : 2}}
+                        <span class="total" ng-if="reservationData.isRoomRateSuppressed">SR</span>
+                        <span class="total" ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{ row.amount | number : 2}}</span>               		
                 	</li>
                 	
                     <li>

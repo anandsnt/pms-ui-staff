@@ -49,7 +49,7 @@ angular.module('ui.date', [])
           var _onClose = opts.onClose || angular.noop;
           opts.onClose = function(value, picker) {
             showing = false;
-            _onClose();
+            _onClose(value, picker);
           };
           element.off('blur.datepicker').on('blur.datepicker', function() {
             if ( !showing ) {
