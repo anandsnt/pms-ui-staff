@@ -30,7 +30,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isRoomVerified =  false;
  	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
  	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
- 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true')?true:false;
+ 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
  	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
@@ -38,7 +38,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 
 	//navigate to different pages
 
-	if($attrs.isPrecheckinOnly  ==='true' && $rootScope.isCheckin){
+	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
  		$location.path('/tripDetails');
  	}	
  	else if($rootScope.isCheckedin){
