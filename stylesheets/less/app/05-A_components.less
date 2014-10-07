@@ -9898,11 +9898,9 @@
             }
         }
     }
-    
+
 /* Room Diary                ==============================*/
 .diary-content {
-    position: relative;
-    display: block;
     
     .diary-header {
         position: relative;
@@ -10225,7 +10223,7 @@
                 .size(60px, 100%);
                 .float;
 
-                .segment {
+                .segment { 
                     position: relative;
                     display: block;
                     float: left;
@@ -10376,43 +10374,44 @@
             .wrapper {
                 position: relative;
                 font-weight: 600;
+                height: 100%;
                 overflow-y: scroll;
                 z-index: 1099;
 
-                li {
-                    margin: 5px 0 5px 10px;
-                    padding: 10px 5px;
-                    text-align: right;
-                    text-transform: uppercase;
-                    background: @white;
-                    overflow: hidden;
+            li {
+                margin: 5px 0 5px 10px;
+                padding: 10px 5px;
+                text-align: right;
+                text-transform: uppercase;
+                background: @white;
+                overflow: hidden;
 
-                    span {
-                        line-height: 1em;
-                        .show;    
+                span {
+                    line-height: 1em;
+                    .show;    
 
-                        &.number {
-                            font-size: 20px;
-                            font-weight: 600;
-                        }
-
-                        &.type { font-size: 13px; }
+                    &.number {
+                        font-size: 20px;
+                        font-weight: 600;
                     }
 
-
-                    &.occupied { 
-                        color: @grey3;
-                        background: @grey1; }
-                    
-                    &.dirty { 
-                        color: @red;
-                        background: lighten(@red, 30); 
-                    }                
-
-                    &:first-child { margin-top: 0; }
-                    &:last-child { margin-bottom: 0; }
+                    &.type { font-size: 13px; }
                 }
+
+
+                &.occupied { 
+                    color: @grey3;
+                    background: @grey1; }
+                
+                &.dirty { 
+                    color: @red;
+                    background: lighten(@red, 30); 
+                }                
+
+                &:first-child { margin-top: 0; }
+                &:last-child { margin-bottom: 0; }
             }
+        }
         }
 
         .diary-grid {
@@ -10474,11 +10473,11 @@
                             z-index: 1199;
 
                             span {
+                                height: 100%;
                                 .pull-left; 
                                 .show;
 
                                 &.maintenence {
-                                    //width: 80px;
                                     .gradient(@grey4, @gcard);
                                 }
 
@@ -10492,14 +10491,8 @@
 
                                 &.check-in { .gradient(@greenStart, @greenEnd); }
                                 &.inhouse { .gradient(@blueStart, @blueEnd); }
-
-                                &.check-out {
-                                    .gradient(@greenStart, @greenEnd);
-                                }
-
-                                &.housekeeping {
-                                    .gradient(@greenStart, @greenEnd);
-                                }                               
+                                &.check-out { .gradient(@redStart, @redEnd); }
+                                &.reservation { .gradient(@orangeStart, @orangeEnd); }
                             }
                         }
                     }
@@ -10507,7 +10500,7 @@
                     .grid-row:nth-of-type(2n) {
                         background-color: rgba(0, 0, 0, 0.03);  
                     }
-
+                
                     .grid-row:nth-of-type(2n + 1) {
                         background-color: rgba(0, 149, 238, 0.05);  
                     }
@@ -10520,28 +10513,20 @@
 
         /* 12 hours grid ***/
         &.hours-12 {
-
             .diary-rooms {
-                li {
-                    height: 60px;
-                }
+                li { height: 60px; }
             }
 
             .diary-grid {
                 li {
                     line-height: 60px;
                     height: 60px;
-
-                    span {
-                        height: 60px;
-                    }
                 }
             }
         }
 
         /* 24-hours grid ***/
         &.hours-24 {
-
             .diary-rooms {
                 li {
                     height: 30px;
@@ -10554,10 +10539,6 @@
                     line-height: 30px;
                     height: 30px;
                     margin: 0;
-
-                    span {
-                        height: 30px;
-                    }
                 }
             }
         }

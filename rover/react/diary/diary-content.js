@@ -103,6 +103,15 @@ DiaryContent = React.createClass({
 					height: scope.grid_dimensions.height
 				},
 				data: scope.data,
+				new_reservation_time_span: scope.new_reservation_time_span,
+				angular_evt: {
+					onDragStart: scope.onDragStart,
+					onDragEnd: scope.onDragEnd,
+					onResizeStart: scope.onResizeStart,
+					onResizeEnd: scope.onResizeEnd,
+					onScrollLoadTriggerRight: scope.onScrollLoadTriggerRight,
+					onScrollLoadTriggerLeft: scope.onScrollLoadTriggerLeft
+				},
 				currentDragItem: undefined,
 				currentResizeItem: undefined
 			};
@@ -138,12 +147,14 @@ DiaryContent = React.createClass({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.state.data,
+			angular_evt: this.state.angular_evt,
 			__onGridScroll: self.__onGridScroll
 		}), 
 		GridPanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.state.data,
+			angular_evt: this.state.angular_evt,
 			__onGridScroll: self.__onGridScroll
 		})), this.props.children);
 	}
