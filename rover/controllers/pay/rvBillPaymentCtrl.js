@@ -358,9 +358,13 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 				"card_expiry": $scope.newPaymentInfo.cardExpiryMonth+"/"+$scope.newPaymentInfo.cardExpiryYear,
 				"card_name": $scope.newPaymentInfo.cardHolderName,
 				"id": data.id,
-				"isSelected": true
+				"isSelected": true,
+				"is_primary":false,
+				"payment_type":data.payment_name,
+				"payment_type_id": 1
 			};
 			$scope.guestPaymentList.push(dataToGuestList);
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
 		
 		$scope.showInitialScreen();
