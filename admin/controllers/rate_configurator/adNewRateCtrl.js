@@ -8,7 +8,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 'setChanged' : false,
                 'activeDateRange' : '',
                 'activeDateRangeIndex' : '',
-                'rateSavePromptOpen' : false
+                'rateSavePromptOpen' : false,
+                'isEdit': false
             };
 
             $scope.is_edit = false;
@@ -52,6 +53,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
+                $scope.otherData.isEdit = true;
             }
         };
 

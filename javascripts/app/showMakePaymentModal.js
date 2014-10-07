@@ -157,7 +157,6 @@ var ShowMakePaymentModal = function(backDom) {
         
 	};
 	this.hideErrorMessage = function(){
-		console.log("hide");
 		that.myDom.find("#notification-message").removeClass('notice success_message error_message').html('');
 	};
 	this.showExistingCards = function(){
