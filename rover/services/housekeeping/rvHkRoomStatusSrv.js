@@ -36,6 +36,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		this.currentFilters = this.initFilters();
 		
+		var that = this;
 		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
 			var url = '/house/search.json?date='+ businessDate;
@@ -59,10 +60,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    	// single calculate the class required
 					    	// will require additional call from details page
-					    	room.roomStatusClass = this.setRoomStatusClass(room);
+					    	room.roomStatusClass = that.setRoomStatusClass(room);
 
 					    	// set the leaveStatusClass or enterStatusClass value
-					    	this.setReservationStatusClass(room);
+					    	that.setReservationStatusClass(room);
 					    }
 
 					    deferred.resolve(this.roomList);
