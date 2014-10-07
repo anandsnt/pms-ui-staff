@@ -944,8 +944,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
 		}
+		else if($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount !== "0.00"){
+			console.log("Final bill having balance not 0.00");
+			$scope.clickedPayButton();
+		}
 		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
-			console.log($scope.reservationBillData.reservation_balance);
+			console.log("reservation_balance not 0.00"+$scope.reservationBillData.reservation_balance);
 			$scope.clickedPayButton();
 		}
 		else{
