@@ -676,7 +676,6 @@ reports.factory('RepFetchSrv', [
                         deferred.reject(['Internal server error occured']);
                     }
                     else if(status == 401){ // 401- Unauthorized
-                        console.log('lets redirect');
                         // so lets redirect to login page
                         $window.location.href = '/logout';
                     }else{
@@ -728,7 +727,6 @@ reports.factory('RepUserSrv', [
                         deferred.reject(['Internal server error occured']);
                     }
                     else if(status == 401){ // 401- Unauthorized
-                        console.log('lets redirect');
                         // so lets redirect to login page
                         $window.location.href = '/logout' ;
                     }else{
@@ -769,7 +767,6 @@ reports.factory('RepFetchReportsSrv', [
                         deferred.reject(['Internal server error occured']);
                     }
                     else if(status == 401){ // 401- Unauthorized
-                        console.log('lets redirect');
                         // so lets redirect to login page
                         $window.location.href = '/logout' ;
                     }else{

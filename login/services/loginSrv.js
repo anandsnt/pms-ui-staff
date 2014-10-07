@@ -23,7 +23,6 @@ login.service('loginSrv',['$http', '$q', function($http, $q){
 				deferred.reject(['Internal server error occured']);
 			}
 			else if(status == 401){ // 401- Unauthorized
-				console.log('lets redirect');
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}else{
