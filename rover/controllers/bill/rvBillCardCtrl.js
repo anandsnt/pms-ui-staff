@@ -103,11 +103,27 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.refreshScroller('registration-content');
 		}, 500);
 	};
+
+	//Calculate the scroll width for bill tabs in all the cases
+	$scope.getWidthForBillTabsScroll = function(){
+		var width = 0;
+		if($scope.routingArrayCount > 0)
+			width = width + 200;
+		if($scope.incomingRoutingArrayCount > 0)
+			width = width + 275
+		if($scope.clickedButton == 'checkinButton')
+			width = width + 230;
+		if($scope.reservationBillData.bills.length < 10)
+			width = width + 50;
+		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
+		return width;
+		// return 2200;
+	};
+	
 	// Initializing reviewStatusArray
 	$scope.reviewStatusArray = [];
 	angular.forEach(reservationBillData.bills, function(value, key) {
 		var data = {};
-    	console.log($scope.reviewStatusArray[key]);
         // Bill is reviewed(true) or not-reviewed(false).
 		data.reviewStatus = false;
 		data.billNumber = value.bill_number;
@@ -153,6 +169,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		 */
 		$scope.setNoPostStatus();
      	$scope.calculateHeightAndRefreshScroll();
+     	$scope.refreshScroller('bill-tab-scroller');
         
 	};
 
