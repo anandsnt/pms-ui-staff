@@ -224,6 +224,14 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.$parent.myScroll["workSheetUnassigned"].enable();
 		}
 
+		$scope.onUnassignmentDragStart = function() {
+			$scope.$parent.myScroll["workSheetAssigned"].disable();
+		}
+
+		$scope.onUnassignmentDragStop = function() {
+			$scope.$parent.myScroll["workSheetAssigned"].enable();
+		}
+
 		init();
 	}
 

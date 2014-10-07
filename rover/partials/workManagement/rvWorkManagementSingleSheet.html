@@ -53,10 +53,10 @@
         <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned">
             <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" data-jqyoui-options="{accept: '.worksheet-room.single-sheet.assigned'}" >
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
-                <li id="unassigned-{{$index}}" class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
+                <li iscroll-stop-propagation id="unassigned-{{$index}}" class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
                         data-drag = "true"                        
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onAssignmentDragStart()', onStop: 'onAssignmentDragStop()' }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', delay: 500}"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', delay: 500, containment: '#worksheet-content'}"
                         style="width:{{singleState.dimensions.unassigned}}px">
 
                     <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
@@ -109,10 +109,10 @@
                 <!-- 2. Existing sheet, with rooms assigned -->
                 <ul class="sortable wrapper" ng-if="singleState.assigned.length > 0" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.worksheet-room.single-sheet.unassigned'}">
                     <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->                    
-                    <li class="worksheet-room single-sheet assigned" ng-repeat="room in singleState.assigned" 
+                    <li iscroll-stop-propagation class="worksheet-room single-sheet assigned" ng-repeat="room in singleState.assigned" 
                         data-drag = "true"
-                        jqyoui-draggable ="{index: {{$index}}, animate:false }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', delay: 500}" id="unassigned-{{$index}}" 
+                        jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onUnassignmentDragStart()', onStop: 'onUnassignmentDragStop()' }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', delay: 500, containment: '#worksheet-content'}" id="unassigned-{{$index}}" 
                         style="width:{{singleState.dimensions.assigned}}px">
 
                         <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
