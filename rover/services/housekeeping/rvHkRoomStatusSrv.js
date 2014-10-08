@@ -222,7 +222,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setReservationStatusClass = function(room){
+		this.setReservationStatusClass = function(room) {
+
+			// room.leaveStatusClass is for first arrow. can be red(check-out), blue(inhouse) or gray(no-show)
+			// room.enterStatusClass is for second arrow. can be green(check-in) or gray(no-show)
 			switch(room.room_reservation_status) {
 				case 'Due Out':
 					room.leaveStatusClass = 'check-out';
@@ -252,6 +255,31 @@ sntRover.service('RVHkRoomStatusSrv', [
 				case 'Due out / Arrival':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Departed / Arrival':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Arrived / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Due out / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Arrived / Day use / Due out':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Arrived / Day Use / Due Out / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
 					break;
 
 				default:

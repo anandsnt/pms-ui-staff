@@ -63,7 +63,6 @@
             <span class="room-status {{ room.roomStatusClass }}" bo-text="room.description"></span>
           </div>
           <div class="reservation-status">
-            <p>{{ room.room_reservation_status }}</p>
             <!-- {leaveStatusClass} can be check-out(for due out or departed) or inhouse(for stayover) --> 
             <div class="current {{ room.leaveStatusClass }}">
               <span class="guest-status {{ room.leaveStatusClass }}" bo-text="room.room_reservation_status"></span>
