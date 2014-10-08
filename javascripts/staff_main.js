@@ -48,6 +48,7 @@
 //=require ../rover/react/diary/diary-rooms.js
 //=require ../rover/react/diary/diary-room-panel.js
 //=require ../rover/react/diary/diary-grid.js
+//=require ../rover/react/diary/diary-timeline-resize.js
 //=require ../rover/react/diary/diary-timeline-occupancy.js
 //=require ../rover/react/diary/diary-timeline.js
 //=require ../rover/react/diary/diary-timeline-panel.js

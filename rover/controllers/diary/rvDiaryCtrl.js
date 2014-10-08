@@ -405,13 +405,36 @@ sntRover
 	    	renderGrid();
 	    };
 	})();
-    $scope.onResizeStart = function(component, data, event) {
 
-    };
+	/*Left must be passed in milliseconds for accurate time adjustment*/
+	(function() { 
+		var w0;
 
-    $scope.onResizeEnd = function(component, data, event) {
+	    $scope.onResizeLeftStart = function(left) {
+	    	w0 = left;
+	    };
 
-    };
+	    $scope.onResizeLeftEnd = function(left) {
+	    	var delta = left - w0,
+	    		arrival_time = new Date(left);
+	    	
+	    	 updateStartTimeOffsetNewReservations(delta);
+	    };
+    })();
+
+	(function() {
+		var w0;
+
+	    $scope.onResizeRightStart = function(right) {
+	    	w0 = right;
+	    };
+
+	    $scope.onResizeRightEnd = function(right) {
+	    	var delta = right - w0;
+
+	    	updateEndTimeOffsetNewReservations(delta);
+	    };
+	})();
 
     $scope.onScrollLoadTriggerRight = function(component, data, event) {
 
@@ -420,7 +443,7 @@ sntRover
     $scope.onScrollLoadTriggerLeft = function(component) {
 		
     };
-       
+
 	$scope.onUpdate = function() {
 		clearNewReservations($scope.data);
 		injectNewReservations(Time({ hours: $scope.new_reservation_time_span }),
@@ -430,6 +453,30 @@ sntRover
 		renderGrid();
 	};
 
+	function updateStartTimeOffsetNewReservations(newArrivalTimeDelta) {
+		var hop = Object.prototype.hasOwnProperty;
+
+		$scope.data.forEach(function(item) {
+			item.reservations.forEach(function(res) {
+				if(hop.call(res, 'temporary')) {
+					res.start_date = new Date(res.start_date.getTime() + newArrivalTimeDelta);
+				}
+			});
+		});
+	}
+
+	function updateEndTimeOffsetNewReservations(newDepartureTimeDelta) {
+		var hop = Object.prototype.hasOwnProperty;
+
+		$scope.data.forEach(function(item) {
+			item.reservations.forEach(function(res) {
+				if(hop.call(res, 'temporary')) {
+					res.end_date = new Date(res.end_date.getTime() + newDepartureTimeDelta);
+				}
+			});
+		});
+	}
+
 	function renderGrid() {
 		React.renderComponent(
 			DiaryContent({
@@ -437,6 +484,23 @@ sntRover
 			}),
 			document.getElementById('component-wrapper')
 		);		
+	}
+
+	function parseArrivalTime(arrival_time) {
+		var pos = arrival_time.indexOf(':'),
+			hours, minutes;
+
+		if(pos > -1) {
+			hours = arrival_time.substr(0, pos);
+
+			if(pos < arrival_time.length) {
+				minutes = arrival_time.substr(pos + 1);
+			}
+		}
+
+		if(hours && minutes) {
+			return Time({hours: hours, minutes: minutes});
+		}
 	}
 
 	function reservationRoomTransfer(nextRoom, room, reservation) {
@@ -458,7 +522,7 @@ sntRover
 
 	function getMaxId(max, data, idx) {
 		if(idx < data.length) {
-			return getMaxId(max < data[idx] ? data[idx] : max, data, ++idx);
+			return getMaxId(((max < data[idx]) ? data[idx] : max), data, ++idx);
 		} else {
 			return max;
 		}
@@ -496,12 +560,13 @@ sntRover
 
 	function injectNewReservations(time_span, filter, data) {
 		var start_date = filter.arrival_date,
-			start_time = filter.arrival_time,
+			start_time = parseArrivalTime(filter.arrival_time),
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
-							 parseInt(start_time.charAt(0)),
-							 0, 0, 0),
+							 start_time.hours, //parseInt(start_time.charAt(0)),
+							 start_time.minutes, 
+							 0, 0),
 			end = new Date(start.getFullYear(),
 						   start.getMonth(),
 						   start.getDate(),
