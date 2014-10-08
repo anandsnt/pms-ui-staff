@@ -25,19 +25,18 @@ var GridRowItemDrag = React.createClass({
 			distance = Math.abs(delta_x) + Math.abs(delta_y),
 			left, top, margin_top = this.props.display.row_height + 6;
 
-		if(!this.state.dragging &&
-		   distance > 3) {
+		if(!this.state.dragging) {
 			this.setState({
 				dragging: true
 			}, function() {
 				this.props.__onDragStart(this.props.room, this.props.__dragData.data);
 			});
 		} else if(this.state.dragging) {
-			left = this.state.element_x + delta_x; // - $('.diary-grid .wrapper')[0].scrollLeft;
-			top = this.state.element_y + delta_y - this.state.offset_y; //- $('.diary-grid .wrapper')[0].scrollTop - this.state.offset_y;
+			left = 	this.state.element_x + delta_x; 
+			top = 	this.state.element_y + delta_y - this.state.offset_y; 
 
 			this.setState({
-				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int , //document.body.scrollLeft,
+				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int , 
 				top: (top / margin_top).toFixed() * margin_top
 			});
 		}
@@ -52,23 +51,44 @@ var GridRowItemDrag = React.createClass({
 			}, function() {
 				this.props.__onDragStop(e);
 			});
+		} else if(this.state.mouse_down) {
+			this.setState({
+				selected: !this.state.selected
+			}, function() {
+				this.props.angular_evt.onSelect(this.state.data);
+			});
 		}
 	},
 	getInitialState: function() {
 		return {
+			data: this.props.data,
+			room: this.props.room,
 			dragging: false,
-			mouse_down: false
+			mouse_down: false,
+			selected: false
 		};
 	},
 	render: function() {
-		return this.transferPropsTo(React.DOM.div({
-			style: (this.state.dragging) ? { 
+		var style = {},
+			className = '';
+
+		if(this.state.dragging) {
+			style = { 
 				position: 'fixed',
 				left: this.state.left,
 				top: this.state.top,
 				height: this.props.display.row_height
-			} : {},
-			className: (this.state.dragging) ? 'draggable' : '',
+			}; 
+			className = 'draggable';
+		} else if(this.state.selected) {
+			className = 'selected';
+		} else {
+			className = '';
+		}
+
+		return this.transferPropsTo(React.DOM.div({
+			style: style,
+			className: className,
 			children: this.props.children,
 			onMouseDown: this.__onMouseDown
 		}));

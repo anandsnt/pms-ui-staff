@@ -57,6 +57,8 @@ var Timeline = React.createClass({
 				width: props.display.width
 			},
 			data: this.state.data
-		}, hourly_spans);
+		}, React.DOM.div({
+			className: 'hours'
+		}), hourly_spans);
 	}
 });

@@ -27,15 +27,18 @@ var GridRow = React.createClass({
 		}, 
 		_.map(this.state.data.reservations, function(reservation) {
 			return GridRowItem({
-				key: 		reservation.key,
-				className: 	'occupancy-block',
-				display: 	self.props.display,
-				data: 		reservation,
-				room:       self.state.data, 
-				row_offset: self.props.row_number * self.props.display.row_height,
+				key: 			reservation.key,
+				className: 		'occupancy-block',
+				display: 		self.props.display,
+				viewport:    	self.props.viewport, 
+				filter: 		self.props.filter,
+				angular_evt: 	self.props.angular_evt,
+				data: 			reservation,
+				room:       	self.props.data, 
+				row_offset: 	self.props.row_number * self.props.display.row_height,
 				__onDragStart:  self.props.__onDragStart,
-				__onDragStop: self.props.__onDragStop,
-				__onMouseUp: self.props.__onDrop
+				__onDragStop: 	self.props.__onDragStop,
+				__onMouseUp: 	self.props.__onDrop
 			});
 		}),
 		hourly_divs);

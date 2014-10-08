@@ -91,24 +91,21 @@ DiaryContent = React.createClass({
 			scope = props.scope,
 			initial_state = {
 				display: {
-					x_scroll_delta: 0,
-					y_scroll_delta: 0,
-					x_scroll_offset: 0,
-					y_scroll_offset: 0, //AKA Y OFFSET FROM ROOT TOP OF GRID
-					y_rel_load_trigger_right: undefined,
-					y_rel_load_trigger_left: undefined,
 					x_0: props.viewport.row_header_width,
 					x_origin: scope.start_date.getTime(),
 					x_origin_start_time: scope.start_time
 				},
 				viewport: {
 					width: scope.grid_dimensions.width,
-					height: scope.grid_dimensions.height
+					height: scope.grid_dimensions.height,
+					element: scope.grid_element
 				},
 				data: scope.data,
 				new_reservation_time_span: scope.new_reservation_time_span,
 				angular_evt: {
 					onSelect: scope.onSelect,
+					isSelected: scope.isSelected,
+					displayFilter: scope.displayFilter,
 					onDragStart: scope.onDragStart,
 					onDragEnd: scope.onDragEnd,
 					onResizeStart: scope.onResizeStart,
@@ -116,6 +113,7 @@ DiaryContent = React.createClass({
 					onScrollLoadTriggerRight: scope.onScrollLoadTriggerRight,
 					onScrollLoadTriggerLeft: scope.onScrollLoadTriggerLeft
 				},
+				filter: scope.filter,
 				currentDragItem: undefined,
 				currentResizeItem: undefined
 			};
@@ -139,24 +137,28 @@ DiaryContent = React.createClass({
 		TogglePanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
-			data: this.state.data
+			data: this.state.data,
+			filter: this.state.filter,
 		}),
 		RoomPanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.state.data,
+			filter: this.state.filter,
 			__onGridScroll: self.__onGridScroll
 		}),
 		TimelinePanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.state.data,
+			filter: this.state.filter,
 			angular_evt: this.state.angular_evt,
 			__onGridScroll: self.__onGridScroll
 		}), 
 		GridPanel({
 			viewport: this.props.viewport,
 			display: this.props.display,
+			filter: this.state.filter,
 			data: this.state.data,
 			angular_evt: this.state.angular_evt,
 			__onGridScroll: self.__onGridScroll

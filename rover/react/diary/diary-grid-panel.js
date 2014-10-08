@@ -13,6 +13,7 @@ var GridPanel = React.createClass({
 		Grid({
 			viewport: this.props.viewport,
 			display: this.props.display,
+			filter: this.props.filter,
 			data: this.state.data,
 			angular_evt: this.props.angular_evt,
 			__onGridScroll: self.props.__onGridScroll

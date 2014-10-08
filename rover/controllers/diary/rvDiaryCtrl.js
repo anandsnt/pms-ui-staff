@@ -339,6 +339,10 @@ sntRover
 		height: angular.element($window).height() - 230
 	};
 
+	$scope.grid_element = function() {
+		return $('.diary-grid .wrapper');
+	};
+
 	/*DEFAULT RESERVATION GRID ITEM WIDTH IN HOURS*/
 	$scope.new_reservation_time_span = 4;
 
@@ -388,7 +392,7 @@ sntRover
 
 	$scope.room_types = _.uniq(_.pluck($scope.data, 'type'));
 	$scope.room_types.unshift('All');
-	
+
 	(function() {    /*React callbacks for grid events*/
 		var prevRoom;
 
@@ -443,6 +447,26 @@ sntRover
 
     $scope.onScrollLoadTriggerLeft = function(component) {
 		
+    };
+
+    $scope.onSelect = function(data, selected) {
+    	data.selected = selected;
+    };
+
+    $scope.isSelected = function(data) {
+    	return data.selected;
+    };
+
+    $scope.displayFilter = function(filter, reservation, room, data) {
+    	if(Object.prototype.hasOwnProperty.call(reservation, 'temporary')) {
+    		if(filter.room_type === data.room_type) {
+    			return true;
+    		} else {
+    			return false;
+    		}
+    	} else {
+    		return true;
+    	}
     };
 
 	$scope.onUpdate = function() {
