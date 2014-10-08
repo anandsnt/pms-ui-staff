@@ -213,7 +213,7 @@ console.log($scope);
 	 * Show existing payments Active and show screen
 	 */
 	$scope.clickedShowExistingCard = function(){
-		$scope.refreshScroller('available-cards');
+		
 		$scope.addCardActive = false;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -221,6 +221,7 @@ console.log($scope);
 		$scope.depositBalanceNewCardData.expiryMonth = "";
 		$scope.depositBalanceNewCardData.expiryYear  = "";
 		$scope.depositBalanceNewCardData.cardHolderName  = "";
+		$scope.refreshScroller('available_cards');
 	};
 	$scope.selectPayment = function(paymentId){
 		selectedPaymentIdFromList = paymentId;
