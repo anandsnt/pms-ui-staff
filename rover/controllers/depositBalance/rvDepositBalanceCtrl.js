@@ -35,9 +35,7 @@ console.log($scope);
 	$scope.makePaymentData = {};
 	$scope.makePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonActive = false;
-	setTimeout(function(){
-		$scope.setScroller('available-cards');
-	}, 1000);
+	$scope.setScroller('available_cards', { click:true});
 	/*
 	 * Function to handle click on make payment button
 	 * If new card is added, then first we need to add the credit card and on success we make the payment
@@ -215,7 +213,7 @@ console.log($scope);
 	 * Show existing payments Active and show screen
 	 */
 	$scope.clickedShowExistingCard = function(){
-		$scope.refreshScroller('available-cards');
+		
 		$scope.addCardActive = false;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -223,6 +221,7 @@ console.log($scope);
 		$scope.depositBalanceNewCardData.expiryMonth = "";
 		$scope.depositBalanceNewCardData.expiryYear  = "";
 		$scope.depositBalanceNewCardData.cardHolderName  = "";
+		$scope.refreshScroller('available_cards');
 	};
 	$scope.selectPayment = function(paymentId){
 		selectedPaymentIdFromList = paymentId;
