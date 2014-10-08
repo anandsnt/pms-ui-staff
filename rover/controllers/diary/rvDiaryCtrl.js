@@ -459,7 +459,7 @@ sntRover
 
     $scope.displayFilter = function(filter, reservation, room, data) {
     	if(Object.prototype.hasOwnProperty.call(reservation, 'temporary')) {
-    		if(filter.room_type === data.room_type) {
+    		if(angular.lowercase(filter.room_type) === 'all' || filter.room_type === data.room_type) {
     			return true;
     		} else {
     			return false;
@@ -604,7 +604,7 @@ sntRover
 					id: id,
 					key: 'guest-status-' + id,
 					guest_name: 'Guest ' + id,
-					status: 'reservation',
+					status: 'available',
 					start_date: start_date,
 					end_date: end_date,
 					room_type: room.type,

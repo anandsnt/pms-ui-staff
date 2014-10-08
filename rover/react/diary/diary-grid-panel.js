@@ -8,7 +8,8 @@ var GridPanel = React.createClass({
 		var self = this;
 
 		return React.DOM.div({
-			className: 'diary-grid scrollable'
+			className: 'diary-grid scrollable',
+			onScroll: self.props.__onGridScroll 
 		}, 
 		Grid({
 			viewport: this.props.viewport,

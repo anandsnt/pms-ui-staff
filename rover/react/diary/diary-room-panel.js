@@ -9,14 +9,11 @@ var RoomPanel = React.createClass({
 
 		return React.DOM.div({
 			className: 'diary-rooms scrollable',
-			style: {
+			/*style: {
 				height: this.props.viewport.height
-			},
+			},*/
 			onScroll: self.props.__onGridScroll
 		},
-		React.DOM.div({
-			className: 'switch-button'
-		}),
 		Rooms({
 			display: this.props.display,
 			data: this.state.data

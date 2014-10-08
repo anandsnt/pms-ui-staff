@@ -59,8 +59,8 @@ DiaryContent = React.createClass({
 		var el = e.currentTarget;
 
 		if(el) {
-			$('.diary-timeline .wrapper').css({ 'left': -el.scrollLeft + 'px'});
-			$('.diary-rooms .wrapper').css({ 'top': -el.scrollTop + 'px'});
+			$('.diary-timeline').css({ 'left': -el.scrollLeft + 120 + 'px'});
+			$('.diary-rooms').css({ 'top': -el.scrollTop + 90 + 'px'});
 		}
 	},
 	componentDidMount: function() {
