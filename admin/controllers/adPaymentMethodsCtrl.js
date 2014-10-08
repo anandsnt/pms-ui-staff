@@ -1,5 +1,5 @@
-admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv',
-function($scope, $state, ADPaymentMethodsSrv) {
+admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv', '$anchorScroll', '$timeout', '$location', 
+function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location) {
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.editData = {};
@@ -51,6 +51,10 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	$scope.addNew = function() {
 		$scope.addData = {};
 		$scope.currentClickedElement = "new";
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
 
 	/*
