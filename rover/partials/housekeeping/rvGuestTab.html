@@ -30,11 +30,11 @@
 <div class="room-content scrollable" ng-if="roomDetails.is_occupied == 'true'">
   <div class="wrapper">
     <strong class="h2">
-      {{ roomDetails.current_room_reservation_status }}
-      <span class="green" ng-if="roomDetails.current_room_reservation_status == 'DUE IN'">. Arriving at {{ roomDetails.arrival_time }}.</span>
-      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED' && !!roomDetails.departure_time && !!roomDetails.dept_date">. Departing at {{ roomDetails.departure_time }} on {{ roomDetails.dept_date }}.</span>      
-      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED' && !!roomDetails.departure_time && !roomDetails.dept_date">. Departing at {{ roomDetails.departure_time }}.</span>
-      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED' && !!roomDetails.dept_date && !roomDetails.departure_time">. Departing on {{ roomDetails.dept_date }}.</span>
+      {{ roomDetails.current_room_reservation_status }}<span ng-if="roomDetails.current_room_reservation_status == 'DUE IN' || (roomDetails.current_room_reservation_status == 'ARRIVED' && (!!roomDetails.departure_time || !!roomDetails.dept_date) )">.</span>
+      <span class="green" ng-if="roomDetails.current_room_reservation_status == 'DUE IN'">Arriving at {{ roomDetails.arrival_time }}.</span>
+      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED' && !!roomDetails.departure_time && !!roomDetails.dept_date">Departing at {{ roomDetails.departure_time }} on {{ roomDetails.dept_date }}.</span>      
+      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED' && !!roomDetails.departure_time && !roomDetails.dept_date">Departing at {{ roomDetails.departure_time }}.</span>
+      <span class="red" ng-if="roomDetails.current_room_reservation_status == 'ARRIVED' && !!roomDetails.dept_date && !roomDetails.departure_time">Departing on {{ roomDetails.dept_date }}.</span>
     </strong>
     <figure class="guest-image">
       <img src="{{ roomDetails.avatar_src }}" alt="">
