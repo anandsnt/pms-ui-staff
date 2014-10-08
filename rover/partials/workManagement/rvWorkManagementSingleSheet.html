@@ -71,7 +71,7 @@
                         <div class="next {{arrivalClass[room.reservation_status]}}">
                             <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {arrival-time} can only be time -->
-                            <span>{{room.checkin_time}}</span>
+                            <span ng-show="arrivalClass[room.reservation_status] == 'check-in'">{{room.checkin_time}}</span>
                         </div>
 
                     </div>
@@ -126,7 +126,7 @@
                             <div class="next {{arrivalClass[room.reservation_status]}}">
                                 <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {arrival-time} can only be time -->
-                                <span>{{room.checkin_time}}</span>
+                                <span ng-show = "arrivalClass[room.reservation_status] == 'check-in'">{{room.checkin_time}}</span>
                             </div>
                         </div>
                          <!-- If VIP guest  -->

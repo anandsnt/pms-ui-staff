@@ -21,9 +21,9 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Departed": "check-out",
 			"STAYOVER": "inhouse",
 			"Not Reserved": "no-show",
-			"Not Defined": "no-show",
 			"Arrival": "check-in",
-			"Arrived": "check-in"
+			"Arrived": "check-in",
+			"Not Defined": "no-show"
 		}
 
 		$scope.arrivalClass = {
@@ -50,7 +50,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			window.print();
 		}
 
-		$scope.addDuration= function(augend, addend) {
+		$scope.addDuration = function(augend, addend) {
 			if (!addend) {
 				return augend;
 			}
