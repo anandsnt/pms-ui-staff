@@ -10418,21 +10418,21 @@
             .calc-width(100, 120);
 
             /* TEMP - NATIVE SCROLL ENABLED START */
-            .wrapper { 
-                overflow: auto;
-                -webkit-overflow-scrolling: touch;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
 
-                &::-webkit-scrollbar{ 
-                  margin-right: 5px;
-                  width: 5px; 
-                }
-                &::-webkit-scrollbar-track{ background: transparent; }
-                &::-webkit-scrollbar-thumb{
-                  background: @logoGradientStart;
-                  #border-radius > .rounded(5px);
-                }
-                &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+            &::-webkit-scrollbar{ 
+              margin-right: 5px;
+              width: 5px; 
+              height: 5px;
             }
+            &::-webkit-scrollbar-track{ background: transparent; }
+            &::-webkit-scrollbar-thumb{
+              background: @logoGradientStart;
+              #border-radius > .rounded(5px);
+            }
+            &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+            
             /* TEMP - NATIVE SCROLL ENABLED END */
 
             > .iScrollVerticalScrollbar { .hide; }
@@ -10643,7 +10643,7 @@
                             &.available { padding: 0 10px; }
 
                             &.occupied { 
-                                padding-left: 40px; 
+                                text-indent: 30px; 
 
                                 &:after {
                                     top: 15px;
@@ -10717,7 +10717,7 @@
                             &.available { padding: 0 5px; }
 
                             &.occupied {
-                                padding-left: 30px;
+                                text-indent: 20px;
 
                                 &:after {
                                     top: 0;
