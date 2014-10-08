@@ -227,7 +227,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			// room.leaveStatusClass is for first arrow. can be red(check-out), blue(inhouse) or gray(no-show)
 			// room.enterStatusClass is for second arrow. can be green(check-in) or gray(no-show)
 			switch(room.room_reservation_status) {
-				case 'Due Out':
+				case 'Due out':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'no-show';
 					break;
@@ -277,7 +277,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					room.enterStatusClass = 'check-out';
 					break;
 
-				case 'Arrived / Day Use / Due Out / Departed':
+				case 'Arrived / Day Use / Due out / Departed':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'check-out';
 					break;
