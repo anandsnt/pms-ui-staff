@@ -465,11 +465,14 @@ sntRover
 	}
 
 	function clearNewReservations(data) {
-		var hop = Object.prototype.hasOwnProperty;
+		var hop = Object.prototype.hasOwnProperty,
+			topOfStack;
 
 		data.forEach(function(item) {
 			if(_.isArray(item.reservations)) {
-				if(hop.call(_.last(item.reservations), 'temporary')) {
+				topOfStack = _.last(item.reservations);
+
+				if(topOfStack && hop.call(topOfStack, 'temporary')) {
 					item.reservations.pop();
 				}
 			}
