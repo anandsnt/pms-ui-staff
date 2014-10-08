@@ -1,9 +1,8 @@
 var GridRow = React.createClass({
 	getInitialState: function() {
 		return {
-			x_rel_load_tigger_right: undefined,
-			x_rel_load_trigger_left: undefined,
-			data: this.props.data
+			data: this.props.data,
+			currentDragItem: this.props.currentDragItem
 		};
 	},
 	render: function() {
@@ -32,6 +31,7 @@ var GridRow = React.createClass({
 				className: 	'occupancy-block',
 				display: 	self.props.display,
 				data: 		reservation,
+				room:       self.state.data, 
 				row_offset: self.props.row_number * self.props.display.row_height,
 				__onDragStart:  self.props.__onDragStart,
 				__onDragStop: self.props.__onDragStop,

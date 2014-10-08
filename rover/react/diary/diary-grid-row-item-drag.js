@@ -23,14 +23,15 @@ var GridRowItemDrag = React.createClass({
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y, 
 			distance = Math.abs(delta_x) + Math.abs(delta_y),
-			left, top, margin_top = this.props.display.row_height + 11;
+			left, top, margin_top = this.props.display.row_height + 6;
 
 		if(!this.state.dragging &&
 		   distance > 3) {
 			this.setState({
 				dragging: true
+			}, function() {
+				this.props.__onDragStart(this.props.room, this.props.__dragData.data);
 			});
-			this.props.__onDragStart(this.props.__dragData.data);
 		} else if(this.state.dragging) {
 			left = this.state.element_x + delta_x - $('.diary-grid .wrapper')[0].scrollLeft;
 			top = this.state.element_y + delta_y - $('.diary-grid .wrapper')[0].scrollTop - this.state.offset_y;
@@ -46,9 +47,10 @@ var GridRowItemDrag = React.createClass({
 		document.removeEventListener('mousemove', this.__onMouseMove);
 
 		if(this.state.dragging) {
-			this.props.__onDragStop();
 			this.setState({
 				dragging: false
+			}, function() {
+				this.props.__onDragStop(e);
 			});
 		}
 	},

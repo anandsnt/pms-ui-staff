@@ -386,37 +386,39 @@ sntRover
 		}
     };
 
-	$scope.room_types = _.uniq(_.pluck($scope.data));
+	$scope.room_types = _.uniq(_.pluck($scope.data, 'room_type'));
 
-    /*React callbacks for grid events*/
-    $scope.onDragStart = function(component, data, event) {
+	(function() {    /*React callbacks for grid events*/
+		var prevRoom;
 
-    	$scope.apply();
-    };
+	    $scope.onDragStart = function(room, reservation) {
+	    	prevRoom = room;
 
-    $scope.onDragEnd = function(component, data, event) {
+	    	console.log('Reservation room transfer initiated:  ', room, reservation);
+	    };
 
-		$scope.apply();
-    };
+	    $scope.onDragEnd = function(nextRoom, reservation) {
+	    	console.log('New Room for reservation confirmed:  ', nextRoom, reservation);
 
+	    	reservationRoomTransfer(nextRoom, prevRoom, reservation);
+
+	    	renderGrid();
+	    };
+	})();
     $scope.onResizeStart = function(component, data, event) {
 
-    	$scope.apply();
     };
 
     $scope.onResizeEnd = function(component, data, event) {
 
-    	$scope.apply();
     };
 
     $scope.onScrollLoadTriggerRight = function(component, data, event) {
 
-    	$scope.apply();
     };
 
     $scope.onScrollLoadTriggerLeft = function(component) {
-
-		$scope.apply();
+		
     };
        
 	$scope.onUpdate = function() {
@@ -424,21 +426,39 @@ sntRover
 		injectNewReservations(Time({ hours: $scope.new_reservation_time_span }),
 							  $scope.filter,
 							  $scope.data);
+
+		renderGrid();
+	};
+
+	function renderGrid() {
 		React.renderComponent(
 			DiaryContent({
 				scope: $scope
 			}),
 			document.getElementById('component-wrapper')
-		);
-	};
+		);		
+	}
+
+	function reservationRoomTransfer(nextRoom, room, reservation) {
+		nextRoom.reservations = nextRoom.reservations || [];
+		nextRoom.reservations.push(removeReservation(room, reservation));
+	}
+
+	function findRoom(room) {
+		return _.findWhere($scope.data, { id: room.id });
+	}
+
+	function removeReservation(room, reservation) {
+		var res = _.findWhere(room.reservations, { id: reservation.id });
+		
+		room.reservations.splice(_.indexOf(room.reservations, res), 1);
+
+		return res;
+	}
 
 	function getMaxId(max, data, idx) {
 		if(idx < data.length) {
-			if(max < data[idx].id) {
-				return getMaxId(data[idx].id, data, ++idx);
-			} else if(idx < data.length) {
-				return getMaxId(max, data, ++idx);
-			}
+			return getMaxId(max < data[idx] ? data[idx] : max, data, ++idx);
 		} else {
 			return max;
 		}
@@ -477,7 +497,7 @@ sntRover
 			start = new Date(start_date.getFullYear(),
 							 start_date.getMonth(),
 							 start_date.getDate(),
-							 start_time.charAt(0),
+							 parseInt(start_time.charAt(0)),
 							 0, 0, 0),
 			end = new Date(start.getFullYear(),
 						   start.getMonth(),

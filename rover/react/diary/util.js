@@ -61,7 +61,7 @@ if(typeof Date.prototype.toComponents === 'undefined') {
 				day: this.getDate(),
 				weekday: __DAYS[this.getDay()],
 				month: this.getMonth(),
-				monthName: __MONTHS[this.getMonth() + 1],
+				monthName: __MONTHS[this.getMonth()],
 				year: this.getFullYear()
 			},
 			time: {

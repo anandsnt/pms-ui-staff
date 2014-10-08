@@ -16,14 +16,28 @@ var Grid = React.createClass({
 	_filterRowsByEndTime: function(end_time) {
 
 	},
-	__onDragStart: function(item) {
+	__onDragStart: function(room, reservation) {
+		var self = this;
+
 		this.setState({
-			currentDragItem: item
+			currentDragItem: reservation
+		}, function() {
+			self.props.angular_evt.onDragStart(room, reservation);
 		});
 	},
-	__onDragStop: function() {
+	__onDragStop: function(e) {
+		var rowHeight = this.props.display.row_height + 6,
+			viewport = $('.diary-grid .wrapper'),
+			curPos = viewport[0].scrollTop + e.pageY - viewport.offset().top,
+			rowNumber = Math.floor(curPos / rowHeight),
+			room = this.state.data[rowNumber],
+			reservation = this.state.currentDragItem,
+			self = this;
+
 		this.setState({
 			currentDragItem: undefined
+		}, function() {
+			self.props.angular_evt.onDragEnd(room, reservation);
 		});
 	},
 	__onDrop: function(target_row) {
@@ -58,6 +72,7 @@ var Grid = React.createClass({
 						key: row.key,
 						data: row,
 						row_number: idx,
+						ref: 'row',
 						className: 'grid-row',
 						display: self.props.display,
 						filter: self.props.filter,

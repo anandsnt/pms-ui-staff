@@ -41,6 +41,7 @@ var GridRowItem = React.createClass({
 			display: props.display,
 			key: props.data.key,
 			className: props.className,
+			room: props.room,
 			ref: 'item',
 			style: {
 				left: (state.start_time_ms - x_axis_origin) * px_per_ms + 'px', 
