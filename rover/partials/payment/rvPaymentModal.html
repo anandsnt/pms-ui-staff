@@ -9,9 +9,9 @@
 	    <div class="select">
 
 	    	<select ng-disabled="shouldShowDisabled" ng-model="saveData.selected_payment_type" class="placeholder" ng-change="renderPaymentValues()">
-				<option value="" translate> SELECT_PAYMENT_TYPE </option>
-
-				<option ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
+				<option value="null" ng-selected="{{saveData.selected_payment_type=='null'}}" translate> SELECT_PAYMENT_TYPE </option>
+				<option ng-if="isStandAlone && paymenttype.name !== 'DB'" ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
+				<option ng-if="!isStandAlone && paymenttype.name === 'CC'"  ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{paymenttype.name == 'CC'}}" >{{paymenttype.description}}</option>
 			</select>
 	    	
 	
