@@ -678,18 +678,18 @@
             margin: 0;           
 
             a {
-            color: @textColor;
-            line-height: 1em;
+                color: @textColor;
+                line-height: 1em;
                 padding: 10px;
                 background-color: @white;
                 overflow: hidden;
                 .box-shadow(inset 0 1px 1px rgba(0,0,0,.1));
                 .show;
                 .float;
-            
-            .data {
+
+                .data {
                     margin-right: 10px;
-                overflow: hidden;
+                    overflow: hidden;
                     .show;
                     .pull-left;
 
@@ -697,7 +697,7 @@
                         font-weight: 700;
                         white-space: nowrap;
                         overflow: hidden;
-                text-overflow: ellipsis;
+                        text-overflow: ellipsis;
                     }
                 }
 
@@ -1012,7 +1012,7 @@
                             line-height: 40px;
                             width: 140px;
                             .show;
-                .pull-left;
+                            .pull-left;
 
                             .completed { color: @grey3; }
                         }
@@ -1042,110 +1042,112 @@
                         .data { 
                             .calc-width(63, 40); 
 
-                h2 {
-                    font-size: 24px;
-                    line-height: 24px;
-                    margin-bottom: 10px;
-                }
+                            h2 {
+                                font-size: 24px;
+                                line-height: 24px;
+                                margin-bottom: 10px;
+                            }
 
-                span:not(.highlight),
-                em {
-                    display: inline;
-                    height: 20px;
-                    margin-right: 30px;
-                    overflow: hidden;
+                            span:not(.highlight),
+                            em {
+                                display: inline;
+                                height: 20px;
+                                margin-right: 30px;
+                                overflow: hidden;
 
-                    &.confirmation { font-weight: 600; }
+                                &.confirmation { font-weight: 600; }
 
-                    &.icon-location,
-                    &.icon-phone,
-                    &.icon-group,
-                    &.icon-email-grey {
-                        color: @grey3;
-                        padding-left: 20px; 
-                    }
-                }
-            }
+                                &.icon-location,
+                                &.icon-phone,
+                                &.icon-group,
+                                &.icon-email-grey {
+                                    color: @grey3;
+                                    padding-left: 20px; 
+                                }
+                            }
+                        }
 
-            .status {
-                width: 80px;
+                        .status {
+                            width: 80px;
 
-                .guest-status {
-                    margin-top: 10px;
-                    .square(30px);
-                }
+                            .guest-status { 
+                                margin-top: 10px;  
+                                .square(30px);
+                            }
 
-                .pre-checkin-time,
-                .late-checkout-time {
-                    font-weight: 600;
-                    line-height: 50px;
-                    text-transform: uppercase;
-                    margin-left: -80px;
+                            .pre-checkin-time,
+                            .late-checkout-time {
+                                font-weight: 600;
+                                line-height: 50px;
+                                text-transform: uppercase;
+                                margin-left: -80px;
                                 .show;
-                    .pull-left;
-                }
+                                .pull-left;
+                            }
 
-                &.queued {
-                    .icons;
-                    .icons > .icon-queued;
-                }
-            }
+                            &.queued {
+                                background-image: @icons;
+                                background-repeat: no-repeat;
+                                border: 0;
+                                .icons > .icon-queued;
+                            }
+                        }
 
-            .room-number {
-                margin: 7px 20px;
+                        .room-number {
+                            margin: 7px 20px;
                             .show;
-                .pull-left;
+                            .pull-left;
 
-                .highlight { 
-                    display: inline-block;
-                    margin-left: -10px;
-                    padding-left: 10px;
-                    border-left: 4px solid @logoPrimary;
-                }
-            }
+                            .highlight { 
+                                display: inline-block;
+                                margin-left: -10px;
+                                padding-left: 10px;
+                                border-left: 4px solid @logoPrimary;
+                            }
+                        }
 
-            .room-status {
-                line-height: 50px;
-                vertical-align: middle;
+                        .room-status {
+                            line-height: 50px;
+                            vertical-align: middle;
                             .show;
-                .pull-left;
-            }
+                            .pull-left;
+                        }
 
-            .stays {
-                overflow: hidden;
-                text-overflow: ellipsis;
+                        .stays {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                             .show;
-                .pull-left;
+                            .pull-left;
 
-                .count,
-                .last-stay {
-                    font-size: 24px;
-                    line-height: 22px;
-                    font-weight: 600;
-                    
-                    .label { 
-                        display: inline-block;
-                        font-weight: 14px;
-                        line-height: 24px;
-                        margin: 0 20px 0 0;
-                        font-weight: 400;
-                    }
+                            .count,
+                            .last-stay {
+                                font-size: 24px;
+                                line-height: 22px;
+                                font-weight: 600;
+                                
+                                .label { 
+                                    display: inline-block;
+                                    font-weight: 14px;
+                                    line-height: 24px;
+                                    margin: 0 20px 0 0;
+                                    font-weight: 400;
+                                }
 
-                    &.last-stay {
-                        font-size: 18px;
-                        font-weight: 400;
-                        margin-top: 6px;
+                                &.last-stay {
+                                    font-size: 18px;
+                                    font-weight: 400;
+                                    margin-top: 6px;
 
-                        strong { 
-                            font-size: 24px; 
-                            font-weight: 600;
-                            margin: 0 10px 0 20px;
+                                    strong { 
+                                        font-size: 24px; 
+                                        font-weight: 600;
+                                        margin: 0 10px 0 20px;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-            }
-                }
-            }
 
                 &.room {
                     a {
@@ -1169,22 +1171,22 @@
                                 text-transform: uppercase;
                                 font-weight: 600;
                                 .pull-left;
-                }
+                            }
 
                             .unassigned { color: @grey2; }
                             .service-status { color: @grey3; }
-            }
+                        }
 
                         &.with-image {
                             .reservation-status { .calc-width(35, 10); }
 
-                .guest-image {
+                            .guest-image {
                                 top: 10px;
                                 right: 10px;
-                    }
+                            }
                         }
                     }
-                    }
+                }
 
                 &.card {
                     a {
@@ -1194,11 +1196,11 @@
 
                 &.employee {
                     a {
-                .data {
+                        .data {
                             .calc-width(100, 700);
 
                             h2 { font-size: 24px; }
-                    }
+                        }
 
                         .stayovers,
                         .departures {
@@ -1216,7 +1218,7 @@
                                 font-weight: 400;
                                 margin-right: 5px;
                                 vertical-align: middle;
-                }
+                            }
                         }
 
                         .stayovers { color: @blue; }
@@ -2271,44 +2273,44 @@
                             .search-results {
                                 li:not(.no-content) {
                                       a {
-                                    .data,
-                                    .stays { .calc-width(50, 60); }
+                                        .data,
+                                        .stays { .calc-width(50, 60); }
 
-                                    &.card-result {
-                                        .data { 
-                                            margin-right: 0;
-                                            .calc-width(100, 70);
+                                        &.card-result {
+                                            .data { 
+                                                margin-right: 0;
+                                                .calc-width(100, 70);
 
-                                            .info {
-                                                height: 40px;
-                                                .float;
+                                                .info {
+                                                    height: 40px;
+                                                    .float;
 
-                                                h2 {
-                                                    line-height: 1em;
-                                                    margin-right: 40px;
-                                                    .pull-left;
-                                                }
-
-                                                .rate { 
-                                                    font-size: 24px;
-                                                    line-height: 1em;
-                                                    font-weight: 600;
-                                                    .pull-left;
-                                                    
-                                                    .label { 
-                                                        display: inline-block;
-                                                        font-weight: 14px;
-                                                        line-height: 24px;
-                                                        margin: 0 10px 0 0;
-                                                        font-weight: 400;
+                                                    h2 {
+                                                        line-height: 1em;
+                                                        margin-right: 40px;
+                                                        .pull-left;
                                                     }
 
+                                                    .rate { 
+                                                        font-size: 24px;
+                                                        line-height: 1em;
+                                                        font-weight: 600;
+                                                        .pull-left;
+                                                        
+                                                        .label { 
+                                                            display: inline-block;
+                                                            font-weight: 14px;
+                                                            line-height: 24px;
+                                                            margin: 0 10px 0 0;
+                                                            font-weight: 400;
+                                                        }
+
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
                             }
 
                             &.no-content { 
@@ -5882,7 +5884,7 @@
             .configure-report {
                 background-color: @grey1;
                 margin: 0 15px 15px 15px;
-                    padding: 15px;
+                padding: 15px;
                 overflow: hidden;
                 #border-radius > .rounded();
                 .box-shadow();
@@ -6179,7 +6181,7 @@
                     }
                 }
 
-                .button {
+                .button {                    
                     margin-right: 5px;
                     .square(40px);
                     .pull-left;
@@ -6249,8 +6251,8 @@
                 &.right-align {
                     text-align: right;
                 }*/
-                }
             }
+        }
 
         .report-content {
             position: relative;
@@ -6277,7 +6279,7 @@
                         padding: 0 10px;
                         font-weight: 600;
                         min-width: 15%;
-            max-width: 30%;
+                        max-width: 30%;
                         &.align-right { text-align: right; }
                     }
 
@@ -6814,19 +6816,14 @@
             }
 
             &#actions {
+                text-align: center;
                 margin-bottom: 0;
-                .float;
 
                 .button {
                     font-size: 24px;
                     line-height: 70px;
-                    .show;
                     #pixel-to-percent > .width(585, 1210);
-                    .pull-left;
-
-                    &.blue { #pixel-to-percent > .right-margin(40, 1210); }
                 }
-
             }
         }
     }
@@ -9608,15 +9605,19 @@
                         .no-transition;
 
                         &.green { 
-                            .icons;
-                            .icons > .icon-assign-room;
+                            background-image: @icons;
                             background-color: @green; 
+                            background-repeat: no-repeat;
+                            border: 0;
+                            .icons > .icon-assign-room;
                         }
                         
                         &.red { 
-                            .icons;
-                            .icons > .icon-unassign-room;
+                            background-image: @icons;
                             background-color: @red; 
+                            background-repeat: no-repeat;
+                            border: 0;
+                            .icons > .icon-unassign-room;
                         }
                         
                         &.no-action { background: @grey2; }
@@ -9898,7 +9899,7 @@
             }
         }
     }
-
+    
 /* Room Diary                ==============================*/
 .diary-content {
     

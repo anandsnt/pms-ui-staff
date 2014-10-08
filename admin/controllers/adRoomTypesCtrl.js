@@ -1,4 +1,4 @@
-admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$timeout', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter,$timeout){
+admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTableParams','$filter','$anchorScroll', '$timeout', '$location', function($scope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -31,7 +31,6 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		                                $scope.data.room_types;
 		                              
 		            $scope.orderedData =  orderedData;
-		            // console.log($scope.orderedData);
 		                       
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
@@ -160,15 +159,19 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		//reset data
 		$scope.roomTypeData = {
-				"room_type_id": "",
-				"room_type_code": "",
-				"room_type_name": "",
-				"snt_description": "",
-				"max_occupancy": "",
-				"is_pseudo_room_type": "",
-				"is_suite": "",
-				"image_of_room_type": " "
-			}	
+			"room_type_id": "",
+			"room_type_code": "",
+			"room_type_name": "",
+			"snt_description": "",
+			"max_occupancy": "",
+			"is_pseudo_room_type": "",
+			"is_suite": "",
+			"image_of_room_type": " "
+		};
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});	
 	};
 	$scope.sortByName = function(){
 		if($scope.currentClickedElement == -1)

@@ -23,7 +23,7 @@
 			<div class="row checkin-wrapper-top">
 				<div class="pad-rt-60 pre-checkin-container-padding">
 					<div class="reservation-id centeralign">
-						<span class="res-conf-no grey-text">RESERVATION #{{reservationID}}</span>
+						<span class="res-conf-no grey-text">RESERVATION #{{tripDetails.confirm_no}}</span>
 					</div>
 					<div class="chekin-heading centeralign blue-text">
 						Your Trip Details
@@ -79,7 +79,7 @@
 								</div>
 							</div>
 							<div class="room_details grey-text">
-								{{currencySymbol}}{{tripDetails.rate_amount}}
+								{{currencySymbol}}{{tripDetails.rate_amount | number:2}}
 							</div>
 						</div>
 					</div>					

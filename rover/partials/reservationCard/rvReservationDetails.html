@@ -10,10 +10,10 @@
 			{{reservationData.reservation_card.departure_date|date:dateFormat}} </span>
 		</div>
 		<div class="actions">
-			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'PRE_CHECKIN')" class="button times check-in toggle">
+			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
 				<span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
 			</a>
-			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.departure_time ,'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT'|| reservationData.reservation_card.reservation_status == 'PRE_CHECKIN')" class="button times check-out toggle">
+			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.departure_time ,'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="button times check-out toggle">
 				<span class="icons time check-out"></span>{{reservationData.reservation_card.departure_time ? reservationData.reservation_card.departure_time : 'NOT SET' }}
 			</a>
 			<a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.late_checkout_time ,'active': shouldShowTimeDetails}"  ng-if="reservationData.reservation_card.is_opted_late_checkout" class="button times late-check-out toggle">

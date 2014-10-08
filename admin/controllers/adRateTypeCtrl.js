@@ -1,5 +1,5 @@
-admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv',
-function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
+admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv', '$anchorScroll', '$timeout', '$location',
+function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout, $location) {
 	$scope.halfwayPoint = 0;
 
 	$scope.errorMessage = '';
@@ -26,6 +26,10 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		$scope.rateTypeData = {};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
 
 	/**

@@ -269,15 +269,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	/*
 	* function used in template to map the reservation status to the view expected format
 	*/
-	$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
+	$scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn,isPrechin){
 	  var viewStatus = "";
       if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
         viewStatus = "late-check-out";
         return viewStatus;
       }
-      if("RESERVED" == reservationStatus){
+      if("RESERVED" == reservationStatus && !isPrechin){
         viewStatus = "arrival";
-      }else if("CHECKING_IN" == reservationStatus){
+      }else if("CHECKING_IN" == reservationStatus && !isPrechin){
         viewStatus = "check-in";
       }else if("CHECKEDIN" == reservationStatus){
         viewStatus = "inhouse";
@@ -290,7 +290,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
       }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
         viewStatus = "no-show";
       }
-      else if("PRE_CHECKIN" == reservationStatus){
+      else if(isPrechin){
       	viewStatus = "pre-check-in";
       }
       return viewStatus;

@@ -1,5 +1,5 @@
 body {
-background: none !important;
+	background: none !important;
 }
 
 .room-number-message{
@@ -12,12 +12,19 @@ background: none !important;
 .cabin_number_field{
 	width:85% !important;	
 	text-align: left !important;
+
+	p{
+		margin-bottom: 0;
+	}
 }
 
 .blue-bg{
 	background:#2EAEEF !important;	
 }
 
+.with-back-btn span{
+	float:none !important;
+}
 
 .blue-text{
 	color:#2EAEEF !important;	
@@ -33,7 +40,7 @@ background: none !important;
 .black-text,.guest-room-description,.balance{
 	color:#000 !important;	
 }
-.checkout-status,.grey-text,.lightcontent,.headtext,.base-text,.white-alert-link-tag{
+.checkout-status,.grey-text,.lightcontent,.headtext,.base-text,.white-alert-link-tag,a, a:hover{
 	color:#787878 !important;
 }
 
@@ -51,7 +58,7 @@ background: none !important;
 }
 
 .margin-10{
-	 margin: 10% 0 !important;
+	margin: 10% 0 !important;
 }
 .room-verification-continue{
 	min-width:85% !important;	
@@ -59,17 +66,17 @@ background: none !important;
 
 
 .checkouttime1 {
-background: #97defa;
+	background: #97defa;
 
 }
 
 .checkouttime2 {
-background: #64cef6;
+	background: #64cef6;
 
 }
 
 .checkouttime3 {
-background: #0aadf0;
+	background: #0aadf0;
 
 }
 
@@ -87,7 +94,10 @@ background: #0aadf0;
     font-size: 28px !important;
     margin:10%;
 }
-
+.room-text{
+	font-size:15px !important;
+	margin:20px 0 !important;
+}
 
 .row .reservation-dates{
 	color:#787878 !important;
@@ -179,6 +189,7 @@ background: #0aadf0;
 		padding:5px !important;
 	}
 
+
 	.pre-checkin-button{
 	    margin-top:5px !important;
 	}
@@ -197,4 +208,65 @@ background: #0aadf0;
 			padding:0%;
 		}
 	}
+
+	.pre-checkin-complete{
+		padding:8% 0 !important
+	}
+
+	.jumbotron .check-inout-wrapper,.jumbotron .checkin-wrapper{
+		border-bottom: 1px solid #656565 !important;
+	    border-top: 1px solid #656565 !important;
+	}
+	.jumbotron .checkin-wrapper{
+		margin:15px 0 !important;
+		max-width: 100% !important;
+	}
+	
 }
+.payment{
+	p{
+	margin-bottom:0;
+	}
+}
+.checkout-late-sucess a:hover{
+
+	color:#fff !important;
+	
+	}
+
+/* Desktop */
+
+@media (min-width: 990px){
+	
+	.cabin-number-main-heading-seperator{
+		display:block !important;
+	}
+
+	.chekout-time{
+		font-size: 21px !important;
+	}
+	.continue-button{
+		margin-top: 10%;
+	}
+	.check-inout-wrapper{
+		.leadtext{
+			width: 430px; 
+			margin-left: 100px;
+		}
+	}
+	.no-thanks-text{
+		font-size: 22px;
+	}
+	.latecheckout-charged{
+		margin-top: 20px;
+	}
+	.accept-charges-button.single .rel-wrapper {
+    	padding: 27px 75px 30px;
+  	}
+	.margin-top-60{
+		margin-top:60px;
+	}
+
+
+}
+

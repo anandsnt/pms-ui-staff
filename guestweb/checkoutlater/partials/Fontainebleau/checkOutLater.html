@@ -2,7 +2,21 @@
 	<div class="container backgroundbg">
 		<div class="container-fluid">
 			<div class="row headerrow">
-				<logo-image-back></logo-image-back>
+				<div class="header">
+					<div class="container">
+						<div class="row pos-relative">
+							<div class="backbtn" ng-show="showBackButtonImage">
+								<a ui-sref="checkOutOptions" class="with-back-btn">
+									<img src="/assets/img/back-btn-black.png">
+									<span class="checkout-later-back-button">back</span>
+								</a>
+							</div>
+							<div class="logo-bg">
+								<img alt="" class="img-responsive img-center logoImage" src="{{hotelLogo}}" style="margin-top: 20px;">
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- show posting message -->
@@ -27,7 +41,7 @@
 				</div>
 
 				<!-- checkoubtn section starts here-->
-				<div class="col-md-6 no-padding top-margin now-later-options" ng-show="optionsAvailable">
+				<div class="col-md-6 no-padding now-later-options" ng-show="optionsAvailable">
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
 						
