@@ -185,6 +185,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.showExistingAndAddNewPayments = true;
 			$scope.showExistingGuestPayments = true;
 			$scope.showOnlyAddCard = false;
+			$scope.refreshScroller('cardsList');
 		} else {
 			$scope.showOnlyAddCard = true;
 			$scope.showAddNewCreditCard();
@@ -237,6 +238,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.showExistingAndAddNewPayments = true;
 		$scope.showInitalPaymentScreen = false;
 		$scope.showAddNewPaymentScreen = false;
+		$scope.refreshScroller('cardsList');
 	};
 	/*
 	 * To add new card to the bill - either swipe or manual
@@ -420,8 +422,5 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
 	};
-	// On "showExistingAndAddNewPayments" refresh the scroll.
-	$scope.$watch("showExistingAndAddNewPayments", function () {
-        $scope.refreshScroller('cardsList');
-    });
+	
 }]);
