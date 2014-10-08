@@ -223,18 +223,41 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
 		this.setReservationStatusClass = function(room){
-			if ( room.room_reservation_status == 'Due Out' || room.room_reservation_status == 'Departed' ) {
-				room.leaveStatusClass = 'check-out';
-			} else if ( room.room_reservation_status == 'STAYOVER' ) {
-				room.leaveStatusClass = 'inhouse';
-			} else {
-				room.leaveStatusClass = 'no-show';
-			}
+			switch(room.room_reservation_status) {
+				case 'Due Out':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
 
-			if ( room.room_reservation_status == 'Arrival' || room.room_reservation_status == 'Arrived' ) {
-				room.enterStatusClass = 'check-in';
-			} else {
-				room.enterStatusClass = 'no-show';
+				case 'Stayover':
+					room.leaveStatusClass = 'inhouse';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Arrival':
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Arrived':
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Due out / Arrival':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				default:
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'no-show';
+					break;
 			}
 		};
 
