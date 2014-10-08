@@ -200,8 +200,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
 					return 'pickup';
 				}
-			}
-			else {
+			} else {
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
 					return 'clean';
 				}
@@ -213,6 +212,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			if( (room.hk_status.value == 'DIRTY') && !room.is_occupied ) {
 				return 'dirty';
 			}
+
 			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ) {
 				return 'out';
 			}
@@ -228,59 +228,45 @@ sntRover.service('RVHkRoomStatusSrv', [
 			// room.enterStatusClass is for second arrow. can be green(check-in) or gray(no-show)
 			switch(room.room_reservation_status) {
 				case 'Due Out':
+				case 'Departed':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'no-show';
 					break;
+
+				/* ***** * ***** */
 
 				case 'Stayover':
 					room.leaveStatusClass = 'inhouse';
 					room.enterStatusClass = 'no-show';
 					break;
 
-				case 'Departed':
-					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'no-show';
-					break;
+				/* ***** * ***** */
 
 				case 'Arrival':
-					room.leaveStatusClass = 'no-show';
-					room.enterStatusClass = 'check-in';
-					break;
-
 				case 'Arrived':
 					room.leaveStatusClass = 'no-show';
 					room.enterStatusClass = 'check-in';
 					break;
 
+				/* ***** * ***** */
+
 				case 'Due out / Arrival':
-					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'check-in';
-					break;
-
 				case 'Departed / Arrival':
-					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'check-in';
-					break;
-
 				case 'Arrived / Departed':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'check-in';
 					break;
 
+				/* ***** * ***** */
+
 				case 'Due out / Departed':
-					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'no-show';
-					break;
-
 				case 'Arrived / Day use / Due out':
-					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'no-show';
-					break;
-
 				case 'Arrived / Day Use / Due Out / Departed':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'no-show';
 					break;
+
+				/* ***** * ***** */
 
 				default:
 					room.leaveStatusClass = 'no-show';

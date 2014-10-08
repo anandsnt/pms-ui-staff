@@ -78,14 +78,14 @@
             </div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
-          <div class="additional-info" bo-if="isStandAlone">
+          <div class="additional-info">
             <!-- Show only if room is assigned -->   <!-- if the room is departed or stayover -->         
-            <span bo-if="room.assignee_maid" class="assigned" bo-text="room.assignee_maid"></span>
-            <span bo-if="!room.assignee_maid && (room.room_reservation_status == 'Departed' || room.room_reservation_status == 'STAYOVER')" class="unassigned">Unassigned</span>
+            <span bo-if="isStandAlone && room.assignee_maid" class="assigned" bo-text="room.assignee_maid"></span>
+            <span bo-if="isStandAlone && !room.assignee_maid && (room.room_reservation_status == 'Departed' || room.room_reservation_status == 'STAYOVER')" class="unassigned">Unassigned</span>
             
             <!-- Show only if room is not in service -->
-            <span bo-if="room.room_reservation_hk_status == 2" class="service-status">Out of Service</span>
-            <span bo-if="room.room_reservation_hk_status == 3" class="service-status">Out of Order</span>
+            <span bo-if="room.room_reservation_hk_status == 2 || room.hk_status.value == 'OS'" class="service-status">Out of Service</span>
+            <span bo-if="room.room_reservation_hk_status == 3 || room.hk_status.value == 'OO'" class="service-status">Out of Order</span>
           </div>
           <!-- Show only if room is occupied -->
           <figure class="guest-image" bo-if="room.is_occupied">
