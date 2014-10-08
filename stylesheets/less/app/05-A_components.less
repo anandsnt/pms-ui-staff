@@ -10218,6 +10218,23 @@
             .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
             .calc-width(100, 120);
 
+
+                /* TEMP - NATIVE SCROLL ENABLED START */
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+
+                &::-webkit-scrollbar{ 
+                  margin-bottom: 5px;
+                  height: 5px; 
+                }
+                &::-webkit-scrollbar-track{ background: transparent; }
+                &::-webkit-scrollbar-thumb{
+                  background: @logoGradientStart;
+                  #border-radius > .rounded(5px);
+                }
+                &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+                /* TEMP - NATIVE SCROLL ENABLED END */
+
             .wrapper {
                 color: @white;
                 overflow: hidden;
@@ -10346,6 +10363,24 @@
             .calc-height(100, 90);
             .show; 
 
+            /* TEMP - NATIVE SCROLL ENABLED START */
+            .wrapper { 
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+
+                &::-webkit-scrollbar{ 
+                  margin-right: 5px;
+                  width: 5px; 
+                }
+                &::-webkit-scrollbar-track{ background: transparent; }
+                &::-webkit-scrollbar-thumb{
+                  background: @logoGradientStart;
+                  #border-radius > .rounded(5px);
+                }
+                &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+            }
+            /* TEMP - NATIVE SCROLL ENABLED END */
+
             > .iScrollVerticalScrollbar {
                 right: auto;
                 top: 0;
@@ -10381,6 +10416,24 @@
             z-index: 99;
             .calc-height(100, 90);
             .calc-width(100, 120);
+
+            /* TEMP - NATIVE SCROLL ENABLED START */
+            .wrapper { 
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+
+                &::-webkit-scrollbar{ 
+                  margin-right: 5px;
+                  width: 5px; 
+                }
+                &::-webkit-scrollbar-track{ background: transparent; }
+                &::-webkit-scrollbar-thumb{
+                  background: @logoGradientStart;
+                  #border-radius > .rounded(5px);
+                }
+                &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+            }
+            /* TEMP - NATIVE SCROLL ENABLED END */
 
             > .iScrollVerticalScrollbar { .hide; }
             > .iScrollHorizontalScrollbar { 
