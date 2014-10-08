@@ -71,7 +71,7 @@
 				<div id="available-cards"  data-is-existing-card="no" class="cards-list scrollable cards-list-height">
 					<div id="available-cards-wrapper" class="wrapper" >
 						<!-- Selected card -->
-						<label class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">
+						<a class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">
 							<figure class="card-logo">
 								<img src="/assets/{{existingPayments.card_code}}.png" alt="">
 							</figure> 
@@ -86,10 +86,7 @@
 									SELECTED
 								</span> 
 							</span> 
-						</label>
-					</div>
-					<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-						<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+						</a>
 					</div>
 				</div>
 			</div>
