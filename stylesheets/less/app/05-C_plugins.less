@@ -115,6 +115,32 @@
 				}
 			}
 		}
+
+		&.journal-print {
+            .ui-resizable-handle {
+                &.ui-resizable-s { 
+                    top: auto;
+                    bottom: -20px;
+                    font-size: 11px;
+                    line-height: 20px;
+                    text-align: center;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    color: @grey4;
+                    background: @rcardTexture2;
+                    
+                    &:before {
+                        content: "Print";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 99;
+                        .size(20px, 100%);
+                        .show;
+                    }
+                }
+            }
+        }
 	}
 
 /* jQuery UI datepicker		==============================*/
@@ -126,65 +152,58 @@
 
 /* jQuery UI autocomplete	==============================*/
 	.ui-autocomplete {
-		position: absolute;
-		top: 0;
-		left: 0;
-		cursor: default;
-		z-index: 99999;
-		
-		&.find-cards {
-			max-height: 240px;
-			width: auto !important;
-			.faux-clickable;
-			overflow-y: auto;
-			-webkit-overflow-scrolling: touch;
-		
-			li {
-				margin: 0;
-				.box-shadow(0 1px 2px rgba(0,0,0,.1));
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: default;
+        z-index: 99999;
+        .faux-clickable;
+        height: 240px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
 
-				a {
-					position: relative;
-					padding: 10px 20px 10px 50px;
-					font-size: 18px;
-					line-height: 30px;
-					font-weight: 600;
-					color: @textColor;
-					.show;
+        li {
+            margin: 0;
+            .box-shadow(0 1px 2px rgba(0,0,0,.1));
 
-					.highlight { color: @logoPrimary; }
+            a {
+                padding: 10px;
+                font-size: 18px;
+                line-height: 30px;
+                font-weight: 600;
+                color: @textColor;
+                .show;
 
-					img {
-						position: absolute;
-						top: 10px;
-						left: 10px;
-						.square(30px);
-						#border-radius > .rounded();
-					}
-				}
-			}
-		}
+                .highlight { color: @logoPrimary; }
+            }
+        }
+        
+        &.find-cards {
+            width: auto !important;
+        
+            li {
+                a {
+                    position: relative;
+                    padding: 10px 20px 10px 50px;
+                    font-size: 18px;
+                    line-height: 30px;
+                    font-weight: 600;
+                    color: @textColor;
+                    .show;
 
-		&.find-rate {
-			.faux-clickable;
+                    .highlight { color: @logoPrimary; }
 
-			li {
-				margin: 0;
-				.box-shadow(0 1px 2px rgba(0,0,0,.1));
-
-				a {
-					padding: 10px;
-					font-size: 18px;
-					line-height: 30px;
-					font-weight: 600;
-					color: @textColor;
-					.show;
-
-					.highlight { color: @logoPrimary; }
-				}
-			}
-		}
-	}
+                    img {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        .square(30px);
+                        #border-radius > .rounded();
+                    }
+                }
+            }
+        }
+    }
 
 	.ui-helper-hidden-accessible { .hide; }
 
@@ -794,7 +813,7 @@
 							.background(@white);
 							.box-shadow(0 0 2px rgba(0,0,0,.15));
 							#border-radius > .rounded(3px);
-							.transform3d(-50%, -50%, 0);
+							.translate3d(-50%, -50%, 0);
 						}
 
 						&.visible {
@@ -1421,6 +1440,199 @@
 					.credit-card { .show; }
 				}
 			}
+
+			/* Deposits / Balance ***/
+            &.deposit-balance {
+                padding: 0;
+                .size(640px, 920px);
+                .float;
+
+                .content-left,
+                .content-right {
+                    position: relative;
+                    overflow: hidden;
+                    height: 100%;
+                    .pull-left;
+                }
+
+                .content-left { 
+                    width: 50%;
+                    padding: 20px;
+                    background: rgba(0,0,0,.05);
+
+                    .expenses { 
+                        position: relative;
+                        padding-top: 20px;
+                        .calc-height(100, 80);
+
+                        li {
+                            color: @grey3;
+                            line-height: 30px;
+                            vertical-align: middle;
+                            padding-bottom: 5px;
+                            margin-bottom: 5px;
+                            text-transform: uppercase;
+                            width: 100%;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+
+                            span {
+                                font-size: 24px;
+                                font-weight: 300;
+                                line-height: 30px;
+                                color: @textColor;
+                                .show;
+                                .pull-right;
+                            }
+
+                            &.total {
+                                color: @textColor;
+                                span { font-weight: 600; }
+
+                                &.final { 
+                                    font-weight: 600; 
+                                    margin-bottom: 0;
+                                    padding-bottom: 0;
+                                    border-bottom: 0;
+                                }
+                            }
+
+                            &.deposit,
+                            &.balance {
+                                position: absolute;
+                                left: 0;
+                                
+                                span { 
+                                    font-size: 30px; 
+
+                                    &.green { color: @green; }
+                                    &.red { color: @red; }
+                                }
+
+                                &.deposit { bottom: 30px; }
+
+                                &.balance {
+                                    bottom: 0;
+                                    padding-bottom: 0;
+                                    margin-bottom: 0;
+                                    border-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .content-right {
+                    position: relative;
+                    width: 50%; 
+                    padding: 20px;
+                    .box-shadow(0 -2px 2px rgba(0,0,0,.3));
+
+                    .amount {
+                        float: none;
+                        clear: both;
+                        margin: 40px auto 0;
+                        width: 200px;
+
+                        &.full-width {
+                            width: 100%;
+                            text-align: center;
+                            margin: 0 0 20px 0;
+                            padding-bottom: 20px;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+
+                            input { width: 200px; }
+                        }
+                    }
+
+                    .select-card,
+                    .new-card {
+                        height: 280px;
+                        #fade > .in;
+                        .transition;
+
+                        &.hidden { #fade > .out; }
+                    }
+
+                    .select-card {
+                        .cards-list {
+                            position: relative;
+                            
+                            .wrapper { padding: 0 10px 0 0; }
+                            .iScrollVerticalScrollbar { 
+                                top: 0;
+                                bottom: 0;
+                                right: 0;
+                            }
+
+                            .active-item {
+                                position: relative;
+                                line-height: 50px;
+                                padding: 0 10px;
+                                .clickable;
+
+                                > span {
+                                    margin-right: 10px;
+
+                                    &.number { width: 150px; }
+                                    &.date { width: 100px; }
+                                    &.name { width: 220px; margin-right: 0; }
+
+                                    &.primary {
+                                        position: absolute;
+                                        top: 0;
+                                        right: 10px;
+                                        margin-right: 0;
+                                    }
+                                }
+
+                                .card-logo { margin-right: 10px; }
+                            }
+                        }
+                    }
+
+                    .new-card {
+                        .holder {
+                            .entry {
+                                width: 40%;
+
+                                input {
+                                    &:nth-of-type(2) { margin-left: 10px; }
+                                }
+
+                                &.margin {
+                                    margin-right: 40px;
+                                    .calc-width(60, 40);
+                                }
+
+                                &.full-width { 
+                                    margin: 0; 
+
+                                    .checkbox { margin-bottom: 0; }
+                                }
+                            }
+                        }   
+
+                        &.only-new { height: 335px; }
+                    }
+
+                    .actions {
+                        margin-top: 20px;
+                        text-align: center;
+                        .float;
+
+                        .button {
+                            display: inline-block;
+                            width: auto;
+                            padding: 0 40px;
+
+                            &.blank { 
+                                padding: 0 20px 0 0; 
+                                text-align: right; 
+                            }
+                        }
+                    }
+                }
+            }
 
 			/* Cancel reservation ***/
 			&.cancel-reservation {
@@ -2122,6 +2334,61 @@
 					&.blank { margin-bottom: 0; }
 				}
 			}
+
+			/* Terms & Conditions ***/
+            &.terms {
+                .size(600px, 480px);
+
+                .scrollable {
+                    position: relative;
+                    font-size: 14px;
+                    .size(480px, 100%);
+
+                    .wrapper { 
+                        padding-right: 40px; 
+
+                        br { margin-bottom: 20px; }
+                    }
+
+                    .iScrollVerticalScrollbar {
+                        top: 0;
+                        bottom: 0;
+                    }
+                }
+
+                .actions {
+                    margin-top: 20px;
+                    text-align: center;
+
+                    .button { 
+                        display: inline-block;
+                        width: auto;
+
+                        &.green { padding: 0 40px; }
+                    }
+                }
+            }
+
+            /* New Worksheet / Filter Rooms ***/
+            &.new-worksheet,
+            &.filter-rooms {
+                width: 320px;
+
+                .h2 { margin-bottom: 30px; }
+
+                .entry { 
+                    margin-bottom: 20px; 
+
+                    &.has-datepicker {
+                        .ui-datepicker-trigger { top: 0; }
+                    }
+                }
+
+                .actions {
+                    padding-top: 19px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                }
+            }
 		}
 	}
 
@@ -2317,208 +2584,247 @@
 				}
 			}
 
-			&.check-in { 
-				z-index: 990;
-				
-				.fc-event-inner {
-					cursor: pointer;
-					background: @green; 
+			&.check-in,
+            &.check-out,
+            &.check-in-unavailable,
+            &.check-out-unavailable {
+                .fc-event-inner {
+                    cursor: @draggable, pointer;
+                    cursor: @draggable 16 16, pointer;
 
-					.fc-event-day,
-					.fc-event-title { color: @white; }
-					.fc-event-title { 
-						background: @icons no-repeat 5px -115px; 
+                    .fc-event-day,
+                    .fc-event-title { color: @white; }
+                }
 
-						@media @highdpi {
-							background-image: @icons2x;
-							background-size: 120px;
-						}
-					}
-				}
-			}
+                &.ui-draggable-dragging {
+                    .fc-event-inner {
+                        cursor: @dragging, move;
+                        cursor: @dragging 16 16, move;
+                    }
+                }
+            }
 
-			&.check-out { 
-				z-index: 999;
+            &.check-in,
+            &.check-in-unavailable {
+                .fc-event-inner {
+                    background: @green; 
 
-				.fc-event-inner {
-					cursor: pointer;
-					background: @red; 
+                    .fc-event-title { 
+                        background: @icons no-repeat 5px -115px; 
 
-					.fc-event-day,
-					.fc-event-title { color: @white; }
-					.fc-event-title { 
-						text-indent: 9999px; 
-						background: @icons no-repeat 5px -155px; 
+                        @media @highdpi {
+                            background-image: @icons2x;
+                            background-size: 120px;
+                        }
+                    }
+                }
+            }
 
-						@media @highdpi {
-							background-image: @icons2x;
-							background-size: 120px;
-						}
-					}
-				}
-			}
+            &.check-out,
+            &.check-out-unavailable { 
+                .fc-event-inner {
+                    background: @red; 
 
-			&.mid-stay { 
-				.fc-event-inner {
-					position: relative;
-					background: rgba(137,189,85,.2);
-					
-					.fc-event-day,
-					.fc-event-title { color: @green; }
+                    .fc-event-title { 
+                        text-indent: 9999px; 
+                        background: @icons no-repeat 5px -155px; 
 
-					&:after {
-						content: "";
-						position: absolute;
-						top: 0;
-					    left: 0;
-					    bottom: 0;
-					    right: 0;
-    					z-index: -1;  
-						background-image: @textureImage;
-						background-repeat: repeat;
-						background-size: 40px;
-					}
-				}
-			}
+                        @media @highdpi {
+                            background-image: @icons2x;
+                            background-size: 120px;
+                        }
+                    }
+                }
+            }
 
-			&.type-available {
-				.fc-event-inner {
-					border: 3px solid @green;
-					.background();
+            &.check-in-unavailable,
+            &.check-out-unavailable { 
+                .fc-event-day,
+                .fc-event-title { .opacity(50); }
+            }
 
-					.fc-event-day { color: @textColor; }
-					.fc-event-title { color: @grey3; }
-				}
-			}
+            &.check-in-unavailable {
+                .fc-event-inner { background: lighten(@green, 15); }
+            }
 
-			&.house-unavailable {
-				.fc-event-inner {
-					.background();
+            &.check-out-unavailable { 
+                .fc-event-inner { background: lighten(@red, 15); }
+            }
 
-					.fc-event-day { color: @red; }
-					.fc-event-title { color: @red; }
+            &.mid-stay,
+            &.mid-stay-type-unavailable,
+            &.mid-stay-house-unavailable { 
+                .fc-event-inner {
+                    .background();
 
-					&:after {
-						content: ' ';
-					    position: absolute;
-					    left: 0;
-					    right: 0;
-					    top: 0;
-					    bottom: 0;
-					    background-color: rgba(230,56,56,.3);
-					}
-				}
-			}
+                    &:after {
+                        content: ' ';
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        background-color: rgba(137,189,85,.3);
+                    }
+                }
+            }
 
-			&.split-view {
-				
-				/* Vertical split
-				.fc-event-inner { width: 30px !important; }
-				&.check-in {
-					.fc-event-inner {
-						.fc-event-day { 
-							text-indent: 9999px; 
-							background: @icons no-repeat 7px -115px; 
+            &.mid-stay { 
+                .fc-event-inner {
+                    .fc-event-day,
+                    .fc-event-title { color: @green; }
+                }
+            }
 
-							@media @highdpi {
-								background-image: @icons2x;
-								background-size: 120px;
-							}
-						}
+            &.mid-stay-type-unavailable {
+                .fc-event-inner {
+                    .fc-event-day,
+                    .fc-event-title { color: rgba(0,0,0,.3); }
+                }
+            }
 
-						.fc-event-title { background: transparent; }
-					}
-				}
-				&.check-out {
-					margin: -50px 0 0 30px !important;
-				}  ***/
+            &.mid-stay-house-unavailable {
+                .fc-event-inner {
+                    .fc-event-day,
+                    .fc-event-title { color: @red; }
+                }
+            }
 
-				/* Horizontal split ***/
-				.fc-event-inner { height: 25px !important; }
-				&.check-in {
-					.fc-event-inner {
-						.fc-event-title { 
-							margin-top: -25px;
-							text-indent: 9999px; 
-						}
-					}
-				}
-				&.check-out {
-					.fc-event-inner {
-						.fc-event-title { text-indent: 0; }
-						.fc-event-day { .hide; }
-					}
-				}  
+            &.type-available {
+                .fc-event-inner {
+                    border: 3px solid @green;
+                    .background();
 
-				/* Restore looks when dragging ***/
-				&.ui-draggable-dragging {
-					.fc-event-inner { height: 50px !important; }
-					&.check-in {
-						.fc-event-inner {
-							.fc-event-title { 
-								margin-top: 0;
-								text-indent: 0; 
-							}
-						}
-					}
-					&.check-out {
-						.fc-event-inner {
-							.fc-event-title { text-indent: 9999px; }
-							.fc-event-day { .show; }
-						}
-					} 
-				}
-			}
+                    .fc-event-day { color: @textColor; }
+                    .fc-event-title { color: @grey3; }
+                }
+            }
 
-			&[data-rate]:not([data-rate=""]):not(.hide-tooltip) {
-				.show;
-				white-space: pre;
+            &.type-unavailable {
+                .fc-event-inner {
+                    .background();
 
-				&:before,
-				&:after {
-					visibility: hidden;
-					pointer-events: none;
-					.transition;
-					.opacity(0);
-				}
+                    .fc-event-day,
+                    .fc-event-title { color: @grey2; }
 
-				&:before {
-					content: attr(data-rate); 
-					position: absolute;
-					bottom: 49px;
-					right: 10px;
-					padding: 10px;
-					background-color: @white;
-					font-size: 18px;
-					font-weight: 600;
-					min-width: 200px;
-					.show;
-					.box-shadow();
-					#border-radius > .rounded();
-				}
+                    &:after {
+                        content: ' ';
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        background-color: rgba(0,0,0,.15);
+                    }
+                }
+            }
 
-				&:after {
-					content: "";
-					position: absolute;
-					bottom: 40px;
-					left: 20px;
-					width: 0;
-					height: 0;
-					border-top: 10px solid @white;
-					border-right: 10px solid transparent;
-					border-left: 10px solid transparent;
-				}
+            &.house-unavailable {
+                .fc-event-inner {
+                    .background();
 
-				&:hover:before,
-				&:hover:after {
-					visibility: visible;
-					.opacity(100);
-				}
+                    .fc-event-day { color: @red; }
+                    .fc-event-title { color: @red; }
 
-				&[data-room-type]:not([data-room-type=""]) {
-					&:before { content: attr(data-room-type) "\A" attr(data-rate);  }
-				}
-			}
+                    &:after {
+                        content: ' ';
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        bottom: 0;
+                        background-color: rgba(230,56,56,.3);
+                    }
+                }
+            }
+
+            &.split-view {
+                .fc-event-inner { height: 25px !important; }
+                
+                &.check-in {
+                    .fc-event-inner {
+                        .fc-event-title { 
+                            margin-top: -25px;
+                            text-indent: 9999px; 
+                        }
+                    }
+                }
+                &.check-out {
+                    .fc-event-inner {
+                        .fc-event-title { text-indent: 0; }
+                        .fc-event-day { .hide; }
+                    }
+                }  
+
+                /* Restore looks when dragging ***/
+                &.ui-draggable-dragging {
+                    .fc-event-inner { height: 50px !important; }
+
+                    &.check-in {
+                        .fc-event-inner {
+                            .fc-event-title { 
+                                margin-top: 0;
+                                text-indent: 0; 
+                            }
+                        }
+                    }
+                    &.check-out {
+                        .fc-event-inner {
+                            .fc-event-title { text-indent: 9999px; }
+                            .fc-event-day { .show; }
+                        }
+                    } 
+                }
+            }
+
+            &[data-rate]:not([data-rate=""]):not(.hide-tooltip) {
+                .show;
+
+                &:before,
+                &:after {
+                    position: absolute;
+                    visibility: hidden;
+                    pointer-events: none;
+                    z-index: 999;
+                    .transition;
+                    .opacity(0);
+                }
+
+                &:before {
+                    content: attr(data-rate); 
+                    bottom: 49px;
+                    right: 10px;
+                    padding: 10px;
+                    background-color: @white;
+                    font-size: 18px;
+                    font-weight: 600;
+                    min-width: 200px;
+                    .show;
+                    .box-shadow();
+                    #border-radius > .rounded();
+                }
+
+                &:after {
+                    content: "";
+                    bottom: 40px;
+                    left: 20px;
+                    width: 0;
+                    height: 0;
+                    border-top: 10px solid @white;
+                    border-right: 10px solid transparent;
+                    border-left: 10px solid transparent;
+                }
+
+                &:hover:before,
+                &:hover:after {
+                    visibility: visible;
+                    .opacity(100);
+                }
+
+                &[data-room-type]:not([data-room-type=""]) {
+                    &:before { content: attr(data-room-type) "\A" attr(data-rate);  }
+                }
+            }
 		}		
 	
 	/* Calendar table ***/
@@ -2563,6 +2869,200 @@
 				}
 			}
 		}
+		
+		/* Deposits / Balance ***/
+    &.deposit-balance {
+      padding: 0 !important;
+      .size(640px, 920px);
+      .float;
+
+      .content-left,
+      .content-right {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        .pull-left;
+      }
+
+      .content-left { 
+        width: 50%;
+        padding: 20px;
+        background: rgba(0,0,0,.05);
+
+        .expenses { 
+          position: relative;
+          padding-top: 20px;
+          .calc-height(100, 80);
+
+          li {
+            color: @grey3;
+                        line-height: 30px;
+                        vertical-align: middle;
+                        padding-bottom: 5px;
+                        margin-bottom: 5px;
+                        text-transform: uppercase;
+                        width: 100%;
+                        border-bottom: 1px solid rgba(0,0,0,.1);
+
+                        span {
+                            font-size: 24px;
+                            font-weight: 300;
+                            line-height: 30px;
+                            color: @textColor;
+                            .show;
+                            .pull-right;
+                        }
+
+                        &.total {
+                          color: @textColor;
+                          span { font-weight: 600; }
+
+                          &.final { 
+                            font-weight: 600; 
+                            margin-bottom: 0;
+                            padding-bottom: 0;
+                            border-bottom: 0;
+                          }
+                        }
+
+                        &.deposit,
+                        &.balance {
+                          position: absolute;
+                          left: 0;
+                          
+                          span { 
+                            font-size: 30px; 
+
+                            &.green { color: @green; }
+                              &.red { color: @red; }
+                          }
+
+                          &.deposit { bottom: 30px; }
+
+                          &.balance {
+                            bottom: 0;
+                              padding-bottom: 0;
+                              margin-bottom: 0;
+                              border-bottom: 0;
+                          }
+                        }
+                    }
+        }
+      }
+
+      .content-right {
+        position: relative;
+        width: 50%; 
+        padding: 20px;
+        .box-shadow(0 -2px 2px rgba(0,0,0,.3));
+
+        .amount {
+          float: none;
+          clear: both;
+          margin: 40px auto 0;
+          width: 200px;
+
+          &.full-width {
+            width: 100%;
+            text-align: center;
+            margin: 0 0 20px 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+
+            input { width: 200px; }
+          }
+        }
+
+        .select-card,
+              .new-card {
+                height: 280px;
+                #fade > .in;
+                .transition;
+
+                &.hidden { #fade > .out; }
+              }
+
+              .select-card {
+                .cards-list {
+            position: relative;
+            
+            .wrapper { padding: 0 10px 0 0; }
+            .iScrollVerticalScrollbar { 
+              top: 0;
+              bottom: 0;
+              right: 0;
+            }
+
+            .active-item {
+              position: relative;
+              line-height: 50px;
+              padding: 0 10px;
+              .clickable;
+
+              > span {
+                margin-right: 10px;
+
+                &.number { width: 150px; }
+                &.date { width: 100px; }
+                &.name { width: 220px; margin-right: 0; }
+
+                &.primary {
+                  position: absolute;
+                  top: 0;
+                  right: 10px;
+                  margin-right: 0;
+                }
+              }
+
+              .card-logo { margin-right: 10px; }
+            }
+          }
+              }
+
+              .new-card {
+                .holder {
+            .entry {
+              width: 40%;
+
+              input {
+                &:nth-of-type(2) { margin-left: 10px; }
+              }
+
+              &.margin {
+                margin-right: 40px;
+                .calc-width(60, 40);
+              }
+
+              &.full-width { 
+                margin: 0; 
+
+                .checkbox { margin-bottom: 0; }
+              }
+            }
+          } 
+
+          &.only-new { height: 335px; }
+              }
+
+              .actions {
+          margin-top: 20px;
+          text-align: center;
+          .float;
+
+          .button {
+            display: inline-block !important;
+            width: auto !important;
+            padding: 0 40px;
+
+            &.blank { 
+              padding: 0 20px 0 0; 
+              text-align: right; 
+            }
+          }
+        }
+      }
+    }
+
 
 /* 6. IE
 ==========================================================*/

@@ -5,7 +5,9 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 
 
 		$scope.init = function() {
-			$scope.$emit('setHeading', 'Reservations');
+			$scope.heading = 'Reservations';
+			$scope.setHeadingTitle($scope.heading);
+			
 			$scope.$parent.hideSidebar = true;
 			$scope.isConfirmationEmailSent = ($scope.otherData.isGuestPrimaryEmailChecked || $scope.otherData.isGuestAdditionalEmailChecked) ? true : false;
 			$scope.setScroller('reservationSummary');
@@ -14,15 +16,15 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		};
 
 		/*
-	 * Get the title for the billing info button, 
-	 * on the basis of routes available or not
-	 */
-	$scope.getBillingInfoTitle = function(){
-		if($scope.reservationData.is_routing_available)
-			return $filter('translate')('BILLING_INFO_TITLE');
-		else
-			return $filter('translate')('ADD_BILLING_INFO_TITLE');
-	}
+		 * Get the title for the billing info button,
+		 * on the basis of routes available or not
+		 */
+		$scope.getBillingInfoTitle = function() {
+			if ($scope.reservationData.is_routing_available)
+				return $filter('translate')('BILLING_INFO_TITLE');
+			else
+				return $filter('translate')('ADD_BILLING_INFO_TITLE');
+		}
 
 		/**
 		 * Function to check if the the check-in time is selected by the user.
@@ -64,8 +66,18 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 				return false;
 
 			}
-			var postData = {};
+			var postData = {};			
 			postData.reservationId = $scope.reservationData.reservationId;
+			/**
+			 * CICO-7077 Confirmation Mail to have tax details
+			 */
+			postData.tax_details = [];
+			_.each($scope.reservationData.taxDetails, function(taxDetail) {
+				postData.tax_details.push(taxDetail);
+			});
+			
+			postData.tax_total = $scope.reservationData.totalTaxAmount;
+
 			postData.emails = [];
 			postData.emails.push($scope.reservationData.guest.sendConfirmMailTo);
 
@@ -82,7 +94,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 */
 		$scope.primaryEmailEntered = function() {
 
-			if($scope.reservationData.guest.email != '' && $scope.reservationData.guest.email != null){
+			if ($scope.reservationData.guest.email != '' && $scope.reservationData.guest.email != null) {
 				return false;
 			}
 
@@ -181,14 +193,14 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$state.go('rover.reservation.search');
 		};
 
-		$scope.modifyCheckinCheckoutTime = function(){
+		$scope.modifyCheckinCheckoutTime = function() {
 
-			var updateSuccess = function(data){
+			var updateSuccess = function(data) {
 				$scope.$emit('hideLoader');
 			}
 
 
-			var updateFailure = function(data){
+			var updateFailure = function(data) {
 				$scope.$emit('hideLoader');
 			}
 			if ($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkoutTime.hh != '') {
@@ -201,26 +213,26 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 * trigger the billing information popup. $scope.reservationData is the same variable used in billing info popups also. 
 		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
 		 */
-		
-	    $scope.openBillingInformation = function(){
 
-	    	
-	    	$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
-	    	$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
-	    	$scope.reservationData.reservation_status = $scope.reservationData.status;
-	    	if($scope.reservationData.guest.id != null){
-	    		$scope.reservationData.user_id = $scope.reservationData.guest.id ;
-	    	}else{
-	    		$scope.reservationData.user_id = $scope.reservationData.company.id ;
-	    	}
-	    	
-		      ngDialog.open({
-		        template: '/assets/partials/bill/rvBillingInformationPopup.html',
-		        controller: 'rvBillingInformationPopupCtrl',
-		        className: 'ngdialog-theme-default',
-		        scope: $scope
-		      });
-	    }
+		$scope.openBillingInformation = function() {
+
+
+			$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
+			$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
+			$scope.reservationData.reservation_status = $scope.reservationData.status;
+			if ($scope.reservationData.guest.id != null) {
+				$scope.reservationData.user_id = $scope.reservationData.guest.id;
+			} else {
+				$scope.reservationData.user_id = $scope.reservationData.company.id;
+			}
+
+			ngDialog.open({
+				template: '/assets/partials/bill/rvBillingInformationPopup.html',
+				controller: 'rvBillingInformationPopupCtrl',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+		}
 
 		$scope.init();
 

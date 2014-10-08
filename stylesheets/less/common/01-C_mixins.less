@@ -59,11 +59,11 @@
 		   	color: @color;}
 
 		&:-ms-input-placeholder {  
-			font-size: @font-size;
-			line-height: @line-height;
-			font-weight: @font-weight;
-		   	font-style: @font-style;
-		   	color: @color;
+			font-size: @font-size !important;
+            line-height: @line-height !important;
+            font-weight: @font-weight !important;
+            font-style: @font-style !important;
+            color: @color !important;
 		}
 
 		&:input-placeholder {  
@@ -80,13 +80,15 @@
 	#font {
 		#family {
 			.sans-serif() {
-				font-family: "source_sans_pro", Helvetica, Arial, sans-serif;
-				text-rendering: optimizeLegibility;
-				-webkit-font-smoothing: antialiased;
-			}
-			.monospace() {
-				font-family: "Courier New", Courier, monospace;
-			}
+                font-family: "source_sans_pro", Helvetica, Arial, sans-serif;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+            }
+            .monospace() {
+                font-family: "Courier New", Courier, monospace;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+            }
 		}
 
 		.shorthand(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
@@ -239,15 +241,15 @@
 		background-repeat: repeat;
 	}
 
-	/*.faux-columns-gradient(@image, @color1, @color2, @break: 50%, @stop: 100%) {
-		background-image: @image, -moz-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, -ms-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, -webkit-gradient(linear, left top, right top, color-stop(0, @color1), color-stop(@break, @color1), color-stop(@break, @color2), color-stop(@stop, @color2));
-		background-image: @image, -webkit-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, -o-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-image: @image, linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
-		background-repeat: repeat;
-	}*/
+	.candystripe(@color, @angle) {
+        background-image: -moz-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-image: -ms-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, @color), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, @color), color-stop(.75, @color), color-stop(.75, transparent), to(transparent));
+        background-image: -webkit-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-image: -o-linear-gradient(@angle, @color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-image: linear-gradient(@angle,@color 25%, transparent 25%, transparent 50%, @color 50%, @color 75%, transparent 75%, transparent);
+        background-repeat: repeat;
+    }
 
 	/* Opacity			======================================*/
 	.opacity(@opacity: 100) {
@@ -329,6 +331,13 @@
 		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
 	}
 
+	.calc-max-width(@percentage, @pixels) {
+        max-width: -webkit-calc(~"@{percentage}% - @{pixels}px");
+        max-width: -moz-calc(~"@{percentage}% - @{pixels}px");
+        max-width: calc(~"@{percentage}% - @{pixels}px");
+        .no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+    }
+
 	.extend-width(@percentage, @pixels) {
 		width: -webkit-calc(~"@{percentage}% + @{pixels}px");
 		width: -moz-calc(~"@{percentage}% + @{pixels}px");
@@ -343,6 +352,18 @@
 			left: calc(~"@{percentage}% - @{pixels}px");
 			.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
 		}
+		.top-minus(@percentage, @pixels) {
+            top: -webkit-calc(~"@{percentage}% - @{pixels}px");
+            top: -moz-calc(~"@{percentage}% - @{pixels}px");
+            top: calc(~"@{percentage}% - @{pixels}px");
+            .no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+        }
+        .top-plus(@percentage, @pixels) {
+            top: -webkit-calc(~"@{percentage}% + @{pixels}px");
+            top: -moz-calc(~"@{percentage}% + @{pixels}px");
+            top: calc(~"@{percentage}% + @{pixels}px");
+            .no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+        }
 	}
 
 	#pixel-to-percent {
@@ -390,12 +411,6 @@
 	  	.right-margin(@target, @context) {
 	    	margin-right: (@target / @context) * 100%;
 	  	}
-  	}
-
-  	.backface-visibility(@value: hidden) {
-  		-webkit-backface-visibility: @value;
-		-moz-backface-visibility: @value;
-		backface-visibility: @value;
   	}
   	
 /* 5. COMPONENTS

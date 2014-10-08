@@ -14,7 +14,7 @@
 		<!-- show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check out at our front desk.</p>
+			<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
 			<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 		</div>
 
@@ -27,7 +27,7 @@
 				</div>
 
 				<!-- checkoubtn section starts here-->
-				<div class="col-md-6 no-padding top-margin now-later-options" ng-show="optionsAvailable">
+				<div class="col-md-6 no-padding now-later-options" ng-show="optionsAvailable">
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
 
@@ -60,15 +60,14 @@
 
 						</div>
 					</div>
+					<div class="row no-thanks-wrap">
+						<p class="centeralign no-thanks" ng-show="optionsAvailable">
+							<a class="no-thanks-text" ui-sref="checkOutOptions">no, thanks</a>
+						</p>
+				</div>
 				</div>
 
-				<div class="row no-thanks-wrap">
-					<p class="centeralign no-thanks" ng-show="optionsAvailable">
-						<a class="no-thanks-text" ui-sref="checkOutOptions">no, thanks</a>
-
-
-					</p>
-				</div>
+				
 			</div>
 
 		</div>

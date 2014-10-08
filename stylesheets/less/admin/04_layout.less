@@ -419,33 +419,10 @@ body { overflow: hidden; }
 
 /* Content title            ==============================*/
     .content-title {
-        /*position: relative;
-        min-height: 40px;
-        vertical-align: middle;
-        margin-bottom: 30px;*/
         border-bottom: 1px solid rgba(0,0,0,.1);
         position: fixed;
-        background-image: url(http://localhost:3000/assets/texture.png);
-        background-position-x: initial;
-        background-position-y: initial;
-        background-size: initial;
-        background-repeat-x: repeat;
-        background-repeat-y: repeat;
-        background-attachment: initial;
-        background-origin: initial;
-        background-clip: initial;
-        /*background-color: rgb(252, 252, 252);*/
-        margin-bottom: 0px;
-        padding-top: 10px;
-       /*padding-left: 20px;*/
-        min-height: 60px;
-        left: 17.741935483870968%; /*19.35483870967742%;*/
-        right: 20px;
-        z-index: 1199;
-        margin-left: 20px;
-        margin-top: -25px;
+        background-image: @textureImage;
         
-
         h2,
         .count,
         .action{
@@ -884,12 +861,12 @@ body { overflow: hidden; }
                 transform: translateY(0px);
     }
     .tooltip {
-        z-index:1000;
+        z-index:1150;
         background: #fff;
-        top: 25%;
+        top: -10px; //25%; CICO-8634
         color: #fff;
         display: block;
-        left: 100%;
+        left: 30px; //100%; CICO-8634
         margin-bottom: 0px;
         opacity: 0;
         padding: 0px;
@@ -928,6 +905,7 @@ body { overflow: hidden; }
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }
+
         /* This bridges the gap so you can mouse into the tooltip without it disappearing */
         &:before {
             bottom: -14px;
@@ -956,6 +934,31 @@ body { overflow: hidden; }
             -ms-transform:rotate(90deg); /* IE 9 */
             -webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
         } 
+    }
+    /*CICO-8634 - Inverted popup for rate types*/
+    .polarize {
+        top: initial;
+        bottom: -10px;   
+
+        .title {
+            -webkit-border-top-left-radius: 0px;
+            -webkit-border-top-right-radius: 0px;
+            -moz-border-radius-topleft: 0px;
+            -moz-border-radius-topright: 0px;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;  
+            -webkit-border-bottom-left-radius: 5px;
+            -webkit-border-bottom-right-radius: 5px;
+            -moz-border-radius-bottomleft: 5px;
+            -moz-border-radius-bottomright: 5px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;                    
+        }  
+
+        &:after {
+            top: initial;
+            bottom: 12px;            
+        }   
     }
 }
   
@@ -1023,6 +1026,12 @@ body { overflow: hidden; }
 .header-title{
   float:right;
   font-size: 25px;
+}
+
+#taxCalculationList{
+    .tax-name{
+        display: inline-block;
+    }
 }
 
 

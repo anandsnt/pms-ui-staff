@@ -38,6 +38,11 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.$broadcast('roomFeaturesLoaded', $scope.roomFeatures);
 	});
 
+	/*To fix the unassign button flasing issue during checkin
+	*/
+	$scope.roomAssgnment = {};
+	$scope.roomAssgnment.inProgress = false;
+
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
@@ -150,7 +155,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.$emit('hideLoader');
 		$scope.reservationData.reservation_card.room_id = '';
 		$scope.reservationData.reservation_card.room_number = '';
-		$scope.reservationData.reservation_card.is_upsell_available = true;
+		$scope.reservationData.reservation_card.is_upsell_available = 'true';
 
 		$scope.reservationData.reservation_card.room_status = '';
 		$scope.reservationData.reservation_card.fo_status = '';
@@ -184,10 +189,7 @@ sntRover.controller('RVroomAssignmentController',[
 	*/
 	$scope.assignRoom = function() {
 		var successCallbackAssignRoom = function(data){
-			$scope.$emit('hideLoader');
-			
-			
-			
+			$scope.$emit('hideLoader');			
 			
 			$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
 			
@@ -214,7 +216,6 @@ sntRover.controller('RVroomAssignmentController',[
 			          scope: $scope
 		        });
 			} else {
-				$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 				if($scope.clickedButton == "checkinButton"){
 					$scope.$emit('hideLoader');
 					$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
@@ -222,12 +223,18 @@ sntRover.controller('RVroomAssignmentController',[
 					$scope.$emit('hideLoader');
 					$scope.backToStayCard();
 				}
+				$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
 			}
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+			setTimeout(function(){
+				$scope.roomAssgnment.inProgress = false;	
+				}, 
+			3000);
 			
 		};
 		var errorCallbackAssignRoom = function(error){
 			$scope.$emit('hideLoader');
+			$scope.roomAssgnment.inProgress = false;
 			setTimeout(function(){
 				ngDialog.open({
 			          template: '/assets/partials/roomAssignment/rvRoomHasAlreadySelected.html',
@@ -244,7 +251,7 @@ sntRover.controller('RVroomAssignmentController',[
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
-		
+		$scope.roomAssgnment.inProgress = true;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 	$scope.goToNextView = function(){

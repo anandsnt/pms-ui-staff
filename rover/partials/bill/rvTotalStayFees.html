@@ -4,7 +4,7 @@
 </div>
 <div class="total-stay-fees float">
 	<div class="overview" ng-repeat="totalFees in billData.total_fees" >
-		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle has-arrow with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
+		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 			<span class="title"> <span translate>GUEST_BALANCE</span>:
 				<em class="label"> <span translate>AS_OF</span>
 					{{totalFees.fees_date |date:dateFormat}}
@@ -87,7 +87,7 @@
 	</div>
 
 	<!-- Bill Total Stay Fees -->
-	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
+	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails && totalFeesArray.fees_details.length>0 ">
 
 		<table class="total-fees">
 			<thead>
@@ -105,7 +105,7 @@
 			<!-- Total Stay fees details in CHECK IN status. -->
 			<tfoot>
 				<tr class="active edit">
-					<td colspan="2" class="total-label">
+					<td colspan="3" class="total-label">
 						<!-- Show email and print buttons -->
 						<a ng-click="clickedEmail()" class="button with-icon only-icon blue">
 							 <span class="icons icon-email"></span> 
@@ -133,7 +133,7 @@
 				</tr>
 				<!-- Show balance -->
 				<tr class="active" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
-					<td colspan="2" class="total-label"> <span translate>BALANCE_AS_OF</span>
+					<td colspan="3" class="total-label"> <span translate>BALANCE_AS_OF</span>
 					{{totalFeesArray.fees_date |date:dateFormat}}
 					): </td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
@@ -154,7 +154,7 @@
 					<!-- Show fee details -->
 				</tr>
 				<tr class="active" ng-show="showGuestBalance(reservationBillData.reservation_status)">
-					<td colspan="2" class="total-label"> <span translate>GUEST_BALANCE_AS_OF</span>
+					<td colspan="3" class="total-label"> <span translate>GUEST_BALANCE_AS_OF</span>
 						{{totalFeesArray.fees_date |date:dateFormat}}):
 					</td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
@@ -217,7 +217,7 @@
 						</select>
 					</div>
 					</td>
-					<td class="edit"><a class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="feesData.type.value != 'TAX'"> <span class="icons icon-pencil"></span> <span translate>EDIT</span> </a></td>
+					<td class="edit"><a ng-show="isStandAlone" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="feesData.type.value != 'TAX'"> <span class="icons icon-pencil"></span> <span translate>EDIT</span> </a></td>
 				</tr>
 			</tbody>
 

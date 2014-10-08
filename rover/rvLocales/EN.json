@@ -284,14 +284,46 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",    "PRINT_ROOM_KEY" : "Print Room Key",
+	"RELEASE_REFRESH": "Release to refesh...",
+	"ROOM_TYPE_FILTER_TITLE": "Room Type",
+
+	"SELECT_WORK_TYPE" : "Select a Work Type",
+	"OO" : "Out of Order",
+	"OS" : "Out of Service",
+	"FIND_ROOM_MAID" : "Find Room or Employee",
+
+	"DEP_TO_CLEAN" : "Departures to clean",
+	"SO_TO_CLEAN" : "Departures to clean",
+	"TOTAL" : "Total",
+	"TOTAL_STAFF_REQUIRED" : "Total Staff Required",
+	"TOTAL_ROOMS_ASSIGNED" : "Total Rooms Assigned",
+	"TOTAL_ROOMS_COMPLETED" : "Total Rooms Completed",
+
+	"MANAGE_WS" : "Manage Work Sheets",
+	"CREATE_WS" : "Create Work Sheet",
+	"EMPLOYEE_NAME": "Employee name",
+	"SELECT_EMPLOYEE" : "Select Employee",
+	"MAID" : "Maid",
+	"UNASSIGNED" : "Unassigned",
+	"ALL_UNASSIGNED" : "All unassigned",
+	"ALL_FLOORS" : "All floors",
+	"NO_ROOM_ASSIGNED" : "No room assigned.",
+	"DRAG_DROP_TO_ASSIGN" : "Drag and drop rooms to assign.",
+	"UNASSIGN_ROOM" : "Unassign Room",
+	"TIME_ALLOCATED" : "Time Allocated",
+	
+	"STAYOVERS" : "Stayovers",
+	"COMPLETED" : "Completed"
+
+
+,    "PRINT_ROOM_KEY" : "Print Room Key",
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
     "KEY_PRINTED" : "Keys printed!",
     "KEY_CONNECTED_STATUS" : "Connected to Key Card Reader!",
-    "KEY_CHECKIN_STATUS" : "Check in Complete",
+    "KEY_CHECKIN_STATUS" : "Checking In",
     "KEY_INHOUSE_STATUS" : "In House",
     "KEY_CHECKOUT_STATUS" : "Checking Out",
     "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
@@ -359,8 +391,10 @@
     "ADD_NEW_CARD":"Add New Card",
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
-    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined"
-,    
+    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
+,	
+	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     
     "RESERVATION_SUMMARY": "Reservation summary",
     "ROOMS": "rooms",
@@ -463,7 +497,8 @@
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
-    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address"
+    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
@@ -545,7 +580,8 @@
     "DASHBOARD_SEARCH_INHOUSE": "Stayovers",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
     "DASHBOARD_SEARCH_VIP": "VIPS",
-    "SEARCH_NORMAL": "Find Reservation"
+    "SEARCH_NORMAL": "Find Reservation",
+    "PRE_CHECKIN":"Pre Check In"
 ,
 
 
@@ -592,6 +628,7 @@
     "PRICE": "Price",
     "PACKAGE": "Package",
     "INCL": "INCL",
+    "EXCL": "EXCL",
     "EXPENSE": "Expense",
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
@@ -694,5 +731,7 @@
     "POST_CHARGES_LABEL": "Post Room Charges",
     "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
     "DISAGREE_BUTTON_LABEL":"Disagree",
-    "AGREE_BUTTON_LABEL":"Agree"
+    "AGREE_BUTTON_LABEL":"Agree",
+    "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"
 }

@@ -7,109 +7,117 @@
 
 /* Menu icons			==================================*/
 	.icon-menu {
-		background-image: @iconMenu;
-		background-repeat: no-repeat;
-		overflow: hidden;
-		.hide-text;
-		.square(60px);
-		.show;
-		.no-transition;
+        background-image: @iconMenu;
+        background-repeat: no-repeat;
+        background-size: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        .size(50px, 100%);
+        .show;
+        
+        &.icon-dashboard { 
+            background-position: 0 -267px;
+            &.active { background-position: 0 -312px;}
+        }
 
-		&.active{
-			background-position: -60px 0;
-		}
+        &.icon-frontdesk { 
+            background-position: 0 -355px;
+            &.active { background-position: 0 -401px;}
+        }
 
-		&.icon-dashboard { 
-			background-position: 0 -60px; 
+        &.icon-conversations { 
+            background-position: 0 -448px;
+            &.active { background-position: 0 -493px;}
+        }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -60px;}
-		}
+        &.icon-revenue { 
+            background-position: 0 -539px;
+            &.active { background-position: 0 -583px;}
+        }
 
-		&.icon-search { 
-			background-position: 0 -120px; 
+        &.icon-housekeeping { 
+            background-position: 0 -628px;
+            &.active { background-position: 0 -673px;}
+        }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -120px;}
-		}
+        &.icon-financials { 
+            background-position: 0 -719px;
+            &.active { background-position: 0 -763px;}
+        }
 
-		&.icon-social-lobby {
-			background-position: 0 -180px; 
+        &.icon-reports { 
+            background-position: 0 -809px;
+            &.active { background-position: 0 -853px;}
+        }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -180px;}
-		}
+        &.icon-settings {
+            background-position: 0 -898px; 
+            &.active { background-position: 0 -942px;}
+        }
 
-		&.icon-messages {
-			background-position: 0 -240px; 
+        &.icon-sign-out {
+            background-position: 0 -989px; 
+            &.active { background-position: 0 -1033px;}
+        }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -240px;}
-		}
+        @media @highdpi {
+            background-image: @iconMenu2x;
+            background-size: 30px;
+        }
 
-		&.icon-reviews {
-			background-position: 0 -300px; 
+        @media only screen and (min-width: 600px) {
+            height: 60px;
+            background-size: 40px;
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -300px;}
-		}
+            &.icon-dashboard { 
+                background-position: 0 -360px;
+                &.active { background-position: 0 -420px;}
+            }
 
-		&.icon-settings {
-			background-position: 0 -360px; 
-			&.active{ background-position: -60px -360px;}
-		}
+            &.icon-frontdesk { 
+                background-position: 0 -480px;
+                &.active { background-position: 0 -540px;}
+            }
 
-		&.icon-sign-out {
-			background-position: 0 -420px; 
+            &.icon-conversations { 
+                background-position: 0 -600px;
+                &.active { background-position: 0 -660px;}
+            }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -420px;}
-		}
+            &.icon-revenue { 
+                background-position: 0 -720px;
+                &.active { background-position: 0 -780px;}
+            }
 
-		&.icon-rooms {
-			background-position: 0 -540px; 
+            &.icon-housekeeping { 
+                background-position: 0 -840px;
+                &.active { background-position: 0 -900px;}
+            }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -540px;}
-		}
+            &.icon-financials { 
+                background-position: 0 -960px;
+                &.active { background-position: 0 -1020px;}
+            }
 
-		&.icon-reports {
-			background-position: 0 -600px; 
+            &.icon-reports { 
+                background-position: 0 -1080px;
+                &.active { background-position: 0 -1140px;}
+            }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -600px;}
-		}
+            &.icon-settings {
+                background-position: 0 -1200px; 
+                &.active { background-position: 0 -1260px;}
+            }
 
-		&.icon-cards {
-			background-position: 0 -660px; 
+            &.icon-sign-out {
+                background-position: 0 -1320px; 
+                &.active { background-position: 0 -1380px;}
+            }
 
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -660px;}
-		}
-
-		&.icon-reservations {
-			background-position: 0 -720px;
-
-			&:hover,
-			&.active,
-			&:active { background-position: -60px -720px;}
-		}
-
-		@media @highdpi {
-			background-image: @iconMenu2x;
-			background-size: 120px;
-		}
-	}
-
+            @media @highdpi { background-size: 40px; }
+        }
+    }
 
 	.rover-icon-menu {
 		background-image: @roverMenu;
@@ -198,11 +206,58 @@
 		}
 	}
 
+/* Menu & availability toggle   ==========================*/
+    .icon-toggle,
+    .icon-availability {
+        overflow: hidden;
+        background-image: @iconMenu, @darkTexture;
+        background-repeat: no-repeat, repeat;
+        .hide-text;
+        .square(40px);
+        .show;
+        .no-transition;
+
+        @media @highdpi {
+            background-image: @iconMenu2x, @darkTexture;
+            background-size: 40px;
+        }
+    }
+
+    &.icon-toggle {
+        background-position: 0 -70px, 0 0;
+        #border-radius > .right();
+
+        &.active { 
+            background-color: @logoGradientStart; 
+            .box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+        }
+
+        @media only screen and (min-width: 768px) {
+            background-color: @logoGradientStart;
+            background-position: 0 -10px, 0 0;
+            .box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+
+            &:hover,
+            &.active { background-position: 0 -70px, 0 0; }
+        }
+    }
+
+    &.icon-availability {
+        background-color: @grey2;
+        background-repeat: no-repeat, repeat;
+        background-position: 0 -250px, 0 0;
+        #border-radius > .left();
+        .box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+
+        &:hover,
+        &.active { background-position: 0 -310px, 0 0; }
+    }
+
 /* Buttons				==================================*/
 	.button {
 		display: inline-block;
 		font-weight: 600;
-		line-height: 40px;
+		line-height: 38px;
 		vertical-align: middle;
 		text-transform: uppercase;
 		text-align: center;
@@ -223,7 +278,7 @@
 
 		/* Button styles ***/
 		&.blank {
-			color: @grey3;
+			color: @textColor;
 			background: transparent;
 			text-shadow: none;
 			#border-radius > .rounded(0);
@@ -253,6 +308,13 @@
 
 			&:hover,
 			&:active { .gradient (@redEnd, @redStart); }
+		}
+
+		&.orange {
+			.gradient (@orangeStart, @orangeEnd);
+
+			&:hover,
+			&:active { .gradient (@orangeEnd, @orangeStart); }
 		}
 
 		&.yellow { 

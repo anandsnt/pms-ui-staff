@@ -3,6 +3,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
+
+            $scope.otherData = {
+                'setChanged' : false,
+                'activeDateRange' : '',
+                'activeDateRangeIndex' : '',
+                'rateSavePromptOpen' : false,
+                'isEdit': false
+            };
+
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
@@ -32,7 +41,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "addOns":[],
                 "end_date":"",
                 "end_date_for_display":""
-            }
+            };
             // intialize rateData dictionary - END
 
             $scope.allAddOns = [];
@@ -44,6 +53,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
+                $scope.otherData.isEdit = true;
             }
         };
 
@@ -121,7 +131,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         * Fetch the based on rate retails, if the rate has chosen a based on rate.
         */
         var fetchBasedOnRateDetails = function() {
-            if ($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == "") {
+            if ($scope.rateData.based_on.id === undefined || $scope.rateData.based_on.id === '') {
                 return false;
             }
             var fetchBasedonSuccess = function(data) {
@@ -203,8 +213,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.rateData.id = data.id;
             }
             if (!$scope.is_edit) {
-                $scope.is_edit = true
-            };
+                $scope.is_edit = true;
+            }
+            
             $scope.rateData.name = data.name;
         $scope.rateData.description = data.description;
         $scope.rateData.promotion_code = data.promotion_code;
@@ -297,14 +308,26 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.$broadcast('resetCalendar');
         };
 
+        $scope.backToRates = function(event){
+            event.preventDefault();
+            if(Object.prototype.hasOwnProperty.call($scope, 'otherData') && 
+               $scope.otherData.setChanged){     
+                $scope.$broadcast('backToRatesClicked', event);
+            }
+            else{
+                $state.go('admin.rates');
+            }
+        }
+
+
         $scope.shouldShowAddNewDateRange = function() {
             if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
                 return false;
             }
-            if ($scope.rateData.based_on.id > 1 && $scope.rateData.rate_type.name != 'Specials & Promotions') {
+            if ($scope.rateData.based_on.id > 1 && $scope.rateData.rate_type.name !== 'Specials & Promotions') {
                 return false;
             }
-            if (!$scope.rateData.id || $scope.rateData.room_type_ids.length == 0) {
+            if (!$scope.rateData.id || $scope.rateData.room_type_ids.length === 0) {
                 return false;
             }
             return true;
@@ -313,7 +336,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         // on click Cancel button redirect to previous active msetRateDetailsenu
         $scope.cancelMenu = function() {
             $scope.$emit("changeMenu", $scope.prevMenu);
-        }
+        };
 
         /*
          * init call

@@ -3,7 +3,7 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
-//store basic details as rootscope variables
+	//store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
 	$rootScope.hotelName     = $attrs.hotelName;
@@ -30,11 +30,18 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isRoomVerified =  false;
  	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
  	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
-
+ 	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
+ 	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
- 	
- 	if($rootScope.isCheckedin){
+	
+
+	//navigate to different pages
+
+	if($attrs.isPrecheckinOnly  ==='true' && $attrs.reservationStatus ==='RESERVED'){
+ 		$location.path('/tripDetails');
+ 	}	
+ 	else if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}
     else if($attrs.isCheckin ==='true'){
@@ -46,6 +53,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	else{
 		$location.path('/checkoutRoomVerification');
 	};
+
 
 }]);
 
