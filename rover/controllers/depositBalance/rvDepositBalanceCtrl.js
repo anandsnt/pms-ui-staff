@@ -141,7 +141,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		 } else if(type === "selectedCard"){
 		 	var dataToMakePaymentApi = {
-				"payment_id": selectedPaymentIdFromList,
+				"guest_payment_id": selectedPaymentIdFromList,
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"amount": $scope.makePaymentData.amount
 			};
@@ -168,7 +168,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		//alert("------pay----------"+paymentId)
 		//$scope.makePaymentData.amount
 		var dataToMakePaymentApi = {
-			"payment_id": paymentId,
+			"guest_payment_id": paymentId,
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"amount": $scope.makePaymentData.amount
 		};
