@@ -90,7 +90,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		$scope.firstSearch = false;
 	    $scope.searchType = "default";
 	    $scope.isTyping = false;
-    	displayFilteredResults();
+	    if($scope.results.length > 0){ //if there is any result then only we want to filter
+    		displayFilteredResults();
+    	}
 
 	    setTimeout(function(){
 	    	$scope.$apply();
