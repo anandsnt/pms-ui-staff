@@ -9,6 +9,8 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 
   	$scope.showDashboard = true; //variable used to hide/show dabshboard
 
+    $scope.disableReservations = true;
+
     // we are hiding the search results area
     $scope.$broadcast("showSearchResultsArea", false);     
 

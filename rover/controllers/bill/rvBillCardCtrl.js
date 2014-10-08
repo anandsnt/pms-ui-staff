@@ -910,8 +910,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			var bill = reservationBillData.bills[i];
 			totalBal += bill.total_amount * 1;
 		};
-		
-		if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
+
+		var finalBillBalance = "0.00";
+		if(typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !=='undefined'){
+			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
+		}
+
+		if($rootScope.isStandAlone && finalBillBalance !== "0.00"){
+			console.log("Standalone - Final bill having balance to pay");
+			$scope.clickedPayButton();
+		}
+		else if(!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag){
 			// Popup to accept and save email address.
 			$scope.callBackMethodCheckout = function(){
 				$scope.saveData.isEmailPopupFlag = true ;
@@ -944,10 +953,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
 		}
-		else if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_balance != "0.00") {
-			console.log($scope.reservationBillData.reservation_balance);
-			//$scope.clickedPayButton();
-		}
 		else{
 			var data = {
 				"reservation_id" : $scope.reservationBillData.reservation_id,
@@ -966,18 +971,30 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
-		if(ActiveBillBalance == "0.00" || ActiveBillBalance == 0.00){
+		if($rootScope.isStandAlone && ActiveBillBalance == "0.00"){
+			// Checking bill balance for stand-alone only.
 			$scope.reviewStatusArray[index].reviewStatus = true;
 			$scope.findNextBillToReview();
 		}
-		else{
+		else if($rootScope.isStandAlone && ActiveBillBalance !== "0.00"){
+			// Show payment popup for stand-alone only.
 			$scope.clickedPayButton();
+		}
+		else{
+			$scope.reviewStatusArray[index].reviewStatus = true;
+			$scope.findNextBillToReview();
 		}
 	};
 	
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function(){
 		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
+
+			// Checking last bill balance for stand-alone only.
+			if($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined'){
+				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
+				if(billBalance !== "0.00") $scope.reviewStatusArray[i].reviewStatus = false;
+			}
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
 				if($scope.reviewStatusArray.length == (i+1)) $scope.isAllBillsReviewed = true;
