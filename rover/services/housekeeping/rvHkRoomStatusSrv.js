@@ -60,7 +60,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    	// single calculate the class required
 					    	// will require additional call from details page
-					    	room.roomStatusClass = that.setRoomStatusClass(room);
+					    	that.setRoomStatusClass(room);
 
 					    	// set the leaveStatusClass or enterStatusClass value
 					    	that.setReservationStatusClass(room);
@@ -190,35 +190,68 @@ sntRover.service('RVHkRoomStatusSrv', [
 			}
 		};
 
+
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room){
-			if(this.roomList.checkin_inspected_only == "true"){
+		this.setRoomStatusClass = function(room) {
+			if(this.roomList.checkin_inspected_only == "true") {
 				if(room.hk_status.value == 'INSPECTED') {
-					return 'clean';
+					room.roomStatusClass = 'clean';
+					return;
 				}
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP')) {
-					return 'pickup';
+					room.roomStatusClass = 'pickup';
+					return;
 				}
 			} else {
 				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED')) {
-					return 'clean';
+					room.roomStatusClass = 'clean';
+					return;
 				}
 				if((room.hk_status.value == 'PICKUP')) {
-					return 'pickup';
+					room.roomStatusClass = 'pickup';
+					return;
 				}
 			}
 
 			if( (room.hk_status.value == 'DIRTY') ) {
-				return 'dirty';
+				room.roomStatusClass = 'dirty';
+				return;
 			}
 
 			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ) {
-				return 'out';
-			}
+				room.roomStatusClass = 'out';
 
-			return '';
+				if ( !!room.hk_status.oo_status ) {
+					if(this.roomList.checkin_inspected_only == "true") {
+						if(room.hk_status.oo_status == 'INSPECTED') {
+							room.roomStatusClassWithOO = 'clean';
+							return;
+						}
+						if((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'PICKUP')) {
+							room.roomStatusClassWithOO = 'pickup';
+							return;
+						}
+					} else {
+						if((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'INSPECTED')) {
+							room.roomStatusClassWithOO = 'clean';
+							return;
+						}
+						if((room.hk_status.oo_status == 'PICKUP')) {
+							room.roomStatusClassWithOO = 'pickup';
+							return;
+						}
+					}
+					if((room.hk_status.oo_status == 'DIRTY')) {
+						room.roomStatusClassWithOO = 'dirty';
+						return;
+					}
+				};
+
+				return;
+			}
 		};
+
 
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
