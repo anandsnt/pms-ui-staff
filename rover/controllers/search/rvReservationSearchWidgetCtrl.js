@@ -6,7 +6,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	* you wrapping this.
 	*/
 
-	$s = $scope;
 	var that = this;
   	BaseCtrl.call(this, $scope);
 
