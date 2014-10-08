@@ -155,7 +155,7 @@ sntRover.controller('RVroomAssignmentController',[
 		$scope.$emit('hideLoader');
 		$scope.reservationData.reservation_card.room_id = '';
 		$scope.reservationData.reservation_card.room_number = '';
-		$scope.reservationData.reservation_card.is_upsell_available = true;
+		$scope.reservationData.reservation_card.is_upsell_available = 'true';
 
 		$scope.reservationData.reservation_card.room_status = '';
 		$scope.reservationData.reservation_card.fo_status = '';

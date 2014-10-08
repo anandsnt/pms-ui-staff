@@ -14,7 +14,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		catch(err) {};
 
-	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
+	$scope.saveData.selected_payment_type = "null";//Only for swipe
 
 	$scope.paymentTypeValues = "";
 	$scope.saveData.card_number  = "";
@@ -90,6 +90,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		} else {
 			$scope.showPaymentAmount = false;
 		}
+		if(!$rootScope.isStandAlone){
+			$scope.saveData.selected_payment_type = 0;//cico-9959
+		}
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){
@@ -110,6 +113,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 					$scope.saveData.selected_payment_type = key; 
 				}
 			});
+		
 			$scope.billsArray = $scope.paymentData.bills;
 			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){//NOT Credit card only show amount and window
 				$scope.showCreditCardDetails = false;
@@ -134,7 +138,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * On selecting payment type list corresponding payments
 	 */
 	$scope.renderPaymentValues = function(){
-		$scope.paymentTypeValues = $scope.data[$scope.saveData.selected_payment_type].values;
+		if($scope.saveData.selected_payment_type !== "null"){
+			$scope.paymentTypeValues = $scope.data[$scope.saveData.selected_payment_type].values;
+		}
+		
 		if($scope.passData.fromView == "paybutton"){
 			if($scope.saveData.selected_payment_type == 0){//cc
 				$scope.showCreditCardDetails = true;
