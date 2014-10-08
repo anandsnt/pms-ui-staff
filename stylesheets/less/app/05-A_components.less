@@ -10422,7 +10422,14 @@
             z-index: 99;
             .calc-height(100, 90);
             .calc-width(100, 120);
-
+            -webkit-touch-callout: none;/*for mobile*/
+            -webkit-user-select: none;/*for chrome*/
+            -khtml-user-select: none;/*for safari*/
+            -moz-user-select: none;/*for Mozilla*/
+            -ms-user-select: none;/*for mircosoft*/
+            -o-user-select: none;/*for opera*/
+            user-select: none;/*base css ,but not work in all browsers*/
+            
             > .iScrollVerticalScrollbar { .hide; }
             > .iScrollHorizontalScrollbar { 
                 top: auto;

@@ -33,8 +33,8 @@ var GridRowItemDrag = React.createClass({
 				this.props.__onDragStart(this.props.room, this.props.__dragData.data);
 			});
 		} else if(this.state.dragging) {
-			left = this.state.element_x + delta_x - $('.diary-grid .wrapper')[0].scrollLeft;
-			top = this.state.element_y + delta_y - $('.diary-grid .wrapper')[0].scrollTop - this.state.offset_y;
+			left = this.state.element_x + delta_x; // - $('.diary-grid .wrapper')[0].scrollLeft;
+			top = this.state.element_y + delta_y - this.state.offset_y; //- $('.diary-grid .wrapper')[0].scrollTop - this.state.offset_y;
 
 			this.setState({
 				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int , //document.body.scrollLeft,

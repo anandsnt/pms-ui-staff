@@ -108,6 +108,7 @@ DiaryContent = React.createClass({
 				data: scope.data,
 				new_reservation_time_span: scope.new_reservation_time_span,
 				angular_evt: {
+					onSelect: scope.onSelect,
 					onDragStart: scope.onDragStart,
 					onDragEnd: scope.onDragEnd,
 					onResizeStart: scope.onResizeStart,
