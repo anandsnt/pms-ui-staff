@@ -1,6 +1,6 @@
 <div id="select-card" class="select-card">
     <div id="available-cards" class="cards-list scrollable" >
-        <div id="cardsList" ng-iscroll='cardsList' ng-iscroll-delay='100' style="height:220px;">
+        <div id="cardsList" class="card-list-height" ng-iscroll='cardsList' ng-iscroll-delay='100'>
             <div class="wrapper">
                 <!-- Selected card -->
                 <label class="active-item item-payment primary" ng-click="setCreditCardFromList($index)" ng-repeat="guestCreditCardList in guestPaymentList">
