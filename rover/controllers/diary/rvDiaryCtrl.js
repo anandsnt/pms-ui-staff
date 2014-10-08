@@ -522,10 +522,7 @@ sntRover
 
 	function getMaxId(max, data, idx) {
 		if(idx < data.length) {
-			if(max < data[idx])
-				return getMaxId(data[idx].id, data, ++idx);
-			else
-				return getMaxId(max, data, ++idx);
+			return getMaxId((max < data[idx].id) ? data[idx].id : max, data, ++idx);
 		} else {
 			return max;
 		}
