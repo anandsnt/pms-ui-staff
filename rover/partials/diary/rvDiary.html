@@ -31,17 +31,17 @@
         <div class="entry time">
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
-                <select id="arrival-time" name="arrival-time">
-                    <option ng-repeat="arrival_time in arrival_times" value={{arrival_time}} ng-model="filter.arrival_time">{{arrival_time}}</option> 
+                <select id="arrival-time" name="arrival-time" ng-model="filter.arrival_time" ng-options="arrival_time for arrival_time in arrival_times">
+                    <option value={{arrival_time}}>{{arrival_time}}</option> 
                 </select>
             </div>
         </div>
         <div class="entry room">
             <label for="room-type">Room Type</label>
             <div class="select">
-                <select id="room-type" name="room-type">
-                    <option value="All" selected>All</option>
-                    <option ng-repeat="room_type in room_types" value={{room_type}} ng-model="filter.room_type">{{room_type}}</option>
+                <select id="room-type" name="room-type" ng-model="filter.room_type" ng-options="room_type for room_type in room_types">
+                    <option value="All">All</option>
+                    <option value={{room_type}}>{{room_type}}</option>
                 </select>
             </div>
         </div>

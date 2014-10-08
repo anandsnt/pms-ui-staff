@@ -27,8 +27,11 @@ var GridRowItem = React.createClass({
 			x_axis_origin =props.display.x_origin - props.display.x_0,
 			px_per_int = props.display.px_per_int,
 			px_per_ms = props.display.px_per_ms,
+			start_time_ms = props.data.start_date.getTime(),
+			end_time_ms = props.data.end_date.getTime(),
+			time_span_ms = end_time_ms - start_time_ms,
 			maintenance_time_span = props.display.maintenance_int * px_per_int,
-			reservation_time_span = (state.time_span_ms) * px_per_ms,
+			reservation_time_span = time_span_ms * px_per_ms,
 			is_temp_reservation = (props.data.status === 'reservation');
 
 		return GridRowItemDrag({
@@ -44,7 +47,7 @@ var GridRowItem = React.createClass({
 			room: props.room,
 			ref: 'item',
 			style: {
-				left: (state.start_time_ms - x_axis_origin) * px_per_ms + 'px', 
+				left: (start_time_ms - x_axis_origin) * px_per_ms + 'px', 
 				width: reservation_time_span + maintenance_time_span
 			}
 		}, 
