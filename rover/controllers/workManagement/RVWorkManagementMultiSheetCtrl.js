@@ -18,13 +18,13 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		$scope.setScroller('assignedRoomList-0');
 
 		var selectionHistory = [],
-			updateView = function() {
+			updateView = function(reset) {
 				var onFetchSuccess = function(data) {
 						$scope.multiSheetState.unassigned = data.unassigned;
 						$scope.filterUnassigned();
 						// $scope.multiSheetState.assignments = {};
 						_.each(data.work_sheets, function(worksheet) {
-							if (!$scope.multiSheetState.assignments[worksheet.employee_id]) {
+							if (!$scope.multiSheetState.assignments[worksheet.employee_id] || reset) {
 								$scope.multiSheetState.assignments[worksheet.employee_id] = {};
 								$scope.multiSheetState.assignments[worksheet.employee_id].rooms = [];
 								$scope.multiSheetState.assignments[worksheet.employee_id].summary = {
@@ -65,7 +65,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
 							var employee = employee.id;
-							if (!$scope.multiSheetState.assignments[employee]) {
+							if (!$scope.multiSheetState.assignments[employee] || reset) {
 								$scope.multiSheetState.assignments[employee] = {};
 								$scope.multiSheetState.assignments[employee].rooms = [];
 								$scope.multiSheetState.assignments[employee].summary = {
@@ -321,11 +321,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		}
 
 		$scope.onDateChanged = function() {
-			updateView();
+			updateView(true);
 		}
 
 		$scope.onWorkTypeChanged = function() {
-			updateView();
+			updateView(true);
 		}
 
 		/**
