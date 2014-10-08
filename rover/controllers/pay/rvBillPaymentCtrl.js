@@ -30,7 +30,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.showAddNewPaymentScreen = false;
 	$scope.newPaymentInfo.isSwiped = false;
 	$scope.showOnlyAddCard = false;
-	
+	//Set scroller
+	$scope.setScroller('cardsList');
 	//To set merchant id
 	try 
 	{
@@ -419,4 +420,8 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.$emit('HANDLE_MODAL_OPENED');
 		$scope.closeDialog();
 	};
+	// On "showExistingAndAddNewPayments" refresh the scroll.
+	$scope.$watch("showExistingAndAddNewPayments", function () {
+        $scope.refreshScroller('cardsList');
+    });
 }]);
