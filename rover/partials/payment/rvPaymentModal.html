@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-show="isManualCCEntryDisabled">
+<div role="dialog" id="modal" class="modal-show" ng-show="shouldShowManualEntryDisabled && !isLoading">
 	<div class="modal-content">
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
@@ -7,7 +7,7 @@
 	</div>
 </div>
 
-<div role="dialog" id="modal" class="modal-show" ng-hide="isManualCCEntryDisabled">
+<div role="dialog" id="modal" class="modal-show" ng-hide="shouldShowManualEntryDisabled || isLoading">
 	<form ng-click="setPosition()" class="modal-content form new-content payment-popup" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
 	<button class="dark-title modal-close" type="button" id="modal-close" ng-click="closeDialog()">
 		<span class="icons icon-close"></span>
