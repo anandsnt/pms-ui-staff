@@ -91,7 +91,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.showPaymentAmount = false;
 		}
 		if(!$rootScope.isStandAlone){
-			$scope.saveData.selected_payment_type = 0;//cico-9959
+			$scope.saveData.selected_payment_type = 0;//CICO-9959
+			$scope.renderPaymentValues();
 		}
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);

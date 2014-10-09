@@ -151,31 +151,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			//Fetch the roomlist if necessary
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
 
-				// $scope.$emit('showLoader');
-
-				// RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-				// 	.then(function(data) {
-				// 		$scope.showPickup = data.use_pickup;
-				// 		$scope.showInspected = data.use_inspected;
-				// 		$scope.showQueued = data.is_queue_rooms_on;
-
-				// 		if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
-				// 			// show the user related rooms only
-				// 			$scope.filterByWorkType = defaultWorkType;
-				// 			$scope.filterByEmployee = defaultMaid;
-
-				// 			// update filterByWorkType filter to first item
-				// 			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
-
-				// 			// update filterByEmployee filter
-				// 			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
-				// 		}
-
-				// 		afterFetch( data );
-				// 	}, function() {
-				// 		$scope.$emit('hideLoader');
-				// 	});
-
 				var callback = function(data) {
 					$scope.showPickup = data.use_pickup;
 					$scope.showInspected = data.use_inspected;
@@ -245,6 +220,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
 				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
 		});
 

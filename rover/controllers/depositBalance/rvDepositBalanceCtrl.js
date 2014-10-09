@@ -141,7 +141,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		 } else if(type === "selectedCard"){
 		 	var dataToMakePaymentApi = {
-				"payment_id": selectedPaymentIdFromList,
+				"guest_payment_id": selectedPaymentIdFromList,
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"amount": $scope.makePaymentData.amount
 			};
@@ -168,7 +168,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		//alert("------pay----------"+paymentId)
 		//$scope.makePaymentData.amount
 		var dataToMakePaymentApi = {
-			"payment_id": paymentId,
+			"guest_payment_id": paymentId,
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"amount": $scope.makePaymentData.amount
 		};
@@ -213,7 +213,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * Show existing payments Active and show screen
 	 */
 	$scope.clickedShowExistingCard = function(){
+
 		$scope.refreshScroller('available_cards');
+
 		$scope.addCardActive = false;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -221,6 +223,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceNewCardData.expiryMonth = "";
 		$scope.depositBalanceNewCardData.expiryYear  = "";
 		$scope.depositBalanceNewCardData.cardHolderName  = "";
+	
 	};
 	$scope.selectPayment = function(paymentId){
 		selectedPaymentIdFromList = paymentId;
