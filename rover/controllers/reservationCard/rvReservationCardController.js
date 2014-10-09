@@ -132,7 +132,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 */
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 			// CICO-9709 - Reintiate reservation main data
-			$scope.initReservationData();
+			///$scope.initReservationData(); // commenting code as per CICO-10077
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
 					"confirmationId": currentConfirmationNumber,
