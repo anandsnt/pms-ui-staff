@@ -578,20 +578,24 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-
-      var type = "LATE_CHECKOUT";
-      $state.go('rover.search', {
-        'type': type
-      });
-
+      if ( !$rootScope.isMaintenanceStaff ) {
+        var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {
+          'type': type
+        });
+      }
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-
-      var type = "QUEUED_ROOMS";
-      $state.go('rover.search', {
-        'type': type
-      });
+      if ( $rootScope.isMaintenanceStaff ) {
+        $state.go('rover.housekeeping.roomStatus', {
+          'roomStatus': 'QUEUED_ROOMS'
+        });
+      } else {
+        $state.go('rover.search', {
+          'type': 'QUEUED_ROOMS'
+        });
+      }
     };
 
     $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data) {
