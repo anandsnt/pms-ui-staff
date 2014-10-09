@@ -33,10 +33,10 @@
 							<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
 						</div>	
 						<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
-							<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
+							<span class="late-checkout-time" ng-hide="(row.reservation_status!='CHECKING_OUT'||row.reservation_status=='CHECKING_IN')&&row.is_opted_late_checkout==false">
 								{{row.late_checkout_time}}
 							</span>
-							 <span class="pre-checkin-time" ng-show="row.arrival_time && row.is_pre_checkin" ng-bind="row.arrival_time"></span>
+							 <span class="pre-checkin-time" ng-show="row.arrival_time && row.is_pre_checkin && row.reservation_status=='CHECKING_IN'" ng-bind="row.arrival_time"></span>
 							<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin)}}">
 							</span>
 						</div>	
