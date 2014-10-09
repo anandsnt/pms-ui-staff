@@ -147,7 +147,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			};
 
 		//	alert(JSON.stringify(dataToMakePaymentApi));
-			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 		 }
 		 // dataToApiToAddNewCard
 		 // add_to_guest_card
@@ -174,7 +174,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		};
 
 	//	alert(JSON.stringify(dataToMakePaymentApi));
-		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 	};
 	/*
 	 * To render the values on fields during swipe
@@ -256,6 +256,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.closeDepositModal = function(){
 		$scope.isDepositBalanceScreenOpened = false;
 		$scope.closeDialog();
+	};
+	$scope.successMakePayment = function(){
+		$scope.$emit("hideLoader");
+		$scope.closeDepositModal();
 	};
 
 
