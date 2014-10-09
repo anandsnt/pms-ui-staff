@@ -34,8 +34,8 @@
       <strong class="h2">
         {{ roomDetails.current_room_reservation_status }}<span ng-if="arrivals.show || departure.show">. </span>
         <span class="green" ng-if="arrivals.show">Arriving at {{ arrivals.time }}</span>
-        <span class="green" ng-if="departure.show && !!departure.time">Departing at {{ departure.time }}</span>
-        <span class="green" ng-if="departure.show && !!departure.date">Departing on {{ departure.date }}</span>
+        <span class="red" ng-if="departure.show && !!departure.time">Departing at {{ departure.time }}</span>
+        <span class="red" ng-if="departure.show && !!departure.date">Departing on {{ departure.date }}</span>
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">
@@ -47,7 +47,4 @@
       </h2>
     </div>
   </div>
-
-  <span ng-if="arrivals.show || departure.show">.</span><span class="green" ng-if="arrivals.show">Arriving at {{ arrivals.time }}</span><span class="green" ng-if="departure.show && !!departure.time">Departing at {{ departure.time }}</span><span class="green" ng-if="departure.show && !!departure.date">Departing on {{ departure.date }}</span>
-
 </div>

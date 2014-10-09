@@ -46,9 +46,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-		// show queued icon
-		$scope.shouldShowQueuedRooms  = true;
-
 		$scope.filterOpen = false;
 		$scope.localLoader = false;
 
