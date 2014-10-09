@@ -47,7 +47,7 @@
 		</div>
 	</fieldset>
 	<fieldset class="content-right" ng-show = "bills.length != 0">
-		<span class="h2 message">
+		<span class="h2 message" ng-hide = "(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')">
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select">
 				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill">
