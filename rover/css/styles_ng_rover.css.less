@@ -401,7 +401,6 @@ height: 410px;
   .group{
     margin: 5px 0 5px;
     height:25px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
   .name{
     font-style:italic;
@@ -409,6 +408,7 @@ height: 410px;
   }
   .guest{
     margin: 5px 0 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding-top: 5px;
   }
   .label{
@@ -1366,3 +1366,13 @@ Padding for the ows error popup
 .card-list-height{
   height:220px;
 }
+
+/*---------------*/
+/* CICO-7619 Fix for the delete issue in payment and loyalty in guest card.
+ Overridding transition property since that makes the issue while deleting the respective items */
+
+.active-item-no-transition{
+  .transition (all, 0s, @easing: cubic-bezier(.10, .10, .25, .90)) !important;
+}
+
+/*-------------*/
