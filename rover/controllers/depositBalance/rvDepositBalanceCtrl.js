@@ -14,7 +14,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	BaseCtrl.call(this, $scope);
 
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
-console.log($scope);
+
 
 
 
@@ -147,7 +147,7 @@ console.log($scope);
 			};
 
 		//	alert(JSON.stringify(dataToMakePaymentApi));
-			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 		 }
 		 // dataToApiToAddNewCard
 		 // add_to_guest_card
@@ -174,7 +174,7 @@ console.log($scope);
 		};
 
 	//	alert(JSON.stringify(dataToMakePaymentApi));
-		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 	};
 	/*
 	 * To render the values on fields during swipe
@@ -245,16 +245,21 @@ console.log($scope);
 		return buttonClass;
 	};
 	$scope.showMakePaymentButtonActive = function(){
-		if($scope.depositBalanceNewCardData.cardNumber !== ""){
-			$scope.makePaymentButtonActive = true;
-		} else {
+		//Commenting - CICO-9959
+		// if($scope.depositBalanceNewCardData.cardNumber !== ""){
+			// $scope.makePaymentButtonActive = true;
+		// } else {
 			$scope.makePaymentButtonActive = false;
-		}
+		//}
 	};
 
 	$scope.closeDepositModal = function(){
 		$scope.isDepositBalanceScreenOpened = false;
 		$scope.closeDialog();
+	};
+	$scope.successMakePayment = function(){
+		$scope.$emit("hideLoader");
+		$scope.closeDepositModal();
 	};
 
 
