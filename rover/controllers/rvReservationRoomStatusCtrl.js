@@ -1,12 +1,16 @@
-sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog',  function($state, $rootScope, $scope, ngDialog){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
-	
-	
 	$scope.getRoomClass = function(reservationStatus){
-		var reservationRoomClass = "";
-		if(reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
-			reservationRoomClass = "has-arrow";
-		} 
+		var reservationRoomClass = '';
+		if(reservationStatus == 'CANCELED'){
+			reservationRoomClass ='overlay';
+		}
+		else if( !$rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
+			reservationRoomClass = 'has-arrow hover-hand';
+		}
+		else if($rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED'){
+			reservationRoomClass = 'has-arrow hover-hand';
+		}
 		return reservationRoomClass;
 	};
 	
@@ -62,41 +66,56 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
-		if(reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
+		if((reservationStatus == 'CHECKING_IN' && $scope.reservationData.reservation_card.room_number != '')|| reservationStatus == 'CHECKING_OUT' || reservationStatus == 'CHECKEDIN'){
 			showKey = true;
 		}
 		return showKey;
 	};
 	$scope.addHasButtonClass = function(reservationStatus,  isUpsellAvailable){
 		var hasButton = "";
-		if($scope.showKeysButton(reservationStatus) || $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)){
+		if($scope.showKeysButton(reservationStatus) && $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)){
+			hasButton = "has-buttons";
+		}
+		else if($scope.showKeysButton(reservationStatus) || $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)){
 			hasButton = "has-button";
-		};
+		}
 		return hasButton;
 	};
 	
 	// To handle click of key icon.
-	$scope.clickedIconKey = function(){
-		
+	$scope.clickedIconKey = function(event){
+		event.stopPropagation();
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
-		
+		$scope.viewFromBillScreen = false;
 		if(keySettings === "email"){
 			
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
 				 controller: 'RVKeyEmailPopupController',
-				 className: 'ngdialog-theme-default1',
+				 className: '',
 				 scope: $scope
 			});
 		}
 		else if(keySettings === "qr_code_tablet"){
+
+			//Fetch and show the QR code in a popup
+			var	reservationId = $scope.reservationData.reservation_card.reservation_id;
+
+			var successCallback = function(data){
+				$scope.$emit('hideLoader');
+				$scope.data = data;
+				ngDialog.open({
+					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+					 controller: 'RVKeyQRCodePopupController',
+					 className: '',
+					 scope: $scope
+				});	
+			}
+
+			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
+
 			
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-				 controller: 'RVKeyQRCodePopupController',
-				 className: 'ngdialog-theme-default1',
-				 scope: $scope
-			});
+			
 		}
 		
 		//Display the key encoder popup
@@ -104,7 +123,7 @@ sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ng
 			ngDialog.open({
 			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 			    controller: 'RVKeyEncodePopupCtrl',
-			    className: 'ngdialog-theme-default1',
+			    className: '',
 			    scope: $scope
 			});
 		}

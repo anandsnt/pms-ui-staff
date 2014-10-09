@@ -1,32 +1,23 @@
 <!-- Navbar --> 
-
-<header class="nav-bar float rover-header" role = "banner">
-	<!-- Drawer toggle -->
-	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
-
+<header class="nav-bar rover-header" role = "banner">
 
 	<!--search Backbutton> -->
-	<div class="actions-back button white" ng-if="searchBackButtonCaption!=''">
-		<a class="back-button" ng-if="searchBackButtonCaption!=''" ng-click="headerBackButtonClicked()">{{searchBackButtonCaption}}</a>	
-	</div>
+	<a class="back-button" ng-if="searchBackButtonCaption!=''" ng-click="headerBackButtonClicked()">{{searchBackButtonCaption}}</a>	
 	<!-- end of search backbutton -->
 
 	<!-- back to prev -->
-	<div class="actions-back button white">
-		<a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
-	</div>
-
-	<a id="late-checkout-alert" ng-click="clickedOnHeaderLateCheckoutIcon($event)"  class="icons icon-alert late-check-out" ng-show="isLateCheckoutTurnedOn && shouldShowLateCheckout"> {{userInfo.late_checkout_count}} </a>
+	<a class="back-button" href="" ng-if="setPrevState.title" ng-hide="setPrevState.hide" ng-click="loadPrevState()">{{ setPrevState.title }}</a>
 
 	<div class="logo">
-		<img alt = "Logo of hotel" ng-src= "{{userInfo.logo}}" />
+		<img ng-src= "{{userInfo.logo}}" alt="" />
 	</div>
 
 	<!-- Title -->
 	<h1 class="h2"> {{heading | translate}} <span><strong> {{userInfo.first_name}}
-		{{userInfo.last_name}} </strong> | <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="blink_text" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em>
-	</span>
+		{{userInfo.last_name}} </strong> | <em class="date" ng-hide="isBussinessDateChanging"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em><em class="blink_text" ng-show="isBussinessDateChanging">End of Day Routine in Progress</em></span>
 	</h1>
-	<!-- Right side button -->
 
+	<a class="icons icon-alert queued-rooms" id="queue-rooms" ng-show="isQueuedRoomsTurnedOn && shouldShowLateCheckout" ng-click = "clickedOnQueuedRoomsIcon()">{{userInfo.queue_rooms_count}}</a>
+
+	<a id="late-checkout-alert" ng-click="clickedOnHeaderLateCheckoutIcon($event)"  class="icons icon-alert late-check-out" ng-show="isLateCheckoutTurnedOn && shouldShowLateCheckout"> {{userInfo.late_checkout_count}} </a>
 </header>

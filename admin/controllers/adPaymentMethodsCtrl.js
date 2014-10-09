@@ -1,5 +1,5 @@
-admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv',
-function($scope, $state, ADPaymentMethodsSrv) {
+admin.controller('ADPaymentMethodsCtrl', ['$scope', '$state', 'ADPaymentMethodsSrv', '$anchorScroll', '$timeout', '$location', 
+function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location) {
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.editData = {};
@@ -51,6 +51,10 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	$scope.addNew = function() {
 		$scope.addData = {};
 		$scope.currentClickedElement = "new";
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
 
 	/*
@@ -66,14 +70,16 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	$scope.savePaymentMethod = function() {
 		
 		var successCallbackSave = function(data){
+			
 			if($scope.currentClickedElement === "new"){
 				$scope.addData.id = data.id;
-				$scope.data.payments.push($scope.addData);
+				var obj = { 'id': data.id , 'description' : data.name , 'value': data.value };
+				$scope.data.payments.push(obj);
 			}
 			else{
 				//To update data with new value
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].description = $scope.editData.description;
-		    	$scope.data.payments[parseInt($scope.currentClickedElement)].value = $scope.editData.value;
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].description = data.name;
+		    	$scope.data.payments[parseInt($scope.currentClickedElement)].value = data.value;
 	    	}	
     		$scope.$emit('hideLoader');
     		$scope.currentClickedElement = -1;
@@ -112,7 +118,6 @@ function($scope, $state, ADPaymentMethodsSrv) {
 	 * @param {string} id of the selected payment method
 	 */
 	$scope.deletePaymentMethod = function(id) {
-		console.log("delete id"+id);
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.payments.splice($scope.currentClickedElement, 1);

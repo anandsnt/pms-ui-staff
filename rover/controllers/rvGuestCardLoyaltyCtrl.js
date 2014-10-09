@@ -5,6 +5,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		var loyaltyFetchsuccessCallback = function(data){		
 			$scope.$emit('hideLoader');
 			$scope.loyaltyData = data;
+			$scope.checkForHotelLoyaltyLevel();
 			setTimeout(function(){
 				$scope.refreshScroller('loyaltyList');				
 				}, 
@@ -23,6 +24,21 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
         function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
         function(gustDataReady) { if(gustDataReady)$scope.init(); }
     );
+
+
+	/*
+	* To check for the loyalty levels in hotel loyalty section for the guest
+	* and notify the guestcard header to display the same
+	*/
+    $scope.checkForHotelLoyaltyLevel = function(){
+    	for(var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++){
+    		if($scope.loyaltyData.userMemberships.hotelLoyaltyProgram.membership_level != ""){
+    			$scope.$emit('loyaltyLevelAvailable', $scope.loyaltyData.userMemberships.hotelLoyaltyProgram[i].membership_level);
+    			break;
+    		}
+    	}
+    	
+    }
 
 
     $scope.$on('clearNotifications',function(){

@@ -81,16 +81,17 @@
 				<div id="bills" class="registration-summary ui-tabs ui-widget ui-widget-content ui-corner-all" >
 					<!-- Bills summary tabs navigation -->
 			<div id="bills-tabs-nav" class="float bill-tabs" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
-						<div class="bill-tab-container">
+						<div class="bill-tab-container"  style="width:{{getWidthForBillTabsScroll()}}px">
 						<!-- Billing instructions -->
-						<!-- <a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a> -->
+						<a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-class="{'active':showBillingInfo}" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a>
 						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-class="{'active':showIncomingBillingInfo}" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
-						
+						<a class="button no-post-button" ng-show="clickedButton == 'checkinButton'" ng-click="noPostButtonClicked()" ng-class = "{'green':roomChargeEnabled, 'red': !roomChargeEnabled}">{{getNoPostButtonTiltle()}}  </a>
 						
 						<!-- Add new bill -->
 						<!-- %a.button.with-icon.only-icon.brand-colors -->
 						<!-- %span.icons.icon-plus -->
 						<!-- Add new -->
+						
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all bill-tab-ul" role="tablist">
 							
 							<li class="ui-state-default ui-corner-top bill-tab-li" ng-click="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
@@ -148,7 +149,7 @@
 									</li>
 
 									<!-- packages -->
-									<li class="active package" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
+									<li class="active package summarychargegroup" ng-click="showAddons($index)" ng-repeat="addons in billData.addons">
 										<a class="toggle dual-toggle" ng-class="{'active': $index == showAddonIndex}"> 
 											<span class="day"> {{addons.title}} </span> 
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span> 
@@ -157,7 +158,7 @@
 									</li>
 
 									<!-- Group items tab -->
-									<li class="active expense" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
+									<li class="active expense summarychargegroup" ng-click="showGroupItems($index)" ng-repeat="groupItems in billData.group_items">
 										<a class="toggle dual-toggle"  ng-class="{'active': $index == showGroupItemIndex}"> 
 											<span class="expense"> {{groupItems.title}} </span> 
 											<span class="price" >{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
@@ -209,8 +210,9 @@
 									</thead>
 									<tbody>
 										<tr ng-repeat="expense in billAddons.expense_details">
-											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td class="price" ng-hide="expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
+											<td class="price" ng-if="expense.is_inclusive == 'true'" translate> INCL </td>
+											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price =='' " translate> EXCL </td>
+											<td class="price" ng-if="expense.is_inclusive == 'false' && expense.price !==''"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
 										</tr>
 									</tbody>

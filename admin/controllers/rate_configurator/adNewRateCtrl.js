@@ -1,8 +1,17 @@
 admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails','$filter','$rootScope',
     function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails,$filter, $rootScope) {
 
-        $scope.init = function () {
+        $scope.init = function() {
             BaseCtrl.call(this, $scope);
+
+            $scope.otherData = {
+                'setChanged' : false,
+                'activeDateRange' : '',
+                'activeDateRangeIndex' : '',
+                'rateSavePromptOpen' : false,
+                'isEdit': false
+            };
+
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
@@ -32,7 +41,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "addOns":[],
                 "end_date":"",
                 "end_date_for_display":""
-            }
+            };
             // intialize rateData dictionary - END
 
             $scope.allAddOns = [];
@@ -44,15 +53,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
+                $scope.otherData.isEdit = true;
             }
         };
 
         $scope.rateInitialData = rateInitialData;
 
-        var setRateAdditionalDetails  = function(){
+        var setRateAdditionalDetails = function() {
         //add ons
         $scope.allAddOns = rateInitialData.addons;
-        angular.forEach($scope.allAddOns, function(addOns){
+            angular.forEach($scope.allAddOns, function(addOns) {
             addOns.isSelected = false;
             addOns.is_inclusive_in_rate = "false";
         });
@@ -62,28 +72,28 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         //restriction type
         $scope.restrictionDetails = rateInitialData.restrictionDetails;
-        angular.forEach($scope.restrictionDetails, function(restrictionType){
-         if(restrictionType.value == 'CANCEL_PENALTIES'){
-           $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true:false;
+            angular.forEach($scope.restrictionDetails, function(restrictionType) {
+                if (restrictionType.value == 'CANCEL_PENALTIES') {
+                    $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true : false;
        }
-       if(restrictionType.value == 'DEPOSIT_REQUESTED'){
-        $scope.depositRequiredActivated = (restrictionType.activated)  ? true:false;
+                if (restrictionType.value == 'DEPOSIT_REQUESTED') {
+                    $scope.depositRequiredActivated = (restrictionType.activated) ? true : false;
     }
-});
+            });
 
      //selected restrictions
-     angular.forEach(rateInitialData.selectedRestrictions, function(selectedRestriction){
+            angular.forEach(rateInitialData.selectedRestrictions, function(selectedRestriction) {
           if (selectedRestriction.activated) {
-              if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
+                    if (selectedRestriction.value == 'MAX_ADV_BOOKING') {
                   $scope.maxAdvancedBookingActivated =  true;
               }
-              if(selectedRestriction.value == 'MAX_STAY_LENGTH'){
+                    if (selectedRestriction.value == 'MAX_STAY_LENGTH') {
                   $scope.maxStayLengthActivated =  true;
               }
-              if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+                    if (selectedRestriction.value == 'MIN_ADV_BOOKING') {
                   $scope.minAdvancedBookingActivated =  true;
               }
-              if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+                    if (selectedRestriction.value == 'MIN_ADV_BOOKING') {
                  $scope.minStayLengthActivated =  true;
              }
         }
@@ -94,25 +104,25 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         /*
          * toogle different rate view
          */
-         $scope.$on("changeMenu", function (e, value) {
+        $scope.$on("changeMenu", function(e, value) {
             // keep track of previous menu for switching - on Cancel button click
             $scope.prevMenu = $scope.rateMenu;
-            if (!isNaN(parseInt(value))){
-                value = "dateRange."+value;
+            if (!isNaN(parseInt(value))) {
+                value = "dateRange." + value;
             }
             $scope.rateMenu = value;
 
         });
 
-         $scope.$on("errorReceived", function (e, value) {
+        $scope.$on("errorReceived", function(e, value) {
             $scope.errorMessage = value;
-            angular.element( document.querySelector('#wrapper')).scrollTop(0);
+            angular.element(document.querySelector('#wrapper')).scrollTop(0);
         });
 
         /**
         * Function ivoked from child classes when the rate details are changed.
         */
-        $scope.$on("rateChangedFromDetails", function(e){
+        $scope.$on("rateChangedFromDetails", function(e) {
             $scope.$broadcast('ratesChanged');
             fetchBasedOnRateDetails();
         });
@@ -120,15 +130,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         /**
         * Fetch the based on rate retails, if the rate has chosen a based on rate.
         */
-        var fetchBasedOnRateDetails = function(){
-            if($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == ""){
+        var fetchBasedOnRateDetails = function() {
+            if ($scope.rateData.based_on.id === undefined || $scope.rateData.based_on.id === '') {
                 return false;
             }
-            var fetchBasedonSuccess = function(data){
+            var fetchBasedonSuccess = function(data) {
                 // set basedon data
                 $scope.basedonRateData = data;
                 $scope.basedonRateData.room_type_ids = [];
-                angular.forEach(data.room_types, function(room_type){
+                angular.forEach(data.room_types, function(room_type) {
                     $scope.basedonRateData.room_type_ids.push(room_type.id);
                 });
                 $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
@@ -141,20 +151,20 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
         }
-        var manipulateAdditionalDetails = function(data){
+        var manipulateAdditionalDetails = function(data) {
             // rules and restrictions
             $scope.rateData.min_advanced_booking = data.min_advanced_booking;
             $scope.rateData.max_advanced_booking = data.max_advanced_booking;
             $scope.rateData.min_stay = data.min_stay;
             $scope.rateData.max_stay = data.max_stay;
-            $scope.rateData.use_rate_levels =(data.use_rate_levels) ? true: false ;
+            $scope.rateData.use_rate_levels = (data.use_rate_levels) ? true : false;
             $scope.rateData.deposit_policy_id = data.deposit_policy_id;
             $scope.rateData.cancellation_policy_id = data.cancellation_policy_id;
 
             //Additional details
-            $scope.rateData.is_commission_on = (data.is_commission_on)?true:false;
-            $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on)?true:false;
-            $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on)?true:false;
+            $scope.rateData.is_commission_on = (data.is_commission_on) ? true : false;
+            $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on) ? true : false;
+            $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on) ? true : false;
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
@@ -168,15 +178,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                       
 
             // addons -mark as activated for selected addons
-            if($scope.rateData.addOns.length>0){
+            if ($scope.rateData.addOns.length > 0) {
                 var tempData = $scope.rateData.addOns;
                 $scope.rateData.addOns = [];
-                angular.forEach($scope.allAddOns, function(addOns){
-                    angular.forEach(tempData, function(addOnsSelected){
-                        if(addOns.id === addOnsSelected.id){
+                angular.forEach($scope.allAddOns, function(addOns) {
+                    angular.forEach(tempData, function(addOnsSelected) {
+                        if (addOns.id === addOnsSelected.id) {
                             addOns.isSelected = true;
-                            addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
-                            if($scope.rateData.addOns.indexOf(addOns)=== -1)
+                            addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true' : 'false';
+                            if ($scope.rateData.addOns.indexOf(addOns) === -1)
                                $scope.rateData.addOns.push(addOns);
                        }
 
@@ -185,9 +195,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
             }
             // addons mark as deactivated for selected addons
-            angular.forEach($scope.allAddOns, function(addOns){
+            angular.forEach($scope.allAddOns, function(addOns) {
 
-                if($scope.rateData.addOns.indexOf(addOns)=== -1){
+                if ($scope.rateData.addOns.indexOf(addOns) === -1) {
                     addOns.isSelected = false;
                     addOns.is_inclusive_in_rate = 'false';
                     $scope.rateData.addOns.push(addOns);
@@ -197,19 +207,24 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
     };
 
-    $scope.manipulateData = function(data){
+        $scope.manipulateData = function(data) {
 
-        if(data.id) { $scope.rateData.id = data.id; }
-        if(!$scope.is_edit) { $scope.is_edit =true };
-        $scope.rateData.name= data.name;
+            if (data.id) {
+                $scope.rateData.id = data.id;
+            }
+            if (!$scope.is_edit) {
+                $scope.is_edit = true;
+            }
+            
+            $scope.rateData.name = data.name;
         $scope.rateData.description = data.description;
         $scope.rateData.promotion_code = data.promotion_code;
         $scope.rateData.room_types = data.room_types;
         $scope.rateData.room_type_ids = [];
-        angular.forEach(data.room_types, function(room_type){
+            angular.forEach(data.room_types, function(room_type) {
             $scope.rateData.room_type_ids.push(room_type.id);
         });
-        $scope.rateData.date_ranges= data.date_ranges;
+            $scope.rateData.date_ranges = data.date_ranges;
         $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
         $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
         $scope.rateData.addOns = data.addons;
@@ -238,7 +253,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         // Fetch details success callback for rate edit
 
-        var setRateDetails = function (data) {
+        var setRateDetails = function(data) {
 
             $scope.hotel_business_date = data.business_date;
             // set rate data for edit
@@ -246,14 +261,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.manipulateData(data);
             $scope.rateData.id = $stateParams.rateId;
             // navigate to step where user last left unsaved
-            if($scope.rateData.date_ranges.length > 0){
+            if ($scope.rateData.date_ranges.length > 0) {
                 activeDateRange = getActiveDateRange();
                 $scope.$emit("changeMenu", activeDateRange);
-            }
-            else if($scope.rateData.room_type_ids.length > 0){
+            } else if ($scope.rateData.room_type_ids.length > 0) {
                 $scope.$emit("changeMenu", 'Room types');
-            }
-            else{
+            } else {
                 $scope.$emit("changeMenu", 'Details');
             }
             fetchBasedOnRateDetails(false);
@@ -262,7 +275,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
 
-        var getActiveDateRange = function(){
+        var getActiveDateRange = function() {
             var beginDate = '';
             var endDate = '';
             var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
@@ -281,31 +294,49 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             return activeDateRange;
         }
 
-        $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId){
-            angular.forEach($scope.rateData.date_ranges, function(dateRange, index){
-                if (dateRange.id == dateRangeId){
+        $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId) {
+            angular.forEach($scope.rateData.date_ranges, function(dateRange, index) {
+                if (dateRange.id == dateRangeId) {
                     $scope.rateData.date_ranges.splice(index, 1);
                 }
             });
         })
 
-        $scope.addNewDateRange = function(){
+        $scope.addNewDateRange = function() {
             $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
             // reset calendar
             $scope.$broadcast('resetCalendar');
         };
 
-        $scope.shouldShowAddNewDateRange = function(){
-            if($scope.rateMenu === 'ADD_NEW_DATE_RANGE') { return false; }
-            if($scope.rateData.based_on.id > 1 && $scope.rateData.rate_type.name != 'Specials & Promotions') { return false; }
-            if (!$scope.rateData.id || $scope.rateData.room_type_ids.length == 0) { return false; }
+        $scope.backToRates = function(event){
+            event.preventDefault();
+            if(Object.prototype.hasOwnProperty.call($scope, 'otherData') && 
+               $scope.otherData.setChanged){     
+                $scope.$broadcast('backToRatesClicked', event);
+            }
+            else{
+                $state.go('admin.rates');
+            }
+        }
+
+
+        $scope.shouldShowAddNewDateRange = function() {
+            if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
+                return false;
+            }
+            if ($scope.rateData.based_on.id > 1 && $scope.rateData.rate_type.name !== 'Specials & Promotions') {
+                return false;
+            }
+            if (!$scope.rateData.id || $scope.rateData.room_type_ids.length === 0) {
+                return false;
+            }
             return true;
         };
 
         // on click Cancel button redirect to previous active msetRateDetailsenu
-        $scope.cancelMenu = function(){
+        $scope.cancelMenu = function() {
             $scope.$emit("changeMenu", $scope.prevMenu);
-        }
+        };
 
         /*
          * init call
@@ -314,4 +345,4 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
      }
-     ]);
+]);

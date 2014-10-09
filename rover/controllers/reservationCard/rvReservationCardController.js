@@ -9,7 +9,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.viewState.identifier = "STAY_CARD";
 
 		$scope.heading = 'Staycard';
-		$scope.$emit('setHeading', $scope.heading);
+		$scope.setHeadingTitle($scope.heading);
 
 		var title = "Staycard";
 		$scope.setTitle(title);
@@ -95,70 +95,49 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		 * Handles time line click events
 		 * @param {string} time line
 		 */
+		// CICO-9692- Changes added to intitate route state change for both PMSconnected and standalone.
+		// before state change was not implemented for reservation tabs - upcoming, current a& history
+		// hence back navigation will redirect to first loaded reservation staycard
 		$scope.showTimeLineReservation = function(timeline) {
+			$scope.timeline = timeline;
+			var count = 0;
 			if (timeline == "current") {
-				$scope.timeline = "current";
 				$scope.reservationList = $scope.data.reservation_list.current_reservations_arr;
-
-				if ($scope.countCurrent > 0) {
-					$scope.currentReservationId = $scope.data.reservation_list.current_reservations_arr[0].confirmation_num;
-					$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-				} else {
-					$scope.currentReservationId = "";
-					$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-				}
-				//This status is used to show appr message if count of reservations in selected time line is zero
-				$scope.reservationDisplayStatus = ($scope.countCurrent > 0) ? true : false;
-
+				count = $scope.countCurrent;
 			}
-			if (timeline == "upcoming") {
-				$scope.timeline = "upcoming";
+			else if (timeline == "upcoming") {
 				$scope.reservationList = $scope.data.reservation_list.upcoming_reservations_arr;
-				if ($scope.countUpcoming > 0) {
-					$scope.currentReservationId = $scope.data.reservation_list.upcoming_reservations_arr[0].confirmation_num;
-					$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-				} else {
-					$scope.currentReservationId = "";
-					$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-				}
-				//This status is used to show appr message if count of reservations in selected time line is zero
-				$scope.reservationDisplayStatus = ($scope.countUpcoming > 0) ? true : false;
-
+				count = $scope.countUpcoming;
 			}
-			if (timeline == "history") {
-				$scope.timeline = "history";
+			else if (timeline == "history") {
 				$scope.reservationList = $scope.data.reservation_list.history_reservations_arr;
-				if ($scope.countHistory > 0) {
-					$scope.currentReservationId = $scope.data.reservation_list.history_reservations_arr[0].confirmation_num;
-					$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-				} else {
-					$scope.currentReservationId = "";
-					$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-				}
-				//This status is used to show appr message if count of reservations in selected time line is zero
-				$scope.reservationDisplayStatus = ($scope.countHistory > 0) ? true : false;
+				count = $scope.countHistory;
 			}
+			if (count>0){
+				$scope.currentReservationId = $scope.reservationList[0].confirmation_num;
+				$scope.getReservationDetails($scope.reservationList[0].confirmation_num, $scope.reservationList[0].id)
+			}
+			else {
+				$scope.currentReservationId = "";
+				$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
+			}
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = (count > 0) ? true : false;
 			$scope.$broadcast('RESERVATIONLISTUPDATED');
-
 		};
+
 		/*
 		 * get reservation details on click each reservation
 		 * @param {string} current clicked confirmation number
 		 */
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
-
-			 
-			 if($rootScope.isStandAlone){
-			 	$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+			// CICO-9709 - Reintiate reservation main data
+			$scope.initReservationData();
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
 					"confirmationId": currentConfirmationNumber,
 					"isrefresh": true
-				});
-			 } else {
-			 	$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
-			 }
-			
-			$scope.currentReservationId = currentConfirmationNumber;
+			});
 		};
 		/*
 		 * To show the payment data list

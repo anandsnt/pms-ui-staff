@@ -2,31 +2,38 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 	
 	var that = this;
 
+	var availabilityGridDataFromAPI = null;
+
 	this.data = {};
 
-	this.roomAvailabilityData = {};
-	this.getData = function(){
-		return that.data;
-	}
+	this.getGraphData = function(){
+		return that.data.graphData;
+	};
+	this.getGridData = function(){
+		return that.data.gridData;
+	};
+
 	this.updateData = function(data){
 		that.data = data;
 	};
 
-	this.restructureDataForUI = function(dataFromAPI){
-		var roomAvailabilityData= dataFromAPI.roomAvailabilityData;
-		var occupanyData 		= dataFromAPI.occupancyTargetted;
+	var formGridData = function(roomAvailabilityData){
+		var gridData = {};
+
+		//array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [];
 		var occupancies 		= [];
 		var bookableRooms 		= [];
 		var availableRooms 		= [];
 		var outOfOrderRooms 	= [];
 		var reservedRooms 		= [];
-		var overBookableRooms 	= [];
-		var occupanciesActual	= [];
-		var occupanciesTargeted = [];		
+		var overBookableRooms 	= [];		
 		var availableRoomsWithBookableRooms = [];
-		var individualAvailableRooms = [];
+		var individualAvailableRooms = [];	
 
+
+		var currentRow = null;
+		var totalRooms = roomAvailabilityData.physical_count;
 
 		//web service response is arrogant!!, requested to change. no use
 		// before looking into the code, please have good look in the webservice response.
@@ -40,45 +47,37 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		}
 
 		for(i = 0; i < roomAvailabilityData.results.length; i++){
-			var dateToCheck = tzIndependentDate(roomAvailabilityData.results[i].date);
+			currentRow = roomAvailabilityData.results[i];
+
+			var dateToCheck = tzIndependentDate(currentRow.date);
 			var isWeekend = dateToCheck.getDay() == 0 || dateToCheck.getDay() == 6;
-			dates.push({'date': roomAvailabilityData.results[i].date, 'isWeekend': isWeekend, 'dateObj': new Date(roomAvailabilityData.results[i].date)});
+			dates.push({'date': currentRow.date, 'isWeekend': isWeekend, 'dateObj': new Date(currentRow.date)});
 
-			occupancies.push((roomAvailabilityData.results[i].house.sold / roomAvailabilityData.physical_count) * 100);
+			occupancies.push((currentRow.house.sold / totalRooms) * 100);
 
-			bookableRooms.push(roomAvailabilityData.physical_count - roomAvailabilityData.results[i].house.out_of_order);
+			bookableRooms.push(totalRooms - currentRow.house.out_of_order);
 
-			availableRooms.push(roomAvailabilityData.results[i].house.availability);
+			availableRooms.push(currentRow.house.availability);
 			//web service response is arrogant!!, requested to change. no use :(
-			for(var j = 0; j < roomAvailabilityData.results[i].room_types.length; j++){
-				var id = roomAvailabilityData.results[i].room_types[j].id;
+			for(var j = 0; j < currentRow.room_types.length; j++){
+				var id = currentRow.room_types[j].id;
 				for(var k = 0; k < individualAvailableRooms.length; k++){
 					if(individualAvailableRooms[k].id == id){
-						individualAvailableRooms[k].availableRoomNumberList.push(roomAvailabilityData.results[i].room_types[j].availability);
+						individualAvailableRooms[k].availableRoomNumberList.push(currentRow.room_types[j].availability);
 						break;
 					}
 				}
 			}
 
-			outOfOrderRooms.push(roomAvailabilityData.results[i].house.out_of_order);
+			outOfOrderRooms.push(currentRow.house.out_of_order);
 
-			reservedRooms.push(roomAvailabilityData.results[i].house.sold);
+			reservedRooms.push(currentRow.house.sold);
 			//hardcoded
 			overBookableRooms.push(1);
 			availableRoomsWithBookableRooms.push(3);
 
 		}
-		var IsOccupancyTargetSetBetween = false;
-		for(i = 0; i < occupanyData.results.length; i++){	
-			var actual = escapeNull(occupanyData.results[i].actual) == "" ? 0 : occupanyData.results[i].actual;
-			var target = escapeNull(occupanyData.results[i].target) == "" ? 0 : occupanyData.results[i].target;
-			occupanciesActual.push((actual / roomAvailabilityData.physical_count) * 100);
-			occupanciesTargeted.push((target / roomAvailabilityData.physical_count) * 100);
-			if(target > 0) {
-				IsOccupancyTargetSetBetween = true;
-			}
-		}
-		var availabilityData = {
+		gridData = {
 			'dates'				: dates,
 			'occupancies'		: occupancies,
 			'bookableRooms'		: bookableRooms,
@@ -88,13 +87,94 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 			'overBookableRooms'	: overBookableRooms,
 			'availableRoomsWithBookableRooms': availableRoomsWithBookableRooms,
 			'individualAvailableRooms': individualAvailableRooms,
-			'totalRooms'		: roomAvailabilityData.physical_count,
+			'totalRooms'		: roomAvailabilityData.physical_count
+		}
+		return gridData;		
+	}
+
+	var formGraphData = function(dataFromAvailability, occupancyData){
+		// returning object
+		var graphData = {};
+
+		//array to keep all data, we will append these to above dictionary after calculation
+		var dates 				= [];
+		var bookableRooms 		= [];
+		var outOfOrderRooms 	= [];
+		var reservedRooms 		= [];
+		var availableRooms 		= [];
+		var occupanciesActual	= [];
+		var occupanciesTargeted = [];	
+
+		//used to show/hide the occupancy target checkbox
+		var IsOccupancyTargetSetBetween = false;
+
+		//variables for single day calculation
+		var bookableRoomForADay 		= '';
+		var outOfOrderRoomForADay 		= '';
+		var reservedRoomForADay			= '';
+		var availableRoomForADay		= '';
+		var occupanciesActualForADay	= '';
+		var occupanciesTargetedForADay 	= '';
+		var date 						= '';
+		var totalRoomCount = dataFromAvailability.physical_count;
+		var currentRow = null;
+		for(var i = 0; i < dataFromAvailability.results.length; i++){	
+			currentRow = dataFromAvailability.results[i];
+			
+			// date for th day
+			date = {'dateObj': new Date(currentRow.date)};
+			
+			//forming bookable room data for a day
+			//total number of rooms - outoforder for that day
+			bookableRoomForADay = totalRoomCount - currentRow.house.out_of_order;
+			bookableRoomForADay = ( bookableRoomForADay / totalRoomCount ) * 100;
+			
+			// forming outoforder room data for a day
+			outOfOrderRoomForADay = ( currentRow.house.out_of_order / totalRoomCount ) * 100;
+
+			//forming reserved room data for a day
+			reservedRoomForADay = ( currentRow.house.sold / totalRoomCount ) * 100;
+
+			//forming available room for a day
+			availableRoomForADay = (currentRow.house.availability / totalRoomCount ) * 100;
+
+			//pusing all these to array
+			dates.push(date);
+			bookableRooms.push(bookableRoomForADay);
+			outOfOrderRooms.push(outOfOrderRoomForADay);
+			reservedRooms.push(reservedRoomForADay);
+			availableRooms.push(availableRoomForADay);
+		}
+
+		//since occupancy data is from another API, results may have length  lesser/greater than availability
+		for(i = 0; i < occupancyData.results.length; i++){			
+			currentRow = occupancyData.results[i];	
+			occupanciesActualForADay = escapeNull(currentRow.actual) === "" ? 0 : currentRow.actual;
+			occupanciesTargetedForADay = escapeNull(currentRow.target) === "" ? 0 : currentRow.target;
+			occupanciesActual.push(occupanciesActualForADay);
+			occupanciesTargeted.push(occupanciesTargetedForADay);
+			if(occupanciesTargetedForADay > 0) {
+				IsOccupancyTargetSetBetween = true;
+			}
+		}
+
+		//forming data to return
+		graphData = {
+			'dates'				: dates,
+			'bookableRooms'		: bookableRooms,
+			'outOfOrderRooms'	: outOfOrderRooms,
+			'reservedRooms'		: reservedRooms,
+			'availableRooms'	: availableRooms,
+			'occupanciesActual'	: occupanciesActual,
 			'occupanciesActual'	: occupanciesActual,
 			'occupanciesTargeted': occupanciesTargeted,
-			'IsOccupancyTargetSetBetween': IsOccupancyTargetSetBetween
+			'totalRooms'	: totalRoomCount,
+
 		}
-		return availabilityData;
+		return graphData;		
+
 	};
+
 
 	/**
 	* function to fetch availability between from date & to date
@@ -111,8 +191,9 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		//Webservice calling section
 		var deferred = $q.defer();
 		var url = 'api/availability';
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(data) {
-			that.roomAvailabilityData.roomAvailabilityData = data;	
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(resultFromAPI) {
+			//storing response temporarily in that.data, will change in occupancy call
+			availabilityGridDataFromAPI= resultFromAPI;
 			return that.fetchOccupancyDetails(params, deferred);
 		},function(data){
 			deferred.reject(data);
@@ -133,9 +214,10 @@ sntRover.service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2', function($q, rvBa
 		};
 
 		var url = 'api/daily_occupancies';
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(data) {
-			that.roomAvailabilityData.occupancyTargetted = data;	
-			deferred.resolve(that.restructureDataForUI(that.roomAvailabilityData));
+		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function(responseFromAPI) { 
+			that.data.gridData 	= formGridData(availabilityGridDataFromAPI);
+			that.data.graphData = formGraphData(availabilityGridDataFromAPI, responseFromAPI);
+			deferred.resolve(that.data);
 		},function(data){
 			deferred.reject(data);
 		});	

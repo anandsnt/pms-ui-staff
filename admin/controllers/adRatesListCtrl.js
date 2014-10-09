@@ -1,5 +1,5 @@
 admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams','$filter','$timeout',
-	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter,$timeout){
+	function($scope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout){
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -196,7 +196,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.deleteRate = function(selectedId){
 
 		//call service for deleting
-		var params = {'id':selectedId};
 		var rateDeleteSuccess = function(){
 			$scope.tableParams.reload();
 			$scope.$emit('hideLoader');
@@ -205,7 +204,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.$emit('hideLoader');
 			$scope.errorMessage =  data;
 		};
-		$scope.invokeApi(ADRatesSrv.deleteRate, params, rateDeleteSuccess,rateDeleteFailure);
+		$scope.invokeApi(ADRatesSrv.deleteRate, selectedId, rateDeleteSuccess,rateDeleteFailure);
 
 
 	};

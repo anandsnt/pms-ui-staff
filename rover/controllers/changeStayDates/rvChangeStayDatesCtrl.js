@@ -2,7 +2,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
-
+		$s = $scope;
+		
 		// set a back button on header
 		$rootScope.setPrevState = {
 			title: $filter('translate')('STAY_CARD'),
@@ -16,12 +17,16 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.$emit('HeaderChanged', translatedHeading);
 		$scope.setTitle(translatedHeading);
 
+		//CICO-7897
+		$scope.isChanging = false;
+		var isFirstTime = true;
 		/**
 		 * setting the scroll options for the room list
 		 */
 		var scrollerOptions = {
 			preventDefault: false
 		};
+
 		$scope.setScroller('edit_staydate_updatedDetails', scrollerOptions);
 		$scope.setScroller('edit_staydate_calendar', scrollerOptions);
 
@@ -49,7 +54,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			//calender options used by full calender, related settings are done here
 			$scope.fullCalendarOptions = {
 				height: 450,
-				editable: true,
 				header: {
 					left: 'prev',
 					center: 'title',
@@ -64,6 +68,28 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				weekMode: 'fixed',
 				ignoreTimezone: false, // For ignoring timezone,
 				eventDrop: $scope.changedDateOnCalendar,
+				eventAfterRender: function(event, element){
+					//FIX FOR CICO-7897 explicitly setting draggability in touch evnvironment
+					if('startEditable' in event && 'ontouchstart' in document.documentElement){
+						element.draggable();
+					}									
+				},
+				//CICO-7897's 2nd fix
+				viewRender: function(event, element){
+					if(!isFirstTime){
+						$scope.$apply(function(){
+							$scope.isChanging = true;
+							$scope.$emit("showLoader");
+						});
+						setTimeout(function(){
+							$scope.$apply(function(){
+								$scope.isChanging = false;
+								$scope.$emit("hideLoader");
+							});
+						}, 0);
+					}
+					isFirstTime = false;					
+				}
 			};
 			setTimeout(function() {
 				$scope.refreshScroller('edit_staydate_calendar');
@@ -76,15 +102,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 				if (!that.checkIfStaydatesCanBeExtended()) {
 					$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
-					$scope.refreshScroller();
+					$scope.refreshMyScroller();
 				} else if (that.hasMultipleRates()) {
 					$scope.rightSideReservationUpdates = 'HAS_MULTIPLE_RATES';
-					$scope.refreshScroller();
+					$scope.refreshMyScroller();
 				}
 
 			}
 			that.renderFullCalendar();
-
 		};
 
 		/**
@@ -163,7 +188,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				if (data.restrictions.length > 0) {
 					$scope.rightSideReservationUpdates = 'RESTRICTION_EXISTS';
 					$scope.stayDetails.restrictions = data.restrictions;
-					$scope.refreshScroller();
+					$scope.refreshMyScroller();
 					return false;
 				}
 			}
@@ -199,31 +224,31 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			} else if ($scope.availabilityDetails.availability_status == "do_not_move") {
 				$scope.rightSideReservationUpdates = "ROOM_CANNOT_UNASSIGN";
 			}
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		}
 
 		//function to show restricted stay range div- only available for non-standalone PMS
 		this.showRestrictedStayRange = function() {
 			$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		};
 
 		//function to show not available room types div
 		this.showRoomNotAvailable = function() {
 			$scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE';
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		};
 
 		//function to show restricted stay range div- only available for non-standalone PMS
 		this.showRestrictedStayRange = function() {
 			$scope.rightSideReservationUpdates = 'STAY_RANGE_RESTRICTED';
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		};
 
 		//function to show not available room types div
 		this.showRoomNotAvailable = function() {
 			$scope.rightSideReservationUpdates = 'ROOM_NOT_AVAILABLE';
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		};
 
 		// function to show room list
@@ -231,58 +256,43 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.availableRooms = data.rooms;
 			//we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_TYPE_AVAILABLE';
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		};
 
-		//function to show room details, total, avg.. after successful checking for room available
+				//function to show room details, total, avg.. after successful checking for room available
 		$scope.showRoomAvailable = function() {
 			//setting nights based on calender checking/checkout days
 			var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
 			$scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-			var numNightsWithoutSR = $scope.calendarNightDiff; 
-			$scope.isStayRatesSuppressed = false;
+
 			//calculating the total rate / avg.rate
 			$scope.totRate = 0;
-			var checkinRate;
-			var stayRangeRatesSuppressed = true;
-
+			var checkinRate = '';
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-				
+
 				//we have to add rate between the calendar checkin date & calendar checkout date only
-				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime()
-			 	&& tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
-
-					if(this.is_sr == "false"){
-						stayRangeRatesSuppressed = false;
-						$scope.totRate += parseFloat(this.rate);
-					} else {
-						numNightsWithoutSR --;// Findout the number of days having no suppressed rate
-					}
+				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
+					$scope.totRate += escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
-
 				//if calendar checkout date is same as calendar checking date, total rate is same as that day's checkin rate
-				if ($scope.calendarNightDiff == 0 && tzIndependentDate(this.date).getTime() == $scope.checkinDateInCalender.getTime()) {
-					stayRangeRatesSuppressed = this.is_sr == "true" ? true: false;
-					checkinRate = this.is_sr == "true" ? $filter('translate')('SUPPRESSED_RATES_TEXT'): $scope.escapeNull(this.rate);
+				if (this.date == ($scope.stayDetails.details.arrival_date)) {
+					checkinRate = $scope.escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
 
 			});
-
 			//calculating the avg. rate
-			if (numNightsWithoutSR > 0) {
-				$scope.avgRate = Math.round(parseInt($scope.totRate) / numNightsWithoutSR + 0.00001);
+			if ($scope.calendarNightDiff > 0) {
+				$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100);
 			} else {
-				$scope.totRate = Math.round((parseInt(checkinRate) + 0.00001));;
-				$scope.avgRate = Math.round((parseInt($scope.totRate) + 0.00001));
-			}
-			//If the entair stay range has suppressed rate, then we display the avg daily rate and total staycost as SR
-			if(stayRangeRatesSuppressed){
-				$scope.isStayRatesSuppressed = true;
+				$scope.totRate = checkinRate;
+				$scope.avgRate = Math.round(($scope.totRate + 0.00001));
 			}
 			//we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		}
+
+		
 		//click function to execute when user selected a room from list (on ROOM_TYPE_AVAILABLE status)
 		$scope.roomSelectedFromList = function(roomNumber) {
 			$scope.roomSelected = roomNumber;
@@ -317,7 +327,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			if ($rootScope.isStandAlone) {
 				if (!that.checkIfStaydatesCanBeExtended()) {
 					$scope.rightSideReservationUpdates = 'NO_HOUSE_AVAILABLE';
-					$scope.refreshScroller();
+					$scope.refreshMyScroller();
 				}
 			}
 			/* event source that contains custom events on the scope */
@@ -539,12 +549,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			return events;
 		};
 
-		this.initialise();
-
-		$scope.refreshScroller = function() {
+		$scope.refreshMyScroller = function() {
 			setTimeout(function() {
-				$scope.myScroll['edit_staydate_updatedDetails'].refresh();
-				$scope.myScroll['edit_staydate_calendar'].refresh();
+				$scope.refreshScroller('edit_staydate_updatedDetails');
+				$scope.refreshScroller('edit_staydate_calendar');
 			}, 300);
 		};
 
@@ -560,8 +568,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 		$scope.$on('$viewContentLoaded', function() {
 
-			$scope.refreshScroller();
+			$scope.refreshMyScroller();
 		});
+
+		this.initialise();
 
 	}
 ]);

@@ -11,12 +11,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         //setting the main header of the screen
         $scope.heading = "Reservations";
 
-        // This is a temporary fix, has to be revisited as to why the heading is not changeable from the 
-        // inner controllers
-        $scope.$on("setHeading", function(e, value) {
-            $scope.heading = value;
-        });
-
         $scope.viewState = {
             isAddNewCard: false,
             pendingRemoval: {
@@ -74,7 +68,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     rateTotal: 0,
                     addons: [],
                     varyingOccupancy: false,
-                    stayDates: {}
+                    stayDates: {},
+                    isOccupancyCheckAlerted: false
                 }],
                 totalTaxAmount: 0,
                 totalStayCost: 0,
@@ -307,18 +302,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max == null || roomPref.max >= currOccupancy) {
                     return true;
                 }
-
-                ngDialog.open({
-                    template: '/assets/partials/reservation/alerts/occupancy.html',
-                    className: 'ngdialog-theme-default',
-                    scope: $scope,
-                    closeByDocument: false,
-                    closeByEscape: false,
-                    data: JSON.stringify({
-                        roomType: roomPref.name,
-                        roomMax: roomPref.max
-                    })
-                });
+                // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
+                if (!$scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted || $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted != activeRoom) {
+                    ngDialog.open({
+                        template: '/assets/partials/reservation/alerts/occupancy.html',
+                        className: 'ngdialog-theme-default',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        data: JSON.stringify({
+                            roomType: roomPref.name,
+                            roomMax: roomPref.max
+                        })
+                    });
+                    // CICO-9575: The occupancy warning should pop up only once during the reservation process if no changes are being made to the room type.
+                    $scope.reservationData.rooms[roomIndex].isOccupancyCheckAlerted = activeRoom;
+                }
                 return true;
             } else {
                 // TODO: 7641
@@ -346,9 +345,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
          * The computation happens at day level as the rate details can be varying for each day!
          */
 
-        $scope.calculateTax = function(date, amount, taxes, roomIndex, recordTaxes) {
+        $scope.calculateTax = function(date, amount, taxes, roomIndex) {
             var taxInclusiveTotal = 0.0; //Per Night Inclusive Charges
             var taxExclusiveTotal = 0.0; //Per Night Exclusive Charges
+            var taxesLookUp = {};
             /* --The above two are required only for the room and rates section where we 
              *  do not display the STAY taxes
              */
@@ -386,15 +386,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     } else if (taxAmountType == "PERSON") {
                         multiplicity = parseInt(children) + parseInt(adults);
                     }
+
+                    var taxOnAmount = amount;
+
+                    // if (!!tax.calculation_rules.length) {
+                    //     _.each(tax.calculation_rules, function(tax) {
+                    //         taxOnAmount = parseFloat(taxOnAmount) + parseFloat(taxesLookUp[tax]);
+                    //     });
+                    // }
+
                     /*
                      *  THE TAX CALCULATION HAPPENS HERE
                      */
                     var taxCalculated = 0;
                     if (taxData.amount_symbol == '%' && parseFloat(taxData.amount) != 0.0) {
-                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * amount));
+                        taxCalculated = parseFloat(multiplicity * (parseFloat(taxData.amount / 100) * taxOnAmount));
                     } else {
                         taxCalculated = parseFloat(multiplicity * parseFloat(taxData.amount));
                     }
+
+                    taxesLookUp[taxData.id] = taxCalculated;
+
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
                         if (isInclusive) {
                             taxInclusiveTotal = parseFloat(taxInclusiveTotal) + parseFloat(taxCalculated);
@@ -564,6 +576,58 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 } else {
                     finalRate = amountPerday;
                 }
+
+                //  CICO-9576 => TAXES FOR ADDONS
+
+                /**
+                 * Update finalRate for the current addon!
+                 * finalRate = finalRate + taxOn(finalRate)
+                 * Taxes associated with the addon will be present in addon.taxDetail array.
+                 * TODO :   Try to use the existing calculateTax method available to compute the tax on the finalRate value for the addon
+                 *          To find out how significant the date's value could be in affecting the tax computation.
+                 *          Days will have varyiung occupancies and addons rates are calculated based on the occupancies
+                 *          In case of addons with the amountType as person/child/adult we will have to consider the occupancy, in which case a varying occupancy adds to the existing confusion,
+                 *          To begin with, ASSUMING that occupancy of the first day is taken into consideration for such calculation, we can pass the arrival date to the $scope.calculateTax method
+                 *              so that the occupancy is considered for that day.
+                 *          ALSO, current granularity of the method is per day... whereas we compute the addon stuff on the whole stay... so multiplicity in case of PER_NIGHT will have to be
+                 *              taken into consideration!    [IMPORTANT]
+                 */
+
+                // we are sending the arrivaldate as in case of varying occupancies, it is ASSUMED that we go forward with the first day's occupancy
+                var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail, roomIndex);
+
+                // Go through the tax applied and update the calculations such that
+                // When Add-on items are being added to a reservation, their respective tax should also be added to the reservation summary screen, to 
+                //      a) the respective tax charge code (can be grouped with accommodation tax charge, should not be a separate line if the same tax charge code already exists)
+                //      b) the total tax amount
+
+                var taxAmount = 0;
+                _.each(taxApplied.taxDescription, function(description, index) {
+                    if (description.postType == "NIGHT") {
+                        var nights = $scope.reservationData.numNights || 1;
+                        if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                            $scope.reservationData.taxDetails[description.id] = description;
+                        } else {
+                            // add the amount here
+                            // Note Got to multiply with the number of days as this is a per night tax
+                            var nights = $scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights;
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                        }
+                        taxAmount = parseFloat(nights * taxApplied.exclusive);
+                    } else { //STAY
+                        if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
+                            $scope.reservationData.taxDetails[description.id] = description;
+                        } else {
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + parseFloat(description.amount);
+                        }
+                        taxAmount = parseFloat(taxApplied.exclusive);
+                    }
+                });
+
+                totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
+
+                //  CICO-9576
+
                 addOnCumulative += parseInt(finalRate);
                 addon.effectivePrice = finalRate;
             });
@@ -730,7 +794,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 }
 
             });
-            
+
             // appending departure date for UI handling since its not in API response IFF not a day reservation
             if (parseInt($scope.reservationData.numNights) > 0) {
                 $scope.reservationData.stayDays.push({
@@ -750,13 +814,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     }
                 }
             }
-
-            if (reservationDetails.reservation_card.payment_method_used != "") {
+            if (reservationDetails.reservation_card.payment_method_used !== "" && reservationDetails.reservation_card.payment_method_used !== null) {
                 $scope.reservationData.paymentType.type.description = reservationDetails.reservation_card.payment_method_description;
                 $scope.reservationData.paymentType.type.value = reservationDetails.reservation_card.payment_method_used;
             }
 
-            console.log('$scope.reservationData model - 2', $scope.reservationData);
 
             /* CICO-6069
              *  Comments from story:
@@ -777,7 +839,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                  * CICO-8504
                  * Initialize occupancy to the last day
                  * If midstay update it to that day's
-                 * 
+                 *
                  */
                 var lastDaydetails = _.last(reservationDetails.reservation_card.stay_dates);
                 $scope.reservationData.rooms[0].numAdults = lastDaydetails.adults;
@@ -905,5 +967,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         };
 
         $scope.initReservationData();
+
+        $scope.$on('REFRESHACCORDIAN', function() {
+            $scope.$broadcast('GETREFRESHACCORDIAN');
+        });
     }
 ]);

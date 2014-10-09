@@ -22,7 +22,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
         $scope.activeAddonCategoryId = -1;
         $scope.activeRoom = $scope.reservationData.rooms[0];
 
-        $scope.$emit('setHeading', 'Enhance Stay');
+        $scope.heading = 'Enhance Stay';
+        $scope.setHeadingTitle($scope.heading);
 
         $scope.showEnhancementsPopup = function() {
             var selectedAddons = $scope.activeRoom.addons;
@@ -81,6 +82,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
                 item.price = addon.price;
                 item.amountType = addon.amountType;
                 item.postType = addon.postType;
+                item.taxDetail = addon.taxes;
                 $scope.activeRoom.addons.push(item);
             } else {
                 $scope.activeRoom.addons[elemIndex].quantity += parseInt(addonQty);
@@ -116,6 +118,7 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', '$rootScope', 'addonDa
                         addonItem.title = item.name;
                         addonItem.description = item.description;
                         addonItem.price = item.amount;
+                        addonItem.taxes = item.taxes;
                         addonItem.stay = "";
                         if (item.amount_type != "") {
                             addonItem.stay = item.amount_type.description;

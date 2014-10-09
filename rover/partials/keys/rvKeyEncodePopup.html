@@ -1,7 +1,7 @@
 <div role="dialog" id="modal" class="modal-show">
 	
 	<form id="print-key" name="print-key" class="modal-content form key-delivery" ng-class="data.colorCodeClass">
-		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-class="data.colorCodeClassForClose">
+		<button ng-if="!viewFromBillScreen" id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-class="data.colorCodeClassForClose">
 			<span class="icons icon-close">
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>

@@ -219,6 +219,8 @@
     "DASHBOARD_HOUSEKEEPING_HEADING": "Housekeeping Dashboard",
     "DASHBOARD_FRONTDESK_HEADING": "Front Desk Dashboard",
     "SHOWING_DASHBOARD_TITLE": "Showing Dashboard",
+    "QUEUED_ROOMS_TITLE": "Queued Reservations"
+,
     "BUSSINESS_DATE_NOT_ENDED_MSG": "Business Day has not yet ended. Are you sure you want to initiate End of Day?.",
     "ENTER_PASSWORD": "Enter your Password",
     "PASSWORD": "Password",
@@ -282,7 +284,66 @@
 	"HK_TO": "To",
 
 	"PULL_REFRESH": "Pull down to refesh...",
-	"RELEASE_REFRESH": "Release to refesh...",    
+	"RELEASE_REFRESH": "Release to refesh...",
+	"ROOM_TYPE_FILTER_TITLE": "Room Type",
+
+	"SELECT_WORK_TYPE" : "Select a Work Type",
+	"OO" : "Out of Order",
+	"OS" : "Out of Service",
+	"FIND_ROOM_MAID" : "Find Room or Employee",
+
+	"DEP_TO_CLEAN" : "Departures to clean",
+	"SO_TO_CLEAN" : "Departures to clean",
+	"TOTAL" : "Total",
+	"TOTAL_STAFF_REQUIRED" : "Total Staff Required",
+	"TOTAL_ROOMS_ASSIGNED" : "Total Rooms Assigned",
+	"TOTAL_ROOMS_COMPLETED" : "Total Rooms Completed",
+
+	"MANAGE_WS" : "Manage Work Sheets",
+	"CREATE_WS" : "Create Work Sheet",
+	"EMPLOYEE_NAME": "Employee name",
+	"SELECT_EMPLOYEE" : "Select Employee",
+	"MAID" : "Maid",
+	"UNASSIGNED" : "Unassigned",
+	"ALL_UNASSIGNED" : "All unassigned",
+	"ALL_FLOORS" : "All floors",
+	"NO_ROOM_ASSIGNED" : "No room assigned.",
+	"DRAG_DROP_TO_ASSIGN" : "Drag and drop rooms to assign.",
+	"UNASSIGN_ROOM" : "Unassign Room",
+	"TIME_ALLOCATED" : "Time Allocated",
+	
+	"STAYOVERS" : "Stayovers",
+	"COMPLETED" : "Completed"
+
+
+,    "PRINT_ROOM_KEY" : "Print Room Key",
+    "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
+    "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
+    "TRY_AGAIN" : "Try Again",
+    "HOW_MANY_KEYS" : "How many keys?",
+    "KEY_PRINTED" : "Keys printed!",
+    "KEY_CONNECTED_STATUS" : "Connected to Key Card Reader!",
+    "KEY_CHECKIN_STATUS" : "Checking In",
+    "KEY_INHOUSE_STATUS" : "In House",
+    "KEY_CHECKOUT_STATUS" : "Checking Out",
+    "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
+    "KEY_PRINT_BUTTON_TEXT_KEY1" : "Print Key 1",
+    "KEY_PRINT_BUTTON_TEXT" : "Print Key",
+    "KEY_READING_STATUS" : "Reading key!",
+    "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
+    "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",
+    "KEY_WRITING_PROGRESS_STATUS" : "Writing key!",
+
+    "KEY_CREATED_STATUS" : "Key created!",
+    "KEY_CREATION_FAILED_STATUS" : "Key creation failed!",
+    "KEY_CREATION_FAILED_STATUS_LONG" : "Print key failed, Please try again",
+    "ADDING_BAND": "Adding Band..",
+    "BAND_ADDED": "Band added",
+    "KEY_CREATED_BAND_ADDING_FAILED": "Key created successfully, but failed in adding band",
+    "WRITING_BAND_TYPE": "Writing band type..",
+    "KEY_BAND_CREATED_SUCCESSFULLY": "Key, Band created successfully",
+    "KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE": "Key created, Band Added, Writing band type failed.."
+,    
     
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
@@ -329,8 +390,11 @@
     "SELECT_OR_ADD_CREDIT_CARD":"Select or Add Credit Card",
     "ADD_NEW_CARD":"Add New Card",
     "EXISTING_CARDS":"Existing Cards",
-    "ADD_CREDIT_CARD": "Add Credit Card"
-,    
+    "ADD_CREDIT_CARD": "Add Credit Card",
+    "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
+,	
+	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     
     "RESERVATION_SUMMARY": "Reservation summary",
     "ROOMS": "rooms",
@@ -432,7 +496,9 @@
     "YES":"Yes",
     "NO":"No",
     "SHOW_STAY_DATES": "Show Stay Dates",
-    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date"
+    "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
+    "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
@@ -475,27 +541,7 @@
     "NEW_HOTEL_LOYALTY_PROGRAM":"NEW HOTEL LOYALTY PROGRAM",
     "DEFAULT_NOTE_TOPIC":"GENERAL",
     "CLOSE": "Close",
-    "PRINT_ROOM_KEY" : "Print Room Key",
-    "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
-    "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
-    "TRY_AGAIN" : "Try Again",
-    "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!",
-    "KEY_CONNECTED_STATUS" : "Connected to Key Card Reader!",
-    "KEY_CHECKIN_STATUS" : "Check in Complete",
-    "KEY_INHOUSE_STATUS" : "In House",
-    "KEY_CHECKOUT_STATUS" : "Checking Out",
-    "KEY_PRINT_BUTTON_TEXT_NORMAL" : "Print Key",
-    "KEY_PRINT_BUTTON_TEXT_KEY1" : "Print Key 1",
-    "KEY_PRINT_BUTTON_TEXT" : "Print Key",
-    "KEY_READING_STATUS" : "Reading key!",
-    "KEY_UNABLE_TO_READ_STATUS" : "Unable to read the key!",
-    "KEY_GETTING_KEY_IMAGE_STATUS" : "Getting key image!",
-    "KEY_WRITING_PROGRESS_STATUS" : "Writing key!",
 
-    "KEY_CREATED_STATUS" : "Key created!",
-    "KEY_CREATION_FAILED_STATUS" : "Key creation failed!",
-    "KEY_CREATION_FAILED_STATUS_LONG" : "Print key failed, Please try again",
 	"PREFERENCES" : "Preferences",
 	"NEWSPAPER" : "Newspaper",
 	"ROOM_TYPE" : "Room type",
@@ -531,10 +577,11 @@
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
-    "DASHBOARD_SEARCH_INHOUSE": "In-House",
+    "DASHBOARD_SEARCH_INHOUSE": "Stayovers",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
     "DASHBOARD_SEARCH_VIP": "VIPS",
-    "SEARCH_NORMAL": "Find Reservation"
+    "SEARCH_NORMAL": "Find Reservation",
+    "PRE_CHECKIN":"Pre Check In"
 ,
 
 
@@ -581,6 +628,7 @@
     "PRICE": "Price",
     "PACKAGE": "Package",
     "INCL": "INCL",
+    "EXCL": "EXCL",
     "EXPENSE": "Expense",
     "LOCATION": "Location",
     "GUEST_BALANCE": "Guest Balance",
@@ -680,5 +728,10 @@
     "REMOVE_ITEM":"Remove item",
     "UNIT":"unit",
     "AT":"at",
-    "POST_CHARGES_LABEL": "Post Room Charges"
+    "POST_CHARGES_LABEL": "Post Room Charges",
+    "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS",
+    "DISAGREE_BUTTON_LABEL":"Disagree",
+    "AGREE_BUTTON_LABEL":"Agree",
+    "NO_POST_ENABLED":"ROOM CHARGE ENABLED",
+    "NO_POST_DISABLED":"ROOM CHARGE DISABLED"
 }

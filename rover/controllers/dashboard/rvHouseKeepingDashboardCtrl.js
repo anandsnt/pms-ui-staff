@@ -9,6 +9,8 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 
   	$scope.showDashboard = true; //variable used to hide/show dabshboard
 
+    $scope.disableReservations = true;
+
     // we are hiding the search results area
     $scope.$broadcast("showSearchResultsArea", false);     
 
@@ -55,6 +57,7 @@ sntRover.controller('RVhouseKeepingDashboardController',['$scope', '$rootScope',
 
     //dont show Latecheckout icon
     $scope.shouldShowLateCheckout = false; 
+    $scope.shouldShowQueuedRooms  = false;
 
     /**
     *   a recievder function to show erorr message in the dashboard

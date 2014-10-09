@@ -10,7 +10,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
 
-            $scope.$emit('setHeading', 'Reservations');
+            $scope.heading = 'Reservations';
+            $scope.setHeadingTitle($scope.heading);
+
             // Check flag to retain the card details
             if (!$scope.reservationData.isSameCard) {
                 $scope.initReservationData();
@@ -22,8 +24,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                 //They are added to the reservation by default later on, 
                 //but should be copied to the Search screen as well
                 $scope.viewState.reservationStatus.confirm = false;
-                $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
-                $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
+                if($scope.reservationDetails.guestCard.id != ''){
+                    $scope.searchData.guestCard.guestFirstName = $scope.reservationData.guest.firstName;
+                    $scope.searchData.guestCard.guestLastName = $scope.reservationData.guest.lastName;
+                }
                 $scope.companySearchText = (function() {
                     if ($scope.reservationData.company.id != null && $scope.reservationData.company.id != "") {
                         return $scope.reservationData.company.name;
@@ -277,6 +281,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                 $('#ui-datepicker-overlay').remove();
             }
         };
+
+        /**
+        Fix for CICO-9573: ng: Rover: Create Reservation - Guest Card details are not refreshed when user tries to create reservation against another guest
+        **/
+        $scope.reservationGuestSearchChanged = function(){
+            // check whether guest card attached and remove if attached.
+            $scope.reservationDetails.guestCard.id = '';
+        }
 
     }
 ]);

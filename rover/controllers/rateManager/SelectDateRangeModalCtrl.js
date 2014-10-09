@@ -1,57 +1,69 @@
-sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','dateFilter','$rootScope', function($scope,  ngDialog, $filter, dateFilter,$rootScope){
+sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngDialog','$filter','dateFilter','$rootScope', 
+	function(filterDefaults, $scope,  ngDialog, $filter, dateFilter, $rootScope) {
+	'use strict';
 
-	$scope.setUpData = function(){
+	var filterData = $scope.currentFilterData,
+		businessDate = tzIndependentDate($rootScope.businessDate),
+		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
+		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date,
+		fromDateOffset = _.isEmpty(fromDate) ? (new Date()).getMonth() - businessDate.getMonth() : undefined,
+		toDateOffset = _.isEmpty(toDate) ? fromDateOffset - 1 : undefined;
 
-		if($scope.currentFilterData.begin_date.length > 0){
-			$scope.fromDate = $scope.currentFilterData.begin_date;
-		}else{
-			$scope.fromDate =tzIndependentDate($rootScope.businessDate);
-		};
-		if($scope.currentFilterData.end_date.length > 0){
-			$scope.toDate = $scope.currentFilterData.end_date
-		}
-		else{
-			$scope.toDate = tzIndependentDate($rootScope.businessDate);
-		};
-		
+	$scope.setUpData = function() {		
+		$scope.fromDate = fromDate;
+		$scope.toDate = toDate;
 
 		$scope.fromDateOptions = {
+			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
-			minDate: tzIndependentDate($rootScope.businessDate),
-			yearRange: "0:+10",
-			onSelect: function() {
+			showCurrentAtPos: fromDateOffset,
+			yearRange: "-5:+5",
+			onSelect: function(dateText, datePicker) {
+				datePicker.drawMonth += fromDateOffset;
 
-				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
+				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.toDate = $scope.fromDate;
 				}
 			}
 		};
 
 		$scope.toDateOptions = {
+			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
-			minDate: tzIndependentDate($rootScope.businessDate),
-			yearRange: "0:+10",
-			onSelect: function() {
+			showCurrentAtPos: toDateOffset,
+			yearRange: "-5:+5",
+			onSelect: function(dateText, datePicker) {
+				datePicker.drawMonth += toDateOffset;
 
-				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)){
+				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.fromDate = $scope.toDate;
 				}
 			}
 		};
 
-		$scope.errorMessage='';
+		$scope.errorMessage = '';
 	};
 
 	$scope.setUpData();
-	$scope.updateClicked = function(){
-		$scope.currentFilterData.begin_date = $scope.fromDate;
-		$scope.currentFilterData.end_date = $scope.toDate;
-		$scope.currentFilterData.selected_date_range = dateFilter($scope.currentFilterData.begin_date, $rootScope.dateFormat) + " to " + dateFilter($scope.currentFilterData.end_date, $rootScope.dateFormat);
+
+	$scope.updateClicked = function() {
+		filterData.begin_date = $scope.fromDate;
+		filterData.end_date = $scope.toDate;
+
+		filterData.selected_date_range = dateFilter($scope.fromDate, $rootScope.dateFormat) +
+										 ' to ' + 
+										 dateFilter($scope.toDate, $rootScope.dateFormat);
+
 		ngDialog.close();
 	};
-	$scope.cancelClicked = function(){
+
+	$scope.toggleUpdate = function() {
+		return _.isEmpty($scope.fromDate) || _.isEmpty($scope.toDate);
+	};
+
+	$scope.cancelClicked = function() {
 		ngDialog.close();
 	};
 }]);

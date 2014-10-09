@@ -10,15 +10,15 @@
 			<a ng-click="addNewClicked()" class="action add" translate>ADD_NEW</a>
 			<a ng-show="data.is_connected_to_pms =='true'"  ng-click="importFromPmsClicked($event)" class="action import" translate>IMPORT_FROM_PMS</a>
 		</header>
-
+		<section class="content-scroll">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-	<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
+	<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
 		<div id="new-form-holder"></div>
-		<table class="grid datatable" ng-table="tableParams">
+		<table class="grid datatable" ng-table="tableParams" template-pagination="nil">
 			<tbody>
 				<tr ng-repeat="item in $data">
-					<td data-title="'Code'" sortable="'charge_code'" ng-click="editSelected($index, item.value)" ng-hide="currentClickedElement == $index && isEdit">
+					<td header-class="text-left width-20" data-title="'Code'" sortable="'charge_code'" ng-click="editSelected($index, item.value)" ng-hide="currentClickedElement == $index && isEdit">
 						<a data-colspan="1" class="edit-data-inline">
 							{{item.charge_code}}
 						</a>
@@ -32,19 +32,20 @@
 					<td header-class="text-left width-20" header-class="text-center" data-title="'Type'" ng-hide="currentClickedElement == $index && isEdit">
 						{{item.charge_code_type}}
 					</td>
-					<td header-class="text-left" data-title="'Tax'"  ng-hide="currentClickedElement == $index && isEdit">
+					<td header-class="text-left width-20" data-title="'Tax'"  ng-hide="currentClickedElement == $index && isEdit">
 						<div class="linkwith" ng-repeat="link in item.link_with">
 							{{link}}
 						</div>
 					</td>
-					<td data-title="'Delete'"  class="delete" ng-hide="currentClickedElement == $index && isEdit">
+					<td header-class="text-left width-20" data-title="'Delete'"  class="delete" ng-hide="currentClickedElement == $index && isEdit">
 						<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.value)">item.value</a>
 					</td>
 					
-					<td colspan="6" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEdit"></td>
+					<td colspan="6" ng-include="getTemplateUrl()" ng-if="currentClickedElement == $index && isEdit"></td>
 
 				</tr>
 			</tbody>
 		</table>
+		</section>
 	</div>
 </section>

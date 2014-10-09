@@ -15,6 +15,7 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	var lastDropedTime = '';
 	$scope.assignedRoles = [];
 	$scope.rolesWithDashboards = [];
+	$scope.errorMessage = "";
 
 	$scope.getMyDashboards = function() { 
 
@@ -240,6 +241,10 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
     * @param {int} user id
     */
 	$scope.sendInvitation = function(userId){
+		console.log("send invitation");
+		if(userId == "" || userId == undefined){
+			return false;
+		}
 		var data = {"id": userId};
 	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
 	};

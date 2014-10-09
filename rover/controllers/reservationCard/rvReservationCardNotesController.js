@@ -4,10 +4,18 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter',
         /*
          *To save the reservation note and update the ui accordingly
          */
+        var init = function(){
+            
+            var hideNotes = true;
+            if($scope.reservationData.reservation_card.notes.reservation_notes.length > 0){
+                hideNotes = false;
+            }
 
-        $scope.reservationNotesState = {
-            hideDetails: true // TODO : make this flag true before sending to CR
-        }
+            $scope.reservationNotesState = {
+                hideDetails: hideNotes 
+            }
+        };
+        
 
         $scope.saveReservationNote = function() {
             if (!$scope.$parent.isNewsPaperPreferenceAvailable()) {
@@ -16,14 +24,18 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter',
                 return;
             }
             var successCallBackReservationNote = function(data) {
-                $scope.reservationnote = "";
-                data.topic = "GENERAL"; //$filter('translate')('DEFAULT_NOTE_TOPIC');
-                $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
-                $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+
+                if(!data.is_already_existing){
+                     $scope.reservationnote = "";
+                    data.topic = "GENERAL"; //$filter('translate')('DEFAULT_NOTE_TOPIC');
+                    $scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
+                    $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+                    
+                    setTimeout(function() {
+                        $scope.$parent.myScroll['resultDetails'].refresh();
+                    }, 700);
+                }
                 $scope.$parent.$emit('hideLoader');
-                setTimeout(function() {
-                    $scope.$parent.myScroll['resultDetails'].refresh();
-                }, 700);
             };
 
             var params = {};
@@ -56,5 +68,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter',
             var note_id = $scope.$parent.reservationData.reservation_card.notes.reservation_notes[index].note_id;
             $scope.invokeApi($scope.$parent.reservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote);
         };
+
+        init();
     }
 ]);

@@ -4,10 +4,10 @@
 	<!-- Navbar -->
 		<div ng-include="'/assets/partials/common/header.html'"></div>
 		<form role="search" name="search-form" method="get" id="search-form" class="search-form form float" action="" ng-click="clickedOnSearchArea()">
-			<div class="entry">
+			<div class="entry search">
 				<a id="clear-query" class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
 				<button type="submit" name="submit" class="icons icon-search">Search</button>
-				<input type="text" placeholder="Name, Group, Room No. or Confirmation No." name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+				<input type="text" class="query" placeholder="Name, Group, Room No. or Confirmation No." name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
 			</div>
 			<!-- %button.button.blank{name: "advanced", type: "button"} Advanced search -->
 		</form>
@@ -18,16 +18,13 @@
 
 				<div ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 					<ul id="search-results" class="search-results" style="width: 100%;">
-						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length == 0">
+						<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length == 0">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
-						
-							<a data-transition="inner-page" class="guest-check-in link-item float" ng-click="goToReservationDetails(row.id, row.confirmation)">
-
+							<a ng-click="goToReservationDetails(row.id, row.confirmation)">
 								<figure class="guest-image" ng-show="row.images.length!=0 ">	
 									<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),'second-image':(row.images.length >1 && image.is_primary==false)}">
 									<span class="vip" ng-show="row.vip==true">VIP</span>
 								</figure>
-
 								<div class="data">
 									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
 									<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
@@ -35,7 +32,6 @@
 									</span>
 									<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
 								</div>	
-
 								<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on)">				
 									<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 										{{row.late_checkout_time}}
@@ -44,14 +40,11 @@
 									<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
 									</span>
 								</div>	
-
 								<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)" >
 									<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
 										{{row.room}}
 									</span>			
 								</span>
-
-
 								<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
 							</a>
 						</li>

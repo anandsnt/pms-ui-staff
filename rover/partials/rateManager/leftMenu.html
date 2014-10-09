@@ -10,7 +10,7 @@
 
 					<div class="entry has-datepicker">
 						<label for="rmDateRange">DATE RANGE</label>
-						<input id="rmDateRange" placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+						<input id="rmDateRange" placeholder="{{defaults.DATE_RANGE_PLACEHOLDER}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
 						<button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
 					</div>
 
@@ -87,7 +87,7 @@
 					<hr/>
 
 					<div class="entry table-search1">
-						<label class="search-text" >NAME CARD, IATA # OR CORPORATE ID</label>
+						<label for="company-card" class="search-text" >NAME CARD, IATA # OR CORPORATE ID</label>
 						<span type="submit" name="submit" class="icons icon-search1"></span>
 						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
 					</div>
@@ -112,7 +112,7 @@
 							<div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
 							<div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
 							<img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
-							<h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
+							<h4 style="font-size: 16px; font-weight: bold;" ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
 						</li>
 					</ul>
 				</div>
@@ -125,7 +125,7 @@
 	</div>
 	<div class="entry action-filter">
 		<div class="actions float">
-			<button class="button green" type="button" ng-click="showRatesBtnClicked()" >Show Rates</button>
+			<button class="button green" type="button" ng-click="showRatesBtnClicked()" ng-disabled="toggleShowRates()" ng-class="{ grey: toggleShowRates() }" disabled="disabled">Show Rates</button>
 		</div>
 	</div>
 </div>

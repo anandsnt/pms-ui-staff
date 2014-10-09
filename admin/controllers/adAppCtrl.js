@@ -39,6 +39,16 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
 		$rootScope.currencySymbol = "";
+		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+	
+	    var routeChange = function(event, newURL) {
+	      event.preventDefault();
+	      return;
+	    };
+	
+	    $rootScope.$on('$locationChangeStart', routeChange);
+	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
 
 		var setupLeftMenu = function(){
@@ -49,18 +59,20 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					menuIndex: "dashboard",
 					submenu: [],
 					iconClass: "icon-dashboard"
-				}, {
-					title: "MENU_AVAILABILITY",
-					action: "",
-					iconClass: "icon-availability",
-					submenu: [{
-						title: "MENU_HOUSE_STATUS",
-						action: ""
-					}, {
-						title: "MENU_AVAILABILITY",
-						action: ""
-					}]
-				}, {
+				}, 
+				// {
+				// 	title: "MENU_AVAILABILITY",
+				// 	action: "",
+				// 	iconClass: "icon-availability",
+				// 	submenu: [{
+				// 		title: "MENU_HOUSE_STATUS",
+				// 		action: ""
+				// 	}, {
+				// 		title: "MENU_AVAILABILITY",
+				// 		action: ""
+				// 	}]
+				// }, 
+				{
 					title: "MENU_FRONT_DESK",
 					//hidden: true,
 					action: "",
@@ -129,7 +141,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: ""
+						action: "staff#/staff/workmanagement/start"
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -162,12 +174,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: [],
 					iconClass: "icon-dashboard"
 				}, {
-					title: "MENU_SEARCH",
-					action: "staff#/staff/search/",
-					menuIndex: "search",
-					submenu: [],
-					iconClass: "icon-dashboard"
-				}, {
 					title: "MENU_HOUSEKEEPING",
 					//hidden: true,
 					action: "",
@@ -176,12 +182,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_ROOM_STATUS",
 						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
-					}, {
-						title: "MENU_TASK_MANAGEMENT",
-						action: ""
-					}, {
-						title: "MENU_MAINTAENANCE",
-						action: ""
 					}]
 				},{
 					title: "MENU_REPORTS",
@@ -190,17 +190,26 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: []
 				}];
 			}
-		}
+		};
 		
 		
 
 		$scope.$on("updateSubMenu", function(idx, item) {
+			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
+			if (item[1].action.split('#')[0] === "staff"){
+				$('body').addClass('no-animation');
+				$('#admin-header').css({'z-index':'0'});
+				$('section.content-scroll').css({'overflow':'visible'});
+			}
+
 			if (item && item[1] && item[1].submenu) {
 				$scope.showSubMenu = true;
 				$scope.activeSubMenu = item[1].submenu;
 			} else {
 				$scope.activeSubMenu = [];
 			}
+
+
 		});
 
 		if ($rootScope.adminRole == "hotel-admin") {
@@ -387,9 +396,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.businessDate = data.business_date;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
-		    console.log("currency code   : "+data.currency.value);
-		    console.log("currency symbol : "+$rootScope.currencySymbol);
-		    console.log("date format     : "+$rootScope.dateFormat);
 			$scope.$emit('hideLoader');
 
 		};
@@ -424,6 +430,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
+		}else{
+			$translate.use('EN');
 		}
 
 	
@@ -461,9 +469,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 		$scope.redirectToHotel = function(hotel_id) {
 			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
+				//CICO-9816 bug fix
+				$('body').addClass('no-animation');
+				$('#admin-header').css({'z-index':'0'});
+				$('section.content-scroll').css({'overflow':'visible'});
+
 				$window.location.href = "/admin";
 			}, function() {
-				console.log("error controller");
 			});
 		};
 

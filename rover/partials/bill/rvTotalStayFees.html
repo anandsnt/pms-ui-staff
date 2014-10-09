@@ -4,7 +4,7 @@
 </div>
 <div class="total-stay-fees float">
 	<div class="overview" ng-repeat="totalFees in billData.total_fees" >
-		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle has-arrow with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
+		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 			<span class="title"> <span translate>GUEST_BALANCE</span>:
 				<em class="label"> <span translate>AS_OF</span>
 					{{totalFees.fees_date |date:dateFormat}}
@@ -67,10 +67,15 @@
 		<a class="button with-icon green" ng-click='clickedAddUpdateCCButton()' ng-show="billData.credit_card_details.payment_type == 'CC'"> 
 			<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}</span>  
 		</a>
-		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> {{billData.guest_or_company_name}} </h3>
+		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> 
+			<span>{{billData.guest_or_company_name}}</span>
+			<a ng-if="isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
+			<a ng-if="!isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a> 
+		</h3>
 		
 		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''">	   <span>{{billData.credit_card_details.payment_type_description}}</span>
-			<a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
+			<a ng-if="isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
+			<a ng-if="!isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a>
 		</h3>
 		
 		<h3 ng-show="billData.credit_card_details.payment_type ==''"> {{ 'NOT_DEFINED' | translate }} <a class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a></h3>
@@ -79,12 +84,12 @@
 	<div class="details signature-wrapper" ng-show="showSignedSignature">
 		<figure>
 			<img src="{{reservationBillData.signature_details.signed_image}}" alt="">
-		</figure>dateFormat{{krish}}
+		</figure>
 		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
 	</div>
 
 	<!-- Bill Total Stay Fees -->
-	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
+	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails && totalFeesArray.fees_details.length>0 ">
 
 		<table class="total-fees">
 			<thead>
@@ -102,7 +107,7 @@
 			<!-- Total Stay fees details in CHECK IN status. -->
 			<tfoot>
 				<tr class="active edit">
-					<td colspan="2" class="total-label">
+					<td colspan="3" class="total-label">
 						<!-- Show email and print buttons -->
 						<a ng-click="clickedEmail()" class="button with-icon only-icon blue">
 							 <span class="icons icon-email"></span> 
@@ -130,7 +135,7 @@
 				</tr>
 				<!-- Show balance -->
 				<tr class="active" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
-					<td colspan="2" class="total-label"> <span translate>BALANCE_AS_OF</span>
+					<td colspan="3" class="total-label"> <span translate>BALANCE_AS_OF</span>
 					{{totalFeesArray.fees_date |date:dateFormat}}
 					): </td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
@@ -151,7 +156,7 @@
 					<!-- Show fee details -->
 				</tr>
 				<tr class="active" ng-show="showGuestBalance(reservationBillData.reservation_status)">
-					<td colspan="2" class="total-label"> <span translate>GUEST_BALANCE_AS_OF</span>
+					<td colspan="3" class="total-label"> <span translate>GUEST_BALANCE_AS_OF</span>
 						{{totalFeesArray.fees_date |date:dateFormat}}):
 					</td>
 					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
@@ -214,7 +219,7 @@
 						</select>
 					</div>
 					</td>
-					<td class="edit"><a class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="feesData.type.value != 'TAX'"> <span class="icons icon-pencil"></span> <span translate>EDIT</span> </a></td>
+					<td class="edit"><a ng-show="isStandAlone" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-show="feesData.type.value != 'TAX'"> <span class="icons icon-pencil"></span> <span translate>EDIT</span> </a></td>
 				</tr>
 			</tbody>
 

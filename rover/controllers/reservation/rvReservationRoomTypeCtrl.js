@@ -82,9 +82,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 
 		$scope.setScroller('room_types', {
-			click: true,
-			scrollbars: true,
-			hideScrollbar: false
+			preventDefault: false
 		});
 
 		$scope.setScroller('stayDates', {
@@ -98,7 +96,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			$scope.$emit('showLoader');
 			$scope.heading = 'Rooms & Rates';
-			$scope.$emit('setHeading', $scope.heading);
+			$scope.setHeadingTitle($scope.heading);
 
 			$scope.displayData.dates = [];
 			$scope.filteredRates = [];
@@ -476,6 +474,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			/*	Using the populateStayDates method, the stayDates object for the active room are 
 			 *	are updated with the rate and rateName information
 			 */
+			// CICO-9727: Reservations - Error thrown when user chooses SR rates for another room type
+			// bypass rate selection from room type other than $scope.stateCheck.preferredType
+			if($scope.stateCheck.preferredType > 0 && roomId !== $scope.stateCheck.preferredType){
+				return false;
+			}
 			if ($scope.stateCheck.stayDatesMode) {
 				if (!$scope.stateCheck.rateSelected.oneDay) {
 					// The first selected day must be taken as the preferredType
@@ -534,6 +537,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					}
 				}
 			});
+
+			$scope.$emit("REFRESHACCORDIAN");
 		}
 
 		$scope.showAllRooms = function() {
@@ -546,6 +551,21 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.setSelectedType = function(val) {
 			$scope.selectedRoomType = $scope.selectedRoomType == val.id ? -1 : val.id;
 			$scope.refreshScroll();
+		}
+		
+		// Fix for CICO-9536
+		// Expected Result: Only one single room type can be applied to a reservation.
+		// However, the user should be able to change the room type for the first night on the Stay Dates screen,
+		// while the reservation is not yet checked in. The control should be disabled for any subsequent nights.
+		$scope.resetRates = function(){
+			_.each($scope.reservationData.rooms[$scope.activeRoom].stayDates, function(stayDate, idx) {
+				stayDate.rate.id = '';
+                stayDate.rate.name ='';
+            });
+            $scope.stateCheck.rateSelected.allDays = false;
+            // reset value, else rate selection will get bypassed 
+            // check $scope.handleBooking method
+            $scope.stateCheck.rateSelected.oneDay = false;
 		}
 
 		$scope.filterRooms = function() {

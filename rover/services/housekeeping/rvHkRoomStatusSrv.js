@@ -2,7 +2,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 	'$http',
 	'$q',
 	'$window',
-	function($http, $q, $window) {
+	'BaseWebSrvV2',
+	function($http, $q, $window, BaseWebSrvV2) {
 
 		this.roomList = {};
 		
@@ -27,15 +28,18 @@ sntRover.service('RVHkRoomStatusSrv', [
 					"floorFilterSingle": '',
 					"floorFilterStart": '',
 					"floorFilterEnd": '',
-					'showAllFloors': true
+					'showAllFloors': true,
+					'filterByWorkType': '',
+					'filterByEmployee': ''
 				};
 		}
 
 		this.currentFilters = this.initFilters();
 		
-		this.fetch = function(){
+		var that = this;
+		this.fetch = function(businessDate) {
 			var deferred = $q.defer();
-			var url = '/house/search.json';
+			var url = '/house/search.json?date='+ businessDate;
 			
 			$http.get(url)
 				.success(function(response, status) {
@@ -56,7 +60,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    	// single calculate the class required
 					    	// will require additional call from details page
-					    	room.roomStatusClass = this.setRoomStatusClass(room);
+					    	that.setRoomStatusClass(room);
+
+					    	// set the leaveStatusClass or enterStatusClass value
+					    	that.setReservationStatusClass(room);
 					    }
 
 					    deferred.resolve(this.roomList);
@@ -105,6 +112,72 @@ sntRover.service('RVHkRoomStatusSrv', [
 			return deferred.promise;
 		}
 
+		// fetch all room types
+		var that = this;
+		this.allRoomTypes = {};
+		this.fetchAllRoomTypes = function(){
+			var url =  'api/room_types?exclude_pseudo=true&exclude_suite=true';	
+			var deferred = $q.defer();
+
+			BaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					angular.forEach(data.results, function(roomType, i) {
+						roomType.isSelected = false;
+						that.allRoomTypes[roomType.id] = roomType;
+					});
+					deferred.resolve(that.allRoomTypes);
+				}, function(data){
+					deferred.reject(data);
+				});
+
+			return deferred.promise;
+		};
+
+
+		// fetch all HK cleaning staffs
+		var HKMaids = [];
+		this.fetchHKMaids = function() {
+			var url = "/api/work_statistics/employees_list";
+			var deferred = $q.defer();
+
+			if ( HKMaids.length ) {
+				deferred.resolve(HKMaids);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						HKMaids = data.results;
+						deferred.resolve(HKMaids);
+					}, function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+		// get all all WorkTypes
+		var workTypesList = [];
+		this.getWorkTypes = function() {
+			var deferred = $q.defer(),
+				url = 'api/work_types';
+
+			if ( workTypesList.length ) {
+				deferred.resolve(workTypesList);
+			} else {
+				BaseWebSrvV2.getJSON(url)
+					.then(function(data) {
+						workTypesList = data.results;
+						deferred.resolve(workTypesList);
+					}.bind(this), function(data){
+						deferred.reject(data);
+					});
+			};
+
+			return deferred.promise;
+		};
+
+
+
 		this.toggleFilter = function(item) {
 			this.currentFilters[item] = !this.currentFilters[item];
 		};
@@ -117,34 +190,136 @@ sntRover.service('RVHkRoomStatusSrv', [
 			}
 		};
 
+
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room){
+		this.setRoomStatusClass = function(room) {
+			if(this.roomList.checkin_inspected_only == "true") {
+				if(room.hk_status.value == 'INSPECTED') {
+					room.roomStatusClass = 'clean';
+					return;
+				}
+				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP')) {
+					room.roomStatusClass = 'pickup';
+					return;
+				}
+			} else {
+				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED')) {
+					room.roomStatusClass = 'clean';
+					return;
+				}
+				if((room.hk_status.value == 'PICKUP')) {
+					room.roomStatusClass = 'pickup';
+					return;
+				}
+			}
 
-			if(this.roomList.checkin_inspected_only == "true"){
-				if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-					return 'room-clean';
-				}
-				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
-				}
-			}
-			else {
-				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-					return 'room-clean';
-				}
-				if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'room-pickup';
-				}
+			if( (room.hk_status.value == 'DIRTY') ) {
+				room.roomStatusClass = 'dirty';
+				return;
 			}
 
-			if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
-				return 'room-dirty';
+			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ) {
+				room.roomStatusClass = 'out';
+
+				if ( !!room.hk_status.oo_status ) {
+					if(this.roomList.checkin_inspected_only == "true") {
+						if(room.hk_status.oo_status == 'INSPECTED') {
+							room.roomStatusClassWithOO = 'clean';
+							return;
+						}
+						if((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'PICKUP')) {
+							room.roomStatusClassWithOO = 'pickup';
+							return;
+						}
+					} else {
+						if((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'INSPECTED')) {
+							room.roomStatusClassWithOO = 'clean';
+							return;
+						}
+						if((room.hk_status.oo_status == 'PICKUP')) {
+							room.roomStatusClassWithOO = 'pickup';
+							return;
+						}
+					}
+					if((room.hk_status.oo_status == 'DIRTY')) {
+						room.roomStatusClassWithOO = 'dirty';
+						return;
+					}
+				};
+
+				return;
 			}
-			if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-				return 'room-out';
+		};
+
+
+		// Moved from ctrl to srv as this is calculated only once
+		// keept as msg so that it can be called from crtl if needed
+		this.setReservationStatusClass = function(room) {
+
+			// room.leaveStatusClass is for first arrow. can be red(check-out), blue(inhouse) or gray(no-show)
+			// room.enterStatusClass is for second arrow. can be green(check-in) or gray(no-show)
+			switch(room.room_reservation_status) {
+				case 'Due out':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Stayover':
+					room.leaveStatusClass = 'inhouse';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Arrival':
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Arrived':
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Due out / Arrival':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Departed / Arrival':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Arrived / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Due out / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-out';
+					break;
+
+				case 'Arrived / Day use / Due out':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-out';
+					break;
+
+				case 'Arrived / Day Use / Due out / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-out';
+					break;
+
+				default:
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'no-show';
+					break;
 			}
-			return '';
 		};
 
 		// when user edit the room on details page
@@ -166,6 +341,5 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.description           = newDescription;
 			matchedRoom.roomStatusClass       = this.setRoomStatusClass(matchedRoom);
 		};
-
 	}
 ]);

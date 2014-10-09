@@ -1,5 +1,7 @@
-admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv',
-function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
+admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv', '$anchorScroll', '$timeout', '$location',
+function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv, $anchorScroll, $timeout, $location) {
+	$scope.halfwayPoint = 0;
+
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.rateTypeData = {};
@@ -11,6 +13,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	var fetchSuccess = function(data) {
 		$scope.data = data;
 		$scope.$emit('hideLoader');
+
+		$scope.halfwayPoint = data.length >> 1;
 	};
 
 	$scope.invokeApi(ADRateTypeSrv.fetch, {}, fetchSuccess);
@@ -22,6 +26,10 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		$scope.rateTypeData = {};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
 
 	/**
@@ -148,9 +156,8 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		if(!$scope.mouseEnterPopover){
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
-			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess);
+			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess, undefined, 'NOOP');
 		}
-
 	};
 
 	/**
@@ -159,7 +166,9 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	$scope.mouseLeavePopover = function(){
 		$scope.popoverRates = "";
 		$scope.mouseEnterPopover = false; 
-	}
+	};
 
-
+	$scope.showLoader = function() {
+		$scope.$emit('showLoader');
+	};
 }]);

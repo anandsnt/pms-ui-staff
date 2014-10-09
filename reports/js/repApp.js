@@ -64,7 +64,7 @@ reports.controller('reporstList', [
                 $scope.reportCount = response.total_count;
 
                 // looping through results to add more features
-                var hasDateFilter, hasCicoFilter, hasUserFilter, hasSortDate, hasSortUser;
+                var hasDateFilter, hasCicoFilter, hasUserFilter, hasSortDate, hasSortUser, sortDate;
                 for (var i = 0, j = $scope.reportList.length; i < j; i++) {
 
                     // add report icon class
@@ -72,6 +72,8 @@ reports.controller('reporstList', [
                         $scope.reportList[i]['reportIconCls'] = 'icon-upsell';
                     } else if ($scope.reportList[i]['title'] == 'Late Check Out') {
                         $scope.reportList[i]['reportIconCls'] = 'icon-late-check-out';
+                    } else if ($scope.reportList[i]['title'] == 'Web Check Out Conversion') {
+                        $scope.reportList[i]['reportIconCls'] = 'icon-check-out';
                     } else {
                         // lets have cico icon as
                         $scope.reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
@@ -106,7 +108,15 @@ reports.controller('reporstList', [
                     $scope.reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 
                     // sort by options
-                    $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
+                    $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields'];
+
+                    // CICO-8010: for Yotel make "date" default sort by filter
+                    if ( $scope.reportList[i].title === 'Check In / Check Out' || $scope.reportList[i].title === 'Late Check Out' ) {
+                        sortDate = _.find($scope.reportList[i]['sort_fields'], function(item) {
+                            return item.value === 'DATE';
+                        });
+                        $scope.reportList[i].chosenSortBy = sortDate.value;
+                    };
 
 
                     // IMPORTANT used date filter with option 'medium' to avoid incorrect date due to timezone change
@@ -666,7 +676,6 @@ reports.factory('RepFetchSrv', [
                         deferred.reject(['Internal server error occured']);
                     }
                     else if(status == 401){ // 401- Unauthorized
-                        console.log('lets redirect');
                         // so lets redirect to login page
                         $window.location.href = '/logout';
                     }else{
@@ -718,7 +727,6 @@ reports.factory('RepUserSrv', [
                         deferred.reject(['Internal server error occured']);
                     }
                     else if(status == 401){ // 401- Unauthorized
-                        console.log('lets redirect');
                         // so lets redirect to login page
                         $window.location.href = '/logout' ;
                     }else{
@@ -759,7 +767,6 @@ reports.factory('RepFetchReportsSrv', [
                         deferred.reject(['Internal server error occured']);
                     }
                     else if(status == 401){ // 401- Unauthorized
-                        console.log('lets redirect');
                         // so lets redirect to login page
                         $window.location.href = '/logout' ;
                     }else{
