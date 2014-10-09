@@ -11,6 +11,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
+  	$scope.fetchTerm = "";
 
   	// variable used track the & type if pre-loaded search results (nhouse, checkingin..)
 	$scope.searchType = "default";
@@ -87,12 +88,17 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
         $scope.$emit('hideLoader');
 		$scope.results = data;
-		$scope.firstSearch = false;
+		//TODO: commenting out for now. See if this has to be restored
+		//$scope.firstSearch = false;
 	    $scope.searchType = "default";
 	    $scope.isTyping = false;
+
 	    if($scope.results.length > 0){ //if there is any result then only we want to filter
     		displayFilteredResults();
     	}
+    	//TODO: commenting out for now. See if this has to be restored
+		//$scope.firstSearch = false;
+    	//$scope.fetchTerm = $scope.textInQueryBox;
 
 	    setTimeout(function(){
 	    	$scope.$apply();
@@ -154,11 +160,13 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	* function to perform filtering/request data from service in change event of query box
 	*/
 	$scope.queryEntered = function(){
+
 		$scope.isSwiped = false;
 		$scope.swipeNoResults = false;
 		$scope.isLateCheckoutList = false;
 	    $scope.isQueueReservationList = false;
 		var queryText = $scope.textInQueryBox;
+		
 		$scope.$emit("UPDATE_MANAGER_DASHBOARD");
 		//inoreder to prevent unwanted results showing while tyeping..
 		if(!$scope.isTyping){
@@ -167,6 +175,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 		//setting first letter as captial: soumya
 		$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
+		/*if($scope.fetchTerm == ""){
+		    $scope.fetchTerm = $scope.textInQueryBox;
+		}*/
 
 		if($scope.textInQueryBox.length == 0 && $scope.searchType == "default"){
 			$scope.clearResults();
@@ -204,7 +215,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	* function to perform filering on results.
 	* if not fouund in the data, it will request for webservice
 	*/
-	var displayFilteredResults = function(){ 		
+	var displayFilteredResults = function(){ 
 	    //if the entered text's length < 3, we will show everything, means no filtering    
 	    if($scope.textInQueryBox.length < 3){
 	      	//based on 'is_row_visible' parameter we are showing the data in the template      
@@ -218,7 +229,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	    }
 	    else{
 
-		    if($scope.searchType == "default" &&  $scope.textInQueryBox.indexOf($scope.textInQueryBox) == 0 && $scope.results.length > 0 && !$scope.firstSearch){
+	    	//see if the new query is the substring of fetch term
+		    if($scope.searchType == "default" &&  $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 && !$scope.firstSearch){
 		        var value = ""; 
 		        //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 		        //if it is zero, then we will request for webservice
@@ -239,13 +251,15 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		          	}  
 		        }
 		        $scope.isTyping = false;
-		        if(totalCountOfFound == 0){
+		        /*if(totalCountOfFound == 0){
 		        	var dataDict = {'query': $scope.textInQueryBox.trim()};
 		        	$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
-		        }
+		        }*/
 		    }
 		    else{
 		        var dataDict = {'query': $scope.textInQueryBox.trim()};
+				$scope.firstSearch = false;
+				$scope.fetchTerm = $scope.textInQueryBox;
 		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);         
 		    }
 	      	// we have changed data, so we are refreshing the scrollerbar
@@ -359,6 +373,9 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
     $scope.clearResults = function(){
     	$scope.results = [];
 	  	$scope.textInQueryBox = "";
+	  	$scope.fetchTerm = "";
+	  	$scope.firstSearch = true;
+
 	  	$scope.$emit("SearchResultsCleared");
 	  	
 	  	// dont remove yet
