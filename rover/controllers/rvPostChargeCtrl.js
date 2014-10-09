@@ -235,12 +235,15 @@ sntRover.controller('RVPostChargeController',
 				$scope.selectedChargeItem.isChosen = false;
 				$scope.selectedChargeItem.count = 0;
 				$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
-
+				//CICO-10013 fix
+				$scope.selectedChargeItem.userEnteredPrice = '';
 				$scope.selectedChargeItem = {};
 
 				// recalculate net price
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
+				//CICO-10013 fix
+				$scope.calToggle = 'QTY';
 			};
 
 			/**
