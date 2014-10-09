@@ -177,6 +177,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$scope.showSearchResultsArea = true;
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
+			$scope.$emit("UpdateHeading", 'MENU_ROOM_STATUS');	
 		}
 		/**
 		* when focusedout on query box, we need to hide the search results area
@@ -189,6 +190,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 					$scope.query = "";
 					$scope.showSearchResultsArea = false;
 					$scope.$emit("showDashboardArea", true);
+					$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');	
 				}
 			}, 100);
 			

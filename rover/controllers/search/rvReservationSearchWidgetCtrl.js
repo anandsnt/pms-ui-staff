@@ -258,7 +258,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	*/
 	$scope.focusOnSearchText = function(){
 		//we are showing the search area
-		$scope.$emit("showSearchResultsArea", true);		
+		$scope.$emit("showSearchResultsArea", true);	
+		$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');	
 		refreshScroller();
 	};
 
