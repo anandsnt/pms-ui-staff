@@ -153,8 +153,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				var time = this.item.time;
 				$scope.eachWorkShift = {
 					name: this.item.name,
-					hours: !!time ? time.split(':')[0] : '',
-					mins: !!time ? time.split(':')[1] : '',
+					hours: (!!time && time!="00:00") ? time.split(':')[0] : '',
+					mins: (!!time && time!="00:00") ? time.split(':')[1] : '',
 					hotel_id: $rootScope.hotelId,
 					id: this.item.id
 				}

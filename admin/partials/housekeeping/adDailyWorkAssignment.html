@@ -85,15 +85,15 @@
 			<tbody>
 				<tr ng-repeat="item in workShift">
 					<td width="50%" ng-click="openWorkShiftForm($index)" ng-hide="workShiftClickedElement == $index">
-						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
-						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
-						<em ng-if="item.is_system_defined">{{ 'SYSTEM_DEFINED' | translate }}</em>
+						<a ng-class="{'bold' : item.is_system}">{{ item.name }}</a>
+						<em ng-if="item.is_system">&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
 					<td ng-hide="workShiftClickedElement == $index">
-						<span>{{ item.time }}</span>
+						<span ng-if="item.time!='00:00'">{{ item.time }}</span>
+						<span ng-if="item.time =='00:00'">HH:MM</span>
 					</td>
-					<td class="delete" ng-if="!item.is_system_defined" ng-hide="workShiftClickedElement == $index">
-						<a ng-if="!item.is_system_defined" ng-click="deleteWorkShift()" class="icons icon-delete large-icon delete_item"></a>
+					<td class="delete" ng-hide="workShiftClickedElement == $index">
+						<a ng-if="!item.is_system" ng-click="deleteWorkShift()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
 					<td colspan="3" ng-show="workShiftClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddWorkShift.html'"></td>
 				</tr>
