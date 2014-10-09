@@ -9,7 +9,7 @@
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/paymentMethods/adAddPaymentMethod.html'"></div>		
+			<div id = "new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/paymentMethods/adAddPaymentMethod.html'"></div>		
 
 			<table class="grid">
 				<tbody ng-repeat="payment in data.payments">

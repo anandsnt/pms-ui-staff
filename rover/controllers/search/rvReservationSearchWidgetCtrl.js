@@ -92,8 +92,10 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		$scope.firstSearch = false;
 	    $scope.searchType = "default";
 	    $scope.isTyping = false;
-	    if($scope.results.length > 0)
+
+	    if($scope.results.length > 0){ //if there is any result then only we want to filter
     		displayFilteredResults();
+    	}
 
     	$scope.fetchTerm = $scope.textInQueryBox;
 
