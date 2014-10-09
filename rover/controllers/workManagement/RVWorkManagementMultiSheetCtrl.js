@@ -267,16 +267,53 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 			// time filtering on $scope.multiSheetState.unassignedFiltered
 			if (!!$scope.filters.checkin.before.hh || !!$scope.filters.checkin.after.hh || !!$scope.filters.checkout.after.hh || !!$scope.filters.checkout.after.hh) {
-				_.filter($scope.multiSheetState.unassignedFiltered, function(room) {
-					if (!!room.checkin_time || !!room.checkout_time) {
-						console.log(room);
-						return true;
+				$scope.multiSheetState.unassignedFiltered = _.filter($scope.multiSheetState.unassignedFiltered, function(room) {
+
+					if ((!!room.checkin_time && (!!$scope.filters.checkin.before.hh || !!$scope.filters.checkin.after.hh)) ||
+						(!!room.checkout_time && (!!$scope.filters.checkout.before.hh || !!$scope.filters.checkout.after.hh))) {
+						var cib = $scope.filters.checkin.before,
+							cia = $scope.filters.checkin.after,
+							cob = $scope.filters.checkout.before,
+							coa = $scope.filters.checkout.after,
+							get24hourTime = function(time) { //time is in "12:34 pm" format 
+								if (time) {
+									var firstSplit = time.toString().split(':');
+									var secondSplit = firstSplit[1].split(' ');
+									var returnString = firstSplit[0];
+									if (secondSplit[1].toString() && secondSplit[1].toString().toUpperCase() == "PM") {
+										returnString = parseInt(returnString) + 12;
+									} else {
+										returnString = (parseInt(returnString) + 12) % 12;
+									}
+									if (returnString.toString().length < 2) {
+										returnString = "0" + returnString.toString();
+									}
+									return returnString + ":" + secondSplit[0];
+								} else {
+									return "00:00"
+								}
+							}
+
+						if (!!cia.hh && !!cib.hh) { // CASE 1 & 2
+							return ((get24hourTime(room.checkin_time) >= get24hourTime(cia.hh + ':' + (cia.mm || '00') + " " + cia.am)) &&
+								(get24hourTime(room.checkin_time) <= get24hourTime(cib.hh + ':' + (cib.mm || '00') + " " + cib.am)));
+						} else if (!!cia.hh) { // CASE 1 : Arrival After
+							return get24hourTime(room.checkin_time) >= get24hourTime(cia.hh + ':' + (cia.mm || '00') + " " + cia.am);
+						} else if (!!cib.hh) { // CASE 2 : Arrival Before
+							return get24hourTime(room.checkin_time) <= get24hourTime(cib.hh + ':' + (cib.mm || '00') + " " + cib.am);
+						}
+
+						if (!!coa.hh && !!cob.hh) { // CASE 3 & 4
+							return ((get24hourTime(room.checkout_time) >= get24hourTime(coa.hh + ':' + (coa.mm || '00') + " " + coa.am)) &&
+								(get24hourTime(room.checkout_time) <= get24hourTime(cob.hh + ':' + (cob.mm || '00') + " " + cob.am)));
+						} else if (!!coa.hh) { // CASE 3 : Departure After
+							return get24hourTime(room.checkout_time) >= get24hourTime(coa.hh + ':' + (coa.mm || '00') + " " + coa.am);
+						} else if (!!cob.hh) { // CASE 4 : Departure Before
+							return get24hourTime(room.checkout_time) <= get24hourTime(cob.hh + ':' + (cob.mm || '00') + " " + cob.am);
+						}
 					}
-				})
+				});
 			}
-
-
-
 			refreshView();
 			$scope.closeDialog();
 			$timeout(function() {

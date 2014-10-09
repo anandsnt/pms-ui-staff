@@ -4,14 +4,14 @@
 
 			<span class="h2 message">Filter Rooms</span>
 			<div class="full-width">     
-				<div class="entry" style="width:50%">
+				<div class="entry half-width">
 					<div class="select full-width">
 		                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="filters.selectedFloor" ng-class="{'placeholder': !filters.selectedFloor}" ng-options="floor.floor_number as floor.description for floor in floors">
 		                    <option value="" selected>All floors</option>
 		                </select>   
 					</div>
 				</div>
-				<div class="entry" style="width:50%">	
+				<div class="entry half-width">	
 					<label class="checkbox inline" ng-class="{checked: filters.vipsOnly}">
 		                <span class="icon-form icon-checkbox" ng-class="{checked: filters.vipsOnly}"></span>
 		                <input type="checkbox" ng-class="{checked: filters.vipsOnly}" ng-model="filters.vipsOnly"/>
@@ -20,8 +20,8 @@
 	        	</div>
 	        </div>
 	            
-	        <div class="full-width" style="clear:both">
-	            <div class="entry" style="width:50%">
+	        <div class="full-width clear-both">
+	            <div class="entry half-width">
 					<div class="select">
 		                <select ng-model="filters.selectedFOStatus" ng-class="{'placeholder': !filters.selectedFOStatus}">
 		                    <!-- Add class="placeholder" if value="" is selected -->
@@ -31,7 +31,7 @@
 		                </select>
 					</div>
 				</div>
-				<div class="entry" style="width:50%">
+				<div class="entry half-width">
 					<div class="select">
 		                <select ng-model="filters.selectedReservationStatus" ng-class="{'placeholder': !filters.selectedReservationStatus}">
 		                    <!-- Add class="placeholder" if value="" is selected -->
@@ -47,73 +47,45 @@
 				</div>
 			</div>				
 			
-			<div class="entry full-width" style="clear:both">
+			<div class="entry full-width clear-both">
 				Arrival Time				
 				<div class="reservation-times"> 
 					<!-- Arrival time -->
-					<div class="check-data icons icon-time time-in"> <!-- Add class 'locked' if time is not editable -->
+					<div> 
 					    <label class="label"> > </label>
-					    <div class="select hour" style="width:33%;max-width:75px;float: left;">
-					        <select ng-model="filters.checkin.after.hh" ng-model="reservationParentData.checkinTime.hh" > <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">HH</option> <!-- Selected if time not set -->
-					            <option value="01">01</option>
-					            <option value="02">02</option>
-					            <option value="03">03</option>
-					            <option value="04">04</option>
-					            <option value="05">05</option>
-					            <option value="06">06</option>
-					            <option value="07">07</option>
-					            <option value="08">08</option>
-					            <option value="09">09</option>
-					            <option value="10">10</option>
-					            <option value="11">11</option>
-					            <option value="12">12</option>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.after.hh"> 
+					            <option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select minutes">
-					        <select ng-model="filters.checkin.after.mm" style="width:33%;max-width:75px;float: left;"> <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">MM</option> <!-- Selected if time not set -->
-					            <option value="00">00</option>
-					            <option value="15">15</option>
-					            <option value="30">30</option>
-					            <option value="45">45</option>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.after.mm"> 
+					            <option value="">MM</option> 
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select ampm">
-					        <select ng-model="filters.checkin.after.am" style="width:33%;max-width:75px;float: left;">
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.after.am" class="">
 					            <option value="AM" selected>AM</option>
 					            <option value="PM">PM</option>
 					        </select>
 					    </div>
-					    <label class="label" style="clear:both"> < </label>
-					    <div class="select hour" style="width:33%;max-width:75px;float: left;">
-					        <select ng-model="filters.checkin.before.hh" > <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">HH</option> <!-- Selected if time not set -->
-					            <option value="01">01</option>
-					            <option value="02">02</option>
-					            <option value="03">03</option>
-					            <option value="04">04</option>
-					            <option value="05">05</option>
-					            <option value="06">06</option>
-					            <option value="07">07</option>
-					            <option value="08">08</option>
-					            <option value="09">09</option>
-					            <option value="10">10</option>
-					            <option value="11">11</option>
-					            <option value="12">12</option>
+					    <label class="label clear-both"> < </label>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.before.hh" > 
+					            <option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select minutes">
-					        <select ng-model="filters.checkin.before.mm" style="width:33%;max-width:75px;float: left;"> <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">MM</option> <!-- Selected if time not set -->
-					            <option value="00">00</option>
-					            <option value="15">15</option>
-					            <option value="30">30</option>
-					            <option value="45">45</option>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.before.mm"> 
+					            <option value="">MM</option> 
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select ampm">
-					        <select ng-model="filters.checkin.before.am" style="width:33%;max-width:75px;float: left;">
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.before.am">
 					            <option value="AM" selected>AM</option>
 					            <option value="PM">PM</option>
 					        </select>
@@ -122,73 +94,44 @@
 				</div>
 			</div>
 
-			<div class="entry full-width" style="clear:both">
+			<div class="entry full-width clear-both">
 				Departure Time				
-				<div class="reservation-times"> 
-					<!-- Arrival time -->
-					<div class="check-data icons icon-time time-in"> <!-- Add class 'locked' if time is not editable -->
+				<div class="reservation-times"> 					
+					<div> 
 					    <label class="label"> > </label>
-					    <div class="select hour" style="width:33%;max-width:75px;float: left;">
-					        <select ng-model="filters.checkout.after.hh" > <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">HH</option> <!-- Selected if time not set -->
-					            <option value="01">01</option>
-					            <option value="02">02</option>
-					            <option value="03">03</option>
-					            <option value="04">04</option>
-					            <option value="05">05</option>
-					            <option value="06">06</option>
-					            <option value="07">07</option>
-					            <option value="08">08</option>
-					            <option value="09">09</option>
-					            <option value="10">10</option>
-					            <option value="11">11</option>
-					            <option value="12">12</option>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.after.hh" > 
+					        	<option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select minutes">
-					        <select ng-model="filters.checkout.after.mm" style="width:33%;max-width:75px;float: left;"> <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">MM</option> <!-- Selected if time not set -->
-					            <option value="00">00</option>
-					            <option value="15">15</option>
-					            <option value="30">30</option>
-					            <option value="45">45</option>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.after.mm"> 
+					            <option value="">MM</option> 
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select ampm">
-					        <select ng-model="filters.checkout.after.am" style="width:33%;max-width:75px;float: left;">
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.after.am">
 					            <option value="AM">AM</option>
 					            <option value="PM">PM</option>
 					        </select>
 					    </div>
-					    <label class="label" style="clear:both"> < </label>
-					    <div class="select hour" style="width:33%;max-width:75px;float: left;">
-					        <select ng-model="filters.checkout.before.hh" > <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">HH</option> <!-- Selected if time not set -->
-					            <option value="01">01</option>
-					            <option value="02">02</option>
-					            <option value="03">03</option>
-					            <option value="04">04</option>
-					            <option value="05">05</option>
-					            <option value="06">06</option>
-					            <option value="07">07</option>
-					            <option value="08">08</option>
-					            <option value="09">09</option>
-					            <option value="10">10</option>
-					            <option value="11">11</option>
-					            <option value="12">12</option>
+					    <label class="label clear-both"> < </label>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.before.hh" >
+					        	<option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select minutes">
-					        <select ng-model="filters.checkout.before.mm" style="width:33%;max-width:75px;float: left;"> <!-- Add attribute 'disabled' if time is not editable -->
-					            <option value="">MM</option> <!-- Selected if time not set -->
-					            <option value="00">00</option>
-					            <option value="15">15</option>
-					            <option value="30">30</option>
-					            <option value="45">45</option>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.before.mm"> 
+					            <option value="">MM</option>
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
 					        </select>
 					    </div>
-					    <div class="select ampm">
-					        <select ng-model="filters.checkout.before.am" style="width:33%;max-width:75px;float: left;">
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.before.am">
 					            <option value="AM">AM</option>
 					            <option value="PM">PM</option>
 					        </select>
@@ -197,7 +140,7 @@
 				</div>
 			</div>
 
-			<div class="actions" style="clear:both">
+			<div class="actions clear-both">
 				<button type="button" ng-click="filterUnassigned()" class="button green modal-close">Continue</button>
 				<button type="button" ng-click="closeDialog()" class="button blank modal-close">Cancel</button> 
 			</div>
