@@ -112,8 +112,7 @@
 									ON_SATURDAY_SUNDAY
 								</label>
 							</div>
-							
-							
+
 						</fieldset>
 
 						<fieldset class="holder left">
@@ -144,9 +143,12 @@
 
 							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.staff_emails_for_late_checkouts" label = "{{'EMAIL_ACCOUNTS_LABEL2' | translate}}" placeholder = ""></ad-textarea>
 
-
-
 						</fieldset>
+						
+						<fieldset class="holder right">
+							<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="checkoutData.room_verification_instruction" label = "{{'ROOM_VERIFICATION_INSTRUCTIONS' | translate}}" placeholder = ""></ad-textarea>
+							
+						</fieldset>	
 						
 						<div class="actions float">
 							<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>CANCEL</button>
