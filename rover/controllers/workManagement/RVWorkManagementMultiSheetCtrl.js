@@ -166,11 +166,38 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			header: {
 				work_type_id: $scope.workTypes[0].id
 			},
-			filters: {
-				selectedFloor: "",
-				selectedStatus: ""
-			},
 			assignments: {}
+		}
+
+		$scope.filters = {
+			selectedFloor: "",
+			selectedReservationStatus: "",
+			selectedFOStatus: "",
+			vipsOnly: false,
+			checkin: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			},
+			checkout: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			}
 		}
 
 		$scope.closeDialog = function() {
@@ -215,26 +242,46 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		 * Handling either/both
 		 */
 		$scope.filterUnassigned = function() {
+			$scope.$emit('showLoader');
 			$scope.multiSheetState.unassignedFiltered = [];
-			if (!$scope.multiSheetState.filters.selectedStatus && !$scope.multiSheetState.filters.selectedFloor) {
-				$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned;
 
-			} else if (!$scope.multiSheetState.filters.selectedStatus) {
-				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
-					floor_number: $scope.multiSheetState.filters.selectedFloor
-				});
-			} else if (!$scope.multiSheetState.filters.selectedFloor) {
-				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
-					current_status: $scope.multiSheetState.filters.selectedStatus
-				});
-			} else { //Both Filters
-				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
-					current_status: $scope.multiSheetState.filters.selectedStatus,
-					floor_number: $scope.multiSheetState.filters.selectedFloor
-				});
+			var filterObject = {};
+			//build the approp. filterObject 
+			if ($scope.filters.selectedFloor) {
+				filterObject.floor_number = $scope.filters.selectedFloor;
 			}
+			if ($scope.filters.selectedReservationStatus) {
+				filterObject.reservation_status = $scope.filters.selectedReservationStatus;
+			}
+			if ($scope.filters.vipsOnly) {
+				filterObject.is_vip = true;
+			}
+			if ($scope.filters.selectedFOStatus) {
+				filterObject.is_vip = $scope.filters.selectedFOStatus;
+			}
+			if (!$.isEmptyObject(filterObject)) {
+				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, filterObject);
+			} else {
+				$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned;
+			}
+
+			// time filtering on $scope.multiSheetState.unassignedFiltered
+			if (!!$scope.filters.checkin.before.hh || !!$scope.filters.checkin.after.hh || !!$scope.filters.checkout.after.hh || !!$scope.filters.checkout.after.hh) {
+				_.filter($scope.multiSheetState.unassignedFiltered, function(room) {
+					if (!!room.checkin_time || !!room.checkout_time) {
+						console.log(room);
+						return true;
+					}
+				})
+			}
+
+
+
 			refreshView();
 			$scope.closeDialog();
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 800);
 		}
 
 		$scope.showCalendar = function(controller) {

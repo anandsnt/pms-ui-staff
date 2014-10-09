@@ -18,7 +18,7 @@
             <div multi-select custom-template="workmanagement" input-model="employeeList" button-label="maid_name" item-label="maid_name"  max-labels="0" on-item-click="selectEmployee(data)" on-open="onEmployeeListOpened()" on-close="onEmployeeListClosed()" tick-property="ticked" disable-property="checkboxDisabled"></div>
         </div>
         <div class="entry task">
-            <label for="worksheet-work-type" translate>WORK_TYPE</label>
+            <label for="worksheet-work-type" translate>WORK TYPE</label>
             <div class="select">
                 <select ng-model="multiSheetState.header.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" id="worksheet-work-type" name="worksheet-work-type" ng-change="onWorkTypeChanged()">
                 </select>
