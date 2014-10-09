@@ -1,10 +1,16 @@
 sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog', 'RVKeyPopupSrv',  function($state, $rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.getRoomClass = function(reservationStatus){
-		var reservationRoomClass = "";
-		if(reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
-			reservationRoomClass = "has-arrow";
-		} 
+		var reservationRoomClass = '';
+		if(reservationStatus == 'CANCELED'){
+			reservationRoomClass ='overlay';
+		}
+		else if( !$rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED' && reservationStatus != 'CHECKEDIN' && reservationStatus != 'CHECKING_OUT'){
+			reservationRoomClass = 'has-arrow hover-hand';
+		}
+		else if($rootScope.isStandAlone && reservationStatus != 'NOSHOW' && reservationStatus != 'CHECKEDOUT' && reservationStatus != 'CANCELED'){
+			reservationRoomClass = 'has-arrow hover-hand';
+		}
 		return reservationRoomClass;
 	};
 	

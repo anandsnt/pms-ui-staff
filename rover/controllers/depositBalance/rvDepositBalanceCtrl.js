@@ -1,18 +1,18 @@
 sntRover.controller('RVDepositBalanceCtrl',[
 					'$scope',
-					'ngDialog', 
-					'$rootScope', 
+					'ngDialog',
+					'$rootScope',
 					'RVDepositBalanceSrv',
 					'RVPaymentSrv',
-					'$stateParams', 
-		function($scope, 
-				ngDialog, 
+					'$stateParams',
+		function($scope,
+				ngDialog,
 				$rootScope,
-				RVDepositBalanceSrv, 
+				RVDepositBalanceSrv,
 				RVPaymentSrv,
 				$stateParams){
 	BaseCtrl.call(this, $scope);
-	
+
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
 
 
@@ -35,30 +35,28 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.makePaymentData = {};
 	$scope.makePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonActive = false;
-	setTimeout(function(){
-		$scope.setScroller('available-cards');
-	}, 1000);
+	$scope.setScroller('available_cards', { click:true});
 	/*
 	 * Function to handle click on make payment button
 	 * If new card is added, then first we need to add the credit card and on success we make the payment
 	 * We should handle manual entry of new card, swiped card and select already existing cards
 	 */
 	$scope.clickedMakePayment = function(){
-		
-		
+
+
 		if($scope.isSwiped){
 			//$scope.handleSwipedData();
-				
+
 			$scope.savePayment("swiped");
-			
+
 		} else if($scope.addCardActive){
-			
+
 			$scope.handleMLISessionId();
 		} else {
-			
+
 			$scope.savePayment("selectedCard");
 		}
-		
+
 	};
 	/*
 	 * Manual entry cards - MLI session integration
@@ -81,29 +79,29 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		 sessionDetails.cardSecurityCode = $scope.depositBalanceNewCardData.ccv;
 		 sessionDetails.cardExpiryMonth = $scope.depositBalanceNewCardData.expiryMonth;
 		 sessionDetails.cardExpiryYear = $scope.depositBalanceNewCardData.expiryYear;
-		
+
 		 var callback = function(response){
 		 	$scope.$emit("hideLoader");
-		 	
+
 		 	if(response.status ==="ok"){
 
 		 		MLISessionId = response.session;
-		 		$scope.savePayment('manual');// call save payment details WS		 		
+		 		$scope.savePayment('manual');// call save payment details WS
 		 	}
 		 	else{
 		 		$scope.errorMessage = ["There is a problem with your credit card"];
-		 	}			
-		 	$scope.$apply(); 	
+		 	}
+		 	$scope.$apply();
 		 };
 
 		try {
-		    HostedForm.updateSession(sessionDetails, callback);	
+		    HostedForm.updateSession(sessionDetails, callback);
 		    $scope.$emit("showLoader");
 		}
 		catch(err) {
 		   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 		};
-		 		
+
 	};
 	/*
 	 * Function to save payment
@@ -124,7 +122,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 
 			var cardExpiry = ($scope.depositBalanceNewCardData.expiryMonth!=='' && $scope.depositBalanceNewCardData.expiryYear!=='') ? "20"+$scope.depositBalanceNewCardData.expiryYear+"-"+$scope.depositBalanceNewCardData.expiryMonth+"-01" : "";
-			
+
 			var dataToApiToAddNewCard = {
 				    card_expiry: cardExpiry,
 				    name_on_card: $scope.depositBalanceNewCardData.cardHolderName,
@@ -143,20 +141,20 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		 } else if(type === "selectedCard"){
 		 	var dataToMakePaymentApi = {
-				"payment_id": selectedPaymentIdFromList,
+				"guest_payment_id": selectedPaymentIdFromList,
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"amount": $scope.makePaymentData.amount
 			};
-		
+
 		//	alert(JSON.stringify(dataToMakePaymentApi));
 			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
 		 }
 		 // dataToApiToAddNewCard
 		 // add_to_guest_card
-		  
+
 	};
 	/*
-	 * Success callback of save payment. 
+	 * Success callback of save payment.
 	 * Do make payment on success
 	 */
 	$scope.successSavePayment = function(data){
@@ -170,11 +168,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		//alert("------pay----------"+paymentId)
 		//$scope.makePaymentData.amount
 		var dataToMakePaymentApi = {
-			"payment_id": paymentId,
+			"guest_payment_id": paymentId,
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"amount": $scope.makePaymentData.amount
 		};
-		
+
 	//	alert(JSON.stringify(dataToMakePaymentApi));
 		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
 	};
@@ -192,9 +190,9 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceNewCardData.expiryMonth = data.card_expiry.slice(-2);;
 		$scope.depositBalanceNewCardData.expiryYear  = data.card_expiry.substring(0, 2);;
 		$scope.depositBalanceNewCardData.cardHolderName  = data.name_on_card;
-		
+
 		$scope.$emit("hideLoader");
-		
+
 	});
 	/*
 	 * Show Add Card Active and show screen
@@ -215,7 +213,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 * Show existing payments Active and show screen
 	 */
 	$scope.clickedShowExistingCard = function(){
-		$scope.refreshScroller('available-cards');
+
 		$scope.addCardActive = false;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -223,6 +221,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceNewCardData.expiryMonth = "";
 		$scope.depositBalanceNewCardData.expiryYear  = "";
 		$scope.depositBalanceNewCardData.cardHolderName  = "";
+		$scope.refreshScroller('available_cards');
 	};
 	$scope.selectPayment = function(paymentId){
 		selectedPaymentIdFromList = paymentId;
@@ -234,7 +233,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				value.isSelected = true;
 			}
 		});
-		
+
 	};
 	$scope.showMakePaymentButtonStatus = function(){
 		var buttonClass = "";
@@ -253,11 +252,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			$scope.makePaymentButtonActive = false;
 		//}
 	};
-	
+
 	$scope.closeDepositModal = function(){
 		$scope.isDepositBalanceScreenOpened = false;
 		$scope.closeDialog();
 	};
 
-	
+
 }]);

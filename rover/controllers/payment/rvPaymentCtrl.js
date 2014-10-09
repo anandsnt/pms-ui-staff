@@ -82,9 +82,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.shouldShowDisabled = true;
 			
 		}
+
 		$scope.isLoading = false;
 		$scope.$emit("hideLoader");
-		
+
 
 		$scope.paymentTypeList = data;
 

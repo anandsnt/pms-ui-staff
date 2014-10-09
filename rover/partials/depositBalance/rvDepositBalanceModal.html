@@ -67,9 +67,13 @@
 				</li>
 			</ul>
 			<!-- Select cards, if exsist -->
-			<div id="select-make-payment-card" class="select-card" ng-hide="addCardActive">
-				<div id="available-cards" ng-iscroll='available-cards' ng-iscroll-delay='50'  data-is-existing-card="no" class="cards-list scrollable cards-list-height">
-					<div id="available-cards-wrapper" class="wrapper" >
+
+			<!-- <div id="select-make-payment-card" class="select-card scrollable cards-list-height" ng-hide="addCardActive">
+				<div id="available-cards" ng-iscroll='available-cards' ng-iscroll-delay='50'  data-is-existing-card="no" class="cards-list "> -->
+					
+			 <div id="select-make-payment-card" class="select-card " ng-hide="addCardActive">
+				<div  data-is-existing-card="no" class="cards-list scrollable existing-cards-height"  ng-iscroll='available_cards' ng-iscroll-delay='50' >
+					<div class="wrapper" >
 						<!-- Selected card -->
 						<label class="active-item item-payment primary" ng-click="selectPayment(existingPayments.value)" ng-show="existingPayments.is_credit_card" ng-repeat="existingPayments in depositBalanceData.data.existing_payments">
 							<figure class="card-logo">
@@ -88,9 +92,7 @@
 							</span> 
 						</label>
 					</div>
-					<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-						<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-					</div>
+					
 				</div>
 			</div>
 			<!-- New Card form - this is same as in {modals/pay-bill/card-attached.html}, lines 98-129 -->
