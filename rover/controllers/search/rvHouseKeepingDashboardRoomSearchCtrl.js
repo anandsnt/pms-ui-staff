@@ -161,6 +161,8 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	    $scope.clearResults = function(){
 		  	$scope.query = "";
 		  	$scope.$emit("showDashboardArea", true);
+		  	 //we are setting the header accrdoing to house keeping dashboard
+   			$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 		  	$scope.showSearchResultsArea = false;
 		  	$scope.isSearchResultsShowing = false;
 		  	if($scope.queryFunctionProccessing){
