@@ -16,7 +16,8 @@ var Resizable = React.createClass({
 				origin_y: e.pageY,
 				offset_y: $('.diary-timeline .wrapper').offset().top,
 				element_x: page_offset.left,
-				element_y: page_offset.top
+				element_y: page_offset.top,
+				left: page_offset.left
 			});
 		}
 	},
@@ -37,42 +38,50 @@ var Resizable = React.createClass({
 				origin_y: e.pageY,
 				offset_y: $('.diary-timeline .wrapper').offset().top,
 				element_x: page_offset.left,
-				element_y: page_offset.top
+				element_y: page_offset.top,
+				left: page_offset.left
 			});
 		}
 	},
 	__onMouseMove: function(e) {
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y, 
-			distance = Math.abs(delta_x) + Math.abs(delta_y),
-			left, top, margin_top = this.props.display.row_height + 6;
+			left;
+
+		left = this.state.element_x + delta_x;
 
 		if(!this.state.dragging &&
-		   distance > 3) {
+		   this.state.mouse_down_left) {
 			this.setState({
-				dragging: true
+				dragging: true,
+				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int 
 			}, function() {
-				this.props.__onDragStart(this.props.room, this.props.__dragData.data);
+				this.props.angular_evt.onResizeLeftStart(this.state.row, this.state.row_item, this.state.left);
 			});
 		} else if(this.state.dragging) {
-			left = this.state.element_x + delta_x - $('.diary-grid .wrapper')[0].scrollLeft;
-			top = this.state.element_y + delta_y - $('.diary-grid .wrapper')[0].scrollTop - this.state.offset_y;
-
 			this.setState({
-				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int , //document.body.scrollLeft,
-				top: (top / margin_top).toFixed() * margin_top
+				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int 
 			});
 		}
 	},
 	__onMouseUp: function(e) {
+		var delta_x = e.pageX - this.state.origin_x, 
+			delta_y = e.pageY - this.state.origin_y, 
+			left;
+
+		left = this.state.element_x + delta_x;
+
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__onMouseMove);
 
 		if(this.state.dragging) {
 			this.setState({
-				dragging: false
+				mouse_down_left: false,
+				mouse_down_right: false,
+				dragging: false,
+				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int 
 			}, function() {
-				this.props.__onDragStop(e);
+				this.props.angular_evt.onResizeLeftEnd(this.state.row, this.state.row_item, this.state.left);
 			});
 		}
 	},
@@ -84,19 +93,41 @@ var Resizable = React.createClass({
 	getInitialState: function() {
 		return {
 			data: this.props.data,
+			row: undefined,
+			row_item: undefined,
+			left: 0,
 			dragging: false,
 			mouse_down_left: false,
 			mouse_down_right: false
 		};
 	},
 	render: function() {
-		var i = 0, reservation, 
+		var model,
 			handle_width_ms = this.props.handle_width * this.props.display.px_per_ms,
+			left, right,
 			self = this;
 
-		while(!_.first(this.state.data[i++].reservations));
+		return React.DOM.div({
+			style: {
+				display: 'none'
+			}
+		});
+		/*if(!this.state.row_item) {
+			for(var i = 0; i < this.state.data.length; i++) {
+				for(var j = 0; j < this.state.data[i].reservations.length; j++) {
+					if(!model && this.state.data[i].reservations[j].temporary) {
+						model = this.state.data[i].reservations[j];
+						this.state.row = this.state.data[i];
+						this.state.row_item = model;
+					}
+				}
+			}
 
-		reservation = _.first(this.state.data[--i].reservations);
+			if(model) {
+				left = (model.start_date.getTime() - this.props.display.x_origin - this.props.display.x_0) * this.props.display.px_per_ms + 'px';
+				right = (model.end_date.getTime() - handle_width_ms - this.props.display.x_origin - this.props.display.x_0) * this.props.display.px_per_ms + 'px';
+			}
+		}
 
 		return React.DOM.div({
 			style: {
@@ -104,22 +135,26 @@ var Resizable = React.createClass({
 			}
 		},
 		React.DOM.div({
-			style: (this.state.dragging) ? {
-				left: reservation.start_date.getTime() * this.props.display.px_per_ms + 'px',
+			style: (model) ? {
+				left: left || this.state.left,
 				width: this.props.handle_width + 'px',
 				height: '100%',
 				zIndex: 1299,
-				onClick: self.__onMouseDownLeft
-			} : {}
+				backgroundColor: '#fff',
+				position: 'relative'				
+			} : {},
+			onMouseDown: self.__onMouseDownLeft
 		}),
 		React.DOM.div({
-			style: (this.state.dragging) ? {
-				left: (reservation.end_date.getTime() - handle_width_ms) * this.props.display.px_per_ms + 'px',
+			style: (model) ? {
+				left: right || this.state.left,
 				width: this.props.handle_width + 'px',
 				height: '100%',
 				zIndex: 1299,
-				onClick: self.__onMouseDownRight
-			} : {}
-		}));
+				backgroundColor: '#fff',
+				position: 'relative'
+			} : {},
+			onMouseDown: self.__onMouseDownRight
+		}));*/
 	}
 });

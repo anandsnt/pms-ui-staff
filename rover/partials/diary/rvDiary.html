@@ -23,15 +23,15 @@
             <label for="arrival-date">Date</label>
             <div class="entry-data">
                 <input name="arrival-date" ui-date="dateOptions" id="arrival-date" type="text" class="datepicker" ng-model="filter.arrival_date" readonly />
-                <strong id="arrival-date-day" class="day">{{filter.arrival_date.getDate()}}</strong>
-                <span id="arrival-date-month" class="month">{{filter.arrival_date.toComponents().date.monthName}}</span>
-                <span id="arrival-date-year" class="year">{{filter.arrival_date.getFullYear()}}</span>
+                <strong id="arrival-date-day" class="day">{{gridProps.filter.arrival_date.getDate()}}</strong>
+                <span id="arrival-date-month" class="month">{{gridProps.filter.arrival_date.toComponents().date.monthName}}</span>
+                <span id="arrival-date-year" class="year">{{gridProps.filter.arrival_date.getFullYear()}}</span>
             </div>
         </div>
         <div class="entry time">
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
-                <select id="arrival-time" name="arrival-time" ng-model="filter.arrival_time" ng-options="arrival_time for arrival_time in arrival_times">
+                <select id="arrival-time" name="arrival-time" ng-model="gridProps.filter.arrival_time" ng-options="arrival_time for arrival_time in arrival_times">
                     <option value={{arrival_time}}>{{arrival_time}}</option> 
                 </select>
             </div>
@@ -39,7 +39,7 @@
         <div class="entry room">
             <label for="room-type">Room Type</label>
             <div class="select">
-                <select id="room-type" name="room-type" ng-model="filter.room_type" ng-options="room_type for room_type in room_types">
+                <select id="room-type" name="room-type" ng-model="gridProps.filter.room_type" ng-options="room_type for room_type in room_types">
                     <option value="All">All</option>
                     <option value={{room_type}}>{{room_type}}</option>
                 </select>
@@ -85,8 +85,8 @@
         </div>
         <div class="entry switch">
             <label for="diary-hours-days">Hours / Days</label>
-            <div class="switch-button" ng-class="{on: filter.hours_days === 'h'}">
-                <input name="diary-hours-days" id="diary-hours-days" value="" type="checkbox" checked ng-click="filter.toggleHoursDays()" />
+            <div class="switch-button" ng-class="{on: gridProps.filter.hours_days === 'h'}">
+                <input name="diary-hours-days" id="diary-hours-days" value="" type="checkbox" checked ng-click="gridProps.filter.toggleHoursDays()" />
                 <label class="data-off">
                     <span class="value">H</span>
                     <span class="switch-icon">D</span>
@@ -99,8 +99,8 @@
         </div>
         <div class="entry switch display">
             <label for="diary-range">Show <span>(Hours)</span></label>
-            <div class="switch-button" ng-class="{on: filter.range === 12}">
-                <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked ng-click="filter.toggleRange()" />
+            <div class="switch-button" ng-class="{on: gridProps.filter.range === 12}">
+                <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked ng-click="gridProps.filter.toggleRange()" />
                 <label class="data-off">
                     <span class="value">12</span>
                     <span class="switch-icon">24</span>

@@ -1,7 +1,6 @@
 var GridRow = React.createClass({
 	getInitialState: function() {
 		return {
-			data: this.props.data,
 			currentDragItem: this.props.currentDragItem
 		};
 	},
@@ -25,17 +24,16 @@ var GridRow = React.createClass({
 			key: 		this.props.key,
 			className: 	this.props.className
 		}, 
-		_.map(this.state.data.reservations, function(reservation) {
+		_.map(this.props.data.reservations, function(reservation) {
 			return GridRowItem({
 				key: 			reservation.key,
-				className: 		'occupancy-block',
 				display: 		self.props.display,
 				viewport:    	self.props.viewport, 
 				filter: 		self.props.filter,
 				angular_evt: 	self.props.angular_evt,
 				data: 			reservation,
-				room:       	self.props.data, 
-				row_offset: 	self.props.row_number * self.props.display.row_height,
+				row_data:       self.props.data, 
+				row_offset: 	self.props.row_number * (self.props.display.row_height + self.props.display.row_height_margin),
 				__onDragStart:  self.props.__onDragStart,
 				__onDragStop: 	self.props.__onDragStop,
 				__onMouseUp: 	self.props.__onDrop

@@ -14,7 +14,9 @@ var TimelinePanel = React.createClass({
 		Timeline({
 			viewport: this.props.viewport,
 			display: this.props.display,
-			data: this.state.data
+			data: this.state.data,
+			filter: this.props.filter,
+			angular_evt: this.props.angular_evt
 		}));			
 	}
 });

@@ -9,7 +9,7 @@ var Grid = React.createClass({
 		});
 	},
 	__onDragStop: function(e) {
-		var rowHeight 	= this.props.display.row_height + 6,
+		var rowHeight 	= this.props.display.row_height + this.props.display.row_height_margin,
 			viewport 	= this.props.viewport.element(),
 			curPos 		= viewport[0].scrollTop + e.pageY - viewport.offset().top,
 			rowNumber 	= Math.floor(curPos / rowHeight),

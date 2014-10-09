@@ -1,58 +1,19 @@
-var DiaryContent, SETTINGS = {
-	viewport: {
-		width: 1024,
-		height: 768,
-		row_header_width: 120,  //Relative starting point for left edge of grid
-		timeline_header_height: 80,
-		timeline_height: 60,
-		timeline_occupancy_height: 20,
-		hours: 12
-	},				
-	display: {
-		width: undefined,
-		height: '100%',
-		hours: 48,
-		row_height: 60,
-		intervals_per_hour: 4, 
-		px_per_ms: undefined,
-		px_per_int: undefined,
-		maintenance_int: 2
-	},
-	filter: {
-		types: ['room', 'rate_type', 'start_time', 'status']
-	}
-};
-
-DiaryContent = React.createClass({
-	roomsPanelEl: undefined,
-	timelinePanelEl: undefined,
+var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {
-		var display_width,
-			px_per_hr,
-			px_per_int,
-			px_per_ms,
-			vw_width,
-			vw_height;
+		var display = this.state.display,
+			viewport = this.state.viewport;
 
-		vw_width = $(window).width() - 120;
-		vw_height = $(window).height() - 230;
+		viewport.width = $(window).width() - 120;
+		viewport.height = $(window).height() - 230;
 
-		display_width = this.props.display.hours / this.props.viewport.hours * vw_width;
-		px_per_hr = vw_width / this.props.viewport.hours;
-		px_per_int = px_per_hr / this.props.display.intervals_per_hour;
-		px_per_ms = px_per_int / 900000;
+		display.width 		= display.hours / viewport.hours * viewport.width;
+		display.px_per_hr 	= viewport.width / viewport.hours;
+		display.px_per_int 	= display.px_per_hr / display.intervals_per_hour;
+		display.px_per_ms 	= display.px_per_int / 900000;
 
 		this.setState({
-			viewport: {
-				width: vw_width,
-				height: vw_height
-			},
-			display: {
-				width: display_width,
-				px_per_hr: px_per_hr,
-				px_per_int: px_per_int,
-				px_per_ms: px_per_ms
-			}
+			viewport: viewport,
+			display: display
 		});
 	},
 	__onGridScroll: function(e) {
@@ -64,10 +25,6 @@ DiaryContent = React.createClass({
 		}
 	},
 	componentDidMount: function() {
-		this.roomsPanelEl = $('.diary-rooms .wrapper');
-		this.timelinePanelEl = $('.diary-timeline .wrapper');
-    	//this.__onGridScroll = _.debounce(this.__onGridScroll.bind(this), 100);
-
     	$(window).on('resize', _.debounce(function(e) {
     		this._recalculateGridSize();
     	}.bind(this), 50));
@@ -75,93 +32,77 @@ DiaryContent = React.createClass({
   	componentWillUnmount: function() {
   		$(window).off('resize');
   	},
-	getDefaultProps: function() {
-		var viewport = SETTINGS.viewport,
-			display = SETTINGS.display;
-
-		return { 
-			viewport: viewport, 
-			display: display, 
-			data: [],
-			filter: undefined 
-		};
-	},
 	getInitialState: function() {
-		var props = this.props,
-			scope = props.scope,
-			initial_state = {
-				display: {
-					x_0: props.viewport.row_header_width,
-					x_origin: scope.start_date.getTime(),
-					x_origin_start_time: scope.start_time
-				},
-				viewport: {
-					width: scope.grid_dimensions.width,
-					height: scope.grid_dimensions.height,
-					element: scope.grid_element
-				},
-				data: scope.data,
-				new_reservation_time_span: scope.new_reservation_time_span,
-				angular_evt: {
-					onSelect: scope.onSelect,
-					isSelected: scope.isSelected,
-					displayFilter: scope.displayFilter,
-					onDragStart: scope.onDragStart,
-					onDragEnd: scope.onDragEnd,
-					onResizeStart: scope.onResizeStart,
-					onResizeEnd: scope.onResizeEnd,
-					onScrollLoadTriggerRight: scope.onScrollLoadTriggerRight,
-					onScrollLoadTriggerLeft: scope.onScrollLoadTriggerLeft
-				},
-				filter: scope.filter,
-				currentDragItem: undefined,
-				currentResizeItem: undefined
-			};
+		var props 		= this.props,
+			scope 		= props.scope,
+			viewport 	= scope.gridProps.viewport,
+			display 	= scope.gridProps.display,
+			s_0 		= {
+							angular_evt: {
+								onSelect: 					scope.onSelect,
+								onRowItemSelect: 			scope.onRowItemSelect,
+								onRowSelect: 				scope.onRowSelect,
+								onTimelineSelect:  			scope.onTimelineSelect,
+								isSelected: 				scope.isSelected,
+								displayFilter: 				scope.displayFilter,
+								onDragStart: 				scope.onDragStart,
+								onDragEnd: 					scope.onDragEnd,
+								onResizeLeftStart: 			scope.onResizeLeftStart,
+								onResizeLeftEnd: 			scope.onResizeLeftEnd,
+								onResizeRightStart: 		scope.onResizeRightStart,
+								onResizeRightEnd: 			scope.onResizeRightEnd,
+								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
+								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft
+							},
+							currentDragItem: undefined,
+							currentResizeItem: undefined
+						};
 		
-		initial_state.display.width 		= props.display.hours / props.viewport.hours * initial_state.viewport.width;
-		initial_state.display.px_per_hr 	= initial_state.viewport.width / props.viewport.hours;
-		initial_state.display.px_per_int  	= initial_state.display.px_per_hr / props.display.intervals_per_hour;
-		initial_state.display.px_per_ms 	= initial_state.display.px_per_int / 900000;
+		display.width 				= display.hours / viewport.hours * viewport.width;
+		display.height 				= '100%';
+		display.px_per_hr 			= viewport.width / viewport.hours;
+		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
+		display.px_per_ms 			= display.px_per_int / 900000;
+		display.x_0 				= viewport.row_header_right;
+		display.x_origin 			= scope.start_date.getTime(),
+		display.x_origin_start_time = scope.start_time
 
-		return initial_state;
+		return _.extend(s_0, scope.gridProps);
 	},
 	render: function() {
 		var self = this;
 
-		_.extend(this.props.viewport, this.state.viewport);
-		_.extend(this.props.display, this.state.display);
-
 		return this.transferPropsTo(React.DOM.div({
-			className: 'diary-container hours-12'
+			className: 'diary-container ' + ((this.state.viewport.hours === 12) ? 'hours-12' : 'hours-24')
 		},
 		TogglePanel({
-			viewport: this.props.viewport,
-			display: this.props.display,
+			viewport: this.state.viewport,
+			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
 		}),
 		RoomPanel({
-			viewport: this.props.viewport,
-			display: this.props.display,
+			viewport: this.state.viewport,
+			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
-			__onGridScroll: self.__onGridScroll
+			__onGridScroll: this.__onGridScroll
 		}),
 		TimelinePanel({
-			viewport: this.props.viewport,
-			display: this.props.display,
+			viewport: this.state.viewport,
+			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
 			angular_evt: this.state.angular_evt,
-			__onGridScroll: self.__onGridScroll
+			__onGridScroll: this.__onGridScroll
 		}), 
 		GridPanel({
-			viewport: this.props.viewport,
-			display: this.props.display,
+			viewport: this.state.viewport,
+			display: this.state.display,
 			filter: this.state.filter,
 			data: this.state.data,
 			angular_evt: this.state.angular_evt,
-			__onGridScroll: self.__onGridScroll
+			__onGridScroll: this.__onGridScroll
 		})), this.props.children);
 	}
 });

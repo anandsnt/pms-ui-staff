@@ -13,7 +13,8 @@ var GridRowItemDrag = React.createClass({
 				mouse_down: true,
 				origin_x: e.pageX,
 				origin_y: e.pageY,
-				offset_y: $('.diary-grid .wrapper').offset().top,
+				offset_x: this.props.viewport.element().offset().left,
+				offset_y: this.props.viewport.element().offset().top,
 				element_x: page_offset.left,
 				element_y: page_offset.top
 			});
@@ -23,9 +24,11 @@ var GridRowItemDrag = React.createClass({
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y, 
 			distance = Math.abs(delta_x) + Math.abs(delta_y),
-			left, top, margin_top = this.props.display.row_height + 6;
+			left, 
+			top, 
+			margin_top = this.props.display.row_height + this.props.display.row_height_margin;
 
-		if(!this.state.dragging) {
+		if(!this.state.dragging && distance > 5) {
 			this.setState({
 				dragging: true
 			}, function() {
@@ -55,7 +58,7 @@ var GridRowItemDrag = React.createClass({
 			this.setState({
 				selected: !this.state.selected
 			}, function() {
-				this.props.angular_evt.onSelect(this.state.data);
+				this.props.angular_evt.onSelect(this.props.data);
 			});
 		}
 	},
