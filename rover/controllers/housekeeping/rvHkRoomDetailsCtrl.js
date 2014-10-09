@@ -14,7 +14,8 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		// set the previous state
 		$rootScope.setPrevState = {
 		    title: $filter('translate')('ROOM_STATUS'),
-		    name: 'rover.housekeeping.roomStatus'
+		    name: 'rover.housekeeping.roomStatus',
+		    param: {}
 		}
 
 		$scope.setTitle( $filter('translate')('ROOM_DETAILS') );
