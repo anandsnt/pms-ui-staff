@@ -5,7 +5,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 	function($scope, $rootScope, ADDailyWorkAssignmentSrv) {
 
 		BaseCtrl.call(this, $scope);
-		
+
 
 		// clicked element type indicators 
 		$scope.workTypeClickedElement = -1;
@@ -35,7 +35,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workTypeForm = 'add';
 
 		$scope.openWorkTypeForm = function(typeIndex) {
-			if ( typeIndex == 'new' ) {
+			if (typeIndex == 'new') {
 				$scope.workTypeForm = 'add';
 				$scope.workTypeClickedElement = 'new';
 				resetEachWorkType();
@@ -59,20 +59,22 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.deleteWorkType = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.workTypeClickedElement = -1;
 				resetEachWorkType();
 
 				fetchWorkType();
 			};
 
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteWorkType, {id: this.item.id}, callback);
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteWorkType, {
+				id: this.item.id
+			}, callback);
 		};
 
 		$scope.updateWorkType = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.workTypeClickedElement = -1;
 				resetEachWorkType();
 
@@ -85,7 +87,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.addWorkType = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.workTypeClickedElement = -1;
 				resetEachWorkType();
 
@@ -98,7 +100,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.toggleActive = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.workTypeClickedElement = -1;
 				resetEachWorkType();
 
@@ -113,11 +115,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkType, $scope.eachWorkType, callback);
 		};
-
-
-
-
-
 
 
 
@@ -145,7 +142,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.workShiftForm = 'add';
 
 		$scope.openWorkShiftForm = function(typeIndex) {
-			if ( typeIndex == 'new' ) {
+			if (typeIndex == 'new') {
 				$scope.workShiftForm = 'add';
 				$scope.workShiftClickedElement = 'new';
 				resetEachWorkShift();
@@ -172,29 +169,32 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.deleteWorkShift = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.workShiftClickedElement = -1;
 				resetEachWorkShift();
 
 				fetchWorkShift();
 			};
 
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteWorkShift, {id: this.item.id}, callback);
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteWorkShift, {
+				id: this.item.id
+			}, callback);
 		};
 
 		$scope.addWorkShift = function() {
 
 			var callback = function(data) {
-				$scope.$emit('hideLoader');
-				
-				$scope.workShiftClickedElement = -1;
-				resetEachWorkShift();
+					$scope.$emit('hideLoader');
 
-				fetchWorkShift();
-			}, onSaveFailure = function(errorMessage){
-				$scope.errorMessage = errorMessage;
-				$scope.$emit('hideLoader');
-			};
+					$scope.workShiftClickedElement = -1;
+					resetEachWorkShift();
+
+					fetchWorkShift();
+				},
+				onSaveFailure = function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+					$scope.$emit('hideLoader');
+				};
 
 			var params = {
 				name: $scope.eachWorkShift.name,
@@ -208,7 +208,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.updateWorkShift = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.workShiftClickedElement = -1;
 				resetEachWorkShift();
 
@@ -224,11 +224,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.putWorkShift, params, callback);
 		};
-
-
-
-
-
 
 
 
@@ -290,7 +285,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.taskListForm = 'add';
 
 		$scope.openTaskListForm = function(typeIndex) {
-			if ( typeIndex == 'new' ) {
+			if (typeIndex == 'new') {
 				$scope.taskListForm = 'add';
 				$scope.taskListClickedElement = 'new';
 				resetEachTaskList();
@@ -323,20 +318,22 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		$scope.deleteTaskListItem = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.taskListClickedElement = -1;
 				resetEachTaskList();
 
 				fetchTaskList();
 			};
 
-			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteTaskListItem, {id: this.item.id}, callback);
+			$scope.invokeApi(ADDailyWorkAssignmentSrv.deleteTaskListItem, {
+				id: this.item.id
+			}, callback);
 		};
 
 		$scope.addTaskListItem = function() {
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-				
+
 				$scope.taskListClickedElement = -1;
 				resetEachTaskList();
 
@@ -378,7 +375,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				room_type_ids: $scope.eachTaskList.room_type_ids,
 				front_office_status_ids: $scope.eachTaskList.front_office_status_ids,
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
-				is_occupied: !!isOccupied ? true : false,
+				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
+				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
 				id: $scope.eachTaskList.id
