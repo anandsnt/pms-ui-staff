@@ -78,9 +78,7 @@
 		$rootScope.departureDate = $scope.selectedDate;
 
 		dateToSend = dclone($scope.date,[]);
-		dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));
-		console.log("dateToSend"+dateToSend);
-		
+		dateToSend = ($filter('date')(dateToSend,'MM-dd-yyyy'));		
 		$scope.closeCalender();
 	};
 }

@@ -143,7 +143,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// execute this after this much time
 			// as the animation is in progress
-			}, 200);
+			}, 700);
 		};
 
 

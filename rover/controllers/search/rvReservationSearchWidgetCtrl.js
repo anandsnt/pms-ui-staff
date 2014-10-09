@@ -5,6 +5,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	* it contain only minimal function, please add functions & methods where
 	* you wrapping this.
 	*/
+
 	var that = this;
   	BaseCtrl.call(this, $scope);
 
@@ -88,11 +89,14 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		$scope.results = data;
 		$scope.firstSearch = false;
 	    $scope.searchType = "default";
+	    $scope.isTyping = false;
+	    if($scope.results.length > 0){ //if there is any result then only we want to filter
+    		displayFilteredResults();
+    	}
+
 	    setTimeout(function(){
-	    	refreshScroller();
-	      	$scope.$apply(function(){$scope.isTyping = false;
-	      		
-	      	});
+	    	$scope.$apply();
+	      	refreshScroller();
 	    }, 100);
 	};
 
@@ -200,7 +204,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	* function to perform filering on results.
 	* if not fouund in the data, it will request for webservice
 	*/
-	var displayFilteredResults = function(){ 
+	var displayFilteredResults = function(){ 		
 	    //if the entered text's length < 3, we will show everything, means no filtering    
 	    if($scope.textInQueryBox.length < 3){
 	      	//based on 'is_row_visible' parameter we are showing the data in the template      
@@ -209,7 +213,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	      	}     
 	      	setTimeout(function(){
 	      		$scope.isTyping = false;
-	      	}, 200);
+	      	}, 500);
 			refreshScroller();    
 	    }
 	    else{
@@ -220,26 +224,26 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 		        //if it is zero, then we will request for webservice
 		        var totalCountOfFound = 0;		        
 		        for(var i = 0; i < $scope.results.length; i++){
-		          value = $scope.results[i];
-		          if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
-		              ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
-		              ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-		              ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
-		              ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0)
-		              {
-		                 $scope.results[i].is_row_visible = true;
-		                 totalCountOfFound++;
-		              }
+		          	value = $scope.results[i];
+		          	if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
+		              	($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
+		              	($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+		              	($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
+		              	($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0)
+		              	{
+			                $scope.results[i].is_row_visible = true;
+			                totalCountOfFound++;
+		              	}
 		          else {
-		            $scope.results[i].is_row_visible = false;
-		          }  
+		        		$scope.results[i].is_row_visible = false;
+		          	}  
 		        }
 		        $scope.isTyping = false;
 		        if(totalCountOfFound == 0){
-		        	 var dataDict = {'query': $scope.textInQueryBox.trim()};
-		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
+		        	var dataDict = {'query': $scope.textInQueryBox.trim()};
+		        	$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 		        }
-		      }
+		    }
 		    else{
 		        var dataDict = {'query': $scope.textInQueryBox.trim()};
 		        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);         
