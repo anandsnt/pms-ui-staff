@@ -16,11 +16,19 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		// default cleaning status
 		$scope.isCleaning = false;
 
+		// must create a copy since this scope is an inner scope
+		$scope.isStandAlone = $rootScope.isStandAlone;
+
 		// default room HK status
 		// will be changed only for connected
 		if ( !$rootScope.isStandAlone ) {
-			$scope.ooOsTitle = $scope.roomDetails.room_reservation_hk_status == 2 ? 'Out Of Service' :
-								$scope.roomDetails.room_reservation_hk_status == 3 ? 'Out Of Order' : false;
+			if ( $scope.roomDetails.hk_status_list[0].value == 'OS' ) {
+				$scope.ooOsTitle = 'Out Of Service';
+			} else if ( $scope.roomDetails.hk_status_list[0].value == 'OO' ) {
+ 				$scope.ooOsTitle = 'Out Of Order';
+			} else {
+				$scope.ooOsTitle = false;
+			}
 		} else {
 			$scope.ooOsTitle = false;
 		}

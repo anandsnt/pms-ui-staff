@@ -512,9 +512,10 @@ sntRover.controller('RVPostChargeController',
 						$scope.$emit( 'CHARGEPOSTED' );
 					}
 				};
+				var updateParam = data;
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
-					$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+					$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 				}
 				else{
 						var billData ={
@@ -527,7 +528,7 @@ sntRover.controller('RVPostChargeController',
 					var createBillSuccessCallback = function(){
 						$scope.$emit('hideLoader');			
 						//Fetch data again to refresh the screen with new data
-						$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+						$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 						// Update Review status array.
 						var data = {};
 						data.reviewStatus = false;
