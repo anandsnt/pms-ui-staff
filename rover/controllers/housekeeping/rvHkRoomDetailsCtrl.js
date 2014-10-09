@@ -21,6 +21,8 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		$scope.heading = $filter('translate')('ROOM_DETAILS');
 	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
+	    // show queued icon
+		$scope.shouldShowQueuedRooms = true;
 
 		$scope.updateHKStatus = function(){	
 			$scope.$emit('showLoader');	
@@ -114,7 +116,11 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 
 		// default open tab
-		$scope.openTab = 'Guest';
+		if ( $rootScope.isStandAlone ) {
+			$scope.openTab = 'Guest';
+		} else {
+			$scope.openTab = 'Work';
+		}
 
 		// methods to switch tab
 		$scope.tabSwitch = function(tab) {

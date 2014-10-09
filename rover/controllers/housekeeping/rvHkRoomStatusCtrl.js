@@ -46,7 +46,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
+		// show queued icon
+		$scope.shouldShowQueuedRooms  = true;
+
 		$scope.filterOpen = false;
+		$scope.localLoader = false;
 
 		$scope.query = '';
 		$scope.showPickup = false;
@@ -105,7 +109,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noScroll = true;
 		var afterFetch = function(data) {
-			$scope.noScroll = true;
+			$scope.localLoader = true;
 
 			// apply the filter first
 			$scope.calculateFilters(data.rooms);
@@ -135,11 +139,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var toPos = localStorage.getItem( 'roomListScrollTopPos' );
 				$scope.refreshScroll( toPos );
 
-				// finally hide the loaded
-				// in almost every case this will not block UX
-				$scope.$emit( 'hideLoader' );
-
-				$scope.noScroll = false;
+				$scope.localLoader = false;
 
 			// execute this after this much time
 			// as the animation is in progress
@@ -168,11 +168,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
 					}
 
-					afterFetch( data );
-
 					$scope.$emit('hideLoader');
+					afterFetch( data );
 				};	
-
 				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
 			} else {
 				$timeout(function() {
@@ -186,10 +184,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						});
 					}
 					
-					// show loader as we will be slicing the rooms
-					// in smaller and bigger parts and show smaller first
-					// and rest after a delay
-					$scope.$emit('showLoader');
 					afterFetch( fetchedRoomList );
 				}, 1);
 			}
@@ -337,6 +331,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		*  A method which checks the filter option status and see if the room should be displayed
 		*/
 		$scope.calculateFilters = function(source) {
+			$scope.localLoader = true;
+
 			var source = source || $scope.rooms;
 			$scope.noResultsFound = 0;
 			var allRoomTypesUnSelected = true;
@@ -510,6 +506,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				room.display_room = true;
 			}
 
+			$scope.localLoader = false;
 		};
 
 		/**
