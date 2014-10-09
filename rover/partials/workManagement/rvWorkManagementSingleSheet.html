@@ -34,10 +34,14 @@
 
     <!-- Single worksheet - unassigned rooms -->
     <div class="unassigned-rooms single-sheet">
-        <h2 translate>UNASSIGNED</h2>
+        <h2 translate>UNASSIGNED ROOMS</h2>
+        <a ng-click="showFilter()" class="filter button open-modal white with-icon only-icon" style="top: -40px;left: 80%;width: 100px; height: 45px;">
+            <span class="icons icon-filter"></span>
+            {{'FILTER_ROOMS' | translate}}
+        </a>
         <div class="worksheet-actions">
             <div class="select">
-                <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus" ng-class="{'placeholder': !singleState.filters.selectedFloor}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
+                <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus"  ng-class="{'placeholder': !singleState.filters.selectedFloor}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
                     <!-- Add class="placeholder" if value="" is selected -->
                     <option value="" selected>{{ 'ALL_UNASSIGNED'| translate}}</option>
                     <option value="DIRTY">{{ 'UNASSIGNED'| translate}} &amp; Dirty</option>
