@@ -191,6 +191,7 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	    // save the entered query into vault
 	    // if returning back we will display that result
 	    $vault.set('searchQuery', $scope.textInQueryBox);
+	    $scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 
 	}; //end of query entered
 
@@ -272,7 +273,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	*/
 	$scope.focusOnSearchText = function(){
 		//we are showing the search area
-		$scope.$emit("showSearchResultsArea", true);		
+		$scope.$emit("showSearchResultsArea", true);	
+		$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');	
 		refreshScroller();
 	};
 
