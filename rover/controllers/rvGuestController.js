@@ -10,6 +10,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			cardTabContentOffset: 170, // Height of the tab menu and the header above.			
 		};
 
+		$s = $scope;
+
 		$scope.cardVisible = false;
 		//init activeCard as the companyCard
 		$scope.activeCard = "companyCard";
@@ -79,10 +81,10 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var data = {
 				'firstname': $scope.guestCardData.contactInfo.first_name,
 				'lastname': $scope.guestCardData.contactInfo.last_name,
-				'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city : false,
+				'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city 
+									+ ', '  + $scope.guestCardData.contactInfo.address.state: false,
 				'vip': $scope.guestCardData.contactInfo.vip
 			};
-
 			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
 		};
 

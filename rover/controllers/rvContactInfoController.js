@@ -1,7 +1,9 @@
-sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout',
-  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv) {
 
     BaseCtrl.call(this, $scope);
+
+    $a = $scope;
     /**
      * storing to check if data will be updated
      */
@@ -31,10 +33,25 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
         // CICO-9169
 
         var avatarImage = getAvatharUrl(dataToUpdate.title);
+        updateSearchCache();
         $scope.$emit("CHANGEAVATAR", avatarImage);
         $scope.$emit('hideLoader');
 
       };
+
+      // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
+      var updateSearchCache = function() {
+        var data = {
+          'firstname': $scope.guestCardData.contactInfo.first_name,
+          'lastname': $scope.guestCardData.contactInfo.last_name,
+          'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city 
+                    + ', '  + $scope.guestCardData.contactInfo.address.state: false,
+          'vip': $scope.guestCardData.contactInfo.vip
+        };
+
+        RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+      };
+
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
