@@ -66,7 +66,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-	$rootScope.isManualCCEntryDisabled = hotelDetails.is_manual_cc_entry_disabled;
+	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 
 
     //set flag if standalone PMS

@@ -61,9 +61,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		MLISessionId = "";
 		$scope.data = data;
 		
-		$scope.shouldShowManualEntryDisabled = $rootScope.isManualCCEntryDisabled;
+		$scope.shouldShowManualEntryDisabled = $rootScope.isManualCCEntryEnabled;
 		if($scope.passData.is_swiped){
-			$scope.shouldShowManualEntryDisabled = false;
+			$scope.isManualCCEntryEnabled = true;
 			
 			var selectedPaymentType = 0;
 			angular.forEach($scope.data, function(value, key) {
