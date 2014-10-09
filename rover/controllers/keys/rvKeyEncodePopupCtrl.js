@@ -441,7 +441,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		data.reservationId = reservationId;		
 		$scope.invokeApi(RVKeyPopupSrv.addNewSmartBand, (data), successCallbackOfAddNewSmartband_, failureCallbackOfAddNewSmartband);	
 	};
-	var showPrintKeyOptions = function (){
+	var showPrintKeyOptions = function (status){
+		//if status === false, they are not able to connect. I dont know why these type of designs
+		// we have to call failurecallback on that
+		if(status === false){
+			return showDeviceNotConnected();
+		}
 		$scope.$emit('hideLoader');
 		$scope.deviceConnecting = false;
 		$scope.deviceNotConnected = false;
