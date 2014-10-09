@@ -417,7 +417,8 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
   		if(data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined"){
 			ksn = data.RVCardReadETBKSN;
 		}
-		var cardNumber = data.RVCardReadMaskedPAN.substr(data.RVCardReadMaskedPAN.length - 4);
+		
+		var cardNumber = data.RVCardReadCardIIN.substr(data.RVCardReadCardIIN.length - 4);
 		swipeHeadingInSearch = 'Reservations with card '+cardNumber;
 		
 		//var url = '/staff/payments/search_by_cc';
