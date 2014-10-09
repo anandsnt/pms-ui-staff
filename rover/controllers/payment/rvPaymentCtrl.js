@@ -5,7 +5,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.guestPaymentList = {};
 	$scope.saveData.add_to_guest_card = false;
 	$scope.do_not_cc_auth = false;
-
+	$scope.isLoading = true;
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
 	
@@ -81,7 +81,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.shouldShowDisabled = true;
 		}
 
-		
+		$scope.isLoading = false;
 		
 
 		//Same popup is used to do the payment - View bill screen pay button

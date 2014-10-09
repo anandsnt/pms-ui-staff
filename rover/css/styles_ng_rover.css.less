@@ -401,7 +401,6 @@ height: 410px;
   .group{
     margin: 5px 0 5px;
     height:25px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
   .name{
     font-style:italic;
@@ -409,6 +408,7 @@ height: 410px;
   }
   .guest{
     margin: 5px 0 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding-top: 5px;
   }
   .label{
@@ -1369,4 +1369,15 @@ Padding for the ows error popup
 // CICO-9956 -scroll for credit card list.
 .card-list-height{
   height:220px;
+}
+
+
+/*  
+    CICO-7619  - Deleted payment and loyalty do not disappear from Guest card.
+    Adding correction class 'active-item-no-transition' here.
+    Overridding transition property on 'active-item' class used in these sections.
+    Since that makes the issue while deleting the respective items.
+*/
+.active-item-no-transition{
+  .transition (all, 0s, @easing: cubic-bezier(.10, .10, .25, .90)) !important;
 }
