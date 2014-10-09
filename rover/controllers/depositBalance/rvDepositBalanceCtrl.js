@@ -11,10 +11,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				RVDepositBalanceSrv, 
 				RVPaymentSrv,
 				$stateParams){
+					
 	BaseCtrl.call(this, $scope);
 	
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
-console.log($scope);
 
 
 
@@ -35,9 +35,7 @@ console.log($scope);
 	$scope.makePaymentData = {};
 	$scope.makePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonActive = false;
-	setTimeout(function(){
-		$scope.setScroller('available-cards');
-	}, 1000);
+	$scope.setScroller('available_cards', { click:true});
 	/*
 	 * Function to handle click on make payment button
 	 * If new card is added, then first we need to add the credit card and on success we make the payment
@@ -143,7 +141,7 @@ console.log($scope);
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, dataToApiToAddNewCard, $scope.successSavePayment);
 		 } else if(type === "selectedCard"){
 		 	var dataToMakePaymentApi = {
-				"payment_id": selectedPaymentIdFromList,
+				"guest_payment_id": selectedPaymentIdFromList,
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"amount": $scope.makePaymentData.amount
 			};
@@ -170,7 +168,7 @@ console.log($scope);
 		//alert("------pay----------"+paymentId)
 		//$scope.makePaymentData.amount
 		var dataToMakePaymentApi = {
-			"payment_id": paymentId,
+			"guest_payment_id": paymentId,
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 			"amount": $scope.makePaymentData.amount
 		};
@@ -199,7 +197,7 @@ console.log($scope);
 	/*
 	 * Show Add Card Active and show screen
 	 */
-	$scope.clickedAddCard = function(){
+	$scope.clickedAddCard = function(){		
 		$scope.addCardActive = true;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -215,7 +213,7 @@ console.log($scope);
 	 * Show existing payments Active and show screen
 	 */
 	$scope.clickedShowExistingCard = function(){
-		$scope.refreshScroller('available-cards');
+		$scope.refreshScroller('available_cards');
 		$scope.addCardActive = false;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
