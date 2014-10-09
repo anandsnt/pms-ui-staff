@@ -98,12 +98,12 @@
 				<div class="holder">
 					<div class="entry margin">
 						<label for="card-number">Card number</label>
-						<input type="text" ng-keydown="showMakePaymentButtonActive()" ng-readonly="isSwiped" ng-model="depositBalanceNewCardData.cardNumber" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number">
+						<input type="text" ng-keydown="showMakePaymentButtonActive()" ng-readonly="isSwiped || isManualCCEntryDisabled" ng-model="depositBalanceNewCardData.cardNumber" placeholder="Enter Card number" name="card-number" maxlength="16" id="card-number">
 					</div>
 					<div class="entry">
 						<label for="expiry-month"> Expiration date (<span>MM/YY</span>) </label>
-						<input type="text" ng-readonly="isSwiped" ng-model="depositBalanceNewCardData.expiryMonth" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month">
-						<input type="text" ng-readonly="isSwiped" ng-model="depositBalanceNewCardData.expiryYear" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" >
+						<input type="text" ng-readonly="isSwiped || isManualCCEntryDisabled" ng-model="depositBalanceNewCardData.expiryMonth" size="3" placeholder="MM" name="expiry-month" maxlength="2" id="expiry-month">
+						<input type="text" ng-readonly="isSwiped || isManualCCEntryDisabled" ng-model="depositBalanceNewCardData.expiryYear" size="3" placeholder="YY" name="expiry-year" maxlength="2" id="expiry-year" >
 					</div>
 					<div class="entry margin">
 						<label for="name-on-card">Name on card</label>

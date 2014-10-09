@@ -14,7 +14,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	BaseCtrl.call(this, $scope);
 	
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
-console.log($scope);
+
 
 
 
@@ -246,11 +246,12 @@ console.log($scope);
 		return buttonClass;
 	};
 	$scope.showMakePaymentButtonActive = function(){
-		if($scope.depositBalanceNewCardData.cardNumber !== ""){
-			$scope.makePaymentButtonActive = true;
-		} else {
+		//Commenting - CICO-9959
+		// if($scope.depositBalanceNewCardData.cardNumber !== ""){
+			// $scope.makePaymentButtonActive = true;
+		// } else {
 			$scope.makePaymentButtonActive = false;
-		}
+		//}
 	};
 	
 	$scope.closeDepositModal = function(){
