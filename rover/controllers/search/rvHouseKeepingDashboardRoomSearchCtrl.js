@@ -161,6 +161,8 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 	    $scope.clearResults = function(){
 		  	$scope.query = "";
 		  	$scope.$emit("showDashboardArea", true);
+		  	 //we are setting the header accrdoing to house keeping dashboard
+   			$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');
 		  	$scope.showSearchResultsArea = false;
 		  	$scope.isSearchResultsShowing = false;
 		  	if($scope.queryFunctionProccessing){
@@ -177,6 +179,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 			$scope.showSearchResultsArea = true;
 			refreshScroller();
 			$scope.$emit("showDashboardArea", false);
+			$scope.$emit("UpdateHeading", 'MENU_ROOM_STATUS');	
 		}
 		/**
 		* when focusedout on query box, we need to hide the search results area
@@ -189,6 +192,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 					$scope.query = "";
 					$scope.showSearchResultsArea = false;
 					$scope.$emit("showDashboardArea", true);
+					$scope.$emit("UpdateHeading", 'DASHBOARD_HOUSEKEEPING_HEADING');	
 				}
 			}, 100);
 			
