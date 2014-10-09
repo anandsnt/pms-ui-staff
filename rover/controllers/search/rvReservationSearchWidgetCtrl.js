@@ -8,7 +8,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 
 	var that = this;
   	BaseCtrl.call(this, $scope);
-  	$s = $scope;
 
   	//model against query textbox, we will be using this across
   	$scope.textInQueryBox = "";
@@ -229,12 +228,6 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 			refreshScroller();    
 	    }
 	    else{
-	    	/*console.log("in main else");
-	    	console.log("$scope.textInQueryBox.indexOf($scope.fetchTerm)--" + $scope.textInQueryBox.indexOf($scope.fetchTerm));
-	    	console.log("!$scope.firstSearch--" + !$scope.firstSearch);
-	    	console.log("################################");
-	    	console.log("$scope.textInQueryBox== " + $scope.textInQueryBox);
-	    	console.log("$scope.fetchTerm== " + $scope.fetchTerm);*/
 
 	    	//see if the new query is the substring of fetch term
 		    if($scope.searchType == "default" &&  $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 && !$scope.firstSearch){
