@@ -223,7 +223,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				room.roomStatusClass = 'out';
 
 				if ( !!room.hk_status.oo_status ) {
-					if(this.roomList.checkin_inspected_only == "true" && this.roomList.use_inspected == "true") {
+					if(this.roomList.checkin_inspected_only == "true") {
 						if(room.hk_status.oo_status == 'INSPECTED') {
 							room.roomStatusClassWithOO = 'clean';
 							return;
