@@ -1,6 +1,6 @@
 var GridRowItemDrag = React.createClass({
 	__onMouseDown: function(e) {
-		var page_offset;
+		var page_offset, el;
 
 		if(e.button === 0) {
 			e.stopPropagation();
@@ -8,13 +8,17 @@ var GridRowItemDrag = React.createClass({
 			document.addEventListener('mousemove', this.__onMouseMove);
 
 			page_offset = this.getDOMNode().getBoundingClientRect();
+			el = this.props.viewport.element();
 
 			this.setState({
+				left: page_offset.left, // - el.offset().left - el.parent()[0].scrollLeft,
+				top: page_offset.top ,//- el.offset().top - el[0].scrollTop,
 				mouse_down: true,
+				element: el.parent(),
 				origin_x: e.pageX,
 				origin_y: e.pageY,
-				offset_x: this.props.viewport.element().offset().left,
-				offset_y: this.props.viewport.element().offset().top,
+				offset_x: el.offset().left,
+				offset_y: el.offset().top,
 				element_x: page_offset.left,
 				element_y: page_offset.top
 			});
@@ -22,7 +26,7 @@ var GridRowItemDrag = React.createClass({
 	},
 	__onMouseMove: function(e) {
 		var delta_x = e.pageX - this.state.origin_x, 
-			delta_y = e.pageY - this.state.origin_y, 
+			delta_y = e.pageY - this.state.origin_y - this.state.offset_y, 
 			distance = Math.abs(delta_x) + Math.abs(delta_y),
 			left, 
 			top, 
@@ -30,17 +34,17 @@ var GridRowItemDrag = React.createClass({
 
 		if(!this.state.dragging && distance > 5) {
 			this.setState({
-				dragging: true
+				dragging: true,
 			}, function() {
-				this.props.__onDragStart(this.props.room, this.props.__dragData.data);
+				this.props.__onDragStart(this.props.row_data, this.props.__dragData.data);
 			});
-		} else if(this.state.dragging) {
-			left = 	this.state.element_x + delta_x; 
-			top = 	this.state.element_y + delta_y - this.state.offset_y; 
+		} else if(this.state.dragging) {	
+			left = 	this.state.element_x + delta_x - this.state.offset_x;
+			top = 	this.state.element_y + delta_y; // - this.state.element[0].scrollTop; this.state.offset_y;	
 
 			this.setState({
 				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int , 
-				top: (top / margin_top).toFixed() * margin_top
+				top: Math.floor(top / margin_top) * margin_top
 			});
 		}
 	},
@@ -52,7 +56,7 @@ var GridRowItemDrag = React.createClass({
 			this.setState({
 				dragging: false
 			}, function() {
-				this.props.__onDragStop(e);
+				this.props.__onDragStop(e, this.state.left);
 			});
 		} else if(this.state.mouse_down) {
 			this.setState({

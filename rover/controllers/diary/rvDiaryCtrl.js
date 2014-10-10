@@ -335,6 +335,7 @@ sntRover
 
 		$scope.start_date = new Date('09/30/2014 12:00 AM');
 		$scope.start_time = new Time($scope.start_date.toComponents().time);
+		$scope.selections = [];
 
 		$scope.gridProps = {
 			viewport: {
@@ -377,7 +378,7 @@ sntRover
 		    	toggleRange: function() {
 		    		var hourFormat12 = this.range === 12;
 
-					$scope.gridProps.viewport.hours = this.range = (hourFormat12) ? 24 : 12;
+					$scope.gridProps.viewport.hours = (hourFormat12) ? 24 : 12;
 					$scope.gridProps.display.row_height = (hourFormat12) ? 60 : 24;
 					$scope.gridProps.display.row_height_margin = (hourFormat12) ? 5 : 0;
 
@@ -420,16 +421,17 @@ sntRover
 		/*BEGIN PROTOTYPE EVENT HOOKS -- */
 		/*_________________________________________________________*/
 		(function() {    /*React callbacks for grid events*/
-			var prevRoom;
+			var prevRoom, prevTime;
 
-		    $scope.onDragStart = function(room, reservation, start_time) {
+		    $scope.onDragStart = function(room, reservation) {
 		    	prevRoom = room;
+		    	prevTime = reservation.start_time;
 
-		    	console.log('Reservation room transfer initiated:  ', room, reservation);
+		    	console.log('Reservation room transfer initiated:  ', room.id, reservation.status, prevTime);
 		    };
 
-		    $scope.onDragEnd = function(nextRoom, reservation, start_time) {
-		    	console.log('New Room for reservation confirmed:  ', nextRoom, reservation);
+		    $scope.onDragEnd = function(nextRoom, reservation, start_time_ms) {
+		    	console.log('New Room for reservation confirmed:  ', nextRoom, reservation, new Date(start_time_ms));
 
 		    	reservationRoomTransfer(nextRoom, prevRoom, reservation);
 
@@ -477,13 +479,27 @@ sntRover
 
 	    $scope.onSelect = function(data, selected) {
 	    	data.selected = selected;
+
+	    	$scope.selections = [];
+
+	    	$scope.data.forEach(function(room, idx) {
+	    		if(_.isArray(room.reservations)) {
+	    			room.reservations.forEach(function(reservation) {
+	    				if($scope.isSelected(reservation)) {
+	    					reservation.room_id = room.id;
+
+	    					$scope.selections.push(reservation);
+	    				}
+	    			});
+	    		}
+	    	});
 	    };
 	    /*_________________________________________________________*/
 		/*END PROTOTYPE EVENT HOOKS -- */
 		/*_________________________________________________________*/
 
 	    $scope.isSelected = function(data) {
-	    	return data.selected;
+	    	return _.isBoolean(data.selected) && data.selected;
 	    };
 
 	    $scope.displayFilter = function(filter, reservation, room, data) {
@@ -499,7 +515,7 @@ sntRover
 	    };
 
 		$scope.onUpdate = function() {
-			$scope.filter.enable_resize = true;
+			$scope.gridProps.filter.enable_resize = true;
 
 			clearNewReservations($scope.data);
 			injectNewReservations(Time({ hours: $scope.display.new_reservation_time_span }),

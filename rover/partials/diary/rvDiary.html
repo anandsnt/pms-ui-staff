@@ -99,7 +99,7 @@
         </div>
         <div class="entry switch display">
             <label for="diary-range">Show <span>(Hours)</span></label>
-            <div class="switch-button" ng-class="{on: gridProps.filter.range === 12}">
+            <div class="switch-button" ng-class="{on: gridProps.viewport.hours === 12}">
                 <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked ng-click="gridProps.filter.toggleRange()" />
                 <label class="data-off">
                     <span class="value">12</span>

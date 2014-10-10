@@ -8,7 +8,7 @@ var Grid = React.createClass({
 			self.props.angular_evt.onDragStart(room, reservation);
 		});
 	},
-	__onDragStop: function(e) {
+	__onDragStop: function(e, left) {
 		var rowHeight 	= this.props.display.row_height + this.props.display.row_height_margin,
 			viewport 	= this.props.viewport.element(),
 			curPos 		= viewport[0].scrollTop + e.pageY - viewport.offset().top,
@@ -20,7 +20,7 @@ var Grid = React.createClass({
 		this.setState({
 			currentDragItem: undefined
 		}, function() {
-			self.props.angular_evt.onDragEnd(room, reservation);
+			self.props.angular_evt.onDragEnd(room, reservation, (left / this.props.display.px_per_ms) + this.props.display.x_origin);
 		});
 	},
 	getInitialState: function() {
