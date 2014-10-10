@@ -80,7 +80,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 				filterObject.is_vip = true;
 			}
 			if (filter.selectedFOStatus) {
-				filterObject.is_vip = filter.selectedFOStatus;
+				filterObject.fo_status = filter.selectedFOStatus;
 			}
 			if (!$.isEmptyObject(filterObject)) {
 				filteredRooms = _.where(rooms, filterObject);
