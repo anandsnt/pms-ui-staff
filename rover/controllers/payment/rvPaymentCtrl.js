@@ -1,4 +1,4 @@
-sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv){
+sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', '$timeout', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv, $timeout){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.saveData = {};
@@ -61,7 +61,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		MLISessionId = "";
 		$scope.data = data;
 		
-		$scope.shouldShowManualEntryDisabled = $rootScope.isManualCCEntryEnabled;
+		$scope.isManualCCEntryEnabled = $rootScope.isManualCCEntryEnabled;
 		if($scope.passData.is_swiped){
 			$scope.isManualCCEntryEnabled = true;
 			
@@ -103,7 +103,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.selected_payment_type = 0;//CICO-9959
 			$scope.renderPaymentValues();
 		}
-		$scope.isLoading = false;
+		$timeout(function() {
+	       	$scope.isLoading = false;
+	    }, 200);
+	
+		
+		
+		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){

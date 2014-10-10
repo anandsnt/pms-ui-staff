@@ -261,8 +261,11 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	};
 	$scope.successMakePayment = function(){
 		$scope.$emit("hideLoader");
-		if(!$scope.reservationData.reservation_card.is_rates_suppressed){
+		
+		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
+			console.log(";;;;;;;;;;;;;");
 			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.makePaymentData.amount);
+			$scope.$apply();
 		}
 		
 		$scope.closeDepositModal();
