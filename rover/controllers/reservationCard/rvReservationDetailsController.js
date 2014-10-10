@@ -150,6 +150,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		$scope.refreshReservationDetailsScroller = function(timeoutSpan) {
 			setTimeout(function() {
 					$scope.refreshScroller('resultDetails');
+					$scope.$emit("REFRESH_LIST_SCROLL");
 				},
 				timeoutSpan);
 		};
