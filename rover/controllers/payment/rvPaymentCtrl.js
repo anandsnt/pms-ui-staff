@@ -314,7 +314,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 		} else {
 			//$scope.saveData.guest_id = $scope.passData.guest_id;
-			 $scope.saveData.user_id = $scope.passData.guest_id;
+			$scope.saveData.user_id = $scope.passData.user_id;
 			if($scope.passData.is_swiped){
 				$scope.saveData.credit_card = $scope.passData.credit_card;
 			}
@@ -344,6 +344,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
+			alert(JSON.stringify(data));
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
