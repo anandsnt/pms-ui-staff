@@ -1,5 +1,6 @@
-sntRover
-.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window', function($scope, $rootScope, $filter, $window) {
+sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window', 'rvDiarySrv', '$state', '$stateParams', 'loadInitialData', 
+	function($scope, $rootScope, $filter, $window, rvDiarySrv, $state, $stateParams, loadInitialData) {
+	'use strict';
 	BaseCtrl.call(this, $scope);
 
     $scope.initReservationData = function() {
@@ -86,252 +87,15 @@ sntRover
             };
 	};
 
+	/*--------------------------------------------------*/
+	/*BEGIN INITIALIZATION METHOD IN PROTECTED SCOPE*/
+	/*--------------------------------------------------*/
+
 	/*Initial Values and Default Settings for React Grid*/
 	/*Initialization of React/Angular hooks and callbacks*/
 	/*Mock data currently in use*/
 	(function() {
-		$scope.data = [
-			{
-				id: 0,
-				key: 'room-0',
-				number: '0',
-				type: 'Single',
-				reservations: [
-					{
-						id: 0,
-						key: 'guest-status-0',
-						guest_name: 'Guest 0',
-						status: 'inhouse',
-						start_date: new Date('09/30/2014 4:20:00 PM'),
-						end_date: new Date('09/30/2014 8:20:00 PM')
-					}
-				]
-			},
-			{
-				id: 1,
-				key: 'room-1',
-				number: '1',
-				type: 'Double',
-				reservations: [
-					{
-						id: 1,
-						key: 'guest-status-1',
-						guest_name: 'Guest 1',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 6:15:00 PM'),
-						end_date: new Date('09/30/2014 11:45 PM')
-					}
-				]
-			},
-			{
-				id: 2,
-				key: 'room-2',
-				number: '2',
-				type: 'Queen',
-				reservations: [
-					{
-						id: 2,
-						key: 'guest-status-2',
-						guest_name: 'Guest 2',
-						status: 'check-out',
-						start_date: new Date('09/30/2014 1:00:00 PM'),
-						end_date: new Date('09/30/2014 2:00:00 PM')
-					}
-				]
-			},
-			{
-				id: 3,
-				key: 'room-3',
-				number: '3',
-				type: 'King',
-				reservations: [
-					{
-						id: 3,
-						key: 'guest-status-3',
-						guest_name: 'Guest 3',
-						status: 'check-out',
-						start_date: new Date('09/30/2014 2:30:00 PM'),
-						end_date: new Date('09/30/2014 2:45:00 PM')
-					}
-				]
-			},
-			{
-				id: 4,
-				key: 'room-4',
-				number: '4',
-				type: 'Child',
-				reservations: [
-					{
-						id: 4,
-						key: 'guest-status-4',
-						guest_name: 'Guest 4',
-						status: 'inhouse',
-						start_date: new Date('09/30/2014 5:15:00 PM'),
-						end_date: new Date('09/30/2014 7:00:00 PM')
-					}
-				]
-			},
-			{
-				id: 5,
-				key: 'room-5',
-				number: '5',
-				type: 'Single',
-				reservations: [
-					{
-						id: 5,
-						key: 'guest-status-0',
-						guest_name: 'Guest 0',
-						status: 'inhouse',
-						start_date: new Date('09/30/2014 2:30:00 PM'),
-						end_date: new Date('09/30/2014 10:30:00 PM')
-					}
-				]
-			},
-			{
-				id: 6,
-				key: 'room-6',
-				number: '6',
-				type: 'Double',
-				reservations: [
-					{
-						id: 6,
-						key: 'guest-status-6',
-						guest_name: 'Guest 6',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 1:15:00 PM'),
-						end_date: new Date('09/30/2014 5:45 PM')
-					}
-				]
-			},
-			{
-				id: 7,
-				key: 'room-7',
-				number: '7',
-				type: 'Queen',
-				reservations: [
-					{
-						id: 2,
-						key: 'guest-status-7',
-						guest_name: 'Guest 7',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 1:00:00 AM'),
-						end_date: new Date('09/30/2014 2:45:00 AM')
-					}
-				]
-			},
-			{
-				id: 8,
-				key: 'room-8',
-				number: '8',
-				type: 'King',
-				reservations: [
-					{
-						id: 3,
-						key: 'guest-status-8',
-						guest_name: 'Guest 8',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 2:30:00 AM'),
-						end_date: new Date('09/30/2014 7:45:00 AM')
-					}
-				]
-			},
-			{
-				id: 9,
-				key: 'room-9',
-				number: '9',
-				type: 'Child',
-				reservations: [
-					{
-						id: 4,
-						key: 'guest-status-9',
-						guest_name: 'Guest 9',
-						status: 'check-out',
-						start_date: new Date('09/30/2014 12:15:00 PM'),
-						end_date: new Date('09/30/2014 3:00:00 PM')
-					}
-				]
-			},
-					{
-				id: 10,
-				key: 'room-10',
-				number: '10',
-				type: 'Single',
-				reservations: [
-					{
-						id: 10,
-						key: 'guest-status-10',
-						guest_name: 'Guest 10',
-						status: 'inhouse',
-						start_date: new Date('09/30/2014 2:30:00 PM'),
-						end_date: new Date('09/30/2014 10:30:00 PM')
-					}
-				]
-			},
-			{
-				id: 11,
-				key: 'room-11',
-				number: '11',
-				type: 'Double',
-				reservations: [
-					{
-						id: 11,
-						key: 'guest-status-11',
-						guest_name: 'Guest 11',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 1:15:00 PM'),
-						end_date: new Date('09/30/2014 5:45 PM')
-					}
-				]
-			},
-			{
-				id: 12,
-				key: 'room-12',
-				number: '12',
-				type: 'Queen',
-				reservations: [
-					{
-						id: 12,
-						key: 'guest-status-12',
-						guest_name: 'Guest 12',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 1:00:00 AM'),
-						end_date: new Date('09/30/2014 2:45:00 AM')
-					}
-				]
-			},
-			{
-				id: 13,
-				key: 'room-13',
-				number: '13',
-				type: 'King',
-				reservations: [
-					{
-						id: 13,
-						key: 'guest-status-13',
-						guest_name: 'Guest 13',
-						status: 'check-in',
-						start_date: new Date('09/30/2014 2:30:00 AM'),
-						end_date: new Date('09/30/2014 7:45:00 AM')
-					}
-				]
-			},
-			{
-				id: 14,
-				key: 'room-14',
-				number: '14',
-				type: 'Child',
-				reservations: [
-					{
-						id: 14,
-						key: 'guest-status-14',
-						guest_name: 'Guest 14',
-						status: 'check-out',
-						start_date: new Date('09/30/2014 12:15:00 PM'),
-						end_date: new Date('09/30/2014 3:00:00 PM')
-					}
-				]
-			}
-		];
+		$scope.data = loadInitialData;
 
 		$scope.start_date = new Date('09/30/2014 12:00 AM');
 		$scope.start_time = new Time($scope.start_date.toComponents().time);
@@ -382,6 +146,14 @@ sntRover
 					$scope.gridProps.display.row_height = (hourFormat12) ? 60 : 24;
 					$scope.gridProps.display.row_height_margin = (hourFormat12) ? 5 : 0;
 
+					//viewport.width = $(window).width() - 120;
+					//viewport.height = $(window).height() - 230;
+
+					$scope.gridProps.display.width 		= $scope.gridProps.display.hours / $scope.gridProps.viewport.hours * $scope.gridProps.viewport.width;
+					$scope.gridProps.display.px_per_hr 	= $scope.gridProps.viewport.width / $scope.gridProps.viewport.hours;
+					$scope.gridProps.display.px_per_int = $scope.gridProps.display.px_per_hr / $scope.gridProps.display.intervals_per_hour;
+					$scope.gridProps.display.px_per_ms 	= $scope.gridProps.display.px_per_int / 900000;
+
 					renderGrid(); 
 				}
 		    },
@@ -431,9 +203,18 @@ sntRover
 		    };
 
 		    $scope.onDragEnd = function(nextRoom, reservation, start_time_ms) {
-		    	console.log('New Room for reservation confirmed:  ', nextRoom, reservation, new Date(start_time_ms));
+		    	var delta = Math.abs(reservation.start_date.getTime() - start_time_ms);
+		    	//console.log('New Room for reservation confirmed:  ', nextRoom, reservation, new Date(start_time_ms));
 
-		    	reservationRoomTransfer(nextRoom, prevRoom, reservation);
+		    	if(nextRoom.id !== prevRoom.id) {
+			    	reservationRoomTransfer(nextRoom, prevRoom, reservation);
+			    }
+
+			    if(reservation.start_date.getTime() !== start_time_ms &&
+			       start_time_ms >= $scope.start_date.getTime()) {
+					reservation.start_date.setTime(start_time_ms);
+					reservation.end_date.setTime(reservation.end_date.getTime() + delta);
+				}
 
 		    	renderGrid();
 		    };
@@ -504,7 +285,7 @@ sntRover
 
 	    $scope.displayFilter = function(filter, reservation, room, data) {
 	    	if(Object.prototype.hasOwnProperty.call(reservation, 'temporary')) {
-	    		if(angular.lowercase(filter.room_type) === 'all' || filter.room_type === data.room_type) {
+	    		if(angular.lowercase(filter.room_type) === 'all' || filter.room_type === reservation.room_type) {
 	    			return true;
 	    		} else {
 	    			return false;
@@ -514,17 +295,70 @@ sntRover
 	    	}
 	    };
 
-		$scope.onUpdate = function() {
-			$scope.gridProps.filter.enable_resize = true;
+	    $scope.calculateOccupancy = function(rooms) {
+	    	var len = rooms.length,
+	    		vals = _.range(1, $scope.gridProps.display.hours, 1);
 
-			clearNewReservations($scope.data);
-			injectNewReservations(Time({ hours: $scope.display.new_reservation_time_span }),
-								  $scope.filter,
-								  $scope.data);
+	    	return _.map(vals, function(val) {
+	    		return _.random(0, len) * val;
+	    	});
+	    };
+	})();
+
+	/*WATCHERS*/
+	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
+		var props = $scope.gridProps,
+			display = props.display;
+
+		if(newValue !== oldValue) {
+			display.x_origin = props.filter.arrival_date;
+			display.x_origin_start_time = Time(display.x_origin.toComponents().time);
 
 			renderGrid();
-		};
-	})();
+		}
+	});
+
+	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
+		if(newValue !== oldValue) {
+			clearNewReservations($scope.gridProps.data);
+			injectNewReservations(Time({ 
+									hours: $scope.gridProps.display.new_reservation_time_span 
+								  }),
+								  $scope.gridProps.filter,
+								  $scope.gridProps.data);
+
+			renderGrid();
+		}
+	});
+
+	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
+		if(newValue !== oldValue) {
+			clearNewReservations($scope.gridProps.data);
+			injectNewReservations(Time({ 
+									hours: $scope.gridProps.display.new_reservation_time_span 
+								  }),
+								  $scope.gridProps.filter,
+								  $scope.gridProps.data);
+
+			renderGrid();
+		}
+	});
+
+	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
+		if(newValue !== oldValue) {
+			clearNewReservations($scope.gridProps.data);
+			injectNewReservations(Time({ 
+									hours: $scope.gridProps.display.new_reservation_time_span 
+								  }),
+								  $scope.gridProps.filter,
+								  $scope.gridProps.data);
+
+			renderGrid();
+		}
+	});
+	/*--------------------------------------------------*/
+	/*END INITIALIZATION METHOD IN PROTECTED SCOPE*/
+	/*--------------------------------------------------*/
 
 	function updateStartTimeOffsetNewReservations(newArrivalTimeDelta) {
 		var hop = Object.prototype.hasOwnProperty;

@@ -45,6 +45,7 @@ var DiaryContent = React.createClass({
 								onTimelineSelect:  			scope.onTimelineSelect,
 								isSelected: 				scope.isSelected,
 								displayFilter: 				scope.displayFilter,
+								calculateOccupancy:    		scope.calculateOccupancy, 
 								onDragStart: 				scope.onDragStart,
 								onDragEnd: 					scope.onDragEnd,
 								onResizeLeftStart: 			scope.onResizeLeftStart,
@@ -64,8 +65,8 @@ var DiaryContent = React.createClass({
 		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
 		display.px_per_ms 			= display.px_per_int / 900000;
 		display.x_0 				= viewport.row_header_right;
-		display.x_origin 			= scope.start_date.getTime(),
-		display.x_origin_start_time = scope.start_time
+		display.x_origin 			= scope.start_date.getTime();
+		display.x_origin_start_time = scope.start_time;
 
 		return _.extend(s_0, scope.gridProps);
 	},

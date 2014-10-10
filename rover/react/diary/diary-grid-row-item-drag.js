@@ -35,6 +35,8 @@ var GridRowItemDrag = React.createClass({
 		if(!this.state.dragging && distance > 5) {
 			this.setState({
 				dragging: true,
+				left: this.state.left,
+				top: this.state.top
 			}, function() {
 				this.props.__onDragStart(this.props.row_data, this.props.__dragData.data);
 			});
@@ -54,7 +56,9 @@ var GridRowItemDrag = React.createClass({
 
 		if(this.state.dragging) {
 			this.setState({
-				dragging: false
+				dragging: false,
+				left: this.state.left,
+				top: this.state.top
 			}, function() {
 				this.props.__onDragStop(e, this.state.left);
 			});

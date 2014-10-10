@@ -17,6 +17,13 @@ var TimelinePanel = React.createClass({
 			data: this.state.data,
 			filter: this.props.filter,
 			angular_evt: this.props.angular_evt
+		}),
+		TimelineOccupancy({
+			viewport: this.props.viewport,
+			display: this.props.display,
+			data: this.state.data,
+			filter: this.props.filter,
+			angular_evt: this.props.angular_evt			
 		}));			
 	}
 });
