@@ -129,6 +129,28 @@ sntRover.controller('rvReservationSearchWidgetController',['$scope', '$rootScope
 	    refreshScroller();
 	});
 
+
+	//click function on search area, mainly for closing the drawer
+  	$scope.clickedOnSearchArea = function($event){
+        $scope.$emit("closeDrawer");
+        // if the click occured on find reservation, no result found, no one opted to late checkout,
+        // need to back to dashboard
+        if(getParentWithSelector($event, document.getElementsByClassName("no-content")[0])
+            || getParentWithSelector($event, document.getElementsByClassName("no-content")[1])
+            || getParentWithSelector($event, document.getElementsByClassName("no-content")[2])) {
+            if($scope.textInQueryBox.length ===0){
+            	backToDashboard();
+            }
+        }
+  	};
+
+  	$scope.focusOutOnSearchText = function(){
+      if($scope.textInQueryBox.length ===0){
+               $scope.$emit("HeaderBackButtonClicked")
+      }
+    };
+
+
 	/**
 	* a reciever function to update data from outside
 	*/
