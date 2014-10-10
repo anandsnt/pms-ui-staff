@@ -82,8 +82,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			}
 
 			// if not then check if this room number is assigned to any other reservation
+			// CICO-10123 : if both reservation having same room number and reservation status is CHECKING_IN
 			// if so remove the room no from that reservation
-			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] ) {
+			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] && self.data[i]['reservation_status'] === 'CHECKING_IN' && data['reservation_status'] === 'CHECKING_IN') {
 				self.data[i]['room'] = '';
 			}
 		};
