@@ -1,4 +1,4 @@
-sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', '$timeout', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv, $timeout){
+sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.saveData = {};
@@ -23,7 +23,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";	
 	$scope.shouldShowDisabled = false;
-	
+	$scope.isManualCCEntryEnabled = false;
 
 	$scope.successMessage = "";
 	//To show/hide payment amount
@@ -55,6 +55,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.$emit("hideLoader");
 		MLISessionId = "";
 		$scope.errorMessage = data;
+		$scope.isLoading = false;
 	};
 	$scope.successRender = function(data){
 		
@@ -84,13 +85,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 
 		
-
-		
 		$scope.$emit("hideLoader");
-
-
 		$scope.paymentTypeList = data;
-
 		$scope.paymentTypeValues = [];
 
 		//Same popup is used to do the payment - View bill screen pay button
@@ -103,13 +99,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.selected_payment_type = 0;//CICO-9959
 			$scope.renderPaymentValues();
 		}
-		$timeout(function() {
-	       	$scope.isLoading = false;
-	    }, 200);
-	
-		
-		
-		
+		$scope.isLoading = false;
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){
