@@ -11,6 +11,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	
 	$scope.closeDialog = function(){
 		ngDialog.close();
+        $scope.$emit('routingPopupDismissed');
 	};
 
 	$scope.dimissLoaderAndDialog = function(){

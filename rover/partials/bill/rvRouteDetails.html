@@ -50,13 +50,13 @@
 		<span class="h2 message" ng-hide = "(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')">
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select">
-				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill">
+				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
 					<option value="{{bill.id}}" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>
 		</span>
-		<ul id="transaction-type" class="modal-options">
+		<ul id="transaction-type" class="modal-options" ng-class="{'no-bill-show' : (reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')}">
 			<li ng-class="{'active' : isBillingGroup}" ng-click = "toggleChargeType()" translate>BILLING_GROUP</li>
 			<li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
 		</ul>

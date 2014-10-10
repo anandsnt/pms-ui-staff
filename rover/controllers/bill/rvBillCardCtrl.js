@@ -617,6 +617,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	}); 
+
+	//Reload bill card when routing popup is dismissed
+	$scope.$on('routingPopupDismissed', function(event) {
+			
+		$scope.isRefreshOnBackToStaycard = true;
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	}); 
     
     /*
 	 * Go back to staycard - Depends on changes in bill do refresh or not

@@ -229,10 +229,12 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     }else{
                         data.splice(0, 1);
                         $scope.bills = $scope.excludeExistingBills(data);
-                        var newBill = {};
-                        newBill.id = 'new';
-                        newBill.bill_number = '' + $scope.newBillNumber + '(new)';
-                        $scope.bills.push(newBill);
+                        if($scope.newBillNumber <= 10){
+                            var newBill = {};
+                            newBill.id = 'new';
+                            newBill.bill_number = '' + $scope.newBillNumber + '(new)';
+                            $scope.bills.push(newBill);
+                        }                        
                         $scope.$parent.bills = $scope.bills;
                     }
                     $scope.selectedEntity.to_bill = $scope.bills[0].id;
@@ -338,6 +340,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
            $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
            
+           /*
+                     * If user selects the new bill option,
+                     * we'll first create the bill and then save the route for that bill
+                     */
            if($scope.selectedEntity.to_bill != 'new'){
                 $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
             }else{
@@ -353,7 +359,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         //Fetch data again to refresh the screen with new data
                         $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, successCallback, errorCallback);
                     };
-                    $scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
+                    $scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback, errorCallback);
             }
             
     };
