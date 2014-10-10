@@ -153,16 +153,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.showInspected = data.use_inspected;
 					$scope.showQueued = data.is_queue_rooms_on;
 
-					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+					if ( $rootScope.isStandAlone ) {
 						// show the user related rooms only
 						$scope.filterByWorkType = defaultWorkType;
 						$scope.filterByEmployee = defaultMaid;
 
 						// update filterByWorkType filter to first item
-						$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+						$scope.currentFilters.filterByWorkTypeId = $scope.filterByWorkType;
 
 						// update filterByEmployee filter
-						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+						$scope.currentFilters.filterByEmployeeName = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
 					}
 
 					$scope.$emit('hideLoader');
@@ -171,13 +171,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
 			} else {
 				$timeout(function() {
-					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+					if ( $rootScope.isStandAlone ) {
 						// restore the filterByWorkType from previous chosen value
-						$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
+						$scope.filterByWorkType = $scope.currentFilters.filterByWorkTypeId;
 
 						// restore the filterByEmployee from previous chosen value
 						$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
-							return item.maid_name == $scope.currentFilters.filterByEmployee
+							return item.maid_name == $scope.currentFilters.filterByEmployeeName
 						});
 					}
 					
@@ -292,10 +292,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyWorkTypefilter = function() {
-			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+			console.log('$scope.filterByWorkType');
+			console.log($scope.filterByWorkType);
+			$scope.currentFilters.filterByWorkTypeId = $scope.filterByWorkType;
 
 			// if work type is null reset filter by employee
-			if ( !$scope.currentFilters.filterByWorkType ) {
+			if ( !$scope.currentFilters.filterByWorkTypeId ) {
 				$scope.filterByEmployee = '';
 				$scope.applyEmpfilter();
 			} else {
@@ -313,7 +315,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
-			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+			console.log('$scope.filterByEmployee');
+			console.log($scope.filterByEmployee);
+			$scope.currentFilters.filterByEmployeeName = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
 			$scope.calculateFilters();
 
 			$scope.refreshScroll();
@@ -348,18 +352,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				if ( $rootScope.isStandAlone ) {
 					// any matched work type ids of room to chosen work type id
 					var workTypeMatch = _.find(room.work_type_ids, function(id) {
-						return id == $scope.currentFilters.filterByWorkType;
+						return id == $scope.currentFilters.filterByWorkTypeId;
 					});
 
 					// Filter by work type
-					if ( !!$scope.currentFilters.filterByWorkType && !workTypeMatch ) {
+					if ( !!$scope.currentFilters.filterByWorkTypeId && !workTypeMatch ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
 					};
 
 					// Filter by employee name
-					if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
+					if ( !!$scope.currentFilters.filterByEmployeeName && $scope.currentFilters.filterByEmployeeName != room.assignee_maid ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;

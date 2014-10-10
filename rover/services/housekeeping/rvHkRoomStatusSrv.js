@@ -29,8 +29,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 					"floorFilterStart": '',
 					"floorFilterEnd": '',
 					'showAllFloors': true,
-					'filterByWorkType': '',
-					'filterByEmployee': ''
+					'filterByWorkTypeId': '',
+					'filterByEmployeeName': ''
 				};
 		}
 
