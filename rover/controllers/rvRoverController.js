@@ -304,6 +304,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item[1].submenu;
       } else {
+        $scope.showSubMenu = false;
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
@@ -351,12 +352,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
-      //$scope.showSubMenu = true;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
-      //$scope.showSubMenu = false;
     };
+
+
     $scope.fetchAllItemsSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
 
@@ -634,7 +635,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-      if ( !$rootScope.isMaintenanceStaff ) {
+      if ( $rootScope.default_dashboard != 'HOUSEKEEPING' ) {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
           'type': type
@@ -643,7 +644,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-      if ( $rootScope.isMaintenanceStaff ) {
+      if ( $rootScope.default_dashboard == 'HOUSEKEEPING' ) {
         $state.go('rover.housekeeping.roomStatus', {
           'roomStatus': 'QUEUED_ROOMS'
         });
