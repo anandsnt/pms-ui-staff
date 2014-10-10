@@ -83,8 +83,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 		}
 
-		$scope.isLoading = false;
-	
+		
+
 		
 		$scope.$emit("hideLoader");
 
@@ -103,6 +103,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.selected_payment_type = 0;//CICO-9959
 			$scope.renderPaymentValues();
 		}
+		$scope.isLoading = false;
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){
