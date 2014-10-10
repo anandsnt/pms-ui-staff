@@ -86,7 +86,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 						}
 
 						$scope.singleState.assigned = assignedRooms;
-						$scope.filterRooms();
+						$scope.filterUnassigned();
 						summarizeAssignment();
 						refreshView();
 						$scope.$emit('hideLoader');
@@ -166,6 +166,37 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			refreshView();
 		}
 
+		$scope.filters = {
+			selectedFloor: "",
+			selectedReservationStatus: "",
+			selectedFOStatus: "",
+			vipsOnly: false,
+			checkin: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			},
+			checkout: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			}
+		}
+
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
 					$state.go('rover.workManagement.start');
@@ -220,27 +251,10 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.$emit('showLoader');
 		}
 
-		$scope.filterRooms = function() {
-			$scope.singleState.unassignedFiltered = [];
-			if (!$scope.singleState.filters.selectedStatus && !$scope.singleState.filters.selectedFloor) {
-				$scope.singleState.unassignedFiltered = $scope.singleState.unassigned;
-
-			} else if (!$scope.singleState.filters.selectedStatus) {
-				$scope.singleState.unassignedFiltered = _.where($scope.singleState.unassigned, {
-					floor_number: $scope.singleState.filters.selectedFloor
-				});
-			} else if (!$scope.singleState.filters.selectedFloor) {
-				$scope.singleState.unassignedFiltered = _.where($scope.singleState.unassigned, {
-					current_status: $scope.singleState.filters.selectedStatus
-				});
-			} else { //Both Filters
-				$scope.singleState.unassignedFiltered = _.where($scope.singleState.unassigned, {
-					current_status: $scope.singleState.filters.selectedStatus,
-					floor_number: $scope.singleState.filters.selectedFloor
-				});
-			}
+		$scope.filterUnassigned = function() {
+			$scope.singleState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.singleState.unassigned);
 			refreshView();
-			$scope.$emit('hideLoader');
+			$scope.closeDialog();
 		}
 
 		$scope.onWorkTypeChange = function() {

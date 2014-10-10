@@ -39,7 +39,7 @@
             <span class="icons icon-filter"></span>
             {{'FILTER_ROOMS' | translate}}
         </a>
-        <div class="worksheet-actions">
+        <div class="worksheet-actions" ng-if="false">
             <div class="select">
                 <select id="worksheet-unassigned-room-status" ng-model="singleState.filters.selectedStatus"  ng-class="{'placeholder': !singleState.filters.selectedFloor}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
                     <!-- Add class="placeholder" if value="" is selected -->
@@ -54,13 +54,17 @@
                 </select>                
             </div>
         </div>        
-        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned">
-            <ul class="sortable wrapper" data-type="source" data-drop="true" jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" data-jqyoui-options="{accept: '.worksheet-room.single-sheet.assigned'}" >
+        <div id="worksheet-unassigned-rooms" class="worksheet-content scrollable" ng-iscroll="workSheetUnassigned"
+            data-type="source" 
+            data-drop="true" 
+            jqyoui-droppable="{multiple:true, onDrop:'dropToUnassign(event, dropped)'}" 
+            data-jqyoui-options="{accept: '.worksheet-room.single-sheet.assigned'}">
+            <ul class="sortable wrapper">
                 <!-- for {-status} values see room-status/room-status.html, lines 71-105 -->
                 <li iscroll-stop-propagation id="unassigned-{{$index}}" class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
                         data-drag = "true"                        
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onAssignmentDragStart()', onStop: 'onAssignmentDragStop()' }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', delay: 500, containment: '#worksheet-content'}"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}"
                         style="width:{{singleState.dimensions.unassigned}}px">
 
                     <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
@@ -98,7 +102,11 @@
             <li>{{'STAYOVERS' | translate}} <span>{{singleState.summary.stayovers}}</span></li>
             <li>{{'COMPLETED' | translate}}<span>{{singleState.summary.completed}} / {{singleState.assigned.length}}</span></li>
         </ul>         
-        <div id="worksheet-assigned-rooms" class="worksheet-content scrollable" data-drop="true" jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" data-jqyoui-options="{accept: '.worksheet-room.single-sheet.unassigned'}" ng-iscroll="workSheetAssigned">
+        <div id="worksheet-assigned-rooms" class="worksheet-content scrollable" 
+            data-drop="true" 
+            jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}" 
+            data-jqyoui-options="{accept: '.worksheet-room.single-sheet.unassigned'}" 
+            ng-iscroll="workSheetAssigned">
             <section>
                 <!-- 1. New sheet, no rooms assigned -->
                 <ul class="sortable wrapper placeholder" ng-if="singleState.assigned.length === 0"></ul>
@@ -116,7 +124,7 @@
                     <li iscroll-stop-propagation class="worksheet-room single-sheet assigned" ng-repeat="room in singleState.assigned" 
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onUnassignmentDragStart()', onStop: 'onUnassignmentDragStop()' }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', delay: 500, containment: '#worksheet-content'}" id="unassigned-{{$index}}" 
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}" id="unassigned-{{$index}}" 
                         style="width:{{singleState.dimensions.assigned}}px">
 
                         <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
