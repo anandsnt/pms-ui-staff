@@ -1,22 +1,19 @@
-admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADBaseWebSrv){
+admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', 'ADBaseWebSrv', function( $http, $q, ADBaseWebSrv,ADBaseWebSrvV2, ADBaseWebSrv){
 	
 	
 	var that = this;
-	akhila = that;
-    this.usersArray = {};
-
+	this.usersArray = {};
     this.departmentsArray = [];
    /**
     * To fetch the list of users
     * @return {object} users list json
     */
     
-	this.fetch = function(){
+	this.fetch = function(params){
 		
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
-		
-		if(!isEmptyObject(that.usersArray)){
+		if(!isEmptyObject(that.usersArray) && !params.isAdminSnt ){
 			deferred.resolve(that.usersArray);
 		} else {
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {

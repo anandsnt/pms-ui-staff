@@ -11,12 +11,10 @@ sntRover.controller('RVDepositBalanceCtrl',[
 				RVDepositBalanceSrv,
 				RVPaymentSrv,
 				$stateParams){
+					
 	BaseCtrl.call(this, $scope);
 
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
-
-
-
 
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
 		value.isSelected = false;
@@ -199,7 +197,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	/*
 	 * Show Add Card Active and show screen
 	 */
-	$scope.clickedAddCard = function(){
+	$scope.clickedAddCard = function(){		
 		$scope.addCardActive = true;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -216,6 +214,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	 */
 	$scope.clickedShowExistingCard = function(){
 
+		$scope.refreshScroller('available_cards');
+
 		$scope.addCardActive = false;
 		$scope.isSwiped = false;
 		$scope.makePaymentButtonActive = false;
@@ -223,7 +223,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		$scope.depositBalanceNewCardData.expiryMonth = "";
 		$scope.depositBalanceNewCardData.expiryYear  = "";
 		$scope.depositBalanceNewCardData.cardHolderName  = "";
-		$scope.refreshScroller('available_cards');
+	
 	};
 	$scope.selectPayment = function(paymentId){
 		selectedPaymentIdFromList = paymentId;
