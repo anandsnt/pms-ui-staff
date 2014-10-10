@@ -129,6 +129,15 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 				if ( typeof data['vip'] === 'boolean' ) {
 					self.data[i]['vip'] = data['vip'];
 				};
+
+				//Update the primary image of the guest with the changed avatar
+				if (data['avatar']) {
+					for(var k in self.data[i]['images']){
+						if(self.data[i]['images'][k].is_primary){
+							self.data[i]['images'][k].guest_image = data['avatar'];
+						}
+					}
+				};
 			};
 		};
 	};

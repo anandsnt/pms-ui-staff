@@ -1,4 +1,4 @@
-sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv){
+sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', 'RVGuestCardSrv', '$timeout', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVGuestCardSrv, $timeout){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.saveData = {};
@@ -61,7 +61,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		MLISessionId = "";
 		$scope.data = data;
 		
-		$scope.shouldShowManualEntryDisabled = $rootScope.isManualCCEntryEnabled;
+		$scope.isManualCCEntryEnabled = $rootScope.isManualCCEntryEnabled;
 		if($scope.passData.is_swiped){
 			$scope.isManualCCEntryEnabled = true;
 			
@@ -82,9 +82,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.shouldShowDisabled = true;
 			
 		}
-		setTimeout(function(){
-			$scope.isLoading = false;
-		}, 200);
+
+		
+
 		
 		$scope.$emit("hideLoader");
 
@@ -103,6 +103,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.selected_payment_type = 0;//CICO-9959
 			$scope.renderPaymentValues();
 		}
+		$timeout(function() {
+	       	$scope.isLoading = false;
+	    }, 200);
+	
+		
+		
+		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){
@@ -307,7 +314,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			
 		} else {
 			//$scope.saveData.guest_id = $scope.passData.guest_id;
-			 $scope.saveData.user_id = $scope.passData.guest_id;
+			$scope.saveData.user_id = $scope.passData.user_id;
 			if($scope.passData.is_swiped){
 				$scope.saveData.credit_card = $scope.passData.credit_card;
 			}
@@ -337,6 +344,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
+			
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
