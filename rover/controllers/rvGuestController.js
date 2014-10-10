@@ -433,7 +433,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.guestFirstName = "";
 				$scope.guestLastName = "";
 				$scope.guestCity = "";
-				$scope.cardHeaderImage = "";
+				$scope.guestCardData.cardHeaderImage = "";
 			};
 			this.resetCompanyCard = function() {
 				$scope.reservationData.company.id = "";
@@ -806,7 +806,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.guestFirstName = guest.firstName;
 				$scope.guestLastName = guest.lastName;
 				$scope.guestCity = guest.address.city;
-				$scope.cardHeaderImage = guest.image;
+				$scope.guestCardData.cardHeaderImage = guest.image;
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
 				$scope.initGuestCard(guest);
