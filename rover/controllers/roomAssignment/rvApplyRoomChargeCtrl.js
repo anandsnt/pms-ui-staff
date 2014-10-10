@@ -1,5 +1,5 @@
-sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', 'RVUpgradesSrv', 'ngDialog',  
-	function($scope, $state, $stateParams, RVRoomAssignmentSrv,RVUpgradesSrv, ngDialog){
+sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$rootScope', '$state', '$stateParams', 'RVRoomAssignmentSrv', 'RVUpgradesSrv', 'ngDialog','RVReservationCardSrv',  
+	function($scope, $rootScope, $state,  $stateParams, RVRoomAssignmentSrv,RVUpgradesSrv, ngDialog, RVReservationCardSrv){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.noChargeDisabled = false;
@@ -36,13 +36,27 @@ sntRover.controller('rvApplyRoomChargeCtrl',['$scope','$state', '$stateParams', 
 		$scope.$emit('hideLoader');
 		
 	};
+	
 	$scope.successCallbackUpgrade = function(data){
 
+		// CICO-10152 : To fix - Rover - Stay card - Room type change does not reflect the updated name soon after upgrading.
+		$scope.reservationData.reservation_card.room_id = $scope.assignedRoom.room_id;
+		$scope.reservationData.reservation_card.room_number = $scope.assignedRoom.room_number;
+		if(typeof $scope.selectedRoomType != 'undefined'){
+			$scope.reservationData.reservation_card.room_type_description = $scope.selectedRoomType.description;
+			$scope.reservationData.reservation_card.room_type_code = $scope.selectedRoomType.type;
+		}
+		$scope.reservationData.reservation_card.room_status = "READY";
+		$scope.reservationData.reservation_card.fo_status = "VACANT";
+		$scope.reservationData.reservation_card.room_ready_status = "INSPECTED";
+		$scope.reservationData.reservation_card.is_upsell_available = data.is_upsell_available?"true":"false";
+
+		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+		// CICO-10152 : Upto here..
+		
 		$scope.$emit('hideLoader');
 		$scope.closeDialog();
 		$scope.goToNextView();
-
-
 
 	};
 	$scope.clickedNoChargeButton = function(){
