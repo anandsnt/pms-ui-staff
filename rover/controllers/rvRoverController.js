@@ -242,6 +242,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           submenu: []
         }
       ];
+
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
+      }];
+
     } else {
       // OBJECT WITH THE MENU STRUCTURE
       $scope.menu = [{
@@ -268,6 +283,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
       }];
 
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
+      }];
+
     }
 
     $scope.$on("updateSubMenu", function(idx, item) {
@@ -275,6 +304,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item[1].submenu;
       } else {
+        $scope.showSubMenu = false;
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
@@ -322,12 +352,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
-      $scope.showSubMenu = false;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
-      $scope.showSubMenu = false;
     };
+
+
     $scope.fetchAllItemsSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
 
@@ -450,23 +480,19 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         	sntapp.cardReader.startReaderDebug(options);
         	return;
       	}
-      	if(sntapp.browser == 'rv_native'){
-      		if (sntapp.cordovaLoaded) {
-	        	sntapp.cardReader.startReader(options);
-	      	}
-	      	else {
-	      		//If cordova not loaded in server, then repeat the method to append/call cordova plugins
+      	
+      	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+ 	    	sntapp.cardReader.startReader(options);
+	    } else {
+	      		//If cordova not loaded in server, or page is not yet loaded completely
 	      		//One second delay is set so that call will repeat in 1 sec delay
-	      		
-	      		if($scope.numberOfCordovaCalls < 15){
-	      			setTimeout(function(){
+	      	if($scope.numberOfCordovaCalls < 25){
+	      		setTimeout(function(){
 	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
 				    	$scope.initiateCardReader();
 				    }, 1000);
 	      		}
-      	    }
-      	} 
-    	
+      	    }	
     };
     
     /*
@@ -605,7 +631,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-      if ( !$rootScope.isMaintenanceStaff ) {
+      if ( $rootScope.default_dashboard != 'HOUSEKEEPING' ) {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
           'type': type
@@ -614,7 +640,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-      if ( $rootScope.isMaintenanceStaff ) {
+      if ( $rootScope.default_dashboard == 'HOUSEKEEPING' ) {
         $state.go('rover.housekeeping.roomStatus', {
           'roomStatus': 'QUEUED_ROOMS'
         });

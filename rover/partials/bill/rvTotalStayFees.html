@@ -210,7 +210,7 @@
 					<td>
 					
 					<div class="select selectBill">
-						<select class="movetobill" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
+						<select iscroll-stop-propagation class="movetobill" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
