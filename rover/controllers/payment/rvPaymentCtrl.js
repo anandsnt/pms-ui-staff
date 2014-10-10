@@ -23,6 +23,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";	
 	$scope.shouldShowDisabled = false;
+	
 
 	$scope.successMessage = "";
 	//To show/hide payment amount
@@ -56,14 +57,14 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.errorMessage = data;
 	};
 	$scope.successRender = function(data){
-		$scope.$emit("hideLoader");
+		
 		MLISessionId = "";
 		$scope.data = data;
-
-		$scope.paymentTypeList = data;
-
-		$scope.paymentTypeValues = [];
+		
+		$scope.shouldShowManualEntryDisabled = $rootScope.isManualCCEntryEnabled;
 		if($scope.passData.is_swiped){
+			$scope.isManualCCEntryEnabled = true;
+			
 			var selectedPaymentType = 0;
 			angular.forEach($scope.data, function(value, key) {
 				if(value.name == 'CC'){
@@ -79,10 +80,18 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.card_expiry_year = $scope.passData.card_expiry.substring(0, 2);
 			//To show fields disabled on swipe
 			$scope.shouldShowDisabled = true;
+			
 		}
 
-		$scope.isLoading = false;
 		
+
+		
+		$scope.$emit("hideLoader");
+
+
+		$scope.paymentTypeList = data;
+
+		$scope.paymentTypeValues = [];
 
 		//Same popup is used to do the payment - View bill screen pay button
 		if($scope.passData.fromView == "paybutton"){
@@ -94,6 +103,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.selected_payment_type = 0;//CICO-9959
 			$scope.renderPaymentValues();
 		}
+		$scope.isLoading = false;
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	$scope.guestPaymentListSuccess = function(data){

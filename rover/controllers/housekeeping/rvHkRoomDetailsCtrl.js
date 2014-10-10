@@ -14,13 +14,13 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		// set the previous state
 		$rootScope.setPrevState = {
 		    title: $filter('translate')('ROOM_STATUS'),
-		    name: 'rover.housekeeping.roomStatus'
+		    name: 'rover.housekeeping.roomStatus',
+		    param: {}
 		}
 
 		$scope.setTitle( $filter('translate')('ROOM_DETAILS') );
 		$scope.heading = $filter('translate')('ROOM_DETAILS');
 	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
-
 
 		$scope.updateHKStatus = function(){	
 			$scope.$emit('showLoader');	
@@ -114,7 +114,11 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 
 		// default open tab
-		$scope.openTab = 'Guest';
+		if ( $rootScope.isStandAlone ) {
+			$scope.openTab = 'Guest';
+		} else {
+			$scope.openTab = 'Work';
+		}
 
 		// methods to switch tab
 		$scope.tabSwitch = function(tab) {

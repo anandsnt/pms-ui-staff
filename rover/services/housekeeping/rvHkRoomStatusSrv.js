@@ -194,7 +194,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
 		this.setRoomStatusClass = function(room) {
-			if(this.roomList.checkin_inspected_only == "true") {
+			if(this.roomList.checkin_inspected_only == "true" && this.roomList.use_inspected == "true") {
 				if(room.hk_status.value == 'INSPECTED') {
 					room.roomStatusClass = 'clean';
 					return;
@@ -223,7 +223,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 				room.roomStatusClass = 'out';
 
 				if ( !!room.hk_status.oo_status ) {
-					if(this.roomList.checkin_inspected_only == "true") {
+					if(this.roomList.checkin_inspected_only == "true" && this.roomList.use_inspected == "true") {
 						if(room.hk_status.oo_status == 'INSPECTED') {
 							room.roomStatusClassWithOO = 'clean';
 							return;
@@ -307,10 +307,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 				case 'Arrived / Day use / Due out':
 					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
 					break;
 
-				case 'Arrived / Day Use / Due out / Departed':
+				case 'Arrived / Day use / Due out / Departed':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'check-out';
 					break;
