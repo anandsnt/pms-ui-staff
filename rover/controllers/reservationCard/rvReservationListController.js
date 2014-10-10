@@ -8,7 +8,6 @@ sntRover.controller('reservationListController',['$scope', function($scope){
 	$scope.$emit("updateRoverLeftMenu","");
 	
 	$scope.$on('RESERVATIONLISTUPDATED', function(event) {
-		alert("jkjjjjjjjjjjjjjjjjjjjjjjjj")
 		setTimeout(function(){
 			$scope.refreshScroller('resultListing');
 			}, 
