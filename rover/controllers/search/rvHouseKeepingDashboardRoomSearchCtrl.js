@@ -188,7 +188,7 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 		$scope.focusedOutOnQueryBox = function(){
 
 			$timeout(function() {
-				if(!$scope.isSearchResultsShowing){
+				if(!$scope.isSearchResultsShowing && $scope.query.length ===0){
 					$scope.query = "";
 					$scope.showSearchResultsArea = false;
 					$scope.$emit("showDashboardArea", true);
