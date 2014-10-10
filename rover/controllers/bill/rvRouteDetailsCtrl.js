@@ -326,6 +326,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             $scope.saveRoute();
     });
     /**
+    * function to update the company and travel agent in stay card header
+    */
+    $scope.updateCardInfo = function(){
+        
+        if(($scope.selectedEntity.entity_type == 'COMPANY_CARD' && (typeof $scope.reservationDetails.companyCard.id == 'undefined'|| $scope.reservationDetails.companyCard.id == '')) || 
+            ($scope.selectedEntity.entity_type == 'TRAVEL_AGENT' && ($scope.reservationDetails.travelAgent.id == 'undefined' || $scope.reservationDetails.travelAgent.id == ''))) {
+            $rootScope.$broadcast('CardInfoUpdated', $scope.selectedEntity.id, $scope.selectedEntity.entity_type);
+        }        
+    }
+    /**
     * function to save the new route
     */
     $scope.saveRoute = function(){
@@ -333,6 +343,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.setReloadOption(true);
                 $scope.headerButtonClicked();
+                $scope.updateCardInfo();
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
