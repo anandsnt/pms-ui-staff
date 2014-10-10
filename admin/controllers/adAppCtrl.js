@@ -166,6 +166,22 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-reports",
 					submenu: []
 				}];
+
+				// menu for mobile views
+				$scope.mobileMenu = [{
+				  title: "MENU_DASHBOARD",
+				  action: "staff#/staff/dashboard/",
+				  menuIndex: "dashboard",
+				  submenu: [],
+				  iconClass: "icon-dashboard"
+				}, {
+				  title: "MENU_ROOM_STATUS",
+				  action: "staff#/staff/housekeeping/roomStatus/",
+				  menuIndex: "roomStatus",
+				  submenu: [],
+				  iconClass: "icon-housekeeping"
+				}];
+
 			} else {
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
@@ -188,6 +204,20 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					action: "staff#/staff/reports",
 					iconClass: "icon-reports",
 					submenu: []
+				}];
+
+				// menu for mobile views
+				$scope.mobileMenu = [{
+				  title: "MENU_DASHBOARD",
+				  action: "staff#/staff/dashboard/",
+				  menuIndex: "dashboard",
+				  iconClass: "icon-dashboard"
+				}, {
+				  title: "MENU_ROOM_STATUS",
+				  action: "rover.housekeeping.roomStatus",
+				  menuIndex: "staff#/staff/housekeeping/roomStatus/",
+				  submenu: [],
+				  iconClass: "icon-housekeeping"
 				}];
 			}
 		};
