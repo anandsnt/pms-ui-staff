@@ -376,7 +376,7 @@ sntRover
 		    		this.hours_days = (this.hours_days === 'h') ? 'd' : 'h';
 		    	},
 		    	toggleRange: function() {
-		    		var hourFormat12 = this.range === 12;
+		    		var hourFormat12 = ($scope.gridProps.viewport.hours === 12);
 
 					$scope.gridProps.viewport.hours = (hourFormat12) ? 24 : 12;
 					$scope.gridProps.display.row_height = (hourFormat12) ? 60 : 24;
