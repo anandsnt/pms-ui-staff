@@ -38,7 +38,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 		    });
 			
 		};
-		$scope.invokeApi(ADUserSrv.fetch, {} , successCallbackFetch);	
+		$scope.invokeApi(ADUserSrv.fetch, {'isAdminSnt':$scope.isAdminSnt} , successCallbackFetch);	
 	};
 	
    /**
