@@ -34,7 +34,7 @@
 							</figure>
 							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.ending_with}}</span></span>
 							<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
-							<span class="icons icon-ok-10">selected</span>
+							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.value"></span>
 						</div>
 					</div>
 				</div>
@@ -57,7 +57,7 @@
 				</select>
 			</div>
 		</span>
-		<ul id="transaction-type" class="modal-options" ng-class="{'no-bill-show' : (reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')}">
+		<ul id="transaction-type" class="modal-options" >
 			<li ng-class="{'active' : isBillingGroup}" ng-click = "toggleChargeType()" translate>BILLING_GROUP</li>
 			<li ng-class="{'active' : !isBillingGroup}" ng-click = "toggleChargeType()" translate>CHARGE_CODES</li>
 		</ul>
@@ -76,7 +76,7 @@
 
 
 		<!-- Search available charge codes -->
-		<div id="autocomplete-charge-codes" class="search-codes" ng-show = "!isBillingGroup">
+		<div id="autocomplete-charge-codes" class="search-codes charge-code-select" ng-show = "!isBillingGroup">
 			<input ng-model="chargeCodeSearchText" ng-keyup="chargeCodeEntered()" name="search-codes" id="search-codes" type="text" placeholder="{{'SEARCH_OR_SELECT_CODES_PLACEHOLDER' | translate}}" value="" autocomplete="off" />
 			<div class="mini-select" ng-click = "showAvailableChargeCodes()">
 				
