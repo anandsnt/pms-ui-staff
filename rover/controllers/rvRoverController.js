@@ -486,11 +486,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
 	      		//One second delay is set so that call will repeat in 1 sec delay
-	      	if($scope.numberOfCordovaCalls < 25){
+	      	if($scope.numberOfCordovaCalls < 50){
 	      		setTimeout(function(){
 	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
 				    	$scope.initiateCardReader();
-				    }, 1000);
+				    }, 2000);
 	      		}
       	    }	
     };
