@@ -1,31 +1,148 @@
 <div id="modal" class="modal-show" ng-cloak>
-	<div class="modal-content">
+	<div class="modal-content new-content">
 		<form method="post" action="" id="fitler-rooms" name="fitler-rooms" class="modal-content form fitler-rooms">
-			<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
-			
+
 			<span class="h2 message">Filter Rooms</span>
-			
-			<div class="entry full-width">
-				<div class="select">
-                <select id="worksheet-unassigned-room-status" ng-model="multiSheetState.filters.selectedStatus" ng-class="{'placeholder': !multiSheetState.filters.selectedFloor}" name="worksheet-unassigned-room-status" ng-change="startLoader();filterRooms();">
-                    <!-- Add class="placeholder" if value="" is selected -->
-                    <option value="" selected>All unassigned</option>
-                    <option value="DIRTY">Unassigned &amp; Dirty</option>
-                    <option value="PICKUP">Unassigned &amp; Pickup</option>
-                </select>
+			<div class="full-width">     
+				<div class="entry half-width">
+					<div class="select full-width">
+		                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="filters.selectedFloor" ng-class="{'placeholder': !filters.selectedFloor}" ng-options="floor.floor_number as floor.description for floor in floors">
+		                    <option value="" selected>All floors</option>
+		                </select>   
+					</div>
 				</div>
-			</div>
-			<div class="entry full-width">
-				<div class="select">
-	                <select id="worksheet-unassigned-floor" name="worksheet-unassigned-floor" ng-model="multiSheetState.filters.selectedFloor" ng-class="{'placeholder': !multiSheetState.filters.selectedFloor}" ng-options="floor.floor_number as floor.description for floor in floors" ng-change="startLoader();filterRooms();">
-	                    <option value="" selected>All floors</option>
-	                </select>   
+				<div class="entry half-width">	
+					<label class="checkbox inline" ng-class="{checked: filters.vipsOnly}">
+		                <span class="icon-form icon-checkbox" ng-class="{checked: filters.vipsOnly}"></span>
+		                <input type="checkbox" ng-class="{checked: filters.vipsOnly}" ng-model="filters.vipsOnly"/>
+		                Show VIPs only
+		            </label> 
+	        	</div>
+	        </div>
+	            
+	        <div class="full-width clear-both">
+	            <div class="entry half-width">
+					<div class="select">
+		                <select ng-model="filters.selectedFOStatus" ng-class="{'placeholder': !filters.selectedFOStatus}">
+		                    <!-- Add class="placeholder" if value="" is selected -->
+		                    <option value="">FO status</option>
+		                    <option value="VACANT">Vacant</option>
+		                    <option value="OCCUPIED">Occupied</option>
+		                </select>
+					</div>
+				</div>
+				<div class="entry half-width">
+					<div class="select">
+		                <select ng-model="filters.selectedReservationStatus" ng-class="{'placeholder': !filters.selectedReservationStatus}">
+		                    <!-- Add class="placeholder" if value="" is selected -->
+		                    <option value="">Reservation status</option>
+		                    <option value="Not Reserved">Not Reserved</option>                    
+		                    <option value="Arrival">Arrival</option>
+		                    <option value="Arrived">Arrived</option>
+		                    <option value="STAYOVER">STAYOVER</option>
+		                    <option value="Due out">Due out</option>
+		                    <option value="Departed">Departed</option>
+		                </select>
+					</div>
+				</div>
+			</div>				
+			
+			<div class="entry full-width clear-both">
+				Arrival Time				
+				<div class="reservation-times"> 
+					<!-- Arrival time -->
+					<div> 
+					    <label class="label"> > </label>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.after.hh"> 
+					            <option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.after.mm"> 
+					            <option value="">MM</option> 
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.after.am" class="">
+					            <option value="AM" selected>AM</option>
+					            <option value="PM">PM</option>
+					        </select>
+					    </div>
+					    <label class="label clear-both"> < </label>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.before.hh" > 
+					            <option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.before.mm"> 
+					            <option value="">MM</option> 
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkin.before.am">
+					            <option value="AM" selected>AM</option>
+					            <option value="PM">PM</option>
+					        </select>
+					    </div>
+					</div>
 				</div>
 			</div>
 
-			<div class="actions">
-				<button type="button" ng-click="filterUnassigned()"class="button green modal-close">Continue</button>
-				<button type="button" ng-click="closeDialog()"  class="button blank modal-close">Cancel</button> 
+			<div class="entry full-width clear-both">
+				Departure Time				
+				<div class="reservation-times"> 					
+					<div> 
+					    <label class="label"> > </label>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.after.hh" > 
+					        	<option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.after.mm"> 
+					            <option value="">MM</option> 
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.after.am">
+					            <option value="AM">AM</option>
+					            <option value="PM">PM</option>
+					        </select>
+					    </div>
+					    <label class="label clear-both"> < </label>
+					    <div class="select hour unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.before.hh" >
+					        	<option value="">HH</option> 
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select minutes unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.before.mm"> 
+					            <option value="">MM</option>
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					        </select>
+					    </div>
+					    <div class="select ampm unasssigned-room-filter-time">
+					        <select ng-model="filters.checkout.before.am">
+					            <option value="AM">AM</option>
+					            <option value="PM">PM</option>
+					        </select>
+					    </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="actions clear-both">
+				<button type="button" ng-click="filterUnassigned()" class="button green modal-close">Continue</button>
+				<button type="button" ng-click="closeDialog()" class="button blank modal-close">Cancel</button> 
 			</div>
 		</form>
 	</div>
