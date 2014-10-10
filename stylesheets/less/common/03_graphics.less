@@ -64,6 +64,21 @@
         @media @highdpi {
             background-image: @iconMenu2x;
             background-size: 30px;
+
+            &.icon-dashboard { 
+                background-position: 0 -367px;
+                &.active { background-position: 0 -427px;}
+            }
+
+            &.icon-housekeeping { 
+                background-position: 0 -847px;
+                &.active { background-position: 0 -906px;}
+            }
+
+            &.icon-sign-out {
+                background-position: 0 -1328px; 
+                &.active { background-position: 0 -1388px;}
+            }
         }
 
         @media only screen and (min-width: 600px) {
