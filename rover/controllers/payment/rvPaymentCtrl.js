@@ -344,7 +344,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
-			alert(JSON.stringify(data));
+			
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
