@@ -442,14 +442,41 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
-    setTimeout(function() {
-      if (sntapp.cardSwipeDebug === true) {
-        sntapp.cardReader.startReaderDebug(options);
-      }
-      if (sntapp.cordovaLoaded) {
-        sntapp.cardReader.startReader(options);
-      };
+	$scope.numberOfCordovaCalls = 0;
+
+	$scope.initiateCardReader = function(){
+    	
+      	if (sntapp.cardSwipeDebug === true) {
+        	sntapp.cardReader.startReaderDebug(options);
+        	return;
+      	}
+      	if(sntapp.browser == 'rv_native'){
+      		if (sntapp.cordovaLoaded) {
+	        	sntapp.cardReader.startReader(options);
+	      	}
+	      	else {
+	      		//If cordova not loaded in server, then repeat the method to append/call cordova plugins
+	      		//One second delay is set so that call will repeat in 1 sec delay
+	      		
+	      		if($scope.numberOfCordovaCalls < 15){
+	      			setTimeout(function(){
+	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
+				    	$scope.initiateCardReader();
+				    }, 1000);
+	      		}
+      	    }
+      	} 
+    	
+    };
+    
+    /*
+     * Start Card reader now!. 
+     * Time out is to call set Browser
+     */
+    setTimeout(function(){
+    	 $scope.initiateCardReader();
     }, 2000);
+   
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
