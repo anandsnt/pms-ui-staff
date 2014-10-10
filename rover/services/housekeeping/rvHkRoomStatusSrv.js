@@ -60,7 +60,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    	// single calculate the class required
 					    	// will require additional call from details page
-					    	room.roomStatusClass = that.setRoomStatusClass(room);
+					    	that.setRoomStatusClass(room);
 
 					    	// set the leaveStatusClass or enterStatusClass value
 					    	that.setReservationStatusClass(room);
@@ -190,51 +190,135 @@ sntRover.service('RVHkRoomStatusSrv', [
 			}
 		};
 
+
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room){
-			if(this.roomList.checkin_inspected_only == "true"){
-				if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-					return 'clean';
+		this.setRoomStatusClass = function(room) {
+			if(this.roomList.checkin_inspected_only == "true" && this.roomList.use_inspected == "true") {
+				if(room.hk_status.value == 'INSPECTED') {
+					room.roomStatusClass = 'clean';
+					return;
 				}
-				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'pickup';
+				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP')) {
+					room.roomStatusClass = 'pickup';
+					return;
 				}
-			}
-			else {
-				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-					return 'clean';
+			} else {
+				if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED')) {
+					room.roomStatusClass = 'clean';
+					return;
 				}
-				if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-					return 'pickup';
+				if((room.hk_status.value == 'PICKUP')) {
+					room.roomStatusClass = 'pickup';
+					return;
 				}
 			}
 
-			if( (room.hk_status.value == 'DIRTY') && !room.is_occupied ) {
-				return 'dirty';
+			if( (room.hk_status.value == 'DIRTY') ) {
+				room.roomStatusClass = 'dirty';
+				return;
 			}
+
 			if( room.hk_status.value == 'OO' || room.hk_status.value == 'OS' ) {
-				return 'out';
-			}
+				room.roomStatusClass = 'out';
 
-			return '';
+				if ( !!room.hk_status.oo_status ) {
+					if(this.roomList.checkin_inspected_only == "true" && this.roomList.use_inspected == "true") {
+						if(room.hk_status.oo_status == 'INSPECTED') {
+							room.roomStatusClassWithOO = 'clean';
+							return;
+						}
+						if((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'PICKUP')) {
+							room.roomStatusClassWithOO = 'pickup';
+							return;
+						}
+					} else {
+						if((room.hk_status.oo_status == 'CLEAN' || room.hk_status.oo_status == 'INSPECTED')) {
+							room.roomStatusClassWithOO = 'clean';
+							return;
+						}
+						if((room.hk_status.oo_status == 'PICKUP')) {
+							room.roomStatusClassWithOO = 'pickup';
+							return;
+						}
+					}
+					if((room.hk_status.oo_status == 'DIRTY')) {
+						room.roomStatusClassWithOO = 'dirty';
+						return;
+					}
+				};
+
+				return;
+			}
 		};
 
+
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setReservationStatusClass = function(room){
-			if ( room.room_reservation_status == 'Due Out' || room.room_reservation_status == 'Departed' ) {
-				room.leaveStatusClass = 'check-out';
-			} else if ( room.room_reservation_status == 'STAYOVER' ) {
-				room.leaveStatusClass = 'inhouse';
-			} else {
-				room.leaveStatusClass = 'no-show';
-			}
+		this.setReservationStatusClass = function(room) {
 
-			if ( room.room_reservation_status == 'Arrival' || room.room_reservation_status == 'Arrived' ) {
-				room.enterStatusClass = 'check-in';
-			} else {
-				room.enterStatusClass = 'no-show';
+			// room.leaveStatusClass is for first arrow. can be red(check-out), blue(inhouse) or gray(no-show)
+			// room.enterStatusClass is for second arrow. can be green(check-in) or gray(no-show)
+			switch(room.room_reservation_status) {
+				case 'Due out':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Stayover':
+					room.leaveStatusClass = 'inhouse';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Arrival':
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Arrived':
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Due out / Arrival':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Departed / Arrival':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Arrived / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-in';
+					break;
+
+				case 'Due out / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-out';
+					break;
+
+				case 'Arrived / Day use / Due out':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
+					break;
+
+				case 'Arrived / Day use / Due out / Departed':
+					room.leaveStatusClass = 'check-out';
+					room.enterStatusClass = 'check-out';
+					break;
+
+				default:
+					room.leaveStatusClass = 'no-show';
+					room.enterStatusClass = 'no-show';
+					break;
 			}
 		};
 

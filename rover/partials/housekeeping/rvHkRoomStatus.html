@@ -1,3 +1,5 @@
+<div ng-show="localLoader" id="loading"><div id="loading-spinner"></div></div> 
+
 <!-- Navbar -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
@@ -54,38 +56,41 @@
 </ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
     <li class="room" bindonce ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
           <div class="data">
             <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
-            <span class="room-status {{ room.roomStatusClass }}" bo-text="room.description"></span>
+            <span class="room-status {{ room.roomStatusClass }}" bo-if="!room.hk_status.oo_status" bo-text="room.description"></span>
+            <span class="room-status {{ room.roomStatusClassWithOO }}" bo-if="!!room.hk_status.oo_status" bo-text="room.hk_status.oo_status"></span>
           </div>
-          <div class="reservation-status">
+          <div class="reservation-status" bo-class="{'queued': room.is_queued}">
             <!-- {leaveStatusClass} can be check-out(for due out or departed) or inhouse(for stayover) --> 
             <div class="current {{ room.leaveStatusClass }}">
               <span class="guest-status {{ room.leaveStatusClass }}" bo-text="room.room_reservation_status"></span>
               <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-              <span bo-if="room.room_reservation_status == 'Departed'">OUT</span>
-              <span bo-if="room.room_reservation_status != 'Departed'" bo-text="room.departure_time"></span>
+              <span bo-if="room.room_reservation_status.indexOf('Departed') >= 0">OUT</span>
+              <span bo-if="room.room_reservation_status.indexOf('Due out') >= 0" bo-text="room.departure_time"></span>
             </div>
             <!-- {enterStatusClass} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
             <div class="next {{ room.enterStatusClass }}">
               <span class="guest-status {{ room.enterStatusClass }}" bo-text="room.room_reservation_status"></span>
-              <!-- Show only if applicable, {arrival-time} can only be time -->
-              <span bo-text="room.arrival_time"></span>
+              <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
+              <span bo-if="room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0)">IN</span>
+              <span bo-if="room.room_reservation_status.indexOf('Arrival') >= 0" bo-text="room.arrival_time"></span>
             </div>
+            <div bo-if="room.is_queued" class="queued"></div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
-          <div class="additional-info" bo-if="isStandAlone">
+          <div class="additional-info">
             <!-- Show only if room is assigned -->   <!-- if the room is departed or stayover -->         
-            <span bo-if="room.assignee_maid" class="assigned" bo-text="room.assignee_maid"></span>
-            <span bo-if="!room.assignee_maid && (room.room_reservation_status == 'Departed' || room.room_reservation_status == 'STAYOVER')" class="unassigned">Unassigned</span>
+            <span bo-if="isStandAlone && room.assignee_maid" class="assigned" bo-text="room.assignee_maid"></span>
+            <span bo-if="isStandAlone && !room.assignee_maid && (room.room_reservation_status == 'Departed' || room.room_reservation_status == 'STAYOVER')" class="unassigned">Unassigned</span>
             
             <!-- Show only if room is not in service -->
-            <span bo-if="room.room_reservation_hk_status == 2" class="service-status">Out of Service</span>
-            <span bo-if="room.room_reservation_hk_status == 3" class="service-status">Out of Order</span>
+            <span bo-if="room.hk_status.value == 'OS'" class="service-status">Out of Service</span>
+            <span bo-if="room.hk_status.value == 'OO'" class="service-status">Out of Order</span>
           </div>
           <!-- Show only if room is occupied -->
           <figure class="guest-image" bo-if="room.is_occupied">

@@ -47,6 +47,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
 		$scope.filterOpen = false;
+		$scope.localLoader = false;
 
 		$scope.query = '';
 		$scope.showPickup = false;
@@ -105,7 +106,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noScroll = true;
 		var afterFetch = function(data) {
-			$scope.noScroll = true;
+			$scope.localLoader = true;
 
 			// apply the filter first
 			$scope.calculateFilters(data.rooms);
@@ -135,11 +136,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var toPos = localStorage.getItem( 'roomListScrollTopPos' );
 				$scope.refreshScroll( toPos );
 
-				// finally hide the loaded
-				// in almost every case this will not block UX
-				$scope.$emit( 'hideLoader' );
-
-				$scope.noScroll = false;
+				$scope.localLoader = false;
 
 			// execute this after this much time
 			// as the animation is in progress
@@ -150,31 +147,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var fetchRooms = function() {
 			//Fetch the roomlist if necessary
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
-
-				// $scope.$emit('showLoader');
-
-				// RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-				// 	.then(function(data) {
-				// 		$scope.showPickup = data.use_pickup;
-				// 		$scope.showInspected = data.use_inspected;
-				// 		$scope.showQueued = data.is_queue_rooms_on;
-
-				// 		if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
-				// 			// show the user related rooms only
-				// 			$scope.filterByWorkType = defaultWorkType;
-				// 			$scope.filterByEmployee = defaultMaid;
-
-				// 			// update filterByWorkType filter to first item
-				// 			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
-
-				// 			// update filterByEmployee filter
-				// 			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
-				// 		}
-
-				// 		afterFetch( data );
-				// 	}, function() {
-				// 		$scope.$emit('hideLoader');
-				// 	});
 
 				var callback = function(data) {
 					$scope.showPickup = data.use_pickup;
@@ -193,11 +165,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
 					}
 
-					afterFetch( data );
-
 					$scope.$emit('hideLoader');
+					afterFetch( data );
 				};	
-
 				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
 			} else {
 				$timeout(function() {
@@ -211,10 +181,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						});
 					}
 					
-					// show loader as we will be slicing the rooms
-					// in smaller and bigger parts and show smaller first
-					// and rest after a delay
-					$scope.$emit('showLoader');
 					afterFetch( fetchedRoomList );
 				}, 1);
 			}
@@ -245,6 +211,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
 				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
 		});
 
@@ -361,6 +328,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		*  A method which checks the filter option status and see if the room should be displayed
 		*/
 		$scope.calculateFilters = function(source) {
+			$scope.localLoader = true;
+
 			var source = source || $scope.rooms;
 			$scope.noResultsFound = 0;
 			var allRoomTypesUnSelected = true;
@@ -534,6 +503,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				room.display_room = true;
 			}
 
+			$scope.localLoader = false;
 		};
 
 		/**
