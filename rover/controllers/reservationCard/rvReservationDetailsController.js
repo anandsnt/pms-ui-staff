@@ -13,6 +13,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
+		//CICO-10006 assign the avatar image
+		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
+
 		// if we just created a reservation and came straight to staycard
 		// we should show the back button with the default text "Find Reservations"	
 		if ( $stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
