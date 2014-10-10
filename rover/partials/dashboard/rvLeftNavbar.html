@@ -1,11 +1,43 @@
-<nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen, 'invisible' : !menuOpen}">
+<nav id="main-menu" role="navigation" ng-animate="animate" ng-class="{'menu-open': menuOpen, 'menu-closing' : !menuOpen}">
+	<a id="{{menuImage}}" class="nav-toggle" ng-class="{'active': menuOpen}" ng-click="toggleDrawerMenu()">Menu</a>
+	
+	<div id="nav" ng-show="isHotelAdmin || isHotelStaff">
+		<h5>Menu</h5>
 
-	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="toggleDrawerMenu()"  ng-class="{'collapse': menuOpen}">
-		Menu
-		<span ng-class="{'active': menuOpen}"></span>
-	</a>
+		<ul id="large-menu" class="main">
+			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])">
+				<a class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}"></a>
+				<a class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action == ''"></a>
+			</li>
+			<li id="settings">
+				<a ng-click="settingsClicked()" class="icon-menu icon-settings">Settings</a>
+			</li> 
+			<li id="sign-out">
+				<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
+			</li>
+		</ul>
+
+		<ul id="mobile-menu" class="main">
+			<li ng-repeat="mobileMenuItem in mobileMenu" ng-click="$emit('updateSubMenu', [$index, mobileMenuItem])">
+				<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action != ''" ui-sref="{{mobileMenuItem.action}}"></a>
+				<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action == ''"></a>
+			</li>
+			<li id="sign-out">
+				<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
+			</li>
+		</ul>
+	</div>
+
+	<ul id="submenu" class="submenu" ng-class="{'active':menuOpen && showSubMenu && activeSubMenu.length > 0}">
+		<li ng-repeat="menuItem in activeSubMenu" ng-hide="menuItem.standAlone && !isStandAlone">
+			<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}"></a>
+			<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action == '' && !menuItem.actionPopup" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}"></a>
+			<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action == ''&& menuItem.actionPopup" ng-click="subMenuAction(menuItem.menuIndex)" translate="{{menuItem.title}}"></a>
+		</li>
+	</ul>
+
 	<!-- For Hotel Admin -->
-	<ul ng-show ="isHotelAdmin || isHotelStaff">
+	<!-- <ul ng-show ="isHotelAdmin || isHotelStaff">
 		<li class="menu-title">
 			MENU
 		</li>		
@@ -35,15 +67,15 @@
 				<a class="fill" ng-click="toggleDrawerMenu()" href="/logout">
 					Sign Out
 				</a>
-		</li>
+		</li> -->
 	<!-- 	<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
 			Version 1.0
 		</li> 	 -->
-	</ul>
+	<!-- </ul> -->
 
 	<!-- For SNT Admin -->
-	<ul ng-hide ="isHotelAdmin || isHotelStaff" >
+	<!-- <ul ng-hide ="isHotelAdmin || isHotelStaff" >
 		<li id="sign-out">
 			<a  ng-click="toggleDrawerMenu()" href="/logout">
 				<label class="icon-menu icon-sign-out"></label>
@@ -51,14 +83,14 @@
 			<a ng-click="toggleDrawerMenu()" href="/logout">
 				Sign Out
 			</a>
-		</li>
+		</li> -->
 		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />
 			Version 1.0
 		</li> -->
-	</ul>
+	<!-- </ul> -->
 
-	<div id="submenu" ng-show="menuOpen && showSubMenu && activeSubMenu.length > 0">
+	<!-- <div id="submenu" ng-show="menuOpen && showSubMenu && activeSubMenu.length > 0">
 		<ul>
 			<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-hide="menuItem.standAlone && !isStandAlone">
 				<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="toggleDrawerMenu()" translate="{{menuItem.title}}">
@@ -69,5 +101,5 @@
 			</li>
 			<li class="filler"></li>
 		</ul>
-	</div>
+	</div> -->
 </nav>

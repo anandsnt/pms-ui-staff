@@ -242,6 +242,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           submenu: []
         }
       ];
+
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping"
+      }];
+
     } else {
       // OBJECT WITH THE MENU STRUCTURE
       $scope.menu = [{
@@ -266,6 +280,19 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         iconClass: "icon-reports",
         submenu: [],
         hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
+      }];
+
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping"
       }];
 
     }
@@ -322,11 +349,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
-      $scope.showSubMenu = false;
+      //$scope.showSubMenu = true;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
-      $scope.showSubMenu = false;
+      //$scope.showSubMenu = false;
     };
     $scope.fetchAllItemsSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
