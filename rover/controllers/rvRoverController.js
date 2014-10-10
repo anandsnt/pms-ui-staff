@@ -253,7 +253,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         title: "MENU_ROOM_STATUS",
         action: "rover.housekeeping.roomStatus",
         menuIndex: "roomStatus",
-        iconClass: "icon-housekeeping"
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
       }];
 
     } else {
@@ -292,7 +293,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         title: "MENU_ROOM_STATUS",
         action: "rover.housekeeping.roomStatus",
         menuIndex: "roomStatus",
-        iconClass: "icon-housekeeping"
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
       }];
 
     }
