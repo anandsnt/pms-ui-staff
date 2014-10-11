@@ -32,11 +32,9 @@ var GridRowItemDrag = React.createClass({
 			top, 
 			margin_top = this.props.display.row_height + this.props.display.row_height_margin;
 
-		if(!this.state.dragging && distance > 5) {
+		if(!this.state.dragging && distance > 10) {
 			this.setState({
-				dragging: true,
-				left: this.state.left,
-				top: this.state.top
+				dragging: true
 			}, function() {
 				this.props.__onDragStart(this.props.row_data, this.props.__dragData.data);
 			});
@@ -45,7 +43,7 @@ var GridRowItemDrag = React.createClass({
 			top = 	this.state.element_y + delta_y; // - this.state.element[0].scrollTop; this.state.offset_y;	
 
 			this.setState({
-				left: (left / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int , 
+				left: Math.floor(left / this.props.display.px_per_int) * this.props.display.px_per_int , 
 				top: Math.floor(top / margin_top) * margin_top
 			});
 		}
@@ -87,12 +85,12 @@ var GridRowItemDrag = React.createClass({
 			style = { 
 				position: 'fixed',
 				left: this.state.left,
-				top: this.state.top,
-				height: this.props.display.row_height
+				top: this.state.top //,
+				//height: this.props.display.row_height
 			}; 
-			className = 'draggable';
+			className = 'occupancy-block dragstate';
 		} else if(this.state.selected) {
-			className = 'selected';
+			className = 'occupancy-block selected';
 		} else {
 			className = '';
 		}

@@ -143,8 +143,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    		var hourFormat12 = ($scope.gridProps.viewport.hours === 12);
 
 					$scope.gridProps.viewport.hours = (hourFormat12) ? 24 : 12;
-					$scope.gridProps.display.row_height = (hourFormat12) ? 60 : 24;
-					$scope.gridProps.display.row_height_margin = (hourFormat12) ? 5 : 0;
+					$scope.gridProps.display.row_height = (hourFormat12) ? 24 : 60;
+					$scope.gridProps.display.row_height_margin = (hourFormat12) ? 0 : 5;
 
 					//viewport.width = $(window).width() - 120;
 					//viewport.height = $(window).height() - 230;
@@ -203,20 +203,27 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    };
 
 		    $scope.onDragEnd = function(nextRoom, reservation, start_time_ms) {
-		    	var delta = Math.abs(reservation.start_date.getTime() - start_time_ms);
+		    	var delta = start_time_ms - reservation.start_date.getTime(),
+		    		newStartTime = new Date(start_time_ms),
+		    		newEndTime = new Date(reservation.end_date.getTime() + delta),
+		    		availability;
+
 		    	//console.log('New Room for reservation confirmed:  ', nextRoom, reservation, new Date(start_time_ms));
+		    	availability = determineAvailability(nextRoom.reservations, newStartTime, newEndTime, reservation).shift();
 
-		    	if(nextRoom.id !== prevRoom.id) {
-			    	reservationRoomTransfer(nextRoom, prevRoom, reservation);
+				if(availability) {
+			    	if(nextRoom.id !== prevRoom.id) {
+			    		reservationRoomTransfer(nextRoom, prevRoom, reservation);
+				    }
+
+				    if(reservation.start_date.getTime() !== start_time_ms &&
+				       start_time_ms >= $scope.start_date.getTime()) {
+						reservation.start_date = newStartTime;
+						reservation.end_date = newEndTime;
+					}
+
+			    	renderGrid();
 			    }
-
-			    if(reservation.start_date.getTime() !== start_time_ms &&
-			       start_time_ms >= $scope.start_date.getTime()) {
-					reservation.start_date.setTime(start_time_ms);
-					reservation.end_date.setTime(reservation.end_date.getTime() + delta);
-				}
-
-		    	renderGrid();
 		    };
 		})();
 
@@ -320,8 +327,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			clearNewReservations($scope.gridProps.data);
-			injectNewReservations(Time({ 
+			clearRoomQuery($scope.gridProps.data);
+			injectAvailableTimeSlots(Time({ 
 									hours: $scope.gridProps.display.new_reservation_time_span 
 								  }),
 								  $scope.gridProps.filter,
@@ -333,8 +340,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			clearNewReservations($scope.gridProps.data);
-			injectNewReservations(Time({ 
+			clearRoomQuery($scope.gridProps.data);
+			injectAvailableTimeSlots(Time({ 
 									hours: $scope.gridProps.display.new_reservation_time_span 
 								  }),
 								  $scope.gridProps.filter,
@@ -346,8 +353,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			clearNewReservations($scope.gridProps.data);
-			injectNewReservations(Time({ 
+			clearRoomQuery($scope.gridProps.data);
+			injectAvailableTimeSlots(Time({ 
 									hours: $scope.gridProps.display.new_reservation_time_span 
 								  }),
 								  $scope.gridProps.filter,
@@ -433,7 +440,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		}
 	}
 
-	function clearNewReservations(data) {
+	function clearRoomQuery(data) {
 		var hop = Object.prototype.hasOwnProperty,
 			topOfStack;
 
@@ -448,22 +455,28 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		});
 	}
 
-	function check_reservation_ranges(reservations, start_date, end_date) {
-		var range_validated = true;
+	function determineAvailability(reservations, start_date, end_date, orig_reservation) {
+		var range_validated = true, conflicting_reservation;
 
-		reservations.forEach(function(reservation, idx) {
-			if(start_date >= reservation.start_date && start_date <= reservation.end_date ||
-			   reservation.start_date >= start_date && reservation.end_date <= end_date ||
-			   end_date >= reservation.start_date && end_date <= reservation.end_date) {
-				range_validated = false;
-				return;
-			}
-		});
+		if(_.isArray(reservations)) {
+			reservations.forEach(function(reservation, idx) {
+				if(_.isObject(orig_reservation) && orig_reservation !== reservation || _.isUndefined(orig_reservation)) {
+					if((start_date >= reservation.start_date && start_date <= reservation.end_date) ||
+					   (reservation.start_date >= start_date && reservation.end_date <= end_date) ||
+					   (start_date >= reservation.start_date && end_date <= reservation.end_date) ||
+					   (end_date >= reservation.start_date && end_date <= reservation.end_date)) {
+					   	conflicting_reservation = reservation;
+						range_validated = false;
+						return;
+					}
+				}
+			});
+		}
 
-		return range_validated;
+		return [range_validated, conflicting_reservation];
 	}
 
-	function injectNewReservations(time_span, filter, data) {
+	function injectAvailableTimeSlots(time_span, filter, data) {
 		var start_date = filter.arrival_date,
 			start_time = parseArrivalTime(filter.arrival_time),
 			start = new Date(start_date.getFullYear(),
@@ -485,8 +498,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 					key: 'guest-status-' + id,
 					guest_name: 'Guest ' + id,
 					status: 'available',
-					start_date: start_date,
-					end_date: end_date,
+					start_date: new Date(start_date.getTime()),
+					end_date: new Date(end_date.getTime()),
 					room_type: room.type,
 					rate: 'Not Defined',
 					temporary: true
@@ -494,9 +507,18 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 			};
 
 		data.forEach(function(item, idx) {
-			if(check_reservation_ranges(item.reservations, start, end)) { 
+			var availability = determineAvailability(item.reservations, start, end);
+
+			if(availability[0]) { 
 				item.reservations.push(reservation(item, ++start_id, start, end));
+				updateRoomStatus(item, ''); //set room to available
+			} else {
+				updateRoomStatus(item, availability[1].status);
 			}
 		});	
 	} 
+
+	function updateRoomStatus(room, status) {
+		room.status = status;
+	}
 }]);

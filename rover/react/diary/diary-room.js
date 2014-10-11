@@ -6,7 +6,7 @@ var Room = React.createClass({
 	},
 	render: function() {
 		return React.DOM.li({
-			className: 'room-title'
+			className: 'room-title' + (!_.isEmpty(this.state.data.status) ? ' ' + this.state.data.status: '')
 		},
 		React.DOM.span({
 			className: 'number'
