@@ -456,15 +456,20 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	}
 
 	function determineAvailability(reservations, start_date, end_date, orig_reservation) {
-		var range_validated = true, conflicting_reservation;
+		var range_validated = true, conflicting_reservation,
+			maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int / $scope.gridProps.display.px_per_ms;
 
 		if(_.isArray(reservations)) {
 			reservations.forEach(function(reservation, idx) {
+				var res_end_date = new Date(reservation.end_date.getTime() + maintenance_span),
+					new_end_date = new Date(end_date.getTime() + maintenance_span);
+
 				if(_.isObject(orig_reservation) && orig_reservation !== reservation || _.isUndefined(orig_reservation)) {
-					if((start_date >= reservation.start_date && start_date <= reservation.end_date) ||
-					   (reservation.start_date >= start_date && reservation.end_date <= end_date) ||
-					   (start_date >= reservation.start_date && end_date <= reservation.end_date) ||
-					   (end_date >= reservation.start_date && end_date <= reservation.end_date)) {
+					if((start_date >= reservation.start_date && start_date <= res_end_date) ||
+					   (reservation.start_date >= start_date && res_end_date <= new_end_date) ||
+					   (start_date >= reservation.start_date && new_end_date <= res_end_date) ||
+					   (new_end_date >= reservation.start_date && new_end_date <= res_end_date)) {
+
 					   	conflicting_reservation = reservation;
 						range_validated = false;
 						return;

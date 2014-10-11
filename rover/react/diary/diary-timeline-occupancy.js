@@ -5,12 +5,13 @@ var TimelineOccupancy = React.createClass({
 		};
 	},
 	render: function() {
-		var occupancy_data;
+var props = this.props,
+			occupancy_data;	
 
 		try{
 			occupancy_data = this.props.angular_evt.calculateOccupancy(this.state.data);
 		}catch(e) {
-
+			console.log('Error: this.props.angular_evt.calculateOccupancy(state_data)');
 		}
 
 		return React.DOM.ul({
@@ -18,7 +19,9 @@ var TimelineOccupancy = React.createClass({
 		},
 		_.map(occupancy_data, function(data_item) {
 			return React.DOM.li({
-				className: ''
+				style: {
+					width: props.display.px_per_hr
+				}
 			}, data_item);
 		}));
 	}

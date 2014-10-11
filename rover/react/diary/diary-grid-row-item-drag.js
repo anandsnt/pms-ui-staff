@@ -11,8 +11,8 @@ var GridRowItemDrag = React.createClass({
 			el = this.props.viewport.element();
 
 			this.setState({
-				left: page_offset.left, // - el.offset().left - el.parent()[0].scrollLeft,
-				top: page_offset.top ,//- el.offset().top - el[0].scrollTop,
+				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
+				top: page_offset.top - el.offset().top - el[0].scrollTop,
 				mouse_down: true,
 				element: el.parent(),
 				origin_x: e.pageX,
