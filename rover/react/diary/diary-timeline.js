@@ -1,9 +1,4 @@
 var Timeline = React.createClass({
-	getInitialState: function() {
-		return {
-			data: this.props.data
-		};
-	},
 	render: function() {
 		var props = this.props,
 			state = this.state,
@@ -53,7 +48,7 @@ var Timeline = React.createClass({
 			style: {
 				width: props.display.width
 			},
-			data: this.state.data
+			data: this.props.data
 		}, React.DOM.div({
 			className: 'hours'
 		}, hourly_spans), 

@@ -54,6 +54,7 @@ var GridRowItem = React.createClass({
 			display: 		props.display,
 			viewport: 		props.viewport,
 			filter: 		props.filter,
+			iscroll:        props.iscroll,
 			angular_evt:    props.angular_evt,
 			key: 			props.data.key,
 			className: 		'occupancy-block',

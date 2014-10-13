@@ -23,18 +23,48 @@ var Grid = React.createClass({
 			self.props.angular_evt.onDragEnd(room, reservation, (left / this.props.display.px_per_ms) + this.props.display.x_origin);
 		});
 	},
+	_scrollFn: undefined,
+	_scroll: undefined,
+	componentDidMount: function() {
+		var self = this;
+
+		this.props.iscroll.grid = this._scroll = new IScroll($('.diary-grid .wrapper')[0], { 
+			probeType: 2, 
+			freeScroll: true, 
+			scrollbars: true,
+			interactiveScrollbars: true,
+			scrollX: true, 
+			scrollY: true, 
+			tap: false, 
+			click: true,
+			bounce: false,
+			mouseWheel: 'scroll',
+			preventDefault: true 
+		});
+
+		this._scrollFn = this.props.__onGridScroll.bind(null, this);
+
+		this._scroll.on('scroll', this._scrollFn);
+
+		setTimeout(function () {
+	        self._scroll.refresh();
+	    }, 100);
+	},
+	componentWillUnmount: function() {
+		this._scroll.destroy();
+	},
 	render: function() {
 		var self = this;
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
-					className: 'wrapper'
+					id: 'grid-wrapper',
+					className: 'wrapper scrollable'
 				},
 				React.DOM.ul({ 
 					className: 'grid',
 					style: {
-						width: this.props.display.width + 'px',
-						height: this.props.display.height + 'px'
+						width: this.props.display.width + 'px'
 					}
 				}, 
 				_.map(this.props.data, function(row, idx) {
@@ -46,6 +76,7 @@ var Grid = React.createClass({
 						display: 			self.props.display,
 						viewport: 			self.props.viewport,
 						filter: 			self.props.filter,
+						iscroll:            self.props.iscroll, 
 						angular_evt: 		self.props.angular_evt,
 						currentDragItem: 	self.props.currentDragItem,
 						currentResizeItem:  self.props.currentResizeItem,

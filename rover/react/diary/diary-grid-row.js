@@ -25,6 +25,7 @@ var GridRow = React.createClass({
 				display: 		self.props.display,
 				viewport:    	self.props.viewport, 
 				filter: 		self.props.filter,
+				iscroll:        self.props.iscroll,
 				angular_evt: 	self.props.angular_evt,
 				data: 			reservation,
 				row_data:       self.props.data, 

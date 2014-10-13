@@ -113,7 +113,7 @@ var Resizable = React.createClass({
 			model.end_date = new Date(((model.end_date.getTime() / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
 		}
 
-		console.log('MouseMove:', model.start_date, model.end_date);
+		console.log('MouseUp:', model.start_date, model.end_date);
 
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__onMouseMove);
@@ -163,7 +163,6 @@ var Resizable = React.createClass({
 			copy.end_date = new Date(nextProps.currentResizeItem.end_date.getTime());
 
 			this.setState({
-			//resizing: true,
 				currentResizeItem: copy
 			});
 		} else if(this.props.currentResizeItem && !nextProps.currentResizeItem) {
@@ -177,38 +176,23 @@ var Resizable = React.createClass({
 			self = this;
 
 		return this.transferPropsTo(React.DOM.div({
+				className: 'resize-wrapper',
 				style: {
-					display: (this.state.currentResizeItem) ? 'block' : 'none',
-					width: '100%',
-					height: '100%',
-					padding: '0px',
-					margin: '0px',
-					border: 'none',
-					position: 'relative',
-					top: '0px',
-					left: '0px'
+					display: (this.state.currentResizeItem) ? 'block' : 'none'
 				} ,
 				children: this.props.children
 			},
 			React.DOM.div({
+				className: 'resize-control',
 				style: {
-					position: 'absolute',
-					left: (this.state.currentResizeItem ? (this.state.currentResizeItem.start_date.getTime() - this.props.display.x_origin) * this.props.display.px_per_ms : 0) + 'px',
-					height: '100%',
-					width: this.props.handle_width + 'px',
-					backgroundColor: 'rgba(255,255,255, 1)',
-					zIndex: '499'			
+					left: (this.state.currentResizeItem ? (this.state.currentResizeItem.start_date.getTime() - this.props.display.x_origin) * this.props.display.px_per_ms : 0) + 'px'		
 				},
 				onMouseDown: self.__onMouseDownLeft
 			}),
 			React.DOM.div({
+				className: 'resize-control',
 				style: {
-					position: 'absolute',
-					left: (this.state.currentResizeItem ? (this.state.currentResizeItem.end_date.getTime() - this.props.display.x_origin) * this.props.display.px_per_ms - this.props.handle_width : 0) + 'px',
-					height: '100%',
-					width: this.props.handle_width + 'px',
-					backgroundColor: 'rgba(255,255,255, 1)',
-					zIndex: '499'					
+					left: (this.state.currentResizeItem ? (this.state.currentResizeItem.end_date.getTime() - this.props.display.x_origin) * this.props.display.px_per_ms - this.props.handle_width : 0) + 'px',				
 				},
 				onMouseDown: self.__onMouseDownRight
 			})));

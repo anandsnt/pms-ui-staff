@@ -10211,90 +10211,96 @@
             position: absolute;
             top: 0;
             left: 120px;
-            z-index: 99;
+            z-index: 1199;
             height: 80px;
             background: darken(@darkBlue, 40);
             cursor: default;
             .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
-            width: auto;
-            //.calc-width(100, 120);
+            .calc-width(100, 120);
 
-            /* TEMP - NATIVE SCROLL ENABLED START */
-            //overflow: auto;
-            -webkit-overflow-scrolling: touch;
+            > .outer-wrapper {
+                height: 100%;
 
-            &::-webkit-scrollbar{ 
-              margin-bottom: 5px;
-              height: 5px; 
-            }
-            &::-webkit-scrollbar-track{ background: transparent; }
-            &::-webkit-scrollbar-thumb{
-              background: @logoGradientStart;
-              #border-radius > .rounded(5px);
-            }
-            &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
-            /* TEMP - NATIVE SCROLL ENABLED END */
+                > .wrapper {
+                    color: @white;
+                    .gradient-horizontal-three-colors(darken(@darkBlue, 40), @blue, darken(@darkBlue, 40));
+                    .size(60px, 100%);
+                    .float;
 
-            .wrapper {
-                color: @white;
-                overflow: hidden;
-                .gradient-horizontal-three-colors(darken(@darkBlue, 40), @blue, darken(@darkBlue, 40));
-                .size(60px, 100%);
-                .float;
+                    > .hours {
+                        width: 100%;
 
-                .segment { 
-                    position: relative;
-                    font-size: 14px;
-                    line-height: 60px;
-                    font-weight: 600;
-                    vertical-align: middle;
-                    text-indent: 5px;
-                    height: 100%;
-                    .pull-left;
+                        > .segment { 
+                            position: relative;
+                            font-size: 14px;
+                            line-height: 60px;
+                            font-weight: 600;
+                            vertical-align: middle;
+                            text-indent: 5px;
+                            height: 100%;
+                            .pull-left;
 
-                    span {
-                        position: absolute;
-                        bottom: 0;
-                        width: 25%;
-                        z-index: 1;
+                            span {
+                                position: absolute;
+                                bottom: 0;
+                                width: 25%;
+                                z-index: 1;
 
-                        &.interval-1 { 
-                            left: 0;
-                            border-left: 2px solid rgba(255,255,255,.5);
-                            height: 20px;
+                                &.interval-1 { 
+                                    left: 0;
+                                    border-left: 2px solid rgba(255,255,255,.5);
+                                    height: 20px;
+                                }
+
+                                &.interval-2 { 
+                                    left: 25%;
+                                    border-left: 1px solid rgba(255,255,255,.3);
+                                    height: 10px; 
+                                }
+                                
+                                &.interval-3 { 
+                                    left: 50%;
+                                    border-left: 1px solid rgba(255,255,255,.3);
+                                    height: 16px; 
+                                }
+
+                                &.interval-4 { 
+                                    left: 75%;
+                                    border-left: 1px solid rgba(255,255,255,.3);
+                                    height: 10px; 
+                                }
+                            }
                         }
+                    }
+                }
 
-                        &.interval-2 { 
-                            left: 25%;
-                            border-left: 1px solid rgba(255,255,255,.3);
-                            height: 10px; 
-                        }
-                        
-                        &.interval-3 { 
-                            left: 50%;
-                            border-left: 1px solid rgba(255,255,255,.3);
-                            height: 16px; 
-                        }
+                > .occupancy {
+                    li {
+                        float: left;
+                        height: 20px;
+                        margin-bottom: 0px;
+                    }
 
-                        &.interval-4 { 
-                            left: 75%;
-                            border-left: 1px solid rgba(255,255,255,.3);
-                            height: 10px; 
-                        }
+                    &::after {
+                        content: '';
+                        clear: both;
                     }
                 }
             }
 
-            .occupancy {
-                li {
-                    float: left;
-                    height: 20px;
-                    margin-bottom: 0px;
-                }
+            .resize-wrapper {
+                display: block;
+                width: 100%;
+                height: 100%;
+                positiion: relative;
+                top: 0px;
+                left: 0px;
 
-                &::after {
-                    content: '';
-                    clear: both;
+                .resize-control {                   
+                    position: 'absolute';
+                    width: 30px;
+                    height: 100%;
+                    background-color: #fff;
                 }
             }
         }
@@ -10370,30 +10376,11 @@
             left: 0;
             width: 120px;
             background: @grey1;
-            z-index: 1099;
+            z-index: 1199;
             cursor: default;
             .box-shadow(2px 5px 5px rgba(0,0,0,.15));
-            //.calc-height(100, 90);
-            height: auto;
+            .calc-height(100, 90);
             .show; 
-
-            /* TEMP - NATIVE SCROLL ENABLED START */
-            .wrapper { 
-                overflow: auto;
-                -webkit-overflow-scrolling: touch;
-
-                &::-webkit-scrollbar{ 
-                  margin-right: 5px;
-                  width: 5px; 
-                }
-                &::-webkit-scrollbar-track{ background: transparent; }
-                &::-webkit-scrollbar-thumb{
-                  background: @logoGradientStart;
-                  #border-radius > .rounded(5px);
-                }
-                &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
-            }
-            /* TEMP - NATIVE SCROLL ENABLED END */
 
             > .iScrollVerticalScrollbar {
                 right: auto;
@@ -10402,61 +10389,48 @@
                 left: 10px;
             }
 
-            li {
-                margin: 5px 0 5px 10px;
-                text-align: right;
-                text-transform: uppercase;
-                background: @white;
+            > .wrapper {
+                position: relative;
                 overflow: hidden;
 
-                &.occupied { 
-                    color: @grey2;
-                    background: @grey1; }
-                
-                &.dirty { 
-                    color: @red;
-                    background: lighten(@red, 30); 
-                }                
+                li {
+                    margin: 5px 0 5px 10px;
+                    text-align: right;
+                    text-transform: uppercase;
+                    background: @white;
+                    overflow: hidden;
 
-                &:first-child { margin-top: 0; }
-                &:last-child { margin-bottom: 0; }
-            }
+                    &.occupied { 
+                        color: @grey2;
+                        background: @grey1; }
+                    
+                    &.dirty { 
+                        color: @red;
+                        background: lighten(@red, 30); 
+                    }                
+
+                    &:first-child { margin-top: 0; }
+                    &:last-child { margin-bottom: 0; }
+                } 
+            }          
         }
 
         .diary-grid {
             position: absolute;
             top: 90px;
             left: 120px;
-            z-index: 99;
+            z-index: 1099;
             .calc-height(100, 90);
             .calc-width(100, 120);
 
-            /*Clear highlighting during drag and drop*/
+            /*Clear highlighting during drag and drop
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             -o-user-select: none;
-            user-select: none;
-
-            /* TEMP - NATIVE SCROLL ENABLED START */
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-
-            &::-webkit-scrollbar{ 
-              margin-right: 5px;
-              width: 5px; 
-              height: 5px;
-            }
-            &::-webkit-scrollbar-track{ background: transparent; }
-            &::-webkit-scrollbar-thumb{
-              background: @logoGradientStart;
-              #border-radius > .rounded(5px);
-            }
-            &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
-            
-            /* TEMP - NATIVE SCROLL ENABLED END */
+            user-select: none; */
 
             > .iScrollVerticalScrollbar { .hide; }
             > .iScrollHorizontalScrollbar { 
@@ -10466,176 +10440,187 @@
                 right: 10px;
             }
 
-            li {
+            > .wrapper {
                 position: relative;
-                margin: 5px 0;
-                background: @white;
-                width: 100%;
-                .float;
+                overflow: hidden;
+                height: 100%;
 
-                .occupancy-block.dragstate {
-                    z-index: 1199;
-                    //opacity: 0.45;
-                }
+                > .grid {
+                    position: relative;
+                    height: auto;
 
-                .occupancy-block.placeholder {
-                    background-color: #999;
-                    z-index: 199;
-                    //opacity: 0.45;
-                }
+                    li {
+                        position: relative;
+                        margin: 5px 0;
+                        background: @white;
+                        width: 100%;
+                        .float;
 
-                .occupancy-block {
-                    position: absolute;
-                    z-index: 1199;
-                    .show;
-                    .float;
+                        .occupancy-block.dragstate {
+                            z-index: 1159;
+                            opacity: 0.45;
+                        }
 
-                    span {
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        .pull-left; 
-                        .show;
+                        /*.occupancy-block.placeholder {
+                            background-color: #999;
+                            z-index: 199;
+                            //opacity: 0.45;
+                        }*/
 
-                        &.occupied {
-                            position: relative;
-                            color: @white;
-                            cursor: @draggable, pointer;
-                            cursor: @draggable 16 16, pointer;
-                            /*cursor: @dragging, move;
-                            cursor: @dragging 16 16, move;*/
+                        .occupancy-block {
+                            position: absolute;
+                            z-index: 1149;
+                            .show;
+                            .float;
 
-                            &:after,
-                            &:before {
-                                content: "";
-                                position: absolute;
-                                background-image: @icons;
-                                background-repeat: no-repeat;
+                            span {
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                .pull-left; 
                                 .show;
 
-                                @media @highdpi {
-                                    background-image: @icons2x;
-                                    background-size: 120px;
+                                &.occupied {
+                                    position: relative;
+                                    color: @white;
+                                    cursor: @draggable, pointer;
+                                    cursor: @draggable 16 16, pointer;
+                                    /*cursor: @dragging, move;
+                                    cursor: @dragging 16 16, move;*/
+
+                                    &:after,
+                                    &:before {
+                                        content: "";
+                                        position: absolute;
+                                        background-image: @icons;
+                                        background-repeat: no-repeat;
+                                        .show;
+
+                                        @media @highdpi {
+                                            background-image: @icons2x;
+                                            background-size: 120px;
+                                        }
+                                    }
+
+                                    &:before { 
+                                        .hide;
+                                        #fade > .out();
+                                        .icons > .icon-diary-move-reservation();
+
+                                       
+                                    }
+
+                                    &:hover { 
+                                        &:before { 
+                                            .show; #fade > .in(); 
+                                        }
+                                    }
+
+                                    &.check-in {
+                                        .gradient(@greenStart, @greenEnd);
+                                        
+                                        &:after {
+                                            .guest-status > .check-in;
+                                            background-color: transparent;
+                                        }
+                                    }
+
+                                    &.inhouse {
+                                        .gradient(@blueStart, @blueEnd);
+
+                                        &:after {
+                                            .guest-status > .inhouse;
+                                            background-color: transparent;
+                                        }
+                                    }
+
+                                    &.check-out {
+                                        .gradient(@redStart, @redEnd);
+
+                                        &:after {
+                                            .guest-status > .check-out;
+                                            background-color: transparent;
+                                        }
+                                    }
                                 }
-                            }
 
-                            &:before { 
-                                .hide;
-                                #fade > .out();
-                                .icons > .icon-diary-move-reservation();
-
-                               
-                            }
-
-                            &:hover { 
-                                &:before { 
-                                    .show; #fade > .in(); 
+                                &.available {
+                                    color: @white;
+                                    cursor: pointer;
+                                    .gradient(@orangeStart, @orangeEnd);
                                 }
-                            }
 
-                            &.check-in {
-                                .gradient(@greenStart, @greenEnd);
-                                
-                                &:after {
-                                    .guest-status > .check-in;
-                                    background-color: transparent;
-                                }
-                            }
+                                &.maintenance { 
+                                    position: relative;
+                                    .gradient(@grey4, @gcard); 
 
-                            &.inhouse {
-                                .gradient(@blueStart, @blueEnd);
+                                    &:after {
+                                        content: "";
+                                        position: absolute;
+                                        background-image: @icons;
+                                        background-repeat: no-repeat;
+                                        .icons > .icon-diary-maintenance;
+                                        .show;
 
-                                &:after {
-                                    .guest-status > .inhouse;
-                                    background-color: transparent;
-                                }
-                            }
-
-                            &.check-out {
-                                .gradient(@redStart, @redEnd);
-
-                                &:after {
-                                    .guest-status > .check-out;
-                                    background-color: transparent;
-                                }
+                                        @media @highdpi {
+                                            background-image: @icons2x;
+                                            background-size: 120px;
+                                        }
+                                    }
+                                }                        
                             }
                         }
 
-                        &.available {
-                            color: @white;
-                            cursor: pointer;
-                            .gradient(@orangeStart, @orangeEnd);
+                        .hour {
+                            border-right: 1px solid rgba(0,0,0,.2);
+                            background-size: 100%;
+                            background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
+                            background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
+                            background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
+                            background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                            background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                            background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
+                            background-repeat: no-repeat;
+                            .pull-left; 
+
+                            &:nth-child(odd) { background-color: @grey1; }
                         }
 
-                        &.maintenance { 
-                            position: relative;
-                            .gradient(@grey4, @gcard); 
+                        &.occupied { 
+                            background: @grey2; 
 
-                            &:after {
-                                content: "";
-                                position: absolute;
-                                background-image: @icons;
-                                background-repeat: no-repeat;
-                                .icons > .icon-diary-maintenance;
-                                .show;
-
-                                @media @highdpi {
-                                    background-image: @icons2x;
-                                    background-size: 120px;
-                                }
+                            .hour { 
+                                &:nth-child(odd) { background-color: transparent; }
                             }
-                        }                        
+                        }
+
+                        &.dirty { 
+                            background: lighten(@red, 30); 
+
+                            .hour { 
+                                &:nth-child(odd) { background-color: transparent; }
+                            }
+                        }
+
+                        &:first-child { margin-top: 0; }
+                        &:last-child { margin-bottom: 0; }
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            left: 0px;
+                            top: 0px;
+                            right: 0px;
+                            bottom: 0px;
+                            z-index: 1399;
+                            pointer-events: none;
+                            .square(100%);
+                            .show;
+                            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                        }
                     }
-                }
-
-                .hour {
-                    border-right: 1px solid rgba(0,0,0,.2);
-                    background-size: 100%;
-                    background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
-                    background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
-                    background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
-                    background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-repeat: no-repeat;
-                    .pull-left; 
-
-                    &:nth-child(odd) { background-color: @grey1; }
-                }
-
-                &.occupied { 
-                    background: @grey2; 
-
-                    .hour { 
-                        &:nth-child(odd) { background-color: transparent; }
-                    }
-                }
-
-                &.dirty { 
-                    background: lighten(@red, 30); 
-
-                    .hour { 
-                        &:nth-child(odd) { background-color: transparent; }
-                    }
-                }
-
-                &:first-child { margin-top: 0; }
-                &:last-child { margin-bottom: 0; }
-
-                &:before {
-                    content: "";
-                    position: absolute;
-                    left: 0px;
-                    top: 0px;
-                    right: 0px;
-                    bottom: 0px;
-                    z-index: 1399;
-                    pointer-events: none;
-                    .square(100%);
-                    .show;
-                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
                 }
             }
         }
@@ -10735,60 +10720,64 @@
             }
 
             .diary-grid {
-                li {
-                    line-height: 24px;
-                    height: 24px;
-                    margin: 0;
-
-                    span { height: 24px; }
-
-                    .occupancy-block {
-                        span {
-                            font-size: 12px;
+                > .wrapper {
+                    > .grid {
+                        li {
                             line-height: 24px;
+                            height: 24px;
+                            margin: 0;
 
-                            &.occupied,
-                            &.available { padding: 0 5px; }
+                            span { height: 24px; }
 
-                            &.occupied {
-                                text-indent: 20px;
+                            .occupancy-block {
+                                span {
+                                    font-size: 12px;
+                                    line-height: 24px;
 
-                                &:after {
-                                    top: 0;
-                                    left: 5px;
-                                    background-size: 80px;
-                                    .square(24px);
+                                    &.occupied,
+                                    &.available { padding: 0 5px; }
+
+                                    &.occupied {
+                                        text-indent: 20px;
+
+                                        &:after {
+                                            top: 0;
+                                            left: 5px;
+                                            background-size: 80px;
+                                            .square(24px);
+                                        }
+
+                                        &:before { 
+                                            top: 0;
+                                            right: 5px;
+                                            background-size: 80px;
+                                            .square(24px);
+                                        }
+
+                                        &.check-in {
+                                            &:after { background-position: 5px -73px; }
+                                        }
+
+                                        &.inhouse {
+                                            &:after { background-position:  5px -126px; }
+                                        }
+
+                                        &.check-out {
+                                            &:after { background-position: 5px -100px; }
+                                        }
+                                    }      
+
+                                    &.maintenance { 
+                                        &:after {
+                                            top: 0;
+                                            background-size: 60px;
+                                            background-position: 5px -2955px;
+                                            #calc-position > .left(50, 12);
+                                            .square(24px);
+                                        }
+                                    }                  
                                 }
-
-                                &:before { 
-                                    top: 0;
-                                    right: 5px;
-                                    background-size: 80px;
-                                    .square(24px);
-                                }
-
-                                &.check-in {
-                                    &:after { background-position: 5px -73px; }
-                                }
-
-                                &.inhouse {
-                                    &:after { background-position:  5px -126px; }
-                                }
-
-                                &.check-out {
-                                    &:after { background-position: 5px -100px; }
-                                }
-                            }      
-
-                            &.maintenance { 
-                                &:after {
-                                    top: 0;
-                                    background-size: 60px;
-                                    background-position: 5px -2955px;
-                                    #calc-position > .left(50, 12);
-                                    .square(24px);
-                                }
-                            }                  
+                            }
                         }
                     }
                 }

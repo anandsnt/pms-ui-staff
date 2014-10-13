@@ -2,15 +2,24 @@ var GridRowItemDrag = React.createClass({
 	__dbMouseMove: undefined,
 	componentWillMount: function() {
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
-	},
-	componentWillUnmount: function() {
 
+		/*if(_.isObject(this.props.iscroll)) {
+			for(var k in this.props.iscroll) {
+				if(Object.prototype.hasOwnProperty.call(this.props.iscroll, k)) {
+					if(this.props.iscroll[k] instanceof IScroll) {
+						this.props.iscroll[k].disable();
+					}
+				}
+			}
+		}*/
 	},
 	__onMouseDown: function(e) {
 		var page_offset, el;
 
 		if(e.button === 0) {
 			e.stopPropagation();
+			e.preventDefault();
+
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 

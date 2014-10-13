@@ -16,14 +16,14 @@ var DiaryContent = React.createClass({
 			display: display
 		});
 	},
-	__onGridScroll: function(e) {
-		var el = e.currentTarget;
+	__onGridScroll: function(component) {
+		var node = component.getDOMNode(), //Get .wrapper > .grid
+			el = $(node.children[0]),
+			parent = node.offsetParent;
 
 		if(el) {
-			$('.diary-timeline').css({ 'left': -el.scrollLeft + 120 + 'px'});
-			$('.diary-rooms').css({ 'top': -el.scrollTop + 90 + 'px'});
-
-			//Send message to Rooms to update row class styles?
+			this.state.iscroll.timeline.scrollTo(this.state.iscroll.grid.x, 0);
+			this.state.iscroll.rooms.scrollTo(0, -this.state.iscroll.grid.y);
 		}
 	},
 	__onResizeCommand: function(row_item_data) {
@@ -79,7 +79,12 @@ var DiaryContent = React.createClass({
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft
 							},
 							currentDragItem: props.currentDragItem,
-							currentResizeItem: props.currentResizeItem
+							currentResizeItem: props.currentResizeItem,
+							iscroll: {
+				  				timeline: undefined,
+				  				rooms: undefined,
+				  				grid: undefined
+				  			}
 						};
 		
 		display.width 				= display.hours / viewport.hours * viewport.width;
@@ -106,26 +111,32 @@ var DiaryContent = React.createClass({
 			filter: this.state.filter,
 		}),
 		RoomPanel({
+			refs: 'rooms',
 			viewport: this.state.viewport,
 			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
+			iscroll: this.state.iscroll,
 			__onGridScroll: self.__onGridScroll
 		}),
 		TimelinePanel({
+			refs: 'timeline',
 			viewport: this.state.viewport,
 			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
+			iscroll: this.state.iscroll,
 			currentResizeItem: this.props.currentResizeItem,
 			angular_evt: this.state.angular_evt,
 			__onResizeCommand: self.__onResizeCommand,
 			__onGridScroll: self.__onGridScroll
 		}), 
 		GridPanel({
+			refs: 'grid',
 			viewport: this.state.viewport,
 			display: this.state.display,
 			filter: this.state.filter,
+			iscroll: this.state.iscroll,
 			data: this.state.data,
 			currentResizeItem: this.props.currentResizeItem,
 			angular_evt: this.state.angular_evt,
