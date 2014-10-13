@@ -208,12 +208,19 @@
 					</td>
 					<td>
 					
-					<div class="select selectBill">
+					<div class="select selectBill" ng-hide="isStandAlone">
 						<select class="movetobill" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							
+							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>							
+						</select>
+					</div>
+					<!-- we have to replicate code as option is not being hidden in devices -->
+					<div class="select selectBill" ng-show="isStandAlone">
+						<select class="movetobill" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
+							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>							
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
-							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10 && isStandAlone">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 							
 						</select>
 					</div>

@@ -29,8 +29,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 					"floorFilterStart": '',
 					"floorFilterEnd": '',
 					'showAllFloors': true,
-					'filterByWorkType': '',
-					'filterByEmployee': ''
+					'filterByWorkTypeId': '',
+					'filterByEmployeeName': ''
 				};
 		}
 
@@ -46,6 +46,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 					if(response.status == "success"){
 					    this.roomList = response.data;
 
+					    console.log(this.roomList.checkin_inspected_only);
+
 					    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
 					    	var room = this.roomList.rooms[i];
 
@@ -60,7 +62,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    	// single calculate the class required
 					    	// will require additional call from details page
-					    	that.setRoomStatusClass(room);
+					    	that.setRoomStatusClass(room, this.roomList.checkin_inspected_only);
 
 					    	// set the leaveStatusClass or enterStatusClass value
 					    	that.setReservationStatusClass(room);
@@ -193,8 +195,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
-		this.setRoomStatusClass = function(room) {
-			if(this.roomList.checkin_inspected_only == "true") {
+		this.setRoomStatusClass = function(room, checkinInspectedOnly) {
+			if(checkinInspectedOnly == "true") {
 				if(room.hk_status.value == 'INSPECTED') {
 					room.roomStatusClass = 'clean';
 					return;
@@ -307,10 +309,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 				case 'Arrived / Day use / Due out':
 					room.leaveStatusClass = 'check-out';
-					room.enterStatusClass = 'check-out';
+					room.enterStatusClass = 'no-show';
 					break;
 
-				case 'Arrived / Day Use / Due out / Departed':
+				case 'Arrived / Day use / Due out / Departed':
 					room.leaveStatusClass = 'check-out';
 					room.enterStatusClass = 'check-out';
 					break;

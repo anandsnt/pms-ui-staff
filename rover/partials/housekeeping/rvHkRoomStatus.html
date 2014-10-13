@@ -1,3 +1,5 @@
+<div ng-show="localLoader" id="loading"><div id="loading-spinner"></div></div> 
+
 <!-- Navbar -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
@@ -54,7 +56,7 @@
 </ul>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
     <li class="room" bindonce ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
@@ -63,7 +65,7 @@
             <span class="room-status {{ room.roomStatusClass }}" bo-if="!room.hk_status.oo_status" bo-text="room.description"></span>
             <span class="room-status {{ room.roomStatusClassWithOO }}" bo-if="!!room.hk_status.oo_status" bo-text="room.hk_status.oo_status"></span>
           </div>
-          <div class="reservation-status">
+          <div class="reservation-status" bo-class="{'queued': room.is_queued}">
             <!-- {leaveStatusClass} can be check-out(for due out or departed) or inhouse(for stayover) --> 
             <div class="current {{ room.leaveStatusClass }}">
               <span class="guest-status {{ room.leaveStatusClass }}" bo-text="room.room_reservation_status"></span>
@@ -75,9 +77,10 @@
             <div class="next {{ room.enterStatusClass }}">
               <span class="guest-status {{ room.enterStatusClass }}" bo-text="room.room_reservation_status"></span>
               <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
-              <span bo-if="room.room_reservation_status.indexOf('Arrived') >= 0">IN</span>
+              <span bo-if="room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0)">IN</span>
               <span bo-if="room.room_reservation_status.indexOf('Arrival') >= 0" bo-text="room.arrival_time"></span>
             </div>
+            <div bo-if="room.is_queued" class="queued"></div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">

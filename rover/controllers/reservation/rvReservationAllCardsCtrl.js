@@ -32,7 +32,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.travelAgentIATA = '';
         $scope.travelAgentSearchIntiated = false;
 
-        $scope.cardHeaderImage = '/assets/avatar-trans.png';
+        if($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == ""){
+            $scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
+        }
 
         /**
          * scroller options
@@ -498,7 +500,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 $scope.guestFirstName = "";
                 $scope.guestLastName = "";
                 $scope.guestCity = "";
-                $scope.cardHeaderImage = "";
+                $scope.guestCardData.cardHeaderImage = "";
             };
             this.resetCompanyCard = function() {
                 $scope.reservationData.company.id = "";
@@ -632,7 +634,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.guestFirstName = guest.firstName;
             $scope.guestLastName = guest.lastName;
             $scope.guestCity = guest.address.city;
-            $scope.cardHeaderImage = guest.image;
+            $scope.guestCardData.cardHeaderImage = guest.image;
             //$scope.closeGuestCard();
             // Fetch the guest Card
             $scope.initGuestCard(guest);
