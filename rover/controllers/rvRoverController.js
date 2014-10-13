@@ -482,6 +482,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       	}
       	
       	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      		// alert("card reader");
  	    	sntapp.cardReader.startReader(options);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
