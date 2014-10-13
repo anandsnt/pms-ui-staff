@@ -51,8 +51,11 @@ var GlobalApp = function(){
           
     	   that.cardReader = new CardOperation();
     	    that.cordovaLoaded = true;
+    	    alert("try success")
         }
-        catch(er){};
+        catch(er){
+        	alert("catch error")
+        };
         try{
             that.iBeaconLinker = new iBeaconOperation();
         }
