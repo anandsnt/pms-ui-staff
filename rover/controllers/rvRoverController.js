@@ -461,6 +461,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	alert("success callback swipe");
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
