@@ -461,12 +461,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
-    	alert("success callback swipe");
+    	alert("success")
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
     $scope.failureCallBackSwipe = function() {
-		//alert("failure callback swipe");
     };
 
     var options = {};
@@ -483,7 +482,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       	}
       	
       	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-      	   // alert("card reader");
  	    	sntapp.cardReader.startReader(options);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
@@ -502,7 +500,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Time out is to call set Browser
      */
     setTimeout(function(){
-    	//alert("inntial")
     	 $scope.initiateCardReader();
     }, 2000);
    
