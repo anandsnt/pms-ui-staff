@@ -45,6 +45,7 @@ var GlobalApp = function(){
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
+    	alert("fetchCompletedOfCordovaPlugins")
         try{
           
     	   that.cardReader = new CardOperation();
