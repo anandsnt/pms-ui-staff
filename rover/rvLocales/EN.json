@@ -313,7 +313,9 @@
 	"TIME_ALLOCATED" : "Time Allocated",
 	
 	"STAYOVERS" : "Stayovers",
-	"COMPLETED" : "Completed"
+	"COMPLETED" : "Completed",
+	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
 
 
 ,    "PRINT_ROOM_KEY" : "Print Room Key",
@@ -577,7 +579,7 @@
     
     "DASHBOARD_SEARCH_CHECKINGIN": "Arrivals",
     "DASHBOARD_SEARCH_CHECKINGOUT": "Departures",
-    "DASHBOARD_SEARCH_INHOUSE": "Stayovers",
+    "DASHBOARD_SEARCH_INHOUSE": "In-House",
     "DASHBOARD_SEARCH_LATECHECKOUT": "Late Check Out",
     "DASHBOARD_SEARCH_VIP": "VIPS",
     "SEARCH_NORMAL": "Find Reservation",

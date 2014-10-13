@@ -448,11 +448,6 @@
                     &.red { color: @red; }
                 }
 
-                &:last-child {
-                    padding-bottom: 0;
-                    margin-bottom: 0;
-                }
-
                 &.buttons {
                     .actions { .hide; }
                     .data { .show; }
@@ -762,11 +757,11 @@
                         h2 { 
                             font-size: 30px; 
 
+                            &.pickup,
                             &.clean,
                             &.inspected { color: @green; }
 
-                            &.dirty,
-                            &.pickup { color: @red; }
+                            &.dirty { color: @red; }
 
                             &.out { color: @grey3; }
                         }
@@ -813,7 +808,20 @@
                             &.check-in { color: @green; }
                             &.check-out { color: @red; }
                             &.inhouse { color: @blue; }
-                        }                        
+                        }
+
+                        &.queued {
+                            position: relative;
+                        }
+
+                        .queued {
+                            .size(30, 30);
+                            .pull-right;
+                            position: absolute;
+                            left: 90px;
+                            top: 10px;
+                            background: url(/assets/app/app-icons.png) 0 -4180px no-repeat;
+                        }                    
                     }
 
                     .additional-info { .hide; }
@@ -974,7 +982,11 @@
                                 margin: 0;
                                 .size(30px, 40%);
                                 .pull-left;
-                            }       
+                            }  
+
+                            .queued {
+                                position: static;
+                            }     
                         }
 
                         &.with-image {
@@ -8546,7 +8558,7 @@
                                             position: relative;
                                             background: transparent;
                                             border: 0;
-                                            padding: 10px;
+                                            padding: 0 10px;
                                             line-height: 40px; 
                                             height: 40px;
                                             min-height: 40px;

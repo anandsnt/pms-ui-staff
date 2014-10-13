@@ -1,5 +1,6 @@
 
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$stateParams','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', '$timeout','chargeCodeData', '$sce', 'RVKeyPopupSrv', 
+	function($scope,$rootScope,$state,$stateParams, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window, $timeout,chargeCodeData, $sce, RVKeyPopupSrv){
 
 	
 	BaseCtrl.call(this, $scope);	
@@ -771,14 +772,22 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			});
 		}
 		else if(keySettings === "qr_code_tablet"){
-			
-			ngDialog.open({
-				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
-				 controller: 'RVKeyQRCodePopupController',
-				 className: '',
-				 closeByDocument: false,
-				 scope: $scope
-			});
+
+			//Fetch and show the QR code in a popup
+			var	reservationId = $scope.reservationBillData.reservation_id;
+
+			var successCallback = function(data){
+				$scope.$emit('hideLoader');
+				$scope.data = data;
+				ngDialog.open({
+					 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+					 controller: 'RVKeyQRCodePopupController',
+					 className: '',
+					 scope: $scope
+				});	
+			}
+
+			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
 		}
 		
 		//Display the key encoder popup
