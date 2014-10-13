@@ -346,7 +346,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
          * The computation happens at day level as the rate details can be varying for each day!
          */
 
-        $scope.calculateTax = function(date, amount, taxes, roomIndex) {
+        $scope.calculateTax = function(date, amount, taxes, roomIndex, forAddons) {
+
             var taxInclusiveTotal = 0.0; //Per Night Inclusive Charges
             var taxExclusiveTotal = 0.0; //Per Night Exclusive Charges
             var taxesLookUp = {};
@@ -388,6 +389,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         multiplicity = parseInt(children) + parseInt(adults);
                     }
 
+
                     var taxOnAmount = amount;
 
                     if (!!tax.calculation_rules.length) {
@@ -407,6 +409,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     }
 
                     taxesLookUp[taxData.id] = taxCalculated;
+                    if (forAddons && taxData.post_type == 'NIGHT') {
+                        taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                    }
 
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
                         if (isInclusive) {
@@ -595,7 +600,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                  */
 
                 // we are sending the arrivaldate as in case of varying occupancies, it is ASSUMED that we go forward with the first day's occupancy
-                var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail, roomIndex);
+                var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, finalRate, addon.taxDetail, roomIndex, true);
 
                 // Go through the tax applied and update the calculations such that
                 // When Add-on items are being added to a reservation, their respective tax should also be added to the reservation summary screen, to 
