@@ -18,7 +18,7 @@ sntRover.controller('RVPostChargeController',
 			$scope.isResultOnFetchedItems = true;
 			$scope.isOutsidePostCharge = false;
 			
-			var scrollerOptions = {click: true};
+			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
 
