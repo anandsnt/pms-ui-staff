@@ -44,17 +44,13 @@ var GlobalApp = function(){
     
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
-    	//alert("fetchCompletedOfCordovaPlugins--------");
     	$('body').append(data);
-    	//alert("fetchCompletedOfCordovaPlugins-----append---");
         try{
           
     	   that.cardReader = new CardOperation();
     	    that.cordovaLoaded = true;
-    	    alert("try success")
         }
         catch(er){
-        	//alert("catch error")
         };
         try{
             that.iBeaconLinker = new iBeaconOperation();
@@ -65,7 +61,6 @@ var GlobalApp = function(){
     
     // success function of coddova plugin's appending
     this.fetchFailedOfCordovaPlugins = function(errorMessage){   
-    	//alert("fetchFailedOfCordovaPlugins ------------------") 
     	that.cordovaLoaded = false;
     };
 
