@@ -65,7 +65,7 @@
 		    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped">Credit card swiped</span>
 		</a>
 		<a class="button with-icon green" ng-click='clickedAddUpdateCCButton()' ng-show="billData.credit_card_details.payment_type == 'CC'"> 
-			<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}</span>  
+			<span class="icons icon-wallet">{{ 'UPDATE_CC' | translate }}</span>  
 		</a>
 
 		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type !=''">	
