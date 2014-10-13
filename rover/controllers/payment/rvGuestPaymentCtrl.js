@@ -48,7 +48,6 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	              	'token': tokenData,
 		  	 		"is_swiped": true  
 		  	 	};
-		  	 	
          	var paymentData = $scope.paymentData;
   	 		$scope.showAddNewPaymentModal(passData, paymentData);
          };
