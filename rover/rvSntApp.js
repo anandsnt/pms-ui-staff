@@ -44,20 +44,28 @@ var GlobalApp = function(){
     
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
+    	//alert("fetchCompletedOfCordovaPlugins--------");
     	$('body').append(data);
+    	//alert("fetchCompletedOfCordovaPlugins-----append---");
         try{
+          
     	   that.cardReader = new CardOperation();
+    	    that.cordovaLoaded = true;
+    	    alert("try success")
         }
-        catch(er){};
+        catch(er){
+        	//alert("catch error")
+        };
         try{
             that.iBeaconLinker = new iBeaconOperation();
         }
         catch(er){};
-    	that.cordovaLoaded = true;
+    	
     };
     
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage){    
+    this.fetchFailedOfCordovaPlugins = function(errorMessage){   
+    	//alert("fetchFailedOfCordovaPlugins ------------------") 
     	that.cordovaLoaded = false;
     };
 
