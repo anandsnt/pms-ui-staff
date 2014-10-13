@@ -64,19 +64,23 @@ var CardOperation = function(){
 		var arguments = options["arguments"] ? options["arguments"] : [];
 		
 		if(successCallBack == null){
+			alert("----successCallBack")
 			return false;
 		}
 		else if(failureCallBack == null){
+			alert("----failureCallBack")
 			return false;			
 		}
 		else if(service == null){
+			alert("----service")
 			return false;
 		}
 		else if(action == null){
+			alert("----action")
 			return false;			
 		}		
 		else{
-			
+			alert("execution cordova");
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
