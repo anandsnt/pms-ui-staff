@@ -390,11 +390,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
                     var taxOnAmount = amount;
 
-                    // if (!!tax.calculation_rules.length) {
-                    //     _.each(tax.calculation_rules, function(tax) {
-                    //         taxOnAmount = parseFloat(taxOnAmount) + parseFloat(taxesLookUp[tax]);
-                    //     });
-                    // }
+                    if (!!tax.calculation_rules.length) {
+                        _.each(tax.calculation_rules, function(tax) {
+                            taxOnAmount = parseFloat(taxOnAmount) + parseFloat(taxesLookUp[tax]);
+                        });
+                    }
 
                     /*
                      *  THE TAX CALCULATION HAPPENS HERE
