@@ -41,7 +41,7 @@ var CardOperation = function(){
 
 
 	this.startReader = function(options){
-		alert("start reader");
+		//alert("start reader");
 		options['shouldCallRecursively'] = true;
 		that.listenForSingleSwipe(options);		
 	};
@@ -64,23 +64,23 @@ var CardOperation = function(){
 		var arguments = options["arguments"] ? options["arguments"] : [];
 		
 		if(successCallBack == null){
-			alert("----successCallBack")
+			//alert("----successCallBack")
 			return false;
 		}
 		else if(failureCallBack == null){
-			alert("----failureCallBack")
+			//alert("----failureCallBack")
 			return false;			
 		}
 		else if(service == null){
-			alert("----service")
+			//alert("----service")
 			return false;
 		}
 		else if(action == null){
-			alert("----action")
+			//alert("----action")
 			return false;			
 		}		
 		else{
-			alert("execution cordova");
+			//alert("execution cordova");
 			alert("===============");
 			alert(cordova)
 			//calling cordova service
@@ -88,14 +88,14 @@ var CardOperation = function(){
 						// if success call back require any parameters
 						function(data){
 							if(successCallBackParameters !== null){
-								alert("successCallBackParameters");
+								//alert("successCallBackParameters");
 								//alert("cordoveexec---DATA----"+JSON.stringify(data));
 								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
 							else{
-								alert("successCallBackParameters dfdfdf");
+								//alert("successCallBackParameters dfdfdf");
 								//alert("cordoveexec---DATA ||----"+JSON.stringify(data));
 								//alert("cordoveexec---successparama 2----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data);
