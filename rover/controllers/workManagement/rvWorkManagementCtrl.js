@@ -46,6 +46,16 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Not Defined": "no-show"
 		}
 
+		$scope.stayoverClass = {
+			"Arrival": "inhouse",
+			"Arrived": "inhouse",
+			"Due out": "check-out",
+			"Departed": "check-out",
+			"STAYOVER": "inhouse",
+			"Not Reserved": "no-show",
+			"Not Defined": "no-show"
+		}
+
 		$scope.printWorkSheet = function() {
 			window.print();
 		}

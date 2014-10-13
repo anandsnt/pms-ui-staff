@@ -56,13 +56,13 @@
 					    <div class="select hour unasssigned-room-filter-time">
 					        <select ng-model="filters.checkin.after.hh"> 
 					            <option value="">HH</option> 
-					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkin.after.hh">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select minutes unasssigned-room-filter-time">
 					        <select ng-model="filters.checkin.after.mm"> 
 					            <option value="">MM</option> 
-					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkin.after.mm">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select ampm unasssigned-room-filter-time">
@@ -75,13 +75,13 @@
 					    <div class="select hour unasssigned-room-filter-time">
 					        <select ng-model="filters.checkin.before.hh" > 
 					            <option value="">HH</option> 
-					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkin.before.hh">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select minutes unasssigned-room-filter-time">
 					        <select ng-model="filters.checkin.before.mm"> 
 					            <option value="">MM</option> 
-					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkin.before.mm">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select ampm unasssigned-room-filter-time">
@@ -102,13 +102,13 @@
 					    <div class="select hour unasssigned-room-filter-time">
 					        <select ng-model="filters.checkout.after.hh" > 
 					        	<option value="">HH</option> 
-					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkout.after.hh">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select minutes unasssigned-room-filter-time">
 					        <select ng-model="filters.checkout.after.mm"> 
 					            <option value="">MM</option> 
-					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkout.after.mm">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select ampm unasssigned-room-filter-time">
@@ -121,13 +121,13 @@
 					    <div class="select hour unasssigned-room-filter-time">
 					        <select ng-model="filters.checkout.before.hh" >
 					        	<option value="">HH</option> 
-					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkout.before.hh">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select minutes unasssigned-room-filter-time">
 					        <select ng-model="filters.checkout.before.mm"> 
 					            <option value="">MM</option>
-					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}">{{i}}</option>
+					            <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==filters.checkout.before.mm">{{i}}</option>
 					        </select>
 					    </div>
 					    <div class="select ampm unasssigned-room-filter-time">
