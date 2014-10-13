@@ -2,10 +2,11 @@ admin.controller('ADRatesAddonsCtrl', [
 	'$scope',
 	'$rootScope',
 	'ADRatesAddonsSrv',
+	'ADHotelSettingsSrv',
 	'$filter',
 	'ngTableParams',
 	'ngDialog',
-	function($scope, $rootScope, ADRatesAddonsSrv, $filter, ngTableParams, ngDialog) {
+	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog) {
 
 		
 
@@ -27,6 +28,16 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = -1;
 			$scope.errorMessage = "";
 		};
+
+		$scope.isConnectedToPMS = false;
+		$scope.checkPMSConnection = function(){
+			var fetchSuccessOfHotelSettings = function(data){
+				if(data.pms_type !== null)
+					$scope.isConnectedToPMS = true;
+			}
+			$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
+		};
+		$scope.checkPMSConnection();
 
 		$scope.init();
 
@@ -418,5 +429,25 @@ admin.controller('ADRatesAddonsCtrl', [
 		if($scope.currentClickedAddon == -1)
 			$scope.tableParams.sorting({'description' : $scope.tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'});
 		};
+
+		/**
+		* To import the package details from MICROS PMS.
+		*/
+		$scope.importFromPms = function(event){
+
+			event.stopPropagation();
+			
+			$scope.successMessage = "Collecting package details from PMS and adding to Rover...";
+			
+			var fetchSuccessOfPackageList = function(data){
+				$scope.$emit('hideLoader');
+				$scope.successMessage = "Completed!";
+		 		$timeout(function() {
+			        $scope.successMessage = "";
+			    }, 1000);
+			};
+			$scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
+		}
+
 	}
 ]);
