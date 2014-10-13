@@ -48,8 +48,9 @@ var GlobalApp = function(){
     	$('body').append(data);
     	alert("fetchCompletedOfCordovaPlugins-----append---");
         try{
-           that.cordovaLoaded = true;
+          
     	   that.cardReader = new CardOperation();
+    	    that.cordovaLoaded = true;
         }
         catch(er){};
         try{
