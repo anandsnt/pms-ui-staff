@@ -5,7 +5,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.guestPaymentList = {};
 	$scope.saveData.add_to_guest_card = false;
 	$scope.do_not_cc_auth = false;
-
+	$scope.isLoading = true;
 	//Set merchant ID for MLI integration
 	var MLISessionId = "";
 	
@@ -14,7 +14,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		catch(err) {};
 
-	$scope.saveData.selected_payment_type = "selectpayment";//Only for swipe
+	$scope.saveData.selected_payment_type = "null";//Only for swipe
 
 	$scope.paymentTypeValues = "";
 	$scope.saveData.card_number  = "";
@@ -81,7 +81,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.shouldShowDisabled = true;
 		}
 
-		
+		$scope.isLoading = false;
 		
 
 		//Same popup is used to do the payment - View bill screen pay button
@@ -89,6 +89,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.renderPayButtonDefaultValues();
 		} else {
 			$scope.showPaymentAmount = false;
+		}
+		if(!$rootScope.isStandAlone){
+			$scope.saveData.selected_payment_type = 0;//CICO-9959
+			$scope.renderPaymentValues();
 		}
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
@@ -110,6 +114,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 					$scope.saveData.selected_payment_type = key; 
 				}
 			});
+		
 			$scope.billsArray = $scope.paymentData.bills;
 			if($scope.paymentData.bills[billIndex].credit_card_details.payment_type !== "CC"){//NOT Credit card only show amount and window
 				$scope.showCreditCardDetails = false;
@@ -134,7 +139,10 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * On selecting payment type list corresponding payments
 	 */
 	$scope.renderPaymentValues = function(){
-		$scope.paymentTypeValues = $scope.data[$scope.saveData.selected_payment_type].values;
+		if($scope.saveData.selected_payment_type !== "null"){
+			$scope.paymentTypeValues = $scope.data[$scope.saveData.selected_payment_type].values;
+		}
+		
 		if($scope.passData.fromView == "paybutton"){
 			if($scope.saveData.selected_payment_type == 0){//cc
 				$scope.showCreditCardDetails = true;

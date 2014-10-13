@@ -7,7 +7,7 @@
 			<span class="count">({{ workType.length }})</span>
 			<a id="add-new-button" class="action add ng-scope" ng-click="openWorkTypeForm('new')" translate="">Add Work Type</a>
 		</header>
-		<div id="new-form-holder" ng-show="workTypeClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddWorkType.html'"></div>
+		<div id="new-form-holder-work-type" ng-show="workTypeClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddWorkType.html'"></div>
 		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in workType">
@@ -48,7 +48,7 @@
 			<span class="count">({{ taskList.length }})</span>
 			<a id="add-new-button" class="action add ng-scope" ng-click="openTaskListForm('new')" translate="">Add Task</a>
 		</header>
-		<div id="new-form-holder" ng-show="taskListClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></div>
+		<div id="new-form-holder-task-list" ng-show="taskListClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></div>
 		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in taskList">
@@ -80,7 +80,7 @@
 			<span class="count">({{ workShift.length }})</span>
 			<a id="add-new-button" class="action add ng-scope" ng-click="openWorkShiftForm('new')" translate="">Add Shift</a>
 		</header>
-		<div id="new-form-holder" ng-show="workShiftClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddWorkShift.html'"></div>
+		<div id="new-form-holder-work-shift" ng-show="workShiftClickedElement == 'new'" ng-include="'/assets/partials/housekeeping/adHKAddWorkShift.html'"></div>
 		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in workShift">

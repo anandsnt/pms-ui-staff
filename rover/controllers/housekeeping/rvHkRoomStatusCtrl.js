@@ -143,7 +143,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// execute this after this much time
 			// as the animation is in progress
-			}, 200);
+			}, 700);
 		};
 
 
@@ -151,30 +151,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			//Fetch the roomlist if necessary
 			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
 
-				$scope.$emit('showLoader');
+				var callback = function(data) {
+					$scope.showPickup = data.use_pickup;
+					$scope.showInspected = data.use_inspected;
+					$scope.showQueued = data.is_queue_rooms_on;
 
-				RVHkRoomStatusSrv.fetch($rootScope.businessDate)
-					.then(function(data) {
-						$scope.showPickup = data.use_pickup;
-						$scope.showInspected = data.use_inspected;
-						$scope.showQueued = data.is_queue_rooms_on;
+					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+						// show the user related rooms only
+						$scope.filterByWorkType = defaultWorkType;
+						$scope.filterByEmployee = defaultMaid;
 
-						if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
-							// show the user related rooms only
-							$scope.filterByWorkType = defaultWorkType;
-							$scope.filterByEmployee = defaultMaid;
+						// update filterByWorkType filter to first item
+						$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
 
-							// update filterByWorkType filter to first item
-							$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+						// update filterByEmployee filter
+						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+					}
 
-							// update filterByEmployee filter
-							$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
-						}
+					afterFetch( data );
 
-						afterFetch( data );
-					}, function() {
-						$scope.$emit('hideLoader');
-					});	
+					$scope.$emit('hideLoader');
+				};	
+
+				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
 			} else {
 				$timeout(function() {
 					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
@@ -221,6 +220,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
 				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
 				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+				localStorage.removeItem( 'roomListScrollTopPos' );
 			};
 		});
 
@@ -745,6 +745,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.WebkitTransition = '';
 				$notify.style.WebkitTransition = '';
 
+				$notify.classList.add('show');
+
 				// only bind 'touchmove' when required
 				$rooms.addEventListener('touchmove', touchMoveHandler, false);
 			};
@@ -786,6 +788,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener( touchMoveHandler );
+
+				$timeout(function() {
+					$notify.classList.remove('show');
+				}, 320);
 
 				loadNotify();
 			};

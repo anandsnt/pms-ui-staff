@@ -17,7 +17,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// we should show the back button with the default text "Find Reservations"	
 		if ( $stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
 			backTitle = titleDict['NORMAL_SEARCH'];
-			backParam = {};
+			backParam = { type: 'RESET'}; // CICO-9726 --- If a newly created reservation / go back to plain search page
 		} else {
 			backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
 			backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};

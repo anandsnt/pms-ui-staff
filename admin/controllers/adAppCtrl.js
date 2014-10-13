@@ -39,6 +39,16 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
 		$rootScope.currencySymbol = "";
+		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+	
+	    var routeChange = function(event, newURL) {
+	      event.preventDefault();
+	      return;
+	    };
+	
+	    $rootScope.$on('$locationChangeStart', routeChange);
+	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
 
 		var setupLeftMenu = function(){
@@ -180,7 +190,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					submenu: []
 				}];
 			}
-		}
+		};
 		
 		
 

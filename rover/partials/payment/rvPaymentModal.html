@@ -1,4 +1,5 @@
-<div role="dialog" id="modal" class="modal-show"><form ng-click="setPosition()" class="modal-content form new-content payment-popup" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
+<div role="dialog" id="modal" class="modal-show" ng-hide="isLoading">
+	<form ng-click="setPosition()" class="modal-content form new-content payment-popup" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
 	<button class="dark-title modal-close" type="button" id="modal-close" ng-click="closeDialog()">
 		<span class="icons icon-close"></span>
 	</button>
@@ -9,9 +10,9 @@
 	    <div class="select">
 
 	    	<select ng-disabled="shouldShowDisabled" ng-model="saveData.selected_payment_type" class="placeholder" ng-change="renderPaymentValues()">
-				<option value="" translate> SELECT_PAYMENT_TYPE </option>
-
-				<option ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
+				<option value="null" ng-selected="{{saveData.selected_payment_type=='null'}}" translate> SELECT_PAYMENT_TYPE </option>
+				<option ng-if="isStandAlone && paymenttype.name !== 'DB'" ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
+				<option ng-if="!isStandAlone && paymenttype.name === 'CC'"  ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{paymenttype.name == 'CC'}}" >{{paymenttype.description}}</option>
 			</select>
 	    	
 	

@@ -12,12 +12,11 @@
       <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="standaloneRoomStatusChanged()" disabled></select>
 
       <!-- connected PMS -->
-      <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="connectedRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
+      <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="connectedRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
     </div>
   </div>
 
   <div id="room-content" class="room-content">
-    
     <!-- this is a connected hotel -->
     <div ng-if="!isStandAlone">
       <!-- 2.A Work Tab - Room is clean -->

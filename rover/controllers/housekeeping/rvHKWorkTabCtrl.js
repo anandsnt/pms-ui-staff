@@ -4,23 +4,31 @@ sntRover.controller('RVHKWorkTabCtrl', [
 	'$state',
 	'$stateParams',
 	'RVHkRoomDetailsSrv',
+	'RVHkRoomStatusSrv',
 	'$filter',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter) {
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
 		// keep ref to room details in local scope
-		var updateRoom = $scope.$parent.updateRoom;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		// default cleaning status
 		$scope.isCleaning = false;
 
+		// must create a copy since this scope is an inner scope
+		$scope.isStandAlone = $rootScope.isStandAlone;
+
 		// default room HK status
 		// will be changed only for connected
 		if ( !$rootScope.isStandAlone ) {
-			$scope.ooOsTitle = $scope.roomDetails.room_reservation_hk_status == 2 ? 'Out Of Service' :
-								$scope.roomDetails.room_reservation_hk_status == 3 ? 'Out Of Order' : false;
+			if ( $scope.roomDetails.hk_status_list[0].value == 'OS' ) {
+				$scope.ooOsTitle = 'Out Of Service';
+			} else if ( $scope.roomDetails.hk_status_list[0].value == 'OO' ) {
+ 				$scope.ooOsTitle = 'Out Of Order';
+			} else {
+				$scope.ooOsTitle = false;
+			}
 		} else {
 			$scope.ooOsTitle = false;
 		}
@@ -59,7 +67,10 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		$scope.connectedRoomStatusChanged = function() {
 			var callback = function(data){
 				$scope.$emit('hideLoader');
-				updateRoom( 'current_hk_status', $scope.roomDetails.current_hk_status );
+				RVHkRoomStatusSrv.updateHKStatus({
+					id: $scope.roomDetails.id,
+					current_hk_status: $scope.roomDetails.current_hk_status
+				})
 			}
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
