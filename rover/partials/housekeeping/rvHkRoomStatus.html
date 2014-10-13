@@ -80,7 +80,7 @@
               <span bo-if="room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0)">IN</span>
               <span bo-if="room.room_reservation_status.indexOf('Arrival') >= 0" bo-text="room.arrival_time"></span>
             </div>
-            <div bo-if="room.is_queued" class="queued"></div>
+            <div bo-if="room.is_queued" class="queued">VACANT</div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
