@@ -48,6 +48,7 @@ var GlobalApp = function(){
         try{
           
     	   that.cardReader = new CardOperation();
+    	   alert("try success");
     	    that.cordovaLoaded = true;
         }
         catch(er){
