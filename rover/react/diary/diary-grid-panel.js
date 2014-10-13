@@ -1,9 +1,4 @@
 var GridPanel = React.createClass({
-	getInitialState: function() {
-		return {
-			data: this.props.data
-		};
-	},
 	render: function() {
 		var self = this;
 
@@ -15,9 +10,11 @@ var GridPanel = React.createClass({
 			viewport: this.props.viewport,
 			display: this.props.display,
 			filter: this.props.filter,
-			data: this.state.data,
+			data: this.props.data,
 			angular_evt: this.props.angular_evt,
-			__onGridScroll: self.props.__onGridScroll
+			currentResizeItem: this.props.currentResizeItem,
+			__onGridScroll: self.props.__onGridScroll//,
+			//__dispatchResizeCommand: self.__dispatchResizeCommand
 		}));
 	}
 });

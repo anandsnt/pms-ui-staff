@@ -62,7 +62,9 @@ var Timeline = React.createClass({
 			display: this.props.display,
 			data: this.props.data,
 			filter: this.props.filter,
-			angular_evt: this.props.angular_evt
+			angular_evt: this.props.angular_evt,
+			__onResizeCommand: this.props.__onResizeCommand,
+			currentResizeItem: this.props.currentResizeItem
 		}));
 	}
 });

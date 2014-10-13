@@ -22,7 +22,30 @@ var DiaryContent = React.createClass({
 		if(el) {
 			$('.diary-timeline').css({ 'left': -el.scrollLeft + 120 + 'px'});
 			$('.diary-rooms').css({ 'top': -el.scrollTop + 90 + 'px'});
+
+			//Send message to Rooms to update row class styles?
 		}
+	},
+	__onResizeCommand: function(row_item_data) {
+		var copy = {};
+
+		copy = _.extend(copy, row_item_data);
+
+		copy.start_date = new Date(copy.start_date.getTime());
+		copy.end_date = new Date(copy.end_date.getTime());		
+
+		this.setProps({
+			//resizing: true,
+			currentResizeItem: copy
+		});
+	},
+	__onResizeStart: function(row_data, row_item_data) {
+		console.log('Resize start:', row_data, row_item_data);
+	},
+	__onResizeEnd: function(row_item_data) {
+		this.setState({
+			currentResizeItem: undefined
+		});
 	},
 	componentDidMount: function() {
     	$(window).on('resize', _.debounce(function(e) {
@@ -55,8 +78,8 @@ var DiaryContent = React.createClass({
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft
 							},
-							currentDragItem: undefined,
-							currentResizeItem: undefined
+							currentDragItem: props.currentDragItem,
+							currentResizeItem: props.currentResizeItem
 						};
 		
 		display.width 				= display.hours / viewport.hours * viewport.width;
@@ -87,23 +110,27 @@ var DiaryContent = React.createClass({
 			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
-			__onGridScroll: this.__onGridScroll
+			__onGridScroll: self.__onGridScroll
 		}),
 		TimelinePanel({
 			viewport: this.state.viewport,
 			display: this.state.display,
 			data: this.state.data,
 			filter: this.state.filter,
+			currentResizeItem: this.props.currentResizeItem,
 			angular_evt: this.state.angular_evt,
-			__onGridScroll: this.__onGridScroll
+			__onResizeCommand: self.__onResizeCommand,
+			__onGridScroll: self.__onGridScroll
 		}), 
 		GridPanel({
 			viewport: this.state.viewport,
 			display: this.state.display,
 			filter: this.state.filter,
 			data: this.state.data,
+			currentResizeItem: this.props.currentResizeItem,
 			angular_evt: this.state.angular_evt,
-			__onGridScroll: this.__onGridScroll
+			//__dispatchResizeCommand: this.dispatchResizeCommand,
+			__onGridScroll: self.__onGridScroll
 		})), this.props.children);
 	}
 });

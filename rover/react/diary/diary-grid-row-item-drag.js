@@ -1,11 +1,18 @@
 var GridRowItemDrag = React.createClass({
+	__dbMouseMove: undefined,
+	componentWillMount: function() {
+		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
+	},
+	componentWillUnmount: function() {
+
+	},
 	__onMouseDown: function(e) {
 		var page_offset, el;
 
 		if(e.button === 0) {
 			e.stopPropagation();
 			document.addEventListener('mouseup', this.__onMouseUp);
-			document.addEventListener('mousemove', this.__onMouseMove);
+			document.addEventListener('mousemove', this.__dbMouseMove);
 
 			page_offset = this.getDOMNode().getBoundingClientRect();
 			el = this.props.viewport.element();
@@ -50,7 +57,7 @@ var GridRowItemDrag = React.createClass({
 	},
 	__onMouseUp: function(e) {
 		document.removeEventListener('mouseup', this.__onMouseUp);
-		document.removeEventListener('mousemove', this.__onMouseMove);
+		document.removeEventListener('mousemove', this.__dbMouseMove);
 
 		if(this.state.dragging) {
 			this.setState({
@@ -64,7 +71,8 @@ var GridRowItemDrag = React.createClass({
 			this.setState({
 				selected: !this.state.selected
 			}, function() {
-				this.props.angular_evt.onSelect(this.props.data);
+				this.props.angular_evt.onSelect(this.props.row_data, this.props.data, false, 'resize');
+				//this.props.__dispatchResizeCommand(this.props.row_data, this.props.data);
 			});
 		}
 	},

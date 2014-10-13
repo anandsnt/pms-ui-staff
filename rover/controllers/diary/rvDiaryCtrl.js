@@ -1,6 +1,6 @@
 sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window', 'rvDiarySrv', '$state', '$stateParams', 'loadInitialData', 
 	function($scope, $rootScope, $filter, $window, rvDiarySrv, $state, $stateParams, loadInitialData) {
-	'use strict';
+	//'use strict';
 	BaseCtrl.call(this, $scope);
 
     $scope.initReservationData = function() {
@@ -265,9 +265,12 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 			
 	    };
 
-	    $scope.onSelect = function(data, selected) {
-	    	data.selected = selected;
+	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
+	    	var copy = {};
 
+	    	row_item_data.selected = selected;
+
+	    	/*Clear selections array, and repopulate*/
 	    	$scope.selections = [];
 
 	    	$scope.data.forEach(function(room, idx) {
@@ -281,6 +284,20 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    			});
 	    		}
 	    	});
+
+	    	switch(command_message) {
+	    		case 'resize': 
+	    		copy = _.extend({}, row_item_data);
+
+	    		copy.start_date = new Date(row_item_data.start_date.getTime());
+	    		copy.end_date = new Date(row_item_data.end_date.getTime());
+	    		copy.left = (copy.start_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
+	    		copy.right = (copy.end_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
+
+	    		renderGrid({ currentResizeItem: copy });
+
+	    		break;	 
+	    	}   
 	    };
 	    /*_________________________________________________________*/
 		/*END PROTOTYPE EVENT HOOKS -- */
@@ -391,9 +408,11 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		});
 	}
 
-	function renderGrid() {
+	function renderGrid(params) {
+		var args = params || {};
+
  		React.renderComponent(
-			DiaryContent($scope.gridProps),
+			DiaryContent(_.extend(args, $scope.gridProps)),
 			document.getElementById('component-wrapper')
 		);	
 	}
@@ -465,10 +484,10 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 					new_end_date = new Date(end_date.getTime() + maintenance_span);
 
 				if(_.isObject(orig_reservation) && orig_reservation !== reservation || _.isUndefined(orig_reservation)) {
-					if((start_date >= reservation.start_date && start_date <= res_end_date) ||
-					   (reservation.start_date >= start_date && res_end_date <= new_end_date) ||
-					   (start_date >= reservation.start_date && new_end_date <= res_end_date) ||
-					   (new_end_date >= reservation.start_date && new_end_date <= res_end_date)) {
+					if((start_date > reservation.start_date && start_date < res_end_date) ||
+					   (reservation.start_date > start_date && res_end_date < new_end_date) ||
+					   (start_date > reservation.start_date && new_end_date < res_end_date) ||
+					   (new_end_date > reservation.start_date && new_end_date < res_end_date)) {
 
 					   	conflicting_reservation = reservation;
 						range_validated = false;

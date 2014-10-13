@@ -1,9 +1,4 @@
 var GridRow = React.createClass({
-	getInitialState: function() {
-		return {
-			currentDragItem: this.props.currentDragItem
-		};
-	},
 	render: function() {
 		var hourly_divs = [],
 			self = this;
@@ -36,7 +31,9 @@ var GridRow = React.createClass({
 				row_offset: 	self.props.row_number * (self.props.display.row_height + self.props.display.row_height_margin),
 				__onDragStart:  self.props.__onDragStart,
 				__onDragStop: 	self.props.__onDragStop,
-				__onMouseUp: 	self.props.__onDrop
+				currentResizeItem: self.props.currentResizeItem
+				//__onMouseUp: 	self.props.__onDrop,
+				//__dispatchResizeCommand: self.__dispatchResizeCommand
 			});
 		}),
 		hourly_divs);

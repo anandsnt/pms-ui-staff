@@ -13,7 +13,7 @@ var Grid = React.createClass({
 			viewport 	= this.props.viewport.element(),
 			curPos 		= viewport[0].scrollTop + e.pageY - viewport.offset().top,
 			rowNumber 	= Math.floor(curPos / rowHeight),
-			room 		= this.state.data[rowNumber],
+			room 		= this.props.data[rowNumber],
 			reservation = this.state.currentDragItem,
 			self 		= this;
 
@@ -22,12 +22,6 @@ var Grid = React.createClass({
 		}, function() {
 			self.props.angular_evt.onDragEnd(room, reservation, (left / this.props.display.px_per_ms) + this.props.display.x_origin);
 		});
-	},
-	getInitialState: function() {
-		return {
-			data: this.props.data,
-			currentDragItem: undefined
-		};
 	},
 	render: function() {
 		var self = this;
@@ -43,7 +37,7 @@ var Grid = React.createClass({
 						height: this.props.display.height + 'px'
 					}
 				}, 
-				_.map(this.state.data, function(row, idx) {
+				_.map(this.props.data, function(row, idx) {
 					return GridRow({
 						key: 				row.key,
 						data: 				row,
@@ -53,9 +47,11 @@ var Grid = React.createClass({
 						viewport: 			self.props.viewport,
 						filter: 			self.props.filter,
 						angular_evt: 		self.props.angular_evt,
-						currentDragItem: 	self.state.currentDragItem,
+						currentDragItem: 	self.props.currentDragItem,
+						currentResizeItem:  self.props.currentResizeItem,
 						__onDragStart: 		self.__onDragStart,
-						__onDragStop: 		self.__onDragStop					
+						__onDragStop: 		self.__onDragStop//,
+						//__dispatchResizeCommand: self.__dispatchResizeCommand				
 					});
 				})
 		));

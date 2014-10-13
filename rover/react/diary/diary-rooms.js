@@ -1,9 +1,4 @@
 var Rooms = React.createClass({
-	getInitialState: function() {
-		return {
-			data: this.props.data
-		}
-	},
 	render: function() {
 		return React.DOM.ul({
 			className: 'wrapper',
@@ -11,7 +6,7 @@ var Rooms = React.createClass({
 				height: this.props.display.height
 			}
 		},
-		_.map(this.state.data, function(room) {
+		_.map(this.props.data, function(room) {
 			return Room({
 				data: room
 			});

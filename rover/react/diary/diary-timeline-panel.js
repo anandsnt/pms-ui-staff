@@ -16,7 +16,9 @@ var TimelinePanel = React.createClass({
 			display: this.props.display,
 			data: this.state.data,
 			filter: this.props.filter,
-			angular_evt: this.props.angular_evt
+			angular_evt: this.props.angular_evt,
+			__onResizeCommand: self.props.__onResizeCommand,
+			currentResizeItem: this.props.currentResizeItem
 		}),
 		TimelineOccupancy({
 			viewport: this.props.viewport,

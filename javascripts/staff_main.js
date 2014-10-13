@@ -41,6 +41,7 @@
 //=require ../rover/react/diary/resize_mixin.js
 //=require ../rover/react/diary/diary-toggle.js
 //=require ../rover/react/diary/diary-toggle-panel.js
+//=require ../rover/react/diary/diary-grid-row-item-placeholder.js
 //=require ../rover/react/diary/diary-grid-row-item-drag.js
 //=require ../rover/react/diary/diary-grid-row-item.js
 //=require ../rover/react/diary/diary-grid-row.js
