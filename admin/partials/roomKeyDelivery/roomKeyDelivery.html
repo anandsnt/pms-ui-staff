@@ -31,7 +31,9 @@
 								<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="front_desk" name="guest-zest" id="type3" class="change-data">
 								{{'DELIVER_MSG_TO_GUEST' | translate }}
 							</label>
-							<ad-textarea rows="2" ng-show="data.room_key_delivery_for_guestzest_check_in == 'front_desk'" div-class="full-width" text-area-class="full-width" value="data.key_delivery_message" label = "{{ 'ROOM_KEY_DELIVERY_MESSAGE_TITLE' | translate}}" placeholder = ""></ad-textarea>
+
+
+							<ad-textarea rows="2" ng-if="data.room_key_delivery_for_guestzest_check_in == 'front_desk'" div-class="full-width" text-area-class="full-width" value="data.key_delivery_message" label = "{{ 'ROOM_KEY_DELIVERY_MESSAGE_TITLE' | translate}}" placeholder = ""></ad-textarea>
 						</div>
 					</div>
 					
