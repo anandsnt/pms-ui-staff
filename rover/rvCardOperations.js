@@ -41,13 +41,14 @@ var CardOperation = function(){
 
 
 	this.startReader = function(options){
+		alert("start reader");
 		options['shouldCallRecursively'] = true;
 		that.listenForSingleSwipe(options);		
 	};
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
-				
+				alert("call cordova service");
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;		
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -63,30 +64,36 @@ var CardOperation = function(){
 		var arguments = options["arguments"] ? options["arguments"] : [];
 		
 		if(successCallBack == null){
+			alert("----successCallBack")
 			return false;
 		}
 		else if(failureCallBack == null){
+			alert("----failureCallBack")
 			return false;			
 		}
 		else if(service == null){
+			alert("----service")
 			return false;
 		}
 		else if(action == null){
+			alert("----action")
 			return false;			
 		}		
 		else{
-			
+			alert("execution cordova");
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
 							if(successCallBackParameters !== null){
+								alert("successCallBackParameters");
 								//alert("cordoveexec---DATA----"+JSON.stringify(data));
 								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
 							else{
+								alert("successCallBackParameters dfdfdf");
 								//alert("cordoveexec---DATA ||----"+JSON.stringify(data));
 								//alert("cordoveexec---successparama 2----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data);
@@ -96,7 +103,7 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
-							//alert("error");
+							alert("error");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}
@@ -129,6 +136,7 @@ var CardOperation = function(){
 	
 	//function for get single swipe
 	this.listenForSingleSwipe = function(options){	
+		alert("listenForSingleSwipe");
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
