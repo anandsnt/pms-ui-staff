@@ -66,6 +66,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 
 
     //set flag if standalone PMS
@@ -241,6 +242,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           submenu: []
         }
       ];
+
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
+      }];
+
     } else {
       // OBJECT WITH THE MENU STRUCTURE
       $scope.menu = [{
@@ -267,6 +283,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
       }];
 
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
+      }];
+
     }
 
     $scope.$on("updateSubMenu", function(idx, item) {
@@ -274,6 +304,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item[1].submenu;
       } else {
+        $scope.showSubMenu = false;
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
@@ -321,12 +352,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
-      $scope.showSubMenu = false;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
-      $scope.showSubMenu = false;
     };
+
+
     $scope.fetchAllItemsSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
 
@@ -430,25 +461,51 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
     });
     $scope.successCallBackSwipe = function(data) {
+    	alert("success callback swipe");
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
     $scope.failureCallBackSwipe = function() {
-
+		alert("failure callback swipe");
     };
 
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
-    setTimeout(function() {
-      if (sntapp.cardSwipeDebug === true) {
-        sntapp.cardReader.startReaderDebug(options);
-      }
-      if (sntapp.cordovaLoaded) {
-        sntapp.cardReader.startReader(options);
-      };
+	$scope.numberOfCordovaCalls = 0;
+
+	$scope.initiateCardReader = function(){
+    	
+      	if (sntapp.cardSwipeDebug === true) {
+        	sntapp.cardReader.startReaderDebug(options);
+        	return;
+      	}
+      	
+      	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      	    alert("card reader");
+ 	    	sntapp.cardReader.startReader(options);
+	    } else {
+	      		//If cordova not loaded in server, or page is not yet loaded completely
+	      		//One second delay is set so that call will repeat in 1 sec delay
+	      	if($scope.numberOfCordovaCalls < 50){
+	      		setTimeout(function(){
+	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
+				    	$scope.initiateCardReader();
+				    }, 2000);
+	      		}
+      	    }	
+    };
+    
+    /*
+     * Start Card reader now!. 
+     * Time out is to call set Browser
+     */
+    setTimeout(function(){
+    	alert("inntial")
+    	 $scope.initiateCardReader();
     }, 2000);
+   
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
@@ -577,20 +634,24 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-
-      var type = "LATE_CHECKOUT";
-      $state.go('rover.search', {
-        'type': type
-      });
-
+      if ( $rootScope.default_dashboard != 'HOUSEKEEPING' ) {
+        var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {
+          'type': type
+        });
+      }
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-
-      var type = "QUEUED_ROOMS";
-      $state.go('rover.search', {
-        'type': type
-      });
+      if ( $rootScope.default_dashboard == 'HOUSEKEEPING' ) {
+        $state.go('rover.housekeeping.roomStatus', {
+          'roomStatus': 'QUEUED_ROOMS'
+        });
+      } else {
+        $state.go('rover.search', {
+          'type': 'QUEUED_ROOMS'
+        });
+      }
     };
 
     $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data) {

@@ -7,12 +7,12 @@
 	        <button type="submit" name="submit" class="icons icon-search">Search</button>
 	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
 	        ng-keyup="queryEntered()" ng-focus="focusOnSearchText()"
-	        ng-model="textInQueryBox" >
+	        ng-model="textInQueryBox" ng-blur="focusOutOnSearchText()" >
 	    </div>
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
 	</form>
 
-	<section id="dashboard-search" class="content scrollable dashboard-scroll-div" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+	<section id="dashboard-search" class="content scrollable" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->

@@ -14,7 +14,7 @@
 	<div ng-show="showSearchResultsArea">
 
 		<!-- Rooms list -->
-		<section id="dashboard-search" class="content scrollable hkdashboard-scroll-div" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': rooms.length==0}">
+		<section id="dashboard-search" class="content scrollable" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" ng-class="{'no-results': rooms.length==0}">
 			<div class="wrapper" id="rooms">
 				<ul id="dashboard-search-results" class="search-results" ng-show="isSearchResultsShowing">
 					<li class="room" ng-repeat="room in rooms" ng-if="room.display_room">
