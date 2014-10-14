@@ -171,6 +171,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             };
 
             $scope.guestCardData = {};
+            $scope.guestCardData.cardHeaderImage = "/assets/avatar-trans.png";
             $scope.guestCardData.contactInfo = {};
             $scope.guestCardData.userId = '';
 

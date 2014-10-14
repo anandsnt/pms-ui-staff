@@ -16,8 +16,6 @@ sntRover.controller('RVDepositBalanceCtrl',[
 
 	$scope.$emit("UPDATE_DEPOSIT_BALANCE_FLAG");
 
-
-
 	angular.forEach($scope.depositBalanceData.data.existing_payments, function(value, key) {
 		value.isSelected = false;
 	});
@@ -36,6 +34,8 @@ sntRover.controller('RVDepositBalanceCtrl',[
 	$scope.makePaymentData.amount = $scope.depositBalanceData.data.outstanding_stay_total;
 	$scope.makePaymentButtonActive = false;
 	$scope.setScroller('available_cards', { click:true});
+	
+	
 	/*
 	 * Function to handle click on make payment button
 	 * If new card is added, then first we need to add the credit card and on success we make the payment
@@ -147,7 +147,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 			};
 
 		//	alert(JSON.stringify(dataToMakePaymentApi));
-			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+			 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 		 }
 		 // dataToApiToAddNewCard
 		 // add_to_guest_card
@@ -174,7 +174,7 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		};
 
 	//	alert(JSON.stringify(dataToMakePaymentApi));
-		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi);
+		 $scope.invokeApi(RVPaymentSrv.makePaymentOnDepositBalance, dataToMakePaymentApi, $scope.successMakePayment);
 	};
 	/*
 	 * To render the values on fields during swipe
@@ -247,16 +247,28 @@ sntRover.controller('RVDepositBalanceCtrl',[
 		return buttonClass;
 	};
 	$scope.showMakePaymentButtonActive = function(){
-		if($scope.depositBalanceNewCardData.cardNumber !== ""){
-			$scope.makePaymentButtonActive = true;
-		} else {
+		//Commenting - CICO-9959
+		// if($scope.depositBalanceNewCardData.cardNumber !== ""){
+			// $scope.makePaymentButtonActive = true;
+		// } else {
 			$scope.makePaymentButtonActive = false;
-		}
+		//}
 	};
 
 	$scope.closeDepositModal = function(){
 		$scope.isDepositBalanceScreenOpened = false;
 		$scope.closeDialog();
+	};
+	$scope.successMakePayment = function(){
+		$scope.$emit("hideLoader");
+		
+		if($scope.reservationData.reservation_card.is_rates_suppressed === "false" || $scope.reservationData.reservation_card.is_rates_suppressed === false){
+			console.log(";;;;;;;;;;;;;");
+			$scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total = parseInt($scope.reservationData.reservation_card.deposit_attributes.outstanding_stay_total) - parseInt($scope.makePaymentData.amount);
+			$scope.$apply();
+		}
+		
+		$scope.closeDepositModal();
 	};
 
 
