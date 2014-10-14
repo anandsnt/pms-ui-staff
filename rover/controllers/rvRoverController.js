@@ -500,7 +500,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Time out is to call set Browser
      */
     setTimeout(function(){
-    	
     	 $scope.initiateCardReader();
     }, 2000);
    

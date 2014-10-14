@@ -133,7 +133,6 @@ var CardOperation = function(){
 	
 	//function for get single swipe
 	this.listenForSingleSwipe = function(options){	
-		alert("listen for single swipe");
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
