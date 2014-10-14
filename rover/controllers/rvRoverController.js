@@ -502,6 +502,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     setTimeout(function(){
     	 $scope.initiateCardReader();
     }, 2000);
+    $scope.$on("OBSERVE_SWIPE", function(){
+    	sntapp.cardReader.startReader(options);
+    });
    
     /*
      * To show add new payment modal
