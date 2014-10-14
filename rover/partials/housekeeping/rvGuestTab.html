@@ -1,4 +1,4 @@
-<div ng-controller="RVHKRoomTabCtrl">
+<div ng-controller="RVHKGuestTabCtrl">
 
   <!-- 1.A Guest Tab - Room vacant, not queued -->
   <div class="no-content" ng-if="roomDetails.is_occupied == 'false'">
@@ -32,15 +32,16 @@
   <div class="room-content scrollable" ng-if="roomDetails.is_occupied == 'true'">
     <div class="wrapper">
       <strong class="h2">
-        {{ roomDetails.current_room_reservation_status }}<span ng-if="!!roomDetails.arrival_time || !!roomDetails.late_checkout_time || !!roomDetails.dept_date || !!roomDetails.dept_date">. </span>
+        {{ roomDetails.current_room_reservation_status }}<span ng-if="roomDetails.hasDept">.</span>
 
-        <span class="green" ng-if="roomDetails.arrival_time && roomDetails.is_late_checkout == 'false' && !roomDetails.departure_time && !roomDetails.dept_date">Arriving at {{ roomDetails.arrival_time }}.</span>
+        <!-- <span class="green" ng-if="roomDetails.current_room_reservation_status == 'DUE IN'">Arriving at {{ roomDetails.arrival_time }}.</span> -->
 
-        <span class="red" ng-if="roomDetails.is_late_checkout == 'true'">Departing at {{ roomDetails.late_checkout_time }}.</span>
-
-        <span class="red" ng-if="roomDetails.is_late_checkout == 'false' && !!roomDetails.departure_time">Departing at {{ roomDetails.departure_time }}.</span>
-
-        <span class="red" ng-if="roomDetails.is_late_checkout == 'false' && !roomDetails.departure_time && !!roomDetails.dept_date">Departing on {{ roomDetails.dept_date }}.</span>
+        <span class="red" ng-if="roomDetails.hasDept">
+          Departing 
+          <span ng-if="!!roomDetails.departure.time"> at {{ roomDetails.departure.time }}</span>
+          <span ng-if="!!roomDetails.departure.date"> on {{ roomDetails.departure.date }}</span>
+          .
+        </span>
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">
@@ -52,4 +53,5 @@
       </h2>
     </div>
   </div>
+
 </div>
