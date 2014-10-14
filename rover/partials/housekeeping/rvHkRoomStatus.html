@@ -71,7 +71,7 @@
               <span class="guest-status {{ room.leaveStatusClass }}" bo-text="room.room_reservation_status"></span>
               <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
               <span bo-if="room.room_reservation_status.indexOf('Departed') >= 0">OUT</span>
-              <span bo-if="room.room_reservation_status.indexOf('Due out') >= 0" bo-text="room.departure_time"></span>
+              <span bo-if="!(room.room_reservation_status.indexOf('Departed') >= 0) && room.room_reservation_status.indexOf('Due out') >= 0" bo-text="room.departure_time"></span>
             </div>
             <!-- {enterStatusClass} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
             <div class="next {{ room.enterStatusClass }}">
@@ -80,7 +80,7 @@
               <span bo-if="room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0)">IN</span>
               <span bo-if="room.room_reservation_status.indexOf('Arrival') >= 0" bo-text="room.arrival_time"></span>
             </div>
-            <div bo-if="room.is_queued" class="queued"></div>
+            <div bo-if="room.is_queued" class="queued">VACANT</div>
           </div>
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">

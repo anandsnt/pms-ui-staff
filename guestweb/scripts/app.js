@@ -31,6 +31,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.dateFormatPlaceholder = $attrs.dateFormatValue;
  	$rootScope.dateFormat = getDateFormat($attrs.dateFormatValue);
  	$rootScope.isPrecheckinOnly = ($attrs.isPrecheckinOnly ==='true' && $attrs.reservationStatus ==='RESERVED')?true:false;
+ 	$rootScope.roomVerificationInstruction = $attrs.roomVerificationInstruction;
+
  	// $rootScope.isPreCheckedIn   = ($attrs.isPreCheckedIn === 'true') ? true: false;
  	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
