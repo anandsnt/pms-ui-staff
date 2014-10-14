@@ -47,20 +47,14 @@ sntRover.service('RVHkRoomStatusSrv', [
 					if(response.status == "success"){
 					    this.roomList = response.data;
 
-					    console.log(this.roomList.checkin_inspected_only);
-
 					    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
 					    	var room = this.roomList.rooms[i];
-
-					    	if ( i % 10 === 0 ) {
-					    		room.is_queued = true;
-					    	};
 
 					    	// lets set this so that we can avoid
 					    	room.display_room = true;
 
 					    	// reduce scope search
-					    	room.description = room.hk_status.description
+					    	room.description = room.hk_status.description;
 					    	
 					    	room.is_occupied = room.is_occupied == 'true' ? true : false;
 					    	room.is_vip = room.is_vip == 'true' ? true : false;
