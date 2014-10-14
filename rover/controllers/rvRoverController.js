@@ -476,6 +476,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$scope.initiateCardReader = function(){
     	
       	if (sntapp.cardSwipeDebug === true) {
+      		
         	sntapp.cardReader.startReaderDebug(options);
         	return;
       	}
@@ -501,6 +502,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     setTimeout(function(){
     	 $scope.initiateCardReader();
     }, 2000);
+    $scope.$on("OBSERVE_SWIPE", function(){
+    	alert("observe swipe OBSERVE_SWIPE");
+    	sntapp.cardReader.startReader(options);
+    });
    
     /*
      * To show add new payment modal

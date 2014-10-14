@@ -23,13 +23,14 @@
 					<div class="col-md-6 headtext centeralign">
 						<div class="blue-text">Ready to check-out?</div>
 						<div class="lightcontent chekout-time grey-text room-text">To start please enter your room number:</div>
+						<div class="lightcontent chekout-time grey-text room-text">({{roomVerificationInstruction}})</div>
 					</div>
 				<!-- top section ends here-->
 				<div class="col-md-6 no-padding now-later-options cabin-number room_container">
 					<form class="centeralign">
 					<div class="row cabin_number_field">
 						<p class="lightcontent chekout-time grey-text">Room Number</p>
-						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input"/> 
+						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox shadow room-input" placeholder="Enter Room number"/> 
 					</div>								
 							<button class="checkin-button continue-button blue-bg room-verification-continue" ng-click="continueButtonClicked()">
 								<span class="continue-text white-text">Continue</span>
