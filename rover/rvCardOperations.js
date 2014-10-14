@@ -47,7 +47,6 @@ var CardOperation = function(){
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
-				
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;		
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -75,7 +74,6 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
-			
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
@@ -96,7 +94,6 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
-							//alert("error");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}
