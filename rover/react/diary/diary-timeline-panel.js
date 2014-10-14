@@ -41,6 +41,7 @@ var TimelinePanel = React.createClass({
 		Timeline({
 			display: this.props.display,
 			data: this.props.data,
+			iscroll: this.props.iscroll,
 			__onResizeCommand: self.props.__onResizeCommand,
 			__onResizeLeftStart:self.props.__onResizeLeftStart,
 			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,
@@ -50,7 +51,8 @@ var TimelinePanel = React.createClass({
 		}),
 		TimelineOccupancy({
 			display: this.props.display,
-			data: this.props.data		
+			data: this.props.data,
+			angular_evt: this.props.angular_evt		
 		})));			
 	}
 });

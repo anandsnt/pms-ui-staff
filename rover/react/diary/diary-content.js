@@ -143,6 +143,8 @@ var DiaryContent = React.createClass({
     			}
     		}
     	}
+
+    	return true;
   	},
 	getInitialState: function() {
 		var props 		= this.props,

@@ -166,7 +166,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	row_item_data.selected = selected;
 
 	    	if($scope.isSelected(row_item_data)) {
-	    		$scope.selectedReservations.push(reservation);
+	    		$scope.selectedReservations.push(row_item_data);
 	    	}
 
 	    	switch(command_message) {
@@ -215,13 +215,13 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	/*WATCHERS*/
 	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
-		if(newValue > oldValue) {
+		/*if(newValue > oldValue) {
 			ngDialog.open({
 				template: 'assets/partials/diary/rvDiaryConfirmation.html',
 				controller: 'RVDiaryConfirmation',
 				scope: $scope
 			});
-		} 
+		} */
 	});
 
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
@@ -401,7 +401,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 		data.forEach(function(item, idx) {
 			var res = reservation(item, ++start_id, start, end),
-				availability = determineAvailability(item.reservations, res).shift();
+				availability = determineAvailability(item.reservations, res);
 
 			if(availability[0]) { 
 				item.reservations.push(res);

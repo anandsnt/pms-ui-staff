@@ -33,6 +33,9 @@ var Resizable = React.createClass({
 				origin_y: e.pageY,
 				element_x: page_offset.left,
 				element_y: page_offset.top
+			}, function() {
+				this.props.iscroll.timeline.disable();
+				this.props.iscroll.grid.disable();
 			});
 		}
 	},
@@ -57,6 +60,9 @@ var Resizable = React.createClass({
 				origin_y: e.pageY,
 				element_x: page_offset.left,
 				element_y: page_offset.top
+			}, function() {
+				this.props.iscroll.timeline.disable();
+				this.props.iscroll.grid.disable();
 			});
 		}
 	},
@@ -141,6 +147,9 @@ var Resizable = React.createClass({
 				}
 
 				this.props.__onResizeCommand(model);
+				
+				this.props.iscroll.timeline.enable();
+				this.props.iscroll.grid.enable();		
 			});
 		}
 	},
