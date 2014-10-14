@@ -65,7 +65,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 
 						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
 							var employee = employee.id;
-							if (!$scope.multiSheetState.assignments[employee]) {
+							if (!$scope.multiSheetState.assignments[employee] || reset) {
 								$scope.multiSheetState.assignments[employee] = {};
 								$scope.multiSheetState.assignments[employee].rooms = [];
 								$scope.multiSheetState.assignments[employee].summary = {
