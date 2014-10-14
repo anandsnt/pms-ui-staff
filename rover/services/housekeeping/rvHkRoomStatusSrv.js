@@ -372,7 +372,7 @@ sntRover.service('RVHkRoomStatusSrv', [
             if ( room.room_reservation_status.indexOf('Departed') >= 0 ) {
             	return 'OUT'
             } else if ( room.room_reservation_status.indexOf('Due out') >= 0 ) {
-            	return room.is_late_checkout ? room.late_checkout_time : room.departure_time;
+            	return room.is_late_checkout == 'true' ? room.late_checkout_time : room.departure_time;
             }
 
             return '';
