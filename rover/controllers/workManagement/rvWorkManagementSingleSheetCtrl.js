@@ -111,7 +111,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				_.each($scope.singleState.assigned, function(room) {
 					if ($scope.departureClass[room.reservation_status] == "check-out") {
 						$scope.singleState.summary.departures++;
-					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
+					} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
 						$scope.singleState.summary.stayovers++;
 					}
 					if (room.hk_complete) {

@@ -19,7 +19,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 		$scope.reservationStatus = {
 			"Due out": "check-out",
 			"Departed": "check-out",
-			"STAYOVER": "inhouse",
+			"Stayover": "inhouse",
 			"Not Reserved": "no-show",
 			"Arrival": "check-in",
 			"Arrived": "check-in",
@@ -31,7 +31,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Arrived": "check-in",
 			"Due out": "no-show",
 			"Departed": "no-show",
-			"STAYOVER": "no-show",
+			"Stayover": "no-show",
 			"Not Reserved": "no-show",
 			"Not Defined": "no-show"
 		}
@@ -41,7 +41,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Arrived": "no-show",
 			"Due out": "check-out",
 			"Departed": "check-out",
-			"STAYOVER": "inhouse",
+			"Stayover": "inhouse",
 			"Not Reserved": "no-show",
 			"Not Defined": "no-show"
 		}
@@ -51,7 +51,7 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Arrived": "inhouse",
 			"Due out": "check-out",
 			"Departed": "check-out",
-			"STAYOVER": "inhouse",
+			"Stayover": "inhouse",
 			"Not Reserved": "no-show",
 			"Not Defined": "no-show"
 		}
