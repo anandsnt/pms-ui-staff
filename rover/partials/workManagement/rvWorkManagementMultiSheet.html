@@ -51,10 +51,13 @@
                         jqyoui-draggable ="{index: {{$index}}, animate:false }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
                     <h3>{{room.room_no}}</h3> 
-                    <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Due out' && room.reservation_status != 'Departed'">STAYOVER  | </span>
-                    <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && room.checkout_time == null">DUE OUT  | </span>
-                    <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && room.reservation_status != 'Departed' && room.checkout_time">{{ room.checkout_time}}  | </span>
-                    <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT  | </span>
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && !room.checkout_timech">DUE OUT | </span>
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}} | </span>
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT | </span>                        
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Stayover'">STAYOVER | </span>
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL | </span>
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time}} | </span>
+                    <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Arrived'">IN | </span>
                     <span class="room {{room.current_status}}">{{room.current_status}}</span>
                 </li>                
             </ul>
@@ -103,10 +106,13 @@
                         data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content'}">
 
                         <h3>{{room.room_no}}</h3>
-                        <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status != 'Due out' && room.reservation_status != 'Departed'">STAYOVER  | </span>
-                        <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && room.checkout_time == null">DUE OUT  | </span>
-                         <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && room.reservation_status != 'Departed' && room.checkout_time">{{ room.checkout_time}}  | </span>
-                        <span class="guest {{stayoverClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT  | </span>
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && !room.checkout_timech">DUE OUT | </span>
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}} | </span>
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Departed'">OUT | </span>                        
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Stayover'">STAYOVER | </span>
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL | </span>
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time}} | </span>
+                        <span class="guest {{reservationStatus[room.reservation_status]}}" ng-show="room.reservation_status == 'Arrived'">IN | </span>
                         <span class="room {{room.current_status}}">{{room.current_status}}</span>
                     </li>
                     <!-- .. repeat for all assigned room to this employee -->
