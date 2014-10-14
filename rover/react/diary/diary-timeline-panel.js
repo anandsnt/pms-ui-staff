@@ -8,15 +8,12 @@ var TimelinePanel = React.createClass({
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: false, 
-			tap: false, 
-			click: false,
 			momentum: false,
 			bounce: false,
-			mouseWheel: 'scroll',
-			preventDefault: true
+			mouseWheel: 'scroll'
 		});
 
-		iscroll.timeline._scrollFn = this.props.__onGridScroll.bind(null, this);
+		iscroll.timeline._scrollFn = this.props.__onGridScroll.bind(null, iscroll.timeline);
 
 		iscroll.timeline.on('scroll', iscroll.timeline._scrollFn);
 
@@ -42,20 +39,18 @@ var TimelinePanel = React.createClass({
 			}
 		},
 		Timeline({
-			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.props.data,
-			filter: this.props.filter,
-			angular_evt: this.props.angular_evt,
 			__onResizeCommand: self.props.__onResizeCommand,
+			__onResizeLeftStart:self.props.__onResizeLeftStart,
+			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,
+			__onResizeRightStart:self.props.__onResizeRightStart,
+			__onResizeRightEnd: self.props.__onResizeRightEnd, 
 			currentResizeItem: this.props.currentResizeItem
 		}),
 		TimelineOccupancy({
-			viewport: this.props.viewport,
 			display: this.props.display,
-			data: this.props.data,
-			filter: this.props.filter,
-			angular_evt: this.props.angular_evt			
+			data: this.props.data		
 		})));			
 	}
 });

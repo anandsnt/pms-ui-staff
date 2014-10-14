@@ -24,7 +24,7 @@ var Resizable = React.createClass({
 
 			model = this._update(this.state.currentResizeItem);
 
-			console.log('MouseDown:', model.start_date, model.end_date);
+			console.log('MouseDownLeft:', model.start_date, model.end_date);
 
 			this.setState({
 				mouse_down_left: true,
@@ -48,7 +48,7 @@ var Resizable = React.createClass({
 
 			model = this._update(this.state.currentResizeItem);
 
-			console.log('MouseDown:', model.start_date, model.end_date);
+			console.log('MouseDownRight:', model.start_date, model.end_date);
 
 			this.setState({
 				mouse_down_right: true,
@@ -74,8 +74,17 @@ var Resizable = React.createClass({
 				resizing: true,
 				currentResizeItem: model
 			}, function() {
-				this.props.angular_evt.onResizeLeftStart(this.state.currentResizeItem);
-				this.props.__onResizeCommand(this.state.currentResizeItem);
+				this.props.__onResizeLeftStart(this.state.row, model);
+				this.props.__onResizeCommand(model);
+			});
+		} else if(!this.state.resizing &&
+		   this.state.mouse_down_right && distance > 5) {
+			this.setState({
+				resizing: true,
+				currentResizeItem: model
+			}, function() {
+				this.props.__onResizeRightStart(this.state.row, model);
+				this.props.__onResizeCommand(model);
 			});
 		} else if(this.state.resizing) {
 			if(this.state.mouse_down_left) {
@@ -93,7 +102,7 @@ var Resizable = React.createClass({
 			this.setState({
 				currentResizeItem: model
 			}, function() {
-				this.props.__onResizeCommand(this.state.currentResizeItem);
+				this.props.__onResizeCommand(model);
 			});
 		}
 	},
@@ -125,8 +134,13 @@ var Resizable = React.createClass({
 				resizing: false,
 				currentResizeItem: model
 			}, function() {
-				this.props.angular_evt.onResizeLeftEnd(this.state.row, this.state.currentResizeItem);
-				this.props.__onResizeCommand(this.state.currentResizeItem);
+				if(this.state.mouse_down_left) {
+					this.props.__onResizeLeftEnd(this.state.row, model);
+				} else {
+					this.props.__onResizeRightEnd(this.state.row, model);
+				}
+
+				this.props.__onResizeCommand(model);
 			});
 		}
 	},
@@ -154,16 +168,9 @@ var Resizable = React.createClass({
 		return false;
 	},
 	componentWillReceiveProps: function(nextProps) {
-		var copy = {};
-
 		if(!this.props.currentResizeItem && nextProps.currentResizeItem) {
-			copy = _.extend(copy, nextProps.currentResizeItem);
-
-			copy.start_date = new Date(nextProps.currentResizeItem.start_date.getTime());
-			copy.end_date = new Date(nextProps.currentResizeItem.end_date.getTime());
-
 			this.setState({
-				currentResizeItem: copy
+				currentResizeItem: this._update(nextProps.currentResizeItem)
 			});
 		} else if(this.props.currentResizeItem && !nextProps.currentResizeItem) {
 			this.setState({

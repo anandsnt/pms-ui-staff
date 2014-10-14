@@ -7,16 +7,13 @@ var RoomPanel = React.createClass({
 			scrollbars: true,
 			interactiveScrollbars: true,
 			scrollX: false, 
-			scrollY: true, 
-			tap: false, 
-			click: false,
-			bounce: false,
+			scrollY: true,
 			momentum: false,
-			mouseWheel: 'scroll',
-			preventDefault: true 
+			bounce: false, 
+			mouseWheel: 'scroll'
 		});
 
-		iscroll.rooms._scrollFn = this.props.__onGridScroll.bind(null, this);
+		iscroll.rooms._scrollFn = this.props.__onGridScroll.bind(null, iscroll.rooms);
 
 		iscroll.rooms.on('scroll', iscroll.rooms._scrollFn);
 

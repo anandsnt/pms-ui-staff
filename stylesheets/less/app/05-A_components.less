@@ -10274,6 +10274,22 @@
                     }
                 }
 
+                .resize-wrapper {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    positiion: relative;
+                    top: 0px;
+                    left: 0px;
+
+                    .resize-control {                   
+                        position: 'absolute';
+                        width: 30px;
+                        height: 100%;
+                        background-color: #fff;
+                    }
+                }
+
                 > .occupancy {
                     li {
                         float: left;
@@ -10285,22 +10301,6 @@
                         content: '';
                         clear: both;
                     }
-                }
-            }
-
-            .resize-wrapper {
-                display: block;
-                width: 100%;
-                height: 100%;
-                positiion: relative;
-                top: 0px;
-                left: 0px;
-
-                .resize-control {                   
-                    position: 'absolute';
-                    width: 30px;
-                    height: 100%;
-                    background-color: #fff;
                 }
             }
         }
@@ -10391,6 +10391,7 @@
 
             > .wrapper {
                 position: relative;
+                height: auto;
                 overflow: hidden;
 
                 li {

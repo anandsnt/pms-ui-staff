@@ -6,7 +6,8 @@ var Timeline = React.createClass({
 			hourly_spans = [],
 			segment_hour_display = [],
 			interval_spans,
-			start_time = props.display.x_origin_start_time;		
+			start_time = props.display.x_origin_start_time,
+			self = this;
 
 		(function() {
 			var time = start_time.hours;
@@ -53,12 +54,13 @@ var Timeline = React.createClass({
 			className: 'hours'
 		}, hourly_spans), 
 		Resizable({
-			viewport: this.props.viewport,
 			display: this.props.display,
 			data: this.props.data,
-			filter: this.props.filter,
-			angular_evt: this.props.angular_evt,
 			__onResizeCommand: this.props.__onResizeCommand,
+			__onResizeLeftStart:self.props.__onResizeLeftStart,
+			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,
+			__onResizeRightStart:self.props.__onResizeRightStart,
+			__onResizeRightEnd: self.props.__onResizeRightEnd, 
 			currentResizeItem: this.props.currentResizeItem
 		}));
 	}

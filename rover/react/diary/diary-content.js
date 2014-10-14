@@ -1,6 +1,18 @@
 React.initializeTouchEvents(true);
 
 var DiaryContent = React.createClass({
+	_update: function(row_item_data) {
+		var copy = {};
+
+		if(_.isObject(row_item_data)) {
+			copy = _.extend(copy, row_item_data);
+
+			copy.start_date = new Date(row_item_data.start_date.getTime());
+			copy.end_date = new Date(row_item_data.end_date.getTime());
+
+			return copy;
+		}
+	},
 	_recalculateGridSize: function() {
 		var display = this.state.display,
 			viewport = this.state.viewport;
@@ -18,39 +30,98 @@ var DiaryContent = React.createClass({
 			display: display
 		});
 	},
-	__onGridScroll: function(component) {
+	__onGridScroll: function(iscroll_object) {
 		try{
-			var el = $(component.getDOMNode().children[0]);
+			var el = iscroll_object, iscroll = this.state.iscroll;
 
 			if(el) {
-				this.state.iscroll.timeline.scrollTo(this.state.iscroll.grid.x, 0);
-				this.state.iscroll.rooms.scrollTo(0, -this.state.iscroll.grid.y);
+				switch(el) {
+					case iscroll.grid:
+						iscroll.timeline.scrollTo(el.x, 0);
+						iscroll.rooms.scrollTo(0, el.y);
+					break;
+					case iscroll.timeline:
+						iscroll.grid.scrollTo(el.x, 0);
+					break;
+					case iscroll.rooms:
+						iscroll.grid.scrollTo(el.y, 0);
+					break;
+				}
 			}
 		} catch(e) {
 			console.log(e);
 		}
 	},
-	__onResizeCommand: function(row_item_data) {
-		var copy = {};
+	__onDragStart: function(row_data, row_item_data) {
+		var args = arguments;
 
-		copy = _.extend(copy, row_item_data);
+		this.setState({
+			currentDragItem: row_item_data
+		}, function() {
+			this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(args));
+		});	
+	},
+	__onDragStop: function(e, left) {
+		var state 			= this.state,
+			rowHeight 		= state.display.row_height + state.display.row_height_margin,
+			viewport 		= state.viewport.element(),
+			curPos 			= viewport[0].scrollTop + e.pageY - viewport.offset().top,
+			rowNumber 		= (curPos / rowHeight).toFixed(),
+			row_data 		= state.data[rowNumber],
+			row_item_data 	= this._update(this.state.currentDragItem),
+			start_time_ms 	= (left / state.display.px_per_ms) + state.display.x_origin,
+			delta 			= start_time_ms - row_item_data.start_date.getTime();
 
-		copy.start_date = new Date(copy.start_date.getTime());
-		copy.end_date = new Date(copy.end_date.getTime());		
+		row_item_data.start_date = new Date(start_time_ms);
+		row_item_data.end_date 	= new Date(row_item_data.end_date.getTime() + delta);
 
-		this.setProps({
-			//resizing: true,
-			currentResizeItem: copy
+		this.setState({
+			currentDragItem: undefined
+		}, function() {
+			this.state.angular_evt.onDragEnd(row_data, 
+											 row_item_data);
 		});
 	},
-	__onResizeStart: function(row_data, row_item_data) {
-		console.log('Resize start:', row_data, row_item_data);
+	/*Message transport between timeline and grid:
+	  As resize controls are arranged on timeline, the positional data
+	  is passed via this command, then a property update is initiated with a
+	  deep copy clone of the position state from the timeline.  This update
+	  propagates down the component tree and is available for rendering update
+	  by the grid row item.
+	*/
+	__onResizeCommand: function(row_item_data) {
+		this.setProps({
+			currentResizeItem: row_item_data
+		});
 	},
-	__onResizeEnd: function(row_item_data) {
-		this.setState({
+	__onResizeLeftStart: function(row_data, row_item_data) {
+		this.state.angular_evt.onResizeLeftStart.apply(this, Array.prototype.slice.call(arguments));
+
+		console.log('Resize left start:', row_data, row_item_data);
+	},
+	__onResizeLeftEnd: function(row_data, row_item_data) {
+		this.state.angular_evt.onResizeLeftEnd.apply(this, Array.prototype.slice.call(arguments));
+
+		console.log('Resize left end:', row_item_data);
+
+		this.setProps({
 			currentResizeItem: undefined
 		});
 	},
+	__onResizeRightStart: function(row_data, row_item_data) {
+		this.state.angular_evt.onResizeRightStart.apply(this, Array.prototype.slice.call(arguments));
+
+		console.log('Resize right start:', row_data, row_item_data);
+	},
+	__onResizeRightEnd: function(row_data, row_item_data) {
+		this.state.angular_evt.onResizeRightEnd.apply(this, Array.prototype.slice.call(arguments));
+
+		console.log('Resize right end:', row_item_data);
+
+		this.setProps({
+			currentResizeItem: undefined
+		});
+	},	
 	componentDidMount: function() {
 		var self = this;
 
@@ -72,8 +143,6 @@ var DiaryContent = React.createClass({
     			}
     		}
     	}
-
-    	return true;
   	},
 	getInitialState: function() {
 		var props 		= this.props,
@@ -131,37 +200,42 @@ var DiaryContent = React.createClass({
 			filter: this.state.filter,
 		}),
 		RoomPanel({
-			refs: 'rooms',
-			viewport: this.state.viewport,
-			display: this.state.display,
-			data: this.state.data,
-			filter: this.state.filter,
-			iscroll: this.state.iscroll,
+			refs: 			'rooms',
+			viewport: 		this.state.viewport,
+			display: 		this.state.display,
+			data: 			this.state.data,
+			filter: 		this.state.filter,
+			iscroll: 		this.state.iscroll,
 			__onGridScroll: self.__onGridScroll
 		}),
 		TimelinePanel({
-			refs: 'timeline',
-			viewport: this.state.viewport,
-			display: this.state.display,
-			data: this.state.data,
-			filter: this.state.filter,
-			iscroll: this.state.iscroll,
-			currentResizeItem: this.props.currentResizeItem,
-			angular_evt: this.state.angular_evt,
-			__onResizeCommand: self.__onResizeCommand,
-			__onGridScroll: self.__onGridScroll
+			refs: 				'timeline',
+			viewport: 			this.state.viewport,
+			display: 			this.state.display,
+			data: 				this.state.data,
+			filter: 			this.state.filter,
+			iscroll: 			this.state.iscroll,
+			currentResizeItem: 	this.props.currentResizeItem,
+			angular_evt: 		this.state.angular_evt,
+			__onResizeCommand: 	self.__onResizeCommand,
+			__onResizeLeftStart:self.__onResizeLeftStart,
+			__onResizeLeftEnd:  self.__onResizeLeftEnd,
+			__onResizeRightStart:self.__onResizeRightStart,
+			__onResizeRightEnd: self.__onResizeRightEnd, 
+			__onGridScroll: 	self.__onGridScroll
 		}), 
 		GridPanel({
-			refs: 'grid',
-			viewport: this.state.viewport,
-			display: this.state.display,
-			filter: this.state.filter,
-			iscroll: this.state.iscroll,
-			data: this.state.data,
-			currentResizeItem: this.props.currentResizeItem,
-			angular_evt: this.state.angular_evt,
-			//__dispatchResizeCommand: this.dispatchResizeCommand,
-			__onGridScroll: self.__onGridScroll
+			refs: 				'grid',
+			viewport: 			this.state.viewport,
+			display: 			this.state.display,
+			filter: 			this.state.filter,
+			iscroll: 			this.state.iscroll,
+			data: 				this.state.data,
+			currentResizeItem: 	this.props.currentResizeItem,
+			angular_evt: 		this.state.angular_evt,
+			__onGridScroll: 	self.__onGridScroll,
+			__onDragStart: 		self.__onDragStart,
+			__onDragStop: 		self.__onDragStop	
 		})), this.props.children);
 	}
 });

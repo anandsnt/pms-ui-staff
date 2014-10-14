@@ -31,41 +31,38 @@ var GridRowItem = React.createClass({
 	},
 	render: function() {
 		var props = this.props,
-			start_time_ms 			= !this.state.resizing ? props.data.start_date.getTime() : this.state.currentResizeItem.start_date.getTime(),
-			end_time_ms 			= !this.state.resizing ? props.data.end_date.getTime() : this.state.currentResizeItem.end_date.getTime(),
+			state = this.state,
+			start_time_ms 			= !state.resizing ? props.data.start_date.getTime() : state.currentResizeItem.start_date.getTime(),
+			end_time_ms 			= !state.resizing ? props.data.end_date.getTime() : state.currentResizeItem.end_date.getTime(),
 			time_span_ms 			= end_time_ms - start_time_ms,
 			maintenance_time_span 	= props.display.maintenance_span_int * props.display.px_per_int,
 			reservation_time_span 	= time_span_ms * props.display.px_per_ms,
 			is_temp_reservation 	= (props.data.status === 'available'),
-			style = {},
-			display_filter 			= props.angular_evt.displayFilter(props.filter, props.data, props.row_data); //TODO - pass in controller defined method from scope
+			style 					= {},
+			display_filter 			= props.angular_evt.displayFilter(props.filter, props.data, props.row_data),
+			self = this;
 
 		if(!display_filter) {
 			style.display = 'none';
 		}
 
 		return GridRowItemDrag({
-			__onDragStart:  props.__onDragStart,
-			__onDragStop: 	props.__onDragStop,
-			__onMouseUp: 	props.__onDrop,
-			__dragData: {
-				data: props.data
-			},
+			key: 			props.data.key,
+			className: 		'occupancy-block',
+			row_data: 		props.row_data,
+			data:  			props.data,
 			display: 		props.display,
 			viewport: 		props.viewport,
 			filter: 		props.filter,
 			iscroll:        props.iscroll,
 			angular_evt:    props.angular_evt,
-			key: 			props.data.key,
-			className: 		'occupancy-block',
-			row_data: 		props.row_data,
-			data:  			props.data,
+			__onDragStart:  props.__onDragStart,
+			__onDragStop: 	props.__onDragStop,
+			currentResizeItem: state.currentResizeItem,
 			style: 			_.extend({
 				left: 		(start_time_ms - props.display.x_origin) * props.display.px_per_ms + 'px', 
 				width: 		reservation_time_span + maintenance_time_span
-			}, style),
-			currentResizeItem: this.state.currentResizeItem
-			//__dispatchResizeCommand: self.__dispatchResizeCommand
+			}, style)	
 		}, 
 		React.DOM.span({
 			className: ((!is_temp_reservation) ? 'occupied ' : '') + props.data.status,

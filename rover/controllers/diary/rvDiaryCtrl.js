@@ -1,91 +1,7 @@
-sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window', 'rvDiarySrv', '$state', '$stateParams', 'loadInitialData', 
-	function($scope, $rootScope, $filter, $window, rvDiarySrv, $state, $stateParams, loadInitialData) {
+sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window', 'ngDialog', 'rvDiarySrv', '$state', '$stateParams', 'loadInitialData', 
+	function($scope, $rootScope, $filter, $window, ngDialog, rvDiarySrv, $state, $stateParams, loadInitialData) {
 	//'use strict';
 	BaseCtrl.call(this, $scope);
-
-    $scope.initReservationData = function() {
-            // intialize reservation object
-            $scope.reservationData = {
-                arrivalDate: '',
-                departureDate: '',
-                midStay: false, // Flag to check in edit mode if in the middle of stay
-                stayDays: [],
-                checkinTime: {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                },
-                checkoutTime: {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                },
-                taxDetails: {},
-                numNights: 1, // computed value, ensure to keep it updated
-                roomCount: 1, // Hard coded for now,
-                rooms: [{
-                    numAdults: 1,
-                    numChildren: 0,
-                    numInfants: 0,
-                    roomTypeId: '',
-                    roomTypeName: '',
-                    rateId: '',
-                    rateName: '',
-                    rateAvg: 0,
-                    rateTotal: 0,
-                    addons: [],
-                    varyingOccupancy: false,
-                    stayDates: {},
-                    isOccupancyCheckAlerted: false
-                }],
-                totalTaxAmount: 0,
-                totalStayCost: 0,
-                guest: {
-                    id: null, // if new guest, then it is null, other wise his id
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    city: '',
-                    loyaltyNumber: '',
-                    sendConfirmMailTo: ''
-                },
-                company: {
-                    id: null, // if new company, then it is null, other wise his id
-                    name: '',
-                    corporateid: '', // Add different fields for company as in story
-                },
-                travelAgent: {
-                    id: null, // if new , then it is null, other wise his id
-                    name: '',
-                    iataNumber: '', // Add different fields for travelAgent as in story
-                },
-                paymentType: {
-                    type: {},
-                    ccDetails: { //optional - only if credit card selected
-                        number: '',
-                        expMonth: '',
-                        expYear: '',
-                        nameOnCard: ''
-                    }
-                },
-                demographics: {
-                    market: '',
-                    source: '',
-                    reservationType: '',
-                    origin: ''
-                },
-                promotion: {
-                    promotionCode: '',
-                    promotionType: ''
-                },
-                status: '', //reservation status
-                reservationId: '',
-                confirmNum: '',
-                isSameCard: false, // Set flag to retain the card details,
-                rateDetails: [], // This array would hold the configuration information of rates selected for each room
-                isRoomRateSuppressed: false // This variable will hold flag to check whether any of the room rates is suppressed?
-            };
-	};
 
 	/*--------------------------------------------------*/
 	/*BEGIN INITIALIZATION METHOD IN PROTECTED SCOPE*/
@@ -99,7 +15,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 		$scope.start_date = new Date('09/30/2014 12:00 AM');
 		$scope.start_time = new Time($scope.start_date.toComponents().time);
-		$scope.selections = [];
+		$scope.selectedReservations = [];
 
 		$scope.gridProps = {
 			viewport: {
@@ -127,6 +43,9 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 				px_per_hr: undefined,
 				maintenance_span_int: 2, //In sub-intervals(ie. 15min interval count)
 				new_reservation_time_span: 4 //In hours - let's change this later to intervals as well
+			},
+			meta: {
+
 			},
 			filter: {
 		    	arrival_date: $scope.start_date,
@@ -202,60 +121,36 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    	console.log('Reservation room transfer initiated:  ', room.id, reservation.status, prevTime);
 		    };
 
-		    $scope.onDragEnd = function(nextRoom, reservation, start_time_ms) {
-		    	var delta = start_time_ms - reservation.start_date.getTime(),
-		    		newStartTime = new Date(start_time_ms),
-		    		newEndTime = new Date(reservation.end_date.getTime() + delta),
-		    		availability;
+		    $scope.onDragEnd = function(nextRoom, reservation) {
+		    	var availability;
 
-		    	//console.log('New Room for reservation confirmed:  ', nextRoom, reservation, new Date(start_time_ms));
-		    	availability = determineAvailability(nextRoom.reservations, newStartTime, newEndTime, reservation).shift();
+		    	availability = determineAvailability(nextRoom.reservations, reservation).shift();
 
 				if(availability) {
 			    	if(nextRoom.id !== prevRoom.id) {
 			    		reservationRoomTransfer(nextRoom, prevRoom, reservation);
 				    }
 
-				    if(reservation.start_date.getTime() !== start_time_ms &&
-				       start_time_ms >= $scope.start_date.getTime()) {
-						reservation.start_date = newStartTime;
-						reservation.end_date = newEndTime;
-					}
-
 			    	renderGrid();
 			    }
 		    };
 		})();
 
-		/*Left must be passed in milliseconds for accurate time adjustment*/
-		(function() { 
-			var w0;
+	    $scope.onResizeLeftStart = function(room, reservation) {
+	    	console.log('Resize left start', room, reservation);
+	    };
 
-		    $scope.onResizeLeftStart = function(room, reservation, start_time_ms) {
-		    	w0 = start_time_ms;
-		    };
+	    $scope.onResizeLeftEnd = function(room, reservation) {
+	    	console.log('Resize left end', room, reservation);    	
+	    };
 
-		    $scope.onResizeLeftEnd = function(room, reservation, start_time_ms) {
-		    	var delta = start_time_ms - w0,
-		    		arrival_time = new Date(start_time_ms);
-		    	
-		    	 updateStartTimeOffsetNewReservations(delta);
-		    };
-	    })();
+	    $scope.onResizeRightStart = function(room, reservation) {
+	    	console.log('Resize right start', room, reservation);
+	    };
 
-		(function() {
-			var w0;
-
-		    $scope.onResizeRightStart = function(room, reservation, end_time_ms) {
-		    	w0 = end_time_ms;
-		    };
-
-		    $scope.onResizeRightEnd = function(room, reservation, end_time_ms) {
-		    	var delta = end_time_ms - w0;
-
-		    	updateEndTimeOffsetNewReservations(delta);
-		    };
-		})();
+	    $scope.onResizeRightEnd = function(room, reservation) {
+	    	console.log('Resize right end', room, reservation);	    	
+	    };
 
 	    $scope.onScrollLoadTriggerRight = function(component, data, event) {
 
@@ -270,20 +165,9 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	    	row_item_data.selected = selected;
 
-	    	/*Clear selections array, and repopulate*/
-	    	$scope.selections = [];
-
-	    	$scope.data.forEach(function(room, idx) {
-	    		if(_.isArray(room.reservations)) {
-	    			room.reservations.forEach(function(reservation) {
-	    				if($scope.isSelected(reservation)) {
-	    					reservation.room_id = room.id;
-
-	    					$scope.selections.push(reservation);
-	    				}
-	    			});
-	    		}
-	    	});
+	    	if($scope.isSelected(row_item_data)) {
+	    		$scope.selectedReservations.push(reservation);
+	    	}
 
 	    	switch(command_message) {
 	    		case 'resize': 
@@ -330,6 +214,16 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	})();
 
 	/*WATCHERS*/
+	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
+		if(newValue > oldValue) {
+			ngDialog.open({
+				template: 'assets/partials/diary/rvDiaryConfirmation.html',
+				controller: 'RVDiaryConfirmation',
+				scope: $scope
+			});
+		} 
+	});
+
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var props = $scope.gridProps,
 			display = props.display;
@@ -383,30 +277,6 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	/*--------------------------------------------------*/
 	/*END INITIALIZATION METHOD IN PROTECTED SCOPE*/
 	/*--------------------------------------------------*/
-
-	function updateStartTimeOffsetNewReservations(newArrivalTimeDelta) {
-		var hop = Object.prototype.hasOwnProperty;
-
-		$scope.data.forEach(function(item) {
-			item.reservations.forEach(function(res) {
-				if(hop.call(res, 'temporary')) {
-					res.start_date = new Date(res.start_date.getTime() + newArrivalTimeDelta);
-				}
-			});
-		});
-	}
-
-	function updateEndTimeOffsetNewReservations(newDepartureTimeDelta) {
-		var hop = Object.prototype.hasOwnProperty;
-
-		$scope.data.forEach(function(item) {
-			item.reservations.forEach(function(res) {
-				if(hop.call(res, 'temporary')) {
-					res.end_date = new Date(res.end_date.getTime() + newDepartureTimeDelta);
-				}
-			});
-		});
-	}
 
 	function renderGrid(params) {
 		var args = params || {};
@@ -474,27 +344,26 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		});
 	}
 
-	function determineAvailability(reservations, start_date, end_date, orig_reservation) {
+	function determineAvailability(reservations, orig_reservation) {
 		var range_validated = true, conflicting_reservation,
 			maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int / $scope.gridProps.display.px_per_ms;
 
-		if(_.isArray(reservations)) {
+		if(_.isArray(reservations) && _.isObject(orig_reservation) || _.isUndefined(orig_reservation)) {
 			reservations.forEach(function(reservation, idx) {
 				var res_end_date = new Date(reservation.end_date.getTime() + maintenance_span),
-					new_end_date = new Date(end_date.getTime() + maintenance_span);
+					new_end_date = new Date(orig_reservation.end_date.getTime() + maintenance_span);
 
-				if(_.isObject(orig_reservation) && orig_reservation !== reservation || _.isUndefined(orig_reservation)) {
-					if((start_date > reservation.start_date && start_date < res_end_date) ||
-					   (reservation.start_date > start_date && res_end_date < new_end_date) ||
-					   (start_date > reservation.start_date && new_end_date < res_end_date) ||
+					if((orig_reservation.start_date > reservation.start_date && orig_reservation.start_date < res_end_date) ||
+					   (reservation.start_date > orig_reservation.start_date && res_end_date < new_end_date) ||
+					   (orig_reservation.start_date > reservation.start_date && new_end_date < res_end_date) ||
 					   (new_end_date > reservation.start_date && new_end_date < res_end_date)) {
 
 					   	conflicting_reservation = reservation;
 						range_validated = false;
+
 						return;
 					}
-				}
-			});
+				});
 		}
 
 		return [range_validated, conflicting_reservation];
@@ -531,10 +400,11 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 			};
 
 		data.forEach(function(item, idx) {
-			var availability = determineAvailability(item.reservations, start, end);
+			var res = reservation(item, ++start_id, start, end),
+				availability = determineAvailability(item.reservations, res).shift();
 
 			if(availability[0]) { 
-				item.reservations.push(reservation(item, ++start_id, start, end));
+				item.reservations.push(res);
 				updateRoomStatus(item, ''); //set room to available
 			} else {
 				updateRoomStatus(item, availability[1].status);

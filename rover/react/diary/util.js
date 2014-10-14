@@ -1,3 +1,8 @@
+var DiaryLib = window.DiaryLib || Object.create(null);
+
+DiaryLib.Models = DiaryLib.Models || Object.create(null);
+DiaryLib.Util = DiaryLib.Util || Object.create(null);
+
 function Model(params) {
 	var defDec = function(val) {
 		return {

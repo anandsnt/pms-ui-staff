@@ -1,30 +1,4 @@
 var Grid = React.createClass({
-	__onDragStart: function(room, reservation) {
-		var self = this;
-
-		this.setState({
-			currentDragItem: reservation
-		}, function() {
-			self.props.angular_evt.onDragStart(room, reservation);
-		});
-	},
-	__onDragStop: function(e, left) {
-		var rowHeight 	= this.props.display.row_height + this.props.display.row_height_margin,
-			viewport 	= this.props.viewport.element(),
-			curPos 		= viewport[0].scrollTop + e.pageY - viewport.offset().top,
-			rowNumber 	= Math.floor(curPos / rowHeight),
-			room 		= this.props.data[rowNumber],
-			reservation = this.state.currentDragItem,
-			self 		= this;
-
-		this.setState({
-			currentDragItem: undefined
-		}, function() {
-			self.props.angular_evt.onDragEnd(room, reservation, (left / this.props.display.px_per_ms) + this.props.display.x_origin);
-		});
-	},
-	_scrollFn: undefined,
-	_scroll: undefined,
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
 
@@ -34,16 +8,13 @@ var Grid = React.createClass({
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: true, 
-			tap: false, 
-			click: false,
-			preventDefaultException: { className: /(^|\s)occupancy-block(\s|$)/ },
 			bounce: false,
 			momentum: false,
-			mouseWheel: 'scroll',
-			preventDefault: true 
+			preventDefaultException: { className: /(^|\s)occupancy-block(\s|$)/ },
+			mouseWheel: 'scroll'
 		});
 
-		iscroll.grid._scrollFn = this.props.__onGridScroll.bind(null, this);
+		iscroll.grid._scrollFn = this.props.__onGridScroll.bind(null, iscroll.grid);
 
 		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
 
@@ -81,9 +52,8 @@ var Grid = React.createClass({
 						angular_evt: 		self.props.angular_evt,
 						currentDragItem: 	self.props.currentDragItem,
 						currentResizeItem:  self.props.currentResizeItem,
-						__onDragStart: 		self.__onDragStart,
-						__onDragStop: 		self.__onDragStop//,
-						//__dispatchResizeCommand: self.__dispatchResizeCommand				
+						__onDragStart: 		self.props.__onDragStart,
+						__onDragStop: 		self.props.__onDragStop			
 					});
 				})
 		));

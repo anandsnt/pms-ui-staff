@@ -4,7 +4,7 @@ var Rooms = React.createClass({
 			id: 'room-wrapper',
 			className: 'wrapper',
 			style: {
-				height: this.props.display.height
+				height: this.props.display.height + 'px'
 			}
 		},
 		_.map(this.props.data, function(room) {

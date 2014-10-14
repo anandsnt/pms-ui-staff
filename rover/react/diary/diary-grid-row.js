@@ -33,8 +33,6 @@ var GridRow = React.createClass({
 				__onDragStart:  self.props.__onDragStart,
 				__onDragStop: 	self.props.__onDragStop,
 				currentResizeItem: self.props.currentResizeItem
-				//__onMouseUp: 	self.props.__onDrop,
-				//__dispatchResizeCommand: self.__dispatchResizeCommand
 			});
 		}),
 		hourly_divs);
