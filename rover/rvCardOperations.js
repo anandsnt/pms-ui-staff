@@ -74,7 +74,10 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
-			alert("alling cordova service");
+			alert("calling cordova service");
+			alert("----service------"+service+"===action======"+action+"=====arguments========"+arguments);
+			alert(action);
+			alert(action);
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
