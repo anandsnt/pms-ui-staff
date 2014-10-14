@@ -362,6 +362,22 @@
 				</h3>
 			</div>
 			<div class="entry">
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'sixpayments'}">
+									<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'sixpayments'}"></span>
+									<input type="radio" ng-model="data.payment_gateway" value="sixpayments" class="change-data">
+									Six Payments Gateway
+									
+								</label>
+
+								<label class="radio" ng-class="{checked:checkoutData.checkout_staff_alert_option == 'not_success'}">
+									<span class="icon-form icon-radio " ng-class="{checked:checkoutData.checkout_staff_alert_option == 'not_success'}"></span>
+									<input type="radio" ng-model="checkoutData.checkout_staff_alert_option" value="MLI" class="change-data">
+									MLI Payement Gateway
+									
+								</label>
+			</div>
+
+			<div class="entry">
 				<label for="mli-payment-gateway-url">
 					MLI payment gateway url
 				</label>
