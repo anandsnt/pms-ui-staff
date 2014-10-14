@@ -503,6 +503,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     	 $scope.initiateCardReader();
     }, 2000);
     $scope.$on("OBSERVE_SWIPE", function(){
+    	alert("observe swipe OBSERVE_SWIPE");
     	sntapp.cardReader.startReader(options);
     });
    

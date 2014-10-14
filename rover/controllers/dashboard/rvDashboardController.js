@@ -118,12 +118,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
    };
 
 
-    $(document).ready(function(){
-    	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-    		$scope.$emit("OBSERVE_SWIPE");
-    	}
-    }) ;
-
+   
 }]);
 
     
