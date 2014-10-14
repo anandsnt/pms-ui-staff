@@ -72,7 +72,8 @@
                         <div class="current {{departureClass[room.reservation_status]}}">
                             <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                            <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
+                            <span class="guest {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && !!room.checkout_time">DUE OUT</span>
+                            <span class="guest {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && room.checkout_time">{{ room.checkout_time}}</span>
                             <span ng-show="room.reservation_status == 'Departed'" translate>OUT</span>
                         </div>
 
@@ -132,7 +133,8 @@
                             <div class="current {{departureClass[room.reservation_status]}}">
                                 <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                                <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
+                                <span class="guest {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && !!room.checkout_time">DUE OUT</span>
+                                <span class="guest {{departureClass[room.reservation_status]}}" ng-show="room.reservation_status == 'Due out' && room.checkout_time">{{ room.checkout_time}}</span>
                                 <span ng-show="room.reservation_status == 'Departed'" translate>OUT</span>
                             </div>
                             <div class="next {{arrivalClass[room.reservation_status]}}">
