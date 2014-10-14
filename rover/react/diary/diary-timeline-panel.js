@@ -1,32 +1,31 @@
 var TimelinePanel = React.createClass({
-	_scrollFn: undefined,
-	_scroll: undefined,
 	componentDidMount: function() {
-		var self = this;
+		var iscroll = this.props.iscroll;
 
-		this.props.iscroll.timeline = this._scroll = new IScroll('#diary-timeline', { 
+		iscroll.timeline = new IScroll('#diary-timeline', { 
 			probeType: 2, 
 			scrollbars: false,
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: false, 
 			tap: false, 
-			click: true,
+			click: false,
+			momentum: false,
 			bounce: false,
 			mouseWheel: 'scroll',
 			preventDefault: true
 		});
 
-		this._scrollFn = this.props.__onGridScroll.bind(null, this);
+		iscroll.timeline._scrollFn = this.props.__onGridScroll.bind(null, this);
 
-		this._scroll.on('scroll', this._scrollFn);
+		iscroll.timeline.on('scroll', iscroll.timeline._scrollFn);
 
 		setTimeout(function () {
-	        self._scroll.refresh();
-	    }, 100);
+	        iscroll.timeline.refresh();
+	    }.bind(this), 0);
 	},
 	componentWillUnmount: function() {
-		this._scroll.destroy();
+		this.props.iscroll.timeline.destroy();
 	},
 	render: function() {
 		var self = this;

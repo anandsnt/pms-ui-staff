@@ -1,36 +1,33 @@
 var RoomPanel = React.createClass({
-	_scrollFn: undefined,
-	_scroll: undefined,
 	componentDidMount: function() {
-		var self = this;
+		var iscroll = this.props.iscroll;
 
-		this.props.iscroll.rooms = this._scroll = new IScroll('#diary-rooms', { 
+		iscroll.rooms = new IScroll('#diary-rooms', { 
 			probeType: 2, 
 			scrollbars: true,
 			interactiveScrollbars: true,
 			scrollX: false, 
 			scrollY: true, 
 			tap: false, 
-			click: true,
+			click: false,
 			bounce: false,
+			momentum: false,
 			mouseWheel: 'scroll',
 			preventDefault: true 
 		});
 
-		this._scrollFn = this.props.__onGridScroll.bind(null, this);
+		iscroll.rooms._scrollFn = this.props.__onGridScroll.bind(null, this);
 
-		this._scroll.on('scroll', this._scrollFn);
+		iscroll.rooms.on('scroll', iscroll.rooms._scrollFn);
 
 		setTimeout(function () {
-	        self._scroll.refresh();
-	    }, 100);
+	        iscroll.rooms.refresh();
+	    }, 0);
 	},
 	componentWillUnmount: function() {
-		this._scroll.destroy();
+		this.props.iscroll.rooms.destroy();
 	},
 	render: function() {
-		var self = this;
-
 		return React.DOM.div({
 			id: 'diary-rooms',
 			className: 'diary-rooms scrollable'

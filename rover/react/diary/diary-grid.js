@@ -26,32 +26,33 @@ var Grid = React.createClass({
 	_scrollFn: undefined,
 	_scroll: undefined,
 	componentDidMount: function() {
-		var self = this;
+		var iscroll = this.props.iscroll;
 
-		this.props.iscroll.grid = this._scroll = new IScroll($('.diary-grid .wrapper')[0], { 
+		iscroll.grid = new IScroll($('.diary-grid .wrapper')[0], { 
 			probeType: 2, 
-			freeScroll: true, 
 			scrollbars: true,
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: true, 
 			tap: false, 
-			click: true,
+			click: false,
+			preventDefaultException: { className: /(^|\s)occupancy-block(\s|$)/ },
 			bounce: false,
+			momentum: false,
 			mouseWheel: 'scroll',
 			preventDefault: true 
 		});
 
-		this._scrollFn = this.props.__onGridScroll.bind(null, this);
+		iscroll.grid._scrollFn = this.props.__onGridScroll.bind(null, this);
 
-		this._scroll.on('scroll', this._scrollFn);
+		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
 
 		setTimeout(function () {
-	        self._scroll.refresh();
-	    }, 100);
+	        iscroll.grid.refresh();
+	    }.bind(this), 0);
 	},
 	componentWillUnmount: function() {
-		this._scroll.destroy();
+		this.props.iscroll.grid.destroy();
 	},
 	render: function() {
 		var self = this;

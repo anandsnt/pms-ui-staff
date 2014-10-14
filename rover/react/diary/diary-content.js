@@ -1,3 +1,5 @@
+React.initializeTouchEvents(true);
+
 var DiaryContent = React.createClass({
 	_recalculateGridSize: function() {
 		var display = this.state.display,
@@ -17,13 +19,15 @@ var DiaryContent = React.createClass({
 		});
 	},
 	__onGridScroll: function(component) {
-		var node = component.getDOMNode(), //Get .wrapper > .grid
-			el = $(node.children[0]),
-			parent = node.offsetParent;
+		try{
+			var el = $(component.getDOMNode().children[0]);
 
-		if(el) {
-			this.state.iscroll.timeline.scrollTo(this.state.iscroll.grid.x, 0);
-			this.state.iscroll.rooms.scrollTo(0, -this.state.iscroll.grid.y);
+			if(el) {
+				this.state.iscroll.timeline.scrollTo(this.state.iscroll.grid.x, 0);
+				this.state.iscroll.rooms.scrollTo(0, -this.state.iscroll.grid.y);
+			}
+		} catch(e) {
+			console.log(e);
 		}
 	},
 	__onResizeCommand: function(row_item_data) {
@@ -48,12 +52,28 @@ var DiaryContent = React.createClass({
 		});
 	},
 	componentDidMount: function() {
+		var self = this;
+
     	$(window).on('resize', _.debounce(function(e) {
     		this._recalculateGridSize();
     	}.bind(this), 50));
   	},
   	componentWillUnmount: function() {
   		$(window).off('resize');
+  	},
+  	shouldComponentUpdate: function(nextProps, nextState) {
+  		var self = this;
+    	for(var k in this.state.iscroll) {
+    		if(Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
+    			if(this.state.iscroll[k] instanceof IScroll) {
+    				setTimeout(function () {
+    					self.state.iscroll[k].refresh(); 
+    				}, 0);
+    			}
+    		}
+    	}
+
+    	return true;
   	},
 	getInitialState: function() {
 		var props 		= this.props,

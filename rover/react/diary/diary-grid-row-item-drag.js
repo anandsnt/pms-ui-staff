@@ -2,23 +2,12 @@ var GridRowItemDrag = React.createClass({
 	__dbMouseMove: undefined,
 	componentWillMount: function() {
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
-
-		/*if(_.isObject(this.props.iscroll)) {
-			for(var k in this.props.iscroll) {
-				if(Object.prototype.hasOwnProperty.call(this.props.iscroll, k)) {
-					if(this.props.iscroll[k] instanceof IScroll) {
-						this.props.iscroll[k].disable();
-					}
-				}
-			}
-		}*/
 	},
 	__onMouseDown: function(e) {
 		var page_offset, el;
 
 		if(e.button === 0) {
 			e.stopPropagation();
-			e.preventDefault();
 
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
@@ -37,18 +26,19 @@ var GridRowItemDrag = React.createClass({
 				offset_y: el.offset().top,
 				element_x: page_offset.left,
 				element_y: page_offset.top
+			},
+			function() {
+				this.props.iscroll.grid.disable();
 			});
 		}
 	},
 	__onMouseMove: function(e) {
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y - this.state.offset_y, 
-			distance = Math.abs(delta_x) + Math.abs(delta_y),
-			left, 
-			top, 
+			left, top, 
 			margin_top = this.props.display.row_height + this.props.display.row_height_margin;
 
-		if(!this.state.dragging && distance > 10) {
+		if(!this.state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
 			this.setState({
 				dragging: true
 			}, function() {
@@ -74,14 +64,15 @@ var GridRowItemDrag = React.createClass({
 				left: this.state.left,
 				top: this.state.top
 			}, function() {
+				this.props.iscroll.grid.enable();
 				this.props.__onDragStop(e, this.state.left);
 			});
 		} else if(this.state.mouse_down) {
 			this.setState({
 				selected: !this.state.selected
 			}, function() {
-				this.props.angular_evt.onSelect(this.props.row_data, this.props.data, false, 'resize');
-				//this.props.__dispatchResizeCommand(this.props.row_data, this.props.data);
+				this.props.iscroll.grid.enable();
+				this.props.angular_evt.onSelect(this.props.row_data, this.props.data, false, 'resize');		
 			});
 		}
 	},
@@ -102,8 +93,7 @@ var GridRowItemDrag = React.createClass({
 			style = { 
 				position: 'fixed',
 				left: this.state.left,
-				top: this.state.top //,
-				//height: this.props.display.row_height
+				top: this.state.top
 			}; 
 			className = 'occupancy-block dragstate';
 		} else if(this.state.selected) {
