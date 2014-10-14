@@ -3,7 +3,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 	'$q',
 	'$window',
 	'BaseWebSrvV2',
-	function($http, $q, $window, BaseWebSrvV2) {
+	'$rootScope',
+	function($http, $q, $window, BaseWebSrvV2, $rootScope) {
 
 		this.roomList = {};
 		
@@ -51,6 +52,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
 					    	var room = this.roomList.rooms[i];
 
+					    	if ( i % 10 === 0 ) {
+					    		room.is_queued = true;
+					    	};
+
 					    	// lets set this so that we can avoid
 					    	room.display_room = true;
 
@@ -66,6 +71,13 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 					    	// set the leaveStatusClass or enterStatusClass value
 					    	that.setReservationStatusClass(room);
+
+					    	room.timeOrIn = calculateTimeOrIn(room);
+					    	room.timeOrOut = calculateTimeOrOut(room);
+
+					    	room.assigned_staff = calculateAssignedStaff(room);
+
+					    	room.ooOsTitle = calculateOoOsTitle(room);
 					    }
 
 					    deferred.resolve(this.roomList);
@@ -342,6 +354,63 @@ sntRover.service('RVHkRoomStatusSrv', [
 			matchedRoom.hk_status.description = newDescription;
 			matchedRoom.description           = newDescription;
 			matchedRoom.roomStatusClass       = this.setRoomStatusClass(matchedRoom);
+		};
+
+		// set the arrival time or 'IN' text for arrivied
+		var calculateTimeOrIn = function(room) {
+            if ( room.room_reservation_status.indexOf('Arrived') >= 0 && !(room.room_reservation_status.indexOf('Day use') >= 0) ) {
+            	return 'IN'
+            }
+
+            if ( room.room_reservation_status.indexOf('Arrival') >= 0 ) {
+            	return room.arrival_time;
+            }
+
+            return '';
+		};
+
+		// set the departure/latecheckout time or 'OUT' for departed
+		var calculateTimeOrOut = function(room) {
+            if ( room.room_reservation_status.indexOf('Departed') >= 0 ) {
+            	return 'OUT'
+            } else if ( room.room_reservation_status.indexOf('Due out') >= 0 ) {
+            	return room.is_late_checkout ? room.late_checkout_time : room.departure_time;
+            }
+
+            return '';
+		};
+
+		// calculate the assigned maid name and its class
+		var calculateAssignedStaff = function(room) {
+			if ( !$rootScope.isStandAlone ) {
+				return false;
+			};
+
+			if ( room.assignee_maid ) {
+				return {
+					'name': angular.copy(room.assignee_maid),
+					'class': 'assigned'
+				}
+			} else {
+				return {
+					'name': 'Unassigned',
+					'class': 'unassigned'
+				}
+			}
+		};
+
+		// calculte the OO/OS title
+		// in future the internal check may become common - to check only 'room_reservation_hk_status'
+		var calculateOoOsTitle = function(room) {
+			if ( !$rootScope.isStandAlone ) {
+				return room.room_reservation_hk_status == 2 ? 'Out of Service' :
+						room.room_reservation_hk_status == 3 ? 'Out of Order' :
+						false;
+			} else {
+				return room.hk_status.value == 'OS' ? 'Out of Service' :
+						room.hk_status.value == 'OO' ? 'Out of Order' :
+						false;
+			}
 		};
 	}
 ]);
