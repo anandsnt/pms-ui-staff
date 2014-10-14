@@ -474,13 +474,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$scope.numberOfCordovaCalls = 0;
 
 	$scope.initiateCardReader = function(){
-    	
+    	alert("initiateCardReader");
       	if (sntapp.cardSwipeDebug === true) {
+      		
         	sntapp.cardReader.startReaderDebug(options);
         	return;
       	}
       	
       	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      		alert("cordoval Loaded");
  	    	sntapp.cardReader.startReader(options);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
@@ -499,6 +501,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Time out is to call set Browser
      */
     setTimeout(function(){
+    	
     	 $scope.initiateCardReader();
     }, 2000);
    
