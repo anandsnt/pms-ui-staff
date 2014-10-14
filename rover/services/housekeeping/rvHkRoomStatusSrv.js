@@ -75,8 +75,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    }
 
 					    deferred.resolve(this.roomList);
-					}else{
-					}
+					}else{ }
 					
 				}.bind(this))
 				.error(function(response, status) {
@@ -396,7 +395,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// calculte the OO/OS title
 		// in future the internal check may become common - to check only 'room_reservation_hk_status'
 		var calculateOoOsTitle = function(room) {
-			if ( !$rootScope.isStandAlone ) {
+			if ( $rootScope.isStandAlone ) {
 				return room.room_reservation_hk_status == 2 ? 'Out of Service' :
 						room.room_reservation_hk_status == 3 ? 'Out of Order' :
 						false;

@@ -323,20 +323,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
-		// CICO-10101 #5 requirement: when chosing 'vacant' also show 'queued' since its also vacant
-		$scope.checkQueuedAlso = function() {
-			if ( !!$scope.currentFilters.vacant ) {
-				$scope.currentFilters.queued = true;
-			};
-		};
-		$scope.keepCheckedIfVacant = function() {
-			if ( !$scope.currentFilters.queued && !!$scope.currentFilters.vacant ) {
-				$timeout(function() {
-					$scope.currentFilters.queued = true;
-				}, 10);
-			};
-		};
-
 
 		/**
 		*  A method which checks the filter option status and see if the room should be displayed
