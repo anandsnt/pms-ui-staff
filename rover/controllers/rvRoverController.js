@@ -474,7 +474,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$scope.numberOfCordovaCalls = 0;
 
 	$scope.initiateCardReader = function(){
-    	alert("initiateCardReader");
+    	
       	if (sntapp.cardSwipeDebug === true) {
       		
         	sntapp.cardReader.startReaderDebug(options);
