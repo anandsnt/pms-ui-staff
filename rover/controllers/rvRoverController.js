@@ -482,7 +482,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       	}
       	
       	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-      		alert("cordoval Loaded");
  	    	sntapp.cardReader.startReader(options);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
@@ -501,9 +500,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Time out is to call set Browser
      */
     setTimeout(function(){
-    	
     	 $scope.initiateCardReader();
     }, 2000);
+    $scope.$on("OBSERVE_SWIPE", function(){
+    	alert("observe swipe OBSERVE_SWIPE");
+    	sntapp.cardReader.startReader(options);
+    });
    
     /*
      * To show add new payment modal

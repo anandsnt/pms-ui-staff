@@ -74,15 +74,16 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
-			alert("calling cordova service");
-			alert("----service------"+service+"===action======"+action+"=====arguments========"+arguments);
-			alert(action);
-			alert(action);
+			//alert(cordova);
+			//alert(JSON.stringify(cordova));
+			//alert("----service------"+service+"===action======"+action+"=====arguments========"+arguments);
+			
+			
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
-							alert("successCallBackParameters");
+							//alert("successCallBackParameters");
 							if(successCallBackParameters !== null){
 								//alert("cordoveexec---DATA----"+JSON.stringify(data));
 								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
@@ -99,7 +100,7 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
-							alert("failureCallBackParameters");
+							//alert("failureCallBackParameters");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}
@@ -132,7 +133,6 @@ var CardOperation = function(){
 	
 	//function for get single swipe
 	this.listenForSingleSwipe = function(options){	
-		alert("listen for single swipe");
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
