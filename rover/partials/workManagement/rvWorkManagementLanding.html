@@ -115,7 +115,7 @@
         <div class="dashboard-block data">
             <ul>
                 <li>{{'DEP_TO_CLEAN' | translate}}<span class="red">{{workStats.departures.clean}}</span></li>
-                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="red">{{workStats.departures.total_hours | number : 2}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="red">{{ workStats.departures.total_hours}}</span></li>
                 <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="red">{{workStats.departures.total_maids_required}}</span></li>
                 <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="red">{{workStats.departures.total_rooms_assigned}}</span></li>
                 <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="red">{{workStats.departures.total_rooms_completed}}</span></li>
@@ -124,7 +124,7 @@
         <div class="dashboard-block data">
             <ul>
                 <li>Stayovers to clean<span class="orange">{{workStats.stayovers.clean}}</span></li>
-                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="orange">{{workStats.stayovers.total_hours | number : 2}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="orange">{{ workStats.stayovers.total_hours}}</span></li>
                 <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="orange">{{workStats.stayovers.total_maids_required}}</span></li>
                 <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_assigned}}</span></li>
                 <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_completed}}</span></li>
