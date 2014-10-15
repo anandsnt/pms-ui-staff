@@ -16,6 +16,8 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 
 		$scope.floors = floors;
 
+		// Arrived / Day Use / Due Out / Departed,Due out / Arrival,Departed / Arrival,Arrived / Departed,Due out / Departed,Arrived,Stayover,Departed,Not Defined
+
 		$scope.reservationStatus = {
 			"Due out": "check-out",
 			"Departed": "check-out",
@@ -23,7 +25,14 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Not Reserved": "no-show",
 			"Arrival": "check-in",
 			"Arrived": "check-in",
-			"Not Defined": "no-show"
+			"Not Defined": "no-show",
+			"Day Use": "check-out",
+			"Due out / Arrival": "check-out",
+			"Departed / Arrival": "check-out",
+			"Arrived / Departed": "check-in",
+			"Due out / Departed": "check-out",
+			"Arrived / Day use / Due out": "check-in",
+			"Arrived / Day use / Due out / Departed": "check-in"
 		}
 
 		$scope.arrivalClass = {
@@ -33,7 +42,14 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Departed": "no-show",
 			"Stayover": "no-show",
 			"Not Reserved": "no-show",
-			"Not Defined": "no-show"
+			"Not Defined": "no-show",
+			"Day Use": "check-out",
+			"Due out / Arrival": "check-in",
+			"Departed / Arrival": "check-in",
+			"Arrived / Departed": "check-in",
+			"Due out / Departed": "check-out",
+			"Arrived / Day use / Due out": "no-show",
+			"Arrived / Day use / Due out / Departed": "check-out"
 		}
 
 		$scope.departureClass = {
@@ -43,7 +59,14 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Departed": "check-out",
 			"Stayover": "inhouse",
 			"Not Reserved": "no-show",
-			"Not Defined": "no-show"
+			"Not Defined": "no-show",
+			"Day Use": "check-out",
+			"Due out / Arrival": "check-out",
+			"Departed / Arrival": "check-out",
+			"Arrived / Departed": "check-out",
+			"Due out / Departed": "check-out",
+			"Arrived / Day use / Due out": "check-out",
+			"Arrived / Day use / Due out / Departed": "check-out"
 		}
 
 		$scope.printWorkSheet = function() {
