@@ -126,5 +126,14 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 				$scope.openTab = tab;
 			};
 		};
+
+		$scope.updateRoomDetails = function(prop, value) {
+			if ( $scope.roomDetails.hasOwnProperty(prop) ) {
+				$scope.roomDetails[prop] = value;
+				$scope.getHeaderColor();
+			} else {
+				console.info( 'RVHkRoomDetailsCtrl: No prop "' + prop + '" found on $scope.roomDetails' );
+			}
+		};
 	}
 ]);

@@ -11,6 +11,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		// keep ref to room details in local scope
+		var updateRoomDetails = $scope.$parent.updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		// default cleaning status
@@ -70,7 +71,8 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				RVHkRoomStatusSrv.updateHKStatus({
 					id: $scope.roomDetails.id,
 					current_hk_status: $scope.roomDetails.current_hk_status
-				})
+				});
+				updateRoomDetails( 'current_hk_status' , $scope.roomDetails.current_hk_status );
 			}
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
