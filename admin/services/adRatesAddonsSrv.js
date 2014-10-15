@@ -216,7 +216,7 @@ admin.service('ADRatesAddonsSrv', [
 
 		this.importPackages = function () {
             var deferred = $q.defer();
-            //var url = "/api/rates/import";
+            var url = "/api/addons/import";
             ADBaseWebSrvV2.postJSON(url).then(function (data) {
                 deferred.resolve(data.results);
             }, function (data) {
