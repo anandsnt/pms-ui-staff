@@ -361,63 +361,73 @@
 					MLI Payement Gateway Settings
 				</h3>
 			</div>
-			<div class="entry">
+			<div class="entry ">
 				<label class="radio" ng-class="{checked:data.payment_gateway == 'sixpayments'}">
-									<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'sixpayments'}"></span>
-									<input type="radio" ng-model="data.payment_gateway" value="sixpayments" class="change-data">
-									Six Payments Gateway
-									
-								</label>
+					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'sixpayments'}"></span>
+					<input type="radio" ng-model="data.payment_gateway" value="sixpayments" class="change-data">
+					Six Payments Gateway
+				</label>
 
-								<label class="radio" ng-class="{checked:checkoutData.checkout_staff_alert_option == 'not_success'}">
-									<span class="icon-form icon-radio " ng-class="{checked:checkoutData.checkout_staff_alert_option == 'not_success'}"></span>
-									<input type="radio" ng-model="checkoutData.checkout_staff_alert_option" value="MLI" class="change-data">
-									MLI Payement Gateway
-									
-								</label>
+				<label class="radio" ng-class="{checked:data.payment_gateway == 'MLI'}">
+					<span class="icon-form icon-radio " ng-class="{checked:data.payment_gateway == 'MLI'}"></span>
+					<input type="radio" ng-model="data.payment_gateway" value="MLI" class="change-data">
+					MLI Payement Gateway
+				</label>
 			</div>
-
-			<div class="entry">
+			<div class="entry"></div>
+			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
 				<label for="mli-payment-gateway-url">
 					MLI payment gateway url
 				</label>
 				<input type="text" ng-model="data.mli_payment_gateway_url" value="{{data.mli_payment_gateway_url}}" placeholder="Enter MLI payment gateway url">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
 				<label for="mli-merchant-id">
 					MLI Merchant ID
 				</label>
 				<input type="text" ng-model="data.mli_merchant_id" value="{{data.mli_merchant_id}}" placeholder="Enter MLI Merchant ID">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
 				<label for=" mli-api-version">
 					MLI api version
 				</label>
 				<input type="text" ng-model="data.mli_api_version" value="{{data.mli_api_version}}" placeholder="Enter MLI api version">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
 				<label for="mli-api-key">
 					MLI api key
 				</label>
 				<input type="password" ng-model="data.mli_api_key" value="{{data.mli_api_key}}" placeholder="Enter MLI api key">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-show="data.payment_gateway == 'MLI'">
 				<label for="mli-site-code">
 					MLI site code
 				</label>
 				<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI api key">
 			</div>
 
-			<div class="entry full-width">
+			<div class="entry full-width" ng-show="data.payment_gateway == 'MLI'">
 				<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">
 					TEST MLI PAYMENT GATEWAY
 				</button>
 			</div>
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="mli-payment-gateway-url">
+					SIX payment merchant ID
+				</label>
+				<input type="text" ng-model="data.mli_payment_gateway_url" value="{{data.mli_payment_gateway_url}}" placeholder="Enter MLI payment gateway url">
+			</div>
 
+			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
+				<label for="mli-merchant-id">
+					SIX payment validation code
+				</label>
+				<input type="text" ng-model="data.mli_merchant_id" value="{{data.mli_merchant_id}}" placeholder="Enter MLI Merchant ID">
+			</div>
 		</fieldset>
 
 		<div class="actions float">
