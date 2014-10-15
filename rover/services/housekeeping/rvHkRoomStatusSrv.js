@@ -54,7 +54,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    	room.display_room = true;
 
 					    	// reduce scope search
-					    	room.description = room.hk_status.description
+					    	room.description = room.hk_status.description;
 					    	
 					    	room.is_occupied = room.is_occupied == 'true' ? true : false;
 					    	room.is_vip = room.is_vip == 'true' ? true : false;
