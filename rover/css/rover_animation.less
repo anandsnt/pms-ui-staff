@@ -4,6 +4,15 @@
 * DO NOT change the numeric values
 */
 
+body {
+  /**/
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
 /* ui-view animation hook up class for root-view */
 .root-view {
   position: absolute;
@@ -13,14 +22,9 @@
   right: 0;
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
 }
+
 .root-view.ng-enter {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  /**/
-  #fade > .in;
+  #zoom > #in;
 }
 
 .ui-router-wrapper {
