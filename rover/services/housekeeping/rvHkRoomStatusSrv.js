@@ -50,10 +50,6 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
 					    	var room = this.roomList.rooms[i];
 
-					    	if ( i % 10 === 0 ) {
-					    		room.is_queued = true;
-					    	};
-
 					    	// lets set this so that we can avoid
 					    	room.display_room = true;
 
@@ -79,8 +75,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    }
 
 					    deferred.resolve(this.roomList);
-					}else{
-					}
+					}else{ }
 					
 				}.bind(this))
 				.error(function(response, status) {
