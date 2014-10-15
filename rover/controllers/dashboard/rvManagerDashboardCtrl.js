@@ -95,12 +95,7 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
       $scope.refreshScroller('dashboard_scroller');
    }, 500);
    
-    $(document).ready(function(){
-    	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-    		alert("observe swipe");
-    		$scope.$emit("OBSERVE_SWIPE");
-    	}
-    }) ;
+
 
 
 }]);

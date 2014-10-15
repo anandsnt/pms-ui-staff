@@ -308,14 +308,13 @@
 
 /* Rover Angular animations			==============================*/
 	@uiViewDuration: 1s;
-	@uiViewEnterTiming: linear;
-	@uiViewLeaveTiming: linear;
+	@uiViewTimingFx: linear;
 	@uiViewFillMode: both;
 	@uiViewDelay: 0s;
 
 	#move {
 		#ui-view {
-			.enter(@animation: uiViewSlideIn, @duration: @uiViewDuration, @easing: @uiViewEnterTiming, @fill-mode: @uiViewFillMode, @delay: @uiViewDelay) {
+			.enter(@animation: uiViewSlideIn, @duration: @uiViewDuration, @easing: @uiViewTimingFx, @fill-mode: @uiViewFillMode, @delay: @uiViewDelay) {
 				-webkit-animation: @animation @duration @easing @fill-mode @delay;
 				-moz-animation: @animation @duration @easing @fill-mode @delay;
 				-ms-animation: @animation @duration @easing @fill-mode @delay;
@@ -323,7 +322,7 @@
 				animation: @animation @duration @easing @fill-mode @delay;
 			}
 
-			.leave(@animation: uiViewSlideOut, @duration: @uiViewDuration, @easing: @uiViewLeaveTiming, @fill-mode: @uiViewFillMode) {
+			.leave(@animation: uiViewSlideOut, @duration: @uiViewDuration, @easing: @uiViewTimingFx, @fill-mode: @uiViewFillMode) {
 				-webkit-animation: @animation @duration @easing @fill-mode;
 				-moz-animation: @animation @duration @easing @fill-mode;
 				-ms-animation: @animation @duration @easing @fill-mode;
@@ -331,7 +330,7 @@
 				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.enter-rev(@animation: uiViewSlideInRev, @duration: @uiViewDuration, @easing: @uiViewEnterTiming, @fill-mode: @uiViewFillMode, @delay: @uiViewDelay) {
+			.enter-rev(@animation: uiViewSlideInRev, @duration: @uiViewDuration, @easing: @uiViewTimingFx, @fill-mode: @uiViewFillMode, @delay: @uiViewDelay) {
 				-webkit-animation: @animation @duration @easing @fill-mode @delay;
 				-moz-animation: @animation @duration @easing @fill-mode @delay;
 				-ms-animation: @animation @duration @easing @fill-mode @delay;
@@ -339,7 +338,7 @@
 				animation: @animation @duration @easing @fill-mode @delay;
 			}
 
-			.leave-rev(@animation: uiViewSlideOutRev, @duration: @uiViewDuration, @easing: @uiViewLeaveTiming, @fill-mode: @uiViewFillMode) {
+			.leave-rev(@animation: uiViewSlideOutRev, @duration: @uiViewDuration, @easing: @uiViewTimingFx, @fill-mode: @uiViewFillMode) {
 				-webkit-animation: @animation @duration @easing @fill-mode;
 				-moz-animation: @animation @duration @easing @fill-mode;
 				-ms-animation: @animation @duration @easing @fill-mode;
