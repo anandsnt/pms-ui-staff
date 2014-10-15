@@ -34,13 +34,8 @@
       <strong class="h2">
         {{ roomDetails.current_room_reservation_status }}<span ng-if="roomDetails.hasDept">.</span>
 
-        <!-- <span class="green" ng-if="roomDetails.current_room_reservation_status == 'DUE IN'">Arriving at {{ roomDetails.arrival_time }}.</span> -->
-
-        <span class="red" ng-if="roomDetails.hasDept">
-          Departing 
-          <span ng-if="!!roomDetails.departure.time"> at {{ roomDetails.departure.time }}</span>
-          <span ng-if="!!roomDetails.departure.date"> on {{ roomDetails.departure.date| date : dateFormat }}</span>
-        </span>
+        <!-- spaces removed so that in end UI there should not be a space b/w text and last full stop -->
+        <span class="red" ng-if="roomDetails.hasDept">Departing<span ng-if="!!roomDetails.departure.time"> at {{ roomDetails.departure.time }}</span><span ng-if="!!roomDetails.departure.date"> on {{ roomDetails.departure.date | date : dateFormat }}</span>.</span>
       </strong>
       <figure class="guest-image">
         <img src="{{ roomDetails.avatar_src }}" alt="">
