@@ -417,11 +417,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.noResultsFound++;
 						continue;
 					}
-				};
-				
+				};				
 
 				// filter by status in filter section, HK_STATUS
-				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service']) ) {
+				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected']) ) {
+					console.log('dirty, pickup, clean, inspected');
 					if ( !$scope.currentFilters.dirty && (room.hk_status.value === "DIRTY") ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
@@ -442,20 +442,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$scope.noResultsFound++;
 						continue;
 					}
-					if ( !$scope.currentFilters.out_of_order && (room.hk_status.value === "OO") ) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
-					if ( !$scope.currentFilters.out_of_service && (room.hk_status.value === "OS") ) {
-						room.display_room = false;
-						$scope.noResultsFound++;
-						continue;
-					}
 				}
 
 				// filter by status in filter section, OCCUPANCY_STATUS
 				if ( $scope.isAnyFilterTrue(["vacant","occupied","queued"]) ) {
+					console.log('vacant, occupied, queued');
 					if ( !$scope.currentFilters.queued && room.is_queued ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
@@ -481,6 +472,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// For this status, pass the test, if any condition applies.
 				// NOTE : This must be the last set of checks, as we make display_room = true and mark continue here.
 				if ( $scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse']) ) {
+					console.log('reservation status');
 					if ( $scope.currentFilters.stayover && room.room_reservation_status.indexOf("Stayover") >= 0 ) {
 						room.display_room = true;
 						continue;
@@ -506,6 +498,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						continue;
 					}
 					if ( $scope.currentFilters.dayuse && room.room_reservation_status.indexOf("Day use") >= 0 ) {
+						room.display_room = true;
+						continue;
+					}
+
+					room.display_room = false;
+					$scope.noResultsFound++;
+					continue;
+				}
+
+				// filter by status in filter section, room reservation HK_STATUS
+				// NOTE: This must be the last set of checks, as we make display_room = true and mark continue here.
+				// NOTE: in future the internal check may become common - check only 'room_reservation_hk_status'
+				if( $scope.isAnyFilterTrue(['out_of_order', 'out_of_service']) ) {
+					if ( $scope.currentFilters.out_of_order && (room.hk_status.value === "OO" || (room.hasOwnProperty('room_reservation_hk_status') && room.room_reservation_hk_status == 3)) ) {
+						room.display_room = true;
+						continue;
+					}
+					if ( $scope.currentFilters.out_of_service && (room.hk_status.value === "OS" || (room.hasOwnProperty('room_reservation_hk_status') && room.room_reservation_hk_status == 2)) ) {
 						room.display_room = true;
 						continue;
 					}

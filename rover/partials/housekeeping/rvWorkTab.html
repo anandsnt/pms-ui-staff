@@ -1,15 +1,18 @@
 <div ng-controller="RVHKWorkTabCtrl">
-  <div class="room-actions" ng-class="{ 'dual-select': isStandAlone }">
-    <div class="select">
+  
+  <!-- Hide the first select everywhere -->
+  <!-- ng-class="{ 'dual-select': isStandAlone }" -->
+  <div class="room-actions">
+    <!-- <div class="select">
       <select id="work-type" name="work-type" ng-if="isStandAlone" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList" disabled>
         <option value="">All Work Types</option>
       </select>
-    </div>
+    </div> -->
     <div class="select">
       <!-- standalone PMS -->
       <!-- Disable when cleaning in progrees. -->
       <!-- ng-disabled="isCleaning" -->
-      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="standaloneRoomStatusChanged()" disabled></select>
+      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="standaloneRoomStatusChanged()"></select>
 
       <!-- connected PMS -->
       <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="connectedRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
