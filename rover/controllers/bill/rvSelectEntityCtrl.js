@@ -49,15 +49,17 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
                 "is_new" : true
 			};
 			if(type == 'GUEST'){
-				$scope.selectedEntity.id = $scope.attachedEntities.primary_guest_details[index].id;
-				$scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details[index].name;
+				$scope.selectedEntity.id = $scope.reservationData.reservation_id;
+				$scope.selectedEntity.guest_id = $scope.attachedEntities.primary_guest_details.id;
+				$scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
 				$scope.images = [{
                     "is_primary":true, 
-		            "guest_image": $scope.attachedEntities.primary_guest_details[index].avatar;
+		            "guest_image": $scope.attachedEntities.primary_guest_details.avatar;
 		        }];
 		        $scope.selectedEntity.entity_type = "RESERVATION";
 			}else if(type == 'ACCOMPANY_GUEST'){
-				$scope.selectedEntity.id = $scope.attachedEntities.accompanying_guest_details[index].id;
+				$scope.selectedEntity.id = $scope.reservationData.reservation_id;
+				$scope.selectedEntity.guest_id = $scope.attachedEntities.accompanying_guest_details[index].id;
 				$scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
 				$scope.images = [{
                     "is_primary":false, 

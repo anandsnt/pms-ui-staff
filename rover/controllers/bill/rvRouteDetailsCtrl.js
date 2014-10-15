@@ -350,6 +350,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.errorMessage = errorMessage;
             };
            $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;
+           if($scope.selectedEntity.id == $scope.reservationData.reservation_id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                $scope.selectedEntity.id = $scope.selectedEntity.guest_id;
+           }
            
            /*
                      * If user selects the new bill option,
