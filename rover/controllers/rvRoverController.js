@@ -476,31 +476,26 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$scope.numberOfCordovaCalls = 0;
 
 	$scope.initiateCardReader = function(){
-       
-         if (sntapp.cardSwipeDebug === true) {
-          
-           sntapp.cardReader.startReaderDebug(options);
-           return;
-         }
-         
-         if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-          setTimeout(function(){
-             //$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
-         sntapp.cardReader.startReader(options);
-          }, 2000);
-
-
-       } else {
-           //If cordova not loaded in server, or page is not yet loaded completely
-           //One second delay is set so that call will repeat in 1 sec delay
-          if($scope.numberOfCordovaCalls < 50){
-           setTimeout(function(){
-             $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
-           $scope.initiateCardReader();
-          }, 2000);
-           }
-             } 
-      };
+      	if (sntapp.cardSwipeDebug === true) {
+        	sntapp.cardReader.startReaderDebug(options);
+        	return;
+      	}
+      	
+      	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      		setTimeout(function(){
+ 	    		sntapp.cardReader.startReader(options);
+ 	        }, 2000);
+	    } else {
+	      		//If cordova not loaded in server, or page is not yet loaded completely
+	      		//One second delay is set so that call will repeat in 1 sec delay
+	      	if($scope.numberOfCordovaCalls < 50){
+	      		setTimeout(function(){
+	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
+				    	$scope.initiateCardReader();
+				    }, 2000);
+	      		}
+      	    }	
+    };
     
     /*
      * Start Card reader now!. 
