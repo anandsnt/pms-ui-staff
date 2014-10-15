@@ -1,17 +1,9 @@
 /* 
 * Angular UI-States Animations      
 * ==================================
-* DO NOT change the numeric values
+* 
+DO NOT change the numeric values
 */
-
-body {
-  /**/
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
 
 /* ui-view animation hook up class for root-view */
 .root-view {
@@ -23,10 +15,6 @@ body {
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
 }
 
-.root-view.ng-enter {
-  #zoom > #in;
-}
-
 .ui-router-wrapper {
   position: relative;
   left: 0;
@@ -36,6 +24,12 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+  /**/
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 /* ui-view animation hook up class for main-view */
