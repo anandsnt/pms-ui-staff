@@ -6,7 +6,8 @@ admin.controller('ADRatesAddonsCtrl', [
 	'$filter',
 	'ngTableParams',
 	'ngDialog',
-	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog) {
+	'$timeout',
+	function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout) {
 
 		
 
