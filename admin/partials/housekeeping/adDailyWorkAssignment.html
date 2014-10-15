@@ -11,19 +11,24 @@
 		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in workType">
-					<td width="50%" ng-click="openWorkTypeForm($index)" ng-hide="workTypeClickedElement == $index">
-						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
-						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
-						<em ng-if="item.is_system">{{ 'SYSTEM_DEFINED' | translate }}</em>
+					<td ng-if="!item.is_system" width="50%" ng-click="openWorkTypeForm($index)" ng-hide="workTypeClickedElement == $index">
+						<a>{{ item.name }}</a>
+						<span ng-if="item.is_system" class="bold">{{ item.name }}</span>
+						<em ng-if="item.is_system">&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
-					<td class="delete" ng-if="!item.is_system_defined" ng-hide="workTypeClickedElement == $index">
-						<a ng-if="!item.is_system_defined" ng-click="deleteWorkType()" class="icons icon-delete large-icon delete_item"></a>
+					<td ng-if="item.is_system" width="50%">
+						<span class="bold">{{ item.name }}</span>
+						<em>&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
+					</td>
+
+					<td class="delete" ng-hide="workTypeClickedElement == $index">
+						<a ng-if="!item.is_system" ng-click="deleteWorkType()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
 					<td class="activate" ng-hide="workTypeClickedElement == $index">
-						<div class="entry" >
+						<div class="entry" ng-if="!item.is_system">
 							<label></label>
 							<div class="switch-button single"  ng-class="{ on : item.is_active}" ng-click="toggleActive()">
-								<input type="checkbox" is_system_defined="item.system_defined" value="" name="" id="">
+								<input type="checkbox" is_system="item.system_defined" value="" name="" id="">
 								<span class="switch-icon"></span>
 							</div>
 						</div>
@@ -47,18 +52,20 @@
 		<table id="task-types" class="grid">
 			<tbody>
 				<tr ng-repeat="item in taskList">
-					<td width="50%" ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
-						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
-						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
-						<em ng-if="item.is_system_defined">{{ 'SYSTEM_DEFINED' | translate }}</em>
+					<td width="30%" ng-click="openTaskListForm($index)" ng-hide="taskListClickedElement == $index">
+						<a ng-class="{'bold' : item.is_system}">{{ item.name }}</a>
+						<em ng-if="item.is_system">&nbsp;{{'SYSTEM_DEFINED' | translate }}</em>
+					</td>
+					<td width="30%" ng-hide="taskListClickedElement == $index">
+						<span>{{ item.work_type_name }}</span>
 					</td>
 					<td ng-hide="taskListClickedElement == $index">
 						<span>{{ item.completion_time }}</span>
 					</td>
-					<td class="delete" ng-if="!item.is_system_defined" ng-hide="taskListClickedElement == $index">
-						<a ng-if="!item.is_system_defined" ng-click="deleteTaskListItem()" class="icons icon-delete large-icon delete_item"></a>
+					<td class="delete" ng-hide="taskListClickedElement == $index">
+						<a ng-if="!item.is_system" ng-click="deleteTaskListItem()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
-					<td colspan="3" ng-show="taskListClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></td>
+					<td colspan="4" ng-show="taskListClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddToTaskList.html'"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -69,7 +76,7 @@
 
 
 		<header class="content-title float" style="position:static;margin:0;">
-			<h2 translate>Maid Working Shift</h2>
+			<h2 translate>Employee Working Shifts</h2>
 			<span class="count">({{ workShift.length }})</span>
 			<a id="add-new-button" class="action add ng-scope" ng-click="openWorkShiftForm('new')" translate="">Add Shift</a>
 		</header>
@@ -78,15 +85,15 @@
 			<tbody>
 				<tr ng-repeat="item in workShift">
 					<td width="50%" ng-click="openWorkShiftForm($index)" ng-hide="workShiftClickedElement == $index">
-						<a ng-if="!item.is_system_defined">{{ item.name }}</a>
-						<span ng-if="item.is_system_defined" class="bold">{{ item.name }}</span>
-						<em ng-if="item.is_system_defined">{{ 'SYSTEM_DEFINED' | translate }}</em>
+						<a ng-class="{'bold' : item.is_system}">{{ item.name }}</a>
+						<em ng-if="item.is_system">&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
 					<td ng-hide="workShiftClickedElement == $index">
-						<span>{{ item.time }}</span>
+						<span ng-if="item.time!='00:00'">{{ item.time }}</span>
+						<span ng-if="item.time =='00:00'">HH:MM</span>
 					</td>
-					<td class="delete" ng-if="!item.is_system_defined" ng-hide="workShiftClickedElement == $index">
-						<a ng-if="!item.is_system_defined" ng-click="deleteWorkShift()" class="icons icon-delete large-icon delete_item"></a>
+					<td class="delete" ng-hide="workShiftClickedElement == $index">
+						<a ng-if="!item.is_system" ng-click="deleteWorkShift()" class="icons icon-delete large-icon delete_item"></a>
 					</td>
 					<td colspan="3" ng-show="workShiftClickedElement == $index" ng-include="'/assets/partials/housekeeping/adHKAddWorkShift.html'"></td>
 				</tr>
