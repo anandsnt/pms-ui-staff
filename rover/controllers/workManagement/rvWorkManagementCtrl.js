@@ -8,6 +8,8 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 
 		$scope.setHeading("Work Management");
 
+		$scope.$emit("updateRoverLeftMenu", "workManagement");
+
 		$scope.workTypes = workTypes;
 
 		$scope.employeeList = employees;
