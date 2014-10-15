@@ -1072,6 +1072,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	$scope.reservationData.reservation_id = $scope.reservationBillData.reservation_id;
     	$scope.reservationData.reservation_status = $scope.reservationBillData.reservation_status;
     	$scope.reservationData.user_id = $stateParams.userId;
+    	$scope.reservationData.is_opted_late_checkout = false;
 	    ngDialog.open({
 	        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 	        controller: 'rvBillingInformationPopupCtrl',

@@ -56,7 +56,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 		$scope.isEntitySelected = true;
         $scope.isInitialPage = false;
         if(type === 'ATTACHED_ENTITY' || type === 'ROUTES'){
-        	$scope.selectedEntity = $scope.attachedEntities[index];
+        	$scope.selectedEntity = $scope.routes[index];
             $scope.selectedEntity.is_new = (type == 'ATTACHED_ENTITY')? true: false; 
             $scope.selectedEntity.images[0].guest_image = $scope.selectedEntity.images[0].image;
         }
