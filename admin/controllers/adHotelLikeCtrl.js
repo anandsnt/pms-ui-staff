@@ -230,6 +230,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv', '$l
      $scope.showTextBox = false;
      $scope.showRadio = false;
      $scope.showCheckbox = false;
+     if($scope.likeData.options.length == 0){
+        $scope.likeData.options =[{'name':''}];
+     }
    }
    else{
      $scope.showCheckbox = true;
