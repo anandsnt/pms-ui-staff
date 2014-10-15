@@ -44,7 +44,7 @@
 							</div>
 							<div class="ccv-container">
 								<p class="cabin-number-text lightcontent grey-text">CCV#</p>
-								<input type="password" ng-model="ccv" class = "col-xs-12 textBox shadow"/> 
+								<input type="password" ng-model="ccv" class = "col-xs-12 textBox shadow" ng-class="{'red-border':isCVVEmpty}"/> 
 								<p class="ccv-popup-link" ng-click="showCcvPopup()"><u class="ccv-text grey-text">what is this?</u></p>
 							</div>
 						</div>
