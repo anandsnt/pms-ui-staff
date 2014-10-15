@@ -238,6 +238,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }, {
           title: "MENU_REPORTS",
           action: "rover.reports",
+          menuIndex: "reports",
           iconClass: "icon-reports",
           submenu: []
         }
@@ -278,6 +279,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }, {
         title: "MENU_REPORTS",
         action: "rover.reports",
+        menuIndex: "reports",
         iconClass: "icon-reports",
         submenu: [],
         hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
