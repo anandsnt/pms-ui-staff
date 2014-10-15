@@ -507,15 +507,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Time out is to call set Browser
      */
     setTimeout(function(){
-    	alert("initiate card reader")
     	 $scope.initiateCardReader();
     }, 200);
-   
-    $scope.$on("OBSERVE_SWIPE", function(){
-    	alert("observe swipe OBSERVE_SWIPE");
-    	sntapp.cardReader.startReader(options);
-    });
-   
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
