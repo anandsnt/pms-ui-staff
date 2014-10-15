@@ -500,8 +500,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Time out is to call set Browser
      */
     setTimeout(function(){
+    	alert("initiate card reader")
     	 $scope.initiateCardReader();
-    }, 2000);
+    }, 200000);
     $scope.$on("OBSERVE_SWIPE", function(){
     	alert("observe swipe OBSERVE_SWIPE");
     	sntapp.cardReader.startReader(options);
