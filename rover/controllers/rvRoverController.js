@@ -352,8 +352,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
+      $scope.showSubMenu = false;
     };
     $scope.closeDrawerMenu = function() {
+      $scope.showSubMenu = false;
       $scope.menuOpen = false;
     };
 
