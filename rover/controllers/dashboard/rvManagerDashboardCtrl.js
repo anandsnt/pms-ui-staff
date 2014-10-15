@@ -94,5 +94,17 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
    setTimeout(function(){
       $scope.refreshScroller('dashboard_scroller');
    }, 500);
+   
+    
+    $scope.pageLoaded = function(){
+    	alert("observe swipeddddddddddddd0");
+    	alert(sntapp.browser)
+    	alert(sntapp.cordovaLoaded)
+    	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+    		alert("observe swipe");
+    		$scope.$emit("OBSERVE_SWIPE");
+    	}
+    };
+
 
 }]);

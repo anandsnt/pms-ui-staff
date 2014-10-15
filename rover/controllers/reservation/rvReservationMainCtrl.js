@@ -35,6 +35,21 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         //Commenting - Another call is happening to fetch countries
         $scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
 
+        // adding extra function to reset time
+        $scope.clearArrivalAndDepartureTime = function() {
+            $scope.reservationData.checkinTime =  {
+                    hh: '',
+                    mm: '00',
+                    ampm: 'AM'
+                };
+            $scope.reservationData.checkoutTime =  {
+                    hh: '',
+                    mm: '00',
+                    ampm: 'AM'
+                };
+
+        }
+
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
             // intialize reservation object
