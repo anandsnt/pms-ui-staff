@@ -8,6 +8,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 	$scope.results = {};
     $scope.bills = [];
     $scope.isReloadNeeded = false;
+    $scope.routes = [];
 	
 	$scope.closeDialog = function(){
 		ngDialog.close();

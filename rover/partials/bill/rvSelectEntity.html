@@ -15,7 +15,7 @@
          <div id="entities" ng-iscroll='entities' ng-iscroll-delay='100' class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
             	<!-- List for guests -->
-                 <li class="entity guest" ng-click="selectAttachedEntity(-1,'GUEST')">
+                 <li class="entity guest" ng-show="attachedEntities.hasOwnProperty('primary_guest_details')" ng-click="selectAttachedEntity(-1,'GUEST')">
                   <!-- image -->
                   
                   <figure class="guest-image" >
