@@ -1,0 +1,497 @@
+<section id="journal" class="content" role="main">
+<!-- Header -->
+<form method="post" action="http://stayntouch.perceptiveinteractive.com/standalone/app/financials/journal/" id="journal-header" name="journal-header" class="journal-header">
+    <div class="entry">
+        <label for="journal-departments">Employee / Department / House</label>
+        <div class="faux-select">
+            All Departments
+        </div>
+    </div>
+    <div id="journal-filters" class="faux-select-options hidden">
+        <button id="select-filters" type="button" class="button grey">Select</button>
+        <div class="header">
+            <label class="radio inline checked"><span class="icon-form icon-radio checked"></span>
+                <input name="journal-departments" id="journal-departments" value="all-departments" type="radio" checked="">
+                All Departments
+            </label>
+            <strong class="h5">Employees</strong>
+        </div>
+        <div id="faux-journal-departments" class="holder scrollable">
+            <div class="wrapper">
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="catering" type="checkbox">
+                    Catering
+                </label>
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="catering" type="checkbox">
+                    Front Desk
+                </label>
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="gift-shop" type="checkbox">
+                    Gift Shop
+                </label>
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="housekeeping" type="checkbox">
+                    Housekeeping
+                </label>
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="room-service" type="checkbox">
+                    Room Service
+                </label>
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="diogenes" type="checkbox">
+                    Diogenes
+                </label>
+                <label class="checkbox inline"><span class="icon-form icon-checkbox"></span>
+                    <input name="journal-departments" value="rooftop-restaurant" type="checkbox">
+                    Rooftop Restaurant
+                </label>
+            </div>
+        </div>
+        <div id="faux-journal-employees" class="holder scrollable">
+            <div class="wrapper">
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Allison Smith" type="radio">
+                    Allison Smith
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Debra Smith" type="radio">
+                    Debra Smith
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Andrea Smith" type="radio">
+                    Andrea Smith
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Jenniffer Smithson" type="radio">
+                    Jenniffer Smithson
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Paula Smit" type="radio">
+                    Paula Smit
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Marcy Johnson" type="radio">
+                    Marcy Johnson
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Amy Williams" type="radio">
+                    Amy Williams
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Katy Brown" type="radio">
+                    Katy Brown
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Marcy Davis" type="radio">
+                    Marcy Davis
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Linda Miller" type="radio">
+                    Linda Miller
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Debra Jones" type="radio">
+                    Debra Jones
+                </label>
+                <label class="radio inline"><span class="icon-form icon-radio"></span>
+                    <input name="journal-employees" value="Susan Anderson" type="radio">
+                    Susan Anderson
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="journal-date">Date</label>
+        <div class="entry-data">
+            <input name="journal-date" id="journal-date" type="text" class="datepicker hasDatepicker" value="10-17-2014" readonly=""><button type="button" class="ui-datepicker-trigger">...</button>
+            <strong id="journal-date-day" class="day">16</strong>
+            <span id="journal-date-month" class="month">October</span>
+            <span id="journal-date-year" class="year">2014</span>
+        </div>
+    </div>
+    <ul id="journal-options" class="display">
+        <li id="show-revenue" data-href="revenue" class="active"><span class="icons icon-navbar icon-revenue">Revenue</span>$8899.45</li>
+        <li id="show-payments" data-href="payments"><span class="icons icon-navbar icon-payments">Payments</span>$9234.23</li>
+        <li id="show-cashier" data-href="cashier"><span class="icons icon-navbar icon-cashier">Cashier</span>Open</li>
+    </ul>
+</form>
+
+<!-- Print box -->
+<form method="post" action="http://stayntouch.perceptiveinteractive.com/standalone/app/financials/journal/" id="journal-print-options" class="journal-print ui-resizable" role="complementary">
+    <div class="holder">
+        <div class="entry">
+            <label for="journal-charge-group">Charge Group</label>
+            <div class="select">
+                <select name="journal-charge-group" id="journal-charge-group" class="placeholder">
+                    <option value="" selected="">All Charge Groups</option>
+                    <option value="favorites">Favorites</option>
+                    <option value="attractions">Attractions</option>
+                    <option value="bedding">Bedding</option>
+                    <option value="food-drink">Food &amp; Drink</option>
+                    <option value="golf">Golf</option>
+                    <option value="mini-bar">Mini-Bar</option>
+                    <option value="parking">Parking</option>
+                    <option value="spa">Spa</option>
+                    <option value="transportion">Transportion</option>
+                </select>
+            </div>
+        </div>
+        <div class="entry">
+            <label for="journal-charge-code">Charge Code / Name</label>
+            <div class="select">
+                <select name="journal-charge-code" id="journal-charge-code" class="placeholder">
+                    <option value="" selected="">All Charge Codes</option>
+                    <option value="Apple 1kg">Apple 1kg</option>
+<option value="Band Aid">Band Aid</option>
+<option value="Coca-Cola Light 33cl">Coca-Cola Light 33cl</option>
+<option value="Crystal Head Vodka 1L">Crystal Head Vodka 1L</option>
+<option value="Evian 2L">Evian 2L</option>
+<option value="Ginger Ale 50cl">Ginger Ale 50cl</option>
+<option value="Heineken 33cl">Heineken 33cl</option>
+<option value="Jack Daniels 50cl">Jack Daniels 50cl</option>
+<option value="Perrier">Perrier</option>
+<option value="Coca-Cola Light 50cl">Coca-Cola Light 50cl</option>
+<option value="Duff Beer 50cl">Duff Beer 50cl</option>
+<option value="Lays Natural 45g">Lays Natural 45g</option>
+<option value="Chestnuts">Chestnuts</option>
+<option value="Black Grapes 1kg">Black Grapes 1kg</option>
+<option value="Chimay 33cl">Chimay 33cl</option>
+<option value="Leffe Brune 33cl">Leffe Brune 33cl</option>
+<option value="Peaches 1kg">Peaches 1kg</option>
+<option value="Southern">Southern</option>
+<option value="Cornetto">Cornetto</option>
+<option value="Coca-Cola Regular 50cl">Coca-Cola Regular 50cl</option>
+                </select> 
+            </div>
+        </div>
+        <div class="entry">
+            <div class="switch-button on">
+                <input name="journal-print-toggle" id="journal-print-toggle" value="" type="checkbox" checked="">
+                <label class="data-off">
+                    <span class="value">Summary</span>
+                    <span class="switch-icon">Details</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">Summary</span>
+                    <span class="value">Details</span>
+                </label>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="print-journal" type="button" class="button blue">Print</button>
+        </div>
+    </div>
+<div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div></form>
+
+<!-- Content -->
+<div id="journal-content" class="journal-content scrollable">
+    <div class="wrapper" style="transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1); -webkit-transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1); transform: translate(0px, 0px) translateZ(0px);">
+        <table id="journal-grid" class="journal-grid print-summary">
+            <tbody>
+                <tr class="grid-group rows-toggle" data-href="group-rooms">
+                    <th scope="row" colspan="7">Rooms</th>
+                    <td>$8472.50</td>
+                </tr>
+                    <tr class="grid-charge rows-toggle hidden" data-id="group-rooms" data-href="room-revenue">
+                        <td>1001</td>
+                        <th scope="row" colspan="6">Transistent Room Revenue</th>
+                        <td>$7472.50</td>
+                    </tr>
+                        <tr class="grid-item-heading hidden" data-id="room-revenue">
+                            <th scope="col" class="short-col">Room</th>
+                            <th scope="col">Name</th>
+                            <th scope="col" class="medium-col">Reservation Number</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Details</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Debit</th>
+                            <th scope="col">Credit</th>
+                        </tr>
+                                                    <tr class="grid-item hidden" data-id="room-revenue">
+                                <td>10</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="room-revenue">
+                                <td>6</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="room-revenue">
+                                <td>8</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="room-revenue">
+                                <td>10</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="room-revenue">
+                                <td>7</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="room-revenue">
+                                <td>8</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                            <tr class="grid-charge rows-toggle hidden" data-id="group-rooms" data-href="package-revenue">
+                        <td>1002</td>
+                        <th scope="row" colspan="6">Transistent Package Revenue</th>
+                        <td>$1000.00</td>
+                    </tr>
+                        <tr class="grid-item-heading hidden" data-id="package-revenue">
+                            <th scope="col" class="short-col">Room</th>
+                            <th scope="col">Name</th>
+                            <th scope="col" class="medium-col">Reservation Number</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Details</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Debit</th>
+                            <th scope="col">Credit</th>
+                        </tr>
+                                                    <tr class="grid-item hidden" data-id="package-revenue">
+                                <td>6</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="package-revenue">
+                                <td>8</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="package-revenue">
+                                <td>6</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="package-revenue">
+                                <td>8</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="package-revenue">
+                                <td>10</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                                    <tr class="grid-item hidden" data-id="package-revenue">
+                                <td>8</td>
+                                <td>Jones</td>
+                                <td>55458542</td>
+                                <td>Split</td>
+                                <td>12452125</td>
+                                <td>01:26</td>
+                                <td>259.99</td> 
+                                <td></td>                                           
+                            </tr>
+                                        <tr class="grid-group rows-toggle" data-href="group-food">
+                    <th scope="row" colspan="7">Food &amp; Beverage</th>
+                    <td>$1381.83</td>
+                </tr>
+                    <tr class="grid-item-heading hidden" data-id="group-food">
+                        <th scope="col" class="short-col">Room</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reservation Number</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Debit</th>
+                        <th scope="col">Credit</th>
+                    </tr>
+                                            <tr class="grid-item hidden" data-id="group-food">
+                            <td>6</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-food">
+                            <td>9</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-food">
+                            <td>6</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-food">
+                            <td>8</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-food">
+                            <td>10</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-food">
+                            <td>7</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                    <tr class="grid-group rows-toggle" data-href="group-tax">
+                    <th scope="row" colspan="7">Tax</th>
+                    <td>$1381.83</td>
+                    </tr><tr class="grid-item-heading hidden" data-id="group-tax">
+                        <th scope="col" class="short-col">Room</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reservation Number</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Debit</th>
+                        <th scope="col">Credit</th>
+                    </tr>
+                                            <tr class="grid-item hidden" data-id="group-tax">
+                            <td>6</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-tax">
+                            <td>10</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-tax">
+                            <td>10</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-tax">
+                            <td>8</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-tax">
+                            <td>9</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                            <tr class="grid-item hidden" data-id="group-tax">
+                            <td>10</td>
+                            <td>Jones</td>
+                            <td>55458542</td>
+                            <td>Split</td>
+                            <td>12452125</td>
+                            <td>01:26</td>
+                            <td>259.99</td> 
+                            <td></td>                                           
+                        </tr>
+                                    
+            </tbody>
+        </table>
+    </div>
+<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;"><div class="iScrollIndicator" style="transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1); -webkit-transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1); display: none; height: 239px; transform: translate(0px, 0px) translateZ(0px);"></div></div></div></section>
