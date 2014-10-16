@@ -481,7 +481,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       	}
       	
       	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
- 	    	sntapp.cardReader.startReader(options);
+      		setTimeout(function(){
+ 	    		sntapp.cardReader.startReader(options);
+ 	        }, 2000);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
 	      		//One second delay is set so that call will repeat in 1 sec delay
