@@ -39,6 +39,8 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', functi
 	this.fetchKeyFromServer = function(params){
 		var deferred = $q.defer();
 		var url =  "/staff/reservation/print_key";	
+		//var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
+
 		
 		RVBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
@@ -60,6 +62,8 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', functi
 		var data = dclone(params, unWantedKeysToRemove);
 		
 		var url = '/api/reservations/' + reservationId + '/smartbands';
+		//var url = '/ui/show?format=json&json_input=keys/save_smartbands.json';
+
 		
 		rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);

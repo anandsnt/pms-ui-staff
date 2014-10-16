@@ -363,7 +363,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				room_type_ids: $scope.eachTaskList.room_type_ids,
 				front_office_status_ids: $scope.eachTaskList.front_office_status_ids,
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
-				is_occupied: !!isOccupied ? true : false,
+				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
+				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
 				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
 			};
