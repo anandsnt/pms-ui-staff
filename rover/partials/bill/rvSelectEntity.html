@@ -15,17 +15,17 @@
          <div id="entities" ng-iscroll='entities' ng-iscroll-delay='100' class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
             	<!-- List for guests -->
-                 <li class="entity guest" ng-repeat="entity in attachedEntities.primary_guest_details" ng-click="selectAttachedEntity($index,'GUEST')">
+                 <li class="entity guest" ng-click="selectAttachedEntity(-1,'GUEST')">
                   <!-- image -->
                   
                   <figure class="guest-image" >
-							<img src="{{entity.avatar}}" alt="" />
+							<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
 					</figure>
 
                   <!-- heading -->
-                  <h2>{{entity.name}}</h2>
+                  <h2>{{attachedEntities.primary_guest_details.name}}</h2>
                   <!-- icon -->
-                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{entity.name}}</span>
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{attachedEntities.primary_guest_details.name}}</span>
                  </li>
 
                  <!-- List for accompany guests -->
@@ -44,7 +44,7 @@
 
                  <!-- Company card -->
 
-                 <li class="entity company" ng-click="selectAttachedEntity(-1,'COMPANY_CARD')">
+                 <li class="entity company" ng-show="attachedEntities.hasOwnProperty('company_card')" ng-click="selectAttachedEntity(-1,'COMPANY_CARD')">
                   <!-- image -->
                   
                   		<figure class="guest-image" >
@@ -62,7 +62,7 @@
                  </li>
 
                  <!-- Travel agent card -->
-                 <li class="entity travel-agent" ng-click="selectAttachedEntity(-1,'TRAVEL_AGENT')">
+                 <li class="entity travel-agent" ng-show="attachedEntities.hasOwnProperty('travel_agent')" ng-click="selectAttachedEntity(-1,'TRAVEL_AGENT')">
                   <!-- image -->
                   
                   		<figure class="guest-image" >		              

@@ -54,7 +54,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 				$scope.selectedEntity.name = $scope.attachedEntities.primary_guest_details.name;
 				$scope.images = [{
                     "is_primary":true, 
-		            "guest_image": $scope.attachedEntities.primary_guest_details.avatar;
+		            "guest_image": $scope.attachedEntities.primary_guest_details.avatar
 		        }];
 		        $scope.selectedEntity.entity_type = "RESERVATION";
 			}else if(type == 'ACCOMPANY_GUEST'){
@@ -63,7 +63,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 				$scope.selectedEntity.name = $scope.attachedEntities.accompanying_guest_details[index].name;
 				$scope.images = [{
                     "is_primary":false, 
-		            "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar;
+		            "guest_image": $scope.attachedEntities.accompanying_guest_details[index].avatar
 		        }];		
 		        $scope.selectedEntity.has_accompanying_guests = true;        
 		        $scope.selectedEntity.entity_type = "RESERVATION";
@@ -72,7 +72,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 				$scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
 				$scope.images = [{
                     "is_primary":true, 
-		            "guest_image": $scope.attachedEntities.company_card.logo;
+		            "guest_image": $scope.attachedEntities.company_card.logo
 		        }];		        
 		        $scope.selectedEntity.entity_type = "COMPANY_CARD";
 			}else if(type == 'TRAVEL_AGENT'){
@@ -80,7 +80,7 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBil
 				$scope.selectedEntity.name = $scope.attachedEntities.travel_agent.name;
 				$scope.images = [{
                     "is_primary":true, 
-		            "guest_image": $scope.attachedEntities.travel_agent.logo;
+		            "guest_image": $scope.attachedEntities.travel_agent.logo
 		        }];		        
 		        $scope.selectedEntity.entity_type = "TRAVEL_AGENT";
 			}
