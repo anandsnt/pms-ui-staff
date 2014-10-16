@@ -9,6 +9,8 @@ sntRover.service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv'
         this.fetchStayBasicDetails = function (reservationId, deferred){
             var url = '/staff/change_stay_dates/' + reservationId + '.json';
             RVBaseWebSrv.getJSON(url).then(function(data) {
+                console.log("in service");
+                console.log(data);
                 that.changeStayDetails.details = data;
             }, function(errorMessage){
                 deferred.reject(errorMessage);

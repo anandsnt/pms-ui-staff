@@ -31,6 +31,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		$scope.setScroller('edit_staydate_calendar', scrollerOptions);
 
 		this.dataAssign = function() {
+			console.log("in data dataAssign");
+			console.log(stayDateDetails);
 			//Data from Resolve method
 			$scope.stayDetails = stayDateDetails;
 			$scope.stayDetails.isOverlay = false;
@@ -347,8 +349,13 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		};
 
 		// function to get color class against a room based on it's status
-		$scope.getColorCode = function(roomReadyStatus, checkinInspectedOnly) {
-			return getMappedRoomReadyStatusColor(roomReadyStatus, checkinInspectedOnly);
+		$scope.getColorCode = function() {
+			console.log($scope.stayDetails);
+			var reservationStatus = $scope.stayDetails.calendarDetails.reservation_status;
+			var roomReadyStatus = $scope.stayDetails.calendarDetails.room_ready_status; 
+			var foStatus = $scope.stayDetails.calendarDetails.fo_status;
+			var checkinInspectedOnly = $scope.stayDetails.calendarDetails.checkin_inspected_only;
+			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 		};
 
 		$scope.confirmUpdates = function() {

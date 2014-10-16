@@ -190,9 +190,9 @@ function getCurrencySymbol(currenyCode){
       return symbol;
 };
 
-var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspectedOnly) {
-    
-        mappedColor = "";
+var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly) {
+    console.log(reservationStatus)
+        /*mappedColor = "";
         switch(roomReadyStatus) {
 
             case "INSPECTED":
@@ -216,7 +216,54 @@ var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspected
                 break;
 
         }
-        return mappedColor;
+        return mappedColor;*/
+        console.log(reservationStatus);
+        console.log(roomReadyStatus);
+        console.log(foStatus);
+        console.log(checkinInspectedOnly);
+
+
+
+    var reservationRoomStatusClass = "";
+    if(reservationStatus == 'CHECKING_IN' && roomReadyStatus!=''){
+        console.log("if 1");
+        
+        if(foStatus == 'VACANT'){
+            console.log("if 2");
+            switch(roomReadyStatus) {
+                case "INSPECTED":
+                    reservationRoomStatusClass = ' room-green';
+                    break;
+                case "CLEAN":
+                    if (checkinInspectedOnly == "true") {
+                        reservationRoomStatusClass = ' room-orange';
+                        break;
+                    } else {
+                        reservationRoomStatusClass = ' room-green';
+                        break;
+                    }
+                    break;
+                case "PICKUP":
+                    reservationRoomStatusClass = " room-orange";
+                    break;
+    
+                case "DIRTY":
+                    reservationRoomStatusClass = " room-red";
+                    break;
+                default:
+                    console.log("default option");
+                    reservationRoomStatusClass = " ";
+                    break;
+
+
+        }
+        
+        } else {
+            reservationRoomStatusClass = "room-red";
+        }
+            
+    } 
+    return reservationRoomStatusClass;
 };
 
 
