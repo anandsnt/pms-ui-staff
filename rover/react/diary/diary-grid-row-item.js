@@ -39,8 +39,11 @@ var GridRowItem = React.createClass({
 			return true;
 		}
 
-		if(this.props.angular_evt.displayFilter(nextProps.filter, next_row_item_data, nextProps.row_data)) {
-			return true;
+		if(this.state.resizing) {
+			if(this.state.currentResizeItem.start_date.getTime() !== nextState.currentResizeItem.start_date.getTime() ||
+			   this.state.currentResizeItem.end_date.getTime() !== nextState.currentResizeItem.end_date.getTime()) {
+				return true;
+			}
 		}
 
 		return false;

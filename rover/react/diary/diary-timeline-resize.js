@@ -20,9 +20,9 @@ var Resizable = React.createClass({
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__onMouseMove);
 
-			page_offset = this.getDOMNode().getBoundingClientRect();
+			page_offset = $(this.getDOMNode())[0].children[0].getBoundingClientRect();
 
-			model = this._update(this.state.currentResizeItem);
+			model = this.state.currentResizeItem;
 
 			console.log('MouseDownLeft:', model.start_date, model.end_date);
 
@@ -44,12 +44,13 @@ var Resizable = React.createClass({
 
 		if(e.button === 0) {
 			e.stopPropagation();
+
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__onMouseMove);
 
-			page_offset = $(this.getDOMNode()).filter(':first-child')[0].getBoundingClientRect();
+			page_offset = $(this.getDOMNode())[0].children[1].getBoundingClientRect();
 
-			model = this._update(this.state.currentResizeItem);
+			model = this.state.currentResizeItem;
 
 			console.log('MouseDownRight:', model.start_date, model.end_date);
 
@@ -96,9 +97,7 @@ var Resizable = React.createClass({
 			if(this.state.mouse_down_left) {
 				model.start_date = new Date(model.start_date.getTime() + delta_x / this.props.display.px_per_ms);
 				model.start_date = new Date(((model.start_date.getTime() * this.props.display.px_per_ms / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
-			}
-
-			if(this.state.mouse_down_right) {
+			} else if(this.state.mouse_down_right) {
 				model.end_date = new Date(model.end_date.getTime() + delta_x / this.props.display.px_per_ms);
 				model.end_date = new Date(((model.end_date.getTime() * this.props.display.px_per_ms / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
 			}
@@ -121,9 +120,7 @@ var Resizable = React.createClass({
 		if(this.state.resizing && this.state.mouse_down_left) {
 			model.start_date = new Date(model.start_date.setTime(model.start_date.getTime() + delta_x / this.props.display.px_per_ms));
 			model.start_date = new Date(((model.start_date.getTime() / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
-		}
-
-		if(this.state.resizing && this.state.mouse_down_right) {
+		} else if(this.state.resizing && this.state.mouse_down_right) {
 			model.end_date = new Date(model.end_date.setTime(model.end_date.getTime() + delta_x / this.props.display.px_per_ms));
 			model.end_date = new Date(((model.end_date.getTime() / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
 		}
