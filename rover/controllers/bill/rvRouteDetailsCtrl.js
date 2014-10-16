@@ -154,11 +154,11 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.availableBillingGroups = data;
                 if(data.length == 0)
                     $scope.isBillingGroup = false;
-                if($scope.selectedEntity.entity_type == 'COMPANY_CARD' || $scope.selectedEntity.entity_type == 'TRAVEL_AGENT'){
+                if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
+                    $scope.$parent.$emit('hideLoader');                    
+                }else{
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
-                }else{
-                    $scope.$parent.$emit('hideLoader');
                 }
                 
             };
