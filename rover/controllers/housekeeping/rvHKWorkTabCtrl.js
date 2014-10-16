@@ -22,6 +22,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			completed: 'COMPLETED'
 		}
 		$scope.isCleaning = $scope.roomDetails.work_status == $_workStatusList['inProgress'] ? true : false;
+		$scope.isDone = $scope.roomDetails.work_status == $_workStatusList['completed'] ? true : false;
 
 
 		// must create a copy since this scope is an inner scope
@@ -103,6 +104,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['inProgress'];
 				$scope.isCleaning = true;
+				$scope.isDone = false;
 			};
 
 			var params = {
@@ -121,6 +123,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['completed'];
 				$scope.isCleaning = false;
+				$scope.isDone = true;
 			
 				// update the 'curent_hk_status' to 'CLEAN'
 				// but it should update to the status set from the admin section
