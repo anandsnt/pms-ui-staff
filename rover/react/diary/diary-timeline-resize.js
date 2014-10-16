@@ -6,8 +6,8 @@ var Resizable = React.createClass({
 		if(_.isObject(row_item_data)) {
 			copy = _.extend(copy, row_item_data);
 
-			copy.start_date = new Date(row_item_data.start_date.getTime());
-			copy.end_date = new Date(row_item_data.end_date.getTime());
+			copy.start_date = new Date(copy.start_date.getTime());
+			copy.end_date = new Date(copy.end_date.getTime());
 
 			return copy;
 		}
@@ -16,15 +16,12 @@ var Resizable = React.createClass({
 		var page_offset, model;
 
 		if(e.button === 0) {
-			//e.stopPropagation();
+			e.stopPropagation();
+
 			document.addEventListener('mouseup', this.__onMouseUp);
-			document.addEventListener('mousemove', this.__onMouseMove);
+			document.addEventListener('mousemove', this.__onMouseMoveLeft);
 
 			page_offset = $(this.getDOMNode())[0].children[0].getBoundingClientRect();
-
-			model = this.state.currentResizeItem;
-
-			console.log('MouseDownLeft:', model.start_date, model.end_date);
 
 			this.setState({
 				mouse_down_left: true,
@@ -40,19 +37,15 @@ var Resizable = React.createClass({
 		}
 	},
 	__onMouseDownRight: function(e) {
-		var page_offset, model;
+		var page_offset;
 
 		if(e.button === 0) {
 			e.stopPropagation();
 
 			document.addEventListener('mouseup', this.__onMouseUp);
-			document.addEventListener('mousemove', this.__onMouseMove);
+			document.addEventListener('mousemove', this.__onMouseMoveRight);
 
 			page_offset = $(this.getDOMNode())[0].children[1].getBoundingClientRect();
-
-			model = this.state.currentResizeItem;
-
-			console.log('MouseDownRight:', model.start_date, model.end_date);
 
 			this.setState({
 				mouse_down_right: true,
@@ -67,45 +60,70 @@ var Resizable = React.createClass({
 			});
 		}
 	},
-	__onMouseMove: function(e) {
+	__onMouseMoveLeft: function(e) {
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y, 
-			distance = Math.abs(delta_x) + Math.abs(delta_y),
 			x_origin = this.props.display.x_origin,
 			px_per_int = this.props.display.px_per_int,
-			model = this._update(this.state.currentResizeItem);
+			px_per_ms = this.props.display.px_per_ms,
+			model = this.state.currentResizeItem;
 
 		if(!this.state.resizing &&
-		   this.state.mouse_down_left && distance > 5) {
+		   this.state.mouse_down_left && (Math.abs(delta_x) + Math.abs(delta_y) > 5)) {
+		   	model.left = (model.start_date.getTime() - x_origin) * px_per_ms;
+			model.right = (model.end_date.getTime() - x_origin) * px_per_ms;
+
 			this.setState({
 				resizing: true,
-				currentResizeItem: model
+				currentResizeItem: model,
+				left: (this.state.element_x + delta_x / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int
 			}, function() {
-				this.props.__onResizeLeftStart(this.state.row, model);
+				//this.props.__onResizeLeftStart(undefined, model);
 				this.props.__onResizeCommand(model);
 			});
-		} else if(!this.state.resizing &&
-		   this.state.mouse_down_right && distance > 5) {
+		} else if(this.state.resizing) {		
+			model.left = ((model.left + delta_x) / px_per_int).toFixed() * px_per_int;
+			//model.start_date = new Date(model.start_date.getTime() + delta_x / px_per_ms);
+			//model.start_date = new Date(((model.start_date.getTime() * px_per_ms / px_per_int).toFixed() * px_per_int) / px_per_ms);
+		
+			this.setState({
+				currentResizeItem: model,
+				left: (this.state.element_x + delta_x / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int
+			}, function() {
+				this.props.__onResizeCommand(model);
+			});
+		}
+	},
+	__onMouseMoveRight: function(e) {
+		var delta_x = e.pageX - this.state.origin_x, 
+			delta_y = e.pageY - this.state.origin_y, 
+			x_origin = this.props.display.x_origin,
+			px_per_int = this.props.display.px_per_int,
+			px_per_ms = this.props.display.px_per_ms,
+			model = this.state.currentResizeItem;
+
+		if(!this.state.resizing &&
+		   this.state.mouse_down_right &&  (Math.abs(delta_x) + Math.abs(delta_y) > 5)) {
+		   	model.left = (model.start_date.getTime() - x_origin) * px_per_ms;
+			model.right = (model.end_date.getTime() - x_origin) * px_per_ms;
+
 			this.setState({
 				resizing: true,
-				currentResizeItem: model
+				currentResizeItem: model,
+				right: (this.state.element_x + delta_x / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int
 			}, function() {
-				this.props.__onResizeRightStart(this.state.row, model);
+				this.props.__onResizeRightStart(undefined, model);
 				this.props.__onResizeCommand(model);
 			});
 		} else if(this.state.resizing) {
-			if(this.state.mouse_down_left) {
-				model.start_date = new Date(model.start_date.getTime() + delta_x / this.props.display.px_per_ms);
-				model.start_date = new Date(((model.start_date.getTime() * this.props.display.px_per_ms / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
-			} else if(this.state.mouse_down_right) {
-				model.end_date = new Date(model.end_date.getTime() + delta_x / this.props.display.px_per_ms);
-				model.end_date = new Date(((model.end_date.getTime() * this.props.display.px_per_ms / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
-			}
-
-			console.log('MouseMove:', model.start_date, model.end_date);
-
+			model.right = ((model.right + delta_x) / px_per_int).toFixed() * px_per_int;
+			//model.end_date = new Date(model.end_date.getTime() + delta_x / px_per_ms);
+			//model.end_date = new Date(((model.end_date.getTime() * px_per_ms / px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
+			
 			this.setState({
-				currentResizeItem: model
+				resizing: true,
+				currentResizeItem: model,
+				right: (this.state.element_x + delta_x / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int
 			}, function() {
 				this.props.__onResizeCommand(model);
 			});
@@ -115,20 +133,21 @@ var Resizable = React.createClass({
 		var delta_x = e.pageX - this.state.origin_x, 
 			delta_y = e.pageY - this.state.origin_y, 
 			left = this.state.element_x + delta_x,
-			model = this._update(this.state.currentResizeItem);
+			model = this.state.currentResizeItem;
 
 		if(this.state.resizing && this.state.mouse_down_left) {
-			model.start_date = new Date(model.start_date.setTime(model.start_date.getTime() + delta_x / this.props.display.px_per_ms));
-			model.start_date = new Date(((model.start_date.getTime() / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
+			model.left = ((model.left + delta_x) / px_per_int).toFixed() * px_per_int;
 		} else if(this.state.resizing && this.state.mouse_down_right) {
-			model.end_date = new Date(model.end_date.setTime(model.end_date.getTime() + delta_x / this.props.display.px_per_ms));
-			model.end_date = new Date(((model.end_date.getTime() / this.props.display.px_per_int).toFixed() * this.props.display.px_per_int) / this.props.display.px_per_ms);
+			model.right = ((model.left + delta_x) / px_per_int).toFixed() * px_per_int;
 		}
 
-		console.log('MouseUp:', model.start_date, model.end_date);
-
 		document.removeEventListener('mouseup', this.__onMouseUp);
-		document.removeEventListener('mousemove', this.__onMouseMove);
+
+		if(this.state.mouse_down_left) {
+			document.removeEventListener('mousemove', this.__onMouseMoveLeft);
+		} else{
+			document.removeEventListener('mousemove', this.__onMouseMoveRight);
+		}
 
 		if(this.state.resizing) {
 			this.setState({
@@ -165,7 +184,7 @@ var Resizable = React.createClass({
 		};
 	},
 	componentWillMount: function() {
-		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
+		this.__dbMouseMove = _.debounce(this.__onMouseMove, 100);
 	},
 	shouldComponentUpdate: function(nextProps, nextState) {
 		if(!this.props.currentResizeItem && nextProps.currentResizeItem || 
@@ -198,16 +217,18 @@ var Resizable = React.createClass({
 			React.DOM.div({
 				className: 'resize-control',
 				style: {
-					left: (this.state.currentResizeItem ? (this.state.currentResizeItem.start_date.getTime() - this.props.display.x_origin) * this.props.display.px_per_ms : 0) + 'px'		
+					left: (this.state.currentResizeItem ? this.state.currentResizeItem.left : 0) + 'px'		
 				},
-				onMouseDown: self.__onMouseDownLeft
+				onMouseDown: self.__onMouseDownLeft//,
+				//onMouseMove: self.__onMouseMove
 			}),
 			React.DOM.div({
 				className: 'resize-control',
 				style: {
-					left: (this.state.currentResizeItem ? (this.state.currentResizeItem.end_date.getTime() - this.props.display.x_origin) * this.props.display.px_per_ms - this.props.handle_width : 0) + 'px',				
+					left: (this.state.currentResizeItem ? this.state.currentResizeItem.right : 0) + 'px'			
 				},
-				onMouseDown: self.__onMouseDownRight
+				onMouseDown: self.__onMouseDownRight//,
+				//onMouseMove: self.__onMouseMove
 			})));
 	}
 });

@@ -15,8 +15,8 @@ var GridRowItem = React.createClass({
 			copy.start_date = new Date(nextProps.currentResizeItem.start_date.getTime());
 			copy.end_date = new Date(nextProps.currentResizeItem.end_date.getTime());
 
-			copy.left = (copy.start_date.getTime() - nextProps.display.x_origin) * nextProps.display.px_per_ms;
-			copy.right = (copy.end_date.getTime() - nextProps.display.x_origin) * nextProps.display.px_per_ms;
+			//copy.left = (copy.start_date.getTime() - nextProps.display.x_origin) * nextProps.display.px_per_ms;
+			//copy.right = (copy.end_date.getTime() - nextProps.display.x_origin) * nextProps.display.px_per_ms;
 
 			this.setState({
 				resizing: true,
@@ -29,37 +29,14 @@ var GridRowItem = React.createClass({
 			});
 		}
 	},
-	shouldComponentUpdate: function(nextProps, nextState) {
-		var row_item_data = this.props.data,
-			next_row_item_data = nextProps.data;
-
-		if(this.props.display !== nextProps.display) {
-			return true;
-		}
-
-		if(row_item_data.start_date.getTime() !== next_row_item_data.start_date.getTime() ||
-		   row_item_data.end_date.getTime() !== next_row_item_data.end_date.getTime() ||
-		   row_item_data.status !== next_row_item_data.status) {
-			return true;
-		}
-
-		if(this.state.resizing) {
-			if(this.state.currentResizeItem.start_date.getTime() !== nextState.currentResizeItem.start_date.getTime() ||
-			   this.state.currentResizeItem.end_date.getTime() !== nextState.currentResizeItem.end_date.getTime()) {
-				return true;
-			}
-		}
-
-		return false;
-	},
 	render: function() {
 		var props = this.props,
 			state = this.state,
-			start_time_ms 			= !state.resizing ? props.data.start_date.getTime() : state.currentResizeItem.start_date.getTime(),
-			end_time_ms 			= !state.resizing ? props.data.end_date.getTime() : state.currentResizeItem.end_date.getTime(),
+			start_time_ms 			= !state.resizing ? props.data.start_date.getTime() : state.currentResizeItem.left,
+			end_time_ms 			= !state.resizing ? props.data.end_date.getTime() : state.currentResizeItem.right,
 			time_span_ms 			= end_time_ms - start_time_ms,
 			maintenance_time_span 	= props.display.maintenance_span_int * props.display.px_per_int,
-			reservation_time_span 	= time_span_ms * props.display.px_per_ms,
+			reservation_time_span 	= !state.resizing ? time_span_ms * props.display.px_per_ms : time_span_ms,
 			is_temp_reservation 	= props.angular_evt.isAvailable(props.row_data, props.data),
 			style 					= {},
 			display_filter 			= props.angular_evt.displayFilter(props.filter, props.row_data, props.data),
@@ -83,8 +60,8 @@ var GridRowItem = React.createClass({
 			__onDragStop: 	props.__onDragStop,
 			currentResizeItem: state.currentResizeItem,
 			style: 			_.extend({
-				left: 		(start_time_ms - props.display.x_origin) * props.display.px_per_ms + 'px', 
-				width: 		reservation_time_span + maintenance_time_span + 'px'
+				left: 		(!state.resizing ? (start_time_ms - props.display.x_origin) * props.display.px_per_ms + 'px' : start_time_ms)//, 
+				//width: 		reservation_time_span + maintenance_time_span + 'px'
 			}, style)	
 		}, 
 		React.DOM.span({

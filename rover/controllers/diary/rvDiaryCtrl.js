@@ -173,12 +173,12 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	    	switch(command_message) {
 	    		case 'resize': 
-	    		copy = copyReservation(row_item_data);
+	    		//copy = copyReservation(row_item_data);
 
-	    		copy.left = (copy.start_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
-	    		copy.right = (copy.end_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
+	    		row_item_data.left = (row_item_data.start_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
+	    		row_item_data.right = (row_item_data.end_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
 
-	    		renderGrid({ currentResizeItem: copy });
+	    		renderGrid({ currentResizeItem: row_item_data });
 
 	    		break;	 
 	    	}   
@@ -208,7 +208,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    		reservation;
 
 	    	for(var i = 0, len = $scope.data.length; i < len; i++) {
-	    		reservations = $scope.data[i];
+	    		reservations = $scope.data[i].reservations;
 
 	    		for(var j =0, rlen = reservations.length; j < rlen; j++) {
 	    			reservation = reservations[j];
@@ -472,10 +472,10 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 					new_end_date = new Date(orig_reservation.end_date.getTime() + maintenance_span);
 
 				if(reservation.id !== orig_reservation.id) {
-					if((orig_reservation.start_date > reservation.start_date && orig_reservation.start_date < res_end_date) ||
-					   (reservation.start_date > orig_reservation.start_date && res_end_date < new_end_date) ||
-					   (orig_reservation.start_date > reservation.start_date && new_end_date < res_end_date) ||
-					   (new_end_date > reservation.start_date && new_end_date < res_end_date)) {
+					if((orig_reservation.start_date >= reservation.start_date && orig_reservation.start_date <= res_end_date) ||
+					   (reservation.start_date >= orig_reservation.start_date && res_end_date <= new_end_date) ||
+					   (orig_reservation.start_date >= reservation.start_date && new_end_date <= res_end_date) ||
+					   (new_end_date >= reservation.start_date && new_end_date <= res_end_date)) {
 
 					   	conflicting_reservation = reservation;
 						range_validated = false;
