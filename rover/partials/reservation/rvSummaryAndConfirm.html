@@ -174,7 +174,7 @@
                 </div>
                 
                 <div class="entry full-width">
-                    <label for="payment-type" translate>PAYMENT_TYPE</label>
+                    <label for="payment-type" translate>PAYMENT_TYPE </label>
                     <div class="select">
 
                         <select class="placeholder" ng-model="reservationData.paymentType.type"
@@ -201,6 +201,10 @@
                 <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.value == 'CC'">
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
+                </div>
+                <div class="entry full-width">
+                	
+                	<iframe src="http://localhost:3000/api/ipage/test.html?reservation_id=12402" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
                 </div>
                 <div class="actions">
                     <button class="button green" type="button" translate ng-click ="submitReservation()">SUBMIT_RESERVATION</button>

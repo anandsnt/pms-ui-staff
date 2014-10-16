@@ -2,6 +2,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
+		setTimeout(function(){
+			var MyIFrame = document.getElementById("sixpaymentform");
+			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
+			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
+			MyIFrameDoc.getElementById("six_form").submit();
+			
+		}, 3000);
 
 		// set the previous state
 		$rootScope.setPrevState = {
@@ -11,7 +18,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				from_date: $scope.reservationData.arrivalDate,
 				to_date: $scope.reservationData.departureDate
 			}
-		}
+		};
 
 
 
@@ -29,7 +36,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
 
-		}
+		};
 
 		/**
 		 * Fetches all the payment methods
