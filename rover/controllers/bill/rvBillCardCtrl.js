@@ -554,6 +554,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	  */
 	 $scope.showSignature = function(){
 	 	$scope.showSignedSignature = !$scope.showSignedSignature;
+	 	$scope.calculateHeightAndRefreshScroll();
 	 };
 	 /*
 	  * Show the payment list of guest card for selection
