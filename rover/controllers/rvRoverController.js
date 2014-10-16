@@ -215,7 +215,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "roomStatus"
           }, {
             title: "MENU_TASK_MANAGEMENT",
-            action: "rover.workManagement.start"
+            action: "rover.workManagement.start",
+            menuIndex: "workManagement"
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
@@ -460,7 +461,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.isGuestCardVisible = true;
       }
     });
+    
     $scope.successCallBackSwipe = function(data) {
+    	
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
@@ -474,14 +477,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$scope.numberOfCordovaCalls = 0;
 
 	$scope.initiateCardReader = function(){
-    	
       	if (sntapp.cardSwipeDebug === true) {
         	sntapp.cardReader.startReaderDebug(options);
         	return;
       	}
       	
       	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
- 	    	sntapp.cardReader.startReader(options);
+      		setTimeout(function(){
+ 	    		sntapp.cardReader.startReader(options);
+ 	        }, 2000);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
 	      		//One second delay is set so that call will repeat in 1 sec delay
@@ -500,8 +504,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     setTimeout(function(){
     	 $scope.initiateCardReader();
-    }, 2000);
-   
+    }, 200);
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc

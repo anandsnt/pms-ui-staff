@@ -1,5 +1,17 @@
-sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog',
-	function($scope, RVGuestCardSrv, ngDialog) {
+sntRover.controller('staycardController', ['$scope', 'RVGuestCardSrv', 'ngDialog', '$timeout',
+	function($scope, RVGuestCardSrv, ngDialog, $timeout) {
+
+		// Browser chokes when he tries to do the following two thing at the same time:
+		// 		1. Slide in staycard
+		// 		2. Update the UI with all the fetched data
+		// So we have the following throtel to easy the pain by display:none; staycard while browser updates the UI
+		// Show after a delay which is slightly greater that @uiViewDuration + @uiViewDelay (/assets/stylesheets/less/common/01-D_mixins-animations.less)
+		var delay = 700;
+		$scope.staycardReady = false;
+		$timeout(function() { $scope.staycardReady = true; }, delay);
+
+
+
 
 		// $scope.guestCardData = {};
 		// $scope.guestCardData.contactInfo = {};
