@@ -57,6 +57,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.noResultsFound = 0;
 
+		$scope.topFilter = {};
+
 		// default values for these
 		// for a HK staff the filterByEmployee value must be defalut to that
 		// and filter the rooms accordingly
@@ -73,7 +75,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.currentView = view;
 			};
 
-			$scope.filterByWorkType = '';
 			$scope.workTypes = [];
 			var defaultWorkType;
 			var wtCallback = function(data) {
@@ -86,16 +87,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
 
 			// fetch all the HK work staff
-			$scope.filterByEmployee = '';
 			$scope.HKMaids = [];
 			var defaultMaid;
 			var hkmCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.HKMaids = data;
 
-				// TODO: for user specific the room must be filtered based on the choosen user
-				defaultMaid = _.find($scope.HKMaids, function(item) {
-					return item.maid_name == $rootScope.userName;
+				// TODO: We need to have the id's here to compare
+				defaultMaid = _.find($scope.HKMaids, function(maid) {
+					return maid.id == $rootScope.userName;
 				});
 			};
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
@@ -153,16 +153,19 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.showInspected = data.use_inspected;
 					$scope.showQueued = data.is_queue_rooms_on;
 
-					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+					if ( $rootScope.isStandAlone ) {
+						// show the rooms with matching worktype
+						// update filterByWorkType filter
+						$scope.topFilter.byWorkType = defaultWorkType;
+						$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+					}
+
+					// only set this for the staff with housekeeping dashboard
+					if ( $rootScope.isMaintenanceStaff ) {
 						// show the user related rooms only
-						$scope.filterByWorkType = defaultWorkType;
-						$scope.filterByEmployee = defaultMaid;
-
-						// update filterByWorkType filter to first item
-						$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
-
-						// update filterByEmployee filter
-						$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+						// update filterByWorkType filter
+						$scope.topFilter.byEmployee = defaultMaid;
+						$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
 					}
 
 					$scope.$emit('hideLoader');
@@ -171,14 +174,15 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
 			} else {
 				$timeout(function() {
-					if ( $rootScope.isStandAlone && $rootScope.isMaintenanceStaff ) {
+					if ( $rootScope.isStandAlone ) {
 						// restore the filterByWorkType from previous chosen value
-						$scope.filterByWorkType = $scope.currentFilters.filterByWorkType;
+						$scope.topFilter.byWorkType = $scope.currentFilters.filterByWorkType;
+					}
 
+					// only set this for the staff with housekeeping dashboard
+					if ( $rootScope.isMaintenanceStaff ) {
 						// restore the filterByEmployee from previous chosen value
-						$scope.filterByEmployee = _.find($scope.HKMaids, function(item) {
-							return item.maid_name == $scope.currentFilters.filterByEmployee
-						});
+						$scope.topFilter.byEmployee = $scope.currentFilters.filterByEmployee;
 					}
 					
 					afterFetch( fetchedRoomList );
@@ -292,11 +296,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyWorkTypefilter = function() {
-			$scope.currentFilters.filterByWorkType = $scope.filterByWorkType;
+			$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
 
 			// if work type is null reset filter by employee
 			if ( !$scope.currentFilters.filterByWorkType ) {
-				$scope.filterByEmployee = '';
+				$scope.topFilter.byEmployee = '';
 				$scope.applyEmpfilter();
 			} else {
 				// call caluculate filter in else since
@@ -313,7 +317,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
-			$scope.currentFilters.filterByEmployee = !!$scope.filterByEmployee ? $scope.filterByEmployee.maid_name : '';
+			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
 			$scope.calculateFilters();
 
 			$scope.refreshScroll();
@@ -387,8 +391,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						continue;
 					};
 
-					// Filter by employee name
-					if ( !!$scope.currentFilters.filterByEmployee && $scope.currentFilters.filterByEmployee != room.assignee_maid ) {
+					// Filter by employee name, strach that the id
+					// TODO: currently we only get room.assignee_maid, we need this like this room.assignee_maid{ name: 'name', id: id } 
+					if ( !!$scope.currentFilters.filterByEmployee && !room.assignee_maid.id ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;

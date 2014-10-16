@@ -9,7 +9,7 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'single-option': filterByWorkType == '', 'showing-filters': filterOpen, 'has-options': isStandAlone }">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone &&!topFilter.byWorkType), 'showing-filters': filterOpen }">
     <a id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
@@ -30,13 +30,13 @@
     
     <div class="entry options" ng-if="isStandAlone">
         <div class="select">
-            <select id="work-type" name="work-type" ng-model="filterByWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
+            <select id="work-type" name="work-type" ng-model="topFilter.byWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
                 <option value="">All Work Types</option>
             </select>
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
-        <div class="select" ng-hide="!filterByWorkType">
-            <select id="employees" name="employees" class="placeholder" ng-model="filterByEmployee" ng-options="user.maid_name for user in HKMaids" ng-change="applyEmpfilter()">
+        <div class="select" ng-hide="!topFilter.byWorkType">
+            <select id="employees" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="maid.id as maid.maid_name for maid in HKMaids" ng-change="applyEmpfilter()">
                 <option value="">All Employees</option>
             </select>
         </div>
