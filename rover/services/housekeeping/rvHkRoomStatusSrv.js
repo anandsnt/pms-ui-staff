@@ -332,6 +332,10 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// when user edit the room on details page
 		// update that on the room list
 		this.updateHKStatus = function(updatedRoom) {
+
+			// disabled for now
+			return;
+
 			var newValue = updatedRoom.current_hk_status;
 
 			var newDescription = newValue.toLowerCase();

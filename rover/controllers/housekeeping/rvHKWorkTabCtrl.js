@@ -73,11 +73,11 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		$scope.manualRoomStatusChanged = function() {
 			var callback = function(data){
 				$scope.$emit('hideLoader');
+				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
 				RVHkRoomStatusSrv.updateHKStatus({
 					id: $scope.roomDetails.id,
 					current_hk_status: $scope.roomDetails.current_hk_status
 				});
-				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
 			}
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
