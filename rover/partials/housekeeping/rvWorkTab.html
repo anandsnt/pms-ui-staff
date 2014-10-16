@@ -58,31 +58,26 @@
         <strong class="h2">Room is clean.</strong>
         <span class="icon-no-content icon-ok"></span> 
       </div>
-      
-      <!-- 2.B Work Tab - Room is dirty -->
-      <div ng-if="checkShow('dirty') && !isCleaning">
-        <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
 
-        <div ng-if="roomDetails.assigned_maid">
-          <button type="button" class="button blue action" ng-click="startCleaning()">Start</button> 
-          <!-- Show this only if room is assigned to staff memeber -->
-          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
-        </div>
+      <!-- 2.B Work Tab - Room is dirty -->
+      <div ng-if="checkShow('dirty')">
+        <strong class="h2">Room is <span class="red">Dirty</span>.</strong>
       </div>
 
       <!-- 2.C Work Tab - Room is pickup -->
-      <div ng-if="checkShow('pickup') && !isCleaning">
-        <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
-
-        <div ng-if="roomDetails.assigned_maid">
-          <button type="button" class="button blue action" ng-click="startCleaning()">Start</button>
-          <!-- Show this only if room is assigned to staff memeber -->
-          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
-        </div>
+      <div ng-if="checkShow('pickup')">
+        <strong class="h2"><span class="orange">Pickup</span> room.</strong>
+      </div>
+      
+      <!-- ? Work Tab - Room need work, press start -->
+      <div ng-if="roomDetails.assigned_maid && !isCleaning">
+        <button type="button" class="button blue action" ng-click="startCleaning()">Start</button> 
+        <!-- Show this only if room is assigned to staff memeber -->
+        <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
       </div>
       
       <!-- 2.D Work Tab - Room cleaning in progress -->
-      <div ng-if="isCleaning">
+      <div ng-if="roomDetails.assigned_maid && isCleaning">
         <strong class="h2">Work is in Progress.</strong>
         <span class="progress"></span>
         <button type="button" class="button green action" ng-click="doneCleaning()">Done!</button>

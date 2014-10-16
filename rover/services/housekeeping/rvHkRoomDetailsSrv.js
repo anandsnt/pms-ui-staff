@@ -158,7 +158,7 @@ sntRover.service('RVHkRoomDetailsSrv', [
 
 
 		// room work time fetch record api
-		this.postRecordTime = function() {
+		this.postRecordTime = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/work_assignments/record_time';
 

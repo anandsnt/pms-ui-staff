@@ -11,18 +11,25 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		// keep ref to room details in local scope
-		var updateRoomDetails = $scope.$parent.updateRoomDetails;
+		var $_updateRoomDetails = $scope.$parent.$_updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		// default cleaning status
-		$scope.isCleaning = false;
+		// [ OPEN, IN_PROGRESS, COMPLETED ]
+		var $_workStatusList = {
+			open: 'OPEN',
+			inProgress: 'IN_PROGRESS',
+			completed: 'COMPLETED'
+		}
+		$scope.isCleaning = $scope.roomDetails.work_status == $_workStatusList['inProgress'] ? true : false;
+
 
 		// must create a copy since this scope is an inner scope
 		$scope.isStandAlone = $rootScope.isStandAlone;
 
 		// default room HK status
 		// will be changed only for connected
-		if ( !$rootScope.isStandAlone ) {
+		if ( !$scope.isStandAlone ) {
 			if ( $scope.roomDetails.hk_status_list[0].value == 'OS' ) {
 				$scope.ooOsTitle = 'Out Of Service';
 			} else if ( $scope.roomDetails.hk_status_list[0].value == 'OO' ) {
@@ -35,7 +42,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		}
 
 		// fetch maintenance reasons list
-		if ( $rootScope.isStandAlone ) {
+		if ( $scope.isStandAlone ) {
 			$scope.workTypesList = [];
 			var wtlCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -72,7 +79,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 					id: $scope.roomDetails.id,
 					current_hk_status: $scope.roomDetails.current_hk_status
 				});
-				updateRoomDetails( 'current_hk_status' , $scope.roomDetails.current_hk_status );
+				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
 			}
 
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
@@ -92,6 +99,9 @@ sntRover.controller('RVHKWorkTabCtrl', [
 		$scope.startCleaning = function() {
 			var callback = function() {
 				$scope.$emit('hideLoader');
+
+				// update local data
+				$scope.roomDetails.work_status = $_workStatusList['inProgress'];
 				$scope.isCleaning = true;
 			};
 
@@ -108,10 +118,13 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			var callback = function() {
 				$scope.$emit('hideLoader');
 
+				// update local data
+				$scope.roomDetails.work_status = $_workStatusList['completed'];
 				$scope.isCleaning = false;
 			
-				// update the 'cuurent_hk_status' to 'CLEAN'
-				updateRoom( 'current_hk_status', 'CLEAN' );
+				// update the 'curent_hk_status' to 'CLEAN'
+				// but it should update to the status set from the admin section
+				// $_updateRoomDetails( 'current_hk_status', 'CLEAN' );
 			};
 
 			var params = {
