@@ -24,6 +24,16 @@ var TimelinePanel = React.createClass({
 	componentWillUnmount: function() {
 		this.props.iscroll.timeline.destroy();
 	},
+	shouldComponentUpdate: function(nextProps, nextState) {
+		if(this.props.viewport !== nextProps.viewport ||
+		   this.props.display !== nextProps.display ||
+		   !this.props.currentResizeItem && nextProps.currentResizeItem ||
+		   this.props.currentResizeItem) {
+			return true;
+		} else {
+			return false;
+		}
+	},
 	render: function() {
 		var self = this;
 

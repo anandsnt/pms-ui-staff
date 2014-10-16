@@ -44,6 +44,7 @@
 //=require ../rover/react/diary/diary-grid-row-item-placeholder.js
 //=require ../rover/react/diary/diary-grid-row-item-drag.js
 //=require ../rover/react/diary/diary-grid-row-item.js
+//=require ../rover/react/diary/diary-grid-row-background.js
 //=require ../rover/react/diary/diary-grid-row.js
 //=require ../rover/react/diary/diary-room.js
 //=require ../rover/react/diary/diary-rooms.js

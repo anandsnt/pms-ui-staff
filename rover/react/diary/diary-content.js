@@ -1,21 +1,9 @@
 React.initializeTouchEvents(true);
 
 var DiaryContent = React.createClass({
-	_update: function(row_item_data) {
-		var copy = {};
-
-		if(_.isObject(row_item_data)) {
-			copy = _.extend(copy, row_item_data);
-
-			copy.start_date = new Date(row_item_data.start_date.getTime());
-			copy.end_date = new Date(row_item_data.end_date.getTime());
-
-			return copy;
-		}
-	},
 	_recalculateGridSize: function() {
-		var display = this.state.display,
-			viewport = this.state.viewport;
+		var display = _.extend({}, this.state.display),
+			viewport = _.extend({}, this.state.viewport);
 
 		viewport.width = $(window).width() - 120;
 		viewport.height = $(window).height() - 230;
@@ -30,6 +18,11 @@ var DiaryContent = React.createClass({
 			display: display
 		});
 	},
+	__toggleRows: function(state) {
+		var scroll_pos = this.state.iscroll.grid.x / this.state.display.px_per_ms + this.state.display.x_origin;
+
+		this.state.angular_evt.toggleRows(state, scroll_pos);	
+	},
 	__onGridScroll: function(iscroll_object) {
 		try{
 			var el = iscroll_object, iscroll = this.state.iscroll;
@@ -41,10 +34,10 @@ var DiaryContent = React.createClass({
 						iscroll.rooms.scrollTo(0, el.y);
 					break;
 					case iscroll.timeline:
-						iscroll.grid.scrollTo(el.x, 0);
+						iscroll.grid.scrollTo(el.x, iscroll.grid.y);
 					break;
 					case iscroll.rooms:
-						iscroll.grid.scrollTo(el.y, 0);
+						iscroll.grid.scrollTo(iscroll.grid.x, el.y);
 					break;
 				}
 			}
@@ -53,34 +46,24 @@ var DiaryContent = React.createClass({
 		}
 	},
 	__onDragStart: function(row_data, row_item_data) {
-		var args = arguments;
-
-		this.setState({
-			currentDragItem: row_item_data
-		}, function() {
-			this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(args));
-		});	
+		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));
 	},
-	__onDragStop: function(e, left) {
+	__onDragStop: function(e, left, row_item_data) {
 		var state 			= this.state,
 			rowHeight 		= state.display.row_height + state.display.row_height_margin,
 			viewport 		= state.viewport.element(),
-			curPos 			= viewport[0].scrollTop + e.pageY - viewport.offset().top,
+			curPos 			= viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= (curPos / rowHeight).toFixed(),
 			row_data 		= state.data[rowNumber],
-			row_item_data 	= this._update(this.state.currentDragItem),
+			//row_item_data 	= this._update(this.state.currentDragItem),
 			start_time_ms 	= (left / state.display.px_per_ms) + state.display.x_origin,
 			delta 			= start_time_ms - row_item_data.start_date.getTime();
 
 		row_item_data.start_date = new Date(start_time_ms);
 		row_item_data.end_date 	= new Date(row_item_data.end_date.getTime() + delta);
 
-		this.setState({
-			currentDragItem: undefined
-		}, function() {
-			this.state.angular_evt.onDragEnd(row_data, 
-											 row_item_data);
-		});
+		this.state.angular_evt.onDragEnd(row_data, row_item_data);
+		
 	},
 	/*Message transport between timeline and grid:
 	  As resize controls are arranged on timeline, the positional data
@@ -96,13 +79,9 @@ var DiaryContent = React.createClass({
 	},
 	__onResizeLeftStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeLeftStart.apply(this, Array.prototype.slice.call(arguments));
-
-		console.log('Resize left start:', row_data, row_item_data);
 	},
 	__onResizeLeftEnd: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeLeftEnd.apply(this, Array.prototype.slice.call(arguments));
-
-		console.log('Resize left end:', row_item_data);
 
 		this.setProps({
 			currentResizeItem: undefined
@@ -110,13 +89,9 @@ var DiaryContent = React.createClass({
 	},
 	__onResizeRightStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeRightStart.apply(this, Array.prototype.slice.call(arguments));
-
-		console.log('Resize right start:', row_data, row_item_data);
 	},
 	__onResizeRightEnd: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeRightEnd.apply(this, Array.prototype.slice.call(arguments));
-
-		console.log('Resize right end:', row_item_data);
 
 		this.setProps({
 			currentResizeItem: undefined
@@ -132,8 +107,9 @@ var DiaryContent = React.createClass({
   	componentWillUnmount: function() {
   		$(window).off('resize');
   	},
-  	shouldComponentUpdate: function(nextProps, nextState) {
+  	componentWillMount: function() {
   		var self = this;
+
     	for(var k in this.state.iscroll) {
     		if(Object.prototype.hasOwnProperty.call(this.state.iscroll, k)) {
     			if(this.state.iscroll[k] instanceof IScroll) {
@@ -143,8 +119,18 @@ var DiaryContent = React.createClass({
     			}
     		}
     	}
+  	},
+  	componentWillReceiveProps: function(nextProps) {
+  		if(this.props.viewport !== nextProps.viewport ||
+  		   this.props.display !== nextProps.display ||
+  		   this.props.filter !== nextProps.filter) {
 
-    	return true;
+  			this.setState({
+  				display: nextProps.display,
+  				viewport: nextProps.viewport,
+  				filter: nextProps.filter
+  			});
+  		}
   	},
 	getInitialState: function() {
 		var props 		= this.props,
@@ -158,6 +144,8 @@ var DiaryContent = React.createClass({
 								onRowSelect: 				scope.onRowSelect,
 								onTimelineSelect:  			scope.onTimelineSelect,
 								isSelected: 				scope.isSelected,
+								isAvailable:                scope.isAvailable,
+								toggleRows:                 scope.toggleRows,
 								displayFilter: 				scope.displayFilter,
 								calculateOccupancy:    		scope.calculateOccupancy, 
 								onDragStart: 				scope.onDragStart,
@@ -196,10 +184,7 @@ var DiaryContent = React.createClass({
 			className: 'diary-container ' + ((this.state.viewport.hours === 12) ? 'hours-12' : 'hours-24')
 		},
 		TogglePanel({
-			viewport: this.state.viewport,
-			display: this.state.display,
-			data: this.state.data,
-			filter: this.state.filter,
+			__toggleRows:  self.__toggleRows
 		}),
 		RoomPanel({
 			refs: 			'rooms',
@@ -234,6 +219,7 @@ var DiaryContent = React.createClass({
 			iscroll: 			this.state.iscroll,
 			data: 				this.state.data,
 			currentResizeItem: 	this.props.currentResizeItem,
+			//currentDragItem:    this.state.currentDragItem, 
 			angular_evt: 		this.state.angular_evt,
 			__onGridScroll: 	self.__onGridScroll,
 			__onDragStart: 		self.__onDragStart,

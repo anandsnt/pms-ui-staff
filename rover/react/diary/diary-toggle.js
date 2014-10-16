@@ -1,14 +1,22 @@
 var Toggle = React.createClass({
+	componentWillReceiveProps: function(nextProps, nextState) {
+		if(nextProps.mode !== this.props.mode) {
+			this.props.__toggleRows(this.props.mode);
+		}
+	},
 	render: function() {
+		var self = this;
+
 		return React.DOM.div({
-			className: 'switch-button on'
+			className: 'switch-button' + (this.props.mode === 'on' ? ' on' : '')
 		},
 			React.DOM.input({
 				className: '',
 				name: 'diary-rooms-showing',
 				id: 'diary-rooms-showing',
 				type: 'checkbox',
-				checked: undefined
+				checked: undefined,
+				onChange: self.props.__onClick
 			}),
 			React.DOM.label({
 				className: 'data-off'

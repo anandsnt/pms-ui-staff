@@ -1,18 +1,29 @@
 var GridRow = React.createClass({
-	render: function() {
-		var hourly_divs = [],
-			self = this;
+	shouldComponentUpdate: function(nextProps, nextState) {
+		var render = false;
 
-		/*Create hourly spans across each grid row*/
-		for(var i = 0; i < this.props.display.hours; i++) {
-			hourly_divs.push(React.DOM.span({ 
-				key: 		'date-time-' + i,
-				className: 	'hour',
-				style: {
-					width: 	this.props.display.px_per_hr + 'px'
+		if(this.props.viewport !== nextProps.viewport ||
+		   this.props.display !== nextProps.display) {
+			render = true;
+		} else {
+			if(this.props.data.reservations.length !== nextProps.data.reservations.length) {
+				render = true;
+			} else if(nextProps.currentResizeItem) {
+				render = true;
+			} else {
+				for(var i = 0, len = this.props.data.reservations.length; i < len; i++) {
+					if(this.props.data.reservations[i] !== nextProps.data.reservations[i]) {
+						render = true;
+						return render;
+					}
 				}
-			}));
+			}		
 		}
+
+		return render;
+	},
+	render: function() {
+		var self = this;
 
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
@@ -32,9 +43,10 @@ var GridRow = React.createClass({
 				row_offset: 	self.props.row_number * (self.props.display.row_height + self.props.display.row_height_margin),
 				__onDragStart:  self.props.__onDragStart,
 				__onDragStop: 	self.props.__onDragStop,
-				currentResizeItem: self.props.currentResizeItem
+				currentResizeItem: self.props.currentResizeItem//,
+				//currentDragItem: self.props.currentDragItem
 			});
 		}),
-		hourly_divs);
+		GridRowBackground({ display: this.props.display })); //hourly_divs);
 	}	
 });

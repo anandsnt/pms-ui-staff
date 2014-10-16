@@ -12,7 +12,7 @@ var GridPanel = React.createClass({
 			iscroll: 			this.props.iscroll,
 			data: 				this.props.data,
 			angular_evt: 		this.props.angular_evt,
-			currentResizeItem: this.props.currentResizeItem,
+			currentResizeItem:  this.props.currentResizeItem,
 			__onGridScroll: 	self.props.__onGridScroll,
 			__onDragStart: 		self.props.__onDragStart,
 			__onDragStop: 		self.props.__onDragStop	

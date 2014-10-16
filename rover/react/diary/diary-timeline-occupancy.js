@@ -1,4 +1,7 @@
 var TimelineOccupancy = React.createClass({
+	shouldComponentUpdate: function(nextProps) {
+		return this.props.display !== nextProps.display;
+	},
 	render: function() {
 		var props = this.props,
 			occupancy_data;	

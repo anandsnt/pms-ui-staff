@@ -3,6 +3,13 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', 'rvDiar
 		//'use strict';
 		BaseCtrl.call(this, $scope);
 
-		
+		$scope.rooms = $scope.selectedReservations;
+
+		$scope.arrival_time = '';
+		$scope.arrival_date = '';
+		$scope.departure_time = '';
+		$scope.departure_date = '';
+
+
 	}
 ]);

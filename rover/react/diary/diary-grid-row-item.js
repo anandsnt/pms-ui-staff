@@ -29,6 +29,22 @@ var GridRowItem = React.createClass({
 			});
 		}
 	},
+	shouldComponentUpdate: function(nextProps, nextState) {
+		var row_item_data = this.props.data,
+			next_row_item_data = nextProps.data;
+
+		if(row_item_data.start_date.getTime() !== next_row_item_data.start_date.getTime() ||
+		   row_item_data.end_date.getTime() !== next_row_item_data.end_date.getTime() ||
+		   row_item_data.status !== next_row_item_data.status) {
+			return true;
+		}
+
+		if(this.props.angular_evt.displayFilter(nextProps.filter, next_row_item_data, nextProps.row_data)) {
+			return true;
+		}
+
+		return false;
+	},
 	render: function() {
 		var props = this.props,
 			state = this.state,
@@ -37,9 +53,9 @@ var GridRowItem = React.createClass({
 			time_span_ms 			= end_time_ms - start_time_ms,
 			maintenance_time_span 	= props.display.maintenance_span_int * props.display.px_per_int,
 			reservation_time_span 	= time_span_ms * props.display.px_per_ms,
-			is_temp_reservation 	= (props.data.status === 'available'),
+			is_temp_reservation 	= props.angular_evt.isAvailable(props.row_data, props.data),
 			style 					= {},
-			display_filter 			= props.angular_evt.displayFilter(props.filter, props.data, props.row_data),
+			display_filter 			= props.angular_evt.displayFilter(props.filter, props.row_data, props.data),
 			self = this;
 
 		if(!display_filter) {
@@ -61,16 +77,16 @@ var GridRowItem = React.createClass({
 			currentResizeItem: state.currentResizeItem,
 			style: 			_.extend({
 				left: 		(start_time_ms - props.display.x_origin) * props.display.px_per_ms + 'px', 
-				width: 		reservation_time_span + maintenance_time_span
+				width: 		reservation_time_span + maintenance_time_span + 'px'
 			}, style)	
 		}, 
 		React.DOM.span({
 			className: ((!is_temp_reservation) ? 'occupied ' : '') + props.data.status,
-			style: { width: reservation_time_span }
+			style: { width: reservation_time_span + 'px' }
 		}, is_temp_reservation ? props.data.rate + '|' + props.data.room_type : props.data.guest_name),
 		React.DOM.span({
 			className: 'maintenance',
-			style: { width: maintenance_time_span }
+			style: { width: maintenance_time_span + 'px' }
 		}, ' '));
 	}
 });

@@ -50,7 +50,7 @@
             <div class="faux-select">
                 Standard Rate
             </div>
-            <div id="diary-rates" class="faux-select-options hidden">
+            <div id="diary-rates" class="faux-select-options" ng-class="{'hidden': !gridProps.filter.rate_type}">
                 <div class="header">
                     <!-- Standard Rate -->
                     <label class="radio inline">

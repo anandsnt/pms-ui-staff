@@ -142,6 +142,13 @@ if(typeof Time === 'undefined') {
 		},
 		AMPM: function() {
 			return this.isAM() ? 'AM' : 'PM';
+		},
+		toString: function() {
+			var hours = (this.hours < 10) ? '0' + this.hours : this.hours, 
+				min = (this.minutes < 10) ? '0' + this.minutes : this.minutes, 
+				ampm = ' ' + (this.hours > 11) ? 'PM' : 'AM';
+
+			return this.hours + ':' + this.minutes ;
 		}
 	};
 }

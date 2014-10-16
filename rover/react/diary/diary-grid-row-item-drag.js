@@ -71,7 +71,8 @@ var GridRowItemDrag = React.createClass({
 	},
 	__onMouseUp: function(e) {
 		var state = this.state, 
-			props = this.props;
+			props = this.props,
+			item = this.state.currentDragItem;
 
 		document.removeEventListener('mouseup', this.__onMouseUp);
 		document.removeEventListener('mousemove', this.__dbMouseMove);
@@ -79,11 +80,12 @@ var GridRowItemDrag = React.createClass({
 		if(state.dragging) {
 			this.setState({
 				dragging: false,
+				currentDragItem: undefined,
 				left: state.left,
 				top: state.top
 			}, function() {
 				props.iscroll.grid.enable();
-				props.__onDragStop(e, state.left);
+				props.__onDragStop(e, state.left, item);
 			});
 		} else if(this.state.mouse_down) {
 			this.setState({
