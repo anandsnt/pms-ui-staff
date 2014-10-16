@@ -419,14 +419,14 @@
 				<label for="mli-payment-gateway-url">
 					SIX payment merchant ID
 				</label>
-				<input type="text" ng-model="data.mli_payment_gateway_url" value="{{data.mli_payment_gateway_url}}" placeholder="Enter MLI payment gateway url">
+				<input type="text" ng-model="data.six_merchant_id" value="{{data.six_merchant_id}}" placeholder="Enter six payment merchant id">
 			</div>
 
 			<div class="entry" ng-show="data.payment_gateway == 'sixpayments'">
 				<label for="mli-merchant-id">
 					SIX payment validation code
 				</label>
-				<input type="text" ng-model="data.mli_merchant_id" value="{{data.mli_merchant_id}}" placeholder="Enter MLI Merchant ID">
+				<input type="text" ng-model="data.six_validation_code" value="{{data.six_validation_code}}" placeholder="Enter six payment validation code">
 			</div>
 		</fieldset>
 
