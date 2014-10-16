@@ -12,10 +12,12 @@
       <!-- standalone PMS -->
       <!-- Disable when cleaning in progrees. -->
       <!-- ng-disabled="isCleaning" -->
-      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="standaloneRoomStatusChanged()"></select>
+      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disable="!!task_completion_status">
+        <option value="">  </option>
+      </select>
 
       <!-- connected PMS -->
-      <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="connectedRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
+      <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
     </div>
   </div>
 
@@ -60,7 +62,7 @@
       </div>
       
       <!-- 2.B Work Tab - Room is dirty -->
-      <div ng-if="checkShow('dirty') && !isCleaning && !isDone">
+      <div ng-if="checkShow('dirty') && !isCleaning">
         <strong class="h2"> Room is <span class="red">Dirty</span>.</strong>
 
         <div ng-if="roomDetails.assigned_maid">
@@ -71,7 +73,7 @@
       </div>
 
       <!-- 2.C Work Tab - Room is pickup -->
-      <div ng-if="checkShow('pickup') && !isCleaning && !isDone">
+      <div ng-if="checkShow('pickup') && !isCleaning">
         <strong class="h2"> <span class="orange">Pickup</span> room.</strong>
 
         <div ng-if="roomDetails.assigned_maid">

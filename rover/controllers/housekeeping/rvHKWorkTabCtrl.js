@@ -10,8 +10,11 @@ sntRover.controller('RVHKWorkTabCtrl', [
 
 		BaseCtrl.call(this, $scope);
 
+		// must create a copy since this scope is an inner scope
+		$scope.isStandAlone = $rootScope.isStandAlone;
+
 		// keep ref to room details in local scope
-		var $_updateRoomDetails = $scope.$parent.$_updateRoomDetails;
+		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		// default cleaning status
@@ -22,11 +25,10 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			completed: 'COMPLETED'
 		}
 		$scope.isCleaning = $scope.roomDetails.work_status == $_workStatusList['inProgress'] ? true : false;
-		$scope.isDone = $scope.roomDetails.work_status == $_workStatusList['completed'] ? true : false;
 
-
-		// must create a copy since this scope is an inner scope
-		$scope.isStandAlone = $rootScope.isStandAlone;
+		// the task completion status
+		// when the user click start button and done button the status here must be used as the done status
+		$scope.task_completion_status = $scope.roomDetails.task_completion_status;
 
 		// default room HK status
 		// will be changed only for connected
@@ -68,12 +70,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 			return false;
 		};
 
-
-		$scope.standaloneRoomStatusChanged = function() {
-			// nothing yet
-		};
-
-		$scope.connectedRoomStatusChanged = function() {
+		$scope.manualRoomStatusChanged = function() {
 			var callback = function(data){
 				$scope.$emit('hideLoader');
 				RVHkRoomStatusSrv.updateHKStatus({
@@ -104,7 +101,6 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['inProgress'];
 				$scope.isCleaning = true;
-				$scope.isDone = false;
 			};
 
 			var params = {
@@ -123,11 +119,9 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				// update local data
 				$scope.roomDetails.work_status = $_workStatusList['completed'];
 				$scope.isCleaning = false;
-				$scope.isDone = true;
 			
-				// update the 'curent_hk_status' to 'CLEAN'
-				// but it should update to the status set from the admin section
-				// $_updateRoomDetails( 'current_hk_status', 'CLEAN' );
+				// update 'current_hk_status' to 'task_completion_status'
+				$_updateRoomDetails( 'current_hk_status', $scope.task_completion_status );
 			};
 
 			var params = {

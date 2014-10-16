@@ -10,7 +10,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		// keep ref to room details in local scope
-		var updateRoomDetails = $scope.$parent.updateRoomDetails;
+		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		// oo/os save request param object
@@ -127,7 +127,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 					// change the original status and update the 'room_reservation_hk_status' in parent
 					originalStatusId = $scope.roomServices.room_service_status_id;
-					updateRoomDetails( 'room_reservation_hk_status', 1 );
+					$_updateRoomDetails( 'room_reservation_hk_status', 1 );
 				};
 
 				$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, { roomId: $scope.roomDetails.id, inServiceID: 1 }, callback);
@@ -148,7 +148,7 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 				// change the original status and update the 'room_reservation_hk_status' in parent
 				originalStatusId = $scope.roomServices.room_service_status_id;
-				updateRoomDetails( 'room_reservation_hk_status', $scope.roomServices.room_service_status_id );
+				$_updateRoomDetails( 'room_reservation_hk_status', $scope.roomServices.room_service_status_id );
 
 				// reset dates and reason and comment
 				$scope.roomServices.from_date = $filter( 'date' )( tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd' );
