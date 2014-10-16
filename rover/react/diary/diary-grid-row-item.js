@@ -33,6 +33,10 @@ var GridRowItem = React.createClass({
 		var row_item_data = this.props.data,
 			next_row_item_data = nextProps.data;
 
+		if(this.props.display !== nextProps.display) {
+			return true;
+		}
+
 		if(row_item_data.start_date.getTime() !== next_row_item_data.start_date.getTime() ||
 		   row_item_data.end_date.getTime() !== next_row_item_data.end_date.getTime() ||
 		   row_item_data.status !== next_row_item_data.status) {
