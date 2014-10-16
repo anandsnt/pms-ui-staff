@@ -10577,8 +10577,6 @@
                                         .hide;
                                         #fade > .out();
                                         .icons > .icon-diary-move-reservation();
-
-                                       
                                     }
 
                                     &:hover { 
@@ -10613,12 +10611,42 @@
                                             background-color: transparent;
                                         }
                                     }
+
+                                    &.check-in,
+                                    &.inhouse,
+                                    &.check-out {
+                                        &.editing { 
+                                            .gradient(@purpleStart, @purpleEnd); 
+
+                                            &:before {
+                                                .show; 
+                                                #fade > .in();
+                                                .icons > .icon-diary-edit-reservation();
+                                            }
+                                        }
+                                    }
                                 }
 
                                 &.available {
                                     color: @white;
                                     cursor: pointer;
                                     .gradient(@orangeStart, @orangeEnd);
+                                    
+
+                                    &.reserved { 
+                                        cursor: default;
+
+                                        &:after {
+                                            content: "";
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            bottom: 0;
+                                            .candystripe(rgba(255,118,37,.5), -45deg);
+                                            #move > .candystripe();
+                                        }
+                                    }
                                 }
 
                                 &.maintenance { 
@@ -10694,6 +10722,9 @@
             }
         }
 
+        /* Reservation edit ***/
+        &.editing { .calc-height(100, 150); }
+
         /* 12 hours grid ***/
         &.hours-12 {
 
@@ -10744,6 +10775,12 @@
                                     right: 5px;
                                     .square(30px);
                                 }                           
+                            }
+
+                            &.available {
+                                &.reserved { 
+                                    &:after { background-size: 40px 40px; }
+                                }
                             }
 
                             &.maintenance { 
@@ -10836,6 +10873,12 @@
                                         }
                                     }      
 
+                                    &.available {
+                                        &.reserved {                                   
+                                            &:after { background-size: 20px 20px; }
+                                        }
+                                    }   
+
                                     &.maintenance { 
                                         &:after {
                                             top: 0;
@@ -10844,7 +10887,7 @@
                                             #calc-position > .left(50, 12);
                                             .square(24px);
                                         }
-                                    }                  
+                                    }               
                                 }
                             }
                         }
