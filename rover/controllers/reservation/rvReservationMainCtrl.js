@@ -71,8 +71,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     stayDates: {},
                     isOccupancyCheckAlerted: false
                 }],
-                totalTaxAmount: 0,
-                totalStayCost: 0,
+                totalTaxAmount: 0, //This is for ONLY exclusive taxes
+                totalStayCost: 0, 
+                totalTax: 0, // CICO-10161 > This stores the tax inclusive and exclusive together
                 guest: {
                     id: null, // if new guest, then it is null, other wise his id
                     firstName: '',
@@ -457,7 +458,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             var roomTotal = 0;
             var roomTax = 0;
             var roomAvg = 0;
-            var totalTaxes = 0;
+            var totalTaxes = 0; // only exclusive
+            var taxesInclusiveExclusive = 0; // CICO-10161 > holds both inclusive and exclusive
             var taxes = currentRoom.taxes;
             $scope.reservationData.taxDetails = {};
 
@@ -480,6 +482,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         var taxApplied = $scope.calculateTax(date, roomAmount, taxes, roomIndex);
                         //  Note: Got to add the exclusive taxes into the tax Amount thing
                         var taxAmount = 0;
+                        var taxAll = 0; // CICO-10161
                         //  Compile up the data to be shown for the tax breakup
                         //  Add up the inclusive taxes & exclusive taxes pernight
                         //  TODO: PERSTAY TAXES TO BE COMPUTED HERE [[[[[[[[PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]]]
@@ -493,6 +496,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                                     $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + parseFloat(description.amount);
                                 }
                                 taxAmount = parseFloat(taxApplied.exclusive);
+                                taxAll = parseFloat(taxApplied.exclusive)+ parseFloat(taxApplied.inclusive);// CICO-10161
+
                             } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
                                 if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
                                     // As stated earler per_stay taxes can be taken in only for the first rateId
@@ -522,6 +527,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         });
                         //  update the total Tax Amount to be shown                        
                         totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
+                        taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll);// CICO-10161
                     }
                 }
             });
@@ -534,6 +540,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             _.each(exclusiveStayTaxes, function(description, index) {
                 totalTaxes = parseFloat(totalTaxes) + parseFloat(description.amount);
             })
+
+             _.each($scope.reservationData.taxDetails, function(description, index) {
+                if(description.postType == 'STAY'){
+                    taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(description.amount);    
+                }                
+            })
+
+
 
             currentRoom.rateTotal = parseFloat(roomTotal) + parseFloat(roomTax);
             currentRoom.rateAvg = currentRoom.rateTotal / ($scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights);
@@ -608,6 +622,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 //      b) the total tax amount
 
                 var taxAmount = 0;
+                var taxAll = 0;// CICO-10161
                 _.each(taxApplied.taxDescription, function(description, index) {
                     if (description.postType == "NIGHT") {
                         var nights = $scope.reservationData.numNights || 1;
@@ -620,6 +635,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
                         }
                         taxAmount = parseFloat(nights * taxApplied.exclusive);
+                        taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive);// CICO-10161
                     } else { //STAY
                         if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
                             $scope.reservationData.taxDetails[description.id] = description;
@@ -627,10 +643,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + parseFloat(description.amount);
                         }
                         taxAmount = parseFloat(taxApplied.exclusive);
+                        taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive);// CICO-10161
                     }
                 });
 
                 totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
+                taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll);// CICO-10161
 
                 //  CICO-9576
 
@@ -642,7 +660,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //TODO: Extend for multiple rooms
             $scope.reservationData.totalTaxAmount = totalTaxes;
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative) + parseFloat(totalTaxes);
-
+            $scope.reservationData.totalTax = taxesInclusiveExclusive;// CICO-10161
 
         }
 
