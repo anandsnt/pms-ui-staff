@@ -220,7 +220,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
                  $scope.fetchEntities();
             };
             var errorCallback = function(errorMessage) {
-                $scope.$emit('hideLoader');
+                $scope.fetchEntities();
                 $scope.errorMessage = errorMessage;
             };
            
