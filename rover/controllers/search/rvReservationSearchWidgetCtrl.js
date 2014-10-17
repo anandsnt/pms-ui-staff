@@ -143,6 +143,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			for (var i = 0; i < $scope.results.length; i++) {
 				$scope.results[i].is_row_visible = true;
 			}
+
 			refreshScroller();
 			$scope.$emit('hideLoader');
 		});
@@ -447,6 +448,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.focusOnSearchText();
 			}
+
+			//Set the search type and search title. Used in back navigation from staycard to search
+			$vault.set('searchType', "BY_SWIPE");
+			$vault.set('title', swipeHeadingInSearch);
+
 			$scope.$emit("UpdateHeading", swipeHeadingInSearch);
 		};
 		var swipeHeadingInSearch = '';
@@ -455,11 +461,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if (data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined") {
 				ksn = data.RVCardReadETBKSN;
 			}
-
+			alert(data.RVCardReadCardIIN);
 			var cardNumber = data.RVCardReadCardIIN.substr(data.RVCardReadCardIIN.length - 4);
 			swipeHeadingInSearch = 'Reservations with card ' + cardNumber;
-
-			//var url = '/staff/payments/search_by_cc';
 
 			var swipeData = {
 				'et2': data.RVCardReadTrack2,
