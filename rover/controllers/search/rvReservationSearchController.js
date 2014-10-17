@@ -82,13 +82,20 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
-
+    var totalNgIncludeRequested = 0;
     //click function on search area, mainly for closing the drawer
-    $scope.clickedOnSearchArea = function($event) {
+    $scope.clickedOnSearchArea = function($event) {      
       $scope.$emit("closeDrawer");
     };
-
+    $scope.$on("$includeContentRequested", function(event){
+      totalNgIncludeRequested++;
+      $scope.$emit('showLoader');
+    });    
     $scope.$on("$viewContentLoaded", function(event) {
+      totalNgIncludeRequested--;
+      if(totalNgIncludeRequested == 0){
+        $scope.$emit('hideLoader');
+      }
       setTimeout(function() {
         $scope.$apply(function() {
           //we are showing the search results area
