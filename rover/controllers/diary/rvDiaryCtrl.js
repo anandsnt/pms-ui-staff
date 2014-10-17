@@ -47,15 +47,19 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 			meta: {
 
 			},
+			edit: {
+				active: false,
+				currentItem: undefined
+			},
 			filter: {
 		    	arrival_date: $scope.start_date,
 		    	enable_resize: false,
-		    	arrival_time: '1:00',
+		    	arrival_time: undefined,
 		    	hours_days: 'h',
 		    	range: 12,
 		    	rate_type: 'Standard',
 		    	rate_type_details: {},
-		    	room_type: 'All',
+		    	room_type: undefined,
 		    	toggleHoursDays: function() {
 		    		this.hours_days = (this.hours_days === 'h') ? 'd' : 'h';
 		    	},
@@ -77,7 +81,15 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 					renderGrid(); 
 				},
 				toggleRates: function() {
-					this.rate_type = (this.rate_type === 'standard') ? 'corporate' : 'standard';
+					var rateMenu = $('.faux-select-options');
+
+					if(rateMenu.length > 0) {
+						if(rateMenu.hasClass('hidden')) {
+							rateMenu.removeClass('hidden');
+						}
+					}
+
+					//this.rate_type = (this.rate_type === 'standard') ? 'corporate' : 'standard';
 				}
 		    },
 		    data: $scope.data
@@ -167,21 +179,25 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	    	row_item_data.selected = selected;
 
-	    	if($scope.isSelected(row_data, row_item_data)) {
-	    		$scope.selectedReservations.push({ room: row_data, reservation: row_item_data });
-	    	}
+	    	if(!$scope.isAvailable(undefined, row_item_data)) {
+		    	switch(command_message) {
+		    		case 'resize': 
+		    		//copy = copyReservation(row_item_data);
 
-	    	switch(command_message) {
-	    		case 'resize': 
-	    		//copy = copyReservation(row_item_data);
+		    		row_item_data.left = (row_item_data.start_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
+		    		row_item_data.right = (row_item_data.end_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
 
-	    		row_item_data.left = (row_item_data.start_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
-	    		row_item_data.right = (row_item_data.end_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
+		    		$scope.gridProps.edit.active = true;
 
-	    		renderGrid({ currentResizeItem: row_item_data });
+		    		renderGrid({ currentResizeItem: row_item_data, currentResizeItemRow: row_data });
 
-	    		break;	 
-	    	}   
+		    		break;	 
+		    	} 
+		    } else {
+		    	if($scope.isSelected(row_data, row_item_data)) {
+		    		$scope.selectedReservations.push({ room: row_data, reservation: row_item_data });
+		    	}
+		    }
 	    };
 	    /*_________________________________________________________*/
 		/*END PROTOTYPE EVENT HOOKS -- */
@@ -247,11 +263,11 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	/*WATCHERS*/
 	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
 		if(newValue > oldValue) {
-			/*ngDialog.open({
+			ngDialog.open({
 				template: 'assets/partials/diary/rvDiaryConfirmation.html',
-				controller: 'RVDiaryConfirmation',
+				controller: 'RVDiaryConfirmationCtrl',
 				scope: $scope
-			});*/
+			});
 		}
 	});
 

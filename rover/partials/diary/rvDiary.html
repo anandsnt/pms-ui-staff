@@ -18,7 +18,7 @@
 <section id="diary-content" class="content diary-content" role="main">
 
     <!-- Diary header -->
-    <form method="post" action="" id="diary-header" name="diary-header" class="diary-header">
+    <form method="post" action="" id="diary-header" name="diary-header" class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
         <div class="entry date">
             <label for="arrival-date">Date</label>
             <div class="entry-data">
@@ -32,6 +32,7 @@
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
                 <select id="arrival-time" name="arrival-time" ng-model="gridProps.filter.arrival_time" ng-options="arrival_time for arrival_time in arrival_times">
+                    <option value="" disabled selected="selected">Select</option>
                     <option value={{arrival_time}}>{{arrival_time}}</option> 
                 </select>
             </div>
@@ -40,6 +41,7 @@
             <label for="room-type">Room Type</label>
             <div class="select">
                 <select id="room-type" name="room-type" ng-model="gridProps.filter.room_type" ng-options="room_type for room_type in room_types">
+                    <option value="" disabled selected="selected">Select</option>
                     <option value="All">All</option>
                     <option value={{room_type}}>{{room_type}}</option>
                 </select>
@@ -47,10 +49,10 @@
         </div>
         <div class="entry rate">
             <label for="rate-type">Rate Type</label>
-            <div class="faux-select">
+            <div class="faux-select" ng-click="toggleRates()">
                 Standard Rate
             </div>
-            <div id="diary-rates" class="faux-select-options" ng-class="{'hidden': !gridProps.filter.rate_type}">
+            <div id="diary-rates" class="faux-select-options hidden">
                 <div class="header">
                     <!-- Standard Rate -->
                     <label class="radio inline">

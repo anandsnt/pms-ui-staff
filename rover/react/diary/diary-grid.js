@@ -51,6 +51,7 @@ var Grid = React.createClass({
 						iscroll:            self.props.iscroll, 
 						angular_evt: 		self.props.angular_evt,
 						currentResizeItem:  self.props.currentResizeItem,
+						currentResizeItemRow:   self.props.currentResizeItemRow,
 						__onDragStart: 		self.props.__onDragStart,
 						__onDragStop: 		self.props.__onDragStop			
 					});

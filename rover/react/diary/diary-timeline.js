@@ -62,7 +62,8 @@ var Timeline = React.createClass({
 			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,
 			__onResizeRightStart:self.props.__onResizeRightStart,
 			__onResizeRightEnd: self.props.__onResizeRightEnd, 
-			currentResizeItem: this.props.currentResizeItem
+			currentResizeItem: this.props.currentResizeItem,
+			currentResizeItemRow: this.props.currentResizeItemRow
 		}));
 	}
 });

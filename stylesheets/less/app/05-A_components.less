@@ -9996,11 +9996,11 @@
                 }
             }
 
-            &.room { #pixel-to-percent > .width(320, 2048); }
+            &.room { #pixel-to-percent > .width(380, 2048); }
 
             &.rate { 
                 position: relative;
-                #pixel-to-percent > .width(320, 2048); 
+                #pixel-to-percent > .width(498, 2048);
 
                 .faux-select { 
                     position: relative;
@@ -10076,13 +10076,6 @@
             }
         }
 
-        .actions {
-            padding: 30px 10px 0;
-            .pull-right;
-
-            .button { line-height: 50px; }
-        }
-
         /* Rate type search **/
         .faux-select-options {
             position: absolute;
@@ -10099,6 +10092,7 @@
                     margin: 0;
                     padding: 5px 0 5px 40px;
                     border-bottom: 1px solid rgba(0,0,0,.1);
+                    text-overflow: clip;
                     .show;
 
                     .icon-form { 
@@ -10110,6 +10104,30 @@
                         color: @grey3;
                         font-style: italic;
                         .hide;
+
+                        &.active {
+                            color: @logoPrimary;
+                            font-weight: 600;
+                            font-style: normal;
+                        }
+                    }
+
+                    .icons {
+                        position: absolute;
+                        top: 0;
+                        background-color: @white;
+                        .square(50px);
+                        z-index: 99;
+                        
+                        &.icon-ok-10 { 
+                            right: 50px; 
+                            background-position: 20px -5840px;
+                        }
+
+                        &.icon-remove-10 { 
+                            right: 0; 
+                            background-position: 20px -3920px;
+                        }
                     }
 
                     &:last-child { border-bottom: 0; }
@@ -10199,6 +10217,56 @@
 
             &.hidden { #fade > .out(); }
         }
+
+        &.editing {
+            height: 150px;
+            background: @purpleStart;
+
+            .reservation-details {
+                padding: 10px 10px 0 10px;
+                .pull-left;
+                .size(60px, 100%);
+
+                p {
+                    font-size: 20px;
+                    line-height: 50px;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    color: @white;
+                    width: 70%;
+                    .pull-left;
+
+                    strong { 
+                        font-weight: 600;
+                        margin-right: 15px; 
+                    }
+
+                    span { margin: 0 5px; }
+                }
+
+                .actions {
+                    width: 30%;
+                    .pull-left;
+
+                    .button {
+                        line-height: 48px;
+                        margin-right: 10px;
+
+                        &.green {
+                            padding: 0 40px;
+                        }
+
+                        &.blank {
+                            margin-right: 0;
+                            color: rgba(0,0,0,.5);
+
+                            &:hover,
+                            &:active { color: @white; }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .diary-container {
@@ -10218,19 +10286,63 @@
             .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
             .calc-width(100, 120);
 
-            > .outer-wrapper {
+            .outer-wrapper {
                 height: 100%;
 
-                > .wrapper {
+                .wrapper {
                     color: @white;
                     .gradient-horizontal-three-colors(darken(@darkBlue, 40), @blue, darken(@darkBlue, 40));
                     .size(60px, 100%);
                     .float;
 
-                    > .hours {
+                    .stay-range {
+                        position: absolute;
+                        top: 5px;
+                        left: 0;
+                        width: 100%;
+                        .calc-height(100, 5);
+
+                        .set-times {
+                            position: absolute;
+                            z-index: 11000;
+                            font-size: 12px;
+                            line-height: 16px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            color: @white;
+                            padding: 5px;
+                            .size(40px, 60px);
+                            .gradient(@orangeStart, @orangeEnd);
+                            #border-radius > .rounded(6px);
+
+                            span { 
+                                font-size: 14px;
+                                .show;
+                            }
+
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                bottom: -5px;
+                                left: 0;
+                                .square(0px);
+                                border-top: 5px solid transparent;
+                                border-bottom: 5px solid transparent;
+                                border-left: 5px solid @orangeEnd;
+                            }
+
+                            &.editing { 
+                                .gradient(@purpleStart, @purpleEnd); 
+
+                                &:after { border-left: 5px solid @purpleEnd; }
+                            }
+                        }
+                    }
+
+                    .hours {
                         width: 100%;
 
-                        > .segment { 
+                        .segment { 
                             position: relative;
                             font-size: 14px;
                             line-height: 60px;
@@ -10284,10 +10396,10 @@
 
                     .resize-control {                   
                         position: absolute;
-                        width: 30px;
+                        width: 50px;
                         height: 100%;
                         background-color: #fff;
-                        z-index: auto;
+                        z-index: 9000;
                     }
                 }
 
@@ -10434,9 +10546,9 @@
             -o-user-select: none;
             user-select: none; */
 
-            > .iScrollVerticalScrollbar { .hide; }
+            > .iScrollVerticalScrollbar { display: none; }
             > .iScrollHorizontalScrollbar { 
-                top: auto;
+                //top: auto;
                 bottom: 10px;
                 left: 10px;
                 right: 10px;
@@ -10510,8 +10622,6 @@
                                         .hide;
                                         #fade > .out();
                                         .icons > .icon-diary-move-reservation();
-
-                                       
                                     }
 
                                     &:hover { 
@@ -10546,12 +10656,42 @@
                                             background-color: transparent;
                                         }
                                     }
+
+                                    &.check-in,
+                                    &.inhouse,
+                                    &.check-out {
+                                        &.editing { 
+                                            .gradient(@purpleStart, @purpleEnd); 
+
+                                            &:before {
+                                                .show; 
+                                                #fade > .in();
+                                                .icons > .icon-diary-edit-reservation();
+                                            }
+                                        }
+                                    }
                                 }
 
                                 &.available {
                                     color: @white;
                                     cursor: pointer;
                                     .gradient(@orangeStart, @orangeEnd);
+                                    
+
+                                    &.reserved { 
+                                        cursor: default;
+
+                                        &:after {
+                                            content: "";
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            bottom: 0;
+                                            .candystripe(rgba(255,118,37,.5), -45deg);
+                                            #move > .candystripe();
+                                        }
+                                    }
                                 }
 
                                 &.maintenance { 
@@ -10627,6 +10767,9 @@
             }
         }
 
+        /* Reservation edit ***/
+        &.editing { .calc-height(100, 150); }
+
         /* 12 hours grid ***/
         &.hours-12 {
 
@@ -10677,6 +10820,12 @@
                                     right: 5px;
                                     .square(30px);
                                 }                           
+                            }
+
+                            &.available {
+                                &.reserved { 
+                                    &:after { background-size: 40px 40px; }
+                                }
                             }
 
                             &.maintenance { 
@@ -10769,6 +10918,12 @@
                                         }
                                     }      
 
+                                    &.available {
+                                        &.reserved {                                   
+                                            &:after { background-size: 20px 20px; }
+                                        }
+                                    }   
+
                                     &.maintenance { 
                                         &:after {
                                             top: 0;
@@ -10777,7 +10932,7 @@
                                             #calc-position > .left(50, 12);
                                             .square(24px);
                                         }
-                                    }                  
+                                    }               
                                 }
                             }
                         }

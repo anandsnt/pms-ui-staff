@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter',
+sntRover.controller('RVDiarySummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter',
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);

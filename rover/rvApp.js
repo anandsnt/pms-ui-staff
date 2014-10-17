@@ -15,6 +15,7 @@ var sntRover = angular.module('sntRover',[
 		'stayCardModule', 
 		'housekeepingModule', 
 		'reportsModule', 
+		'diaryModule',
 		'cacheVaultModule', 
 		'twoMonthscalendar',
 		'acute.select', 

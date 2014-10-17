@@ -181,7 +181,7 @@ var DiaryContent = React.createClass({
 		var self = this;
 
 		return this.transferPropsTo(React.DOM.div({
-			className: 'diary-container ' + ((this.state.viewport.hours === 12) ? 'hours-12' : 'hours-24')
+			className: 'diary-container ' + ((this.state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + (this.props.currentResizeItem ? ' editing' : '')
 		},
 		TogglePanel({
 			__toggleRows:  self.__toggleRows
@@ -219,6 +219,7 @@ var DiaryContent = React.createClass({
 			iscroll: 			this.state.iscroll,
 			data: 				this.state.data,
 			currentResizeItem: 	this.props.currentResizeItem,
+			currentResizeItemRow: this.props.currentResizeItemRow,
 			//currentDragItem:    this.state.currentDragItem, 
 			angular_evt: 		this.state.angular_evt,
 			__onGridScroll: 	self.__onGridScroll,
