@@ -5,11 +5,13 @@ angular.module('FinancialsModule', [])
         abstract: true,
         url: '/financials',
         templateUrl: '/assets/partials/financials/rvFinancials.html',
-        controller: 'RVFinancialsCtrl'
+        controller: 'RVFinancialsController'
     });
+
     $stateProvider.state('rover.financials.journal', {
-        url: '/journal',
+        url: '/journal/:id',
         templateUrl: '/assets/partials/financials/rvJournal.html',
-        controller: 'RVJournalCtrl'
+        controller: 'RVJournalController'
     });
+
 });
