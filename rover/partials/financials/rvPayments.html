@@ -1,33 +1,36 @@
 <div>
     <!-- Print box -->
     <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
-        <div class="entry">
-            <label for="payments-payment-type">Payment Type / Charge Code</label>
-            <div class="select">
-                <select name="payments-payment-type" id="payments-payment-type" class="placeholder">
-                    <option value="" selected>All</option>
-                    <option value="{option 1}">{option 1}</option>
-                    <option value="{option 2}">{option 2}</option>
-                    ...
-                </select>
+        <div class="holder">
+            <div class="entry">
+                <label for="payments-payment-type">Payment Type / Charge Code</label>
+                <div class="select">
+                    <select name="payments-payment-type" id="payments-payment-type" class="placeholder">
+                        <option value="" selected>All</option>
+                        <option value="{option 1}">{option 1}</option>
+                        <option value="{option 2}">{option 2}</option>
+                        ...
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="switch-button on">
+                    <input name="payments-print-toggle" id="payments-print-toggle" value="" type="checkbox" checked />
+                    <label class="data-off">
+                        <span class="value">Summary</span>
+                        <span class="switch-icon">Details</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">Summary</span>
+                        <span class="value">Details</span>
+                    </label>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="print-payments" type="button" class="button blue">Print</button>
             </div>
         </div>
-        <div class="entry">
-            <div class="switch-button on">
-                <input name="payments-print-toggle" id="payments-print-toggle" value="" type="checkbox" checked />
-                <label class="data-off">
-                    <span class="value">Summary</span>
-                    <span class="switch-icon">Details</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">Summary</span>
-                    <span class="value">Details</span>
-                </label>
-            </div>
-        </div>
-        <div class="actions">
-            <button id="print-payments" type="button" class="button blue">Print</button>
-        </div>
+        <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
     </form>
 
     <!-- Content PAYMENTS-->
