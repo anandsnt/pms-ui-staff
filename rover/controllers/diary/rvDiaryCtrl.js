@@ -236,7 +236,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 				DiaryContent(_.extend(args, $scope.gridProps)),
 				document.getElementById('component-wrapper')
 			);	
-		}
+		};
 
 	    $scope.isSelected = function(room, reservation) {
 	    	return _.isBoolean(reservation.selected) && reservation.selected;
@@ -309,6 +309,22 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	return _.map(vals, function(val) {
 	    		return _.random(0, len) * val;
 	    	});
+	    };
+
+	    $scope.saveEdit = function() {
+	    	var row_data = copyRoom($scope.gridProps.currentResizeItemRow),
+	    		row_item_data = copyReservation($scope.gridProps.currentResizeItem);
+
+	    	row_item_data.start_time = new Date(row_item_data.left / $scope.gridProps.display.px_per_ms + $scope.gridProps.display.x_origin);
+	    	row_item_data.end_time = new Date(row_item_data.right / $scope.gridProps.display.px_per_ms + $scope.gridProps.display.x_origin); 
+
+	    	updateReservation(row_item_data);
+
+	    	$scope.renderGrid( { edit: { active: false }, currentResizeItem: undefined, currentResizeItemRow: undefined });
+	    };
+
+	    $scope.cancelEdit = function() {
+	    	$scope.renderGrid( { edit: { active: false } });
 	    };
 	})();
 
