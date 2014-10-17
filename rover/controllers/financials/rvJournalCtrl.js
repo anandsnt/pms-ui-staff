@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams',	function($scope,$filter,$stateParams) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope',	function($scope,$filter,$stateParams, ngDialog, $rootScope) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading.
@@ -27,6 +27,15 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams',	f
 		$scope.printBoxHeight = resizableMinHeight;
 		$scope.printBoxClass = '';
 	};
+	$scope.popupCalendar = function() {
+      ngDialog.open({
+        template: '/assets/partials/financials/rvJournalCalendarPopup.html',
+        controller: 'RVJournalDatePickerController',
+        className: 'single-date-picker',
+        scope: $scope
+      });
+    };
 
+    $scope.date = $rootScope.businessDate;
 
 }]);
