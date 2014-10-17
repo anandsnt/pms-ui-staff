@@ -1,27 +1,28 @@
 var TimelinePanel = React.createClass({
 	componentDidMount: function() {
-		/*var iscroll = this.props.iscroll;
+		var iscroll = this.props.iscroll;
 
 		iscroll.timeline = new IScroll('#diary-timeline', { 
-			//probeType: 1, 
+			probeType: 2, 
 			scrollbars: false,
-			interactiveScrollbars: false,
-			scrollX: false, 
+			interactiveScrollbars: true,
+			scrollX: true, 
 			scrollY: false, 
 			momentum: false,
-			bounce: false
-		});*/
+			bounce: false,
+			mouseWheel: 'scroll'
+		});
 
-		//iscroll.timeline._scrollFn = this.props.__onGridScroll.bind(null, iscroll.timeline);
+		iscroll.timeline._scrollFn = this.props.__onGridScroll.bind(null, iscroll.timeline);
 
-		//iscroll.timeline.on('scroll', iscroll.timeline._scrollFn);
+		iscroll.timeline.on('scroll', iscroll.timeline._scrollFn);
 
-		/*setTimeout(function () {
+		setTimeout(function () {
 	        iscroll.timeline.refresh();
-	    }.bind(this), 0);*/
+	    }.bind(this), 0);
 	},
 	componentWillUnmount: function() {
-		//this.props.iscroll.timeline.destroy();
+		this.props.iscroll.timeline.destroy();
 	},
 	shouldComponentUpdate: function(nextProps, nextState) {
 		if(this.props.viewport !== nextProps.viewport ||
@@ -51,6 +52,7 @@ var TimelinePanel = React.createClass({
 			display: this.props.display,
 			data: this.props.data,
 			iscroll: this.props.iscroll,
+			edit: this.props.edit,
 			__onResizeCommand: self.props.__onResizeCommand,
 			__onResizeLeftStart:self.props.__onResizeLeftStart,
 			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,

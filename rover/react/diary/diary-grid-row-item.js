@@ -1,35 +1,35 @@
 var GridRowItem = React.createClass({
 	getInitialState: function() {
 		return {
-			resizing: false,
-			currentResizeItem: undefined
+			editing: this.props.edit.active,
+			resizing: this.props.resizing,
+			currentResizeItem: this.props.currentResizeItem,
+			currentResizeItemRow: this.props.currentResizeItemRow
 		};
 	},
 	componentWillReceiveProps: function(nextProps) {
 		var copy = {};
 
 		if(nextProps.currentResizeItem &&
-		   nextProps.currentResizeItem.id === nextProps.data.id) {
+		   nextProps.currentResizeItem.id === nextProps.data.id ||
+		   nextProps.edit.active &&
+		   nextProps.edit.originalItem.id === nextProps.data.id) {
 
 			this.setState({
+				editing: nextProps.edit.active,
 				resizing: true,
-				currentResizeItem: nextProps.currentResizeItem
+				currentResizeItem: nextProps.currentResizeItem,
+				currentResizeItemRow: nextProps.currentResizeItemRow
 			});
-		} else if(this.props.currentResizeItem && !nextProps.currentResizeItem) {
+		} else if(!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem ||
+				  this.props.edit.active && !nextProps.edit.active) {
 			this.setState({
+				editing: false,
 				resizing: false,
-				currentResizeItem: undefined
+				currentResizeItem: undefined,
+				currentResizeItemRow: undefined
 			});
 		}
-	},
-	shouldComponentUpdate: function(nextProps, nextState) {
-		/*if(nextState.resizing && nextState.currentResizeItem) {
-			if(this.props.id !== nextState.currentResizeItem.id) {
-				return false;
-			}
-		}*/
-
-		return true;
 	},
 	render: function() {
 		var props 					= this.props,
@@ -51,22 +51,24 @@ var GridRowItem = React.createClass({
 
 		return GridRowItemDrag({
 			key: 				props.data.key,
-			className: 		    'occupancy-block' + (state.resizing ? ' editing' : ''),
+			className: 		    'occupancy-block' + (state.editing ? ' editing' : ''),
 			row_data: 			props.row_data,
 			data:  				props.data,
 			display: 			props.display,
 			viewport: 			props.viewport,
+			edit:               props.edit,
 			iscroll:        	props.iscroll,
 			angular_evt:    	props.angular_evt,
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
 			currentResizeItem:  state.currentResizeItem,
+			currentResizeItemRow: state.currentResizeItemRow,
 			style: 			   _.extend({
 				left: 		       (!state.resizing ? (start_time_ms - display.x_origin) * display.px_per_ms : start_time_ms) + 'px'
 			}, style)	
 		}, 
 		React.DOM.span({
-			className: ((!is_temp_reservation) ? 'occupied ' : '') + props.data.status + (state.resizing ? ' editing' : '') + (is_temp_reservation && this.props.data.selected ? ' reserved' : ''),
+			className: ((!is_temp_reservation) ? 'occupied ' : '') + props.data.status + (state.editing ? ' editing' : '') + (is_temp_reservation && this.props.data.selected ? ' reserved' : ''),
 			style: { 
 				width: reservation_time_span + 'px' 
 			}

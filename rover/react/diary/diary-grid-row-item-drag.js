@@ -94,7 +94,7 @@ var GridRowItemDrag = React.createClass({
 				selected: !state.selected
 			}, function() {
 				props.iscroll.grid.enable();
-				props.angular_evt.onSelect(props.row_data, props.data, !state.selected, 'resize');		
+				props.angular_evt.onSelect(props.row_data, props.data, !state.selected, 'edit');		
 			});
 		}
 	},

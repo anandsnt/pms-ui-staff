@@ -6,7 +6,7 @@ var Resizable = React.createClass({
 		return React.DOM.div({
 			className: 'stay-range',
 			style: {
-				display: (this.props.currentResizeItem) ? 'block' : 'none'
+				display: (this.props.edit.active) ? 'block' : 'none'
 			}
 		},
 		TimelineResizeGrip({

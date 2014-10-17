@@ -9,6 +9,7 @@ var GridPanel = React.createClass({
 			viewport: 			this.props.viewport,
 			display: 			this.props.display,
 			filter: 			this.props.filter,
+			edit:               this.props.edit,
 			iscroll: 			this.props.iscroll,
 			data: 				this.props.data,
 			angular_evt: 		this.props.angular_evt,

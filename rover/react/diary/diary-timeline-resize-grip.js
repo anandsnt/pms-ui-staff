@@ -30,6 +30,10 @@ var TimelineResizeGrip = React.createClass({
 				mouse_down: true,
 				origin_x: e.pageX,
 				element_x: page_offset.left - 120
+			},
+			function() {
+				this.props.iscroll.timeline.disable();
+				this.props.iscroll.grid.disable();	
 			});
 		}
 	},
@@ -89,7 +93,7 @@ var TimelineResizeGrip = React.createClass({
 				
 				this.props.__onResizeCommand(model);
 				
-				//this.props.iscroll.timeline.enable();
+				this.props.iscroll.timeline.enable();
 				this.props.iscroll.grid.enable();		
 			});
 		}

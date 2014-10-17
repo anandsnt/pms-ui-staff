@@ -48,6 +48,7 @@ var Grid = React.createClass({
 						display: 			self.props.display,
 						viewport: 			self.props.viewport,
 						filter: 			self.props.filter,
+						edit:               self.props.edit,
 						iscroll:            self.props.iscroll, 
 						angular_evt: 		self.props.angular_evt,
 						currentResizeItem:  self.props.currentResizeItem,

@@ -56,6 +56,7 @@ var Timeline = React.createClass({
 		Resizable({
 			display: this.props.display,
 			data: this.props.data,
+			edit: this.props.edit,
 			iscroll: this.props.iscroll,
 			__onResizeCommand: this.props.__onResizeCommand,
 			__onResizeLeftStart:self.props.__onResizeLeftStart,

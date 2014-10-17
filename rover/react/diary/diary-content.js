@@ -30,8 +30,8 @@ var DiaryContent = React.createClass({
 			if(el) {
 				switch(el) {
 					case iscroll.grid:
-						//iscroll.timeline.scrollTo(el.x, 0);
-						$('.diary-timeline .hours').css({ left: -iscroll.grid.x });
+						iscroll.timeline.scrollTo(el.x, 0);
+						//$('.diary-timeline .hours').css({ left: -el.x });
 						iscroll.rooms.scrollTo(0, el.y);
 					break;
 					case iscroll.timeline:
@@ -85,7 +85,7 @@ var DiaryContent = React.createClass({
 		this.state.angular_evt.onResizeLeftEnd.apply(this, Array.prototype.slice.call(arguments));
 
 		this.setProps({
-			currentResizeItem: undefined
+			currentResizeItem: row_item_data
 		});
 	},
 	__onResizeRightStart: function(row_data, row_item_data) {
@@ -95,7 +95,7 @@ var DiaryContent = React.createClass({
 		this.state.angular_evt.onResizeRightEnd.apply(this, Array.prototype.slice.call(arguments));
 
 		this.setProps({
-			currentResizeItem: undefined
+			currentResizeItem: row_item_data
 		});
 	},	
 	componentDidMount: function() {
@@ -124,12 +124,14 @@ var DiaryContent = React.createClass({
   	componentWillReceiveProps: function(nextProps) {
   		if(this.props.viewport !== nextProps.viewport ||
   		   this.props.display !== nextProps.display ||
-  		   this.props.filter !== nextProps.filter) {
+  		   this.props.filter !== nextProps.filter ||
+  		   this.props.edit !== nextProps.edit) {
 
   			this.setState({
   				display: nextProps.display,
   				viewport: nextProps.viewport,
-  				filter: nextProps.filter
+  				filter: nextProps.filter,
+  				edit: nextProps.edit
   			});
   		}
   	},
@@ -162,6 +164,11 @@ var DiaryContent = React.createClass({
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
+							edit: {
+								active: false,
+								originalItem: undefined,
+								originalRowItem: undefined
+							},
 							iscroll: {
 				  				timeline: undefined,
 				  				rooms: undefined,
@@ -204,6 +211,7 @@ var DiaryContent = React.createClass({
 			display: 			this.state.display,
 			data: 				this.state.data,
 			filter: 			this.state.filter,
+			edit: 				this.state.edit,
 			iscroll: 			this.state.iscroll,
 			currentResizeItem: 	this.props.currentResizeItem,
 			angular_evt: 		this.state.angular_evt,
@@ -219,11 +227,11 @@ var DiaryContent = React.createClass({
 			viewport: 			this.state.viewport,
 			display: 			this.state.display,
 			filter: 			this.state.filter,
+			edit:               this.state.edit,
 			iscroll: 			this.state.iscroll,
 			data: 				this.state.data,
 			currentResizeItem: 	this.props.currentResizeItem,
 			currentResizeItemRow: this.props.currentResizeItemRow,
-			//currentDragItem:    this.state.currentDragItem, 
 			angular_evt: 		this.state.angular_evt,
 			__onGridScroll: 	self.__onGridScroll,
 			__onDragStart: 		self.__onDragStart,
