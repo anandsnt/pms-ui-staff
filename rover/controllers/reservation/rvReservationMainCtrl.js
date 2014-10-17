@@ -72,7 +72,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     isOccupancyCheckAlerted: false
                 }],
                 totalTaxAmount: 0, //This is for ONLY exclusive taxes
-                totalStayCost: 0, 
+                totalStayCost: 0,
                 totalTax: 0, // CICO-10161 > This stores the tax inclusive and exclusive together
                 guest: {
                     id: null, // if new guest, then it is null, other wise his id
@@ -496,7 +496,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                                     $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + parseFloat(description.amount);
                                 }
                                 taxAmount = parseFloat(taxApplied.exclusive);
-                                taxAll = parseFloat(taxApplied.exclusive)+ parseFloat(taxApplied.inclusive);// CICO-10161
+                                taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive); // CICO-10161
 
                             } else { //[[[[[[ PER_STAY NEEDS TO BE DONE ONLY ONCE FOR A RATE ID & TAX ID COMBO]]]]]]
                                 if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
@@ -527,7 +527,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         });
                         //  update the total Tax Amount to be shown                        
                         totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
-                        taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll);// CICO-10161
+                        taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll); // CICO-10161
                     }
                 }
             });
@@ -541,10 +541,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 totalTaxes = parseFloat(totalTaxes) + parseFloat(description.amount);
             })
 
-             _.each($scope.reservationData.taxDetails, function(description, index) {
-                if(description.postType == 'STAY'){
-                    taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(description.amount);    
-                }                
+            _.each($scope.reservationData.taxDetails, function(description, index) {
+                if (description.postType == 'STAY') {
+                    taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(description.amount);
+                }
             })
 
 
@@ -574,27 +574,37 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 var baseRate = parseFloat(addon.quantity) * parseFloat(addon.price);
 
                 var finalRate = baseRate;
-                // Function to compute the amount per day of the selected addon 
-                var amountPerday = (function getAmountPerDay() {
-                    //TODO: calculate rate based on the amount type
-                    if (addon.amountType.value == "PERSON") {
-                        // Calculate the total number of occupants and multiply with base rate
-                        // Total number of occupants doesnt count the infants!
-                        return baseRate * parseInt(parseInt(currentRoom.numAdults) + parseInt(currentRoom.numChildren));
+
+                var getAddonRateForDay = function(amountType, baseRate, numAdults, numChildren) {
+                    if (amountType == "PERSON") {
+                        return baseRate * parseInt(parseInt(numAdults) + parseInt(numChildren));
                     } else if (addon.amountType.value == "CHILD") {
-                        //TODO : Calculate the total number of occupants and multiply with base rate
-                        return baseRate * parseInt(currentRoom.numChildren);
+                        return baseRate * parseInt(numChildren);
                     } else if (addon.amountType.value == "ADULT") {
-                        //TODO : Calculate the total number of occupants and multiply with base rate
-                        return baseRate * parseInt(currentRoom.numAdults);
+                        return baseRate * parseInt(numAdults);
                     }
-                    //fallback should happen if amount type is flat
                     return baseRate;
-                })();
-                if (addon.postType.value == "NIGHT") {
-                    finalRate = parseFloat(amountPerday) * parseInt($scope.reservationData.numNights);
+                }
+
+                if (addon.postType.value == "NIGHT" && parseInt($scope.reservationData.numNights) > 1) {
+                    var cumulativeRate = 0
+                    _.each(currentRoom.stayDates, function(stayDate, date) {
+                        if (date !== $scope.reservationData.departureDate)
+                            cumulativeRate = parseFloat(cumulativeRate) + parseFloat(getAddonRateForDay(
+                                addon.amountType.value,
+                                baseRate,
+                                stayDate.guests.adults, // Using EACH night's occupancy information to calculate the addon's applicable amount!
+                                stayDate.guests.children
+                            )); // cummulative sum (Not just multiplication of rate per day with the num of nights) >> Has to done at "day level" to handle the reservations with varying occupancy!
+                    });
+                    finalRate = cumulativeRate;
                 } else {
-                    finalRate = amountPerday;
+                    finalRate = parseFloat(getAddonRateForDay(
+                        addon.amountType.value,
+                        baseRate,
+                        currentRoom.numAdults, // Using FIRST night's occupancy information to calculate the addon's applicable amount!
+                        currentRoom.numChildren
+                    ));
                 }
 
                 //  CICO-9576 => TAXES FOR ADDONS
@@ -622,7 +632,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 //      b) the total tax amount
 
                 var taxAmount = 0;
-                var taxAll = 0;// CICO-10161
+                var taxAll = 0; // CICO-10161
                 _.each(taxApplied.taxDescription, function(description, index) {
                     if (description.postType == "NIGHT") {
                         var nights = $scope.reservationData.numNights || 1;
@@ -630,12 +640,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             $scope.reservationData.taxDetails[description.id] = description;
                         } else {
                             // add the amount here
-                            // Note Got to multiply with the number of days as this is a per night tax
+                            // Note Got to multiply with the number of days as this is a per night tax                            
                             var nights = $scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights;
+                            if (addon.postType.value == "STAY") nights = 1; // Based on Nicole's comments the addons override their taxes in the post type dimension
                             $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
                         }
                         taxAmount = parseFloat(nights * taxApplied.exclusive);
-                        taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive);// CICO-10161
+                        taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-10161
                     } else { //STAY
                         if (typeof $scope.reservationData.taxDetails[description.id] == "undefined") {
                             $scope.reservationData.taxDetails[description.id] = description;
@@ -643,12 +654,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + parseFloat(description.amount);
                         }
                         taxAmount = parseFloat(taxApplied.exclusive);
-                        taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive);// CICO-10161
+                        taxAll = parseFloat(taxApplied.exclusive) + parseFloat(taxApplied.inclusive); // CICO-10161
                     }
                 });
 
                 totalTaxes = parseFloat(totalTaxes) + parseFloat(taxAmount);
-                taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll);// CICO-10161
+                taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(taxAll); // CICO-10161
 
                 //  CICO-9576
 
@@ -660,7 +671,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             //TODO: Extend for multiple rooms
             $scope.reservationData.totalTaxAmount = totalTaxes;
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative) + parseFloat(totalTaxes);
-            $scope.reservationData.totalTax = taxesInclusiveExclusive;// CICO-10161
+            $scope.reservationData.totalTax = taxesInclusiveExclusive; // CICO-10161
 
         }
 
