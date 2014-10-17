@@ -139,16 +139,20 @@ var TimelineResizeGrip = React.createClass({
 		}
 	},
 	render: function() {
-		var self = this;
+		var self = this,
+			direction = this.props.itemProp,
+			px_per_ms = this.props.display.px_per_ms,
+			x_origin = this.props.display.x_origin,
+			currentResizeItem = this.state.currentResizeItem;
 
 		console.log('rendering', this.state);
 
 		return this.transferPropsTo(React.DOM.a({
 			className: 'set-times',
 			style: {
-				left: (this.state.currentResizeItem ? this.state.currentResizeItem[direction] : 0) + 'px'		
+				left: (currentResizeItem ? currentResizeItem[direction] : 0) + 'px'		
 			},
 			onMouseDown: self.__onMouseDown
-		}, (new Date(this.state.currentResizeItem[direction] / this.props.display.px_per_ms + this.props.display.x_origin)).toLocaleTimeString()));
+		}, (currentResizeItem ? (new Date(currentResizeItem[direction] / px_per_ms + x_origin)).toLocaleTimeString() : '')));
 	}
 });

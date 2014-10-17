@@ -151,18 +151,26 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		})();
 
 	    $scope.onResizeLeftStart = function(room, reservation) {
+	    	$scope.gridProps.currentResizeItem = reservation;
+
 	    	console.log('Resize left start', room, reservation);
 	    };
 
 	    $scope.onResizeLeftEnd = function(room, reservation) {
+	    	$scope.gridProps.currentResizeItem = undefined;
+
 	    	console.log('Resize left end', room, reservation);    	
 	    };
 
 	    $scope.onResizeRightStart = function(room, reservation) {
+	    	$scope.gridProps.currentResizeItem = reservation;
+
 	    	console.log('Resize right start', room, reservation);
 	    };
 
 	    $scope.onResizeRightEnd = function(room, reservation) {
+	    	$scope.gridProps.currentResizeItem = undefined;
+
 	    	console.log('Resize right end', room, reservation);	    	
 	    };
 
@@ -175,14 +183,11 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    };
 
 	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
-	    	var copy = {};
-
-	    	row_item_data.selected = selected;
+	    	var copy;
 
 	    	if(!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch(command_message) {
 		    		case 'resize': 
-		    		//copy = copyReservation(row_item_data);
 
 		    		row_item_data.left = (row_item_data.start_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
 		    		row_item_data.right = (row_item_data.end_date.getTime() - $scope.gridProps.display.x_origin) * $scope.gridProps.display.px_per_ms;
@@ -194,8 +199,16 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    		break;	 
 		    	} 
 		    } else {
-		    	if($scope.isSelected(row_data, row_item_data)) {
-		    		$scope.selectedReservations.push({ room: row_data, reservation: row_item_data });
+		    	copy = copyReservation(row_item_data);
+
+	    		copy.selected = selected;
+
+	    		updateReservation(row_data, copy);
+
+		    	renderGrid();
+
+		    	if($scope.isSelected(row_data, copy)) {
+		    		$scope.selectedReservations.push({ room: row_data, reservation: copy });
 		    	}
 		    }
 	    };

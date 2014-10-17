@@ -133,8 +133,8 @@ var GridRowItemDrag = React.createClass({
 				top: state.top
 			}; 
 			className = 'occupancy-block dragstate';
-		} else if(state.selected) {
-			className = 'occupancy-block reserved';
+		//} else if(state.selected) {
+			//className = 'occupancy-block reserved';
 		} else {
 			className = '';
 		}
