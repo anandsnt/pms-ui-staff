@@ -75,8 +75,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    }
 
 					    deferred.resolve(this.roomList);
-					}else{
-					}
+					}else{ }
 					
 				}.bind(this))
 				.error(function(response, status) {
@@ -368,7 +367,7 @@ sntRover.service('RVHkRoomStatusSrv', [
             if ( room.room_reservation_status.indexOf('Departed') >= 0 ) {
             	return 'OUT'
             } else if ( room.room_reservation_status.indexOf('Due out') >= 0 ) {
-            	return room.is_late_checkout ? room.late_checkout_time : room.departure_time;
+            	return room.is_late_checkout == 'true' ? room.late_checkout_time : room.departure_time;
             }
 
             return '';
@@ -396,7 +395,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// calculte the OO/OS title
 		// in future the internal check may become common - to check only 'room_reservation_hk_status'
 		var calculateOoOsTitle = function(room) {
-			if ( !$rootScope.isStandAlone ) {
+			if ( $rootScope.isStandAlone ) {
 				return room.room_reservation_hk_status == 2 ? 'Out of Service' :
 						room.room_reservation_hk_status == 3 ? 'Out of Order' :
 						false;

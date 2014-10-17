@@ -1,15 +1,17 @@
 <!-- NEW CODE -->
 <nav id="main-menu" role="navigation" ng-animate="animate" ng-class="{'menu-open': menuOpen, 'menu-closing' : !menuOpen}">
-	<a class="nav-toggle" ng-class="{'active': menuOpen}" ng-click="$emit('navToggled')">Menu</a>
-
-	<div id="nav" ng-show="isHotelAdmin || isHotelStaff">
-		<h5>Menu</h5>
+	<a class="nav-toggle" ng-class="{'active': menuOpen}" ng-click="$emit('navToggled')" >Menu</a>
+	
+	<!--CICO-10216 Seems un necessare check -->
+	<!-- <div id="nav" ng-show="isHotelAdmin || isHotelStaff"> -->
+	<div id="nav">
+		<h5 ng-show="isHotelAdmin || isHotelStaff">Menu</h5>
 		
 		<ul id="large-menu" class="main">
-			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])"> 			
+			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-show="isHotelAdmin || isHotelStaff"> 			
 				<a href="{{menuItem.action}}" class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu}" translate="{{menuItem.title}}"></a>
 			</li>
-			<li id="settings">
+			<li id="settings" ng-show="isHotelAdmin || isHotelStaff">
 				<a ng-click="settingsClicked()" class="icon-menu icon-settings active">Settings</a>
 			</li> 
 			<li id="sign-out">
@@ -18,7 +20,7 @@
 		</ul>
 
 		<ul id="mobile-menu" class="main">
-			<li ng-repeat="mobileMenuItem in mobileMenu" ng-click="$emit('updateSubMenu',[$index,menuItem])">
+			<li ng-repeat="mobileMenuItem in mobileMenu" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-show="isHotelAdmin || isHotelStaff">
 				<a href="{{mobileMenuItem.action}}" class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && mobileMenuItem.submenu.length >= 1 && activeSubMenu == mobileMenuItem.submenu}" translate="{{mobileMenuItem.title}}"></a>
 			</li>
 			<li id="sign-out">
