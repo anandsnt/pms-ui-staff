@@ -55,11 +55,11 @@
             </div>
         </div>
         <ul id="journal-options" class="display">
-            <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activeTab=0">
+            <li id="show-revenue" ng-class="{'active':activeTab===0}" ng-click="activeTab=0">
                 <span class="icons icon-navbar icon-revenue">Revenue</span>{amount}</li>
-            <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
+            <li id="show-payments" ng-class="{'active':activeTab===1}" ng-click="activeTab=1">
                 <span class="icons icon-navbar icon-payments">Payments</span>{amount}</li>
-            <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activeTab=2">
+            <li id="show-cashier" ng-class="{'active':activeTab===2}" ng-click="activeTab=2">
                 <span class="icons icon-navbar icon-cashier">Cashier</span>{Open or Closed}</li>
         </ul>
     </form>
@@ -110,7 +110,7 @@
     <div ng-show="activeTab==0" ng-include="'/assets/partials/financials/rvRevenue.html'"></div>
 
     <!-- Content PAYMENTS-->
-    <div ng-show="activeTab==1" ng-include="'/assets/partials/financials/rvJournal.html'"></div>
+    <div ng-show="activeTab==1" ng-include="'/assets/partials/financials/rvPayments.html'"></div>
 
     <!-- Content CASHIER-->
     <div ng-show="activeTab==2" ng-include="'/assets/partials/financials/rvCashier.html'"></div>
