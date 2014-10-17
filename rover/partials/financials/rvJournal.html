@@ -51,7 +51,7 @@
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{date}" readonly />
                 <strong id="revenue-date-day" class="day">01</strong>
-                <span id="revenue-date-month" class="month">january</span>
+                <span id="revenue-date-month" class="month">January</span>
                 <span id="revenue-date-year" class="year">2014</span>
             </div>
         </div>
@@ -59,9 +59,9 @@
             <label id="revenue-date-label" for="revenue-date">To Date</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{date}}" readonly />
-                <strong id="revenue-date-day" class="day">31</strong>
-                <span id="revenue-date-month" class="month">December</span>
-                <span id="revenue-date-year" class="year">2014</span>
+                <strong id="revenue-date-day" class="day">{{date | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{date | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{date | date:'y'}}</span>
             </div>
         </div>
         <ul id="journal-options" class="display">
