@@ -5,35 +5,19 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'$state',
 	'$filter',
 	'RVHkRoomStatusSrv',
-	'fetchedRoomList',
-	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, fetchedRoomList) {
+	'roomList',
+	'employees',
+	'workTypes',
+	'roomTypes',
+	'floors',
+	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, roomList, employees, workTypes, roomTypes, floors) {
 
-
-		// TODO: RESTRUCTURE THE CODE TO PROPER SECTIONS
-		// 1. stateChange  should keep filters or reset them?
-		// 2. fetch housemaid list, work type list, floor type etc and possible cashing in srv
-		// 3. should fetch room list again or not
-		// 4. all filters and things
-		// 5. calculate filters, check possiblity of moving it to a seperate module its too big!
-		// 6. pull down to refresh
-		// 7. performance enhancement
-
-
-		// additional check since the router resolve may fail
-		if ( !fetchedRoomList ) {
-			var fetchedRoomList = RVHkRoomStatusSrv.roomList;
-		};
-
-		/*var successCallback = function(data){
-			//$scope.allRoomTypes = data;
-		};*/
-		$scope.allRoomTypes = RVHkRoomStatusSrv.allRoomTypes;
-		if( isEmptyObject(RVHkRoomStatusSrv.allRoomTypes) ){
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchAllRoomTypes, {}, '', '', 'NONE');
-		}
-
-
+		// hook it up with base ctrl
 		BaseCtrl.call(this, $scope);
+
+
+
+
 
 		// set the previous state
 		$rootScope.setPrevState = {
@@ -41,75 +25,167 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		    name: 'rover.dashboard'
 		}
 
+
+
+
+
 		// set title in header
 		$scope.setTitle( $filter('translate')('ROOM_STATUS') );
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 	    $scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-		$scope.filterOpen = false;
-		$scope.localLoader = false;
 
-		$scope.query = '';
-		$scope.showPickup = false;
-		$scope.showInspected = false;
 
-		$scope.showQueued = false;
 
-		$scope.noResultsFound = 0;
 
-		$scope.topFilter = {};
+	    // reset all the filters
+	    $scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 
-		// default values for these
-		// for a HK staff the filterByEmployee value must be defalut to that
-		// and filter the rooms accordingly
-		// fetch all the HK work staff
+	    // The filters should be re initialized in we are navigating from dashborad to search
+	    // In back navigation (From room details to search), we would retain the filters.
+	    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+	    	if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
+	    		RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+	    		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+	    		localStorage.removeItem( 'roomListScrollTopPos' );
+	    	};
+	    });
+
+
+
+
+	    // internal variables
+	    var $_defaultWorkType,
+	    	$_defaultEmp,
+	    	$_hasActiveWorkSheet;
+
+	    // filter open or close
+	    $scope.filterOpen = false;
+
+	    // filter stuff
+	    $scope.showPickup = roomList.use_pickup || false;
+	    $scope.showInspected = roomList.use_inspected || false;
+	    $scope.showQueued = roomList.is_queue_rooms_on || false;
+
+	    // empty the search query
+	    $scope.query = '';		
+
+	    // default no results found
+	    $scope.noResultsFound = 0;
+
+	    // default no top filters
+	    $scope.topFilter = {};
+
+
+
+
+
+	    // ALL PMS: assign the resolved data to scope
+	    // common to all typr of PMS 
+	    $scope.roomTypes = roomTypes;
+		$scope.floors = floors;
+
+		// STANALONE PMS: assign the resolved data to scope
 		if ( $rootScope.isStandAlone ) {
+			$scope.workTypes = workTypes;
+			$scope.employees = employees;
 
-			// switching b/w summary and rooms on mobile view
-			if ( $rootScope.isMaintenanceStaff ) {
-				$scope.currentView = 'summary';
-			} else {
-				$scope.currentView = 'rooms';
-			}
+			$_defaultWorkType = $scope.workTypes[0].id;
+			$_defaultEmp = $rootScope.userId;
+
+			// when a employee logges in mobile view
+			// we introduce another level of tabs to seperate
+			// his/her work count status and rooms
+			// defaults to rooms tab, but if has active worksheet
+			// show summary by default
+			$scope.currentView = 'rooms';
 			$scope.changeView = function(view) {
 				$scope.currentView = view;
 			};
 
-			$scope.workTypes = [];
-			var defaultWorkType;
-			var wtCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.workTypes = data;
+			// time to decide if this is an employee
+			// who has an active work sheets
+			$_checkHasActiveWorkSheet();
+		} else {
+			// need delay, just need it
+			$timeout(function() {
+				$_postProcessRooms(roomList);
+			}, 10);
+		}
 
-				// chose the first work type for now
-				defaultWorkType = data[0].id;
-			};
-			$scope.invokeApi(RVHkRoomStatusSrv.getWorkTypes, {}, wtCallback);
 
-			// fetch all the HK work staff
-			$scope.HKMaids = [];
-			var defaultMaid;
-			var hkmCallback = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.HKMaids = data;
 
-				// TODO: We need to have the id's here to compare
-				defaultMaid = _.find($scope.HKMaids, function(maid) {
-					return maid.id == $rootScope.userName;
-				});
-			};
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchHKMaids, {}, hkmCallback);
+
+		function $_checkHasActiveWorkSheet (argument) {
+			var _params = {
+					'date': $rootScope.businessDate,
+					'employee_ids': [$_defaultEmp],
+					'work_type_id': $_defaultWorkType
+				},
+				_callback = function(data) {
+					$scope.topFilter.byWorkType = $_defaultWorkType;
+					$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
+
+					// $scope.$emit('hideLoader');
+					$_hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments.length;
+
+					// set an active user in filterByEmployee, set the mobile tab to to summary
+					if ( $_hasActiveWorkSheet ) {
+						$scope.topFilter.byEmployee = $_defaultEmp;
+						$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
+
+						$_caluculateCounts(data.work_sheets[0].work_assignments);
+						$scope.currentView = 'summary';
+					};
+
+					// need delay, just need it
+					$timeout(function() {
+						$_postProcessRooms(roomList);
+					}, 10);
+				};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback);
 		};
 
-		// make sure any previous open filter is not showing
-		$scope.$emit( 'dismissFilterScreen' );
+		function $_caluculateCounts(assignments) {
+			$scope.counts = {
+				allocated: 0,
+				departures: 0,
+				stayover: 0,
+				completed: 0,
+				total: 0
+			}
 
-		$scope.noScroll = true;
-		var afterFetch = function(data) {
-			$scope.localLoader = true;
+			var totalHH = totalMM = hh = mm = i = 0;
+			for ($scope.counts.total = assignments.length; i < $scope.counts.total; i++) {
+				var room = assignments[i].room;
 
+				totalHH += parseInt(room.time_allocated.split(':')[0]),
+				totalMM += parseInt(room.time_allocated.split(':')[1]);
+
+				if ( room.reservation_status.indexOf("Arrived") >= 0 ) {
+					$scope.counts.departures++;
+				};
+				if ( room.reservation_status.indexOf("Stayover") >= 0 ) {
+					$scope.counts.stayover++;
+				};
+				if ( room.hk_complete ) {
+					$scope.counts.completed++;
+				};
+			};
+
+			hh = totalHH + Math.floor(totalMM / 60);
+			mm = (totalMM % 60) < 10 ? '0' + (totalMM % 60) : (totalMM % 60);
+			$scope.counts.allocated = hh + ':' + mm;
+		};
+
+
+
+
+
+		function $_postProcessRooms(data) {
 			// apply the filter first
-			$scope.calculateFilters(data.rooms);
+			$_calculateFilters(data.rooms);
 
 			// making unique copies of array
 			// slicing same array not good.
@@ -136,88 +212,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var toPos = localStorage.getItem( 'roomListScrollTopPos' );
 				$scope.refreshScroll( toPos );
 
-				$scope.localLoader = false;
+				$scope.$emit('hideLoader');
 
 			// execute this after this much time
 			// as the animation is in progress
 			}, 700);
 		};
 
-
-		var fetchRooms = function() {
-			//Fetch the roomlist if necessary
-			if ( RVHkRoomStatusSrv.isListEmpty() || !fetchedRoomList.rooms.length) {
-
-				var callback = function(data) {
-					$scope.showPickup = data.use_pickup;
-					$scope.showInspected = data.use_inspected;
-					$scope.showQueued = data.is_queue_rooms_on;
-
-					if ( $rootScope.isStandAlone ) {
-						// show the rooms with matching worktype
-						// update filterByWorkType filter
-						$scope.topFilter.byWorkType = defaultWorkType;
-						$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
-					}
-
-					// only set this for the staff with housekeeping dashboard
-					if ( $rootScope.isMaintenanceStaff ) {
-						// show the user related rooms only
-						// update filterByWorkType filter
-						$scope.topFilter.byEmployee = defaultMaid;
-						$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-					}
-
-					$scope.$emit('hideLoader');
-					afterFetch( data );
-				};	
-				$scope.invokeApi(RVHkRoomStatusSrv.fetch, $rootScope.businessDate, callback);
-			} else {
-				$timeout(function() {
-					if ( $rootScope.isStandAlone ) {
-						// restore the filterByWorkType from previous chosen value
-						$scope.topFilter.byWorkType = $scope.currentFilters.filterByWorkType;
-					}
-
-					// only set this for the staff with housekeeping dashboard
-					if ( $rootScope.isMaintenanceStaff ) {
-						// restore the filterByEmployee from previous chosen value
-						$scope.topFilter.byEmployee = $scope.currentFilters.filterByEmployee;
-					}
-					
-					afterFetch( fetchedRoomList );
-				}, 1);
-			}
-		};
-
-		fetchRooms();
-
-		var fetchFloors = function() {
-			//Fetch the roomlist if necessary
-
-			$scope.$emit('showLoader');
-			RVHkRoomStatusSrv.fetch_floors().then(function(data) {
-				$scope.$emit('hideLoader');
-				$scope.floors = data;
-			}, function() {
-				$scope.$emit('hideLoader');
-			});
-		}
-
-		fetchFloors();
-
-		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
-
-		/** The filters should be re initialized in we are navigating from dashborad to search
-		*   In back navigation (From room details to search), we would retain the filters.
-		*/
-		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-			if ( (fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails') ) {
-				RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-				$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
-				localStorage.removeItem( 'roomListScrollTopPos' );
-			};
-		});
+		
 
 
 
@@ -282,7 +284,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		*  Emits a call to dismiss the filter screen
 		*/	
 		$scope.filterDoneButtonPressed = function() {
-			$scope.calculateFilters();
+			$_calculateFilters();
 
 			$scope.refreshScroll();
 
@@ -291,7 +293,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
 			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
-			RVHkRoomStatusSrv.allRoomTypes = $scope.allRoomTypes;
+			RVHkRoomStatusSrv.roomTypes = $scope.roomTypes;
 		};
 
 		// when user changes the employee filter
@@ -306,7 +308,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// call caluculate filter in else since
 				// resetting filterByEmployee will call applyEmpfilter 
 				// which in turn will call calculateFilters
-				$scope.calculateFilters();
+				$_calculateFilters();
 				$scope.refreshScroll();
 			}
 
@@ -318,7 +320,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-			$scope.calculateFilters();
+			$_calculateFilters();
 
 			$scope.refreshScroll();
 
@@ -360,17 +362,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		/**
 		*  A method which checks the filter option status and see if the room should be displayed
 		*/
-		$scope.calculateFilters = function(source) {
-			$scope.localLoader = true;
-
+		function $_calculateFilters(source) {
+			
 			var source = source || $scope.rooms;
 			$scope.noResultsFound = 0;
-			var allRoomTypesUnSelected = true;
+			var roomTypesUnSelected = true;
 
 			//If all room types are unselected, we should show all rooms.
-			angular.forEach($scope.allRoomTypes, function(roomType, id) {
+			angular.forEach($scope.roomTypes, function(roomType, id) {
 				if( roomType.isSelected ){
-					allRoomTypesUnSelected = false;					
+					roomTypesUnSelected = false;					
 				}
 				return false;
 			});
@@ -393,7 +394,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// Filter by employee name, strach that the id
 					// TODO: currently we only get room.assignee_maid, we need this like this room.assignee_maid{ name: 'name', id: id } 
-					if ( !!$scope.currentFilters.filterByEmployee && !room.assignee_maid.id ) {
+					if ( !!$scope.currentFilters.filterByEmployee && room.assignee_maid.id != $scope.currentFilters.filterByEmployee ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
@@ -431,7 +432,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// filter by room type
 				if ( !!room.room_type.id ) {
-					if ( !allRoomTypesUnSelected && !$scope.allRoomTypes[room.room_type.id].isSelected ){
+					var matchedRoomType = _.find($scope.roomTypes, function(type) {
+						return type.id == room.room_type.id;
+					});
+					if ( !roomTypesUnSelected && !matchedRoomType.isSelected ){
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
@@ -440,7 +444,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// filter by status in filter section, HK_STATUS
 				if( $scope.isAnyFilterTrue(['dirty','pickup','clean','inspected']) ) {
-					console.log('dirty, pickup, clean, inspected');
 					if ( !$scope.currentFilters.dirty && (room.hk_status.value === "DIRTY") ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
@@ -465,7 +468,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// filter by status in filter section, OCCUPANCY_STATUS
 				if ( $scope.isAnyFilterTrue(["vacant","occupied","queued"]) ) {
-					console.log('vacant, occupied, queued');
 					if ( !$scope.currentFilters.queued && room.is_queued ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
@@ -491,7 +493,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// For this status, pass the test, if any condition applies.
 				// NOTE : This must be the last set of checks, as we make display_room = true and mark continue here.
 				if ( $scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse']) ) {
-					console.log('reservation status');
 					if ( $scope.currentFilters.stayover && room.room_reservation_status.indexOf("Stayover") >= 0 ) {
 						room.display_room = true;
 						continue;
@@ -547,7 +548,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				room.display_room = true;
 			}
 
-			$scope.localLoader = false;
+			
 		};
 
 		/**
@@ -565,7 +566,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// apply any filter options
 				// and return
 				if ( !$scope.query ) {
-					$scope.calculateFilters();
+					$_calculateFilters();
 					break;
 					return;
 				};
@@ -642,7 +643,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				list[key] = false;
 			});
 
-			angular.forEach($scope.allRoomTypes, function(roomType, id) {
+			angular.forEach($scope.roomTypes, function(roomType, id) {
 				roomType.isSelected = false;
 			});
 

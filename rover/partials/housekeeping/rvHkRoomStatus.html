@@ -36,7 +36,7 @@
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
         <div class="select" ng-hide="!topFilter.byWorkType">
-            <select id="employees" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="maid.id as maid.maid_name for maid in HKMaids" ng-change="applyEmpfilter()">
+            <select id="employees" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
                 <option value="">All Employees</option>
             </select>
         </div>
@@ -49,10 +49,10 @@
 </ul>
 
 <ul id="my-worksheet-summary" class="worksheet-summary" ng-if="isStandAlone && isMaintenanceStaff" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
-    <li>Time Allocated <span>0</span></li> <!-- TODO: Need actual values for API -->
-    <li>Departures <span>0</span></li> <!-- TODO: Need actual values for API -->
-    <li>Stayovers <span>0</span></li> <!-- TODO: Need actual values for API -->
-    <li>Completed <span>0/0</span></li> <!-- TODO: Need actual values for API -->
+    <li>Time Allocated <span>{{ counts.allocated }}</span></li>
+    <li>Departures <span>{{ counts.departures }}</span></li>
+    <li>Stayovers <span>{{ counts.stayover }}</span></li>
+    <li>Completed <span>{{ counts.completed }}/{{ counts.total }}</span></li>
 </ul>
 
 <!-- Rooms list -->
@@ -83,7 +83,7 @@
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
             <!-- Show only if room is assigned -->
-            <span bo-if="room.assigned_staff" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class"></span>
+            <span bo-if="room.assignee_maid" bo-text="room.assignee_maid.name" bo-class="room.assignee_maid.class"></span>
             <!-- Show only if room is not in service -->
             <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
           </div>
@@ -272,11 +272,11 @@
 
             <div class="holder" ng-if="isStandAlone">
               <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-              <div class="entry radio-check" ng-repeat= "roomType in allRoomTypes" >
+              <div class="entry radio-check" ng-repeat= "type in roomTypes track by $index" >
                 <label class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : roomType.isSelected}"></span>
-                  <input type="checkbox" ng-model="roomType.isSelected" name="room-filters">
-                  <label>{{ roomType.name }}</label>
+                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
+                  <input type="checkbox" ng-model="type.isSelected" name="room-filters">
+                  <label>{{ type.name }}</label>
                 </label>
               </div>
             </div>
