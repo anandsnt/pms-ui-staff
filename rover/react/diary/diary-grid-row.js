@@ -2,17 +2,17 @@ var GridRow = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
 		var render = true; //false;
 
-		/*if(this.props.viewport !== nextProps.viewport ||
+		if(this.props.viewport !== nextProps.viewport ||
 		   this.props.display !== nextProps.display) {
 			render = true;
 		} else {
 			if(this.props.data.reservations.length !== nextProps.data.reservations.length) {
 				render = true;
 			} else if(nextProps.currentResizeItem) {
-				//if(nextProps.data.id === nextProps.currentResizeItemRow.id) {
-				//	ender = true;
-				//
-				render = true;
+				if(nextProps.data.id === nextProps.currentResizeItemRow.id) {
+					render = true;
+				}
+				//render = true;
 			} else {
 				for(var i = 0, len = this.props.data.reservations.length; i < len; i++) {
 					if(this.props.data.reservations[i] !== nextProps.data.reservations[i]) {
@@ -21,7 +21,7 @@ var GridRow = React.createClass({
 					}
 				}
 			}		
-		}*/
+		}
 
 		return render;
 	},

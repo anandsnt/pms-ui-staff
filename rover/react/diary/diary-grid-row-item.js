@@ -10,13 +10,6 @@ var GridRowItem = React.createClass({
 
 		if(nextProps.currentResizeItem &&
 		   nextProps.currentResizeItem.id === nextProps.data.id) {
-			//copy = _.extend(copy, nextProps.currentResizeItem);
-
-			//copy.start_date = new Date(nextProps.currentResizeItem.start_date.getTime());
-			//copy.end_date = new Date(nextProps.currentResizeItem.end_date.getTime());
-
-			//copy.left = (copy.start_date.getTime() - nextProps.display.x_origin) * nextProps.display.px_per_ms;
-			//copy.right = (copy.end_date.getTime() - nextProps.display.x_origin) * nextProps.display.px_per_ms;
 
 			this.setState({
 				resizing: true,
@@ -29,9 +22,15 @@ var GridRowItem = React.createClass({
 			});
 		}
 	},
-	/*shouldComponentUpdate: function(nextProps, nextState) {
+	shouldComponentUpdate: function(nextProps, nextState) {
+		/*if(nextState.resizing && nextState.currentResizeItem) {
+			if(this.props.id !== nextState.currentResizeItem.id) {
+				return false;
+			}
+		}*/
 
-	},*/
+		return true;
+	},
 	render: function() {
 		var props 					= this.props,
 			state 					= this.state,

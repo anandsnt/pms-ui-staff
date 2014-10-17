@@ -30,7 +30,8 @@ var DiaryContent = React.createClass({
 			if(el) {
 				switch(el) {
 					case iscroll.grid:
-						iscroll.timeline.scrollTo(el.x, 0);
+						//iscroll.timeline.scrollTo(el.x, 0);
+						$('.diary-timeline .hours').css({ left: -iscroll.grid.x });
 						iscroll.rooms.scrollTo(0, el.y);
 					break;
 					case iscroll.timeline:
@@ -140,11 +141,13 @@ var DiaryContent = React.createClass({
 			s_0 		= {
 							angular_evt: {
 								onSelect: 					scope.onSelect,
-								onRowItemSelect: 			scope.onRowItemSelect,
-								onRowSelect: 				scope.onRowSelect,
-								onTimelineSelect:  			scope.onTimelineSelect,
+								//onRowItemSelect: 			scope.onRowItemSelect,
+								//onRowSelect: 				scope.onRowSelect,
+								//onTimelineSelect:  			scope.onTimelineSelect,
 								isSelected: 				scope.isSelected,
 								isAvailable:                scope.isAvailable,
+								isDraggable:                scope.isDraggable,
+								isResizable:                scope.isResizable,
 								toggleRows:                 scope.toggleRows,
 								displayFilter: 				scope.displayFilter,
 								calculateOccupancy:    		scope.calculateOccupancy, 

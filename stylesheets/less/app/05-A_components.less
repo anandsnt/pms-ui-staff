@@ -10246,8 +10246,9 @@
 
                 .actions {
                     width: 30%;
-                    .pull-left;
-
+                    //.pull-left;
+                    .pull-right;
+                    
                     .button {
                         line-height: 48px;
                         margin-right: 10px;
@@ -10267,6 +10268,8 @@
                 }
             }
         }
+
+
     }
 
     .diary-container {
@@ -10660,6 +10663,8 @@
                                     &.check-in,
                                     &.inhouse,
                                     &.check-out {
+                                        -webkit-transform: translateZ(0);
+
                                         &.editing { 
                                             .gradient(@purpleStart, @purpleEnd); 
 
