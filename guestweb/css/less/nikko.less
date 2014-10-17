@@ -1,0 +1,541 @@
+@charset: "utf-8";
+/*Accent colors*/
+@white:#fff;
+@black:#19171c;
+@blue:#195c87;
+@lightBlue:#679bca;
+@grey:#7a7a7a;
+/* width */
+@fullWidth:100%;
+@noPadding:0;
+@noBorder:none;
+/* Box box-shadow 	======================================*/
+	.box-shadow(@shadow: 1px 1px 0 rgba(0,0,0,.15)) {
+		-webkit-box-shadow: @shadow;
+		-moz-box-shadow: @shadow;
+		box-shadow: @shadow;
+}
+
+body{
+	background-color:@white !important;
+	background-image: none !important;
+}
+.no-border{
+	border:@noBorder !important;
+}
+.jumbotron .container.backgroundbg{
+	.no-border;
+}
+.jumbotron .container.backgroundbg,.jumbotron#check-in-out{
+	width: @fullWidth;
+	.container-fluid{
+		padding: @noPadding;
+	}
+	.container{
+		border-bottom: 1px solid @grey;
+	}
+	.header .container{
+		border:@noBorder;
+		min-height: inherit;
+	}
+	.headerrow{
+		padding: @noPadding;
+		background-color: @black;
+		.header{
+			padding: 80px 0 10px;
+		}
+		.img-responsive.img-center.logoImage{
+			width: auto !important;
+			max-width: inherit;
+			max-height: inherit;
+		}
+	}
+	.checkin-button{
+		background-color: @blue;
+		color: @white;
+		border:1px solid #144e73;
+		border-color: #357195 #92afc1 #144e73;
+	}
+	.blueText{
+		color: @lightBlue;
+		padding: 18px 0;
+		display: block;
+	}
+	p{
+		color: @grey;
+	}
+	.headtext{
+		width: 55%;
+		color: @lightBlue;
+	}
+	.cabin-number{
+		width: 40%;
+	}
+	p.cabin-number-text{
+		font-size: 17px !important;
+	}
+	input,
+	textarea {
+	background-color: #f1f1f1;
+    min-height: 40px;
+    vertical-align: middle;
+    margin: 0;
+    border: 0;
+    resize: none;
+    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+   
+    &:focus,
+    &:active {
+        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
+        border:0;
+        outline: none;
+    }
+	}
+	
+}
+.jumbotron#check-in-out .content-wrap{
+	a.blue-alert-link-tag{
+		color: @blue !important;
+	}
+}
+.green-gradient{
+	background: #f1fbe3 !important; /* Old browsers */
+	background: -moz-linear-gradient(top,  #f1fbe3 0%, #91da2b 2%, #8ad82a 20%, #84d926 30%, #60d218 79%, #56d315 96%, #4bb612 98%, #49b311 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1fbe3), color-stop(2%,#91da2b), color-stop(20%,#8ad82a), color-stop(30%,#84d926), color-stop(79%,#60d218), color-stop(96%,#56d315), color-stop(98%,#4bb612), color-stop(100%,#49b311)) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #f1fbe3 0%,#91da2b 2%,#8ad82a 20%,#84d926 30%,#60d218 79%,#56d315 96%,#4bb612 98%,#49b311 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #f1fbe3 0%,#91da2b 2%,#8ad82a 20%,#84d926 30%,#60d218 79%,#56d315 96%,#4bb612 98%,#49b311 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #f1fbe3 0%,#91da2b 2%,#8ad82a 20%,#84d926 30%,#60d218 79%,#56d315 96%,#4bb612 98%,#49b311 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  #f1fbe3 0%,#91da2b 2%,#8ad82a 20%,#84d926 30%,#60d218 79%,#56d315 96%,#4bb612 98%,#49b311 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1fbe3', endColorstr='#49b311',GradientType=0 ) !important; /* IE6-9 */
+	border:@noBorder !important;
+}
+.grey-gradient{
+	background: #dddddd !important; /* Old browsers */
+	background: -moz-linear-gradient(top,  #dddddd 0%, #dadada 9%, #d0d0d0 95%, #bcbcbc 96%, #b1b1b1 98%, #e5e5e5 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddddd), color-stop(9%,#dadada), color-stop(95%,#d0d0d0), color-stop(96%,#bcbcbc), color-stop(98%,#b1b1b1), color-stop(100%,#e5e5e5)) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #dddddd 0%,#dadada 9%,#d0d0d0 95%,#bcbcbc 96%,#b1b1b1 98%,#e5e5e5 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #dddddd 0%,#dadada 9%,#d0d0d0 95%,#bcbcbc 96%,#b1b1b1 98%,#e5e5e5 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #dddddd 0%,#dadada 9%,#d0d0d0 95%,#bcbcbc 96%,#b1b1b1 98%,#e5e5e5 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  #dddddd 0%,#dadada 9%,#d0d0d0 95%,#bcbcbc 96%,#b1b1b1 98%,#e5e5e5 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#e5e5e5',GradientType=0 ) !important; /* IE6-9 */
+
+}
+.modal-dialog{
+	.room-error-green-button{
+		.green-gradient;
+	}
+	.light-gray-bg{
+		border:@noBorder;
+	}
+}
+.checkoutnow{
+	background: #689bc8;
+	border-bottom: 2px solid #5985aa;
+}
+.checkoutlater{
+	background: @blue;
+	border-bottom: 2px solid #144e73;
+	color: @white;
+	a{
+		color: @white;
+	}
+}
+@media all and (max-width: 767px){
+	.jumbotron .container.backgroundbg,.jumbotron#check-in-out{
+		.container{
+			border:@noBorder;
+			big{
+				padding: 40px 0;
+			}
+			p{
+				font-size: 21px ;
+				color: @grey;
+			}
+			input{
+				min-height: 50px;
+			}
+			.continue-button{
+				padding: 3%;
+			}
+			.checkin-button{
+				min-height: 72px;
+			}
+		}
+		.headtext{
+			width: @fullWidth;
+		}
+		.cabin-number{
+			width: @fullWidth;
+		}
+		.logo-bg{
+			img.img-responsive.img-center.logoImage{
+				width: 65% !important;
+			}
+		}
+	}
+}
+
+
+
+/* Styles copied from Galleria */
+
+
+.row .date-container{
+	  border-bottom:1px solid #134b52;
+}
+.checkoutlater, .checkin {
+    color: #fff;
+}
+
+.checkoutnow-icon,.checkoutlater-icon,.accept-charges-icon,.checkout-now-white-icon{
+	width:100% !important;
+	height:49px !important;
+	margin-top:10px !important;
+}
+
+.checkoutnow-icon{
+  	background: url(/assets/img/Nikko/checkout-now_icon-white.png) top center no-repeat !important;
+}
+
+
+.pickadate-cell .pickadate-disabled,.pickadate-cell .pickadate-enabled {
+	  background-color: #9b9b9b;
+	  background:rgba(0, 0, 0, 24%);
+}
+
+.date-picker-header{
+  background-color: #134b52;
+}
+
+.date-picker-ok{
+  padding-top: 18px;
+  background: url(/assets/img/Nikko/tick-white-small.png) 25px 0px no-repeat !important;
+  color:#fff;
+}
+.date-picker-wrap{
+  background: url(/assets/img/Nikko/bg.png) repeat top left !important;
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #134b52;
+}
+.link-btn.with-bg.nextbtn{
+  background: #513d4f;
+  color:#fff;
+}
+.departure-date{
+   p:first-child{
+       color:#78b3ba;
+   }
+  
+}
+
+.row .reservation-dates .lightcontent, .res-conf-no , .row .applycharge, .error-callus div{
+  color:#134b52 !important;
+}
+
+
+
+.checkoutlater-icon{
+	background: url(/assets/img/Nikko/checkoutlater_smalll.png) top center no-repeat !important;
+}
+
+.checkout-now-white-icon{
+	background: url(/assets/img/Nikko/checkout-now_icon-white.png) top center no-repeat !important;
+}
+.accept-charges-icon{
+	background: url(/assets/img/Nikko/charges_icon.png) top center no-repeat !important;
+}
+
+.jumbotron .roomnumber span {
+    background: none repeat scroll 0 0 #134b52;
+ }
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #c4d7e8;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #689bc8;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #195c87;
+}
+
+.no-thanks {
+    font-size: 25px !important;
+    margin-top: 50px;
+    .grey-text{
+    	color: @grey;
+
+    }
+    .no-thanks-text{
+	    color: @grey !important;
+	    //text-decoration: underline !important;
+	}
+}
+
+.upgrade-details .upgrades-btn{
+    background-color:#fba000;
+}
+
+.upgrades-label{
+  color:#513d4f;
+}
+
+.col-xs-12.checkoutnow.single, .col-xs-12.accept-charges-button.single  {
+    background: none repeat scroll 0 0 #195c87;
+    color: #fff;
+}
+
+.guest-room-description {
+    color: #513d4f !important;
+}
+
+.jumbotron .roomnumber span {
+    background: none repeat scroll 0 0 #134b52;
+ }
+
+.link-btn.with-bg {
+	background: #195c87 !important;
+}
+.jumbotron .check-inout-wrapper{
+	padding-top: 40px !important;
+}
+.fee{
+	color:@black !important;
+}
+
+.leadtext{
+	margin-bottom: 0px !important;
+	padding-top: 0px !important;
+}
+.cabin-number-text, .ccv-text, .chekout-late-final{
+	color:@grey !important;
+	
+}
+.select-style select{
+	 background-color: #f1f1f1 ;
+}
+
+.chekout-time{
+	color:@grey !important;	
+}
+
+.link-btn.with-bg{
+	padding-top: 20px !important;
+	padding-bottom: 20px !important;
+}
+.latecheckout-charged{
+		margin-top: 20px;
+}
+
+.checkout-status{
+	p{
+		font-size: 32px !important;
+	}
+	.msg-foot{
+		margin-top: 40px;
+		font-size: 32px !important;
+		font-weight: 300 !important;
+		color: #5985aa !important;
+	}
+}
+
+.viewbill-toggle a, .viewbill-toggle a:hover,.white-alert-link-tag, .alert-link-tag:hover {
+	color: #195c87 !important;
+}
+.with-back-btn span{
+	color:#7a787d !important;
+}
+
+
+
+/* Desktop only */
+
+@media (min-width: 990px) {
+
+	.proceed-to-checkin{
+	   background: none repeat scroll 0 0 #513d4f;
+	    color: #fff;
+	}
+
+   .checkin-width {
+	      margin-top:20%;
+	      //margin: 0 auto !important;
+	      max-width: 570px;
+	      text-align: center;
+	    }
+	.checkin{
+	    background: url(/assets/img/Nikko/checkin-white-icon-large.png) 80% center no-repeat  #513d4f !important;
+	      span{
+	         margin-left: -84px;
+	      }
+	  }
+
+	  
+   .line-top{
+	   border-top:1px solid white;
+	   margin-bottom:40px;
+	      margin-top: 0 !important;
+	}
+	.line-bottom{
+	   	border-bottom:1px solid white;
+	     margin-top:40px;
+	 }
+
+	.container.line-top.line-bottom , .row.checkin-wrapper.no-top-margin.line-bottom{
+	    padding-bottom: 40px !important;
+	}
+
+	.checkout-text{
+	    padding: 20px 44px 0;
+	}
+	.checkoutnow-icon,.checkoutlater-icon,.checkout-now-white-icon{
+		height:76px !important;
+	}
+
+	.checkout-now-white-icon{
+		width:76px !important;
+	}
+
+	.accept-charges-icon{
+		width:29% !important;
+		height: 78px !important;
+		margin-top: 10px !important;
+	}
+
+	.accept-charges-button.single .rel-wrapper {
+	    padding: 27px 70px 15px;
+	}
+
+	.now-later-options .accept-charges-button {
+	    font-size: 40px;
+	}
+	.checkoutnow-icon{
+		background: url(/assets/img/Nikko/checkout-now_icon-white-big.png) top center no-repeat !important;
+	}
+
+	.checkoutlater-icon{
+		background: url(/assets/img/Nikko/checkoutlater_big.png) top center no-repeat !important;
+	}
+
+	.checkout-now-white-icon{
+		background: url(/assets/img/Nikko/checkout-now_icon-white-big.png) top center no-repeat !important;
+	}
+	.jumbotron .extra-head-pad {
+	    padding: 106px 92px;
+	}
+	.checkout-status .msg-body {
+	    padding: 28px 25% 0;
+	}
+	.checkoutnow.single .rel-wrapper, .checkoutlater.single .rel-wrapper {
+	    padding: 57px 10px 67px;
+	}
+
+	.row .applycharge {
+	    font-size: 14px;
+	    margin-bottom: 10px !important;
+	}
+
+	.row.checkin-wrapper.line-top.checkin-details {
+	    margin-top: 0 !important;
+	}
+	
+
+	//------------------------------------
+
+	.row.checkout-later-text.accept-charges-text{
+		padding-left:30px;
+		padding-right:30px;
+	}
+	.checkout-status .msg-body {
+	    padding: 10px 5% 0;
+	}
+	.checkout-status .msg-head{
+	  margin-bottom:0px;
+	}
+	.check-inout-wrapper{
+		
+		.leadtext{
+			width: 485px; 
+			margin-left: 76px;
+		}
+	}
+	.chekout-time{
+		font-size: 21px !important;
+	}
+	.no-thanks-text{
+		font-size: 22px;
+	}
+	
+	.link-btn.with-bg{
+		margin-top: 125px !important; 
+	}
+}
+
+/* smartphone only */
+
+@media (max-width: 990px) {
+  
+	  .checkin-width {
+		    margin: 0 auto !important;
+		    max-width: 570px;
+		    text-align: center;
+		}
+
+
+	.checkout-status{
+		padding: 8px 10px 22px;
+	}
+	
+	 .checkin{
+	    background: url(/assets/img/Nikko/checkin-white-icon-large.png)   85% 45%  no-repeat  #513d4f !important;
+	    span{
+	       margin-left: -60px;
+	    }
+	  }
+	  .link-btn.with-bg{
+		margin-top: 0 !important; 
+	}
+	.latecheckout-charged{
+		color:@black !important;
+	}
+	.checkout-status{
+		p{
+			font-size: 32px !important;
+		}
+		.msg-foot{
+			margin-top: 40px;
+			font-size: 32px !important;
+			font-weight: 300 !important;
+			color: #5985aa !important;
+		}
+	}
+}
+@media (max-width: 480px) {
+  .checkin{
+    background: url(/assets/img/Nikko/checkin-white-icon-small.png)   80% 30%  no-repeat  #513d4f !important;
+    span{
+       margin-left: -60px;
+    }
+  }
+  .backbtn{
+  display:none;
+  }
+}
+
+
+.margin-top-20{
+	margin-top:20px !important;
+}
+
+.margin-bottom-20{
+	margin-bottom:20px !important;
+}
+.jumbotron .checkin-wrapper{
+	margin: 15px auto 0 !important;
+}
+   
+.red-border{
+	 border: 3px solid red !important;
+}

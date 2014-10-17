@@ -66,7 +66,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 
 
     //set flag if standalone PMS
@@ -238,6 +238,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }, {
           title: "MENU_REPORTS",
           action: "rover.reports",
+          menuIndex: "reports",
           iconClass: "icon-reports",
           submenu: []
         }
@@ -278,6 +279,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }, {
         title: "MENU_REPORTS",
         action: "rover.reports",
+        menuIndex: "reports",
         iconClass: "icon-reports",
         submenu: [],
         hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
@@ -299,8 +301,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     }
 
-    $scope.$on("updateSubMenu", function(idx, item) {
-      if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
+    $rootScope.updateSubMenu = function(idx, item) {
+      if (item && item.submenu && item.submenu.length > 0) {
+        $scope.showSubMenu = true;
+        $scope.activeSubMenu = item.submenu;
+      } else if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item[1].submenu;
       } else {
@@ -308,6 +313,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
+    }
+
+    $scope.$on("updateSubMenu", function(idx, item) {
+      $rootScope.updateSubMenu(idx, item);
     });
 
     $scope.$on("closeDrawer", function() {
@@ -440,7 +449,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($scope.isHotelAdmin) {
         //CICO-9816 bug fix
         $('body').addClass('no-animation');
-        
+
         $scope.selectedMenuIndex = "settings";
         $window.location.href = "/admin";
       } else if ($scope.isHotelStaff) {
@@ -466,8 +475,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
-    $scope.failureCallBackSwipe = function() {
-    };
+    $scope.failureCallBackSwipe = function() {};
 
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
@@ -476,39 +484,36 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 	$scope.numberOfCordovaCalls = 0;
 
 	$scope.initiateCardReader = function(){
+    	if (sntapp.cardSwipeDebug === true) {
+      	sntapp.cardReader.startReaderDebug(options);
+      	return;
+    	}
     	
-      	if (sntapp.cardSwipeDebug === true) {
-      		
-        	sntapp.cardReader.startReaderDebug(options);
-        	return;
-      	}
-      	
-      	if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-      		setTimeout(function(){
-	      				//$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
- 	    	sntapp.cardReader.startReader(options);
-				    }, 2000);
-
-
+      if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      	setTimeout(function(){
+ 	    		sntapp.cardReader.startReader(options);
+ 	      }, 2000);
 	    } else {
 	      		//If cordova not loaded in server, or page is not yet loaded completely
 	      		//One second delay is set so that call will repeat in 1 sec delay
 	      	if($scope.numberOfCordovaCalls < 50){
 	      		setTimeout(function(){
 	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
-				    	$scope.initiateCardReader();
+				    	  $scope.initiateCardReader();
 				    }, 2000);
-	      		}
-      	    }	
+	      	}
+        }	
     };
-    
+
     /*
-     * Start Card reader now!. 
+     * Start Card reader now!.
      * Time out is to call set Browser
      */
-    setTimeout(function(){
-    	 $scope.initiateCardReader();
-    }, 200);
+
+    setTimeout(function() {
+      $scope.initiateCardReader();
+    }, 2000);
+
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
@@ -637,7 +642,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * function to execute on clicking latecheckout button
      */
     $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
-      if ( $rootScope.default_dashboard != 'HOUSEKEEPING' ) {
+      if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
           'type': type
@@ -646,7 +651,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     };
 
     $scope.clickedOnQueuedRoomsIcon = function(event) {
-      if ( $rootScope.default_dashboard == 'HOUSEKEEPING' ) {
+      if ($rootScope.default_dashboard == 'HOUSEKEEPING') {
         $state.go('rover.housekeeping.roomStatus', {
           'roomStatus': 'QUEUED_ROOMS'
         });
