@@ -45,7 +45,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.showAddNewGuestButton = showAddNewGuestButton;
 		});
 
-
+		//setting the scroller for view
+			var scrollerOptions = {
+		        tap: true,
+		        preventDefault: false,
+		        deceleration: 0.0001,
+		        shrinkScrollbars: 'clip' 
+		    };
+		  	$scope.setScroller('result_showing_area', scrollerOptions);
 
 		// if returning back and there was a search query typed in restore that
 		// else reset the query value in vault
@@ -80,6 +87,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// 	};
 		// }
 
+		$scope.$on('I_COMPLETED_RENDERING', function(event){
+			setTimeout(function(){
+				refreshScroller();
+			}, 100)
+		});
 
 
 		/**
@@ -132,6 +144,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.results[i].is_row_visible = true;
 			}
 			refreshScroller();
+			$scope.$emit('hideLoader');
 		});
 
 		/**
