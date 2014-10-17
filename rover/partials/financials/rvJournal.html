@@ -1,3 +1,4 @@
+
 <!-- Content -->
 <section id="journal" class="content" role="main">
     
@@ -46,7 +47,16 @@
             </div>
         </div>
         <div class="entry">
-            <label id="revenue-date-label" for="revenue-date">Date</label>
+            <label id="revenue-date-label" for="revenue-date">From Date</label>
+            <div class="entry-data">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{date}" readonly />
+                <strong id="revenue-date-day" class="day">{day}</strong>
+                <span id="revenue-date-month" class="month">{month}</span>
+                <span id="revenue-date-year" class="year">{year</span>
+            </div>
+        </div>
+        <div class="entry">
+            <label id="revenue-date-label" for="revenue-date">To Date</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{date}" readonly />
                 <strong id="revenue-date-day" class="day">{day}</strong>
@@ -55,55 +65,13 @@
             </div>
         </div>
         <ul id="journal-options" class="display">
-            <li id="show-revenue" ng-class="{'active':activeTab===0}" ng-click="activeTab=0">
+            <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activeTab=0">
                 <span class="icons icon-navbar icon-revenue">Revenue</span>{amount}</li>
-            <li id="show-payments" ng-class="{'active':activeTab===1}" ng-click="activeTab=1">
+            <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
                 <span class="icons icon-navbar icon-payments">Payments</span>{amount}</li>
-            <li id="show-cashier" ng-class="{'active':activeTab===2}" ng-click="activeTab=2">
+            <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activeTab=2">
                 <span class="icons icon-navbar icon-cashier">Cashier</span>{Open or Closed}</li>
         </ul>
-    </form>
-
-    <!-- Print box -->
-    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
-        <div class="entry">
-            <label for="revenue-charge-group">Charge Group</label>
-            <div class="select">
-                <select name="revenue-charge-group" id="revenue-charge-group" class="placeholder">
-                    <option value="" selected>All Charge Groups</option>
-                    <option value="{charge group 1}">{charge group 1}</option>
-                    <option value="{charge group 2}">{charge group 2}</option>
-                    ...
-                </select>
-            </div>
-        </div>
-        <div class="entry">
-            <label for="revenue-charge-code">Charge Code / Name</label>
-            <div class="select">
-                <select name="revenue-charge-code" id="revenue-charge-code" class="placeholder">
-                    <option value="" selected>All Charge Codes</option>
-                    <option value="{charge code 1}">{charge code 1}</option>
-                    <option value="{charge code 2}">{charge code 2}</option>
-                    ...
-                </select> 
-            </div>
-        </div>
-        <div class="entry">
-            <div class="switch-button on">
-                <input name="revenue-print-toggle" id="revenue-print-toggle" value="" type="checkbox" checked />
-                <label class="data-off">
-                    <span class="value">Summary</span>
-                    <span class="switch-icon">Details</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">Summary</span>
-                    <span class="value">Details</span>
-                </label>
-            </div>
-        </div>
-        <div class="actions">
-            <button id="print-revenue" type="button" class="button blue">Print</button>
-        </div>
     </form>
 
     <!-- Content REVENUE-->

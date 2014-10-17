@@ -1,120 +1,139 @@
-<div id="journal-content" class="journal-content">
-        <div id="cashier-history" class="journal-history scrollable">
-            <div class="wrapper">
-                <h2>History</h2>
-                <ul class="shift-history">
-                    <!-- Closed -->
-                    <li>
-                        <strong class="status closed">
-                            Closed
-                            <span>{who/what closed it}</span>
-                        </strong>
-                        <time datetime="{datetime timestamp}">
-                            <span class="time">{time}</span>
-                            <span class="date">{date}</span>
-                        </time>
-                    </li>
-                    <!-- Opened -->
-                    <li>
-                        <strong class="status opened">
-                            Opened
-                            <span>{who/what opened it}</span>
-                        </strong>
-                        <time datetime="{datetime timestamp}">
-                            <span class="time">{time}</span>
-                            <span class="date">{date}</span>
-                        </time>
-                    </li>
-                </ul>
-                <button type="button" class="button green">Re-Open</button>
-            </div> 
+<div>
+    <!-- Print box -->
+    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
+        <div class="entry">
+            <label for="cashier-report">Report</label>
+            <div class="select">
+                <select name="cashier-report" id="cashier-report">
+                    <option value="">Select Report Type</option>
+                    <option value="credit-card" selected>Cashier Summary</option>
+                    ...
+                </select>
+            </div>
         </div>
-        <div id="cashier-shift" class="journal-shift scrollable">
-            <!-- Open shift -->
-            <div class="wrapper">
-                <table class="shift-details">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Opening balance cash</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Opening balance check</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total Cash received</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total In Checks received</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <td class="entry" colspan="2">
-                                <input name="cash-submited" id="cash-submited" type="text" value="" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="entry" colspan="2">
-                                <input name="checks-submited" id="checks-submited" type="text" value="" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total Closing Balance Cash</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total Closing Balance Check</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button" class="button green">Close Shift</button>
-            </div> 
+        <div class="actions">
+            <button id="print-cashier" type="button" class="button blue">Print</button>
+        </div>
+    </form>
+    <!-- Content -->    
+    <div id="journal-content" class="journal-content">
+            <div id="cashier-history" class="journal-history scrollable">
+                <div class="wrapper">
+                    <h2>History</h2>
+                    <ul class="shift-history">
+                        <!-- Closed -->
+                        <li>
+                            <strong class="status closed">
+                                Closed
+                                <span>{who/what closed it}</span>
+                            </strong>
+                            <time datetime="{datetime timestamp}">
+                                <span class="time">{time}</span>
+                                <span class="date">{date}</span>
+                            </time>
+                        </li>
+                        <!-- Opened -->
+                        <li>
+                            <strong class="status opened">
+                                Opened
+                                <span>{who/what opened it}</span>
+                            </strong>
+                            <time datetime="{datetime timestamp}">
+                                <span class="time">{time}</span>
+                                <span class="date">{date}</span>
+                            </time>
+                        </li>
+                    </ul>
+                    <button type="button" class="button green">Re-Open</button>
+                </div> 
+            </div>
+            <div id="cashier-shift" class="journal-shift scrollable">
+                <!-- Open shift -->
+                <div class="wrapper">
+                    <table class="shift-details">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Opening balance cash</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Opening balance check</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Cash received</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total In Checks received</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <td class="entry" colspan="2">
+                                    <input name="cash-submited" id="cash-submited" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="entry" colspan="2">
+                                    <input name="checks-submited" id="checks-submited" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Closing Balance Cash</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Closing Balance Check</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="button green">Close Shift</button>
+                </div> 
 
-            <!-- Shift selected from history 
-            <div class="wrapper">
-                <table class="shift-details">
-                    <caption class="{opened or closed}">{User}| {Open or Closed} | {Time and Date} </caption>
-                    <tbody>
-                        <tr>
-                            <th scope="row">Opening balance cash</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Opening balance check</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total Cash received</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total In Checks received</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="entry">Cash submitted</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="entry">Checks submitted</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total Closing Balance Cash</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Total Closing Balance Check</th>
-                            <td class="value">{amount}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                // Show button only if closed 
-                <button type="button" class="button green">Close Shift</button>
-            </div> 
-            -->
+                <!-- Shift selected from history 
+                <div class="wrapper">
+                    <table class="shift-details">
+                        <caption class="{opened or closed}">{User}| {Open or Closed} | {Time and Date} </caption>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Opening balance cash</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Opening balance check</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Cash received</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total In Checks received</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="entry">Cash submitted</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="entry">Checks submitted</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Closing Balance Cash</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Closing Balance Check</th>
+                                <td class="value">{amount}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    // Show button only if closed 
+                    <button type="button" class="button green">Close Shift</button>
+                </div> 
+                -->
+            </div>
         </div>
     </div>
