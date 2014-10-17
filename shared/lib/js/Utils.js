@@ -191,45 +191,11 @@ function getCurrencySymbol(currenyCode){
 };
 
 var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly) {
-    console.log(reservationStatus)
-        /*mappedColor = "";
-        switch(roomReadyStatus) {
-
-            case "INSPECTED":
-                mappedColor = 'room-green';
-                break;
-            case "CLEAN":
-                if (checkinIsInspectedOnly == "true") {
-                    mappedColor = 'room-orange';
-                    break;
-                } else {
-                    mappedColor = 'room-green';
-                    break;
-                }
-                break;
-            case "PICKUP":
-                mappedColor = "room-orange";
-                break;
-
-            case "DIRTY":
-                mappedColor = "room-red";
-                break;
-
-        }
-        return mappedColor;*/
-        console.log(reservationStatus);
-        console.log(roomReadyStatus);
-        console.log(foStatus);
-        console.log(checkinInspectedOnly);
-
-
 
     var reservationRoomStatusClass = "";
     if(reservationStatus == 'CHECKING_IN' && roomReadyStatus!=''){
-        console.log("if 1");
         
         if(foStatus == 'VACANT'){
-            console.log("if 2");
             switch(roomReadyStatus) {
                 case "INSPECTED":
                     reservationRoomStatusClass = ' room-green';
@@ -251,12 +217,9 @@ var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foSt
                     reservationRoomStatusClass = " room-red";
                     break;
                 default:
-                    console.log("default option");
                     reservationRoomStatusClass = " ";
                     break;
-
-
-        }
+            }
         
         } else {
             reservationRoomStatusClass = "room-red";
