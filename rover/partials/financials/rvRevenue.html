@@ -1,7 +1,6 @@
 <div>
     <!-- Print box -->
-    <form method="post" action="" id="journal-print-options" class="journal-print" 
-    role="complementary" ui-jq="resizable" ui-options="resizableOptions">
+    <form ng-click="closeDrawer($event)" id="journal-print-options" class="journal-print" ng-class="printBoxClass" role="complementary" ui-jq="resizable" ui-options="resizableOptions" resize style="height: {{printBoxHeight}}px;">
         <div class="holder">
             <div class="entry">
                 <label for="revenue-charge-group">Charge Group</label>
