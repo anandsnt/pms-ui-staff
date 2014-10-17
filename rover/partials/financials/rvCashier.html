@@ -1,19 +1,22 @@
 <div>
     <!-- Print box -->
     <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary">
-        <div class="entry">
-            <label for="cashier-report">Report</label>
-            <div class="select">
-                <select name="cashier-report" id="cashier-report">
-                    <option value="">Select Report Type</option>
-                    <option value="credit-card" selected>Cashier Summary</option>
-                    ...
-                </select>
+        <div class="holder">
+            <div class="entry">
+                <label for="cashier-report">Report</label>
+                <div class="select">
+                    <select name="cashier-report" id="cashier-report">
+                        <option value="">Select Report Type</option>
+                        <option value="credit-card" selected>Cashier Summary</option>
+                        ...
+                    </select>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="print-cashier" type="button" class="button blue">Print</button>
             </div>
         </div>
-        <div class="actions">
-            <button id="print-cashier" type="button" class="button blue">Print</button>
-        </div>
+        <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
     </form>
     <!-- Content -->    
     <div id="journal-content" class="journal-content">
