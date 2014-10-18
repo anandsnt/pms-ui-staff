@@ -37,14 +37,11 @@
 //=require_tree ../rover/directives/ngReact
 
 //=require ../rover/react/diary/util.js
-//=require ../rover/react/diary/drag_mixin.js
 //=require ../rover/react/diary/resize_mixin.js
 //=require ../rover/react/diary/diary-toggle.js
 //=require ../rover/react/diary/diary-toggle-panel.js
-//=require ../rover/react/diary/diary-grid-row-item-placeholder.js
 //=require ../rover/react/diary/diary-grid-row-item-drag.js
 //=require ../rover/react/diary/diary-grid-row-item.js
-//=require ../rover/react/diary/diary-grid-row-background.js
 //=require ../rover/react/diary/diary-grid-row.js
 //=require ../rover/react/diary/diary-room.js
 //=require ../rover/react/diary/diary-rooms.js
