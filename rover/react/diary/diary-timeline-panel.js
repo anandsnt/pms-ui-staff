@@ -5,15 +5,16 @@ var TimelinePanel = React.createClass({
 		iscroll.timeline = new IScroll('#diary-timeline', { 
 			probeType: 2, 
 			scrollbars: false,
-			interactiveScrollbars: true,
+			interactiveScrollbars: false,
 			scrollX: true, 
 			scrollY: false, 
 			momentum: false,
 			bounce: false,
-			mouseWheel: 'scroll'
+			mouseWheel: false,
+			useTransition: true
 		});
 
-		iscroll.timeline._scrollFn = this.props.__onGridScroll.bind(null, iscroll.timeline);
+		iscroll.timeline._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.timeline), 10);
 
 		iscroll.timeline.on('scroll', iscroll.timeline._scrollFn);
 

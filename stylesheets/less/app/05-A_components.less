@@ -10076,6 +10076,17 @@
             }
         }
 
+        .actions {
+            float: right;
+            padding-top: 18px;
+            text-align: center;
+            width: 23.4375%;
+
+            button {
+                width: 46%;
+            }
+        }
+
         /* Rate type search **/
         .faux-select-options {
             position: absolute;
@@ -10426,7 +10437,7 @@
             left: 0;
             padding: 10px;
             background: @grey1;
-            z-index: 9990;
+            z-index: 1199; //9990; CHANGED
             .box-shadow(2px 5px 5px rgba(0,0,0,.15));
             .size(90px, 120px);
 
@@ -10505,11 +10516,11 @@
             }
 
             > .wrapper {
-                position: relative;
+                position: relative; //CHANGED
                 height: auto;
                 overflow: hidden;
 
-                li {
+                .room-title {
                     margin: 5px 0 5px 10px;
                     text-align: right;
                     text-transform: uppercase;
@@ -10535,59 +10546,45 @@
             position: absolute;
             top: 90px;
             left: 120px;
-            z-index: 1099;
+            z-index: 1099; //1099; CHANGED
             .calc-height(100, 90);
             .calc-width(100, 120);
 
-            /*Clear highlighting during drag and drop
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none; */
-
             > .iScrollVerticalScrollbar { display: none; }
-            > .iScrollHorizontalScrollbar { 
-                //top: auto;
-                bottom: 10px;
+            > .iScrollHorizontalScrollbar {                 
+                top: initial !important;
+                bottom: 10px !important;
                 left: 10px;
-                right: 10px;
+                right: 10px; //CHANGED
             }
 
             > .wrapper {
-                position: relative;
+                position: absolute; //CHANGED
                 overflow: hidden;
                 height: 100%;
 
                 > .grid {
-                    position: relative;
+                    position: absolute; //relative; CHANGED
                     height: auto;
 
-                    li {
-                        position: relative;
+                    > .grid-row {
+                        position: relative; 
                         margin: 5px 0;
                         background: @white;
+                        overflow: hidden;
                         width: 100%;
                         .float;
 
-                        .occupancy-block.dragstate {
-                            z-index: 1159;
-                            opacity: 0.45;
-                        }
-
-                        /*.occupancy-block.placeholder {
-                            background-color: #999;
-                            z-index: 199;
-                            //opacity: 0.45;
-                        }*/
-
                         .occupancy-block {
                             position: absolute;
-                            z-index: 1149;
+                            z-index: 1099; //1149; CHANGED
                             .show;
                             .float;
+
+                            &.dragstate {
+                                z-index: 1159;
+                                opacity: 0.45;
+                            }
 
                             span {
                                 font-weight: 600;
@@ -10628,7 +10625,8 @@
 
                                     &:hover { 
                                         &:before { 
-                                            .show; #fade > .in(); 
+                                            .show; 
+                                            #fade > .in(); 
                                         }
                                     }
 
@@ -10662,7 +10660,7 @@
                                     &.check-in,
                                     &.inhouse,
                                     &.check-out {
-                                        -webkit-transform: translateZ(0);
+                                        //-webkit-transform: translateZ(0); CHANGED
 
                                         &.editing { 
                                             .gradient(@purpleStart, @purpleEnd); 
@@ -10720,7 +10718,7 @@
                         }
 
                         .hour {
-                            border-right: 1px solid rgba(0,0,0,.2);
+                            border-right: 1px solid #aaa; //rgba(0,0,0,.2); CHANGED
                             background-size: 100%;
                             background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
                             background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);                   
@@ -10764,7 +10762,7 @@
                             pointer-events: none;
                             .square(100%);
                             .show;
-                            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                            //.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15)); CHANGED
                         }
                     }
                 }

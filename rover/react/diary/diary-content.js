@@ -19,15 +19,21 @@ var DiaryContent = React.createClass({
 		});
 	},
 	__toggleRows: function(state) {
-		var scroll_pos = this.state.iscroll.grid.x / this.state.display.px_per_ms + this.state.display.x_origin;
+		var scroll_pos = Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_origin;
 
 		this.state.angular_evt.toggleRows(state, scroll_pos);	
 	},
+	__onGridScrollStart: function(iscroll_object) {
+
+	},
+	__onGridScrollEnd: function(iscroll_object) {
+
+	},
 	__onGridScroll: function(iscroll_object) {
-		try{
+		//try{
 			var el = iscroll_object, iscroll = this.state.iscroll;
 
-			if(el) {
+			//if(el) {
 				switch(el) {
 					case iscroll.grid:
 						iscroll.timeline.scrollTo(el.x, 0);
@@ -41,10 +47,10 @@ var DiaryContent = React.createClass({
 						iscroll.grid.scrollTo(iscroll.grid.x, el.y);
 					break;
 				}
-			}
-		} catch(e) {
+			//}
+		/*} catch(e) {
 			console.log(e);
-		}
+		}*/
 	},
 	__onDragStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));
@@ -143,9 +149,6 @@ var DiaryContent = React.createClass({
 			s_0 		= {
 							angular_evt: {
 								onSelect: 					scope.onSelect,
-								//onRowItemSelect: 			scope.onRowItemSelect,
-								//onRowSelect: 				scope.onRowSelect,
-								//onTimelineSelect:  			scope.onTimelineSelect,
 								isSelected: 				scope.isSelected,
 								isAvailable:                scope.isAvailable,
 								isDraggable:                scope.isDraggable,

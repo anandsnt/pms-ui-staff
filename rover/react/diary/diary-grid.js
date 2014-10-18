@@ -8,13 +8,14 @@ var Grid = React.createClass({
 			interactiveScrollbars: true,
 			scrollX: true, 
 			scrollY: true, 
-			bounce: false,
+			bounce: true,
 			momentum: false,
 			preventDefaultException: { className: /(^|\s)occupancy-block(\s|$)/ },
-			mouseWheel: 'scroll'
+			mouseWheel: true,
+			useTransition: true// 'scroll'
 		});
 
-		iscroll.grid._scrollFn = this.props.__onGridScroll.bind(null, iscroll.grid);
+		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 30);
 
 		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
 
@@ -44,7 +45,6 @@ var Grid = React.createClass({
 						key: 				row.key,
 						data: 				row,
 						row_number: 		idx,
-						className: 			'grid-row',
 						display: 			self.props.display,
 						viewport: 			self.props.viewport,
 						filter: 			self.props.filter,

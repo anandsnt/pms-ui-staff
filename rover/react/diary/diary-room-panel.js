@@ -10,10 +10,11 @@ var RoomPanel = React.createClass({
 			scrollY: true,
 			momentum: false,
 			bounce: false, 
-			mouseWheel: 'scroll'
+			mouseWheel: false,
+			useTransition: true
 		});
 
-		iscroll.rooms._scrollFn = this.props.__onGridScroll.bind(null, iscroll.rooms);
+		iscroll.rooms._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.rooms), 10);
 
 		iscroll.rooms.on('scroll', iscroll.rooms._scrollFn);
 

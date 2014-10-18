@@ -26,12 +26,23 @@ var GridRow = React.createClass({
 		return render;
 	},
 	render: function() {
-		var self = this;
+		var hourly_divs = [],
+			self = this;
 
+		/*Create hourly spans across each grid row*/
+		for(var i = 0; i < this.props.display.hours; i++) {
+			hourly_divs.push(React.DOM.span({ 
+				//key: 		'date-time-' + i,
+				className: 	'hour',
+				style: {
+					width: 	this.props.display.px_per_hr + 'px'
+				}
+			}));
+		}
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		this.props.key,
-			className: 	this.props.className
+			className: 	'grid-row' + (_.isEmpty(this.props.data.status) ? '' : ' ' + this.props.data.status)
 		}, 
 		_.map(this.props.data.reservations, function(reservation) {
 			return GridRowItem({
@@ -50,7 +61,6 @@ var GridRow = React.createClass({
 				currentResizeItem: self.props.currentResizeItem,
 				currentResizeItemRow: self.props.currentResizeItemRow
 			});
-		}),
-		GridRowBackground({ display: this.props.display })); //hourly_divs);
+		}), hourly_divs); //GridRowBackground({ display: this.props.display })); //hourly_divs);
 	}	
 });

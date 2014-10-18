@@ -15,11 +15,14 @@ var TimelineResizeGrip = React.createClass({
 	__onMouseDown: function(e) {
 		var page_offset, model;
 
+		this.props.iscroll.timeline.disable();
+		this.props.iscroll.grid.disable();	
+
+		e.preventDefault();
+		e.stopPropagation();
+
 		if(e.button === 0) {
 			this.props.iscroll.grid.disable();
-			
-			e.preventDefault();
-			e.stopPropagation();
 
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__onMouseMove);
@@ -29,11 +32,7 @@ var TimelineResizeGrip = React.createClass({
 			this.setState({
 				mouse_down: true,
 				origin_x: e.pageX,
-				element_x: page_offset.left - 120
-			},
-			function() {
-				this.props.iscroll.timeline.disable();
-				this.props.iscroll.grid.disable();	
+				element_x: page_offset.left -this.props.display.x_0 - this.props.iscroll.grid.x
 			});
 		}
 	},

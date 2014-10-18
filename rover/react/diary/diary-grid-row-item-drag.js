@@ -26,6 +26,7 @@ var GridRowItemDrag = React.createClass({
 			document.addEventListener('mousemove', this.__dbMouseMove);
 
 			page_offset = this.getDOMNode().getBoundingClientRect();
+			
 			el = this.props.viewport.element();
 
 			this.setState({

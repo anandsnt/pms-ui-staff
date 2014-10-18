@@ -258,15 +258,28 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    $scope.toggleRows = function(state, current_scroll_pos) {
 	    	var showAllRooms = (state === 'on');
 
-	    	updateRowClasses(current_scroll_pos);
+	    	if(showAllRooms) {
+	    		clearRowClasses();
+	    	} else {
+	    		updateRowClasses(current_scroll_pos);
+			}
 
 	    	$scope.renderGrid();
 	    };
 
+	    function clearRowClasses() {
+	    	for(var i = 0, len = $scope.data.length; i < len; i++) {
+	    		$scope.data[i] = copyRoom($scope.data);
+	    		$scope.data[i].status = '';
+	    	}
+	    }
+
 	    function updateRowClasses(current_scroll_pos) {
 	    	var reservations,
 	    		reservation,
-	    		adjusted_scroll_pos = current_scroll_pos - $scope.gridProps.display.x_origin;
+	    		maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int;
+
+	    	current_scroll_pos = parseInt(current_scroll_pos, 10);
 
 	    	for(var i = 0, len = $scope.data.length; i < len; i++) {
 	    		reservations = $scope.data[i].reservations;
@@ -279,17 +292,22 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	    				$scope.data[i] = copyRoom($scope.data[i]);
 
-	    				switch(reservation.status) {
+	    				switch(angular.lowercase(reservation.status)) {
 	    					case 'inhouse':
 	    					case 'check-in':
 	    					case 'check-out':
 	    						$scope.data[i].status = 'occupied';
 	    					break;
 	    					case 'housekeeping':
-	    						$scope.data[i].status = 'dirty';
+	    						
 	    					break;
 	    				}
-	    			}
+	    			} else if(current_scroll_pos > reservation.end_date.getTime() && 
+	    			   		  current_scroll_pos <= (reservation.end_date.getTime() + maintenance_span)) {
+	    				
+	    				$scope.data[i] = copyRoom($scope.data[i]);
+	    				$scope.data[i].status = 'dirty';
+	    			} 
 	    		}
 	    	}
 	    }
@@ -315,28 +333,32 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	});
 	    };
 
-	    $scope.saveEdit = function() {
-	    	var row_data = copyRoom($scope.gridProps.currentResizeItemRow),
-	    		row_item_data = copyReservation($scope.gridProps.currentResizeItem);
+	    $scope.editSave = function() {
+	    	var props = $scope.gridProps,
+	    		row_data = copyRoom(props.currentResizeItemRow),
+	    		row_item_data = copyReservation(props.currentResizeItem);
 
-	    	row_item_data.start_time = new Date(row_item_data.left / $scope.gridProps.display.px_per_ms + $scope.gridProps.display.x_origin);
-	    	row_item_data.end_time = new Date(row_item_data.right / $scope.gridProps.display.px_per_ms + $scope.gridProps.display.x_origin); 
+	    	row_item_data.start_time = new Date(row_item_data.left / props.display.px_per_ms + props.display.x_origin);
+	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + $props.display.x_origin); 
 
 	    	updateReservation(row_item_data);
 
-	    	$scope.gridProps.edit = _.extend({}, $scope.gridProps.edit);
-	    	$scope.gridProps.edit = false;
-	    	$scope.gridProps.currentResizeItem = undefined;
-	    	$scope.gridProps.currentResizeItemRow = undefined;
+	    	props.edit = _.extend({}, props.edit);
+	    	props.edit = false;
+	    	props.currentResizeItem = undefined;
+	    	props.currentResizeItemRow = undefined;
 
 	    	$scope.renderGrid();
 	    };
 
-	    $scope.cancelEdit = function() {
-	    	$scope.gridProps.edit = _.extend({}, $scope.gridProps.edit);
-	    	$scope.gridProps.edit = false;
-	    	$scope.gridProps.currentResizeItem = undefined;
-	    	$scope.gridProps.currentResizeItemRow = undefined;
+	    $scope.editCancel = function() {
+	    	var props = $scope.gridProps;
+	    	
+	    	props.edit = _.extend({}, $scope.gridProps.edit);
+	    	props.edit = false;
+	    	props.currentResizeItem = undefined;
+	    	props.currentResizeItemRow = undefined;
+
 	    	$scope.renderGrid();
 	    };
 	})();

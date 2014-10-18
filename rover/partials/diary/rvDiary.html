@@ -113,9 +113,9 @@
                 </label>
             </div>
         </div>
-        <div id="actions" class="" ng-class="{editing: gridProps.edit_mode.active === true}">
+        <div class="actions" ng-show="gridProps.edit.active">
             <button id="edit-save" class="button green" ng-click="editSave()">Save</button>
-            <button id="edit-save" class="button" ng-click="editCancel()">Cancel</button>
+            <button id="edit-cancel" class="button gray" ng-click="editCancel()">Cancel</button>
         </div>
         <!--<div class="actions">
             <button type="button" class="button green" ng-click="onUpdate()">Update</button>
