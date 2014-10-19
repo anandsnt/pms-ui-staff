@@ -1,14 +1,16 @@
 var TogglePanel = React.createClass({
 	__onClick: function(e) {
-		var self = this;
-
-		console.log(e);
+		var self = this,
+			mode = (this.state.mode === 'on') ? 'off' : 'on';
 
 		this.setState({
-			mode: (this.state.mode === 'on') ? 'off' : 'on'
+			mode: mode
 		}, function() {
-			self.props.__toggleRows();
+			self.props.__toggleRows(mode);
 		});
+
+		e.preventDefault();
+		e.stopPropagation();
 	},
 	getInitialState: function() {
 		return {
@@ -26,7 +28,6 @@ var TogglePanel = React.createClass({
 		},
 		Toggle({
 			mode: this.state.mode,
-			__toggleRows: self.props.__toggleRows,
 			__onClick: self.__onClick
 		}));
 	}

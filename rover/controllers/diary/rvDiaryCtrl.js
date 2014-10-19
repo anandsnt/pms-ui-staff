@@ -89,6 +89,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 					if(rateMenu.length > 0) {
 						if(rateMenu.hasClass('hidden')) {
 							rateMenu.removeClass('hidden');
+						}else {
+							rateMenu.addClass('hidden');
 						}
 					}
 
@@ -190,14 +192,16 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    	switch(command_message) {
 		    		case 'edit': 
 
-		    		$scope.gridProps.edit = _.extend({}, $scope.gridProps.edit);
-		    		$scope.gridProps.edit.active = true;
-		    		$scope.gridProps.edit.originalItem = copyReservation(row_item_data);
-		    		$scope.gridProps.edit.originalRowItem = copyRoom(row_data);
-		    		$scope.gridProps.currentResizeItem = row_item_data;
-		    		$scope.gridProps.currentResizeItemRow = row_data;
+		    		if(!$scope.gridProps.edit.active) {
+			    		$scope.gridProps.edit = _.extend({}, $scope.gridProps.edit);
+			    		$scope.gridProps.edit.active = true;
+			    		$scope.gridProps.edit.originalItem = copyReservation(row_item_data);
+			    		$scope.gridProps.edit.originalRowItem = copyRoom(row_data);
+			    		$scope.gridProps.currentResizeItem = row_item_data;
+			    		$scope.gridProps.currentResizeItemRow = row_data;
 
-		    		$scope.renderGrid();
+			    		$scope.renderGrid();
+			    	}
 
 		    		break;	 
 		    	} 
@@ -269,7 +273,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	    function clearRowClasses() {
 	    	for(var i = 0, len = $scope.data.length; i < len; i++) {
-	    		$scope.data[i] = copyRoom($scope.data);
+	    		$scope.data[i] = copyRoom($scope.data[i]);
 	    		$scope.data[i].status = '';
 	    	}
 	    }
@@ -297,10 +301,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    					case 'check-in':
 	    					case 'check-out':
 	    						$scope.data[i].status = 'occupied';
-	    					break;
-	    					case 'housekeeping':
-	    						
-	    					break;
+	    					break;	
 	    				}
 	    			} else if(current_scroll_pos > reservation.end_date.getTime() && 
 	    			   		  current_scroll_pos <= (reservation.end_date.getTime() + maintenance_span)) {
@@ -339,7 +340,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    		row_item_data = copyReservation(props.currentResizeItem);
 
 	    	row_item_data.start_time = new Date(row_item_data.left / props.display.px_per_ms + props.display.x_origin);
-	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + $props.display.x_origin); 
+	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + props.display.x_origin); 
 
 	    	updateReservation(row_item_data);
 

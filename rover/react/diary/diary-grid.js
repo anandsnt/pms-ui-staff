@@ -10,12 +10,12 @@ var Grid = React.createClass({
 			scrollY: true, 
 			bounce: true,
 			momentum: false,
-			preventDefaultException: { className: /(^|\s)occupancy-block(\s|$)/ },
+			preventDefaultException: { className: /(^|\s)occupied(\s|$)/ },
 			mouseWheel: true,
 			useTransition: true// 'scroll'
 		});
 
-		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 30);
+		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 10);
 
 		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
 

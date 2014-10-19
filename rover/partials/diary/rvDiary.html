@@ -49,33 +49,37 @@
         </div>
         <div class="entry rate">
             <label for="rate-type">Rate Type</label>
-            <div class="faux-select" ng-click="toggleRates()">
+            <div class="faux-select" ng-click="gridProps.filter.toggleRates()">
                 Standard Rate
             </div>
             <div id="diary-rates" class="faux-select-options hidden">
                 <div class="header">
                     <!-- Standard Rate -->
-                    <label class="radio inline">
-                        <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" checked />
-                        Standard
-                    </label>
-                    <label class="radio inline">
-                        <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" />
-                        Corporate 
-                        <span>Select Account</span>
-                    </label>   
+                    <div ng-show="gridProps.filter.rate_type === 'Standard'">
+                        <label class="radio inline">
+                            <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" checked />
+                            Standard
+                        </label>
+                        <label class="radio inline">
+                            <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" />
+                            Corporate 
+                            <span>Select Account</span>
+                        </label>   
+                    </div>
                     <!-- Corporate Rate is selected & defined -->
-                    <label class="radio inline">
-                        <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" />
-                        Standard
-                    </label>
-                    <label class="radio inline checked">
-                        <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" checked />
-                        Corporate 
-                        <span>American Airlines</span>
-                        <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
-                        <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
-                    </label>      
+                    <div ng-show="gridProps.filter.rate_type === 'Corporate'">
+                        <label class="radio inline">
+                            <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" />
+                            Standard
+                        </label>
+                        <label class="radio inline checked">
+                            <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" checked />
+                            Corporate 
+                            <span>American Airlines</span>
+                            <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
+                            <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
+                        </label>   
+                    </div>   
                 </div>
                 <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
                 <div class="entry search hidden">

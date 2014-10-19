@@ -19,9 +19,7 @@ var DiaryContent = React.createClass({
 		});
 	},
 	__toggleRows: function(state) {
-		var scroll_pos = Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_origin;
-
-		this.state.angular_evt.toggleRows(state, scroll_pos);	
+		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_origin);	
 	},
 	__onGridScrollStart: function(iscroll_object) {
 
@@ -30,27 +28,23 @@ var DiaryContent = React.createClass({
 
 	},
 	__onGridScroll: function(iscroll_object) {
-		//try{
-			var el = iscroll_object, iscroll = this.state.iscroll;
+		
+		var el = iscroll_object, iscroll = this.state.iscroll;
 
-			//if(el) {
-				switch(el) {
-					case iscroll.grid:
-						iscroll.timeline.scrollTo(el.x, 0);
-						//$('.diary-timeline .hours').css({ left: -el.x });
-						iscroll.rooms.scrollTo(0, el.y);
-					break;
-					case iscroll.timeline:
-						iscroll.grid.scrollTo(el.x, iscroll.grid.y);
-					break;
-					case iscroll.rooms:
-						iscroll.grid.scrollTo(iscroll.grid.x, el.y);
-					break;
-				}
-			//}
-		/*} catch(e) {
-			console.log(e);
-		}*/
+		switch(el) {
+			case iscroll.grid:
+				iscroll.timeline.scrollTo(el.x, 0);
+				
+				iscroll.rooms.scrollTo(0, el.y);
+			break;
+			case iscroll.timeline:
+				iscroll.grid.scrollTo(el.x, iscroll.grid.y);
+			break;
+			case iscroll.rooms:
+				iscroll.grid.scrollTo(iscroll.grid.x, el.y);
+			break;
+		}
+ 
 	},
 	__onDragStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onDragStart.apply(this, Array.prototype.slice.call(arguments));

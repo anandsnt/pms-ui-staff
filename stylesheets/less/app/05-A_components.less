@@ -10092,7 +10092,7 @@
             position: absolute;
             top: 80px;
             left: 10px;
-            z-index: 1020;
+            z-index: 1199;
             .calc-width(100, 10);
             .faux-clickable;
             .transition;
@@ -10292,7 +10292,7 @@
             position: absolute;
             top: 0;
             left: 120px;
-            z-index: 1199;
+            z-index: 1099;
             height: 80px;
             background: darken(@darkBlue, 40);
             cursor: default;
@@ -10437,7 +10437,7 @@
             left: 0;
             padding: 10px;
             background: @grey1;
-            z-index: 1199; //9990; CHANGED
+            z-index: 1099; //9990; CHANGED
             .box-shadow(2px 5px 5px rgba(0,0,0,.15));
             .size(90px, 120px);
 
@@ -10502,7 +10502,7 @@
             left: 0;
             width: 120px;
             background: @grey1;
-            z-index: 1199;
+            z-index: 1099;
             cursor: default;
             .box-shadow(2px 5px 5px rgba(0,0,0,.15));
             .calc-height(100, 90);
@@ -10520,7 +10520,7 @@
                 height: auto;
                 overflow: hidden;
 
-                .room-title {
+                > .room-title {
                     margin: 5px 0 5px 10px;
                     text-align: right;
                     text-transform: uppercase;
@@ -10546,7 +10546,7 @@
             position: absolute;
             top: 90px;
             left: 120px;
-            z-index: 1099; //1099; CHANGED
+            z-index: 1049; //1099; CHANGED
             .calc-height(100, 90);
             .calc-width(100, 120);
 
@@ -10582,7 +10582,7 @@
                             .float;
 
                             &.dragstate {
-                                z-index: 1159;
+                                z-index: 1149;
                                 opacity: 0.45;
                             }
 
@@ -10848,7 +10848,7 @@
         &.hours-24 {
 
             .diary-rooms {
-                li {
+                .room-title {
                     height: 24px;
                     padding: 0 5px;
                     margin: 0;
@@ -10876,7 +10876,7 @@
             .diary-grid {
                 > .wrapper {
                     > .grid {
-                        li {
+                        > .grid-row {
                             line-height: 24px;
                             height: 24px;
                             margin: 0;

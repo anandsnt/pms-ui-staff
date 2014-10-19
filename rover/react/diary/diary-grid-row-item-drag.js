@@ -18,10 +18,10 @@ var GridRowItemDrag = React.createClass({
 	__onMouseDown: function(e) {
 		var page_offset, el;
 
-		if(e.button === 0) {
-			e.stopPropagation();
-			e.preventDefault();
+		e.stopPropagation();
+		e.preventDefault();
 
+		if(e.button === 0) {
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 
@@ -133,16 +133,14 @@ var GridRowItemDrag = React.createClass({
 				left: state.left,
 				top: state.top
 			}; 
-			className = 'occupancy-block dragstate';
-		//} else if(state.selected) {
-			//className = 'occupancy-block reserved';
+			className = ' dragstate'; //'occupancy-block dragstate';
 		} else {
 			className = '';
 		}
 
 		return this.transferPropsTo(React.DOM.div({
 			style: style,
-			className: className,
+			className: this.props.className + className,
 			children: this.props.children,
 			onMouseDown: this.__onMouseDown
 		}));

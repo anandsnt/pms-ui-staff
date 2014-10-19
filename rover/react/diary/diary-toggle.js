@@ -1,9 +1,4 @@
 var Toggle = React.createClass({
-	componentWillReceiveProps: function(nextProps, nextState) {
-		if(nextProps.mode !== this.props.mode) {
-			this.props.__toggleRows(this.props.mode);
-		}
-	},
 	render: function() {
 		var self = this;
 
@@ -16,7 +11,7 @@ var Toggle = React.createClass({
 				id: 'diary-rooms-showing',
 				type: 'checkbox',
 				checked: undefined,
-				onChange: self.props.__onClick
+				onClick: self.props.__onClick
 			}),
 			React.DOM.label({
 				className: 'data-off'
