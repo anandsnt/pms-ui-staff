@@ -194,6 +194,340 @@
             }
         }
     }
+
+/* Content management       ==============================*/
+    .cms-view {
+        margin: 0;
+        display: table;
+        .float;
+        .pull-left;
+
+        li { 
+            display: inline-block;
+            cursor: pointer;
+            margin: 0 0 0 1px;
+            font-size: 14px;
+            line-height: 40px;
+            text-align: center;
+            color: @textColor;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0 20px;
+            .pull-left;
+            .clickable;
+            #border-radius > .rounded(0);
+
+            &:hover { 
+                color: @logoPrimary; 
+                .box-shadow();
+            }
+
+            &.active {
+                cursor: default;
+                color: @white;
+                text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+                .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.3)");
+                .gradient (@logoGradientEnd, @logoGradientStart);
+            }
+
+            &:first-child { #border-radius > .left(); }
+            &:last-child { #border-radius > .right(); }
+        }
+    }
+
+    .cms-grid {
+        overflow-x: hidden;
+
+        .grid-options {
+            .float;
+
+            .entry {
+                margin-right: 20px;
+                .pull-left;
+
+                label {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    margin: 0;
+                    color: @grey3;
+                    .show;
+
+                    &.checkbox,
+                    &.radio {
+                        border-left: 1px solid rgba(0,0,0,.1);
+                        margin-top: 25px;
+                        padding-left: 40px;
+                        line-height: 40px;
+                        color: @textColor;
+
+                        .icon-form { 
+                            top: 10px; 
+                            left: 10px;
+                        }
+                    }
+                }
+
+                .holder {
+                    position: relative;
+                    .pull-left;
+
+                    .icon-search {
+                        position: absolute;
+                        top: 13px;
+                        left: 10px;
+                    }
+
+                    .query { padding-left: 30px; }
+                }
+
+                .select { 
+                    min-width: 120px;
+                    .pull-left; 
+                }
+                
+                &.search { 
+                    margin-right: 0;
+                    .pull-right; 
+                }
+            }
+        }
+
+        .cms-tree-header {
+            position: relative;
+            list-style: none;
+            padding: 0 180px 0 10px;
+            background-color: rgba(0,0,0,.1);
+            width: 100%;
+            .float;
+
+            li {
+                font-size: 16px;
+                font-weight: 600;
+                text-transform: uppercase;
+                line-height: 40px;
+                margin: 0;
+                padding: 0 10px;
+                .pull-left;
+
+                &.cms-name { width: 50%; }
+                &.cms-type { width: 20%; }
+                &.cms-date { width: 30%; }
+                &.cms-activate,
+                &.cms-delete {
+                    position: absolute;
+                    top: 0;
+                    float: none;
+                }
+
+                &.cms-activate { 
+                    right: 100px;
+                    width: 60px;
+                }
+
+                &.cms-delete { 
+                    right: 0; 
+                    width: 80px;
+                }
+            }
+        }
+    }
+
+    .cms-tree {
+        margin: 20px 0;
+        list-style: none;
+        .float;
+
+        li {
+            vertical-align: middle;
+            line-height: 40px;
+            margin-bottom: 10px;
+
+            .sort {
+                position: relative;
+                padding: 10px 180px 10px 20px;
+                cursor: move;
+                background: @white;
+                overflow: hidden;
+                .float;
+                .size(60px, 100%);
+                .box-shadow(1px 1px 2px rgba(0,0,0,.1));
+
+                .reorder {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    cursor: pointer;
+                    width: 40px;
+                    height: 60px;
+                    background-position: 95% 50%;
+                    background-repeat: no-repeat;
+                    .hide;
+
+                    @media @highdpi { background-size: 14px 14px; }
+                }
+
+                [class*='cms-'] { 
+                    .show;
+                    .pull-left;
+                }
+
+                a {
+                    color: @textColor;
+
+                    &:hover { color: @logoPrimary; }
+                }
+
+                .cms-name { 
+                    font-size: 18px;
+                    font-weight: 600;
+                    width: 45%;
+                }
+
+                .cms-type {
+                    color: @grey3;
+                    width: 25%;
+                }
+
+                .cms-date { width: 30%; }
+
+                .cms-activate,
+                .cms-delete,
+                .cms-selected {
+                    position: absolute;
+                    top: 15px;
+                    float: none;
+
+                    .switch-button,
+                    .icon-delete,
+                    .icon-setup-complete {
+                        margin: 0 auto;
+                        .show;
+                        .hide-text;
+                    }
+                }
+
+                .cms-activate { 
+                    right: 90px; 
+                    .size(26px, 60px);
+                }
+
+                .cms-delete {  
+                    right: 0; 
+                    .size(20px, 80px);
+
+                    .icon-delete { margin-top: 5px; }
+                }
+
+                .cms-selected {
+                    right: 0; 
+                    .size(20px, 80px);
+
+                    .icon-setup-complete { margin-top: 5px; }
+                }
+            }
+
+            ol { 
+                margin: 10px 0 0 40px; 
+                list-style: none;
+                .show;
+            }
+
+            &.collapsed {
+                > .sort {
+                    .reorder {
+                        background-image: @arrowDown; 
+                        @media @highdpi { background-image: @arrowDown2x; }
+                    }
+                }
+                > ol { .hide; }
+            }
+
+            &.expanded {
+                > .sort {
+                    .reorder {
+                        background-image: @arrowUp; 
+                        @media @highdpi { background-image: @arrowUp2x; }
+                    }
+                }
+            }
+
+            &.branch {
+                > .sort {
+                    padding-left: 60px;
+                    > .reorder { .show; }
+                }                    
+            }
+
+            &.category {
+                &.branch {
+                    .sort { .cms-name { .calc-width(45, 20); } }
+                    .branch {
+                       .sort { .cms-name { .calc-width(45, 40); } } 
+                       .branch {
+                           .sort {  .cms-name { .calc-width(45, 60); } } 
+                           .branch {
+                               .sort {  .cms-name { .calc-width(45, 80); } } 
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:last-child { margin-bottom: 0; }       
+        }
+
+        .placeholder {
+            .notice;
+            padding: 0;
+            border-style: dashed;
+        }
+
+        .error {
+            .notice > .error;
+            border: 0;
+        }
+
+        &.boxes {
+
+            li {
+                
+                .sort {
+                    cursor: default;
+                    height: 40px;
+                    padding: 0 10px;
+
+                    .cms-name {  font-size: 16px; }
+
+                    .cms-delete {
+                        top: 10px;
+                        right: 10px;
+                        width: 20px;
+
+                        .icon-delete { margin-top: 0; }
+                    }
+                }
+
+                &.add {
+                    .add-new-button { 
+                        padding: 0 10px;
+                        line-height: 40px;
+                        .show;
+                    }
+                }
+            }
+
+            .placeholder {
+                background-color: transparent;
+                font-weight: 16px;
+                color: @grey3;
+                border-color: @grey3;
+                font-style: italic;
+                padding: 10px;
+                text-align: center;
+            }
+        }
+    }
+    
 // To align text to center with margin
 .align-text-center{
   margin-top: 10px;
