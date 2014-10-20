@@ -461,7 +461,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if (data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined") {
 				ksn = data.RVCardReadETBKSN;
 			}
-			alert(data.RVCardReadCardIIN);
 			var cardNumber = data.RVCardReadCardIIN.substr(data.RVCardReadCardIIN.length - 4);
 			swipeHeadingInSearch = 'Reservations with card ' + cardNumber;
 
