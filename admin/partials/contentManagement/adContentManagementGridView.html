@@ -1,175 +1,177 @@
-<section class="content current" ng-click='clearErrorMessage()'>
+<!-- <section class="content current" ng-click='clearErrorMessage()'>
 	
-	<header class="content-title">
-    <h2>Content Management</h2>
-    <a class="action add">Section</a>
-    <a class="action add">Category</a>
-    <a class="action add">Item</a>
-    <div class="filters">
-        <ul id="view-options" class="cms-view">
-            <li class="active">View grid</li>
-            <li>View tree</li>
-        </ul>
-    </div>
-</header>
-
-<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
-
-<div id="sections" class="cms-grid">
-
-    <!-- Grid options -->
-    <div class="grid-options">
-        <!-- Show sections, categories or items. This template assumes section is default view. If that is changed, then be carefull in hiding items below listed as hidden by default - some should not be hidden if category or item is shown by default -->
-        <div class="entry filter">
-            <label for="showing-structure">Showing</label>
-            <div class="select">
-                <select id="showing-structure">
-                    <option value="section" selected>Sections</option>
-                    <option value="category">Categories</option>
-                    <option value="item">Items</option>
-                </select>
-            </div>
+    	<header class="content-title">
+        <h2>Content Management</h2>
+        <a class="action add" ui-sref = "admin.contentManagementSectionDetails">Section</a>
+        <a class="action add" ui-sref = "admin.contentManagementCategoryDetails">Category</a>
+        <a class="action add" ui-sref = "admin.contentManagementItemDetails">Item</a>
+        <div class="filters">
+            <ul id="view-options" class="cms-view">
+                <li class="active" ui-sref = "admin.adContentManagementItemDetail">View grid</li>
+                <li ui-sref = "admin.contentManagementTreeView">View tree</li>
+            </ul>
         </div>
+    </header> -->
+    
 
-        <!-- Filter by section, hidden by default - show only when listing categories or items --> 
-        <div class="entry filter hidden">
-            <label for="showing-categories">From Section</label>
-            <div class="select">
-                <select id="showing-categories" class="placeholder">
-                    <option value="" selected>All sections</option>
-                    <option value="My City Guide">My City Guide</option>
-                    
-                </select>
-            </div>
-        </div>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-        <!--Filter by category, hidden by default - show only when listing items -->
-        <div class="entry filter hidden">
-            <label for="showing-items">From Category</label>
-            <div class="select">
-                <select id="showing-items" class="placeholder">
-                    <option value="" selected>All categories</option>
-                    <option value="category 1">category 1</option>
-                    <option value="category 2">category 2</option>
-                    <option value="category 3">category 3</option>
-                </select>
-            </div>
-        </div>
 
-        <!-- Show only unassigned categories or items, hidden by default - show only when listing items or categories -->
-        <div class="entry radio-check hidden">
-            <label for="unassigned" class="checkbox">
-                <span class="icon-form icon-checkbox"></span>
-                Show only unassigned
-                <input id="unassigned" name="unassigned" value="0" type="checkbox">
-            </label>
-        </div>
+        <div id="sections" class="cms-grid">
 
-        <!-- Search option -->
-        <div class="entry search">
-            <label for="structure-search">Search</label>
-            <div class="holder">
-                <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input type="search" class="query" placeholder="Search sections, categories or items" id="structure-search" autocomplete="off" />
-            </div>
-        </div>    
-    </div>
-
-    <!-- Grid content -->
-    <table class="grid datatable " >
-        
-        <!-- Section table HTML -->
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Last Update</th>
-                <th>No. of categories</th>
-                <th>No. of items</th>
-                <th class="activate">Status</th>
-                <th class="delete">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a >City Guide</a></td>
-                <td><em>10-20-2014 06:35 am</em></td>
-                <td>2</td>
-                <td>1</td>
-                <td class="activate">
-                    <div class="switch-button on">
-                        <input name="{section}" id="{section}" value="{section}" type="checkbox" checked />
-                        <span class="switch-icon"></span>
+            <!-- Grid options -->
+            <div class="grid-options">
+                <!-- Show sections, categories or items. This template assumes section is default view. If that is changed, then be carefull in hiding items below listed as hidden by default - some should not be hidden if category or item is shown by default -->
+                <div class="entry filter">
+                    <label for="showing-structure">Showing</label>
+                    <div class="select">
+                        <select id="showing-structure">
+                            <option value="section" selected>Sections</option>
+                            <option value="category">Categories</option>
+                            <option value="item">Items</option>
+                        </select>
                     </div>
-                </td>
-                <td class="delete">
-                    <a  class="icons icon-delete large-icon">Delete</a>
-                </td>
-            </tr>
-        </tbody>
+                </div>
 
-        <!-- Categories grid HTML 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Last Update</th>
-                <th>Parent Category</th>
-                <th>No. of items</th>
-                <th class="activate">Status</th>
-                <th class="delete">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a href="{link}">{Category Name}</a></td>
-                <td><em>{Last update DateTime}</em></td>
-                <td>{Parent Category Name, blank if none}</td>
-                <td>{items in Category}</td>
-                <td class="activate">
-                    <div class="switch-button on">
-                        <input name="{category}" id="{category}" value="{category}" type="checkbox" checked />
-                        <span class="switch-icon"></span>
+                <!-- Filter by section, hidden by default - show only when listing categories or items --> 
+                <div class="entry filter hidden">
+                    <label for="showing-categories">From Section</label>
+                    <div class="select">
+                        <select id="showing-categories" class="placeholder">
+                            <option value="" selected>All sections</option>
+                            <option value="My City Guide">My City Guide</option>
+                            
+                        </select>
                     </div>
-                </td>
-                <td class="delete">
-                    <a href="{link}" class="icons icon-delete large-icon">Delete</a>
-                </td>
-            </tr>
-            ... repeat for all categories
-        </tbody> -->
+                </div>
 
-        <!-- Items grid HTML 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Last Update</th>
-                <th>Section</th>
-                <th>Category</th>
-                <th class="activate">Status</th>
-                <th class="delete">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a href="{link}">{Item Name}</a></td>
-                <td>{Item Type}</td>
-                <td><em>{Last update DateTime}</em></td>
-                <td>{Section Name}</td>
-                <td>{Category Name}</td>
-                <td class="activate">
-                <td class="activate">
-                    <div class="switch-button on">
-                        <input name="{item}" id="{item}" value="{item}" type="checkbox" checked />
-                        <span class="switch-icon"></span>
+                <!--Filter by category, hidden by default - show only when listing items -->
+                <div class="entry filter hidden">
+                    <label for="showing-items">From Category</label>
+                    <div class="select">
+                        <select id="showing-items" class="placeholder">
+                            <option value="" selected>All categories</option>
+                            <option value="category 1">category 1</option>
+                            <option value="category 2">category 2</option>
+                            <option value="category 3">category 3</option>
+                        </select>
                     </div>
-                </td>
-                <td class="delete">
-                    <a href="{link}" class="icons icon-delete large-icon">Delete</a>
-                </td>
-            </tr>
-            ... repeat for all items
-        </tbody> -->
-    </table> 
-</div>
-</section>
+                </div>
+
+                <!-- Show only unassigned categories or items, hidden by default - show only when listing items or categories -->
+                <div class="entry radio-check hidden">
+                    <label for="unassigned" class="checkbox">
+                        <span class="icon-form icon-checkbox"></span>
+                        Show only unassigned
+                        <input id="unassigned" name="unassigned" value="0" type="checkbox">
+                    </label>
+                </div>
+
+                <!-- Search option -->
+                <div class="entry search">
+                    <label for="structure-search">Search</label>
+                    <div class="holder">
+                        <button type="submit" name="submit" class="icons icon-search">Search</button>
+                        <input type="search" class="query" placeholder="Search sections, categories or items" id="structure-search" autocomplete="off" />
+                    </div>
+                </div>    
+            </div>
+
+            <!-- Grid content -->
+            <table class="grid datatable " >
+                
+                <!-- Section table HTML -->
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Update</th>
+                        <th>No. of categories</th>
+                        <th>No. of items</th>
+                        <th class="activate">Status</th>
+                        <th class="delete">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a >City Guide</a></td>
+                        <td><em>10-20-2014 06:35 am</em></td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td class="activate">
+                            <div class="switch-button on">
+                                <input name="{section}" id="{section}" value="{section}" type="checkbox" checked />
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                        <td class="delete">
+                            <a  class="icons icon-delete large-icon">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <!-- Categories grid HTML 
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Update</th>
+                        <th>Parent Category</th>
+                        <th>No. of items</th>
+                        <th class="activate">Status</th>
+                        <th class="delete">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="{link}">{Category Name}</a></td>
+                        <td><em>{Last update DateTime}</em></td>
+                        <td>{Parent Category Name, blank if none}</td>
+                        <td>{items in Category}</td>
+                        <td class="activate">
+                            <div class="switch-button on">
+                                <input name="{category}" id="{category}" value="{category}" type="checkbox" checked />
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                        <td class="delete">
+                            <a href="{link}" class="icons icon-delete large-icon">Delete</a>
+                        </td>
+                    </tr>
+                    ... repeat for all categories
+                </tbody> -->
+
+                <!-- Items grid HTML 
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Last Update</th>
+                        <th>Section</th>
+                        <th>Category</th>
+                        <th class="activate">Status</th>
+                        <th class="delete">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="{link}">{Item Name}</a></td>
+                        <td>{Item Type}</td>
+                        <td><em>{Last update DateTime}</em></td>
+                        <td>{Section Name}</td>
+                        <td>{Category Name}</td>
+                        <td class="activate">
+                        <td class="activate">
+                            <div class="switch-button on">
+                                <input name="{item}" id="{item}" value="{item}" type="checkbox" checked />
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                        <td class="delete">
+                            <a href="{link}" class="icons icon-delete large-icon">Delete</a>
+                        </td>
+                    </tr>
+                    ... repeat for all items
+                </tbody> -->
+            </table> 
+        </div>
+       
+<!-- </section> -->

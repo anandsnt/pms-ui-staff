@@ -1,0 +1,42 @@
+<section class="content current" ng-click="clearErrorMessage()">
+    <header class="content-title">
+        <h2>Edit Section <span>Section Name</span></h2>
+        <a href="{link}" class="action back">Back</a>
+        <a href="{link}" class="action remove">Delete Section</a>
+    </header>
+    <section class="content-scroll">
+        <form method="post" action="" id="{add/edit}" name="{add/edit}-section" class="form float">
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span>Section</span> details</h3>
+                    <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+                </div>
+                <div class="entry full-width">
+                    <label for="section-availability">Availability Status <strong>*</strong></label>
+                    <div class="switch-button on">
+                        <input name="section-availability" id="section-availability" value="1" type="checkbox" checked />
+                        <span class="switch-icon"></span>
+                    </div>
+                </div> 
+                <div class="entry">
+                    <label for="section-name">Section name <strong>*</strong></label>
+                    <input type="text" name="section-name" id="section-name" placeholder="Enter section name" value="{Section Name}" required />
+                </div>
+                <div class="entry full-width">
+                    <label for="section-image">Section Icon <span>(Transparent PNG, 128x128px in size)</span></label>
+                    <div class="file-upload with-preview small-preview">
+                        <input type="file" name="section-image" id="section-image" />
+                        <button type="button" class="button brand-colors">Replace image</button>
+                    </div>
+                    <span class="file-preview small-preview">
+                        <img src="" alt="" />
+                    </span>
+                </div>     
+            </fieldset>
+            <div class="actions float">
+                <button type="button" class="button blank">Cancel</button>
+                <button type="button" class="button green">Save changes</button>  
+            </div>
+        </form>
+    </section>
+</section>

@@ -1,0 +1,101 @@
+<section class="content current" ng-click="clearErrorMessage()">
+    <header class="content-title">
+        <h2>Edit Item <span>Category Name</span></h2>
+        <a href="{link}" class="action back">Back</a>
+        <a href="{link}" class="action remove">Delete Item</a>
+    </header>
+
+    <section class="content-scroll">
+        <form method="post" action="" id="{add/edit}" name="{add/edit}-item" class="form float">
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span>Item</span> details</h3>
+                    <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+                </div>
+                <div class="entry full-width">
+                    <label for="item-availability">Availability Status <strong>*</strong></label>
+                    <div class="switch-button on">
+                        <input name="item-availability" id="item-availability" value="1" type="checkbox" checked />
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+                <div class="entry">
+                    <label for="item-name">Item name <strong>*</strong></label>
+                    <input type="text" name="item-name" id="item-name" placeholder="Enter item name" value="{Item Name}" required />
+                </div>
+                <div class="entry full-width">
+                    <label for="item-type">Item Type <strong>*</strong></label>
+                    <div class="boxes">
+                        <label class="radio checked"> 
+                            <span class="icon-form icon-radio checked"></span>
+                            <input type="radio" name="item-type" id="poi" value="poi" checked/>
+                            Point of Interest 
+                        </label>
+                        <label class="radio"> 
+                            <span class="icon-form icon-radio"></span>
+                            <input type="radio" name="item-type" id="general" value="general" />
+                            General Information 
+                        </label>
+                        <label class="radio"> 
+                            <span class="icon-form icon-radio"></span>
+                            <input type="radio" name="item-type" id="link" value="link" />
+                            Link 
+                        </label>
+                    </div>
+                </div>
+                <div class="entry full-width">
+                    <label for="item-image">Image<span>(680x320px in size)</span></label>
+                    <div class="file-upload with-preview large-preview">
+                        <input type="file" name="item-image" id="item-image" />
+                        <button type="button" class="button brand-colors">Replace image</button>
+                    </div>
+                    <span class="file-preview large-preview">
+                        <img src="{image}" alt="" />
+                    </span>
+                </div>
+                <div class="entry full-width">
+                    <label for="item-description">Description</label>
+                    <textarea name="item-description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
+                </div>
+                <div class="entry">
+                    <label for="item-phone">Phone</label>
+                    <input type="text" name="item-phone" id="item-phone" placeholder="Enter Phone number" value="" />
+                </div>
+                <div class="entry full-width">
+                    <label for="item-address">Address</label>
+                    <input type="text" name="aitem-ddress" id="item-address" placeholder="Enter Address" value=""  />
+                </div>
+                
+                <div class="entry full-width">
+                    <label for="item-url">URL <strong>*</strong></label>
+                    <input type="text" name="item-url" id="item-url" placeholder="Enter URL" value=""  />
+                </div>        
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title">
+                    <h3><span>Assign</span> to category</h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="category">
+                            <div class="sort">
+                                <span class="cms-name">Category Name</span>
+                                <div class="cms-delete">
+                                    <a href="#" class="icons icon-delete">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a  class="add-new-button open-modal">Add category</a>
+                        </li>
+                    </ul>
+                </div>        
+            </fieldset>
+            <div class="actions float">
+                <button type="button" class="button blank">Cancel</button>
+                <button type="button" class="button green">Save changes</button>  
+            </div>
+        </form>
+    </section>
+</section>

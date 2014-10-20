@@ -1,0 +1,84 @@
+<section class="content current" ng-click="clearErrorMessage()">
+    <header class="content-title">
+        <h2>Edit Category <span>Category Name</span></h2>
+        <a href="{link}" class="action back">Back</a>
+        <a href="{link}" class="action remove">Delete Category</a>
+    </header>
+
+    <section class="content-scroll">
+
+        <form method="post" action="" id="{add/edit}" name="{add/edit}-category" class="form float">
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span>Category</span> details</h3>
+                    <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+                </div>
+                <div class="entry full-width">
+                    <label for="category-availability">Availability Status <strong>*</strong></label>
+                    <div class="switch-button on">
+                        <input name="category-availability" id="category-availability" value="1" type="checkbox" checked />
+                        <span class="switch-icon"></span>
+                    </div>
+                </div> 
+                <div class="entry">
+                    <label for="category-name">Category name <strong>*</strong></label>
+                    <input type="text" name="category-name" id="category-name" placeholder="Enter category name" value="{Category Name}" required />
+                </div>
+                <div class="entry full-width">
+                    <label for="category-icon">Category Icon <span>(Transparent PNG, 128x128px in size)</span></label>
+                    <div class="file-upload with-preview small-preview">
+                        <input type="file" name="category-icon" id="category-icon" />
+                        <button type="button" class="button brand-colors">Replace icon</button>
+                    </div>
+                    <span class="file-preview small-preview">
+                        <img src="{Category Icon}" alt="" />
+                    </span>
+                </div>     
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title">
+                    <h3><span>Assign</span> to section</h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="section">
+                            <div class="sort">
+                                <span class="cms-name">Section Name</span>
+                                <div class="cms-delete">
+                                    <a href="#" class="icons icon-delete">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a  class="add-new-button open-modal">Add section</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-title">
+                    <h3><span>Assign</span> to category</h3>
+                </div>
+                <div class="entry full-width">
+                    <ul class="boxes cms-tree">
+                        <li class="category">
+                            <div class="sort">
+                                <span class="cms-name">Category Name</span>
+                                <div class="cms-delete">
+                                    <a href="#" class="icons icon-delete">Delete</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="add">
+                            <a href="{link}" class="add-new-button open-modal">Add category</a>
+                        </li>
+                    </ul> 
+                </div>        
+            </fieldset>
+            <div class="actions float">
+                <button type="button" class="button blank">Cancel</button>
+                <button type="button" class="button green">Save changes</button>  
+            </div>
+        </form>
+    </section>
+</section>

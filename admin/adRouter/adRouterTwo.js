@@ -210,8 +210,31 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		// });
 
 		$stateProvider.state('admin.checkout', {
-			templateUrl: '/assets/partials/contentManagement/adContentManagementGridView.html',
-			controller: 'ADContentmanagementGridviewCtrl',
+			templateUrl: '/assets/partials/contentManagement/adContentManagement.html',
+			controller: 'ADContentManagementCtrl',
+			url : '/contentManagement'
+		});
+
+		// $stateProvider.state('admin.contentManagementTreeView', {
+		// 	templateUrl: '/assets/partials/contentManagement/adContentManagementTreeView.html',
+		// 	controller: 'ADContentManagementTreeviewCtrl',
+		// 	url : '/contentManagement'
+		// });
+
+		$stateProvider.state('admin.contentManagementSectionDetails', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagementSectionDetail.html',
+			controller: 'ADContentManagementSectionDetailCtrl',
+			url : '/contentManagement'
+		});
+
+		$stateProvider.state('admin.contentManagementCategoryDetails', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagementCategoryDetail.html',
+			controller: 'ADContentManagementCategoryDetailCtrl',
+			url : '/contentManagement'
+		});
+		$stateProvider.state('admin.contentManagementItemDetails', {
+			templateUrl: '/assets/partials/contentManagement/adContentManagementItemDetail.html',
+			controller: 'ADContentManagementItemDetailCtrl',
 			url : '/contentManagement'
 		});
 

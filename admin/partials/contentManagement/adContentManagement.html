@@ -1,0 +1,20 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	
+    	<header class="content-title">
+            <h2>Content Management</h2>
+            <a class="action add" ui-sref = "admin.contentManagementSectionDetails">Section</a>
+            <a class="action add" ui-sref = "admin.contentManagementCategoryDetails">Category</a>
+            <a class="action add" ui-sref = "admin.contentManagementItemDetails">Item</a>
+            <div class="filters">
+                <ul id="view-options" class="cms-view">
+                    <li ng-class= "{'active':isGridView}" ng-click="isGridView = !isGridView">View grid</li>
+                    <li ng-class= "{'active':!isGridView}" ng-click="isGridView = !isGridView">View tree</li>
+                </ul>
+            </div>
+        </header>
+        
+         <section class="content-scroll" ng-if="isGridView"  ng-include="'/assets/partials/contentManagement/adContentManagementGridView.html'"></section>
+         
+         <section class="content-scroll" ng-if="!isGridView" ng-include="'/assets/partials/contentManagement/adContentManagementTreeView.html'"></section>
+
+</section>
