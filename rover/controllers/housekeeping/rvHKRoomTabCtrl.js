@@ -137,9 +137,13 @@ sntRover.controller('RVHKRoomTabCtrl', [
 
 		// when user try to save a oo/os form
 		$scope.submit = function() {
+			var onError = function(errorMessage){
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorMessage;
+			}
 			var callback = function(data) {
 				$scope.$emit('hideLoader');
-
+				$scope.errorMessage = '';
 				// form submitted, so hide it
 				$scope.showForm = false;
 
@@ -156,8 +160,11 @@ sntRover.controller('RVHKRoomTabCtrl', [
 				$scope.roomServices.reason_id = '';
 				$scope.roomServices.comment = '';
 				$scope.refreshScroller( 'room-tab-scroll' );
+
 			};
-			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.roomServices, callback);
+			$scope.roomServices.from_date = $filter( 'date' )( tzIndependentDate($scope.roomServices.from_date), 'yyyy-MM-dd' );
+			$scope.roomServices.to_date = $filter( 'date' )( tzIndependentDate($scope.roomServices.to_date), 'yyyy-MM-dd' );
+			$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.roomServices, callback, onError);
 		};
 	}
 ]);
