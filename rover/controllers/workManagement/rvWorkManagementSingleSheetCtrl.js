@@ -197,6 +197,13 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			}
 		}
 
+		$scope.printWorkSheet = function() {
+			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
+				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
+			window.print();
+		}
+
+
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
 					$state.go('rover.workManagement.start');
