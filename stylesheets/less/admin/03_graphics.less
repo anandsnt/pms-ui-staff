@@ -31,6 +31,7 @@
             .hide-text;
         }
 
+        &.icon-added,
         &.icon-setup-complete { background-position: 0 -375px; }
         &.icon-setup-error { background-position: 0 -425px; }
         &.icon-setup-pending { background-position: 0 -475px; }
@@ -489,27 +490,6 @@
         }
     }
 
-/* Menu toggle icon     ==================================*/
-    .icon-toggle {
-        background-image: @icons;
-        background-position: 10px 12px;
-        background-repeat: no-repeat;
-        overflow: hidden;
-        .hide-text;
-        .show;
-        .square(40px);
-        .no-transition;
-        .pull-left;
-
-        &:hover,
-        &.active { background-position: 10px -38px;}
-
-        @media @highdpi {
-            background-image: @icons2x;
-            background-size: 50px;
-        }
-    }
-
 /* Rover icons          ==================================*/
     .app-icons {
         background-image: @iconsApp;
@@ -522,7 +502,6 @@
             .square(20px);
         }
     }
-
 
 /* 4. LAYOUT
 ==========================================================*/
