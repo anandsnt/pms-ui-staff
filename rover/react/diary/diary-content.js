@@ -56,15 +56,15 @@ var DiaryContent = React.createClass({
 			curPos 			= viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= (curPos / rowHeight).toFixed(),
 			row_data 		= state.data[rowNumber],
-			//row_item_data 	= this._update(this.state.currentDragItem),
-			start_time_ms 	= (left / state.display.px_per_ms) + state.display.x_origin,
-			delta 			= start_time_ms - row_item_data.start_date.getTime();
+			delta 			= Number((left - row_item_data.left).toFixed(3));
 
-		row_item_data.start_date = new Date(start_time_ms);
-		row_item_data.end_date 	= new Date(row_item_data.end_date.getTime() + delta);
+		row_item_data.left = left;
+		row_item_data.right = row_item_data.right + delta;
 
-		this.state.angular_evt.onDragEnd(row_data, row_item_data);
-		
+		row_item_data.start_date = new Date((row_item_data.left / state.display.px_per_ms) + state.display.x_origin);
+		row_item_data.end_date 	= new Date((row_item_data.right / state.display.px_per_ms) + state.display.x_origin);
+
+		this.state.angular_evt.onDragEnd(row_data, row_item_data);		
 	},
 	/*Message transport between timeline and grid:
 	  As resize controls are arranged on timeline, the positional data

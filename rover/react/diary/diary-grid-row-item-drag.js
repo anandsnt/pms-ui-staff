@@ -56,7 +56,7 @@ var GridRowItemDrag = React.createClass({
 			model;
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
-			model = this._update(props.data);
+			model = this._update(this.props.currentDragItem); //props.data);
 
 			this.setState({
 				dragging: true,
@@ -102,10 +102,10 @@ var GridRowItemDrag = React.createClass({
 	componentWillReceiveProps: function(nextProps) {
 		if(!this.props.currentDragItem && 
 		   !this.state.currentDragItem && 
-		    nextProps.currentDragItem) {
+		    nextProps.currentDragItem && nextProps.currentDragItem.id === this.props.data.id) {
 
 			this.setState({
-				currentDragItem: this._update(nextProps.currentDragItem)
+				currentDragItem: nextProps.currentDragItem
 			});
 		} else if(this.props.currentDragItem && 
 				  !nextProps.currentDragItem) {

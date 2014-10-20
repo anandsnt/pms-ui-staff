@@ -148,7 +148,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    	availability = determineAvailability(nextRoom.reservations, reservation).shift();
 
 				if(availability) {
-			    	reservationRoomTransfer(nextRoom, prevRoom, reservation, $scope.gridProps.edit.active);
+			    	reservationRoomTransfer(nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
 				    
 			    	$scope.gridProps.currentResizeItemRow = nextRoom;
 
@@ -342,10 +342,10 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	row_item_data.start_time = new Date(row_item_data.left / props.display.px_per_ms + props.display.x_origin);
 	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + props.display.x_origin); 
 
-	    	updateReservation(row_item_data);
+	    	updateReservation(row_data, row_item_data);
 
 	    	props.edit = _.extend({}, props.edit);
-	    	props.edit = false;
+	    	props.edit.active = false;
 	    	props.currentResizeItem = undefined;
 	    	props.currentResizeItemRow = undefined;
 
@@ -355,8 +355,12 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    $scope.editCancel = function() {
 	    	var props = $scope.gridProps;
 	    	
+	    	reservationRoomTransfer(props.edit.originalRowItem, props.edit.currentResizeItemRow, props.edit.originalItem);
+
 	    	props.edit = _.extend({}, $scope.gridProps.edit);
-	    	props.edit = false;
+	    	props.edit.active = false;
+	    	props.edit.originalItem = undefined;
+	    	props.edit.originalRowItem = undefined;
 	    	props.currentResizeItem = undefined;
 	    	props.currentResizeItemRow = undefined;
 
@@ -438,7 +442,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		}
 	}
 
-	function reservationRoomTransfer(nextRoom, room, reservation, commit) {
+	function reservationRoomTransfer(nextRoom, room, reservation) { //, commit) {
 		var oldRoom, newRoom, idxOldRoom, idxNewRoom;
 
 		oldRoom = copyRoom(room);
@@ -456,15 +460,15 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		idxOldRoom = roomIndex(oldRoom);
 		idxNewRoom = roomIndex(newRoom);
 
-		if(commit) {
-			if(idxOldRoom > -1 && idxOldRoom < $scope.data.length) {
-				$scope.data[idxOldRoom] = oldRoom;
-			}
-
-			if(idxNewRoom > -1 && idxNewRoom < $scope.data.length) {
-				$scope.data[idxNewRoom] = newRoom;
-			}
+		//if(commit) {
+		if(idxOldRoom > -1 && idxOldRoom < $scope.data.length) {
+			$scope.data[idxOldRoom] = oldRoom;
 		}
+
+		if(idxNewRoom > -1 && idxNewRoom < $scope.data.length) {
+			$scope.data[idxNewRoom] = newRoom;
+		}
+		//}
 	}
 
 	function findRoom(room) {

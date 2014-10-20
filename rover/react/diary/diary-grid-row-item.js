@@ -58,11 +58,12 @@ var GridRowItem = React.createClass({
 			viewport: 			props.viewport,
 			edit:               props.edit,
 			iscroll:        	props.iscroll,
-			angular_evt:    	props.angular_evt,
+			angular_evt:    	props.angular_evt, 
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
-			currentResizeItem:  state.currentResizeItem,
-			currentResizeItemRow: state.currentResizeItemRow,
+			currentDragItem:    props.currentResizeItem,
+			//currentResizeItem:  state.currentResizeItem,
+			//currentResizeItemRow: state.currentResizeItemRow,
 			style: 			   _.extend({
 				left: 		       (!state.resizing ? (start_time_ms - display.x_origin) * display.px_per_ms : start_time_ms) + 'px'
 			}, style)	
