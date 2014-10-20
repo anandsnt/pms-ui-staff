@@ -490,10 +490,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			return showNoMatchesMessage;
 		};
-		$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn) {
+		$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn, reservationStatus) {
 			var queueClass = '';
-			if (isReservationQueued == "true" && isQueueRoomsOn == "true") {
-				queueClass = 'queued';
+			if(reservationStatus === 'CHECKING_IN' || reservationStatus === 'RESERVED'){
+				if (isReservationQueued == "true" && isQueueRoomsOn == "true") {
+					queueClass = 'queued';
+				}
 			}
 			return queueClass;
 		};
