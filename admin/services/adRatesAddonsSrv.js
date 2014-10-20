@@ -213,5 +213,16 @@ admin.service('ADRatesAddonsSrv', [
 
 			return deferred.promise;
 		};
+
+		this.importPackages = function () {
+            var deferred = $q.defer();
+            var url = "/api/addons/import";
+            ADBaseWebSrvV2.postJSON(url).then(function (data) {
+                deferred.resolve(data.results);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 	}
 ]);
