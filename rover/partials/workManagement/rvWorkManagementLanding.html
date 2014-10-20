@@ -65,6 +65,7 @@
 						<span ng-if="room.room_reservation_status == 'Departed'">OUT</span>
                         <span ng-if="room.room_reservation_status == 'Due out' && !room.departure_time">DUE OUT</span>
                         <span ng-if="room.room_reservation_status == 'Due out' && !!room.departure_time">{{ room.departure_time }}</span>
+                        <span ng-if="room.room_reservation_status != 'Due out' && room.room_reservation_status != 'Departed' && departureClass[room.room_reservation_status] == 'check-out' && !!room.departure_time">{{ room.departure_time }}</span>                        
 					</div>
 
 					<!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
@@ -74,6 +75,8 @@
 						<span ng-if="room.room_reservation_status == 'Arrived'">IN</span>
                         <span ng-if="room.room_reservation_status == 'Arrival' && !room.arrival_time">ARRIVAL</span>
                         <span ng-if="room.room_reservation_status == 'Arrival' && !!room.arrival_time">{{ room.arrival_time }}</span>
+                        <span ng-if="room.room_reservation_status != 'Arrived' && room.room_reservation_status != 'Arrival' && arrivalClass[room.room_reservation_status] == 'check-in' && !!room.arrival_time">{{ room.arrival_time }}</span>                        
+
 					</div>
 				</div>
 
