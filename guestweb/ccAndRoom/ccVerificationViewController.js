@@ -179,10 +179,17 @@
           (!$scope.monthSelected) ||
           (!$scope.yearSelected)){
               $modal.open($scope.errorOpts); // details modal popup
+              if($scope.ccv.length===0){
+                $scope.isCVVEmpty = true;
+              }
+              else{
+                $scope.isCVVEmpty = false;
+              }
          }
          else{
 
              $scope.isFetching = true;
+             $scope.isCVVEmpty = false;
              sessionDetails.cardNumber = $scope.cardNumber;
              sessionDetails.cardSecurityCode = $scope.ccv;
              sessionDetails.cardExpiryMonth = $scope.monthSelected;
