@@ -74,7 +74,7 @@
         </ul>
     </form>
 
-    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="printBoxClass" ui-jq="resizable" ui-options="resizableOptions" resize style="height: {{printBoxHeight}}px;">
+    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open':isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{printBoxHeight}}px;" ng-click="clickedDrawer($event)">
         <div ng-include="'/assets/partials/financials/rvPrintBox.html'"></div>
     </form> 
 
