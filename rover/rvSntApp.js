@@ -45,19 +45,23 @@ var GlobalApp = function(){
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
+    	
         try{
+          
     	   that.cardReader = new CardOperation();
+    	   that.cordovaLoaded = true;
         }
-        catch(er){};
+        catch(er){
+        };
         try{
             that.iBeaconLinker = new iBeaconOperation();
         }
         catch(er){};
-    	that.cordovaLoaded = true;
+    	
     };
     
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage){    
+    this.fetchFailedOfCordovaPlugins = function(errorMessage){   
     	that.cordovaLoaded = false;
     };
 

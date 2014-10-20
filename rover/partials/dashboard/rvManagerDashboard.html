@@ -3,7 +3,7 @@
 <section id="dashboard" class="content scrollable" role = "main" 
 ng-iscroll='dashboard_scroller' ng-iscroll-delay="100" 
 ng-show="showDashboard">
-	<div class="wrapper">
+	<div class="wrapper" data-ng-init="pageLoaded()">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGreetingMessageSection.html'"></div>
 		<div ng-include="'/assets/partials/dashboard/rvDbGuestsSection.html'"></div>
