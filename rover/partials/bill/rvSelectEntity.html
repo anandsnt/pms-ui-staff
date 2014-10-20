@@ -14,26 +14,67 @@
          <span class="h3 message" ng-hide="textInQueryBox!=''" translate>ATTACHED_ENTITIES</span>
          <div id="entities" ng-iscroll='entities' ng-iscroll-delay='100' class="entities-list scrollable" ng-hide="textInQueryBox!=''" >
             <ul class="wrapper">
-                 <li class="entity" ng-repeat="entity in attachedEntities"ng-class="getEntityRole(entity)" ng-click="selectEntity($index,'ATTACHED_ENTITY')">
+            	<!-- List for guests -->
+                 <li class="entity guest" ng-show="attachedEntities.hasOwnProperty('primary_guest_details')" ng-click="selectAttachedEntity(-1,'GUEST')">
                   <!-- image -->
                   
-                  <figure class="guest-image" ng-class = "getEntityIconClass(entity)" ng-if="(escapeNull(entity.images[0].image)!='' && entity.images[0].image != null)">
-							<img src="{{entity.images[0].image}}" alt="" />
+                  <figure class="guest-image" >
+							<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
 					</figure>
 
-						<figure class="guest-image" ng-if="(escapeNull((entity.images[0].image)=='') || entity.images[0].image ==null)">
-		                    <div class="guest-image icons icon-company" ng-if="escapeNull(entity.entity_type)=='COMPANY_CARD'" ></div>
-		                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(entity.entity_type)=='TRAVEL_AGENT'" ></div>
+                  <!-- heading -->
+                  <h2>{{attachedEntities.primary_guest_details.name}}</h2>
+                  <!-- icon -->
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{attachedEntities.primary_guest_details.name}}</span>
+                 </li>
+
+                 <!-- List for accompany guests -->
+                 <li class="entity accompany" ng-repeat="entity in attachedEntities.accompanying_guest_details" ng-click="selectAttachedEntity($index,'ACCOMPANY_GUEST')">
+                  <!-- image -->
+                  
+                  <figure class="guest-image accompany" >
+							<img src="{{entity.avatar}}" alt="" />
+					</figure>
+
+                  <!-- heading -->
+                  <h2>{{entity.name}}</h2>
+                  <!-- icon -->
+                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(reservationData.reservation_status, reservationData.is_opted_late_checkout)"   >{{entity.name}}</span>
+                 </li>
+
+                 <!-- Company card -->
+
+                 <li class="entity company" ng-show="attachedEntities.hasOwnProperty('company_card')" ng-click="selectAttachedEntity(-1,'COMPANY_CARD')">
+                  <!-- image -->
+                  
+                  		<figure class="guest-image" >
+		                    <div class="guest-image icons icon-company" ></div>
+		                    
 		                </figure>
 
 
 
                   <!-- heading -->
-                  <h2>{{entity.name}}</h2>
+                  <h2>{{attachedEntities.company_card.name}}</h2>
                   <!-- icon -->
-                  <span class="guest-status small-icon" ng-class = "getGuestStatusMapped(entity.reservation_status, entity.is_opted_late_checkout)"  ng-hide="entity.entity_type !='RESERVATION'" >{{entity.status}}</span>
-                  <div class="status" ng-class="getEntityRole(entity)" ng-show="entity.entity_type !='RESERVATION'">{{entity.status}}</div>
+                  
+                  <div class="status company" >{{attachedEntities.company_card.name}}</div>
                  </li>
+
+                 <!-- Travel agent card -->
+                 <li class="entity travel-agent" ng-show="attachedEntities.hasOwnProperty('travel_agent')" ng-click="selectAttachedEntity(-1,'TRAVEL_AGENT')">
+                  <!-- image -->
+                  
+                  		<figure class="guest-image" >		              
+		                    <div class="guest-image icons icon-travel-agent" ></div>
+		                </figure>
+
+                  <!-- heading -->
+                  <h2>{{attachedEntities.travel_agent.name}}</h2>
+                  <!-- icon -->                  
+                  <div class="status travel-agent" >{{attachedEntities.travel_agent.name}}</div>
+                 </li>
+
             </ul>
          </div>
          <!-- Search results, show instead of attached entities when searching -->
