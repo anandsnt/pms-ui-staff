@@ -1,89 +1,43 @@
-<div>
-    <!-- Print box -->
-    <form ng-click="closeDrawer($event)" id="journal-print-options" class="journal-print" ng-class="printBoxClass" role="complementary" ui-jq="resizable" ui-options="resizableOptions" resize style="height: {{printBoxHeight}}px;">
-        <div class="holder">
-            <div class="entry">
-                <label for="revenue-charge-group">Charge Group</label>
-                <div class="select">
-                    <select name="revenue-charge-group" id="revenue-charge-group" class="placeholder">
-                        <option value="" selected>All Charge Groups</option>
-                        <option value="{charge group 1}">{charge group 1}</option>
-                        <option value="{charge group 2}">{charge group 2}</option>
-                        ...
-                    </select>
-                </div>
-            </div>
-            <div class="entry">
-                <label for="revenue-charge-code">Charge Code / Name</label>
-                <div class="select">
-                    <select name="revenue-charge-code" id="revenue-charge-code" class="placeholder">
-                        <option value="" selected>All Charge Codes</option>
-                        <option value="{charge code 1}">{charge code 1}</option>
-                        <option value="{charge code 2}">{charge code 2}</option>
-                        ...
-                    </select> 
-                </div>
-            </div>
-            <div class="entry">
-                <div class="switch-button on">
-                    <input name="revenue-print-toggle" id="revenue-print-toggle" value="" type="checkbox" checked />
-                    <label class="data-off">
-                        <span class="value">Summary</span>
-                        <span class="switch-icon">Details</span>
-                    </label>
-                    <label class="data-on">
-                        <span class="switch-icon">Summary</span>
-                        <span class="value">Details</span>
-                    </label>
-                </div>
-            </div>
-            <div class="actions">
-                <button id="print-revenue" type="button" class="button blue">Print</button>
-            </div>
-        </div>
-        
-    </form>
-    <!-- Content REVENUE-->
-    <div id="journal-content" class="journal-content scrollable">
-        <div class="wrapper">
-            <table id="journal-grid" class="journal-grid">
-                <tbody>
-                    <!-- First level row (with white background) -->
-                    <tr class="grid-group rows-toggle" data-href="{2nd level row id}"> 
-                        <!-- I've used data-href here to target which rows should toggle on click - data-href here needs to match data-id -->
-                        <th scope="row" colspan="7">{Rooms/Bed &amp; Breakfast/Tax etc.}</th>
-                        <td>{amount}</td>
-                    </tr>
-                    <!-- Second level row (with grey background) -->
-                    <tr class="grid-charge rows-toggle hidden" data-id="{2nd level row id}" data-href="{3rd level row id}">
-                        <td>{ID or something like that, not sure}</td>
-                        <th scope="row" colspan="6">{Title}</th>
-                        <td>${amount}</td>
-                    </tr>
-                    <!-- Third level row (sometime with headings above columns), no background color -->
-                    <tr class="grid-item-heading hidden" data-id="{3rd level row id}">
-                        <th scope="col">Room</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Reservation Number</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Debit</th>
-                        <th scope="col">Credit</th>
-                    </tr>
-                    <tr class="grid-item hidden" data-id="{3rd level row id}">
-                        <td>{room #</td>
-                        <td>{guest name}</td>
-                        <td>{res. number}</td>
-                        <td>{type}</td>
-                        <td>{details}</td>
-                        <td>{time}</td>
-                        <td>{debit}</td> 
-                        <td>{credit</td>                                           
-                    </tr>
-                    ... repeat as needed
-                </tbody>
-            </table>
-        </div>
+<!-- Content REVENUE-->
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController">
+    <div class="wrapper">
+        <table id="journal-grid" class="journal-grid">
+            <tbody>
+                <!-- First level row (with white background) -->
+                <tr class="grid-group rows-toggle" data-href="{2nd level row id}"> 
+                    <!-- I've used data-href here to target which rows should toggle on click - data-href here needs to match data-id -->
+                    <th scope="row" colspan="7">{Rooms/Bed &amp; Breakfast/Tax etc.}</th>
+                    <td>{amount}</td>
+                </tr>
+                <!-- Second level row (with grey background) -->
+                <tr class="grid-charge rows-toggle hidden" data-id="{2nd level row id}" data-href="{3rd level row id}">
+                    <td>{ID or something like that, not sure}</td>
+                    <th scope="row" colspan="6">{Title}</th>
+                    <td>${amount}</td>
+                </tr>
+                <!-- Third level row (sometime with headings above columns), no background color -->
+                <tr class="grid-item-heading hidden" data-id="{3rd level row id}">
+                    <th scope="col">Room</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Reservation Number</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Debit</th>
+                    <th scope="col">Credit</th>
+                </tr>
+                <tr class="grid-item hidden" data-id="{3rd level row id}">
+                    <td>{room #</td>
+                    <td>{guest name}</td>
+                    <td>{res. number}</td>
+                    <td>{type}</td>
+                    <td>{details}</td>
+                    <td>{time}</td>
+                    <td>{debit}</td> 
+                    <td>{credit</td>                                           
+                </tr>
+                ... repeat as needed
+            </tbody>
+        </table>
     </div>
 </div>

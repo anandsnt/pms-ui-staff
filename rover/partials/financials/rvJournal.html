@@ -74,6 +74,10 @@
         </ul>
     </form>
 
+    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="printBoxClass" ui-jq="resizable" ui-options="resizableOptions" resize style="height: {{printBoxHeight}}px;">
+        <div ng-include="'/assets/partials/financials/rvPrintBox.html'"></div>
+    </form> 
+
     <!-- Content REVENUE-->
     <div ng-show="activeTab==0" ng-include="'/assets/partials/financials/rvRevenue.html'"></div>
 
