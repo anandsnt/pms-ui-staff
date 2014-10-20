@@ -21,7 +21,7 @@ var GridRowItemDrag = React.createClass({
 		e.stopPropagation();
 		e.preventDefault();
 
-		if(e.button === 0) {
+		if(e.button === 0 || e.button === 2) {
 			document.addEventListener('mouseup', this.__onMouseUp);
 			document.addEventListener('mousemove', this.__dbMouseMove);
 

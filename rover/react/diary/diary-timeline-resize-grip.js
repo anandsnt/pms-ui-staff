@@ -21,7 +21,7 @@ var TimelineResizeGrip = React.createClass({
 		e.preventDefault();
 		e.stopPropagation();
 
-		if(e.button === 0) {
+		if(e.button === 0 || e.button === 2) {
 			this.props.iscroll.grid.disable();
 
 			document.addEventListener('mouseup', this.__onMouseUp);
@@ -90,7 +90,7 @@ var TimelineResizeGrip = React.createClass({
 			}, function() {
 				model.start_date = new Date(model.left / this.props.display.px_per_ms + this.props.display.x_origin);
 				model.end_date = new Date(model.right / this.props.display.px_per_ms + this.props.display.x_origin);
-				
+
 				this.props.__onResizeEnd(this.state.row, model);
 				
 				this.props.__onResizeCommand(model);
