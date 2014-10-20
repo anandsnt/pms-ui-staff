@@ -44,20 +44,8 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 });
 
 	// checkin states
-	
-	// checkin states
 
 	$stateProvider.state('checkinConfirmation', {
-	 	url: '/checkinConfirmation',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'Check-in'
-	 }).state('checkinSuccess', {
-	 	url: '/checkinSuccess',
-	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
-	 	title: 'Check-in'
-	 });
-
-/*	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/checkin/partials/Nikko/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
@@ -81,7 +69,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/Nikko/checkinSuccess.html',
 	 	title: 'Status - Check-in'
-	 });*/
+	 });
 
 
 	 //room verification
@@ -98,4 +86,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	title: 'CC verification'
 	 });
 
+	 	  // pre checkin states
+
+    $stateProvider.state('preCheckinTripDetails', {
+    	url: '/tripDetails',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Pre Check-in'
+	});
 }]);
