@@ -1,18 +1,3 @@
-<!-- <section class="content current" ng-click='clearErrorMessage()'>
-	
-    	<header class="content-title">
-        <h2>Content Management</h2>
-        <a class="action add" ui-sref = "admin.contentManagementSectionDetails">Section</a>
-        <a class="action add" ui-sref = "admin.contentManagementCategoryDetails">Category</a>
-        <a class="action add" ui-sref = "admin.contentManagementItemDetails">Item</a>
-        <div class="filters">
-            <ul id="view-options" class="cms-view">
-                <li class="active" ui-sref = "admin.adContentManagementItemDetail">View grid</li>
-                <li ui-sref = "admin.contentManagementTreeView">View tree</li>
-            </ul>
-        </div>
-    </header> -->
-    
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -25,7 +10,7 @@
                 <div class="entry filter">
                     <label for="showing-structure">Showing</label>
                     <div class="select">
-                        <select id="showing-structure">
+                        <select id="showing-structure" ng-model="selectedView">
                             <option value="section" selected>Sections</option>
                             <option value="category">Categories</option>
                             <option value="item">Items</option>
@@ -34,11 +19,11 @@
                 </div>
 
                 <!-- Filter by section, hidden by default - show only when listing categories or items --> 
-                <div class="entry filter hidden">
+                <div class="entry filter" ng-show="selectedView != 'section'">
                     <label for="showing-categories">From Section</label>
                     <div class="select">
-                        <select id="showing-categories" class="placeholder">
-                            <option value="" selected>All sections</option>
+                        <select id="showing-categories" ng-model="fromSection" class="placeholder">
+                            <option value="all" >All sections</option>
                             <option value="My City Guide">My City Guide</option>
                             
                         </select>
@@ -46,11 +31,11 @@
                 </div>
 
                 <!--Filter by category, hidden by default - show only when listing items -->
-                <div class="entry filter hidden">
+                <div class="entry filter" ng-show="selectedView == 'item'">
                     <label for="showing-items">From Category</label>
-                    <div class="select">
+                    <div class="select" ng-model = "fromCategory">
                         <select id="showing-items" class="placeholder">
-                            <option value="" selected>All categories</option>
+                            <option value="all">All categories</option>
                             <option value="category 1">category 1</option>
                             <option value="category 2">category 2</option>
                             <option value="category 3">category 3</option>
@@ -59,7 +44,7 @@
                 </div>
 
                 <!-- Show only unassigned categories or items, hidden by default - show only when listing items or categories -->
-                <div class="entry radio-check hidden">
+                <div class="entry radio-check " ng-show="selectedView != 'section'">
                     <label for="unassigned" class="checkbox">
                         <span class="icon-form icon-checkbox"></span>
                         Show only unassigned
@@ -78,28 +63,58 @@
             </div>
 
             <!-- Grid content -->
-            <table class="grid datatable " >
+            <table class="grid datatable ng-table" ng-show="selectedView == 'section'" ng-table="tableParams">
                 
                 <!-- Section table HTML -->
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Last Update</th>
-                        <th>No. of categories</th>
-                        <th>No. of items</th>
-                        <th class="activate">Status</th>
-                        <th class="delete">Delete</th>
-                    </tr>
+                <thead>                 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('name', 'asc'),
+                        'sort-desc': tableParams.isSortBy('name', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+                    </th>
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('last_updated', 'asc'),
+                        'sort-desc': tableParams.isSortBy('last_updated', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'last_updated' : tableParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
+                    </th>       
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('no_of_categories', 'asc'),
+                        'sort-desc': tableParams.isSortBy('no_of_categories', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'no_of_categories' : tableParams.isSortBy('no_of_categories', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>No. of categories</span></div>
+                    </th>    
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('no_of_items', 'asc'),
+                        'sort-desc': tableParams.isSortBy('no_of_items', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'no_of_items' : tableParams.isSortBy('no_of_items', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>No. of items</span></div>
+                    </th>        
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('status', 'asc'),
+                        'sort-desc': tableParams.isSortBy('status', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'status' : tableParams.isSortBy('status', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Status</span></div>
+                    </th> 
+                        <th class="width-10" translate> delete</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><a >City Guide</a></td>
-                        <td><em>10-20-2014 06:35 am</em></td>
-                        <td>2</td>
-                        <td>1</td>
+                    <tr ng-repeat="gridItem in $data">
+                        <td><a >{{gridItem.name}}</a></td>
+                        <td><em>{{gridItem.last_updated}}</em></td>
+                        <td>{{gridItem.no_of_categories}}</td>
+                        <td>{{gridItem.no_of_items}}</td>
                         <td class="activate">
-                            <div class="switch-button on">
-                                <input name="{section}" id="{section}" value="{section}" type="checkbox" checked />
+                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                                <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
@@ -108,6 +123,142 @@
                         </td>
                     </tr>
                 </tbody>
+             </table> 
+
+             <!-- Categories table HTML -->
+             <table class="grid datatable ng-table" ng-show="selectedView == 'category'" ng-table="tableParams">
+                
+                
+                <thead>                 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('name', 'asc'),
+                        'sort-desc': tableParams.isSortBy('name', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+                    </th>
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('last_updated', 'asc'),
+                        'sort-desc': tableParams.isSortBy('last_updated', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'last_updated' : tableParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
+                    </th>       
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('no_of_categories', 'asc'),
+                        'sort-desc': tableParams.isSortBy('no_of_categories', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'no_of_categories' : tableParams.isSortBy('no_of_categories', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Parent Category</span></div>
+                    </th>    
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('no_of_items', 'asc'),
+                        'sort-desc': tableParams.isSortBy('no_of_items', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'no_of_items' : tableParams.isSortBy('no_of_items', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>No. of items</span></div>
+                    </th>        
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('status', 'asc'),
+                        'sort-desc': tableParams.isSortBy('status', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'status' : tableParams.isSortBy('status', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Status</span></div>
+                    </th> 
+                        <th class="width-10" translate> delete</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="gridItem in $data">
+                        <td><a >{{gridItem.name}}</a></td>
+                        <td><em>{{gridItem.last_updated}}</em></td>
+                        <td>{{gridItem.parent_category}}</td>
+                        <td>{{gridItem.no_of_items}}</td>
+                        <td class="activate">
+                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                                <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                        <td class="delete">
+                            <a  class="icons icon-delete large-icon">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+             </table>
+
+             <!-- Items table HTML -->
+             <table class="grid datatable ng-table" ng-show="selectedView == 'item'" ng-table="tableParams">               
+                
+                <thead>                 
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('name', 'asc'),
+                        'sort-desc': tableParams.isSortBy('name', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+                    </th>
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('page_template', 'asc'),
+                        'sort-desc': tableParams.isSortBy('page_template', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'page_template' : tableParams.isSortBy('page_template', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Type</span></div>
+                    </th>
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('last_updated', 'asc'),
+                        'sort-desc': tableParams.isSortBy('last_updated', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'last_updated' : tableParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
+                    </th>       
+
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('section', 'asc'),
+                        'sort-desc': tableParams.isSortBy('section', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'section' : tableParams.isSortBy('section', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Section</span></div>
+                    </th>    
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('category', 'asc'),
+                        'sort-desc': tableParams.isSortBy('category', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'category' : tableParams.isSortBy('category', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Category</span></div>
+                    </th>        
+                    <th class="sortable" ng-class="{
+                        'sort-asc': tableParams.isSortBy('status', 'asc'),
+                        'sort-desc': tableParams.isSortBy('status', 'desc')
+                      }"
+                        ng-click="tableParams.sorting({'status' : tableParams.isSortBy('status', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Status</span></div>
+                    </th> 
+                        <th class="width-10" translate> delete</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="gridItem in $data">
+                        <td><a >{{gridItem.name}}</a></td>
+                        <td>{{gridItem.page_template}}</td>
+                        <td><em>{{gridItem.last_updated}}</em></td>
+                        <td>{{gridItem.section}}</td>
+                        <td>{{gridItem.category}}</td>
+                        <td class="activate">
+                            <div class="switch-button " ng-class="{'on':gridItem.status}">
+                                <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
+                                <span class="switch-icon"></span>
+                            </div>
+                        </td>
+                        <td class="delete">
+                            <a  class="icons icon-delete large-icon">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+             </table>
 
                 <!-- Categories grid HTML 
                 <thead>
@@ -171,7 +322,7 @@
                     </tr>
                     ... repeat for all items
                 </tbody> -->
-            </table> 
+            
         </div>
        
 <!-- </section> -->

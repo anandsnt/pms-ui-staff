@@ -215,12 +215,6 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			url : '/contentManagement'
 		});
 
-		// $stateProvider.state('admin.contentManagementTreeView', {
-		// 	templateUrl: '/assets/partials/contentManagement/adContentManagementTreeView.html',
-		// 	controller: 'ADContentManagementTreeviewCtrl',
-		// 	url : '/contentManagement'
-		// });
-
 		$stateProvider.state('admin.contentManagementSectionDetails', {
 			templateUrl: '/assets/partials/contentManagement/adContentManagementSectionDetail.html',
 			controller: 'ADContentManagementSectionDetailCtrl',
