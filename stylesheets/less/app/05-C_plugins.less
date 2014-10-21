@@ -1520,8 +1520,8 @@
 				}
 
 				&.set-targets {
-					width: 890px;
-					height: 560px;
+					width: 880px;
+					height: auto;
 
 					.grid-wrapper {
 						overflow: hidden;
@@ -1580,7 +1580,8 @@
 							}
 
 							&.left {
-								width: 260px;
+								width: auto;
+								margin-left: 30px;
 
 								li {
 									> .entry {
@@ -1590,11 +1591,7 @@
 
 										&.move {
 											.icon-mover-right {
-												margin-top: 25px;
-												cursor: pointer;
-												text-indent: -9999px;
-												width: 40px;
-												height: 40px;
+												margin-top: 15px;
 											}
 										}
 
@@ -1607,40 +1604,35 @@
 							}
 
 							&.right {
-								width: 590px;							
+								width: 560px;							
 	
-								ul {
-									li {	
-										> .entry {
-											> .target {
-												background-color: #fcfcfc;
-										        font-size: 11px;
-										        text-align: right;
-										        color: #999999;									        									       									        										        
-										        > span {
-			  										display: block;
-			  										height: 20px;
-										        }
-
-										        > input {					        								            										            
-										            transition: all 0.3s cubic-bezier(0.1, 0.1, 0.25, 0.9) 0s;									  
-										            font-size: 18px; 
-										            color: #999999;
-										            text-align: center;
-										        }
+								li {	
+									> .entry {
+										> .target {
+											background-color: #fcfcfc;
+									        font-size: 11px;
+									        text-align: right;
+									        color: #999999;									        									       									        										        
+									        > span {
+		  										display: block;
+		  										height: 20px;
+		  										padding-right: 4px;
 									        }
 
-											&:first-child {
-												margin-left: 10px;
-											}	
+									        > input {					        								            										            
+									            transition: all 0.3s cubic-bezier(0.1, 0.1, 0.25, 0.9) 0s;									  
+									            font-size: 18px; 
+									            color: #999999;
+									            text-align: center;
+									        }
+								        }	
 
-											&:nth-child(6n) { margin-right: 10px; }								
-											&:nth-child(7n) { margin-right: 0px; }								
-										}							
+										&:nth-child(6n) { margin-right: 10px; }								
+										&:nth-child(7n) { margin-right: 0px; }								
+									}							
 
-										&:first-child {
-											text-align: center;
-										}
+									&:first-child {
+										text-align: center;
 									}
 								}
 							}
