@@ -81,7 +81,7 @@ angular.module('housekeepingModule', [])
                     return RVWorkManagementSrv.fetchShifts();
                 },
                 floors: function(RVHkRoomStatusSrv) {
-                    return RVHkRoomStatusSrv.fetch_floors();
+                    return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
         });
