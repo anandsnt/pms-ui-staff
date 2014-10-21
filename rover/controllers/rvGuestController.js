@@ -897,6 +897,18 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.$on("updateGuestEmail", function(e) {
 			$scope.guestCardData.contactInfo.email = $scope.reservationData.guest.email;
 		});
+		//Listener to update the card info from billing info
+		$scope.$on("CardInfoUpdated", function(e, card_id, card_type) {
+			if(card_type == 'COMPANY_CARD'){
+				$scope.reservationDetails.companyCard.id = card_id;
+				$scope.initCompanyCard();
+			}else{
+				$scope.reservationDetails.travelAgent.id = card_id;
+				$scope.initTravelAgentCard();
+			}
+			
+		});
+		
 
 		$scope.init();
 
