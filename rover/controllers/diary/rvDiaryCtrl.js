@@ -343,7 +343,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    $scope.editCancel = function() {
 	    	var props = $scope.gridProps;
 	    	
-	    	reservationRoomTransfer(props.edit.originalRowItem, props.edit.currentResizeItemRow, props.edit.originalItem);
+	    	reservationRoomTransfer(props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
 
 	    	props.edit = _.extend({}, $scope.gridProps.edit);
 	    	props.edit.active = false;
@@ -481,7 +481,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	function reservationIndex(room, reservation) {
 		var idx = -1;
 
-		for(var i = 0, len = room.reservations; i < len; i++) {
+		for(var i = 0, len = room.reservations.length; i < len; i++) {
 			if(room.reservations[i].id === reservation.id) {
 				idx = i;
 				return idx;
