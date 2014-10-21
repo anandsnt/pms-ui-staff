@@ -1,0 +1,49 @@
+<div class="modal-content diary-move">
+    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+    <span class="h2 message">
+    	Move results in a price change of:
+    	<!-- if price increase: -->
+    	<span class="red">+ ${price}</span>
+    	<!-- if price decrease:
+    	<span class="green">- ${price}</span> -->
+    </span>
+
+	<div class="diary-moved">
+		<span class="label">From</span>
+		<ul class="details">
+			<li class="arrival">
+                <span>{old arrival time}</span>
+                {old arrival date}
+            </li>
+            <li class="departure">
+                <span>{old departure time}</span>
+                {old departure date}
+            </li>
+            <li class="type">{old room type}</li>
+            <li class="room">{old room number}</li>
+            <li class="price">${old price}</li>
+		</ul>
+	</div>
+	<div class="diary-moved">
+		<span class="label">To</span>
+		<ul class="details">
+			<li class="arrival">
+                <span>{new arrival time}</span>
+                {new arrival date}
+            </li>
+            <li class="departure">
+                <span>{new departure time}</span>
+                {new departure date}
+            </li>
+            <li class="type">{new room type}</li>
+            <li class="room">{new room number}</li>
+            <li class="price">${new price}</li>
+		</ul>
+	</div>
+
+    <div class="actions">
+        <button type="button" class="button brand-colors">Move without Rate Change</button>
+        <button type="button" class="button green">Apply Payment</button>
+        <button type="button" class="button blank">Cancel</button> 
+    </div>
+</div>
