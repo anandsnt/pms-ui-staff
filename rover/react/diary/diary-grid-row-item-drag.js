@@ -1,22 +1,24 @@
 var GridRowItemDrag = React.createClass({
 	_update: function(row_item_data) {
-		var copy = {};
+		//var copy = {};
 
-		if(_.isObject(row_item_data)) {
+		/*if(_.isObject(row_item_data)) {
 			copy = _.extend(copy, row_item_data);
 
 			copy.start_date = new Date(row_item_data.start_date.getTime());
 			copy.end_date = new Date(row_item_data.end_date.getTime());
 
 			return copy;
-		}
+		}*/
+
+		return _.extend({}, row_item_data);
 	},
 	__dbMouseMove: undefined,
 	componentWillMount: function() {
 		this.__dbMouseMove = _.debounce(this.__onMouseMove, 10);
 	},
 	__onMouseDown: function(e) {
-		var page_offset, el;
+		var page_offset, el, props = this.props;
 
 		e.stopPropagation();
 		e.preventDefault();
@@ -27,7 +29,7 @@ var GridRowItemDrag = React.createClass({
 
 			page_offset = this.getDOMNode().getBoundingClientRect();
 			
-			el = this.props.viewport.element();
+			el = props.viewport.element();
 
 			this.setState({
 				left: page_offset.left  - el.offset().left - el.parent()[0].scrollLeft,
@@ -36,13 +38,13 @@ var GridRowItemDrag = React.createClass({
 				element: el.parent(),
 				origin_x: e.pageX,
 				origin_y: e.pageY,
-				offset_x: el.offset().left + this.props.iscroll.grid.x,
-				offset_y: el.offset().top + this.props.iscroll.grid.y,
+				offset_x: el.offset().left + props.iscroll.grid.x,
+				offset_y: el.offset().top + props.iscroll.grid.y,
 				element_x: page_offset.left,
 				element_y: page_offset.top
 			},
 			function() {
-				this.props.iscroll.grid.disable();
+				props.iscroll.grid.disable();
 			});
 		}
 	},
@@ -56,7 +58,7 @@ var GridRowItemDrag = React.createClass({
 			model;
 
 		if(!state.dragging && (Math.abs(delta_x) + Math.abs(delta_y) > 10)) {
-			model = this._update(this.props.currentDragItem); //props.data);
+			model = this._update(props.currentDragItem); //props.data);
 
 			this.setState({
 				dragging: true,
@@ -95,7 +97,7 @@ var GridRowItemDrag = React.createClass({
 				selected: !state.selected
 			}, function() {
 				props.iscroll.grid.enable();
-				props.angular_evt.onSelect(props.row_data, props.data, !state.selected, 'edit');		
+				props.angular_evt.onSelect(props.row_data, props.data, !state.selected, 'edit');	//TODO Make proxy fn, and move this to diary-content	
 			});
 		}
 	},
@@ -123,11 +125,12 @@ var GridRowItemDrag = React.createClass({
 		};
 	},
 	render: function() {
-		var state = this.state,
+		var props = this.props,
+			state = this.state,
 			style = {},
 			className = '';
 
-		if(this.state.dragging) {
+		if(state.dragging) {
 			style = { 
 				position: 'fixed',
 				left: state.left,
@@ -139,9 +142,9 @@ var GridRowItemDrag = React.createClass({
 		}
 
 		return this.transferPropsTo(React.DOM.div({
-			style: style,
-			className: this.props.className + className,
-			children: this.props.children,
+			style:       style,
+			className:   props.className + className,
+			children:    props.children,
 			onMouseDown: this.__onMouseDown
 		}));
 	}

@@ -61,8 +61,8 @@ var DiaryContent = React.createClass({
 		row_item_data.left = left;
 		row_item_data.right = row_item_data.right + delta;
 
-		row_item_data.start_date = new Date((row_item_data.left / state.display.px_per_ms) + state.display.x_origin);
-		row_item_data.end_date 	= new Date((row_item_data.right / state.display.px_per_ms) + state.display.x_origin);
+		row_item_data.start_date = row_item_data.left / state.display.px_per_ms + state.display.x_origin;
+		row_item_data.end_date = row_item_data.right / state.display.px_per_ms + state.display.x_origin;
 
 		this.state.angular_evt.onDragEnd(row_data, row_item_data);		
 	},
@@ -78,26 +78,17 @@ var DiaryContent = React.createClass({
 			currentResizeItem: row_item_data
 		});
 	},
-	__onResizeLeftStart: function(row_data, row_item_data) {
-		this.state.angular_evt.onResizeLeftStart.apply(this, Array.prototype.slice.call(arguments));
+	__onResizeStart: function(row_data, row_item_data) {
+		this.state.angular_evt.onResizeStart.apply(this, Array.prototype.slice.call(arguments));
 	},
-	__onResizeLeftEnd: function(row_data, row_item_data) {
-		this.state.angular_evt.onResizeLeftEnd.apply(this, Array.prototype.slice.call(arguments));
+	__onResizeEnd: function(row_data, row_item_data) {
+		this.state.angular_evt.onResizeEnd.apply(this, Array.prototype.slice.call(arguments));
 
 		this.setProps({
-			currentResizeItem: row_item_data
+			currentResizeItem: row_item_data,
+			currentResizeItemRow: row_data
 		});
 	},
-	__onResizeRightStart: function(row_data, row_item_data) {
-		this.state.angular_evt.onResizeRightStart.apply(this, Array.prototype.slice.call(arguments));
-	},
-	__onResizeRightEnd: function(row_data, row_item_data) {
-		this.state.angular_evt.onResizeRightEnd.apply(this, Array.prototype.slice.call(arguments));
-
-		this.setProps({
-			currentResizeItem: row_item_data
-		});
-	},	
 	componentDidMount: function() {
 		var self = this;
 
@@ -152,10 +143,8 @@ var DiaryContent = React.createClass({
 								calculateOccupancy:    		scope.calculateOccupancy, 
 								onDragStart: 				scope.onDragStart,
 								onDragEnd: 					scope.onDragEnd,
-								onResizeLeftStart: 			scope.onResizeLeftStart,
-								onResizeLeftEnd: 			scope.onResizeLeftEnd,
-								onResizeRightStart: 		scope.onResizeRightStart,
-								onResizeRightEnd: 			scope.onResizeRightEnd,
+								onResizeStart: 				scope.onResizeStart,
+								onResizeEnd: 				scope.onResizeEnd,
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft
 							},
@@ -213,10 +202,8 @@ var DiaryContent = React.createClass({
 			currentResizeItem: 	this.props.currentResizeItem,
 			angular_evt: 		this.state.angular_evt,
 			__onResizeCommand: 	self.__onResizeCommand,
-			__onResizeLeftStart:self.__onResizeLeftStart,
-			__onResizeLeftEnd:  self.__onResizeLeftEnd,
-			__onResizeRightStart:self.__onResizeRightStart,
-			__onResizeRightEnd: self.__onResizeRightEnd, 
+			__onResizeStart:    self.__onResizeStart,
+			__onResizeEnd:  	self.__onResizeEnd,
 			__onGridScroll: 	self.__onGridScroll
 		}), 
 		GridPanel({

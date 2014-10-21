@@ -37,7 +37,8 @@ var TimelinePanel = React.createClass({
 		}
 	},
 	render: function() {
-		var self = this;
+		var props = this.props,
+			self = this;
 
 		return React.DOM.div({
 			id: 'diary-timeline',
@@ -51,22 +52,19 @@ var TimelinePanel = React.createClass({
 			}
 		},
 		Timeline({
-			display: this.props.display,
-			data: this.props.data,
-			iscroll: this.props.iscroll,
-			edit: this.props.edit,
-			__onResizeCommand: self.props.__onResizeCommand,
-			__onResizeLeftStart:self.props.__onResizeLeftStart,
-			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,
-			__onResizeRightStart:self.props.__onResizeRightStart,
-			__onResizeRightEnd: self.props.__onResizeRightEnd, 
-			currentResizeItem: this.props.currentResizeItem,
-			currentResizeItemRow: this.props.currentResizeItemRow
+			display: props.display,
+			iscroll: props.iscroll,
+			edit:    props.edit,
+			__onResizeCommand:    props.__onResizeCommand,
+			__onResizeStart:  props.__onResizeStart,
+			__onResizeEnd:    props.__onResizeEnd,
+			currentResizeItem:    props.currentResizeItem,
+			currentResizeItemRow: props.currentResizeItemRow
 		}),
 		TimelineOccupancy({
-			display: this.props.display,
-			data: this.props.data,
-			angular_evt: this.props.angular_evt		
+			display:     props.display,
+			data:        props.data,
+			angular_evt: props.angular_evt		
 		})));			
 	}
 });

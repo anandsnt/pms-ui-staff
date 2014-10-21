@@ -1,23 +1,23 @@
 var GridPanel = React.createClass({
 	render: function() {
-		var self = this;
+		var props = this.props;
 
 		return React.DOM.div({
 			className: 'diary-grid' 
 		}, 
 		Grid({
-			viewport: 			this.props.viewport,
-			display: 			this.props.display,
-			filter: 			this.props.filter,
-			edit:               this.props.edit,
-			iscroll: 			this.props.iscroll,
-			data: 				this.props.data,
-			angular_evt: 		this.props.angular_evt,
-			currentResizeItem:  this.props.currentResizeItem,
-			currentResizeItemRow: this.props.currentResizeItemRow,
-			__onGridScroll: 	self.props.__onGridScroll,
-			__onDragStart: 		self.props.__onDragStart,
-			__onDragStop: 		self.props.__onDragStop	
+			viewport: 			props.viewport,
+			display: 			props.display,
+			filter: 			props.filter,
+			edit:               props.edit,
+			iscroll: 			props.iscroll,
+			data: 				props.data,
+			angular_evt: 		props.angular_evt,
+			currentResizeItem:  props.currentResizeItem,
+			currentResizeItemRow: props.currentResizeItemRow,
+			__onGridScroll: 	props.__onGridScroll,
+			__onDragStart: 		props.__onDragStart,
+			__onDragStop: 		props.__onDragStop	
 		}));
 	}
 });

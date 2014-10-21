@@ -1,10 +1,38 @@
 sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
     function ($q, rvBaseWebSrvV2, RVBaseWebSrv) {
-        this.fetchInitialData = function (arrival_date){
-            var deferred = $q.defer (),
-            	reservations;
+    	this.normalizeData = function(data, meta) {
+    		var room, 
+    			reservations, 
+    			reservation,
+    			arrival_date_meta = meta.arrival_date,
+    			departure_date_meta = meta.departure_date;
 
-            reservations = [
+    		if(!_.isArray(data)) {
+    			throw new Error("Unexpected parameter");
+    		}
+
+    		for(var i = 0, len = data.length; i < len; i++) {
+    			room = data[i];
+    			reservations = room.reservations;
+
+    			if(_.isArray(reservations)) {
+    				for(var j = 0, rlen = reservations.length; j < rlen; j++) {
+    					reservation = reservations[j];
+
+    					reservation[arrival_date_meta] = reservation[arrival_date_meta].getTime();
+    					reservation[departure_date_meta] = reservation[departure_date_meta].getTime();
+    				}
+	    		}
+    		}
+
+    		return data;
+    	};
+
+        this.fetchInitialData = function (arrival_date, meta){
+            var deferred = $q.defer (),
+            	rooms;
+
+            rooms = [
 				{
 					id: 0,
 					key: 'room-0',
@@ -607,7 +635,7 @@ sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
 				}
 			];
 
-			deferred.resolve(reservations);
+			deferred.resolve(this.normalizeData(rooms, meta));
 
             return deferred.promise;
         };

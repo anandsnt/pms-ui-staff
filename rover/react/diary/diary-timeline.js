@@ -2,17 +2,20 @@ var Timeline = React.createClass({
 	render: function() {
 		var props = this.props,
 			state = this.state,
+			display = props.display,
 			timeline,
 			hourly_spans = [],
 			segment_hour_display = [],
 			interval_spans,
+			px_per_int = display.px_per_int + 'px',
+			px_per_hr = display.px_per_hr + 'px',
 			start_time = props.display.x_origin_start_time,
 			self = this;
 
 		(function() {
 			var time = start_time.hours;
 
-			for(var i = 0; i < props.display.hours; i++) {
+			for(var i = 0, len = props.display.hours; i < len; i++) {
 				segment_hour_display.push(time++ + ':00');
 
 				time = (time > 23) ? 0 : time;
@@ -20,18 +23,18 @@ var Timeline = React.createClass({
 		})(); 
 
 		/*CREATE TIMELINE*/
-		for(var i = 0; i < props.display.hours; i++) {
+		for(var i = 0, len = display.hours; i < len; i++) {
 			interval_spans = [];
 
 			interval_spans.push(React.DOM.span({
 				className: 'hour-display'
 			}, segment_hour_display[i]));
 
-			for(var j = 0; j < props.display.intervals_per_hour; j++) {
+			for(var j = 0; j < display.intervals_per_hour; j++) {
 				interval_spans.push(React.DOM.span({
 					className: 'interval-' + (j + 1),
 					style: {
-						width: props.display.px_per_int
+						width: px_per_int
 					}
 				}));
 			}
@@ -39,7 +42,7 @@ var Timeline = React.createClass({
 			hourly_spans.push(React.DOM.span({
 				className: 'segment',
 				style: {
-					width: props.display.px_per_hr
+					width: px_per_hr
 				}
 			}, interval_spans));
 		}
@@ -47,24 +50,20 @@ var Timeline = React.createClass({
 		return React.DOM.div({
 			className: 'wrapper',
 			style: {
-				width: props.display.width
+				width: display.width
 			},
-			data: this.props.data
 		}, React.DOM.div({
 			className: 'hours'
 		}, hourly_spans), 
 		Resizable({
-			display: this.props.display,
-			data: this.props.data,
-			edit: this.props.edit,
-			iscroll: this.props.iscroll,
-			__onResizeCommand: this.props.__onResizeCommand,
-			__onResizeLeftStart:self.props.__onResizeLeftStart,
-			__onResizeLeftEnd:  self.props.__onResizeLeftEnd,
-			__onResizeRightStart:self.props.__onResizeRightStart,
-			__onResizeRightEnd: self.props.__onResizeRightEnd, 
-			currentResizeItem: this.props.currentResizeItem,
-			currentResizeItemRow: this.props.currentResizeItemRow
+			display:               display,
+			edit:                  props.edit,
+			iscroll:               props.iscroll,
+			__onResizeCommand:     props.__onResizeCommand,
+			__onResizeStart:       props.__onResizeStart,
+			__onResizeEnd:         props.__onResizeEnd,
+			currentResizeItem:     props.currentResizeItem,
+			currentResizeItemRow:  props.currentResizeItemRow
 		}));
 	}
 });

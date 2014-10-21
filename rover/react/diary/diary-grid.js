@@ -27,7 +27,10 @@ var Grid = React.createClass({
 		this.props.iscroll.grid.destroy();
 	},
 	render: function() {
-		var self = this;
+		var props = this.props,
+			display = props.display,
+			grid_width = display.width + 'px',
+			self = this;
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
@@ -37,7 +40,7 @@ var Grid = React.createClass({
 				React.DOM.ul({ 
 					className: 'grid',
 					style: {
-						width: this.props.display.width + 'px'
+						width: grid_width
 					}
 				}, 
 				_.map(this.props.data, function(row, idx) {
@@ -45,16 +48,16 @@ var Grid = React.createClass({
 						key: 				row.key,
 						data: 				row,
 						row_number: 		idx,
-						display: 			self.props.display,
-						viewport: 			self.props.viewport,
-						filter: 			self.props.filter,
-						edit:               self.props.edit,
-						iscroll:            self.props.iscroll, 
-						angular_evt: 		self.props.angular_evt,
-						currentResizeItem:  self.props.currentResizeItem,
-						currentResizeItemRow:   self.props.currentResizeItemRow,
-						__onDragStart: 		self.props.__onDragStart,
-						__onDragStop: 		self.props.__onDragStop			
+						display: 			props.display,
+						viewport: 			props.viewport,
+						filter: 			props.filter,
+						edit:               props.edit,
+						iscroll:            props.iscroll, 
+						angular_evt: 		props.angular_evt,
+						currentResizeItem:  props.currentResizeItem,
+						currentResizeItemRow: props.currentResizeItemRow,
+						__onDragStart: 		props.__onDragStart,
+						__onDragStop: 		props.__onDragStop			
 					});
 				})
 		));

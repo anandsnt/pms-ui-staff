@@ -19,6 +19,15 @@
 
     <!-- Diary header -->
     <form method="post" action="" id="diary-header" name="diary-header" class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
+        <div class="entry edit">
+            <div class="guest" ng-show="gridProps.edit.active">
+                {{gridProps.edit.originalItem.guest_name}}
+            </div>
+            <div class="actions" ng-show="gridProps.edit.active">
+                <button id="edit-save" class="button green" ng-click="editSave()">Save</button>
+                <button id="edit-cancel" class="button gray" ng-click="editCancel()">Cancel</button>
+            </div>
+        </div>
         <div class="entry date">
             <label for="arrival-date">Date</label>
             <div class="entry-data">
@@ -55,31 +64,31 @@
             <div id="diary-rates" class="faux-select-options hidden">
                 <div class="header">
                     <!-- Standard Rate -->
-                    <div ng-show="gridProps.filter.rate_type === 'Standard'">
+                    <div ng-show="gridProps.filter.rate_type === 'standard'">
                         <label class="radio inline">
-                            <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" checked />
+                            <input name="rate-type" id="standard-rate" value="standard" ng-model="gridProps.filter.rate_type" type="radio" checked />
                             Standard
                         </label>
                         <label class="radio inline">
-                            <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" />
+                            <input name="rate-type" id="corporate-rate" value="corporate" ng-model="gridProps.filter.rate_type" type="radio" />
                             Corporate 
                             <span>Select Account</span>
                         </label>   
                     </div>
                     <!-- Corporate Rate is selected & defined -->
-                    <div ng-show="gridProps.filter.rate_type === 'Corporate'">
+                    <!--<div ng-show="gridProps.filter.rate_type === 'corporate'">
                         <label class="radio inline">
-                            <input name="rate-type" id="standard-rate" value="standard-rate" type="radio" />
+                            <input name="rate-type" id="standard-rate" value="standard" type="radio" />
                             Standard
                         </label>
                         <label class="radio inline checked">
-                            <input name="rate-type" id="corporate-rate" value="standard-rate" type="radio" checked />
+                            <input name="rate-type" id="corporate-rate" value="corporate" type="radio" checked />
                             Corporate 
                             <span>American Airlines</span>
                             <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
                             <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
                         </label>   
-                    </div>   
+                    </div>  --> 
                 </div>
                 <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
                 <div class="entry search hidden">
@@ -117,10 +126,7 @@
                 </label>
             </div>
         </div>
-        <div class="actions" ng-show="gridProps.edit.active">
-            <button id="edit-save" class="button green" ng-click="editSave()">Save</button>
-            <button id="edit-cancel" class="button gray" ng-click="editCancel()">Cancel</button>
-        </div>
+       
         <!--<div class="actions">
             <button type="button" class="button green" ng-click="onUpdate()">Update</button>
         </div>-->

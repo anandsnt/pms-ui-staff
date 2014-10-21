@@ -35,14 +35,15 @@ var GridRowItem = React.createClass({
 		var props 					= this.props,
 			state 					= this.state,
 			display 				= props.display,
-			start_time_ms 			= !state.resizing ? props.data.start_date.getTime() : state.currentResizeItem.left,
-			end_time_ms 			= !state.resizing ? props.data.end_date.getTime() : state.currentResizeItem.right,
+			data 					= props.data,
+			start_time_ms 			= !state.resizing ? data.start_date : state.currentResizeItem.left,
+			end_time_ms 			= !state.resizing ? data.end_date : state.currentResizeItem.right,
 			time_span_ms 			= end_time_ms - start_time_ms,
-			maintenance_time_span 	= props.display.maintenance_span_int * display.px_per_int,
+			maintenance_time_span 	= display.maintenance_span_int * display.px_per_int,
 			reservation_time_span 	= ((!state.resizing) ? time_span_ms * display.px_per_ms : time_span_ms),
-			is_temp_reservation 	= props.angular_evt.isAvailable(props.row_data, props.data),
+			is_temp_reservation 	= props.angular_evt.isAvailable(props.row_data, data),
 			style 					= {},
-			display_filter 			= props.angular_evt.displayFilter(props.filter, props.row_data, props.data),
+			display_filter 			= props.angular_evt.displayFilter(props.filter, props.row_data, data),
 			self = this;
 
 		if(!display_filter) {
@@ -50,11 +51,11 @@ var GridRowItem = React.createClass({
 		}
 
 		return GridRowItemDrag({
-			key: 				props.data.key,
+			key: 				data.key,
 			className: 		    'occupancy-block' + (state.editing ? ' editing' : ''),
 			row_data: 			props.row_data,
-			data:  				props.data,
-			display: 			props.display,
+			data:  				data,
+			display: 			display,
 			viewport: 			props.viewport,
 			edit:               props.edit,
 			iscroll:        	props.iscroll,
@@ -62,18 +63,16 @@ var GridRowItem = React.createClass({
 			__onDragStart:  	props.__onDragStart,
 			__onDragStop: 		props.__onDragStop,
 			currentDragItem:    props.currentResizeItem,
-			//currentResizeItem:  state.currentResizeItem,
-			//currentResizeItemRow: state.currentResizeItemRow,
 			style: 			   _.extend({
 				left: 		       (!state.resizing ? (start_time_ms - display.x_origin) * display.px_per_ms : start_time_ms) + 'px'
 			}, style)	
 		}, 
 		React.DOM.span({
-			className: ((!is_temp_reservation) ? 'occupied ' : '') + props.data.status + (state.editing ? ' editing' : '') + (is_temp_reservation && this.props.data.selected ? ' reserved' : ''),
+			className: ((!is_temp_reservation) ? 'occupied ' : '') + data.status + (state.editing ? ' editing' : '') + (is_temp_reservation && data.selected ? ' reserved' : ''),
 			style: { 
 				width: reservation_time_span + 'px' 
 			}
-		}, is_temp_reservation ? props.data.rate + '|' + props.data.room_type : props.data.guest_name),
+		}, is_temp_reservation ? data.rate + '|' + data.room_type : data.guest_name),
 		React.DOM.span({
 			className: 'maintenance',
 			style: { 
