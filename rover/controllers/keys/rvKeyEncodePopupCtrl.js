@@ -304,6 +304,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
     				data.account_number = that.lastSuccessfulCardIDReaded;
     				return that.addNewSmartbandWithKey(data, index);
     			}
+
 				that.numOfKeys--;
 				that.printKeyStatus[index-1].printed = true;
 				$scope.printedKeysCount = index;
@@ -469,8 +470,12 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 	/*
 	 * To handle cancel option after checkin success
 	 */
-    $scope.pressedCancel = function(){
+    $scope.pressedCancel = function(message){
 		$scope.$emit('hideLoader');
+		$scope.printKeyFailMsg = $filter('translate')('KEY_NOT_PRINTED');
+		if(message !== undefined){
+			$scope.printKeyFailMsg = message;
+		}
 		$scope.deviceConnecting = false;
 		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = false;
@@ -495,7 +500,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','$state','ngD
 		if(typeof message == 'undefined'){
 			var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 		}
-		that.setStatusAndMessage(message, 'error');
+		$scope.pressedCancel(message);
 		//Check if digest is already in progress - if not start digest
 		if(!$scope.$$phase) {
 			$scope.$apply();

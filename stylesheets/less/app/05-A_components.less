@@ -448,11 +448,6 @@
                     &.red { color: @red; }
                 }
 
-                &:last-child {
-                    padding-bottom: 0;
-                    margin-bottom: 0;
-                }
-
                 &.buttons {
                     .actions { .hide; }
                     .data { .show; }
@@ -762,11 +757,11 @@
                         h2 { 
                             font-size: 30px; 
 
+                            &.pickup,
                             &.clean,
                             &.inspected { color: @green; }
 
-                            &.dirty,
-                            &.pickup { color: @red; }
+                            &.dirty { color: @red; }
 
                             &.out { color: @grey3; }
                         }
@@ -821,6 +816,9 @@
 
                         .queued {
                             .size(30, 30);
+                            padding-left: 35px;
+                            line-height: 30px;
+                            font-size: 14px;
                             .pull-right;
                             position: absolute;
                             left: 90px;
@@ -985,12 +983,15 @@
                                 font-size: 16px;
                                 line-height: 30px;
                                 margin: 0;
-                                .size(30px, 40%);
+                                .size(30px, 33%);
                                 .pull-left;
                             }  
 
                             .queued {
                                 position: static;
+                                font-size: 16px;
+                                .size(30px, 33%);
+                                .pull-left;
                             }     
                         }
 
@@ -8475,7 +8476,7 @@
     }
 
     #filter-rooms {
-        z-index: 9999;
+        z-index: 8888;
         background: @white;
 
         #filter-options {

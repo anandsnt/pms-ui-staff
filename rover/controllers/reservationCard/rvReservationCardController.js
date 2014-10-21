@@ -121,6 +121,8 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 				$scope.currentReservationId = "";
 				$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
+
+			$scope.$broadcast('RESERVATIONLISTUPDATED');
 			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = (count > 0) ? true : false;
 			
@@ -135,6 +137,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 		$scope.getReservationDetails = function(currentConfirmationNumber, currentId) {
 			// CICO-9709 - Reintiate reservation main data
 			//$scope.initReservationData(); // commenting code as per CICO-10077
+			$scope.clearArrivalAndDepartureTime();
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					"id": currentId,
 					"confirmationId": currentConfirmationNumber,

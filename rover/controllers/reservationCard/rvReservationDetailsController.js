@@ -12,7 +12,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'VIP': 'DASHBOARD_SEARCH_VIP',
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
-
+		
 		//CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 
@@ -23,7 +23,13 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			backParam = { type: 'RESET'}; // CICO-9726 --- If a newly created reservation / go back to plain search page
 		} else {
 			backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
-			backParam = !!titleDict[$vault.get('searchType')] ? { type: $vault.get('searchType') } : {};
+			backParam = { type: $vault.get('searchType') };
+			//Special case - In case of search by CC, the title has to display the card number as well.
+			//The title is already stored in $vault
+			if($vault.get('searchType') == "BY_SWIPE"){
+				backParam = { type: "BY_SWIPE"};
+			}
+
 		}
 
 		// setup a back button
@@ -37,6 +43,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		// before going back to search results
 		$scope.goBackSearch = function() {
 			$scope.updateSearchCache();
+			console.log(backParam);
 			$state.go('rover.search', backParam);
 		};
 

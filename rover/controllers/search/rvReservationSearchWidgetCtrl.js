@@ -45,7 +45,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.showAddNewGuestButton = showAddNewGuestButton;
 		});
 
-
+		//setting the scroller for view
+			var scrollerOptions = {
+		        tap: true,
+		        preventDefault: false,
+		        deceleration: 0.0001,
+		        shrinkScrollbars: 'clip' 
+		    };
+		  	$scope.setScroller('result_showing_area', scrollerOptions);
 
 		// if returning back and there was a search query typed in restore that
 		// else reset the query value in vault
@@ -80,6 +87,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// 	};
 		// }
 
+		$scope.$on('I_COMPLETED_RENDERING', function(event){
+			setTimeout(function(){
+				refreshScroller();
+			}, 100)
+		});
 
 
 		/**
@@ -128,7 +140,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.$on("updateDataFromOutside", function(event, data) {
 			$scope.results = data;
+			for (var i = 0; i < $scope.results.length; i++) {
+				$scope.results[i].is_row_visible = true;
+			}
+
 			refreshScroller();
+			$scope.$emit('hideLoader');
 		});
 
 		/**
@@ -193,6 +210,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			// save the entered query into vault
 			// if returning back we will display that result
 			$vault.set('searchQuery', $scope.textInQueryBox);
+			console.log("1");
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 
 		}; //end of query entered
@@ -274,6 +292,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.focusOnSearchText = function() {
 			//we are showing the search area
 			$scope.$emit("showSearchResultsArea", true);
+			console.log("2");
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 			$vault.set('searchType', 'SEARCH_NORMAL')
 			refreshScroller();
@@ -414,9 +433,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			// show back to dashboard button (dont remove yet)
 			// $rootScope.setPrevState.hide = false;
 
-
-			$scope.$emit("UpdateHeading", swipeHeadingInSearch);
-
 			$scope.$emit('hideLoader');
 			$scope.isSwiped = true;
 			data = searchByCCResults;
@@ -433,6 +449,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.focusOnSearchText();
 			}
 
+			//Set the search type and search title. Used in back navigation from staycard to search
+			$vault.set('searchType', "BY_SWIPE");
+			$vault.set('title', swipeHeadingInSearch);
+
+			$scope.$emit("UpdateHeading", swipeHeadingInSearch);
 		};
 		var swipeHeadingInSearch = '';
 		$scope.$on('SWIPEHAPPENED', function(event, data) {
@@ -440,11 +461,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if (data.RVCardReadETBKSN != "" && typeof data.RVCardReadETBKSN != "undefined") {
 				ksn = data.RVCardReadETBKSN;
 			}
-
 			var cardNumber = data.RVCardReadCardIIN.substr(data.RVCardReadCardIIN.length - 4);
 			swipeHeadingInSearch = 'Reservations with card ' + cardNumber;
-
-			//var url = '/staff/payments/search_by_cc';
 
 			var swipeData = {
 				'et2': data.RVCardReadTrack2,

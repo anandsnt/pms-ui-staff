@@ -12,11 +12,11 @@
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
 	</form>
 
-	<section id="dashboard-search" class="content scrollable dashboard-scroll-div" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
+	<section id="dashboard-search" class="content scrollable" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
-				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" >
+				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend>
 					<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
 					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails(row.id, row.confirmation)"> <!--ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})" -->
 						<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
@@ -26,7 +26,10 @@
 							<span class="vip" ng-show="row.vip==true">VIP</span>
 						</figure>
 						<div class="data">
-							<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
+							<h2 ng-class="{'grey' : row.is_accompanying_guest=='1'}">
+								<span class="no-margin-right" ng-bind-html="row.lastname|highlight:textInQueryBox:false"></span>,
+								<span ng-bind-html="row.firstname|highlight:textInQueryBox:false"></span>
+							</h2>
 							<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
 							<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 							</span>

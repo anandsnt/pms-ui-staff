@@ -11,8 +11,11 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
 
 	//setting the scroller for view
 	var scrollerOptions = {
-        click: true,
-        preventDefault: false
+        tap: true,
+        preventDefault: true,
+        momentum: false,
+        mouseWheel: false,
+        shrinkScrollbars: 'clip' 
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);

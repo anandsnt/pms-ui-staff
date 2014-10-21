@@ -23,7 +23,7 @@ angular.module('housekeepingModule', [])
                             'INHOUSE_DIRTY': ['dirty', 'stayover'],
                             'INHOUSE_CLEAN': ['clean', 'stayover'],
                             'DEPARTURES_DIRTY': ['dueout', 'departed', 'dirty'],
-                            'DEPARTURES_CLEAN': ['departed', 'clean'],
+                            'DEPARTURES_CLEAN': ['dueout', 'departed', 'clean'],
                             'OCCUPIED': ['occupied'],
                             'VACANT_READY': ['vacant', 'clean', 'inspected'],
                             'VACANT_NOT_READY': ['vacant', 'dirty', 'out_of_order'],
