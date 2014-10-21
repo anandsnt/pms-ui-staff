@@ -339,6 +339,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		// CICO-10101 #5 requirement: when chosing 'vacant' also show 'queued' since its also vacant
+		/**
+		 * CICO-10255
+		 * Jos had reported an issue (Housekeeping - Filter screen when you click "show vacant" the "show queued" is also automatically marked)
+		 * Have removed invocation of these two functions
+		 */
 		$scope.checkQueuedAlso = function() {
 			if ( !!$scope.currentFilters.vacant ) {
 				$scope.currentFilters.queued = true;
@@ -460,8 +465,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// filter by status in filter section, OCCUPANCY_STATUS
 				if ( $scope.isAnyFilterTrue(["vacant","occupied","queued"]) ) {
-					console.log('vacant, occupied, queued');
-					if ( !$scope.currentFilters.queued && room.is_queued ) {
+					/**
+					 *CICO-10255
+					 *Jos had reported an issue (Housekeeping - Filter screen when you click "show vacant" the "show queued" is also automatically marked)
+					 *		 				* Have removed invocation of these two functions
+					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked		 				
+					 */
+					if ( !$scope.currentFilters.queued && !$scope.currentFilters.vacant  && room.is_queued ) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
