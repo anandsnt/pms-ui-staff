@@ -84,7 +84,13 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 		// default open tab
 		// connected default to 'Work'
 		// stanAlone and maintainceStaff default to 'Work'
-		if ( !$rootScope.isStandAlone || ($rootScope.isStandAlone && $rootScope.isMaintenanceStaff) ) {
+		/**
+		 * CICO-8620
+		 * Added condition for the comment in ticket
+		 * When opening the room details screen, default to WORK view for logged in employee $rootScope.isStandAlone && !!roomDetailsData.work_sheet_id
+		 */
+		
+		if ( !$rootScope.isStandAlone || ($rootScope.isStandAlone && $rootScope.isMaintenanceStaff) || ($rootScope.isStandAlone && !!roomDetailsData.work_sheet_id)  ) {
 			$scope.openTab = 'Work';
 		} else {
 			$scope.openTab = 'Guest';
