@@ -23,7 +23,7 @@
 			<tr ng-show="calendarData.data.length > 1">
 				<td class="first-row"><span class="bolder">All Rates</span><span>&nbsp;</span></td>
 
-				<td ng-repeat="date in calendarData.dates" class="cell" >
+				<td ng-repeat="date in calendarData.dates track by date" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
 							<div>
@@ -49,13 +49,13 @@
 						</span>
 					</div>
 				</td>
-				<td ng-repeat="date in calendarData.dates" class="cell" >
+				<td ng-repeat="date in calendarData.dates track by date" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in rate[date] track by restriction.id" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
+										<span ng-repeat="restriction in rate[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
 									</div>
 								</div>
 							</div>

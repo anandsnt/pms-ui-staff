@@ -11,10 +11,8 @@
     }
 
     table.rate-calendar{
-       height:200px;
-       table-layout:fixed; 
-       
-       
+       height: auto; //200px;
+       table-layout:fixed;   
     }
 
     span.left{
@@ -95,32 +93,33 @@
     }
 
     .entry.radio-check{
-      //CICO-8633 margin : 0 0 20px 0; 
 
       label{
-       height : 40px;
-       //padding-top: 10px;                                                                                                                                                                                          
-       padding-left: 40px;    
+       height: 40px;                                                                                                                                                          padding-left: 40px; 
+
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gUQBikteQ2wPAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAADCSURBVDjLrZWxDYMwEADP3zFDyjAAA2QHhBR6OmZKRx8kxA4egAFCyQxp0zyRgYCS+K+zLZ/e9v/bscPzdjoDBZADmU4PQA90ST2Nn/a5HVEDXDjGA9Va7FayK3DnN8qkntqN8E/ZRuqCYz6II03qaRQdNMTTADij6N5RiqaGFYVonlmRS5C0FmSCMaLlZMUgWptW9AJ0hsJOtLi9gcyHlVIZCKv5UdAoywhZObcx8/a1yENdSL+8U68dpj3s2LFfwAvhP0O7QfDr4AAAAABJRU5ErkJggg==);
        background-repeat : no-repeat;
        background-position: 160px 10px;
+
        span{
          left:10px;
          top:10px;
        }
-     }     
+     } 
+
      label.target{
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gUQBjQAw76AVQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAEMSURBVDjLY2AgAmzZ0Jm1ZUNXBjFqWYhR9JjbsJ3p/99/DAwMMwipZSKkYPPG7sLXHKp8Lzk1BLZs7C6g2MAnXPoNMPZTTp16igzcvLG7+DWHKh+MT4wrmQi4DsNFhFzJhNt1PSWvOVR50cUJuZIJt+v06nDJ4XMlE46wK8PmOmJcyYQj7GoIxSYuVzJhCbtyfK4j5EomLK6rZiASYHMlE5rrKl9zqPASayA2VzKhua6SgUSA7komcl2Hy5VMSK6rYiATILuSiYGBgWHTxt6q1xwqPOQaiOxKJgYGBoanXHqVDBQCmCuZN2/sqbnLa+NBqYFfWUU4igNkPrK85FDLYf/7+T8DFcArduViAN1taQYD3fsaAAAAAElFTkSuQmCC);
      }
    }
  }
+
  #update{
   width:100%;
 }
 
 .occgraph-outer{
 /*CICO-8863*/
-  left: 265px; //240px;
+  left: 265px; 
   clear:both;
 } 
 .topbar {
@@ -129,10 +128,12 @@
   width: 100%;
   background: #FFFFFF;
   border: 1px solid #FCFCFC;
+
   ul {
     float: left;
     margin-left: 40px;
     height: 100%;
+
     li { 
         display: inline-block;
         float: left;
@@ -141,6 +142,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
         h6 {
           color: #9D9D9D;
           min-width: 200px;
@@ -148,19 +150,23 @@
           margin-top: 7px;
           font-size: 12px;
         }
+
         span{
           text-transform: uppercase;
           font-size:14px;
         }
+
         .button {
           float:right !important;
         }
+
         .back-button {
           display: block;
           line-height: normal;
           margin-top: 14px;
         }
       } 
+
       li:not(.ng-hide) + li:not(.ng-hide)::before {
         content: "|";
         color: #DDDDDD;
@@ -170,6 +176,7 @@
         margin: 0 15px;
       }
     }
+
     .display-mode {
       float: right;
       div{
@@ -237,36 +244,42 @@
 .content {
   clear:both;
   margin-top: 40px;
+
   .left-menu{
     width: 22%;
     display: table-cell;
 
   }
+
   .filter-options {
     display:block;
-    width: 265px; /*230px;*/
+    width: 265px; 
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
     height:100%;
+
     hr{border:1px solid rgba(0, 0, 0, 0.1);  margin: 20px 0;}
     hr.half-left { width:25%; height:1px; margin:10px 2px 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
     hr.half-right{ width:25%; height:1px; margin:10px 25px 0 0; float:right; border:1px solid rgba(0, 0, 0, 0.1)}
+
     .rates-box{ 
       margin: 10px 0 10px;
       width:100%;
+
       .rate-data{
         width:80% !important;
         float:left;
-        padding: 4px 0 4px 4px; /*4px 0*/
-        /*text-indent: 10px;*/
+        padding: 4px 0 4px 4px; 
       }
+
       .delete_small{
         width:15%;
         float:right;
         background-position: 7px -689px !important;
       }
     }
+
     #rmDateRange::-webkit-input-placeholder, 
     #rmDateRange::-moz-placeholder
     {
@@ -293,9 +306,10 @@
     .cal-cell{
       text-align:center; 
       /*CICO-8633*/
-      vertical-align: top; //middle;
+      vertical-align: top; 
       line-height: 20px;
     }
+
     .iScrollHorizontalScrollbar {
       top: auto !important;
     }
@@ -306,6 +320,7 @@
     width: 100%;
     overflow: hidden;
     text-align: center;
+
     & > span {
       background-image: url(/assets/rate-manager/ratemanager-not-configed.png);
       background-repeat: no-repeat;
@@ -314,6 +329,7 @@
       display: table;
       height: 100%;
       width: 100%;
+
       & > span {
         padding-top: 15%;
         display: table-cell;
@@ -321,6 +337,7 @@
         color: #9D9D9D;
         font-size: 30px;
         font-weight: bold;
+
         & > span {
           font-weight: 100;
           font-size: 20px;
@@ -344,38 +361,32 @@
     &.last{
       /*CICO-8633*/
       .cell-content{
-         //border-bottom : 10px solid rgba(0,0,0, 0.05); //#e8e8e8;
-
-        &.exp{
-           border-bottom : 10px solid rgba(0,0,0, 0.05); //#d8d8d8;
-        } 
+        border-bottom : 6px solid rgba(0,0,0, 0.05); 
       }
     }
     .first-row {
       text-align: right;
       padding: 0 20px;
       /*CICO-8633*/
-      vertical-align: middle; //text-top;
-      padding-top: 0px; //10px;
-      &.actions {
-        //padding-top: 10px;
-      }
+      vertical-align: middle; 
+      padding-top: 0px; 
+      
       img {
         cursor: pointer;
         width: 12px;
         height: 12px;        
       }
+
       .button {
         color: #fcfcfc;
         padding: 0 5px;
         margin-left: 10px;
-        //margin-top: -20px;
         vertical-align: top;
         text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
-
         border-radius: 1px;
         font-weight: normal;
         font-size: 14px;
+
         &.open {
           background-color: #d1d1d1;
           border-radius: 3px;
@@ -389,6 +400,7 @@
         float: right;
         text-transform: uppercase;
         font-weight: normal;
+
         &:first-child {
           width: 85%;
           float: left;
@@ -426,10 +438,6 @@
     border-bottom: 3px solid rgba(0,0,0, 0.05);
     border-left: 6px solid rgba(0,0,0, 0.05);
     border-right: 6px solid rgba(0,0,0,0.05);
-
-    &.exp{
-        background-color: #d2d2d2;
-    }
 
     .cell-content {
         cursor: pointer;
@@ -477,14 +485,8 @@
       height: auto;
       line-height: normal;
 
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px;
-
       & > div {
-
         & > div {
-
           cursor: pointer;
           padding: 0;
 
@@ -501,7 +503,6 @@
           }
 
           & > div {
-
             height: 30px;
             text-transform: uppercase;
             font-size: 12px;
@@ -538,7 +539,7 @@
           width: 25px;
           height: 25px;
           line-height: normal;
-          padding-left: 10px;
+          padding: 5px 0 0 10px;
           font-weight: lighter;
           color: #333;       
       }
