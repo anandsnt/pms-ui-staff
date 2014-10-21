@@ -6,10 +6,12 @@
 			<span class="count">
 				({{ totalCount }})
 			</span>
-			<a id="add-new-button" class="action add" ng-click="addNew()">{{ 'ADD_NEW' | translate }}</a>
+			<a id="add-new-button" ng-hide="isConnectedToPMS" class="action add" ng-click="addNew()">{{ 'ADD_NEW' | translate }}</a>
+			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
 			<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
 

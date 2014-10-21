@@ -12,11 +12,12 @@ $scope.nextBusinessDate = tzIndependentDate($rootScope.businessDate);
 $scope.nextBusinessDate.setDate($scope.nextBusinessDate.getDate()+1);
 $scope.nextBusinessDate = $filter('date')($scope.nextBusinessDate, $rootScope.dateFormat);
 $scope.isTimePastMidnight = true;
-
+$rootScope.isCurrentUserChangingBussinessDate = true;
 /*
  * cancel click action
  */
 $scope.cancelClicked = function(){
+   $rootScope.isCurrentUserChangingBussinessDate = false;
    ngDialog.close();
 };
 /*
@@ -48,7 +49,6 @@ $scope.yesClick = function(){
 	$scope.isTimePastMidnight = true
 }
 
-var Resheil = $scope;
 $scope.continueClicked = function(){
 	
 	$scope.startProcessEnabled = false;
@@ -59,12 +59,9 @@ $scope.continueClicked = function(){
 		$scope.startProcess = false;
 		$scope.errorMessage = data;
 		$scope.startProcessEnabled = true;
-		$rootScope.isCurrentUserChangingBussinessDate = false;
-
 	};
 	var startProcessSuccess = function(data){
 		$rootScope.$broadcast('hideLoader');
-		$rootScope.isCurrentUserChangingBussinessDate = true;
 		$rootScope.isBussinessDateChanging = true;
 		ngDialog.close();
 	}

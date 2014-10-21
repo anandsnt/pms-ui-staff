@@ -29,15 +29,23 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'PRE_CHECKIN': 'PRE_CHECKIN'
     };
 
-    if ($stateParams.type in headingDict) {
-      heading = headingDict[$stateParams.type];
+    //Special case: Search by swipe in back navigation. We have to display the card number as well.
+    //So we store the title as sucn in $vault
+    if($stateParams.type == "BY_SWIPE"){
+      heading = $vault.get('title');
     } else {
-      heading = headingDict['NORMAL_SEARCH'];
-    }
+      if ($stateParams.type in headingDict) {
+        heading = headingDict[$stateParams.type];
+      } else {
+        heading = headingDict['NORMAL_SEARCH'];
+      }
 
+    }
 
     // set up a back button
     if ($stateParams.type != '' && $stateParams.type != null) {
+      console.log("in here");
+      console.log($stateParams.type);
       $rootScope.setPrevState = {
         title: $filter('translate')('DASHBOARD'),
         // name: 'rover.dashboard',
@@ -53,7 +61,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
         useCache: true
       });
     }
-
+    console.log($stateParams.type);
     // saving/reseting search params to $vault
     $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
 
@@ -82,13 +90,20 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
-
+    var totalNgIncludeRequested = 0;
     //click function on search area, mainly for closing the drawer
-    $scope.clickedOnSearchArea = function($event) {
+    $scope.clickedOnSearchArea = function($event) {      
       $scope.$emit("closeDrawer");
     };
-
+    $scope.$on("$includeContentRequested", function(event){
+      totalNgIncludeRequested++;
+      $scope.$emit('showLoader');
+    });    
     $scope.$on("$viewContentLoaded", function(event) {
+      totalNgIncludeRequested--;
+      if(totalNgIncludeRequested == 0){
+        $scope.$emit('hideLoader');
+      }
       setTimeout(function() {
         $scope.$apply(function() {
           //we are showing the search results area
