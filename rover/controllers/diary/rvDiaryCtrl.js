@@ -218,6 +218,39 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    	}
 		    }
 	    };
+	    
+	    $scope.editSave = function() {
+	    	var props = $scope.gridProps,
+	    		row_data = copyRoom(props.currentResizeItemRow),
+	    		row_item_data = copyReservation(props.currentResizeItem);
+
+	    	row_item_data.start_time = new Date(row_item_data.left / props.display.px_per_ms + props.display.x_origin);
+	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + props.display.x_origin); 
+
+	    	updateReservation(row_data, row_item_data);
+
+	    	props.edit = _.extend({}, props.edit);
+	    	props.edit.active = false;
+	    	props.currentResizeItem = undefined;
+	    	props.currentResizeItemRow = undefined;
+
+	    	$scope.renderGrid();
+	    };
+
+	    $scope.editCancel = function() {
+	    	var props = $scope.gridProps;
+	    	
+	    	reservationRoomTransfer(props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
+
+	    	props.edit = _.extend({}, $scope.gridProps.edit);
+	    	props.edit.active = false;
+	    	props.edit.originalItem = undefined;
+	    	props.edit.originalRowItem = undefined;
+	    	props.currentResizeItem = undefined;
+	    	props.currentResizeItemRow = undefined;
+
+	    	$scope.renderGrid();
+	    };
 	    /*_________________________________________________________*/
 		/*END PROTOTYPE EVENT HOOKS -- */
 		/*_________________________________________________________*/
@@ -320,39 +353,6 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	return _.map(vals, function(val) {
 	    		return _.random(0, len) * val;
 	    	});
-	    };
-
-	    $scope.editSave = function() {
-	    	var props = $scope.gridProps,
-	    		row_data = copyRoom(props.currentResizeItemRow),
-	    		row_item_data = copyReservation(props.currentResizeItem);
-
-	    	row_item_data.start_time = new Date(row_item_data.left / props.display.px_per_ms + props.display.x_origin);
-	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + props.display.x_origin); 
-
-	    	updateReservation(row_data, row_item_data);
-
-	    	props.edit = _.extend({}, props.edit);
-	    	props.edit.active = false;
-	    	props.currentResizeItem = undefined;
-	    	props.currentResizeItemRow = undefined;
-
-	    	$scope.renderGrid();
-	    };
-
-	    $scope.editCancel = function() {
-	    	var props = $scope.gridProps;
-	    	
-	    	reservationRoomTransfer(props.edit.originalRowItem, props.currentResizeItemRow, props.edit.originalItem);
-
-	    	props.edit = _.extend({}, $scope.gridProps.edit);
-	    	props.edit.active = false;
-	    	props.edit.originalItem = undefined;
-	    	props.edit.originalRowItem = undefined;
-	    	props.currentResizeItem = undefined;
-	    	props.currentResizeItemRow = undefined;
-
-	    	$scope.renderGrid();
 	    };
 	})();
 
