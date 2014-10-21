@@ -52,38 +52,6 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 		$scope.roomDetails = roomDetailsData;
 
-		/** Method for getting the guest status icon class
-		  @return the guest status icon class  
-		*/
-		var getGuestStatusMapped = function(reservationStatus, isLateCheckout){
-		    var viewStatus = "";
-
-		    //If the guest is opted for late checkout
-		    if( isLateCheckout == "true" ){
-		        return "late-check-out";
-		    }
-
-		    //Determine the guest status class based on the reservation status
-		    if( "RESERVED" == reservationStatus) {
-		        viewStatus = "arrival";
-		    }else if( "CHECKING_IN" == reservationStatus ) {
-		        viewStatus = "check-in";
-		    }else if( "CHECKEDIN" == reservationStatus ) {
-		        viewStatus = "inhouse";
-		    }else if( "CHECKEDOUT" == reservationStatus ) {
-		        viewStatus = "departed";
-		    }else if( "CHECKING_OUT" == reservationStatus ) {
-		        viewStatus = "check-out";
-		    }else if( "CANCELED" == reservationStatus ) {
-		        viewStatus = "cancel";
-		    }else if( ("NOSHOW" == reservationStatus) || ("NOSHOW_CURRENT" == reservationStatus) ) {
-		        viewStatus = "no-show";
-		    }
-
-		    return viewStatus;
-		};
-		
-		$scope.guestViewStatus = getGuestStatusMapped( $scope.roomDetails.reservation_status, $scope.roomDetails.is_late_checkout );
 
 		$scope.getHeaderColor = function() {
 			// if room is out
@@ -114,17 +82,35 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 
 
 		// default open tab
-		if ( $rootScope.isStandAlone ) {
-			$scope.openTab = 'Guest';
-		} else {
+		// connected default to 'Work'
+		// stanAlone and maintainceStaff default to 'Work'
+		/**
+		 * CICO-8620
+		 * Added condition for the comment in ticket
+		 * When opening the room details screen, default to WORK view for logged in employee $rootScope.isStandAlone && !!roomDetailsData.work_sheet_id
+		 */
+		
+		if ( !$rootScope.isStandAlone || ($rootScope.isStandAlone && $rootScope.isMaintenanceStaff) || ($rootScope.isStandAlone && !!roomDetailsData.work_sheet_id)  ) {
 			$scope.openTab = 'Work';
+		} else {
+			$scope.openTab = 'Guest';
 		}
+
 
 		// methods to switch tab
 		$scope.tabSwitch = function(tab) {
 			if ( !!tab ) {
 				$scope.openTab = tab;
 			};
+		};
+
+		$scope.updateRoomDetails = function(prop, value) {
+			if ( $scope.roomDetails.hasOwnProperty(prop) ) {
+				$scope.roomDetails[prop] = value;
+				$scope.getHeaderColor();
+			} else {
+				console.info( 'RVHkRoomDetailsCtrl: No prop "' + prop + '" found on $scope.roomDetails' );
+			}
 		};
 	}
 ]);
