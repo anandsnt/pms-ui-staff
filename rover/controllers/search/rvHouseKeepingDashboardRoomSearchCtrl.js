@@ -43,8 +43,8 @@ sntRover.controller('rvHouseKeepingDashboardRoomSearchCtrl', [
 
 			// smaller part consisit of enogh rooms
 			// that will fill in the screen
-			smallPart = smallPart.slice( 0, 13 );
-			restPart  = restPart.slice( 13 );
+			smallPart = smallPart.slice( 0, 20 );
+			restPart  = restPart.slice( 20 );
 
 			// first load the small part
 			$scope.rooms = smallPart;
