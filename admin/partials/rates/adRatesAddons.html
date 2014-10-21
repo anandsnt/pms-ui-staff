@@ -11,7 +11,7 @@
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
+			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 			<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
 
 			<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
