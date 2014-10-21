@@ -203,13 +203,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			}
 		});
 
-		// $stateProvider.state('admin.checkout', {
-		// 	templateUrl: '/assets/partials/checkout/adCheckout.html',
-		// 	controller: 'ADCheckoutCtrl',
-		// 	url : '/checkout'
-		// });
-
 		$stateProvider.state('admin.checkout', {
+			templateUrl: '/assets/partials/checkout/adCheckout.html',
+			controller: 'ADCheckoutCtrl',
+			url : '/checkout'
+		});
+
+		$stateProvider.state('admin.cmscomponentSettings', {
 			templateUrl: '/assets/partials/contentManagement/adContentManagement.html',
 			controller: 'ADContentManagementCtrl',
 			url : '/contentManagement'

@@ -29,14 +29,14 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.sections.push($scope.data[i]);
    			}else if($scope.data[i].type == 'CATEGORY'){
    				$scope.categories.push($scope.data[i]);
-   			}else if($scope.data[i].type == 'ITEM'){
+   			}else if($scope.data[i].type == 'PAGE'){
    				$scope.items.push($scope.data[i]);
    			}
    		}
    }
    $scope.setSections =function(){
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-		    $scope.tableParams = new ngTableParams({
+		    $scope.sectionParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.sections.length,    // count per page - Need to change when on pagination implemntation
 		        sorting: { name: 'asc'     // initial sorting 
@@ -57,7 +57,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    }
    $scope.setCategories =function(){
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-		    $scope.tableParams = new ngTableParams({
+		    $scope.categoryParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.categories.length,    // count per page - Need to change when on pagination implemntation
 		        sorting: { name: 'asc'     // initial sorting 
@@ -67,8 +67,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
-		                                $filter('orderBy')($scope.sections, params.orderBy()) :
-		                                $scope.sections;
+		                                $filter('orderBy')($scope.categories, params.orderBy()) :
+		                                $scope.categories;
 		                              
 		            $scope.orderedCategories =  orderedData;
 		                                 
@@ -78,7 +78,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    }
    $scope.setItems =function(){
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-		    $scope.tableParams = new ngTableParams({
+		    $scope.itemParams = new ngTableParams({
 		       page: 1,            // show first page
 		       	count: $scope.items.length,    // count per page - Need to change when on pagination implemntation
 		        sorting: { name: 'asc'     // initial sorting 

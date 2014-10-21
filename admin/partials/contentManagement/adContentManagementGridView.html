@@ -1,4 +1,4 @@
-
+    <section class="content-scroll" ng-controller="ADContentManagementGridviewCtrl" >
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 
@@ -63,7 +63,7 @@
             </div>
 
             <!-- Grid content -->
-            <table class="grid datatable ng-table" ng-show="selectedView == 'section'" ng-table="tableParams">
+            <table class="grid datatable ng-table" ng-show="selectedView == 'section'" ng-table="sectionParams">
                 
                 <!-- Section table HTML -->
                 <thead>                 
@@ -126,7 +126,7 @@
              </table> 
 
              <!-- Categories table HTML -->
-             <table class="grid datatable ng-table" ng-show="selectedView == 'category'" ng-table="tableParams">
+             <table class="grid datatable ng-table" ng-show="selectedView == 'category'" ng-table="categoryParams">
                 
                 
                 <thead>                 
@@ -190,7 +190,7 @@
              </table>
 
              <!-- Items table HTML -->
-             <table class="grid datatable ng-table" ng-show="selectedView == 'item'" ng-table="tableParams">               
+             <table class="grid datatable ng-table" ng-show="selectedView == 'item'" ng-table="itemParams">               
                 
                 <thead>                 
 
@@ -324,5 +324,6 @@
                 </tbody> -->
             
         </div>
+    </section>
        
 <!-- </section> -->
