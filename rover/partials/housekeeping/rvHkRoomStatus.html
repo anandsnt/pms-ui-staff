@@ -199,7 +199,7 @@
                 <div class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.vacant}"></span>
-                        <input name="room-filters" type="checkbox" ng-model="currentFilters.vacant" ng-change="checkQueuedAlso()">
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.vacant">
                         <label translate>SHOW_VACANT</label>
                     </label>
                 </div>
@@ -213,7 +213,7 @@
                 <div class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.queued}"></span>
-                        <input name="room-filters" type="checkbox" ng-model="currentFilters.queued" ng-change="keepCheckedIfVacant()">
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.queued">
                         <label translate>SHOW_QUEUED</label>
                     </label>
                 </div>
