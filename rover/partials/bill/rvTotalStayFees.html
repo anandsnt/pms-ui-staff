@@ -38,10 +38,8 @@
 
 	<!-- Show Signature button -->
 	<div class="signature" ng-show="reservationBillData.signature_details.is_signed" ng-click="showSignature()">
-		<a class="toggle signature-toggle has-arrow"> 
+		<a class="toggle signature-toggle has-arrow" ng-class="{'active':showSignedSignature }">
 			<span class="icons icon-signature"></span> 
-			<span translate>SIGNED</span> 
-			<em class="label"> {{reservationBillData.signature_details.signed_date | date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> 
 		</a>
 	</div>
 	

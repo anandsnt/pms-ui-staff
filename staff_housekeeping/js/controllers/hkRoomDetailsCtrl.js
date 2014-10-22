@@ -19,7 +19,6 @@ hkRover.controller('HKRoomDetailsCtrl',
 
 	$scope.initColorCodes();
 	$scope.guestViewStatus = "";
-	$scope.$emit('hideNavMenu');
 
 	$scope.data = roomDetailsData;
 
