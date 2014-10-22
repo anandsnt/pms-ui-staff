@@ -5,7 +5,8 @@ sntRover.controller('RVHKRoomTabCtrl', [
 	'$stateParams',
 	'RVHkRoomDetailsSrv',
 	'$filter',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter) {
+	'RVHkRoomStatusSrv',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, $filter, RVHkRoomStatusSrv) {
 
 		BaseCtrl.call(this, $scope);
 

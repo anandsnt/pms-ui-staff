@@ -111,6 +111,7 @@ sntRover.controller('RVHkRoomDetailsCtrl', [
 			} else {
 				console.info( 'RVHkRoomDetailsCtrl: No prop "' + prop + '" found on $scope.roomDetails' );
 			}
+			RVHkRoomStatusSrv.setRoomStatus($scope.roomDetails.id, prop,value);
 		};
 	}
 ]);
