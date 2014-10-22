@@ -35,8 +35,8 @@
             </select>
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
-        <div class="select" ng-hide="!topFilter.byWorkType">
-            <select id="employees" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
+        <div class="select">
+            <select id="employees"  ng-disabled="!topFilter.byWorkType" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
                 <option value="">All Employees</option>
             </select>
         </div>
