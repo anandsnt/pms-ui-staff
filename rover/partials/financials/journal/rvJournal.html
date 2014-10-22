@@ -66,22 +66,23 @@
                 </select>
             </div>
         </div>
-        <div class="entry" ng-click = "popupCalendar()">
+        
+        <div class="entry" ng-click="clickedFromDate()">
             <label id="revenue-date-label" for="revenue-date">From Date</label>
             <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{fromDate}}" readonly />
-                <strong id="revenue-date-day" class="day">{{fromDate | date:'d'}}</strong>
-                <span id="revenue-date-month" class="month">{{fromDate | date:'MMMM'}}</span>
-                <span id="revenue-date-year" class="year">{{fromDate | date:'y'}}</span>
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.fromDate}}" readonly />
+                <strong id="revenue-date-day" class="day">{{data.fromDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.fromDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.fromDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click = "popupCalendar()">
+        <div class="entry" ng-click="clickedToDate()">
             <label id="revenue-date-label" for="revenue-date">To Date</label>
             <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{toDate}}" readonly />
-                <strong id="revenue-date-day" class="day">{{toDate | date:'d'}}</strong>
-                <span id="revenue-date-month" class="month">{{toDate | date:'MMMM'}}</span>
-                <span id="revenue-date-year" class="year">{{toDate | date:'y'}}</span>
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate}}" readonly />
+                <strong id="revenue-date-day" class="day">{{data.toDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.toDate | date:'y'}}</span>
             </div>
         </div>
         <ul id="journal-options" class="display">
@@ -94,7 +95,7 @@
         </ul>
     </form>
 
-    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open':isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open':isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
         <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
     </form> 
 

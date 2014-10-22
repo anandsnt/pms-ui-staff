@@ -1,19 +1,20 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope',	function($scope,$filter,$stateParams, ngDialog, $rootScope) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv',	function($scope,$filter,$stateParams, ngDialog, $rootScope, RVJournalSrv) {
 		
 	BaseCtrl.call(this, $scope);	
-	// Setting up the screen heading.
+	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
+	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 	$scope.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data = {};
-	$scope.fromDate = $rootScope.businessDate;
-    $scope.toDate 	= $rootScope.businessDate;
+	$scope.data.fromDate = $rootScope.businessDate;
+    $scope.data.toDate 	= $rootScope.businessDate;
     $scope.isActiveRevenueFilter = false;
 
 	$scope.isDrawerOpened = false;
 	var resizableMinHeight = 0;
 	var resizableMaxHeight = 90;
 	$scope.eventTimestamp ='';
-	$scope.printBoxHeight =	resizableMinHeight;
+	$scope.data.printBoxHeight =	resizableMinHeight;
 	// Drawer resize options.
 	$scope.resizableOptions = {
 		minHeight: resizableMinHeight,
@@ -23,11 +24,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 			var height = $(this).height();
 			if (height > 5){
 				$scope.isDrawerOpened = true;
-				$scope.printBoxHeight = height;
+				$scope.data.printBoxHeight = height;
 			}
 			else if(height < 5){
 				$scope.isDrawerOpened = false;
-				$scope.printBoxHeight = 0;
+				$scope.data.printBoxHeight = 0;
 			}
 		},
 		stop: function(event, ui) {
@@ -45,28 +46,36 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 					return;
 				}
 			}
-			if($scope.printBoxHeight == resizableMinHeight || $scope.printBoxHeight == resizableMaxHeight) {
+			if($scope.data.printBoxHeight == resizableMinHeight || $scope.data.printBoxHeight == resizableMaxHeight) {
 				if ($scope.isDrawerOpened) {
-					$scope.printBoxHeight = resizableMinHeight;
+					$scope.data.printBoxHeight = resizableMinHeight;
 					$scope.isDrawerOpened = false;
 				}
 				else if(!$scope.isDrawerOpened) {
-					$scope.printBoxHeight = resizableMaxHeight;
+					$scope.data.printBoxHeight = resizableMaxHeight;
 					$scope.isDrawerOpened = true;
 				}
 			}
 			else{
 				// mid way click : close guest card
-				$scope.printBoxHeight = resizableMinHeight;
+				$scope.data.printBoxHeight = resizableMinHeight;
 				$scope.isDrawerOpened = false;
 			}
 		}
 	};
+	// To toggle revenue filter.
 	$scope.clickedRevenueFilter = function(){
 		$scope.isActiveRevenueFilter = !$scope.isActiveRevenueFilter;
 	};
+	$scope.clickedFromDate = function(){
+		$scope.popupCalendar('FROM');
+	};
+	$scope.clickedToDate = function(){
+		$scope.popupCalendar('TO');
+	};
 	// Calendar popup.
-	$scope.popupCalendar = function() {
+	$scope.popupCalendar = function(clickedOn) {
+		$scope.clickedOn = clickedOn;
       	ngDialog.open({
 	        template: '/assets/partials/financials/journal/rvJournalCalendarPopup.html',
 	        controller: 'RVJournalDatePickerController',

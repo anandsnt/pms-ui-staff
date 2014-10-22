@@ -7,6 +7,14 @@ $scope.setUpData = function(){
      maxDate: tzIndependentDate($rootScope.businessDate),
      yearRange: "-100:+0",
       onSelect: function(dateText, inst) {
+      	
+      	if($scope.clickedOn === 'FROM') $scope.data.fromDate = $scope.date;
+      	if($scope.clickedOn === 'TO') $scope.data.toDate = $scope.date;
+
+      	console.log("$scope.fromDate"+$scope.data.fromDate);
+      	console.log("$scope.toDate"+$scope.data.toDate);
+
+      
         ngDialog.close();
       }
 
