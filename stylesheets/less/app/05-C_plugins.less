@@ -1770,7 +1770,7 @@
           										background-color: transparent;
 											    padding: 0px;
 											    margin: 0px;
-											    width: 100%; 
+											    width: 100%; 		    
 											    box-shadow: none;
 											}
 
@@ -1799,17 +1799,19 @@
 									> .entry {
 										input {
 											height: 100%;
+											line-height: 50px;
+											text-align: center;
 										}
 
 										&.move {
 											.icon-mover-right {
-												margin-top: 15px;
+												margin-top: 5px;
 											}
 										}
 
 										&:first-child {
 											width: 110px;
-											line-height: 70px;
+											line-height: 50px;
 										}
 									}
 								}
@@ -1832,7 +1834,9 @@
 									        }
 
 									        > input {					        								            										            
-									            transition: all 0.3s cubic-bezier(0.1, 0.1, 0.25, 0.9) 0s;									  
+									            transition: all 0.3s cubic-bezier(0.1, 0.1, 0.25, 0.9) 0s;							
+									            height: 30px;
+									            line-height: 30px;
 									            font-size: 18px; 
 									            color: #999999;
 									            text-align: center;
