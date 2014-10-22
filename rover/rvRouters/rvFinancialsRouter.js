@@ -10,7 +10,7 @@ angular.module('FinancialsModule', [])
 
     $stateProvider.state('rover.financials.journal', {
         url: '/journal/:id',
-        templateUrl: '/assets/partials/financials/rvJournal.html',
+        templateUrl: '/assets/partials/financials/journal/rvJournal.html',
         controller: 'RVJournalController'
     });
 

@@ -1,0 +1,112 @@
+
+<!-- Content -->
+<section id="journal" class="content" role="main">
+    
+    <!-- Header -->
+    <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
+        <div class="entry" ng-hide="activeTab==2">
+            <label for="revenue-departments">Employee / Department / House</label>
+            <div class="faux-select" ng-class="{'active':isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();">
+                All Departments
+            </div>
+        </div>
+        <div id="revenue-filters" class="faux-select-options" ng-show="isActiveRevenueFilter">
+            <button id="select-filters" type="button" class="button grey">Select</button>  <!-- When user selects a department or an employee replace class "grey" with "green" -->
+            <div class="header">
+                <label class="radio inline">
+                    <input name="revenue-departments" id="revenue-departments" value="all-departments" type="radio" checked />
+                    All Departments
+                </label>
+                <strong class="h5">Employees</strong>
+            </div>
+            <div id="faux-revenue-departments" class="holder scrollable">
+                <div class="wrapper">
+                    <label class="checkbox inline">
+                        <input name="revenue-departments" value="{Department 1}" type="checkbox" />
+                        {Department 1}
+                    </label>
+                    <label class="checkbox inline">
+                        <input name="revenue-departments" value="{Department 2}" type="checkbox" />
+                        {Department 2}
+                    </label>
+                    .. other departments
+                </div>
+            </div>
+            <div id="faux-revenue-employees" class="holder scrollable">
+                <div class="wrapper">
+                    <label class="radio inline">
+                        <input name="revenue-employees" value="{Employee 1}" type="radio" />
+                        {Employee 1}
+                    </label>
+                    <label class="radio inline">
+                        <input name="revenue-employees" value="{Employee 2}" type="radio" />
+                        {Employee 2}
+                    </label>
+                    ...
+                </div>
+            </div>
+        </div>
+        <div class="entry" ng-show="activeTab==2">
+            <label for="select-cashier">Cashier</label>
+            <div class="select">
+                <select name="select-cashier" id="select-cashier">
+                    <option value="">Select cashier</option>
+                    <option selected="" value="Allison Smith">Allison Smith</option>
+                    <option value="Debra Smith">Debra Smith</option>
+                    <option value="Andrea Smith">Andrea Smith</option>
+                    <option value="Jenniffer Smithson">Jenniffer Smithson</option>
+                    <option value="Paula Smit">Paula Smit</option>
+                    <option value="Marcy Johnson">Marcy Johnson</option>
+                    <option value="Amy Williams">Amy Williams</option>
+                    <option value="Katy Brown">Katy Brown</option>
+                    <option value="Marcy Davis">Marcy Davis</option>
+                    <option value="Linda Miller">Linda Miller</option>
+                    <option value="Debra Jones">Debra Jones</option>
+                    <option value="Susan Anderson">Susan Anderson</option>  
+                </select>
+            </div>
+        </div>
+        <div class="entry" ng-click = "popupCalendar()">
+            <label id="revenue-date-label" for="revenue-date">From Date</label>
+            <div class="entry-data">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{fromDate}}" readonly />
+                <strong id="revenue-date-day" class="day">{{fromDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{fromDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{fromDate | date:'y'}}</span>
+            </div>
+        </div>
+        <div class="entry" ng-click = "popupCalendar()">
+            <label id="revenue-date-label" for="revenue-date">To Date</label>
+            <div class="entry-data">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{toDate}}" readonly />
+                <strong id="revenue-date-day" class="day">{{toDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{toDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{toDate | date:'y'}}</span>
+            </div>
+        </div>
+        <ul id="journal-options" class="display">
+            <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activeTab=0">
+                <span class="icons icon-navbar icon-revenue">Revenue</span>{amount}</li>
+            <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
+                <span class="icons icon-navbar icon-payments">Payments</span>{amount}</li>
+            <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activeTab=2">
+                <span class="icons icon-navbar icon-cashier">Cashier</span>{Open or Closed}</li>
+        </ul>
+    </form>
+
+    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open':isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+        <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
+    </form> 
+
+    <!-- Content REVENUE-->
+    <div ng-show="activeTab==0" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>
+
+    <!-- Content PAYMENTS-->
+    <div ng-show="activeTab==1" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></div>
+
+    <!-- Content CASHIER-->
+    <div ng-show="activeTab==2" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></div>
+    
+
+
+</section>
