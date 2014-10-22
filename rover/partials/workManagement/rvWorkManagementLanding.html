@@ -63,22 +63,28 @@
 						<span class="guest-status {{departureClass[room.room_reservation_status]}}">{{room.room_reservation_status}}</span>
 						<!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
 						<span ng-if="room.room_reservation_status == 'Departed'">OUT</span>
-                        <span ng-if="room.room_reservation_status != 'Departed'">{{ room.departure_time }}</span>
+                        <span ng-if="room.room_reservation_status == 'Due out' && !room.departure_time">DUE OUT</span>
+                        <span ng-if="room.room_reservation_status == 'Due out' && !!room.departure_time">{{ room.departure_time }}</span>
+                        <span ng-if="room.room_reservation_status != 'Due out' && room.room_reservation_status != 'Departed' && departureClass[room.room_reservation_status] == 'check-out' && !!room.departure_time">{{ room.departure_time }}</span>                        
 					</div>
 
 					<!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
 					<div class="next {{arrivalClass[room.room_reservation_status]}}">
 						<span class="guest-status {{arrivalClass[room.room_reservation_status]}}">{{room.room_reservation_status}}</span>
 						<!-- Show only if applicable, {arrival-time} can only be time -->
-						<span>{{room.arrival_time}}</span>
+						<span ng-if="room.room_reservation_status == 'Arrived'">IN</span>
+                        <span ng-if="room.room_reservation_status == 'Arrival' && !room.arrival_time">ARRIVAL</span>
+                        <span ng-if="room.room_reservation_status == 'Arrival' && !!room.arrival_time">{{ room.arrival_time }}</span>
+                        <span ng-if="room.room_reservation_status != 'Arrived' && room.room_reservation_status != 'Arrival' && arrivalClass[room.room_reservation_status] == 'check-in' && !!room.arrival_time">{{ room.arrival_time }}</span>                        
+
 					</div>
 				</div>
 
 				<!-- Show if room is assigned or ooo/oos -->
 				<div class="additional-info" ng-if="room.assignee_maid || room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
 					<!-- Show only if room is assigned -->
-					<span class="assigned">{{room.assignee_maid}}</span>
-                    <span ng-if="!room.assignee_maid" class="unassigned">Unassigned</span>
+					<span class="assigned">{{room.assignee_maid.name}}</span>
+                    <span ng-if="!room.assignee_maid.id" class="unassigned">Unassigned</span>
 					<!-- Show only if room is not in service -->
 					<span class="service-status" ng-if="room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
                         <span ng-if="room.hk_status.value == 'OS'" class="service-status" translate>OS</span>
@@ -115,7 +121,7 @@
         <div class="dashboard-block data">
             <ul>
                 <li>{{'DEP_TO_CLEAN' | translate}}<span class="red">{{workStats.departures.clean}}</span></li>
-                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="red">{{workStats.departures.total_hours}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="red">{{ workStats.departures.total_hours}}</span></li>
                 <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="red">{{workStats.departures.total_maids_required}}</span></li>
                 <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="red">{{workStats.departures.total_rooms_assigned}}</span></li>
                 <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="red">{{workStats.departures.total_rooms_completed}}</span></li>
@@ -124,7 +130,7 @@
         <div class="dashboard-block data">
             <ul>
                 <li>Stayovers to clean<span class="orange">{{workStats.stayovers.clean}}</span></li>
-                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="orange">{{workStats.stayovers.total_hours}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="orange">{{ workStats.stayovers.total_hours}}</span></li>
                 <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="orange">{{workStats.stayovers.total_maids_required}}</span></li>
                 <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_assigned}}</span></li>
                 <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_completed}}</span></li>

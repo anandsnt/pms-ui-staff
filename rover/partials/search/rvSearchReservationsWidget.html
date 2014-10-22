@@ -27,7 +27,7 @@
 						</figure>
 						<div class="data">
 							<h2 ng-class="{'grey' : row.is_accompanying_guest=='1'}">
-								<span class="no-margin-right" ng-bind-html="escapeNull(row.lastname)|highlight:textInQueryBox:false"></span>,
+                                <span class="no-margin-right" ng-bind-html="escapeNull(row.lastname)|highlight:textInQueryBox:false"></span>,
 								<span ng-bind-html="escapeNull(row.firstname)|highlight:textInQueryBox:false"></span>
 							</h2>
 							<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>

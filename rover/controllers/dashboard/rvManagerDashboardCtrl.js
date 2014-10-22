@@ -94,5 +94,8 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope', func
    setTimeout(function(){
       $scope.refreshScroller('dashboard_scroller');
    }, 500);
+   
+
+
 
 }]);
