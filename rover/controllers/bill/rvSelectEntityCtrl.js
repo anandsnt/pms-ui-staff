@@ -1,4 +1,4 @@
-sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv){
+sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'ngDialog','RVCompanyCardSearchSrv','RVSearchSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, ngDialog, RVCompanyCardSearchSrv, RVSearchSrv){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.textInQueryBox = "";
@@ -17,7 +17,8 @@ sntRover.controller('rvSelectEntityCtrl',['$scope','$rootScope','$filter','RVGue
                 $scope.refreshScroller('entities'); 
                 }, 
             500);
-  	/**
+
+    /**
   	* function to perform filtering/request data from service in change event of query box
   	*/
 	$scope.queryEntered = function(){

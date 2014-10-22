@@ -1,9 +1,6 @@
 <!-- contentarea starts here-->
 
-<div class="jumbotron" id="check-in-out">
-
-
-
+<div class="jumbotron" id="checkin">
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
 			<div class="row headerrow">
@@ -12,13 +9,13 @@
 		</div>
 
 
-	<!--	 show posting message -->
+	<!--show posting message -->
 		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 			<p class="msg-head">Your request is being processed.</p>
 			<p class="msg-body">This may take a few seconds..... please wait!</p>
 		</div>
 
-	<!--	show error message -->
+	<!--show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 		<p class="msg-head">Our apologies, something went wrong, please complete your check-in at our front desk.</p>
@@ -52,7 +49,7 @@
 				<div class="row">
 					<em class="labelText">DEPARTURE DATE</em>
 					<span class="date-picker" ng-click="showCalender()" >
-					<input type="text " class = "col-xs-12 textBox" placeholder="{{dateFormatPlaceholder}}"  ng-model="departureDate" readonly/> 
+					<input type="text " class = "col-xs-12 textBox" placeholder="MM/DD/YYY	"  ng-model="departureDate" readonly/> 
 					<img src="/assets/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
 				</div>
 
@@ -75,7 +72,7 @@
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12 date-picker-header">
 	      <div class="col-xs-2 date-picker-back" ng-click = "closeCalender()">
-	         <img src="/assets/img/back_icon.png " width="25" height="20" alt=""/>
+	         <img src="/assets/img/Nikko/back_icon.png " width="25" height="20" alt=""/>
 	         <div >BACK</div>
 	      </div>
 

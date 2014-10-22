@@ -96,7 +96,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 						$scope.$emit('hideLoader');
 					}
 				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
-					"date": $stateParams.date,
+					"date": $stateParams.date || $rootScope.businessDate,
 					"employee_ids": [$scope.singleState.workSheet.user_id],
 					"work_type_id": $scope.singleState.workSheet.work_type_id
 				}, onFetchSuccess, onFetchFailure);
@@ -140,6 +140,14 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			prevState = {
 				title: ('Manage Worksheets'),
 				name: 'rover.workManagement.multiSheet'
+			}
+		} else if (!!parseInt($stateParams.from)) {
+			prevState = {
+				title: ('Room Details'),
+				name: 'rover.housekeeping.roomDetails',
+				param: {
+					id: parseInt($stateParams.from)
+				}
 			}
 		}
 

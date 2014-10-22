@@ -38,16 +38,16 @@
 
 	<!-- Show Signature button -->
 	<div class="signature" ng-show="reservationBillData.signature_details.is_signed" ng-click="showSignature()">
-		<a class="toggle signature-toggle has-arrow"> 
+		<a class="toggle signature-toggle has-arrow" ng-class="{'active':showSignedSignature }">
 			<span class="icons icon-signature"></span> 
-			<span translate>SIGNED</span> 
-			<em class="label"> {{reservationBillData.signature_details.signed_date | date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> 
 		</a>
 	</div>
 	
 	<!-- Credit card -->
 	<div class="block-item item-payment">
 		 <!-- AS PER CICO-4842 keeping cc section hidden for billnumber other than 1 -->
+		
+		<h3 ng-show="billData.credit_card_details.payment_type == 'CC'" style="float:left"><span >{{billData.guest_or_company_name}}</span></h3>
 		<a class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC'" ng-click="showPaymentList()">
 			<figure class="card-logo">
 				<img src="/assets/{{billData.credit_card_details.card_code}}.png" alt="">
@@ -65,15 +65,12 @@
 		    <span ng-show="billData.credit_card_details.is_swiped" class="icons icon-swiped">Credit card swiped</span>
 		</a>
 		<a class="button with-icon green" ng-click='clickedAddUpdateCCButton()' ng-show="billData.credit_card_details.payment_type == 'CC'"> 
-			<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}</span>  
+			<span class="icons icon-wallet"></span>{{ 'UPDATE_CC' | translate }}</span>  
 		</a>
-		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> 
-			<span>{{billData.guest_or_company_name}}</span>
-			<a ng-if="isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
-			<a ng-if="!isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a> 
-		</h3>
-		
-		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type != 'DB' && billData.credit_card_details.payment_type !=''">	   <span>{{billData.credit_card_details.payment_type_description}}</span>
+
+		<h3 ng-show="billData.credit_card_details.payment_type != 'CC' && billData.credit_card_details.payment_type !=''">	
+			<span>{{billData.guest_or_company_name}}</span>   
+			<span>{{billData.credit_card_details.payment_type_description}}</span>
 			<a ng-if="isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD_PAYMENT_TYPE' | translate}}</a>
 			<a ng-if="!isStandAlone" class="add-new-button" ng-click='clickedAddUpdateCCButton()'>+ {{'ADD' | translate}}</a>
 		</h3>
