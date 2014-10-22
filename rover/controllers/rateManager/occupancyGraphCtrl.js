@@ -389,6 +389,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						chart: {
 							type: 'area',
 							className: 'rateMgrOccGraph',
+							backgroundColor: 'rgba(0,0,0,0.05)',
 							width: graphDim.width,
 							height: graphDim.height
 						},
@@ -397,6 +398,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 							tickInterval: null,
 							tickPixelInterval: (graphDim.width - 8 * data.results.length) / data.results.length,
 							tickPosition: 'outside',
+							opposite: true,
 							type: 'datetime',
 							dateTimeLabelFormats: {
 								day: '%b %e'		
@@ -408,14 +410,18 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 								y: -50,
 								style: {
 									class: 'uppercase-label',
-									textAlign: 'center',
-									display: 'block',
-									fontWeight: 'bold',
+									textAlign: 'center',							
 									textTransform: 'uppercase',
 									backgroundColor: '#393c41',
 									color: '#fcfcfc',
-									width: this.tickPixelInterval - 8 + 'px',
-									padding: '0 4px 0 4px'
+									width: ((graphDim.width - 8 * data.results.length) / data.results.length) + 'px',
+									height: '60px',
+									border: '3px solid rgba(0,0,0,0.05)',
+									margin: '0px',
+									fontSize: '16px',
+									fontWeight: '600',
+									borderRadius: '3px',
+									padding: '20px 0px 20px 0'
 								},
 								useHTML: true
 							}
@@ -456,7 +462,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				_.extend($scope.highchartsNG, generateSeries(data));
 
 				$scope.targetData = manipulateTargetData(data);
-				$scope.scroller = new IScroll($scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
+				$scope.scroller = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
 
 				setTimeout(function() {			
 					$scope.$emit('computeColumWidth');	
