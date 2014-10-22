@@ -46,7 +46,7 @@
                         </div>
                     </li>
                     <li ng-repeat="week in targetData track by $id(week)">
-                        <div class="entry" ng-repeat="weekDay in week track by weekDay.date">
+                        <div class="entry" ng-repeat="weekDay in week">
                             <div class="target" ng-class="{'disabled-bg': !weekDay.is_editable}">
                                 <span ng-show="!weekDay.is_editable" >&nbsp;</span>
                                 <span ng-show="weekDay.is_editable" >{{ weekDay.date | date:'dd' }}</span>

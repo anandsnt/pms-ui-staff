@@ -32,7 +32,7 @@
 					placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}"
 					required="yes"></ad-textarea>
 
-				<div class="entry full-width radio-check">
+				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
 						<label>{{'BESTSELLER' | translate}}</label>
@@ -40,7 +40,7 @@
 					</label>
 				</div>
 
-				<div class="entry full-width radio-check">
+				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
 						<label>{{'RATE_ONLY' | translate}}</label>
@@ -48,7 +48,7 @@
 					</label>
 				</div>
 
-				<div class="entry full-width radio-check">
+				<div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_reservation_only }"></span>
 						<label>{{'RESERVATION_ONLY' | translate}}</label>
@@ -60,7 +60,7 @@
 
 
 			<fieldset class="holder right float">
-				<div class="entry has-datepicker margin">
+				<div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'FROM_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
@@ -73,7 +73,7 @@
                 </div>
 
 				
-				<div class="entry has-datepicker margin">
+				<div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'TO_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
@@ -86,7 +86,7 @@
                 </div>
 			
 
-				<div class="entry">
+				<div ng-hide="isConnectedToPMS" class="entry">
 					<div class="entry full-width">
 						<label for="charge-group-id">
 							{{'CHARGE_GROUP' | translate}}
@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="entry">
+				<div ng-hide="isConnectedToPMS" class="entry">
 					<div class="entry full-width">
 						<label for="charge-group-id">
 							{{'CHARGE_CODE' | translate}}
@@ -122,14 +122,14 @@
 						value="singleAddon.amount"
 						name="amount"
 						id="amount"
-						label="{{'AMOUNT' | translate}}"
+						label="{{'AMOUNT' | translate}} [{{currencySymbol}}]"
 						placeholder="Enter the amount"
 						required="yes"></ad-textbox>
 				</div>
-				<div class="entry">
+				<div ng-hide="isConnectedToPMS" class="entry">
 					<div class="entry full-width">
 						<label for="amount-type-id">
-							{{'AMOUNT_TYPE' | translate}}
+							{{'AMOUNT_TYPE' | translate}} 
 							<strong>*</strong>
 						</label>
 						<div class="select">
@@ -141,7 +141,7 @@
 					</div>
 				</div>
 
-				<div class="entry full-width">
+				<div ng-hide="isConnectedToPMS" class="entry full-width">
 					<label for="amount-type-id">
 						{{'POST_TYPE' | translate}}
 						<strong>*</strong>

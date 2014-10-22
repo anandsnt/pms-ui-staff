@@ -1,5 +1,5 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',
-    function ($q, $scope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope','$rootScope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',
+    function ($q, $scope, $rootScope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv) {
     
     $scope.init = function(){
         $scope.showRestrictionDayUpdate = false;
@@ -106,16 +106,16 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.data.child = '';
         $scope.data.single_sign = '+';
         $scope.data.single_extra_amnt = '';
-        $scope.data.single_amnt_diff = '$';
+        $scope.data.single_amnt_diff = $rootScope.currencySymbol;
         $scope.data.double_sign = '+';
         $scope.data.double_extra_amnt = '';
-        $scope.data.double_amnt_diff = '$';
+        $scope.data.double_amnt_diff = $rootScope.currencySymbol;
         $scope.data.extra_adult_sign = '+';
         $scope.data.extra_adult_extra_amnt = '';
-        $scope.data.extra_adult_amnt_diff = '$';
+        $scope.data.extra_adult_amnt_diff = $rootScope.currencySymbol;
         $scope.data.child_sign = '+';
         $scope.data.child_extra_amnt = '';
-        $scope.data.child_amnt_diff = '$';
+        $scope.data.child_amnt_diff = $rootScope.currencySymbol;
 
         //Flag to check if the rate set amounts are configured for the selected date
         $scope.data.hasAmountConfigured = true;
@@ -437,7 +437,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     if($scope.data.single_extra_amnt !== ""){
                         restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
                         
-                        if($scope.data.single_amnt_diff == "$"){
+                        if($scope.data.single_amnt_diff !== "%"){
                             restrictionDetails.single.type = "amount_diff";
                         } else {
                             restrictionDetails.single.type = "percent_diff";
@@ -450,7 +450,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     
                     if($scope.data.double_extra_amnt !== ""){
                         restrictionDetails.double.value = $scope.data.double_sign + $scope.data.double_extra_amnt;
-                        if($scope.data.double_amnt_diff == "$"){
+                        if($scope.data.double_amnt_diff !== "%"){
                             restrictionDetails.double.type = "amount_diff";
                         } else {
                             restrictionDetails.double.type = "percent_diff";
@@ -463,7 +463,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     
                     if($scope.data.extra_adult_extra_amnt !== ""){
                         restrictionDetails.extra_adult.value = $scope.data.extra_adult_sign + $scope.data.extra_adult_extra_amnt;
-                        if($scope.data.extra_adult_amnt_diff == "$"){
+                        if($scope.data.extra_adult_amnt_diff !== "%"){
                             restrictionDetails.extra_adult.type = "amount_diff";
                         } else {
                             restrictionDetails.extra_adult.type = "percent_diff";
@@ -476,7 +476,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     
                     if($scope.data.child_extra_amnt !== ""){
                         restrictionDetails.child.value = $scope.data.child_sign + $scope.data.child_extra_amnt;
-                        if($scope.data.child_amnt_diff == "$"){
+                        if($scope.data.child_amnt_diff !== "%"){
                             restrictionDetails.child.type = "amount_diff";
                         } else {
                             restrictionDetails.child.type = "percent_diff";

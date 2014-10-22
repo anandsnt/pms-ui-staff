@@ -38,10 +38,11 @@
                   <a id="upgrade-room-select" class="button green submit-value hover-hand" ng-click="showMaximumOccupancyDialog($index)">
                   Upgrade for only
                   <sup></sup>
-                  $ {{upgrade.upsell_amount}} per night
+                  {{currencySymbol}} {{upgrade.upsell_amount}} per night
                   </a>
                   <figure class="room-image">
-                     <img src="{{upgrade.room_type_image}}" alt="">
+                     <img ng-src="{{upgrade.room_type_image}}" alt="" ng-if="upgrade.room_type_image !== ''">
+                     <img ng-src="/assets/bedroom-blank.png" alt="" ng-if="upgrade.room_type_image === ''">
                   </figure>
                </li>
                

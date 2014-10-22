@@ -53,13 +53,6 @@
 
     table{
       table-layout:fixed; 
-      /*tr {
-        th:first-child, td.first-row {
-          position: absolute;
-          left: 0px;
-          width: 220px;
-        }
-      }*/
     }
     .iScrollIndicator{
       background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
@@ -162,8 +155,8 @@
 
         .back-button {
           display: block;
-          line-height: normal;
-          margin-top: 14px;
+          line-height: 40px; //normal;
+          margin-top: 5px; //14px;
         }
       } 
 
@@ -243,7 +236,7 @@
 
 .content {
   clear:both;
-  margin-top: 40px;
+  margin-top: 80px; //40px;
 
   .left-menu{
     width: 22%;
@@ -351,6 +344,7 @@
 
 .calendar-wraper {
   position: relative;
+  height: 100%;
 }
 
 .rate-calendar{
@@ -359,7 +353,6 @@
 
   tr {
     &.last{
-      /*CICO-8633*/
       .cell-content{
         border-bottom : 6px solid rgba(0,0,0, 0.05); 
       }
@@ -367,9 +360,7 @@
     .first-row {
       text-align: right;
       padding: 0 20px;
-      /*CICO-8633*/
-      vertical-align: middle; 
-      padding-top: 0px; 
+      vertical-align: middle;  
       
       img {
         cursor: pointer;
@@ -425,11 +416,11 @@
 
   td {
     vertical-align: middle;
-    padding: 0 10px 0 10px;
+    padding: 0 5px 0 5px;
   }
 
   thead tr th:not(:first-child) {
-    padding: 5px 10px 0px 10px;
+    padding: 5px 5px 0px 5px;
   }
 
   .cell-container{
@@ -587,7 +578,7 @@
         margin: 0px;
 
         &:first-child {
-          padding-top: 11px;
+          padding-top: 16px;
         }
 
         &:last-child {
@@ -603,7 +594,10 @@
         right: 6px;
         bottom: 3px;
         z-index: -100;
+        border-radius: 3px;
         background-color: #393c41;
+         -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;   
       }
 
       &:after {
@@ -615,6 +609,7 @@
         right: 0;
         z-index: -120;
         background-color: rgba(0,0,0,0.05);
+       
       }
     }
   }
@@ -630,39 +625,44 @@
 }
 
 .restriction-legends{
-  background-color : #fcfcfc;
-  font-size : 16px;
-  text-transform:uppercase;
-  padding: 10px 40px;
-  overflow: hidden;
+    /*position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 108px;*/
 
-  .restriction-icon{
-    height: 20px;
-    width: 20px;
-    text-indent: 7px;
-    line-height: 20px;
-  }
+    background-color : #fcfcfc;
+    font-size : 16px;
+    text-transform:uppercase;
+    padding: 10px 40px;
+    overflow: hidden;
 
-  span{
-    padding-right: 20px;
-    padding-bottom : 10px;
-        // padding-top : 10px;
-        font-size: 16px; /*14px;*/
+    .restriction-icon{
+        height: 20px;
+        width: 20px;
+        text-indent: 7px;
+        line-height: 20px;
+    }
+
+    span{
+        padding-right: 20px;
+        padding-bottom : 10px;  
+        font-size: 16px; 
         font-weight: normal;
         float:left;
-      }
+    }
 
-      #update{
+    #update{
         width:100%;
-      }
+    }
 
-      .occgraph-outer{
+    .occgraph-outer{
         position: absolute;
         left: 550px;
         top: 88px;
         clear:both;
-      }
     }
+}
 
 
     .settarget {

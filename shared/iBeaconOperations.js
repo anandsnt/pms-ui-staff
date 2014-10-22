@@ -20,19 +20,15 @@ var iBeaconOperation = function(){
 		var arguments = options["arguments"] ? options["arguments"] : [];
 		
 		if(successCallBack == null){
-			console.log('Card operation requires "successCallBack" parameter as function');
 			return false;
 		}
 		else if(failureCallBack == null){
-			console.log('Card operation requires "failureCallBack" parameter as function');
 			return false;			
 		}
 		else if(service == null){
-			console.log('Card operation requires service name as "service" parameter');
 			return false;
 		}
 		else if(action == null){
-			console.log('Card operation requires action name as "action" parameter');
 			return false;			
 		}		
 		else{
@@ -80,7 +76,6 @@ var iBeaconOperation = function(){
 		// TODO: Have to find better way of implementing this if not.
 		var shouldCallRecursively = options["shouldCallRecursively"] ? options["shouldCallRecursively"] : false;
 		if(shouldCallRecursively) {
-			console.log('Calling recursively');
 			that.callCordovaService(options);
 		}
 	};

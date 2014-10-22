@@ -15,10 +15,11 @@
             <a id="upgrade-room-select" class="button green submit-value"   data-transition="nested-view" ng-click="showMaximumOccupancyDialog($index)">
             <span translate>UPGRADE_FOR_ONLY_LABEL</span>
             <sup></sup>
-            $ {{upgrade.upsell_amount}} <span translate>PER_NIGHT_LABEL</span>
+            {{currencySymbol}} {{upgrade.upsell_amount}} <span translate>PER_NIGHT_LABEL</span>
             </a>
             <figure class="room-image">
-               <img src="{{upgrade.room_type_image}}" onerror="this.src=''" alt="" image-load image-loaded="imageLoaded()">
+               <img ng-src="{{upgrade.room_type_image}}" onerror="this.src=''" alt="" image-load image-loaded="imageLoaded()" ng-if="upgrade.room_type_image !== ''">
+               <img ng-src="/assets/bedroom-blank.png" alt="" ng-if="upgrade.room_type_image === ''">
             </figure>
          </li>
       </ul>

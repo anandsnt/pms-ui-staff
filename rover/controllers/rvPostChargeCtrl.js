@@ -18,7 +18,7 @@ sntRover.controller('RVPostChargeController',
 			$scope.isResultOnFetchedItems = true;
 			$scope.isOutsidePostCharge = false;
 			
-			var scrollerOptions = {click: true};
+			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
 
@@ -27,17 +27,16 @@ sntRover.controller('RVPostChargeController',
   				$rootScope.multiplePostingNumber = "";
   			};
 
-			// set the default bill number
-			$scope.successGetBillDetails = function(data){
-				$scope.$emit( 'hideLoader' );
-				data.isFromOut = false;
-				$scope.$broadcast("UPDATED_BILLNUMBERS", data);
-			};
-			if(!$scope.passActiveBillNo && $scope.reservation_id){
-				$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
-			}else{
-				$scope.fetchedData.bill_numbers = [];
-			}
+			// // set the default bill number
+			// $scope.successGetBillDetails = function(data){
+			// 	$scope.$emit( 'hideLoader' );
+			// 	data.isFromOut = false;
+			// 	$scope.$broadcast("UPDATED_BILLNUMBERS", data);
+			// };
+			// if(!$scope.isBillsFetched && $scope.reservation_id){
+			// 	$scope.invokeApi(RVChargeItems.getReservationBillDetails, $scope.reservation_id, $scope.successGetBillDetails);
+			// }
+			
 			// filter the items based on the chosen charge group
 			$scope.filterbyChargeGroup = function() {
 
@@ -141,10 +140,13 @@ sntRover.controller('RVPostChargeController',
 
 			// make favorite selected by default
 			// must have delay
-			$timeout(function() {
-				$scope.chargeGroup = 'FAV';
-				$scope.filterbyChargeGroup();				
-			}, 500);
+			// $timeout(function() {
+			// 	$scope.chargeGroup = 'FAV';
+			// 	$scope.filterbyChargeGroup();				
+			// }, 500);
+
+			$scope.chargeGroup = 'FAV';
+			$scope.filterbyChargeGroup();
 
 
 
@@ -233,12 +235,15 @@ sntRover.controller('RVPostChargeController',
 				$scope.selectedChargeItem.isChosen = false;
 				$scope.selectedChargeItem.count = 0;
 				$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
-
+				//CICO-10013 fix
+				$scope.selectedChargeItem.userEnteredPrice = '';
 				$scope.selectedChargeItem = {};
 
 				// recalculate net price
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
+				//CICO-10013 fix
+				$scope.calToggle = 'QTY';
 			};
 
 			/**
@@ -510,9 +515,10 @@ sntRover.controller('RVPostChargeController',
 						$scope.$emit( 'CHARGEPOSTED' );
 					}
 				};
+				var updateParam = data;
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
-					$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+					$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 				}
 				else{
 						var billData ={
@@ -525,7 +531,14 @@ sntRover.controller('RVPostChargeController',
 					var createBillSuccessCallback = function(){
 						$scope.$emit('hideLoader');			
 						//Fetch data again to refresh the screen with new data
-						$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+						$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
+						// Update Review status array.
+						var data = {};
+						data.reviewStatus = false;
+						data.billNumber = $scope.billNumber;
+						data.billIndex = $scope.reservationBillData.bills.length;
+						$scope.isAllBillsReviewed = false;
+						$scope.reviewStatusArray.push(data);
 					};
 					$scope.invokeApi(RVBillCardSrv.createAnotherBill,billData,createBillSuccessCallback);
 				}
@@ -536,12 +549,14 @@ sntRover.controller('RVPostChargeController',
 				$scope.invokeApi(RVSearchSrv.fetch, {});
 			};
 			
+			//Will be invoked only if triggered from the menu. 
+			// So always the default bill no will be 1
 			$scope.$on("UPDATED_BILLNUMBERS", function(event, data){
 				$scope.fetchedData.bill_numbers = data.bills;
 
-				if(!$scope.billNumber){
-					$scope.billNumber = "1";// set as per requirement in CICO-6094
-				}
+				$scope.billNumber = "1";
+				$scope.chargeGroup = 'FAV';
+				$scope.filterbyChargeGroup();
 			});
 			
 			$scope.$on('POSTCHARGE', function(event, data) {

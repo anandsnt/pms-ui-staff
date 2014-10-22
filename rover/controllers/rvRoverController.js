@@ -1,4 +1,4 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams', 
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate', 'hotelDetails', 'userInfoDetails', 'RVChargeItems', '$stateParams',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate, hotelDetails, userInfoDetails, RVChargeItems, $stateParams) {
     $rootScope.isOWSErrorShowing = false;
     if (hotelDetails.language) {
@@ -54,6 +54,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fulldayInWeek = "EEEE";
     $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; //January 06, 2014
     $rootScope.isCurrentUserChangingBussinessDate = false;
+    $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
     /*
      * hotel Details
      */
@@ -64,7 +65,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
-	$rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+    $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
+    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 
 
     //set flag if standalone PMS
@@ -79,24 +81,30 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+    $rootScope.isMaintenanceStaff = hotelDetails.current_user.default_dashboard == 'HOUSEKEEPING' ? true : false;
 
-
-    $rootScope.$on('bussinessDateChanged',function(e,newBussinessDate){
-      $scope.userInfo.business_date = newBussinessDate
+    $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
+      $scope.userInfo.business_date = newBussinessDate;
     });
 
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
+    $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
+    $rootScope.userId = hotelDetails.current_user.id;
 
+    $scope.isDepositBalanceScreenOpened = false;
+    $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
+      $scope.isDepositBalanceScreenOpened = true;
+    });
     $scope.searchBackButtonCaption = '';
 
     /**
-    * reciever function used to change the heading according to the current page
-    * if there is any trnslation, please use that
-    * param1 {object}, javascript event
-    * param2 {String}, Backbutton's caption
-    */
-    $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption){
+     * reciever function used to change the heading according to the current page
+     * if there is any trnslation, please use that
+     * param1 {object}, javascript event
+     * param2 {String}, Backbutton's caption
+     */
+    $scope.$on("UpdateSearchBackbuttonCaption", function(event, caption) {
       event.stopPropagation();
       //chnaging the heading of the page
       $scope.searchBackButtonCaption = caption; //if it is not blank, backbutton will show, otherwise dont
@@ -105,24 +113,24 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     if ($rootScope.adminRole == "Hotel Admin")
       $scope.isHotelAdmin = true;
 
-    var getDefaultDashboardState = function(){
-        var statesForDashbaord = {
-          'HOUSEKEEPING': 'rover.dashboard.housekeeping',
-          'FRONT_DESK'  : 'rover.dashboard.frontoffice',
-          'MANAGER'     : 'rover.dashboard.manager'
-        };
-        return statesForDashbaord[$rootScope.default_dashboard];
+    var getDefaultDashboardState = function() {
+      var statesForDashbaord = {
+        'HOUSEKEEPING': 'rover.dashboard.housekeeping',
+        'FRONT_DESK': 'rover.dashboard.frontoffice',
+        'MANAGER': 'rover.dashboard.manager'
+      };
+      return statesForDashbaord[$rootScope.default_dashboard];
     };
 
-    if($rootScope.isStandAlone){
+    if ($rootScope.isStandAlone) {
       // OBJECT WITH THE MENU STRUCTURE
-        $scope.menu = [{
+      $scope.menu = [{
           title: "MENU_DASHBOARD",
           action: getDefaultDashboardState(),
           menuIndex: "dashboard",
           submenu: [],
           iconClass: "icon-dashboard"
-        }, 
+        },
         // {
         //   title: "MENU_AVAILABILITY",
         //   action: "",
@@ -143,8 +151,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           submenu: [{
             title: "MENU_SEARCH_RESERVATIONS",
             action: "rover.search",
-            menuIndex:"search"
-          },{
+            menuIndex: "search"
+          }, {
             title: "MENU_CREATE_RESERVATION",
             action: "rover.reservation.search",
             standAlone: true,
@@ -155,16 +163,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }, {
             title: "MENU_POST_CHARGES",
             action: "",
-            actionPopup:true,
-             menuIndex:"postcharges"
+            actionPopup: true,
+            menuIndex: "postcharges"
           }, {
             title: "MENU_CASHIER",
             action: ""
           }, {
             title: "MENU_END_OF_DAY",
             action: "",
-            actionPopup:true,
-            menuIndex:"endOfDay"
+            actionPopup: true,
+            menuIndex: "endOfDay"
           }]
         }, {
           title: "MENU_CONVERSATIONS",
@@ -208,7 +216,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "roomStatus"
           }, {
             title: "MENU_TASK_MANAGEMENT",
-            action: ""
+            action: "rover.workManagement.start",
+            menuIndex: "workManagement"
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
@@ -231,58 +240,85 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }, {
           title: "MENU_REPORTS",
           action: "rover.reports",
+          menuIndex: "reports",
           iconClass: "icon-reports",
           submenu: []
-        }];
-    }
-    else{
+        }
+      ];
+
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
+      }];
+
+    } else {
       // OBJECT WITH THE MENU STRUCTURE
-        $scope.menu = [{
-          title: "MENU_DASHBOARD",
-          action: getDefaultDashboardState(),
-          menuIndex: "dashboard",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        }, {
-          title: "MENU_SEARCH",
-          action: "rover.search",
-          menuIndex: "search",
-          submenu: [],
-          iconClass: "icon-dashboard"
-        }, 
-         {
-          title: "MENU_HOUSEKEEPING",
-          //hidden: true,
-          action: "",
-          iconClass: "icon-housekeeping",
-          submenu: [{
-            title: "MENU_ROOM_STATUS",
-            action: "rover.housekeeping.roomStatus",
-            menuIndex: "roomStatus"
-          }, {
-            title: "MENU_TASK_MANAGEMENT",
-            action: ""
-          }, {
-            title: "MENU_MAINTAENANCE",
-            action: ""
-          }]
-        },{
-          title: "MENU_REPORTS",
-          action: "rover.reports",
-          iconClass: "icon-reports",
-          submenu: []
-        }];
+      $scope.menu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        submenu: [],
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_HOUSEKEEPING",
+        //hidden: true,
+        action: "",
+        iconClass: "icon-housekeeping",
+        submenu: [{
+          title: "MENU_ROOM_STATUS",
+          action: "rover.housekeeping.roomStatus",
+          menuIndex: "roomStatus"
+        }]
+      }, {
+        title: "MENU_REPORTS",
+        action: "rover.reports",
+        menuIndex: "reports",
+        iconClass: "icon-reports",
+        submenu: [],
+        hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
+      }];
+
+      // menu for mobile views
+      $scope.mobileMenu = [{
+        title: "MENU_DASHBOARD",
+        action: getDefaultDashboardState(),
+        menuIndex: "dashboard",
+        iconClass: "icon-dashboard"
+      }, {
+        title: "MENU_ROOM_STATUS",
+        action: "rover.housekeeping.roomStatus",
+        menuIndex: "roomStatus",
+        iconClass: "icon-housekeeping",
+        hidden: $rootScope.default_dashboard == 'FRONT_DESK'
+      }];
 
     }
 
-    $scope.$on("updateSubMenu", function(idx, item) {
-      if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
+    $rootScope.updateSubMenu = function(idx, item) {
+      if (item && item.submenu && item.submenu.length > 0) {
+        $scope.showSubMenu = true;
+        $scope.activeSubMenu = item.submenu;
+      } else if (item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item[1].submenu;
       } else {
+        $scope.showSubMenu = false;
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
+    }
+
+    $scope.$on("updateSubMenu", function(idx, item) {
+      $rootScope.updateSubMenu(idx, item);
     });
 
     $scope.$on("closeDrawer", function() {
@@ -327,49 +363,49 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      */
     $scope.toggleDrawerMenu = function() {
       $scope.menuOpen = !$scope.menuOpen;
-      $scope.showSubMenu = false;
     };
     $scope.closeDrawerMenu = function() {
       $scope.menuOpen = false;
-      $scope.showSubMenu = false;
     };
-	$scope.fetchAllItemsSuccessCallback = function(data){
-		$scope.$emit('hideLoader');
 
-		$scope.fetchedData = data;
 
-		ngDialog.open({
-			template: '/assets/partials/postCharge/outsidePostCharge.html',
-			controller: 'RVOutsidePostChargeController',
-			scope: $scope
-		});
-	};
-    $scope.subMenuAction = function(subMenu){
+    $scope.fetchAllItemsSuccessCallback = function(data) {
+      $scope.$emit('hideLoader');
+
+      $scope.fetchedData = data;
+
+      ngDialog.open({
+        template: '/assets/partials/postCharge/outsidePostCharge.html',
+        controller: 'RVOutsidePostChargeController',
+        scope: $scope
+      });
+    };
+    $scope.subMenuAction = function(subMenu) {
       $scope.toggleDrawerMenu();
-      if(subMenu === "postcharges"){
-      	$scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
-      	
+      if (subMenu === "postcharges") {
+        $scope.invokeApi(RVChargeItems.fetchAllItems, '', $scope.fetchAllItemsSuccessCallback);
+
       }
-      if(subMenu === "endOfDay"){
-         ngDialog.open({
-            template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-            controller: 'RVEndOfDayModalController',
-            className: 'end-of-day-popup ngdialog-theme-plain'
-          });
+      if (subMenu === "endOfDay") {
+        ngDialog.open({
+          template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+          controller: 'RVEndOfDayModalController',
+          className: 'end-of-day-popup ngdialog-theme-plain'
+        });
       }
     };
 
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
-    
-    var routeChange = function(event, newURL){
-       event.preventDefault();
-       return;
+
+    var routeChange = function(event, newURL) {
+      event.preventDefault();
+      return;
     };
 
-    $rootScope.$on('$locationChangeStart', routeChange);                   
+    $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
-    
+
     //
     // DEPRICATED!
     // since custom event emit and listning is breaking the
@@ -394,7 +430,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
-      }         
+      }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
@@ -402,8 +438,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('hideLoader');
       $rootScope.previousState = from;
       $rootScope.previousStateParams = fromParams;
-   
-      
+
+
     });
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       // Hide loading message
@@ -413,13 +449,16 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.settingsClicked = function() {
       if ($scope.isHotelAdmin) {
+        //CICO-9816 bug fix
+        $('body').addClass('no-animation');
+
         $scope.selectedMenuIndex = "settings";
         $window.location.href = "/admin";
       } else if ($scope.isHotelStaff) {
         ngDialog.open({
           template: '/assets/partials/settings/rvStaffSettingModal.html',
           controller: 'RVStaffsettingsModalController',
-          className: 'ngdialog-theme-plain calendar-modal'
+          className: 'calendar-modal'
         });
       }
     };
@@ -432,26 +471,51 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.isGuestCardVisible = true;
       }
     });
+    
     $scope.successCallBackSwipe = function(data) {
+    	
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
-    $scope.failureCallBackSwipe = function() {
-    	
-    };
+    $scope.failureCallBackSwipe = function() {};
 
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
+	$scope.numberOfCordovaCalls = 0;
+
+	$scope.initiateCardReader = function(){
+    	if (sntapp.cardSwipeDebug === true) {
+      	sntapp.cardReader.startReaderDebug(options);
+      	return;
+    	}
+    	
+      if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
+      	setTimeout(function(){
+ 	    		sntapp.cardReader.startReader(options);
+ 	      }, 2000);
+	    } else {
+	      		//If cordova not loaded in server, or page is not yet loaded completely
+	      		//One second delay is set so that call will repeat in 1 sec delay
+	      	if($scope.numberOfCordovaCalls < 50){
+	      		setTimeout(function(){
+	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
+				    	  $scope.initiateCardReader();
+				    }, 2000);
+	      	}
+        }	
+    };
+
+    /*
+     * Start Card reader now!.
+     * Time out is to call set Browser
+     */
+
     setTimeout(function() {
-      if (sntapp.cardSwipeDebug === true) {
-        sntapp.cardReader.startReaderDebug(options);
-      }
-      if (sntapp.cordovaLoaded) {
-        sntapp.cardReader.startReader(options);
-      };
+      $scope.initiateCardReader();
     }, 2000);
+
     /*
      * To show add new payment modal
      * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
@@ -471,8 +535,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
      * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
-    		
-      	$scope.$broadcast('GUESTPAYMENT', paymentData);
+
+      $scope.$broadcast('GUESTPAYMENT', paymentData);
     });
 
     $scope.$on('SHOWGUESTLIKES', function(event) {
@@ -480,151 +544,136 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     });
     $scope.guestInfoToPaymentModal = {};
     $scope.$on('SETGUESTDATA', function(event, guestData) {
-        $scope.guestInfoToPaymentModal = guestData;
-      
+      $scope.guestInfoToPaymentModal = guestData;
+
     });
     /*
      * Tp close dialog box
      */
     $scope.closeDialog = function() {
-        document.activeElement.blur();
-        $scope.$emit('hideLoader');
-        setTimeout(function(){
-           ngDialog.close();
-           window.scrollTo(0,0);
-           $scope.$apply();
-        }, 700);
+      document.activeElement.blur();
+      $scope.$emit('hideLoader');
+      setTimeout(function() {
+        ngDialog.close();
+        window.scrollTo(0, 0);
+        $scope.$apply();
+      }, 700);
     };
     /*
      * To fix issue with ipad keypad - 7702
      */
-    $scope.setPosition = function(){
-      if(document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT'){
-         document.activeElement.blur();
-          setTimeout(function(){
-             window.scrollTo(0,0);
-          }, 700);
+    $scope.setPosition = function() {
+      if (document.activeElement.nodeName !== 'INPUT' && document.activeElement.nodeName !== 'SELECT') {
+        document.activeElement.blur();
+        setTimeout(function() {
+          window.scrollTo(0, 0);
+        }, 700);
       }
     };
 
     /**
-    * Handles the OWS error - Shows a popup having OWS connection test option
-    */
+     * Handles the OWS error - Shows a popup having OWS connection test option
+     */
     $rootScope.showOWSError = function() {
 
-        // Hide loading message
-        $scope.$emit('hideLoader');
-        if(!$rootScope.isOWSErrorShowing){
-            $rootScope.isOWSErrorShowing = true;
-            ngDialog.open({
-              template: '/assets/partials/hkOWSError.html',
-              className: 'ngdialog-theme-default1 modal-theme1',
-              controller: 'RVHKOWSErrorCtrl',
-              closeByDocument: false,
-              scope: $scope
-          });
-        }        
+      // Hide loading message
+      $scope.$emit('hideLoader');
+      if (!$rootScope.isOWSErrorShowing) {
+        $rootScope.isOWSErrorShowing = true;
+        ngDialog.open({
+          template: '/assets/partials/housekeeping/rvHkOWSError.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          controller: 'RVHKOWSErrorCtrl',
+          closeByDocument: false,
+          scope: $scope
+        });
+      }
     };
-
-  /**
-    * Handles the bussiness date change in progress
-    */
+    /**
+     * Handles the bussiness date change in progress
+     */
     $rootScope.showBussinessDateChangingPopup = function() {
 
-        // Hide loading message
-        $scope.$emit('hideLoader');
-        //if already shown no need to show again and again
-        if(!$rootScope.isBussinessDateChanging){
-            $rootScope.isBussinessDateChanging = true;
-            ngDialog.open({
-              template: '/assets/partials/common/bussinessDateChangingPopup.html',
-              className: 'ngdialog-theme-default1 modal-theme1',
-              controller: 'bussinessDateChangingCtrl',
-              closeByDocument: false,
-              scope: $scope
-          });
-        }        
+      // Hide loading message
+      $scope.$emit('hideLoader');
+      //if already shown no need to show again and again
+      if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
+        $rootScope.isBussinessDateChanging = true;
+        ngDialog.open({
+          template: '/assets/partials/common/bussinessDateChangingPopup.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          controller: 'bussinessDateChangingCtrl',
+          closeByDocument: false,
+          scope: $scope
+        });
+      }
     };
- 
-    $rootScope.$on('bussinessDateChangeInProgress',function(){
-      $rootScope.showBussinessDateChangingPopup();
-    });     
 
-    $scope.goToDashboard = function(){
+    $rootScope.$on('bussinessDateChangeInProgress', function() {
+      $rootScope.showBussinessDateChangingPopup();
+    });
+
+    $scope.goToDashboard = function() {
       ngDialog.close();
       // to reload app in case the bussiness date is changed
-      $state.go('rover.dashboard', {}, {reload: true});
-    }
-
-     /**
-    * Handles the bussiness date change completion
-    */
-    $rootScope.showBussinessDateChangedPopup = function() {
-        $rootScope.isBussinessDateChanging = false;
-        // Hide loading message
-        $scope.$emit('hideLoader');
-        // if(!$rootScope.isBussinessDateChanged){
-        //     $rootScope.isBussinessDateChanged = true;
-            ngDialog.open({
-              template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
-              className: 'ngdialog-theme-default1 modal-theme1',
-              closeByDocument: false,
-              scope: $scope
-          });
-        // }        
+      // $state.go('rover.dashboard', {}, {reload: true});
+      $window.location.reload();
     };
-    
-    
-    
-     
 
     /**
-    * function to execute on clicking latecheckout button
-    */
-    $scope.clickedOnHeaderLateCheckoutIcon = function(event){
-    	
-	 	var type = "LATE_CHECKOUT";
-        $state.go('rover.search', {'type': type});
-	    
+     * Handles the bussiness date change completion
+     */
+    $rootScope.showBussinessDateChangedPopup = function() {
+      $rootScope.isBussinessDateChanging = false;
+      // Hide loading message
+      $scope.$emit('hideLoader');
+      if (!$rootScope.isBussinessDateChanged) {
+        $rootScope.isBussinessDateChanged = true;
+        ngDialog.open({
+          template: '/assets/partials/common/rvBussinessDateChangedPopup.html',
+          className: 'ngdialog-theme-default1 modal-theme1',
+          closeByDocument: false,
+          scope: $scope
+        });
+      }
     };
-    
-    $scope.clickedOnQueuedRoomsIcon = function(event){
-    	
-	 	var type = "QUEUED_ROOMS";
-        $state.go('rover.search', {'type': type});
+
+
+
+    /**
+     * function to execute on clicking latecheckout button
+     */
+    $scope.clickedOnHeaderLateCheckoutIcon = function(event) {
+      if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
+        var type = "LATE_CHECKOUT";
+        $state.go('rover.search', {
+          'type': type
+        });
+      }
     };
-    
+
+    $scope.clickedOnQueuedRoomsIcon = function(event) {
+      if ($rootScope.default_dashboard == 'HOUSEKEEPING') {
+        $state.go('rover.housekeeping.roomStatus', {
+          'roomStatus': 'QUEUED_ROOMS'
+        });
+      } else {
+        $state.go('rover.search', {
+          'type': 'QUEUED_ROOMS'
+        });
+      }
+    };
+
+    $scope.$on('UPDATE_QUEUE_ROOMS_COUNT', function(event, data) {
+      if (data == "remove") {
+        $scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count) - parseInt(1);
+      } else {
+        $scope.userInfo.queue_rooms_count = parseInt($scope.userInfo.queue_rooms_count) + parseInt(1);
+      }
+
+    });
+
+
 
   }
 ]);
-
-// adding an OWS check Interceptor here and bussiness date change
-// but should be moved to higher up above in root level
-sntRover.factory('httpInterceptor', function ($rootScope, $q, $location) {
-  
-  return {
-    request: function (config) {
-      return config;
-    },
-    response: function (response) {
-        // if manual bussiness date change is in progress alert user.
-        if(response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate){
-           $rootScope.$emit('bussinessDateChangeInProgress');
-        }       
-        return response || $q.when(response);
-    },
-    responseError: function(rejection) {
-      if(rejection.status == 430){
-         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
-      }
-      if(rejection.status == 520 && rejection.config.url !== '/admin/test_pms_connection') {
-        $rootScope.showOWSError && $rootScope.showOWSError();
-      }
-      return $q.reject(rejection);
-    }
-  };
-});
-
-sntRover.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('httpInterceptor');
-});

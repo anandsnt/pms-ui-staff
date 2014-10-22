@@ -134,7 +134,8 @@
 
 
 "DEPARTMENTS":"Departments",
-"DEPARTMENT_NAME_PLACEHOLDER": "Enter department"
+"DEPARTMENT_NAME_PLACEHOLDER": "Enter department",
+"TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
 
 ,
  
@@ -155,6 +156,43 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
+    "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
+    "SENT_TO_QUEUE":"SENT TO QUEUE",
+    "YES_SMALL":"Yes",
+    "NO_SMALL":"No",
+    "MINUTES_PRIOR_TO_ETA":"XX MINUTES PRIOR TO ARRIVAL TIME (ETA)",
+    "RATE_CODES_TO_EXCLUDE_FROM_CHECKIN":"RATE CODES TO EXCLUDE FROM CHECKIN",
+    "BLOCK_CODES_EXCLUDE_FROM_CHECKIN":"BLOCK CODES TO EXCLUDE FROM CHECKIN",
+    "EXCLUDE_BLOCK_CODES":"Exclude block codes",
+    "EXCLUDE_RATE_CODES":"Exclude rate codes",
+    "EXCLUDED_RATE_CODES":"EXCLUDED RATE CODES",
+    "EXCLUDED_BLOCK_CODES":"EXCLUDED BLOCK CODES",
+    "SELECT_RATE_CODE":"Select Rate Code",
+    "SELECT_BLOCK_CODE":"Select Block Code",
+    "MAX_NUMBER_OF_WEB_CHECKIN_PER_DAY":"Maximum number of web checkin's per day",
+    "PRE_CHECK_IN_EMAIL_TITLE":"PRE CHECK IN - EMAIL TITLE ",
+    "PRE_CHECK_IN_TOP_BODY":"PRE CHECK IN - TOP BODY",
+    "PRE_CHECK_IN_BOTTOM_BODY":"PRE CHECK IN - BOTTOM BODY",
+    "PRE_CHECK_IN_EMAIL_FIELDS":"Pre Check-In Email Fields"
+,"iCARE_ON_OFF": "iCare ON/OFF",
+"SAVE_GUEST_NAME_TO_ICARE": "Save Guest Name To iCare",
+"COMBINED_KEY_ROOM_CHARGE": "Combined Key / Room Charge Create",
+"ICARE_ACCESS_URL":"ACCESS URL",
+"ENTER_ICARE_ACCESS_URL":"Enter access url",
+"iCARE_USERNAME":"iCARE USERNAME",
+"ENTER_iCARE_USERNAME":"Enter icare username",
+"iCARE_PASSWORD":"iCARE PASSWORD",
+"ENTER_iCARE_PASSWORD":"Enter icare password",
+"iCARE_ACCOUNT_PRE_FIX": "ACCOUNT PRE-FIX",
+"ENTER_iCARE_ACCOUNT_PRE_FIX": "Enter account pre-fix",
+"iCARE_ACCOUNT_LENGTH": "ACCOUNT LENGTH",
+"ENTER_iCARE_ACCOUNT_LENGTH": "Enter account length",
+"iCARE_DEBIT_CHARGE_CODE": "Debit Charge Code",
+"iCARE_CREDIT_CHARGE_CODE": "Credit Charge Code",
+"FIXED_BAND_PMS_ALERT_CODE": "PMS ALERT CODE",
+"ENTER_FIXED_BAND_PMS_ALERT_CODE": "Enter PMS Aert Code"
+
+,
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)"
 ,
@@ -272,9 +310,12 @@
 "USE_INSPECTED_ROOM_STATUS":"Use Inspected room status",
 "USE_PICKUP_ROOM_STATUS":"Use Pick-up room status",
 "ENABLE_QUEUE_ROOMS":"Enable Queue Rooms",
+"EMAIL_ACCOUNTS_TO_RECIEVE_QUEUE_RES_ALERT":"EMAIL ACCOUNTS TO RECEIVE QUEUE RESERVATION ALERT",
 "CHECK_IN_TO_INSPECTED_ROOMS_ONLY":"Check in to inspected rooms only",
+"ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
-"MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",    
+"MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
+"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
     
     "NAME":"Name",
     "DESCRIPTION":"Description",
@@ -343,6 +384,7 @@
 "WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
 "CHECKOUT_NOT_SUCESSFULL":"Only when check out is NOT successful",
 "EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
+"EMAIL_ACCOUNTS_LABEL2":"EMAIL ACCOUNTS TO RECEIVE LATE CHECK OUT ALERT ONLY (Seperated by semicolon [;]) ",
 "BACK_TO_SETUP":"Back to setup",
 "SOCIAL_LOBBY_SETUP":"Social Lobby Setup",
 "SOCIAL_LOBBY":"Social Lobby",
@@ -353,4 +395,8 @@
 "GUEST_REVIEWS":"Guest Reviews",
 "NUMBER_OF_REVIEWS":"Number of reviews",
 "NUMBER_OF_REVIEWS_PLACEHOLDER":"Enter Number of reviews",
-"RATING_LIMIT":"Rating limit"}
+"RATING_LIMIT":"Rating limit",
+"AND": "and",
+"ON_WEEKDAYS": "on weekdays",
+"ON_SATURDAY_SUNDAY": "on saturday /sunday"
+}

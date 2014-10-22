@@ -9,8 +9,8 @@
 	.icon-no-content {
 		background-image: @iconNoContent;
 		background-repeat: no-repeat;
-		.size(120px, 125px);
 		margin: 0 auto;
+		.size(120px, 125px);
 		.show;
 
 		&.icon-search { 
@@ -49,6 +49,14 @@
 			background-position: 0 -960px;
 		}
 
+		&.icon-ok {
+			background-position: 0 -1080px;
+		}
+
+		&.icon-housekeeping {
+			background-position: 0 -1200px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 125px, 120px;
@@ -80,6 +88,7 @@
 		border: 0;
 		.show;
 
+		/* Modal icons ***/
 		&.icon-close {
 			background-position: 0 -3040px;
 			.square(24px);
@@ -88,6 +97,7 @@
 			&.invert { background-position: 0 -3100px; }
 		}
 
+		/* Search icons ***/
 		&.icon-search {
 			background-color: transparent;
 			background-position: 0 3px;
@@ -102,6 +112,7 @@
 			.hide-text;
 		}
 
+		/* Navbar icons ***/
 		&.icon-alert {
 			.square(40px);
 
@@ -112,11 +123,50 @@
 			}
 		}
 
+		&.icon-navbar {
+			padding-top: 35px;
+			height: 60px;
+
+			&.icon-grid { 
+				background-position: 19px -4520px;
+				&.active { background-position: 19px -4580px; }
+			}
+
+			&.icon-graph { 
+				background-position: 18px -4635px;
+				&.active { background-position: 18px -4695px; }
+			}
+
+			&.icon-dual { 
+				background-position: 18px -4755px;
+				&.active { background-position: 18px -4815px; }
+			}
+
+			&.icon-hk-guest { background-position: 50% -4890px; }
+			&.icon-hk-work { background-position: 50% -5010px; }
+			&.icon-hk-room { background-position: 50% -5130px; }
+			&.icon-revenue { background-position: 50% -5250px; }
+			&.icon-payments { background-position: 50% -5370px; }
+			&.icon-cashier { background-position: 50% -5490px; }
+
+			@media only screen and (min-width: 768px) {
+				&.icon-hk-guest { background-position: 50% -4880px; }
+				&.icon-hk-work { background-position: 50% -5000px; }
+				&.icon-hk-room { background-position: 50% -5120px; }
+			}
+
+			&.only-icon { 
+				padding-top: 0;
+				.hide-text; 
+			}
+		}
+
 		/* Guest icons ***/
 		&.icon-location {  background-position: 0 -23px; background-size: 80px; }
 		&.icon-group { background-position: 0 -50px; background-size: 80px; }
 		&.icon-phone { background-position: 3px -4234px; }
 		&.icon-email-grey { background-position: 2px -4293px; }
+		&.pre-check-in,
 		&.check-in { background-position: 8px -112px; }
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
@@ -132,36 +182,16 @@
 
 		&.icon-queued { background-position: 45px -4170px; }
 
-		&.icon-queued { background-position: 45px -4170px; }
-
 		/* Stay Card Icons ***/
-		&.icon-company,
-        &.icon-travel-agent {
-        	text-align: center;
-        	text-transform: uppercase;
-        	color: @white;
-        	font-size: 12px;
-        	line-height: 1em;
-        	font-weight: 600;
-        	padding-top: 55px;
-        	margin: -20px 0 0 -20px;
-        	.square(90px);
-        	white-space: nowrap;
-        	text-shadow: 1px 1px 0 rgba(0,0,0,.15);
-
-        	span { .show; }
-
-        	&.icon-company { background-position: 32px -3435px; }
-        	&.icon-travel-agent { background-position: 33px -3553px; }
-        }
-
+		&.icon-company { background-position: 32px -3435px; }
+		&.icon-travel-agent { background-position: 34px -3553px; }
 		&.icon-upgrade { background-position: 3px -440px; }
 		&.icon-key { background-position: 3px -500px; }
 		&.icon-plus { background-position: 3px -1000px; }
 		&.icon-email { background-position: 3px -1055px; }
 		&.icon-print { background-position: 3px -1115px; }
 		&.icon-pencil { background-position: 3px -1178px; }
-		&.icon-wallet { background-position: 3px -1240px; }	
+		&.icon-wallet { background-position: 3px -1237px; }	
 		&.icon-save { background-position: 3px -3276px; }	
 
 		&.icon-swiped {
@@ -185,6 +215,7 @@
 		&.small-icon {
 			background-size: 80px;
 
+			&.pre-check-in,
 			&.check-in { background-position: 6px -75px; }
 			&.check-out { background-position: 6px -101px; }
 			&.inhouse { background-position:  5px -128px; }
@@ -210,10 +241,28 @@
 		&.icon-filter.active { background-position: 0 -1360px; }
 
 		&.time { 
+			.square(30px);
+			.hide-text;
+
 			&.check-in { background-position: 10px -542px; }
 			&.check-out { background-position: 10px -582px; }
 			&.late-check-out { background-position: 10px -2903px; }
 		}
+
+		/* Housekeeping icons ***/
+		&.icon-room {
+			background-position: 0 -4350px;
+
+			@media only screen and (min-width: 768px) {
+				background-position: 0 -4415px;
+			}
+		}
+
+		/* Work Management icons ***/
+		&.icon-location-room { background-position: 0 -5620px; }
+		&.icon-location-floor { background-position: 0 -5680px; }
+		&.icon-unassign-room { background-position: 25px -5720px; }
+		&.icon-assign-room { background-position: 25px -5780px; }
 
 		/* Social Lobby Icons ***/
 		&.icon-show-conversations {
@@ -298,6 +347,13 @@
 			.square(14px);
 		}
 
+		&.icon-ok-10 {
+			background-color: transparent;
+			background-position: 0 -5860px;
+			.hide-text;
+			.square(14px);
+		}
+
 		&.icon-time {
 			&.time-in { background-position: 10px -4050px; }
 			&.time-out { background-position: 10px -4110px; }
@@ -308,52 +364,6 @@
 			background-image: @icons2x;
 			background-size: 120px;
 		}
-	}
-
-/* Menu & availability toggle	==========================*/
-	.icon-toggle,
-	.icon-availability {
-		overflow: hidden;
-		background-image: @iconMenu, @darkTexture;
-		background-repeat: no-repeat, repeat;
-		.hide-text;
-		.square(40px);
-		.show;
-		.no-transition;
-
-		@media @highdpi {
-			background-image: @iconMenu2x, @darkTexture;
-			background-size: 40px;
-		}
-	}
-
-	&.icon-toggle {
-		background-position: 0 -70px, 0 0;
-		#border-radius > .right();
-
-		&.active { 
-			background-color: @logoGradientStart; 
-			.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-		}
-
-		@media only screen and (min-width: 768px) {
-			background-color: @logoGradientStart;
-			background-position: 0 -10px, 0 0;
-			.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-
-			&:hover,
-			&.active { background-position: 0 -70px, 0 0; }
-		}
-	}
-
-	&.icon-availability {
-		background-color: @grey2;//edited from qburst
-		background-image: url(/assets/rovermenu.png); //qburst
-		background-repeat: no-repeat, repeat;
-		background-position: 5 -495px, 0 0;
-		#border-radius > .left();
-		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));		
-		&:hover,&.active { background-position: 5 -545px, 0 0; }
 	}
 
 /* Arrow icons			==================================*/
@@ -489,21 +499,14 @@
 
 /* Back button			==================================*/
 	.back-button:not(.button):not(.switch) {
-		color: @logoPrimary;
-		text-transform: uppercase;
-		font-size: 18px;
-		line-height: 30px;
-		vertical-align: middle;
-		font-weight: 600;	
-		padding-left: 25px;
-		background: @icons 0 -1595px no-repeat; 
+		background: @icons 10px -1587px no-repeat;
+		.square(40px);
+		.hide-text;
 		.no-transition;
+		.show;
 
 		&:hover,
-		&:active {
-			color: @textColor;
-			background-position: 0 -1535px;
-		}
+		&:active { background-position: 10px -1527px; }
 
 		@media @highdpi { 
 			background-image: @icons2x;
@@ -511,19 +514,46 @@
 		}
 	}
 
+	@media only screen and (min-width: 768px) {
+		.back-button:not(.button):not(.switch) {
+			color: @logoPrimary;
+			text-transform: uppercase;
+			text-indent: 0;
+			line-height: 40px;
+			vertical-align: middle;
+			font-weight: 600;	
+			width: auto;
+			padding: 0 20px 0 40px;
+			background-color: @white;
+			#border-radius > .rounded();
+			.box-shadow();
+
+			&:hover,
+			&:active { color: @textColor; }
+		}
+	}
+
 /* Misc					==================================*/
 	.vip {
-		font-size: 10px;
+		font-size: 9px;
+        line-height: 16px;                  
 		font-weight: 700;
-		line-height: 20px;
 		text-transform: uppercase;
 		text-align: center;
 		vertical-align: middle;
 		color: rgba(0,0,0,.5);
 		text-shadow: none;
 		background: @yellow;
-		.square(20px);
+		.square(16px);
 		#border-radius > .rounded(20px);
+	}
+
+	@media only screen and (min-width: 600px) {
+		.vip {
+			font-size: 10px;
+			line-height: 20px;
+			.square(20px);
+		}
 	}
 
 	.skip {
@@ -551,13 +581,17 @@
 		background: @white @icons no-repeat;
 		background-position: 4px -3875px;
 		border: 0;
-		.square(20px);
+		.square(16px);
 		#border-radius > .rounded(20px);
 
 		@media @highdpi {
 			background-image: @icons2x;
 			background-size: 120px;
 		}
+	}
+
+	@media only screen and (min-width: 600px) {
+		.search-indicator { .square(20px); }
 	}
 
 	.stars {
@@ -651,7 +685,6 @@
 			background-size: 50px;
 		}
 	}
-
 
 /* 4. LAYOUT
 ==========================================================*/

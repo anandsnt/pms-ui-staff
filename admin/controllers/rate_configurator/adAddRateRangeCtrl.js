@@ -45,16 +45,23 @@ admin
                 }
             }, rateFilterDefaults.OPTIONS);
 
-            $scope.Sets = [createDefaultSet("Set 1")];
-            $scope.begin_date = $filter('date')(businessDate, rateFilterDefaults.DATE_FORMAT); 
-            $scope.end_date = $scope.begin_date; //$filter('date')(businessDate, rateFilterDefaults.DATE_FORMAT);
+            $scope.Sets = [];
+            $scope.Sets.push(createDefaultSet("Set 1"));
+//if no date is selected .Make bussiness date as default CICO-8703
+
+            if(!$scope.begin_date){
+                $scope.begin_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            }
+            if(!$scope.end_date){
+                $scope.end_date = $filter('date')(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd');
+            }       
 
             try
             { //Handle exception, in case of NaN, initially.
                 lastSelectedDate = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].end_date;
             }
             catch(e) { }
-            
+
             /* For new dateranges, fromdate should default 
              * to one day past the enddate of the last daterange
              * TODO: Only if lastDate > businessDate
@@ -66,7 +73,8 @@ admin
 
                 $scope.begin_date = $filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
                 $scope.end_date = $scope.begin_date; //$filter('date')(dLastSelectedDate, rateFilterDefaults.DATE_FORMAT);
-            }
+             }
+
         };
 
         /*
@@ -119,33 +127,6 @@ admin
                 setDetails.sunday = set.days[6].checked;
                 setData.push(setDetails);
             });
-
-            /*var dateRangeData = {
-                'id': $scope.rateData.id,
-                'data': {
-                    'begin_date': $scope.begin_date,
-                    'end_date': $scope.end_date ,
-                    'sets': setData
-                }
-            };*/
-
-            /*var postDateRangeSuccessCallback = function (data) {
-                var dateData = {};
-
-                dateData.id = data.id;
-                dateData.begin_date = dateRangeData.data.begin_date;
-                dateData.end_date = dateRangeData.data.end_date;
-                $scope.rateData.date_ranges.push(dateData);
-
-                // activate last saved date range view
-                $scope.$emit("changeMenu", data.id);
-                $scope.$emit('hideLoader');
-            };
-
-            var postDateRangeFailureCallback = function (data) {
-                $scope.$emit('hideLoader');
-                $scope.$emit("errorReceived", data);
-            };*/
 
             $scope.invokeApi(ADRatesRangeSrv.postDateRange, dateRangeData, postDateRangeSuccessCallback, postDateRangeFailureCallback);
         };
@@ -213,8 +194,9 @@ admin
             var anyOneDayisChecked = false;
             angular.forEach($scope.Sets, function (set, key) {
                 angular.forEach(set.days, function (day, key) {
-                    if (day.checked)
+                    if (day.checked) {
                         anyOneDayisChecked = true;
+                    }
                 });
             });
 

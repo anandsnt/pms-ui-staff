@@ -52,6 +52,10 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_number = cardNumberEndingWith;
 				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_expiry = expiryDate;
+				// CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
+				if(billIndex === 0){
+					$rootScope.$emit('UPDATEDPAYMENTLIST', $scope.dataToPaymentList.bills[billIndex].credit_card_details );
+				}
 			} else {
 				$scope.dataToPaymentList.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 				$scope.dataToPaymentList.reservation_card.payment_details.card_number = cardNumberEndingWith;

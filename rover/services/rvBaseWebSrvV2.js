@@ -19,13 +19,13 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
     *   @param {string} webservice url
     *   @param {Object} data for webservice
     *   @return {promise}
-    */	
+    */
 	this.callWebService = function(httpMethod, url, params, data){
 		var deferred = $q.defer();
 		if(typeof params == "undefined"){
 			params = "";
 		}
-		
+
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		var httpDict = {};
  		httpDict.url = url;
@@ -36,13 +36,11 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
  		else if(httpMethod == 'POST' || httpMethod == 'PUT'){
  			httpDict.data = params;
   		};
- 	 			
+
 		$http(httpDict).success(function(response, status) {
 	    	deferred.resolve(response)
 		}).error(function(errors, status) {
-			console.log(status);
 			var urlStart = url.split('?')[0];
-			console.log(urlStart)
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if(status == 406){ // 406- Network error
@@ -50,9 +48,7 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
 			}
 			else if(status == 500){ // 500- Internal Server Error
 				deferred.reject(['Internal server error occured']);
-			}else if(urlStart != '/api/availability' && status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
-				$window.location.href = '/500' ;
-			}else if(urlStart != '/api/availability' && status == 404){ // 500- Internal Server Error
+			}else if(status == 501 || status == 502 || status == 503){ // 500- Internal Server Error
 				$window.location.href = '/500' ;
 			}
 			else if(status == 401){ // 401- Unauthorized
@@ -61,23 +57,23 @@ sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q,
 			}else{
 				deferred.reject(errors);
 			}
-		    
+
 		});
-		return deferred.promise;	    	
+		return deferred.promise;
 	};
 
    	this.getJSON = function(url, params) {
     	return this.callWebService("GET", url, params);
    	};
-    
+
    	this.putJSON = function(url, params) {
    		return this.callWebService("PUT", url, params);
    	};
-    
+
    	this.postJSON = function(url, data) {
    		return this.callWebService("POST", url, data);
    	};
-    
+
    	this.deleteJSON = function(url, params) {
    		return this.callWebService("DELETE", url, params);
    	};

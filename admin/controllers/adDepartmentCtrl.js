@@ -1,4 +1,4 @@
-admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv',  function($scope, $state, ADDepartmentSrv){
+admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', '$location', '$anchorScroll', '$timeout',  function($scope, $state, ADDepartmentSrv, $location, $anchorScroll, $timeout){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -41,6 +41,10 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
 		$scope.departmentData={};
 		$scope.currentClickedElement = "new";
 		$scope.isAddMode = true;
+		$timeout(function() {
+            $location.hash('new-form-holder');
+            $anchorScroll();
+    	});
 	};
    /*
     * To get the template of edit screen

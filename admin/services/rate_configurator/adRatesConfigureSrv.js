@@ -14,7 +14,7 @@ admin.service('ADRatesConfigureSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$rootSco
         };
 
         this.saveSet = function (data) {
-            console.log(data);
+          
             var deferred = $q.defer();
             var url = "/api/rate_date_ranges/" + data.dateRangeId +"/rate_sets";
             delete data['id'];

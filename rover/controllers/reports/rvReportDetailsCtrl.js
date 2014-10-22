@@ -18,14 +18,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 		
 		// common methods to do things after fetch report
 		var afterFetch = function() {
-			var totals = $scope.$parent.totals,
-				headers = $scope.$parent.headers,
-				subHeaders = $scope.$parent.subHeaders,
-				results = $scope.$parent.results,
+			var totals          = $scope.$parent.totals,
+				headers         = $scope.$parent.headers,
+				subHeaders      = $scope.$parent.subHeaders,
+				results         = $scope.$parent.results,
 				resultsTotalRow = $scope.$parent.resultsTotalRow;
 
 
 			$scope.chosenReport = RVreportsSrv.getChoosenReport();
+			
+			$scope.setTitle( $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title );
 			$scope.$parent.heading = $scope.chosenReport.title + ' ' + $scope.chosenReport.sub_title;
 
 
@@ -132,8 +134,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 			$scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
 
 			// hack to set the colspan for reports details tfoot - 'Web Check Out Conversion''
-			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check Out Conversion' ? 6 : $scope.leftColSpan;
-			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check Out Conversion' ? 6 : $scope.rightColSpan;
+			$scope.leftColSpan  = $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.leftColSpan;
+			$scope.rightColSpan = $scope.chosenReport.title === 'Web Check Out Conversion' ? 8 : $scope.rightColSpan;
 
 			// scroller refresh and reset position
 			refreshScroll();

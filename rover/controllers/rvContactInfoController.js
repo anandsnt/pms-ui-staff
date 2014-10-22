@@ -1,7 +1,9 @@
-sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout',
-  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout) {
+sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv) {
 
     BaseCtrl.call(this, $scope);
+
+    $a = $scope;
     /**
      * storing to check if data will be updated
      */
@@ -32,9 +34,26 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
 
         var avatarImage = getAvatharUrl(dataToUpdate.title);
         $scope.$emit("CHANGEAVATAR", avatarImage);
+
+        updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
 
       };
+
+      // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
+      var updateSearchCache = function(avatarImage) {
+        var data = {
+          'firstname': $scope.guestCardData.contactInfo.first_name,
+          'lastname': $scope.guestCardData.contactInfo.last_name,
+          'location': $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.city 
+                    + ', '  + $scope.guestCardData.contactInfo.address.state: false,
+          'vip': $scope.guestCardData.contactInfo.vip,
+          'avatar': avatarImage
+        };
+
+        RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+      };
+
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
@@ -86,7 +105,8 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
        * change date format for API call
        */
       var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-      dataToUpdate.birthday = $scope.birthdayText;
+      dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+
       var dataUpdated = false;
       if (angular.equals(dataToUpdate, presentContactInfo)) {
         dataUpdated = true;
@@ -141,8 +161,7 @@ sntRover.controller('RVContactInfoController', ['$scope', '$rootScope', 'RVConta
       ngDialog.open({
         template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
         controller: 'RVContactInfoDatePickerController',
-        className: 'ngdialog-theme-default single-date-picker',
-        closeByDocument: true,
+        className: 'single-date-picker',
         scope: $scope
       });
     };

@@ -3,11 +3,18 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 		BaseCtrl.call(this, $scope);
 		//Switch to Enable the new cards addition funcitonality
 		$scope.addNewCards = true;
-		$scope.cardHeaderImage = '/assets/avatar-trans.png';
+		if($scope.guestCardData.cardHeaderImage == undefined || $scope.guestCardData.cardHeaderImage == ""){
+			$scope.guestCardData.cardHeaderImage = '/assets/avatar-trans.png';
+		}
 		$scope.pendingRemoval = {
 			status: false,
 			cardType: ""
 		};
+
+		$scope.setHeadingTitle = function(heading) {
+			$scope.heading = heading;
+			$scope.setTitle(heading);
+		}
 
 		$scope.cardSaved = function() {
 			$scope.viewState.isAddNewCard = false;
@@ -48,7 +55,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 					'contactInfo': data,
 					'countries': $scope.countries,
 					'userId': $scope.reservationDetails.guestCard.id,
-					'avatar': (guestData && guestData.image) || $scope.cardHeaderImage,
+					'avatar': $scope.guestCardData.cardHeaderImage,
 					'guestId': null,
 					'vip': false //TODO: check with API or the product team
 				};
@@ -106,7 +113,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 			}
 		};
 
-		
+
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var companyCardFound = function(data) {
@@ -116,7 +123,7 @@ sntRover.controller('stayCardMainCtrl', ['$rootScope', '$scope', 'RVCompanyCardS
 				// No more future reservations returned with this API call
 				// $scope.reservationDetails.companyCard.futureReservations = data.future_reservation_count;
 				$scope.$broadcast('companyCardAvailable');
-				
+
 			};
 			//	companycard defaults to search mode 
 			// 	Hence, do API call only if a company card ID is returned

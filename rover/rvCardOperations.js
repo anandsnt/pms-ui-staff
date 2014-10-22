@@ -2,7 +2,6 @@ var CardOperation = function(){
 	// class for handling operations with payment device
 	
 	var that = this;
-	
 	// function for start reading from device 
 	// Note down: Currently it is recursive
 	
@@ -19,7 +18,8 @@ var CardOperation = function(){
           					'RVCardReadTrack2KSN': '950067000000062002AF',
           					'RVCardReadMaskedPAN': '5405220008002226',
           					'RVCardReadCardName': 'Sample Name',
-          					'RVCardReadExpDate':"17012"
+          					'RVCardReadExpDate':"17012",
+          					'RVCardReadCardIIN': "002226"
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}
@@ -47,7 +47,6 @@ var CardOperation = function(){
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
-				
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;		
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -75,17 +74,25 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
-		
+			//alert(cordova);
+			//alert(JSON.stringify(cordova));
+			//alert("----service------"+service+"===action======"+action+"=====arguments========"+arguments);
+			
+			
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
-	
+							//alert("successCallBackParameters");
 							if(successCallBackParameters !== null){
+								//alert("cordoveexec---DATA----"+JSON.stringify(data));
+								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
 							}
 							else{
+								//alert("cordoveexec---DATA ||----"+JSON.stringify(data));
+								//alert("cordoveexec---successparama 2----"+JSON.stringify(successCallBackParameters));
 								successCallBack(data);
 								that.callRecursively(options);
 							}
@@ -93,6 +100,7 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
+							//alert("failureCallBackParameters");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}
@@ -158,7 +166,7 @@ var CardOperation = function(){
 	*/
 	this.setBandType = function(options){
 		options['service'] = "RVCardPlugin";
-		options['action'] = "setBandType";		
+		options['action'] = "setBandType";	
 		that.callCordovaService(options);			
 	};
 
@@ -223,7 +231,6 @@ var CardOperation = function(){
 
 	//function for linking iBeacon
 	this.linkiBeacon = function(options){	
-		alert("gtfgh");
 		options['service'] = "RVCardPlugin";
 		options['action'] = "writeBeaconID";
 		that.callCordovaService(options);

@@ -11,24 +11,22 @@ sntRover.controller('rvManagerDashboardSearchController',['$scope', '$rootScope'
 
 	//setting the scroller for view
 	var scrollerOptions = {
-        click: true,
-        preventDefault: false
+        tap: true,
+        preventDefault: true,
+        momentum: false,
+        mouseWheel: false,
+        shrinkScrollbars: 'clip' 
     };
   	$scope.setScroller('result_showing_area', scrollerOptions);
     $scope.$broadcast("showSearchResultsArea", false);
 
-  	//click function on search area, mainly for closing the drawer
-  	$scope.clickedOnSearchArea = function($event){
-        $scope.$emit("closeDrawer");
-        // if the click occured on find reservation, no result found, no one opted to late checkout,
-        // need to back to dashboard
-        if(getParentWithSelector($event, document.getElementsByClassName("no-content")[0])
-            || getParentWithSelector($event, document.getElementsByClassName("no-content")[1])
-            || getParentWithSelector($event, document.getElementsByClassName("no-content")[2])) {
-            
-            backToDashboard();
-        }
-  	};
+    /**
+    * recieved event from search controller on focusedout.
+    */
+    $scope.$on("SEARCH_BOX_FOCUSED_OUT", function(event){
+        backToDashboard();
+    });
+
 
     /**
     * function used to back onto dashboard screen

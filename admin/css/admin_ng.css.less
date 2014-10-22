@@ -41,6 +41,7 @@
 ==========================================================*/
 /* 7. MEDIA QUERIES
 ==========================================================*/
+
 /* 1024px                   ================*/
 @media only screen and (max-width : 1024px) {
   @import "../stylesheets/less/admin/07-A_1024.less";
@@ -468,6 +469,14 @@ height: 410px;
 
 .confirm-save {
     text-align: center;
+    padding: 10px;
+
+    .form-title {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0, 0.1);
+    }
+
     .confirm-button {
       margin: 0 auto;
       padding: 10px 20%;
@@ -564,6 +573,10 @@ height: 410px;
     text-transform: none;
 }
 
+.rates_exclusive .radio .icon-form {
+    left: 10px;
+}
+
 /*Tooltip indicator sample...*/
 .tooltip-indicator {
     display: inline-block;
@@ -588,16 +601,12 @@ header.content-title a.action.back {
 
 section.content-scroll {
     position: relative;
-    top: 70px;
+    padding-top: 50px;
     display: table;
-    padding: 0px;
-    margin: 0px;
     width: 100%;
     overflow: auto;
     z-index: 1099;
-    box-sizing: border-box;
-    border: none;
-    background: transparent;
+    .show;
 }
 
 /*END -- For Fixed Content Header Update*/
@@ -732,15 +741,64 @@ td{
   margin-left:5px;
   color:#575757 !important;
 }
-//CICO-9442 Fix the close button issue
 
- .ui-datepicker-trigger-btn { 
-                    margin-left:36px;
-                    width:85% !important; 
-                     }
-//CICO-6445 On edit screens, position of right side buttons seems to change
+
+/*HK: Daily work assignment*/
+#daily-work-assignment .select select.daily-task-worktype{
+  padding: 0 0 0 10px;
+}
+
+#daily-work-assignment .content-title {
+  margin-bottom: 0;
+}
+
+#daily-work-assignment .grid {
+  margin-bottom: 50px;
+}
+
+#daily-work-assignment .grid tbody tr td a {
+  display: inline-block;
+}
+
+.ui-datepicker-trigger-btn { 
+  margin-left:36px;
+  width:85% !important; 
+}
+
+/*CICO-6445 On edit screens, position of right side buttons seems to change*/
 .inline-edit{
   table{
     table-layout:auto !important;
   }
 }
+.entry-padding-left{
+  padding-left:2%;
+}
+.select-margin{
+  margin-right:3.333% !important;
+   width: 15%;
+}
+
+.select-med {
+  margin-right:3.333%;
+  width: 18%;
+}
+
+.label-checkout {
+  padding-top: 10px;
+}
+
+/* to handle width issue in multti select options */
+.multiSelect .multiSelectItem{
+  white-space:normal !important;
+}
+
+.multiSelect .show{
+   max-width:40% !important;
+}
+
+
+.top-padding-20{
+  padding-top:20px !important;
+}
+

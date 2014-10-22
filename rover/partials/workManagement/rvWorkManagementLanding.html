@@ -1,0 +1,146 @@
+
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<!-- Search form -->
+<form method="get" action="" name="work-management-search-form" id="work-management-search-form" class="search-form has-options" role="search">
+    <div class="entry search">
+        <a href="#" id="work-management-clear-query" class="clear-query">
+            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+        </a>
+        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+        <input name="work-management-query" id="work-management-query" ng-model="stateVariables.searchQuery" class="query" placeholder="Search by Room No. or Employee Name" type="search" autocomplete="off" rv-delay-textbox  delay="1000" function-to-fire="workManagementSearch"/>
+    </div>
+    <div class="entry options">
+        <div class="select">
+            <select ng-model="stateVariables.viewingDate.work_type_id" ng-options="workType.id as workType.name for workType in workTypes" ng-change="onWorkTypeChanged()">                
+            </select>
+        </div>
+        <div class="entry has-datepicker">
+            <input id="rmDateRange" placeholder="{{stateVariables.viewingDate.date | date : 'dd MMMM yyyy'}}" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+            <button ng-click="showCalendar('RVWorkManagementSearchDatePickerController')" type="button" class="ui-datepicker-trigger" style="top: 0px">...</button>
+        </div>
+    </div>
+</form> 
+
+<!-- Search panel : SEARCH BY NAME -->
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
+    <div class="wrapper scrollable" style="height:100%" ng-iscroll="maidsSearchResults">
+        <ul id="work-management-search-results" class="search-results">            
+            <li class="employee" ng-repeat="maid in stateVariables.searchResults.maids">
+                <a ng-click="showWorkSheet(maid.work_sheet_id)">
+                    <div class="data">
+                        <h2>{{maid.full_name}}</h2>
+                    </div>
+                    <div class="stayovers"><span>{{maid.stayovers.total_rooms_completed}}/{{maid.stayovers.total_rooms_assigned}}</span>stayovers</div>
+                    <div class="departures"><span>{{maid.departures.total_rooms_completed}}/{{maid.departures.total_rooms_assigned}}</span>departures</div>
+                    <!-- <div class="shift">{shift completed time}/{total shift time}</div> -->
+                    <!-- Maid in room -->
+                    <!-- <div class="location room">{room number}</div> -->
+                    <!-- Maid on floor -->
+                    <!-- <div class="location floor">{floor number}<sup>{st, nd, rd or th}</sup> floor</div> -->
+                </a>
+            </li>
+        </ul>
+    </div>
+</section> 
+
+<!-- Search panel : SEARCH BY ROOM NUMBER -->
+<section id="work-management-search" class="content scrollable showing-search" role="complementary" ng-show="stateVariables.searching && !stateVariables.employeeSearch && !$scope.stateVariables.noSearchResults">
+    <div class="wrapper scrollable" style="height:100%" ng-iscroll="roomsSearchResults">
+        <ul id="work-management-search-results" class="search-results">
+           <li class="room" ng-repeat="room in stateVariables.searchResults.rooms">
+			<a ng-click="onRoomSelect(room)" ng-class="{'with-image': room.is_occupied}"> <!-- Add class="with-image" if room is occupied -->
+				
+                <div class="data">
+					<h2 class="{{room.hk_status.value}}" ng-class="{'out' : room.hk_status.value == 'OO' || room.hk_status.value == 'OS'}">{{room.room_no}}</h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
+					<span class="room-status {{room.hk_status.value}}">{{room.hk_status.value}}</span>
+				</div>
+
+				<!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
+				<div class="reservation-status">
+					
+                    <!-- {reservation-status} can be check-out(for due out or departed) or inhouse(for stayover) -->
+					<div class="current {{departureClass[room.room_reservation_status]}}">
+						<span class="guest-status {{departureClass[room.room_reservation_status]}}">{{room.room_reservation_status}}</span>
+						<!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
+						<span ng-if="room.room_reservation_status == 'Departed'">OUT</span>
+                        <span ng-if="room.room_reservation_status == 'Due out' && !room.departure_time">DUE OUT</span>
+                        <span ng-if="room.room_reservation_status == 'Due out' && !!room.departure_time">{{ room.departure_time }}</span>
+                        <span ng-if="room.room_reservation_status != 'Due out' && room.room_reservation_status != 'Departed' && departureClass[room.room_reservation_status] == 'check-out' && !!room.departure_time">{{ room.departure_time }}</span>                        
+					</div>
+
+					<!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
+					<div class="next {{arrivalClass[room.room_reservation_status]}}">
+						<span class="guest-status {{arrivalClass[room.room_reservation_status]}}">{{room.room_reservation_status}}</span>
+						<!-- Show only if applicable, {arrival-time} can only be time -->
+						<span ng-if="room.room_reservation_status == 'Arrived'">IN</span>
+                        <span ng-if="room.room_reservation_status == 'Arrival' && !room.arrival_time">ARRIVAL</span>
+                        <span ng-if="room.room_reservation_status == 'Arrival' && !!room.arrival_time">{{ room.arrival_time }}</span>
+                        <span ng-if="room.room_reservation_status != 'Arrived' && room.room_reservation_status != 'Arrival' && arrivalClass[room.room_reservation_status] == 'check-in' && !!room.arrival_time">{{ room.arrival_time }}</span>                        
+
+					</div>
+				</div>
+
+				<!-- Show if room is assigned or ooo/oos -->
+				<div class="additional-info" ng-if="room.assignee_maid || room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
+					<!-- Show only if room is assigned -->
+					<span class="assigned">{{room.assignee_maid.name}}</span>
+                    <span ng-if="!room.assignee_maid.id" class="unassigned">Unassigned</span>
+					<!-- Show only if room is not in service -->
+					<span class="service-status" ng-if="room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
+                        <span ng-if="room.hk_status.value == 'OS'" class="service-status" translate>OS</span>
+                        <span ng-if="room.hk_status.value == 'OO'" class="service-status" translate>OO</span>
+                    </span>
+				</div>
+
+                <img ng-src="room.avatar_src" alt="" ng-show="room.is_occupied && room.is_vip"/>
+                <span class="vip" ng-show="room.is_occupied && room.is_vip" translate>VIP</span>
+			</a>
+		</li>
+        </ul>
+    </div>
+</section> 
+
+<!-- Search panel : EMPTY -->
+<section id="work-management-search" class="content scrollable no-results" role="complementary" ng-show="stateVariables.searching && stateVariables.noSearchResults">
+    <div class="wrapper">
+        <ul id="work-management-search-results" class="search-results">
+            <li class="no-content">
+                <div class="info">
+                    <span class="icon-no-content icon-search"></span>
+                    <strong class="h1" translate>FIND_ROOM_MAID</strong>
+                    <span class="h2">Search by <strong>{{'ROOM_NUMBER' | translate}}</strong> or <strong>{{'EMPLOYEE_NAME' | translate}}</strong></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+	
+<!-- Work Management -->
+<section id="work-management" class="content scrollable" role="main" ng-if="!stateVariables.searching && !stateVariables.noSearchResults">
+    <div class="wrapper">
+        <div class="dashboard-block data">
+            <ul>
+                <li>{{'DEP_TO_CLEAN' | translate}}<span class="red">{{workStats.departures.clean}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="red">{{ workStats.departures.total_hours}}</span></li>
+                <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="red">{{workStats.departures.total_maids_required}}</span></li>
+                <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="red">{{workStats.departures.total_rooms_assigned}}</span></li>
+                <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="red">{{workStats.departures.total_rooms_completed}}</span></li>
+            </ul>
+        </div>
+        <div class="dashboard-block data">
+            <ul>
+                <li>Stayovers to clean<span class="orange">{{workStats.stayovers.clean}}</span></li>
+                <li>{{'TOTAL' | translate}} <i>{{'HOURS' | translate}}</i><span class="orange">{{ workStats.stayovers.total_hours}}</span></li>
+                <li>{{'TOTAL_STAFF_REQUIRED' | translate}}<span class="orange">{{workStats.stayovers.total_maids_required}}</span></li>
+                <li>{{'TOTAL_ROOMS_ASSIGNED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_assigned}}</span></li>
+                <li>{{'TOTAL_ROOMS_COMPLETED' | translate }}<span class="orange">{{workStats.stayovers.total_rooms_completed}}</span></li>
+            </ul>
+        </div>
+        <div class="dashboard-block buttons">
+            <ul class="actions">
+                <li><a ui-sref="rover.workManagement.multiSheet({ date : stateVariables.viewingDate.date })" class="button blue">Manage Work Sheets</a></li>
+                <li><button ng-click="showCreateWorkSheetDialog()" class="button green open-modal">Create Work Sheet</button></li>
+            </ul>
+        </div>
+    </div>
+</section>

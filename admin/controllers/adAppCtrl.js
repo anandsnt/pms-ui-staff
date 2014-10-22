@@ -39,6 +39,16 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
 		$rootScope.currencySymbol = "";
+		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+	
+	    var routeChange = function(event, newURL) {
+	      event.preventDefault();
+	      return;
+	    };
+	
+	    $rootScope.$on('$locationChangeStart', routeChange);
+	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
 
 		var setupLeftMenu = function(){
@@ -127,11 +137,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/",
+						action: "staff#/staff/housekeeping/roomStatus/?date=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
-						action: ""
+						action: "staff#/staff/workmanagement/start"
 					}, {
 						title: "MENU_MAINTAENANCE",
 						action: ""
@@ -153,20 +163,31 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
+
+				// menu for mobile views
+				$scope.mobileMenu = [{
+				  title: "MENU_DASHBOARD",
+				  action: "staff#/staff/dashboard/",
+				  menuIndex: "dashboard",
+				  submenu: [],
+				  iconClass: "icon-dashboard"
+				}, {
+				  title: "MENU_ROOM_STATUS",
+				  action: "staff#/staff/housekeeping/roomStatus/",
+				  menuIndex: "roomStatus",
+				  submenu: [],
+				  iconClass: "icon-housekeeping"
+				}];
+
 			} else {
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
 					action: "staff#/staff/dashboard/",
 					menuIndex: "dashboard",
-					submenu: [],
-					iconClass: "icon-dashboard"
-				}, {
-					title: "MENU_SEARCH",
-					action: "staff#/staff/search/",
-					menuIndex: "search",
 					submenu: [],
 					iconClass: "icon-dashboard"
 				}, {
@@ -178,31 +199,49 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						title: "MENU_ROOM_STATUS",
 						action: "staff#/staff/housekeeping/roomStatus/",
 						menuIndex: "roomStatus"
-					}, {
-						title: "MENU_TASK_MANAGEMENT",
-						action: ""
-					}, {
-						title: "MENU_MAINTAENANCE",
-						action: ""
 					}]
 				},{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
+
+				// menu for mobile views
+				$scope.mobileMenu = [{
+				  title: "MENU_DASHBOARD",
+				  action: "staff#/staff/dashboard/",
+				  menuIndex: "dashboard",
+				  iconClass: "icon-dashboard"
+				}, {
+				  title: "MENU_ROOM_STATUS",
+				  action: "rover.housekeeping.roomStatus",
+				  menuIndex: "staff#/staff/housekeeping/roomStatus/",
+				  submenu: [],
+				  iconClass: "icon-housekeeping"
+				}];
 			}
-		}
+		};
 		
 		
 
 		$scope.$on("updateSubMenu", function(idx, item) {
+			//CICO-9816 Bug fix - When moving to /staff, the screen was showing blank content
+			if (item[1].action.split('#')[0] === "staff"){
+				$('body').addClass('no-animation');
+				$('#admin-header').css({'z-index':'0'});
+				$('section.content-scroll').css({'overflow':'visible'});
+			}
+
 			if (item && item[1] && item[1].submenu) {
 				$scope.showSubMenu = true;
 				$scope.activeSubMenu = item[1].submenu;
 			} else {
 				$scope.activeSubMenu = [];
 			}
+
+
 		});
 
 		if ($rootScope.adminRole == "hotel-admin") {
@@ -389,9 +428,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.businessDate = data.business_date;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
-		    console.log("currency code   : "+data.currency.value);
-		    console.log("currency symbol : "+$rootScope.currencySymbol);
-		    console.log("date format     : "+$rootScope.dateFormat);
 			$scope.$emit('hideLoader');
 
 		};
@@ -426,6 +462,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		
 		if ($scope.isHotelAdmin) {
 			$scope.getLanguage();
+		}else{
+			$translate.use('EN');
 		}
 
 	
@@ -463,9 +501,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		};
 		$scope.redirectToHotel = function(hotel_id) {
 			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
+				//CICO-9816 bug fix
+				$('body').addClass('no-animation');
+				$('#admin-header').css({'z-index':'0'});
+				$('section.content-scroll').css({'overflow':'visible'});
+
 				$window.location.href = "/admin";
 			}, function() {
-				console.log("error controller");
 			});
 		};
 

@@ -27,7 +27,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
 login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
 	 $scope.data = {};
 	 
-	 if(localStorage.email!=""){
+	 if(localStorage.email && localStorage.email!=""){
 	 	$scope.data.email = localStorage.email;
 	 	document.getElementById("password").focus();
 	 } else {

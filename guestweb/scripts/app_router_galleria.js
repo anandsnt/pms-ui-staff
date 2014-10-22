@@ -10,18 +10,18 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
        	templateUrl: '/assets/checkoutnow/partials/Galleria/checkoutBalance.html',
-	    title: 'Balance - Checkout Now'
+	    title: 'Balance - Check-out Now'
     })
     .state('checkOutStatus', {
         url: '/checkOutStatus',
        	controller: 'checkOutStatusController',
        	templateUrl: '/assets/checkoutnow/partials/Galleria/checkOutStatus.html',
-		title: 'Status - Checkout Now'
+		title: 'Status - Check-out Now'
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
        	controller: 'checkOutConfirmationController',
        	templateUrl: '/assets/checkoutnow/partials/Galleria/checkoutConfirmation.html',
-		title: 'Confirm - Checkout Now'
+		title: 'Confirm - Check-out Now'
     });
 
     // late checkout states
@@ -30,17 +30,17 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
     	url: '/checkOutOptions',
 	 	templateUrl: '/assets/landing/Galleria/landing.html',
 	 	controller: 'checkOutLandingController',
-	 	title: 'Checkout'
+	 	title: 'Check-out'
 	 }).state('checkOutLaterOptions', {
 	 	url: '/checkOutLaterOptions',
 		templateUrl: '/assets/checkoutlater/partials/Galleria/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
-		title: 'Checkout Later'
+		title: 'Check-out Later'
 	}).state('checkOutLaterSuccess', {
 		url: '/checkOutLaterOptions/:id',
 		templateUrl: '/assets/checkoutlater/partials/Galleria/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
-		title: 'Status - Checkout Later'
+		title: 'Status - Check-out Later'
 	 });
 
 	// checkin states
@@ -49,26 +49,26 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/checkin/partials/Galleria/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
-	 	title: 'Check In'
+	 	title: 'Check-in'
 	 }).state('checkinReservationDetails', {
 	 	url: '/checkinReservationDetails',
 	 	templateUrl: '/assets/checkin/partials/Galleria/checkInReservationDetails.html',
 	 	controller : 'checkInReservationDetails',
-	 	title: 'Details - Check In'
+	 	title: 'Details - Check-in'
 	 }).state('checkinUpgrade', {
 	 	url: '/checkinUpgrade',
 	 	templateUrl: '/assets/checkin/partials/Galleria/checkinUpgradeRoom.html',
 	 	controller : 'checkinUpgradeRoomController',
-	    title: 'Upgrade - Check In'
+	    title: 'Upgrade - Check-in'
 	 }).state('checkinKeys', {
 	 	url: '/checkinKeys',
 	 	templateUrl: '/assets/checkin/partials/Galleria/checkInKeys.html',
 	 	controller : 'checkInKeysController',
-	 	title: 'Keys - Check In'
+	 	title: 'Keys - Check-in'
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/Galleria/checkinSuccess.html',
-	 	title: 'Status - Check In'
+	 	title: 'Status - Check-in'
 	 });
 
 
@@ -85,5 +85,12 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
 	 });
+	  // pre checkin states
+
+    $stateProvider.state('preCheckinTripDetails', {
+    	url: '/tripDetails',
+	 	templateUrl: '/assets/preCheckin/partials/noOption.html',
+	 	title: 'Pre Check-in'
+	});
 
 }]);

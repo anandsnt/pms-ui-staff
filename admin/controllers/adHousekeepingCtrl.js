@@ -2,7 +2,6 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', '$rootScope', 'ADHote
 	
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
-	console.log("here");
 	var fetchSuccess = function(data){
 		$scope.data = data.housekeeping;
 		$scope.$emit('hideLoader');

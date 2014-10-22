@@ -10,7 +10,6 @@
  *
  *= require '../rover/css/rate-manager.less'
  *= require '../rover/css/reservation.less'
- *= require '../rover/css/rover_housekeeping.css.less'
  *= require '../rover/css/styles_ng_rover.css.less'
  *= require '../rover/css/rover_scroll_fix.css.less'
  *= require '../shared/lib/css/ngDialog.css'
@@ -19,6 +18,7 @@
  *= require '../shared/lib/css/ng-table.css'
  *= require '../shared/lib/css/date-picker.css.less'
  *= require '../shared/lib/css/advanced_date_picker.css'
+ *= require '../shared/lib/css/angular-multi-select.css'
  *= require '../rover/css/acute-select.css'
 
  */

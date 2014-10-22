@@ -23,7 +23,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.data.MLIData = {};
 			$scope.isGuestEmailAlreadyExists = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.heading = "Guest Details & Payment";
-			$scope.$emit('setHeading', 'Guest Details & Payment');
+			$scope.setHeadingTitle($scope.heading);
+
 			$scope.setScroller('reservationSummary');
 			$scope.setScroller('paymentInfo');
 			fetchPaymentMethods();
@@ -94,7 +95,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			// CICO - 8320 Rate to be handled in room level
 			// data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 			data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
-
 			//Guest details
 			data.guest_detail = {};
 			// Send null if no guest card is attached, empty string causes server internal error
@@ -104,8 +104,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
-			if ($scope.reservationData.paymentType.type != null) {
-				data.payment_type = {};
+			data.payment_type = {};
+			if ($scope.reservationData.paymentType.type !== null && !isEmpty($scope.reservationData.paymentType.type)) {
 				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
 				//TODO: verify
 				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
@@ -114,18 +114,30 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 
 			}
+			
+			/**			
+			 * CICO-7077 Confirmation Mail to have tax details
+			 */
+
+			data.tax_details = [];
+			_.each($scope.reservationData.taxDetails, function(taxDetail) {
+				data.tax_details.push(taxDetail);
+			});
+			
+			data.tax_total = $scope.reservationData.totalTaxAmount;
+
 
 			// guest emails to which confirmation emails should send
 			data.confirmation_emails = [];
-			if ($scope.otherData.isGuestPrimaryEmailChecked) {
+			if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email != "") {
 				data.confirmation_emails.push($scope.reservationData.guest.email);
 			}
-			if ($scope.otherData.isGuestAdditionalEmailChecked) {
+			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
 
 			// MLI Integration.
-			if ($scope.reservationData.paymentType.type != null) {
+			if ($scope.reservationData.paymentType.type !== null) {
 				if ($scope.reservationData.paymentType.type.value === "CC") {
 					data.payment_type.session_id = $scope.data.MLIData.session;
 				}
@@ -137,14 +149,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var stay = [];
 			_.each($scope.reservationData.rooms[0].stayDates, function(staydata, date) {
 				// if ($scope.reservationData.reservationId == "" || $scope.reservationData.reservationId == null || typeof $scope.reservationData.reservationId == "undefined") {
-					stay.push({
-						date: date,
-						rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
-						room_type_id: $scope.reservationData.rooms[0].roomTypeId,
-						adults_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.adults :  parseInt(staydata.guests.adults),
-						children_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.children :  parseInt(staydata.guests.children),
-						infants_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.infants :  parseInt(staydata.guests.infants)
-					});
+				stay.push({
+					date: date,
+					rate_id: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id, // In case of the last day, send the first day's occupancy
+					room_type_id: $scope.reservationData.rooms[0].roomTypeId,
+					adults_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
+					children_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
+					infants_count: (date == $scope.reservationData.departureDate) ? $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants)
+				});
 				// } else if (date != $scope.reservationData.departureDate) {
 				// 	stay.push({
 				// 		date: date,
@@ -300,13 +312,22 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Creates the reservation and on success, goes to the confirmation screen
 		 */
 		$scope.submitReservation = function() {
+			$scope.errorMessage = [];
+			// CICO-9794
+			if (($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email == "") || ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail == "")) {
+				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
+			}
 
-			if($scope.reservationData.paymentType.type != null){
+			if ($scope.reservationData.paymentType.type != null) {
 				if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-					return false;
+					$scope.errorMessage = [$filter('translate')('INVALID_CREDIT_CARD')];
 				}
 			}
+
+			if ($scope.errorMessage.length > 0) {
+				return false;
+			}
+
 			$scope.proceedCreatingReservation();
 
 		};

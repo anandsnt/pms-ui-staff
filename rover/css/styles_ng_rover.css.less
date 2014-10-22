@@ -49,14 +49,19 @@
 ==========================================================*/
 @import "less/app/06_ie.less"; 
 
-/* 7. MEDIA QUERIES
-==========================================================*/
-@media only print {
-    @import "less/app/07_print.less"; 
+/* 7. MEDIA QUERIES    
+==========================================================*/   
+@media only print {    
+    @import "less/app/07_print.less";    
 }
 
-
 @import "less/app/08_smartband.less"; 
+
+/* x. Rover Angular Animations
+==========================================================*/
+@import "../rover/css/rover_animation.less";
+
+
 
 // back button
 .actions-back {
@@ -133,11 +138,7 @@
 .container.menu-open .page-current, .container.menu-open .page-locked {
     animation: 0s ease 0s normal both 1 appMenuOpen;
  }
-
-
-
-
-/* ------------------date -picker ---------------------*/
+ /* ------------------date -picker ---------------------*/
 .pickdate-cell-bg{
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
 }
@@ -358,7 +359,6 @@ height: 410px;
 
 /*------------------date -picker ends here-------------------------- */
 
-
 .ui-match { color: #F6991B; margin-right: 0px !important;}
 .post-button {
   line-height: 50px !important;
@@ -464,8 +464,6 @@ button.icons.icon-search{
    top:15px;
 }
 
-
-
 }
 
 #search-cards .entry{
@@ -525,106 +523,10 @@ button.icons.icon-search{
     height: 50px !important;
     vertical-align: middle;     
 }
-
-
-/* 
-* Angular UI-States Animations      
-* ==================================
-* DO NOT change the numeric values
-*/
-
-/* ui-view animation hook up class for root-view */
-.root-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
-}
-.root-view.ng-enter {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  /**/
-  #fade > .in;
+#room-assignment .room-assignment-content .rooms-listing .results .rooms li .room-number {
+    line-height: normal;
 }
 
-/* ui-view animation hook up class for main-view */
-.main-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
-}
-
-/* making sure we are not flickering */
-.main-view.ng-enter,
-.main-view.ng-leave {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
-
-.main-view.ng-enter,
-.main-view.ng-enter-active {
-  z-index: 50;
-}
-
-.main-view.ng-leave,
-.main-view.ng-leave-active {
-  z-index: 30;
-}
-
-/* to remove a slight delay in applying the animations
-on a slow performaing device, keep the entering view hidden
-untill angular is ready to activate it */
-.main-view.ng-enter {
-  /*opacity: 0;*/
-  display: none;
-}
-.main-view.ng-enter-active {
-  /*opacity: 1;*/
-  display: block;
-}
-
-/* normal app state animations */
-.main-view.ng-enter {
-  #move > #ui-view > .enter;
-}
-
-.main-view.ng-leave {
-  #move > #ui-view > .leave;
-}
-
-/* when returning back */
-.return-back .main-view.ng-enter {
-  #move > #ui-view > .enter-rev;
-}
-
-.return-back .main-view.ng-leave {
-  #move > #ui-view > .leave-rev;
-}
-
-/* 
-* The End     
-* ==================================
-* Angular UI-States Animations
-*/
-
-.room-number {    
-    line-height: initial !important;
-}
-
-.room-status {    
-    line-height: 64px !important;
-}
 
 .iScrollVerticalScrollbar .iScrollIndicator {
     background: none repeat scroll 0 0 #FFB319;
@@ -738,266 +640,103 @@ Padding for the ows error popup
 
 }
 
-
 /* Rooms page               ==============================*/
-    
-    /* Rooms listing ***/
-    #rooms {
-        li {
-            margin: 0;         
-            a {
-                color: @textColor;
-                padding: 0 10px 0 10px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                border-bottom: 1px solid rgba(0,0,0,.1);
-                background-color: @white;
-                position: relative;
-                .show;
+.content#rooms {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
 
-                .room-number {
-                    font-size: 30px;
-                    line-height: 50px;
-                    vertical-align: middle;
-                    font-weight: 700;
-                    width: 70px;
-                    .show;
-                    .pull-left;
-                }
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 
-                .room-stats-wrap {
-                    display: block;
-                    overflow: hidden;
-                    position: absolute;
-                    top: 0;
-                    left: 90px;
-                    right: 50px;    
-                }
+  &.no-scroll {
+    overflow-y: hidden;
+  }
 
-
-                .room-status,
-                .fo-status {
-                    display: inline-block;
-                    color: @grey3;
-                    font-size: 13px;
-                    font-weight: 400; 
-                    font-style: italic;
-                    line-height: 50px;
-                }
-
-                .room-status {
-                    width: 50%;
-                    .pull-left;
-                 }
-
-                 @media (max-width: 319px) {
-                    .room-stats-wrap {
-                        clear: both;
-                        position: static;
-                        padding: 3px 0 10px;
-                    }
-
-                    .room-status,
-                    .fo-status {
-                        width: 49%;
-                        line-height: 1;
-                    }
-
-                    .fo-status {
-                        text-align: right;
-                        .pull-right;
-                    }
-                }
-
-                .guest-image {
-                    position: relative;
-                    top: 5px;
-                    .pull-right;
-                    #border-radius > .rounded(40px);
-                    .square(40px);
-
-                    .vip {
-                        position: absolute;
-                        bottom: 0;
-                        right: 0;
-                        font-size: 9px;
-                        line-height: 16px;
-                        .square(16px);
-                        #border-radius > .rounded(16px);       
-                    }
-
-                    img {
-                        width: 100%;
-                        height: auto;
-                        #border-radius > .rounded(40px);
-                    }
-                }
-
-                &.room-clean { 
-                    .room-number { color: @green; }
-                }
-
-                &.room-dirty { 
-                    .room-number { color: @red; }
-                }
-
-                &.room-out {
-                    .room-number { color: @grey3; }
-                }
-
-                &.room-pickup {
-                    .room-number { color: @orange; }
-                }
-
-                &:hover,
-                &:active {
-                    background-color: rgba(0,0,0,.02);
-                }
-            }
-        }
-    }
-
-    /* Rooms page               ==============================*/
-        
-        /* Rooms listing ***/
-        #rooms {
-            li {           
-                a {
-                    color: @textColor;
-                    padding: 0 20px 0 20px;
-
-                    .room-number,
-                    .room-status,
-                    .fo-status { line-height: 60px !important; }
-
-                    .room-number { 
-                        font-size: 36px;
-                        width: 120px;
-                        vertical-align: middle;
-                        font-weight: 700;
-                        display: block;
-                        float: left;
-                    }
-                    
-                    .room-status,
-                    .fo-status {
-                        font-size: 16px;
-                        font-style: normal;
-                        text-transform: uppercase;
-                        font-weight: 600;
-                        color: #9d9d9d;
-                    }
-
-                    .guest-image {
-                        top: 10px;
-                        .square(40px);
-                    }
-
-                    .room-stats-wrap {
-                        left: 150px;
-                        right: 60px;
-                    }
-
-                    &.with-image {
-                        .guest-image {
-                            top: 10px;
-                            .square(40px);
-                        }
-                    }
-                }
-            }
-        }    
-            /* Rooms page               ==============================*/
-        
-        /* Rooms listing ***/
-        #rooms {
-            .wrapper { padding: 0 20px; }
-
-            li {
-                margin-bottom: 10px;
-
-                a {
-                    border-bottom: 0;
-                    .clickable;
-
-                    &:hover,
-                    &:active { background-color: @white; }
-                }
-            }
-
-            .iScrollVerticalScrollbar { 
-                top: 0;
-                bottom: 0;
-            }
-        }
-
-
-/* 
-* Reports screen change animations  
-* ==================================
-* DO NOT change the numeric values
-*/
-#report-details.content.stay-card-inner{
-  position: absolute;
-}
-
-@media (max-width: 999px) {
-  #report-details.content.stay-card-inner {
-    position: static;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
   }
 }
 
-#reports-details-wrap #report-details .report-content {
-  .calc-height(100, 180);
+.content#filter-options {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+   
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+   
+  &::-webkit-scrollbar-thumb {
+    width: 4px;
+    border-radius: 3px;
+    background-color: #FFB319;
+  }
 }
 
-/* ui-view animation hook up class for main-view */
-.reports-wrapper {
+
+#pull-refresh-notify {
+  padding: 10px;
   position: absolute;
-  top: 60px;
   left: 0;
-  bottom: 0;
   right: 0;
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+  top: 60px;
+  text-align: center;
+  display: none;
+
+  &.show {
+    display: block;
+  }
+
+  &.has-options {
+    top: 120px;
+  }
+
+  #icon {
+    background: url(/assets/app/pull-refresh.png) 0 0 no-repeat;
+    width: 14px;
+    height: 20px;
+    display: inline-block;
+    background-size: 14px 20px;
+    -webkit-transition: all 0.3s ease;
+    &.rotate {
+      -webkit-transform: rotateZ(180deg);
+    }
+  }
+
+  #ref-text {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    top: -5px;
+    padding-left: 10px;
+  }
 }
 
-/* making sure we are not flickering */
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
-
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add-active {
-  z-index: 50;
-}
-
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add-active {
-  z-index: 30;
-}
-
-/* normal app state animations */
-.reports-wrapper.ng-hide-remove {
-  #move > #ui-view > .enter;
-}
-
-.reports-wrapper.ng-hide-add {
-  #move > #ui-view > .leave;
-}
-
-/* when returning back */
-.return-back .reports-wrapper.ng-hide-remove {
-  #move > #ui-view > .enter-rev;
-}
-
-.return-back .reports-wrapper.ng-hide-add {
-  #move > #ui-view > .leave-rev;
+@media only screen and (min-width: 600px) {
+  #pull-refresh-notify.has-options {
+    top: 60px;
+  }
 }
 
 .end-of-day-modal{
@@ -1259,7 +998,9 @@ Padding for the ows error popup
     top:0px !important;    
   }
 }
-
+#modal .modal-content.key-delivery #key-status.print-key .status.error{
+  height: auto !important;
+}
 
 
 /*-----CICO-6094 implementing horizontal scroll starts here-------*/
@@ -1293,7 +1034,7 @@ Padding for the ows error popup
 }
 
 #bills-tabs-nav .bill-tab-container{
-  width: 1600px; 
+  
   height: 100%;
 }
 
@@ -1305,11 +1046,21 @@ Padding for the ows error popup
     z-index: 10;
   }
  }
+
+// For CICO-6080 Charge code select box.
+
+.charge-code-select{
+  margin: 0 auto 0 auto !important;
+}
+
+.billing-info-charge-codes{
+  margin: 20 0 0 0 !important;
+}
+ 
  // For CICO-6080 Charge code search results.
  
  .charge-code-list{
     height: 200px;
-    top: 290px;
     z-index: 999;
     left: 390px;
     width: 330px;
@@ -1342,12 +1093,24 @@ Padding for the ows error popup
 }
 
 .bill-routing-list {
-  padding-top : 60px;
+  margin-top : 60px;
+  height: 360px !important;
 }
 
 /*-----CICO-6080 Adding cursor pointer to the entity div-------*/
 .entity {
    cursor: pointer;
+
+}
+
+/*-----CICO-9319 Hiding CC options for other payment methods-------*/
+.paymentMethodSelect {
+   min-width: 320px;
+
+}
+/*-----CICO-9179 setting max width for summary box items-------*/
+.summarychargegroup {
+   max-width: 104px;
 
 }
 
@@ -1357,4 +1120,108 @@ Padding for the ows error popup
     width: 100%;   height: 100%;   display: block; padding-top :0;
   }
 }
+// Solve the select box design issue in post charge pop-up
+.post-charge {
+  .select:after{
+    z-index: 9 !important;
+  }
+}
 
+
+//CICO-9595 setting the height and width for the terms and conditions dialog
+#modal .modal-content.terms {
+  width: 480px !important;
+  height: 600px !important;
+}
+
+#modal .modal-content.terms .actions {
+  margin-top: 20px;
+  text-align: center;
+}
+#modal .modal-content.terms .actions .button {
+  display: inline-block;
+  width: auto;
+}
+.head_terms_and_conditions {
+  text-align: center;
+  font-weight: bold;
+}
+#modal .modal-content.terms .scrollable {
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  height: 480px;
+}
+.agree-terms-and-conditions {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.termsandconditions-checkbox{
+  width: 30px !important;
+}
+#modal .modal-content.terms .actions .button.green {
+  padding: 0 35px;
+}
+
+//CICO-9586 setting the styles for the no post button
+.no-post-button {
+  border-radius: 3px !important;
+  width: auto !important;
+  line-height: 30px !important;
+  height: auto !important;
+  float: left !important;
+  margin: 10px 10 10 0px !important; 
+}
+
+.payment-checkbox-container{
+  float: left !important;
+}
+.payment-checkbox{
+  float:left !important;
+  width:50%;
+
+}
+
+.no-animation   * { 
+  -webkit-transition: none !important; 
+  -moz-transition: none !important; 
+  -o-transition: none !important; 
+  -ms-transition: none !important; 
+  transition: none !important; 
+  -webkit-transform: none !important; 
+  -moz-transform: none !important; 
+  -ms-transform: none !important; 
+  -o-transform: none !important; 
+  transform: none !important; 
+}
+
+// CICO-9956 -scroll for credit card list.
+.card-list-height{
+  height:220px;
+}
+
+/*  
+    CICO-7619  - Deleted payment and loyalty do not disappear from Guest card.
+    Adding correction class 'active-item-no-transition' here.
+    Overridding transition property on 'active-item' class used in these sections.
+    Since that makes the issue while deleting the respective items.
+*/
+.active-item-no-transition{
+  .transition (all, 0s, @easing: cubic-bezier(.10, .10, .25, .90)) !important;
+
+}
+
+/* CICO-10105 */
+#availability {
+  z-index: 10000;
+}
+
+#modal .key-delivery #key-status .info.print-status-msg {
+    height: 150px;
+}
+
+/* CICO-10309 */
+.no-margin-right {
+  margin-right:0px !important;
+}

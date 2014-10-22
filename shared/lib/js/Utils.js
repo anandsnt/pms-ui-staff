@@ -2,19 +2,19 @@
 // Function to remove unwanted key elements from hash.
 var dclone = function(object, unwanted_keys){
 
-  	if(typeof unwanted_keys === "undefined"){
-  		unwanted_keys = [];
-  	}
-  	if(object === "undefined"){
-  		return object;
-  	} else {
-  			var newObject = JSON.parse(JSON.stringify(object));
-		  	for(var i=0; i < unwanted_keys.length; i++){
-		  		delete newObject[unwanted_keys[i]];
-		  	}
-  	}
+    if(typeof unwanted_keys === "undefined"){
+        unwanted_keys = [];
+    }
+    if(object === "undefined"){
+        return object;
+    } else {
+            var newObject = JSON.parse(JSON.stringify(object));
+            for(var i=0; i < unwanted_keys.length; i++){
+                delete newObject[unwanted_keys[i]];
+            }
+    }
   
-  	return newObject;
+    return newObject;
 };
 
 
@@ -190,57 +190,67 @@ function getCurrencySymbol(currenyCode){
       return symbol;
 };
 
-var getMappedRoomReadyStatusColor = function(roomReadyStatus, checkinIsInspectedOnly) {
-	
-        mappedColor = "";
-        switch(roomReadyStatus) {
+var getMappedRoomStatusColor = function(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly) {
 
-            case "INSPECTED":
-                mappedColor = 'room-green';
-                break;
-            case "CLEAN":
-                if (checkinIsInspectedOnly == "true") {
-                    mappedColor = 'room-orange';
+    var reservationRoomStatusClass = "";
+    if(reservationStatus == 'CHECKING_IN' && roomReadyStatus!=''){
+        
+        if(foStatus == 'VACANT'){
+            switch(roomReadyStatus) {
+                case "INSPECTED":
+                    reservationRoomStatusClass = ' room-green';
                     break;
-                } else {
-                    mappedColor = 'room-green';
+                case "CLEAN":
+                    if (checkinInspectedOnly == "true") {
+                        reservationRoomStatusClass = ' room-orange';
+                        break;
+                    } else {
+                        reservationRoomStatusClass = ' room-green';
+                        break;
+                    }
                     break;
-                }
-                break;
-            case "PICKUP":
-                mappedColor = "room-orange";
-                break;
-
-            case "DIRTY":
-                mappedColor = "room-red";
-                break;
-
+                case "PICKUP":
+                    reservationRoomStatusClass = " room-orange";
+                    break;
+    
+                case "DIRTY":
+                    reservationRoomStatusClass = " room-red";
+                    break;
+                default:
+                    reservationRoomStatusClass = " ";
+                    break;
+            }
+        
+        } else {
+            reservationRoomStatusClass = "room-red";
         }
-        return mappedColor;
+            
+    } 
+    return reservationRoomStatusClass;
 };
 
 
 var avatharImgs = {
-	'mr' : 'avatar-male.png',
-	'mrs': 'avatar-female.png',
-	'ms': 'avatar-female.png',
-	'miss': 'avatar-female.png',
-	'': 'avatar-trans.png',
+    'mr' : 'avatar-male.png',
+    'mrs': 'avatar-female.png',
+    'ms': 'avatar-female.png',
+    'miss': 'avatar-female.png',
+    '': 'avatar-trans.png',
 };
 
 function getAvatharUrl(title){
-	//function to get avathar image url by giving title
-	title = $.trim(title).toLowerCase().split('.')[0];
-	try{
-		if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
-			return (/assets/ + avatharImgs[title]);
-	    else
-	    	return (/assets/ + avatharImgs['']);
-	}
-	catch (e) {
-		console.log(e.message);
-		// TODO: handle exception
-	}
+    //function to get avathar image url by giving title
+    title = $.trim(title).toLowerCase().split('.')[0];
+    try{
+        if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
+            return (/assets/ + avatharImgs[title]);
+        else
+            return (/assets/ + avatharImgs['']);
+    }
+    catch (e) {
+        console.log(e.message);
+        // TODO: handle exception
+    }
 }
 
 /**

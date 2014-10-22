@@ -3,6 +3,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
 	$scope.$emit("changedSelectedMenu", 0);
+	$s = $scope;
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */	
@@ -37,7 +38,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 		    });
 			
 		};
-		$scope.invokeApi(ADUserSrv.fetch, {} , successCallbackFetch);	
+		$scope.invokeApi(ADUserSrv.fetch, {'isAdminSnt':$scope.isAdminSnt} , successCallbackFetch);	
 	};
 	
    /**
@@ -69,12 +70,12 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
     */ 
 	$scope.deleteUser = function(index, userId){
 		var data = {
-			"id": userId
+			"id": userId,
+			"index": index
 		};
 		var successDelete = function(){
 			$scope.$emit('hideLoader');
-			$scope.orderedData.splice(index, 1);
-			//Since splice not working in sorted data. Need to find a correct solution
+			//To refresh the user list
 			$scope.listUsers(); 
 		};
 		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );

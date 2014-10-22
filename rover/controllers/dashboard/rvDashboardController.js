@@ -66,7 +66,7 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
           'FRONT_DESK': 'rover.dashboard.frontoffice',
           'MANAGER': 'rover.dashboard.manager',
           'HOUSEKEEPING': 'rover.dashboard.housekeeping'
-        }
+        };
         if($rootScope.default_dashboard in defaultDashboardMappedWithStates) {
 
             // Nice Gotacha!!
@@ -115,11 +115,10 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
     */              
 	 $scope.headerBackButtonClicked = function(){
         $scope.$broadcast("HeaderBackButtonClicked");
-    }
+   };
 
 
-     
-
+   
 }]);
 
     

@@ -47,7 +47,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     var oldType = "";
                     var dataDict = {};
                     oldType = $stateParams.type;
-                    if( oldType != null && oldType!= '' ) {
+                    if( oldType != null && oldType!= '' && oldType !="RESET") {
                         if(oldType == "LATE_CHECKOUT"){
                             dataDict.is_late_checkout_only = true;
                         } else if(oldType == "QUEUED_ROOMS"){
@@ -61,7 +61,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         }
                         //calling the webservice
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
-                    } else if ( !!$stateParams.useCache ) {
+                    } else if ( !!$stateParams.useCache && oldType !="RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
                         var results = [];

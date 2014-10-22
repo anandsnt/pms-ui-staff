@@ -7,7 +7,7 @@ sntRover.controller('RVReportsMainCtrl', [
 	function($rootScope, $scope, reportsResponse, RVreportsSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
-console.log($rootScope);
+
 		// set a back button, by default keep hidden
 		$rootScope.setPrevState = {
 		    hide: true,
@@ -20,8 +20,9 @@ console.log($rootScope);
 		    noStateChange: true
 		};
 
-		$scope.setTitle( 'Stats & Reports' );
-		$scope.heading = 'Stats & Reports';
+		var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+		$scope.setTitle( listTitle );
+		$scope.heading = listTitle;
 		$scope.$emit("updateRoverLeftMenu", "reports");
 
 		$scope.reportList = reportsResponse.results;
@@ -36,44 +37,45 @@ console.log($rootScope);
 		$scope.goBackReportList = function() {
 			$rootScope.setPrevState.hide = true;
 			$scope.showReportDetails = false;
-			$scope.heading = 'Stats & Reports';
+			$scope.heading = listTitle;
 		};
 
-		$scope.getFromOptions = function(item) {
-		    return {
-		        dateFormat: $rootScope.jqDateFormat,
-		        numberOfMonths: 1,
-		        changeYear: true,
-		        changeMonth: true,
-		        maxDate: tzIndependentDate( item.untilDate ),
-		        beforeShow: function(input, inst) {
-                    $('#ui-datepicker-div');
-                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-                },
-                onClose: function(dateText, inst) {
-                    $('#ui-datepicker-div');
-                    $('#ui-datepicker-overlay').remove();
-                }
-		    }
+		$scope.fromDateOptions = {
+			dateFormat: $rootScope.jqDateFormat,
+			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onSelect: function(value) {
+				$scope.untilDateOptions.minDate = value;
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
 		};
 
-		$scope.getUntilOptions = function(item) {
-		    return {
-		        dateFormat: $rootScope.jqDateFormat,
-		        numberOfMonths: 1,
-		        changeYear: true,
-		        changeMonth: true,
-		        minDate: tzIndependentDate( item.fromDate ),
-		        maxDate: tzIndependentDate( $rootScope.businessDate ),
-		        beforeShow: function(input, inst) {
-                    $('#ui-datepicker-div');
-                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-                },
-                onClose: function(dateText, inst) {
-                    $('#ui-datepicker-div');
-                    $('#ui-datepicker-overlay').remove();
-                }
-		    }
+		$scope.untilDateOptions = {
+			dateFormat: $rootScope.jqDateFormat,
+			maxDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat),
+			numberOfMonths: 1,
+			changeYear: true,
+			changeMonth: true,
+			beforeShow: function(input, inst) {
+				$('#ui-datepicker-div');
+				$('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
+			},
+			onSelect: function(value) {
+				$scope.fromDateOptions.maxDate = value;
+			},
+			onClose: function(value) {
+				$('#ui-datepicker-div');
+				$('#ui-datepicker-overlay').remove();
+			},
 		};
 
 		// auto correct the CICO value;
@@ -107,8 +109,8 @@ console.log($rootScope);
 		// generate reports
 		$scope.genReport = function(changeView, loadPage, resultPerPageOverride) {
 			var chosenReport = RVreportsSrv.getChoosenReport(),
-				fromDate     = tzIndependentDate( chosenReport.fromDate ),
-				untilDate    = tzIndependentDate( chosenReport.untilDate ),
+				fromDate     = chosenReport.fromDate,
+				untilDate    = chosenReport.untilDate,
 				changeView   = typeof changeView === 'boolean' ? changeView : true,
 				page         = !!loadPage ? loadPage : 1;
 				

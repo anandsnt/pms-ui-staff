@@ -25,7 +25,7 @@
 					<button type="button" name="submit" class="icons icon-search">
 						Search
 					</button>
-					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
+					<input type="search" class="query" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>
 			</div>
 			<div id="items-listing" class="scrollable" ng-iscroll="items_list">
@@ -57,14 +57,23 @@
 
 			<span class="h2 message">
 				<span translate>POST_CHARGE_TO_BILL</span> #<span ng-show="passActiveBillNo">{{ passActiveBillNo }}</span>
-				<div id="select-bill-number" class="select" ng-hide="passActiveBillNo">
+				<div id="select-bill-number" class="select" ng-hide="passActiveBillNo || !isStandAlone">
 					<select ng-model="billNumber">
 					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 					        {{ no }}
 					    </option>
 					    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="fetchedData.bill_numbers.length<10 && isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 					</select>
-				</div> </span>
+				</div> 
+				<!-- we have to replicate code as option is not being hidden in devices -->
+				<div id="select-bill-number" class="select" ng-hide="passActiveBillNo || isStandAlone">
+					<select ng-model="billNumber">
+					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
+					        {{ no }}
+					    </option>
+					</select>
+				</div> 
+			</span>
 			<div id="no-items-added" class="no-content" ng-hide="isAnyChosen()">
 				<div class="info">
 					<strong class="h1" translate>0_ITEM_SELECTED</strong>

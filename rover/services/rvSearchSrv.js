@@ -4,6 +4,8 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
+	
+		
 		dataToSend.fakeDataToAvoidCache = new Date();
 		var url =  'search.json';
 
@@ -15,6 +17,12 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 					data[i].is_row_visible = true;
 				}
 
+				if(dataToSend.is_queued_rooms_only == true){
+					self.lastSearchedType = "queued";
+				} else {
+					self.lastSearchedType = "others";
+				}
+				
 				self.data = data;
 				deferred.resolve(data);
 			},function(data){
@@ -74,12 +82,28 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			}
 
 			// if not then check if this room number is assigned to any other reservation
+			// CICO-10123 : if both reservation having same room number and reservation status is CHECKING_IN
 			// if so remove the room no from that reservation
-			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] ) {
+			else if ( data.hasOwnProperty('room') && data['room'] === self.data[i]['room'] && self.data[i]['reservation_status'] === 'CHECKING_IN' && data['reservation_status'] === 'CHECKING_IN') {
 				self.data[i]['room'] = '';
 			}
 		};
 	};
+	this.removeResultFromData = function(reservationId){
+		
+        if(self.lastSearchedType === "queued"){
+        	for (var i = 0, j = self.data.length; i < j; i++) {
+        		
+				if ( self.data[i]['id'] === reservationId ) {
+					self.data.splice(i, 1);
+					break;
+					
+				}
+			}
+        }
+		
+	};
+
 
 	// update the guest details of cached data
 	this.updateGuestDetails = function(guestid, data) {
@@ -104,6 +128,15 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 
 				if ( typeof data['vip'] === 'boolean' ) {
 					self.data[i]['vip'] = data['vip'];
+				};
+
+				//Update the primary image of the guest with the changed avatar
+				if (data['avatar']) {
+					for(var k in self.data[i]['images']){
+						if(self.data[i]['images'][k].is_primary){
+							self.data[i]['images'][k].guest_image = data['avatar'];
+						}
+					}
 				};
 			};
 		};

@@ -2,14 +2,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog){
 	
 	$scope.$parent.myScrollOptions = {
-            'RateCalendarCtrl': {
+            RateCalendarCtrl: {
                 scrollX: true,
                 scrollbars: true,
                 interactiveScrollbars: true,
                 click: true,
                 snap: false
-            },
-         
+            }
    };
    /* Cute workaround. ng-iscroll creates myScroll array in its Scope's $parent.
     * Since our controller's scope is two step above the scroll div, 
@@ -40,6 +39,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		if($scope.currentExpandedRow == index){
 			$scope.currentExpandedRow = -1;
 			$scope.refreshScroller();
+
 			return false;
 		}
 		$scope.currentExpandedRow = index;
@@ -48,7 +48,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 	$scope.refreshScroller = function(){
 		setTimeout( function(){
-			$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
+			$scope.$parent.myScroll.RateCalendarCtrl.refresh();
 		}, 0);
 	};
 
@@ -80,14 +80,24 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			} else {
 				$scope.calendarMode = "RATE_VIEW";
 			}
+
 			if(typeof data.selectedRateDetails != 'undefined'){
 				$scope.currentSelectedRate = data.selectedRateDetails;
 				$scope.ratesDisplayed.push(data.selectedRateDetails);
 			}
+
 			$scope.calendarData = data;
+
+			/*for(var i = 0, len = data.length; i < len; i++){
+				$scope.calendarData[i].date = data[i];
+				$scope.calendarData[i].id = Date.parse(data[i]);
+			}*/
+
         	$scope.currentFilterData.filterConfigured = true;
+
 			$scope.$emit('hideLoader');
-			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
+
+			if($scope.$parent.myScroll.RateCalendarCtrl){
 				$scope.refreshScroller();
 			}
 
@@ -96,13 +106,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 		//Set the current business date value to the service. Done for calculating the history dates
 		RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
+
 		if($scope.calendarMode == "RATE_VIEW"){
-			var getParams = calculateRateViewCalGetParams();
-			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getParams, calenderDataFetchSuccess);
+			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess);
 		
 		} else {
-			var getParams = calculateRoomTypeViewCalGetParams();
-			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, getParams, calenderDataFetchSuccess);
+			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess);
 		}
 	};
 
@@ -111,12 +120,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	*/
 	var calculateRateViewCalGetParams = function(){
 		var data = {};
+
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
 		//Total number of dates to be displayed
         data.per_page = getNumOfCalendarColumns();
 
 		data.name_card_ids = [];
+
 		for(var i in $scope.currentFilterData.name_cards){
 			data.name_card_ids.push($scope.currentFilterData.name_cards[i].id);	
 		}
@@ -126,11 +137,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}
 
 		data.rate_type_ids = [];
+
 		for(var i in $scope.currentFilterData.rate_type_selected_list){
 			data.rate_type_ids.push($scope.currentFilterData.rate_type_selected_list[i].id);	
 		}
 		
 		data.rate_ids = [];
+
 		for(var i in $scope.currentFilterData.rates_selected_list){
 			data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);	
 		}
@@ -145,6 +158,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	var calculateRoomTypeViewCalGetParams = function(){
 
 		var data = {};
+
 		data.id = $scope.currentSelectedRate.id;
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');

@@ -13,7 +13,7 @@
 			</div>
 		
 	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-		<p class="msg-head">Our apologies, something went wrong, please complete your check out at our front desk.</p>
+		<p class="msg-head">Our apologies, something went wrong, please complete your check-out at our front desk.</p>
 		<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 	</div>
 	<!-- contentarea starts here-->
@@ -21,15 +21,17 @@
 		<!-- top section starts here-->
 		<div class="row checkin-wrapper">
 			<div class="col-md-6 headtext centeralign pad-rt-60">
-				Enter Your <br class="cabin-number-main-heading-seperator"/> Room Number				
+				Enter Your  <br class="cabin-number-main-heading-seperator"/> Room Number				
 			</div>
+
 			<div class="verti-ruler"></div>
 			<!-- top section ends here-->
 			<div class="col-md-6 pad-lf-60 cabin-number">
 				<form >
 				<div class="row cabin_number_field">
-					<p class="centeralign cabin-number-text">Room Number</p>
-					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox"/> 
+					<div class="lightcontent chekout-time grey-text room-text">({{roomVerificationInstruction}})</div>
+					<p class="cabin-number-text">Room Number</p>
+					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox" placeholder="Enter Room number"/> 
 				</div>								
 						<button class="checkin-button continue-button" ng-click="continueButtonClicked()">
 							<span class="continue-text">Continue</span>
