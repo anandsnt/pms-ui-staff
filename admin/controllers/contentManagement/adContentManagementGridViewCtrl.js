@@ -7,14 +7,17 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    $scope.selectedView = "section";
    $scope.fromSection = "all";
    $scope.fromCategory = "all";
+   $scope.showUnMappedList = false;
    $scope.sections = [];
    $scope.categories = [];
    $scope.items = [];
+   $scope.searchText = "";
 
    $scope.fetchGridViewList= function(){
    		var successCallbackGridFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
+			$scope.filteredData = $scope.data;
 			$scope.setUpLists();
 			$scope.setSections();
 			$scope.setCategories();
@@ -96,6 +99,55 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		            $defer.resolve(orderedData);
 		        }
 		    });
+   }
+
+   $scope.filterBySectionAndCategory = function(){
+
+   		if($scope.showUnMappedList){
+   				for(var i=0; i < $scope.data.length; i++){
+			   			if($scope.data[i].from_section == '' && $scope.data[i].from_category == ''){
+			   				$scope.filteredData.push($scope.data[i]);
+			   			}
+		   			}
+   		}else{
+	   			if($scope.fromSection == 'all' && $scope.fromCategory == 'all'){
+	   				$scope.filteredData = $scope.data;
+	   			}else if($scope.fromSection != 'all' && $scope.fromCategory != 'all'){
+		   			for(var i=0; i < $scope.data.length; i++){
+			   			if($scope.data[i].from_section == $scope.fromSection && $scope.data[i].from_category == $scope.fromCategory){
+			   				$scope.filteredData.push($scope.data[i]);
+			   			}
+		   			}
+	   			}else if($scope.fromSection != 'all'){
+	   				for(var i=0; i < $scope.data.length; i++){
+			   			if($scope.data[i].from_section == $scope.fromSection){
+			   				$scope.filteredData.push($scope.data[i]);
+			   			}
+		   			}
+	   			}else{
+	   				for(var i=0; i < $scope.data.length; i++){
+			   			if($scope.data[i].from_category == $scope.fromCategory){
+			   				$scope.filteredData.push($scope.data[i]);
+			   			}
+		   			}
+	   			}
+   		}
+   		
+   		
+   		$scope.applyFiltersToSectionsAndItems();
+   		
+   }
+
+   $scope.applyFiltersToSectionsAndItems = function(){
+   		for(var i= 0; i < $scope.filteredData.length; i++){
+   			if($scope.filteredData[i].type == 'CATEGORY'){
+   				$scope.categories.push($scope.filteredData[i]);
+   			}else if($scope.filteredData[i].type == 'PAGE'){
+   				$scope.items.push($scope.filteredData[i]);
+   			}
+   		}
+   		$scope.setCategories();
+   		$scope.setItems();
    }
 
    $scope.fetchGridViewList();
