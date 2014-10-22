@@ -40,7 +40,7 @@
 				</td>
 			</tr>
 
-			<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}" ng-show="calendarMode==='RATE_VIEW'">
+			<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading===false}" ng-show="calendarMode==='RATE_VIEW'">
 				<td class="first-row">
 					<div ng-click="goToRoomTypeCalendarView(rate)">
 						<span>{{rate.name}}</span>
