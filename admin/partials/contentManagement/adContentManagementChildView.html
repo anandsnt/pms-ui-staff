@@ -1,0 +1,25 @@
+<ol ng-controller="ADContentManagementChildViewCtrl">
+    <li class="section branch" ng-class= "{'collapsed': !content.isExpanded, 'expanded': content.isExpanded}" ng-repeat = "content in contentList">
+                            <div class="sort">
+                                <span class="reorder" ng-show="content.children.length > 0" ng-click= "toggleExpansion($index)"></span>
+                                <a  class="cms-name">{{content.component_name}}</a>
+                                <span class="cms-type">{{content.component_type}}</span>
+                                <em class="cms-date">{{content.updated_at}}</em>
+                                <div class="cms-activate">
+                                    <div class="switch-button" ng-class="{'on':content.status}">
+                                        <input name="category" id="category" value="category" type="checkbox" ng-model="content.status" />
+                                        <span class="switch-icon"></span>
+                                    </div>
+                                </div>
+                                <div class="cms-delete">
+                                     <a  class="icons icon-delete large-icon">Delete</a>
+                                </div>
+                            </div>
+
+                            <!-- Item -->
+                            <div ng-if="content.children.length > 0 && content.isExpanded" ng-include= "'/assets/partials/contentManagement/adContentManagementChildView.html'">
+                                
+                                
+                            </div>
+    </li>
+</ol>

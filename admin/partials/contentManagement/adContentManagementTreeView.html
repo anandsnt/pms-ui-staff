@@ -13,15 +13,15 @@
             <!-- Tree content -->
             <ol class="cms-tree">
                 <!-- First level: Sections -->
-                <li class="section">
+                <li class="section branch" ng-class="{'collapsed': !section.isExpanded, 'expanded': section.isExpanded}"  ng-repeat="section in data">
                     <div class="sort">
-                        <span class="reorder"></span>
-                        <a href="{link}" class="cms-name">Section Name</a>
-                        <span class="cms-type">Section</span>
-                        <em class="cms-date">Last Update DateTime</em>
+                        <span class="reorder" ng-click= "toggleExpansion($index)"></span>
+                        <a href="{link}" class="cms-name">{{section.component_name}}</a>
+                        <span class="cms-type">{{section.component_type}}</span>
+                        <em class="cms-date">{{section.updated_at}}</em>
                         <div class="cms-activate">
-                            <div class="switch-button on">
-                                <input name="section" id="{section}" value="section" type="checkbox" checked />
+                            <div class="switch-button" ng-class="{'on':section.status}">
+                                <input name="section" id="section" value="section" type="checkbox" ng-model="section.status" />
                                 <span class="switch-icon"></span>
                             </div>
                         </div>
@@ -31,48 +31,7 @@
                     </div>
 
                     <!-- 1st level category. All deper category levels use same <li class="category"> markup so it's not repeated here. Standard ordered list nesting should be applied. -->
-                    <ol>
-                        <li class="category">
-                            <div class="sort">
-                                <span class="reorder"></span>
-                                <a  class="cms-name">Category Name</a>
-                                <span class="cms-type">Category</span>
-                                <em class="cms-date">Last update DateTime</em>
-                                <div class="cms-activate">
-                                    <div class="switch-button on">
-                                        <input name="category" id="category" value="category" type="checkbox" checked />
-                                        <span class="switch-icon"></span>
-                                    </div>
-                                </div>
-                                <div class="cms-delete">
-                                     <a  class="icons icon-delete large-icon">Delete</a>
-                                </div>
-                            </div>
-
-                            <!-- Item -->
-                            <ol>
-                                <li class="item">
-                                    <div class="sort">
-                                        <span class="reorder"></span>
-                                        <a  class="cms-name">Item Name</a>
-                                        <span class="cms-type">Category / Item Type</span>
-                                        <em class="cms-date">Last update DateTime</em>
-                                        <div class="cms-activate">
-                                            <div class="switch-button on">
-                                                <input name="category" id="category" value="category" type="checkbox" checked />
-                                                <span class="switch-icon"></span>
-                                            </div>
-                                        </div>
-                                        <div class="cms-delete">
-                                             <a  class="icons icon-delete large-icon">Delete</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                            </ol>
-                        </li>
-                        
-                    </ol>
+                    <div ng-if="section.children.length > 0 && section.isExpanded" ng-include= "'/assets/partials/contentManagement/adContentManagementChildView.html'"></div>
                 </li>
                 
             </ol>
