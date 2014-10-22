@@ -91,7 +91,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 			$scope.calendarData = data;
 
-			if($scope.store.dates.length === 0) {
+			if($scope.store.dates.length !== $scope.calendarData.dates.length) {
+				$scope.store.dates = [];
 				initializing = true;
 
 				for(var i = 0, len = $scope.calendarData.dates.length; i < len; i++) {
