@@ -13,12 +13,8 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
             resolve: {
-                fetchedRoomList: function(RVHkRoomStatusSrv, $stateParams) {
-                    if (!$stateParams) {
-                        return false;
-                    };
-
-                    if (!!$stateParams.roomStatus) {
+                roomList: function(RVHkRoomStatusSrv, $stateParams, $rootScope) {
+                    if (!!$stateParams && !!$stateParams.roomStatus) {
                         var filterStatus = {
                             'INHOUSE_DIRTY': ['dirty', 'stayover'],
                             'INHOUSE_CLEAN': ['clean', 'stayover'],
@@ -28,7 +24,7 @@ angular.module('housekeepingModule', [])
                             'VACANT_READY': ['vacant', 'clean', 'inspected'],
                             'VACANT_NOT_READY': ['vacant', 'dirty', 'out_of_order'],
                             'OUTOFORDER_OR_SERVICE': ['out_of_order', 'out_of_service'],
-                            'QUEUED_ROOMS': ['dayuse']
+                            'QUEUED_ROOMS': ['queued']
                         }
                         var filtersToApply = filterStatus[$stateParams.roomStatus];
                         for (var i = 0; i < filtersToApply.length; i++) {
@@ -36,7 +32,19 @@ angular.module('housekeepingModule', [])
                         }
                     }
 
-                    return RVHkRoomStatusSrv.roomList;
+                    return RVHkRoomStatusSrv.fetchRoomList($rootScope.businessDate);
+                },
+                employees: function(RVHkRoomStatusSrv, $rootScope) {
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : null;
+                },
+                workTypes: function(RVHkRoomStatusSrv, $rootScope) {
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchWorkTypes() : null;
+                },
+                roomTypes: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchRoomTypes();
+                },
+                floors: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
         });
@@ -73,7 +81,7 @@ angular.module('housekeepingModule', [])
                     return RVWorkManagementSrv.fetchShifts();
                 },
                 floors: function(RVHkRoomStatusSrv) {
-                    return RVHkRoomStatusSrv.fetch_floors();
+                    return RVHkRoomStatusSrv.fetchFloors();
                 }
             }
         });

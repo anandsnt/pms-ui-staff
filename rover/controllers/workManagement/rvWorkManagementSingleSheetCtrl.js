@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog',
-	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog) {
+sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog', '$filter',
+	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog, $filter) {
 		BaseCtrl.call(this, $scope);
 		$scope.singleState = {
 			workSheet: {
@@ -96,7 +96,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 						$scope.$emit('hideLoader');
 					}
 				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
-					"date": $stateParams.date,
+					"date": $stateParams.date || $rootScope.businessDate,
 					"employee_ids": [$scope.singleState.workSheet.user_id],
 					"work_type_id": $scope.singleState.workSheet.work_type_id
 				}, onFetchSuccess, onFetchFailure);
@@ -111,7 +111,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				_.each($scope.singleState.assigned, function(room) {
 					if ($scope.departureClass[room.reservation_status] == "check-out") {
 						$scope.singleState.summary.departures++;
-					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
+					} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
 						$scope.singleState.summary.stayovers++;
 					}
 					if (room.hk_complete) {
@@ -130,7 +130,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			};
 
 
-		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $stateParams.date);
+		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
 
 		var prevState = {
 			title: ('Work Management'),
@@ -140,6 +140,14 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			prevState = {
 				title: ('Manage Worksheets'),
 				name: 'rover.workManagement.multiSheet'
+			}
+		} else if (!!parseInt($stateParams.from)) {
+			prevState = {
+				title: ('Room Details'),
+				name: 'rover.housekeeping.roomDetails',
+				param: {
+					id: parseInt($stateParams.from)
+				}
 			}
 		}
 
@@ -196,6 +204,13 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				}
 			}
 		}
+
+		$scope.printWorkSheet = function() {
+			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
+				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
+			window.print();
+		}
+
 
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
