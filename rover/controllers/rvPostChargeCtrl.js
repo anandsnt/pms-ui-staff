@@ -219,6 +219,16 @@ sntRover.controller('RVPostChargeController',
 
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
+				/*
+				 * TO solve CICO-10251
+				 */
+				angular.forEach(angular.element("#numpad-numbers button"), function(value, key){
+				      new FastClick(value);
+				});
+				angular.forEach(angular.element("#numpad-options button"), function(value, key){
+				      new FastClick(value);
+				});
+				
 			};
 
 			/**
