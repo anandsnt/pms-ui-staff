@@ -6,12 +6,11 @@
       </select>
     </div>
   </div>
-
-  <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
+    
   <!-- 3.B Room Tab - Room is OOO or OOS -->
   <div id="room-content" class="room-content row scrollable" ng-iscroll="room-tab-scroll">
     <div class="wrapper">
+      <div ng-include="'/assets/partials/common/notification_message.html'"></div>
           <!-- 3.A  Room Tab - Room in service -->
           <div ng-if="inService && !showForm">
             <strong class="h2">In Service</strong>
