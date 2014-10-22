@@ -28,7 +28,7 @@
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
     
-    <div class="entry options" ng-if="isStandAlone">
+    <div class="entry options" ng-if="isStandAlone" ng-cloak>
         <div class="select">
             <select id="work-type" name="work-type" ng-model="topFilter.byWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
                 <option value="">All Work Types</option>
