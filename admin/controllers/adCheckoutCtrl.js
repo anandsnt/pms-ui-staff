@@ -61,9 +61,9 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
             $scope.checkoutData.alternate_checkout_email_alert_time_minute = $scope.checkoutData.alternate_checkout_email_alert_time_minute == null? "MM":$scope.checkoutData.alternate_checkout_email_alert_time_minute;
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute == null? "MM":$scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
 			 
-             $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;       
-			 $scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
-			 $scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
+            $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true:false;       
+			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true:false;
+			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true:false;
 		};
 		$scope.invokeApi(adCheckoutSrv.fetch, {},fetchCheckoutDetailsSuccessCallback,fetchCheckoutDetailsFailureCallback);
 	};
@@ -113,7 +113,8 @@ admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state
 				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
 				'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
 				'require_cc_for_checkout_email':$scope.checkoutData.require_cc_for_checkout_email,
-                'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts
+                'staff_emails_for_late_checkouts':$scope.checkoutData.staff_emails_for_late_checkouts,
+                'room_verification_instruction':$scope.checkoutData.room_verification_instruction
 			};
 
         var saveCheckoutDetailsFailureCallback = function(data) {
