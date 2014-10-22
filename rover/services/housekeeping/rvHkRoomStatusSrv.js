@@ -375,7 +375,8 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		/**
 		 * CICO-8470 QA comment : Rooms filter for OOO/OOS does not display the correct rooms
-		 * This method just updates the property param with the value param passed into it for the room specified!
+		 * The methods setWorkStatus and setRoomStatus
+		 *  just updates the property param with the value param passed into it for the room specified!
 		 */
 		this.setRoomStatus = function(id, property, value) {
 			var matchedRoom = _.find(roomList.rooms, function(room) {
@@ -383,6 +384,16 @@ sntRover.service('RVHkRoomStatusSrv', [
 			});
 			matchedRoom[property] = value;
 			matchedRoom.ooOsTitle = calculateOoOsTitle(matchedRoom);
+		}
+
+		this.setWorkStatus = function(id, status) {
+			var matchedRoom = _.find(roomList.rooms, function(room) {
+				return parseInt(room.id) === id;
+			});
+			matchedRoom.hk_status.description = status.description;
+			matchedRoom.description = matchedRoom.hk_status.description;
+			matchedRoom.hk_status.value = status.value;
+			this.setRoomStatusClass(matchedRoom);
 		}
 
 		// set the arrival time or 'IN' text for arrivied
