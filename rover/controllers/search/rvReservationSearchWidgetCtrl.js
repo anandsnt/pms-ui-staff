@@ -210,6 +210,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			// save the entered query into vault
 			// if returning back we will display that result
 			$vault.set('searchQuery', $scope.textInQueryBox);
+			console.log("1");
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 
 		}; //end of query entered
@@ -291,6 +292,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.focusOnSearchText = function() {
 			//we are showing the search area
 			$scope.$emit("showSearchResultsArea", true);
+			console.log("2");
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 			$vault.set('searchType', 'SEARCH_NORMAL')
 			refreshScroller();
@@ -445,12 +447,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$emit("updateDataFromOutside", data);
 				$scope.focusOnSearchText();
 			}
+
 			//Set the search type and search title. Used in back navigation from staycard to search
 			$vault.set('searchType', "BY_SWIPE");
 			$vault.set('title', swipeHeadingInSearch);
 
 			$scope.$emit("UpdateHeading", swipeHeadingInSearch);
-
 		};
 		var swipeHeadingInSearch = '';
 		$scope.$on('SWIPEHAPPENED', function(event, data) {
