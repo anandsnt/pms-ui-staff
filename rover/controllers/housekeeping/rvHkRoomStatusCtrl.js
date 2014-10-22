@@ -66,9 +66,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// default no results found
 		$scope.noResultsFound = 0;
 
+		
 		// default no top filters
-		$scope.topFilter = {};
-
+		// $scope.topFilter = {};
 
 
 		// ALL PMS: assign the resolved data to scope
@@ -82,7 +82,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.employees = employees;
 
 			$_defaultWorkType = $scope.workTypes[0].id;
-			$_defaultEmp = $rootScope.userId;
+			/**
+			 * CICO-8620
+			 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
+			 * Rest of the times maintain state in the dropdown!
+			 * 
+			 */
+			$_defaultEmp = ($scope.topFilter.byEmployee !== -1)? $scope.topFilter.byEmployee : $rootScope.userId;
 
 			// when a employee logges in mobile view
 			// we introduce another level of tabs to seperate
@@ -109,7 +115,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		function $_checkHasActiveWorkSheet(argument) {
 			var _params = {
 					'date': $rootScope.businessDate,
-					'employee_ids': [$_defaultEmp],
+					'employee_ids': [$_defaultEmp || $rootScope.userId], // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
 					'work_type_id': $_defaultWorkType
 				},
 				_callback = function(data) {
@@ -462,7 +468,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked		 				
 					 */
 					if ( !$scope.currentFilters.queued && !$scope.currentFilters.vacant  && room.is_queued ) {
-                        room.display_room = false;
+						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
 					}

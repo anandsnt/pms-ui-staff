@@ -121,7 +121,7 @@ sntRover.controller('RVHKWorkTabCtrl', [
 				$scope.isCleaning = false;
 			
 				// update 'current_hk_status' to 'task_completion_status'
-				$_updateRoomDetails( 'current_hk_status', $scope.task_completion_status );
+				$_updateRoomDetails( 'current_hk_status', $scope.task_completion_status || "CLEAN" );
 			};
 
 			var params = {
