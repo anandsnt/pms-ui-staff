@@ -36,7 +36,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	* Click handler for expand button in room type calendar
 	*/
 	$scope.expandRow = function(index){
-		if($scope.currentExpandedRow == index){
+		if($scope.currentExpandedRow === index){
 			$scope.currentExpandedRow = -1;
 			$scope.refreshScroller();
 
@@ -68,7 +68,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     */
 	var loadTable = function(){
 		// If only one rate is selected in the filter section, the defult view is room type calendar 
-		if($scope.currentFilterData.rates_selected_list.length == 1){
+		if($scope.currentFilterData.rates_selected_list.length === 1){
 			$scope.calendarMode = "ROOM_TYPE_VIEW";
 			$scope.currentSelectedRate.id = $scope.currentFilterData.rates_selected_list[0].id;
 		}
