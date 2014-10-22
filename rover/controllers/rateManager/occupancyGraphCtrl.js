@@ -85,7 +85,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 							x: 0,
 							y: -50,
 							style: {
-								'class': 'uppercase-label',
+								/*'class': 'uppercase-label',
 								'textAlign': 'center',
 								'display': 'block',
 								'fontWeight': 'bold',
@@ -102,7 +102,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 									var perSidePadding = (perColumnWidth - existingTextWidth) / 2;
 								
 									return "10px " + perSidePadding + "px";
-								})()
+								})()*/
 							},
 							useHTML: true
 						}

@@ -16,7 +16,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     * Note: If a subscope requires another iScroll, this approach may not work.
     */
    $scope.$parent.myScroll =[];
-	
+
    BaseCtrl.call(this, $scope);
    
 	$scope.init = function(){
@@ -26,7 +26,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.currentSelectedRate = {};
 		$scope.calendarData = {};
 		$scope.popupData = {};
-      
+        $scope.loading = true;
+        $scope.store = { dates: [] };
+
         if($scope.currentFilterData.filterConfigured){
         	loadTable();
         }
@@ -74,38 +76,48 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}
 
 		var calenderDataFetchSuccess = function(data) {
+			var initializing = false;
 			//Set the calendar type
-			if(data.type == 'ROOM_TYPES_LIST'){
+			if(data.type === 'ROOM_TYPES_LIST'){
 				$scope.calendarMode = "ROOM_TYPE_VIEW";
 			} else {
 				$scope.calendarMode = "RATE_VIEW";
 			}
 
-			if(typeof data.selectedRateDetails != 'undefined'){
+			if(typeof data.selectedRateDetails !== 'undefined'){
 				$scope.currentSelectedRate = data.selectedRateDetails;
 				$scope.ratesDisplayed.push(data.selectedRateDetails);
 			}
 
 			$scope.calendarData = data;
 
-			/*for(var i = 0, len = data.length; i < len; i++){
-				$scope.calendarData[i].date = data[i];
-				$scope.calendarData[i].id = Date.parse(data[i]);
-			}*/
+			if($scope.store.dates.length === 0) {
+				initializing = true;
+
+				for(var i = 0, len = $scope.calendarData.dates.length; i < len; i++) {
+					$scope.store.dates.push($scope.calendarData.dates[i]);
+				}		
+			}
 
         	$scope.currentFilterData.filterConfigured = true;
 
-			$scope.$emit('hideLoader');
+			$scope.$emit('hideLoader');		
 
-			if($scope.$parent.myScroll.RateCalendarCtrl){
-				$scope.refreshScroller();
-			}
+			$scope.loading = false;
 
-			$scope.$emit('computeColumWidth');			
+			if(initializing) {
+				$scope.$emit('computeColumWidth');	
+
+				if($scope.$parent.myScroll.RateCalendarCtrl){
+					$scope.refreshScroller();
+				}
+			}		
 		};
 
 		//Set the current business date value to the service. Done for calculating the history dates
 		RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
+
+		$scope.loading = true;
 
 		if($scope.calendarMode == "RATE_VIEW"){
 			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess);
