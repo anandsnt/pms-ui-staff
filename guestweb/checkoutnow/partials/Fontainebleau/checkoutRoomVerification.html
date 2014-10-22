@@ -23,7 +23,7 @@
 					<div class="col-md-6 headtext centeralign">
 						<div class="blue-text">Ready to check-out?</div>
 						<div class="lightcontent chekout-time grey-text room-text">To start please enter your room number:</div>
-						<div class="lightcontent chekout-time grey-text room-text">({{roomVerificationInstruction}})</div>
+						<div class="lightcontent chekout-time grey-text room-text" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
 					</div>
 				<!-- top section ends here-->
 				<div class="col-md-6 no-padding now-later-options cabin-number room_container">
