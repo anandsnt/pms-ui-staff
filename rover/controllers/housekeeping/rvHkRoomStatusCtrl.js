@@ -673,6 +673,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentFilters.floorFilterStart = '';
 			$scope.currentFilters.floorFilterEnd = '';
 			$scope.currentFilters.floorFilterSingle = '';
+			$scope.refreshScroller('filtersection');
 		};
 
 
