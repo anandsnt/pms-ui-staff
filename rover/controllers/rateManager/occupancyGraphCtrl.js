@@ -1,8 +1,7 @@
 sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupancyGraphSrv', 'ngDialog', 'dateFilter',
 	function($q, $scope, RateMgrOccupancyGraphSrv, ngDialog, dateFilter) {
-
 		$scope.$parent.myScrollOptions = {
-			'RateMgrOccupancyGraphCtrl': {
+			RateMgrOccupancyGraphCtrl: {
 				scrollX: true,
 				scrollbars: true,
 				interactiveScrollbars: true,
@@ -189,7 +188,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				// NOTE :: Check if replaced harcoded 10 with item.actual
 				// var valueActual = Math.floor((Math.random() * 100) + 1);
-				actualData.push(!item.actual || 0); //[itemDate, !item.actual || 0]); 
+				actualData.push(item.actual || 0); //[itemDate, !item.actual || 0]); 
 				toolTipLookUp[itemDate].actual = valueActual;
 
 				// NOTE :: Check if replaced harcoded 10 with item.target
@@ -396,24 +395,29 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						xAxis: {
 							title: { enabled: false },
 							tickInterval: null,
-							tickPixelInterval: graphDim.width / data.results.length,
+							tickPixelInterval: (graphDim.width - 8 * data.results.length) / data.results.length,
 							tickPosition: 'outside',
 							type: 'datetime',
 							dateTimeLabelFormats: {
 								day: '%b %e'		
 							},
+							gridLineWidth: 5,
+							gridLineColor: '#FCFCFC',
 							labels: {
 								x: 0,
 								y: -50,
 								style: {
-									'class': 'uppercase-label',
-									'textAlign': 'center',
-									'display': 'block',
-									'fontWeight': 'bold',
-									'textTransform': 'uppercase',
-									'backgroundColor': '#393c41',
-									'color': '#fcfcfc'
-								}
+									class: 'uppercase-label',
+									textAlign: 'center',
+									display: 'block',
+									fontWeight: 'bold',
+									textTransform: 'uppercase',
+									backgroundColor: '#393c41',
+									color: '#fcfcfc',
+									width: this.tickPixelInterval - 8 + 'px',
+									padding: '0 4px 0 4px'
+								},
+								useHTML: true
 							}
 						},
 						yAxis: {
@@ -429,8 +433,9 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 								style: {
 									color: '#868788',
 									fontWeight: 'bold'
-								}
-							}
+								},
+								useHTML: true
+							}			
 						},
 						legend: {
 							enabled: false
@@ -450,10 +455,14 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				_.extend($scope.highchartsNG, generateSeries(data));
 
-				setTimeout(function() {	
-					
-					$scope.$emit('computeColumWidth');				
-				}, 0);		
+				$scope.targetData = manipulateTargetData(data);
+				$scope.scroller = new IScroll($scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
+
+				setTimeout(function() {			
+					$scope.$emit('computeColumWidth');	
+					//$scope.$parent.myScroll.RateMgrOccupancyGraphCtrl.refresh();	
+					$scope.scroller.refresh();		
+				}, 1000);		
 			});
 		};
 
