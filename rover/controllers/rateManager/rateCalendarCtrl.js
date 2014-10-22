@@ -91,28 +91,29 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 
 			$scope.calendarData = data;
 
-			if($scope.store.dates.length !== $scope.calendarData.dates.length) {
+			/*if($scope.store.dates.length !== $scope.calendarData.dates.length) {
+				if($scope.store.dates.length === 0) initializing = true;
+
 				$scope.store.dates = [];
-				initializing = true;
 
 				for(var i = 0, len = $scope.calendarData.dates.length; i < len; i++) {
 					$scope.store.dates.push($scope.calendarData.dates[i]);
 				}		
-			}
+			}*/
 
-        	$scope.currentFilterData.filterConfigured = true;
+        	//$scope.currentFilterData.filterConfigured = true;
 
 			$scope.$emit('hideLoader');		
 
 			$scope.loading = false;
-
-			if(initializing) {
+			$scope.currentFilterData.filterConfigured = true;
+			//if(initializing) {
 				$scope.$emit('computeColumWidth');	
 
 				if($scope.$parent.myScroll.RateCalendarCtrl){
 					$scope.refreshScroller();
 				}
-			}		
+			//}		
 		};
 
 		//Set the current business date value to the service. Done for calculating the history dates

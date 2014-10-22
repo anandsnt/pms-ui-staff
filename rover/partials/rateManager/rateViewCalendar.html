@@ -9,7 +9,7 @@
 					<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'grey': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
 						Close All
 					</button></th>
-				<th width="{{uiOptions.columnWidth}}" style="{width:th.width}" ng-repeat="date in store.dates" class="cell">
+				<th width="{{uiOptions.columnWidth}}" style="{width:th.width}" ng-repeat="date in calendarData.dates track by date" class="cell">
 					<div class="date-header">
 						<span class="week-day">{{date| date:'EEEE'}}</span>
 						<span>{{date| date:'MMMM dd'}}</span>
@@ -23,7 +23,7 @@
 			<tr ng-show="calendarData.data.length > 1">
 				<td class="first-row"><span class="bolder">All Rates</span><span>&nbsp;</span></td>
 
-				<td ng-repeat="date in store.dates" class="cell" >
+				<td ng-repeat="date in calendarData.dates track by date" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
 							<div>
@@ -49,7 +49,7 @@
 						</span>
 					</div>
 				</td>
-				<td ng-repeat="date in store.dates" class="cell" >
+				<td ng-repeat="date in calendarData.dates track by date" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
 							<div>

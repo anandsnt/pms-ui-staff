@@ -36,7 +36,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						plotBackgroundColor: 'rgba(0,0,0,0.05)',
 						width: $scope.uiOptions.tableWidth - 280,
 						backgroundColor: null,
-						height: clientHeight - 175
+						height: clientHeight //- 175
 					},
 					tooltip : {
 						shared: false,
@@ -365,12 +365,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 		$scope.fetchGraphData = function(params) {
 			var fetchGraphDataSuccess = function(data) {
+				setTimeout(function() {
+					$scope.$emit('computeColumWidth');		
+					
+				}, 1000);
 				$scope.graphData = manipulateGraphData(data);
-
 				drawGraph();
 
 				$scope.targetData = manipulateTargetData(data);
 				$scope.$emit('hideLoader');
+				
 			};
 
 			var params = {
