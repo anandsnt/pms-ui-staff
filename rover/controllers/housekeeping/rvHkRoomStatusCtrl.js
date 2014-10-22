@@ -30,7 +30,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-
+		var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
+		$scope.setScroller('filtersection', scrollOptions);
 
 		// reset all the filters
 		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
@@ -258,6 +259,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
+			$scope.refreshScroller('filtersection');
 		};
 
 		/**
