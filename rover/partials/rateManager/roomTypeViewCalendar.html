@@ -40,14 +40,14 @@
 				</td>
 			</tr>
 
-		<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}" ng-show="loading===false && calendarMode.substr(0,4)==='ROOM'">
+		<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last}"> <!-- ng-show="loading===false && calendarMode.substr(0,4)==='ROOM'">-->
 			<td class="first-row">    
 				<span ng-class="{'expanded': currentExpandedRow===$index}">{{rate.name}}</span>
 				<span style="float:right" ng-hide="currentExpandedRow===$index">
 					<img class="down" src="/assets/arrow-down.png" ng-click="expandRow($index)">
 				</span>
 				<span style="float:right" ng-show="currentExpandedRow===$index">
-					<img class="up" src="/assets/arrow-up.png" ng-click="expandRow($index)">
+					<img class="up" src="/assets/arrow-up.png" ng-click="expandRow($index)" ng-show="loading===false">
 				</span>
 			</td>
 
