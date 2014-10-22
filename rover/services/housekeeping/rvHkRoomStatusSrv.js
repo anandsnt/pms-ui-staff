@@ -220,6 +220,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 		// Moved from ctrl to srv as this is calculated only once
 		// keept as msg so that it can be called from crtl if needed
 		this.setRoomStatusClass = function(room, checkinInspectedOnly) {
+
+			var isOOSorOOO = room.hk_status.value == 'OO' || room.hk_status.value == 'OS' || room.room_reservation_hk_status == 2 || room.room_reservation_hk_status == 3;
+
 			if (checkinInspectedOnly == "true") {
 				if (room.hk_status.value == 'INSPECTED') {
 					room.roomStatusClass = 'clean';
@@ -229,7 +232,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					room.roomStatusClass = 'pickup';
 					return;
 				}
-			} else {
+			} else if (!isOOSorOOO) {
 				if ((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED')) {
 					room.roomStatusClass = 'clean';
 					return;
@@ -240,12 +243,12 @@ sntRover.service('RVHkRoomStatusSrv', [
 				}
 			}
 
-			if ((room.hk_status.value == 'DIRTY')) {
+			if ((room.hk_status.value == 'DIRTY') && !isOOSorOOO) {
 				room.roomStatusClass = 'dirty';
 				return;
 			}
 
-			if (room.hk_status.value == 'OO' || room.hk_status.value == 'OS') {
+			if (isOOSorOOO) {
 				room.roomStatusClass = 'out';
 
 				if (!!room.hk_status.oo_status) {
@@ -384,6 +387,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 			});
 			matchedRoom[property] = value;
 			matchedRoom.ooOsTitle = calculateOoOsTitle(matchedRoom);
+			this.setRoomStatusClass(matchedRoom);
 		}
 
 		this.setWorkStatus = function(id, status) {
