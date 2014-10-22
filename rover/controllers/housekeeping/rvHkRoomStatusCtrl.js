@@ -462,7 +462,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked		 				
 					 */
 					if ( !$scope.currentFilters.queued && !$scope.currentFilters.vacant  && room.is_queued ) {
-                        room.display_room = false;
+						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
 					}
