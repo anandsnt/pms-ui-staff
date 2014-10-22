@@ -122,7 +122,7 @@
   background: #FFFFFF;
   border: 1px solid #FCFCFC;
 
-  ul {
+  ul:not(.display-mode) {
     float: left;
     margin-left: 40px;
     height: 100%;
@@ -158,79 +158,73 @@
           line-height: 40px; //normal;
           margin-top: 5px; //14px;
         }
-      } 
+    } 
 
-      li:not(.ng-hide) + li:not(.ng-hide)::before {
+    li:not(.ng-hide) + li:not(.ng-hide)::before {
         content: "|";
         color: #DDDDDD;
         float: left;
         font-size: 35px;
         line-height: normal;
         margin: 0 15px;
-      }
     }
+  }
 
-    .display-mode {
+  .display-mode {
+      width: 100px;
       float: right;
-      div{
-        float: right;
+
+      li {
+          display: block;
+          margin: 0;
+          cursor: pointer;
+          width: 50px; 
+          height: 50px; 
+          float: left;
+
+          &:first-child { 
+            -webkit-box-shadow: 1px 0 0 rgba(0,0,0,.1);
+            -moz-box-shadow: 1px 0 0 rgba(0,0,0,.1);
+            box-shadow: 1px 0 0 rgba(0,0,0,.1);
+          }
+
+          &.active {
+              position: relative;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+              box-shadow: none;
+              background-image: -moz-linear-gradient(top, #ffb319, #ff860d);
+              background-image: -ms-linear-gradient(top, #ffb319, #ff860d);
+              background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb319), to(#ff860d));
+              background-image: -webkit-linear-gradient(top, #ffb319, #ff860d);
+              background-image: -o-linear-gradient(top, #ffb319, #ff860d);
+              background-image: linear-gradient(top, #ffb319, #ff860d);
+              background-color: mix(#ffb319, #ff860d, 60%);
+              background-repeat: repeat;
+
+              &:after {
+                  content: "";
+                  position: absolute;
+                  left: 15px;
+                  bottom: -10px;
+                  width: 0; 
+                  height: 0; 
+                  border-top: 10px solid #ff860d;
+                  border-left: 10px solid transparent;
+                  border-right: 10px solid transparent;
+              }
+          }
+
+          .icon-grid {
+            background-position: 13px -4525px;
+            &.active { background-position: 14px -4585px; }
+          }
+
+          .icon-graph {
+            background-position: 13px -4640px;
+            &.active { background-position: 13px -4640px; }
+          }
       }
-    .button {
-      background-color: #F5F5F5;
-      border-radius: 0;
-      border-right: 1px solid #DCDCDC;
-      box-shadow: none;
-      height: 100%;
-      text-align: center;
-      /*CICO-8633*/
-      vertical-align: top; //middle;
-      &.cl-gr-button {
-        background: image-url("app/cal_graph_icon.png") no-repeat scroll center center #F5F5F5;
-      }
-      &.cl-button {
-        background: image-url("app/calendar_icon_white.png") no-repeat scroll center center #F5F5F5;
-      }
-      &.gr-button {
-        background: image-url("app/graph_icon.png") no-repeat scroll center center #F5F5F5;
-      }
-      &.active {
-        position: relative;
-        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
-        &.gr-button {
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-        }
-        &.cl-button {
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-        }
-        &.cl-gr-button {
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-        }
-      }
-      &.active:after, &.active:before {
-        top: 100%; 
-        left: 50%; 
-        border: solid transparent; 
-        content: " "; 
-        height: 0; 
-        width: 0; 
-        position: absolute; 
-        pointer-events: none;
-      }
-      &.active:after {
-        border-color: #FF860D rgba(136, 183, 213, 0) rgba(136, 183, 213, 0);
-        border-width: 9px;
-        margin-left: -9px;
-      }
-    }
   }
 }
 
