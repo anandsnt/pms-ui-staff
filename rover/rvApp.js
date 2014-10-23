@@ -5,6 +5,7 @@ var sntRover = angular.module('sntRover',[
 		'ng-iscroll', 
 		'highcharts-ng', 
 		'ngDialog', 
+		'ngAnimate',
 		'ngSanitize', 
 		'pascalprecht.translate',
 		'ui.date',
