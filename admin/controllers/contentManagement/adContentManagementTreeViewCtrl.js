@@ -7,8 +7,8 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
 	 $scope.fetchTreeViewList= function(){
    		var successCallbackTreeFetch = function(data){
 			$scope.$emit('hideLoader');
-			$scope.data = data;
-			$scope.setExpandStatus($scope.data);
+			$scope.contentList = data;
+			$scope.setExpandStatus($scope.contentList);
 						
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {} , successCallbackTreeFetch);
@@ -23,10 +23,8 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    }   
 
    $scope.toggleExpansion = function(index){
-   		$scope.selectedContent = $scope.data[index];
-   		if($scope.selectedContent.isExpanded)
-   			$scope.setExpandStatus($scope.selectedContent.children);
-   		$scope.selectedContent.isExpanded = !$scope.selectedContent.isExpanded;
+   		
+   		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
    }
 
    $scope.fetchTreeViewList();

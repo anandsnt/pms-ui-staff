@@ -4,13 +4,11 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
-	$scope.contentList = $scope.selectedContent.children;
+	$scope.contentList = $scope.contentList[$scope.$index].children;
 
 	$scope.toggleExpansion = function(index){
-   		$scope.selectedContent = $scope.contentList[index];
-   		if($scope.selectedContent.isExpanded)
-   			$scope.setExpandStatus($scope.selectedContent.children);
-   		$scope.selectedContent.isExpanded = !$scope.selectedContent.isExpanded;
+   		
+   		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
    }
 
 }]);

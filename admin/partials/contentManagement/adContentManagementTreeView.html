@@ -13,7 +13,7 @@
             <!-- Tree content -->
             <ol class="cms-tree">
                 <!-- First level: Sections -->
-                <li class="section branch" ng-class="{'collapsed': !section.isExpanded, 'expanded': section.isExpanded}"  ng-repeat="section in data">
+                <li class="section branch" ng-class="{'collapsed': !section.isExpanded, 'expanded': section.isExpanded}"  ng-repeat="section in contentList">
                     <div class="sort">
                         <span class="reorder" ng-click= "toggleExpansion($index)"></span>
                         <a href="{link}" class="cms-name">{{section.component_name}}</a>
@@ -31,7 +31,7 @@
                     </div>
 
                     <!-- 1st level category. All deper category levels use same <li class="category"> markup so it's not repeated here. Standard ordered list nesting should be applied. -->
-                    <div ng-if="section.children.length > 0 && section.isExpanded" ng-include= "'/assets/partials/contentManagement/adContentManagementChildView.html'"></div>
+                    <div ng-show="section.children.length > 0 && section.isExpanded" ng-include= "'/assets/partials/contentManagement/adContentManagementChildView.html'"></div>
                 </li>
                 
             </ol>
