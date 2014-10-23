@@ -108,9 +108,9 @@
 	</tbody>
 </table> 
 </div>
-<div class="restriction-legends" >
-	<span bindonce ng-repeat="restrictionType in calendarData.restriction_types track by restrictionType.id">
+<ul class="restriction-legends" >
+	<li bindonce ng-repeat="restrictionType in calendarData.restriction_types track by restrictionType.id">
 		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
-		<span bo-text="restrictionType.description"><!--{{restrictionType.description}}--></span>
-	</span>
-</div> 
+		{{restrictionType.description}}
+	</li>
+</ul> 
