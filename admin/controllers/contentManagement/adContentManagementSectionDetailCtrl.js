@@ -11,6 +11,8 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', '$s
 	            "icon": ''
             }
 
+    
+
 	$scope.fetchSection = function(){
 		var fetchSectionSuccessCallback = function(data){
 			$scope.$emit('hideLoader');

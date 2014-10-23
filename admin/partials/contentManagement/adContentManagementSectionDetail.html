@@ -26,11 +26,12 @@
                 <div class="entry full-width">
                     <label for="section-image">Section Icon <span>(Transparent PNG, 128x128px in size)</span></label>
                     <div class="file-upload with-preview small-preview">
-                        <input type="file" ng-model="fileName" accept="image/*" app-filereader name="section-image" id="section-image" />
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" ng-model="data.icon" accept="image/*" app-filereader name="section-image" id="section-image" />
                         <button type="button" class="button brand-colors">Replace image</button>
                     </div>
                     <span class="file-preview small-preview">
-                        <img src="{{data.fileName}}" alt="" />
+                        <img src="{{data.icon}}" alt="" />
                     </span>
                 </div>     
             </fieldset>
