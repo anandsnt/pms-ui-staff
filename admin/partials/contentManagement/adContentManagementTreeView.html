@@ -16,7 +16,7 @@
                 <li class="section branch" ng-class="{'collapsed': !section.isExpanded, 'expanded': section.isExpanded}"  ng-repeat="section in contentList">
                     <div class="sort">
                         <span class="reorder" ng-click= "toggleExpansion($index)"></span>
-                        <a href="{link}" class="cms-name">{{section.component_name}}</a>
+                        <a ng-click = "componentSelected(section.component_type, section.id)" class="cms-name">{{section.component_name}}</a>
                         <span class="cms-type">{{section.component_type}}</span>
                         <em class="cms-date">{{section.updated_at}}</em>
                         <div class="cms-activate">

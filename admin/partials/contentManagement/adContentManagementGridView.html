@@ -107,7 +107,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a >{{gridItem.name}}</a></td>
+                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
                         <td><em>{{gridItem.last_updated}}</em></td>
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_items}}</td>
@@ -171,7 +171,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a >{{gridItem.name}}</a></td>
+                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
                         <td><em>{{gridItem.last_updated}}</em></td>
                         <td>{{gridItem.parent_category}}</td>
                         <td>{{gridItem.no_of_items}}</td>
@@ -241,7 +241,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
-                        <td><a >{{gridItem.name}}</a></td>
+                        <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
                         <td>{{gridItem.page_template}}</td>
                         <td><em>{{gridItem.last_updated}}</em></td>
                         <td>{{gridItem.section}}</td>

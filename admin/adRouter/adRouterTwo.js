@@ -218,18 +218,18 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.contentManagementSectionDetails', {
 			templateUrl: '/assets/partials/contentManagement/adContentManagementSectionDetail.html',
 			controller: 'ADContentManagementSectionDetailCtrl',
-			url : '/contentManagement'
+			url : '/contentManagement/section/:id'
 		});
 
 		$stateProvider.state('admin.contentManagementCategoryDetails', {
 			templateUrl: '/assets/partials/contentManagement/adContentManagementCategoryDetail.html',
 			controller: 'ADContentManagementCategoryDetailCtrl',
-			url : '/contentManagement'
+			url : '/contentManagement/category/:id'
 		});
 		$stateProvider.state('admin.contentManagementItemDetails', {
 			templateUrl: '/assets/partials/contentManagement/adContentManagementItemDetail.html',
 			controller: 'ADContentManagementItemDetailCtrl',
-			url : '/contentManagement'
+			url : '/contentManagement/item/:id'
 		});
 
 

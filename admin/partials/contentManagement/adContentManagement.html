@@ -2,9 +2,9 @@
 	
     	<header class="content-title">
             <h2>Content Management</h2>
-            <a class="action add" ui-sref = "admin.contentManagementSectionDetails">Section</a>
-            <a class="action add" ui-sref = "admin.contentManagementCategoryDetails">Category</a>
-            <a class="action add" ui-sref = "admin.contentManagementItemDetails">Item</a>
+            <a class="action add" ui-sref = "admin.contentManagementSectionDetails({id:'new'})">Section</a>
+            <a class="action add" ui-sref = "admin.contentManagementCategoryDetails({id:'new'})">Category</a>
+            <a class="action add" ui-sref = "admin.contentManagementItemDetails({id:'new'})">Item</a>
             <div class="filters">
                 <ul id="view-options" class="cms-view">
                     <li ng-class= "{'active':isGridView}" ng-click="isGridView = !isGridView">View grid</li>

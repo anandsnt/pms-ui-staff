@@ -3,10 +3,8 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'A
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	
-	 
 
-	
+		
 
 }]);
 

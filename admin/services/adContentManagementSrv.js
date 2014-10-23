@@ -1,7 +1,7 @@
 admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    /**
     * To fetch the grid view list
-    * @return {object} sections list json
+    * @return {object} grid view list json
     */
 	this.fetchGridViewList = function(){
 		
@@ -18,7 +18,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 
 	/**
     * To fetch the tree view list
-    * @return {object} sections list json
+    * @return {object} tree view list json
     */
 	this.fetchTreeViewList = function(){
 		
@@ -32,12 +32,29 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		});	
 		return deferred.promise;
 	};
-   /*
-    * To update section data
-    * @param {array} data of the modified section
-    * @return {object} status of updated section
+
+	/**
+    * To fetch the section/category/item details
+    * @return {object} section/category/item details json
     */
-	this.updateSection = function(data){
+	this.fetchComponent = function(id){
+		
+		var deferred = $q.defer();
+		var url = '/api/cms_components/'+ id+'/edit';
+
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+   /*
+    * To update section/category/item details
+    * @param {array} data of the modified section/category/item
+    * @return {object} status of updated section/category/item
+    */
+	this.updateComponent = function(data){
 
 		var deferred = $q.defer();
 		var url = '';	

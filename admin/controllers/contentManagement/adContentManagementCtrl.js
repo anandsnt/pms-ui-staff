@@ -6,28 +6,20 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', 'ADContentManage
 	$scope.isGridView = true;
 	 
 
-	 /*
-    * To add new section
-    * 
-    */		
-	$scope.addNewSection = function(){
-		
-	};
-
-	 /*
-    * To add new Category
-    * 
-    */		
-	$scope.addNewCategory = function(){
-		
-	};
-
-	 /*
-    * To add new Item
-    * 
-    */		
-	$scope.addNewItem = function(){
-		
-	};
+	 $scope.componentSelected = function(component_type, id){
+   		if(component_type == 'section'){
+   			$state.go("admin.contentManagementSectionDetails", {
+				id: id
+			});
+   		}else if(component_type == 'category'){
+   			$state.go("admin.contentManagementCategoryDetails", {
+				id: id
+			});
+   		}else if(component_type == 'item'){
+   			$state.go("admin.contentManagementItemDetails", {
+				id: id
+			});
+   		}
+   }
 
 }]);
