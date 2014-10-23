@@ -6,6 +6,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 	$scope.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data = {};
+	$scope.filterData = {};
+	$scope.filterData = RVJournalSrv.fetchGenericData();
+	console.log( $scope.filterData );
 	$scope.data.fromDate = $rootScope.businessDate;
     $scope.data.toDate 	= $rootScope.businessDate;
     $scope.isActiveRevenueFilter = false;
