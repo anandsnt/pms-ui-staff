@@ -28,7 +28,7 @@ sntRover
     },
     TOP_BOTTOM_HEIGHT: {
         enumerable: true,
-        value: 240
+        value: 190
     },
     DEFAULT_COLUMN_WIDTH: {
         enumerable: true,
