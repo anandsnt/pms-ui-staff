@@ -111,7 +111,7 @@
                         <td><em>{{gridItem.last_updated}}</em></td>
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_items}}</td>
-                        <td class="activate">
+                        <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
@@ -144,15 +144,8 @@
                       }"
                         ng-click="categoryParams.sorting({'last_updated' : categoryParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
                         <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
-                    </th>       
-
-                    <th class="sortable" ng-class="{
-                        'sort-asc': categoryParams.isSortBy('no_of_categories', 'asc'),
-                        'sort-desc': categoryParams.isSortBy('no_of_categories', 'desc')
-                      }"
-                        ng-click="categoryParams.sorting({'no_of_categories' : categoryParams.isSortBy('no_of_categories', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Parent Category</span></div>
-                    </th>    
+                    </th>  
+                     
                     <th class="sortable" ng-class="{
                         'sort-asc': categoryParams.isSortBy('no_of_items', 'asc'),
                         'sort-desc': categoryParams.isSortBy('no_of_items', 'desc')
@@ -172,10 +165,9 @@
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
                         <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
-                        <td><em>{{gridItem.last_updated}}</em></td>
-                        <td>{{gridItem.parent_category}}</td>
+                        <td><em>{{gridItem.last_updated}}</em></td>                        
                         <td>{{gridItem.no_of_items}}</td>
-                        <td class="activate">
+                        <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
@@ -214,22 +206,7 @@
                       }"
                         ng-click="itemParams.sorting({'last_updated' : itemParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
                         <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
-                    </th>       
-
-                    <th class="sortable" ng-class="{
-                        'sort-asc': itemParams.isSortBy('section', 'asc'),
-                        'sort-desc': itemParams.isSortBy('section', 'desc')
-                      }"
-                        ng-click="itemParams.sorting({'section' : itemParams.isSortBy('section', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Section</span></div>
-                    </th>    
-                    <th class="sortable" ng-class="{
-                        'sort-asc': itemParams.isSortBy('category', 'asc'),
-                        'sort-desc': itemParams.isSortBy('category', 'desc')
-                      }"
-                        ng-click="itemParams.sorting({'category' : itemParams.isSortBy('category', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Category</span></div>
-                    </th>        
+                    </th>                            
                     <th class="sortable" ng-class="{
                         'sort-asc': itemParams.isSortBy('status', 'asc'),
                         'sort-desc': itemParams.isSortBy('status', 'desc')
@@ -243,10 +220,8 @@
                     <tr ng-repeat="gridItem in $data | filter:searchText">
                         <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
                         <td>{{gridItem.page_template}}</td>
-                        <td><em>{{gridItem.last_updated}}</em></td>
-                        <td>{{gridItem.section}}</td>
-                        <td>{{gridItem.category}}</td>
-                        <td class="activate">
+                        <td><em>{{gridItem.last_updated}}</em></td>                        
+                        <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
