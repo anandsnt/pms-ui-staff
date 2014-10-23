@@ -54,7 +54,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 					    	room.display_room = true;
 
 					    	// reduce scope search
-					    	room.description = room.hk_status.description
+					    	room.description = room.hk_status.description;
 					    	
 					    	room.is_occupied = room.is_occupied == 'true' ? true : false;
 					    	room.is_vip = room.is_vip == 'true' ? true : false;
@@ -367,7 +367,7 @@ sntRover.service('RVHkRoomStatusSrv', [
             if ( room.room_reservation_status.indexOf('Departed') >= 0 ) {
             	return 'OUT'
             } else if ( room.room_reservation_status.indexOf('Due out') >= 0 ) {
-            	return room.is_late_checkout ? room.late_checkout_time : room.departure_time;
+            	return room.is_late_checkout == 'true' ? room.late_checkout_time : room.departure_time;
             }
 
             return '';

@@ -215,7 +215,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "roomStatus"
           }, {
             title: "MENU_TASK_MANAGEMENT",
-            action: "rover.workManagement.start"
+            action: "rover.workManagement.start",
+            menuIndex: "workManagement"
           }, {
             title: "MENU_MAINTAENANCE",
             action: ""
@@ -467,7 +468,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.isGuestCardVisible = true;
       }
     });
+    
     $scope.successCallBackSwipe = function(data) {
+    	
       $scope.$broadcast('SWIPEHAPPENED', data);
     };
 
@@ -476,6 +479,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     var options = {};
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
+
 
     $scope.numberOfCordovaCalls = 0;
 
@@ -500,15 +504,19 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           }, 2000);
         }
       }
+
     };
 
     /*
      * Start Card reader now!.
      * Time out is to call set Browser
      */
+
     setTimeout(function() {
       $scope.initiateCardReader();
     }, 2000);
+
+
 
     /*
      * To show add new payment modal

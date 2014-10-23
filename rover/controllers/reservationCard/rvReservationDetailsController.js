@@ -12,7 +12,7 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				'VIP': 'DASHBOARD_SEARCH_VIP',
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
-
+		
 		//CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 
