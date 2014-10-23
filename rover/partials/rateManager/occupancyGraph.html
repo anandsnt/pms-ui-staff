@@ -20,8 +20,10 @@
 		<button type="button" id="update" class="button green edit-data-inline" ng-click="showSetTargetDialog()">Set Targets</button>
 	</div>
 </div>
-<div id="occ-graph" class="occgraph-outer" ng-iscroll="RateMgrOccupancyGraphCtrl" ng-iscroll-delay="1000" style= "overflow: hidden; position: relative;">
-	 <highchart id="occGraphContainer" 
-	 			config="highchartsNG">
-	 </highchart>
+<div id="graph-scroll" ng-iscroll="RateMgrOccupancyGraphCtrl" ng-iscroll-delay="1000">
+	<div id="occ-graph" class="occgraph-outer" >
+		 <highchart id="occGraphContainer" 
+		 			config="highchartsNG">
+		 </highchart>
+	</div>
 </div>

@@ -275,13 +275,13 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						containerWidth: viewport.width, //|| $(window).width() - 280,
 						containerHeight: viewport.height, //$(window).height(),
 						width: $scope.uiOptions.tableWidth - 280,
-						height: $scope.uiOptions.tableHeight
+						height: $scope.uiOptions.tableHeight - 100
 					};
 
 					graphDim = $scope.graphDimensions;
-					interval_width =(graphDim.containerWidth - 8) / (parseFloat($scope.currentFilterData.zoom_level_selected);
+					interval_width =(graphDim.containerWidth - 8) / parseFloat($scope.currentFilterData.zoom_level_selected);
 
-					$scope.graphDimensions.width = interval_width * data.results.length;
+					$scope.graphDimensions.width = interval_width * (data.results.length - 3);
 				})();
 
 				$scope.highchartsNG = {	
@@ -291,7 +291,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 							className: 'rateMgrOccGraph',
 							backgroundColor: 'rgba(0,0,0,0.05)',
 							width: graphDim.width,
-							height: graphDim.height
+							height: graphDim.height,
+							title: {
+								enabled: false
+							}
 						},
 						xAxis: {
 							title: { enabled: false },
@@ -301,7 +304,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 							opposite: true,
 							type: 'datetime',
 							dateTimeLabelFormats: {
-								day: '%A <br/>%B %b'		
+								day: '%A <br/>%B %e'		
 							},
 							gridLineWidth: 5,
 							gridLineColor: '#FCFCFC',
@@ -314,25 +317,25 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 									display: 'block',
 									textAlign: 'center',							
 									textTransform: 'uppercase',
-									backgroundColor: '#393c41',
-									color: '#fcfcfc',
+									//backgroundColor: '#393c41',
+									//color: '#fcfcfc',
 									height: '60px',
 									lineHeight: 'normal',
-									border: '3px solid rgba(0,0,0,0.05)',
+									//border: '3px solid rgba(0,0,0,0.05)',
 									margin: '0px',
 									fontSize: '14px',
 									fontWeight: '600',
 									borderRadius: '3px',
 									boxSizing: 'border-box',
-									padding: '10px ' + (interval_width) / 5 + 'px'
+									padding: '10px ' + (interval_width) / 6 + 'px'
 								},								
 								useHTML: true
 							}
 						},
 						yAxis: {
 							title: { enabled: false },
-							tickInterval: 1,
-							minTickInterval: 1,
+							tickInterval: 5,
+							minTickInterval: 5,
 							//tickPixelInterval: graphDim.height / 20,
 							tickPosition: 'inside',
 							showLastLabel: false,
@@ -347,7 +350,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 								useHTML: true
 							},
 							min: 0,
-							max: 110,
+							max: 50,
 							minRange: 5	
 						},
 						legend: {
@@ -362,6 +365,9 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 								lineColor: '#aaa',
 								lineWidth: 1
 							}*/
+						},
+						title: {
+							enabled: false
 						}
 					}
 				};
