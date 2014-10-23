@@ -1,11 +1,12 @@
 <section class="content current" ng-click="clearErrorMessage()">
     <header class="content-title">
-        <h2>Edit Section <span>Section Name</span></h2>
-        <a class="action back">Back</a>
+        <h2 ng-show="!isAddMode">Edit Section <span>{{data.name}}</span></h2>
+        <h2 ng-show="isAddMode">Add Section</h2>
+        <a ng-click="goBack()" class="action back">Back</a>
         <a class="action remove">Delete Section</a>
     </header>
     <section class="content-scroll">
-        <form method="post" action="" id="{add/edit}" name="{add/edit}-section" class="form float">
+        <form method="post" action=""  class="form float">
             <fieldset class="holder left">
                 <div class="form-title">
                     <h3><span>Section</span> details</h3>
@@ -13,29 +14,29 @@
                 </div>
                 <div class="entry full-width">
                     <label for="section-availability">Availability Status <strong>*</strong></label>
-                    <div class="switch-button on">
-                        <input name="section-availability" id="section-availability" value="1" type="checkbox" checked />
+                    <div class="switch-button" ng-class="{'on': data.availability_status}">
+                        <input name="section-availability" id="section-availability" value="1" type="checkbox" ng-model="data.availability_status" />
                         <span class="switch-icon"></span>
                     </div>
                 </div> 
                 <div class="entry">
                     <label for="section-name">Section name <strong>*</strong></label>
-                    <input type="text" name="section-name" id="section-name" placeholder="Enter section name" value="{Section Name}" required />
+                    <input type="text" name="section-name" id="section-name" placeholder="Enter section name" ng-model="data.name" required />
                 </div>
                 <div class="entry full-width">
                     <label for="section-image">Section Icon <span>(Transparent PNG, 128x128px in size)</span></label>
                     <div class="file-upload with-preview small-preview">
-                        <input type="file" name="section-image" id="section-image" />
+                        <input type="file" ng-model="data.icon_file_name" accept="image/*" app-filereader name="section-image" id="section-image" />
                         <button type="button" class="button brand-colors">Replace image</button>
                     </div>
                     <span class="file-preview small-preview">
-                        <img src="" alt="" />
+                        <img src="{{data.icon_file_name}}" alt="" />
                     </span>
                 </div>     
             </fieldset>
             <div class="actions float">
-                <button type="button" class="button blank">Cancel</button>
-                <button type="button" class="button green">Save changes</button>  
+                <button type="button" ng-click="goBack()" class="button blank">Cancel</button>
+                <button type="button" ng-click="saveSection()" class="button green">Save changes</button>  
             </div>
         </form>
     </section>

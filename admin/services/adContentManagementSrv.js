@@ -40,7 +40,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.fetchComponent = function(id){
 		
 		var deferred = $q.defer();
-		var url = '/api/cms_components/'+ id+'/edit';
+		var url = '/api/cms_components/'+ id;
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -54,10 +54,10 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
     * @param {array} data of the modified section/category/item
     * @return {object} status of updated section/category/item
     */
-	this.updateComponent = function(data){
+	this.saveComponent = function(data){
 
 		var deferred = $q.defer();
-		var url = '';	
+		var url = 'api/cms_components';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

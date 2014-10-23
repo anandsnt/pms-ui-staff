@@ -1,7 +1,8 @@
 <section class="content current" ng-click="clearErrorMessage()">
     <header class="content-title">
-        <h2>Edit Category <span>Category Name</span></h2>
-        <a href="{link}" class="action back">Back</a>
+        <h2 ng-show="!isAddMode">Edit Category <span>{{data.name}}</span></h2>
+        <h2 ng-show="isAddMode">Add Category</h2>
+        <a ng-click="goBack()" class="action back">Back</a>
         <a href="{link}" class="action remove">Delete Category</a>
     </header>
 
