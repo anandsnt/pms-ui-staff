@@ -11,144 +11,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 		BaseCtrl.call(this, $scope);
 
+		$scope.setScroller('RateMgrOccupancyGraphCtrl');
+		$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
+
 		$scope.targetData = [];	
 		$scope.weekCommonTargets = [];
 
 		$scope.seriesActualVisible = true;
 		$scope.seriesTargetVisible = true;
 
-		(function() {
-			var container = $('.occgraph-outer'),
-				viewport = Object.create(null);
-
-			if(container.length) {
-				viewport = container.offset();
-			}
-
-			$scope.graphDimensions = { 
-				containerWidth: viewport.right - viewport.left, //|| $(window).width() - 280,
-				containerHeight: viewport.bottom - viewport.top, //$(window).height(),
-				width: $scope.uiOptions.tableWidth - 280,
-				height: $scope.uiOptions.tableHeight
-			};
-		})();
-
 		toolTipLookUp = $scope.toolTipLookUp = Object.create(null);
-
-				/*options: {	
-					title: {
-						text: ''
-					},			
-					chart: {
-						type: 'area',
-						//className: "rateMgrOccGraph",//,
-						//plotBackgroundColor: '#aaa',
-						width: 900, //$scope.uiOptions.tableWidth - 280,
-						//backgroundColor: '#ccc',
-						height: 800 //clientHeight + 175
-					},
-					//width: $scope.uiOptions.tableWidth - 280,
-					//height: clientHeight - 175,
-					tooltip : {
-						shared: false,
-						formatter: function() {
-							if ($scope.seriesActualVisible && $scope.seriesTargetVisible) {
-									// return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%</b>' + '<br/>TARGET <b>' + (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '%</b>';
-								if (this.series.name === "Actual") {
-									return 'ACTUAL <b>' + this.y + '%</b>' + '<br/>TARGET <b>' + toolTipLookUp[this.x].target + '%</b>';
-								} else {
-									return 'ACTUAL <b>' + toolTipLookUp[this.x].actual + '%</b>' + '<br/>TARGET <b>' + this.y + '%</b>';
-								}
-							}
-							
-							if ($scope.seriesActualVisible) {
-								return 'ACTUAL <b>' + this.y + '%';
-							}
-							if ($scope.seriesTargetVisible) {
-								return 'TARGET <b>' + this.y + '%';
-							}
-						}
-					},
-					/*legend: {
-						enabled: false
-					},
-					plotOptions: {
-						series: {
-							fillOpacity: 0.1
-						}
-					},*/
-					/*xAxis: {
-						type: 'datetime',
-						title: {
-							text: 'Date'
-						},
-						gridLineWidth: 5,
-						gridLineColor: '#FCFCFC',
-						//opposite: true,
-						tickPosition: 'outside',
-						//tickWidth: 5,
-						minTickInterval: 86400000,
-						dateTimeLabelFormats: {
-							days: '%A <br/> %B'
-						},
-						useHTML: true//,
-						/*labels: {
-							x: 0,
-							y: -50,
-							style: {
-								'class': 'uppercase-label',
-								'textAlign': 'center',
-								'display': 'block',
-								'fontWeight': 'bold',
-								'textTransform': 'uppercase',
-								'backgroundColor': '#393c41',
-								'color': '#fcfcfc'/*,
-								'padding': (function() {
-									var totalWidth = $scope.uiOptions.tableWidth - 280;
-									var totalColumns = $scope.currentFilterData.zoom_level_selected;
-									var paddingOffsets = 30;
-									var perColumnWidth = totalWidth / totalColumns - paddingOffsets;
-									var existingTextWidth = 80;
-
-									var perSidePadding = (perColumnWidth - existingTextWidth) / 2;
-								
-									return "10px " + perSidePadding + "px";
-								})()*/
-							//},
-							//useHTML: true
-						//}
-					/*},
-					yAxis: {
-						tickPosition: "inside",
-						showLastLabel: false,
-						style: {
-							color: 'red'
-						},
-						/*title: {
-							text: 'Occupancy'
-						},*/
-						//useHTML: true//,
-						/*labels: {
-							align: 'left',
-							x: 0,
-							y: -2,
-							style: {
-								color: '#868788',
-								fontWeight: 'bold'
-							}
-						}//,
-						/*floor: 0,
-						ceiling: 110,
-						tickInterval: 10,
-						minRange: 110,
-						min: 0,
-						max: 110*/
-					//},
-					//series: $scope.graphData
-					//}
-				//};
-			//};
-		//};
 
 		$scope.legendToggled = function(legendName) {
 			var chart = $('#occGraphContainer').highcharts();
@@ -173,7 +45,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 		function generateSeries(data) {
 			var categories = [],
 			  	actualData = [],
-			  	targetData = [];
+			  	targetData = [], start;
 
 			toolTipLookUp = {};
 
@@ -182,18 +54,22 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				itemDate = Date.parse(item.date); //parse string datetime value to locale ms
 				
+				if(index === 0) {
+					start = itemDate;
+				}
+
 				toolTipLookUp[itemDate] = Object.create(null); //lookup hash
 				
 				categories.push(dateFilter(itemDate, "EEEE") + "<br>" + dateFilter(itemDate, "MMMM dd"));
 
 				// NOTE :: Check if replaced harcoded 10 with item.actual
 				// var valueActual = Math.floor((Math.random() * 100) + 1);
-				actualData.push(item.actual || 0); //[itemDate, !item.actual || 0]); 
+				actualData.push(item.actual || 0); 
 				toolTipLookUp[itemDate].actual = valueActual;
 
 				// NOTE :: Check if replaced harcoded 10 with item.target
 				// var valueTarget = Math.floor((Math.random() * 100) + 1);
-				targetData.push(item.target || 0); //[itemDate, item.target || 0]); 
+				targetData.push(item.target || 0); 
 				toolTipLookUp[itemDate].target = valueTarget;
 			});
 
@@ -201,7 +77,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				series: [{
 						name: 'Actual',
 						data: actualData,
-						pointStart: actualData[0],
+						pointStart: start,
 						pointInterval: 86400000,
 						color: 'rgba(247,153,27,0.9)',
 						marker: {
@@ -212,15 +88,17 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 					{
 						name: 'Target',
 						data: targetData,
-						pointStart: targetData[0],
+						pointStart: start,
 						pointInterval: 86400000,
 						color: 'rgba(130,195,223,0.9)',
 						marker: {
 							symbol: 'triangle',
 							radius: 5
 						}
-				}],
-				categories: categories
+				}]//,
+				//xAxis: {
+				//		categories: categories
+				//}	
 			};	
 		}
 
@@ -382,7 +260,29 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			.then(function() {
 				var args = Array.prototype.slice.call(arguments),
 					data = args.shift(),
-					graphDim  = $scope.graphDimensions;		
+					graphDim, //  = $scope.graphDimensions,
+					interval_width; // = graphDim.containerWidth / 7 - 8;
+
+				(function() {
+					var container = $('.occgraph-outer'),
+						viewport = Object.create(null);
+
+					if(container.length > 0) {
+						viewport = container[0].getBoundingClientRect();
+					}
+
+					$scope.graphDimensions = { 
+						containerWidth: viewport.width, //|| $(window).width() - 280,
+						containerHeight: viewport.height, //$(window).height(),
+						width: $scope.uiOptions.tableWidth - 280,
+						height: $scope.uiOptions.tableHeight
+					};
+
+					graphDim = $scope.graphDimensions;
+					interval_width =(graphDim.containerWidth - 8) / (parseFloat($scope.currentFilterData.zoom_level_selected);
+
+					$scope.graphDimensions.width = interval_width * data.results.length;
+				})();
 
 				$scope.highchartsNG = {	
 					options: {
@@ -395,41 +295,45 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						},
 						xAxis: {
 							title: { enabled: false },
-							tickInterval: null,
-							tickPixelInterval: (graphDim.width - 8 * data.results.length) / data.results.length,
+							//tickInterval: 86400000,
+							//tickPixelInterval: interval_width,
 							tickPosition: 'outside',
 							opposite: true,
 							type: 'datetime',
 							dateTimeLabelFormats: {
-								day: '%b %e'		
+								day: '%A <br/>%B %b'		
 							},
 							gridLineWidth: 5,
 							gridLineColor: '#FCFCFC',
+							minTickInterval: 86400000,
 							labels: {
 								x: 0,
 								y: -50,
 								style: {
 									class: 'uppercase-label',
+									display: 'block',
 									textAlign: 'center',							
 									textTransform: 'uppercase',
 									backgroundColor: '#393c41',
 									color: '#fcfcfc',
-									width: ((graphDim.width - 8 * data.results.length) / data.results.length) + 'px',
 									height: '60px',
+									lineHeight: 'normal',
 									border: '3px solid rgba(0,0,0,0.05)',
 									margin: '0px',
-									fontSize: '16px',
+									fontSize: '14px',
 									fontWeight: '600',
 									borderRadius: '3px',
-									padding: '20px 0px 20px 0'
-								},
+									boxSizing: 'border-box',
+									padding: '10px ' + (interval_width) / 5 + 'px'
+								},								
 								useHTML: true
 							}
 						},
 						yAxis: {
 							title: { enabled: false },
-							tickInterval: null,
-							tickPixelInterval: graphDim.height / 20,
+							tickInterval: 1,
+							minTickInterval: 1,
+							//tickPixelInterval: graphDim.height / 20,
 							tickPosition: 'inside',
 							showLastLabel: false,
 							labels: {
@@ -441,7 +345,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 									fontWeight: 'bold'
 								},
 								useHTML: true
-							}			
+							},
+							min: 0,
+							max: 110,
+							minRange: 5	
 						},
 						legend: {
 							enabled: false
@@ -462,13 +369,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				_.extend($scope.highchartsNG, generateSeries(data));
 
 				$scope.targetData = manipulateTargetData(data);
-				$scope.scroller = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
 
-				setTimeout(function() {			
-					$scope.$emit('computeColumWidth');	
-					//$scope.$parent.myScroll.RateMgrOccupancyGraphCtrl.refresh();	
-					$scope.scroller.refresh();		
-				}, 1000);		
+				$scope.$emit('computeColumWidth');	
+
+				return $scope.highchartsNG;
 			});
 		};
 
