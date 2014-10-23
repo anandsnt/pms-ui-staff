@@ -11,9 +11,6 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.setScroller('RateMgrOccupancyGraphCtrl');
-		$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
-
 		$scope.targetData = [];	
 		$scope.weekCommonTargets = [];
 
@@ -377,6 +374,9 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				$scope.targetData = manipulateTargetData(data);
 
 				$scope.$emit('computeColumWidth');	
+
+				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollbars: true, interactiveScrollbars: true, click: true});
+				$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
 
 				return $scope.highchartsNG;
 			});
