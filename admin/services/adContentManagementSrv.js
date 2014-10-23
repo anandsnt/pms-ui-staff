@@ -57,7 +57,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.saveComponent = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components';	
+		var url = 'api/cms_components/save';	
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
