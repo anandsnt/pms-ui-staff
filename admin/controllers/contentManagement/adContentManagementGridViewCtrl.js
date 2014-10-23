@@ -9,6 +9,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    $scope.fromCategory = "all";
    $scope.showUnMappedList = false;
    $scope.sections = [];
+   $scope.category_options = [];
    $scope.categories = [];
    $scope.items = [];
    $scope.searchText = "";
@@ -17,7 +18,6 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		var successCallbackGridFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.filteredData = $scope.data;
 			$scope.setUpLists();
 			$scope.setSections();
 			$scope.setCategories();
@@ -32,6 +32,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.sections.push($scope.data[i]);
    			}else if($scope.data[i].type == 'CATEGORY'){
    				$scope.categories.push($scope.data[i]);
+   				$scope.category_options.push($scope.data[i]);
    			}else if($scope.data[i].type == 'PAGE'){
    				$scope.items.push($scope.data[i]);
    			}
@@ -102,10 +103,12 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    }
 
    $scope.filterBySectionAndCategory = function(){
-
+   		$scope.filteredData = [];
    		if($scope.showUnMappedList){
+   				$scope.fromSection = 'all';
+   				$scope.fromCategory = 'all';
    				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].from_section == '' && $scope.data[i].from_category == ''){
+			   			if($scope.data[i].parent_section.length == 0 && $scope.data[i].parent_category.length == 0){
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
@@ -114,19 +117,19 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 	   				$scope.filteredData = $scope.data;
 	   			}else if($scope.fromSection != 'all' && $scope.fromCategory != 'all'){
 		   			for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].from_section == $scope.fromSection && $scope.data[i].from_category == $scope.fromCategory){
+			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) != -1 && $scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) != -1 ){
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
 	   			}else if($scope.fromSection != 'all'){
 	   				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].from_section == $scope.fromSection){
+			   			if($scope.data[i].parent_section.indexOf(parseInt($scope.fromSection)) != -1){
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
 	   			}else{
 	   				for(var i=0; i < $scope.data.length; i++){
-			   			if($scope.data[i].from_category == $scope.fromCategory){
+			   			if($scope.data[i].parent_category.indexOf(parseInt($scope.fromCategory)) != -1){
 			   				$scope.filteredData.push($scope.data[i]);
 			   			}
 		   			}
@@ -139,6 +142,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    }
 
    $scope.applyFiltersToSectionsAndItems = function(){
+   		$scope.categories = [];
+   		$scope.items = [];
    		for(var i= 0; i < $scope.filteredData.length; i++){
    			if($scope.filteredData[i].type == 'CATEGORY'){
    				$scope.categories.push($scope.filteredData[i]);
@@ -146,8 +151,17 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    				$scope.items.push($scope.filteredData[i]);
    			}
    		}
-   		$scope.setCategories();
-   		$scope.setItems();
+   		// $scope.setCategories();
+   		// $scope.setItems();
+   		$scope.itemParams.reload();
+   		$scope.categoryParams.reload();
+   }
+
+   $scope.viewSelected = function(){
+   		$scope.fromSection = 'all';
+   		$scope.fromCategory = 'all';
+   		$scope.showUnMappedList = false;
+   		$scope.filterBySectionAndCategory();
    }
 
    $scope.fetchGridViewList();

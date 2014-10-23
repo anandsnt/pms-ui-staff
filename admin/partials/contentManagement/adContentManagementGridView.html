@@ -10,7 +10,7 @@
                 <div class="entry filter">
                     <label for="showing-structure">Showing</label>
                     <div class="select">
-                        <select id="showing-structure" ng-model="selectedView">
+                        <select id="showing-structure" ng-change="viewSelected()" ng-model="selectedView">
                             <option value="section" selected>Sections</option>
                             <option value="category">Categories</option>
                             <option value="item">Items</option>
@@ -24,7 +24,7 @@
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder">
                             <option value="all" >All sections</option>
-                            <option value="{{section.name}}" ng-repeat="section in sections">{{section.name}}</option>
+                            <option value="{{section.id}}" ng-repeat="section in sections">{{section.name}}</option>
                             
                         </select>
                     </div>
@@ -33,10 +33,10 @@
                 <!--Filter by category, hidden by default - show only when listing items -->
                 <div class="entry filter" ng-show="selectedView == 'item'">
                     <label for="showing-items">From Category</label>
-                    <div class="select" ng-model = "fromCategory">
-                        <select id="showing-items" ng-change="filterBySectionAndCategory()" class="placeholder">
+                    <div class="select" >
+                        <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder">
                             <option value="all">All categories</option>
-                             <option value="{{category.name}}" ng-repeat="category in categories">{{category.name}}</option>
+                             <option value="{{category.id}}" ng-repeat="category in category_options">{{category.name}}</option>
                             
                         </select>
                     </div>

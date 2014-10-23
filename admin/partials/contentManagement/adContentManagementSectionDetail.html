@@ -14,8 +14,8 @@
                 </div>
                 <div class="entry full-width">
                     <label for="section-availability">Availability Status <strong>*</strong></label>
-                    <div class="switch-button" ng-class="{'on': data.availability_status}">
-                        <input name="section-availability" id="section-availability" value="1" type="checkbox" ng-model="data.availability_status" />
+                    <div class="switch-button" ng-class="{'on': data.status}">
+                        <input name="section-availability" id="section-availability" value="1" type="checkbox" ng-model="data.status" />
                         <span class="switch-icon"></span>
                     </div>
                 </div> 
@@ -26,11 +26,11 @@
                 <div class="entry full-width">
                     <label for="section-image">Section Icon <span>(Transparent PNG, 128x128px in size)</span></label>
                     <div class="file-upload with-preview small-preview">
-                        <input type="file" ng-model="data.icon_file_name" accept="image/*" app-filereader name="section-image" id="section-image" />
+                        <input type="file" ng-model="fileName" accept="image/*" app-filereader name="section-image" id="section-image" />
                         <button type="button" class="button brand-colors">Replace image</button>
                     </div>
                     <span class="file-preview small-preview">
-                        <img src="{{data.icon_file_name}}" alt="" />
+                        <img src="{{data.fileName}}" alt="" />
                     </span>
                 </div>     
             </fieldset>

@@ -3,11 +3,12 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', '$s
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
+	$scope.fileName = "Choose file..."
 	$scope.data = {	            
 	            "type": "SECTION",
-	            "availability_status": "AVAILABLE",
+	            "status": "AVAILABLE",
 	            "name": "",
-	            "icon_file_name": ''
+	            "icon": ''
             }
 
 	$scope.fetchSection = function(){
@@ -24,19 +25,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', '$s
 	}
 	else{
 		$scope.isAddMode = true;
-	}
-
-	$scope.$watch(
-		function(){
-		return $scope.data.icon_file_name;
-	}, function(logo) {
-				if(logo == '' || logo == null)
-					$scope.fileName = "Choose File....";
-				else 
-					$scope.fileName = logo;
-				$scope.icon_file_name = $scope.fileName;
-			}
-		);
+	}	
 
 	$scope.goBack = function(){
         $state.go('admin.cmscomponentSettings');                  
