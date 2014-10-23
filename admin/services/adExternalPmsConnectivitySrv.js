@@ -25,7 +25,7 @@ admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv','ADB
 		var deferred = $q.defer();
 		var url = '/admin/test_pms_connection';	
 
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 			if(typeof data === 'string') data = [data];
