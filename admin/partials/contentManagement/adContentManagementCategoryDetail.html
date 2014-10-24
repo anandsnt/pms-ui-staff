@@ -43,9 +43,9 @@
                 </div>
                 <div class="entry full-width">
                     <ul class="boxes cms-tree">
-                        <li class="section">
+                        <li class="section" ng-repeat="section in data.parent_section">
                             <div class="sort">
-                                <span class="cms-name">Section Name</span>
+                                <span class="cms-name">{{section.name}}</span>
                                 <div class="cms-delete">
                                     <a href="#" class="icons icon-delete">Delete</a>
                                 </div>
@@ -62,9 +62,9 @@
                 </div>
                 <div class="entry full-width">
                     <ul class="boxes cms-tree">
-                        <li class="category">
+                        <li class="category" ng-repeat="category in data.parent_category">
                             <div class="sort">
-                                <span class="cms-name">Category Name</span>
+                                <span class="cms-name">{{category.name}}</span>
                                 <div class="cms-delete">
                                     <a href="#" class="icons icon-delete">Delete</a>
                                 </div>

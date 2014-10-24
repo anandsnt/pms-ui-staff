@@ -6,7 +6,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', '$s
 	$scope.fileName = "Choose file..."
 	$scope.data = {	            
 	            "type": "SECTION",
-	            "status": "AVAILABLE",
+	            "status": false,
 	            "name": "",
 	            "icon": ''
             }

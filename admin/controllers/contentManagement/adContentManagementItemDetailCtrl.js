@@ -6,10 +6,16 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	
 	 $scope.fileName = "Choose file..."
 	$scope.data = {	            
-	            "type": "SECTION",
-	            "status": "AVAILABLE",
+	            "type": "PAGE",
+	            "status": false,
 	            "name": "",
-	            "icon": ''
+	            "image": '',
+	            "address": "",
+	            "phone": "",
+	            "page_template": "POI",
+	            "website_url": "",
+	            "description": "",
+	            "parent_category": []
             }
 
     

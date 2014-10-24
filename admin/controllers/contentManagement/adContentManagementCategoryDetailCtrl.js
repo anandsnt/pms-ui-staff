@@ -5,10 +5,12 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', '$
 	BaseCtrl.call(this, $scope);
 	$scope.fileName = "Choose file..."
 	$scope.data = {	            
-	            "type": "SECTION",
-	            "status": "AVAILABLE",
+	            "type": "CATEGORY",
+	            "status": false,
 	            "name": "",
-	            "icon": ''
+	            "icon": '',
+	            "parent_category": [],
+	            "parent_section": []
             }
 
     
