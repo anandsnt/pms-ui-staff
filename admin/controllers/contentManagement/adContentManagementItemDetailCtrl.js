@@ -1,5 +1,5 @@
-admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
- function($scope, $state, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stateParams', 'ngDialog', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
+ function($scope, $state, $stateParams, ngDialog, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -38,6 +38,17 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
 	$scope.goBack = function(){
         $state.go('admin.cmscomponentSettings');                  
+	}
+
+	$scope.openAddCategoryModal = function(){
+		$scope.isSection = false;
+		
+          ngDialog.open({
+                template: '/assets/partials/contentManagement/adContentManagementAssignComponentModal.html',
+                controller: 'ADContentManagementAssignComponentCtrl',
+                className: '',
+                scope: $scope
+            });              
 	}
 
 	$scope.saveItem = function(){
