@@ -137,7 +137,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/",
+						action: "staff#/staff/housekeeping/roomStatus/?date=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
@@ -163,6 +163,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
@@ -202,6 +203,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				},{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
@@ -359,7 +361,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			setTimeout(function() {
 				$scope.clearErrorMessage();
 				$scope.$apply();
-			}, 2000);
+			}, 10000);
 		});
 
 		/*

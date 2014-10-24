@@ -90,8 +90,8 @@
                     </div>
                      <!-- If VIP guest  -->
                     <span class="vip" ng-show='room.is_vip' translate>VIP</span>
-                    <!-- If room is queued 
-                    <span class="icon icon-queued">Room queued</span>-->
+                    <!-- If room is queued -->
+                    <span ng-show="room.is_queued" class="icon icon-queued">Room queued</span>
                     <button type="button" class="button green" ng-click="assignRoom(room)" translate>ASSIGN_LABEL</button>
                 </li>                
             </ul>
@@ -154,8 +154,8 @@
                         </div>
                          <!-- If VIP guest  -->
                         <span class="vip" ng-show='room.is_vip' translate>VIP</span>
-                        <!-- If room is queued 
-                        <span class="icon icon-queued">Room queued</span>-->
+                        <!-- If room is queued -->
+                        <span ng-show="room.is_queued" class="icon icon-queued">Room queued</span>
                         
                         <!-- If room not cleaned -->
                         <button ng-hide="room.current_status == 'INSPECTED' || room.current_status == 'CLEAN'" type="button" class="button red" ng-click="unAssignRoom(room)">Unassign Room</button>

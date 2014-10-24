@@ -6,7 +6,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
      * will be updating the heading
      */
 
-    var that = this;
+    var that = this;    
     BaseCtrl.call(this, $scope);
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms = true;
@@ -29,12 +29,18 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'PRE_CHECKIN': 'PRE_CHECKIN'
     };
 
-    if ($stateParams.type in headingDict) {
-      heading = headingDict[$stateParams.type];
+    //Special case: Search by swipe in back navigation. We have to display the card number as well.
+    //So we store the title as sucn in $vault
+    if($stateParams.type == "BY_SWIPE"){
+      heading = $vault.get('title');
     } else {
-      heading = headingDict['NORMAL_SEARCH'];
-    }
+      if ($stateParams.type in headingDict) {
+        heading = headingDict[$stateParams.type];
+      } else {
+        heading = headingDict['NORMAL_SEARCH'];
+      }
 
+    }
 
     // set up a back button
     if ($stateParams.type != '' && $stateParams.type != null) {
@@ -53,7 +59,6 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
         useCache: true
       });
     }
-
     // saving/reseting search params to $vault
     $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
 
@@ -82,13 +87,28 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
-
+    var totalNgIncludeRequested = 0;
     //click function on search area, mainly for closing the drawer
-    $scope.clickedOnSearchArea = function($event) {
+    $scope.clickedOnSearchArea = function($event) {      
       $scope.$emit("closeDrawer");
     };
 
+    /**
+    * When the ng-include content request started, we will show activity indicator
+    */
+    $scope.$on("$includeContentRequested", function(event){
+      totalNgIncludeRequested++; //variable used to track total number of nginlude requested
+      $scope.$emit('showLoader');
+    });  
+
+    /**
+    * When the ng-include content loaded, we will hide activity indicator
+    */      
     $scope.$on("$viewContentLoaded", function(event) {
+      totalNgIncludeRequested--;
+      if(totalNgIncludeRequested == 0){
+        $scope.$emit('hideLoader');
+      }
       setTimeout(function() {
         $scope.$apply(function() {
           //we are showing the search results area
@@ -113,5 +133,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       $scope.heading = headingDict['NORMAL_SEARCH'];
     });
     $stateParams.type = "";
+    //Regarding rvReservationSearchWidgetCtrl.js's ng-repeat on large data set
+    //Even though we are showing loader on ng-repeat start, it is not showing :(, so adding here
+    //we are hiding this loader on data ng-repeat complete in rvReservationSearchWidgetCtrl.js
+    $scope.$emit('showLoader'); //Please see above comment
   }
 ]);

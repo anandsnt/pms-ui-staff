@@ -17,10 +17,11 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 			firstDay: 1,
 			changeYear: true,
 			changeMonth: true,
+			yearRange: "-5:+5", //Show 5 years in past & 5 years in future
 			showCurrentAtPos: fromDateOffset,
-			yearRange: "-5:+5",
 			onSelect: function(dateText, datePicker) {
-				datePicker.drawMonth += fromDateOffset;
+				if(fromDateOffset) { datePicker.drawMonth += fromDateOffset; 
+					$scope.fromDateOptions.showCurrentAtPos = fromDateOffset = undefined; }
 
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.toDate = $scope.fromDate;
@@ -35,7 +36,8 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 			showCurrentAtPos: toDateOffset,
 			yearRange: "-5:+5",
 			onSelect: function(dateText, datePicker) {
-				datePicker.drawMonth += toDateOffset;
+				if(toDateOffset) { datePicker.drawMonth += toDateOffset; 
+					$scope.toDateOptions.showCurrentAtPos = toDateOffset = undefined; }
 
 				if(tzIndependentDate($scope.fromDate) > tzIndependentDate($scope.toDate)) {
 					$scope.fromDate = $scope.toDate;
@@ -66,4 +68,5 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 	$scope.cancelClicked = function() {
 		ngDialog.close();
 	};
+
 }]);

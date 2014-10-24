@@ -12,7 +12,7 @@ sntRover
 .constant('rateGridDefaults', Object.create(null, {
     RESIZE_DEBOUNCE_INTERVAL: {
         enumerable: true,
-        value: 100
+        value: 10
     },
     FILTER_OPTIONS_WIDTH: {
         enumerable: true,
@@ -24,11 +24,11 @@ sntRover
     },
     COLUMN_BORDER_WIDTH: {
         enumerable: true, 
-        value: 20
+        value: 8 //20
     },
     TOP_BOTTOM_HEIGHT: {
         enumerable: true,
-        value: 240
+        value: 190
     },
     DEFAULT_COLUMN_WIDTH: {
         enumerable: true,
@@ -94,15 +94,15 @@ sntRover
     $scope.backbuttonEnabled = false;
     
     //left side menu class, based on which it will appear or not
-    $scope.currentLeftMenuClass = 'slide_right';  
-
+    $scope.currentLeftMenuClass = 'slide_right';
+    
     $scope.currentFilterData = new Model({
         filterConfigured: false,
         begin_date: '',
         end_date: '',
         zoom_level: [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
         zoom_level_selected : "3",
-        is_checked_all_rates: true,
+        is_checked_all_rates : true,
         rate_types: [],
         rate_type_selected_list: [],
         rates: [],
@@ -111,7 +111,7 @@ sntRover
         selected_date_range: '', 
         allRates: []
     });  
-	
+
     var computeColWidth = function(){
         var FILTER_OPTIONS_WIDTH = rateGridDefaults.FILTER_OPTIONS_WIDTH,
             FIRST_COLUMN_WIDTH = rateGridDefaults.FIRST_COLUMN_WIDTH,
@@ -137,8 +137,8 @@ sntRover
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
     },
-    computeColWidthOnResize = _.throttle(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL);
-
+    computeColWidthOnResize = _.debounce(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL, { leading: false, trailing: true });
+        
     $scope.$on("computeColumWidth", computeColWidth);
 
     $scope.ratesDisplayed = [];
