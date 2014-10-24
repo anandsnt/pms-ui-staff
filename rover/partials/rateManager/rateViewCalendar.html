@@ -2,7 +2,7 @@
 	<table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
 		<thead>
 			<tr>
-				<th width="220" style="{width:th.width}" class="first-row">
+				<th width="220" style="width:{{th.width}}px;" class="first-row">
 					<button ng-click="openCloseAllRestrictions('remove')" 
 							class="button green" 
 							ng-class="{'grey': calendarData.disableOpenAllBtn}" 
@@ -15,13 +15,12 @@
 							ng-disabled="calendarData.disableCloseAllBtn">
 						Close All
 					</button></th>
-				<th bindonce ng-repeat="date in calendarData.dates track by $index" 
+				<th ng-repeat="date in calendarData.dates track by $index" 
 					class="cell" 
-					width="{{uiOptions.columnWidth}}" 
-					style="{width:th.width}"> 
+					style="width:{{uiOptions.columnWidth}}px;"> 
 					<div class="date-header">
-						<span class="week-day" bo-html="date| date:'EEEE'"></span>
-						<span bo-html="date| date:'MMMM dd'"></span>
+						<span class="week-day">{{date| date:'EEEE'}}</span>
+						<span>{{date| date:'MMMM dd'}}</span>
 					</div>
 					<div class="cell-overlay" ng-if="isHistoryDate(date)"></div>
 				</th>
