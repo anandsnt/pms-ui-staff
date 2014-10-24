@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv',	function($scope,$filter,$stateParams, ngDialog, $rootScope, RVJournalSrv) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse',	function($scope,$filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
@@ -6,11 +6,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 	$scope.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data = {};
-	$scope.filterData = {};
-	$scope.filterData = RVJournalSrv.fetchGenericData();
-	console.log( $scope.filterData );
+	$scope.data.filterData = {};
+	$scope.data.filterData = journalResponse;
+	console.log(journalResponse);
+	$scope.data.filterData.checkedAllDepartments = true;
 	$scope.data.fromDate = $rootScope.businessDate;
     $scope.data.toDate 	= $rootScope.businessDate;
+    //$scope.data.depOrEmpSelected = true;
     $scope.isActiveRevenueFilter = false;
 
 	$scope.isDrawerOpened = false;
@@ -85,6 +87,62 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	        className: 'single-date-picker',
 	        scope: $scope
       	});
+    };
+
+    // On selecting 'All Departments' radio button.
+    $scope.selectAllDepartment = function(){
+    	$scope.data.filterData.checkedAllDepartments = true;
+    	$scope.clearAllDeptSelection();
+    };
+    // Clicking each checkbox on Departments
+    $scope.clickedDepartment = function(index){
+
+    	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
+    	
+    	if($scope.isAllDepartmentsUnchecked()) $scope.data.filterData.checkedAllDepartments = true;
+    	else $scope.data.filterData.checkedAllDepartments = false;
+    };
+    // Unchecking all checkboxes on Departments.
+    $scope.clearAllDeptSelection = function(index){
+    	angular.forEach($scope.data.filterData.departments,function(item, index) {
+       		item.checked = false;
+       	});
+    };
+    // Checking whether all department checkboxes are unchecked or not
+    $scope.isAllDepartmentsUnchecked = function(){
+    	var isAllDepartmentsUnchecked = true;
+    	angular.forEach($scope.data.filterData.departments,function(item, index) {
+       		if(item.checked) isAllDepartmentsUnchecked = false;
+       	});
+       	return isAllDepartmentsUnchecked;
+    };
+    // Clicking on each Employees radio buttons.
+    $scope.clickedEmployees = function(selectedIndex){
+    	// Unselecting all radio buttons on Departments except the selectedIndex.
+    	angular.forEach($scope.data.filterData.employees,function(item, index) {
+    		if(selectedIndex == index){
+    			item.checked = true;
+    			$scope.data.filterData.selectedEmployeeId = item.id;
+    		}
+    		else{
+    			item.checked = false;
+    		}
+       	});
+       	console.log("$scope.data.filterData.selectedEmployeeId"+$scope.data.filterData.selectedEmployeeId);
+    };
+    // On selecting select button.
+    $scope.clickedSelectButton = function(){
+    	$scope.getListOfCheckedDepartments();
+    	// Close the entire filter box
+    	if(!$scope.data.filterData.checkedAllDepartments) $scope.isActiveRevenueFilter = false;
+    };
+
+    $scope.getListOfCheckedDepartments = function(){
+    	var selectedDepartmentList = [];
+    	angular.forEach($scope.data.filterData.departments,function(item, index) {
+       		if(item.checked) selectedDepartmentList.push(item.id);
+       	});
+       	console.log(selectedDepartmentList);
     };
 
 }]);

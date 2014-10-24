@@ -11,38 +11,31 @@
             </div>
         </div>
         <div id="revenue-filters" class="faux-select-options" ng-show="isActiveRevenueFilter">
-            <button id="select-filters" type="button" class="button grey" translate>SELECT</button>  <!-- When user selects a department or an employee replace class "grey" with "green" -->
+            <button id="select-filters" type="button" ng-click="clickedSelectButton()" ng-class="{ 'green': !data.filterData.checkedAllDepartments, 'grey': data.filterData.checkedAllDepartments }" class="button" translate>SELECT</button>
             <div class="header">
-                <label class="radio inline">
+                <label class="radio inline" ng-click="selectAllDepartment()">
+                    <span class="icon-form icon-radio" ng-class="{'checked':data.filterData.checkedAllDepartments}"></span>
                     <input name="revenue-departments" id="revenue-departments" value="all-departments" type="radio" checked />
-                    {'ALL_DEPARTMENTS' | translate}
+                    {{'ALL_DEPARTMENTS' | translate}}
                 </label>
                 <strong class="h5" translate>EMPLOYEES</strong>
             </div>
             <div id="faux-revenue-departments" class="holder scrollable">
                 <div class="wrapper">
-                    <label class="checkbox inline">
-                        <input name="revenue-departments" value="{Department 1}" type="checkbox" />
-                        {Department 1}
+                    <label class="checkbox inline" ng-click="clickedDepartment($index)" ng-repeat="department in data.filterData.departments">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':department.checked}" ></span>
+                        <input name="revenue-departments" value="{{department.id}}" type="checkbox" />
+                        {{department.name}}
                     </label>
-                    <label class="checkbox inline">
-                        <input name="revenue-departments" value="{Department 2}" type="checkbox" />
-                        {Department 2}
-                    </label>
-                    .. other departments
                 </div>
             </div>
             <div id="faux-revenue-employees" class="holder scrollable">
-                <div class="wrapper">
-                    <label class="radio inline">
-                        <input name="revenue-employees" value="{Employee 1}" type="radio" />
-                        {Employee 1}
+                <div class="wrapper" ng-model="data.filterData.selectedEmployee">
+                    <label class="radio inline" ng-click="clickedEmployees($index)" ng-repeat="employee in data.filterData.employees">
+                        <span class="icon-form icon-radio" ng-class="{'checked':employee.checked}"></span>
+                        <input name="revenue-employees" value="{{employee.id}}" type="radio" />
+                        {{employee.name}}
                     </label>
-                    <label class="radio inline">
-                        <input name="revenue-employees" value="{Employee 2}" type="radio" />
-                        {Employee 2}
-                    </label>
-                    ...
                 </div>
             </div>
         </div>

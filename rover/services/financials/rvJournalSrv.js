@@ -5,11 +5,16 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2', function($http, 
 	this.paymentData = {};
 
 	this.fetchGenericData = function(){
-		console.log("API fetchGenericData");
 		var deferred = $q.defer();
 		var url = '/sample_json/journal/journal_common.json';
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				this.filterData = data;
+				angular.forEach(this.filterData.departments,function(item, index) {
+		       		item.checked = false;
+		       	});
+		       	angular.forEach(this.filterData.employees,function(item, index) {
+		       		item.checked = false;
+		       	});
 			   	deferred.resolve(this.filterData);
 			},function(data){
 			    deferred.reject(data);
