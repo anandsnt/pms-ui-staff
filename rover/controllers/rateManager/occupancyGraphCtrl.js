@@ -17,6 +17,21 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 		$scope.seriesActualVisible = true;
 		$scope.seriesTargetVisible = true;
 
+		(function() {
+			var height = $(window).height() - 200,
+				width = $(window).width() - 265;
+
+			$scope.graphDimensions = { 
+				containerWidth: width,
+				containerHeight: height, //$(window).height(),
+				width: $scope.uiOptions.tableWidth - 280,
+				height: $scope.uiOptions.tableHeight - 100,
+				interval: {
+					width: $scope.uiOptions.columnWidth
+				}
+			};
+		})();
+
 		toolTipLookUp = $scope.toolTipLookUp = Object.create(null);
 
 		$scope.legendToggled = function(legendName) {
@@ -241,6 +256,22 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			ngDialog.close();
 		};
 
+		function findLimit(collection, childCollParam, valueParam, findMax) {
+			var curLimit = -1, curVal, records, record;
+
+			records = collection[childCollParam];
+
+			for(var i = 0, len = records.length; i < len; i++) {
+				record = records[i][valueParam];
+
+				curVal = (record === null || !record || isNaN(record)) ? 0 : record;
+
+				curLimit = (curLimit < curVal ? (findMax ? curVal : curLimit) : (findMax ? curLimit : curVal));
+			}
+
+			return curLimit;
+		}
+
 		$scope.fetchGraphData = function(params) {
 			var params = {
 				"from_date": $scope.currentFilterData.begin_date,
@@ -257,28 +288,40 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			.then(function() {
 				var args = Array.prototype.slice.call(arguments),
 					data = args.shift(),
-					graphDim, //  = $scope.graphDimensions,
-					interval_width; // = graphDim.containerWidth / 7 - 8;
+					graphDim; //, //  = $scope.graphDimensions,
+					//interval_width; // = graphDim.containerWidth / 7 - 8;
 
 				(function() {
 					var container = $('.occgraph-outer'),
-						viewport = Object.create(null);
+						viewport = Object.create(null),
+						maxActual, maxTarget,
+						findMax = findLimit.bind(null, data, 'results'),
+						max;
 
+					maxActual = findMax('actual', true);
+					maxTarget = findMax('target', true);
+
+					max = ((maxActual > maxTarget) ? maxActual : maxTarget);
+					
 					if(container.length > 0) {
 						viewport = container[0].getBoundingClientRect();
 					}
 
 					$scope.graphDimensions = { 
-						containerWidth: viewport.width, //|| $(window).width() - 280,
-						containerHeight: viewport.height, //$(window).height(),
+						containerWidth: viewport.width, 
+						containerHeight: viewport.height, 
 						width: $scope.uiOptions.tableWidth - 280,
-						height: $scope.uiOptions.tableHeight - 100
+						height: $scope.uiOptions.tableHeight,
+						interval: {
+							width: $scope.uiOptions.columnWidth
+						},
+						yAxis: {
+							max: max,
+							step: 2
+						}
 					};
 
 					graphDim = $scope.graphDimensions;
-					interval_width =(graphDim.containerWidth - 8) / parseFloat($scope.currentFilterData.zoom_level_selected);
-
-					$scope.graphDimensions.width = interval_width * (data.results.length - 3);
 				})();
 
 				$scope.highchartsNG = {	
@@ -314,28 +357,31 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 									display: 'block',
 									textAlign: 'center',							
 									textTransform: 'uppercase',
-									//backgroundColor: '#393c41',
-									//color: '#fcfcfc',
+									backgroundColor: '#393c41',
+									color: '#fcfcfc',
 									height: '60px',
 									lineHeight: 'normal',
-									//border: '3px solid rgba(0,0,0,0.05)',
-									margin: '0px',
+									border: '3px solid rgba(0,0,0,0.05)',
+									//margin: '0px',
 									fontSize: '14px',
 									fontWeight: '600',
 									borderRadius: '3px',
 									boxSizing: 'border-box',
-									padding: '10px ' + (interval_width) / 6 + 'px'
+									padding: '10px ' + graphDim.interval.width / 6 + 'px',
+									margin: '0px 0px 0px ' + graphDim.interval.width / 6 + 'px'
 								},								
 								useHTML: true
 							}
 						},
 						yAxis: {
 							title: { enabled: false },
-							tickInterval: 5,
-							minTickInterval: 5,
+							tickWidth: 5,
+							tickInterval: graphDim.yAxis.step,
+							minTickInterval: graphDim.yAxis.step,
 							//tickPixelInterval: graphDim.height / 20,
 							tickPosition: 'inside',
-							showLastLabel: false,
+							showLastLabel: true,
+							showFirstLabel: false,
 							labels: {
 								align: 'left',
 								x: 0,
@@ -347,8 +393,8 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 								useHTML: true
 							},
 							min: 0,
-							max: 50,
-							minRange: 5	
+							max: (graphDim.yAxis.max += parseInt(graphDim.yAxis.max >> 1, 10)),
+							minRange: graphDim.yAxis.step
 						},
 						legend: {
 							enabled: false
@@ -357,11 +403,6 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 							series: {
 								fillOpacity: 0.1
 							}
-							/*area: {
-								stacking: 'percent',
-								lineColor: '#aaa',
-								lineWidth: 1
-							}*/
 						},
 						title: {
 							enabled: false
@@ -375,10 +416,8 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				$scope.$emit('computeColumWidth');	
 
-				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollbars: true, interactiveScrollbars: true, click: true});
+				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: true, momentum: false });
 				$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
-
-				return $scope.highchartsNG;
 			});
 		};
 
