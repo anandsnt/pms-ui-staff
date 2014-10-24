@@ -15,31 +15,31 @@
                 </div>
                 <div class="entry full-width">
                     <label for="item-availability">Availability Status <strong>*</strong></label>
-                    <div class="switch-button on">
-                        <input name="item-availability" id="item-availability" value="1" type="checkbox" checked />
+                    <div class="switch-button" ng-class="{'on': data.status}">
+                        <input name="item-availability" ng-model="data.status" id="item-availability" value="1" type="checkbox"  />
                         <span class="switch-icon"></span>
                     </div>
                 </div>
                 <div class="entry">
                     <label for="item-name">Item name <strong>*</strong></label>
-                    <input type="text" name="item-name" id="item-name" placeholder="Enter item name" value="{Item Name}" required />
+                    <input type="text" name="item-name" ng-model="data.name" id="item-name" placeholder="Enter item name" value="{Item Name}" required />
                 </div>
                 <div class="entry full-width">
                     <label for="item-type">Item Type <strong>*</strong></label>
                     <div class="boxes">
-                        <label class="radio checked"> 
-                            <span class="icon-form icon-radio checked"></span>
-                            <input type="radio" name="item-type" id="poi" value="poi" checked/>
+                        <label class="radio" ng-class = "{'checked': data.page_template=='POI'}"> 
+                            <span class="icon-form icon-radio " ng-class = "{'checked': data.page_template=='POI'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="poi" value="POI" />
                             Point of Interest 
                         </label>
-                        <label class="radio"> 
-                            <span class="icon-form icon-radio"></span>
-                            <input type="radio" name="item-type" id="general" value="general" />
+                        <label class="radio" ng-class = "{'checked': data.page_template=='POI'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.page_template=='GENERAL'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="general" value="GENERAL" />
                             General Information 
                         </label>
-                        <label class="radio"> 
-                            <span class="icon-form icon-radio"></span>
-                            <input type="radio" name="item-type" id="link" value="link" />
+                        <label class="radio" ng-class = "{'checked': data.page_template=='POI'}"> 
+                            <span class="icon-form icon-radio" ng-class = "{'checked': data.page_template=='LINK'}"></span>
+                            <input type="radio" name="item-type" ng-model="data.page_template" id="link" value="LINK" />
                             Link 
                         </label>
                     </div>
@@ -47,29 +47,30 @@
                 <div class="entry full-width">
                     <label for="item-image">Image<span>(680x320px in size)</span></label>
                     <div class="file-upload with-preview large-preview">
-                        <input type="file" name="item-image" id="item-image" />
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" name="item-image" ng-model="data.image" app-filereader id="item-image" />
                         <button type="button" class="button brand-colors">Replace image</button>
                     </div>
                     <span class="file-preview large-preview">
-                        <img src="{image}" alt="" />
+                        <img src="{{data.image}}" alt="" />
                     </span>
                 </div>
                 <div class="entry full-width">
                     <label for="item-description">Description</label>
-                    <textarea name="item-description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
+                    <textarea name="item-description" ng-model="data.description" id="item-description" rows="4" placeholder="Item description ..."></textarea>
                 </div>
                 <div class="entry">
                     <label for="item-phone">Phone</label>
-                    <input type="text" name="item-phone" id="item-phone" placeholder="Enter Phone number" value="" />
+                    <input type="text" name="item-phone" ng-model="data.phone" id="item-phone" placeholder="Enter Phone number" value="" />
                 </div>
                 <div class="entry full-width">
                     <label for="item-address">Address</label>
-                    <input type="text" name="aitem-ddress" id="item-address" placeholder="Enter Address" value=""  />
+                    <input type="text" name="aitem-ddress" ng-model="data.address" id="item-address" placeholder="Enter Address" value=""  />
                 </div>
                 
                 <div class="entry full-width">
                     <label for="item-url">URL <strong>*</strong></label>
-                    <input type="text" name="item-url" id="item-url" placeholder="Enter URL" value=""  />
+                    <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
                 </div>        
             </fieldset>
             <fieldset class="holder right">
@@ -94,8 +95,8 @@
                 </div>        
             </fieldset>
             <div class="actions float">
-                <button type="button" class="button blank">Cancel</button>
-                <button type="button" class="button green">Save changes</button>  
+                <button type="button" ng-click="goBack()" class="button blank">Cancel</button>
+                <button type="button" ng-click="saveItem()" class="button green">Save changes</button>  
             </div>
         </form>
     </section>

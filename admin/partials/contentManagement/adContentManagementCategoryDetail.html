@@ -8,7 +8,7 @@
 
     <section class="content-scroll">
 
-        <form method="post" action="" id="{add/edit}" name="{add/edit}-category" class="form float">
+        <form method="post" class="form float">
             <fieldset class="holder left">
                 <div class="form-title">
                     <h3><span>Category</span> details</h3>
@@ -16,23 +16,24 @@
                 </div>
                 <div class="entry full-width">
                     <label for="category-availability">Availability Status <strong>*</strong></label>
-                    <div class="switch-button on">
-                        <input name="category-availability" id="category-availability" value="1" type="checkbox" checked />
+                    <div class="switch-button" ng-class="{'on':data.status}">
+                        <input name="category-availability" id="category-availability" value="1" type="checkbox" ng-model="data.status" />
                         <span class="switch-icon"></span>
                     </div>
                 </div> 
                 <div class="entry">
                     <label for="category-name">Category name <strong>*</strong></label>
-                    <input type="text" name="category-name" id="category-name" placeholder="Enter category name" value="{Category Name}" required />
+                    <input type="text" name="category-name" id="category-name" placeholder="Enter category name" ng-model= "data.name" required />
                 </div>
                 <div class="entry full-width">
                     <label for="category-icon">Category Icon <span>(Transparent PNG, 128x128px in size)</span></label>
                     <div class="file-upload with-preview small-preview">
-                        <input type="file" name="category-icon" id="category-icon" />
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" name="category-icon" ng-model = "data.icon" app-filereader id="category-icon" />
                         <button type="button" class="button brand-colors">Replace icon</button>
                     </div>
                     <span class="file-preview small-preview">
-                        <img src="{Category Icon}" alt="" />
+                        <img src="{{data.icon}}" alt="" />
                     </span>
                 </div>     
             </fieldset>
@@ -77,8 +78,8 @@
                 </div>        
             </fieldset>
             <div class="actions float">
-                <button type="button" class="button blank">Cancel</button>
-                <button type="button" class="button green">Save changes</button>  
+                <button type="button" ng-click="goBack()" class="button blank">Cancel</button>
+                <button type="button" ng-click="saveCategory()" class="button green">Save changes</button>  
             </div>
         </form>
     </section>
