@@ -223,7 +223,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			searchFilteringCall = setTimeout(function(){
 				$scope.$apply(function(){displayFilteredResults();});
-			}, 300);
+			}, 800);
 			
 
 			// save the entered query into vault
