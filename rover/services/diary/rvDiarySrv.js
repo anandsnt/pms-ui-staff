@@ -28,6 +28,10 @@ sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
     		return data;
     	};
 
+    	this.merge = function(currentData, incomingData) {
+
+    	};
+    	
         this.fetchInitialData = function (arrival_date, meta){
             var deferred = $q.defer (),
             	rooms;

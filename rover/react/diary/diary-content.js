@@ -53,11 +53,15 @@ var DiaryContent = React.createClass({
 		var state 			= this.state,
 			rowHeight 		= state.display.row_height + state.display.row_height_margin,
 			viewport 		= state.viewport.element(),
-			curPos 			= viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
+			curPos 			= e.pageY - viewport.offset().top - state.iscroll.grid.y, //viewport[0].scrollTop + e.pageY - viewport.offset().top - state.iscroll.grid.y,
 			rowNumber 		= (curPos / rowHeight).toFixed(),
 			row_data 		= state.data[rowNumber],
 			delta 			= Number((left - row_item_data.left).toFixed(3));
 
+		if(rowNumber * (state.display.row_height + state.display.row_height_margin) < e.pageY) {
+			rowNumber++;
+		}
+		
 		row_item_data.left = left;
 		row_item_data.right = row_item_data.right + delta;
 
