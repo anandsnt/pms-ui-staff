@@ -1,4 +1,4 @@
-admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
+admin.service('ADExternalPmsConnectivitySrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
    /**
     * To fetch the details of external connection
     * @return {object} external connectivity details
