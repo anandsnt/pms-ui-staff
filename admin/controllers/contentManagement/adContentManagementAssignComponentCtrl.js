@@ -19,16 +19,16 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
 
    $scope.setUpLists =function(){
    		for(var i= 0; i < $scope.componentList.length; i++){
-   			if($scope.componentList[i].type == 'SECTION'){
+   			if($scope.componentList[i].component_type == 'SECTION'){
    				$scope.sections.push($scope.componentList[i]);
-   			}else if($scope.componentList[i].type == 'CATEGORY'){
+   			}else if($scope.componentList[i].component_type == 'CATEGORY'){
    				$scope.categories.push($scope.componentList[i]);   				
    			}
    		}
    }
 
    $scope.isComponentAvailable = function(component){
-   		if(component.type == "SECTION")
+   		if(component.component_type == "SECTION")
    			return component.id != $scope.data.id && $scope.data.parent_section.indexOf(section.id) == -1;
    		else
    			return component.id != $scope.data.id && $scope.data.parent_category.indexOf(section.id) == -1;
