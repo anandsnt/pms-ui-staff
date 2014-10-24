@@ -54,9 +54,9 @@
     <li>Stayovers <span>{{ counts.stayover }}</span></li>
     <li>Completed <span>{{ counts.completed }}/{{ counts.total }}</span></li>
 </ul>
-
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
+<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate ng-show="(rooms | filter:{display_room:true}).length > 0">
+
   <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
     <li class="room" bindonce ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
@@ -98,7 +98,7 @@
   </ul>
   
   <!-- Empty -->
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="noResultsFound==rooms.length" >
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-hide="(rooms | filter:{display_room:true}).length > 0" >
     <li class="no-content">
       <div class="info">
         <span class="icon-no-content icon-room"></span>

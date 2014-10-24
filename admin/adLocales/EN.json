@@ -398,5 +398,6 @@
 "RATING_LIMIT":"Rating limit",
 "AND": "and",
 "ON_WEEKDAYS": "on weekdays",
-"ON_SATURDAY_SUNDAY": "on saturday /sunday"
+"ON_SATURDAY_SUNDAY": "on saturday /sunday",
+"ROOM_VERIFICATION_INSTRUCTIONS":"ROOM NUMBER VERIFICATION INSTRUCTIONS"
 }
