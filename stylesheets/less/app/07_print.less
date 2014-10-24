@@ -83,7 +83,15 @@ q:before, q:after {content: ""}
         }
     }
 
-    .root-view,
+    .root-view {
+        position: static !important;
+        top: 0 !important; 
+        left: 0 !important;
+        height: auto !important;
+        background: transparent !important;
+        overflow: visible;
+    }
+
     .main-view { background: transparent !important; }
 
     .wrapper { 
@@ -748,6 +756,8 @@ q:before, q:after {content: ""}
                             width: auto;
 
                             span { 
+                                display: inline-block;
+
                                 &.completed { margin-right: 8pt; }
                                 &.total { padding-left: 8pt; border-left: 1px solid @grey3; }
                             }

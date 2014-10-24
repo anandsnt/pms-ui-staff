@@ -488,7 +488,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					}
 				}
 			}
-			if(!showNoMatchesMessage){
+			if(!showNoMatchesMessage && resultLength > 0){
 				var totalCountOfFound = 0;
 				for(var i = 0; i < results.length; i++){
 					if(results[i].is_row_visible)
