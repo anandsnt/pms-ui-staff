@@ -6,8 +6,8 @@
 	        </a>
 	        <button type="submit" name="submit" class="icons icon-search">Search</button>
 	        <input name="dashboard-query" id="dashboard-query" class="query" placeholder="Name, Group, Room No. or Confirmation No." type="text" autocomplete="off" 
-	        ng-keyup="queryEntered()" ng-focus="focusOnSearchText()"
-	        ng-model="textInQueryBox" ng-blur="focusOutOnSearchText()" >
+	        ng-change="queryEntered()" ng-focus="focusOnSearchText()"
+	        ng-model="textInQueryBox"  ng-blur="focusOutOnSearchText()" >
 	    </div>
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
 	</form>
@@ -16,7 +16,7 @@
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
-				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend>
+				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
 					<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
 					<a ng-class="getReservationClass(row.reservation_status)" ng-click="goToReservationDetails(row.id, row.confirmation)"> <!--ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation, isrefresh: true})" -->
 						<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
@@ -27,13 +27,13 @@
 						</figure>
 						<div class="data">
 							<h2 ng-class="{'grey' : row.is_accompanying_guest=='1'}">
-								<span class="no-margin-right" ng-bind-html="row.lastname|highlight:textInQueryBox:false"></span>,
-								<span ng-bind-html="row.firstname|highlight:textInQueryBox:false"></span>
+                                <span class="no-margin-right" ng-bind-html="escapeNull(row.lastname)|highlight:textInQueryBox:false"></span>,
+								<span ng-bind-html="escapeNull(row.firstname)|highlight:textInQueryBox:false"></span>
 							</h2>
 							<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
 							<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 							</span>
-							<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
+							<em class="icons icon-group" ng-hide="escapeNull(row.group)==''"  ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></em>
 						</div>	
 						<div class="status" ng-class="getQueueClass(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">				
 							<span class="late-checkout-time" ng-hide="(row.reservation_status!='CHECKING_OUT'||row.reservation_status=='CHECKING_IN')&&row.is_opted_late_checkout==false">
@@ -51,7 +51,7 @@
 						<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
 					</a>
 				</li>
-				<li class="no-content" ng-show="showNoMatches(results.length, textInQueryBox.trim().length, isTyping, isSwiped)" >
+				<li class="no-content" ng-show="showNoMatches(results, textInQueryBox.trim().length, isTyping, isSwiped)" >
 					<div class="info">
 						<span class="icon-no-content icon-search"></span>
 						<strong class="h1">No matches </strong>
@@ -69,7 +69,7 @@
 						<strong class="h1">No guests opted for late checkout </strong>
 					</div>
 				</li>
-				<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<3 && !swipeNoResults">
+				<li class="no-content" ng-show="results.length == 0 && textInQueryBox.trim().length<=3 && !swipeNoResults">
 					<div class="info">
 						<span class="icon-no-content icon-search"></span>
 						<strong class="h1">Find Guests</strong>
