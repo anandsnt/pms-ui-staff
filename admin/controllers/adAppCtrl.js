@@ -361,7 +361,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			setTimeout(function() {
 				$scope.clearErrorMessage();
 				$scope.$apply();
-			}, 2000);
+			}, 10000);
 		});
 
 		/*

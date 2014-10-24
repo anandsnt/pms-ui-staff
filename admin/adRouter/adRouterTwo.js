@@ -210,10 +210,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 		});
 
 
-		$stateProvider.state('admin.checkinCheckoutEmail', {
+		$stateProvider.state('admin.checkinEmail', {
 			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
-			controller: 'ADCheckinCheckoutCtrl',
-			url : '/checkinCheckoutEmail/:from'
+			controller: 'ADCheckinEmailCtrl',
+			url : '/checkinEmail'
 		});
         $stateProvider.state('admin.maintenanceReasons', {
 			templateUrl: '/assets/partials/maintenanceReasons/adMaintenanceReasons.html',
@@ -340,4 +340,9 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
         	controller: 'ADDailyWorkAssignmentCtrl',
         	url: '/daily_work_assignment'
         });
+		$stateProvider.state('admin.checkoutEmail', {
+			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
+			controller: 'ADCheckoutEmailCtrl',
+			url : '/checkoutEmail'
+		});
 });

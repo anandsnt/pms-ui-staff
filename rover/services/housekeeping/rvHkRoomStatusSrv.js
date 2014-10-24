@@ -37,13 +37,20 @@ sntRover.service('RVHkRoomStatusSrv', [
 
 		var that = this;
 
+		this.cacheDirty = true;
 
 		var roomList = {};
 		this.fetchRoomList = function(businessDate) {
 			var deferred = $q.defer();
 			var url = '/house/search.json?date=' + businessDate;
 
-			if (roomList.hasOwnProperty('rooms') && roomList.rooms.length) {
+
+			/**
+			 * CICO-8620 Caching is turned OFF for now
+			 * TODO : Need to turn it on later.. Use the cacheDirty flag at the Workmanagement and staycard controller
+			 * [Assuming they are the places where the stuff gets changed]
+			 */
+			if (roomList.hasOwnProperty('rooms') && roomList.rooms.length && !this.cacheDirty) {
 				deferred.resolve(roomList);
 			} else {
 				$http.get(url)
