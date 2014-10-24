@@ -5,19 +5,19 @@
     <!-- Header -->
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
         <div class="entry" ng-hide="activeTab==2">
-            <label for="revenue-departments">Employee / Department / House</label>
-            <div class="faux-select" ng-class="{'active':isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();">
-                All Departments
+            <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
+            <div class="faux-select" ng-class="{'active':isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();" translate>
+                ALL_DEPARTMENTS
             </div>
         </div>
         <div id="revenue-filters" class="faux-select-options" ng-show="isActiveRevenueFilter">
-            <button id="select-filters" type="button" class="button grey">Select</button>  <!-- When user selects a department or an employee replace class "grey" with "green" -->
+            <button id="select-filters" type="button" class="button grey" translate>SELECT</button>  <!-- When user selects a department or an employee replace class "grey" with "green" -->
             <div class="header">
                 <label class="radio inline">
                     <input name="revenue-departments" id="revenue-departments" value="all-departments" type="radio" checked />
-                    All Departments
+                    {'ALL_DEPARTMENTS' | translate}
                 </label>
-                <strong class="h5">Employees</strong>
+                <strong class="h5" translate>EMPLOYEES</strong>
             </div>
             <div id="faux-revenue-departments" class="holder scrollable">
                 <div class="wrapper">
@@ -47,10 +47,10 @@
             </div>
         </div>
         <div class="entry" ng-show="activeTab==2">
-            <label for="select-cashier">Cashier</label>
+            <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
                 <select name="select-cashier" id="select-cashier">
-                    <option value="">Select cashier</option>
+                    <option value="" translate>SELECT_CASHEIR</option>
                     <option selected="" value="Allison Smith">Allison Smith</option>
                     <option value="Debra Smith">Debra Smith</option>
                     <option value="Andrea Smith">Andrea Smith</option>
@@ -68,7 +68,7 @@
         </div>
         
         <div class="entry" ng-click="clickedFromDate()">
-            <label id="revenue-date-label" for="revenue-date">From Date</label>
+            <label id="revenue-date-label" for="revenue-date" translate>FROM_DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.fromDate}}" readonly />
                 <strong id="revenue-date-day" class="day">{{data.fromDate | date:'d'}}</strong>
@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="entry" ng-click="clickedToDate()">
-            <label id="revenue-date-label" for="revenue-date">To Date</label>
+            <label id="revenue-date-label" for="revenue-date" translate>TO_DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate}}" readonly />
                 <strong id="revenue-date-day" class="day">{{data.toDate | date:'d'}}</strong>
@@ -87,11 +87,11 @@
         </div>
         <ul id="journal-options" class="display">
             <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activeTab=0">
-                <span class="icons icon-navbar icon-revenue">Revenue</span>{amount}</li>
+                <span class="icons icon-navbar icon-revenue" translate>REVENUE</span>{amount}</li>
             <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
-                <span class="icons icon-navbar icon-payments">Payments</span>{amount}</li>
+                <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span>{amount}</li>
             <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activeTab=2">
-                <span class="icons icon-navbar icon-cashier">Cashier</span>{Open or Closed}</li>
+                <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{Open or Closed}</li>
         </ul>
     </form>
 

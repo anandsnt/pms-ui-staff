@@ -4,15 +4,15 @@
         <table id="journal-grid" class="journal-grid">
             <thead>
                 <tr>
-                    <th colspan="2">Payment Type</th>
-                    <th colspan="2">Charge Code</th>
-                    <th>Number</th>
-                    <th colspan="2">Amount</th>
+                    <th colspan="2" translate>PAYMENT_TYPE</th>
+                    <th colspan="2" translate>CHARGE_CODE</th>
+                    <th translate>NUMBER</th>
+                    <th colspan="2" translate>AMOUNT</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
-                    <td colspan="5" class="text-right">Total</td>
+                    <td colspan="5" class="text-right" translate>TOTAL</td>
                     <td colspan="2">{total value}</td>
                 </tr>
             </tfoot>
@@ -27,13 +27,13 @@
                 </tr>
                 <!-- Third level row (sometime with headings above columns), no background color -->
                 <tr class="grid-item-heading hidden" data-id="{3rd level row id}">
-                    <th scope="col">Room</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Reservation Number</th>
-                    <th scope="col">Details</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Debit</th>
-                    <th scope="col">Credit</th>
+                    <th scope="col" translate>ROOM_LABEL</th>
+                    <th scope="col" translate>NAME</th>
+                    <th scope="col" translate>RESERVATION_NUMBER</th>
+                    <th scope="col" translate>DETAILS</th>
+                    <th scope="col" translate>Time</th>
+                    <th scope="col" translate>Debit</th>
+                    <th scope="col" translate>Credit</th>
                 </tr>
                 <tr class="grid-item hidden" data-id="{3rd level row id}">
                     <td>{room #</td>

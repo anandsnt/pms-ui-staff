@@ -318,7 +318,22 @@
 	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
 
 
-,    "PRINT_ROOM_KEY" : "Print Room Key",
+,	
+
+	"EMPLOYEE / DEPARTMENT / HOUSE":"Employee / Department / House",
+	"ALL_DEPARTMENTS":"All Departments",
+	"SELECT":"Select",
+	"EMPLOYEES":"Employees",
+	"CASHIER":"Cashier",
+	"SELECT_CASHEIR":"Select cashier",
+	"FROM_DATE":"From Date",
+	"TO_DATE":"To Date",
+	"REVENUE":"Revenue",
+	"PAYMENTS":"Payments",
+	"RESERVATION_NUMBER":"Reservation Number",
+	"TIME":"Time",
+	"DEBIT":"Debit",
+	"":"",    "PRINT_ROOM_KEY" : "Print Room Key",
     "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
