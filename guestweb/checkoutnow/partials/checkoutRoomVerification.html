@@ -29,7 +29,7 @@
 			<div class="col-md-6 pad-lf-60 cabin-number">
 				<form >
 				<div class="row cabin_number_field">
-					<div class="lightcontent chekout-time grey-text room-text">({{roomVerificationInstruction}})</div>
+					<div class="lightcontent chekout-time grey-text room-text" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</div>
 					<p class="cabin-number-text">Room Number</p>
 					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox" placeholder="Enter Room number"/> 
 				</div>								

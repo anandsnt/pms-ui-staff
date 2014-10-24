@@ -225,4 +225,5 @@ admin.service('ADRatesAddonsSrv', [
             return deferred.promise;
         };
 	}
+
 ]);
