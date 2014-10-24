@@ -2,12 +2,12 @@
 <div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController">
     <div id="cashier-history" class="journal-history scrollable">
         <div class="wrapper">
-            <h2>History</h2>
+            <h2 translate>HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
                 <li>
                     <strong class="status closed">
-                        Closed
+                        {{'CLOSED' | translate}}
                         <span>{who/what closed it}</span>
                     </strong>
                     <time datetime="{datetime timestamp}">
@@ -18,7 +18,7 @@
                 <!-- Opened -->
                 <li>
                     <strong class="status opened">
-                        Opened
+                        {{'OPENED' | translate}}
                         <span>{who/what opened it}</span>
                     </strong>
                     <time datetime="{datetime timestamp}">
@@ -27,7 +27,7 @@
                     </time>
                 </li>
             </ul>
-            <button type="button" class="button green">Re-Open</button>
+            <button type="button" class="button green" translate>RE_OPEN</button>
         </div> 
     </div>
     <div id="cashier-shift" class="journal-shift scrollable">
@@ -36,19 +36,19 @@
             <table class="shift-details">
                 <tbody>
                     <tr>
-                        <th scope="row">Opening balance cash</th>
+                        <th scope="row" translate>OPENING_BALANCE_CASH_MSG</th>
                         <td class="value">{amount}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Opening balance check</th>
+                        <th scope="row" translate>OPENING_BALANCE_CHECK_MSG</th>
                         <td class="value">{amount}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Total Cash received</th>
+                        <th scope="row" translate>TOTAL_CASH_RECEIVED_MSG</th>
                         <td class="value">{amount}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Total In Checks received</th>
+                        <th scope="row" translate>TOTAL_IN_CHECKS_RECEIVED_MSG</th>
                         <td class="value">{amount}</td>
                     </tr>
                     <tr>
@@ -62,16 +62,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">Total Closing Balance Cash</th>
+                        <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
                         <td class="value">{amount}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Total Closing Balance Check</th>
+                        <th scope="row" translate>TOTAL_CLOSING_BALANCE_CHECK_MSG</th>
                         <td class="value">{amount}</td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button green">Close Shift</button>
+            <button type="button" class="button green" translate>CLOSE_SHIFT</button>
         </div> 
 
         <!-- Shift selected from history 
