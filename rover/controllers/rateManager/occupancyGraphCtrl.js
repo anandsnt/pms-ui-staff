@@ -376,7 +376,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 							tickWidth: 5,
 							tickInterval: graphDim.yAxis.step,
 							minTickInterval: graphDim.yAxis.step,
-							gridLineColor: '#666',
+							gridLineColor: '#bbb',
 							tickPosition: 'inside',
 							showLastLabel: true,
 							showFirstLabel: false,
@@ -391,7 +391,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 								useHTML: true
 							},
 							min: 0,
-							max: graphDim.yAxis.max,
+							max: graphDim.yAxis.max + graphDim.yAxis.max / 10,
 							minRange: graphDim.yAxis.step
 						},
 						legend: {
@@ -399,7 +399,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 						},
 						plotOptions: {
 							series: {
-								fillOpacity: 0.1
+								fillOpacity: 0.5						    
 							}
 						},
 						title: {
