@@ -82,4 +82,21 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 		return deferred.promise;
 	};
 
+	/*
+    * To fetch child components for a section/category
+    * @param {object} id
+    * @return {array} children
+    */
+	this.fetchChildList = function(data){
+
+		var deferred = $q.defer();
+		var url = '/guest/cms_components/'+data.id+'/sub_categories.json';	
+		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
 }]);

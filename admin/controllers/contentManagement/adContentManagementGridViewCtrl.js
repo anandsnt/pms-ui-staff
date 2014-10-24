@@ -1,5 +1,5 @@
-admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
- function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 'ngDialog',
+ function($scope, $state, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location,ngDialog){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -166,8 +166,61 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
    $scope.fetchGridViewList();
 
-   
-	
+/* delete component starts here*/
+
+	$scope.deleteItem = function(id){
+		var successCallbackFetchDeleteDetails = function(data){
+			$scope.assocatedChildComponents = [];
+			$scope.assocatedChildComponents = data.results;
+			$scope.$emit('hideLoader');
+			ngDialog.open({
+				template: '/assets/partials/contentManagement/adDeleteContent.html',
+				className: '',
+				controller:'adDeleteContentController',
+				scope:$scope,
+				closeByDocument:true
+			});
+			$scope.componentIdToDelete = id;
+		}
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+
+	}
+
+	$scope.$on('componentDeleted', function(event, data) {
+	//delete item from correspondong list
+	if($scope.selectedView == "section"){
+
+		angular.forEach($scope.sections, function(section, index) {
+			if (section.id == data.id) {
+				$scope.sections.splice(index,1);
+			}
+		});
+		$scope.sectionParams.reload();
+		
+	}else if($scope.selectedView ==="category"){
+
+		angular.forEach($scope.categories, function(category, index) {
+			if (category.id == data.id) {
+				$scope.categories.splice(index,1);
+			}
+		});
+		$scope.categoryParams.reload();
+	}
+	else if($scope.selectedView === "item"){
+
+		angular.forEach($scope.items, function(item, index) {
+			if (item.id == data.id) {
+				$scope.items.splice(index,1);
+			}
+		});
+		$scope.itemParams.reload();
+	};
+
+	//refresh tree
+
+	});
+
+	/* delete component ends here*/
 
 }]);
 
