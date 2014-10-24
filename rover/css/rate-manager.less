@@ -254,7 +254,9 @@
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
-    height:100%;
+    /*IOS/Safari - "show rate" panel disappears after one use, seems realted to position:fixed and height:100%*/
+    /*height:100%;*/
+    bottom: 0px;
 
     hr{border:1px solid rgba(0, 0, 0, 0.1);  margin: 20px 0;}
     hr.half-left { width:25%; height:1px; margin:10px 2px 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
@@ -1433,7 +1435,8 @@ padding-top: 80px;
   }
 
   .action-filter {
-    position:fixed; 
+  /*IOS/Safari issue where "show rates" button disappears after one uses*/
+    position: absolute;  /*fixed; */
     background:#d4d4d4; 
     border-top:1px solid #bcbcbc;
     width:100%; 
