@@ -584,10 +584,12 @@
       text-transform: uppercase;
 
       > span {
+        position: relative;
         font-size: 14px;   
         vertical-align: top;
         display: block;
         margin: 0px;
+        z-index: 10;
 
         &:first-child {
           padding-top: 16px;
@@ -605,7 +607,7 @@
         left: 6px;
         right: 6px;
         bottom: 3px;
-        z-index: -100;
+        z-index: 0; //-100; /*Fix for disappearing date header*/
         border-radius: 3px;
         background-color: #393c41;
          -webkit-border-radius: 3px;
