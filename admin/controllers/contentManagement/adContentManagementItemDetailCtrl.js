@@ -6,7 +6,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	
 	 $scope.fileName = "Choose file..."
 	$scope.data = {	            
-	            "type": "PAGE",
+	            "component_type": "PAGE",
 	            "status": false,
 	            "name": "",
 	            "image": '',

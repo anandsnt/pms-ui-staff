@@ -28,12 +28,12 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
    $scope.setUpLists =function(){
    		for(var i= 0; i < $scope.data.length; i++){
-   			if($scope.data[i].type == 'SECTION'){
+   			if($scope.data[i].component_type == 'SECTION'){
    				$scope.sections.push($scope.data[i]);
-   			}else if($scope.data[i].type == 'CATEGORY'){
+   			}else if($scope.data[i].component_type == 'CATEGORY'){
    				$scope.categories.push($scope.data[i]);
    				$scope.category_options.push($scope.data[i]);
-   			}else if($scope.data[i].type == 'PAGE'){
+   			}else if($scope.data[i].component_type == 'PAGE'){
    				$scope.items.push($scope.data[i]);
    			}
    		}
@@ -145,9 +145,9 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		$scope.categories = [];
    		$scope.items = [];
    		for(var i= 0; i < $scope.filteredData.length; i++){
-   			if($scope.filteredData[i].type == 'CATEGORY'){
+   			if($scope.filteredData[i].component_type == 'CATEGORY'){
    				$scope.categories.push($scope.filteredData[i]);
-   			}else if($scope.filteredData[i].type == 'PAGE'){
+   			}else if($scope.filteredData[i].component_type == 'PAGE'){
    				$scope.items.push($scope.filteredData[i]);
    			}
    		}
