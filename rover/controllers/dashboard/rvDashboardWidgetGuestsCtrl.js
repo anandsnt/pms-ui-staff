@@ -12,9 +12,10 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     * we will call the webservice with given type and
     * will update search results and show search area
     */
-    $scope.clickedOnGuestsToday = function(event, type) {
+    $scope.clickedOnGuestsToday = function(event, type, numberOfReservation) {
         //disable reservation search for house keeping 
-        if(!$scope.disableReservations){
+        // numberofReservation check is a quick fix suggested by Jos
+        if(!$scope.disableReservations && numberOfReservation <= 700){ 
             $state.go('rover.search', {'type': type});
         }
         else

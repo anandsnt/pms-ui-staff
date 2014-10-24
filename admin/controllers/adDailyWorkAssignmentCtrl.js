@@ -285,8 +285,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: [],
 				is_occupied: '',
 				is_vacant: '',
-				hours: '',
-				mins: '',
+				hours: '00',
+				mins: '00',
 				task_completion_hk_status_id: ''
 			};
 		};

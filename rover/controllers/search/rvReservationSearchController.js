@@ -6,7 +6,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
      * will be updating the heading
      */
 
-    var that = this;
+    var that = this;    
     BaseCtrl.call(this, $scope);
     $scope.shouldShowLateCheckout = true;
     $scope.shouldShowQueuedRooms = true;
@@ -44,8 +44,6 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // set up a back button
     if ($stateParams.type != '' && $stateParams.type != null) {
-      console.log("in here");
-      console.log($stateParams.type);
       $rootScope.setPrevState = {
         title: $filter('translate')('DASHBOARD'),
         // name: 'rover.dashboard',
@@ -61,7 +59,6 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
         useCache: true
       });
     }
-    console.log($stateParams.type);
     // saving/reseting search params to $vault
     $vault.set('searchType', !!$stateParams.type ? $stateParams.type : '');
 
@@ -95,10 +92,18 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.clickedOnSearchArea = function($event) {      
       $scope.$emit("closeDrawer");
     };
+
+    /**
+    * When the ng-include content request started, we will show activity indicator
+    */
     $scope.$on("$includeContentRequested", function(event){
-      totalNgIncludeRequested++;
+      totalNgIncludeRequested++; //variable used to track total number of nginlude requested
       $scope.$emit('showLoader');
-    });    
+    });  
+
+    /**
+    * When the ng-include content loaded, we will hide activity indicator
+    */      
     $scope.$on("$viewContentLoaded", function(event) {
       totalNgIncludeRequested--;
       if(totalNgIncludeRequested == 0){
@@ -128,5 +133,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       $scope.heading = headingDict['NORMAL_SEARCH'];
     });
     $stateParams.type = "";
+    //Regarding rvReservationSearchWidgetCtrl.js's ng-repeat on large data set
+    //Even though we are showing loader on ng-repeat start, it is not showing :(, so adding here
+    //we are hiding this loader on data ng-repeat complete in rvReservationSearchWidgetCtrl.js
+    $scope.$emit('showLoader'); //Please see above comment
   }
 ]);

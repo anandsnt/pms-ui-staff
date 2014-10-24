@@ -126,7 +126,8 @@ sntRover.controller('RVHKWorkTabCtrl', [
 
 			var params = {
 				room_id: $scope.roomDetails.id,
-				work_sheet_id: $scope.roomDetails.work_sheet_id
+				work_sheet_id: $scope.roomDetails.work_sheet_id,
+				task_completion_status : $scope.roomDetails.task_completion_status_id
 			}
 
 			$scope.invokeApi(RVHkRoomDetailsSrv.postRecordTime, params, callback);
