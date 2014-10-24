@@ -5,7 +5,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', '$
 	BaseCtrl.call(this, $scope);
 	$scope.fileName = "Choose file..."
 	$scope.data = {	            
-	            "type": "CATEGORY",
+	            "component_type": "CATEGORY",
 	            "status": false,
 	            "name": "",
 	            "icon": '',
