@@ -5,6 +5,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonDisabled = false;
+		$scope.isSixPaymentGatewayVisible = false;
+		$scope.isMLICreditCardVisible = false;
 		// var absoluteUrl = $location.$$absUrl;
 // 		
 		// $scope.absoluteUrl = absoluteUrl.split("/staff#/")[0];
@@ -23,8 +25,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		eventer(messageEvent, function (e) {
 			   var responseData = e.data;
 		       if(responseData.response_message == "payment_success"){
-		       		$scope.isSubmitButtonDisabled = true;
+		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
+       				responseData = dclone(responseData, unwantedKeys);
 		       		alert(JSON.stringify(responseData));
+		       	//	$scope.invokeApi(RVReservationSummarySrv.paymentAction, {}, $scope.successPayment);
+		       		$scope.successPayment();
 		       		
 		       }
 		    
@@ -37,17 +42,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 			return buttonClass;
 		};
+		$scope.successPayment = function(){
+			alert("success");
+			$scope.isSubmitButtonDisabled = true;
+		};
 		
 		
 		
-		
-		// setTimeout(function(){
-			// var MyIFrame = document.getElementById("sixpaymentform");
-			// var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
-			// if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
-			// MyIFrameDoc.getElementById("six_form").submit();
-// 			
-		// }, 3000);
+		setTimeout(function(){
+			var MyIFrame = document.getElementById("sixpaymentform");
+			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
+			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
+			MyIFrameDoc.getElementById("six_form").submit();
+			
+		}, 3000);
 	
 		// set the previous state
 		$rootScope.setPrevState = {
@@ -395,7 +403,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.search');
 			}
 		};
-
+		$scope.changePaymentType = function(){
+			if($scope.reservationData.paymentType.type.value === 'CC'){
+				if($rootScope.paymentGateway === "sixpayments"){
+					$scope.isSixPaymentGatewayVisible = true;
+					$scope.isMLICreditCardVisible = false;
+				} else {
+					$scope.isSixPaymentGatewayVisible = false;
+					$scope.isMLICreditCardVisible = true;
+				}
+			} else {
+				$scope.isSixPaymentGatewayVisible = false;
+				$scope.isMLICreditCardVisible = false;
+				$scope.isSubmitButtonDisabled = true;
+			}
+			
+			$scope.refreshPaymentScroller();
+		};
 		$scope.refreshPaymentScroller = function() {
 			$scope.refreshScroller('paymentInfo');
 		};

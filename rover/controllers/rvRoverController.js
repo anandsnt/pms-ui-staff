@@ -67,7 +67,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
 
+	
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
