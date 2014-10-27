@@ -138,8 +138,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 		var resetEachWorkShift = function() {
 			$scope.eachWorkShift = {
 				name: '',
-				hours: '',
-				mins: '',
+				hours: '00',
+				mins: '00',
 				hotel_id: $rootScope.hotelId
 			};
 		};
