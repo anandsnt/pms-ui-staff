@@ -61,6 +61,8 @@
 
   .occupancy-graph-container{
     position: absolute;
+    z-index: 10;
+
     .filter-options{
       /*CICO-8633*/
       padding: 0 30px 0 30px;
@@ -110,15 +112,23 @@
   width:100%;
 }
 
-.occgraph-outer{
+#occ-graph {
   display: block;
   position: relative;
-  top: 60px;
-  left: 265px; 
-  padding: 0 20px 20px 20px;
-  margin: 0px;
   overflow: hidden;
-} 
+  top: 0px;
+  left: 265px; 
+  z-index: 100;
+
+   .iScrollIndicator{
+      background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
+    }
+
+    .iScrollHorizontalScrollbar {
+      bottom: auto !important;
+    }
+}
+
 .topbar {
   height: 50px;
   line-height: 50px;
@@ -244,7 +254,9 @@
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
-    height:100%;
+    /*IOS/Safari - "show rate" panel disappears after one use, seems realted to position:fixed and height:100%*/
+    /*height:100%;*/
+    bottom: 0px;
 
     hr{border:1px solid rgba(0, 0, 0, 0.1);  margin: 20px 0;}
     hr.half-left { width:25%; height:1px; margin:10px 2px 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
@@ -356,7 +368,7 @@
   tr {
     &.last{
       .cell-content{
-        border-bottom : 6px solid rgba(0,0,0, 0.05); 
+        border-bottom : 3px solid rgba(0,0,0, 0.05);  //6px solid rgba(0,0,0, 0.05); 
       }
     }
     .first-row {
@@ -448,7 +460,7 @@
   }
 
   .cell {
-    width: 100%;
+    //width: 100%;
     position: relative;
   }
 
@@ -574,10 +586,12 @@
       text-transform: uppercase;
 
       > span {
+        position: relative;
         font-size: 14px;   
         vertical-align: top;
         display: block;
         margin: 0px;
+        z-index: 10;
 
         &:first-child {
           padding-top: 16px;
@@ -595,7 +609,7 @@
         left: 6px;
         right: 6px;
         bottom: 3px;
-        z-index: -100;
+        z-index: 0; //-100; /*Fix for disappearing date header*/
         border-radius: 3px;
         background-color: #393c41;
          -webkit-border-radius: 3px;
@@ -1176,6 +1190,7 @@ padding-top: 80px;
         width:100%        
         }
       }
+
       em{
          font-size: 15px;
          font-style: italic !important;
@@ -1420,7 +1435,8 @@ padding-top: 80px;
   }
 
   .action-filter {
-    position:fixed; 
+  /*IOS/Safari issue where "show rates" button disappears after one uses*/
+    position: absolute;  /*fixed; */
     background:#d4d4d4; 
     border-top:1px solid #bcbcbc;
     width:100%; 

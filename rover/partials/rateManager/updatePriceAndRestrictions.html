@@ -5,7 +5,7 @@
             <div ng-cloak class="updatePriceAndRestrictionsContainer">
                 <div class="header">
                     <div class="title-wrap">
-                        <h2 ng-show="!popupData.all_data_selected" ng-class="{'title-expanded': showExpandedView || popupData.fromRoomTypeView}">{{data.name}}</h2>
+                        <h2 ng-show="!popupData.all_data_selected" ng-class="{'title-expanded': showExpandedView || (popupData.fromRoomTypeView && data.hasAmountConfigured)}">{{data.name}}</h2>
                         <em ng-show="!popupData.all_data_selected">{{popupData.selectedDate| date:'EEEE, MMMM dd'}}</em>
                         <!-- To show dates as bold for all room types and all rate types -->
                         <h2 ng-show="(popupData.fromRoomTypeView && popupData.all_data_selected) || (!popupData.fromRoomTypeView && popupData.all_data_selected)" class="h1">

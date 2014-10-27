@@ -4,9 +4,10 @@ sntRover.controller('SelectDateRangeModalCtrl', ['filterDefaults', '$scope','ngD
 
 	var filterData = $scope.currentFilterData,
 		businessDate = tzIndependentDate($rootScope.businessDate),
+		defaultDate = tzIndependentDate(Date.now()),
 		fromDate = _.isEmpty(filterData.begin_date) ? '' : filterData.begin_date,
 		toDate = _.isEmpty(filterData.end_date) ? '' : filterData.end_date,
-		fromDateOffset = _.isEmpty(fromDate) ? (new Date()).getMonth() - businessDate.getMonth() : undefined,
+		fromDateOffset = _.isEmpty(fromDate) ? 0/*(new Date()).getMonth() - businessDate.getMonth()*/ : undefined,
 		toDateOffset = _.isEmpty(toDate) ? fromDateOffset - 1 : undefined;
 
 	$scope.setUpData = function() {		

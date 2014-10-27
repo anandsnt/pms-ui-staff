@@ -12,7 +12,7 @@ sntRover
 .constant('rateGridDefaults', Object.create(null, {
     RESIZE_DEBOUNCE_INTERVAL: {
         enumerable: true,
-        value: 10
+        value: 100
     },
     FILTER_OPTIONS_WIDTH: {
         enumerable: true,
@@ -137,7 +137,7 @@ sntRover
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columnWidth = parseInt(mywidth);
     },
-    computeColWidthOnResize = _.debounce(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL, { leading: false, trailing: true });
+    computeColWidthOnResize = _.throttle(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL, { leading: true, trailing: false });
         
     $scope.$on("computeColumWidth", computeColWidth);
 

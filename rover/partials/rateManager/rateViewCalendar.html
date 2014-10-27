@@ -2,34 +2,44 @@
 	<table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
 		<thead>
 			<tr>
-				<th width="220" style="{width:th.width}" class="first-row">
-					<button ng-click="openCloseAllRestrictions('remove')" class="button green" ng-class="{'grey': calendarData.disableOpenAllBtn}" ng-disabled="calendarData.disableOpenAllBtn">
+				<th width="220" style="width:{{th.width}}px;" class="first-row">
+					<button ng-click="openCloseAllRestrictions('remove')" 
+							class="button green" 
+							ng-class="{'grey': calendarData.disableOpenAllBtn}" 
+							ng-disabled="calendarData.disableOpenAllBtn">
 						Open All
 					</button>
-					<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'grey': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
+					<button ng-click="openCloseAllRestrictions('add')" 
+							class="button red" 
+							ng-class="{'grey': calendarData.disableCloseAllBtn}" 
+							ng-disabled="calendarData.disableCloseAllBtn">
 						Close All
 					</button></th>
-				<th width="{{uiOptions.columnWidth}}" style="{width:th.width}" ng-repeat="date in calendarData.dates track by date" class="cell">
+				<th ng-repeat="date in calendarData.dates track by $index" 
+					class="cell" 
+					style="width:{{uiOptions.columnWidth}}px;"> 
 					<div class="date-header">
 						<span class="week-day">{{date| date:'EEEE'}}</span>
 						<span>{{date| date:'MMMM dd'}}</span>
 					</div>
 					<div class="cell-overlay" ng-if="isHistoryDate(date)"></div>
-				</th>
+				</th>`
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr ng-show="calendarData.data.length > 1">
+			<tr ng-if="calendarData.data.length > 1">
 				<td class="first-row"><span class="bolder">All Rates</span><span>&nbsp;</span></td>
 
-				<td ng-repeat="date in calendarData.dates track by date" class="cell" >
+				<td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in calendarData.all_rates[date] track by restriction.restriction_type_id" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} </span>
+										<span ng-repeat="restriction in calendarData.all_rates[date] track by $index" 
+											  ng-if="toggleRestrictionIconView()"
+											  class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} </span>
 									</div>
 								</div>
 							</div>
@@ -43,19 +53,21 @@
 			<tr ng-repeat="rate in calendarData.data track by rate.id" ng-class="{'last': $last && loading===false}" ng-show="calendarMode==='RATE_VIEW'">
 				<td class="first-row">
 					<div ng-click="goToRoomTypeCalendarView(rate)">
-						<span>{{rate.name}}</span>
+						<span bindonce bo-html="rate.name"></span>
 						<span> 
 							<img src="/assets/arrow-down.png" /> 
 						</span>
 					</div>
 				</td>
-				<td ng-repeat="date in calendarData.dates track by date" class="cell" >
+				<td bindonce ng-repeat="date in calendarData.dates track by $index" class="cell" >
 					<div class="cell-container" >
 						<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
 							<div>
 								<div>
 									<div>
-										<span ng-repeat="restriction in rate[date] track by restriction.restriction_type_id" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} </span>
+										<span ng-repeat="restriction in rate[date] track by $index" 
+											  ng-if="toggleRestrictionIconView()"
+											  class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}"> {{restriction.days}} </span>
 									</div>
 								</div>
 							</div>
@@ -68,8 +80,9 @@
 	</table>
 </div>
 <ul class="restriction-legends" >
-	<li bindonce ng-repeat="restrictionType in calendarData.restriction_types track by restrictionType.id">
-		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
-		{{restrictionType.description}}
+	<li bindonce ng-repeat="restrictionType in calendarData.restriction_types">
+		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}" 
+			  bo-html="restrictionType.days"></span>	
+		<span bo-html="restrictionType.description"></span>
 	</li>
 </ul> 
