@@ -143,10 +143,16 @@ $scope.saveClick = function(){
   updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
   updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
   updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
-  angular.forEach($scope.chekoutchargesArray,function(value, key) {
-  	var timeValue = value.time;
-	  value.time = (timeValue == "HH")?"": (value.time+" PM");
-	});
+
+  for (var i = $scope.chekoutchargesArray.length - 1; i >= 0; i--) {
+    if ($scope.chekoutchargesArray[i].time ==="HH" && $scope.chekoutchargesArray[i].charge ==="") {
+        $scope.chekoutchargesArray.splice(i, 1);
+    }
+    else{
+        $scope.chekoutchargesArray[i].time = $scope.chekoutchargesArray[i].time+" PM";
+    }
+  }
+
   updateData.extended_checkout = $scope.chekoutchargesArray;
   updateData.charge_code = $scope.upsellData.selected_charge_code;
 	updateData.room_types = [];
