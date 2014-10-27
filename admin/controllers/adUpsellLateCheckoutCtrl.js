@@ -136,19 +136,19 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
 *
 */ 
 $scope.saveClick = function(){   	
-    $scope.setUpLateCheckoutArray();
-    var updateData = {};
-    
-    updateData.is_late_checkout_set = $scope.upsellData.is_late_checkout_set;
-    updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
-    updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
-    updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
-    angular.forEach($scope.chekoutchargesArray,function(value, key) {
-    	var timeValue = value.time;
-		value.time = value.time+" PM";
+  $scope.setUpLateCheckoutArray();
+  var updateData = {};
+  
+  updateData.is_late_checkout_set = $scope.upsellData.is_late_checkout_set;
+  updateData.allowed_late_checkout = $scope.upsellData.allowed_late_checkout;
+  updateData.is_exclude_guests = $scope.upsellData.is_exclude_guests;
+  updateData.sent_alert = $scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute;
+  angular.forEach($scope.chekoutchargesArray,function(value, key) {
+  	var timeValue = value.time;
+	  value.time = (timeValue == "HH")?"": (value.time+" PM");
 	});
-    updateData.extended_checkout = $scope.chekoutchargesArray;
-    updateData.charge_code = $scope.upsellData.selected_charge_code;
+  updateData.extended_checkout = $scope.chekoutchargesArray;
+  updateData.charge_code = $scope.upsellData.selected_charge_code;
 	updateData.room_types = [];
 	updateData.deleted_room_types = [];
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
@@ -159,26 +159,26 @@ $scope.saveClick = function(){
 			 updateData.room_types.push(obj);
 		}
 	});
-   	var updateChainSuccessCallback = function(data) {
-       	$scope.$emit('hideLoader');
-       	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
-	    	var timeValue = value.time;
+   	var upsellLateCheckoutSuccessCallback = function(data) {
+      $scope.$emit('hideLoader');
+      angular.forEach($scope.chekoutchargesArray,function(value, key) {
+      var timeValue = value.time;
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
        	
    	};
-   	var updateChainFailureCallback =  function(errorMessage) {
-       	$scope.$emit('hideLoader');
-       	$scope.errorMessage = errorMessage;
-       	 angular.forEach($scope.chekoutchargesArray,function(value, key) {
-	    	var timeValue = value.time;
+   	var upsellLateCheckoutFailureCallback =  function(errorMessage) {
+      $scope.$emit('hideLoader');
+      $scope.errorMessage = errorMessage;
+      angular.forEach($scope.chekoutchargesArray,function(value, key) {
+      var timeValue = value.time;
 			value.time = timeValue.replace(" PM", "");// To make the UI updated after success
 
 		});
        	
    	};
-   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback, updateChainFailureCallback);
+   	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,upsellLateCheckoutSuccessCallback, upsellLateCheckoutFailureCallback);
 
 };
 
