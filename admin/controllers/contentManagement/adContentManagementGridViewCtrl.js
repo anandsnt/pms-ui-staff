@@ -196,19 +196,13 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 		angular.forEach($scope.data, function(component, index) {
 			if (component.id == data.id) {
-				$scope.component.splice(index,1);
-			}
-		});
-
-		angular.forEach($scope.filteredData, function(component, index) {
-			if (component.id == data.id) {
-				$scope.component.splice(index,1);
+				$scope.data.splice(index,1);
 			}
 		});
 
 		angular.forEach($scope.category_options, function(component, index) {
 			if (component.id == data.id) {
-				$scope.component.splice(index,1);
+				$scope.category_options.splice(index,1);
 			}
 		});
 	

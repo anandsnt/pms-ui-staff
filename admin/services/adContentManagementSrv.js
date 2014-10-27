@@ -73,7 +73,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.deleteSection = function(data){
 
 		var deferred = $q.defer();
-		var url = 'api/cms_components/' + data.id;	
+		var url = 'api/cms_components/' + data.id;		
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
