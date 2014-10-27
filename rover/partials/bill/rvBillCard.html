@@ -108,7 +108,7 @@
 									{{billTab.credit_card_details.payment_type_description}}
 								</div>
 								<figure id="payment-info-1" class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">
-									<img src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
+									<img ng-src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
 									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>

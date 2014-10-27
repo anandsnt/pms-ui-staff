@@ -279,14 +279,14 @@ admin.service('ADDailyWorkAssignmentSrv', [
         var HkStatusList = [];
         this.fetchHkStatues = function() {
             var deferred = $q.defer(),
-                url      = '/api/house_keeping_statuses';
+                url      = '/api/tasks/hk_applicable_statuses'; // CICO-8620 Need to get only valid statuses here
 
             if ( HkStatusList.length ) {
                 deferred.resolve(HkStatusList);
             } else {
                 ADBaseWebSrvV2.getJSON(url)
                     .then(function(data) {
-                        HkStatusList = data.house_keeping_statuses
+                        HkStatusList = data.hk_applicable_statuses
                         deferred.resolve(HkStatusList);
                     }, function(errorMessage) {
                         deferred.reject(errorMessage);
