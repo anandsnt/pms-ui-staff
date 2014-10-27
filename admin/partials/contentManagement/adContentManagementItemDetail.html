@@ -3,7 +3,7 @@
         <h2 ng-show="!isAddMode">Edit Item <span>{{data.name}}</span></h2>
         <h2 ng-show="isAddMode">Add Item</h2>
         <a ng-click="goBack()" class="action back">Back</a>
-        <a href="{link}" class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)">Delete Item</a>
+        <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)">Delete Item</a>
     </header>
 
     <section class="content-scroll">
@@ -64,12 +64,12 @@
                     <input type="text" name="item-phone" ng-model="data.phone" id="item-phone" placeholder="Enter Phone number" value="" />
                 </div>
                 <div class="entry full-width">
-                    <label for="item-address">Address</label>
+                    <label for="item-address">Address <strong ng-show="data.page_template=='POI'">*</strong></label>
                     <input type="text" name="aitem-ddress" ng-model="data.address" id="item-address" placeholder="Enter Address" value=""  />
                 </div>
                 
                 <div class="entry full-width">
-                    <label for="item-url">URL <strong>*</strong></label>
+                    <label for="item-url">URL <strong ng-show="data.page_template=='LINK'">*</strong></label>
                     <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
                 </div>        
             </fieldset>

@@ -7,15 +7,15 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', 'ngDialog', 'ADC
 	 
 
 	 $scope.componentSelected = function(component_type, id){
-   		if(component_type == 'section'){
+   		if(component_type == 'section' || component_type == 'SECTION'){
    			$state.go("admin.contentManagementSectionDetails", {
 				id: id
 			});
-   		}else if(component_type == 'category'){
+   		}else if(component_type == 'category' || component_type == 'CATEGORY'){
    			$state.go("admin.contentManagementCategoryDetails", {
 				id: id
 			});
-   		}else if(component_type == 'item'){
+   		}else if(component_type == 'item' || component_type == 'PAGE'){
    			$state.go("admin.contentManagementItemDetails", {
 				id: id
 			});

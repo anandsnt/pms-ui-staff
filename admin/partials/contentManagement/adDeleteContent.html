@@ -2,8 +2,8 @@
 	<div class="modal-content cms-content">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<span class="h3 message">Are you sure?</span>
-		<span class="notice">The following content is assigned to this section and will be marked as unassigned: </span>
-		<ul class="cms-tree boxes">
+		<span class="notice" ng-show="assocatedChildComponents.length > 0">The following content is assigned to this section and will be marked as unassigned: </span>		
+		<ul class="cms-tree boxes" ng-show="assocatedChildComponents.length > 0">
 			<li class="category" ng-repeat="component in assocatedChildComponents">
 				<div class="sort">
 					<strong class="cms-name" ng-bind="component.name"></strong>
