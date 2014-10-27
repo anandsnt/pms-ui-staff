@@ -11,5 +11,16 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
    }
 
+   $scope.saveAvailabilityStatus = function(id, status){
+         var successCallbackAvailabilityStatus = function(data){
+         $scope.$emit('hideLoader');                 
+      };
+      var data = {};
+      data.status = status;
+      data.id = id;
+      
+      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
+   } 
+
 }]);
 

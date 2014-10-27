@@ -7,7 +7,7 @@
                                 <em class="cms-date">{{content.updated_at}}</em>
                                 <div class="cms-activate">
                                     <div class="switch-button" ng-class="{'on':content.status}">
-                                        <input name="category" id="category" value="category" type="checkbox" ng-model="content.status" />
+                                        <input name="category" ng-change="saveAvailabilityStatus(content.id, content.status)" id="category" value="category" type="checkbox" ng-model="content.status" />
                                         <span class="switch-icon"></span>
                                     </div>
                                 </div>

@@ -21,7 +21,7 @@
                         <em class="cms-date">{{section.updated_at}}</em>
                         <div class="cms-activate">
                             <div class="switch-button" ng-class="{'on':section.status}">
-                                <input name="section" id="section" value="section" type="checkbox" ng-model="section.status" />
+                                <input name="section" id="section" ng-change="saveAvailabilityStatus(section.id, section.status)" value="section" type="checkbox" ng-model="section.status" />
                                 <span class="switch-icon"></span>
                             </div>
                         </div>

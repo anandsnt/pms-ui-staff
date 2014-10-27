@@ -219,5 +219,16 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 	/* delete component ends here*/
 
+	$scope.saveAvailabilityStatus = function(id, status){
+         var successCallbackAvailabilityStatus = function(data){
+         $scope.$emit('hideLoader');                 
+      };
+      var data = {};
+      data.status = status;
+      data.id = id;
+      
+      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
+   } 
+
 }]);
 

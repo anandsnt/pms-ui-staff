@@ -113,7 +113,7 @@
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
-                                <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
+                                <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
@@ -169,7 +169,7 @@
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
-                                <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
+                                <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
@@ -223,7 +223,7 @@
                         <td><em>{{gridItem.last_updated}}</em></td>                        
                         <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
-                                <input name="status" id="status" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
+                                <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />
                                 <span class="switch-icon"></span>
                             </div>
                         </td>
