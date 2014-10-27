@@ -1,7 +1,46 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', 
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location) {
 
+		
+		
 		BaseCtrl.call(this, $scope);
+		$scope.isSubmitButtonDisabled = false;
+		// var absoluteUrl = $location.$$absUrl;
+// 		
+		// $scope.absoluteUrl = absoluteUrl.split("/staff#/")[0];
+		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+		var eventer = window[eventMethod];
+		
+		// Now...
+		// if 
+		//    "attachEvent", then we need to select "onmessage" as the event. 
+		// if 
+		//    "addEventListener", then we need to select "message" as the event
+		
+		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+		
+		// Listen to message from child IFrame window
+		eventer(messageEvent, function (e) {
+			   var responseData = e.data;
+		       if(responseData.response_message == "payment_success"){
+		       		$scope.isSubmitButtonDisabled = true;
+		       		alert(JSON.stringify(responseData));
+		       		
+		       }
+		    
+		}, false);   
+		
+		$scope.submitReservationButtonClass = function(isSubmitButtonDisabled){
+			var buttonClass = "grey";
+			if(isSubmitButtonDisabled){
+				buttonClass = "green";
+			}
+			return buttonClass;
+		};
+		
+		
+		
+		
 		// setTimeout(function(){
 			// var MyIFrame = document.getElementById("sixpaymentform");
 			// var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
@@ -9,7 +48,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			// MyIFrameDoc.getElementById("six_form").submit();
 // 			
 		// }, 3000);
-
+	
 		// set the previous state
 		$rootScope.setPrevState = {
 			title: $filter('translate')('ENHANCE_STAY'),

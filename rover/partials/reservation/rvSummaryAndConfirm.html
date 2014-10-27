@@ -202,16 +202,23 @@
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
+                <!-- <div class="entry full-width">
+                	
+                	<iframe src="http://localhost:3000/api/ipage/test.html?reservation_id=12402" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
+                </div> -->
                 <div class="entry full-width">
                 	
-                	<iframe src="http://localhost:3000/api/ipage/test.html?reservation_id=12402" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
+                	<iframe src="http://10.7.1.17:5555/api/ipage/test.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
                 </div>
+                
+                
                 <!-- <div class="entry full-width">
                 	
                 	<iframe src="http://localhost/six_payment/payment_success.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
                 </div> -->
                 <div class="actions">
-                    <button class="button green" type="button" translate ng-click ="submitReservation()">SUBMIT_RESERVATION</button>
+                	<button class="button green" type="button" translate ng-click ="testButton()">TEST BUTTON</button>
+                    <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonDisabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonDisabled">SUBMIT_RESERVATION</button>
                     <button class="button blank" type="button" ng-click="cancelButtonClicked()" translate>CANCEL</button>
                 </div>
             </div> 
