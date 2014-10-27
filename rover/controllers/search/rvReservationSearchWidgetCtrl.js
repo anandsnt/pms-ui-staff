@@ -9,7 +9,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		var that = this;
 		BaseCtrl.call(this, $scope);
-
+		var searchFilteringCall = null;
 		//model against query textbox, we will be using this across
 		$scope.textInQueryBox = "";
 		$scope.fetchTerm = "";
@@ -193,7 +193,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to perform filtering/request data from service in change event of query box
 		 */
 		$scope.queryEntered = function() {
-
 			$scope.isSwiped = false;
 			$scope.swipeNoResults = false;
 			$scope.isLateCheckoutList = false;
@@ -219,14 +218,19 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if (!$scope.showSearchResultsArea) {
 				$scope.showSearchResultsArea = true;
 			}
-			displayFilteredResults();
+			if(searchFilteringCall != null){
+				clearTimeout(searchFilteringCall);
+			}
+			searchFilteringCall = setTimeout(function(){
+				$scope.$apply(function(){displayFilteredResults();});
+			}, 800);
+			
 
 			// save the entered query into vault
 			// if returning back we will display that result
 			$vault.set('searchQuery', $scope.textInQueryBox);
-			console.log("1");
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
-
+			return true;
 		}; //end of query entered
 
 		/**
@@ -262,9 +266,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}, 500);
 				refreshScroller();
 			} else {
-
 				//see if the new query is the substring of fetch term
-				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 && !$scope.firstSearch) {
+				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 && !$scope.firstSearch && $scope.results.length > 0) {
 					var value = "";
 					//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 					//if it is zero, then we will request for webservice
@@ -306,7 +309,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.focusOnSearchText = function() {
 			//we are showing the search area
 			$scope.$emit("showSearchResultsArea", true);
-			console.log("2");
 			$scope.$emit("UpdateHeading", 'SEARCH_NORMAL');
 			$vault.set('searchType', 'SEARCH_NORMAL')
 			refreshScroller();
@@ -489,8 +491,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		});
 
-		$scope.showNoMatches = function(resultLength, queryLength, isTyping, isSwiped) {
+		$scope.showNoMatches = function(results, queryLength, isTyping, isSwiped) {
 			var showNoMatchesMessage = false;
+			var resultLength = results.length;
 			if (!$scope.swipeNoResults) {
 				if (isSwiped && resultLength == 0) {
 					showNoMatchesMessage = true;
@@ -500,7 +503,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					}
 				}
 			}
-
+			if(!showNoMatchesMessage){
+				var totalCountOfFound = 0;
+				for(var i = 0; i < results.length; i++){
+					if(results[i].is_row_visible)
+						totalCountOfFound++;
+				}
+				if(totalCountOfFound == 0)
+					showNoMatchesMessage = true;
+			}
 			return showNoMatchesMessage;
 		};
 		$scope.getQueueClass = function(isReservationQueued, isQueueRoomsOn, reservationStatus) {
