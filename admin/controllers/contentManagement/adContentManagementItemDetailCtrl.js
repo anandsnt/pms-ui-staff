@@ -59,7 +59,31 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, $scope.data , saveItemSuccessCallback);
 	}
 
-	
+	/* delete component starts here*/
+
+	$scope.deleteItem = function(id){
+		var successCallbackFetchDeleteDetails = function(data){
+			$scope.assocatedChildComponents = [];
+			$scope.assocatedChildComponents = data.results;
+			$scope.$emit('hideLoader');
+			ngDialog.open({
+				template: '/assets/partials/contentManagement/adDeleteContent.html',
+				className: '',
+				controller:'adDeleteContentController',
+				scope:$scope,
+				closeByDocument:true
+			});
+			$scope.componentIdToDelete = id;
+		}
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+
+	}	
+
+	$scope.$on('componentDeleted', function(event, data) {   
+
+      $scope.goBack();
+
+   });
 
 }]);
 

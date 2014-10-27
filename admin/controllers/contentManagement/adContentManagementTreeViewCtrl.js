@@ -28,6 +28,25 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    }
 
    $scope.fetchTreeViewList();
+
+   $scope.$on('componentDeleted', function(event, data) {   
+
+      $scope.deleteComponentFromTree($scope.contentList, data.id);
+
+   });
+
+   $scope.deleteComponentFromTree = function(data, id){
+         if(data.length == 0)
+            return;
+         for(var i = 0; i < data.length; i++ ){
+            if(data[i].children.length > 0)
+               $scope.deleteComponentFromTree(data[i].children, id);
+            if(data[i].id == id){
+               data.splice(i, 1);
+               break;
+            }            
+         }
+   } 
 	
 
 }]);

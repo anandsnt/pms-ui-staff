@@ -1,5 +1,5 @@
-admin.controller('adDeleteContentController',['$scope', 'ADContentManagementSrv', 'ngDialog',
- function($scope, ADContentManagementSrv,ngDialog){
+admin.controller('adDeleteContentController',['$scope', '$rootScope', 'ADContentManagementSrv', 'ngDialog',
+ function($scope, $rootScope, ADContentManagementSrv,ngDialog){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -9,7 +9,7 @@ admin.controller('adDeleteContentController',['$scope', 'ADContentManagementSrv'
 		var successCallbackdeleteSection = function(){
 			$scope.$emit('hideLoader');
 			ngDialog.close();
-			$scope.$emit('componentDeleted',{'id':$scope.componentIdToDelete});
+			$rootScope.$broadcast('componentDeleted',{'id':$scope.componentIdToDelete});
 		}
 		
 		$scope.invokeApi(ADContentManagementSrv.deleteSection, {'id':$scope.componentIdToDelete} , successCallbackdeleteSection);

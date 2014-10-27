@@ -73,8 +73,25 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.deleteSection = function(data){
 
 		var deferred = $q.defer();
-		var url = '';	
+		var url = 'api/cms_components/' + data.id;	
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+	/*
+    * To set the availability status
+    * @param {array} data of the section to be deleted
+    * @return {object} status of deleted section
+    */
+	this.setAvailablity = function(data){
+
+		var deferred = $q.defer();
+		var url = '';	
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

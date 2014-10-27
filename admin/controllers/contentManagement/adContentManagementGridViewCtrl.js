@@ -166,29 +166,9 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
    $scope.fetchGridViewList();
 
-/* delete component starts here*/
-
-	$scope.deleteItem = function(id){
-		var successCallbackFetchDeleteDetails = function(data){
-			$scope.assocatedChildComponents = [];
-			$scope.assocatedChildComponents = data.results;
-			$scope.$emit('hideLoader');
-			ngDialog.open({
-				template: '/assets/partials/contentManagement/adDeleteContent.html',
-				className: '',
-				controller:'adDeleteContentController',
-				scope:$scope,
-				closeByDocument:true
-			});
-			$scope.componentIdToDelete = id;
-		}
-		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
-
-	}
-
 	$scope.$on('componentDeleted', function(event, data) {
 	//delete item from correspondong list
-	if($scope.selectedView == "section"){
+	
 
 		angular.forEach($scope.sections, function(section, index) {
 			if (section.id == data.id) {
@@ -197,7 +177,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		});
 		$scope.sectionParams.reload();
 		
-	}else if($scope.selectedView ==="category"){
+	
 
 		angular.forEach($scope.categories, function(category, index) {
 			if (category.id == data.id) {
@@ -205,8 +185,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			}
 		});
 		$scope.categoryParams.reload();
-	}
-	else if($scope.selectedView === "item"){
+	
 
 		angular.forEach($scope.items, function(item, index) {
 			if (item.id == data.id) {
@@ -214,7 +193,25 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 			}
 		});
 		$scope.itemParams.reload();
-	};
+
+		angular.forEach($scope.data, function(component, index) {
+			if (component.id == data.id) {
+				$scope.component.splice(index,1);
+			}
+		});
+
+		angular.forEach($scope.filteredData, function(component, index) {
+			if (component.id == data.id) {
+				$scope.component.splice(index,1);
+			}
+		});
+
+		angular.forEach($scope.category_options, function(component, index) {
+			if (component.id == data.id) {
+				$scope.component.splice(index,1);
+			}
+		});
+	
 
 	//refresh tree
 

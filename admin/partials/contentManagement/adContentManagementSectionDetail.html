@@ -3,7 +3,7 @@
         <h2 ng-show="!isAddMode">Edit Section <span>{{data.name}}</span></h2>
         <h2 ng-show="isAddMode">Add Section</h2>
         <a ng-click="goBack()" class="action back">Back</a>
-        <a class="action remove">Delete Section</a>
+        <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)">Delete Section</a>
     </header>
     <section class="content-scroll">
         <form method="post" action=""  class="form float">

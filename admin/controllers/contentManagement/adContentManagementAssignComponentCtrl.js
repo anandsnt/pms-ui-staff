@@ -29,28 +29,28 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
 
    $scope.isComponentAvailable = function(component){
    		if(component.component_type == "SECTION")
-   			return component.id != $scope.data.id && $scope.data.parent_section.indexOf(section.id) == -1;
+   			return component.id != $scope.data.id && $scope.data.parent_section.indexOf(component) == -1;
    		else
-   			return component.id != $scope.data.id && $scope.data.parent_category.indexOf(section.id) == -1;
+   			return component.id != $scope.data.id && $scope.data.parent_category.indexOf(component) == -1;
    	}
    $scope.fetchComponents();
    $scope.sectionAdded = function(index){
-   		if($scope.selectedSections.indexOf($scope.sections[index].id) == -1)
-   			$scope.selectedSections.push($scope.sections[index].id);
+   		if($scope.selectedSections.indexOf($scope.sections[index]) == -1)
+   			$scope.selectedSections.push($scope.sections[index]);
    		else
-   			$scope.selectedSections.splice($scope.selectedSections.indexOf($scope.sections[index].id), 1);
+   			$scope.selectedSections.splice($scope.selectedSections.indexOf($scope.sections[index]), 1);
    }
    $scope.categoryAdded = function(index){
-   		if($scope.selectedCategories.indexOf($scope.categories[index].id) == -1)
-   			$scope.selectedCategories.push($scope.categories[index].id);
+   		if($scope.selectedCategories.indexOf($scope.categories[index]) == -1)
+   			$scope.selectedCategories.push($scope.categories[index]);
    		else
-   			$scope.selectedCategories.splice($scope.selectedCategories.indexOf($scope.categories[index].id), 1);
+   			$scope.selectedCategories.splice($scope.selectedCategories.indexOf($scope.categories[index]), 1);
    }
    $scope.isSectionSelected = function(index){
-   		return $scope.selectedSections.indexOf($scope.sections[index].id) != -1
+   		return $scope.selectedSections.indexOf($scope.sections[index]) != -1
    }
    $scope.isCategorySelected = function(index){
-   		return $scope.selectedCategories.indexOf($scope.categories[index].id) != -1
+   		return $scope.selectedCategories.indexOf($scope.categories[index]) != -1
    }
 
    $scope.confirmClicked = function(){

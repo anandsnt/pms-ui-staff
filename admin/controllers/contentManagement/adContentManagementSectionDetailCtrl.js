@@ -1,5 +1,5 @@
-admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', '$stateParams', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
- function($scope, $state, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
+admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ngDialog', '$stateParams', 'ADContentManagementSrv', 'ngTableParams','$filter', '$anchorScroll', '$timeout',  '$location', 
+ function($scope, $state, ngDialog, $stateParams, ADContentManagementSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -40,6 +40,31 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', '$s
 		}
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, $scope.data , saveSectionSuccessCallback);
 	}	
+
+	/* delete component starts here*/
+
+	$scope.deleteItem = function(id){
+		var successCallbackFetchDeleteDetails = function(data){
+			$scope.assocatedChildComponents = [];
+			$scope.assocatedChildComponents = data.results;
+			$scope.$emit('hideLoader');
+			ngDialog.open({
+				template: '/assets/partials/contentManagement/adDeleteContent.html',
+				className: '',
+				controller:'adDeleteContentController',
+				scope:$scope,
+				closeByDocument:true
+			});
+			$scope.componentIdToDelete = id;
+		}
+		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
+
+	}
+	$scope.$on('componentDeleted', function(event, data) {   
+
+      $scope.goBack();
+
+   });
 
 }]);
 
