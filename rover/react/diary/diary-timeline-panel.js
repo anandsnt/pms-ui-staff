@@ -9,13 +9,13 @@ var TimelinePanel = React.createClass({
 			scrollX: true, 
 			scrollY: false, 
 			momentum: false,
-			bounce: false,
+			bounce: true,
 			mouseWheel: false,
 			useTransition: true,
 			preventDefaultException:{ className: /(^|\s)set-times(\s|$)/ }
 		});
 
-		iscroll.timeline._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.timeline), 10);
+		iscroll.timeline._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.timeline), 10, { leading: false, trailing: true });
 
 		iscroll.timeline.on('scroll', iscroll.timeline._scrollFn);
 

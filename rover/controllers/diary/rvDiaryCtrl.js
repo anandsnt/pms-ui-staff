@@ -139,30 +139,34 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    	prevRoom = room;
 		    	prevTime = reservation.start_time;
 
-		    	console.log('Reservation room transfer initiated:  ', room, reservation);
+		    	if($scope.gridProps.edit.active) {
+		    		console.log('Reservation room transfer initiated:  ', room, reservation);
+		    	}
 		    };
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
 		    	var availability;
 
-		    	availability = determineAvailability(nextRoom.reservations, reservation).shift();
+		    	if($scope.gridProps.edit.active) {
+			    	availability = determineAvailability(nextRoom.reservations, reservation).shift();
 
-				if(availability) {
-			    	reservationRoomTransfer(nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
-				    
-			    	$scope.gridProps.currentResizeItemRow = nextRoom;
+					if(availability) {
+				    	reservationRoomTransfer(nextRoom, prevRoom, reservation);//, $scope.gridProps.edit.active);
+					    
+				    	$scope.gridProps.currentResizeItemRow = nextRoom;
 
-			    	$scope.renderGrid();
-			    }
+				    	$scope.renderGrid();
+				    }
+				}
 		    };
 		})();
 
 	    $scope.onResizeStart = function(row_data, row_item_data) {
-			console.log('Resize start', room, reservation);	    	
+			//console.log('Resize start', row_data, row_item_data);	    	
 	    };
 
 	    $scope.onResizeEnd = function(row_data, row_item_data) {
-	    	console.log('Resize end', room, reservation);	    	
+	    	//console.log('Resize end', row_data, row_item_data);	    	
 	    };    
 
 	    $scope.onScrollLoadTriggerRight = function(component, data, event) {
@@ -302,7 +306,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    function updateRowClasses(current_scroll_pos) {
 	    	var reservations,
 	    		reservation,
-	    		maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int;
+	    		maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int / $scope.gridProps.display.px_per_ms,
+	    		maintenance_end_date;
 
 	    	current_scroll_pos = parseInt(current_scroll_pos, 10);
 
@@ -311,6 +316,9 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	    		for(var j =0, rlen = reservations.length; j < rlen; j++) {
 	    			reservation = reservations[j];
+	    			maintenance_end_date = reservation.end_date + maintenance_span;
+
+	    			console.log("Maintenace start:  ", new Date(reservation.end_date), "Maintenacne end:  ", new Date(maintenance_end_date));
 
 	    			if(current_scroll_pos >= reservation.start_date && 
 	    			   current_scroll_pos <= reservation.end_date) {
@@ -325,7 +333,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    					break;	
 	    				}
 	    			} else if(current_scroll_pos > reservation.end_date && 
-	    			   		  current_scroll_pos <= (reservation.end_date + maintenance_span)) {
+	    			   		  current_scroll_pos <= maintenance_end_date) {
 	    				
 	    				$scope.data[i] = copyRoom($scope.data[i]);
 	    				$scope.data[i].status = 'dirty';

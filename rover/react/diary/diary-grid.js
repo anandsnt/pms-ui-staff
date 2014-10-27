@@ -15,7 +15,7 @@ var Grid = React.createClass({
 			useTransition: true
 		});
 
-		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 10);
+		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 10, { leading: false, trailing: true });
 
 		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
 
