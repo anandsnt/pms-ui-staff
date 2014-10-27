@@ -224,8 +224,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    		row_data = copyRoom(props.currentResizeItemRow),
 	    		row_item_data = copyReservation(props.currentResizeItem);
 
-	    	row_item_data.start_time = new Date(row_item_data.left / props.display.px_per_ms + props.display.x_origin);
-	    	row_item_data.end_time = new Date(row_item_data.right / props.display.px_per_ms + props.display.x_origin); 
+	    	row_item_data.start_date = row_item_data.left / props.display.px_per_ms + props.display.x_origin;
+	    	row_item_data.end_date = row_item_data.right / props.display.px_per_ms + props.display.x_origin; 
 
 	    	updateReservation(row_data, row_item_data);
 
