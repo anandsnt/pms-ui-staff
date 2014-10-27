@@ -79,6 +79,10 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 
 	}	
 
+	$scope.deleteParentCategory = function(index){
+		$scope.data.parent_category.splice(index, 1);
+	}
+
 	$scope.$on('componentDeleted', function(event, data) {   
 
       $scope.goBack();
