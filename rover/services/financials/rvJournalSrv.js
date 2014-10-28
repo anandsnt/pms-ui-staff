@@ -1,10 +1,10 @@
-sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2){
+sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
    	
    	this.filterData = {};
 	this.revenueData = {};
 	this.paymentData = {};
-
-	this.fetchGenericData = function(){
+	var that = this;
+	this.fetchGenericData1 = function(){
 		var deferred = $q.defer();
 		var url = '/sample_json/journal/journal_common.json';
 			BaseWebSrvV2.getJSON(url).then(function(data) {
@@ -21,6 +21,46 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2', function($http, 
 			});	
 		return deferred.promise;
 	};
+
+ 	// get filter details
+    this.fetchGenericData = function () {
+        var deferred = $q.defer();
+         /*
+         * Service function to fetch departments
+         * @return {object} departments
+         */
+        that.fetchDepartments = function () {
+            var url = "/admin/departments.json";
+            RVBaseWebSrv.getJSON(url).then(function (data) {
+                that.filterData.departments = data.departments;
+                angular.forEach(that.filterData.departments,function(item, index) {
+		       		item.checked = false;
+		       		item.id = item.value;
+		       		delete item.value;
+		       	});
+                deferred.resolve(that.filterData);
+                console.log(that.filterData);
+            }, function (data) {
+                deferred.reject(data);
+            });
+        };
+
+        // fetch employees deatils
+        var url = "/api/users/active.json";
+        BaseWebSrvV2.getJSON(url).then(function (data) {
+            that.filterData.employees = data;
+            angular.forEach(that.filterData.employees,function(item, index) {
+	       		item.checked = false;
+	       		item.name = item.full_name;
+	       		delete item.full_name;
+	       		delete item.email;
+	       	});
+            that.fetchDepartments();
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
 	this.fetchRevenueData = function(){
 		var deferred = $q.defer();
