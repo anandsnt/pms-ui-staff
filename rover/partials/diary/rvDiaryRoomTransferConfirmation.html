@@ -12,32 +12,32 @@
 		<span class="label">From</span>
 		<ul class="details">
 			<li class="arrival">
-                <span>{old arrival time}</span>
-                {old arrival date}
+                <span>{{roomXfer.current.arrivalTime}}</span>
+                {{roomXfer.current.arrivalDate}}
             </li>
             <li class="departure">
-                <span>{old departure time}</span>
-                {old departure date}
+                <span>{{roomXfer.current.departureTime}}</span>
+                {{roomXfer.current.departureDate}}
             </li>
-            <li class="type">{old room type}</li>
-            <li class="room">{old room number}</li>
-            <li class="price">${old price}</li>
+            <li class="type">{{roomXfer.current.room.type}}</li>
+            <li class="room">{{roomXfer.current.room.number}}</li>
+            <li class="price">${{roomXfer.current.room.price}}</li>
 		</ul>
 	</div>
 	<div class="diary-moved">
 		<span class="label">To</span>
 		<ul class="details">
 			<li class="arrival">
-                <span>{new arrival time}</span>
-                {new arrival date}
+                <span>{{roomXfer.next.arrivalTime}}}</span>
+                {{roomXfer.next.arrivalDate}}
             </li>
             <li class="departure">
-                <span>{new departure time}</span>
-                {new departure date}
+                <span>{{roomXfer.next.departureTime}</span>
+                {{{roomXfer.next.departureDate}}
             </li>
-            <li class="type">{new room type}</li>
-            <li class="room">{new room number}</li>
-            <li class="price">${new price}</li>
+            <li class="type">{{roomXfer.next.room.type}}</li>
+            <li class="room">{roomXfer.next.room.number}</li>
+            <li class="price">${{roomXfer.next.room.price}}</li>
 		</ul>
 	</div>
 

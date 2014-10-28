@@ -226,12 +226,33 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    $scope.editSave = function() {
 	    	var props = $scope.gridProps,
 	    		row_data = copyRoom(props.currentResizeItemRow),
-	    		row_item_data = copyReservation(props.currentResizeItem);
+	    		row_item_data = copyReservation(props.currentResizeItem)
 
 	    	row_item_data.start_date = row_item_data.left / props.display.px_per_ms + props.display.x_origin;
 	    	row_item_data.end_date = row_item_data.right / props.display.px_per_ms + props.display.x_origin; 
 
-	    	updateReservation(row_data, row_item_data);
+	    	$scope.roomXfer = {
+	    		current: {
+	    			room: $scope.edit.originalRowItem,
+	    			reservation: $scope.edit.originalItem
+	    		},
+	    		next: {
+	    			room: row_date,
+	    			reservation: row_item_data
+	    		}
+	    	};
+
+			ngDialog.open({
+				template: 'assets/partials/diary/RVDiaryRoomTransferConfirmation.html',
+				controller: 'RVDiaryRoomTransferConfirmationCtrl',
+				scope: $scope
+			});	    	
+	    };
+
+		$scope.reserveRooms = function(row_data, row_item_data) {
+			var props = $scope.gridProps;
+			
+			updateReservation(row_data, row_item_data);
 
 	    	props.edit = _.extend({}, props.edit);
 	    	props.edit.active = false;
@@ -239,7 +260,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	props.currentResizeItemRow = undefined;
 
 	    	$scope.renderGrid();
-	    };
+		};
 
 	    $scope.editCancel = function() {
 	    	var props = $scope.gridProps;
@@ -464,7 +485,6 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		if(idxNewRoom > -1 && idxNewRoom < $scope.data.length) {
 			$scope.data[idxNewRoom] = newRoom;
 		}
-		//}
 	}
 
 	function findRoom(room) {
