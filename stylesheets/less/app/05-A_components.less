@@ -10577,19 +10577,19 @@
             .calc-height(100, 90);
             .calc-width(100, 120);
 
-            > .iScrollVerticalScrollbar { display: none; }
-            > .iScrollHorizontalScrollbar {                 
-                top: auto !important;
-                bottom: 10px !important;
-                left: 10px;
-                right: 10px; //CHANGED
-            }
-
             > .wrapper {
                 position: absolute; //CHANGED
                 overflow: hidden;
                 height: 100%;
 
+                > .iScrollVerticalScrollbar { display: none; }
+                > .iScrollHorizontalScrollbar {                 
+                    top: auto !important;
+                    bottom: 10px !important;
+                    left: 10px;
+                    right: 10px; //CHANGED
+                }
+                
                 > .grid {
                     position: absolute; //relative; CHANGED
                     height: auto;
