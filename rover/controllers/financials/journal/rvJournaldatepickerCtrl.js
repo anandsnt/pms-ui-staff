@@ -7,8 +7,16 @@ $scope.setUpData = function(){
      maxDate: tzIndependentDate($rootScope.businessDate),
      yearRange: "-100:+0",
       onSelect: function(dateText, inst) {
-      	if($scope.clickedOn === 'FROM') $scope.data.fromDate = $scope.date;
-      	if($scope.clickedOn === 'TO') $scope.data.toDate = $scope.date;
+      	if($scope.clickedOn === 'FROM'){
+          $scope.data.fromDate = $scope.date;
+        } 
+        else if($scope.clickedOn === 'TO'){
+          $scope.data.toDate = $scope.date;
+        } 
+        else if($scope.clickedOn === 'CASHIER'){
+          $scope.data.cashierDate = $scope.date;
+          $scope.$emit('cashierDateChanged');
+        }
         ngDialog.close();
       }
     }

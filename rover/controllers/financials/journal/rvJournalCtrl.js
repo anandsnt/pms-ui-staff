@@ -12,6 +12,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.filterData.checkedAllDepartments = true;
 	$scope.data.fromDate = $rootScope.businessDate;
     $scope.data.toDate 	= $rootScope.businessDate;
+    $scope.data.cashierDate = $rootScope.businessDate;
     //$scope.data.depOrEmpSelected = true;
     $scope.isActiveRevenueFilter = false;
     $scope.data.cashierData = cashierData;
@@ -78,6 +79,10 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	};
 	$scope.clickedToDate = function(){
 		$scope.popupCalendar('TO');
+	};
+
+	$scope.clickedCashierDate = function(){
+		$scope.popupCalendar('CASHIER');
 	};
 	// Calendar popup.
 	$scope.popupCalendar = function(clickedOn) {
@@ -146,4 +151,22 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
        	console.log(selectedDepartmentList);
     };
 
+    /* Cahier filter starts here */
+    var callCashierFilterService = function(){
+    	var cashierDataFilterSuccessCallBack = function(data){
+    		$scope.$emit("hideLoader");
+    		$scope.data.cashierData = cashierData;
+    	}
+    	$scope.invokeApi(RVJournalSrv.fetchCashierDetails, '', cashierDataFilterSuccessCallBack);
+    }
+    $scope.$on('cashierDateChanged',function(){
+    	//call filter service
+    	callCashierFilterService();
+    });
+
+    $scope.cashierFilterChanged = function(){
+       //call filter service
+       callCashierFilterService();
+    };
+    /* Cahier filter ends here */
 }]);

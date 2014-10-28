@@ -42,7 +42,7 @@
         <div class="entry" ng-show="activeTab==2">
             <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
-                <select name="select-cashier" id="select-cashier">
+                <select name="select-cashier" id="select-cashier" ng-model="currentCashier" ng-change="cashierFilterChanged()">
                     <option value="" translate>SELECT_CASHEIR</option>
                     <option selected="" value="Allison Smith">Allison Smith</option>
                     <option value="Debra Smith">Debra Smith</option>
@@ -60,7 +60,7 @@
             </div>
         </div>
         
-        <div class="entry" ng-click="clickedFromDate()">
+        <div class="entry" ng-click="clickedFromDate()" ng-hide="activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>FROM_DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.fromDate}}" readonly />
@@ -69,13 +69,22 @@
                 <span id="revenue-date-year" class="year">{{data.fromDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedToDate()">
+        <div class="entry" ng-click="clickedToDate()" ng-hide="activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>TO_DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate}}" readonly />
                 <strong id="revenue-date-day" class="day">{{data.toDate | date:'d'}}</strong>
                 <span id="revenue-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
                 <span id="revenue-date-year" class="year">{{data.toDate | date:'y'}}</span>
+            </div>
+        </div>
+        <div class="entry" ng-click="clickedCashierDate()" ng-show="activeTab==2">
+            <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
+            <div class="entry-data">
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
+                <strong id="revenue-date-day" class="day">{{data.cashierDate | date:'d'}}</strong>
+                <span id="revenue-date-month" class="month">{{data.cashierDate | date:'MMMM'}}</span>
+                <span id="revenue-date-year" class="year">{{data.cashierDate | date:'y'}}</span>
             </div>
         </div>
         <ul id="journal-options" class="display">
