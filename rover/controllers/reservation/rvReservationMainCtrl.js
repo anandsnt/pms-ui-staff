@@ -37,16 +37,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
         // adding extra function to reset time
         $scope.clearArrivalAndDepartureTime = function() {
-            $scope.reservationData.checkinTime =  {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                };
-            $scope.reservationData.checkoutTime =  {
-                    hh: '',
-                    mm: '00',
-                    ampm: 'AM'
-                };
+            $scope.reservationData.checkinTime = {
+                hh: '',
+                mm: '00',
+                ampm: 'AM'
+            };
+            $scope.reservationData.checkoutTime = {
+                hh: '',
+                mm: '00',
+                ampm: 'AM'
+            };
 
         }
 
@@ -426,7 +426,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
                     taxesLookUp[taxData.id] = taxCalculated;
                     if (forAddons && taxData.post_type == 'NIGHT') {
-                        taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                        /**
+                         * CICO-9576
+                         * QA Comment
+                         * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
+                         * 1 adult 3 nights
+                         * Room per night $100, add on per night $20 .. 
+                         * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
+                         *
+                         * Hence the multiplication as reported by Nicole.
+                         * tax for $300 12.5% should be: 37.50
+                           tax for $60 breakfast 12.5% should be: 7.50
+                           so total $45
+                           but it shows $60 because it takes the 7.50 *3
+                           (resv is for 3 nights)
+                           if I make a resv for 1 night it shows correctly
+                           same for the 2% tax
+                         *
+                         * Hence not multiplying the nights with the price in the case of the addon
+                         * // taxesLookUp[taxData.id] = parseFloat(taxCalculated) * parseFloat(nights);
+                         */
+
+                        taxesLookUp[taxData.id] = parseFloat(taxCalculated);
                     }
 
                     if (taxData.post_type == 'NIGHT') { // NIGHT tax computations
@@ -658,7 +679,27 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                             // Note Got to multiply with the number of days as this is a per night tax                            
                             var nights = $scope.reservationData.numNights == 0 ? 1 : $scope.reservationData.numNights;
                             if (addon.postType.value == "STAY") nights = 1; // Based on Nicole's comments the addons override their taxes in the post type dimension
-                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                            /**
+                                 * CICO-9576
+                                 * QA Comment
+                                 * 1. the tax amount seems to multiply twice with the number of nights. It shows correctly for 1 nights stays, but for 2 nights it is x4, for 3 nights x6 etc.
+                                 * 1 adult 3 nights
+                                 * Room per night $100, add on per night $20 .. 
+                                 * Both room and addon have charge codes of 12.5% and 2% on base +12.5% and have post type night
+                                 *
+                                 * Hence the multiplication as reported by Nicole.
+                                 * tax for $300 12.5% should be: 37.50
+                                   tax for $60 breakfast 12.5% should be: 7.50
+                                   so total $45
+                                   but it shows $60 because it takes the 7.50 *3
+                                   (resv is for 3 nights)
+                                   if I make a resv for 1 night it shows correctly
+                                   same for the 2% tax
+                                 *
+                                 * Hence not multiplying the nights with the price in the case of the addon
+                                 * // $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (nights * parseFloat(description.amount));
+                                 */
+                            $scope.reservationData.taxDetails[description.id].amount = parseFloat($scope.reservationData.taxDetails[description.id].amount) + (parseFloat(description.amount));
                         }
                         taxAmount = parseFloat(nights * taxApplied.exclusive);
                         taxAll = parseFloat(nights * taxApplied.exclusive) + parseFloat(nights * taxApplied.inclusive); // CICO-10161
