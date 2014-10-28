@@ -27,7 +27,7 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', 'ngDialog', 'ADC
 	$scope.deleteItem = function(id){
 		var successCallbackFetchDeleteDetails = function(data){
 			$scope.assocatedChildComponents = [];
-			$scope.assocatedChildComponents = data.results;
+			$scope.assocatedChildComponents = data.data.results;
 			$scope.$emit('hideLoader');
 			ngDialog.open({
 				template: '/assets/partials/contentManagement/adDeleteContent.html',
