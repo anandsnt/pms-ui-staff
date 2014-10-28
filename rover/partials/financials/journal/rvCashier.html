@@ -29,10 +29,14 @@
         <div class="wrapper">
             <table class="shift-details">
                 <caption class="closed" ng-hide="details.status ==='open'">
-                    {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
+                    <strong>
+                        {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}}
+                    </strong> 
                 </caption>
                 <caption class="opened" ng-show="details.status ==='open'">
-                    {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
+                     <strong>
+                        {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
+                    </strong> 
                 </caption>
                 <tbody>
                     <tr>
