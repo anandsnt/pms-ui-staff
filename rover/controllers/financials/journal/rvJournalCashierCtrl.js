@@ -54,4 +54,11 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
 
     };
 
+    //tab active
+
+    $scope.$on('cashierTabActive',function(){
+        setTimeout(function(){$scope.refreshScroller('cashier_history');}, 200);
+        setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 200);
+    });
+
 }]);
