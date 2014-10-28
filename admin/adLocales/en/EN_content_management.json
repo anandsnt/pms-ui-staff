@@ -1,7 +1,7 @@
 
 
 
-"CONTENT_MANAGEMENT_TITLE": "Content Management"
+"CONTENT_MANAGEMENT_TITLE": "Content Management",
 "SECTION_LABEL": "Section",
 "CATEGORY_LABEL": "Category",
 "ITEM_LABEL": "Item",
@@ -40,10 +40,20 @@
 "SECTION_NAME_LABEL": "Section name",
 "CATEGORY_NAME_LABEL": "Category name",
 "ITEM_NAME_LABEL": "Item name",
+"ITEM_TYPE_LABEL": "Item type",
+"POI_LABEL": "Point Of Interest",
+"GENERAL_LABEL": "General Information",
+"LINK_LABEL": "Link",
+"DESCRIPTION_LABEL": "Description",
+"PHONE_LABEL": "Phone",
+"ADDRESS_LABEL": "Address",
+"URL_LABEL": "URL",
+
 "SECTION_ICON_LABEL": "Section icon",
 "CATEGORY_ICON_LABEL": "Category icon",
-"ITEM_IMAGE_LABEL": "image",
+"ITEM_IMAGE_LABEL": "Image",
 "ICON_SPEC": "(Transparent PNG, 128x128px in size)",
+"IMAGE_SPEC": "(680x320px in size)",
 "DETAILS_LABEL": "details",
 
 "ASSIGN_LABEL": "Assign",

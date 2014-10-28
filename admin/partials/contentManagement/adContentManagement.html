@@ -7,8 +7,8 @@
             <a class="action add" ui-sref = "admin.contentManagementItemDetails({id:'new'})" translate>ITEM_LABEL</a>
             <div class="filters">
                 <ul id="view-options" class="cms-view">
-                    <li ng-class= "{'active':isGridView}" ng-click="isGridView = !isGridView" translate>VIEW_GRID_LABEL</li>
-                    <li ng-class= "{'active':!isGridView}" ng-click="isGridView = !isGridView" translate>VIEW_TREE_LABEL</li>
+                    <li ng-class= "{'active':isGridView}" ng-click="isGridView = !isGridView" ><span translate>VIEW_GRID_LABEL</span></li>
+                    <li ng-class= "{'active':!isGridView}" ng-click="isGridView = !isGridView" ><span translate>VIEW_TREE_LABEL</span></li>
                 </ul>
             </div>
         </header>
