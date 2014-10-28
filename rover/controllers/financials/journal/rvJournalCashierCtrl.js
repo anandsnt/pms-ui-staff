@@ -98,7 +98,7 @@ sntRover.controller('RVJournalCashierController', ['$scope',function($scope) {
     "total_check_received": "300",
     "cash_submitted":"200",
     "check_submitted":"100",
-    "status":"closed"
+    "status":"open"
   
 	};
 
@@ -107,7 +107,9 @@ sntRover.controller('RVJournalCashierController', ['$scope',function($scope) {
     "opening_balance_check": "200",
     "total_cash_received": "300",
     "total_check_received": "700",
-    "status":"open"
+    "cash_submitted":"200",
+    "check_submitted":"100",
+    "status":"closed"
   
 	};
 
