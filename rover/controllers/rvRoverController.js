@@ -81,7 +81,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
     $rootScope.adminRole = $scope.userInfo.user_role;
     $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-    $rootScope.isMaintenanceStaff = $scope.userInfo.user_role == "Floor & Maintenance Staff" ? true : false;
+    $rootScope.isMaintenanceStaff = hotelDetails.current_user.default_dashboard == 'HOUSEKEEPING' ? true : false;
 
     $rootScope.$on('bussinessDateChanged', function(e, newBussinessDate) {
       $scope.userInfo.business_date = newBussinessDate;
@@ -90,6 +90,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //Default Dashboard
     $rootScope.default_dashboard = hotelDetails.current_user.default_dashboard;
     $rootScope.userName = userInfoDetails.first_name + ' ' + userInfoDetails.last_name;
+    $rootScope.userId = hotelDetails.current_user.id;
 
     $scope.isDepositBalanceScreenOpened = false;
     $scope.$on("UPDATE_DEPOSIT_BALANCE_FLAG", function() {
@@ -239,6 +240,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         }, {
           title: "MENU_REPORTS",
           action: "rover.reports",
+          menuIndex: "reports",
           iconClass: "icon-reports",
           submenu: []
         }
@@ -279,6 +281,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }, {
         title: "MENU_REPORTS",
         action: "rover.reports",
+        menuIndex: "reports",
         iconClass: "icon-reports",
         submenu: [],
         hidden: $scope.userInfo.user_role == "Floor & Maintenance Staff"
@@ -480,32 +483,29 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
 
+	$scope.numberOfCordovaCalls = 0;
 
-    $scope.numberOfCordovaCalls = 0;
-
-    $scope.initiateCardReader = function() {
-
-      if (sntapp.cardSwipeDebug === true) {
-        sntapp.cardReader.startReaderDebug(options);
-        return;
-      }
-
+	$scope.initiateCardReader = function(){
+    	if (sntapp.cardSwipeDebug === true) {
+      	sntapp.cardReader.startReaderDebug(options);
+      	return;
+    	}
+    	
       if ((sntapp.browser == 'rv_native') && sntapp.cordovaLoaded) {
-        setTimeout(function() {
-          sntapp.cardReader.startReader(options);
-        }, 2000);
-      } else {
-        //If cordova not loaded in server, or page is not yet loaded completely
-        //One second delay is set so that call will repeat in 1 sec delay
-        if ($scope.numberOfCordovaCalls < 50) {
-          setTimeout(function() {
-            $scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls) + parseInt(1);
-            $scope.initiateCardReader();
-          }, 2000);
-        }
-      }
-
-    };
+      	setTimeout(function(){
+ 	    		sntapp.cardReader.startReader(options);
+ 	      }, 2000);
+	    } else {
+	      		//If cordova not loaded in server, or page is not yet loaded completely
+	      		//One second delay is set so that call will repeat in 1 sec delay
+	      	if($scope.numberOfCordovaCalls < 50){
+	      		setTimeout(function(){
+	      				$scope.numberOfCordovaCalls = parseInt($scope.numberOfCordovaCalls)+parseInt(1);
+				    	  $scope.initiateCardReader();
+				    }, 2000);
+	      	}
+        }	
+     };
 
     /*
      * Start Card reader now!.
@@ -515,8 +515,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     setTimeout(function() {
       $scope.initiateCardReader();
     }, 2000);
-
-
 
     /*
      * To show add new payment modal

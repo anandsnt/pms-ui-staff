@@ -25,11 +25,13 @@
 				<div class="blueText">Ready to check out?</div>
 				<p>To start, please enter your room number:</p>			
 			</div>
-			<div class="verti-ruler"></div>
 			<!-- top section ends here-->
 			<div class="col-md-6 pad-lf-60 cabin-number">
 				<form >
 				<div class="row cabin_number_field">
+					<div class="row cabin_number_field">
+						<p class="cabin-number-text" ng-show ="(roomVerificationInstruction.length>0)">({{roomVerificationInstruction}})</p>
+					</div>
 					<p class="lightcontent cabin-number-text">Room Number</p>
 					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox"/> 
 				</div>								
