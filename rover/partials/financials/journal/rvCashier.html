@@ -20,6 +20,8 @@
                     </time>
                 </li>
             </ul>
+            <!-- adding extra empty tag to solve scroll not showing bottom part -->
+            <div style="height:20%;"></div>
         </div> 
     </div>
     <div id="cashier-shift" class="journal-shift scrollable" ng-iscroll='cashier_shift'>
@@ -79,6 +81,8 @@
             </table>
             <button type="button" class="button green" translate ng-show="details.status ==='open'" ng-click="closeShift()">CLOSE_SHIFT</button>
             <button type="button" class="button green" translate ng-hide="details.status ==='open'" ng-click="reOpen()">RE_OPEN</button>
+            <!-- adding extra empty tag to solve scroll not showing bottom part -->
+            <div style="height:20%;"></div>
         </div> 
     </div>
 </div>
