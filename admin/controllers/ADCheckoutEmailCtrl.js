@@ -1,13 +1,8 @@
-admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
+admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
 
  /*
   * To retrieve previous state
   */
-
-  if($stateParams.from === 'checkin')
-    $scope.isFromCheckin = true;
-  else if($stateParams.from === 'checkout')
-   $scope.isFromCheckOut = true;
 
   $scope.errorMessage = '';
   $scope.successMessage = '';
@@ -26,14 +21,9 @@ admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$stat
   *
   */
   $scope.showSendEmailOptions = function(){
-    if($scope.isFromCheckin){
-  	 $scope.emailTitle = 'Guests Checking In';
-     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
-    }
-    else if($scope.isFromCheckOut){
-      $scope.emailTitle = 'Guests Checking Out';
-       $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
-    }
+    
+    $scope.emailTitle = 'Guests Checking Out';
+    $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
   	$scope.selectAllOption = false;
     var fetchEmailListFailuerCallback = function(data) {
          $scope.isLoading = false;
@@ -67,7 +57,7 @@ admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$stat
           });
   };
   $scope.emailDatas =[];
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':$scope.isFromCheckin ? 'checkin' : 'checkout'},fetchEmailListSuccessCallback,fetchEmailListFailuerCallback);
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkout'},fetchEmailListSuccessCallback,fetchEmailListFailuerCallback);
 
   };
   $scope.showSendEmailOptions();
@@ -98,16 +88,13 @@ admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$stat
   *
   */
   $scope.$watch("selectAllOption", function(o,n){
-   angular.forEach($scope.emailDatas,function(item, index) {
-           item.is_selected = $scope.selectAllOption;
-  });
+    angular.forEach($scope.emailDatas,function(item, index) {
+      item.is_selected = $scope.selectAllOption;
+    });
   });
   
   $scope.backActionFromEmail = function(){
-    if($scope.isFromCheckin)
-  	 $state.go('admin.checkin');
-    else if($scope.isFromCheckOut)
-     $state.go('admin.checkout');
+    $state.go('admin.checkout');
 
   };
 /*
@@ -118,9 +105,6 @@ admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$stat
   $scope.toggleAllOptions = function(){
 
    var selectedStatus =  $scope.isAllOptionsSelected() ? false : true;
-
-
-  	//$scope.selectAllOption = $scope.selectAllOption ? false:true;
 
      angular.forEach($scope.emailDatas,function(item, index) {
            item.is_selected =selectedStatus;
@@ -147,10 +131,8 @@ admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$stat
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
-    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id':$scope.isFromCheckin ? 'checkin' : 'checkout','data': emailSendingData},sendMailClikedSuccessCallback,sendMailClikedFailureCallback);
+    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id':'checkout','data': emailSendingData},sendMailClikedSuccessCallback,sendMailClikedFailureCallback);
 
   };
 
-
-
-  }]);
+}]);

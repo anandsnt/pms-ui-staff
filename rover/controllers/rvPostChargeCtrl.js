@@ -18,7 +18,7 @@ sntRover.controller('RVPostChargeController',
 			$scope.isResultOnFetchedItems = true;
 			$scope.isOutsidePostCharge = false;
 			
-			var scrollerOptions = {click: true};
+			var scrollerOptions = {preventDefault: false};
   			$scope.setScroller ('items_list', scrollerOptions);
   			$scope.setScroller ('items_summary', scrollerOptions);
 
@@ -219,6 +219,16 @@ sntRover.controller('RVPostChargeController',
 
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
+				/*
+				 * TO solve CICO-10251
+				 */
+				angular.forEach(angular.element("#numpad-numbers button"), function(value, key){
+				      new FastClick(value);
+				});
+				angular.forEach(angular.element("#numpad-options button"), function(value, key){
+				      new FastClick(value);
+				});
+				
 			};
 
 			/**
@@ -235,12 +245,15 @@ sntRover.controller('RVPostChargeController',
 				$scope.selectedChargeItem.isChosen = false;
 				$scope.selectedChargeItem.count = 0;
 				$scope.selectedChargeItem.modifiedPrice = $scope.selectedChargeItem.unit_price;
-
+				//CICO-10013 fix
+				$scope.selectedChargeItem.userEnteredPrice = '';
 				$scope.selectedChargeItem = {};
 
 				// recalculate net price
 				calNetTotalPrice();
 				$scope.refreshScroller('items_summary');
+				//CICO-10013 fix
+				$scope.calToggle = 'QTY';
 			};
 
 			/**
@@ -512,9 +525,10 @@ sntRover.controller('RVPostChargeController',
 						$scope.$emit( 'CHARGEPOSTED' );
 					}
 				};
+				var updateParam = data;
 				/****    CICO-6094    **/
 				if(!needToCreateNewBill){
-					$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+					$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 				}
 				else{
 						var billData ={
@@ -527,7 +541,7 @@ sntRover.controller('RVPostChargeController',
 					var createBillSuccessCallback = function(){
 						$scope.$emit('hideLoader');			
 						//Fetch data again to refresh the screen with new data
-						$scope.invokeApi(RVChargeItems.postCharges, data, callback);
+						$scope.invokeApi(RVChargeItems.postCharges, updateParam, callback);
 						// Update Review status array.
 						var data = {};
 						data.reviewStatus = false;

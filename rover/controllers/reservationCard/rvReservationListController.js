@@ -14,4 +14,5 @@ sntRover.controller('reservationListController',['$scope', function($scope){
 		500);
 		
 	});
+	
 }]);

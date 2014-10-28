@@ -18,13 +18,13 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		$scope.setScroller('assignedRoomList-0');
 
 		var selectionHistory = [],
-			updateView = function() {
+			updateView = function(reset) {
 				var onFetchSuccess = function(data) {
 						$scope.multiSheetState.unassigned = data.unassigned;
 						$scope.filterUnassigned();
 						// $scope.multiSheetState.assignments = {};
 						_.each(data.work_sheets, function(worksheet) {
-							if (!$scope.multiSheetState.assignments[worksheet.employee_id]) {
+							if (!$scope.multiSheetState.assignments[worksheet.employee_id] || reset) {
 								$scope.multiSheetState.assignments[worksheet.employee_id] = {};
 								$scope.multiSheetState.assignments[worksheet.employee_id].rooms = [];
 								$scope.multiSheetState.assignments[worksheet.employee_id].summary = {
@@ -43,7 +43,6 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 								};
 								$scope.multiSheetState.assignments[worksheet.employee_id].worksheetId = worksheet.work_sheet_id;
 								var assignmentDetails = $scope.multiSheetState.assignments[worksheet.employee_id];
-
 								_.each(worksheet.work_assignments, function(workAssignment) {
 									if (workAssignment.room) {
 										if ($scope.departureClass[workAssignment.room.reservation_status] === "check-out") {
@@ -51,7 +50,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 											if (workAssignment.room.hk_complete) {
 												assignmentDetails.summary.departures.completed++;
 											}
-										} else if ($scope.departureClass[workAssignment.room.reservation_status] == "in-house") {
+										} else if ($scope.departureClass[workAssignment.room.reservation_status] == "inhouse") {
 											assignmentDetails.summary.stayovers.total++;
 											if (workAssignment.room.hk_complete) {
 												assignmentDetails.summary.stayovers.completed++;
@@ -61,6 +60,28 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 										assignmentDetails.rooms.push(workAssignment.room);
 									}
 								});
+							}
+						});
+
+						_.each($scope.multiSheetState.selectedEmployees, function(employee) {
+							var employee = employee.id;
+							if (!$scope.multiSheetState.assignments[employee] || reset) {
+								$scope.multiSheetState.assignments[employee] = {};
+								$scope.multiSheetState.assignments[employee].rooms = [];
+								$scope.multiSheetState.assignments[employee].summary = {
+									shift: {
+										completed: "00:00",
+										total: "00:00"
+									},
+									stayovers: {
+										total: 0,
+										completed: 0
+									},
+									departures: {
+										total: 0,
+										completed: 0
+									}
+								}
 							}
 						});
 						refreshView();
@@ -121,7 +142,7 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 						if (room.hk_complete) {
 							assignmentDetails.summary.departures.completed++;
 						}
-					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
+					} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
 						assignmentDetails.summary.stayovers.total++;
 						if (room.hk_complete) {
 							assignmentDetails.summary.stayovers.completed++;
@@ -145,11 +166,38 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			header: {
 				work_type_id: $scope.workTypes[0].id
 			},
-			filters: {
-				selectedFloor: "",
-				selectedStatus: ""
-			},
 			assignments: {}
+		}
+
+		$scope.filters = {
+			selectedFloor: "",
+			selectedReservationStatus: "",
+			selectedFOStatus: "",
+			vipsOnly: false,
+			checkin: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			},
+			checkout: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			}
 		}
 
 		$scope.closeDialog = function() {
@@ -186,32 +234,8 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 			}
 		};
 
-		/**
-		 * Apply filter on the array of unassigned rooms
-		 * Currently two filters are present
-		 * 	a. room status
-		 * 	b. floor
-		 * Handling either/both
-		 */
 		$scope.filterUnassigned = function() {
-			$scope.multiSheetState.unassignedFiltered = [];
-			if (!$scope.multiSheetState.filters.selectedStatus && !$scope.multiSheetState.filters.selectedFloor) {
-				$scope.multiSheetState.unassignedFiltered = $scope.multiSheetState.unassigned;
-
-			} else if (!$scope.multiSheetState.filters.selectedStatus) {
-				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
-					floor_number: $scope.multiSheetState.filters.selectedFloor
-				});
-			} else if (!$scope.multiSheetState.filters.selectedFloor) {
-				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
-					current_status: $scope.multiSheetState.filters.selectedStatus
-				});
-			} else { //Both Filters
-				$scope.multiSheetState.unassignedFiltered = _.where($scope.multiSheetState.unassigned, {
-					current_status: $scope.multiSheetState.filters.selectedStatus,
-					floor_number: $scope.multiSheetState.filters.selectedFloor
-				});
-			}
+			$scope.multiSheetState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.multiSheetState.unassigned);
 			refreshView();
 			$scope.closeDialog();
 		}
@@ -300,11 +324,11 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 		}
 
 		$scope.onDateChanged = function() {
-			updateView();
+			updateView(true);
 		}
 
 		$scope.onWorkTypeChanged = function() {
-			updateView();
+			updateView(true);
 		}
 
 		/**
@@ -362,6 +386,22 @@ sntRover.controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', '
 				"order": "",
 				"assignments": assignments
 			}, onSaveSuccess, onSaveFailure);
+		}
+
+		$scope.printWorkSheet = function() {
+			if ($scope.$parent.myScroll['assignedRoomList-0'] && $scope.$parent.myScroll['assignedRoomList-0'].scrollTo)
+				$scope.$parent.myScroll['assignedRoomList-0'].scrollTo(0, 0);
+			if ($scope.$parent.myScroll['assignedRoomList-1'] && $scope.$parent.myScroll['assignedRoomList-1'].scrollTo)
+				$scope.$parent.myScroll['assignedRoomList-1'].scrollTo(0, 0);
+			if ($scope.$parent.myScroll['assignedRoomList-2'] && $scope.$parent.myScroll['assignedRoomList-2'].scrollTo)
+				$scope.$parent.myScroll['assignedRoomList-2'].scrollTo(0, 0);
+			if ($scope.$parent.myScroll['assignedRoomList-3'] && $scope.$parent.myScroll['assignedRoomList-3'].scrollTo)
+				$scope.$parent.myScroll['assignedRoomList-3'].scrollTo(0, 0);
+			if ($scope.$parent.myScroll['assignedRoomList-4'] && $scope.$parent.myScroll['assignedRoomList-4'].scrollTo)
+				$scope.$parent.myScroll['assignedRoomList-4'].scrollTo(0, 0);
+			if ($scope.$parent.myScroll['assignedRoomList-5'] && $scope.$parent.myScroll['assignedRoomList-5'].scrollTo)
+				$scope.$parent.myScroll['assignedRoomList-5'].scrollTo(0, 0);
+			window.print();
 		}
 
 		init();

@@ -63,7 +63,6 @@ hkRover.controller('HKSearchCtrl',
 				$scope.showQueued = data.is_queue_rooms_on;
 				afterFetch( data );
 			}, function() {
-				console.log("fetch failed");
 				$scope.$emit('hideLoader');
 			});	
 		} else {

@@ -137,7 +137,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/",
+						action: "staff#/staff/housekeeping/roomStatus/?date=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
@@ -163,9 +163,26 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
 				}];
+
+				// menu for mobile views
+				$scope.mobileMenu = [{
+				  title: "MENU_DASHBOARD",
+				  action: "staff#/staff/dashboard/",
+				  menuIndex: "dashboard",
+				  submenu: [],
+				  iconClass: "icon-dashboard"
+				}, {
+				  title: "MENU_ROOM_STATUS",
+				  action: "staff#/staff/housekeeping/roomStatus/",
+				  menuIndex: "roomStatus",
+				  submenu: [],
+				  iconClass: "icon-housekeeping"
+				}];
+
 			} else {
 					$scope.menu = [{
 					title: "MENU_DASHBOARD",
@@ -186,8 +203,23 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				},{
 					title: "MENU_REPORTS",
 					action: "staff#/staff/reports",
+					menuIndex: "reports",
 					iconClass: "icon-reports",
 					submenu: []
+				}];
+
+				// menu for mobile views
+				$scope.mobileMenu = [{
+				  title: "MENU_DASHBOARD",
+				  action: "staff#/staff/dashboard/",
+				  menuIndex: "dashboard",
+				  iconClass: "icon-dashboard"
+				}, {
+				  title: "MENU_ROOM_STATUS",
+				  action: "rover.housekeeping.roomStatus",
+				  menuIndex: "staff#/staff/housekeeping/roomStatus/",
+				  submenu: [],
+				  iconClass: "icon-housekeeping"
 				}];
 			}
 		};
@@ -329,7 +361,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			setTimeout(function() {
 				$scope.clearErrorMessage();
 				$scope.$apply();
-			}, 2000);
+			}, 10000);
 		});
 
 		/*

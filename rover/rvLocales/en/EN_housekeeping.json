@@ -79,6 +79,8 @@
 	"TIME_ALLOCATED" : "Time Allocated",
 	
 	"STAYOVERS" : "Stayovers",
-	"COMPLETED" : "Completed"
+	"COMPLETED" : "Completed",
+	"NO_EMPLOYEES_SELECTED" : "No employees selected.",
+	"SELECT_EMPLOYEES_TO_ASSIGN" : "Select employees to assign rooms."
 
 

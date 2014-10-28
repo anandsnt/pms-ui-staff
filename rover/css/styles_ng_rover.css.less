@@ -49,7 +49,19 @@
 ==========================================================*/
 @import "less/app/06_ie.less"; 
 
+/* 7. MEDIA QUERIES    
+==========================================================*/   
+@media only print {    
+    @import "less/app/07_print.less";    
+}
+
 @import "less/app/08_smartband.less"; 
+
+/* x. Rover Angular Animations
+==========================================================*/
+@import "../rover/css/rover_animation.less";
+
+
 
 // back button
 .actions-back {
@@ -372,11 +384,6 @@ height: 410px;
 }
 
 
-
-.grey{
-  color:grey;
-}
-
 // CICO-609 'Accompany' in Search- Multiple images
 .guest-image img{
     &.first-image {
@@ -516,108 +523,6 @@ button.icons.icon-search{
 }
 
 
-
-/* 
-* Angular UI-States Animations      
-* ==================================
-* DO NOT change the numeric values
-*/
-
-/* ui-view animation hook up class for root-view */
-.root-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
-}
-.root-view.ng-enter {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  /**/
-  #fade > .in;
-}
-
-/* ui-view animation hook up class for main-view */
-.main-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
-}
-
-/* making sure we are not flickering */
-.main-view.ng-enter,
-.main-view.ng-leave {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
-
-.main-view.ng-enter,
-.main-view.ng-enter-active {
-  z-index: 50;
-}
-
-.main-view.ng-leave,
-.main-view.ng-leave-active {
-  z-index: 30;
-}
-
-.return-back .main-view.ng-enter,
-.return-back .main-view.ng-enter-active {
-  z-index: 30;
-}
-
-.return-back .main-view.ng-leave,
-.return-back .main-view.ng-leave-active {
-  z-index: 50;
-}
-
-/* to remove a slight delay in applying the animations
-on a slow performaing device, keep the entering view hidden
-untill angular is ready to activate it */
-.main-view.ng-enter {
-  /*opacity: 0;*/
-  display: none;
-}
-.main-view.ng-enter-active {
-  /*opacity: 1;*/
-  display: block;
-}
-
-/* normal app state animations */
-.main-view.ng-enter {
-  #move > #ui-view > .enter;
-}
-
-.main-view.ng-leave {
-  #move > #ui-view > .leave;
-}
-
-/* when returning back */
-.return-back .main-view.ng-enter {
-  #move > #ui-view > .enter-rev;
-}
-
-.return-back .main-view.ng-leave {
-  #move > #ui-view > .leave-rev;
-}
-
-/* 
-* The End     
-* ==================================
-* Angular UI-States Animations
-*/
-
 .iScrollVerticalScrollbar .iScrollIndicator {
     background: none repeat scroll 0 0 #FFB319;
     border-radius: 4px 4px 4px 4px;
@@ -740,6 +645,10 @@ Padding for the ows error popup
   -moz-user-select: none;
   user-select: none;
 
+  &.no-scroll {
+    overflow-y: hidden;
+  }
+
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -756,29 +665,11 @@ Padding for the ows error popup
 }
 
 .content#filter-options {
-  overflow: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling:touch;
 
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-   
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-   
-  &::-webkit-scrollbar-thumb {
-    width: 4px;
-    border-radius: 3px;
-    background-color: #FFB319;
-  }
 }
-
 
 #pull-refresh-notify {
   padding: 10px;
@@ -823,100 +714,6 @@ Padding for the ows error popup
   #pull-refresh-notify.has-options {
     top: 60px;
   }
-}
-
-
-
-
-/* 
-* Reports screen change animations  
-* ==================================
-* DO NOT change the numeric values
-*/
-#report-details.content.stay-card-inner{
-  position: absolute;
-}
-
-@media (max-width: 999px) {
-  #report-details.content.stay-card-inner {
-    position: static;
-  }
-}
-
-#reports-details-wrap #report-details .report-content {
-  .calc-height(100, 180);
-}
-
-/* ui-view animation hook up class for main-view */
-.reports-wrapper {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
-}
-
-/* making sure we are not flickering */
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add,
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add-active {
-  display: block !important;
-}
-
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add {
-  -webkit-backface-visibility: hidden;
-  backface-visibility:hidden;
-  /**/
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
-
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-remove-active,
-.reports-wrapper.ng-hide-add,
-.reports-wrapper.ng-hide-add-active {
-  display: block !important;
-}
-
-.reports-wrapper.ng-hide-remove,
-.reports-wrapper.ng-hide-add-active {
-  z-index: 50 !important;
-}
-
-.reports-wrapper.ng-hide-add,
-.reports-wrapper.ng-hide-add-active {
-  z-index: 30 !important;
-}
-
-.return-back .reports-wrapper.ng-hide-remove,
-.return-back .reports-wrapper.ng-hide-add-active {
-  z-index: 30 !important;
-}
-
-.return-back .reports-wrapper.ng-hide-add,
-.return-back .reports-wrapper.ng-hide-add-active {
-  z-index: 50 !important;
-}
-
-/* normal app state animations */
-.reports-wrapper.ng-hide-remove {
-  #move > #ui-view > .enter;
-}
-
-.reports-wrapper.ng-hide-add {
-  #move > #ui-view > .leave;
-}
-
-/* when returning back */
-.return-back .reports-wrapper.ng-hide-remove {
-  #move > #ui-view > .enter-rev;
-}
-
-.return-back .reports-wrapper.ng-hide-add {
-  #move > #ui-view > .leave-rev;
 }
 
 .end-of-day-modal{
@@ -1063,6 +860,9 @@ Padding for the ows error popup
   padding:0 !important;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 .guest-bill-edit-buttons{
   width:100% !important;
 }
@@ -1223,11 +1023,21 @@ Padding for the ows error popup
     z-index: 10;
   }
  }
+
+// For CICO-6080 Charge code select box.
+
+.charge-code-select{
+  margin: 0 auto 0 auto !important;
+}
+
+.billing-info-charge-codes{
+  margin: 20 0 0 0 !important;
+}
+ 
  // For CICO-6080 Charge code search results.
  
  .charge-code-list{
     height: 200px;
-    top: 290px;
     z-index: 999;
     left: 390px;
     width: 330px;
@@ -1260,7 +1070,8 @@ Padding for the ows error popup
 }
 
 .bill-routing-list {
-  padding-top : 60px;
+  margin-top : 60px;
+  height: 360px !important;
 }
 
 /*-----CICO-6080 Adding cursor pointer to the entity div-------*/
@@ -1362,3 +1173,32 @@ Padding for the ows error popup
   transform: none !important; 
 }
 
+// CICO-9956 -scroll for credit card list.
+.card-list-height{
+  height:220px;
+}
+
+/*  
+    CICO-7619  - Deleted payment and loyalty do not disappear from Guest card.
+    Adding correction class 'active-item-no-transition' here.
+    Overridding transition property on 'active-item' class used in these sections.
+    Since that makes the issue while deleting the respective items.
+*/
+.active-item-no-transition{
+  .transition (all, 0s, @easing: cubic-bezier(.10, .10, .25, .90)) !important;
+
+}
+
+/* CICO-10105 */
+#availability {
+  z-index: 10000;
+}
+
+#modal .key-delivery #key-status .info.print-status-msg {
+    height: 150px;
+}
+
+/* CICO-10309 */
+.no-margin-right {
+  margin-right:0px !important;
+}

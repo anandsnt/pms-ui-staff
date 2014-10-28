@@ -1,5 +1,5 @@
-sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state',
-	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state) {
+sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog', '$filter',
+	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog, $filter) {
 		BaseCtrl.call(this, $scope);
 		$scope.singleState = {
 			workSheet: {
@@ -25,6 +25,37 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				assigned: $("#worksheet-assigned-rooms").width() - 40
 			}
 		};
+
+		$scope.filters = {
+			selectedFloor: "",
+			selectedReservationStatus: "",
+			selectedFOStatus: "",
+			vipsOnly: false,
+			checkin: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			},
+			checkout: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			}
+		}
 
 		$scope.dropToUnassign = function(event, dropped) {
 			var indexOfDropped = parseInt($(dropped.draggable).attr('id').split('-')[1]);
@@ -55,7 +86,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 						}
 
 						$scope.singleState.assigned = assignedRooms;
-						$scope.filterRooms();
+						$scope.filterUnassigned();
 						summarizeAssignment();
 						refreshView();
 						$scope.$emit('hideLoader');
@@ -65,7 +96,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 						$scope.$emit('hideLoader');
 					}
 				$scope.invokeApi(RVWorkManagementSrv.fetchWorkSheetDetails, {
-					"date": $stateParams.date,
+					"date": $stateParams.date || $rootScope.businessDate,
 					"employee_ids": [$scope.singleState.workSheet.user_id],
 					"work_type_id": $scope.singleState.workSheet.work_type_id
 				}, onFetchSuccess, onFetchFailure);
@@ -80,7 +111,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 				_.each($scope.singleState.assigned, function(room) {
 					if ($scope.departureClass[room.reservation_status] == "check-out") {
 						$scope.singleState.summary.departures++;
-					} else if ($scope.departureClass[room.reservation_status] == "in-house") {
+					} else if ($scope.departureClass[room.reservation_status] == "inhouse") {
 						$scope.singleState.summary.stayovers++;
 					}
 					if (room.hk_complete) {
@@ -99,7 +130,7 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			};
 
 
-		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $stateParams.date);
+		$scope.setHeading("Work Sheet No." + wmWorkSheet.sheet_number + ", " + $filter('date')($stateParams.date, $rootScope.dateFormat));
 
 		var prevState = {
 			title: ('Work Management'),
@@ -109,6 +140,14 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			prevState = {
 				title: ('Manage Worksheets'),
 				name: 'rover.workManagement.multiSheet'
+			}
+		} else if (!!parseInt($stateParams.from)) {
+			prevState = {
+				title: ('Room Details'),
+				name: 'rover.housekeeping.roomDetails',
+				param: {
+					id: parseInt($stateParams.from)
+				}
 			}
 		}
 
@@ -134,6 +173,44 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			summarizeAssignment();
 			refreshView();
 		}
+
+		$scope.filters = {
+			selectedFloor: "",
+			selectedReservationStatus: "",
+			selectedFOStatus: "",
+			vipsOnly: false,
+			checkin: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			},
+			checkout: {
+				after: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				},
+				before: {
+					hh: "",
+					mm: "",
+					am: "AM"
+				}
+			}
+		}
+
+		$scope.printWorkSheet = function() {
+			if ($scope.$parent.myScroll['workSheetAssigned'] && $scope.$parent.myScroll['workSheetAssigned'].scrollTo)
+				$scope.$parent.myScroll['workSheetAssigned'].scrollTo(0, 0);
+			window.print();
+		}
+
 
 		$scope.deletWorkSheet = function() {
 			var onDeleteSuccess = function(data) {
@@ -189,31 +266,39 @@ sntRover.controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', 
 			$scope.$emit('showLoader');
 		}
 
-		$scope.filterRooms = function() {
-			$scope.singleState.unassignedFiltered = [];
-			if (!$scope.singleState.filters.selectedStatus && !$scope.singleState.filters.selectedFloor) {
-				$scope.singleState.unassignedFiltered = $scope.singleState.unassigned;
-
-			} else if (!$scope.singleState.filters.selectedStatus) {
-				$scope.singleState.unassignedFiltered = _.where($scope.singleState.unassigned, {
-					floor_number: $scope.singleState.filters.selectedFloor
-				});
-			} else if (!$scope.singleState.filters.selectedFloor) {
-				$scope.singleState.unassignedFiltered = _.where($scope.singleState.unassigned, {
-					current_status: $scope.singleState.filters.selectedStatus
-				});
-			} else { //Both Filters
-				$scope.singleState.unassignedFiltered = _.where($scope.singleState.unassigned, {
-					current_status: $scope.singleState.filters.selectedStatus,
-					floor_number: $scope.singleState.filters.selectedFloor
-				});
-			}
+		$scope.filterUnassigned = function() {
+			$scope.singleState.unassignedFiltered = $scope.filterUnassignedRooms($scope.filters, $scope.singleState.unassigned);
 			refreshView();
-			$scope.$emit('hideLoader');
+			$scope.closeDialog();
 		}
 
 		$scope.onWorkTypeChange = function() {
 			init();
+		}
+
+		$scope.onAssignmentDragStart = function() {
+			$scope.$parent.myScroll["workSheetUnassigned"].disable();
+		}
+
+		$scope.onAssignmentDragStop = function() {
+			$scope.$parent.myScroll["workSheetUnassigned"].enable();
+		}
+
+		$scope.onUnassignmentDragStart = function() {
+			$scope.$parent.myScroll["workSheetAssigned"].disable();
+		}
+
+		$scope.onUnassignmentDragStop = function() {
+			$scope.$parent.myScroll["workSheetAssigned"].enable();
+		}
+
+		$scope.showFilter = function() {
+			ngDialog.open({
+				template: '/assets/partials/workManagement/popups/rvWorkManagementFilterRoomsPopup.html',
+				className: 'ngdialog-theme-default',
+				closeByDocument: true,
+				scope: $scope
+			});
 		}
 
 		init();

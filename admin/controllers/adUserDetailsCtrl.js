@@ -1,6 +1,10 @@
 admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', 'ADUserRolesSrv', function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv){
 	
 	BaseCtrl.call(this, $scope);
+	//navigate back to user list if no id
+	if(!$stateParams.id){
+			$state.go('admin.users');
+	}
 	$scope.mod = "";
 	$scope.image = "";
 	$scope.$emit("changedSelectedMenu", 0);
@@ -241,6 +245,10 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
     * @param {int} user id
     */
 	$scope.sendInvitation = function(userId){
+		console.log("send invitation");
+		if(userId == "" || userId == undefined){
+			return false;
+		}
 		var data = {"id": userId};
 	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
 	};

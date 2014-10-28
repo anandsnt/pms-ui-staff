@@ -32,7 +32,7 @@
 <!-- TODO :  part of future functionality <ad-checkbox is-checked="rateData.use_rate_levels" label="Use Rate Levels" div-class="full-width"></ad-checkbox> -->
 </fieldset>
 <fieldset class="holder right">
-	<div class="entry full-width rates_deposit_requirements">
+	<div class="entry full-width rates_deposit_requirements" ng-show="depositRequiredActivated">
 		<label>deposit requirements</label>
 		<div class="select">
 			<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.displayData for policy in rateTypesDetails.depositPolicies">

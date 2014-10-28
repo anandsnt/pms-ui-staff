@@ -2,7 +2,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 	function($state, $stateParams, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv, $filter) {
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
-		$s = $scope;
 		
 		// set a back button on header
 		$rootScope.setPrevState = {
@@ -267,9 +266,14 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
 			//calculating the total rate / avg.rate
 			$scope.totRate = 0;
+			$scope.isStayRatesSuppressed = false;
 			var checkinRate = '';
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-
+				console.log(this);
+				if(this.is_sr == "true"){
+					$scope.isStayRatesSuppressed = true;
+					return false;// Exit from loop
+				}
 				//we have to add rate between the calendar checkin date & calendar checkout date only
 				if (tzIndependentDate(this.date).getTime() >= $scope.checkinDateInCalender.getTime() && tzIndependentDate(this.date).getTime() < $scope.checkoutDateInCalender.getTime()) {
 					$scope.totRate += escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
@@ -278,14 +282,17 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				if (this.date == ($scope.stayDetails.details.arrival_date)) {
 					checkinRate = $scope.escapeNull(this.rate) == "" ? 0 : parseInt(this.rate);
 				}
-
+				
 			});
-			//calculating the avg. rate
-			if ($scope.calendarNightDiff > 0) {
-				$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100);
-			} else {
-				$scope.totRate = checkinRate;
-				$scope.avgRate = Math.round(($scope.totRate + 0.00001));
+
+			if(!$scope.isStayRatesSuppressed){
+				//calculating the avg. rate
+				if ($scope.calendarNightDiff > 0) {
+					$scope.avgRate = Math.round(($scope.totRate / $scope.calendarNightDiff + 0.00001) * 100 / 100);
+				} else {
+					$scope.totRate = checkinRate;
+					$scope.avgRate = Math.round(($scope.totRate + 0.00001));
+				}
 			}
 			//we are showing the right side with updates
 			$scope.rightSideReservationUpdates = 'ROOM_AVAILABLE';
@@ -298,18 +305,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.roomSelected = roomNumber;
 			$scope.showRoomAvailable();
 		}
-
-		$scope.getRoomClass = function(reservationStatus, roomStatus, foStatus) {
-			var roomClass = "";
-			if (reservationStatus == "CHECKING_IN") {
-				if (roomStatus == "READY" && foStatus == "VACANT") {
-					roomClass = "ready";
-				} else {
-					roomClass = "not-ready";
-				}
-			}
-			return roomClass;
-		};
 
 		this.successCallbackConfirmUpdates = function(data) {
 			$scope.$emit("hideLoader");
@@ -347,8 +342,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		};
 
 		// function to get color class against a room based on it's status
-		$scope.getColorCode = function(roomReadyStatus, checkinInspectedOnly) {
-			return getMappedRoomReadyStatusColor(roomReadyStatus, checkinInspectedOnly);
+		$scope.getColorCode = function() {
+			var reservationStatus = $scope.stayDetails.details.reservation_status;
+			var roomReadyStatus = $scope.stayDetails.details.room_ready_status; 
+			var foStatus = $scope.stayDetails.details.fo_status;
+			var checkinInspectedOnly = $scope.stayDetails.details.checkin_inspected_only;
+			return getMappedRoomStatusColor(reservationStatus, roomReadyStatus, foStatus, checkinInspectedOnly);
 		};
 
 		$scope.confirmUpdates = function() {
@@ -361,8 +360,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			$scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, that.successCallbackConfirmUpdates, that.failureCallbackConfirmUpdates);
 		}
 		/*
-	 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
-	 */
+		 this function is used to check the whether the movement of dates is valid accoriding to our reqmt.
+		 */
 		$scope.changedDateOnCalendar = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
 			$scope.stayDetails.isOverlay = false;
 			//the new date in calendar

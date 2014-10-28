@@ -1,23 +1,27 @@
 <div ng-controller="RVHKWorkTabCtrl">
-  <div class="room-actions" ng-class="{ 'dual-select': isStandAlone }">
-    <div class="select">
+  
+  <!-- Hide the first select everywhere -->
+  <!-- ng-class="{ 'dual-select': isStandAlone }" -->
+  <div class="room-actions">
+    <!-- <div class="select">
       <select id="work-type" name="work-type" ng-if="isStandAlone" ng-model="chosenWorkType" ng-options="item.id as item.name for item in workTypesList" disabled>
         <option value="">All Work Types</option>
       </select>
-    </div>
+    </div> -->
     <div class="select">
       <!-- standalone PMS -->
       <!-- Disable when cleaning in progrees. -->
       <!-- ng-disabled="isCleaning" -->
-      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="standaloneRoomStatusChanged()" disabled></select>
+      <select id="room-status" name="room-status" ng-if="isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disable="!!task_completion_status">
+        <option value="">  </option>
+      </select>
 
       <!-- connected PMS -->
-      <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="connectedRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
+      <select id="room-status" name="room-status" ng-if="!isStandAlone" ng-model="roomDetails.current_hk_status" ng-options="item.value as item.description for item in roomDetails.hk_status_list" ng-change="manualRoomStatusChanged()" ng-disabled="!!ooOsTitle"></select>
     </div>
   </div>
 
   <div id="room-content" class="room-content">
-    
     <!-- this is a connected hotel -->
     <div ng-if="!isStandAlone">
       <!-- 2.A Work Tab - Room is clean -->
@@ -64,7 +68,7 @@
         <div ng-if="roomDetails.assigned_maid">
           <button type="button" class="button blue action" ng-click="startCleaning()">Start</button> 
           <!-- Show this only if room is assigned to staff memeber -->
-          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
+          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate, from : roomDetails.id })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
         </div>
       </div>
 
@@ -75,12 +79,12 @@
         <div ng-if="roomDetails.assigned_maid">
           <button type="button" class="button blue action" ng-click="startCleaning()">Start</button>
           <!-- Show this only if room is assigned to staff memeber -->
-          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
+          <a ui-sref="rover.workManagement.singleSheet({ id: roomDetails.work_sheet_id, date: businessDate, from: roomDetails.id })" class="button white blue-text show-sheet"><span>Assigned to: </span>{{ roomDetails.assigned_maid }}</a>
         </div>
       </div>
       
       <!-- 2.D Work Tab - Room cleaning in progress -->
-      <div ng-if="isCleaning">
+      <div ng-if="(checkShow('dirty') || checkShow('pickup')) && isCleaning">
         <strong class="h2">Work is in Progress.</strong>
         <span class="progress"></span>
         <button type="button" class="button green action" ng-click="doneCleaning()">Done!</button>

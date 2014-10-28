@@ -18,7 +18,8 @@ var CardOperation = function(){
           					'RVCardReadTrack2KSN': '950067000000062002AF',
           					'RVCardReadMaskedPAN': '5405220008002226',
           					'RVCardReadCardName': 'Sample Name',
-          					'RVCardReadExpDate':"17012"
+          					'RVCardReadExpDate':"17012",
+          					'RVCardReadCardIIN': "002226"
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}
@@ -46,7 +47,6 @@ var CardOperation = function(){
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
-				
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;		
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -74,11 +74,16 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
+			//alert(cordova);
+			//alert(JSON.stringify(cordova));
+			//alert("----service------"+service+"===action======"+action+"=====arguments========"+arguments);
+			
 			
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
+							//alert("successCallBackParameters");
 							if(successCallBackParameters !== null){
 								//alert("cordoveexec---DATA----"+JSON.stringify(data));
 								//alert("cordoveexec---successparama----"+JSON.stringify(successCallBackParameters));
@@ -95,7 +100,7 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
-							//alert("error");
+							//alert("failureCallBackParameters");
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}
