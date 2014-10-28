@@ -88,11 +88,11 @@
             </div>
         </div>
         <ul id="journal-options" class="display">
-            <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activeTab=0">
+            <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activatedTab(0)">
                 <span class="icons icon-navbar icon-revenue" translate>REVENUE</span>{amount}</li>
-            <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
+            <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activatedTab(1)">
                 <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span>{amount}</li>
-            <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activateCashierTab()">
+            <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activatedTab(2)">
                 <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.cashierData.status}}</li>
         </ul>
     </form>

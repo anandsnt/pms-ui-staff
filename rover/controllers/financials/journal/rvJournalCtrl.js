@@ -170,9 +170,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
        callCashierFilterService();
     };
 
-    $scope.activateCashierTab = function(){
-    	$scope.activeTab=2;
-    	$scope.$broadcast('cashierTabActive');
-    }
+    $scope.activatedTab = function(index){
+    	$scope.activeTab = index;
+    	if(index == 0) $scope.$broadcast('revenueTabActive');
+    	else if(index == 2) $scope.$broadcast('cashierTabActive');
+    	else $scope.$broadcast('paymentTabActive');
+    };
     /* Cahier filter ends here */
 }]);
