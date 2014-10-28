@@ -35,6 +35,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
 
         var closeShiftSuccesCallback = function(){
             $scope.data.cashierData.history[$scope.selectedHistory].status = "closed";
+            $scope.details.status ='closed';
         }
         closeShiftSuccesCallback();
     };
@@ -43,6 +44,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
     $scope.reOpen = function(){
         var reOpenSuccesCallback = function(){
             $scope.data.cashierData.history[$scope.selectedHistory].status = "open";
+            $scope.details.status ='open';
         }
         reOpenSuccesCallback();
 

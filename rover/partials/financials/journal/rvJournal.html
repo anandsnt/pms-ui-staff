@@ -84,7 +84,7 @@
             <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
                 <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span>{amount}</li>
             <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activeTab=2">
-                <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{Open or Closed}</li>
+                <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.cashierData.status}}</li>
         </ul>
     </form>
 
