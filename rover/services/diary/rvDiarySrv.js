@@ -1,5 +1,7 @@
 sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
     function ($q, rvBaseWebSrvV2, RVBaseWebSrv) {
+    	this.model = new Model({ room_types: [], rooms: [], results: [] });
+
     	this.normalizeData = function(data, meta) {
     		var room, 
     			reservations, 
@@ -32,6 +34,10 @@ sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
 
     	};
     	
+    	this.loadTimeRange = function(begin_time, end_time, calendar_date, rate_id, room_type_ids) {
+    		
+    	};
+
         this.fetchInitialData = function (arrival_date, meta){
             var deferred = $q.defer (),
             	rooms;
