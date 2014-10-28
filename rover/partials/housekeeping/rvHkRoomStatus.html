@@ -25,7 +25,7 @@
             <span class="icons icon-clear-search" ng-click="$emit('clearSearch()')" translate>CLEAR_QUERY</span>
         </a>
         <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
-        <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
+        <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" rv-delay-textbox  delay="1000" function-to-fire="filterByQuery">
     </div>
     
     <div class="entry options" ng-if="isStandAlone" ng-cloak>
@@ -54,10 +54,10 @@
     <li>Stayovers <span>{{ counts.stayover }}</span></li>
     <li>Completed <span>{{ counts.completed }}/{{ counts.total }}</span></li>
 </ul>
-<!-- Rooms list -->
-<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate ng-show="(rooms | filter:{display_room:true}).length > 0">
 
-  <ul class="wrapper search-results" ng-hide="noResultsFound==rooms.length">
+<!-- Rooms list -->
+<section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
+  <ul class="wrapper search-results" ng-hide="rooms.length === 0 && !!(rooms | filter:{display_room:true})">
     <li class="room" bindonce ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
           <div class="data">
@@ -98,7 +98,7 @@
   </ul>
   
   <!-- Empty -->
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-hide="(rooms | filter:{display_room:true}).length > 0" >
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="rooms.length == 0 || !(rooms | filter:{display_room:true})" >
     <li class="no-content">
       <div class="info">
         <span class="icon-no-content icon-room"></span>

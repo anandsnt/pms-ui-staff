@@ -15,7 +15,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// hook it up with base ctrl
 		BaseCtrl.call(this, $scope);
 
-
+		var lastSearchQuery = "";
 
 		// set the previous state
 		$rootScope.setPrevState = {
@@ -30,7 +30,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-		var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
+		var scrollOptions = {
+			preventDefaultException: {
+				tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+			},
+			preventDefault: false
+		};
 		$scope.setScroller('filtersection', scrollOptions);
 
 		// reset all the filters
@@ -67,7 +72,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// default no results found
 		$scope.noResultsFound = 0;
 
-		
+
 		// default no top filters
 		// $scope.topFilter = {};
 
@@ -87,9 +92,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			 * CICO-8620
 			 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
 			 * Rest of the times maintain state in the dropdown!
-			 * 
+			 *
 			 */
-			$_defaultEmp = ($scope.topFilter.byEmployee !== -1)? $scope.topFilter.byEmployee : $rootScope.userId;
+			$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
 
 			// when a employee logges in mobile view
 			// we introduce another level of tabs to seperate
@@ -180,38 +185,43 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		function $_postProcessRooms(data) {
 			// apply the filter first
-			$_calculateFilters(data.rooms);
+			if (data && data.rooms && data.rooms.length) {
+				$_calculateFilters(data.rooms);
 
-			// making unique copies of array
-			// slicing same array not good.
-			// say thanks to underscore.js
-			var smallPart = _.compact(data.rooms);
-			var restPart = _.compact(data.rooms);
+				// making unique copies of array
+				// slicing same array not good.
+				// say thanks to underscore.js
+				var smallPart = _.compact(data.rooms);
+				var restPart = _.compact(data.rooms);
 
-			// smaller part consisit of enogh rooms
-			// that will fill in the screen
-			smallPart = smallPart.slice(0, 13);
-			restPart = restPart.slice(13);
+				// smaller part consisit of enogh rooms
+				// that will fill in the screen
+				smallPart = smallPart.slice(0, 13);
+				restPart = restPart.slice(13);
 
-			// first load the small part
-			$scope.rooms = smallPart;
+				// first load the small part
+				$scope.rooms = smallPart;
 
-			// load the rest after a small delay
-			$timeout(function() {
+				// load the rest after a small delay
+				$timeout(function() {
 
-				// push the rest of the rooms into $scope.rooms
-				// remember slicing is only happening on the Ctrl and not on Srv
-				$scope.rooms.push.apply($scope.rooms, restPart);
+					// push the rest of the rooms into $scope.rooms
+					// remember slicing is only happening on the Ctrl and not on Srv
+					$scope.rooms.push.apply($scope.rooms, restPart);
 
-				// scroll to the previous room list scroll position
-				var toPos = localStorage.getItem('roomListScrollTopPos');
-				$scope.refreshScroll(toPos);
+					// scroll to the previous room list scroll position
+					var toPos = localStorage.getItem('roomListScrollTopPos');
+					$scope.refreshScroll(toPos);
 
+					$scope.$emit('hideLoader');
+
+					// execute this after this much time
+					// as the animation is in progress
+				}, 700);
+			} else {
 				$scope.$emit('hideLoader');
+			}
 
-				// execute this after this much time
-				// as the animation is in progress
-			}, 700);
 		};
 
 
@@ -462,14 +472,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				}
 
 				// filter by status in filter section, OCCUPANCY_STATUS
-				if ( $scope.isAnyFilterTrue(["vacant","occupied","queued"]) ) {
+				if ($scope.isAnyFilterTrue(["vacant", "occupied", "queued"])) {
 					/**
 					 *CICO-10255
 					 *Jos had reported an issue (Housekeeping - Filter screen when you click "show vacant" the "show queued" is also automatically marked)
 					 *		 				* Have removed invocation of these two functions
-					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked		 				
+					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked
 					 */
-					if ( !$scope.currentFilters.queued && !$scope.currentFilters.vacant  && room.is_queued ) {
+					if (!$scope.currentFilters.queued && !$scope.currentFilters.vacant && room.is_queued) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
@@ -556,36 +566,49 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		 *  Filter Function for filtering our the room list
 		 */
 		$scope.filterByQuery = function() {
+			if (!RVHkRoomStatusSrv.searchOnSubset) {
+				if ($scope.query && !!$scope.query.length && $scope.query != lastSearchQuery) {
+					lastSearchQuery = $scope.query;
+					var onRoomSearchSuccess = function(roomsList) {
+						$scope.rooms = roomsList.rooms;
+						$scope.$emit('hideLoader');
+					}
+					$scope.invokeApi(RVHkRoomStatusSrv.searchRooms, {
+						key: $scope.query,
+						date: $rootScope.businessDate
+					}, onRoomSearchSuccess);
+					console.log($scope.query);
+				}
+			} else {
+				// since no filer we will have to
+				// loop through all rooms
+				for (var i = 0, j = $scope.rooms.length; i < j; i++) {
+					var room = $scope.rooms[i]
+					var roomNo = room.room_no.toUpperCase();
 
-			// since no filer we will have to
-			// loop through all rooms
-			for (var i = 0, j = $scope.rooms.length; i < j; i++) {
-				var room = $scope.rooms[i]
-				var roomNo = room.room_no.toUpperCase();
+					// if the query is empty
+					// apply any filter options
+					// and return
+					if (!$scope.query) {
+						$_calculateFilters();
+						break;
+						return;
+					};
 
-				// if the query is empty
-				// apply any filter options
-				// and return
-				if (!$scope.query) {
-					$_calculateFilters();
-					break;
-					return;
-				};
-
-				// let remove any changed applied by filter
-				// show all rooms
-				room.display_room = true;
-
-				// now match the room no and
-				// and show hide as required
-				// must match first occurance of the search query
-				if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
+					// let remove any changed applied by filter
+					// show all rooms
 					room.display_room = true;
-				} else {
-					room.display_room = false;
+
+					// now match the room no and
+					// and show hide as required
+					// must match first occurance of the search query
+					if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
+						room.display_room = true;
+					} else {
+						room.display_room = false;
+					}
 				}
 			}
-
 			// refresh scroll when all ok
 			$scope.refreshScroll();
 		}
