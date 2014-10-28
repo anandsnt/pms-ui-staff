@@ -107,7 +107,7 @@ admin.service('ADContentManagementSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
 	this.fetchChildList = function(data){
 
 		var deferred = $q.defer();
-		var url = '/guest/cms_components/'+data.id+'/sub_categories.json';	
+		var url = 'api/cms_components/'+ data.id+'/sub_categories.json';	
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

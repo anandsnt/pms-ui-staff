@@ -49,7 +49,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 	$scope.saveCategory = function(){
 		var saveCategorySuccessCallback = function(data){
 			$scope.$emit('hideLoader');
-			
+			$scope.goBack();
 		}
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, $scope.data , saveCategorySuccessCallback);
 	}

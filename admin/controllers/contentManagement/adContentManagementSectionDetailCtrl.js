@@ -36,7 +36,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 	$scope.saveSection = function(){
 		var saveSectionSuccessCallback = function(data){
 			$scope.$emit('hideLoader');
-			
+			$scope.goBack();
 		}
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, $scope.data , saveSectionSuccessCallback);
 	}	

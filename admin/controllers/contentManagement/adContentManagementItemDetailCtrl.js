@@ -54,7 +54,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	$scope.saveItem = function(){
 		var saveItemSuccessCallback = function(data){
 			$scope.$emit('hideLoader');
-			
+			$scope.goBack();
 		}
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, $scope.data , saveItemSuccessCallback);
 	}
