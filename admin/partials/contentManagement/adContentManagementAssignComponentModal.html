@@ -1,7 +1,7 @@
 <div id="modal" class="modal-show" role="dialog">
     <form method="post" action="" id="component-tree" name="component-tree" class="modal-content cms-content">
-        <span class="message h3" ng-show="isSection">Select section</span>
-        <span class="message h3" ng-show="!isSection">Select category</span>
+        <span class="message h3" ng-show="isSection" translate>SELECT_SECTION_LABEL</span>
+        <span class="message h3" ng-show="!isSection" translate>SELECT_CATEGORY_LABEL</span>
         <ul class="cms-tree" ng-show="isSection">
             <li class="section" ng-class="{'selected': isSectionSelected($index)}" ng-click = "sectionAdded($index)" ng-show="isComponentAvailable(section)" ng-repeat="section in sections"> <!-- Add class 'selected' if selected -->
     			<div class="sort">
@@ -24,7 +24,7 @@
 
         <div class="actions">
             <button type="button" ng-click="confirmClicked()" class="button green" translate>CONFIRM_LABEL</button>
-            <button type="button" ng-click="cancelClicked()" class="button blank">Cancel</button>
+            <button type="button" ng-click="cancelClicked()" class="button blank" translate>CANCEL</button>
         </div>
     </form>
 </div>
