@@ -42,7 +42,7 @@
         <div class="entry" ng-show="activeTab==2">
             <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
-                <select name="select-cashier" id="select-cashier">
+                <select name="select-cashier" id="select-cashier" ng-model="cashierValue" ng-change="filterCashierData()">
                     <option value="" translate>SELECT_CASHEIR</option>
                     <option selected="" value="Allison Smith">Allison Smith</option>
                     <option value="Debra Smith">Debra Smith</option>
@@ -69,7 +69,7 @@
                 <span id="revenue-date-year" class="year">{{data.fromDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedToDate()">
+        <div class="entry" ng-click="clickedToDate()" ng-hide="activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>TO_DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate}}" readonly />
@@ -84,7 +84,7 @@
             <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activeTab=1">
                 <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span>{amount}</li>
             <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activeTab=2">
-                <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{Open or Closed}</li>
+                <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.cashierData.status}}</li>
         </ul>
     </form>
 

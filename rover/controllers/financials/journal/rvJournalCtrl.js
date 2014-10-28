@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse',	function($scope,$filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','cashierData',function($scope,$filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse,cashierData) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
@@ -14,6 +14,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.fromDate = $rootScope.businessDate;
     $scope.data.toDate 	= $rootScope.businessDate;
     $scope.isActiveRevenueFilter = false;
+    $scope.data.cashierData = cashierData;
 
 	$scope.isDrawerOpened = false;
 	var resizableMinHeight = 0;

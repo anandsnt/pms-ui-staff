@@ -1,121 +1,84 @@
 <!-- Content CASHIER -->
 <div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController">
-    <div id="cashier-history" class="journal-history scrollable">
+    <div id="cashier-history" class="journal-history scrollable" ng-iscroll='cashier_history'>
         <div class="wrapper">
             <h2 translate>HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
-                <li>
-                    <strong class="status closed">
+                <li ng-repeat="history in data.cashierData.history" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
+                    <strong class="status closed" ng-show="history.status ==='closed'">
                         {{'CLOSED' | translate}}
-                        <span>{who/what closed it}</span>
+                         <span>by {{history.user}}</span>
                     </strong>
-                    <time datetime="{datetime timestamp}">
-                        <span class="time">{time}</span>
-                        <span class="date">{date}</span>
-                    </time>
-                </li>
-                <!-- Opened -->
-                <li>
-                    <strong class="status opened">
+                    <strong class="status opened" ng-hide="history.status ==='closed'">
                         {{'OPENED' | translate}}
-                        <span>{who/what opened it}</span>
+                        <span ng-bind="history.user"</span>
                     </strong>
                     <time datetime="{datetime timestamp}">
-                        <span class="time">{time}</span>
-                        <span class="date">{date}</span>
+                        <span class="time" ng-bind="history.time"></span>
+                        <span class="date">{{history.date | date:'dd MMMM yyyy'}} </span>
                     </time>
                 </li>
             </ul>
-            <button type="button" class="button green" translate>RE_OPEN</button>
         </div> 
     </div>
-    <div id="cashier-shift" class="journal-shift scrollable">
+    <div id="cashier-shift" class="journal-shift scrollable" ng-iscroll='cashier_shift'>
         <!-- Open shift -->
         <div class="wrapper">
             <table class="shift-details">
+                <caption class="closed" ng-hide="details.status ==='open'">
+                    {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
+                </caption>
+                <caption class="opened" ng-show="details.status ==='open'">
+                    {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
+                </caption>
                 <tbody>
                     <tr>
                         <th scope="row" translate>OPENING_BALANCE_CASH_MSG</th>
-                        <td class="value">{amount}</td>
+                        <td class="value">{{currencySymbol}}{{details.opening_balance_cash |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>OPENING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{amount}</td>
+                        <td class="value">{{currencySymbol}}{{details.opening_balance_check |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CASH_RECEIVED_MSG</th>
-                        <td class="value">{amount}</td>
+                        <td class="value">{{currencySymbol}}{{details.total_cash_received |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_IN_CHECKS_RECEIVED_MSG</th>
-                        <td class="value">{amount}</td>
+                        <td class="value">{{currencySymbol}}{{details.total_check_received |number:2}}</td>
                     </tr>
                     <tr>
-                        <td class="entry" colspan="2">
-                            <input name="cash-submited" id="cash-submited" type="text" value="" />
+                        <td class="entry" colspan="2" ng-show="details.status ==='open'">
+                            <span translate>CASH_SUBMITTED</span>
+                            <input name="cash-submited" id="cash-submited" type="text" ng-model="details.cash_submitted"/>
                         </td>
+
+                        <th scope="row" translate  ng-hide="details.status ==='open'">CASH_SUBMITTED</th>
+                        <td class="value"  ng-hide="details.status ==='open'">{{currencySymbol}}{{details.cash_submitted |number:2}}</td>
                     </tr>
                     <tr>
-                        <td class="entry" colspan="2">
-                            <input name="checks-submited" id="checks-submited" type="text" value="" />
+                        <td class="entry" colspan="2" ng-show="details.status ==='open'">  
+                            <span translate>CHECKS_SUBMITTED</span>
+                            <input name="checks-submited" id="checks-submited" type="text" ng-model="details.check_submitted" />
                         </td>
+
+                        <th scope="row" translate ng-hide="details.status ==='open'">CHECKS_SUBMITTED</th>
+                        <td class="value" ng-hide="details.status ==='open'">{{currencySymbol}}{{details.check_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
-                        <td class="value">{amount}</td>
+                        <td class="value">{{currencySymbol}}{{details.opening_balance_cash - details.cash_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{amount}</td>
+                        <td class="value">{{currencySymbol}}{{details.opening_balance_check - details.check_submitted |number:2}}</td>
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button green" translate>CLOSE_SHIFT</button>
+            <button type="button" class="button green" translate ng-show="details.status ==='open'" ng-click="closeShift()">CLOSE_SHIFT</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='open'" ng-click="reOpen()">RE_OPEN</button>
         </div> 
-
-        <!-- Shift selected from history 
-        <div class="wrapper">
-            <table class="shift-details">
-                <caption class="{opened or closed}">{User}| {Open or Closed} | {Time and Date} </caption>
-                <tbody>
-                    <tr>
-                        <th scope="row">Opening balance cash</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Opening balance check</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Total Cash received</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Total In Checks received</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="entry">Cash submitted</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="entry">Checks submitted</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Total Closing Balance Cash</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Total Closing Balance Check</th>
-                        <td class="value">{amount}</td>
-                    </tr>
-                </tbody>
-            </table>
-            // Show button only if closed 
-            <button type="button" class="button green">Close Shift</button>
-        </div> 
-        -->
     </div>
 </div>

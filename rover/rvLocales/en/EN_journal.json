@@ -32,4 +32,6 @@
 	"TOTAL_IN_CHECKS_RECEIVED_MSG":"Total In Checks received",
 	"TOTAL_CLOSING_BALANCE_CASH_MSG":"Total Closing Balance Cash",
 	"TOTAL_CLOSING_BALANCE_CHECK_MSG":"Total Closing Balance Check",
-	"CLOSE_SHIFT":"Close Shift"
+	"CLOSE_SHIFT":"Close Shift",
+	"CASH_SUBMITTED":"Cash submitted",
+	"CHECKS_SUBMITTED":"Checks submitted"
