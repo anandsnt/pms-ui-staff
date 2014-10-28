@@ -24,7 +24,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2', function($http, 
 
 	this.fetchRevenueData = function(){
 		var deferred = $q.defer();
-		var url = '/sample_json/journal/journal_revenue.json.json';
+		var url = '/sample_json/journal/journal_revenue.json';
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				this.revenueData = data;
 			   	deferred.resolve(this.revenueData);
