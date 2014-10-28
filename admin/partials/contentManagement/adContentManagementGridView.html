@@ -8,22 +8,22 @@
             <div class="grid-options">
                 <!-- Show sections, categories or items. This template assumes section is default view. If that is changed, then be carefull in hiding items below listed as hidden by default - some should not be hidden if category or item is shown by default -->
                 <div class="entry filter">
-                    <label for="showing-structure">Showing</label>
+                    <label for="showing-structure" translate>SHOWING_LABEL</label>
                     <div class="select">
                         <select id="showing-structure" ng-change="viewSelected()" ng-model="selectedView">
-                            <option value="section" selected>Sections</option>
-                            <option value="category">Categories</option>
-                            <option value="item">Items</option>
+                            <option value="section" selected translate>SECTIONS_OPTION</option>
+                            <option value="category" translate>CATEGORIES_OPTION</option>
+                            <option value="item" translate>ITEMS_OPTION</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Filter by section, hidden by default - show only when listing categories or items --> 
                 <div class="entry filter" ng-show="selectedView != 'section'">
-                    <label for="showing-categories">From Section</label>
+                    <label for="showing-categories" translate>FROM_SECTION_LABEL</label>
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder">
-                            <option value="all" >All sections</option>
+                            <option value="all" translate>ALL_SECTIONS_LABEL</option>
                             <option value="{{section.id}}" ng-repeat="section in sections">{{section.name}}</option>
                             
                         </select>
@@ -32,10 +32,10 @@
 
                 <!--Filter by category, hidden by default - show only when listing items -->
                 <div class="entry filter" ng-show="selectedView == 'item'">
-                    <label for="showing-items">From Category</label>
+                    <label for="showing-items" translate>FROM_CATEGORIES_LABEL</label>
                     <div class="select" >
                         <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder">
-                            <option value="all">All categories</option>
+                            <option value="all" translate>ALL_CATEGORIES_LABEL</option>
                              <option value="{{category.id}}" ng-repeat="category in category_options">{{category.name}}</option>
                             
                         </select>
@@ -46,16 +46,16 @@
                 <div class="entry radio-check " ng-show="selectedView != 'section'">
                     <label for="unassigned" class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': showUnMappedList}"></span>
-                        Show only unassigned
+                        <span translate>SHOW_UNASSIGNED_LABEL</span>
                         <input id="unassigned" name="unassigned" ng-change="filterBySectionAndCategory()" ng-model = "showUnMappedList" type="checkbox">
                     </label>
                 </div>
 
                 <!-- Search option -->
                 <div class="entry search">
-                    <label for="structure-search">Search</label>
+                    <label for="structure-search" translate>SEARCH_LABEL</label>
                     <div class="holder">
-                        <button type="submit" name="submit" class="icons icon-search">Search</button>
+                        <button type="submit" name="submit" class="icons icon-search" translate>SEARCH_LABEL</button>
                         <input type="search" class="query" placeholder="Search sections, categories or items" ng-model="searchText"  id="structure-search" autocomplete="off" />
                     </div>
                 </div>    
@@ -72,14 +72,14 @@
                         'sort-desc': sectionParams.isSortBy('name', 'desc')
                       }"
                         ng-click="sectionParams.sorting({'name' : sectionParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME_LABEL</span></div>
                     </th>
                     <th class="sortable" ng-class="{
                         'sort-asc': sectionParams.isSortBy('last_updated', 'asc'),
                         'sort-desc': sectionParams.isSortBy('last_updated', 'desc')
                       }"
                         ng-click="sectionParams.sorting({'last_updated' : sectionParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>LAST_UPDATE_LABEL</span></div>
                     </th>       
 
                     <th class="sortable" ng-class="{
@@ -87,23 +87,23 @@
                         'sort-desc': sectionParams.isSortBy('no_of_categories', 'desc')
                       }"
                         ng-click="sectionParams.sorting({'no_of_categories' : sectionParams.isSortBy('no_of_categories', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>No. of categories</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NO_OF_CATEGORIES_LABEL</span></div>
                     </th>    
                     <th class="sortable" ng-class="{
                         'sort-asc': sectionParams.isSortBy('no_of_items', 'asc'),
                         'sort-desc': sectionParams.isSortBy('no_of_items', 'desc')
                       }"
                         ng-click="sectionParams.sorting({'no_of_items' : sectionParams.isSortBy('no_of_items', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>No. of items</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NO_OF_ITEMS_LABEL</span></div>
                     </th>        
                     <th class="sortable" ng-class="{
                         'sort-asc': sectionParams.isSortBy('status', 'asc'),
                         'sort-desc': sectionParams.isSortBy('status', 'desc')
                       }"
                         ng-click="sectionParams.sorting({'status' : sectionParams.isSortBy('status', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Status</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>STATUS_LABEL</span></div>
                     </th> 
-                        <th class="width-10" translate> delete</th>
+                        <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
@@ -135,7 +135,7 @@
                         'sort-desc': categoryParams.isSortBy('name', 'desc')
                       }"
                         ng-click="categoryParams.sorting({'name' : categoryParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME_LABEL</span></div>
                     </th>
 
                     <th class="sortable" ng-class="{
@@ -143,7 +143,7 @@
                         'sort-desc': categoryParams.isSortBy('last_updated', 'desc')
                       }"
                         ng-click="categoryParams.sorting({'last_updated' : categoryParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>LAST_UPDATE_LABEL</span></div>
                     </th>  
                      
                     <th class="sortable" ng-class="{
@@ -151,16 +151,16 @@
                         'sort-desc': categoryParams.isSortBy('no_of_items', 'desc')
                       }"
                         ng-click="categoryParams.sorting({'no_of_items' : categoryParams.isSortBy('no_of_items', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>No. of items</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NO_OF_ITEMS_LABEL</span></div>
                     </th>        
                     <th class="sortable" ng-class="{
                         'sort-asc': categoryParams.isSortBy('status', 'asc'),
                         'sort-desc': categoryParams.isSortBy('status', 'desc')
                       }"
                         ng-click="categoryParams.sorting({'status' : categoryParams.isSortBy('status', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Status</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>STATUS_LABEL</span></div>
                     </th> 
-                        <th class="width-10" translate> delete</th>
+                        <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
@@ -190,7 +190,7 @@
                         'sort-desc': itemParams.isSortBy('name', 'desc')
                       }"
                         ng-click="itemParams.sorting({'name' : itemParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>NAME_LABEL</span></div>
                     </th>
 
                     <th class="sortable" ng-class="{
@@ -198,23 +198,23 @@
                         'sort-desc': itemParams.isSortBy('page_template', 'desc')
                       }"
                         ng-click="itemParams.sorting({'page_template' : itemParams.isSortBy('page_template', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Type</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>TYPE_LABEL</span></div>
                     </th>
                     <th class="sortable" ng-class="{
                         'sort-asc': itemParams.isSortBy('last_updated', 'asc'),
                         'sort-desc': itemParams.isSortBy('last_updated', 'desc')
                       }"
                         ng-click="itemParams.sorting({'last_updated' : itemParams.isSortBy('last_updated', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Last Update</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>LAST_UPDATE_LABEL</span></div>
                     </th>                            
                     <th class="sortable" ng-class="{
                         'sort-asc': itemParams.isSortBy('status', 'asc'),
                         'sort-desc': itemParams.isSortBy('status', 'desc')
                       }"
                         ng-click="itemParams.sorting({'status' : itemParams.isSortBy('status', 'asc') ? 'desc' : 'asc'})" rowspan="2">
-                        <div><i class="glyphicon glyphicon-user"></i> <span translate>Status</span></div>
+                        <div><i class="glyphicon glyphicon-user"></i> <span translate>STATUS_LABEL</span></div>
                     </th> 
-                        <th class="width-10" translate> delete</th>
+                        <th class="width-10" translate> DELETE_LABEL</th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">

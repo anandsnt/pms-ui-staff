@@ -1,9 +1,9 @@
 <section class="content current" ng-click="clearErrorMessage()">
     <header class="content-title">
-        <h2 ng-show="!isAddMode">Edit Category <span>{{data.name}}</span></h2>
-        <h2 ng-show="isAddMode">Add Category</h2>
-        <a ng-click="goBack()" class="action back">Back</a>
-        <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)">Delete Category</a>
+        <h2 ng-show="!isAddMode" translate>EDIT_CATEGORY_LABEL <span>{{data.name}}</span></h2>
+        <h2 ng-show="isAddMode" translate>ADD_CATEGORY_LABEL</h2>
+        <a ng-click="goBack()" class="action back" translate>BACK</a>
+        <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)" translate>DELETE_CATEGORY_LABEL</a>
     </header>
 
     <section class="content-scroll">
@@ -11,22 +11,22 @@
         <form method="post" class="form float">
             <fieldset class="holder left">
                 <div class="form-title">
-                    <h3><span>Category</span> details</h3>
-                    <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+                    <h3><span translate>CATEGORY_LABEL</span> <span translate>DETAILS_LABEL</span></h3>
+                    <em class="status" ><span translate>MANDATORY_FIELDS_MESSAGE1</span> <strong>*</strong><span translate>MANDATORY_FIELDS_MESSAGE2</span></em>
                 </div>
                 <div class="entry full-width">
-                    <label for="category-availability">Availability Status <strong>*</strong></label>
+                    <label for="category-availability" translate>AVAILABILITY_STATUS_LABEL<strong>*</strong></label>
                     <div class="switch-button" ng-class="{'on':data.status}">
                         <input name="category-availability" id="category-availability" value="1" type="checkbox" ng-model="data.status" />
                         <span class="switch-icon"></span>
                     </div>
                 </div> 
                 <div class="entry">
-                    <label for="category-name">Category name <strong>*</strong></label>
+                    <label for="category-name" translate>CATEGORY_NAME_LABEL <strong>*</strong></label>
                     <input type="text" name="category-name" id="category-name" placeholder="Enter category name" ng-model= "data.name" required />
                 </div>
                 <div class="entry full-width">
-                    <label for="category-icon">Category Icon <span>(Transparent PNG, 128x128px in size)</span></label>
+                    <label for="category-icon" > <span translate>CATEGORY_ICON_LABEL</span> <span tanslate>ICON_SPEC</span></label>
                     <div class="file-upload with-preview small-preview">
                         <span class="input">{{fileName}}</span>
                         <input type="file" name="category-icon" ng-model = "data.icon" app-filereader id="category-icon" />
@@ -39,7 +39,7 @@
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title">
-                    <h3><span>Assign</span> to section</h3>
+                    <h3><span translate>ASSIGN_LABEL</span> <span translate>TO_SECTION_LABEL</span></h3>
                 </div>
                 <div class="entry full-width">
                     <ul class="boxes cms-tree">
@@ -53,7 +53,7 @@
                         </li>
                         
                         <li class="add">
-                            <a  class="add-new-button open-modal" ng-click= "openAddParentModal(true)">Add section</a>
+                            <a  class="add-new-button open-modal" ng-click= "openAddParentModal(true)" translate>ADD_SECTION_LABEL</a>
                         </li>
                     </ul>
                 </div>
@@ -72,14 +72,14 @@
                         </li>
                         
                         <li class="add">
-                            <a class="add-new-button open-modal" ng-click= "openAddParentModal(false)">Add category</a>
+                            <a class="add-new-button open-modal" ng-click= "openAddParentModal(false)" translate>ADD_CATEGORY_LABEL</a>
                         </li>
                     </ul> 
                 </div>        
             </fieldset>
             <div class="actions float">
-                <button type="button" ng-click="goBack()" class="button blank">Cancel</button>
-                <button type="button" ng-click="saveCategory()" class="button green">Save changes</button>  
+                <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>
+                <button type="button" ng-click="saveCategory()" class="button green" translate>SAVE_CHANGES</button>  
             </div>
         </form>
     </section>

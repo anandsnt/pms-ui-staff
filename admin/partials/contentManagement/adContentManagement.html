@@ -1,14 +1,14 @@
 <section class="content current" ng-click='clearErrorMessage()'>
 	
     	<header class="content-title">
-            <h2>Content Management</h2>
-            <a class="action add" ui-sref = "admin.contentManagementSectionDetails({id:'new'})">Section</a>
-            <a class="action add" ui-sref = "admin.contentManagementCategoryDetails({id:'new'})">Category</a>
-            <a class="action add" ui-sref = "admin.contentManagementItemDetails({id:'new'})">Item</a>
+            <h2 translate>CONTENT_MANAGEMENT_TITLE</h2>
+            <a class="action add" ui-sref = "admin.contentManagementSectionDetails({id:'new'})" translate>SECTION_LABEL</a>
+            <a class="action add" ui-sref = "admin.contentManagementCategoryDetails({id:'new'})" translate>CATEGORY_LABEL</a>
+            <a class="action add" ui-sref = "admin.contentManagementItemDetails({id:'new'})" translate>ITEM_LABEL</a>
             <div class="filters">
                 <ul id="view-options" class="cms-view">
-                    <li ng-class= "{'active':isGridView}" ng-click="isGridView = !isGridView">View grid</li>
-                    <li ng-class= "{'active':!isGridView}" ng-click="isGridView = !isGridView">View tree</li>
+                    <li ng-class= "{'active':isGridView}" ng-click="isGridView = !isGridView" translate>VIEW_GRID_LABEL</li>
+                    <li ng-class= "{'active':!isGridView}" ng-click="isGridView = !isGridView" translate>VIEW_TREE_LABEL</li>
                 </ul>
             </div>
         </header>
