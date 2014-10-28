@@ -5,7 +5,7 @@
             <h2 translate>HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
-                <li ng-repeat="history in cashierHistory" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
+                <li ng-repeat="history in data.cashierData.history" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
                     <strong class="status closed" ng-show="history.status ==='closed'">
                         {{'CLOSED' | translate}}
                          <span>by {{history.user}}</span>

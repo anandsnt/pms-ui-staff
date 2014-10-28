@@ -24,10 +24,31 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2', function($http, 
 
 	this.fetchRevenueData = function(){
 		var deferred = $q.defer();
-		var url = '/sample_json/journal/journal_revenue.json.json';
+	var url = '/sample_json/journal/journal_revenue.json.json';
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				this.revenueData = data;
 			   	deferred.resolve(this.revenueData);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
+
+	this.fetchCashierData = function(){
+		var deferred = $q.defer();
+		var url = '/sample_json/journal/journal_cashier.json';
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+			   	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
+
+	this.fetchCashierDetails = function(url){
+		var deferred = $q.defer();	
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+			   	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
 			});	
