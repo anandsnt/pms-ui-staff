@@ -20,7 +20,6 @@
                     </time>
                 </li>
             </ul>
-            <button type="button" class="button green" translate>RE_OPEN</button>
         </div> 
     </div>
     <div id="cashier-shift" class="journal-shift scrollable" ng-iscroll='cashier_shift'>
@@ -72,8 +71,8 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button green" translate ng-show="details.status ==='open'">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-hide="details.status ==='open'">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-show="details.status ==='open'" ng-click="closeShift()">CLOSE_SHIFT</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='open'" ng-click="reOpen()">RE_OPEN</button>
         </div> 
     </div>
 </div>

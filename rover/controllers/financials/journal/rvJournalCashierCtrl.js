@@ -29,4 +29,23 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
 		$scope.selectedHistory = index;
         fetchHistoryDetails({'id':$scope.data.cashierData.history[index].status})
 	};
+
+    //click action close shift
+    $scope.closeShift = function(){
+
+        var closeShiftSuccesCallback = function(){
+            $scope.data.cashierData.history[$scope.selectedHistory].status = "closed";
+        }
+        closeShiftSuccesCallback();
+    };
+
+    //click action reOpen
+    $scope.reOpen = function(){
+        var reOpenSuccesCallback = function(){
+            $scope.data.cashierData.history[$scope.selectedHistory].status = "open";
+        }
+        reOpenSuccesCallback();
+
+    };
+
 }]);
