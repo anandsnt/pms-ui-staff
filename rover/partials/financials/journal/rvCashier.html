@@ -26,6 +26,12 @@
         <!-- Open shift -->
         <div class="wrapper">
             <table class="shift-details">
+                <caption class="closed" ng-hide="details.status ==='open'">
+                    {{details.user}}| {{details.status}} | {{details.time}},&nbsp;&nbsp;{{details.date | date:'dd MMMM yyyy'}} 
+                </caption>
+                <caption class="opened" ng-show="details.status ==='open'">
+                    {{details.user}}| {{details.status}} | {{details.time}},&nbsp;&nbsp;{{details.date | date:'dd MMMM yyyy'}} 
+                </caption>
                 <tbody>
                     <tr>
                         <th scope="row" translate>OPENING_BALANCE_CASH_MSG</th>
