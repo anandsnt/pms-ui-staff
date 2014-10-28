@@ -7,6 +7,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data = {};
 	$scope.data.filterData = {};
+	$scope.data.revenueData = {};
 	$scope.data.filterData = journalResponse;
 	console.log(journalResponse);
 	$scope.data.filterData.checkedAllDepartments = true;

@@ -1,0 +1,45 @@
+<!-- Content REVENUE-->
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController">
+    <div class="wrapper">
+        <table id="journal-grid" class="journal-grid">
+            <tbody>
+                <!-- First level row (with white background) -->
+                <tr ng-repeat="level1 in data.revenueData.charge_groups" class="grid-group rows-toggle"> 
+                    <th scope="row" colspan="7">{{level1.name}}</th>
+                    <td>{{currencySymbol}}{{level1.total}}</td>
+                    <td>
+                        <!-- Second level row (with grey background) -->
+                        <tr class="grid-charge rows-toggle hidden1 active" ng-repeat="level2 in level1.charge_codes">
+                            <td>{{level2.id}}</td>
+                            <th scope="row" colspan="6">{{level2.name}}</th>
+                            <td>{{currencySymbol}}{{level2.total}}</td>
+                            <td>
+                                <!-- Third level row (sometime with headings above columns), no background color -->
+                                <tr class="grid-item-heading hidden1" >
+                                    <th scope="col" translate>ROOM_LABEL</th>
+                                    <th scope="col" translate>NAME</th>
+                                    <th scope="col" translate>RESERVATION_NUMBER</th>
+                                    <th scope="col" translate>TYPE</th>
+                                    <th scope="col" translate>DETAILS</th>
+                                    <th scope="col" translate>TIME</th>
+                                    <th scope="col" translate>DEBIT</th>
+                                    <th scope="col" translate>CREDIT</th>
+                                </tr>
+                                <!-- Third level row (sometime with headings above columns), no background color -->
+                                <tr class="grid-item hidden1" ng-repeat="level3 in level2.transactions">
+                                    <td>{{level3.room}}</td>
+                                    <td>{{level3.name}}</td>
+                                    <td>{{level3.reservation_number}}</td>
+                                    <td>{{level3.type}}</td>
+                                    <td>{{level3.details}}</td>
+                                    <td>{{level3.time}}</td>
+                                    <td>{{level3.debit}}</td> 
+                                </tr>
+                            </td>
+                        </tr>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

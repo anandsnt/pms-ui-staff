@@ -8,7 +8,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
             $scope.details = [];
             $scope.details = data;
             setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 500);
-        }
+        };
         var url = '/sample_json/journal/journal_cashier_details_'+data.id+'.json';
         $scope.invokeApi(RVJournalSrv.fetchCashierDetails, url, fetchDetailsSuccessCallback);  
     };
@@ -22,7 +22,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
         $scope.setScroller('cashier_shift', {});
         setTimeout(function(){$scope.refreshScroller('cashier_history');}, 500);
         fetchHistoryDetails({'id':$scope.data.cashierData.history[0].status});
-    }
+    };
 
     init();	
 	
@@ -30,7 +30,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
 	$scope.historyClicked = function(index){
 
 		$scope.selectedHistory = index;
-        fetchHistoryDetails({'id':$scope.data.cashierData.history[index].status})
+        fetchHistoryDetails({'id':$scope.data.cashierData.history[index].status});
 	};
 
     //click action close shift
@@ -39,7 +39,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
         var closeShiftSuccesCallback = function(){
             $scope.data.cashierData.history[$scope.selectedHistory].status = "closed";
             $scope.details.status ='closed';
-        }
+        };
         closeShiftSuccesCallback();
     };
 
@@ -49,7 +49,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
         var reOpenSuccesCallback = function(){
             $scope.data.cashierData.history[$scope.selectedHistory].status = "open";
             $scope.details.status ='open';
-        }
+        };
         reOpenSuccesCallback();
 
     };
