@@ -50,7 +50,7 @@
 		<h3 ng-show="billData.credit_card_details.payment_type == 'CC'" style="float:left"><span >{{billData.guest_or_company_name}}</span></h3>
 		<a class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC'" ng-click="showPaymentList()">
 			<figure class="card-logo">
-				<img src="/assets/{{billData.credit_card_details.card_code}}.png" alt="">
+				<img ng-src="/assets/{{billData.credit_card_details.card_code}}.png" alt="">
 			</figure> 
 			<span class="number"> 
 				<span translate>ENDING_WITH</span> 
@@ -80,7 +80,7 @@
 	<!-- Show signed signature -->
 	<div class="details signature-wrapper" ng-show="showSignedSignature">
 		<figure>
-			<img src="{{reservationBillData.signature_details.signed_image}}" alt="">
+			<img ng-src="{{reservationBillData.signature_details.signed_image}}" alt="">
 		</figure>
 		<span class="signature-date" translate>SIGNED <em> {{reservationBillData.signature_details.signed_date|date:dateFormat}} {{reservationBillData.signature_details.signed_time}}</em> </span>
 	</div>

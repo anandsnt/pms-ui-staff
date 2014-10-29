@@ -27,7 +27,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.calendarData = {};
 		$scope.popupData = {};
         $scope.loading = true;
-        $scope.store = { dates: [] };
 
         if($scope.currentFilterData.filterConfigured){
         	loadTable();
@@ -69,6 +68,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     * Fetches the calendar data and update the scope variables 
     */
 	var loadTable = function(){
+		$scope.loading = true;
+
 		// If only one rate is selected in the filter section, the defult view is room type calendar 
 		if($scope.currentFilterData.rates_selected_list.length === 1){
 			$scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -76,7 +77,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		}
 
 		var calenderDataFetchSuccess = function(data) {
-			var initializing = false;
 			//Set the calendar type
 			if(data.type === 'ROOM_TYPES_LIST'){
 				$scope.calendarMode = "ROOM_TYPE_VIEW";
@@ -92,29 +92,31 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			$scope.calendarData = data;
 
 			$scope.$emit('hideLoader');		
-
-			$scope.loading = false;
-			$scope.currentFilterData.filterConfigured = true;
-			
-			$scope.$emit('computeColumWidth');	
-
-			if($scope.$parent.myScroll.RateCalendarCtrl){
-				$scope.refreshScroller();
-			}		
 		};
 
 		//Set the current business date value to the service. Done for calculating the history dates
 		RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
 
-		$scope.loading = true;
-
 		if($scope.calendarMode == "RATE_VIEW"){
-			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess);
+			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, calculateRateViewCalGetParams(), calenderDataFetchSuccess)
+			.then(finalizeCapture);
 		
 		} else {
-			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess);
+			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, calculateRoomTypeViewCalGetParams(), calenderDataFetchSuccess)
+			.then(finalizeCapture);
 		}
 	};
+
+	function finalizeCapture() {
+		$scope.loading = false;
+		$scope.currentFilterData.filterConfigured = true;
+		
+		$scope.$emit('computeColumWidth');	
+
+		if($scope.$parent.myScroll.RateCalendarCtrl){
+			$scope.refreshScroller();
+		}		
+	}
 
 	/**
 	* Calcultes the get params for fetching calendar.
@@ -304,6 +306,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
    		return ret;
    	};
 	
+	$scope.toggleRestrictionIconView = function() {
+		return !$scope.loading;
+	};
+
 	$scope.refreshCalendar = function(){
 		loadTable();
 	};
