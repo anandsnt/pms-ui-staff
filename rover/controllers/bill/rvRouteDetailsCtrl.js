@@ -118,7 +118,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     */
     $scope.selectChargeCode = function(selected_chargecode_id){
         $scope.chargeCodeToAdd = selected_chargecode_id;
-         $scope.addChargeCode();
+        $scope.addChargeCode();
+        $scope.chargeCodeSearchText = '';
+        $scope.showChargeCodes = false;
     }
     /**
     * function to fetch available charge code from the server
