@@ -1,5 +1,5 @@
 <!-- Worksheet content -->
-<section id="worksheet-content" class="content worksheets" role="main">
+<section id="worksheet-content" class="content worksheets single" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <!-- Worksheet header -->
     <form method="post" action="" id="worksheet-header" name="worksheet-header" class="worksheet-header">
@@ -35,7 +35,7 @@
     <!-- Single worksheet - unassigned rooms -->
     <div class="unassigned-rooms single-sheet">
         <h2 translate>UNASSIGNED ROOMS</h2>
-        <a ng-click="showFilter()" class="filter button open-modal white with-icon only-icon" style="top: -40px;left: 80%;width: 100px; height: 45px;">
+        <a ng-click="showFilter()" class="filter button open-modal white with-icon only-icon">
             <span class="icons icon-filter"></span>
             {{'FILTER_ROOMS' | translate}}
         </a>
@@ -64,29 +64,33 @@
                 <li iscroll-stop-propagation id="unassigned-{{$index}}" class="worksheet-room single-sheet unassigned" ng-repeat="room in singleState.unassignedFiltered" 
                         data-drag = "true"                        
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onAssignmentDragStart()', onStop: 'onAssignmentDragStop()' }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}"
-                        style="width:{{singleState.dimensions.unassigned}}px">
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}">
 
-                    <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
+                    <h3 class="{{room.current_status | lowercase}}">{{room.room_no}}</h3>
                     <div class="reservation-status">
                         <div class="current {{departureClass[room.reservation_status]}}">
                             <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                            <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
-                            <span ng-show="room.reservation_status == 'Departed'" translate>OUT</span>
+                            <span ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
+                            <span ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
+                            <span ng-if="room.reservation_status == 'Departed'" translate>OUT</span>
+                            <span ng-if="room.reservation_status != 'Due out' && room.reservation_status != 'Departed' &&  departureClass[room.reservation_status] == 'check-out' &&!!room.checkout_time">{{ room.checkout_time}}</span>
                         </div>
 
                         <div class="next {{arrivalClass[room.reservation_status]}}">
                             <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                             <!-- Show only if applicable, {arrival-time} can only be time -->
-                            <span ng-show="arrivalClass[room.reservation_status] == 'check-in'">{{room.checkin_time}}</span>
+                            <span ng-if="room.reservation_status == 'Arrived'">IN</span>
+                            <span ng-if="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL</span>
+                            <span ng-if="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time }}</span>
+                            <span ng-if="room.reservation_status != 'Arrival' && room.reservation_status != 'Arrived' &&  arrivalClass[room.reservation_status] == 'check-in' &&!!room.checkin_time">{{ room.checkin_time}}</span>
                         </div>
 
                     </div>
                      <!-- If VIP guest  -->
                     <span class="vip" ng-show='room.is_vip' translate>VIP</span>
-                    <!-- If room is queued 
-                    <span class="icon icon-queued">Room queued</span>-->
+                    <!-- If room is queued -->
+                    <span ng-show="room.is_queued" class="icon icon-queued">Room queued</span>
                     <button type="button" class="button green" ng-click="assignRoom(room)" translate>ASSIGN_LABEL</button>
                 </li>                
             </ul>
@@ -124,27 +128,32 @@
                     <li iscroll-stop-propagation class="worksheet-room single-sheet assigned" ng-repeat="room in singleState.assigned" 
                         data-drag = "true"
                         jqyoui-draggable ="{index: {{$index}}, animate:false, onStart: 'onUnassignmentDragStart()', onStop: 'onUnassignmentDragStop()' }"
-                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}" id="unassigned-{{$index}}" 
-                        style="width:{{singleState.dimensions.assigned}}px">
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone', appendTo:'#worksheet-content', containment: '#worksheet-content'}" id="unassigned-{{$index}}">
 
-                        <h3 class="{{room.current_status}}">{{room.room_no}}</h3>
+                        <h3 class="{{room.current_status | lowercase}}">{{room.room_no}}</h3>
                         <div class="reservation-status">
                             <div class="current {{departureClass[room.reservation_status]}}">
                                 <span class="guest-status {{departureClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
-                                <span ng-hide="room.reservation_status == 'Departed'">{{room.checkout_time}}</span>
-                                <span ng-show="room.reservation_status == 'Departed'" translate>OUT</span>
+                                <span ng-if="room.reservation_status == 'Due out' && !room.checkout_time">DUE OUT</span>
+                                <span ng-if="room.reservation_status == 'Due out' && !!room.checkout_time">{{ room.checkout_time}}</span>
+                                <span ng-if="room.reservation_status == 'Departed'" translate>OUT</span>
+                                <span ng-if="room.reservation_status != 'Due out' && room.reservation_status != 'Departed' &&  departureClass[room.reservation_status] == 'check-out' &&!!room.checkout_time">{{ room.checkout_time}}</span>
+
                             </div>
                             <div class="next {{arrivalClass[room.reservation_status]}}">
                                 <span class="guest-status {{arrivalClass[room.reservation_status]}}">{{room.reservation_status}}</span>
                                 <!-- Show only if applicable, {arrival-time} can only be time -->
-                                <span ng-show = "arrivalClass[room.reservation_status] == 'check-in'">{{room.checkin_time}}</span>
+                                <span ng-if="room.reservation_status == 'Arrived'">IN</span>
+                                <span ng-if="room.reservation_status == 'Arrival' && !room.checkin_time">ARRIVAL</span>
+                                <span ng-if="room.reservation_status == 'Arrival' && !!room.checkin_time">{{ room.checkin_time }}</span>
+                                <span ng-if="room.reservation_status != 'Arrival' && room.reservation_status != 'Arrived' &&  arrivalClass[room.reservation_status] == 'check-in' &&!!room.checkin_time">{{ room.checkin_time}}</span>
                             </div>
                         </div>
                          <!-- If VIP guest  -->
                         <span class="vip" ng-show='room.is_vip' translate>VIP</span>
-                        <!-- If room is queued 
-                        <span class="icon icon-queued">Room queued</span>-->
+                        <!-- If room is queued -->
+                        <span ng-show="room.is_queued" class="icon icon-queued">Room queued</span>
                         
                         <!-- If room not cleaned -->
                         <button ng-hide="room.current_status == 'INSPECTED' || room.current_status == 'CLEAN'" type="button" class="button red" ng-click="unAssignRoom(room)">Unassign Room</button>

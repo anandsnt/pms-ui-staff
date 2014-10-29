@@ -4,6 +4,7 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 8);
 	$scope.successMessage = "";
+  $scope.errorMessage = "";
     $scope.externalPmsConnectivityData = {};
    /*
     * Success callback of render
@@ -30,18 +31,31 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
 		//Success message to show connection valid
 		$scope.successMessage = "Connection Valid";
 	};
+  $scope.failureCallbackConnectionTest = function(){
+    $scope.$emit('hideLoader');
+    $scope.successMessage = "";
+    //Failure message to show connection invalid
+    $scope.errorMessage = ["Invalid"];
+  };
    /*
     * Function to test connectivity details
     */
     $scope.testConnectivity = function(){
-   		$scope.invokeApi(ADExternalPmsConnectivitySrv.testConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackConnectionTest);
+   		$scope.invokeApi(ADExternalPmsConnectivitySrv.testConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
+    };
+
+    $scope.successCallbackSave = function(){
+      $scope.$emit('hideLoader');
+      $scope.successMessage = "";
+      $scope.errorMessage = "";
     };
    /*
     * Function to save connectivity
     */
     $scope.saveConnectivity = function(){
     	$scope.successMessage = "";
-    	$scope.invokeApi(ADExternalPmsConnectivitySrv.saveConnectivity, $scope.externalPmsConnectivityData );
+      $scope.errorMessage = "";
+    	$scope.invokeApi(ADExternalPmsConnectivitySrv.saveConnectivity, $scope.externalPmsConnectivityData , $scope.successCallbackSave);
     };
 
 }]);

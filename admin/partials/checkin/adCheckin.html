@@ -2,7 +2,7 @@
 	<section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
 		<header class="content-title float">
 			<h2>{{ 'GUEST_CHECKIN_SETUP' | translate}}</h2>
-			<a ui-sref="admin.checkinCheckoutEmail({ from: 'checkin'})" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
+			<a ui-sref="admin.checkinEmail" class="action email">{{ 'SEND_CHECKIN_EMAIL' | translate}}</a>
 			<a ng-click="goBackToPreviousState()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
 		</header>
 		<section class="content-scroll">

@@ -135,6 +135,7 @@
         $scope.isFetching = false;
         if(response.status ==="success"){
             $rootScope.isCCOnFile = true;
+            $rootScope.isCcAttachedFromGuestWeb = true;
             if($stateParams.isFromCheckoutNow === "true"){
               $rootScope.ccPaymentSuccessForCheckoutNow = true;
               $state.go('checkOutStatus');

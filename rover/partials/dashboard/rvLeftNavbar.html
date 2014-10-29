@@ -5,7 +5,7 @@
 		<h5>Menu</h5>
 
 		<ul id="large-menu" class="main">
-			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="$emit('updateSubMenu',[$index,menuItem])">
+			<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-hide="(isHotelAdmin || isHotelStaff) && menuItem.standAlone && !isStandAlone" ng-click="updateSubMenu($index,menuItem)">
 				<a class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}"></a>
 				<a class="icon-menu {{menuItem.iconClass}}" ng-class="{'open':menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu, 'active':selectedMenuIndex!='' && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{menuItem.title}}" ng-if="menuItem.action == ''"></a>
 			</li>

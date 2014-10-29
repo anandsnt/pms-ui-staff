@@ -2182,6 +2182,11 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
 
     if ($animate) {
       return function(shouldAnimate) {
+        //CICO-10329 Fix
+        if( $state.current.name === "rover.search"){
+              shouldAnimate = false;
+        }
+
         return !shouldAnimate ? statics() : {
           enter: function(element, parent, anchor) { $animate.enter(element, null, anchor); },
           leave: function(element) { $animate.leave(element, function() { element.remove(); }); }
