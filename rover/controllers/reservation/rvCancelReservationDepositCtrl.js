@@ -1,5 +1,5 @@
-sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope','ngDialog','$stateParams',
-	function($rootScope, $scope,ngDialog,$stateParams) {
+sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope','ngDialog','$stateParams','$state',
+	function($rootScope, $scope,ngDialog,$stateParams,$state) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.cancellationData = {};
@@ -26,6 +26,7 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			};
 			console.log(cancellationParameters);
 			console.log($stateParams.confirmationId);
+			onCancelSuccess();
 		};
 
 		$scope.proceedWithOutDepositRefund = function(){
@@ -34,6 +35,7 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				id: $scope.reservationData.reservation_card.reservation_id
 			};
 			console.log(cancellationParameters);
+			onCancelSuccess();
 		};
 
 		$scope.closeDialog = function(){
