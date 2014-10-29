@@ -83,8 +83,8 @@
 				<!-- Show if room is assigned or ooo/oos -->
 				<div class="additional-info" ng-if="room.assignee_maid || room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
 					<!-- Show only if room is assigned -->
-					<span class="assigned">{{room.assignee_maid}}</span>
-                    <span ng-if="!room.assignee_maid" class="unassigned">Unassigned</span>
+					<span class="assigned">{{room.assignee_maid.name}}</span>
+                    <span ng-if="!room.assignee_maid.id" class="unassigned">Unassigned</span>
 					<!-- Show only if room is not in service -->
 					<span class="service-status" ng-if="room.hk_status.value == 'OO' || room.hk_status.value == 'OS'">
                         <span ng-if="room.hk_status.value == 'OS'" class="service-status" translate>OS</span>

@@ -76,7 +76,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 				postData.tax_details.push(taxDetail);
 			});
 			
-			postData.tax_total = $scope.reservationData.totalTaxAmount;
+			postData.tax_total = $scope.reservationData.totalTax;
 
 			postData.emails = [];
 			postData.emails.push($scope.reservationData.guest.sendConfirmMailTo);
@@ -151,6 +151,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$scope.reservationData.rooms[0].rateTotal = '';
 
 			$scope.reservationData.totalTaxAmount = '';
+			$scope.reservationData.totalTax = '';
 			$scope.reservationData.totalStayCost = '';
 			$scope.reservationData.guest.sendConfirmMailTo = '';
 

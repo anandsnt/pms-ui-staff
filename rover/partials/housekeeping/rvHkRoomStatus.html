@@ -9,7 +9,7 @@
 </div>
 
 <!-- Search form -->
-<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'single-option': filterByWorkType == '', 'showing-filters': filterOpen, 'has-options': isStandAlone }">
+<form method="get" action="" name="rooms-search-form" id="rooms-search-form" class="search-form has-filters" role="search" ng-class="{'has-options': isStandAlone, 'single-option': (isStandAlone &&!topFilter.byWorkType), 'showing-filters': filterOpen }">
     <a id="show-filters" class="filter button white with-icon only-icon" ng-click="showFilters()">
         <span class="icons icon-filter"></span>
         <span translate>FILTER_ROOMS</span>
@@ -28,15 +28,15 @@
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
     
-    <div class="entry options" ng-if="isStandAlone">
+    <div class="entry options" ng-if="isStandAlone" ng-cloak>
         <div class="select">
-            <select id="work-type" name="work-type" ng-model="filterByWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
+            <select id="work-type" name="work-type" ng-model="topFilter.byWorkType" ng-options="work.id as work.name for work in workTypes" ng-change="applyWorkTypefilter()">
                 <option value="">All Work Types</option>
             </select>
         </div>
         <!-- If Work type is set to All, don't show this dropdown -->
-        <div class="select" ng-hide="!filterByWorkType">
-            <select id="employees" name="employees" class="placeholder" ng-model="filterByEmployee" ng-options="user.maid_name for user in HKMaids" ng-change="applyEmpfilter()">
+        <div class="select">
+            <select id="employees"  ng-disabled="!topFilter.byWorkType" name="employees" class="placeholder" ng-model="topFilter.byEmployee" ng-options="emp.id as emp.maid_name for emp in employees" ng-change="applyEmpfilter()">
                 <option value="">All Employees</option>
             </select>
         </div>
@@ -49,10 +49,10 @@
 </ul>
 
 <ul id="my-worksheet-summary" class="worksheet-summary" ng-if="isStandAlone && isMaintenanceStaff" ng-class="{'hidden': currentView == 'rooms'}"> <!-- Add class 'hidden' should be removed when "Rooms" is selected in #my-worksheet-options -->
-    <li>Time Allocated <span>0</span></li> <!-- TODO: Need actual values for API -->
-    <li>Departures <span>0</span></li> <!-- TODO: Need actual values for API -->
-    <li>Stayovers <span>0</span></li> <!-- TODO: Need actual values for API -->
-    <li>Completed <span>0/0</span></li> <!-- TODO: Need actual values for API -->
+    <li>Time Allocated <span>{{ counts.allocated }}</span></li>
+    <li>Departures <span>{{ counts.departures }}</span></li>
+    <li>Stayovers <span>{{ counts.stayover }}</span></li>
+    <li>Completed <span>{{ counts.completed }}/{{ counts.total }}</span></li>
 </ul>
 
 <!-- Rooms list -->
@@ -83,7 +83,8 @@
           <!-- Show if room is assigned or ooo/oos -->
           <div class="additional-info">
             <!-- Show only if room is assigned -->
-            <span bo-if="room.assigned_staff" bo-text="room.assigned_staff.name" bo-class="room.assigned_staff.class"></span>
+            <span bo-if="room.assignee_maid.id" bo-text="room.assignee_maid.name" bo-class="room.assignee_maid.class"></span>
+            <span bo-if="!room.assignee_maid.id" bo-text="'UNASSIGNED'" bo-class="room.assignee_maid.class"></span>
             <!-- Show only if room is not in service -->
             <span bo-if="room.ooOsTitle" bo-text="room.ooOsTitle" class="service-status"></span>
           </div>
@@ -110,7 +111,7 @@
 
 <!-- Rooms filters -->
 <section id="filter-rooms" class="content" ng-class="{ 'hidden' : !filterOpen, 'showing-filters': filterOpen }">
-    <div id="filter-options" class="content scrollable">
+    <div id="filter-options" class="content scrollable" ng-iscroll="filtersection">
         <div class="wrapper">
             <div class="holder">
                 <strong class="title" translate>HK_FLOORS</strong>
@@ -198,7 +199,7 @@
                 <div class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.vacant}"></span>
-                        <input name="room-filters" type="checkbox" ng-model="currentFilters.vacant" ng-change="checkQueuedAlso()">
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.vacant">
                         <label translate>SHOW_VACANT</label>
                     </label>
                 </div>
@@ -212,7 +213,7 @@
                 <div class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : currentFilters.queued}"></span>
-                        <input name="room-filters" type="checkbox" ng-model="currentFilters.queued" ng-change="keepCheckedIfVacant()">
+                        <input name="room-filters" type="checkbox" ng-model="currentFilters.queued">
                         <label translate>SHOW_QUEUED</label>
                     </label>
                 </div>
@@ -272,11 +273,11 @@
 
             <div class="holder" ng-if="isStandAlone">
               <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
-              <div class="entry radio-check" ng-repeat= "roomType in allRoomTypes" >
+              <div class="entry radio-check" ng-repeat= "type in roomTypes track by $index" >
                 <label class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : roomType.isSelected}"></span>
-                  <input type="checkbox" ng-model="roomType.isSelected" name="room-filters">
-                  <label>{{ roomType.name }}</label>
+                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : type.isSelected}"></span>
+                  <input type="checkbox" ng-model="type.isSelected" name="room-filters">
+                  <label>{{ type.name }}</label>
                 </label>
               </div>
             </div>

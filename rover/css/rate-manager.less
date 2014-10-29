@@ -11,10 +11,8 @@
     }
 
     table.rate-calendar{
-       height:200px;
-       table-layout:fixed; 
-       
-       
+       height: auto; //200px;
+       table-layout:fixed;   
     }
 
     span.left{
@@ -63,8 +61,11 @@
 
   .occupancy-graph-container{
     position: absolute;
-    .filter-options{
+    z-index: 10;
 
+    .filter-options{
+      /*CICO-8633*/
+      padding: 0 30px 0 30px;
       background:none !important;
 
       h3 {
@@ -72,7 +73,8 @@
       }
 
       .entry{
-        padding-bottom:7px;
+        /*CICO-8633*/
+        padding-bottom: 10px;
       }
 
       hr {
@@ -86,42 +88,59 @@
     }
 
     .entry.radio-check{
-      margin : 0 0 20px 0; 
+
       label{
-       height : 40px;
-       //padding-top: 10px;                                                                                                                                                                                          
-       padding-left: 40px;    
+       height: 40px;                                                                                                                                                          padding-left: 40px; 
+
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gUQBikteQ2wPAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAADCSURBVDjLrZWxDYMwEADP3zFDyjAAA2QHhBR6OmZKRx8kxA4egAFCyQxp0zyRgYCS+K+zLZ/e9v/bscPzdjoDBZADmU4PQA90ST2Nn/a5HVEDXDjGA9Va7FayK3DnN8qkntqN8E/ZRuqCYz6II03qaRQdNMTTADij6N5RiqaGFYVonlmRS5C0FmSCMaLlZMUgWptW9AJ0hsJOtLi9gcyHlVIZCKv5UdAoywhZObcx8/a1yENdSL+8U68dpj3s2LFfwAvhP0O7QfDr4AAAAABJRU5ErkJggg==);
        background-repeat : no-repeat;
        background-position: 160px 10px;
+
        span{
          left:10px;
          top:10px;
        }
-     }     
+     } 
+
      label.target{
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gUQBjQAw76AVQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAEMSURBVDjLY2AgAmzZ0Jm1ZUNXBjFqWYhR9JjbsJ3p/99/DAwMMwipZSKkYPPG7sLXHKp8Lzk1BLZs7C6g2MAnXPoNMPZTTp16igzcvLG7+DWHKh+MT4wrmQi4DsNFhFzJhNt1PSWvOVR50cUJuZIJt+v06nDJ4XMlE46wK8PmOmJcyYQj7GoIxSYuVzJhCbtyfK4j5EomLK6rZiASYHMlE5rrKl9zqPASayA2VzKhua6SgUSA7komcl2Hy5VMSK6rYiATILuSiYGBgWHTxt6q1xwqPOQaiOxKJgYGBoanXHqVDBQCmCuZN2/sqbnLa+NBqYFfWUU4igNkPrK85FDLYf/7+T8DFcArduViAN1taQYD3fsaAAAAAElFTkSuQmCC);
      }
    }
  }
+
  #update{
   width:100%;
 }
 
-.occgraph-outer{
-  left: 240px;
-  clear:both;
-} 
+#occ-graph {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  top: 0px;
+  left: 265px; 
+  z-index: 100;
+
+   .iScrollIndicator{
+      background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
+    }
+
+    .iScrollHorizontalScrollbar {
+      bottom: auto !important;
+    }
+}
+
 .topbar {
   height: 50px;
   line-height: 50px;
   width: 100%;
   background: #FFFFFF;
   border: 1px solid #FCFCFC;
-  ul {
+
+  ul:not(.display-mode) {
     float: left;
     margin-left: 40px;
     height: 100%;
+
     li { 
         display: inline-block;
         float: left;
@@ -130,6 +149,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
         h6 {
           color: #9D9D9D;
           min-width: 200px;
@@ -137,131 +157,131 @@
           margin-top: 7px;
           font-size: 12px;
         }
+
         span{
           text-transform: uppercase;
           font-size:14px;
         }
+
         .button {
           float:right !important;
         }
+
         .back-button {
           display: block;
-          line-height: normal;
-          margin-top: 14px;
+          line-height: 40px; //normal;
+          margin-top: 5px; //14px;
         }
-      } 
-      li:not(.ng-hide) + li:not(.ng-hide)::before {
+    } 
+
+    li:not(.ng-hide) + li:not(.ng-hide)::before {
         content: "|";
         color: #DDDDDD;
         float: left;
         font-size: 35px;
         line-height: normal;
         margin: 0 15px;
-      }
     }
-    .display-mode {
+  }
+
+  .display-mode {
+      width: 100px;
       float: right;
-      div{
-        float: right;
+
+      li {
+          display: block;
+          margin: 0;
+          cursor: pointer;
+          width: 50px; 
+          height: 50px; 
+          float: left;
+
+          &:first-child { 
+            -webkit-box-shadow: 1px 0 0 rgba(0,0,0,.1);
+            -moz-box-shadow: 1px 0 0 rgba(0,0,0,.1);
+            box-shadow: 1px 0 0 rgba(0,0,0,.1);
+          }
+
+          &.active {
+              position: relative;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+              box-shadow: none;
+              background-image: -moz-linear-gradient(top, #ffb319, #ff860d);
+              background-image: -ms-linear-gradient(top, #ffb319, #ff860d);
+              background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb319), to(#ff860d));
+              background-image: -webkit-linear-gradient(top, #ffb319, #ff860d);
+              background-image: -o-linear-gradient(top, #ffb319, #ff860d);
+              background-image: linear-gradient(top, #ffb319, #ff860d);
+              background-color: mix(#ffb319, #ff860d, 60%);
+              background-repeat: repeat;
+
+              &:after {
+                  content: "";
+                  position: absolute;
+                  left: 15px;
+                  bottom: -10px;
+                  width: 0; 
+                  height: 0; 
+                  border-top: 10px solid #ff860d;
+                  border-left: 10px solid transparent;
+                  border-right: 10px solid transparent;
+              }
+          }
+
+          .icon-grid {
+            background-position: 13px -4525px;
+            &.active { background-position: 14px -4585px; }
+          }
+
+          .icon-graph {
+            background-position: 13px -4640px;
+            &.active { background-position: 13px -4640px; }
+          }
       }
-    .button {
-      background-color: #F5F5F5;
-      border-radius: 0;
-      border-right: 1px solid #DCDCDC;
-      box-shadow: none;
-      height: 100%;
-      text-align: center;
-      /*CICO-8633*/
-      vertical-align: top; //middle;
-      &.cl-gr-button {
-        background: image-url("app/cal_graph_icon.png") no-repeat scroll center center #F5F5F5;
-      }
-      &.cl-button {
-        background: image-url("app/calendar_icon_white.png") no-repeat scroll center center #F5F5F5;
-      }
-      &.gr-button {
-        background: image-url("app/graph_icon.png") no-repeat scroll center center #F5F5F5;
-      }
-      &.active {
-        position: relative;
-        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
-        &.gr-button {
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-        }
-        &.cl-button {
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/calendar_icon_white.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-        }
-        &.cl-gr-button {
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-          background: image-url("app/cal_graph_icon.png") no-repeat scroll center center, linear-gradient(#FFB319, #FF860D) repeat scroll 0 0 rgba(0, 0, 0, 0);
-        }
-      }
-      &.active:after, &.active:before {
-        top: 100%; 
-        left: 50%; 
-        border: solid transparent; 
-        content: " "; 
-        height: 0; 
-        width: 0; 
-        position: absolute; 
-        pointer-events: none;
-      }
-      &.active:after {
-        border-color: #FF860D rgba(136, 183, 213, 0) rgba(136, 183, 213, 0);
-        border-width: 9px;
-        margin-left: -9px;
-      }
-    }
   }
 }
 
-.content {
-  clear:both;
-  margin-top: 40px;
-  .left-menu{
+.left-menu{
     width: 22%;
     display: table-cell;
 
   }
-  .filter-options {
+
+.filter-options {
     display:block;
-    width: 265px; /*230px;*/
+    width: 265px; 
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
 
-    height:100%;
+    /*IOS/Safari - "show rate" panel disappears after one use, seems realted to position:fixed and height:100%*/
+    /*height:100%;*/
+    bottom: 0px;
+
     hr{border:1px solid rgba(0, 0, 0, 0.1);  margin: 20px 0;}
     hr.half-left { width:25%; height:1px; margin:10px 2px 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
     hr.half-right{ width:25%; height:1px; margin:10px 25px 0 0; float:right; border:1px solid rgba(0, 0, 0, 0.1)}
+
     .rates-box{ 
       margin: 10px 0 10px;
       width:100%;
+
       .rate-data{
         width:80% !important;
         float:left;
-        padding: 4px 0 4px 4px; /*4px 0*/
-        /*text-indent: 10px;*/
+        padding: 4px 0 4px 4px; 
       }
+
       .delete_small{
         width:15%;
         float:right;
         background-position: 7px -689px !important;
       }
     }
+
     #rmDateRange::-webkit-input-placeholder, 
-    #rmRateType::-webkit-input-placeholder, 
-    #rmRate::-webkit-input-placeholder,
-    #rmDateRange::-moz-placeholder, 
-    #rmRateType::-moz-placeholder, 
-    #rmRate::-moz-placeholder {
+    #rmDateRange::-moz-placeholder
+    {
        color: #9D9D9D;
        font-style: italic;
        font-size:15px ;
@@ -270,14 +290,22 @@
       left: 0px !important;
       top: 23px !important;
     }
-    select#rmRate:first-child,
-    select#rmRateType:first-child
-     {
+    #rmRate,
+    #rmRateType
+    {
        color: #9D9D9D;
        font-style: italic;
        font-size:15px ;      
     }
   }
+
+.content {
+  clear:both;
+  margin-top: 80px; //40px;
+
+  
+
+  
   .calendar, .graph {
     display: block;
     width: 100%;
@@ -285,9 +313,10 @@
     .cal-cell{
       text-align:center; 
       /*CICO-8633*/
-      vertical-align: top; //middle;
+      vertical-align: top; 
       line-height: 20px;
     }
+
     .iScrollHorizontalScrollbar {
       top: auto !important;
     }
@@ -298,6 +327,7 @@
     width: 100%;
     overflow: hidden;
     text-align: center;
+
     & > span {
       background-image: url(/assets/rate-manager/ratemanager-not-configed.png);
       background-repeat: no-repeat;
@@ -306,6 +336,7 @@
       display: table;
       height: 100%;
       width: 100%;
+
       & > span {
         padding-top: 15%;
         display: table-cell;
@@ -313,6 +344,7 @@
         color: #9D9D9D;
         font-size: 30px;
         font-weight: bold;
+
         & > span {
           font-weight: 100;
           font-size: 20px;
@@ -326,51 +358,40 @@
 
 .calendar-wraper {
   position: relative;
+  height: 100%;
 }
 
 .rate-calendar{
   table {
   }
-  
-  th.first-row {
-    vertical-align: top !important;
-  }
 
   tr {
     &.last{
       .cell-content{
-         border-bottom : 10px solid #e8e8e8;
-
-        &.exp{
-           border-bottom : 10px solid #d8d8d8;
-        } 
+        border-bottom : 3px solid rgba(0,0,0, 0.05);  //6px solid rgba(0,0,0, 0.05); 
       }
     }
     .first-row {
       text-align: right;
       padding: 0 20px;
-      /*CICO-8633*/
-      vertical-align: middle; //text-top;
-      padding-top: 0px; //10px;
-      &.actions {
-        //padding-top: 10px;
-      }
+      vertical-align: middle;  
+      
       img {
         cursor: pointer;
         width: 12px;
         height: 12px;        
       }
+
       .button {
         color: #fcfcfc;
         padding: 0 5px;
         margin-left: 10px;
-        //margin-top: -20px;
         vertical-align: top;
         text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
-
         border-radius: 1px;
         font-weight: normal;
         font-size: 14px;
+
         &.open {
           background-color: #d1d1d1;
           border-radius: 3px;
@@ -384,6 +405,7 @@
         float: right;
         text-transform: uppercase;
         font-weight: normal;
+
         &:first-child {
           width: 85%;
           float: left;
@@ -405,28 +427,40 @@
 
     }
   }
-  th, td {
-    margin: 0px 10px 0px 10px;
-    vertical-allign: middle;
-    padding-right: 10px;
+
+  td {
+    vertical-align: middle;
+    padding: 0 5px 0 5px;
   }
 
+  thead tr th:not(:first-child) {
+    padding: 5px 5px 0px 5px;
+  }
 
   .cell-container{
-    background-color: #e8e8e8;
-
-    &.exp{
-        background-color: #d2d2d2;
-    }
+    /*CICO-8633 10/20/2014*/
+    border-top: 3px solid rgba(0,0,0, 0.05);
+    border-bottom: 3px solid rgba(0,0,0, 0.05);
+    border-left: 6px solid rgba(0,0,0, 0.05);
+    border-right: 6px solid rgba(0,0,0,0.05);
 
     .cell-content {
         cursor: pointer;
+        border: none;
+        border-radius: 0px;
+        padding: 0px;
+
+        > div {
+          border: none;
+          border-radius: 3px;
+          padding: 0px;
+          margin: 0px;
+        }
     }
   }
 
   .cell {
-    width: 100%;
-    //height: 100%;
+    //width: 100%;
     position: relative;
   }
 
@@ -442,42 +476,37 @@
   }
 
   .cell-content{
-    border-left : 10px solid #e8e8e8;
-    border-right : 10px solid #e8e8e8;
-    border-top : 5px solid #e8e8e8;
-    border-bottom : 5px solid #e8e8e8;
     background-color: none;
-    height : 60px; /*80px;*/
-    line-height : 60px; /*80px;*/ /* Trick for vertical alligh*/
+    height : 60px; 
+    line-height : 60px; 
     font-size : 20px;
     pointer: cursor;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
     &.exp {
       height: auto;
-      border-left : 10px solid rgb(216, 216, 216);
-      border-right : 10px solid rgb(216, 216, 216);
-      border-top : 5px solid rgb(216, 216, 216);
-      border-bottom : 5px solid rgb(216, 216, 216);
       line-height: normal;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px;
+
       & > div {
         & > div {
           cursor: pointer;
           padding: 0;
+
           & > div:first-child {
             border-bottom: 1px solid #e7e7e7;
             margin-bottom: 10px;
             height: 42px;
+
             span {
               height: 20px;
               margin-bottom: 10px;
               margin-top: 10px;
             }
           }
+
           & > div {
             height: 30px;
             text-transform: uppercase;
@@ -500,31 +529,32 @@
         }
       }
     }
+
     & > div {
       display: table;
       width: 100%;
       height: 100%;
       background: none repeat scroll 0 0 #FCFCFC;
       border-radius: 4px;
-      -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
-      -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
-      box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
+      -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
+      -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
+      box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
 
       .rate-single {
           width: 25px;
           height: 25px;
           line-height: normal;
-          padding-left: 10px;
+          padding: 5px 0 0 10px;
           font-weight: lighter;
-          color: #333;       }
-
+          color: #333;       
+      }
       & > div {
 
         display: table-cell;
         /*CICO-8633*/
-        vertical-align: middle; //top;
+        vertical-align: middle; 
         padding: 6px 10px 0px;
-        //padding: 0 10px;
+
         .rate-single {
           width: 25px;
           height: 25px;
@@ -533,49 +563,73 @@
           font-weight: lighter;
           color: #333;
         }
-        .right {
-          //float: right;
-        }
-        .left {
-          //float: left;
-        }
-
       }
     }
 
-  }
-  .date-header {
-    border-left : 10px solid #e8e8e8;
-    border-right : 10px solid #e8e8e8;
-    border-top : 10px solid #e8e8e8;
-    border-bottom : 5px solid #e8e8e8;
+  }    
 
-    background-color: #3b3f43;    
-    height : 70px; /*80px;*/
-    font-size : 18px;
-    text-align: center;
-    white-space: pre-line;
-    /*CICO-8633*/
-    vertical-align: top; //middle;
-    display:table;
-    width: 100%;
-    color: #fcfcfc;
-    border-radius: 20px;
-    text-transform: uppercase;
-  }
-  th .date-header {
-    background-color : #393c41;
-    border-radius: 3px;
-  }
-  th .date-header span { 
-    font-size: 14px;    
-    /*CICO-8633*/
-    vertical-align: top; //middle;
-    display: block;
-    &.week-day{
-      margin-top: 10px;
+  th { 
+    height: 60px;
+    background-color: transparent;
+
+    > .date-header {
+      position: relative;
+      font-weight: 600;
+      line-height: 1em;
+      white-space: normal; //or pre-line?
+      font-size : 18px;
+      text-align: center;
+      vertical-align: top;
+      display:table;
+      width: 100%;
+      color: #fcfcfc;
+      text-transform: uppercase;
+
+      > span {
+        position: relative;
+        font-size: 14px;   
+        vertical-align: top;
+        display: block;
+        margin: 0px;
+        z-index: 10;
+
+        &:first-child {
+          padding-top: 16px;
+        }
+
+        &:last-child {
+          padding-bottom: 11px;
+        }
+      }
+
+      &:before {
+        content: ' ';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 3px;
+        z-index: 0; //-100; /*Fix for disappearing date header*/
+        border-radius: 3px;
+        background-color: #393c41;
+         -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;   
+      }
+
+      &:after {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: -120;
+        background-color: rgba(0,0,0,0.05);
+       
+      }
     }
   }
+
   th .cell-content{
     background-color : #393c41;
   }
@@ -587,39 +641,44 @@
 }
 
 .restriction-legends{
-  background-color : #fcfcfc;
-  font-size : 16px;
-  text-transform:uppercase;
-  padding: 10px 40px;
-  overflow: hidden;
+    padding: 10px 20px;
+    background: #fcfcfc;
+    overflow: hidden;
+    *zoom: 1;
 
-  .restriction-icon{
-    height: 20px;
-    width: 20px;
-    text-indent: 7px;
-    line-height: 20px;
-  }
+    li {
+      position: relative;
+      font-size: 13px;
+      line-height: 13px;
+      text-transform: uppercase;
+      padding-left: 30px;
+      margin: 0 10px 0 0;
+      width: -webkit-calc(~"13% - 15px");
+      width: -moz-calc(~"13% - 15px");
+      width: calc(~"13% - 15px");
+      float: left;
 
-  span{
-    padding-right: 20px;
-    padding-bottom : 10px;
-        // padding-top : 10px;
-        font-size: 16px; /*14px;*/
-        font-weight: normal;
-        float:left;
-      }
-
-      #update{
-        width:100%;
-      }
-
-      .occgraph-outer{
+      .restriction-icon {
         position: absolute;
-        left: 550px;
-        top: 88px;
-        clear:both;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
       }
+
+      &:first-child { line-height: 20px; }
+      &:last-child { margin-right: 0; }
     }
+
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
 
 
     .settarget {
@@ -636,7 +695,8 @@
         }
         
         table {
-          width: 70%;
+          /*CICO-8633*/
+          width: 80%; //70%;
           margin: auto;
           background: url('/assets/texture.png') repeat scroll 0 0 #fcfcfc;
           box-shadow: 0 0 3px rgba(0,0,0,0.1);
@@ -651,12 +711,21 @@
               padding-top:30px;
             }
             td {
-              padding:20px 10px;
+              /*CICO-8633*/
+              padding: 10px 10px; //20px 10px;
               font-size:15px !important;
               font-weight:bold !important;
               color:#202123;
               text-align: center !important;
             
+            }
+          }
+
+          tr:first-child {
+            td {
+              > h1 {
+                padding-top: 30px;
+              }
             }
           }
         }
@@ -724,7 +793,7 @@
           padding:5px 6px;
           text-align:center;
         }
-        .nogreen {
+        /*.nogreen {
           background:none !important;
           color:#202123 !important;
           border:none !important;
@@ -734,7 +803,7 @@
         }
         .green {
           float: left !important;
-        }
+        }*/
       }
     }
 
@@ -1121,6 +1190,7 @@ padding-top: 80px;
         width:100%        
         }
       }
+
       em{
          font-size: 15px;
          font-style: italic !important;
@@ -1168,7 +1238,8 @@ padding-top: 80px;
     span{
       display: inline-block;
       &.restriction-status{
-        cursor: alias;
+        /*CICO-8633*/
+        //cursor: alias;
         position: absolute;
         right:0;
         top: 15px; /*10px;*/
@@ -1364,7 +1435,8 @@ padding-top: 80px;
   }
 
   .action-filter {
-    position:fixed; 
+  /*IOS/Safari issue where "show rates" button disappears after one uses*/
+    position: absolute;  /*fixed; */
     background:#d4d4d4; 
     border-top:1px solid #bcbcbc;
     width:100%; 
@@ -1542,6 +1614,8 @@ padding-top: 80px;
     float: left;
     margin: 12px 0;
     clear: none;
+    font-weight: 600;
+    font-size: 16px;
   }
 }
 
@@ -1559,7 +1633,11 @@ padding-top: 80px;
   background-color: #f5f5f5 !important;
 }
 
-#modal.calendar-popup > form {
+#modal.rm-calendar-popup > form {
   min-width: 800px;
   margin: auto;
+  .ui-state-highlight { 
+    color: #202225;
+    background: rgba(0, 0, 0, 0.05);
+  }
 }

@@ -139,7 +139,7 @@
                 	
                     <li>
                         <span class="label" translate>TOTAL_TAX</span>
-                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTaxAmount | number : 2}}</label>
+                        <label ng-if="!reservationData.isRoomRateSuppressed">{{currencySymbol}}{{reservationData.totalTax | number : 2}}</label>
                         <label ng-if="reservationData.isRoomRateSuppressed">SR</label>
                     </li>
                     <li>
@@ -206,9 +206,15 @@
                 	
                 	<iframe src="http://localhost:3000/api/ipage/test.html?reservation_id=12402" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
                 </div> -->
-                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
+                <!-- <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
                 	
                 	<iframe src="http://10.7.1.17:5555/api/ipage/test.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
+                </div> -->
+                
+                
+                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
+                	
+                	<iframe src="http://stayntouch.perceptiveinteractive.com/standalone/app/iframe/payment.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
                 </div>
                 
                 

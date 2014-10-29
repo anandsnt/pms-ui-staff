@@ -1,15 +1,13 @@
 <div class="jumbotron" id="check-in-out">
 
-	<div class="container">
+	<div class="container backgroundbg">
 	<!-- contentarea starts here-->
-		<div class="container">
+
 			<div class="container-fluid">
 				<div class="row headerrow">
 					<logo-image></logo-image>
 				</div>
 			</div>
-
-
 
 			<!-- show posting message -->
 			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
@@ -25,7 +23,7 @@
 			</div>
 			<!-- top section starts here-->
 
-			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
+			<div class="row check-inout-wrapper toggle-pos-rel container margin-zero" ng-show="optionsAvailable && !isFetching && !netWorkError">
 				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel">
 					Check-Out
 					<p class="leadtext balance-container">
@@ -48,7 +46,7 @@
 									
 									<div class="bill-contain">
 										<div class="bill-hotel-logo">
-											<img class="img-responsive img-center" src="{{hotelLogo}}" alt="">
+											<img class="img-responsive img-center nikko-logo" src="{{hotelLogo}}" alt="" >
 										</div>
 
 										<div class="guest-details leftalign">
@@ -141,6 +139,5 @@
 			</div>
 		<!-- top section ends here-->
 		</div>
-	</div>
 </div>
 

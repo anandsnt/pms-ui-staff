@@ -28,8 +28,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
        				responseData = dclone(responseData, unwantedKeys);
 		       		alert(JSON.stringify(responseData));
-		       	//	$scope.invokeApi(RVReservationSummarySrv.paymentAction, {}, $scope.successPayment);
-		       		$scope.successPayment();
+		       		$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
+		       	//	$scope.successPayment();
 		       		
 		       }
 		    
