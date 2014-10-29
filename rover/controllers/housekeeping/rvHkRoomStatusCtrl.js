@@ -82,7 +82,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.workTypes = workTypes;
 			$scope.employees = employees;
 
-			$_defaultWorkType = $scope.workTypes[0].id;
+			$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
 			/**
 			 * CICO-8620
 			 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
