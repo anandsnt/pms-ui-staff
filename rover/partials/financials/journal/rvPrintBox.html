@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="entry">
-        <div class="switch-button on">
+        <div class="switch-button" ng-class="{'on' : data.isRevenueToggleSummaryActive }" ng-click="toggleSummaryOrDeatilsRevenue()">
             <input name="revenue-print-toggle" id="revenue-print-toggle" value="" type="checkbox" checked />
             <label class="data-off">
                 <span class="value" translate>SUMMARY</span>
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="entry">
-        <div class="switch-button on">
+        <div class="switch-button" ng-class="{'on' : data.isPaymentToggleSummaryActive }" ng-click="toggleSummaryOrDeatilsPayment()">
             <input name="payments-print-toggle" id="payments-print-toggle" value="" type="checkbox" checked />
             <label class="data-off">
                 <span class="value" translate>SUMMARY</span>

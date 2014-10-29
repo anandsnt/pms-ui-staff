@@ -18,7 +18,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	yesterday.setDate(yesterday.getDate()-1);
 	$scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
 	$scope.data.toDate 	 = $filter('date')(yesterday, 'yyyy-MM-dd');
-	
+	$scope.data.paymentDate = $rootScope.businessDate;
     $scope.data.cashierDate = $rootScope.businessDate;
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.cashierData = cashierData;
@@ -26,21 +26,20 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isDrawerOpened = false;
 	$scope.data.reportType  = ""; 
 	
-	// To toggle revenue filter.
-	$scope.clickedRevenueFilter = function(){
-		$scope.data.isActiveRevenueFilter = !$scope.data.isActiveRevenueFilter;
-	};
+	/* Handling different date picker clicks */
 	$scope.clickedFromDate = function(){
 		$scope.popupCalendar('FROM');
 	};
 	$scope.clickedToDate = function(){
 		$scope.popupCalendar('TO');
 	};
-
+	$scope.clickedPaymentDate = function(){
+		$scope.popupCalendar('PAYMENT');
+	};
 	$scope.clickedCashierDate = function(){
 		$scope.popupCalendar('CASHIER');
 	};
-	// Calendar popup.
+	// Show calendar popup.
 	$scope.popupCalendar = function(clickedOn) {
 		$scope.clickedOn = clickedOn;
       	ngDialog.open({
@@ -51,6 +50,12 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
       	});
     };
 
+    /** Employee/Departments Filter starts here ..**/
+
+    // To toggle revenue filter.
+	$scope.clickedRevenueFilter = function(){
+		$scope.data.isActiveRevenueFilter = !$scope.data.isActiveRevenueFilter;
+	};
     // On selecting 'All Departments' radio button.
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
@@ -98,7 +103,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	// Close the entire filter box
     	if(!$scope.data.filterData.checkedAllDepartments) $scope.data.isActiveRevenueFilter = false;
     };
-
+    // To get the list of departments id selected.
     $scope.getListOfCheckedDepartments = function(){
     	var selectedDepartmentList = [];
     	angular.forEach($scope.data.filterData.departments,function(item, index) {
@@ -106,6 +111,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
        	});
        	console.log(selectedDepartmentList);
     };
+    /** Employee/Departments Filter ends here .. **/
 
     /* Cahier filter starts here */
     var callCashierFilterService = function(){

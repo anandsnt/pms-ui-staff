@@ -1,6 +1,9 @@
 sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 	BaseCtrl.call(this, $scope);
 
+	$scope.data.isRevenueToggleSummaryActive = true;
+	$scope.data.isPaymentToggleSummaryActive = true;
+
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
 	var resizableMaxHeight = 90;
@@ -83,6 +86,27 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
 		console.log($scope.data.selectedChargeCode);
+	};
+
+	// To handle Summary/Details toggle button click - REVENUE
+	$scope.toggleSummaryOrDeatilsRevenue = function(){
+		if($scope.data.isRevenueToggleSummaryActive){
+			console.log("REVENUE Summary filter");
+		}
+		else{
+			console.log("REVENUE Details filter");
+		}
+		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive ;
+	};
+	// To handle Summary/Details toggle button click - PAYMENT
+	$scope.toggleSummaryOrDeatilsPayment = function(){
+		if($scope.data.isPaymentToggleSummaryActive){
+			console.log("PAYMENT Summary filter");
+		}
+		else{
+			console.log("PAYMENT Details filter");
+		}
+		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive ;
 	};
 
 	/** Code for Revenue Tab - PRINT BOX - filters ends here .. **/
