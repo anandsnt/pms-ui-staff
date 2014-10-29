@@ -429,6 +429,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.firstSearch = true;
 
 			$scope.$emit("SearchResultsCleared");
+			setTimeout(function(){
+               refreshScroller();
+            }, 100);
 
 			// dont remove yet
 			// Gotacha!! Only when we are dealing with 'noStateChange'
@@ -518,7 +521,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					}
 				}
 			}
-			if(!showNoMatchesMessage){
+			if(!showNoMatchesMessage && !$scope.firstSearch){
 				var totalCountOfFound = 0;
 				for(var i = 0; i < results.length; i++){
 					if(results[i].is_row_visible)
