@@ -27,7 +27,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		       if(responseData.response_message == "payment_success"){
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
        				responseData = dclone(responseData, unwantedKeys);
-		       		alert(JSON.stringify(responseData));
+       				responseData.credit_card_payment_method = "SALE";
+		       		console.log(JSON.stringify(responseData));
 		       		$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		       	//	$scope.successPayment();
 		       		
@@ -42,19 +43,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 			return buttonClass;
 		};
-		$scope.successPayment = function(){
-			alert("success");
+		$scope.successPayment = function(data){
+			console.log(data);
+			$scope.$emit('hideLoader');
 			$scope.isSubmitButtonDisabled = true;
+			$scope.creditCardTransactionId = data.credit_card_transaction_id;
 		};
 		
 		
 		
 		setTimeout(function(){
-			var MyIFrame = document.getElementById("sixpaymentform");
-			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
-			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
-			MyIFrameDoc.getElementById("six_form").submit();
-			
+			// var MyIFrame = document.getElementById("sixpaymentform");
+			// var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
+			// if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
+			// MyIFrameDoc.getElementById("six_form").submit();
+// 			
 		}, 3000);
 	
 		// set the previous state
@@ -164,7 +167,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//TODO: verify
 				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
 				data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
-					$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
+					$scope.reservationData.paymentType.ccDetails.expMonth + "-01";
 				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 
 			}
@@ -191,11 +194,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			// MLI Integration.
-			if ($scope.reservationData.paymentType.type !== null) {
-				if ($scope.reservationData.paymentType.type.value === "CC") {
-					data.payment_type.session_id = $scope.data.MLIData.session;
+			if($rootScope.paymentGateway === "sixpayments"){
+				data.credit_card_transaction_id = $scope.creditCardTransactionId;
+				data.isSixPayment = true;
+			} else {
+				data.isSixPayment = false;
+				if ($scope.reservationData.paymentType.type !== null) {
+					if ($scope.reservationData.paymentType.type.value === "CC") {
+						data.payment_type.session_id = $scope.data.MLIData.session;
+					}
 				}
 			}
+			
 
 			//	CICO-8320
 			// 	The API request payload changes
@@ -239,7 +249,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 				});
 
-			})
+			});
 
 
 			data.company_id = $scope.reservationData.company.id;
@@ -286,7 +296,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.errorMessage = data;
 				// $scope.data.MLIData= {};
 
-			}
+			};
 
 			var updateSuccess = function(data) {
 				$scope.viewState.identifier = "UPDATED";
@@ -295,7 +305,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"id": $scope.reservationData.reservationId,
 					"confirmationId": $scope.reservationData.confirmNum
 				});
-			}
+			};
 
 			if ($scope.reservationData.reservationId != "" && $scope.reservationData.reservationId != null && typeof $scope.reservationData.reservationId != "undefined") {
 				//creating reservation
@@ -306,7 +316,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
 
-		}
+		};
 
 		/**
 		 * MLI integration
@@ -331,7 +341,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					$scope.data.MLIData = {};
 				}
 				$scope.$apply();
-			}
+			};
 
 			try {
 				HostedForm.updateSession(sessionDetails, callback);
@@ -339,7 +349,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			} catch (err) {
 				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
 			};
-		}
+		};
 
 		$scope.initFetchMLI = function() {
 			if ($scope.reservationData.paymentType.ccDetails.number == "" ||
@@ -349,8 +359,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				return false;
 			}
 			fetchMLISession();
-		}
-
+		};
 
 		$scope.setUpMLIConnection = function() {
 			try {

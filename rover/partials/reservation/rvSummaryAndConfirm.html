@@ -174,6 +174,21 @@
                 </div>
                 
                 <div class="entry full-width">
+				    <label for="booking-source">Booking Source</label>
+				    <div class="switch-button on">
+				        <input type="checkbox" checked="" value="booking-source" id="booking-source" name="booking-source">
+				        <label class="data-off">
+				            <span class="value">On-Site</span>
+				            <span class="switch-icon">Call-In</span>
+				        </label>
+				        <label class="data-on">
+				            <span class="switch-icon">On-Site</span>
+				            <span class="value">Call-In</span>
+				        </label>
+				    </div>
+				</div>
+                
+                <div class="entry full-width">
                     <label for="payment-type" translate>PAYMENT_TYPE </label>
                     <div class="select">
 
@@ -204,18 +219,25 @@
                 </div>
                 <!-- <div class="entry full-width" >
                 	
-                	<iframe src="http://localhost:3000/api/ipage/test.html?reservation_id=12402" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
-                </div> -->
+                	<iframe src="http://localhost:3000/api/ipage/test.html" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
+                </div>
+                 -->
+                 <div class="entry full-width" >
+                	
+                	<iframe src="http://localhost:3000/api/ipage/index.html?amount={{reservationData.totalStayCost | number : 2}}&card_holder_first_name=aaaaa&service_action=pay" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
+                </div>
+                
+                
                 <!-- <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
                 	
                 	<iframe src="http://10.7.1.17:5555/api/ipage/test.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
                 </div> -->
                 
                 
-                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
+                <!-- <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
                 	
                 	<iframe src="http://stayntouch.perceptiveinteractive.com/standalone/app/iframe/payment.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
-                </div>
+                </div> -->
                 
                 
                 <!-- <div class="entry full-width">
