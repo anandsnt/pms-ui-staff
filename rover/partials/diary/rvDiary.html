@@ -47,33 +47,52 @@
                 <div class="header">
                     <!-- Standard Rate -->
                     <div>
-                        <label class="radio inline">
-                            <input name="rate-type" id="standard-rate" value="standard" ng-model="gridProps.filter.rate_type" type="radio" />
+                        <label class="radio inline" ng-class="{checked: gridProps.filter.rate_type === 'standard'}">
+                            <input name="rate-type" 
+                                   id="standard-rate" 
+                                   value="standard" 
+                                   ng-model="gridProps.filter.rate_type" 
+                                   type="radio"
+                                   class="icon-form placeholder"
+                                   ng-class="{active: gridProps.filter.rate_type === 'standard'}" />
                             Standard
                         </label>
-                        <label class="radio inline">
-                            <input name="rate-type" id="corporate-rate" value="corporate" ng-model="gridProps.filter.rate_type" type="radio" />
+                        <label class="radio inline" ng-class="{checked: gridProps.filter.rate_type === 'corporate'}">
+                            <input name="rate-type" 
+                                   id="corporate-rate" 
+                                   value="corporate" 
+                                   ng-model="gridProps.filter.rate_type" 
+                                   type="radio" 
+                                   class="icon-form placeholder"
+                                   ng-class="{active: gridProps.filter.rate_type === 'corporate'}"/>
                             Corporate 
                             <span>Select Account</span>
+                            <ul>
+                                <li ng-repeat="details in gridProps.filter.rate_type_details track by $index">
+                                    {{details.name}}
+                                    <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
+                                    <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
+                                </li>
+                            </ul>      
                         </label>   
                     </div>
                     <!-- Corporate Rate is selected & defined -->
-                    <div ng-hide="gridProps.filter.rate_type === 'standard'">
+                    <!--<div ng-hide="gridProps.filter.rate_type === 'standard'">
                         <label class="radio inline">
                             <input name="rate-type" id="standard-rate" value="standard" type="radio" />
                             Standard
                         </label>
-                        <label class="radio inline checked">
+                        <label class="radio inline">
                             <input name="rate-type" id="corporate-rate" value="corporate" type="radio" checked />
                             Corporate 
                             <span>American Airlines</span>
                             <span id="confirm-rate" class="icons icon-ok-20">Confirm rate</span>
                             <span id="remove-rate" class="icons icon-remove-20">Remove rate</span>
                         </label>   
-                    </div>
+                    </div>-->
                 </div>
                 <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
-                <div class="entry search hidden">
+                <div class="entry search" ng-show="gridProps.filter.rate_type === 'corporate'">
                     <a href="#" id="diary-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></a>
                     <button type="submit" name="submit" class="icons icon-search">Search</button>
                     <input name="diary-corporate-query" id="diary-corporate-query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" />

@@ -436,8 +436,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 
 	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			updateFilter();
-			$scope.renderGrid();
+			
 		}
 	});
 	/*--------------------------------------------------*/
