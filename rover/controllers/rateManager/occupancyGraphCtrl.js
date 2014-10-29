@@ -427,7 +427,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				$scope.$emit('computeColumWidth');	
 
 				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
-				$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
+
+				setTimeout(function() {
+					$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
+				}, 1000);
 			});
 		};
 
