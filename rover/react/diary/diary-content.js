@@ -8,15 +8,18 @@ var DiaryContent = React.createClass({
 		viewport.width = $(window).width() - 120;
 		viewport.height = $(window).height() - 230;
 
-		display.width 		= display.hours / viewport.hours * viewport.width;
-		display.px_per_hr 	= viewport.width / viewport.hours;
-		display.px_per_int 	= display.px_per_hr / display.intervals_per_hour;
-		display.px_per_ms 	= display.px_per_int / 900000;
+		if(viewport.width !== this.state.viewport.width ||
+		   viewport.height !== this.state.viewport.height) {
+			display.width 		= display.hours / viewport.hours * viewport.width;
+			display.px_per_hr 	= viewport.width / viewport.hours;
+			display.px_per_int 	= display.px_per_hr / display.intervals_per_hour;
+			display.px_per_ms 	= display.px_per_int / 900000;
 
-		this.setState({
-			viewport: viewport,
-			display: display
-		});
+			this.setState({
+				viewport: viewport,
+				display: display
+			});
+		}
 	},
 	__toggleRows: function(state) {
 		this.state.angular_evt.toggleRows(state, Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_origin);	
@@ -25,10 +28,9 @@ var DiaryContent = React.createClass({
 
 	},
 	__onGridScrollEnd: function(iscroll_object) {
-
+		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_origin);	
 	},
-	__onGridScroll: function(iscroll_object) {
-		
+	__onGridScroll: function(iscroll_object) {		
 		var el = iscroll_object, iscroll = this.state.iscroll;
 
 		switch(el) {
@@ -96,9 +98,9 @@ var DiaryContent = React.createClass({
 	componentDidMount: function() {
 		var self = this;
 
-    	$(window).on('resize', _.debounce(function(e) {
+    	$(window).on('resize', _.throttle(function(e) {
     		this._recalculateGridSize();
-    	}.bind(this), 50));
+    	}.bind(this), 10, { leading: false, trailing: true }));
   	},
   	componentWillUnmount: function() {
   		$(window).off('resize');
@@ -117,7 +119,8 @@ var DiaryContent = React.createClass({
     	}
   	},
   	componentWillReceiveProps: function(nextProps) {
-  		if(this.props.viewport !== nextProps.viewport ||
+  		var hops = Object.prototype.hasOwnProperty;
+  		/*if(this.props.viewport !== nextProps.viewport ||
   		   this.props.display !== nextProps.display ||
   		   this.props.filter !== nextProps.filter ||
   		   this.props.edit !== nextProps.edit) {
@@ -126,6 +129,30 @@ var DiaryContent = React.createClass({
   				display: nextProps.display,
   				viewport: nextProps.viewport,
   				filter: nextProps.filter,
+  				edit: nextProps.edit
+  			});
+  		}*/
+
+  		if(hops.call(this.props, 'viewport') && this.props.viewport !== nextProps.viewport) {
+  			this.setState({
+  				viewport: nextProps.viewport
+  			});
+  		}
+
+  		if(hops.call(this.props, 'display') && this.props.display !== nextProps.display) {
+  			this.setState({
+  				display: nextProps.display
+  			});
+  		}
+
+  		if(hops.call(this.props, 'filter') && this.props.filter !== nextProps.filter ) {
+  			this.setState({
+  				filter: nextProps.filter
+  			});
+  		}
+
+  		if(hops.call(this.props, 'edit') && this.props.edit !== nextProps.edit) {
+  			this.setState({
   				edit: nextProps.edit
   			});
   		}
@@ -149,6 +176,7 @@ var DiaryContent = React.createClass({
 								onDragEnd: 					scope.onDragEnd,
 								onResizeStart: 				scope.onResizeStart,
 								onResizeEnd: 				scope.onResizeEnd,
+								onScrollEnd:                scope.onScrollEnd, 
 								onScrollLoadTriggerRight: 	scope.onScrollLoadTriggerRight,
 								onScrollLoadTriggerLeft: 	scope.onScrollLoadTriggerLeft
 							},
@@ -193,7 +221,8 @@ var DiaryContent = React.createClass({
 			data: 			this.state.data,
 			filter: 		this.state.filter,
 			iscroll: 		this.state.iscroll,
-			__onGridScroll: self.__onGridScroll
+			__onGridScroll: self.__onGridScroll,
+			__onGridScrollEnd: 	self.__onGridScrollEnd
 		}),
 		TimelinePanel({
 			refs: 				'timeline',
@@ -208,7 +237,8 @@ var DiaryContent = React.createClass({
 			__onResizeCommand: 	self.__onResizeCommand,
 			__onResizeStart:    self.__onResizeStart,
 			__onResizeEnd:  	self.__onResizeEnd,
-			__onGridScroll: 	self.__onGridScroll
+			__onGridScroll: 	self.__onGridScroll,
+			__onGridScrollEnd: 	self.__onGridScrollEnd
 		}), 
 		GridPanel({
 			refs: 				'grid',
@@ -222,6 +252,7 @@ var DiaryContent = React.createClass({
 			currentResizeItemRow: this.props.currentResizeItemRow,
 			angular_evt: 		this.state.angular_evt,
 			__onGridScroll: 	self.__onGridScroll,
+			__onGridScrollEnd: 	self.__onGridScrollEnd,
 			__onDragStart: 		self.__onDragStart,
 			__onDragStop: 		self.__onDragStop	
 		})), this.props.children);

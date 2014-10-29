@@ -16,6 +16,7 @@ var GridPanel = React.createClass({
 			currentResizeItem:  props.currentResizeItem,
 			currentResizeItemRow: props.currentResizeItemRow,
 			__onGridScroll: 	props.__onGridScroll,
+			__onGridScrollEnd: 	props.__onGridScrollEnd,
 			__onDragStart: 		props.__onDragStart,
 			__onDragStop: 		props.__onDragStop	
 		}));

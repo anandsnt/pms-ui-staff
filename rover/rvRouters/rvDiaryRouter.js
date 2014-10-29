@@ -1,6 +1,13 @@
 angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider.state('rover.diary', {
+            abstract: true,
             url: '/diary',
+            templateUrl: '/assets/partials/diary/dashboard.html',
+            controller: 'RVDiaryAppCtrl'
+        });
+
+        $stateProvider.state('rover.diary.reservations', {
+            url: '/reservations',
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'RVDiaryCtrl',
             resolve: {
@@ -12,8 +19,19 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             }
         });
 
-        $stateProvider.state('rover.diary.summary', {
-            url: '/summary',
+        /*$stateProvider.state('rover.diary.reservations.staycard', {
+            url: '/reservations/staycard',
+            templateUrl: '/assets/partials/reservation/rvMain.html',
+            controller: 'RVDiaryMainCardCtrl',
+            resolve: {
+                loadInitialData: function(rvDiarySrv, $stateParams) {
+                    return {};
+                }
+            }
+        });
+
+        $stateProvider.state('rover.diary.reservations.staycard.summary', {
+            url: 'reservations/summary',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVDiarySummaryCtrl',
             resolve: {
@@ -21,5 +39,5 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                     return {};
                 }
             }
-        });
+        });*/
 });

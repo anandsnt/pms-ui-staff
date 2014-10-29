@@ -24,6 +24,7 @@ var RoomPanel = React.createClass({
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.rooms.destroy();
+		this.props.iscroll.rooms = null;
 	},
 	render: function() {
 		return React.DOM.div({

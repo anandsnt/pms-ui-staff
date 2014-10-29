@@ -60,9 +60,10 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 		    	arrival_time: undefined,
 		    	hours_days: 'h',
 		    	range: 12,
-		    	rate_type: 'Standard',
+		    	rate_type: 'standard',
 		    	rate_type_details: {},
 		    	room_type: undefined,
+		    	show_all_rooms: 'on',
 		    	toggleHoursDays: function() {
 		    		this.hours_days = (this.hours_days === 'h') ? 'd' : 'h';
 		    	},
@@ -93,7 +94,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 							rateMenu.addClass('hidden');
 						}
 					}
-
+					console.log($scope.gridProps.filter.rate_type);
 					//this.rate_type = (this.rate_type === 'standard') ? 'corporate' : 'standard';
 				}
 		    },
@@ -169,6 +170,10 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	//console.log('Resize end', row_data, row_item_data);	    	
 	    };    
 
+	    $scope.onScrollEnd = function(current_scroll_pos) {
+	    	$scope.toggleRows($scope.gridProps.filter.show_all_rooms, current_scroll_pos);
+	    };
+
 	    $scope.onScrollLoadTriggerRight = function(component, data, event) {
 
 	    };
@@ -226,7 +231,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    $scope.editSave = function() {
 	    	var props = $scope.gridProps,
 	    		row_data = copyRoom(props.currentResizeItemRow),
-	    		row_item_data = copyReservation(props.currentResizeItem)
+	    		row_item_data = copyReservation(props.currentResizeItem);
 
 	    	row_item_data.start_date = row_item_data.left / props.display.px_per_ms + props.display.x_origin;
 	    	row_item_data.end_date = row_item_data.right / props.display.px_per_ms + props.display.x_origin; 
@@ -306,9 +311,9 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    };
 
 	    $scope.toggleRows = function(state, current_scroll_pos) {
-	    	var showAllRooms = (state === 'on');
+	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
-	    	if(showAllRooms) {
+	    	if($scope.gridProps.filter.show_all_rooms === 'on') {
 	    		clearRowClasses();
 	    	} else {
 	    		updateRowClasses(current_scroll_pos);
@@ -328,18 +333,17 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    	var reservations,
 	    		reservation,
 	    		maintenance_span = $scope.gridProps.display.maintenance_span_int * $scope.gridProps.display.px_per_int / $scope.gridProps.display.px_per_ms,
-	    		maintenance_end_date;
+	    		maintenance_end_date; //,
+	    		//time_start = Date.now();
 
 	    	current_scroll_pos = parseInt(current_scroll_pos, 10);
 
 	    	for(var i = 0, len = $scope.data.length; i < len; i++) {
 	    		reservations = $scope.data[i].reservations;
 
-	    		for(var j =0, rlen = reservations.length; j < rlen; j++) {
+	    		for(var j = 0, rlen = reservations.length; j < rlen; j++) {
 	    			reservation = reservations[j];
 	    			maintenance_end_date = reservation.end_date + maintenance_span;
-
-	    			console.log("Maintenace start:  ", new Date(reservation.end_date), "Maintenacne end:  ", new Date(maintenance_end_date));
 
 	    			if(current_scroll_pos >= reservation.start_date && 
 	    			   current_scroll_pos <= reservation.end_date) {
@@ -353,14 +357,23 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 	    						$scope.data[i].status = 'occupied';
 	    					break;	
 	    				}
+	    				
+	    				break;
 	    			} else if(current_scroll_pos > reservation.end_date && 
 	    			   		  current_scroll_pos <= maintenance_end_date) {
 	    				
 	    				$scope.data[i] = copyRoom($scope.data[i]);
 	    				$scope.data[i].status = 'dirty';
-	    			} 
+
+	    				break;
+	    			} else {
+	    				$scope.data[i] = copyRoom($scope.data[i]);
+	    				$scope.data[i].status = '';
+	    			}
 	    		}
 	    	}
+
+	    	//console.log('Room status refresh time', Date.now() - time_start);
 	    }
 
 	    $scope.displayFilter = function(filter, room, reservation) {
@@ -401,7 +414,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 			$scope.gridProps.display = _.extend({}, $scope.gridProps.display);
 
 			$scope.gridProps.display.x_origin = $scope.gridProps.filter.arrival_date.getTime();
-			$scope.gridProps.display.x_origin_start_time = Time($scope.gridProps.display.x_origin.toComponents().time);
+			$scope.gridProps.display.x_origin_start_time = Time($scope.gridProps.filter.arrival_date.toComponents().time);
 
 			$scope.renderGrid();
 		}

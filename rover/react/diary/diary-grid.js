@@ -18,6 +18,7 @@ var Grid = React.createClass({
 		iscroll.grid._scrollFn = _.throttle(this.props.__onGridScroll.bind(null, iscroll.grid), 10, { leading: false, trailing: true });
 
 		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
+		iscroll.grid.on('scrollEnd', this.props.__onGridScrollEnd);
 
 		setTimeout(function () {
 	        iscroll.grid.refresh();
@@ -25,6 +26,7 @@ var Grid = React.createClass({
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.grid.destroy();
+		this.props.iscroll.grid = null;
 	},
 	render: function() {
 		var props = this.props,

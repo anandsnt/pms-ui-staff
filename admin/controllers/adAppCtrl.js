@@ -88,7 +88,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						standAlone : true
 					}, {
 						title: "MENU_ROOM_ASSIGNMENT",
-						action: "staff#/staff/diary"
+						action: "staff#/staff/diary/reservations"
 					}, {
 						title: "MENU_POST_CHARGES",
 						action: ""

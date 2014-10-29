@@ -1,7 +1,17 @@
-sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
-    function ($q, rvBaseWebSrvV2, RVBaseWebSrv) {
-    	this.model = new Model({ room_types: [], rooms: [], results: [] });
+sntRover
+.constant('rvDiaryConstants', { 
+	TIME_SPAN_SEEK: 48 * 86400000, 
+	SEEK_OFFSET: -7200,
+	RESERVATION_API: 'api/hourly_availability' })
+.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants',
+    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants) {
 
+    	//this.model = new Model({ room_types: [], rooms: [], results: [] });
+    	//this.models.room_types = [];
+    	//this.models.rooms = [];
+    	//this.models.rates = [];
+    	//this.models.reservations = [];
+    	
     	this.normalizeData = function(data, meta) {
     		var room, 
     			reservations, 
@@ -34,9 +44,14 @@ sntRover.service('rvDiarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebSrv',
 
     	};
     	
-    	this.loadTimeRange = function(begin_time, end_time, calendar_date, rate_id, room_type_ids) {
-    		
-    	};
+    	/*this.reservations = function(date, rate_id) { //, calendar_date, room_type_ids) {
+    		//ASSUME in ms for now
+    		var begin_date = calendar_date + rvDiaryConstants.SEEK_OFFSET,
+    			end_date = calendar_date + rvDiaryConstants.TIME_SPAN_SEEK,
+    			calendar_date = new Date(date).toLocaleDateString();
+
+    		rvBaseWebSrvV2.getJSON();
+    	};*/
 
         this.fetchInitialData = function (arrival_date, meta){
             var deferred = $q.defer (),
