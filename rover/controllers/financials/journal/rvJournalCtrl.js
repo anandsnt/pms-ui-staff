@@ -18,6 +18,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.cashierData = cashierData;
     $scope.data.activeChargeCodes = [];
     $scope.data.isDrawerOpened = false;
+	$scope.data.reportType  =""; 
 	
 	// To toggle revenue filter.
 	$scope.clickedRevenueFilter = function(){
@@ -104,6 +105,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var callCashierFilterService = function(){
     	var cashierDataFilterSuccessCallBack = function(data){
     		$scope.$emit("hideLoader");
+    		console.log($scope.currentCashier)
+    		console.log($scope.data.cashierDate)
+    		console.log($scope.data.reportType);
     		$scope.data.cashierData = cashierData;
     	}
     	$scope.invokeApi(RVJournalSrv.fetchCashierDetails, '', cashierDataFilterSuccessCallBack);
