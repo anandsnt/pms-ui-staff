@@ -283,6 +283,20 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
+
+		var showDepositPopup = function(deposit) {
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+				controller: 'RVCancelReservation',
+				scope: $scope,
+				data: JSON.stringify({
+					state: 'CONFIRM',
+					cards: false,
+					deposit:deposit
+				})
+			 });
+		};
+
 		/**
 		 * This method handles cancelling an exisiting reservation or
 		 * reinstating a cancelled reservation CICO-1403 and CICO-6056(Sprint20 >>> to be implemented in the next sprint)
@@ -312,7 +326,26 @@ sntRover.controller('reservationActionsController', [
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
 					}
-					promptCancel(cancellationCharge, nights);
+					//to delete
+					var extraData = {"is_within_cancellation_period":false,"deposit_amount":""};
+					console.log(extraData.deposit_amount)
+					if(extraData.is_within_cancellation_period){
+						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
+							showDepositPopup(extraData.deposit_amount);
+						}
+						else{
+							promptCancel(cancellationCharge, nights);
+						}
+					}
+					else{
+						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
+							showDepositPopup(extraData.deposit_amount);
+						}
+						else{
+							promptCancel('', nights);
+						}
+					}
+					//promptCancel(cancellationCharge, nights);
 
 				};
 				var onCancellationDetailsFetchFailure = function(error) {
