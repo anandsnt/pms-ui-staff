@@ -22,7 +22,7 @@
                 <div class="entry filter" ng-show="selectedView == 'category'">
                     <label for="showing-categories" translate>FROM_SECTION_LABEL</label>
                     <div class="select">
-                        <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder">
+                        <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_SECTIONS_LABEL</option>
                             <option value="{{section.id}}" ng-repeat="section in sections">{{section.name}}</option>
                             
@@ -34,7 +34,7 @@
                 <div class="entry filter" ng-show="selectedView == 'item'">
                     <label for="showing-items" translate>FROM_CATEGORIES_LABEL</label>
                     <div class="select" >
-                        <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder">
+                        <select id="showing-items" ng-model = "fromCategory" ng-change="filterBySectionAndCategory()" class="placeholder" ng-disabled = "showUnMappedList">
                             <option value="all" translate>ALL_CATEGORIES_LABEL</option>
                              <option value="{{category.id}}" ng-repeat="category in category_options">{{category.name}}</option>
                             
