@@ -307,6 +307,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 					maxTarget = findMax('target', true);
 
 					max = ((maxActual > maxTarget) ? maxActual : maxTarget);
+
+					if(max <= 0) {
+						max = 100;
+					}
 					
 					if(container.length > 0) {
 						viewport = container[0].getBoundingClientRect();
