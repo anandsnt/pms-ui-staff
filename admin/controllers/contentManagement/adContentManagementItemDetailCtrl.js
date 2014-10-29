@@ -4,7 +4,10 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
-	 $scope.fileName = "Choose file..."
+	 $scope.fileName = "Choose file...";
+	 $scope.initialIcon = '';
+	 /*Initializing data, for adding a new item.
+    */
 	$scope.data = {	            
 	            "component_type": "PAGE",
 	            "status": false,
@@ -19,15 +22,19 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
             }
 
     
-
+	/*Function to fetch the item details
+    */
 	$scope.fetchItem = function(){
 		var fetchItemSuccessCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
+			$scope.initialIcon $scope.data.image;
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
 	}
-
+	/*Checkin if the screen is loaded for a new item or,
+	 * for existing item.
+    */
 	if($stateParams.id != 'new'){
 		$scope.isAddMode = false;
 		$scope.fetchItem();
@@ -35,11 +42,15 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 	else{
 		$scope.isAddMode = true;
 	}	
-
+	/*Function to return to preveous state
+    */
 	$scope.goBack = function(){
         $state.go('admin.cmscomponentSettings');                  
 	}
-
+	/*Function to popup the assign parent modal.
+	 *The param isSection == true, implies the modal is for assigning sections
+	 *Otherwise the modal is for assigning categories
+    */
 	$scope.openAddCategoryModal = function(){
 		$scope.isSection = false;
 		
@@ -50,13 +61,19 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
                 scope: $scope
             });              
 	}
-
+	/*Function to save an item
+    */
 	$scope.saveItem = function(){
 		var saveItemSuccessCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.goBack();
 		}
-		$scope.invokeApi(ADContentManagementSrv.saveComponent, $scope.data , saveItemSuccessCallback);
+		var unwantedKeys = [];
+		if($scope.initialIcon == $scope.data.image)
+			unwantedKeys = ["image"];		
+
+		var data = dclone($scope.data, unwantedKeys);
+		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
 	}
 
 	/* delete component starts here*/
@@ -78,11 +95,13 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
 
 	}	
-
+	/* Function to remove the category from selected list*/
 	$scope.deleteParentCategory = function(index){
 		$scope.data.parent_category.splice(index, 1);
 	}
-
+	/* Listener to know that the current category is deleted.
+	 * Need to go back to preveous state in this case
+	 */
 	$scope.$on('componentDeleted', function(event, data) {   
 
       $scope.goBack();

@@ -4,6 +4,8 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
+   /* Function to fetch the components to be listed in the tree view
+    */
 	 $scope.fetchTreeViewList= function(){
    		var successCallbackTreeFetch = function(data){
 			$scope.$emit('hideLoader');
@@ -13,6 +15,8 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchTreeViewList, {} , successCallbackTreeFetch);
    }
+   /* Function to set the expansion status as false for all the components
+    */
    $scope.setExpandStatus = function(data){
    		if(data.length == 0)
    			return;
@@ -21,20 +25,23 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
    			$scope.setExpandStatus(data[i].children);
    		}
    }   
-
+   /* Function to toggle the expansion status
+    */
    $scope.toggleExpansion = function(index){
    		
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
    }
 
    $scope.fetchTreeViewList();
-
+   /* Listener for the component deletion.
+    */
    $scope.$on('componentDeleted', function(event, data) {   
 
       $scope.deleteComponentFromTree($scope.contentList, data.id);
 
    });
-
+   /* Function to delete a component from all the nodes in the tree, reccursively
+    */
    $scope.deleteComponentFromTree = function(data, id){
          if(data.length == 0)
             return;
@@ -47,7 +54,8 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
             }            
          }
    } 
-
+   /* Function to set the availability status
+    */
    $scope.saveAvailabilityStatus = function(id, status){
       var successCallbackAvailabilityStatus = function(data){
          $scope.$emit('hideLoader');                 

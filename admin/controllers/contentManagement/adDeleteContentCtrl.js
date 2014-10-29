@@ -3,7 +3,10 @@ admin.controller('adDeleteContentController',['$scope', '$rootScope', 'ADContent
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-
+	/* Function to delete the component and 
+	 *trigger the appropriate notification 
+	 * other screens
+    */
 	$scope.confirmDelete = function(){
 
 		var successCallbackdeleteSection = function(){

@@ -108,7 +108,7 @@
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
                         <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
-                        <td><em>{{gridItem.last_updated}}</em></td>
+                        <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>
                         <td>{{gridItem.no_of_categories}}</td>
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
@@ -165,7 +165,7 @@
                 <tbody>
                     <tr ng-repeat="gridItem in $data | filter:searchText">
                         <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
-                        <td><em>{{gridItem.last_updated}}</em></td>                        
+                        <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td>{{gridItem.no_of_items}}</td>
                         <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
@@ -220,7 +220,7 @@
                     <tr ng-repeat="gridItem in $data | filter:searchText">
                         <td><a ng-click="componentSelected(selectedView, gridItem.id)">{{gridItem.name}}</a></td>
                         <td>{{gridItem.page_template}}</td>
-                        <td><em>{{gridItem.last_updated}}</em></td>                        
+                        <td><em>{{getFormattedTime(gridItem.last_updated)}}</em></td>                        
                         <td >
                             <div class="switch-button " ng-class="{'on':gridItem.status}">
                                 <input name="status" id="status" ng-change="saveAvailabilityStatus(gridItem.id, gridItem.status)" value="gridItem.status" type="checkbox" ng-model="gridItem.status"  />

@@ -13,7 +13,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    $scope.categories = [];
    $scope.items = [];
    $scope.searchText = "";
-
+   /* Function to fetch the components to be listed in the gridview
+    */
    $scope.fetchGridViewList= function(){
    		var successCallbackGridFetch = function(data){
 			$scope.$emit('hideLoader');
@@ -25,7 +26,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		};
 	   $scope.invokeApi(ADContentManagementSrv.fetchGridViewList, {} , successCallbackGridFetch);
    }
-
+   /* Function to split the fetch components to sections, categories and items
+    */
    $scope.setUpLists =function(){
    		for(var i= 0; i < $scope.data.length; i++){
    			if($scope.data[i].component_type == 'SECTION'){
@@ -38,6 +40,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    			}
    		}
    }
+   /* Function to set the table params for sections
+    */
    $scope.setSections =function(){
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.sectionParams = new ngTableParams({
@@ -59,6 +63,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		        }
 		    });
    }
+   /* Function to set the table params for categories
+    */
    $scope.setCategories =function(){
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.categoryParams = new ngTableParams({
@@ -80,6 +86,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		        }
 		    });
    }
+   /* Function to set the table params for items
+    */
    $scope.setItems =function(){
    		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.itemParams = new ngTableParams({
@@ -101,7 +109,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		        }
 		    });
    }
-
+   /* Function to filter the data set by section and category and unmapped items
+    */
    $scope.filterBySectionAndCategory = function(){
    		$scope.filteredData = [];
    		if($scope.showUnMappedList){
@@ -140,7 +149,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		$scope.applyFiltersToSectionsAndItems();
    		
    }
-
+   /* Function to apply the filterd data to the current list of categories and items
+    */
    $scope.applyFiltersToSectionsAndItems = function(){
    		$scope.categories = [];
    		$scope.items = [];
@@ -156,7 +166,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    		$scope.itemParams.reload();
    		$scope.categoryParams.reload();
    }
-
+   /* Function to set the filter params, when the view selection changes
+    */
    $scope.viewSelected = function(){
    		$scope.fromSection = 'all';
    		$scope.fromCategory = 'all';
@@ -165,7 +176,9 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    }
 
    $scope.fetchGridViewList();
-
+   /* Listener for the component deletion.
+    * Need to delete from all the lists that has dependancy to the filtered data
+    */
 	$scope.$on('componentDeleted', function(event, data) {
 	//delete item from correspondong list
 	
@@ -213,6 +226,8 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 
 	/* delete component ends here*/
 
+	/* Function to set the availability status
+    */
 	$scope.saveAvailabilityStatus = function(id, status){
          var successCallbackAvailabilityStatus = function(data){
          $scope.$emit('hideLoader');                 

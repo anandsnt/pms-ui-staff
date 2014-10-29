@@ -18,7 +18,7 @@
                         <span class="reorder" ng-click= "toggleExpansion($index)"></span>
                         <a ng-click = "componentSelected(section.component_type, section.id)" class="cms-name">{{section.name}}</a>
                         <span class="cms-type">{{section.component_type}}</span>
-                        <em class="cms-date">{{section.updated_at}}</em>
+                        <em class="cms-date">{{getFormattedTime(section.updated_at)}}</em>
                         <div class="cms-activate">
                             <div class="switch-button" ng-class="{'on':section.status}">
                                 <input name="section" id="section" ng-change="saveAvailabilityStatus(section.id, section.status)" value="section" type="checkbox" ng-model="section.status" />

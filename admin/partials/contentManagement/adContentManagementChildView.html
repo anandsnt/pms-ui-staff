@@ -4,7 +4,7 @@
                                 <span class="reorder" ng-show="content.children.length > 0" ng-click= "toggleExpansion($index)"></span>
                                 <a  ng-click = "componentSelected(content.component_type, content.id)" class="cms-name">{{content.name}}</a>
                                 <span class="cms-type">{{content.component_type}}</span>
-                                <em class="cms-date">{{content.updated_at}}</em>
+                                <em class="cms-date">{{getFormattedTime(content.updated_at)}}</em>
                                 <div class="cms-activate">
                                     <div class="switch-button" ng-class="{'on':content.status}">
                                         <input name="category" ng-change="saveAvailabilityStatus(content.id, content.status)" id="category" value="category" type="checkbox" ng-model="content.status" />

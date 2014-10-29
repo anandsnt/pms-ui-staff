@@ -5,7 +5,9 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', 'ngDialog', 'ADC
 	BaseCtrl.call(this, $scope);
 	$scope.isGridView = true;
 	 
-
+	/* Function to load the detail page for sections/categories/items
+	 * Can be used from either grid view or tree view
+    */
 	 $scope.componentSelected = function(component_type, id){
    		if(component_type == 'section' || component_type == 'SECTION'){
    			$state.go("admin.contentManagementSectionDetails", {
@@ -40,6 +42,10 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', 'ngDialog', 'ADC
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchChildList, {'id':id} , successCallbackFetchDeleteDetails);
 
+	}
+
+	$scope.getFormattedTime = function(time){
+		return $filter('date')(time, $rootScope.dateFormat);
 	}
 
 }]);
