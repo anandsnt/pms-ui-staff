@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- Filter by section, hidden by default - show only when listing categories or items --> 
-                <div class="entry filter" ng-show="selectedView != 'section'">
+                <div class="entry filter" ng-show="selectedView == 'category'">
                     <label for="showing-categories" translate>FROM_SECTION_LABEL</label>
                     <div class="select">
                         <select id="showing-categories" ng-model="fromSection" ng-change="filterBySectionAndCategory()" class="placeholder">
