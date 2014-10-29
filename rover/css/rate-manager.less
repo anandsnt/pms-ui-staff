@@ -641,7 +641,7 @@
 }
 
 .restriction-legends{
-    padding: 10px 20px;
+    padding: 10px 15px 0 15px; //20px;
     background: #fcfcfc;
     overflow: hidden;
     *zoom: 1;
@@ -651,11 +651,11 @@
       font-size: 13px;
       line-height: 13px;
       text-transform: uppercase;
-      padding-left: 30px;
-      margin: 0 10px 0 0;
-      width: -webkit-calc(~"13% - 15px");
+      padding: 0 10px 0 30px;
+      margin: 5px 0px 10px 0; //0 10px 0 0;
+      width: -webkit-calc(~"12.5% - 2px"); //-webkit-calc(~"13% - 15px");
       width: -moz-calc(~"13% - 15px");
-      width: calc(~"13% - 15px");
+      width: calc(~"12.5% - 2px"); //calc(~"13% - 15px");
       float: left;
 
       .restriction-icon {
@@ -667,7 +667,7 @@
       }
 
       &:first-child { line-height: 20px; }
-      &:last-child { margin-right: 0; }
+      &:last-child { margin-right: 0; padding-right: 0px; }
     }
 
     &:before,
