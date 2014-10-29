@@ -32,7 +32,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isTyping = false;
 		$scope.isSwiped = false;
 		$scope.firstSearch = true;
-		RVSearchSrv.page = 1;
+		
 
 
 		$scope.showAddNewGuestButton = false; //read cooment below :(
@@ -113,7 +113,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * Success call back of data fetch from webservice
 		 */
 		var successCallBackofDataFetch = function(data) {
-
 			$scope.$emit('hideLoader');
 			$scope.results = data;
 			//TODO: commenting out for now. See if this has to be restored
@@ -122,7 +121,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.isTyping = false;
 
 			if ($scope.results.length > 0) { //if there is any result then only we want to filter
-				displayFilteredResults();
+				applyFilters();
 			}
 			//TODO: commenting out for now. See if this has to be restored
 			//$scope.firstSearch = false;
@@ -251,6 +250,27 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			return false;
 		}
 
+		var applyFilters = function(){
+			var value = "";
+			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+			//if it is zero, then we will request for webservice
+			var totalCountOfFound = 0;
+			for (var i = 0; i < $scope.results.length; i++) {
+				value = $scope.results[i];
+				if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+					($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+					($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+					($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
+					($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0) {
+					$scope.results[i].is_row_visible = true;
+					totalCountOfFound++;
+				} else {
+					$scope.results[i].is_row_visible = false;
+				}
+			}
+			$scope.isTyping = false;
+		};
+
 		/**
 		 * function to perform filering on results.
 		 * if not fouund in the data, it will request for webservice
@@ -271,29 +291,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				//If so we will do local filtering
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
 					&& !$scope.firstSearch && $scope.results.length > 0 
-					&& RVSearchSrv.totalSearchResults <= RVBaseWebSrv.searchPerPage) {
-					var value = "";
-					//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-					//if it is zero, then we will request for webservice
-					var totalCountOfFound = 0;
-					for (var i = 0; i < $scope.results.length; i++) {
-						value = $scope.results[i];
-						if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-							($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-							($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
-							($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 ||
-							($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0) {
-							$scope.results[i].is_row_visible = true;
-							totalCountOfFound++;
-						} else {
-							$scope.results[i].is_row_visible = false;
-						}
-					}
-					$scope.isTyping = false;
-					/*if(totalCountOfFound == 0){
-		        	var dataDict = {'query': $scope.textInQueryBox.trim()};
-		        	$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
-		        }*/
+					&& RVSearchSrv.totalSearchResults <= RVSearchSrv.searchPerPage) {
+					applyFilters();
 				} else {
 					RVSearchSrv.page = 1;
 					fetchSearchResults();					
@@ -304,10 +303,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; //end of displayFilteredResults
 
 		var fetchSearchResults = function(){
-			console.log(RVSearchSrv.page);
-			var dataDict = {
-				'query': $scope.textInQueryBox.trim()
-			};
+			
+			var dataDict = {};
+			var query = $scope.textInQueryBox.trim();
+			if(query != ''){
+				dataDict.query = query;
+			}
+			if($stateParams.type != undefined && query == ''){
+				dataDict.status = $stateParams.type;
+			}
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
 			$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
@@ -583,7 +587,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 
 		$scope.loadNextSet = function(){
-			console.log(RVSearchSrv.page);
 			RVSearchSrv.page++;
 			fetchSearchResults();
 		};
@@ -595,7 +598,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
-			if(RVSearchSrv.page * RVSearchSrv.searchPerPage < RVSearchSrv.totalSearchResults){
+			if(RVSearchSrv.page * RVSearchSrv.searchPerPage >= RVSearchSrv.totalSearchResults){
 				var isDisabled = true;
 			}
 			return isDisabled;
@@ -603,7 +606,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.isPrevButtonDisabled = function(){
 			var isDisabled = false;
-			if(RVSearchSrv.page == 0){
+			if(RVSearchSrv.page == 1){
 				return true;//TODO: Write the logic
 			}
 			return isDisabled;

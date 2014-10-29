@@ -2,6 +2,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 	
 	var self = this;
 	self.searchPerPage = 100;
+	self.page = 1;
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
@@ -24,9 +25,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 					self.lastSearchedType = "others";
 				}
 				
-				self.data = data;
+				self.data = data.results;
 				self.totalSearchResults = data.total_count;
-				deferred.resolve(data);
+				deferred.resolve(self.data);
 			},function(data){
 				deferred.reject(data);
 			});
