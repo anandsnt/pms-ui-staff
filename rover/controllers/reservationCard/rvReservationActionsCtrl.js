@@ -348,7 +348,7 @@ sntRover.controller('reservationActionsController', [
 							showDepositPopup(extraData.deposit_amount);
 						}
 						else{
-							showPenaltyWarningPopup(extraData.deposit_amount);
+							showPenaltyWarningPopup(cancellationCharge);
 						}
 					}
 					else{
