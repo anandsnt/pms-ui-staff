@@ -342,13 +342,13 @@ sntRover.controller('reservationActionsController', [
 						}
 					}
 					//to delete
-					var extraData = {"is_within_cancellation_period":true,"deposit_amount":""};
+					var extraData = {"is_within_cancellation_period":false,"deposit_amount":"22"};
 					if(extraData.is_within_cancellation_period){
 						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
 							showDepositPopup(extraData.deposit_amount);
 						}
 						else{
-							showPenaltyWarningPopup(cancellationCharge);
+							promptCancel('', nights);
 						}
 					}
 					else{
@@ -356,7 +356,7 @@ sntRover.controller('reservationActionsController', [
 							showDepositPopup(extraData.deposit_amount);
 						}
 						else{
-							promptCancel('', nights);
+							showPenaltyWarningPopup(cancellationCharge);
 						}
 					}
 					//promptCancel(cancellationCharge, nights);
