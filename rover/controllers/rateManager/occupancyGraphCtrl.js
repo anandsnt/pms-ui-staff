@@ -20,6 +20,13 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			title: {
 				text: '',
 				enabled: false
+			},
+			options: {
+				chart: { },
+				xAxis: { },
+				yAxis: { },
+				legend: { },
+				plotOptions: { }
 			}
 		};
 		$scope.seriesActualVisible = true;
@@ -441,7 +448,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			}, 1000);
 		}
 
-		$scope.$watch('uiOptions', _.throttle(resize, 200, { leading: true, trailing: false }), true);
+		$scope.$watch('uiOptions', _.throttle(resize, 200, { leading: true, trailing: true }), true);
 
 		$scope.$on("updateOccupancyGraph", function() {
 			$scope.fetchGraphData();
