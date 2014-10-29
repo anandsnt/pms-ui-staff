@@ -13,19 +13,7 @@ admin.controller('ADContentManagementChildViewCtrl',['$scope', '$state', 'ADCont
 	$scope.toggleExpansion = function(index){
    		
    		$scope.contentList[index].isExpanded = !$scope.contentList[index].isExpanded;
-   }
-   /* Function to save the availability status
-    */
-   $scope.saveAvailabilityStatus = function(id, status){
-         var successCallbackAvailabilityStatus = function(data){
-         $scope.$emit('hideLoader');                 
-      };
-      var data = {};
-      data.status = status;
-      data.id = id;
-      
-      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
-   } 
+   }   
 
 }]);
 

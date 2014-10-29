@@ -40,6 +40,7 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
       $scope.deleteComponentFromTree($scope.contentList, data.id);
 
    });
+
    /* Function to delete a component from all the nodes in the tree, reccursively
     */
    $scope.deleteComponentFromTree = function(data, id){
@@ -54,19 +55,28 @@ admin.controller('ADContentManagementTreeViewCtrl',['$scope', '$state', 'ADConte
             }            
          }
    } 
-   /* Function to set the availability status
+   /* Listener for the component status update.
     */
-   $scope.saveAvailabilityStatus = function(id, status){
-      var successCallbackAvailabilityStatus = function(data){
-         $scope.$emit('hideLoader');                 
-      };
-      var data = {};
-      data.status = status;
-      data.id = id;
-      
-      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
-   }  
-	
+   $scope.$on('statusUpdated', function(event, data) {   
+
+      $scope.updateComponentStatusForTree($scope.contentList, data);
+
+   });
+
+   /* Function to update status of a component for all the appearances in the tree, reccursively
+    */
+   $scope.updateComponentStatusForTree = function(data, params){
+         if(data.length == 0)
+            return;
+         for(var i = 0; i < data.length; i++ ){
+            if(data[i].children.length > 0)
+               $scope.updateComponentStatusForTree(data[i].children, params);
+            if(data[i].id == params.id){
+               data[i].status = params.status;
+               break;
+            }            
+         }
+   } 	
 
 }]);
 

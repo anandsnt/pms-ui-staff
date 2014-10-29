@@ -44,6 +44,20 @@ admin.controller('ADContentManagementCtrl',['$scope', '$state', '$rootScope', 'n
 
 	}
 
+	/* Function to set the availability status
+    */
+   $scope.saveAvailabilityStatus = function(id, status){
+      var successCallbackAvailabilityStatus = function(data){
+        $rootScope.$broadcast('statusUpdated',{'id':id, 'status':status});
+        $scope.$emit('hideLoader');                 
+      };
+      var data = {};
+      data.status = status;
+      data.id = id;
+      
+      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
+   }
+
 	$scope.getFormattedTime = function(time){
 		return $filter('date')(time, $rootScope.dateFormat);
 	}

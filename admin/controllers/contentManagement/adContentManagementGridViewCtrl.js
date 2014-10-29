@@ -218,26 +218,59 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 				$scope.category_options.splice(index,1);
 			}
 		});
+	});
+
+	/* Listener for the component status update.
+    * Need to delete from all the lists that has dependancy to the filtered data
+    */
+	$scope.$on('statusUpdated', function(event, data) {
+	//delete item from correspondong list
 	
+
+		angular.forEach($scope.sections, function(section, index) {
+			if (section.id == data.id) {
+				section.status = data.status;
+			}
+		});
+		
+		
+	
+
+		angular.forEach($scope.categories, function(category, index) {
+			if (category.id == data.id) {
+				category.status = data.status;
+			}
+		});
+		
+	
+
+		angular.forEach($scope.items, function(item, index) {
+			if (item.id == data.id) {
+				item.status = data.status;
+			}
+		});
+		
+
+		angular.forEach($scope.data, function(component, index) {
+			if (component.id == data.id) {
+				component.status = data.status;
+			}
+		});
+
+		angular.forEach($scope.category_options, function(component, index) {
+			if (component.id == data.id) {
+				component.status = data.status;
+			}
+		});
+		$scope.sectionParams.reload();
+		$scope.categoryParams.reload();
+		$scope.itemParams.reload();
 
 	//refresh tree
 
 	});
 
 	/* delete component ends here*/
-
-	/* Function to set the availability status
-    */
-	$scope.saveAvailabilityStatus = function(id, status){
-         var successCallbackAvailabilityStatus = function(data){
-         $scope.$emit('hideLoader');                 
-      };
-      var data = {};
-      data.status = status;
-      data.id = id;
-      
-      $scope.invokeApi(ADContentManagementSrv.saveComponent, data , successCallbackAvailabilityStatus);
-   } 
 
 }]);
 
