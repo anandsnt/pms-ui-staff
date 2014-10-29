@@ -28,7 +28,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 		var fetchItemSuccessCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.initialIcon $scope.data.image;
+			$scope.initialIcon =  $scope.data.image;
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchItemSuccessCallback);
 	}

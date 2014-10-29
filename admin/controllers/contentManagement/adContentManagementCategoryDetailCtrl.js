@@ -23,7 +23,7 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 		var fetchCategorySuccessCallback = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.initialIcon = $scope.data,icon;
+			$scope.initialIcon = $scope.data.icon;
 		}
 		$scope.invokeApi(ADContentManagementSrv.fetchComponent, $stateParams.id , fetchCategorySuccessCallback);
 	}
