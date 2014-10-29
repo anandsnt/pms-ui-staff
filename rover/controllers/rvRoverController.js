@@ -505,7 +505,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 				    }, 2000);
 	      	}
         }	
-    };
+     };
 
     /*
      * Start Card reader now!.
