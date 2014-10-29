@@ -32,7 +32,7 @@
 				<input id="cb_price" type="checkbox" ng-model="daysOptions.applyToPrice">
 				<span>APPLY TO PRICE </span> 
 			</label>
-			<label for="cb_restrictions" class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions">
+			<label for="cb_restrictions" class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions" ng-hide="popupData.fromRoomTypeView">
 				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
 				<input id="cb_restrictions" type="checkbox" ng-model="daysOptions.applyToRestrictions">
 				<span>APPLY TO RESTRICTIONS </span> 
