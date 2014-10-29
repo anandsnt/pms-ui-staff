@@ -4,25 +4,31 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	// Setting up the screen heading and browser title.
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
-	$scope.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data = {};
+	$scope.data.activeTab = $stateParams.id=='' ? 0 : $stateParams.id;
 	$scope.data.filterData = {};
 	$scope.data.revenueData = {};
 	$scope.data.filterData = journalResponse;
-	console.log(journalResponse);
 	$scope.data.filterData.checkedAllDepartments = true;
-	$scope.data.fromDate = $rootScope.businessDate;
-    $scope.data.toDate 	= $rootScope.businessDate;
+	/*
+	 *	Setting Revenue & Payment date pickers.
+	 *	All date fields should default to yesterday's date.
+	 */
+	var yesterday = tzIndependentDate($rootScope.businessDate);
+	yesterday.setDate(yesterday.getDate()-1);
+	$scope.data.fromDate = $filter('date')(yesterday, 'yyyy-MM-dd');
+	$scope.data.toDate 	 = $filter('date')(yesterday, 'yyyy-MM-dd');
+	
     $scope.data.cashierDate = $rootScope.businessDate;
-    $scope.isActiveRevenueFilter = false;
+    $scope.data.isActiveRevenueFilter = false;
     $scope.data.cashierData = cashierData;
     $scope.data.activeChargeCodes = [];
     $scope.data.isDrawerOpened = false;
-	$scope.data.reportType  =""; 
+	$scope.data.reportType  = ""; 
 	
 	// To toggle revenue filter.
 	$scope.clickedRevenueFilter = function(){
-		$scope.isActiveRevenueFilter = !$scope.isActiveRevenueFilter;
+		$scope.data.isActiveRevenueFilter = !$scope.data.isActiveRevenueFilter;
 	};
 	$scope.clickedFromDate = function(){
 		$scope.popupCalendar('FROM');
@@ -90,7 +96,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.clickedSelectButton = function(){
     	$scope.getListOfCheckedDepartments();
     	// Close the entire filter box
-    	if(!$scope.data.filterData.checkedAllDepartments) $scope.isActiveRevenueFilter = false;
+    	if(!$scope.data.filterData.checkedAllDepartments) $scope.data.isActiveRevenueFilter = false;
     };
 
     $scope.getListOfCheckedDepartments = function(){
@@ -123,7 +129,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     };
 
     $scope.activatedTab = function(index){
-    	$scope.activeTab = index;
+    	$scope.data.activeTab = index;
     	if(index == 0) $scope.$broadcast('revenueTabActive');
     	else if(index == 2) $scope.$broadcast('cashierTabActive');
     	else $scope.$broadcast('paymentTabActive');

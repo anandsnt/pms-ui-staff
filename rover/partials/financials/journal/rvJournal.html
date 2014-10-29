@@ -4,13 +4,13 @@
     
     <!-- Header -->
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
-        <div class="entry" ng-hide="activeTab==2">
+        <div class="entry" ng-hide="data.activeTab==2">
             <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
-            <div class="faux-select" ng-class="{'active':isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();" translate>
+            <div class="faux-select" ng-class="{'active':data.isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();" translate>
                 ALL_DEPARTMENTS
             </div>
         </div>
-        <div id="revenue-filters" class="faux-select-options" ng-show="isActiveRevenueFilter">
+        <div id="revenue-filters" class="faux-select-options" ng-show="data.isActiveRevenueFilter">
             <button id="select-filters" type="button" ng-click="clickedSelectButton()" ng-class="{ 'green': !data.filterData.checkedAllDepartments, 'grey': data.filterData.checkedAllDepartments }" class="button" translate>SELECT</button>
             <div class="header">
                 <label class="radio inline" ng-click="selectAllDepartment()">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class="entry" ng-show="activeTab==2">
+        <div class="entry" ng-show="data.activeTab==2">
             <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
                 <select name="select-cashier" id="select-cashier" ng-model="currentCashier" ng-change="cashierFilterChanged()">
@@ -60,25 +60,25 @@
             </div>
         </div>
         
-        <div class="entry" ng-click="clickedFromDate()" ng-hide="activeTab==2">
+        <div class="entry" ng-click="clickedFromDate()" ng-hide="data.activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>FROM_DATE</label>
             <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.fromDate}}" readonly />
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.fromDate | date:dateFormat }}" readonly />
                 <strong id="revenue-date-day" class="day">{{data.fromDate | date:'d'}}</strong>
                 <span id="revenue-date-month" class="month">{{data.fromDate | date:'MMMM'}}</span>
                 <span id="revenue-date-year" class="year">{{data.fromDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedToDate()" ng-hide="activeTab==2">
+        <div class="entry" ng-click="clickedToDate()" ng-hide="data.activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>TO_DATE</label>
             <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate}}" readonly />
+                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate | date:dateFormat}}" readonly />
                 <strong id="revenue-date-day" class="day">{{data.toDate | date:'d'}}</strong>
                 <span id="revenue-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
                 <span id="revenue-date-year" class="year">{{data.toDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedCashierDate()" ng-show="activeTab==2">
+        <div class="entry" ng-click="clickedCashierDate()" ng-show="data.activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
@@ -88,11 +88,11 @@
             </div>
         </div>
         <ul id="journal-options" class="display">
-            <li id="show-revenue" ng-class="{'active':activeTab==0}" ng-click="activatedTab(0)">
+            <li id="show-revenue" ng-class="{'active':data.activeTab==0}" ng-click="activatedTab(0)">
                 <span class="icons icon-navbar icon-revenue" translate>REVENUE</span>{amount}</li>
-            <li id="show-payments" ng-class="{'active':activeTab==1}" ng-click="activatedTab(1)">
+            <li id="show-payments" ng-class="{'active':data.activeTab==1}" ng-click="activatedTab(1)">
                 <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span>{amount}</li>
-            <li id="show-cashier" ng-class="{'active':activeTab==2}" ng-click="activatedTab(2)">
+            <li id="show-cashier" ng-class="{'active':data.activeTab==2}" ng-click="activatedTab(2)">
                 <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.cashierData.status}}</li>
         </ul>
     </form>
@@ -102,13 +102,13 @@
     </form> 
 
     <!-- Content REVENUE-->
-    <div ng-show="activeTab==0" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>
+    <div ng-show="data.activeTab==0" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>
 
     <!-- Content PAYMENTS-->
-    <div ng-show="activeTab==1" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></div>
+    <div ng-show="data.activeTab==1" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></div>
 
     <!-- Content CASHIER-->
-    <div ng-show="activeTab==2" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></div>
+    <div ng-show="data.activeTab==2" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></div>
     
 
 
