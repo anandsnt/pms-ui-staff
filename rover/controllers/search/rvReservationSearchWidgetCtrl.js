@@ -32,6 +32,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isTyping = false;
 		$scope.isSwiped = false;
 		$scope.firstSearch = true;
+		RVSearchSrv.page = 1;
 
 
 		$scope.showAddNewGuestButton = false; //read cooment below :(
@@ -266,8 +267,11 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				}, 500);
 				refreshScroller();
 			} else {
-				//see if the new query is the substring of fetch term
-				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 && !$scope.firstSearch && $scope.results.length > 0) {
+				//see if the new query is the substring of fetch term & the fetched results count < per_page param(which is set to be 100 now)
+				//If so we will do local filtering
+				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
+					&& !$scope.firstSearch && $scope.results.length > 0 
+					&& RVSearchSrv.totalSearchResults <= RVBaseWebSrv.searchPerPage) {
 					var value = "";
 					//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 					//if it is zero, then we will request for webservice
@@ -291,17 +295,24 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		        	$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 		        }*/
 				} else {
-					var dataDict = {
-						'query': $scope.textInQueryBox.trim()
-					};
-					$scope.firstSearch = false;
-					$scope.fetchTerm = $scope.textInQueryBox;
-					$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
+					RVSearchSrv.page = 1;
+					fetchSearchResults();					
 				}
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
 			}
 		}; //end of displayFilteredResults
+
+		var fetchSearchResults = function(){
+			console.log(RVSearchSrv.page);
+			var dataDict = {
+				'query': $scope.textInQueryBox.trim()
+			};
+			$scope.firstSearch = false;
+			$scope.fetchTerm = $scope.textInQueryBox;
+			$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
+
+		};
 
 		/**
 		 * function to execute on focusing on search box
@@ -570,6 +581,33 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 		};
 
+
+		$scope.loadNextSet = function(){
+			console.log(RVSearchSrv.page);
+			RVSearchSrv.page++;
+			fetchSearchResults();
+		};
+
+		$scope.loadPrevSet = function(){
+			RVSearchSrv.page--;
+			fetchSearchResults();
+		};
+
+		$scope.isNextButtonDisabled = function(){
+			var isDisabled = false;
+			if(RVSearchSrv.page * RVSearchSrv.searchPerPage < RVSearchSrv.totalSearchResults){
+				var isDisabled = true;
+			}
+			return isDisabled;
+		};
+
+		$scope.isPrevButtonDisabled = function(){
+			var isDisabled = false;
+			if(RVSearchSrv.page == 0){
+				return true;//TODO: Write the logic
+			}
+			return isDisabled;
+		}
 
 
 	}
