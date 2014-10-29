@@ -17,6 +17,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     //$scope.data.depOrEmpSelected = true;
     $scope.isActiveRevenueFilter = false;
     $scope.data.cashierData = cashierData;
+    $scope.data.reportType  =""; 
 
 	$scope.isDrawerOpened = false;
 	var resizableMinHeight = 0;
@@ -156,6 +157,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     var callCashierFilterService = function(){
     	var cashierDataFilterSuccessCallBack = function(data){
     		$scope.$emit("hideLoader");
+    		console.log($scope.currentCashier)
+    		console.log($scope.data.cashierDate)
+    		console.log($scope.data.reportType);
     		$scope.data.cashierData = cashierData;
     	}
     	$scope.invokeApi(RVJournalSrv.fetchCashierDetails, '', cashierDataFilterSuccessCallBack);
