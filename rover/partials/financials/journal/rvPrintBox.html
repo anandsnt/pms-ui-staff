@@ -1,24 +1,20 @@
 <!-- PRINT BOX FOR REVENUE -->
 <div ng-show="activeTab==0" class="holder">
     <div class="entry">
-        <label for="revenue-charge-group">CHARGE_GROUPS</label>
+        <label for="revenue-charge-group" translate>CHARGE_GROUPS</label>
         <div class="select">
-            <select name="revenue-charge-group" id="revenue-charge-group" class="placeholder">
+            <select ng-model="data.selectedChargeGroup" ng-change="chargeGroupChanged()"  name="revenue-charge-group" id="revenue-charge-group" class="placeholder">
                 <option value="" selected translate>ALL_CHARGE_GROUPS</option>
-                <option value="{charge group 1}">{charge group 1}</option>
-                <option value="{charge group 2}">{charge group 2}</option>
-                ...
+                <option ng-repeat="item in data.revenueData.charge_groups" value="{{item.id}}">{{item.name}}</option>
             </select>
         </div>
     </div>
     <div class="entry">
         <label for="revenue-charge-code" translate>CHARGE_CODE_NAME</label>
         <div class="select">
-            <select name="revenue-charge-code" id="revenue-charge-code" class="placeholder">
+            <select ng-model="data.selectedChargeCode" ng-change="chargeCodeChanged()"  name="revenue-charge-code" id="revenue-charge-code" class="placeholder">
                 <option value="" selected translate>ALL_CHARGE_CODE</option>
-                <option value="{charge code 1}">{charge code 1}</option>
-                <option value="{charge code 2}">{charge code 2}</option>
-                ...
+                <option ng-repeat="item in data.activeChargeCodes" value="{{item.id}}">{{item.name}}</option>
             </select> 
         </div>
     </div>

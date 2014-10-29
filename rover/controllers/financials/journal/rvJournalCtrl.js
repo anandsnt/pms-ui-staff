@@ -14,63 +14,11 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.fromDate = $rootScope.businessDate;
     $scope.data.toDate 	= $rootScope.businessDate;
     $scope.data.cashierDate = $rootScope.businessDate;
-    //$scope.data.depOrEmpSelected = true;
     $scope.isActiveRevenueFilter = false;
     $scope.data.cashierData = cashierData;
-
-	$scope.isDrawerOpened = false;
-	var resizableMinHeight = 0;
-	var resizableMaxHeight = 90;
-	$scope.eventTimestamp ='';
-	$scope.data.printBoxHeight =	resizableMinHeight;
-	// Drawer resize options.
-	$scope.resizableOptions = {
-		minHeight: resizableMinHeight,
-		maxHeight: resizableMaxHeight,
-		handles: 's',
-		resize: function(event, ui) {
-			var height = $(this).height();
-			if (height > 5){
-				$scope.isDrawerOpened = true;
-				$scope.data.printBoxHeight = height;
-			}
-			else if(height < 5){
-				$scope.isDrawerOpened = false;
-				$scope.data.printBoxHeight = 0;
-			}
-		},
-		stop: function(event, ui) {
-			preventClicking = true;
-			$scope.eventTimestamp = event.timeStamp;
-		}
-	};
-	// To handle click on drawer handle - open/close.
-	$scope.clickedDrawer = function($event){
-		$event.stopPropagation();
-		$event.stopImmediatePropagation();
-		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){
-			if(parseInt($scope.eventTimestamp)) {
-				if(($event.timeStamp - $scope.eventTimestamp)<2){
-					return;
-				}
-			}
-			if($scope.data.printBoxHeight == resizableMinHeight || $scope.data.printBoxHeight == resizableMaxHeight) {
-				if ($scope.isDrawerOpened) {
-					$scope.data.printBoxHeight = resizableMinHeight;
-					$scope.isDrawerOpened = false;
-				}
-				else if(!$scope.isDrawerOpened) {
-					$scope.data.printBoxHeight = resizableMaxHeight;
-					$scope.isDrawerOpened = true;
-				}
-			}
-			else{
-				// mid way click : close guest card
-				$scope.data.printBoxHeight = resizableMinHeight;
-				$scope.isDrawerOpened = false;
-			}
-		}
-	};
+    $scope.data.activeChargeCodes = [];
+    $scope.data.isDrawerOpened = false;
+	
 	// To toggle revenue filter.
 	$scope.clickedRevenueFilter = function(){
 		$scope.isActiveRevenueFilter = !$scope.isActiveRevenueFilter;
@@ -175,6 +123,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	if(index == 0) $scope.$broadcast('revenueTabActive');
     	else if(index == 2) $scope.$broadcast('cashierTabActive');
     	else $scope.$broadcast('paymentTabActive');
+    	$scope.$broadcast("CLOSEPRINTBOX");
     };
     /* Cahier filter ends here */
+
+    
 }]);

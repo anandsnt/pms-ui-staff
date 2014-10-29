@@ -12,5 +12,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','RVJournalSrv',funct
 	$scope.$on('revenueTabActive',function(){
         setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
     });
+	
+	
 
 }]);

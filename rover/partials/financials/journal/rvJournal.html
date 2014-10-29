@@ -97,7 +97,7 @@
         </ul>
     </form>
 
-    <form method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open':isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
+    <form ng-controller="RVJournalPrintController" method="post" action="" id="journal-print-options" class="journal-print" role="complementary" ng-class="{ 'open': data.isDrawerOpened }" ui-jq="resizable" resize ui-options="resizableOptions" style="height: {{data.printBoxHeight}}px;" ng-click="clickedDrawer($event)">
         <div ng-include="'/assets/partials/financials/journal/rvPrintBox.html'"></div>
     </form> 
 
