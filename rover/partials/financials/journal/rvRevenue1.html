@@ -82,22 +82,24 @@
 
 
 
-        <table style="width:100%" border="1">
+        <table style="width:100%" border="1" ng-if="false">
 
-            <tbody ng-repeat="level1 in data.revenueData.charge_groups">
+            <tbody>
 
-              <tr style="background-color:green" >
+              <tr ng-repeat="level1 in data.revenueData.charge_groups" style="background-color:green" >
 
                 <td >{{level1.name}}</td>
                 <td>{{currencySymbol}}{{level1.total}}</td>
                 <td>
+
                  <tr style="background-color:blue" ng-repeat="level2 in level1.charge_codes">
 
                     <td>{{level2.id}}</td>
                     <td >{{level2.name}}</td>
                     <td>{{currencySymbol}}{{level2.total}}</td>
-                    <td>
-                        <table>
+
+                    
+                    
                           <tr style="background-color:red" ng-repeat="level3 in level2.transactions">
 
                             <td>{{level3.room}}</td>
@@ -109,14 +111,58 @@
                             <td>{{level3.debit}}</td> 
 
                           </tr>
-                  </table>
-                  </td>
+                  
+                  
                  </tr>
+
+
+
                 </td>
               </tr>
 
-            <tbody>
+            </tbody>
         </table>
+
+
+        <div >
+
+
+              <div ng-repeat="level1 in data.revenueData.charge_groups" style="background-color:#FFB2B2" >
+
+                <span >{{level1.name}}</span>
+                <span>{{currencySymbol}}{{level1.total}}</span>
+
+                
+
+                 <div style="background-color:#CCFF99" ng-repeat="level2 in level1.charge_codes">
+
+                    <span>{{level2.id}}</span>
+                    <span >{{level2.name}}</span>
+                    <span>{{currencySymbol}}{{level2.total}}</span>
+
+                    
+                    <table>
+                          <tr style="background-color:#99CCFF" ng-repeat="level3 in level2.transactions">
+
+                            <td>{{level3.room}}</td>
+                            <td>{{level3.name}}</td>
+                            <td>{{level3.reservation_number}}</td>
+                            <td>{{level3.type}}</td>
+                            <td>{{level3.details}}</td>
+                            <td>{{level3.time}}</td>
+                            <td>{{level3.debit}}</td> 
+
+                          </tr>
+                    </table>
+                  
+                 </div>
+
+
+
+                
+              </div>
+
+        </div>
 
 
     </div>
