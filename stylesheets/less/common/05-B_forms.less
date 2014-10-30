@@ -285,7 +285,6 @@ select[disabled],{
         img {
             width: 100%;
             height: auto;
-            max-height: 100px;
             vertical-align: middle;
             #border-radius > .rounded();
         }
@@ -298,6 +297,21 @@ select[disabled],{
             text-align: center;
             color: @grey3;
             .show;
+        }
+
+        &.large-preview {
+            width: 320px;
+            height: auto;
+            line-height: auto;
+        }
+
+        &.small-preview {
+            line-height: 60px;
+            .square(60px);
+        }
+
+        &:not(.large-preview) {
+            img { max-height: 100px; }
         }
     }
 
