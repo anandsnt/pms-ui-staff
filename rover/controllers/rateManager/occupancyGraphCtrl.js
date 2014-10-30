@@ -424,13 +424,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				$scope.targetData = manipulateTargetData(data);
 
-				$scope.$emit('computeColumWidth');	
-
-				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
-
-				setTimeout(function() {
-					$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
-				}, 1000);
+				$scope.$emit('computeColumWidth');
 			});
 		};
 
@@ -446,8 +440,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				$scope.highchartsNG.options.chart.height = $scope.graphDimensions.height;		
 			}
 
+			if(!$scope.myScroll['RateMgrOccupancyGraphCtrl']) {
+				$scope.$parent.myScroll = {};
+				$scope.myScroll = {};
+				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
+				$scope.myScroll.RateMgrOccupancyGraphCtrl = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
+
+			}
+
 			setTimeout(function() {
-				$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
+				$scope.myScroll.RateMgrOccupancyGraphCtrl.refresh();
 			}, 1000);
 		}
 
