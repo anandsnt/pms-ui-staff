@@ -31,9 +31,9 @@ angular.module('housekeepingModule', [])
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
                     }
-                    var businessDate = $stateParams.businessDate || $rootScope.businessDate
+                    var businessDate = $stateParams.businessDate || $rootScope.businessDate;
                     return RVHkRoomStatusSrv.fetchRoomList({
-                        businessDate: $rootScope.businessDate
+                        businessDate: businessDate
                     });
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
