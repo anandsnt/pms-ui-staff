@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate) {
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -41,6 +41,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.currencySymbol = "";
 		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
+
+	    $rootScope.businessDate = businessDate;
 	
 	    var routeChange = function(event, newURL) {
 	      event.preventDefault();
@@ -137,7 +139,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/?date=" + $rootScope.businessDate,
+						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}, {
 						title: "MENU_TASK_MANAGEMENT",
@@ -197,7 +199,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 					iconClass: "icon-housekeeping",
 					submenu: [{
 						title: "MENU_ROOM_STATUS",
-						action: "staff#/staff/housekeeping/roomStatus/",
+						action: "staff#/staff/housekeeping/roomStatus?businessDate=" + $rootScope.businessDate,
 						menuIndex: "roomStatus"
 					}]
 				},{
@@ -361,7 +363,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			setTimeout(function() {
 				$scope.clearErrorMessage();
 				$scope.$apply();
-			}, 2000);
+			}, 10000);
 		});
 
 		/*
@@ -425,7 +427,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			if (data.pms_type === null)
 				$scope.isStandAlone = true;
 			setupLeftMenu();
-			$rootScope.businessDate = data.business_date;
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
