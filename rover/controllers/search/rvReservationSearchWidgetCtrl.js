@@ -24,6 +24,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
+		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
+		$scope.start = 0;
+		$scope.end = 100;
 
 		//results
 		$scope.results = [];
@@ -123,6 +126,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if ($scope.results.length > 0) { //if there is any result then only we want to filter
 				applyFilters();
 			}
+			if($scope.nextAction){
+				$scope.start = $scope.start + RVSearchSrv.searchPerPage ;
+			//	$scope.end = $scope.start + $scope.results.length - 2;
+			}
+
+			if($scope.prevAction){
+				$scope.start = $scope.start - RVSearchSrv.searchPerPage ;
+
+			}
+				$scope.totalSearchResults = RVSearchSrv.totalSearchResults
+				$scope.end = $scope.start + $scope.results.length - 1;
+
 			//TODO: commenting out for now. See if this has to be restored
 			//$scope.firstSearch = false;
 			//$scope.fetchTerm = $scope.textInQueryBox;
@@ -141,6 +156,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 			$scope.searchType = "default";
 			$scope.errorMessage = errorMessage;
+
 			setTimeout(function() {
 				refreshScroller();
 				$scope.$apply(function() {
@@ -157,7 +173,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			for (var i = 0; i < $scope.results.length; i++) {
 				$scope.results[i].is_row_visible = true;
 			}
-
+			$scope.end = $scope.start + $scope.results.length - 1;
 			refreshScroller();
 			$scope.$emit('hideLoader');
 		});
@@ -250,7 +266,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			return false;
 		}
 
-		var applyFilters = function(){
+		var applyFilters = function(isLocalFiltering){
 			var value = "";
 			//searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
 			//if it is zero, then we will request for webservice
@@ -268,6 +284,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					$scope.results[i].is_row_visible = false;
 				}
 			}
+			if(isLocalFiltering){
+				$scope.start = 0;
+				$scope.end = totalCountOfFound;
+				$scope.totalSearchResults = totalCountOfFound;
+			}
+			
 			$scope.isTyping = false;
 		};
 
@@ -276,6 +298,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
+
 			//if the entered text's length < 3, we will show everything, means no filtering    
 			if ($scope.textInQueryBox.length < 3) {
 				//based on 'is_row_visible' parameter we are showing the data in the template      
@@ -292,9 +315,16 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
 					&& !$scope.firstSearch && $scope.results.length > 0 
 					&& RVSearchSrv.totalSearchResults <= RVSearchSrv.searchPerPage) {
-					applyFilters();
+			RVSearchSrv.page = 1;
+		
+					var isLocalFiltering = true;
+					applyFilters(isLocalFiltering);
 				} else {
 					RVSearchSrv.page = 1;
+					$scope.start = 0;
+					$scope.end = $scope.start + $scope.results.length - 1;
+					$scope.nextAction = false;
+					$scope.prevAction = false;
 					fetchSearchResults();					
 				}
 				// we have changed data, so we are refreshing the scrollerbar
@@ -314,6 +344,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			$scope.firstSearch = false;
 			$scope.fetchTerm = $scope.textInQueryBox;
+			
 			$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 
 		};
@@ -427,6 +458,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
 			$scope.firstSearch = true;
+			$scope.start = 0;
+			$scope.end = 100;
 
 			$scope.$emit("SearchResultsCleared");
 			setTimeout(function(){
@@ -591,18 +624,30 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.loadNextSet = function(){
 			RVSearchSrv.page++;
+			$scope.nextAction = true;
+			$scope.prevAction = false;
+
+			//$scope.start = $scope.start +  ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) ;
+			//$scope.end = $scope.start + $scope.results.length - 1;
+			//alert($scope.end);
 			fetchSearchResults();
 		};
 
 		$scope.loadPrevSet = function(){
 			RVSearchSrv.page--;
+			//$scope.start = $scope.start -  ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) ;
+			//$scope.end = $scope.start + $scope.results.length - 1;
+			$scope.nextAction = false;
+			$scope.prevAction = true;
+			//$scope.start = $scope.start +  ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) ;
+			//$scope.end = $scope.start + $scope.results.length;
 			fetchSearchResults();
 		};
 
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
-			if(RVSearchSrv.page * RVSearchSrv.searchPerPage >= RVSearchSrv.totalSearchResults){
-				var isDisabled = true;
+			if(($scope.end + 1) >= RVSearchSrv.totalSearchResults){
+				isDisabled = true;
 			}
 			return isDisabled;
 		};
@@ -610,11 +655,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isPrevButtonDisabled = function(){
 			var isDisabled = false;
 			if(RVSearchSrv.page == 1){
-				return true;//TODO: Write the logic
+				isDisabled = true;//TODO: Write the logic
 			}
 			return isDisabled;
 		}
-
-
 	}
 ]);

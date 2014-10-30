@@ -15,8 +15,11 @@
 	<section id="dashboard-search" class="content scrollable" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	    	<button class="button blue" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" ng-show="results.length > 0" ng-class="{grey: isPrevButtonDisabled()}">prev</button>
-	    	<button class="button blue" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" ng-show="results.length > 0" ng-class="{grey: isNextButtonDisabled()}">next</button>
+	    	<div ng-show="results.length > 0">
+	    		<button class="button blue" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" ng-class="{grey: isPrevButtonDisabled()}">prev</button>
+	    		<button class="button blue" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" ng-class="{grey: isNextButtonDisabled()}">next</button>
+	    		<span>showing {{start}} to {{end}} out of {{totalSearchResults}} results</span>
+	    	</div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
 				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
 					<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
