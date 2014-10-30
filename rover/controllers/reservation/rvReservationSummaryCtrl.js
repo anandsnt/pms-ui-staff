@@ -7,6 +7,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.isSubmitButtonDisabled = false;
 		$scope.isSixPaymentGatewayVisible = false;
 		$scope.isMLICreditCardVisible = false;
+		
+	    //$scope.iFrameUrl ="http://localhost:3000/api/ipage/index.html?amount="+$filter('number')($scope.reservationData.totalStayCost,2)+'&card_holder_first_name=aaaaa&service_action=pay';
 		// var absoluteUrl = $location.$$absUrl;
 // 		
 		// $scope.absoluteUrl = absoluteUrl.split("/staff#/")[0];
@@ -53,10 +55,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		
 		setTimeout(function(){
-			// var MyIFrame = document.getElementById("sixpaymentform");
-			// var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
-			// if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
-			// MyIFrameDoc.getElementById("six_form").submit();
+			console.log("submit auto")
+			var MyIFrame = document.getElementById("sixpaymentform");
+			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
+			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
+			MyIFrameDoc.getElementById("six_form").submit();
 // 			
 		}, 3000);
 	
@@ -195,10 +198,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// MLI Integration.
 			if($rootScope.paymentGateway === "sixpayments"){
-				data.credit_card_transaction_id = $scope.creditCardTransactionId;
-				data.isSixPayment = true;
+				data.payment_type.credit_card_transaction_id = $scope.creditCardTransactionId;
+				data.payment_type.isSixPayment = true;
 			} else {
-				data.isSixPayment = false;
+				data.payment_type.isSixPayment = false;
 				if ($scope.reservationData.paymentType.type !== null) {
 					if ($scope.reservationData.paymentType.type.value === "CC") {
 						data.payment_type.session_id = $scope.data.MLIData.session;
