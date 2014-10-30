@@ -11,6 +11,7 @@ var GridPanel = React.createClass({
 			filter: 			props.filter,
 			edit:               props.edit,
 			iscroll: 			props.iscroll,
+			meta:               props.meta,
 			data: 				props.data,
 			angular_evt: 		props.angular_evt,
 			currentResizeItem:  props.currentResizeItem,

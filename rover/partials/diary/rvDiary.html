@@ -41,30 +41,28 @@
         <div class="entry rate">
             <label for="rate-type">Rate Type</label>
             <div class="faux-select" ng-click="gridProps.filter.toggleRates()">
-                Standard Rate
+                {{gridProps.filter.rate_type}}
             </div>
             <div id="diary-rates" class="faux-select-options hidden">
                 <div class="header">
                     <!-- Standard Rate -->
                     <div>
-                        <label class="radio inline" ng-class="{checked: gridProps.filter.rate_type === 'standard'}">
+                        <label class="radio inline">
+                            <span class="icon-form" ng-class="{active: gridProps.filter.rate_type === 'Standard'}"></span>
                             <input name="rate-type" 
                                    id="standard-rate" 
-                                   value="standard" 
+                                   value="Standard" 
                                    ng-model="gridProps.filter.rate_type" 
-                                   type="radio"
-                                   class="icon-form placeholder"
-                                   ng-class="{active: gridProps.filter.rate_type === 'standard'}" />
+                                   type="radio" />
                             Standard
                         </label>
-                        <label class="radio inline" ng-class="{checked: gridProps.filter.rate_type === 'corporate'}">
+                        <label class="radio inline">
+                            <span class="icon-form" ng-class="{active: gridProps.filter.rate_type === 'Corporate'}"></span>
                             <input name="rate-type" 
                                    id="corporate-rate" 
-                                   value="corporate" 
+                                   value="Corporate" 
                                    ng-model="gridProps.filter.rate_type" 
-                                   type="radio" 
-                                   class="icon-form placeholder"
-                                   ng-class="{active: gridProps.filter.rate_type === 'corporate'}"/>
+                                   type="radio" />
                             Corporate 
                             <span>Select Account</span>
                             <ul>
@@ -94,8 +92,18 @@
                 <!-- Corporate Rate Search - show only when Corporate Rate is selected -->
                 <div class="entry search" ng-show="gridProps.filter.rate_type === 'corporate'">
                     <a href="#" id="diary-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></a>
-                    <button type="submit" name="submit" class="icons icon-search">Search</button>
-                    <input name="diary-corporate-query" id="diary-corporate-query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" />
+                    <span type="submit" name="submit" class="icons icon-search">Search</span>
+                    <input name="diary-corporate-query" id="diary-corporate-query" class="query" placeholder="Type Company or Travel Agent Name" type="search" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+                </div>
+                <div class="entry results">
+                    <ul class="search-list" ng-hide="companyCardResults.length === 0">
+                        <li ng-repeat="name_card in companyCardResults track by $index">
+                            <div class="icon company-card" ng-if="name_card.account_type === 'COMPANY' && name_card.company_logo === ''"></div>
+                            <div class="icon travel-agent" ng-if="name_card.account_type === 'TRAVELAGENT' && name_card.company_logo == ''"></div>
+                            <img ng-src="{{name_card.company_logo}}" alt="" ng-if="name_card.company_logo !== ''" />
+                            <h4 ng-bind-html="row.account_name|highlight:companySearchText:false"></h4>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

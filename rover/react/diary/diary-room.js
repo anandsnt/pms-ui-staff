@@ -1,16 +1,21 @@
 var Room = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
-		return this.props.data.status !== nextProps.data.status;
+		var room_meta_status = this.props.meta.room.status;
+
+		return this.props.data[room_meta_status] !== nextProps.data[room_meta_status];
 	},
 	render: function() {
+		var props = this.props,
+			room_meta = props.meta.room;
+
 		return React.DOM.li({
-			className: 'room-title' + (!_.isEmpty(this.props.data.status) ? ' ' + this.props.data.status: '')
+			className: 'room-title' + (!_.isEmpty(props.data[room_meta.status]) ? ' ' + this.props.data[room_meta.status] : '')
 		},
 		React.DOM.span({
 			className: 'number'
-		}, this.props.data.number),
+		}, props.data[room_meta.number]),
 		React.DOM.span({
 			className: 'type'
-		}, this.props.data.type));
+		}, props.data[room_meta.type]));
 	}
 });

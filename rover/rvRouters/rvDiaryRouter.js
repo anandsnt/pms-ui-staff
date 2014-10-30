@@ -11,10 +11,14 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'RVDiaryCtrl',
             resolve: {
-                loadInitialData: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchInitialData(new Date('09/30/2014 12:00 AM'),
-                                                       { arrival_date: 'start_date',
-                                                         departure_date: 'end_date' });
+                /*payload: function(rvDiarySrv, $stateParams) {
+                    return rvDiarySrv.fetchOccupancy(new Date(), (new Date()).addDays(2)); //fetchInitialData(Date.now());
+                },*/
+                arrivalTimes: function(rvDiaryFilterSrv, $stateParams) {
+                    return rvDiaryFilterSrv.fetchArrivalTimes(15);
+                },
+                roomTypes: function(rvDiaryFilterSrv, $stateParams) {
+                    return rvDiaryFilterSrv.fetchRoomTypes();
                 }
             }
         });

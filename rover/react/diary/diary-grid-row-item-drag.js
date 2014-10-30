@@ -102,9 +102,12 @@ var GridRowItemDrag = React.createClass({
 		}
 	},
 	componentWillReceiveProps: function(nextProps) {
+		var id_meta = this.props.meta.occupancy.id;
+
 		if(!this.props.currentDragItem && 
 		   !this.state.currentDragItem && 
-		    nextProps.currentDragItem && nextProps.currentDragItem.id === this.props.data.id) {
+		    nextProps.currentDragItem && 
+		    nextProps.currentDragItem[id_meta] === this.props.data[id_meta]) {
 
 			this.setState({
 				currentDragItem: nextProps.currentDragItem

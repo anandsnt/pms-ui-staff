@@ -6,11 +6,10 @@ sntRover
 .service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants',
     function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants) {
 
-    	//this.model = new Model({ room_types: [], rooms: [], results: [] });
-    	//this.models.room_types = [];
-    	//this.models.rooms = [];
-    	//this.models.rates = [];
-    	//this.models.reservations = [];
+    	this.index = Object.create(null);
+    	this.index.rooms = Object.create(null);
+    	this.index.roomTypes = Object.create(null);
+    	this.index.occupancies = Object.create(null);
     	
     	this.normalizeData = function(data, meta) {
     		var room, 
@@ -40,10 +39,89 @@ sntRover
     		return data;
     	};
 
+    	this.createIndicies = function(payload) {
+    		var rooms = payload.rooms,
+    			roomTypes = payload.room_types,
+    			occupancies = payload.results.occupancy,
+    			roomIndex = this.index.rooms,
+    			roomTypeIndex = this.index.roomTypes,
+    			occIndex = this.index.occupancies;
+
+    		for(var i = 0, len = rooms.length; i < len; i++) {
+    			roomIndex[rooms[i].id] = rooms[i];
+    		}
+
+    		for(var i = 0, len = roomTypes.length; i < len; i++) {
+    			roomTypeIndex[roomTypes[i].id] = roomTypes[i];
+    		}
+
+    		for(var i = 0, len = occupancies.length; i < len; i++) {
+    			occIndex[occupancies[i].reservation_id] = occupancies[i];
+    		}
+    	};
+
+    	this.normalize = function(payload, meta) {
+    		var rooms = payload.rooms,
+    			room_types = payload.room_types,
+    			occupancies = payload.results.occupancy,
+    			cur_room,
+    			cur_occupancy;
+
+    		for(var i = 0, len = occupancies.length; i < len; i++) {
+    			cur_occupancy = occupancies[i];
+    			cur_room = this.index.rooms[cur_occupancy.room_id];
+
+    			if(cur_room) {
+    				cur_room.room_type = this.index.roomTypes[cur_room.room_type_id].name;
+
+    				if(!cur_room.occupancy) {
+    					cur_room.occupancy = [];
+    				}
+
+    				occupancy.arrival = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+    				occupancy.departure = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+    				occupancy.maintenance = this.normalizeMaintenanceInterval(cur_room.departure_cleaning_time);
+
+    				cur_room.occupancy.push(cur_occupancy);
+    			}
+    		}
+    	};
+
+    	this.normalizeMaintenanceInterval = function(time, base_interval) {
+    		var t_a = time.slice(0, -2),
+    			t_b = time.slice(-3),
+    			intervals = 60 / base_interval;
+
+    		return intervals * t_a + parseInt(60 / base_interval);
+    	};
+
+    	this.normalizeTime = function(date, time) {
+    		var t_a = time.slice(0, -1),
+    			t_b = time.slice(-1);
+
+    		return Date.parse(date + ' ' + t_a + ' ' + t_b);
+    	};
+
     	this.merge = function(currentData, incomingData) {
 
     	};
     	
+    	this.fetchOccupancy = function(start_date, end_date) {
+    		var q = $q.defer(),
+    			url = 'api/daily_occupancies',
+    			dto = {
+    				from_date: tzIndependentDate(start_date),
+    				to_date: tzIndependentDate(end_date)
+    			};
+
+    		rvBaseWebSrvV2.getJSON(url, dto).then(function(data) {
+    			q.resolve(data);
+    		}, function(data) {
+    			q.reject(data);
+    		});
+
+    		return q.promise;
+    	};
     	/*this.reservations = function(date, rate_id) { //, calendar_date, room_type_ids) {
     		//ASSUME in ms for now
     		var begin_date = calendar_date + rvDiaryConstants.SEEK_OFFSET,
@@ -53,17 +131,47 @@ sntRover
     		rvBaseWebSrvV2.getJSON();
     	};*/
 
-        this.fetchInitialData = function (arrival_date, meta){
+        this.fetchFilterData = function (start_date, end_date, rate_id, room_type_ids){
             var deferred = $q.defer (),
-            	rooms;
+            	url = '/api/hourly_availability',
+            	start = start_date.toComponents().time,
+            	end = end_date.toComponents().time,
+            	date = 
+            	dto = Object.create(null, { 
+            		begin_time: { 
+            			enumerable: true,
+            			writable: true,
+            			value: undefined
+					},
+					end_time: {
+						enumerable: true,
+            			writable: true,
+            			value: undefined
+					},
+					date: {
+						enumerable: true,
+            			writable: true,
+            			value: undefined
+					},
+					rate_id: {
+						enumerable: true,
+            			writable: true,
+            			value: undefined
+					},
+					room_type_ids: {
+						enumerable: true,
+            			writable: true,
+            			value: []
+					}
+            	});
 
-            rooms = [
+            /*rooms = [
 				{
 					id: 0,
 					key: 'room-0',
 					number: '0',
 					type: 'Single',
-					reservations: [
+					occupancy: [
 						{
 							id: 1000,
 							key: 'guest-status-0000',
@@ -658,7 +766,7 @@ sntRover
 						}
 					]
 				}
-			];
+			];*/
 
 			deferred.resolve(this.normalizeData(rooms, meta));
 
