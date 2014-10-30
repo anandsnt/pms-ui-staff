@@ -4,7 +4,7 @@
     
     <!-- 1. Cancel Options screen -->
     <fieldset id="cancel-options">
-        <span class="text">Deposit of '{{currencySymbol}}{{ngDialogData.deposit | number:2}}' will not be refunded</span>
+        <span class="text">{{'PENALTY_WARNING_MSG1' |translate}} '{{currencySymbol}}{{ngDialogData.deposit | number:2}}' {{'PENALTY_WARNING_MSG2' |translate}}</span>
         <div class="actions">
             <button type="button" class="button green" ng-click="showPenaltyPopup()" translate>OK</button>           
         </div>

@@ -342,7 +342,7 @@ sntRover.controller('reservationActionsController', [
 						}
 					}
 					//to delete
-					var extraData = {"is_within_cancellation_period":false,"deposit_amount":"22"};
+					var extraData = {"is_within_cancellation_period":false,"deposit_amount":"12"};
 					if(extraData.is_within_cancellation_period){
 						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
 							showDepositPopup(extraData.deposit_amount);
