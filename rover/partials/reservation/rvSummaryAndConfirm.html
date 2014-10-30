@@ -217,15 +217,15 @@
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
-                <!-- <div class="entry full-width" >
+                <div class="entry full-width" >
                 	
-                	<iframe src="http://localhost:3000/api/ipage/test.html" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
+                	<iframe src="http://localhost:3000/api/ipage/index.html?amount=2&card_holder_first_name=soumya&service_action=pay" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="http://localhost:3000/"></iframe>
                 </div>
-                 -->
-                 <div class="entry full-width" >
+                
+                 <!-- <div class="entry full-width" >
                 	
-                	<iframe src="http://localhost:3000/api/ipage/index.html?amount={{reservationData.totalStayCost | number : 2}}&card_holder_first_name=aaaaa&service_action=pay" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
-                </div>
+                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
+                </div> -->
                 
                 
                 <!-- <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
