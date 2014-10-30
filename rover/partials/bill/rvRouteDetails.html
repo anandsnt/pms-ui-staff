@@ -34,10 +34,10 @@
 									<img src="/assets/{{paymentType.card_code}}.png" alt="" />
 								</figure>
 								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
-								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
-								<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.value"></span>
+								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>							
 							</span>
 							<span class="value code" ng-show = "paymentType.payment_type_id != 1">{{ paymentType.payment_type }}</span>
+							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.id"></span>
 						</div>
 					</div>
 				</div>
