@@ -25,16 +25,19 @@
 				</div>
 				<div class="title" ng-show= "showPayment">Payment</div>
 				<!-- Available credit card -->
-				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && attachedPaymentTypes.existing_payments.length > 0">
+				<div ng-iscroll='paymentList' ng-iscroll-delay='100' style="position: relative;height:210px;overflow: hidden;" ng-show = "!isAddPayment && showPayment && attachedPaymentTypes.length > 0">
 					<div class="wrapper">
-						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.value}" ng-show = "!isAddPayment && showPayment && paymentType.is_credit_card" ng-repeat="paymentType in attachedPaymentTypes.existing_payments" ng-click = "selectedEntity.selected_payment = paymentType.value">
+						<div class="payment" ng-class="{'active': selectedEntity.selected_payment == paymentType.id}" ng-show = "!isAddPayment && showPayment" ng-repeat="paymentType in attachedPaymentTypes" ng-click = "selectedEntity.selected_payment = paymentType.id">
 							<!-- add class active when selected -->
-							<figure class="card-logo">
-								<img src="/assets/{{paymentType.card_code}}.png" alt="" />
-							</figure>
-							<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.ending_with}}</span></span>
-							<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
-							<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.value"></span>
+							<span ng-show = "paymentType.payment_type_id == 1">
+								<figure class="card-logo">
+									<img src="/assets/{{paymentType.card_code}}.png" alt="" />
+								</figure>
+								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentType.mli_token}}</span></span>
+								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentType.card_expiry}}</span></span>
+								<span class="icons icon-ok-10" ng-show="selectedEntity.selected_payment == paymentType.value"></span>
+							</span>
+							<span class="value code" ng-show = "paymentType.payment_type_id != 1">{{ paymentType.payment_type }}</span>
 						</div>
 					</div>
 				</div>
