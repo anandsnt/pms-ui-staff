@@ -440,12 +440,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				$scope.highchartsNG.options.chart.height = $scope.graphDimensions.height;		
 			}
 
-			if(!$scope.myScroll['RateMgrOccupancyGraphCtrl']) {
+			if(!$scope.myScroll || !$scope.myScroll.RateMgrOccupancyGraphCtrl) {
 				$scope.$parent.myScroll = {};
 				$scope.myScroll = {};
 				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
-				$scope.myScroll.RateMgrOccupancyGraphCtrl = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
+				
+				try {
+					$scope.myScroll.RateMgrOccupancyGraphCtrl = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
+				}catch(e) {
 
+				}
 			}
 
 			setTimeout(function() {
