@@ -25,18 +25,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		// Listen to message from child IFrame window
 		eventer(messageEvent, function (e) {
-			 	console.log("reached")
 			   var responseData = e.data;
 		       if(responseData.response_message == "payment_success"){
 		       	
-		       	console.log("reached heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere")
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
        				responseData = dclone(responseData, unwantedKeys);
        				responseData.credit_card_payment_method = "SALE";
 		       		console.log(JSON.stringify(responseData));
-		       		$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-		       	//	$scope.successPayment();
 		       		
+		       		$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
+		       	    e.preventDefault();
 		       }
 		    
 		}, false);   
