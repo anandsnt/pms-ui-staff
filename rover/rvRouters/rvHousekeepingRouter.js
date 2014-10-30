@@ -32,7 +32,9 @@ angular.module('housekeepingModule', [])
                         }
                     }
 
-                    return RVHkRoomStatusSrv.fetchRoomList($rootScope.businessDate);
+                    return RVHkRoomStatusSrv.fetchRoomList({
+                        businessDate: $rootScope.businessDate
+                    });
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
                     return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : null;
@@ -89,7 +91,7 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement.start', {
             url: '/start',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementLanding.html',
-            controller: 'RVWorkManagementStartCtrl'            
+            controller: 'RVWorkManagementStartCtrl'
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {

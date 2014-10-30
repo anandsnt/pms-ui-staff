@@ -30,7 +30,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-		var scrollOptions =  {preventDefaultException:{ tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
+		var scrollOptions = {
+			preventDefaultException: {
+				tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+			},
+			preventDefault: false
+		};
 		$scope.setScroller('filtersection', scrollOptions);
 
 		// reset all the filters
@@ -67,7 +72,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// default no results found
 		$scope.noResultsFound = 0;
 
-		
+
 		// default no top filters
 		// $scope.topFilter = {};
 
@@ -87,9 +92,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			 * CICO-8620
 			 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
 			 * Rest of the times maintain state in the dropdown!
-			 * 
+			 *
 			 */
-			$_defaultEmp = ($scope.topFilter.byEmployee !== -1)? $scope.topFilter.byEmployee : $rootScope.userId;
+			$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
 
 			// when a employee logges in mobile view
 			// we introduce another level of tabs to seperate
@@ -462,14 +467,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				}
 
 				// filter by status in filter section, OCCUPANCY_STATUS
-				if ( $scope.isAnyFilterTrue(["vacant","occupied","queued"]) ) {
+				if ($scope.isAnyFilterTrue(["vacant", "occupied", "queued"])) {
 					/**
 					 *CICO-10255
 					 *Jos had reported an issue (Housekeeping - Filter screen when you click "show vacant" the "show queued" is also automatically marked)
 					 *		 				* Have removed invocation of these two functions
-					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked		 				
+					 * Also modified below condition.. Hide queued rooms IFF both vacant and queued are unchecked
 					 */
-					if ( !$scope.currentFilters.queued && !$scope.currentFilters.vacant  && room.is_queued ) {
+					if (!$scope.currentFilters.queued && !$scope.currentFilters.vacant && room.is_queued) {
 						room.display_room = false;
 						$scope.noResultsFound++;
 						continue;
@@ -814,7 +819,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// if we have hit the trigger refresh room list
 				if (diff > trigger) {
-					fetchRooms();
+
+					// fetchRooms();
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+						businessDate: $rootScope.businessDate,
+						refresh: true
+					}, function(data) {
+						roomList = data;
+						if ($rootScope.isStandAlone) {
+							// time to decide if this is an employee
+							// who has an active work sheets
+							$_checkHasActiveWorkSheet();
+						} else {
+							$timeout(function() {
+								$_postProcessRooms(roomList);
+							}, 10);
+						};
+					});
+
 				}
 
 				// for the smooth transition back
