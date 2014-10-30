@@ -33,7 +33,11 @@
                     <span class="file-preview small-preview">
                         <img src="{{data.icon}}" alt="" />
                     </span>
-                </div>     
+                </div>  
+                <div class="entry full-width">
+                    <label for="item-url"><span translate>URL_LABEL </span></label>
+                    <input type="text" name="item-url" ng-model="data.website_url" id="item-url" placeholder="Enter URL" value=""  />
+                </div>   
             </fieldset>
             <div class="actions float">
                 <button type="button" ng-click="goBack()" class="button blank" translate>CANCEL</button>
