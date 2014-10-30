@@ -45,13 +45,13 @@ sntRover.controller('RVWorkManagementCtrl', ['$rootScope', '$scope', 'employees'
 			"Stayover": "no-show",
 			"Not Reserved": "no-show",
 			"Not Defined": "no-show",
-			"Day Use": "check-out",
+			"Day Use": "check-in",
 			"Due out / Arrival": "check-in",
 			"Departed / Arrival": "check-in",
 			"Arrived / Departed": "check-in",
-			"Due out / Departed": "check-out",
-			"Arrived / Day use / Due out": "no-show",
-			"Arrived / Day use / Due out / Departed": "check-out"
+			"Due out / Departed": "no-show",
+			"Arrived / Day use / Due out": "check-in",
+			"Arrived / Day use / Due out / Departed": "check-in"
 		}
 
 		$scope.departureClass = {

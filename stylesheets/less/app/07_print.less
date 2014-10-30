@@ -83,7 +83,15 @@ q:before, q:after {content: ""}
         }
     }
 
-    .root-view,
+    .root-view {
+        position: static !important;
+        top: 0 !important; 
+        left: 0 !important;
+        height: auto !important;
+        background: transparent !important;
+        overflow: visible;
+    }
+
     .main-view { background: transparent !important; }
 
     .wrapper { 
@@ -573,12 +581,13 @@ q:before, q:after {content: ""}
                     text-transform: uppercase;
                     color: @textColor;
                     margin-top: 3pt;
-                    .size(24pt, 5cm);
+                    height: 24pt;
                     .show;
                 }
 
                 .guest {
                     padding-left: 30pt;   
+                    width: 4cm;
                     .pull-left;                 
                     
                     &:before {
@@ -628,6 +637,7 @@ q:before, q:after {content: ""}
                     padding-right: 34pt;
                     text-align: left;
                     color: @textColor;
+                    width: 5cm;
                     .pull-right;
 
                     &:before {
@@ -748,6 +758,8 @@ q:before, q:after {content: ""}
                             width: auto;
 
                             span { 
+                                display: inline-block;
+
                                 &.completed { margin-right: 8pt; }
                                 &.total { padding-left: 8pt; border-left: 1px solid @grey3; }
                             }
