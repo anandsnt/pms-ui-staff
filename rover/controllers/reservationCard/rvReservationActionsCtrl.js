@@ -308,6 +308,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.showPenaltyPopup = function(){
+			ngDialog.close();
 			promptCancel(cancellationCharge, nights);
 		};
 
@@ -342,7 +343,7 @@ sntRover.controller('reservationActionsController', [
 						}
 					}
 					//to delete
-					var extraData = {"is_within_cancellation_period":false,"deposit_amount":"12"};
+					var extraData = {"is_within_cancellation_period":true,"deposit_amount":""};
 					if(extraData.is_within_cancellation_period){
 						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
 							showDepositPopup(extraData.deposit_amount);
@@ -353,10 +354,10 @@ sntRover.controller('reservationActionsController', [
 					}
 					else{
 						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
-							showDepositPopup(extraData.deposit_amount);
+							showPenaltyWarningPopup(cancellationCharge);
 						}
 						else{
-							showPenaltyWarningPopup(cancellationCharge);
+							promptCancel(cancellationCharge, nights);
 						}
 					}
 					//promptCancel(cancellationCharge, nights);
