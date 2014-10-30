@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope',function($scope, $rootScope) {
+sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('payment-content');
 	$scope.$on('paymentTabActive',function(){

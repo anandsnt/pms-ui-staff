@@ -84,10 +84,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
        	});
        	return isAllDepartmentsUnchecked;
     };
-    // Clicking on each Employees radio buttons.
+    // Clicking on each Employees check boxes.
     $scope.clickedEmployees = function(selectedIndex){
-    	// Unselecting all radio buttons on Departments except the selectedIndex.
-    	angular.forEach($scope.data.filterData.employees,function(item, index) {
+        
+        $scope.data.filterData.employees[selectedIndex].checked = !$scope.data.filterData.employees[selectedIndex].checked;
+    	
+        // Unselecting all radio buttons on Departments except the selectedIndex.
+    	/*angular.forEach($scope.data.filterData.employees,function(item, index) {
     		if(selectedIndex == index){
     			item.checked = true;
     			$scope.data.filterData.selectedEmployeeId = item.id;
@@ -97,21 +100,67 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     		}
        	});
        	console.log("$scope.data.filterData.selectedEmployeeId"+$scope.data.filterData.selectedEmployeeId);
+        */
     };
     // On selecting select button.
     $scope.clickedSelectButton = function(){
-    	$scope.getListOfCheckedDepartments();
     	// Close the entire filter box
     	if(!$scope.data.filterData.checkedAllDepartments) $scope.data.isActiveRevenueFilter = false;
+        $scope.filterByDepartmentsOrEmployees();
     };
-    // To get the list of departments id selected.
-    $scope.getListOfCheckedDepartments = function(){
-    	var selectedDepartmentList = [];
-    	angular.forEach($scope.data.filterData.departments,function(item, index) {
-       		if(item.checked) selectedDepartmentList.push(item.id);
-       	});
-       	console.log(selectedDepartmentList);
+    
+    // To Filter by Departments or Employees
+    $scope.filterByDepartmentsOrEmployees = function(){
+
+        // To get the list of departments id selected.
+        var selectedDepartmentList = [];
+        angular.forEach($scope.data.filterData.departments,function(item, index) {
+            if(item.checked) selectedDepartmentList.push(item.id);
+        });
+
+        // To get the list of employee id selected.
+        var selectedEmployeeList = [];
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            if(item.checked) selectedEmployeeList.push(item.id);
+        });
+
+        // Searching for transactions having department_id/employee_id from above lists.
+        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+
+            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+                
+                var noResultsFound = true;
+                angular.forEach(charge_codes.transactions,function(transactions, index3) {
+                    var itemFound = false;
+                    for(var i=0; i<selectedDepartmentList.length; i++){
+                        if(selectedDepartmentList[i] == transactions.department_id) itemFound = true;
+                    }
+                    for(var i=0; i<selectedEmployeeList.length; i++){
+                        if(selectedEmployeeList[i] == transactions.employee_id) itemFound = true;
+                    }
+
+                    if(itemFound){
+                        charge_groups.show = true;
+                        charge_codes.show  = true;
+                        transactions.show  = true;
+                        noResultsFound     = false;
+                    }
+                    else{
+                        transactions.show  = false;
+                    }
+                });
+
+                /*  No results on transactions matching employee_id or department_id
+                 *  So we have to hide its parent tabs - charge_groups & charge_codes
+                 */
+                if(noResultsFound){
+                    charge_groups.show = false;
+                    charge_codes.show  = false;
+                }
+            });
+        });
     };
+
     /** Employee/Departments Filter ends here .. **/
 
     /* Cahier filter starts here */

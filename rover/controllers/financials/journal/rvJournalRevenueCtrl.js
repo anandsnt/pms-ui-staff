@@ -2,7 +2,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('revenue-content');
 
-	$scope.initData = function(){
+	$scope.initRevenueData = function(){
 		var successCallBackFetchRevenueData = function(data){
 			console.log(data);
 			$scope.data.revenueData = {};
@@ -12,7 +12,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 		};
 		$scope.invokeApi(RVJournalSrv.fetchRevenueData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
 	};
-	$scope.initData();
+	$scope.initRevenueData();
 
 	$scope.$on('revenueTabActive',function(){
         setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
@@ -20,12 +20,12 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 	
 	$rootScope.$on('fromDateChanged',function(){
         console.log("fromDateChanged"+$scope.data.fromDate);
-        $scope.initData();
+        $scope.initRevenueData();
     });
 
     $rootScope.$on('toDateChanged',function(){
         console.log("toDateChanged"+$scope.data.toDate);
-        $scope.initData();
+        $scope.initRevenueData();
     });
 
 }]);

@@ -31,9 +31,9 @@
             </div>
             <div id="faux-revenue-employees" class="holder scrollable">
                 <div class="wrapper" ng-model="data.filterData.selectedEmployee">
-                    <label class="radio inline" ng-click="clickedEmployees($index)" ng-repeat="employee in data.filterData.employees">
-                        <span class="icon-form icon-radio" ng-class="{'checked':employee.checked}"></span>
-                        <input name="revenue-employees" value="{{employee.id}}" type="radio" />
+                    <label class="checkbox inline" ng-click="clickedEmployees($index)" ng-repeat="employee in data.filterData.employees">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked':employee.checked}"></span>
+                        <input name="revenue-employees" value="{{employee.id}}" type="checkbox" />
                         {{employee.name}}
                     </label>
                 </div>

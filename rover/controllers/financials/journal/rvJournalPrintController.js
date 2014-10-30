@@ -74,18 +74,17 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 		$scope.data.activeChargeCodes = [];
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			if(charge_groups.id == $scope.data.selectedChargeGroup){
-				console.log("found id");
-				charge_groups.showByCG = true;
+				charge_groups.show = true;
 				angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-					var obj = {"id": charge_codes.id , "name": charge_codes.name};
+					var obj = { "id": charge_codes.id , "name": charge_codes.name };
        				$scope.data.activeChargeCodes.push(obj);
 				});
 			}
 			else if($scope.data.selectedChargeGroup == 'ALL'){
-				charge_groups.showByCG = true;
+				charge_groups.show = true;
 			}
 			else{
-				charge_groups.showByCG = false;
+				charge_groups.show = false;
 			}
        	});
        	console.log($scope.data.revenueData.charge_groups);
@@ -99,14 +98,13 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
 
 				if(charge_codes.id == $scope.data.selectedChargeCode){
-					console.log("found id");
-					charge_codes.showByCC = true;
+					charge_codes.show = true;
 				}
 				else if($scope.data.selectedChargeGroup == 'ALL'){
-					charge_codes.showByCC = true;
+					charge_codes.show = true;
 				}
 				else{
-					charge_codes.showByCC = false;
+					charge_codes.show = false;
 				}
 			});
        	});
