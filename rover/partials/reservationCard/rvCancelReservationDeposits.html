@@ -1,0 +1,25 @@
+<div id="modal" class="modal-show" role="dialog">
+<!-- 
+    When selecting "Apply penalty option", add "pay-bill select-card" classes to #cancel-reservation, so you have: modal-content form cancel-reservation pay-bill select-card
+
+    When switching form exsiting to new card, replace class "select-card" with the class "new-card" in #cancel-reservation
+-->
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+<form  id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-cloak>
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    
+    <!-- 1. Cancel Options screen -->
+    <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
+
+        <div class="entry full-width">
+            <label for="cancel-reason">{{'CANCELLATION_REASON'| translate}}(<span translate>OPTIONAL</span>)</label>
+            <textarea id="cancel-reason" name="cancel-reason" placeholder="{{'CANCELLATION_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="cancellationData.reason"/>
+        </div> 
+        <div class="actions" ng-show="ngDialogData.deposit > 0">
+            <button type="button" class="button green" ng-click="proceedWithDepositRefund()" >PROCEED WITH DEPOSIT REFUND ({{currencySymbol}}{{ngDialogData.deposit | number:2}})</button>
+            <button type="button" class="button blue" ng-click="proceedWithOutDepositRefund()">PROCEED WITHOUT REFUND</button>
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+        </div>
+    </fieldset>
+</form>
+</div>
