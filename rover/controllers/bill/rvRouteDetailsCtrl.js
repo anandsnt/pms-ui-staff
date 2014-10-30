@@ -37,9 +37,22 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * function to show the add payment view
     */
 	$scope.showAddPayment = function(){
+        if(!$rootScope.isManualCCEntryEnabled){
+            $scope.isManualCCEntryEnabled = false;
+            ngDialog.open({
+                template: '/assets/partials/payment/rvPaymentModal.html',
+                controller: '',
+                scope: $scope
+              });
+            return;
+        }
 		$scope.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
 	}	
+    $scope.closeDialog = function(){
+        ngDialog.close();
+        
+    };
     /**
     * function to switch between the charge code and billing groups views
     */
