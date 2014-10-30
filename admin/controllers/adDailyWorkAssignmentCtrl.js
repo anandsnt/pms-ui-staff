@@ -208,7 +208,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var params = {
 				name: $scope.eachWorkShift.name,
-				time: $rootScope.businessDate + ' 00:' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
+				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
 				hotel_id: $rootScope.hotelId
 			};
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback, onSaveFailure);
@@ -226,7 +226,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var params = {
 				name: $scope.eachWorkShift.name,
-				time: $rootScope.businessDate + ' 00:' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
+				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
 				hotel_id: $rootScope.hotelId,
 				id: $scope.eachWorkShift.id
 			};
@@ -364,7 +364,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
 				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
-				completion_time: $rootScope.businessDate + ' 00:' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
 			};
 
@@ -391,7 +391,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
 				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
-				completion_time: $rootScope.businessDate + ' 00:' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
 				id: $scope.eachTaskList.id
 			};
