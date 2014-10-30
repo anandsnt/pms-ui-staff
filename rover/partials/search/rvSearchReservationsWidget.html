@@ -16,7 +16,7 @@
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	    	<div ng-show="results.length > 0" style="text-align:right;margin-top:10px; margin-right: 20px;">
-	    		<span>showing {{start}} to {{end}} out of {{totalSearchResults}} results</span>
+	    		<span>showing {{start}} to {{end}} of {{totalSearchResults}} items</span>
 
 	    		<button class="button blue" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" ng-class="{grey: isPrevButtonDisabled()}">prev</button>
 	    		<button class="button blue" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" ng-class="{grey: isNextButtonDisabled()}">next</button>
