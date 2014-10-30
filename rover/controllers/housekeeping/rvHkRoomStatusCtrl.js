@@ -836,7 +836,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// if we have hit the trigger refresh room list
 				if (diff > trigger) {
-					fetchRooms();
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {businessDate: $rootScope.businessDate}, function(data) {
+						roomList = data;
+						if ($rootScope.isStandAlone) {
+							// time to decide if this is an employee
+							// who has an active work sheets
+							$_checkHasActiveWorkSheet();
+						} else {
+							$timeout(function() {
+								$_postProcessRooms(roomList);
+							}, 10);
+						};
+					});
 				}
 
 				// for the smooth transition back
