@@ -24,6 +24,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
+		$scope.searchResultsFetchDone = false;
 
 		//results
 		$scope.results = [];
@@ -119,6 +120,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			//$scope.firstSearch = false;
 			$scope.searchType = "default";
 			$scope.isTyping = false;
+			$scope.searchResultsFetchDone = true;
 
 			if ($scope.results.length > 0) { //if there is any result then only we want to filter
 				displayFilteredResults();
@@ -141,6 +143,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 			$scope.searchType = "default";
 			$scope.errorMessage = errorMessage;
+			$scope.searchResultsFetchDone = true;
 			setTimeout(function() {
 				refreshScroller();
 				$scope.$apply(function() {
@@ -207,9 +210,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			//setting first letter as captial: soumya
 			$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
-			/*if($scope.fetchTerm == ""){
-		    $scope.fetchTerm = $scope.textInQueryBox;
-		}*/
 
 			if ($scope.textInQueryBox.length == 0 && $scope.searchType == "default") {
 				$scope.clearResults();
@@ -286,16 +286,14 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 						}
 					}
 					$scope.isTyping = false;
-					/*if(totalCountOfFound == 0){
-		        	var dataDict = {'query': $scope.textInQueryBox.trim()};
-		        	$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
-		        }*/
+
 				} else {
 					var dataDict = {
 						'query': $scope.textInQueryBox.trim()
 					};
 					$scope.firstSearch = false;
 					$scope.fetchTerm = $scope.textInQueryBox;
+					$scope.searchResultsFetchDone = false;
 					$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 				}
 				// we have changed data, so we are refreshing the scrollerbar
@@ -350,19 +348,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			return viewStatus;
 		};
-
-		//Map the room status to the view expected format
-		// $scope.getMappedClassWithResStatusAndRoomStatus = function(reservation_status, roomstatus, fostatus){
-		// var mappedStatus = "room-number";
-		// if(reservation_status == 'CHECKING_IN'){
-		// if(roomstatus == "READY" && fostatus == "VACANT"){
-		// mappedStatus +=  " ready";
-		// }else{
-		// mappedStatus += " not-ready";
-		// }
-		// }
-		// return mappedStatus;
-		// };
 
 		//Map the room status to the view expected format
 		$scope.getRoomStatusMapped = function(roomstatus, fostatus) {
@@ -498,12 +483,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				if (isSwiped && resultLength == 0) {
 					showNoMatchesMessage = true;
 				} else {
-					if (resultLength == 0 && queryLength >= 3 && !isTyping) {
+					if ($scope.searchResultsFetchDone && resultLength == 0 && queryLength >= 3 && !isTyping) {
 						showNoMatchesMessage = true;
 					}
 				}
 			}
-			if(!showNoMatchesMessage){
+			if(!showNoMatchesMessage && resultLength > 0){
 				var totalCountOfFound = 0;
 				for(var i = 0; i < results.length; i++){
 					if(results[i].is_row_visible)
