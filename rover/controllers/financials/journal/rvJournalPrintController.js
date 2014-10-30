@@ -75,17 +75,43 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			if(charge_groups.id == $scope.data.selectedChargeGroup){
 				console.log("found id");
+				charge_groups.showByCG = true;
 				angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
 					var obj = {"id": charge_codes.id , "name": charge_codes.name};
        				$scope.data.activeChargeCodes.push(obj);
 				});
 			}
+			else if($scope.data.selectedChargeGroup == 'ALL'){
+				charge_groups.showByCG = true;
+			}
+			else{
+				charge_groups.showByCG = false;
+			}
        	});
-       	console.log($scope.data.activeChargeCodes);
+       	console.log($scope.data.revenueData.charge_groups);
 	};
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
 		console.log($scope.data.selectedChargeCode);
+
+		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+
+			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+
+				if(charge_codes.id == $scope.data.selectedChargeCode){
+					console.log("found id");
+					charge_codes.showByCC = true;
+				}
+				else if($scope.data.selectedChargeGroup == 'ALL'){
+					charge_codes.showByCC = true;
+				}
+				else{
+					charge_codes.showByCC = false;
+				}
+			});
+       	});
+
+       	console.log($scope.data.revenueData.charge_groups);
 	};
 
 	// To handle Summary/Details toggle button click - REVENUE

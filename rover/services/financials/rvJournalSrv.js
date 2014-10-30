@@ -64,13 +64,14 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', f
 
 	this.fetchRevenueData = function(){
 		var deferred = $q.defer();
+		//var url = '/api/financial_transactions/revenue';
 		var url = '/sample_json/journal/journal_revenue.json';
-			BaseWebSrvV2.getJSON(url).then(function(data) {
-				this.revenueData = data;
-			   	deferred.resolve(this.revenueData);
-			},function(data){
-			    deferred.reject(data);
-			});	
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+			this.revenueData = data;
+		   	deferred.resolve(this.revenueData);
+		},function(data){
+		    deferred.reject(data);
+		});	
 		return deferred.promise;
 	};
 

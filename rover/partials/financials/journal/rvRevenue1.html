@@ -1,8 +1,8 @@
 <!-- Content REVENUE-->
-<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController">
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='1000' style="height:90%;">
     <div class="wrapper">
-        <table id="journal-grid" class="journal-grid">
-            <tbody>
+        <table id="journal-grid" class="journal-grid" ng-if="false">
+            <tbody ng-if="false">
                 <!-- First level row (with white background) -->
                 <tr ng-repeat="level1 in data.revenueData.charge_groups" class="grid-group rows-toggle"> 
                     <th scope="row" colspan="7">{{level1.name}}</th>
@@ -40,6 +40,84 @@
                     </td>
                 </tr>
             </tbody>
+
+            <tbody ng-repeat="level1 in data.revenueData.charge_groups">
+                    <!-- First level row (with white background) -->
+                    <tr class="grid-group rows-toggle"> 
+                        <!-- I've used data-href here to target which rows should toggle on click - data-href here needs to match data-id -->
+                        <th scope="row" colspan="7">{{level1.name}}</th>
+                        <td>{{currencySymbol}}{{level1.total}}</td>
+                    </tr>
+                    <!-- Second level row (with grey background) -->
+                    <tr class="grid-charge rows-toggle " ng-repeat="level2 in level1.charge_codes">
+                        <td>{{level2.id}}</td>
+                        <th scope="row" colspan="6">{{level2.name}}</th>
+                        <td>{{currencySymbol}}{{level2.total}}</td>
+                    </tr>
+
+                    <!-- Third level row (sometime with headings above columns), no background color -->
+                    <tr class="grid-item-heading " data-id="{3rd level row id}">
+                        <th scope="col">Room</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reservation Number</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Debit</th>
+                        <th scope="col">Credit</th>
+                    </tr>
+                    <tr class="grid-item " ng-repeat="level3 in level2.transactions">
+                        <td>{{level3.room}}</td>
+                        <td>{{level3.name}}</td>
+                        <td>{{level3.reservation_number}}</td>
+                        <td>{{level3.type}}</td>
+                        <td>{{level3.details}}</td>
+                        <td>{{level3.time}}</td>
+                        <td>{{level3.debit}}</td> 
+                    </tr>
+                    
+                </tbody>
+
         </table>
+
+
+
+        <table style="width:100%" border="1">
+
+            <tbody ng-repeat="level1 in data.revenueData.charge_groups">
+
+              <tr style="background-color:green" >
+
+                <td >{{level1.name}}</td>
+                <td>{{currencySymbol}}{{level1.total}}</td>
+                <td>
+                 <tr style="background-color:blue" ng-repeat="level2 in level1.charge_codes">
+
+                    <td>{{level2.id}}</td>
+                    <td >{{level2.name}}</td>
+                    <td>{{currencySymbol}}{{level2.total}}</td>
+                    <td>
+                        <table>
+                          <tr style="background-color:red" ng-repeat="level3 in level2.transactions">
+
+                            <td>{{level3.room}}</td>
+                            <td>{{level3.name}}</td>
+                            <td>{{level3.reservation_number}}</td>
+                            <td>{{level3.type}}</td>
+                            <td>{{level3.details}}</td>
+                            <td>{{level3.time}}</td>
+                            <td>{{level3.debit}}</td> 
+
+                          </tr>
+                  </table>
+                  </td>
+                 </tr>
+                </td>
+              </tr>
+
+            <tbody>
+        </table>
+
+
     </div>
 </div>
