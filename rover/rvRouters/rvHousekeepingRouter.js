@@ -31,9 +31,10 @@ angular.module('housekeepingModule', [])
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
                     }
-
-                    var businessDate = $stateParams.businessDate || $rootScope.businessDate
-                    return RVHkRoomStatusSrv.fetchRoomList(businessDate);
+                    var businessDate = $stateParams.businessDate || $rootScope.businessDate;
+                    return RVHkRoomStatusSrv.fetchRoomList({
+                        businessDate: businessDate
+                    });
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
                     return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
@@ -90,7 +91,7 @@ angular.module('housekeepingModule', [])
         $stateProvider.state('rover.workManagement.start', {
             url: '/start',
             templateUrl: '/assets/partials/workManagement/rvWorkManagementLanding.html',
-            controller: 'RVWorkManagementStartCtrl'            
+            controller: 'RVWorkManagementStartCtrl'
         });
 
         $stateProvider.state('rover.workManagement.multiSheet', {
