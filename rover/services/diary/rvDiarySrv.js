@@ -21,8 +21,8 @@ sntRover
 		end_date: 'departure'
 	}
 })
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', '$rootScope',
-    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata, $rootScope) {
+.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata',
+    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
 
     	this.start_date = undefined;
 
@@ -247,13 +247,13 @@ sntRover
         };
 
         this.fetchRooms = function() {
-     		var url = '/house/search.json?date=7/5/2014',
+     		var url = '/admin/hotel_rooms.json',
 				deferred = $q.defer(),
 				self = this;
 
 			RVBaseWebSrv.getJSON(url)
 			.then(function(data) {
-				var results = data.results;
+				var results = data;
 
 				self.createIndex(results, 'rooms', 'rooms');
 
@@ -266,19 +266,17 @@ sntRover
         };
 
         this.fetchRoomTypes = function() {
-			var url = 'api/room_types?exclude_pseudo=true',
+			var url = '/api/room_types',
 				deferred = $q.defer(),
 				self = this;
 
-			RVBaseWebSrv.getJSON(url)
+			rvBaseWebSrvV2.getJSON(url)
 			.then(function(data) {
-				var results = data.results;
+				self.createIndex(data, 'results', 'room_types');
 
-				self.createIndex(results, 'room_types', 'room_types');
-
-				deferred.resolve(results);
-			}, function(data) {
-				deferred.reject(data);
+				deferred.resolve(data.results);
+			}, function(err) {
+				deferred.reject(err);
 			});
 			
 			return deferred.promise;

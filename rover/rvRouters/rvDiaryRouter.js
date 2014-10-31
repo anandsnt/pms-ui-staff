@@ -11,27 +11,24 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'RVDiaryCtrl',
             resolve: {
-                arrivalTimes: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchArrivalTimes(15);
-                },
-                roomTypes: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchRoomTypes();
-                },
-                rooms: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchRooms();
-                },
                 payload: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchRoomTypes().then(function(data) {
-                        return rvDiarySrv.fetchRooms();
-                    }).then(function(data) {
+                    return rvDiarySrv.fetchRoomTypes()
+                    .then(rvDiarySrv.fetchArrivalTimes(15))   
+                    .then(rvDiarySrv.fetchRooms())
+                    .then(function() {
                         var cur_time = Date.now();
 
                         return rvDiarySrv.fetchOccupancy((new Date(cur_time)).addHours(-2), (new Date(cur_time)).addDays(1));
-                    }).then(function(data) {
+                    })
+                    .then(function() {
                         rvDiarySrv.normalize();
 
                         return rvDiarSrv.rooms;
-                    });         
+                    }); 
+
+                    /*return rvDiarySrv.fetchArrivalTimes(15)
+                           .then(rvDiarySrv.fetchRoomTypes()) 
+                           .then(rvDiarySrv.fetchRooms)      */
                 }
             }
         });
