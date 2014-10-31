@@ -529,6 +529,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// check whether any one of the rooms rate has isSuppressed on and turn on flag
 			var keepGoing = true;
+			$scope.reservationData.isRoomRateSuppressed = false;
 			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				if (keepGoing) {
 					if (room.isSuppressed) {

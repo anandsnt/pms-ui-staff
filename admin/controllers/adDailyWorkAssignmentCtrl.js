@@ -2,8 +2,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 	'$scope',
 	'$rootScope',
 	'ADDailyWorkAssignmentSrv',
-	'$anchorScroll', '$timeout',  '$location',
-	function($scope, $rootScope, ADDailyWorkAssignmentSrv , $anchorScroll, $timeout, $location) {
+	'$anchorScroll', '$timeout', '$location',
+	function($scope, $rootScope, ADDailyWorkAssignmentSrv, $anchorScroll, $timeout, $location) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -41,10 +41,10 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workTypeClickedElement = 'new';
 				resetEachWorkType();
 				$timeout(function() {
-		            $location.hash('new-form-holder-work-type');
-		            $anchorScroll();
-		    	});
-				
+					$location.hash('new-form-holder-work-type');
+					$anchorScroll();
+				});
+
 			} else {
 				$scope.workTypeForm = 'edit';
 				$scope.workTypeClickedElement = typeIndex;
@@ -153,9 +153,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.workShiftClickedElement = 'new';
 				resetEachWorkShift();
 				$timeout(function() {
-		            $location.hash('new-form-holder-work-shift');
-		            $anchorScroll();
-		    	});
+					$location.hash('new-form-holder-work-shift');
+					$anchorScroll();
+				});
 			} else {
 				$scope.workShiftForm = 'edit';
 				$scope.workShiftClickedElement = typeIndex;
@@ -163,8 +163,8 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				var time = this.item.time;
 				$scope.eachWorkShift = {
 					name: this.item.name,
-					hours: (!!time && time!="00:00") ? time.split(':')[0] : '00',
-					mins: (!!time && time!="00:00") ? time.split(':')[1] : '00',
+					hours: (!!time && time != "00:00") ? time.split(':')[0] : '00',
+					mins: (!!time && time != "00:00") ? time.split(':')[1] : '00',
 					hotel_id: $rootScope.hotelId,
 					id: this.item.id
 				};
@@ -208,10 +208,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var params = {
 				name: $scope.eachWorkShift.name,
-				time: $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
+				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
 				hotel_id: $rootScope.hotelId
 			};
-
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback, onSaveFailure);
 		};
 
@@ -227,7 +226,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var params = {
 				name: $scope.eachWorkShift.name,
-				time: $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins,
+				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
 				hotel_id: $rootScope.hotelId,
 				id: $scope.eachWorkShift.id
 			};
@@ -300,9 +299,9 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				$scope.taskListClickedElement = 'new';
 				resetEachTaskList();
 				$timeout(function() {
-		            $location.hash('new-form-holder-task-list');
-		            $anchorScroll();
-		    	});
+					$location.hash('new-form-holder-task-list');
+					$anchorScroll();
+				});
 			} else {
 				$scope.taskListForm = 'edit';
 				$scope.taskListClickedElement = typeIndex;
@@ -365,7 +364,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
 				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
-				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id
 			};
 
@@ -392,7 +391,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 				reservation_statuses_ids: $scope.eachTaskList.reservation_statuses_ids,
 				is_occupied: $scope.eachTaskList.front_office_status_ids.indexOf(2) > -1,
 				is_vacant: $scope.eachTaskList.front_office_status_ids.indexOf(1) > -1,
-				completion_time: $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins,
+				completion_time: $rootScope.businessDate + ' ' + $scope.eachTaskList.hours + ':' + $scope.eachTaskList.mins + ':00',
 				task_completion_hk_status_id: $scope.eachTaskList.task_completion_hk_status_id,
 				id: $scope.eachTaskList.id
 			};
