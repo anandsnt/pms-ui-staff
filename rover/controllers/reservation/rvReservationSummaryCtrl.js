@@ -6,10 +6,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonDisabled = false;
 		$scope.isSixPaymentGatewayVisible = false;
-		if($rootScope.paymentGateway === "sixpayments"){
-			$scope.isSixPaymentGatewayVisible = true;
-		}
+		$scope.isCallInOnsiteButtonVisible = false;
 		$scope.isMLICreditCardVisible = false;
+		$scope.isOnsiteActive = false;
+		if($rootScope.paymentGateway === "sixpayments"){
+			$scope.isCallInOnsiteButtonVisible = true;
+			$scope.isOnsiteActive = true;
+		}
+		
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
 	    $scope.iFrameUrl = domainUrl+"/api/ipage/index.html?amount="+$filter('number')($scope.reservationData.totalStayCost,2)+'&card_holder_first_name='+$scope.guestCardData.contactInfo.first_name+'&card_holder_last_name='+$scope.guestCardData.contactInfo.last_name+'&service_action=pay';
@@ -57,13 +61,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		
 		setTimeout(function(){
-			console.log("submit auto");
 			var MyIFrame = document.getElementById("sixpaymentform");
 			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
 			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
 			MyIFrameDoc.getElementById("six_form").submit();
 			
-		}, 3000);
+		}, 2000);
 	
 		// set the previous state
 		$rootScope.setPrevState = {
@@ -421,8 +424,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.changePaymentType = function(){
 			if($scope.reservationData.paymentType.type.value === 'CC'){
 				if($rootScope.paymentGateway === "sixpayments"){
-					$scope.isSixPaymentGatewayVisible = true;
-					$scope.isMLICreditCardVisible = false;
+					if($scope.isOnsiteActive){
+						$scope.isSixPaymentGatewayVisible = false;
+						$scope.isMLICreditCardVisible = false;
+					} else {
+						$scope.isSixPaymentGatewayVisible = true;
+						$scope.isMLICreditCardVisible = false;
+					}
+					
 				} else {
 					$scope.isSixPaymentGatewayVisible = false;
 					$scope.isMLICreditCardVisible = true;
@@ -464,6 +473,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 
 			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
+		};
+		$scope.clickedOnsite = function(){
+			$scope.isOnsiteActive = true;
+			$scope.isSixPaymentGatewayVisible = false;
+		};
+		$scope.clickedCallIn = function(){
+			$scope.isOnsiteActive = false;
+			$scope.isSixPaymentGatewayVisible = true;
 		};
 
 		$scope.init();

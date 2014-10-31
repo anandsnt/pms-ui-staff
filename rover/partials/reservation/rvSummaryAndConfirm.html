@@ -187,9 +187,9 @@
 				        </label>
 				    </div>
 				</div> -->
-				<div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
-					<span class="switch-icon" ng-class="{'onsite-active': isOnsiteActive}">On-Site</span>
-				     <span class="value" ng-class="{'onsite-active': !isOnsiteActive}">Call-In</span>
+				<div class="entry full-width" ng-show="isCallInOnsiteButtonVisible">
+					<span class="switch-icon" ng-class="{'onsite-active': isOnsiteActive}" ng-click="clickedOnsite()">On-Site</span>
+				     <span class="value" ng-class="{'onsite-active': !isOnsiteActive}" ng-click="clickedCallIn()">Call-In</span>
 				</div>
 				
                 <div class="entry full-width">
