@@ -1,4 +1,4 @@
-sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVPaymentSrv', 'ngDialog', 'RVBillCardSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVPaymentSrv, ngDialog, RVBillCardSrv){
+sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBillinginfoSrv', 'RVGuestCardSrv', 'ngDialog', 'RVBillCardSrv', function($scope, $rootScope,$filter, RVBillinginfoSrv, RVGuestCardSrv, ngDialog, RVBillCardSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.isAddPayment = false;
     $scope.chargeCodeToAdd = "";
@@ -37,9 +37,30 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     * function to show the add payment view
     */
 	$scope.showAddPayment = function(){
+        if(!$rootScope.isManualCCEntryEnabled){
+            $scope.isManualCCEntryEnabled = false;
+            var dialog = ngDialog.open({
+                template: '/assets/partials/payment/rvPaymentModal.html',
+                controller: '',
+                scope: $scope
+              });
+            return;
+        }
 		$scope.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
 	}	
+    /**
+    * Listener to track the ngDialog open event.
+    * We save the id for the ngDialog to close nested dialog for disabling manual payment addition.
+    */
+    $scope.$on("ngDialog.opened", function(event, data){
+            
+           $scope.ngDialogID =  data[0].id;
+    });
+    $scope.closeDialog = function(){
+        ngDialog.close($scope.ngDialogID);
+        
+    };
     /**
     * function to switch between the charge code and billing groups views
     */
@@ -118,7 +139,9 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     */
     $scope.selectChargeCode = function(selected_chargecode_id){
         $scope.chargeCodeToAdd = selected_chargecode_id;
-         $scope.addChargeCode();
+        $scope.addChargeCode();
+        $scope.chargeCodeSearchText = '';
+        $scope.showChargeCodes = false;
     }
     /**
     * function to fetch available charge code from the server
@@ -131,7 +154,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
             var data = {};
             data.id = $scope.reservationData.reservation_id;
@@ -156,6 +179,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.isBillingGroup = false;
                 if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                     $scope.$parent.$emit('hideLoader');                    
+                }else if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type != 'RESERVATION'){
+                    $scope.showPayment = true;
+                    $scope.attachedPaymentTypes = [];
+                    $scope.$parent.$emit('hideLoader');
                 }else{
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
@@ -164,7 +191,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
             var data = {};
             data.id = $scope.reservationData.reservation_id;
@@ -189,10 +216,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
            
-            $scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservation_id, successCallback, errorCallback);
+            $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
     };
 
     /**
@@ -243,7 +270,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
             var id = $scope.selectedEntity.id;
             if($scope.selectedEntity.entity_type != 'RESERVATION')
@@ -347,8 +374,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
+            
+            if($scope.selectedEntity.attached_charge_codes.length == 0 && $scope.selectedEntity.attached_billing_groups.length==0){
+                $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
+                return;
+            }
            $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
            
            /*

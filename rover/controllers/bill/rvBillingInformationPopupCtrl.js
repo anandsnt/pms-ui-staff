@@ -10,6 +10,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.isReloadNeeded = false;
     $scope.routes = [];
     $scope.attachedEntities = [];
+    $scope.errorMessage = '';
 	
 	$scope.closeDialog = function(){
 		ngDialog.close();
@@ -20,6 +21,14 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
 			$scope.$emit('hideLoader');
 			$scope.closeDialog();
 		};
+
+     
+    $scope.$watch(
+            function() { return $scope.errorMessage; },
+            function(error) {
+                $scope.refreshScroller('homeScroll');
+            }
+        );
     /**
     * function to get label for all routes and add routes button
     */
@@ -222,6 +231,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             var errorCallback = function(errorMessage) {
                 $scope.fetchEntities();
                 $scope.errorMessage = errorMessage;
+
             };
            
             $scope.invokeApi(RVBillinginfoSrv.fetchRoutes, $scope.reservationData.reservation_id, successCallback, errorCallback);
@@ -239,6 +249,7 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
             var errorCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorMessage;
+                
             };
            
             $scope.invokeApi(RVBillinginfoSrv.fetchAttachedCards, $scope.reservationData.reservation_id, successCallback, errorCallback);
@@ -251,5 +262,13 @@ sntRover.controller('rvBillingInformationPopupCtrl',['$scope','$rootScope','$fil
     $scope.saveRoute = function(){
             $rootScope.$broadcast('routeSaveClicked');
     };
+    /**
+    * Listener to show error messages for child views
+    */
+    $scope.$on("displayErrorMessage", function(event, error){
+        $scope.errorMessage = error;
+        
+    });
+
 	
 }]);
