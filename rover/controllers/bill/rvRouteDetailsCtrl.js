@@ -154,7 +154,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
             var data = {};
             data.id = $scope.reservationData.reservation_id;
@@ -187,7 +187,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
             var data = {};
             data.id = $scope.reservationData.reservation_id;
@@ -212,7 +212,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
            
             $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.reservationData.user_id, successCallback, errorCallback);
@@ -266,7 +266,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
             var id = $scope.selectedEntity.id;
             if($scope.selectedEntity.entity_type != 'RESERVATION')
@@ -370,8 +370,13 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
+            
+            if($scope.selectedEntity.attached_charge_codes.length == 0 && $scope.selectedEntity.attached_billing_groups.length==0){
+                $scope.$emit('displayErrorMessage',[$filter('translate')('ERROR_CHARGES_EMPTY')]);
+                return;
+            }
            $scope.selectedEntity.reservation_id=$scope.reservationData.reservation_id;      
            
            /*

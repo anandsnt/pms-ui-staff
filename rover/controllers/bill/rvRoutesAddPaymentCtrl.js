@@ -44,7 +44,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage;
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
            
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback, errorCallback);
@@ -74,7 +74,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			 		$scope.savePayment();// call save payment details WS		 		
 			 	}
 			 	else{
-			 		$scope.errorMessage = ["There is a problem with your credit card"];
+			 		$scope.$emit('displayErrorMessage',["There is a problem with your credit card"]); 
 			 	}			
 			 	$scope.$apply(); 	
 			 };
@@ -84,7 +84,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			    $scope.$emit("showLoader");
 			}
 			catch(err) {
-			   $scope.errorMessage = ["There was a problem connecting to the payment gateway."];
+			   $scope.$emit('displayErrorMessage',["There was a problem connecting to the payment gateway."]);
 			};
 			 		
 		};
@@ -99,7 +99,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
             };
             var errorCallback = function(errorMessage) {
                 $scope.$parent.$emit('hideLoader');
-                $scope.errorMessage = errorMessage[0];
+                $scope.$emit('displayErrorMessage',errorMessage);
             };
 			$scope.saveData.user_id = $scope.reservationData.user_id;
 			$scope.saveData.session_id = MLISessionId;
