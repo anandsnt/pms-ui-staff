@@ -187,9 +187,13 @@
 				        </label>
 				    </div>
 				</div> -->
-				<div class="entry full-width" ng-show="isCallInOnsiteButtonVisible">
-					<span class="switch-icon" ng-class="{'onsite-active': isOnsiteActive}" ng-click="clickedOnsite()">On-Site</span>
-				     <span class="value" ng-class="{'onsite-active': !isOnsiteActive}" ng-click="clickedCallIn()">Call-In</span>
+				<div class="entry full-width" style="height:50px;width:50%;" ng-show="isCallInOnsiteButtonVisible">
+					<a style="height:50px;width:50%;float:left;" ng-click="clickedOnsite()">
+						<span class="onsite" ng-class="{'onsite-active': isOnsiteActive}" >On-Site</span>
+				     </a>
+				     <a style="height:50px;width:50%;float:right;" ng-click="clickedCallIn()">
+					     <span class="call-in" ng-class="{'onsite-active': !isOnsiteActive}" >Call-In</span>
+					</a>
 				</div>
 				
                 <div class="entry full-width">

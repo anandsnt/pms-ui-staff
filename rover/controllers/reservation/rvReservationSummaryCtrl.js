@@ -90,8 +90,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.heading = "Guest Details & Payment";
 			$scope.setHeadingTitle($scope.heading);
 
-			$scope.setScroller('reservationSummary');
-			$scope.setScroller('paymentInfo');
+			$scope.setScroller('reservationSummary', {'click': true});
+			$scope.setScroller('paymentInfo', {'click': true});
 			fetchPaymentMethods();
 
 		};
@@ -475,10 +475,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
 		};
 		$scope.clickedOnsite = function(){
+			
 			$scope.isOnsiteActive = true;
 			$scope.isSixPaymentGatewayVisible = false;
 		};
 		$scope.clickedCallIn = function(){
+			
 			$scope.isOnsiteActive = false;
 			$scope.isSixPaymentGatewayVisible = true;
 		};
