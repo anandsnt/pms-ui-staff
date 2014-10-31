@@ -250,7 +250,7 @@ sntRover.controller('RVroomAssignmentController',[
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_number = parseInt($scope.assignedRoom.room_number, 10);
+		params.room_number = $scope.assignedRoom.room_number;
 		$scope.roomAssgnment.inProgress = true;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
