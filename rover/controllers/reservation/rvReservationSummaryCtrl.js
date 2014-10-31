@@ -6,12 +6,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonDisabled = false;
 		$scope.isSixPaymentGatewayVisible = false;
+		if($rootScope.paymentGateway === "sixpayments"){
+			$scope.isSixPaymentGatewayVisible = true;
+		}
 		$scope.isMLICreditCardVisible = false;
-		
-	    //$scope.iFrameUrl ="http://localhost:3000/api/ipage/index.html?amount="+$filter('number')($scope.reservationData.totalStayCost,2)+'&card_holder_first_name=aaaaa&service_action=pay';
-		// var absoluteUrl = $location.$$absUrl;
-// 		
-		// $scope.absoluteUrl = absoluteUrl.split("/staff#/")[0];
+		var absoluteUrl = $location.$$absUrl;
+		domainUrl = absoluteUrl.split("/staff#/")[0];
+	    $scope.iFrameUrl = domainUrl+"/api/ipage/index.html?amount="+$filter('number')($scope.reservationData.totalStayCost,2)+'&card_holder_first_name='+$scope.guestCardData.contactInfo.first_name+'&card_holder_last_name='+$scope.guestCardData.contactInfo.last_name+'&service_action=pay';
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 		var eventer = window[eventMethod];
 		
@@ -56,12 +57,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		
 		setTimeout(function(){
-			console.log("submit auto")
+			console.log("submit auto");
 			var MyIFrame = document.getElementById("sixpaymentform");
 			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
 			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
 			MyIFrameDoc.getElementById("six_form").submit();
-// 			
+			
 		}, 3000);
 	
 		// set the previous state
@@ -384,10 +385,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if (($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email == "") || ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail == "")) {
 				$scope.errorMessage = [$filter('translate')('INVALID_EMAIL_MESSAGE')];
 			}
-
-			if ($scope.reservationData.paymentType.type != null) {
-				if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
-					$scope.errorMessage = [$filter('translate')('INVALID_CREDIT_CARD')];
+			if($rootScope.paymentGateway !== "sixpayments"){
+				if ($scope.reservationData.paymentType.type != null) {
+					if ($scope.reservationData.paymentType.type.value === "CC" && ($scope.data.MLIData.session == "" || $scope.data.MLIData.session == undefined)) {
+						$scope.errorMessage = [$filter('translate')('INVALID_CREDIT_CARD')];
+					}
 				}
 			}
 
@@ -409,7 +411,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					id: $scope.reservationData.reservationId,
 					confirmationId: $scope.reservationData.confirmNum,
 					isrefresh: false
-				}
+				};
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
 			} else {
 				$scope.initReservationData();
@@ -455,14 +457,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var updateGuestEmailSuccessCallback = function(data) {
 				$scope.$emit('guestEmailChanged');
 				$scope.$emit("hideLoader");
-			}
+			};
 
 			var updateGuestEmailFailureCallback = function(data) {
 				$scope.$emit("hideLoader");
-			}
+			};
 
 			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
-		}
+		};
 
 		$scope.init();
 

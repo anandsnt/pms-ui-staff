@@ -173,7 +173,7 @@
                     <input class="summary_email" ng-model="otherData.additionalEmail">
                 </div>
                 
-                <div class="entry full-width">
+                <!-- <div class="entry full-width">
 				    <label for="booking-source">Booking Source</label>
 				    <div class="switch-button on">
 				        <input type="checkbox" checked="" value="booking-source" id="booking-source" name="booking-source">
@@ -186,8 +186,12 @@
 				            <span class="value">Call-In</span>
 				        </label>
 				    </div>
+				</div> -->
+				<div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
+					<span class="switch-icon" ng-class="{'onsite-active': isOnsiteActive}">On-Site</span>
+				     <span class="value" ng-class="{'onsite-active': !isOnsiteActive}">Call-In</span>
 				</div>
-                
+				
                 <div class="entry full-width">
                     <label for="payment-type" translate>PAYMENT_TYPE </label>
                     <div class="select">
@@ -209,41 +213,17 @@
                     </div>
                     <div class="reservation-card-expiry-date-container">
                         <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
-                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"ng-blur="initFetchMLI()" />
-                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"ng-blur="initFetchMLI()" />
+                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth" ng-blur="initFetchMLI()" />
+                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear" ng-blur="initFetchMLI()" />
                     </div>
                 </div>
                 <div data-type="credit-card-fields" class="entry full-width" ng-show="isMLICreditCardVisible">
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
-                <div class="entry full-width" >
-                	
-                	<iframe src="http://localhost:3000/api/ipage/index.html?amount=2&card_holder_first_name=soumya&service_action=pay" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="http://localhost:3000/"></iframe>
+                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">                	
+                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="http://localhost:3000/"></iframe>
                 </div>
-                
-                 <!-- <div class="entry full-width" >
-                	
-                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="{{absoluteUrl}}"></iframe>
-                </div> -->
-                
-                
-                <!-- <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
-                	
-                	<iframe src="http://10.7.1.17:5555/api/ipage/test.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
-                </div> -->
-                
-                
-                <!-- <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">
-                	
-                	<iframe src="http://stayntouch.perceptiveinteractive.com/standalone/app/iframe/payment.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
-                </div> -->
-                
-                
-                <!-- <div class="entry full-width">
-                	
-                	<iframe src="http://localhost/six_payment/payment_success.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
-                </div> -->
                 <div class="actions">
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonDisabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonDisabled">SUBMIT_RESERVATION</button>
                     <button class="button blank" type="button" ng-click="cancelButtonClicked()" translate>CANCEL</button>
