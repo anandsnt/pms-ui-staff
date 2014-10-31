@@ -179,6 +179,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                     $scope.isBillingGroup = false;
                 if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type == 'RESERVATION'){
                     $scope.$parent.$emit('hideLoader');                    
+                }else if($scope.reservationData.reservation_id != $scope.selectedEntity.id && $scope.selectedEntity.entity_type != 'RESERVATION'){
+                    $scope.showPayment = true;
+                    $scope.attachedPaymentTypes = [];
+                    $scope.$parent.$emit('hideLoader');
                 }else{
                     $scope.showPayment = true;
                     $scope.fetchAttachedPaymentTypes();
