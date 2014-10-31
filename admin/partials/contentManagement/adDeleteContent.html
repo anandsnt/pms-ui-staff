@@ -1,0 +1,18 @@
+<div role="dialog" id="modal" class="modal-show">
+	<div class="modal-content cms-content">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<span class="h3 message" translate>SURE_LABEL</span>
+		<span class="notice" ng-show="assocatedChildComponents.length > 0" translate>CONTENT_NOTIFICATION_LABEL </span>		
+		<ul class="cms-tree boxes" ng-show="assocatedChildComponents.length > 0">
+			<li class="category" ng-repeat="component in assocatedChildComponents">
+				<div class="sort">
+					<strong class="cms-name" ng-bind="component.component_name"></strong>
+					<span class="cms-type" ng-bind="component.component_type"></span>
+				</div>
+			</li>
+		</ul>
+		<div class="actions">
+			<button class="button red modal-close" type="button" ng-click="confirmDelete()" translate>CONFIRM_LABEL
+			</button><button class="button blank modal-close" type="button" ng-click="cancelDelete()" translate>CANCEL
+		</button></div>
+	</div></div>

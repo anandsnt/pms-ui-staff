@@ -20,7 +20,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
   	$scope.setScroller('billDays', scrollerOptionForSummary);
   	
-  	$rootScope.multiplePostingNumber = "";
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
 	$scope.saveData.promotions = !!reservationBillData.is_promotions_and_email_set ? true : false;
@@ -491,6 +490,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	         	if($scope.clickedButton == "checkinButton"){
 	         		$scope.isSwipeHappenedDuringCheckin = true;
 	         	}
+	         	passData.isSwipeHappenedDuringCheckin = $scope.isSwipeHappenedDuringCheckin;
 	  	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	};
          	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
