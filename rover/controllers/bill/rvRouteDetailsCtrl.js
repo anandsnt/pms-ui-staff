@@ -39,7 +39,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 	$scope.showAddPayment = function(){
         if(!$rootScope.isManualCCEntryEnabled){
             $scope.isManualCCEntryEnabled = false;
-            ngDialog.open({
+            var dialog = ngDialog.open({
                 template: '/assets/partials/payment/rvPaymentModal.html',
                 controller: '',
                 scope: $scope
@@ -49,8 +49,16 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
 		$scope.isAddPayment = true;
         $scope.$broadcast('showaddpayment');
 	}	
+    /**
+    * Listener to track the ngDialog open event.
+    * We save the id for the ngDialog to close nested dialog for disabling manual payment addition.
+    */
+    $scope.$on("ngDialog.opened", function(event, data){
+            
+           $scope.ngDialogID =  data[0].id;
+    });
     $scope.closeDialog = function(){
-        ngDialog.close();
+        ngDialog.close($scope.ngDialogID);
         
     };
     /**
