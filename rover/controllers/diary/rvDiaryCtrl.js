@@ -1,4 +1,13 @@
-sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window', 'ngDialog', 'rvDiarySrv', 'rvDiaryFilterSrv', 'payload', 'arrivalTimes', 'roomTypes',
+sntRover.controller('RVDiaryCtrl', 
+	[ 	'$scope', 
+		'$rootScope', 
+		'$filter', 
+		'$window', 
+		'ngDialog', 
+		'rvDiarySrv', 
+		'rvDiaryFilterSrv',
+		'rvDiaryMetadata', 
+		'payload',
 	function($scope, 
 			$rootScope, 
 			$filter, 
@@ -6,24 +15,23 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 			ngDialog, 
 			rvDiarySrv, 
 			rvDiaryFilterSrv,
-			payload,
-			arrivalTimes,
-			roomTypes) {
+			rvDiaryMetadata,
+			payload) {
 	//'use strict';
 	BaseCtrl.call(this, $scope);
 
-	$scope.data 			= payload.rooms;
-	$scope.stats 			= payload.available_occupancy_count;
-	$scope.available_slots 	= payload.availability;
+	$scope.data 			= payload;
+	$scope.stats 			= rvDiarySrv.availability_count; //payload.available_occupancy_count;
+	$scope.available_slots 	= rvDiarySrv.availability;
 
 	/*FILTER CONFIG*/
 	//$scope.room_types = _.uniq(_.pluck($scope.data, 'type'));
 	//$scope.room_types.unshift('All');
 	
-	$scope.start_date = new Date('09/30/2014 12:00 AM');
-	$scope.start_time = new Time($scope.start_date.toComponents().time);
-	$scope.arrival_times = arrivalTimes;
-	$scope.room_types = roomTypes;
+	$scope.start_date 		= rvDiarySrv.start_date;
+	$scope.start_time 		= new Time($scope.start_date.toComponents().time);
+	$scope.arrival_times 	= rvDiarySrv.arrival_times;
+	$scope.room_types 		= rvDiarySrv.room_types;
 
 	$scope.selectedReservations = [];
 
@@ -74,7 +82,8 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 				maintenance_span_int: 2, //In sub-intervals(ie. 15min interval count)
 				new_reservation_time_span: 4 //In hours - let's change this later to intervals as well
 			},
-			meta: {
+			meta: _.extend({}, rvDiaryMetadata),
+				/*{
 				room: {
 					id: 'id',
 					number: 'room_no',
@@ -91,7 +100,7 @@ sntRover.controller('RVDiaryCtrl', [ '$scope', '$rootScope', '$filter', '$window
 					start_date: 'arrival',
 					end_date: 'departure'
 				}
-			},
+			},*/
 			edit: {
 				active: false,
 				originalItem: undefined,

@@ -3,76 +3,97 @@ sntRover
 	TIME_SPAN_SEEK: 48 * 86400000, 
 	SEEK_OFFSET: -7200,
 	RESERVATION_API: 'api/hourly_availability' })
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants',
-    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants) {
+.constant('rvDiaryMetadata', {
+	room: {
+		id: 'id',
+		number: 'room_no',
+		type: 'room_type',
+		type_id: 'room_type_id',
+		row_children: 'occupancies'
+	},
+	occupancy: {
+		id: 'reservation_id',
+		room_id: 'rppm_id',
+		room_type: 'room_type',
+		status: 'reservatopm_status',
+		guest: 'reservation_primary_guest_full_name',
+		start_date: 'arrival',
+		end_date: 'departure'
+	}
+})
+.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', '$rootScope',
+    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata, $rootScope) {
 
-    	this.index = Object.create(null);
-    	this.index.rooms = Object.create(null);
-    	this.index.roomTypes = Object.create(null);
-    	this.index.occupancies = Object.create(null);
-    	
-    	this.normalizeData = function(data, meta) {
-    		var room, 
-    			reservations, 
-    			reservation,
-    			arrival_date_meta = meta.arrival_date,
-    			departure_date_meta = meta.departure_date;
+    	this.start_date = undefined;
 
-    		if(!_.isArray(data)) {
-    			throw new Error("Unexpected parameter");
+    	this.meta = rvDiaryMetadata;
+
+    	this.store = Object.create(null, {
+    		rooms: {
+    			value: Object.create(null)
+    		},
+    		room_types: {
+    			value: Object.create(null)
+    		},
+    		occupancies: {
+    			value: Object.create(null)
+    		}
+    	});
+
+    	(function() { 
+    		function defaults(url, type) {
+    			return { 
+    				value: Object.create(null, {
+		    			url: {
+		    				enumerable: true,
+		    				value: url
+		    			},
+		    			type: {
+		    				enumerable: true,
+		    				value: type
+		    			} 
+		    		})
+    			};
     		}
 
-    		for(var i = 0, len = data.length; i < len; i++) {
-    			room = data[i];
-    			reservations = room.reservations;
+	    	this.api_types = Object.create(null, {
+	    		availability: defaults('api/hourly_availability', 'data'),
+	    		availability_count: defaults('api/hourly_availability', 'count'),
+	    		occupancy: defaults('api/hourly_occupancy', 'data')
+	    	});
+    	}).call(this);
 
-    			if(_.isArray(reservations)) {
-    				for(var j = 0, rlen = reservations.length; j < rlen; j++) {
-    					reservation = reservations[j];
+    	this.availability_count = [];
+    	this.availability = [];
+    	this.occupancies = [];
+    	this.rooms = [];
+    	this.room_types = [];
 
-    					reservation[arrival_date_meta] = reservation[arrival_date_meta].getTime();
-    					reservation[departure_date_meta] = reservation[departure_date_meta].getTime();
-    				}
-	    		}
+    	this.createIndex = function(payload, prop_name, index_prop_name) {
+    		var collection = payload[prop_name],
+    			i = 0,
+    			len = collection.length,
+    			idx = this.store[index_prop_name] = Object.create(null);
+
+    		for(; i < len; ++i) {
+    			idx[collection[i].id] = collection[i];
     		}
-
-    		return data;
     	};
 
-    	this.createIndicies = function(payload) {
-    		var rooms = payload.rooms,
-    			roomTypes = payload.room_types,
-    			occupancies = payload.results.occupancy,
-    			roomIndex = this.index.rooms,
-    			roomTypeIndex = this.index.roomTypes,
-    			occIndex = this.index.occupancies;
-
-    		for(var i = 0, len = rooms.length; i < len; i++) {
-    			roomIndex[rooms[i].id] = rooms[i];
-    		}
-
-    		for(var i = 0, len = roomTypes.length; i < len; i++) {
-    			roomTypeIndex[roomTypes[i].id] = roomTypes[i];
-    		}
-
-    		for(var i = 0, len = occupancies.length; i < len; i++) {
-    			occIndex[occupancies[i].reservation_id] = occupancies[i];
-    		}
-    	};
-
-    	this.normalize = function(payload, meta) {
-    		var rooms = payload.rooms,
-    			room_types = payload.room_types,
-    			occupancies = payload.results.occupancy,
+    	this.normalize = function() {
+    		var rooms = this.rooms,
+    			room_types = this.room_types,
+    			occupancies = this.occupancies,
     			cur_room,
-    			cur_occupancy;
+    			cur_occupancy,
+    			index = this.store;
 
     		for(var i = 0, len = occupancies.length; i < len; i++) {
     			cur_occupancy = occupancies[i];
-    			cur_room = this.index.rooms[cur_occupancy.room_id];
+    			cur_room = index.rooms[cur_occupancy.room_id];
 
     			if(cur_room) {
-    				cur_room.room_type = this.index.roomTypes[cur_room.room_type_id].name;
+    				cur_room.room_type = index.room_types[cur_room.room_type_id].name;
 
     				if(!cur_room.occupancy) {
     					cur_room.occupancy = [];
@@ -107,65 +128,208 @@ sntRover
     	};
     	
     	this.fetchOccupancy = function(start_date, end_date) {
-    		var q = $q.defer(),
-    			url = 'api/daily_occupancies',
-    			dto = {
-    				from_date: tzIndependentDate(start_date),
-    				to_date: tzIndependentDate(end_date)
-    			};
+    		var self = this;
 
-    		rvBaseWebSrvV2.getJSON(url, dto).then(function(data) {
-    			q.resolve(data);
-    		}, function(data) {
-    			q.reject(data);
+    		this.start_date = start_date;
+
+    		return $q(function(resolve, reject) {  
+    			self.fetchData(start_date, end_date, 1, Object.keys(self.store.roomTypes), self.api_types.occupancy)
+    			.then(function(data) {
+    				self.occupancies = data;
+
+    				self.createIndex(self.occupancies, 'occupancies', 'occupancies');
+
+    				resolve(self.occupancies);
+    			}, function(err) {
+    				reject(err);
+    			});
+
     		});
-
-    		return q.promise;
     	};
-    	/*this.reservations = function(date, rate_id) { //, calendar_date, room_type_ids) {
-    		//ASSUME in ms for now
-    		var begin_date = calendar_date + rvDiaryConstants.SEEK_OFFSET,
-    			end_date = calendar_date + rvDiaryConstants.TIME_SPAN_SEEK,
-    			calendar_date = new Date(date).toLocaleDateString();
 
-    		rvBaseWebSrvV2.getJSON();
-    	};*/
+    	this.fetchAvailability = function(start_date, end_date, rate_id, room_type_ids) {
+    		var self = this;
 
-        this.fetchFilterData = function (start_date, end_date, rate_id, room_type_ids){
+    		return $q(function(resolve, reject) {  
+    			this.fetchData(start_date, end_date, rate_id, room_type_ids, self.api_types.availability)
+    			.then(function(payload) {
+			   		var rooms = payload.rooms,
+			   			cur_room,
+			   			cur_room_type,
+			   			room_types = payload.room_types,
+			   			data = payload.results,
+			   			t_a, t_b, t_c;
+
+			   		for(var i = 0, len = data.length; i < len; i++) {
+			   			cur_room = _.findWhere(rooms, { id: data[i].room_id });
+
+			   			if(cur_room) {
+			   				cur_room_type = _.findWhere(room_types, { id: cur_room.room_type_id });
+
+			   				if(cur_room_type) {
+			   					t_a = start_date.toComponents().time;
+			   					t_b = end_date.toComponents().time;
+
+			   					data[i].temporary = true;
+								data[i].arrival = this.normalizeTime(tzIndependentDate(start_date), t_a.toString());
+								data[i].departure = this.normalizeTime(tzIndependentDate(end_date), t_b.toString());
+								data[i].maintenance = this.normalizeMaintenanceInterval(cur_room_type.departure_cleaning_time);	   					
+			   				}
+			   			}
+			   		}
+
+			   		self.availability = data;
+
+			   		resolve(self.availability);
+			   }, function(err) {
+			   		reject(err);
+			   });
+			});
+    	};
+
+    	this.fetchAvailabilityCount = function(start_date, end_date) {
+    		var self = this;
+
+    		return $q(function(resolve, reject) { 
+				this.fetchData(start_date, end_date, 1, Object.keys(self.store.room_types), self.api_types.availability_count)
+			   	.then(function(data) {
+			   		self.availability_count = data;
+			   		
+			   		resolve(self.availability_count);	   	
+			   	}, function(err) {
+			   		reject(err);
+			   	});
+    		});
+    	};
+
+        this.fetchData = function (start_date, end_date, rate_id, room_type_ids, type_config){
             var deferred = $q.defer (),
-            	url = '/api/hourly_availability',
-            	start = start_date.toComponents().time,
-            	end = end_date.toComponents().time,
-            	date = 
+            	start_time = start_date.toComponents().time,
+            	end_time = end_date.toComponents().time,
             	dto = Object.create(null, { 
             		begin_time: { 
             			enumerable: true,
-            			writable: true,
-            			value: undefined
+            			value: start_time.hours + ':' + start_time.minutes
 					},
 					end_time: {
 						enumerable: true,
-            			writable: true,
-            			value: undefined
+            			value: end_time.hours + ';' + end_time.minutes
 					},
-					date: {
+					begin_date: {
 						enumerable: true,
-            			writable: true,
-            			value: undefined
+            			value: tzIndependentDate(start_date)
+					},
+					end_date: {
+						enumerable: true,
+						value: tzIndependentDate(end_date)
 					},
 					rate_id: {
 						enumerable: true,
-            			writable: true,
-            			value: undefined
+            			value: rate_id
 					},
-					room_type_ids: {
+					room_type_id: {
 						enumerable: true,
-            			writable: true,
-            			value: []
+            			value: room_type_ids
+					},
+					type: {
+						enumerable: true,
+						value: type_config.type
 					}
             	});
 
-            /*rooms = [
+			RVBaseWebSrv.getJSON(type_config.url, dto).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+
+            return deferred.promise;
+        };
+
+        this.fetchRooms = function() {
+     		var url = '/house/search.json?date=7/5/2014',
+				deferred = $q.defer(),
+				self = this;
+
+			RVBaseWebSrv.getJSON(url)
+			.then(function(data) {
+				var results = data.results;
+
+				self.createIndex(results, 'rooms', 'rooms');
+
+				deferred.resolve(results);
+			}, function(err) {
+				deferred.reject(err);
+			});
+			
+			return deferred.promise;   	
+        };
+
+        this.fetchRoomTypes = function() {
+			var url = 'api/room_types?exclude_pseudo=true',
+				deferred = $q.defer(),
+				self = this;
+
+			RVBaseWebSrv.getJSON(url)
+			.then(function(data) {
+				var results = data.results;
+
+				self.createIndex(results, 'room_types', 'room_types');
+
+				deferred.resolve(results);
+			}, function(data) {
+				deferred.reject(data);
+			});
+			
+			return deferred.promise;
+		};
+
+	   	this.fetchArrivalTimes = function(base_interval) {
+	    	var times = [], 
+	    		day_min = 24 * 60,
+	    		deferred = $q.defer(),
+	    		min;
+	
+			for(var i = 0; i < day_min; i += base_interval) {
+				min = i % 60;
+				times.push(parseInt(i / 60) + ':' + (min === 0 ? '00' : min));
+			}
+			
+			deferred.resolve(times);
+
+			return deferred.promise;
+	   	};
+    }
+
+    /*this.normalizeData = function(data, meta) {
+    		var room, 
+    			reservations, 
+    			reservation,
+    			arrival_date_meta = meta.arrival_date,
+    			departure_date_meta = meta.departure_date;
+
+    		if(!_.isArray(data)) {
+    			throw new Error("Unexpected parameter");
+    		}
+
+    		for(var i = 0, len = data.length; i < len; i++) {
+    			room = data[i];
+    			reservations = room.reservations;
+
+    			if(_.isArray(reservations)) {
+    				for(var j = 0, rlen = reservations.length; j < rlen; j++) {
+    					reservation = reservations[j];
+
+    					reservation[arrival_date_meta] = reservation[arrival_date_meta].getTime();
+    					reservation[departure_date_meta] = reservation[departure_date_meta].getTime();
+    				}
+	    		}
+    		}
+
+    		return data;
+    	};*/
+
+    	/*rooms = [
 				{
 					id: 0,
 					key: 'room-0',
@@ -768,9 +932,24 @@ sntRover
 				}
 			];*/
 
-			deferred.resolve(this.normalizeData(rooms, meta));
+			/*this.createIndicies = function(payload, prop_name) {
+    		var rooms = payload.rooms,
+    			roomTypes = payload.room_types,
+    			occupancies = payload.results.occupancy,
+    			roomIndex = this.index.rooms,
+    			roomTypeIndex = this.index.roomTypes,
+    			occIndex = this.index.occupancies;
 
-            return deferred.promise;
-        };
-    }
+    		for(var i = 0, len = rooms.length; i < len; i++) {
+    			roomIndex[rooms[i].id] = rooms[i];
+    		}
+
+    		for(var i = 0, len = roomTypes.length; i < len; i++) {
+    			roomTypeIndex[roomTypes[i].id] = roomTypes[i];
+    		}
+
+    		for(var i = 0, len = occupancies.length; i < len; i++) {
+    			occIndex[occupancies[i].reservation_id] = occupancies[i];
+    		}
+    	};*/
 ]);
