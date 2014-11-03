@@ -26,7 +26,7 @@
                      </div>
                      <div class="entry card-number-small">
                         <label for="card-number-set1" translate>CVV</label>
-                        <input name="card-number-set1" id="card-number-set1" ng-model = "saveData.cvv" value="" type="text" />
+                        <input name="card-number-set1" iscroll-stop-propagation id="card-number-set1" ng-model = "saveData.cvv" value="" type="text" />
                      </div>
                      <div class="entry card-number-small ">
                         <label for="expiry-month">Expiration date (<span>MM YY</span>)</label>
@@ -40,7 +40,7 @@
                      </div>
                      <div class="actions">
                         <button type="button" class="button blank" ng-click = "cancelClicked()" translate>CANCEl</button>
-                        <button type="button" class="button green" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button>
+                        <button type="button" class="button" ng-class="{'green': saveData.payment_type != '', 'grey': saveData.payment_type == ''}" ng-disabled = "saveData.payment_type == ''" ng-click = "savePaymentDetails()" translate>ADD_PAYMENT_METHOD</button>
                      </div>
       </div>                  
 </div>                  
