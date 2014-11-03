@@ -674,8 +674,5 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }
 
     });
-
-
-
   }
 ]);
