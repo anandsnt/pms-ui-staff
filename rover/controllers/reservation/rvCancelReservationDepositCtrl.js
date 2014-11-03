@@ -2,27 +2,13 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 	function($rootScope, $scope,ngDialog,$stateParams,$state,RVReservationCardSrv,RVPaymentSrv,$timeout) {
 
 		BaseCtrl.call(this, $scope);
-		$scope.cancellationData = {};
-		$scope.cancellationData.reason = "";
-		$scope.errorMessage = "";
-
-	
+		$scope.errorMessage = "";	
 		$scope.cancellationData = {
 			selectedCard: -1,
 			reason: "",
 			viewCardsList: false,
 			existingCard: false,
-			cardId: "",
-			newCard: {
-				cardNumber: "",
-				addToGuest: false,
-				nameOnCard: "",
-				expiryDate: {
-					mm: "",
-					yy: ""
-				},
-				ccv: ""
-			}
+			cardId: ""
 		}
 
 		$scope.setScroller('cardsList');
@@ -43,8 +29,14 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				$scope.ngDialogData.cards = true;
 				$scope.cancellationData.viewCardsList = true;
 				refreshCardsList();
+				$scope.ngDialogData.state = 'REFUND';
 			}
-			$scope.ngDialogData.state = 'REFUND';
+			else{
+				is_credit_card: false;
+				$scope.ngDialogData.state = 'CONFIRM';
+				$scope.errorMessage = ['Deposit refund can not be processed to this payment type. Manual processing required'];
+			}
+			
 		};
 
 
