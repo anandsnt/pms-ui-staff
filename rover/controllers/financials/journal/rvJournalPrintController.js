@@ -88,11 +88,10 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 			}
        	});
        	$scope.data.selectedChargeCode = 'ALL';
-       	console.log($scope.data.revenueData.charge_groups);
 	};
+
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
-		console.log("chargeCodeChanged"+$scope.data.selectedChargeCode);
 
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 
@@ -109,34 +108,34 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 				}
 			});
        	});
-
-       	console.log($scope.data.revenueData.charge_groups);
 	};
 
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
 		if($scope.data.isRevenueToggleSummaryActive){
 			console.log("REVENUE Summary filter");
-			$scope.showByLevels(true,true,true);
+			$scope.showRevenueByLevels(true,true,true);
 		}
 		else{
 			console.log("REVENUE Details filter");
-			$scope.showByLevels(true,true,false);
+			$scope.showRevenueByLevels(true,true,false);
 		}
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive ;
 	};
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
 		if($scope.data.isPaymentToggleSummaryActive){
-			console.log("PAYMENT Summary filter");
+			$scope.showPaymentByLevels(true,true,true);
 		}
 		else{
-			console.log("PAYMENT Details filter");
+			$scope.showPaymentByLevels(true,true,false);
 		}
 		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive ;
 	};
-
-	$scope.showByLevels = function(level1,level2,level3){
+	/*
+     *	To hanlde show/hide each Levels on Revenue list.
+	 */
+	$scope.showRevenueByLevels = function(level1,level2,level3){
 		// Adding Show status flag to each item.
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
@@ -161,6 +160,59 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
         });
 	};
 
-	/** Code for Revenue Tab - PRINT BOX - filters ends here .. **/
+	/** Code for Revenue Tab - PRINT BOX - filters ends here ..   **/
+
+	/** Code for Payment Tab - PRINT BOX - filters starts here .. **/
+	$scope.paymentTypeChanged = function(){
+
+		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
+
+			if(payment_types.id == $scope.data.selectedPaymentType) {
+				payment_types.show = true ;
+	        }
+	        else if($scope.data.selectedPaymentType == 'ALL'){
+	        	payment_types.show = true ;
+	        }
+	        else{
+	        	payment_types.show = false ;
+	        }
+        });
+	};
+
+	/*
+     *	To hanlde show/hide each Levels on payments list.
+	 */
+	$scope.showPaymentByLevels = function(level1,level2,level3){
+		// Adding Show status flag to each item.
+		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
+			
+			if((level1 && $scope.data.selectedPaymentType == 'ALL') || (level1 && $scope.data.selectedPaymentType == payment_types.id)) 
+				payment_types.show = true ;
+			else
+				payment_types.show = false ;
+
+			if(payment_types.payment_type == "Credit Card"){
+	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
+	            	
+	            	if(level2) credit_cards.show = true;
+	            	else credit_cards.show = false;
+
+	                angular.forEach(credit_cards.transactions,function(transactions, index3) {
+	                	
+	                	if(level3) transactions.show = true;
+	                	else transactions.show = false ;
+	                });
+	            });
+        	}
+        	else{
+        		angular.forEach(payment_types.transactions,function(transactions, index3) {
+                	if(level3) transactions.show = true;
+                	else transactions.show = false ;
+                });
+        	}
+        });
+	};
+	
+	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/
 
 }]);

@@ -13,6 +13,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 	$scope.data.filterData.checkedAllDepartments = true;
     $scope.data.selectedChargeGroup = 'ALL';
     $scope.data.selectedChargeCode  = 'ALL';
+    $scope.data.selectedPaymentType = 'ALL';
 	/*
 	 *	Setting Revenue & Payment date pickers.
 	 *	All date fields should default to yesterday's date.
@@ -96,7 +97,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.clickedSelectButton = function(){
     	// Close the entire filter box
     	if(!$scope.data.filterData.checkedAllDepartments){
-            
+
             $scope.data.isActiveRevenueFilter = false;
 
             if($scope.data.activeTab === '0' ){

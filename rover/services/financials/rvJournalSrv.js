@@ -4,23 +4,6 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', f
 	this.revenueData = {};
 	this.paymentData = {};
 	var that = this;
-	this.fetchGenericData1 = function(){
-		var deferred = $q.defer();
-		var url = '/sample_json/journal/journal_common.json';
-			BaseWebSrvV2.getJSON(url).then(function(data) {
-				this.filterData = data;
-				angular.forEach(this.filterData.departments,function(item, index) {
-		       		item.checked = false;
-		       	});
-		       	angular.forEach(this.filterData.employees,function(item, index) {
-		       		item.checked = false;
-		       	});
-			   	deferred.resolve(this.filterData);
-			},function(data){
-			    deferred.reject(data);
-			});	
-		return deferred.promise;
-	};
 
  	// get filter details
     this.fetchGenericData = function () {
@@ -87,10 +70,28 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', f
 
 	this.fetchPaymentData = function(params){
 		var deferred = $q.defer();
-		var url = '/api/financial_transactions/payments?date='+params.date;
-		//var url = '/sample_json/journal/journal_revenue.json';
+		//var url = '/api/financial_transactions/payments?date='+params.date;
+		var url = '/sample_json/journal/journal_payments.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			this.paymentData = data;
+			// Adding Show status flag to each item.
+			angular.forEach(this.paymentData.payment_types,function(payment_types, index1) {
+				payment_types.show = true ;
+				if(payment_types.payment_type == "Credit Card"){
+		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
+		            	credit_cards.show = false ;
+		                angular.forEach(credit_cards.transactions,function(transactions, index3) {
+		                	transactions.show = false;
+		                });
+		            });
+	        	}
+	        	else{
+	        		angular.forEach(payment_types.transactions,function(transactions, index3) {
+	                	transactions.show = false;
+	                });
+	        	}
+	        });
+	        console.log(this.paymentData);
 		   	deferred.resolve(this.paymentData);
 		},function(data){
 		    deferred.reject(data);
