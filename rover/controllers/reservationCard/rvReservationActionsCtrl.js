@@ -309,7 +309,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.showPenaltyPopup = function(){
 			ngDialog.close();
-			promptCancel(cancellationCharge, nights);
+			showDepositPopup(depositAmount);
 		};
 
 		/**
@@ -319,6 +319,7 @@ sntRover.controller('reservationActionsController', [
 
 		var cancellationCharge = 0;
 		var nights = false;
+		var depositAmount = 0;
 		$scope.toggleCancellation = function() {
 
 			var checkCancellationPolicy = function() {
@@ -330,8 +331,8 @@ sntRover.controller('reservationActionsController', [
 					// cancellation_policy_id: 36
 					// penalty_type: "percent"
 					// penalty_value: 20
-
-					if (typeof data.results != 'undefined') {
+					depositAmount = data.results.deposit_amount;
+					if (typeof data.results.cancellation_policy_id != 'undefined') {
 						if (data.results.penalty_type == 'day') {
 							// To get the duration of stay
 							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
@@ -341,24 +342,20 @@ sntRover.controller('reservationActionsController', [
 						} else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
-					}
-					//to delete
-					var extraData = {"is_within_cancellation_period":true,"deposit_amount":""};
-					if(extraData.is_within_cancellation_period){
-						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
-							showDepositPopup(extraData.deposit_amount);
-						}
-						else{
-							promptCancel('', nights);
-						}
-					}
-					else{
-						if(extraData.deposit_amount.length > 0 && extraData.deposit_amount !=="0"){
+						if(parseInt(depositAmount) > 0){
 							showPenaltyWarningPopup(cancellationCharge);
 						}
 						else{
 							promptCancel(cancellationCharge, nights);
+						};
+					}
+					else{
+						if(parseInt(depositAmount) > 0){
+							showDepositPopup(depositAmount);
 						}
+						else{
+							promptCancel('', nights);
+						};
 					}
 					//promptCancel(cancellationCharge, nights);
 
