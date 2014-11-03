@@ -37,10 +37,10 @@
 			
 		</div>
 		<a id="deposit_balance" ng-show="showDepositBalance(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button brand-colors" ng-click="showDepositBalanceModal()">
-			Deposit/Balance	{{currencySymbol}}{{reservationData.reservation_card.deposit_attributes.outstanding_stay_total | number:precisonZero}}
+			Deposit/Balance&nbsp;{{currencySymbol}}{{reservationData.reservation_card.deposit_attributes.outstanding_stay_total | number:precisonZero}}
 		</a>
 		<a id="deposit_balance" ng-show="showDepositBalanceWithSr(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_rates_suppressed)" class="button brand-colors" ng-click="showDepositBalanceModal()">
-			Deposit/Balance	{{reservationData.reservation_card.text_rates_suppressed}}
+			Deposit/Balance&nbsp;{{reservationData.reservation_card.text_rates_suppressed}}
 		</a>
 		
 		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->

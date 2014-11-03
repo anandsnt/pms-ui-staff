@@ -17,10 +17,15 @@ sntRover.controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSear
 			/**
 			 * function used for refreshing the scroller
 			 */
+		//setting the scroller for view
+		var scrollerOptions = {
+	        tap: true,
+	        preventDefault: false,
+	        deceleration: 0.0001,
+	        shrinkScrollbars: 'clip' 
+	    };
+	  	$scope.setScroller('company_card_scroll', scrollerOptions);
 
-		$scope.setScroller("company_card_scroll", {
-			bounce: true,
-		});
 
 		var refreshScroller = function() {
 			$timeout(function() {

@@ -89,8 +89,7 @@
 						<em ng-if="item.is_system">&nbsp;{{ 'SYSTEM_DEFINED' | translate }}</em>
 					</td>
 					<td ng-hide="workShiftClickedElement == $index">
-						<span ng-if="item.time!='00:00'">{{ item.time }}</span>
-						<span ng-if="item.time =='00:00'">HH:MM</span>
+						<span>{{ item.time }}</span>
 					</td>
 					<td class="delete" ng-hide="workShiftClickedElement == $index">
 						<a ng-if="!item.is_system" ng-click="deleteWorkShift()" class="icons icon-delete large-icon delete_item"></a>

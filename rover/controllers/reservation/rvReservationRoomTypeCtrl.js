@@ -529,6 +529,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			// check whether any one of the rooms rate has isSuppressed on and turn on flag
 			var keepGoing = true;
+			$scope.reservationData.isRoomRateSuppressed = false;
 			angular.forEach($scope.reservationData.rooms, function(room, index) {
 				if (keepGoing) {
 					if (room.isSuppressed) {
@@ -1127,6 +1128,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		$scope.toggleCalendar = function() {
 			$scope.stateCheck.activeMode = $scope.stateCheck.activeMode == "ROOM_RATE" ? "CALENDAR" : "ROOM_RATE";
+			$scope.heading = $scope.stateCheck.activeMode == "ROOM_RATE" ? "Rooms & Rates" : " Change Stay Dates";
+			$scope.setHeadingTitle($scope.heading);
 			$(".data-off span").toggleClass("value switch-icon");
 		}
 

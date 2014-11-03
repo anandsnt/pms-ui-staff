@@ -207,6 +207,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
+				$scope.reservationData.status = data.status;
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.reservationData.is_routing_available = false;
 				$scope.viewState.reservationStatus.number = data.id;
