@@ -87,11 +87,12 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 				charge_groups.show = false;
 			}
        	});
+       	$scope.data.selectedChargeCode = 'ALL';
        	console.log($scope.data.revenueData.charge_groups);
 	};
 	// On changing charge code on PRINT filter
 	$scope.chargeCodeChanged = function(){
-		console.log($scope.data.selectedChargeCode);
+		console.log("chargeCodeChanged"+$scope.data.selectedChargeCode);
 
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 
@@ -100,7 +101,7 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 				if(charge_codes.id == $scope.data.selectedChargeCode){
 					charge_codes.show = true;
 				}
-				else if($scope.data.selectedChargeGroup == 'ALL'){
+				else if($scope.data.selectedChargeCode == 'ALL'){
 					charge_codes.show = true;
 				}
 				else{
@@ -116,9 +117,11 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
 		if($scope.data.isRevenueToggleSummaryActive){
 			console.log("REVENUE Summary filter");
+			$scope.showByLevels(true,true,true);
 		}
 		else{
 			console.log("REVENUE Details filter");
+			$scope.showByLevels(true,true,false);
 		}
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive ;
 	};
@@ -131,6 +134,31 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 			console.log("PAYMENT Details filter");
 		}
 		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive ;
+	};
+
+	$scope.showByLevels = function(level1,level2,level3){
+		// Adding Show status flag to each item.
+		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+			
+			if((level1 && $scope.data.selectedChargeGroup == 'ALL') || (level1 && $scope.data.selectedChargeGroup == charge_groups.id)) 
+				charge_groups.show = true ;
+			else
+				charge_groups.show = false ;
+
+            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+            	
+            	if((level2 && $scope.data.selectedChargeCode == 'ALL') || (level2 && $scope.data.selectedChargeCode == charge_codes.id ))
+            		charge_codes.show = true ;
+            	else
+            		charge_codes.show = false ;
+
+                angular.forEach(charge_codes.transactions,function(transactions, index3) {
+                	
+                	if(level3) transactions.show = true;
+                	else transactions.show = false ;
+                });
+            });
+        });
 	};
 
 	/** Code for Revenue Tab - PRINT BOX - filters ends here .. **/
