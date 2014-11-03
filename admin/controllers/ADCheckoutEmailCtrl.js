@@ -25,10 +25,6 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
     $scope.emailTitle = 'Guests Checking Out';
     $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
   	$scope.selectAllOption = false;
-    var fetchEmailListFailuerCallback = function(data) {
-         $scope.isLoading = false;
-        $scope.$emit('hideLoader');
-      };
     var fetchEmailListSuccessCallback = function(data) {
          $scope.isLoading = false;
         $scope.$emit('hideLoader');
@@ -57,7 +53,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
           });
   };
   $scope.emailDatas =[];
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkout'},fetchEmailListSuccessCallback,fetchEmailListFailuerCallback);
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkout'},fetchEmailListSuccessCallback);
 
   };
   $scope.showSendEmailOptions();
@@ -84,7 +80,7 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
      return status;
   };
 /*
-  * To wall if all options are selcted 
+  * To watch if all options are selcted 
   *
   */
   $scope.$watch("selectAllOption", function(o,n){
@@ -124,14 +120,11 @@ admin.controller('ADCheckoutEmailCtrl',['$scope','adCheckinCheckoutSrv','$state'
          reservations.push(item.reservation_id)
   });
   	var emailSendingData = {'reservations' : reservations}
-       var sendMailClikedFailureCallback = function(data) {
-          $scope.$emit('hideLoader');
-      };
     var sendMailClikedSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
-    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id':'checkout','data': emailSendingData},sendMailClikedSuccessCallback,sendMailClikedFailureCallback);
+    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id':'checkout','data': emailSendingData},sendMailClikedSuccessCallback);
 
   };
 
