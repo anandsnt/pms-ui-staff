@@ -29,6 +29,7 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 			$scope.eventTimestamp = event.timeStamp;
 		}
 	};
+	
 	// To handle click on drawer handle - open/close.
 	$scope.clickedDrawer = function($event){
 		$event.stopPropagation();
@@ -60,6 +61,7 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 		$scope.data.printBoxHeight = resizableMinHeight;
 		$scope.data.isDrawerOpened = false;
 	};
+
 	$scope.$on("CLOSEPRINTBOX",function(){
 		$scope.closeDrawer();
 	});
@@ -70,12 +72,17 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 
 	// On changing charge group on PRINT filter
 	$scope.chargeGroupChanged = function(){
-		console.log("chargeGroupSelected"+$scope.data.selectedChargeGroup);
+		
 		$scope.data.activeChargeCodes = [];
+
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+			
 			if(charge_groups.id == $scope.data.selectedChargeGroup){
+				
 				charge_groups.show = true;
+
 				angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+					
 					var obj = { "id": charge_codes.id , "name": charge_codes.name };
        				$scope.data.activeChargeCodes.push(obj);
 				});
@@ -112,26 +119,26 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
-		if($scope.data.isRevenueToggleSummaryActive){
-			console.log("REVENUE Summary filter");
+
+		if($scope.data.isRevenueToggleSummaryActive)
 			$scope.showRevenueByLevels(true,true,true);
-		}
-		else{
-			console.log("REVENUE Details filter");
+		else
 			$scope.showRevenueByLevels(true,true,false);
-		}
+		
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive ;
 	};
+
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
-		if($scope.data.isPaymentToggleSummaryActive){
+
+		if($scope.data.isPaymentToggleSummaryActive)
 			$scope.showPaymentByLevels(true,true,true);
-		}
-		else{
+		else
 			$scope.showPaymentByLevels(true,true,false);
-		}
+		
 		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive ;
 	};
+
 	/*
      *	To hanlde show/hide each Levels on Revenue list.
 	 */
@@ -212,7 +219,7 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
         	}
         });
 	};
-	
+
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/
 
 }]);
