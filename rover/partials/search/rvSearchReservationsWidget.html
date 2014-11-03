@@ -15,7 +15,7 @@
 	<section id="dashboard-search" class="content scrollable" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	    	<div ng-show="results.length > 0" style="text-align:right;margin-top:10px; margin-right: 20px;">
+	    	<div ng-show="totalSearchResults > 100" style="text-align:right;margin-top:10px; margin-right: 20px;">
 	    		<span>showing {{start}} to {{end}} of {{totalSearchResults}} items</span>
 
 	    		<button class="button blue" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" ng-class="{grey: isPrevButtonDisabled()}">prev</button>

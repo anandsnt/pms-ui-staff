@@ -127,21 +127,17 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			if ($scope.results.length > 0) { //if there is any result then only we want to filter
 				applyFilters();
 			}
+
+			// Compute the start, end and total count parameters
 			if($scope.nextAction){
 				$scope.start = $scope.start + RVSearchSrv.searchPerPage ;
-			//	$scope.end = $scope.start + $scope.results.length - 2;
 			}
-
 			if($scope.prevAction){
 				$scope.start = $scope.start - RVSearchSrv.searchPerPage ;
 
 			}
-				$scope.totalSearchResults = RVSearchSrv.totalSearchResults
-				$scope.end = $scope.start + $scope.results.length - 1;
-
-			//TODO: commenting out for now. See if this has to be restored
-			//$scope.firstSearch = false;
-			//$scope.fetchTerm = $scope.textInQueryBox;
+			$scope.totalSearchResults = RVSearchSrv.totalSearchResults
+			$scope.end = $scope.start + $scope.results.length - 1;
 
 			setTimeout(function() {
 				$scope.$apply();
