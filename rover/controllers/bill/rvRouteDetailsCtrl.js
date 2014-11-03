@@ -8,10 +8,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     $scope.isBillingGroup = true;
     $scope.paymentDetails = null;
 
-    if($scope.selectedEntity.credit_card_details != {}){
+    if($scope.selectedEntity.credit_card_details != {} && $scope.selectedEntity.selected_payment == ""){
         $scope.paymentDetails = $scope.selectedEntity.credit_card_details;
         $scope.paymentDetails.mli_token = $scope.selectedEntity.credit_card_details.card_number;
-        $scope.showPayment = true;
+        $scope.isAddPayment = true;
     }
     
     /**
