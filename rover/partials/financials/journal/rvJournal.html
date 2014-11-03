@@ -20,7 +20,7 @@
                 </label>
                 <strong class="h5" translate>EMPLOYEES</strong>
             </div>
-            <div id="faux-revenue-departments" class="holder scrollable">
+            <div id="faux-revenue-departments" class="holder scrollable" ng-iscroll='employee-content' ng-iscroll-delay='1000' style="height:90%;">
                 <div class="wrapper">
                     <label class="checkbox inline" ng-click="clickedDepartment($index)" ng-repeat="department in data.filterData.departments">
                         <span class="icon-form icon-checkbox" ng-class="{'checked':department.checked}" ></span>

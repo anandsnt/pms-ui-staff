@@ -32,6 +32,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.isDrawerOpened = false;
 	$scope.data.reportType  = ""; 
 	
+    $scope.setScroller('employee-content');
+
 	/* Handling different date picker clicks */
 	$scope.clickedFromDate = function(){
 		$scope.popupCalendar('FROM');
@@ -61,8 +63,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // To toggle revenue filter.
 	$scope.clickedRevenueFilter = function(){
 		$scope.data.isActiveRevenueFilter = !$scope.data.isActiveRevenueFilter;
+        setTimeout(function(){$scope.refreshScroller('employee-content');}, 200);
 	};
-    
+
     // On selecting 'All Departments' radio button.
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
