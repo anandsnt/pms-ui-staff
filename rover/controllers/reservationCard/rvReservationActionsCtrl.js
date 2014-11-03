@@ -331,6 +331,7 @@ sntRover.controller('reservationActionsController', [
 					// cancellation_policy_id: 36
 					// penalty_type: "percent"
 					// penalty_value: 20
+				
 					depositAmount = data.results.deposit_amount;
 					if (typeof data.results.cancellation_policy_id != 'undefined') {
 						if (data.results.penalty_type == 'day') {

@@ -1,10 +1,51 @@
-sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope','ngDialog','$stateParams','$state','RVReservationCardSrv',
-	function($rootScope, $scope,ngDialog,$stateParams,$state,RVReservationCardSrv) {
+sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope','ngDialog','$stateParams','$state','RVReservationCardSrv','RVPaymentSrv','$timeout',
+	function($rootScope, $scope,ngDialog,$stateParams,$state,RVReservationCardSrv,RVPaymentSrv,$timeout) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.cancellationData = {};
 		$scope.cancellationData.reason = "";
 		$scope.errorMessage = "";
+
+	
+		$scope.cancellationData = {
+			selectedCard: -1,
+			reason: "",
+			viewCardsList: false,
+			existingCard: false,
+			cardId: "",
+			newCard: {
+				cardNumber: "",
+				addToGuest: false,
+				nameOnCard: "",
+				expiryDate: {
+					mm: "",
+					yy: ""
+				},
+				ccv: ""
+			}
+		}
+
+		$scope.setScroller('cardsList');
+
+		var refreshCardsList = function() {
+			$timeout(function() {
+				$scope.refreshScroller('cardsList');
+			}, 300)
+		}
+
+
+		var onFetchPaymentsSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.cardsInPaymentMethods = _.where(data.existing_payments, {
+				is_credit_card: true
+			});
+			if ($scope.cardsInPaymentMethods.length > 0) {
+				$scope.ngDialogData.cards = true;
+				$scope.cancellationData.viewCardsList = true;
+				refreshCardsList();
+			}
+			$scope.ngDialogData.state = 'REFUND';
+		};
 
 
 		var cancelReservation = function(cancellationParameters) {
@@ -20,13 +61,21 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess);
 		}
 
-		$scope.proceedWithDepositRefund = function(){
+		$scope.applyRefund = function(){
+
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				id: $scope.reservationData.reservation_card.reservation_id,
+				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				with_deposit_refund:true
 			};
 			cancelReservation(cancellationParameters);
+		};
+
+		$scope.proceedWithDepositRefund = function(){
+		
+			var reservationId = $stateParams.id;
+			$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, onFetchPaymentsSuccess);
 		};
 
 		$scope.proceedWithOutDepositRefund = function(){
