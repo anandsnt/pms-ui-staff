@@ -70,7 +70,7 @@ admin.controller('ADContentManagementItemDetailCtrl',['$scope', '$state', '$stat
 		}
 		var unwantedKeys = [];
 		if($scope.initialIcon == $scope.data.image)
-			unwantedKeys = ["image"];		
+			unwantedKeys = ["icon", "image"];		
 
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveItemSuccessCallback);
