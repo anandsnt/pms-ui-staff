@@ -47,7 +47,7 @@ admin.controller('ADContentManagementSectionDetailCtrl',['$scope', '$state', 'ng
 			$scope.$emit('hideLoader');
 			$scope.goBack();
 		}
-		var unwantedKeys = [];
+		var unwantedKeys = ["image"];
 		if($scope.initialIcon == $scope.data.icon)
 			unwantedKeys = ["icon", "image"];		
 
