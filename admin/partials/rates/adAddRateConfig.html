@@ -4,18 +4,18 @@
             <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         <li style="width:25%" ng-hide="currentClickedSet == $index">{{set.name}}</li>
-        <li ng-show="currentClickedSet == $index" style="width:25%">
+        <li ng-show="currentClickedSet == $index" style="width:20%">
             <ad-textbox disabled="!is_date_range_editable(dateRange.end_date)" value="set.name" style="width:150px; margin-top:10px;"></ad-textbox>
         </li>
 
-        <li style="width:65%">
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.thursday" ng-click="toggleDays($index, 'thursday')" label="THU"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.friday" ng-click="toggleDays($index, 'friday')" label="FRI"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN"></ad-checkboxtext-left>
+        <li style="width:58%">
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.thursday" ng-click="toggleDays($index, 'thursday')" label="THU"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.friday" ng-click="toggleDays($index, 'friday')" label="FRI"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:70px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN"></ad-checkboxtext-left>
         </li>
         
         <li class="arrow-right" ng-hide="currentClickedSet == $index">
@@ -23,14 +23,17 @@
         </li>
         
       
-        <li class="arrow-right " ng-show="currentClickedSet == $index" style="width:38px;">
+        <li ng-show="currentClickedSet == $index" style="width:9%;">
             <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
+        </li>
+        <li ng-show="currentClickedSet == $index" style="width: 9%; float: right;">
+            <button class="green button" type="button">SAVE</button>
         </li>
         
     </ul>
 </div>
 
-<div class="rate-config" >
+<div class="rate-config" ng-if="!isHourlyRatesEnabled">
     <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable" ng-show="currentClickedSet == $index">
         <tr>
             <td width="20%" align="right">&nbsp;</td>
@@ -96,6 +99,85 @@
 </div>
 
 
+<div class="rate-config" ng-if="isHourlyRatesEnabled">
+    <div class="" style="width:45%;float:left;" ng-show="currentClickedSet == $index">
+        <label class="day_rates">Day Rates</label>
+        <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable">
+            <tr class="day_night_rates">
+                <td width="9%" align="right">Add per hour</td>
+                <td width="1%">&nbsp;</td>
+                <td width="9%" align="left">Min. Hours</td>
+                <td width="1%" align="center">&nbsp;</td>
+                <td width="9%" align="left">Max. hours</td>
+                <td width="1%" align="center">&nbsp;</td>
+                <td width="13%" align="left">Check out cut-off</td>
+                
+            </tr>
+            <tr>
+                <td align="left">
+                    <div class ="rate_entry">
+                        <input type="text">
+                    </div>
+                </td>
+                <td align="center">&nbsp;</td>
+                <td align="left">
+                    <div class ="rate_entry">
+                        <input type="text" >
+                    </div>
+                </td>
+                <td align="center">&nbsp;</td>
+
+                <td align="left">
+                    <div class ="rate_entry"><input type="text" ></div>
+                </td>
+                <td align="center">&nbsp;</td>
+                <td align="left">
+                    <ad-dropdown label-class="hidden" div-class="full-width" label-in-drop-down="" list="" selected-Id='' selbox-class='placeholder'></ad-dropdown>
+                </td>
+                
+            </tr>
+           
+        </table>
+    </div>
+    <div style="width:10%"></div>
+    <div class="" style="width:45%;float:right;" ng-show="currentClickedSet == $index">
+        <label class="night_rates">Night Rates</label>
+        <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable" >
+            <tr class="day_night_rates">
+                <td width="9%" align="left">Hourly in day</td>
+                <td width="1%" align="center">&nbsp;</td>
+                <td width="11%" align="left">Night starts</td>
+                <td width="1%" align="center">&nbsp;</td>
+                <td width="11%" align="left">Night ends</td>
+                <td width="1%" align="center">&nbsp;</td>
+                <td width="10%" align="left">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <div class ="rate_entry">
+                        <input type="text">
+                    </div>
+                </td>
+                <td align="center">&nbsp;</td>
+                <td align="left">
+                   <ad-dropdown label-class="hidden" div-class="full-width" label-in-drop-down="" list="" selected-Id='' selbox-class='placeholder'></ad-dropdown>
+                </td>
+                <td align="center">&nbsp;</td>
+
+                <td align="left">
+                    <ad-dropdown label-class="hidden" div-class="full-width" label-in-drop-down="" list="" selected-Id='' selbox-class='placeholder'></ad-dropdown>
+                </td>
+                <td align="center">&nbsp;</td>
+                <td align="left">
+                    <div class ="rate_entry"><button class="green button" type="button">Create</button></div>
+                </td>
+                
+            </tr>
+           
+           
+        </table>
+    </div>
+</div>
 
 
     

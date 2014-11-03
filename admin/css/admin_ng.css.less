@@ -82,9 +82,13 @@
             -o-transition:all 0.3s ease-in-out;
             transition:all 0.3s ease-in-out;
           }
+          &:first-child{
+            float:left;  
+          }
           &:nth-child(2){
             margin-left:0px;
-            margin-right:3px;  
+            margin-right:3px; 
+            float:right;   
           } 
         }
         &.disabled{
@@ -101,7 +105,15 @@
     }  
   }
 }
-
+.day_night_rates{
+	td{
+		font-size:13px;
+		height:30px !important;
+	}
+}
+.day_rates{
+	color:#ff9812
+}
 .basedon_option_hidden{
   visibility: hidden;
 }
