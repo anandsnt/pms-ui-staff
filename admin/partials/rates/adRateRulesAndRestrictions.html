@@ -9,8 +9,31 @@
 		</div>
 	</div>
 </div>
-<!-- Expanded View -->
-<div ng-show="detailsMenu ==='rulesAndRestrictions'" class="form_add_new_rate">
+<!-- Expanded View for hourly -->
+<div ng-if="detailsMenu ==='rulesAndRestrictions' && isHourlyRatesEnabled && rateData.is_hourly_rate" class="form_add_new_rate" >
+	<fieldset class="holder left">
+		<div class="entry full-width rates_deposit_requirements" ng-show="depositRequiredActivated">
+			<label>deposit requirements</label>
+			<div class="select">
+				<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.displayData for policy in rateTypesDetails.depositPolicies">
+					<option value="" disabled>Select Deposit Requirements</option>
+				</select>
+			</div>
+		</div>		
+	</fieldset>
+	<fieldset class="holder right">
+		<div class="entry full-width" ng-show="cancelPenaltiesActivated">
+			<label>cancellation penalties</label>
+			<div class="select">
+				<select class="placeholder" ng-model="rateData.cancellation_policy_id" ng-options="penalty.id as penalty.displayData for penalty in rateTypesDetails.cancelationPenalties">
+					<option value="" disabled>Select Cancellation Penalties</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+</div>
+<!-- Expanded View for non hourly -->
+<div ng-if="detailsMenu ==='rulesAndRestrictions' && !isHourlyRatesEnabled && !rateData.is_hourly_rate" class="form_add_new_rate" >
 	<div class="form-title cursor_pointer" ng-click="changeDetailsMenu('')">
 		<div class="rate_additional_details_heading">
 			RULES & RESTRICTIONS
@@ -20,34 +43,34 @@
 		</div>
 	</div>
 	<!-- <fieldset class="holder full-width"> -->
-<fieldset class="holder left">
-	<div class="entry full-width">
-		<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "min. advanced booking" placeholder = "Enter Number of Days" ng-show="minAdvancedBookingActivated"></ad-textbox>
-		<ad-textbox inputtype="text" value="rateData.max_advanced_booking" label = "max. advanced booking" placeholder = "Enter Number of Days" ng-show="maxAdvancedBookingActivated" ></ad-textbox>
-	</div>
-	<div class="entry full-width">
-		<ad-textbox inputtype="text" value="rateData.min_stay" label = "min. length of stay" placeholder = "Enter Number of Days" ng-show="minStayLengthActivated"></ad-textbox>
-		<ad-textbox inputtype="text" value="rateData.max_stay" label = "max. length of stay" placeholder = "Enter Number of Days" ng-show="maxStayLengthActivated"></ad-textbox>
-	</div>
-<!-- TODO :  part of future functionality <ad-checkbox is-checked="rateData.use_rate_levels" label="Use Rate Levels" div-class="full-width"></ad-checkbox> -->
-</fieldset>
-<fieldset class="holder right">
-	<div class="entry full-width rates_deposit_requirements" ng-show="depositRequiredActivated">
-		<label>deposit requirements</label>
-		<div class="select">
-			<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.displayData for policy in rateTypesDetails.depositPolicies">
-				<option value="" disabled>Select Deposit Requirements</option>
-			</select>
+	<fieldset class="holder left">
+		<div class="entry full-width">
+			<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "min. advanced booking" placeholder = "Enter Number of Days" ng-show="minAdvancedBookingActivated"></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.max_advanced_booking" label = "max. advanced booking" placeholder = "Enter Number of Days" ng-show="maxAdvancedBookingActivated" ></ad-textbox>
 		</div>
-	</div>
-	<div class="entry full-width" ng-show="cancelPenaltiesActivated">
-		<label>cancellation penalties</label>
-		<div class="select">
-			<select class="placeholder" ng-model="rateData.cancellation_policy_id" ng-options="penalty.id as penalty.displayData for penalty in rateTypesDetails.cancelationPenalties">
-				<option value="" disabled>Select Cancellation Penalties</option>
-			</select>
+		<div class="entry full-width">
+			<ad-textbox inputtype="text" value="rateData.min_stay" label = "min. length of stay" placeholder = "Enter Number of Days" ng-show="minStayLengthActivated"></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.max_stay" label = "max. length of stay" placeholder = "Enter Number of Days" ng-show="maxStayLengthActivated"></ad-textbox>
 		</div>
-	</div>
-</fieldset>
-<!-- </fieldset> -->
+		<!-- TODO :  part of future functionality <ad-checkbox is-checked="rateData.use_rate_levels" label="Use Rate Levels" div-class="full-width"></ad-checkbox> -->
+	</fieldset>
+	<fieldset class="holder right">
+		<div class="entry full-width rates_deposit_requirements" ng-show="depositRequiredActivated">
+			<label>deposit requirements</label>
+			<div class="select">
+				<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.displayData for policy in rateTypesDetails.depositPolicies">
+					<option value="" disabled>Select Deposit Requirements</option>
+				</select>
+			</div>
+		</div>
+		<div class="entry full-width" ng-show="cancelPenaltiesActivated">
+			<label>cancellation penalties</label>
+			<div class="select">
+				<select class="placeholder" ng-model="rateData.cancellation_policy_id" ng-options="penalty.id as penalty.displayData for penalty in rateTypesDetails.cancelationPenalties">
+					<option value="" disabled>Select Cancellation Penalties</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+	<!-- </fieldset> -->
 </div>
