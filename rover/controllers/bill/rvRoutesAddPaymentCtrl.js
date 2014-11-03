@@ -7,6 +7,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 	$scope.saveData.credit_card  =  "";
 	$scope.saveData.name_on_card =  "";
 	$scope.saveData.payment_type =  "";
+	$scope.saveData.payment_type_description =  "";
 	$scope.saveData.card_expiry_month = "";
 	$scope.saveData.card_expiry_year = "";
 	/**
@@ -89,23 +90,30 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			 		
 		};
 		/**
-	    * function to save a new payment type for the reservation
+	    * function to save a new payment type 
 	    */
 		$scope.savePayment = function(){
 			
-			var successCallback = function(data) {
-                $scope.showPaymentList();
-                $scope.$parent.fetchAttachedPaymentTypes();                
-            };
-            var errorCallback = function(errorMessage) {
-                $scope.$parent.$emit('hideLoader');
-                $scope.$emit('displayErrorMessage',errorMessage);
-            };
-			$scope.saveData.user_id = $scope.reservationData.user_id;
+			
+			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
-			var expiry_year =  2000 + parseInt($scope.saveData.card_expiry_year) ;
-			$scope.saveData.card_expiry = expiry_year + "-"+ $scope.saveData.card_expiry_month+"-01";
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.saveData, successCallback, errorCallback);
+			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);
+			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
+			var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
+			var data = dclone($scope.saveData, unwantedKeys);
+			$scope.paymentAdded(data);
+
 		};
+		/**
+	    * function to set the selected payment type
+	    */
+		$scope.selectPaymentType = function(){
+			for(var i = 0; i < $scope.availablePaymentTypes.length; i++){
+				if($scope.availablePaymentTypes[i].name == $scope.saveData.payment_type){
+					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
+				}
+			}
+
+		}
 	
 }]);
