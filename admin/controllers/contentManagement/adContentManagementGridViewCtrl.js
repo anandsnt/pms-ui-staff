@@ -30,6 +30,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
     */
    $scope.setUpLists =function(){
    		for(var i= 0; i < $scope.data.length; i++){
+   			$scope.data[i].last_updated = $scope.getFormattedTime($scope.data[i].last_updated);
    			if($scope.data[i].component_type == 'SECTION'){
    				$scope.sections.push($scope.data[i]);
    			}else if($scope.data[i].component_type == 'CATEGORY'){
@@ -40,6 +41,9 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
    			}
    		}
    }
+
+   
+
    /* Function to set the table params for sections
     */
    $scope.setSections =function(){
@@ -55,7 +59,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.sections, params.orderBy()) :
-		                                $scope.sections;
+		                                $scope.sections;		            
 		                              
 		            $scope.orderedSections =  orderedData;
 		                                 
