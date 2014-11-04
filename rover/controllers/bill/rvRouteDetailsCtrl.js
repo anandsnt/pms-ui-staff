@@ -278,7 +278,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         }                        
                         $scope.$parent.bills = $scope.bills;
                     }
-                    $scope.selectedEntity.to_bill = $scope.bills[0].id;
+                    $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new? $scope.bills[0].id : $scope.selectedEntity.to_bill;
                     $scope.fetchAvailableChargeCodes();
                 }
             };
@@ -450,9 +450,14 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
             };
-            $scope.paymentDetails.bill_number = $scope.getSelectedBillNumber();
-
-            $scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.paymentDetails, successCallback, errorCallback);
+            
+            if($scope.paymentDetails.hasOwnProperty('reservation_id')){
+                $scope.paymentDetails.bill_number = $scope.getSelectedBillNumber();
+                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.paymentDetails, successCallback, errorCallback);
+            }else{
+                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+            }
+            
         };
 
          /**
