@@ -1,0 +1,29 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+	<div class="inline-edit">
+		<header class="content-title float">
+			<h2 translate> DEVICES </h2>
+			<span class="count"> (
+				{{data.work_stations.length}}
+				) </span>
+			<a id="add-new-button" class="action add" ng-click="addNewDeviceMapping()" translate>ADD_NEW</a>
+		</header>
+		 <section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/deviceMapping/adDeviceMappingDetails.html'"></div>
+			<div id="new-form-holder"></div>
+			<table id="loyalty" class="grid">
+				<tbody>
+					<tr ng-repeat="workStations in data.work_stations">
+						<td ng-click="editDeviceMapping($index, workStations.id)" ng-hide="currentClickedElement == $index">
+							<a class="edit-data-inline">{{workStations.name}} </a>
+						</td>
+						<td class="activate" ng-hide="currentClickedElement == $index">
+							{{workStations.station_identifier}}
+						</td>
+						<td colspan="2" ng-include="getTemplateUrl($index,workStations.id)"></td>
+					</tr>
+				</tbody>
+			</table>
+		</section> 
+	</div>
+</section>

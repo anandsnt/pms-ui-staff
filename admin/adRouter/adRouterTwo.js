@@ -345,4 +345,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider, $urlRouterP
 			controller: 'ADCheckoutEmailCtrl',
 			url : '/checkoutEmail'
 		});
+		
+		$stateProvider.state('admin.deviceMapping', {
+			templateUrl: '/assets/partials/deviceMapping/adDeviceMappingList.html',
+			controller: 'ADDeviceMappingsCtrl',
+			url : '/deviceMappingsList'
+		});
 });
