@@ -42,7 +42,7 @@
         <div class="entry" ng-show="data.activeTab==2">
             <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
-                <select ng-model="data.filterData.selectedCashier" ng-options="cashier.id as cashier.name for cashier in data.filterData.cashiers"></select>
+                <select ng-model="data.filterData.selectedCashier" ng-options="cashier.id as cashier.name for cashier in data.filterData.cashiers" ng-change="cashierFilterChanged()"></select>
             </div>
         </div>
         

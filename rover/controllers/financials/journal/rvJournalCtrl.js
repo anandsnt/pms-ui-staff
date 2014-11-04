@@ -296,16 +296,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     };
     /** Employee/Departments Filter ends here .. **/
 
-    /* Cahier filter starts here */
+    /* Cashier filter starts here */
     var callCashierFilterService = function(){
-    	var cashierDataFilterSuccessCallBack = function(data){
-    		$scope.$emit("hideLoader");
-    		console.log($scope.currentCashier)
-    		console.log($scope.data.cashierDate)
-    		console.log($scope.data.reportType);
-    		$scope.data.cashierData = cashierData;
-    	}
-    	$scope.invokeApi(RVJournalSrv.fetchCashierDetails, '', cashierDataFilterSuccessCallBack);
+        $scope.$broadcast('refreshDetails');
     }
     $scope.$on('cashierDateChanged',function(){
     	//call filter service
@@ -317,14 +310,15 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
        callCashierFilterService();
     };
 
+    /* Cashier filter ends here */
+
     $scope.activatedTab = function(index){
-    	$scope.data.activeTab = index;
-    	if(index == 0) $scope.$broadcast('revenueTabActive');
-    	else if(index == 2) $scope.$broadcast('cashierTabActive');
-    	else $scope.$broadcast('paymentTabActive');
-    	$scope.$broadcast("CLOSEPRINTBOX");
+        $scope.data.activeTab = index;
+        if(index == 0) $scope.$broadcast('revenueTabActive');
+        else if(index == 2) $scope.$broadcast('cashierTabActive');
+        else $scope.$broadcast('paymentTabActive');
+        $scope.$broadcast("CLOSEPRINTBOX");
     };
-    /* Cahier filter ends here */
 
     
 }]);
