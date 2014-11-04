@@ -241,8 +241,8 @@
         </table>
     </div>
 
-    <div class="rates_state" ng-show="true">
-        <div style="float:left;width:30%;">
+    <div class="hourly_rates_grid" ng-show="true">
+        <div class="night_rates">
             <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="10%" align="right">&nbsp;</td>
@@ -254,41 +254,41 @@
                     <td align="right" class="room-type">{{room_type}}</td>
                     <td align="center">&nbsp;</td>
                     <td align="left">
-                        <div class ="rate_entry">
+                        <div class ="night_rate_entry">
                             <input type="text">
                         </div>
                     </td>
-                    <td align="center" >
-                        <span>&nbsp;</span>
-                    </td>
+                   
                 </tr>
             </table>
         </div>
 
-        <div style="width:60%;float:left;">
+        <div class="hourly_rate_state">
             <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0">
                 
                 <tr>
-                    <td width="10%" align="center" ng-repeat="time in rate_set_time"> {{time}}</td>
+                <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" in <td> -->
+                <!-- The Day Check Out time should be indicated in colour.Add class "day_checkout_time"-->
+                    <td width="10%" align="center" ng-repeat="time in rate_set_time" class="day_checkout_time"> {{time}}</td>
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
+     
                 <tr ng-repeat="room_type in room_type_array">
+                   
                     <td width="10%" align="center" ng-repeat="time in rate_set_time">
-                        <div class ="rate_entry">
+                    <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" along with "night_rate_entry"-->
+                        <div class ="night_rate_entry">
                             <input type="text">
                         </div>
                     </td>
-                    <td align="center" width="2%" >
-                        <span>&nbsp;</span>
-                    </td>
+                    
                 </tr>
               
             </table>
            
         </div>
 
-
-        <div class="entry movers" style="width:10%;float:right;">
+        <div class="entry movers">
             <span  class="icons icon-mover-right to-target" data-type="target">Move right</span>
             <span class="icons icon-mover-left to-source" data-type="source">Move left</span>
         </div>

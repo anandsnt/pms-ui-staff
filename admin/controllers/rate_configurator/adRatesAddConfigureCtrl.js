@@ -12,7 +12,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
         $scope.rate_set_time=["3.00","4.00","5.00","6.00", "7.00", "8.00"];
         $scope.room_type_array=["Standard1", "Standard2", "Standard3"];
-
         $scope.$on("needToShowDateRange", function(e, id) {
             // webservice call to fetch each date range details
             fetchData(id);

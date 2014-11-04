@@ -867,6 +867,50 @@ td{
 }
 
 
-.rates_state{
+.hourly_rates_grid{
+	font-size:13px;
 	width:100%;
+	.night_rates{
+		float: left; 
+		width: 25%;
+		.night_rate_entry{
+			margin-right: 10px;
+			width:auto;
+			input{
+				width: 100%;
+			}
+		}
+	}
+	.hourly_rate_state{
+		width:60%;
+		float:left;
+		box-shadow: inset 8px 0px 3px -3px #e2e2e2,inset -8px 0px 3px -3px #e2e2e2;
+		padding-left: 20px;
+		padding-right: 20px;
+		.default_night_price{
+			color:#b2b1c3;
+			input{
+				background-color: #e5e6eb !important;
+			}
+		}
+		.day_checkout_time{
+			color:#f6991b;
+		}
+
+		.night_rate_entry{
+			margin-right: 10px;
+			width:auto;
+			input{
+				width: 100%;
+				background: none repeat scroll 0 0 #F5F5F5;
+			}
+		}
+	}
+	.movers{
+		width: 10% !important;
+		float: right;
+		margin-top: 50px;
+	}
+
+
 }
