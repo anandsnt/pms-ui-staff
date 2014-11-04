@@ -9,7 +9,7 @@ angular.module('housekeepingModule', [])
         });
 
         $stateProvider.state('rover.housekeeping.roomStatus', {
-            url: '/roomStatus/:roomStatus',
+            url: '/roomStatus?roomStatus&businessDate',
             templateUrl: '/assets/partials/housekeeping/rvHkRoomStatus.html',
             controller: 'RVHkRoomStatusCtrl',
             resolve: {
@@ -32,13 +32,14 @@ angular.module('housekeepingModule', [])
                         }
                     }
 
-                    return RVHkRoomStatusSrv.fetchRoomList($rootScope.businessDate);
+                    var businessDate = $stateParams.businessDate || $rootScope.businessDate
+                    return RVHkRoomStatusSrv.fetchRoomList(businessDate);
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
-                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : null;
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];
                 },
                 workTypes: function(RVHkRoomStatusSrv, $rootScope) {
-                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchWorkTypes() : null;
+                    return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchWorkTypes() : [];
                 },
                 roomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();

@@ -170,8 +170,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
 			data.payment_type = {};
-			if ($scope.reservationData.paymentType.type !== null && !isEmpty($scope.reservationData.paymentType.type)) {
-				data.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);
+			
+			if ($scope.reservationData.paymentType.type.value !== null) {
+				//console.log("===================="+$scope.reservationData.paymentType.type.value);
+				angular.forEach($scope.data.paymentMethods, function(item, index) {
+					if ($scope.reservationData.paymentType.type.value == item.value) {
+						data.payment_type.type_id = item.id;
+					}
+				});
+				//console.log("=========++++++==========="+data.payment_type.type_id);
 				//TODO: verify
 				//data.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
 				data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
@@ -279,6 +286,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
+				$scope.reservationData.status = data.status;
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.reservationData.is_routing_available = false;
 				$scope.viewState.reservationStatus.number = data.id;

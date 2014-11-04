@@ -139,7 +139,7 @@ sntRover
     },
     computeColWidthOnResize = _.throttle(computeColWidth, rateGridDefaults.RESIZE_DEBOUNCE_INTERVAL, { leading: true, trailing: false });
         
-    $scope.$on("computeColumWidth", computeColWidth);
+    $scope.$on("computeColumWidth", computeColWidthOnResize);
 
     $scope.ratesDisplayed = [];
 
