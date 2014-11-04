@@ -1,4 +1,4 @@
-sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
+sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$rootScope', function($http, $q, BaseWebSrvV2, RVBaseWebSrv,$rootScope){
    	
    	this.filterData = {};
 	this.revenueData = {};
@@ -8,6 +8,18 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', f
  	// get filter details
     this.fetchGenericData = function () {
         var deferred = $q.defer();
+
+        that.fetchCashiers = function () {
+            var url = "/api/cashier_periods";
+            var data = {'date':$rootScope.businessDate}
+            BaseWebSrvV2.getJSON(url,data).then(function (data) {
+                that.filterData.cashiers = data.cashiers;
+                that.filterData.selectedCashier = data.current_user_id;
+                deferred.resolve(that.filterData);
+            }, function (data) {
+                deferred.reject(data);
+            });
+        };
          /*
          * Service function to fetch departments
          * @return {object} departments
@@ -21,7 +33,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', f
 		       		item.id = item.value;
 		       		delete item.value;
 		       	});
-                deferred.resolve(that.filterData);
+              //  deferred.resolve(that.filterData);
+                that.fetchCashiers();
                 console.log(that.filterData);
             }, function (data) {
                 deferred.reject(data);

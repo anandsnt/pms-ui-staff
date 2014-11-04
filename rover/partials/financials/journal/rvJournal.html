@@ -42,21 +42,7 @@
         <div class="entry" ng-show="data.activeTab==2">
             <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
-                <select name="select-cashier" id="select-cashier" ng-model="currentCashier" ng-change="cashierFilterChanged()">
-                    <option value="" translate>SELECT_CASHEIR</option>
-                    <option selected="" value="Allison Smith">Allison Smith</option>
-                    <option value="Debra Smith">Debra Smith</option>
-                    <option value="Andrea Smith">Andrea Smith</option>
-                    <option value="Jenniffer Smithson">Jenniffer Smithson</option>
-                    <option value="Paula Smit">Paula Smit</option>
-                    <option value="Marcy Johnson">Marcy Johnson</option>
-                    <option value="Amy Williams">Amy Williams</option>
-                    <option value="Katy Brown">Katy Brown</option>
-                    <option value="Marcy Davis">Marcy Davis</option>
-                    <option value="Linda Miller">Linda Miller</option>
-                    <option value="Debra Jones">Debra Jones</option>
-                    <option value="Susan Anderson">Susan Anderson</option>  
-                </select>
+                <select ng-model="data.filterData.selectedCashier" ng-options="cashier.id as cashier.name for cashier in data.filterData.cashiers"></select>
             </div>
         </div>
         
