@@ -113,6 +113,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
 				}
 			}
+			$scope.refreshScroller('newpaymentview');
 
 		}
 	

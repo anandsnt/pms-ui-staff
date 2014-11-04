@@ -72,7 +72,7 @@
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select">
 				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
-					<option value="{{bill.id}}" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
+					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>
