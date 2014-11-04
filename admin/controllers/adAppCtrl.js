@@ -432,7 +432,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
-			$rootScope.isHourlyRatesEnabled = true;
+			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 
 		};
 		/*
