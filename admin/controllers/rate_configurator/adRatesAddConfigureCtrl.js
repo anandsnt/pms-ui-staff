@@ -10,8 +10,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
         };
 
-        $scope.rate_set_time=["3.00","4.00","5.00","6.00", "7.00", "8.00"];
-        $scope.room_type_array=["Standard1", "Standard2", "Standard3"];
+        $scope.rate_set_time = ["3.00", "4.00", "5.00", "6.00", "7.00", "8.00"];
+        $scope.room_type_array = ["Standard1", "Standard2", "Standard3"];
 
         $scope.$on("needToShowDateRange", function(e, id) {
             // webservice call to fetch each date range details
@@ -129,6 +129,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function(value, key) {
                     if ($scope.rateData.is_hourly_rate) {
+
                         var dummy = {
                             hh: "",
                             mm: "",
@@ -179,12 +180,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 "single": "",
                                 "double": "",
                                 "extra_adult": "",
-                                "child": ""
+                                "child": "",
+                                "hourly": {}
                             };
-
                             room_rates.push(data);
                         });
                         value.room_rates = room_rates;
+                    } else {
+                        angular.forEach(value.room_rates, function(room_type, key) {
+                            room_type.hourly = {};
+                        });
                     }
                 });
                 //Expand top set in the current date range
@@ -249,7 +254,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         //Saves the individual set
-        $scope.saveSet = function(dateRangeId, index) {
+        $scope.saveSet = function(dateRangeId, index, saveGrid) {
 
             var saveSetSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
@@ -278,24 +283,38 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             // API request do not require all keys except room_types
             var selectedSet = $scope.data.sets[index];
 
+            if (!!saveGrid && saveGrid == 'saveGrid') {
+                angular.forEach(selectedSet.room_rates, function(room_rate, key) {
+                    room_rate.hourly_room_rates = [];
+                    angular.forEach(room_rate.hourly, function(amount, key) {
+                        room_rate.hourly_room_rates.push({
+                            hour: key,
+                            amount: amount
+                        });
+                    });
+                    delete room_rate['hourly'];
+                });
+            }
+
             var unwantedKeys = ["room_types", "checkout", "dawn", "dusk"],
                 setData = dclone($scope.data.sets[index], unwantedKeys);
 
             if ($scope.rateData.is_hourly_rate) {
+
                 if (!!selectedSet.checkout && !!selectedSet.checkout.hh && !!selectedSet.checkout.mm && !!selectedSet.checkout.am) {
                     setData.day_checkout_cutoff_time = getTimeFormated(selectedSet.checkout.hh, selectedSet.checkout.mm, selectedSet.checkout.am);
                 } else {
                     setData.day_checkout_cutoff_time = null;
                 }
                 if (!!selectedSet.dusk && !!selectedSet.dusk.hh && !!selectedSet.dusk.mm && !!selectedSet.dusk.am) {
-                    setData.nightly_start_time = getTimeFormated(selectedSet.dusk.hh, selectedSet.dusk.mm, selectedSet.dusk.am);
+                    setData.night_start_time = getTimeFormated(selectedSet.dusk.hh, selectedSet.dusk.mm, selectedSet.dusk.am);
                 } else {
-                    setData.nightly_start_time = null;
+                    setData.night_start_time = null;
                 }
                 if (!!selectedSet.dusk && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
-                    setData.nightly_end_time = getTimeFormated(selectedSet.dawn.hh, selectedSet.dawn.mm, selectedSet.dawn.am);
+                    setData.night_end_time = getTimeFormated(selectedSet.dawn.hh, selectedSet.dawn.mm, selectedSet.dawn.am);
                 } else {
-                    setData.nightly_end_time = null;
+                    setData.night_end_time = null;
                 }
             }
 
