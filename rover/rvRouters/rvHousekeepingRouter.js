@@ -31,15 +31,14 @@ angular.module('housekeepingModule', [])
                             RVHkRoomStatusSrv.currentFilters[filtersToApply[i]] = true;
                         }
                         RVHkRoomStatusSrv.searchOnSubset = true;
-                        return RVHkRoomStatusSrv.fetchRoomList($rootScope.businessDate);
+                        return RVHkRoomStatusSrv.fetchRoomList({ businessDate: $rootScope.businessDate });
+                    } else if (!!$stateParams && !!$stateParams.businessDate) {
+                        RVHkRoomStatusSrv.searchOnSubset = true;
+                        return RVHkRoomStatusSrv.fetchRoomList({ businessDate: $stateParams.businessDate });
                     } else {
                         RVHkRoomStatusSrv.searchOnSubset = false;
                         return {};
                     }
-                    var businessDate = $stateParams.businessDate || $rootScope.businessDate;
-                    return RVHkRoomStatusSrv.fetchRoomList({
-                        businessDate: businessDate
-                    });
                 },
                 employees: function(RVHkRoomStatusSrv, $rootScope) {
                     return $rootScope.isStandAlone ? RVHkRoomStatusSrv.fetchHKEmps() : [];

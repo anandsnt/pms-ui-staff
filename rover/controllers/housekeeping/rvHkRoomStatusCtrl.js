@@ -41,7 +41,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// reset all the filters
 		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
 
-		// The filters should be re initialized in we are navigating from dashborad to search
+		// The filters should be re initialized if we are navigating from dashborad to search
 		// In back navigation (From room details to search), we would retain the filters.
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			if ((fromState.name === 'rover.housekeeping.roomDetails' && toState.name !== 'rover.housekeeping.roomStatus') || (fromState.name === 'rover.housekeeping.roomStatus' && toState.name !== 'rover.housekeeping.roomDetails')) {

@@ -53,7 +53,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		 */
 		this.searchRooms = function(params) {
 			var deferred = $q.defer(),
-				url = '/house/search.json?query=' + params.key + '&date=' + params.date;
+				url = '/house/search.json?query=' + params.key + '&date=' + params.date + '&page=1&per_page=50';
 			RVBaseWebSrvV2.getJSON(url).then(function(response) {
 				roomList = response.data;
 				for (var i = 0, j = roomList.rooms.length; i < j; i++) {
@@ -92,7 +92,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		var roomList = {};
 		this.fetchRoomList = function(params) {
 			var deferred = $q.defer();
-			var url = '/house/search.json?date=' + params.businessDate;
+			var url = '/house/search.json?date=' + params.businessDate + '&page=1&per_page=50';
 
 			if (roomList.hasOwnProperty('rooms') && roomList.rooms.length && !params.refresh) {
 				deferred.resolve(roomList);
