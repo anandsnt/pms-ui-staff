@@ -24,10 +24,6 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
   	$scope.emailTitle = 'Guests Checking In';
     $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
   	$scope.selectAllOption = false;
-    var fetchEmailListFailuerCallback = function(data) {
-         $scope.isLoading = false;
-        $scope.$emit('hideLoader');
-      };
     var fetchEmailListSuccessCallback = function(data) {
          $scope.isLoading = false;
         $scope.$emit('hideLoader');
@@ -56,7 +52,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
           });
   };
   $scope.emailDatas =[];
-  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkin'},fetchEmailListSuccessCallback,fetchEmailListFailuerCallback);
+  $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':'checkin'},fetchEmailListSuccessCallback);
 
   };
   $scope.showSendEmailOptions();
@@ -83,7 +79,7 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
      return status;
   };
 /*
-  * To wall if all options are selcted 
+  * To watch if all options are selcted 
   *
   */
   $scope.$watch("selectAllOption", function(o,n){
@@ -122,14 +118,11 @@ admin.controller('ADCheckinEmailCtrl',['$scope','adCheckinCheckoutSrv','$state',
          reservations.push(item.reservation_id)
   });
   	var emailSendingData = {'reservations' : reservations}
-       var sendMailClikedFailureCallback = function(data) {
-          $scope.$emit('hideLoader');
-      };
     var sendMailClikedSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.successMessage = data.message;
     };
-    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id': 'checkin' ,'data': emailSendingData},sendMailClikedSuccessCallback,sendMailClikedFailureCallback);
+    $scope.invokeApi(adCheckinCheckoutSrv.sendMail,{'id': 'checkin' ,'data': emailSendingData},sendMailClikedSuccessCallback);
 
   };
 

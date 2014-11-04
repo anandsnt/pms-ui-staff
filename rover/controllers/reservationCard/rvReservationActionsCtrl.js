@@ -283,25 +283,57 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
+
+		var showDepositPopup = function(deposit) {
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+				controller: 'RVCancelReservationDepositController',
+				scope: $scope,
+				data: JSON.stringify({
+					state: 'CONFIRM',
+					cards: false,
+					deposit:deposit
+				})
+			 });
+		};
+
+		var showPenaltyWarningPopup = function(deposit) {
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvPenaltyWarningPopup.html',
+				scope: $scope,
+				data: JSON.stringify({
+					deposit:deposit
+				})
+			 });
+		};
+
+		$scope.showPenaltyPopup = function(){
+			ngDialog.close();
+			showDepositPopup(depositAmount);
+		};
+
 		/**
 		 * This method handles cancelling an exisiting reservation or
 		 * reinstating a cancelled reservation CICO-1403 and CICO-6056(Sprint20 >>> to be implemented in the next sprint)
 		 */
+
+		var cancellationCharge = 0;
+		var nights = false;
+		var depositAmount = 0;
 		$scope.toggleCancellation = function() {
 
 			var checkCancellationPolicy = function() {
 				var onCancellationDetailsFetchSuccess = function(data) {
-					$scope.$emit('hideLoader');
-					var nights = false;
-					var cancellationCharge = 0;
+					$scope.$emit('hideLoader');			
 
 					// Sample Response from api/reservations/:id/policies inside the results hash
 					// calculated_penalty_amount: 40
 					// cancellation_policy_id: 36
 					// penalty_type: "percent"
 					// penalty_value: 20
-
-					if (typeof data.results != 'undefined') {
+				
+					depositAmount = data.results.deposit_amount;
+					if (typeof data.results.cancellation_policy_id != 'undefined') {
 						if (data.results.penalty_type == 'day') {
 							// To get the duration of stay
 							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
@@ -311,8 +343,22 @@ sntRover.controller('reservationActionsController', [
 						} else {
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
+						if(parseInt(depositAmount) > 0){
+							showPenaltyWarningPopup(cancellationCharge);
+						}
+						else{
+							promptCancel(cancellationCharge, nights);
+						};
 					}
-					promptCancel(cancellationCharge, nights);
+					else{
+						if(parseInt(depositAmount) > 0){
+							showDepositPopup(depositAmount);
+						}
+						else{
+							promptCancel('', nights);
+						};
+					}
+					//promptCancel(cancellationCharge, nights);
 
 				};
 				var onCancellationDetailsFetchFailure = function(error) {

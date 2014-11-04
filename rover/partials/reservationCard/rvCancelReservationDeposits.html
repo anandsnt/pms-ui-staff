@@ -1,0 +1,47 @@
+<div id="modal" class="modal-show" role="dialog">
+<form  id="cancel-reservation" name="cancel-reservation" class="modal-content form cancel-reservation" ng-click="clearErrorMessage()" ng-cloak>
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    
+      <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
+       <div class="entry full-width">
+            <label for="cancel-reason">{{'CANCELLATION_REASON'| translate}}(<span translate>OPTIONAL</span>)</label>
+            <textarea id="cancel-reason" name="cancel-reason" placeholder="{{'CANCELLATION_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="cancellationData.reason"/>
+        </div> 
+        <div class="actions" ng-show="ngDialogData.deposit > 0">
+            <button type="button" class="button green" ng-click="proceedWithDepositRefund()" >
+                {{'PROCEED_WITH_DEPOSIT_REFUND' | translate}} ({{currencySymbol}}{{ngDialogData.deposit | number:2}})</button>
+            <button type="button" class="button blue" ng-click="proceedWithOutDepositRefund()" translate>PROCEED_WITHOUT_DEPOSIT_REFUND</button>
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
+        </div>
+    </fieldset>
+
+    <!-- 2. Apply penalty screen-->
+    <fieldset id="apply-penalty" class="credit-card" ng-if="ngDialogData.state == 'REFUND'">
+        <strong class="h2 message" ng-show="ngDialogData.cards" translate>EXISTING_CARDS</strong>
+        <div class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
+            <div id="available-cards" class="cards-list scrollable" ng-iscroll="cardsList"  ng-iscroll-delay="500">
+                <div class="cards-list-container">
+                    <div class="wrapper" ng-repeat="card in cardsInPaymentMethods">
+                        <label class="active-item item-payment" ng-class="{primary: cancellationData.selectedCard == card.value}" ng-click="cancellationData.selectedCard = card.value"> 
+                            <!-- Add class "primary" when card is selected --> 
+                            <figure class="card-logo">  
+                                <img ng-src="/assets/{{card.card_code}}.png" alt="" />  
+                            </figure>   
+                            <span class="number">{{'ENDING_WITH' | translate}} <span class="value number">{{card.ending_with}}</span></span>  
+                            <span class="date">{{'DATE' | translate}} <span class="value date">{{card.expiry_date}}</span></span> 
+                            <span class="name" >{{'NAME' | translate}} <span class="value name">{{card.holder_name}}</span></span> 
+                            <span class="primary" ng-show="cancellationData.selectedCard == card.value"><span class="value primary" translate>SELECTED</span></span>  
+                        </label>                    
+                        <!-- repeat ... -->
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="button blank" ng-click="ngDialogData.state = 'CONFIRM'" translate>CANCEL</button> <!-- Shows Cancel Options screen -->
+                <button type="button" class="button green" ng-hide="cancellationData.selectedCard == -1" ng-click="applyRefund()" translate>PROCEED_WITH_DEPOSIT_REFUND</button> <!-- Remove class "hidden" when card is selected; Charges penalty to the card and cancels the reservation -->
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
