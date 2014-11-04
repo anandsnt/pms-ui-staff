@@ -19,14 +19,6 @@ angular.module('FinancialsModule', [])
                 } else {
                     return {};
                 }
-            },
-            cashierData: function(RVJournalSrv){
-                if ( !!RVJournalSrv ) {
-                   return RVJournalSrv.fetchCashierData();
-                } else {
-                    return {};
-                }
-                
             }
         }
     });

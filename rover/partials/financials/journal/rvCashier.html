@@ -1,8 +1,10 @@
 <!-- Content CASHIER -->
-<div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController">
+<div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController" ng-click="clearErrorMessage()">
     <div id="cashier-history" class="journal-history scrollable" ng-iscroll='cashier_history'>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="wrapper">
-            <h2 translate>HISTORY</h2>
+            <h2 ng-show="detailsList.length>0" translate>HISTORY</h2>
+            <h2 ng-hide="detailsList.length>0" translate>NO_HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
                 <li ng-repeat="history in detailsList" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
@@ -27,7 +29,7 @@
     <div id="cashier-shift" class="journal-shift scrollable" ng-iscroll='cashier_shift'>
         <!-- Open shift -->
         <div class="wrapper">
-            <table class="shift-details">
+            <table class="shift-details" ng-show="detailsList.length>0">
                 <caption class="closed" ng-hide="details.status ==='OPEN'">
                     <strong>
                         {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}}
@@ -83,8 +85,8 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED'" ng-click="closeShift()">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-show="details.status ==='CLOSED'" ng-click="reOpen()">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0" ng-click="closeShift()">CLOSE_SHIFT</button>
+            <button type="button" class="button green" translate ng-show="details.status ==='CLOSED' || detailsList.length>0" ng-click="reOpen()">RE_OPEN</button>
             <!-- adding extra empty tag to solve scroll not showing bottom part -->
             <div style="height:20%;"></div>
         </div> 

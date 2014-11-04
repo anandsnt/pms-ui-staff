@@ -343,6 +343,7 @@
 	"SELECT_REPORT_TYPE":"Select Report Type",
 	"CASHIER_SUMMERY":"Cashier Summary",
 	"HISTORY":"History",
+	"NO_HISTORY":"No History",
 	"CLOSED":"Closed",
 	"OPENED":"Opened",
 	"RE_OPEN":"Re-Open",
