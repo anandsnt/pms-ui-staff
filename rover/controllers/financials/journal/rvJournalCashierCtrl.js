@@ -8,7 +8,8 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
 
          var fetchDetailsSuccessCallback = function(data){
             $scope.$emit('hideLoader');
-            $scope.detailsList = data.history;         
+            $scope.detailsList = data.history;      
+            $scope.selectedHistory = ($scope.detailsList.length>0) ? 0:"";
             $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};//set first one as selected
             $scope.selectedHistoryId = ($scope.detailsList.length>0) ? $scope.detailsList[0].id :"";            
             setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 500);
