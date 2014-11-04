@@ -21,5 +21,16 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     	console.log("paymentDateChanged"+$scope.data.paymentDate);
     	$scope.initPaymentData();
     });
+
+    /** Handle Expand/Collapse on each payments level items **/
+    $scope.clickedFirstLevel = function(index){
+    	console.log("clickedFirstLevel"+index);
+    };
+    $scope.clickedSecondLevel = function(index){
+    	console.log("clickedSecondLevel"+index);
+    };
+    $scope.clickedThirdLevel = function(index){
+    	console.log("clickedThirdLevel"+index);
+    };
 	
 }]);

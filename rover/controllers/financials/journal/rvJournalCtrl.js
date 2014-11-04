@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','cashierData',function($scope,$filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse,cashierData) {
+sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','cashierData',function($scope, $rootScope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse,cashierData) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
@@ -81,6 +81,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         else if ($scope.data.activeTab == '1' ){
            $scope.resetPaymentFilters();
         }
+        $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
     };
 
     // Clicking each checkbox on Departments
@@ -127,7 +128,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             else if ($scope.data.activeTab == '1' ){
                 $scope.filterPaymentByDepartmentsOrEmployees();
             }
-        }   
+        } 
+        $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
     };
 
     // To setup Lists of selected ids of employees and departments.
@@ -142,7 +144,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         // To get the list of employee id selected.
         $scope.data.selectedEmployeeList = [];
         angular.forEach($scope.data.filterData.employees,function(item, index) {
-            if(item.checked) $scope.data.selectedDepartmentList.push(item.id);
+            if(item.checked) $scope.data.selectedEmployeeList.push(item.id);
         });
     };
 
@@ -177,6 +179,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
                     if( $scope.searchDeptOrEmpId(transactions) ){
                         transactions.show  = true;
+                        //charge_codes.active = true;
+                        //charge_groups.active = true;
                         isResultsFoundInTransactions = true;
                     }
                     else{
@@ -189,13 +193,19 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
                  */
                 if(isResultsFoundInTransactions) {
                     charge_codes.show = true;
+                    charge_codes.active = true;
                     isResultsFoundInCodes = true;
+                }
+                else{
+                    charge_codes.active = false;
+                    charge_codes.show = false;
                 }
             });
             if(isResultsFoundInCodes){
                 charge_groups.show = true;
+                charge_groups.active = true;
             }
-            else charge_groups.show = false;
+            else {charge_groups.show = false;charge_groups.active = false;}
         });
     };
 
@@ -266,10 +276,12 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.resetRevenueFilters = function(){
         angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
             charge_groups.show = true;
+            charge_groups.active = false;
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-                charge_codes.show = false;
+                charge_codes.show = true;
+                charge_codes.active = false;
                 angular.forEach(charge_codes.transactions,function(transactions, index3) {
-                    transactions.show = false;
+                    transactions.show = true;
                 });
             });
         });
@@ -319,7 +331,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
-    	if(index == 0) $scope.$broadcast('revenueTabActive');
+    	if(index == 0) $rootScope.$broadcast('REFRESHREVENUECONTENT');
     	else if(index == 2) $scope.$broadcast('cashierTabActive');
     	else $scope.$broadcast('paymentTabActive');
     	$scope.$broadcast("CLOSEPRINTBOX");

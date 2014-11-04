@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
+sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function($scope,$rootScope) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.data.isRevenueToggleSummaryActive = true;
@@ -106,9 +106,13 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 
 				if(charge_codes.id == $scope.data.selectedChargeCode){
 					charge_codes.show = true;
+					charge_groups.active = true;
+					$scope.toggleTransactions();
 				}
 				else if($scope.data.selectedChargeCode == 'ALL'){
 					charge_codes.show = true;
+					charge_groups.active = true;
+					$scope.toggleTransactions();
 				}
 				else{
 					charge_codes.show = false;
@@ -117,20 +121,23 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
        	});
 	};
 
+	$scope.toggleTransactions = function(){
+		if($scope.data.isRevenueToggleSummaryActive)
+			$scope.showRevenueByLevels(true,true,false);
+		else
+			$scope.showRevenueByLevels(true,true,true);
+	};
+
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
-
-		if($scope.data.isRevenueToggleSummaryActive)
-			$scope.showRevenueByLevels(true,true,true);
-		else
-			$scope.showRevenueByLevels(true,true,false);
-		
+		$rootScope.$broadcast('REFRESHREVENUECONTENT');
 		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive ;
+		$scope.toggleTransactions();
 	};
 
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
-
+		
 		if($scope.data.isPaymentToggleSummaryActive)
 			$scope.showPaymentByLevels(true,true,true);
 		else
@@ -147,21 +154,27 @@ sntRover.controller('RVJournalPrintController', ['$scope',function($scope) {
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
 			if((level1 && $scope.data.selectedChargeGroup == 'ALL') || (level1 && $scope.data.selectedChargeGroup == charge_groups.id)) 
-				charge_groups.show = true ;
+				{charge_groups.show = true ;charge_groups.active = true ;}
 			else
-				charge_groups.show = false ;
+				{charge_groups.show = false ;charge_groups.active = false ;}
 
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
             	if((level2 && $scope.data.selectedChargeCode == 'ALL') || (level2 && $scope.data.selectedChargeCode == charge_codes.id ))
-            		charge_codes.show = true ;
+            		{charge_codes.show = true ;charge_codes.active = true;}
             	else
-            		charge_codes.show = false ;
+            		{charge_codes.show = false ;charge_codes.active = false;}
 
                 angular.forEach(charge_codes.transactions,function(transactions, index3) {
                 	
-                	if(level3) transactions.show = true;
-                	else transactions.show = false ;
+                	if(level3) {
+                		//transactions.show = true;
+                		charge_codes.active = true;
+                	}
+                	else{
+                	 	//transactions.show = false ;
+                	 	charge_codes.active = false;
+                	}
                 });
             });
         });

@@ -125,46 +125,43 @@
 
 
         <div>
-            <div ng-repeat="level1 in data.revenueData.charge_groups"  ng-show="level1.show">
+            <div ng-repeat="(index1 ,level1) in data.revenueData.charge_groups"  ng-show="level1.show">
 
-                <span style="background-color:#FFB2B2; display: block; width: 100%;">
+                <span ng-click="clickedFirstLevel(index1)" style="background-color:#FFB2B2; display: block; width: 100%;" >
                     <span ng-show="level1.show">{{level1.name}}</span>
                     <span ng-show="level1.show">{{currencySymbol}}{{level1.total}}</span>
                 </span>
             
 
-                <div ng-repeat="level2 in level1.charge_codes" ng-show="level2.show">
+                <div ng-repeat="(index2 ,level2) in level1.charge_codes" ng-show="level1.active">
 
-                    <span style="background-color:#CCFF99; display: block; width: 80%;">
+                    <span ng-click="clickedSecondLevel(index1 ,index2)" style="background-color:#CCFF99; display: block; width: 80%;" ng-show="level1.active && level2.show">
                         <span ng-show="level2.show">{{level2.id}}</span>
                         <span ng-show="level2.show">{{level2.name}}</span>
                         <span ng-show="level2.show">{{currencySymbol}}{{level2.total}}</span>
                     </span>
                     
-                    <table>
+                    <table ng-show="level2.active && level2.show">
+                            <tr class="grid-item-heading" ng-show="isShowTableHeading(index1 ,index2)">
+                                <th scope="col">Room</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Reservation Number</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Details</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Debit</th>
+                                <th scope="col">Credit</th>
+                            </tr>
 
-                        <tr class="grid-item-heading hidden">
-                            <th scope="col">Room</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Reservation Number</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Details</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Debit</th>
-                            <th scope="col">Credit</th>
-                        </tr>
-
-                        <tr style="background-color:#99CCFF; display: block; width: 250%;" ng-repeat="level3 in level2.transactions" ng-show="level3.show">
-
-                            <td>{{level3.room}}</td>
-                            <td>{{level3.name}}</td>
-                            <td>{{level3.reservation_number}}</td>
-                            <td>{{level3.type}}</td>
-                            <td>{{level3.details}}</td>
-                            <td>{{level3.time}}</td>
-                            <td>{{level3.debit}}</td> 
-                        </tr>
-                        
+                            <tr ng-repeat="(index3 ,level3) in level2.transactions" style="background-color:#99CCFF; display: block; width: 250%;" ng-show="level3.show">
+                                <td>{{level3.room}}</td>
+                                <td>{{level3.name}}</td>
+                                <td>{{level3.reservation_number}}</td>
+                                <td>{{level3.type}}</td>
+                                <td>{{level3.details}}</td>
+                                <td>{{level3.time}}</td>
+                                <td>{{level3.debit}}</td> 
+                            </tr>
                     </table>
                   
                 </div>

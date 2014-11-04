@@ -66,11 +66,13 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			this.revenueData = data;
 			// Adding Show status flag to each item.
 			angular.forEach(this.revenueData.charge_groups,function(charge_groups, index1) {
-				charge_groups.show = true ;
+				charge_groups.show 	 = true ;
+				charge_groups.active = false ;
 	            angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-	            	charge_codes.show = false ;
+	            	charge_codes.show   = true ;
+	            	charge_codes.active = false ;
 	                angular.forEach(charge_codes.transactions,function(transactions, index3) {
-	                	transactions.show = false;
+	                	transactions.show = true;
 	                });
 	            });
 	        });
