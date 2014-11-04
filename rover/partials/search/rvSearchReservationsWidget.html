@@ -11,7 +11,11 @@
 	    </div>
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
 	</form>
-
+	<div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0">
+	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
+	</div>
 	<section id="dashboard-search" class="content scrollable" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>

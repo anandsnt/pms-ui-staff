@@ -14,8 +14,7 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     */
     $scope.clickedOnGuestsToday = function(event, type, numberOfReservation) {
         //disable reservation search for house keeping 
-        // numberofReservation check is a quick fix suggested by Jos
-        if(!$scope.disableReservations && numberOfReservation <= 700){ 
+        if(!$scope.disableReservations){ 
             $state.go('rover.search', {'type': type});
         }
         else
