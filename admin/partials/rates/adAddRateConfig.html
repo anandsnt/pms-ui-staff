@@ -26,8 +26,8 @@
         <li ng-show="currentClickedSet == $index" style="width:9%;">
             <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
-        <li ng-show="currentClickedSet == $index" style="width: 9%; float: right;">
-            <button class="green button" type="button">SAVE</button>
+        <li ng-if="currentClickedSet == $index && rateData.is_hourly_rate" style="width: 9%; float: right;">
+            <button ng-click="saveSet(dateRange.id, $index)" class="green button" type="button">SAVE</button>
         </li>
         
     </ul>
@@ -101,7 +101,7 @@
 
 <div class="rate-config" ng-if="rateData.is_hourly_rate" ng-show="currentClickedSet == $index">
     <div class="full-width">
-        <label class="day_rates">{{$index}}Day Rates{{currentClickedSet}}</label>
+        <label class="day_rates">Day Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable">
             <tr class="day_night_rates">
                 <td width="9%" align="right">Add per hour</td>
@@ -116,37 +116,39 @@
             <tr>
                 <td align="left">
                     <div class ="rate_entry">
-                        <input type="text">
+                        <input ng-model="set.day_hourly_increment_amount" type="text">
                     </div>
                 </td>
                 <td align="center">&nbsp;</td>
                 <td align="left">
                     <div class ="rate_entry">
-                        <input type="text" >
+                        <input ng-model="set.day_min_hours" type="text" >
                     </div>
                 </td>
                 <td align="center">&nbsp;</td>
 
                 <td align="left">
-                    <div class ="rate_entry"><input type="text" ></div>
+                    <div class ="rate_entry">
+                        <input ng-model="set.day_max_hours" type="text" >
+                    </div>
                 </td>
                 <td align="center">&nbsp;</td>
                 <td align="left">
                     <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select class="styled">
+                            <select ng-model="set.checkout.hh" class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
-                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
+                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.checkout.hh">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select>
+                            <select ng-model="set.checkout.mm">
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
-                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
+                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.checkout.mm">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select name="hotel-checkout-primetime" class="styled">
+                            <select ng-model="set.checkout.am" name="hotel-checkout-primetime" class="styled">
                                 <option value="AM" selected="" translate>AM</option>
                                 <option value="PM" translate>PM</option>
                             </select>
@@ -172,26 +174,26 @@
             <tr>
                 <td align="left">
                     <div class ="rate_entry">
-                        <input type="text">
+                        <input ng-model="set.nightly_hourly_increment_amount" type="text">
                     </div>
                 </td>
                 <td align="center">&nbsp;</td>
                 <td align="left">
                    <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select class="styled">
+                            <select ng-model="set.dusk.hh" class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
-                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
+                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.dusk.hh">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select>
+                            <select ng-model="set.dusk.mm">
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
-                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
+                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.dusk.mm">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select name="hotel-checkout-primetime" class="styled">
+                            <select ng-model="set.dusk.am" name="hotel-checkout-primetime" class="styled">
                                 <option value="AM" selected="" translate>AM</option>
                                 <option value="PM" translate>PM</option>
                             </select>
@@ -203,19 +205,19 @@
                 <td align="left">
                     <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select class="styled">
+                            <select ng-model="set.dawn.hh" class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
-                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
+                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.dawn.hh">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select>
+                            <select ng-model="set.dawn.mm">
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
-                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
+                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.dawn.mm">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select name="hotel-checkout-primetime" class="styled">
+                            <select ng-model="set.dawn.am" name="hotel-checkout-primetime" class="styled">
                                 <option value="AM" selected="" translate>AM</option>
                                 <option value="PM" translate>PM</option>
                             </select>
