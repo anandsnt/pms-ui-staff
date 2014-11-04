@@ -39,47 +39,7 @@ Model.prototype = {
 	}
 };
 
-if(typeof Date.prototype.toComponents === 'undefined') {
-	Date.prototype.toComponents = function() {
-		var __DAYS = ['Monday', 
-					  'Tuesday', 
-					  'Wednesday', 
-					  'Thursday', 
-					  'Friday', 
-					  'Saturday', 
-					  'Sunday'],
-			__MONTHS = ['January',
-						'February',
-						'March',
-						'April',
-						'May',
-						'June',
-						'July',
-						'August',
-						'September',
-						'October',
-						'November',
-						'December'];
-
-		return {
-			date: {
-				day: this.getDate(),
-				weekday: __DAYS[this.getDay()],
-				month: this.getMonth(),
-				monthName: __MONTHS[this.getMonth()],
-				year: this.getFullYear()
-			},
-			time: {
-				milliseconds: this.getMilliseconds(),
-				seconds: this.getSeconds(),
-				minutes: this.getMinutes(),
-				hours: this.getHours()
-			}
-		};
-	};
-}
-
-if(typeof Time === 'undefined') {
+//if(typeof Time === 'undefined') {
 	function Time(obj) {
 		if(!(this instanceof Time)) {
 			return new Time(obj);
@@ -118,9 +78,7 @@ if(typeof Time === 'undefined') {
 		}).call(this, obj);
 	}
 
-	Time.prototype = {
-		constructor: Time,
-		getOffsetFromReference: function(reference_time) {
+	Time.prototype.getOffsetFromReference = function(reference_time) {
 			var sec_delta;
 
 			if(reference_time instanceof Time) {
@@ -130,28 +88,30 @@ if(typeof Time === 'undefined') {
 			}
 
 			return sec_delta;
-		},
-		getTotalMilliseconds: function() {
+		};
+		Time.prototype.getTotalMilliseconds = function() {
 			return (this.hours * 360 + this.minutes * 6 + this.seconds) * 10000 + this.milliseconds;
-		},
-		convertMillisecondsToTime: function(ms) {
+		};
+		Time.prototype.convertMillisecondsToTime = function(ms) {
 			return new Time(ms);
-		},
-		isAM: function() {
-			return (parseInt(start_time.hours / 12) === 0);
-		},
-		AMPM: function() {
+		};
+		Time.prototype.isAM = function() {
+			return (parseInt(this.hours / 12) === 0);
+		};
+		Time.prototype.AMPM = function() {
 			return this.isAM() ? 'AM' : 'PM';
-		},
-		toString: function() {
+		};
+		Time.prototype.toString = function() {
 			var hours = (this.hours < 10) ? '0' + this.hours : this.hours, 
 				min = (this.minutes < 10) ? '0' + this.minutes : this.minutes, 
 				ampm = ' ' + (this.hours > 11) ? 'PM' : 'AM';
 
 			return this.hours + ':' + this.minutes ;
-		}
-	};
-}
+		};
+	//};
+
+	Time.prototype.constructor = Time;
+//}
 
 function Observer() {
 	this.events = Object.create(null);
@@ -181,3 +141,43 @@ Observer.prototype = {
 	},
 	constructor: Observer
 };
+
+if(typeof Date.prototype.toComponents === 'undefined') {
+	Date.prototype.toComponents = function() {
+		var __DAYS = ['Monday', 
+					  'Tuesday', 
+					  'Wednesday', 
+					  'Thursday', 
+					  'Friday', 
+					  'Saturday', 
+					  'Sunday'],
+			__MONTHS = ['January',
+						'February',
+						'March',
+						'April',
+						'May',
+						'June',
+						'July',
+						'August',
+						'September',
+						'October',
+						'November',
+						'December'];
+
+		return {
+			date: {
+				day: this.getDate(),
+				weekday: __DAYS[this.getDay()],
+				month: this.getMonth(),
+				monthName: __MONTHS[this.getMonth()],
+				year: this.getFullYear()
+			},
+			time: new Time({
+				milliseconds: this.getMilliseconds(),
+				seconds: this.getSeconds(),
+				minutes: this.getMinutes(),
+				hours: this.getHours()
+			})
+		};
+	};
+}

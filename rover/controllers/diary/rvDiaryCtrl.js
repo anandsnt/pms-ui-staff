@@ -20,7 +20,7 @@ sntRover.controller('RVDiaryCtrl',
 	//'use strict';
 	BaseCtrl.call(this, $scope);
 
-	$scope.data 			= payload;
+	$scope.data 			= payload.rooms;
 	$scope.stats 			= rvDiarySrv.availability_count; //payload.available_occupancy_count;
 	$scope.available_slots 	= rvDiarySrv.availability;
 
@@ -28,10 +28,10 @@ sntRover.controller('RVDiaryCtrl',
 	//$scope.room_types = _.uniq(_.pluck($scope.data, 'type'));
 	//$scope.room_types.unshift('All');
 	
-	$scope.start_date 		= rvDiarySrv.start_date;
-	$scope.start_time 		= new Time($scope.start_date.toComponents().time);
-	$scope.arrival_times 	= rvDiarySrv.arrival_times;
-	$scope.room_types 		= rvDiarySrv.room_types;
+	$scope.start_date 		= payload.start_date;
+	$scope.start_time 		= $scope.start_date.toComponents().time;
+	$scope.arrival_times 	= payload.arrival_times;
+	$scope.room_types 		= payload.room_types;
 
 	$scope.selectedReservations = [];
 

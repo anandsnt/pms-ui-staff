@@ -11,19 +11,22 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'RVDiaryCtrl',
             resolve: {
-                payload: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchRoomTypes()
-                    .then(rvDiarySrv.fetchArrivalTimes(15))   
-                    .then(rvDiarySrv.fetchRooms())
+                payload: function(rvDiarySrv, rvDiaryFilterSrv, $stateParams) {
+                    return rvDiaryFilterSrv.fetchArrivalTimes(15)   
                     .then(function() {
                         var cur_time = Date.now();
 
-                        return rvDiarySrv.fetchOccupancy((new Date(cur_time)).addHours(-2), (new Date(cur_time)).addDays(1));
+                        return rvDiarySrv.fetchOccupancy(new Date(cur_time - 7200000), new Date(cur_time + 86400000));
                     })
                     .then(function() {
                         rvDiarySrv.normalize();
 
-                        return rvDiarSrv.rooms;
+                        return { 
+                            start_date: rvDiarySrv.start_date,
+                            data: rvDiarySrv.rooms,
+                            arrival_times: rvDiaryFilterSrv.arrival_times,
+                            room_types: rvDiarySrv.room_types
+                        };
                     }); 
 
                     /*return rvDiarySrv.fetchArrivalTimes(15)
@@ -33,7 +36,7 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             }
         });
 
-        /*$stateProvider.state('rover.diary.reservations.staycard', {
+        $stateProvider.state('rover.diary.reservations.staycard', {
             url: '/reservations/staycard',
             templateUrl: '/assets/partials/reservation/rvMain.html',
             controller: 'RVDiaryMainCardCtrl',
@@ -53,5 +56,5 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                     return {};
                 }
             }
-        });*/
+        });
 });
