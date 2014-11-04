@@ -250,8 +250,8 @@
                     <td width="10%" align="center">Nightly Rates</td>
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
-                <tr ng-repeat="room_type in room_type_array">
-                    <td align="right" class="room-type">{{room_type}}</td>
+                <tr ng-repeat="room_rate in set.room_rates">
+                    <td align="right" class="room-type">{{room_rate.name}}</td>
                     <td align="center">&nbsp;</td>
                     <td align="left">
                         <div class ="rate_entry">
@@ -269,11 +269,11 @@
             <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0">
                 
                 <tr>
-                    <td width="10%" align="center" ng-repeat="time in rate_set_time"> {{time}}</td>
+                    <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}"> {{i}}:00</td>
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
-                <tr ng-repeat="room_type in room_type_array">
-                    <td width="10%" align="center" ng-repeat="time in rate_set_time">
+                <tr ng-repeat="room_rate in set.room_rates">
+                    <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}">
                         <div class ="rate_entry">
                             <input type="text">
                         </div>
