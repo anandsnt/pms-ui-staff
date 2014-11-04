@@ -50,8 +50,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             } else {
                 return true;
             }
-
-
         };
 
         /**

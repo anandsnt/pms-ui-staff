@@ -99,9 +99,9 @@
 </div>
 
 
-<div class="rate-config" ng-if="rateData.is_hourly_rate">
-    <div class="full-width" ng-show="currentClickedSet == $index">
-        <label class="day_rates">Day Rates</label>
+<div class="rate-config" ng-if="rateData.is_hourly_rate" ng-show="currentClickedSet == $index">
+    <div class="full-width">
+        <label class="day_rates">{{$index}}Day Rates{{currentClickedSet}}</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable">
             <tr class="day_night_rates">
                 <td width="9%" align="right">Add per hour</td>
@@ -134,13 +134,13 @@
                 <td align="left">
                     <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select ng-model="" class="styled">
+                            <select class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
                                 <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select ng-model="">
+                            <select>
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
                             </select>
@@ -157,7 +157,7 @@
         </table>
     </div>
    <!--  <div style="width:10%"></div> -->
-    <div class="full-width" ng-show="currentClickedSet == $index">
+    <div class="full-width">
         <label class="night_rates">Night Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable" >
             <tr class="day_night_rates">
@@ -179,13 +179,13 @@
                 <td align="left">
                    <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select ng-model="" class="styled">
+                            <select class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
                                 <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select ng-model="">
+                            <select>
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
                             </select>
@@ -203,13 +203,13 @@
                 <td align="left">
                     <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select ng-model="" class="styled">
+                            <select class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
                                 <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select ng-model="">
+                            <select>
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
                             </select>
