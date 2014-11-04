@@ -84,38 +84,52 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// STANALONE PMS: assign the resolved data to scope
 		if ($rootScope.isStandAlone) {
+			var _fetchAgainCallback = function() {
+				$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
+				/**
+				 * CICO-8620
+				 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
+				 * Rest of the times maintain state in the dropdown!
+				 * 
+				 */
+				$_defaultEmp = ($scope.topFilter.byEmployee !== -1)? $scope.topFilter.byEmployee : $rootScope.userId;
+
+				// when a employee logges in mobile view
+				// we introduce another level of tabs to seperate
+				// his/her work count status and rooms
+				// defaults to rooms tab, but if has active worksheet
+				// show summary by default
+				$scope.currentView = 'rooms';
+				$scope.changeView = function(view) {
+					$scope.currentView = view;
+				};
+
+				// time to decide if this is an employee
+				// who has an active work sheets
+				$_checkHasActiveWorkSheet();
+			};
+
 			$scope.workTypes = workTypes;
 			$scope.employees = employees;
 
-			$_defaultWorkType = $scope.workTypes[0].id;
-			/**
-			 * CICO-8620
-			 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
-			 * Rest of the times maintain state in the dropdown!
-			 *
-			 */
-			$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
-
-			// when a employee logges in mobile view
-			// we introduce another level of tabs to seperate
-			// his/her work count status and rooms
-			// defaults to rooms tab, but if has active worksheet
-			// show summary by default
-			$scope.currentView = 'rooms';
-			$scope.changeView = function(view) {
-				$scope.currentView = view;
+			if ( workTypes.length && employees.length ) {
+				_fetchAgainCallback();
+			} else {
+				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
+					$scope.workTypes = data;
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
+						$scope.employees = data;
+						_fetchAgainCallback();
+					});
+				});
 			};
-
-			// time to decide if this is an employee
-			// who has an active work sheets
-			$_checkHasActiveWorkSheet();
+			
 		} else {
 			// need delay, just need it
 			$timeout(function() {
 				$_postProcessRooms(roomList);
 			}, 10);
 		}
-
 
 
 		function $_checkHasActiveWorkSheet(argument) {
@@ -144,9 +158,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$timeout(function() {
 						$_postProcessRooms(roomList);
 					}, 10);
+				},
+				// it will fail if returning from admin to room status
+				// directly, since the flags in $rootScope may not be ready
+				_failed = function() {
+					$timeout(function() {
+						$_postProcessRooms(roomList);
+					}, 10);
 				};
 
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback);
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkAssignments, _params, _callback, _failed);
 		};
 
 		function $_caluculateCounts(assignments) {
@@ -368,8 +389,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		 *  A method which checks the filter option status and see if the room should be displayed
 		 */
 		function $_calculateFilters(source) {
-
 			var source = source || $scope.rooms;
+			if ( Object.prototype.toString.apply(source) !== '[object Array]' ) {
+				return;
+			};
+
 			$scope.noResultsFound = 0;
 			var roomTypesUnSelected = true;
 
@@ -837,7 +861,22 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// if we have hit the trigger refresh room list
 				if (diff > trigger) {
-					fetchRooms();
+					// fetchRooms
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+						businessDate: $rootScope.businessDate,
+						refresh: true
+					}, function(data) {
+						roomList = data;
+						if ($rootScope.isStandAlone) {
+							// time to decide if this is an employee
+							// who has an active work sheets
+							$_checkHasActiveWorkSheet();
+						} else {
+							$timeout(function() {
+								$_postProcessRooms(roomList);
+							}, 10);
+						};
+					});
 				}
 
 				// for the smooth transition back

@@ -90,11 +90,11 @@ sntRover.service('RVHkRoomStatusSrv', [
 		};
 
 		var roomList = {};
-		this.fetchRoomList = function(businessDate, query) {
+		this.fetchRoomList = function(params) {
 			var deferred = $q.defer();
-			var url = '/house/search.json?date=' + businessDate;
+			var url = '/house/search.json?date=' + params.businessDate;
 
-			if (roomList.hasOwnProperty('rooms') && roomList.rooms.length) {
+			if (roomList.hasOwnProperty('rooms') && roomList.rooms.length && !params.refresh) {
 				deferred.resolve(roomList);
 			} else {
 				$http.get(url)
