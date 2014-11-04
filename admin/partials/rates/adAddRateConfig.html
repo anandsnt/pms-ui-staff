@@ -134,13 +134,13 @@
                 <td align="left">
                     <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select ng-model="" class="styled">
+                            <select  class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
                                 <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select ng-model="">
+                            <select >
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
                             </select>
@@ -179,13 +179,13 @@
                 <td align="left">
                    <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select ng-model="" class="styled">
+                            <select  class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
                                 <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select ng-model="">
+                            <select >
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
                             </select>
@@ -203,13 +203,13 @@
                 <td align="left">
                     <div class="entry full-width float">
                         <div class="select select-col col1-3">
-                            <select ng-model="" class="styled">
+                            <select  class="styled">
                                 <option value="00" data-text="Not set" class="placeholder">HH</option>
                                 <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.hours">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
-                            <select ng-model="">
+                            <select >
                                 <option value="00" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==eachTaskList.mins">{{i}}</option>
                             </select>
@@ -232,6 +232,62 @@
            
         </table>
     </div>
+
+    <div class="rates_state" ng-show="true">
+        <div style="float:left;width:30%;">
+            <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="10%" align="right">&nbsp;</td>
+                    <td width="2%">&nbsp;</td>
+                    <td width="10%" align="center">Nightly Rates</td>
+                    <td width="2%" align="center">&nbsp;</td>
+                </tr>
+                <tr ng-repeat="room_type in room_type_array">
+                    <td align="right" class="room-type">{{room_type}}</td>
+                    <td align="center">&nbsp;</td>
+                    <td align="left">
+                        <div class ="rate_entry">
+                            <input type="text">
+                        </div>
+                    </td>
+                    <td align="center" >
+                        <span>&nbsp;</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="width:60%;float:left;">
+            <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0">
+                
+                <tr>
+                    <td width="10%" align="center" ng-repeat="time in rate_set_time"> {{time}}</td>
+                    <td width="2%" align="center">&nbsp;</td>
+                </tr>
+                <tr ng-repeat="room_type in room_type_array">
+                    <td width="10%" align="center" ng-repeat="time in rate_set_time">
+                        <div class ="rate_entry">
+                            <input type="text">
+                        </div>
+                    </td>
+                    <td align="center" width="2%" >
+                        <span>&nbsp;</span>
+                    </td>
+                </tr>
+              
+            </table>
+           
+        </div>
+
+
+        <div class="entry movers" style="width:10%;float:right;">
+            <span  class="icons icon-mover-right to-target" data-type="target">Move right</span>
+            <span class="icons icon-mover-left to-source" data-type="source">Move left</span>
+        </div>
+    </div>
+
+
+    
 </div>
 
 
