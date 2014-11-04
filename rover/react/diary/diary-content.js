@@ -171,7 +171,6 @@ var DiaryContent = React.createClass({
 								isResizable:                scope.isResizable,
 								toggleRows:                 scope.toggleRows,
 								displayFilter: 				scope.displayFilter,
-								calculateOccupancy:    		scope.calculateOccupancy, 
 								onDragStart: 				scope.onDragStart,
 								onDragEnd: 					scope.onDragEnd,
 								onResizeStart: 				scope.onResizeStart,

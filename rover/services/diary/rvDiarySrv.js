@@ -9,16 +9,17 @@ sntRover
 		number: 'room_no',
 		type: 'room_type',
 		type_id: 'room_type_id',
-		row_children: 'occupancies'
+		row_children: 'occupancy'
 	},
 	occupancy: {
 		id: 'reservation_id',
-		room_id: 'rppm_id',
+		room_id: 'room_id',
 		room_type: 'room_type',
 		status: 'reservatopm_status',
 		guest: 'reservation_primary_guest_full_name',
 		start_date: 'arrival',
-		end_date: 'departure'
+		end_date: 'departure',
+		maintenance: 'maintenance'
 	}
 })
 .service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata',
@@ -36,12 +37,12 @@ sntRover
     		},
     		room_types: {
     			enumerable: true,
-    			writable:true,
+    			writable: true,
     			value: Object.create(null)
     		},
     		occupancies: {
     			enumerable: true,
-    			writable:true,
+    			writable: true,
     			value: Object.create(null)
     		}
     	});
@@ -86,46 +87,55 @@ sntRover
     		}
     	};
 
-    	this.normalize = function() {
+    	this.normalize = function(time_slots, extra_params) {
     		var rooms = this.rooms,
     			room_types = this.room_types,
-    			occupancy = this.occupancy,
-    			cur_room,
-    			cur_occupancy,
-    			index = this.store;
+    			occupancy = time_slots,
+    			children = rvDiaryMetadata.room.row_children,
+    			slot_id = rvDiaryMetadata.occupancy.id,
+    			room,
+    			slot,
+    			index = this.store,
+    			normalizeRooms = !Object.prototype.hasOwnProperty.call(rooms, '__ready');
 
     		if(occupancy.length > 0) {
 	    		for(var i = 0, len = occupancy.length; i < len; i++) {
-	    			cur_occupancy = occupancy[i];
-	    			cur_room = index.rooms[cur_occupancy.room_id];
+	    			slot = occupancy[i];
+	    			room = index.rooms[slot[room_id]];
+    			
+		    		if(normalizeRooms) { 
+		    			this.normalizeRoom(room, index);
+		    		}
 
-	    			if(cur_room) {
-	    				cur_room.room_type = index.room_types[cur_room.room_type_id].name;
+    				if(!_.findWhere(room[children], { reservation_id: slot[slot_id] })) {
+	    				this.normalizeOccupancy(room, slot);
 
-	    				if(!cur_room.occupancy) {
-	    					cur_room.occupancy = [];
-	    				}
-
-	    				occupancy.arrival = this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-	    				occupancy.departure = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-	    				occupancy.maintenance = this.normalizeMaintenanceInterval(cur_room.departure_cleaning_time);
-
-	    				cur_room.occupancy.push(cur_occupancy);
-	    			}
+	    				room[children].push(slot);
+	    			}		
 	    		}
 	    	} else {
-	    		for(var i = 0, len = rooms.length; i < len; i++) {			
-		    		cur_room = rooms[i];
-
-	    			if(cur_room) {
-	    				cur_room.room_type = index.room_types[cur_room.room_type_id].name;
-
-	    				if(!cur_room.occupancy) {
-	    					cur_room.occupancy = [];
-	    				}
+	    		if(!Object.prototype.hasOwnProperty.call(rooms, '__ready')) {
+	    			for(var i = 0, len = rooms.length; i < len; i++) {			
+	    				this.normalizeRoom(rooms[i], index);
 	    			}
-	    		}
+
+	    			Object.defineProperty(rooms, '__ready', { value: true });
+	    		} 
 	    	}
+    	};
+
+    	this.normalizeRoom = function(room, index) {		
+			room.room_type = index.room_types[room.room_type_id].name;
+		    			
+			if(!room[rvDiaryMetadata.room.row_children]) {
+				room[rvDiaryMetadata.room.row_children] = [];
+			}			
+    	};
+
+    	this.normalizeOccupancy = function(room, occupancy) {
+			occupancy[rvDiaryMetadata.occupancy.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+		    occupancy[rvDiaryMetadata.occupancy.start_date] 	= this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+		    occupancy[rvDiaryMetadata.occupancy.maintenance] 	= this.normalizeMaintenanceInterval(room.departure_cleaning_time);
     	};
 
     	this.normalizeMaintenanceInterval = function(time, base_interval) {
@@ -144,7 +154,7 @@ sntRover
     	};
 
     	this.merge = function(currentData, incomingData) {
-
+    		return _.union(currentData, incomingData);
     	};
     	
     	this.fetchOccupancy = function(start_date, end_date) {
@@ -154,19 +164,23 @@ sntRover
 
 			this.fetchData(start_date, end_date, self.api_types.occupancy)
 			.then(function(data) {
-				self.room_types = data.room_types;
-				self.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-				self.createIndex(data, 'room_types', 'room_types');
-				self.rooms = data.rooms;
-				self.createIndex(data, 'rooms', 'rooms');
-				self.occupancy = data.occupancy;
+				if(self.room_types.length === 0) {
+					self.room_types = data.room_types;
+					self.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
+					self.createIndex(data, 'room_types', 'room_types');
+				}
+
+				if(self.rooms.length === 0) {
+					self.rooms = data.rooms;
+					self.createIndex(data, 'rooms', 'rooms');
+				}
+
+				self.occupancy = self.merge(self.occupancy, data.occupancy);
 				self.createIndex(data, 'occupancy', 'occupancy');
 
-				q.resolve({
-					rooms: self.rooms,
-					room_types: self.room_types,
-					occupancy: self.occupancy
-				});
+				self.normalize(self.occupancy);
+
+				q.resolve(data);
 			}, function(err) {
 				q.reject(err);
 			});
@@ -177,36 +191,23 @@ sntRover
     	this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {
     		var self = this, q = $q.defer();
 
-			this.fetchData(start_date, end_date, rate_id, room_type_id, self.api_types.availability)
+			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
 			.then(function(payload) {
-		   		var rooms = payload.rooms,
-		   			cur_room,
-		   			cur_room_type,
-		   			room_types = payload.room_types,
-		   			data = payload.results,
-		   			t_a, t_b, t_c;
+		   		var data = payload.results;
 
-		   		for(var i = 0, len = data.length; i < len; i++) {
-		   			cur_room = _.findWhere(rooms, { id: data[i].room_id });
+		   		if(_.isArray(data)) {
+			   		for(var i = 0, len = data.length; i < len; i++) {
+			   			data[i].temporary = true;
+			   		}
 
-		   			if(cur_room) {
-		   				cur_room_type = _.findWhere(room_types, { id: cur_room.room_type_id });
+			   		self.availability = data;
 
-		   				if(cur_room_type) {
-		   					t_a = start_date.toComponents().time;
-		   					t_b = end_date.toComponents().time;
+			   		self.normalize(self.availability);
+			   	}
 
-		   					data[i].temporary = true;
-							data[i].arrival = this.normalizeTime(tzIndependentDate(start_date), t_a.toString());
-							data[i].departure = this.normalizeTime(tzIndependentDate(end_date), t_b.toString());
-							data[i].maintenance = this.normalizeMaintenanceInterval(cur_room_type.departure_cleaning_time);	   					
-		   				}
-		   			}
-		   		}
-
-		   		self.availability = data;
-
-		   		q.resolve(self.availability);
+			   	q.resolve({
+		   			data: rooms  			
+		   		});
 		   }, function(err) {
 		   		q.reject(err);
 		   });

@@ -12,26 +12,22 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             controller: 'RVDiaryCtrl',
             resolve: {
                 payload: function(rvDiarySrv, rvDiaryFilterSrv, $stateParams) {
-                    return rvDiaryFilterSrv.fetchArrivalTimes(15)   
-                    .then(function() {
-                        var cur_time = Date.now();
+                    var cur_time = Date.now(),
+                        x_0 = new Date(cur_time - 7200000),
+                        x_N = new Date(cur_time + 86400000);
 
-                        return rvDiarySrv.fetchOccupancy(new Date(cur_time - 7200000), new Date(cur_time + 86400000));
+                    return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15)   
+                    .then(function() {
+                        return rvDiarySrv.fetchOccupancy(x_0, x_N);
                     })
-                    .then(function() {
-                        rvDiarySrv.normalize();
-
+                    .then(function(data) {
                         return { 
                             start_date: rvDiarySrv.start_date,
                             data: rvDiarySrv.rooms,
                             arrival_times: rvDiaryFilterSrv.arrival_times,
                             room_types: rvDiarySrv.room_types
                         };
-                    }); 
-
-                    /*return rvDiarySrv.fetchArrivalTimes(15)
-                           .then(rvDiarySrv.fetchRoomTypes()) 
-                           .then(rvDiarySrv.fetchRooms)      */
+                    });
                 }
             }
         });

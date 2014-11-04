@@ -56,6 +56,7 @@ var TimelinePanel = React.createClass({
 			display:                props.display,
 			iscroll:                props.iscroll,
 			edit:    			    props.edit,
+			meta:                   props.meta,
 			__onResizeCommand:      props.__onResizeCommand,
 			__onResizeStart:  		props.__onResizeStart,
 			__onResizeEnd:    		props.__onResizeEnd,

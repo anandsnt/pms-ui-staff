@@ -3,15 +3,25 @@ sntRover
 	function($q, RVBaseWebSrv) {
 		this.arrival_times = [];
 
-		this.fetchArrivalTimes = function(base_interval) {
+		this.fetchArrivalTimes = function(start_time, base_interval) {
 	    	var times = [], 
 	    		day_min = 24 * 60,
 	    		deferred = $q.defer(),
-	    		min;
+	    		min, cur_time, start_flag = false, min_shift = Math.floor(start_time.minutes / 15) * 15;
 	
+			start_time = start_time.hours + ':' + (min_shift < 10 ? '0' : '') + min_shift;
+
 			for(var i = 0; i < day_min; i += base_interval) {
 				min = i % 60;
-				times.push(parseInt(i / 60) + ':' + (min === 0 ? '00' : min));
+				cur_time = parseInt(i / 60) + ':' + (min === 0 ? '00' : min);
+
+				if(!start_flag) {
+					start_flag = (start_time === cur_time);
+				}
+
+				if(start_flag) {
+					times.push(cur_time);
+				}
 			}
 			
 			this.arrival_times = Array.prototype.slice.call(times);
