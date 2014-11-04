@@ -30,7 +30,7 @@ admin.controller('ADContentManagementGridviewCtrl',['$scope', '$state', 'ADConte
     */
    $scope.setUpLists =function(){
    		for(var i= 0; i < $scope.data.length; i++){
-   			$scope.data[i].last_updated = $scope.getFormattedTime($scope.data[i].last_updated);
+   			$scope.data[i].last_updated = new Date($scope.data[i].last_updated);
    			if($scope.data[i].component_type == 'SECTION'){
    				$scope.sections.push($scope.data[i]);
    			}else if($scope.data[i].component_type == 'CATEGORY'){
