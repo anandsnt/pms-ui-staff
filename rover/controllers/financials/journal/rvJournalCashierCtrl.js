@@ -11,7 +11,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
             setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 500);
         };
         
-        var data =  {"user_id":$scope.data.filterData.selectedCashier,"date":$scope.data.cashierDate,"report_type_id":""};
+        var data =  {"user_id":$scope.data.filterData.selectedCashier,"date":$scope.data.cashierDate,"report_type_id":$scope.data.reportType};
         $scope.invokeApi(RVJournalSrv.fetchCashierDetails, data, fetchDetailsSuccessCallback);  
     };
 

@@ -14,6 +14,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedChargeGroup = 'ALL';
     $scope.data.selectedChargeCode  = 'ALL';
     $scope.data.selectedPaymentType = 'ALL';
+    $scope.data.reportType = "";
 	/*
 	 *	Setting Revenue & Payment date pickers.
 	 *	All date fields should default to yesterday's date.
