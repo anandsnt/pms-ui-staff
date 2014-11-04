@@ -454,7 +454,10 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
             
             if($scope.paymentDetails.hasOwnProperty('reservation_id')){
                 $scope.paymentDetails.bill_number = $scope.getSelectedBillNumber();
-                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.paymentDetails, successCallback, errorCallback);
+                var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
+                var data = dclone($scope.paymentDetails, unwantedKeys);
+                data.card_expiry = $scope.paymentDetails.card_expiry_month && $scope.paymentDetails.card_expiry_year ? "20"+$scope.paymentDetails.card_expiry_year+"-"+$scope.paymentDetails.card_expiry_month+"-01" : "";
+                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
             }else{
                 $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
             }
