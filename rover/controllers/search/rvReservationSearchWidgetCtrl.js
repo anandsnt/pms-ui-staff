@@ -157,10 +157,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.$on("updateDataFromOutside", function(event, data) {
 			$scope.results = data;
-			for (var i = 0; i < $scope.results.length; i++) {
-				$scope.results[i].is_row_visible = true;
-			}
-
 			refreshScroller();
 			$scope.$emit('hideLoader');
 		});
@@ -416,6 +412,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.goToReservationDetails = function(reservationID, confirmationID) {
 			$scope.currentReservationID = reservationID;
 			$scope.currentConfirmationID = confirmationID;
+			RVSearchSrv.data = $scope.results;
 			//$scope.$emit("UpdateSearchBackbuttonCaption", "");
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
