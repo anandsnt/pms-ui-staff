@@ -63,9 +63,9 @@ admin.controller('ADContentManagementCategoryDetailCtrl',['$scope', '$state', 'n
 			$scope.$emit('hideLoader');
 			$scope.goBack();
 		}
-		var unwantedKeys = [];
+		var unwantedKeys = ["image"];
 		if($scope.initialIcon == $scope.data.icon)
-			unwantedKeys = ["icon"];		
+			unwantedKeys = ["icon", "image"];		
 
 		var data = dclone($scope.data, unwantedKeys);
 		$scope.invokeApi(ADContentManagementSrv.saveComponent, data , saveCategorySuccessCallback);
