@@ -1,16 +1,19 @@
-sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',function($scope,RVJournalSrv) {
+sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$rootScope',function($scope,RVJournalSrv,$rootScope) {
 	
     //fetch history details
     var fetchHistoryDetails = function(data){
 
          var fetchDetailsSuccessCallback = function(data){
             $scope.$emit('hideLoader');
-            $scope.details = [];
-            $scope.details = data;
+            $scope.detailsList = data.history;
+         
+            $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};//set first one as selected
+            $scope.selectedHistoryId = ($scope.detailsList.length>0) ? $scope.detailsList[0].id :"";            
             setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 500);
         };
-        var url = '/sample_json/journal/journal_cashier_details_'+data.id+'.json';
-        $scope.invokeApi(RVJournalSrv.fetchCashierDetails, url, fetchDetailsSuccessCallback);  
+        
+        var data = {"user_id":$scope.data.filterData.selectedCashier,"date":$rootScope.businessDate,"report_type_id":""};
+        $scope.invokeApi(RVJournalSrv.fetchCashierDetails, data, fetchDetailsSuccessCallback);  
     };
 
     //init
@@ -21,36 +24,45 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv',funct
         $scope.setScroller('cashier_history', {});
         $scope.setScroller('cashier_shift', {});
         setTimeout(function(){$scope.refreshScroller('cashier_history');}, 500);
-        fetchHistoryDetails({'id':$scope.data.cashierData.history[0].status});
+        fetchHistoryDetails();
     };
 
     init();	
 	
     //click action of individual history
 	$scope.historyClicked = function(index){
-
 		$scope.selectedHistory = index;
-        fetchHistoryDetails({'id':$scope.data.cashierData.history[index].status});
+        $scope.details = $scope.detailsList[index];
+        $scope.selectedHistoryId = $scope.detailsList[index].id;
 	};
 
     //click action close shift
     $scope.closeShift = function(){
 
         var closeShiftSuccesCallback = function(){
-            $scope.data.cashierData.history[$scope.selectedHistory].status = "closed";
-            $scope.details.status ='closed';
+            $scope.$emit('hideLoader');
+            $scope.detailsList[$scope.selectedHistory].status = "CLOSED";
+           // $scope.details.status ='closed';
         };
-        closeShiftSuccesCallback();
+        var updateData = {};
+        updateData.id = $scope.selectedHistoryId;
+        updateData.data ={"cash_submitted":$scope.details.cash_submitted,"check_submitted":$scope.details.check_submitted}
+        $scope.invokeApi(RVJournalSrv.closeCashier, updateData, closeShiftSuccesCallback); 
+        // closeShiftSuccesCallback();
     };
 
     //click action reOpen
     $scope.reOpen = function(){
         
         var reOpenSuccesCallback = function(){
-            $scope.data.cashierData.history[$scope.selectedHistory].status = "open";
-            $scope.details.status ='open';
+            $scope.$emit('hideLoader');
+            $scope.detailsList[$scope.selectedHistory].status = "OPEN";
+           // $scope.details.status ='open';
         };
-        reOpenSuccesCallback();
+        //reOpenSuccesCallback();
+        var updateData = {};
+        updateData.id = $scope.selectedHistoryId;
+        $scope.invokeApi(RVJournalSrv.reOpenCashier, updateData, reOpenSuccesCallback); 
 
     };
 
