@@ -11,16 +11,14 @@
 	    </div>
 		<a ng-click="addNewGuest($event)" class="add-new-button" ng-show="showAddNewGuestButton && showSearchResultsArea">+ Add new </a>	
 	</form>
-
+	<div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0">
+	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
+	    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
+	    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalSearchResults}}</strong> items</p>
+	</div>
 	<section id="dashboard-search" class="content scrollable" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000">
 	    <div class="wrapper"> 
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	    	<div ng-show="totalSearchResults > 100" style="text-align:right;margin-top:10px; margin-right: 20px;">
-	    		<span>showing {{start}} to {{end}} of {{totalSearchResults}} items</span>
-
-	    		<button class="button blue" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" ng-class="{grey: isPrevButtonDisabled()}">prev</button>
-	    		<button class="button blue" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" ng-class="{grey: isNextButtonDisabled()}">next</button>
-	    	</div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->
 				<li class="reservation" ng-repeat="row in results" ng-show="row.is_row_visible" ngrepeatend ngrepeatstarted>
 					<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->

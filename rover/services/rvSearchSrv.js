@@ -1,7 +1,7 @@
 sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
 	
 	var self = this;
-	self.searchPerPage = 100;
+	self.searchPerPage = 30;
 	self.page = 1;
 	
 	this.fetch = function(dataToSend, useCache){

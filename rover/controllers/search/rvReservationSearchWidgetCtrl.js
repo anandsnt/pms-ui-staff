@@ -21,13 +21,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isLateCheckoutList = false;
 		$scope.isQueueReservationList = false;
 		$scope.swipeNoResults = false;
-		$scope.disableNextButton = false;
+		//$scope.disableNextButton = false;
 
 		//showSearchResultsAre
 		$scope.showSearchResultsArea = false;
 		$scope.totalSearchResults = RVSearchSrv.totalSearchResults;
+		$scope.searchPerPage = RVSearchSrv.searchPerPage;
+
 		$scope.start = 1;
-		$scope.end = 100;
+		$scope.end = RVSearchSrv.searchPerPage;
 
 		//results
 		$scope.results = [];
@@ -130,10 +132,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			// Compute the start, end and total count parameters
 			if($scope.nextAction){
-				$scope.start = $scope.start + RVSearchSrv.searchPerPage ;
+				$scope.start = $scope.start + $scope.searchPerPage ;
 			}
 			if($scope.prevAction){
-				$scope.start = $scope.start - RVSearchSrv.searchPerPage ;
+				$scope.start = $scope.start - $scope.searchPerPage ;
 
 			}
 			$scope.totalSearchResults = RVSearchSrv.totalSearchResults
@@ -171,6 +173,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			for (var i = 0; i < $scope.results.length; i++) {
 				$scope.results[i].is_row_visible = true;
 			}
+			$scope.start = ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) + $scope.start;
 			$scope.end = $scope.start + $scope.results.length - 1;
 			refreshScroller();
 			$scope.$emit('hideLoader');
@@ -282,12 +285,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					$scope.results[i].is_row_visible = false;
 				}
 			}
-			if(isLocalFiltering){
+			/*if(isLocalFiltering){
 				$scope.start = 1;
 				$scope.end = totalCountOfFound;
 				$scope.totalSearchResults = totalCountOfFound;
 				$scope.disableNextButton = true;//TODO: workaround
-			}
+			}*/
 			
 			$scope.isTyping = false;
 		};
@@ -297,7 +300,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
-$scope.disableNextButton = false;
+			//$scope.disableNextButton = false;
 			//if the entered text's length < 3, we will show everything, means no filtering    
 			if ($scope.textInQueryBox.length < 3) {
 				//based on 'is_row_visible' parameter we are showing the data in the template      
@@ -313,11 +316,11 @@ $scope.disableNextButton = false;
 				//If so we will do local filtering
 				if ($scope.searchType == "default" && $scope.textInQueryBox.indexOf($scope.fetchTerm) == 0 
 					&& !$scope.firstSearch && $scope.results.length > 0 
-					&& RVSearchSrv.totalSearchResults <= RVSearchSrv.searchPerPage) {
-			RVSearchSrv.page = 1;
-		
-					var isLocalFiltering = true;
-					applyFilters(isLocalFiltering);
+					&& RVSearchSrv.totalSearchResults <= $scope.searchPerPage) {
+					//RVSearchSrv.page = 1;
+					//var isLocalFiltering = true;
+					//applyFilters(isLocalFiltering);
+					applyFilters();
 				} else {
 					RVSearchSrv.page = 1;
 					$scope.start = 1;
@@ -457,8 +460,8 @@ $scope.disableNextButton = false;
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
 			$scope.firstSearch = true;
-			$scope.start = 1;
-			$scope.end = 100;
+			//$scope.start = 1;
+			//$scope.end = 100;
 
 			$scope.$emit("SearchResultsCleared");
 			setTimeout(function(){
@@ -625,27 +628,21 @@ $scope.disableNextButton = false;
 			RVSearchSrv.page++;
 			$scope.nextAction = true;
 			$scope.prevAction = false;
-
-			//$scope.start = $scope.start +  ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) ;
-			//$scope.end = $scope.start + $scope.results.length - 1;
-			//alert($scope.end);
 			fetchSearchResults();
 		};
 
 		$scope.loadPrevSet = function(){
 			RVSearchSrv.page--;
-			//$scope.start = $scope.start -  ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) ;
-			//$scope.end = $scope.start + $scope.results.length - 1;
 			$scope.nextAction = false;
 			$scope.prevAction = true;
-			//$scope.start = $scope.start +  ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) ;
-			//$scope.end = $scope.start + $scope.results.length;
 			fetchSearchResults();
 		};
 
 		$scope.isNextButtonDisabled = function(){
 			var isDisabled = false;
-			if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
+			//if($scope.end >= RVSearchSrv.totalSearchResults || $scope.disableNextButton){
+
+			if($scope.end >= RVSearchSrv.totalSearchResults){
 				isDisabled = true;
 			}
 			return isDisabled;
@@ -654,7 +651,7 @@ $scope.disableNextButton = false;
 		$scope.isPrevButtonDisabled = function(){
 			var isDisabled = false;
 			if(RVSearchSrv.page == 1){
-				isDisabled = true;//TODO: Write the logic
+				isDisabled = true;
 			}
 			return isDisabled;
 		}
