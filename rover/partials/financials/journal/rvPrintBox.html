@@ -70,9 +70,9 @@
     <div class="entry">
         <label for="cashier-report" translate>REPORT</label>
         <div class="select">
-            <select name="cashier-report" id="cashier-report" ng-model="reportType" ng-change="cashierFilterChanged()">
+            <select name="cashier-report" id="cashier-report" ng-model="data.reportType" ng-change="cashierFilterChanged()">
                 <option value="" translate>SELECT_REPORT_TYPE</option>
-                <option value="credit-card" selected translate>CASHIER_SUMMERY</option>
+                <option value="cashier" selected translate>CASHIER_SUMMERY</option>
                 ...
             </select>
         </div>

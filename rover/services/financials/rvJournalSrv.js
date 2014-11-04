@@ -114,10 +114,11 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		return deferred.promise;
 	};
 
-	this.fetchCashierData = function(){
-		var deferred = $q.defer();
-		var url = '/sample_json/journal/journal_cashier.json';
-			BaseWebSrvV2.getJSON(url).then(function(data) {
+
+	this.fetchCashierDetails = function(data){
+		var deferred = $q.defer();	
+		var url ='/api/cashier_periods/history';
+		BaseWebSrvV2.postJSON(url,data).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
@@ -125,9 +126,22 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		return deferred.promise;
 	};
 
-	this.fetchCashierDetails = function(url){
+
+	this.reOpenCashier = function(updateData){
 		var deferred = $q.defer();	
-		BaseWebSrvV2.getJSON(url).then(function(data) {
+		var url ='/api/cashier_periods/'+updateData.id+'/reopen';
+		BaseWebSrvV2.postJSON(url).then(function(data) {
+			   	deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
+
+	this.closeCashier = function(updateData){
+		var deferred = $q.defer();	
+		var url ='/api/cashier_periods/'+updateData.id+'/close';
+		BaseWebSrvV2.postJSON(url,updateData.data).then(function(data) {
 			   	deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);

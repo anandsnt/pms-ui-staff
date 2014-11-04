@@ -1,16 +1,18 @@
 <!-- Content CASHIER -->
-<div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController">
+<div id="journal-content" class="journal-content" ng-controller="RVJournalCashierController" ng-click="clearErrorMessage()">
     <div id="cashier-history" class="journal-history scrollable" ng-iscroll='cashier_history'>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="wrapper">
-            <h2 translate>HISTORY</h2>
+            <h2 ng-show="detailsList.length>0" translate>HISTORY</h2>
+            <h2 ng-hide="detailsList.length>0" translate>NO_HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
-                <li ng-repeat="history in data.cashierData.history" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
-                    <strong class="status closed" ng-show="history.status ==='closed'">
+                <li ng-repeat="history in detailsList" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
+                    <strong class="status closed" ng-show="history.status ==='CLOSED'">
                         {{'CLOSED' | translate}}
                          <span>by {{history.user}}</span>
                     </strong>
-                    <strong class="status opened" ng-hide="history.status ==='closed'">
+                    <strong class="status opened" ng-hide="history.status ==='CLOSED'">
                         {{'OPENED' | translate}}
                         <span ng-bind="history.user"</span>
                     </strong>
@@ -27,13 +29,13 @@
     <div id="cashier-shift" class="journal-shift scrollable" ng-iscroll='cashier_shift'>
         <!-- Open shift -->
         <div class="wrapper">
-            <table class="shift-details">
-                <caption class="closed" ng-hide="details.status ==='open'">
+            <table class="shift-details" ng-show="detailsList.length>0">
+                <caption class="closed" ng-hide="details.status ==='OPEN'">
                     <strong>
                         {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}}
                     </strong> 
                 </caption>
-                <caption class="opened" ng-show="details.status ==='open'">
+                <caption class="opened" ng-show="details.status ==='OPEN'">
                      <strong>
                         {{details.user}} | {{details.status}} | {{details.time}}, {{details.date | date:'dd MMMM yyyy'}} 
                     </strong> 
@@ -56,22 +58,22 @@
                         <td class="value">{{currencySymbol}}{{details.total_check_received |number:2}}</td>
                     </tr>
                     <tr>
-                        <td class="entry" colspan="2" ng-show="details.status ==='open'">
+                        <td class="entry" colspan="2" ng-show="details.status ==='OPEN'">
                             <span translate>CASH_SUBMITTED</span>
                             <input name="cash-submited" id="cash-submited" type="text" ng-model="details.cash_submitted"/>
                         </td>
 
-                        <th scope="row" translate  ng-hide="details.status ==='open'">CASH_SUBMITTED</th>
-                        <td class="value"  ng-hide="details.status ==='open'">{{currencySymbol}}{{details.cash_submitted |number:2}}</td>
+                        <th scope="row" translate  ng-hide="details.status ==='OPEN'">CASH_SUBMITTED</th>
+                        <td class="value"  ng-hide="details.status ==='OPEN'">{{currencySymbol}}{{details.cash_submitted |number:2}}</td>
                     </tr>
                     <tr>
-                        <td class="entry" colspan="2" ng-show="details.status ==='open'">  
+                        <td class="entry" colspan="2" ng-show="details.status ==='OPEN'">  
                             <span translate>CHECKS_SUBMITTED</span>
                             <input name="checks-submited" id="checks-submited" type="text" ng-model="details.check_submitted" />
                         </td>
 
-                        <th scope="row" translate ng-hide="details.status ==='open'">CHECKS_SUBMITTED</th>
-                        <td class="value" ng-hide="details.status ==='open'">{{currencySymbol}}{{details.check_submitted |number:2}}</td>
+                        <th scope="row" translate ng-hide="details.status ==='OPEN'">CHECKS_SUBMITTED</th>
+                        <td class="value" ng-hide="details.status ==='OPEN'">{{currencySymbol}}{{details.check_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
@@ -83,8 +85,8 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" class="button green" translate ng-show="details.status ==='open'" ng-click="closeShift()">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-hide="details.status ==='open'" ng-click="reOpen()">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0" ng-click="closeShift()">CLOSE_SHIFT</button>
+            <button type="button" class="button green" translate ng-show="details.status ==='CLOSED' || detailsList.length>0" ng-click="reOpen()">RE_OPEN</button>
             <!-- adding extra empty tag to solve scroll not showing bottom part -->
             <div style="height:20%;"></div>
         </div> 

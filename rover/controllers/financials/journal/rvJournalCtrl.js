@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','cashierData',function($scope, $rootScope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse,cashierData) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','cashierData',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse,cashierData) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
@@ -14,6 +14,7 @@ sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$st
     $scope.data.selectedChargeGroup = 'ALL';
     $scope.data.selectedChargeCode  = 'ALL';
     $scope.data.selectedPaymentType = 'ALL';
+    $scope.data.reportType = "";
 	/*
 	 *	Setting Revenue & Payment date pickers.
 	 *	All date fields should default to yesterday's date.
@@ -25,7 +26,6 @@ sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$st
 	$scope.data.paymentDate = $rootScope.businessDate;
     $scope.data.cashierDate = $rootScope.businessDate;
     $scope.data.isActiveRevenueFilter = false;
-    $scope.data.cashierData = cashierData;
     $scope.data.activeChargeCodes = [];
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
@@ -308,16 +308,9 @@ sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$st
     };
     /** Employee/Departments Filter ends here .. **/
 
-    /* Cahier filter starts here */
+    /* Cashier filter starts here */
     var callCashierFilterService = function(){
-    	var cashierDataFilterSuccessCallBack = function(data){
-    		$scope.$emit("hideLoader");
-    		console.log($scope.currentCashier)
-    		console.log($scope.data.cashierDate)
-    		console.log($scope.data.reportType);
-    		$scope.data.cashierData = cashierData;
-    	}
-    	$scope.invokeApi(RVJournalSrv.fetchCashierDetails, '', cashierDataFilterSuccessCallBack);
+        $scope.$broadcast('refreshDetails');
     }
     $scope.$on('cashierDateChanged',function(){
     	//call filter service
@@ -329,6 +322,8 @@ sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$st
        callCashierFilterService();
     };
 
+    /* Cashier filter ends here */
+
     $scope.activatedTab = function(index){
     	$scope.data.activeTab = index;
     	if(index == 0) $rootScope.$broadcast('REFRESHREVENUECONTENT');
@@ -336,7 +331,6 @@ sntRover.controller('RVJournalController', ['$scope','$rootScope','$filter','$st
     	else $scope.$broadcast('paymentTabActive');
     	$scope.$broadcast("CLOSEPRINTBOX");
     };
-    /* Cahier filter ends here */
 
     
 }]);
