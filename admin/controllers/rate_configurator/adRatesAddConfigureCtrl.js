@@ -235,7 +235,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             // API request do not require all keys except room_types
             var selectedSet = $scope.data.sets[index];           
 
-            var unwantedKeys = ["room_types", "checkout"],
+            var unwantedKeys = ["room_types", "checkout","dawn", "dusk"],
                 setData = dclone($scope.data.sets[index], unwantedKeys);
 
             setData.day_checkout_cutoff_time = getTimeFormated(selectedSet.checkout.hh,
