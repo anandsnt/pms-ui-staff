@@ -11,6 +11,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
         $scope.paymentDetails = $scope.selectedEntity.credit_card_details;
         $scope.paymentDetails.mli_token = $scope.selectedEntity.credit_card_details.card_number;
+        $scope.paymentDetails.credit_card = $scope.selectedEntity.credit_card_details.card_code;
         $scope.isAddPayment = true;
     }
     
