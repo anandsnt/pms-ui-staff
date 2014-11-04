@@ -66,7 +66,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
 			MyIFrameDoc.getElementById("six_form").submit();
 			
-		}, 2000);
+		}, 1000);
 	
 		// set the previous state
 		$rootScope.setPrevState = {
@@ -422,6 +422,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 		};
 		$scope.changePaymentType = function(){
+			console.log($scope.reservationData.paymentType.type.value);
 			if($scope.reservationData.paymentType.type.value === 'CC'){
 				if($rootScope.paymentGateway === "sixpayments"){
 					if($scope.isOnsiteActive){
@@ -478,11 +479,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			
 			$scope.isOnsiteActive = true;
 			$scope.isSixPaymentGatewayVisible = false;
+			$scope.reservationData.paymentType.type.value = '';
+			$scope.refreshPaymentScroller();
 		};
 		$scope.clickedCallIn = function(){
-			
+			var typeIndex = '';
 			$scope.isOnsiteActive = false;
 			$scope.isSixPaymentGatewayVisible = true;
+			$scope.reservationData.paymentType.type.value = 'CC';
 		};
 
 		$scope.init();
