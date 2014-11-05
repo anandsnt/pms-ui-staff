@@ -140,9 +140,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			$scope.totalSearchResults = RVSearchSrv.totalSearchResults
 			$scope.end = $scope.start + $scope.results.length - 1;
-
 			setTimeout(function() {
 				$scope.$apply();
+				$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
 				refreshScroller();
 			}, 100);
 		};
