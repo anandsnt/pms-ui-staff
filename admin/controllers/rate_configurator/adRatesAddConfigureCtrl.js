@@ -204,8 +204,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     } else {
                         angular.forEach(value.room_rates, function(room_type, key) {
                             room_type.hourly = {};
+                            room_type.nightly_rate = parseFloat(room_type.nightly_rate).toFixed(2);
                             angular.forEach(room_type.hourly_rates, function(rate) {
-                                room_type.hourly[rate.hour] = rate.amount;
+                                room_type.hourly[rate.hour] = parseFloat(rate.amount).toFixed(2);
                             });
                         });
                     }
@@ -309,13 +310,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 selectedSet.showRoomRate = true;
                 angular.forEach(selectedSet.room_rates, function(room_rate, key) {
                     room_rate.hourly_room_rates = [];
-                    angular.forEach(room_rate.hourly, function(amount, key) {
+                    angular.forEach(room_rate.hourly, function(amount, key) {                        
                         room_rate.hourly_room_rates.push({
                             hour: key,
                             amount: amount
                         });
                     });
-                    delete room_rate['hourly'];
                 });
             }
 
@@ -498,6 +498,16 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             showRateSetChangeSaveDialog();
             return false;
         });
+
+        $scope.checkNightly = function(index, hour) {
+            var selectedSet = $scope.data.sets[index];
+            if (selectedSet.dawn.hh && selectedSet.dusk.hh) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
 
         $scope.collapse = function(index) {
             var setLength = $scope.data.sets.length;
