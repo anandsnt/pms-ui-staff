@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse','cashierData',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse,cashierData) {
+sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', 'ngDialog', '$rootScope','RVJournalSrv', 'journalResponse',function($scope, $filter,$stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse) {
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
