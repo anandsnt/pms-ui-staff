@@ -237,6 +237,7 @@ sntRover.controller('reservationActionsController', [
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.reservation_id, $scope.reservationData);
 		};
 
+
 		$scope.successRemoveFromQueueCallBack = function() {
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservation_card.is_reservation_queued = "false";
