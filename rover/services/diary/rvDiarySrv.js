@@ -264,6 +264,21 @@ sntRover
     		return Date.parse(date + ' ' + t_a + ' ' + t_b);
     	};
 
+    	this.chompPast = function(cutoff_date) {
+    		var to_splice = [];
+
+    		for(var i = 0, len = this.rooms.length; i < len; i++) {
+    			for(var j = 0, jlen = this.rooms[i].occupancy.length; j < jlen; j++) {
+    				if(this.rooms[i].occupancy[j].arrival < start_date) {
+    					to_splice.push(j);
+    				}
+    			}
+    			while(to_splice.length > 0) {
+    				this.rooms[i].occupancy.splice(to_splice.pop());
+    			}
+    		}
+    	};
+
     	this.merge = function(room, incomingData) {
     		var r = this.store.rooms[room[rvDiaryMetadata.room.id]];
 
@@ -312,9 +327,10 @@ sntRover
 			this.fetchData(start_date, end_date, self.api_types.occupancy)
 			.then(function(data) {
 				self.occupancy = _.union(self.occupancy, data.occupancy);
+
 				self.createIndex(data, 'occupancy', 'occupancy');
 
-				self.normalizeTimeSlots(self.occupancy, self.store);
+				self.normalizeTimeSlots(data.occupancy, self.store);
 
 				q.resolve({
 					data: self.rooms
@@ -356,7 +372,7 @@ sntRover
     	this.fetchAvailabilityCount = function(start_date, end_date) {
     		var self = this, q = $q.defer();
 
-			this.fetchData(start_date, end_date, 1, Object.keys(self.store.room_types), self.api_types.availability_count)
+			this.fetchData(start_date, end_date, self.api_types.availability_count)
 		   	.then(function(data) {
 		   		self.availability_count = data;
 		   		

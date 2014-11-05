@@ -430,15 +430,25 @@ sntRover.controller('RVDiaryCtrl',
 
 	$scope.$watch('gridProps.filter.arrival_date', function(newValue, oldValue) {
 		var filter = $scope.gridProps.filter,
-			display = $scope.gridProps.display;
+			display = $scope.gridProps.display,
+            x_0, //7200000),
+            x_N; //86400000);
 
 		if(newValue !== oldValue) {
 			display = _.extend({}, display);
 
-			display.x_origin 			= filter.arrival_date.getTime();
-			display.x_origin_start_time = Time(filter.arrival_date.toComponents().time);
+			x_0 = new Date($scope.start_date.getTime() - 7200000);
+			x_N = new Date($scope.start_date.getTime() + 86400000);
 
-			$scope.renderGrid();
+			display.x_origin 			= x_0.getTime(); //filter.arrival_date.getTime();
+			display.x_origin_start_time = x_N.toComponents().time; //filter.arrival_date.toComponents().time;
+
+			rvDiarySrv.fetchOccupancy(x_0, x_N)
+			.then(function(data) {
+				$scope.renderGrid();
+			}, function(data) {
+
+			});		
 		}
 	});
 
