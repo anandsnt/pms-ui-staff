@@ -1,5 +1,7 @@
 sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
 	BaseCtrl.call(this, $scope);
+    $scope.errorMessage = "";
+    
 	$scope.setScroller('payment-content');
     var refreshPaymentScroll = function(){
         setTimeout(function(){$scope.refreshScroller('payment-content');}, 200);
@@ -11,11 +13,11 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
 	$scope.initPaymentData = function(){
 		var successCallBackFetchPaymentData = function(data){
-			console.log(data);
 			$scope.data.paymentData = {};
 			$scope.data.paymentData = data;
 			$scope.$emit('hideLoader');
-			setTimeout(function(){$scope.refreshScroller('payment-content');}, 200);
+            $scope.errorMessage = "";
+			refreshPaymentScroll();
 		};
 		$scope.invokeApi(RVJournalSrv.fetchPaymentData, { "date":$scope.data.paymentDate }, successCallBackFetchPaymentData);
 	};

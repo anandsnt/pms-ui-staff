@@ -15,6 +15,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedChargeCode  = 'ALL';
     $scope.data.selectedPaymentType = 'ALL';
     $scope.data.reportType = "";
+    $scope.data.filterTitle = "All Departments";
 	/*
 	 *	Setting Revenue & Payment date pickers.
 	 *	All date fields should default to yesterday's date.
@@ -83,7 +84,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
            $scope.resetPaymentFilters();
            $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
         }
-        
+        $scope.data.filterTitle = "All Departments";
     };
 
     // Clicking each checkbox on Departments
@@ -136,12 +137,22 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // To setup Lists of selected ids of employees and departments.
     $scope.setupDeptAndEmpList = function(){
-
+        var filterTitle = "";
         // To get the list of departments id selected.
         $scope.data.selectedDepartmentList = [];
         angular.forEach($scope.data.filterData.departments,function(item, index) {
-            if(item.checked) $scope.data.selectedDepartmentList.push(item.id);
+            if(item.checked){
+                $scope.data.selectedDepartmentList.push(item.id);
+                filterTitle = item.name;
+            }
         });
+
+        if($scope.data.selectedDepartmentList.length>1){
+            $scope.data.filterTitle = "Multiple";
+        }
+        else{
+            $scope.data.filterTitle = filterTitle;
+        }
 
         // To get the list of employee id selected.
         $scope.data.selectedEmployeeList = [];

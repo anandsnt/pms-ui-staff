@@ -1,22 +1,25 @@
 sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
 	BaseCtrl.call(this, $scope);
-	$scope.setScroller('revenue-content');
+    $scope.errorMessage = "";
 
+	$scope.setScroller('revenue-content');
+    var refreshRevenueScroller = function(){
+        setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
+    };
+    
 	$scope.initRevenueData = function(){
 		var successCallBackFetchRevenueData = function(data){
 			console.log(data);
 			$scope.data.revenueData = {};
 			$scope.data.revenueData = data;
 			$scope.$emit('hideLoader');
+            $scope.errorMessage = "";
 			refreshRevenueScroller();
 		};
 		$scope.invokeApi(RVJournalSrv.fetchRevenueData, {"from":$scope.data.fromDate , "to":$scope.data.toDate}, successCallBackFetchRevenueData);
 	};
 	$scope.initRevenueData();
-
-    var refreshRevenueScroller = function(){
-        setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
-    };
+    
     $rootScope.$on('REFRESHREVENUECONTENT',function(){
         refreshRevenueScroller();
     });
