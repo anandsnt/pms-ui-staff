@@ -124,6 +124,21 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+        
+        /**
+         * Call API to do the payment - SIX payment
+         */
+        this.paymentAction = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/ipage/store_payments';
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
 
     }

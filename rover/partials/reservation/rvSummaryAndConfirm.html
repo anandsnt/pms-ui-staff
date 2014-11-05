@@ -173,37 +173,63 @@
                     <input class="summary_email" ng-model="otherData.additionalEmail">
                 </div>
                 
+                <!-- <div class="entry full-width">
+				    <label for="booking-source">Booking Source</label>
+				    <div class="switch-button on">
+				        <input type="checkbox" checked="" value="booking-source" id="booking-source" name="booking-source">
+				        <label class="data-off">
+				            <span class="value">On-Site</span>
+				            <span class="switch-icon">Call-In</span>
+				        </label>
+				        <label class="data-on">
+				            <span class="switch-icon">On-Site</span>
+				            <span class="value">Call-In</span>
+				        </label>
+				    </div>
+				</div> -->
+				<div class="entry full-width" style="height:50px;width:50%;" ng-show="isCallInOnsiteButtonVisible">
+					<a style="height:50px;width:50%;float:left;" ng-click="clickedOnsite()">
+						<span class="onsite" ng-class="{'onsite-active': isOnsiteActive}" >On-Site</span>
+				     </a>
+				     <a style="height:50px;width:50%;float:right;" ng-click="clickedCallIn()">
+					     <span class="call-in" ng-class="{'onsite-active': !isOnsiteActive}" >Call-In</span>
+					</a>
+				</div>
+				
                 <div class="entry full-width">
-                    <label for="payment-type" translate>PAYMENT_TYPE</label>
+                    <label for="payment-type" translate>PAYMENT_TYPE </label>
                     <div class="select">
 
-                        <select class="placeholder" ng-model="reservationData.paymentType.type"
-                            ng-options="paymentMethod as paymentMethod.description for paymentMethod in data.paymentMethods" ng-change="refreshPaymentScroller()">
+                        <select class="placeholder" ng-model="reservationData.paymentType.type.value"
+                            ng-options="paymentMethod.value as paymentMethod.description for paymentMethod in data.paymentMethods" ng-change="changePaymentType()">
                             <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
                         </select>
                     </div>
                 </div>
-                <div data-type="credit-card-fields" class="entry margin" ng-show= "reservationData.paymentType.type.value == 'CC'">
+                <div data-type="credit-card-fields" class="entry margin" ng-show="isMLICreditCardVisible">
                     <label for="card-number-set1" translate>CREDIT_CARD</label>
                     <input class="card" ng-class="data.MLIData.cardScheme" name="card-number-set1" type="text" ng-model="reservationData.paymentType.ccDetails.number" ng-blur="initFetchMLI()" />
                 </div>
-                <div data-type="credit-card-fields" class="entry" ng-show= "reservationData.paymentType.type.value == 'CC'">
+                <div data-type="credit-card-fields" class="entry" ng-show="isMLICreditCardVisible">
                     <div class="reservation-card-cvv-container">
                         <label for="ccv"><span translate>CCV</span></label>
                         <input name="ccv" placeholder="ccv" maxlength="5" size="5" type="text" ng-model="reservationData.paymentType.ccDetails.cvv" ng-blur="initFetchMLI() "/>
                     </div>
                     <div class="reservation-card-expiry-date-container">
                         <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
-                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth"ng-blur="initFetchMLI()" />
-                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear"ng-blur="initFetchMLI()" />
+                        <input name="expiry-month" placeholder="MM" maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expMonth" ng-blur="initFetchMLI()" />
+                        <input name="expiry-year" placeholder="YY"  maxlength="2" size="2" type="text" ng-model="reservationData.paymentType.ccDetails.expYear" ng-blur="initFetchMLI()" />
                     </div>
                 </div>
-                <div data-type="credit-card-fields" class="entry full-width" ng-show= "reservationData.paymentType.type.value == 'CC'">
+                <div data-type="credit-card-fields" class="entry full-width" ng-show="isMLICreditCardVisible">
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
+                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">                	
+                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="http://localhost:3000/"></iframe>
+                </div>
                 <div class="actions">
-                    <button class="button green" type="button" translate ng-click ="submitReservation()">SUBMIT_RESERVATION</button>
+                    <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonDisabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonDisabled">SUBMIT_RESERVATION</button>
                     <button class="button blank" type="button" ng-click="cancelButtonClicked()" translate>CANCEL</button>
                 </div>
             </div> 
