@@ -17,10 +17,13 @@
 						<td ng-click="editDeviceMapping($index, workStations.id)" ng-hide="currentClickedElement == $index">
 							<a class="edit-data-inline">{{workStations.name}} </a>
 						</td>
-						<td class="activate" ng-hide="currentClickedElement == $index">
+						<td ng-hide="currentClickedElement == $index">
 							{{workStations.station_identifier}}
 						</td>
-						<td colspan="2" ng-include="getTemplateUrl($index,workStations.id)"></td>
+						<td class="delete" ng-hide="currentClickedElement == $index" >
+							<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDeviceMapping($index, workStations.id)"></a>
+						</td>
+						<td colspan="3" ng-include="getTemplateUrl($index,workStations.id)"></td>
 					</tr>
 				</tbody>
 			</table>
