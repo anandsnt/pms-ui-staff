@@ -142,26 +142,26 @@
                     </span>
                     
                     <table ng-show="level2.active && level2.show">
-                            <tr class="grid-item-heading" ng-show="isShowTableHeading(index1 ,index2)">
-                                <th scope="col">Room</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Reservation Number</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Details</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Debit</th>
-                                <th scope="col">Credit</th>
-                            </tr>
+                        <tr class="grid-item-heading" ng-show="isShowTableHeading(index1 ,index2)">
+                            <th scope="col">Room</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Reservation Number</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Details</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Debit</th>
+                            <th scope="col">Credit</th>
+                        </tr>
 
-                            <tr ng-repeat="(index3 ,level3) in level2.transactions" style="background-color:#99CCFF; display: block; width: 250%;" ng-show="level3.show">
-                                <td>{{level3.room}}</td>
-                                <td>{{level3.name}}</td>
-                                <td>{{level3.reservation_number}}</td>
-                                <td>{{level3.type}}</td>
-                                <td>{{level3.details}}</td>
-                                <td>{{level3.time}}</td>
-                                <td>{{level3.debit}}</td> 
-                            </tr>
+                        <tr ng-repeat="(index3 ,level3) in level2.transactions" style="background-color:#99CCFF; display: block; width: 250%;" ng-show="level3.show">
+                            <td>{{level3.room}}</td>
+                            <td>{{level3.name}}</td>
+                            <td>{{level3.reservation_number}}</td>
+                            <td>{{level3.type}}</td>
+                            <td>{{level3.details}}</td>
+                            <td>{{level3.time}}</td>
+                            <td>{{level3.debit}}</td> 
+                        </tr>
                     </table>
                   
                 </div>

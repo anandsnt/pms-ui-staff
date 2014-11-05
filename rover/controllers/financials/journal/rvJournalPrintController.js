@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function($scope,$rootScope) {
+sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window',function($scope,$rootScope,$timeout,$window) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.data.isRevenueToggleSummaryActive = true;
@@ -41,7 +41,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 				}
 			}
 			if($scope.data.printBoxHeight == resizableMinHeight || $scope.data.printBoxHeight == resizableMaxHeight) {
-				
 				if ($scope.data.isDrawerOpened)	$scope.closeDrawer();
 				else $scope.openDrawer();
 			}
@@ -51,11 +50,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 			}
 		}
 	};
+
 	// To open the Drawer
 	$scope.openDrawer = function(){
 		$scope.data.printBoxHeight = resizableMaxHeight;
 		$scope.data.isDrawerOpened = true;
 	};
+
 	// To close the Drawer
 	$scope.closeDrawer = function(){
 		$scope.data.printBoxHeight = resizableMinHeight;
@@ -104,15 +105,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 
 			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
 
-				if(charge_codes.id == $scope.data.selectedChargeCode){
+				if((charge_codes.id == $scope.data.selectedChargeCode) || ($scope.data.selectedChargeCode == 'ALL')){
 					charge_codes.show = true;
 					charge_groups.active = true;
-					$scope.toggleTransactions();
-				}
-				else if($scope.data.selectedChargeCode == 'ALL'){
-					charge_codes.show = true;
-					charge_groups.active = true;
-					$scope.toggleTransactions();
+					$scope.toggleRevenueTransactions();
 				}
 				else{
 					charge_codes.show = false;
@@ -121,7 +117,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
        	});
 	};
 
-	$scope.toggleTransactions = function(){
+	$scope.toggleRevenueTransactions = function(){
 		if($scope.data.isRevenueToggleSummaryActive)
 			$scope.showRevenueByLevels(true,true,false);
 		else
@@ -131,19 +127,22 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 	// To handle Summary/Details toggle button click - REVENUE
 	$scope.toggleSummaryOrDeatilsRevenue = function(){
 		$rootScope.$broadcast('REFRESHREVENUECONTENT');
-		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive ;
-		$scope.toggleTransactions();
+		$scope.data.isRevenueToggleSummaryActive = !$scope.data.isRevenueToggleSummaryActive;
+		$scope.toggleRevenueTransactions();
+	};
+
+	$scope.togglePaymentTransactions = function(){
+		if($scope.data.isPaymentToggleSummaryActive)
+			$scope.showPaymentByLevels(true,true,false);
+		else
+			$scope.showPaymentByLevels(true,true,true);
 	};
 
 	// To handle Summary/Details toggle button click - PAYMENT
 	$scope.toggleSummaryOrDeatilsPayment = function(){
-		
-		if($scope.data.isPaymentToggleSummaryActive)
-			$scope.showPaymentByLevels(true,true,true);
-		else
-			$scope.showPaymentByLevels(true,true,false);
-		
-		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive ;
+		$rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+		$scope.data.isPaymentToggleSummaryActive = !$scope.data.isPaymentToggleSummaryActive;
+		$scope.togglePaymentTransactions();
 	};
 
 	/*
@@ -153,26 +152,32 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 		// Adding Show status flag to each item.
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
-			if((level1 && $scope.data.selectedChargeGroup == 'ALL') || (level1 && $scope.data.selectedChargeGroup == charge_groups.id)) 
-				{charge_groups.show = true ;charge_groups.active = true ;}
-			else
-				{charge_groups.show = false ;charge_groups.active = false ;}
+			if((level1 && $scope.data.selectedChargeGroup == 'ALL') || (level1 && $scope.data.selectedChargeGroup == charge_groups.id)){
+				charge_groups.show 	 = true;
+				charge_groups.active = true ;
+			}
+			else{
+				charge_groups.show 	 = false;
+				charge_groups.active = false;
+			}
 
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
-            	if((level2 && $scope.data.selectedChargeCode == 'ALL') || (level2 && $scope.data.selectedChargeCode == charge_codes.id ))
-            		{charge_codes.show = true ;charge_codes.active = true;}
-            	else
-            		{charge_codes.show = false ;charge_codes.active = false;}
+            	if((level2 && $scope.data.selectedChargeCode == 'ALL') || (level2 && $scope.data.selectedChargeCode == charge_codes.id)){
+            		charge_codes.show 	= true;
+            		charge_codes.active = true;
+            	}
+            	else{
+            		charge_codes.show 	= false;
+            		charge_codes.active = false;
+            	}
 
                 angular.forEach(charge_codes.transactions,function(transactions, index3) {
                 	
-                	if(level3) {
-                		//transactions.show = true;
+                	if(level3){
                 		charge_codes.active = true;
                 	}
                 	else{
-                	 	//transactions.show = false ;
                 	 	charge_codes.active = false;
                 	}
                 });
@@ -187,14 +192,13 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
 
-			if(payment_types.id == $scope.data.selectedPaymentType) {
-				payment_types.show = true ;
-	        }
-	        else if($scope.data.selectedPaymentType == 'ALL'){
-	        	payment_types.show = true ;
+			if(($scope.data.selectedPaymentType == 'ALL') || (payment_types.id == $scope.data.selectedPaymentType)) {
+				payment_types.show 	 = true ;
+				payment_types.active = true ;
 	        }
 	        else{
-	        	payment_types.show = false ;
+	        	payment_types.show 	 = false ;
+	        	payment_types.active = false ;
 	        }
         });
 	};
@@ -206,33 +210,80 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope',function(
 		// Adding Show status flag to each item.
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
 			
-			if((level1 && $scope.data.selectedPaymentType == 'ALL') || (level1 && $scope.data.selectedPaymentType == payment_types.id)) 
-				payment_types.show = true ;
-			else
-				payment_types.show = false ;
+			if((level1 && $scope.data.selectedPaymentType == 'ALL') || (level1 && $scope.data.selectedPaymentType == payment_types.id)){
+				payment_types.show = true; 
+				payment_types.active = true ;
+			}
+			else{
+				payment_types.show = false;
+				payment_types.active = false ;
+			}
 
 			if(payment_types.payment_type == "Credit Card"){
 	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 	            	
-	            	if(level2) credit_cards.show = true;
-	            	else credit_cards.show = false;
+	            	if(level2){
+	            		credit_cards.show = true;
+	            		credit_cards.active = true;
+	            	}
+	            	else{
+	            		credit_cards.show = false;
+	            		credit_cards.active = false;
+	            	}
 
 	                angular.forEach(credit_cards.transactions,function(transactions, index3) {
 	                	
-	                	if(level3) transactions.show = true;
-	                	else transactions.show = false ;
+	                	if(level3) credit_cards.active = true;
+	                	else credit_cards.active = false;
 	                });
 	            });
-        	}
-        	else{
-        		angular.forEach(payment_types.transactions,function(transactions, index3) {
-                	if(level3) transactions.show = true;
-                	else transactions.show = false ;
-                });
         	}
         });
 	};
 
 	/** Code for Payment Tab - PRINT BOX - filters ends here .. **/
+
+
+	/** PRINT Functionality **/
+
+	$scope.printRevenue = function(){
+		console.log("printRevenue");
+		printJournal();
+	};
+
+	$scope.printPayment = function(){
+		console.log("printPayment");
+		printJournal();
+	};
+
+	$scope.printCashier = function(){
+		console.log("printCashier");
+		printJournal();
+	};
+
+	// print the journal page
+	var printJournal = function() {
+		
+		/*
+		 *	=====[ READY TO PRINT ]=====
+		 */
+		// this will show the popup with full bill
+	    $timeout(function() {
+	    	/*
+	    	 *	=====[ PRINTING!! JS EXECUTION IS PAUSED ]=====
+	    	 */
+
+	        $window.print();
+
+	        if ( sntapp.cordovaLoaded ) {
+	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+	        };
+	    }, 100);
+
+	    /*
+	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
+	     */
+	};
+
 
 }]);
