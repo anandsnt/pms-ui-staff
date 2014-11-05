@@ -61,10 +61,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		
 		setTimeout(function(){
-			var MyIFrame = document.getElementById("sixpaymentform");
-			var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
-			if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
-			MyIFrameDoc.getElementById("six_form").submit();
+			// var MyIFrame = document.getElementById("sixpaymentform");
+			// var MyIFrameDoc = (MyIFrame.contentWindow || MyIFrame.contentDocument);
+			// if (MyIFrameDoc.document) MyIFrameDoc = MyIFrameDoc.document;
+			// MyIFrameDoc.getElementById("six_form").submit();
 			
 		}, 1000);
 	
