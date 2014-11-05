@@ -233,7 +233,8 @@
                 <td align="center">&nbsp;</td>
                 <td align="left">
                     <div class ="rate_entry">
-                        <button ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Create</button>
+                        <button ng-if="!set.isSaved" ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Create</button>
+                        <button ng-if="set.isSaved" ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Update</button>
                     </div>
                 </td>                
             </tr>
@@ -242,7 +243,8 @@
         </table>
     </div>
 
-    <div class="hourly_rates_grid" ng-show="true">
+
+    <div class="hourly_rates_grid" ng-show="set.showRoomRate || set.isSaved">
         <div class="night_rates">
             <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
                 <tr>
@@ -252,11 +254,12 @@
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
                 <tr ng-repeat="room_rate in set.room_rates">
-                    <td align="right" class="room-type">{{room_rate.name}}</td>
+                    <td align="right" class="room-type">{{room_rate.name}}{{room_rate.hourly['0']}}</td>
                     <td align="center">&nbsp;</td>
                     <td align="left">
+
                         <div class ="night_rate_entry">
-                            <input type="text">
+                            <input ng-model="room_rate.nightly_rate" type="text">
                         </div>
                     </td>
                    
@@ -275,9 +278,10 @@
                 </tr>
                 <tr ng-repeat="room_rate in set.room_rates">
                     <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}">
+
                         <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" along with "night_rate_entry"-->
-                        <div class ="night_rate_entry">
-                            <input ng-model="room_rate.hourly[i]" type="text">
+                        <div class ="rate_entry">
+                            <input ng-model="room_rate.hourly[$index]" type="text">
                         </div>
                     </td>
                     
