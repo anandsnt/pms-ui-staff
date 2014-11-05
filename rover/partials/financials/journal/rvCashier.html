@@ -86,7 +86,7 @@
                 </tbody>
             </table>
             <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0" ng-click="closeShift()">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-show="details.status ==='CLOSED' || detailsList.length>0" ng-click="reOpen()">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='OPEN' || detailsList.length === 0" ng-click="reOpen()">RE_OPEN</button>
             <!-- adding extra empty tag to solve scroll not showing bottom part -->
             <div style="height:20%;"></div>
         </div> 
