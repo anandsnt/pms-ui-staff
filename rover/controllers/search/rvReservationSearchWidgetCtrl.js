@@ -335,13 +335,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; //end of displayFilteredResults
 
 		var fetchSearchResults = function(){
-			
+			console.log($stateParams);
 			var dataDict = {};
 			var query = $scope.textInQueryBox.trim();
 			if(query != ''){
 				dataDict.query = query;
 			}
-			if($stateParams.type != undefined && query == ''){
+			if($stateParams.type == "VIP"){
+				dataDict.vip = true;
+			} else if($stateParams.type != undefined && query == ''){
 				dataDict.status = $stateParams.type;
 			}
 			$scope.firstSearch = false;
