@@ -16,10 +16,7 @@ sntRover
     		clearRowClasses;
 
 	 	findRoom = function(room) {
-			var meta_id = meta.room.id, data = rvDiarySrv.rooms;
-
-			//return _.findWhere(rooms, { id: room[rm_meta_id] });
-			return index.rooms[room[meta_id]];
+			return index.rooms[room[meta.room.id]];
 		};
 
 		roomIndex = function(room) {
@@ -99,25 +96,20 @@ sntRover
 			return;	
 		};
 
-		clearRoomQuery = function(data) {
-			var hop = Object.prototype.hasOwnProperty,
-				rc_meta = meta.room.row_children,
-				topOfStack,
-				newData = [];
+		clearRoomQuery = function(rooms) {
+			var room, 
+				children = meta.room.row_children, 
+				rejectionFn = function(slot) {
+					return slot.temporary === true;
+				};
 
-			data.forEach(function(item) {
-				if(_.isArray(item[rc_meta])) {
-					topOfStack = _.last(item[rc_meta]);
+			for(var i = 0, len = rooms.length; i < len; i++) {
+				room = rooms[i];
 
-					if(topOfStack && hop.call(topOfStack, 'temporary')) {
-						item[rc_meta].pop();
-					}
-				}
-			});
+				room[children] = _.reject(room[children], rejectionFn);
 
-			for(var i = 0; i < data.length; i++) {
-				newData[i] = copyRoom(data[i]);
-			}
+				rooms[i] = copyRoom(room);
+			}			
 		};  
 
 	 	reservationRoomTransfer = function(nextRoom, room, reservation) { //, commit) {

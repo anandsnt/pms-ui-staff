@@ -27,14 +27,16 @@ var RoomPanel = React.createClass({
 		this.props.iscroll.rooms = null;
 	},
 	render: function() {
+		var props = this.props;
+
 		return React.DOM.div({
 			id: 'diary-rooms',
 			className: 'diary-rooms scrollable'
 		},
 		Rooms({
-			display: this.props.display,
-			meta: this.props.meta,
-			data: this.props.data
+			display: props.display,
+			meta:    props.meta,
+			data:    props.data
 		}));
 	}
 });

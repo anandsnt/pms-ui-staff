@@ -80,9 +80,13 @@ var DiaryContent = React.createClass({
 	  by the grid row item.
 	*/
 	__onResizeCommand: function(row_item_data) {
-		this.setProps({
-			currentResizeItem: row_item_data
-		});
+		if(_.isObject(row_item_data)) {
+			this.setProps({
+				currentResizeItem: row_item_data
+			});
+		} else if( _.isArray(row_item_data)) {
+
+		}
 	},
 	__onResizeStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeStart.apply(this, Array.prototype.slice.call(arguments));
@@ -162,6 +166,7 @@ var DiaryContent = React.createClass({
 			scope 		= props.scope,
 			viewport 	= scope.gridProps.viewport,
 			display 	= scope.gridProps.display,
+			filter      = scope.gridProps.filter,
 			s_0 		= {
 							angular_evt: {
 								onSelect: 					scope.onSelect,
@@ -181,6 +186,7 @@ var DiaryContent = React.createClass({
 							},
 							currentDragItem: props.currentDragItem,
 							currentResizeItem: props.currentResizeItem,
+							currentResizeItems: props.currentResizeItems,
 							edit: {
 								active: false,
 								originalItem: undefined,
@@ -199,41 +205,44 @@ var DiaryContent = React.createClass({
 		display.px_per_int  		= display.px_per_hr / display.intervals_per_hour;
 		display.px_per_ms 			= display.px_per_int / 900000;
 		display.x_0 				= viewport.row_header_right;
-		display.x_origin 			= scope.start_date.getTime();
-		display.x_origin_start_time = scope.start_time;
+		display.x_origin 			= filter.arrival_date.getTime();
+		display.x_origin_start_time = filter.arrival_time;
 
 		return _.extend(s_0, scope.gridProps);
 	},
 	render: function() {
-		var self = this;
+		var self = this,
+			props = this.props,
+			state = this.state;
 
 		return this.transferPropsTo(React.DOM.div({
-			className: 'diary-container ' + ((this.state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + (this.props.currentResizeItem ? ' editing' : '')
+			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + (props.currentResizeItem ? ' editing' : '')
 		},
 		TogglePanel({
 			__toggleRows:  self.__toggleRows
 		}),
 		RoomPanel({
-			refs: 			'rooms',
-			viewport: 		this.state.viewport,
-			display: 		this.state.display,
-			meta:           this.state.meta,
-			data: 			this.state.data,
-			filter: 		this.state.filter,
-			iscroll: 		this.state.iscroll,
-			__onGridScroll: self.__onGridScroll,
+			refs: 				'rooms',
+			viewport: 			state.viewport,
+			display: 			state.display,
+			meta:           	state.meta,
+			data: 				state.data,
+			filter: 			state.filter,
+			iscroll: 			state.iscroll,
+			__onGridScroll: 	self.__onGridScroll,
 			__onGridScrollEnd: 	self.__onGridScrollEnd
 		}),
 		TimelinePanel({
 			refs: 				'timeline',
-			viewport: 			this.state.viewport,
-			display: 			this.state.display,
-			data: 				this.state.data,
-			filter: 			this.state.filter,
-			edit: 				this.state.edit,
-			iscroll: 			this.state.iscroll,
-			currentResizeItem: 	this.props.currentResizeItem,
-			angular_evt: 		this.state.angular_evt,
+			viewport: 			state.viewport,
+			display: 			state.display,
+			data: 				state.data,
+			meta:               state.meta,
+			filter: 			state.filter,
+			edit: 				state.edit,
+			iscroll: 			state.iscroll,
+			currentResizeItem: 	props.currentResizeItem,
+			angular_evt: 		state.angular_evt,
 			__onResizeCommand: 	self.__onResizeCommand,
 			__onResizeStart:    self.__onResizeStart,
 			__onResizeEnd:  	self.__onResizeEnd,
@@ -241,21 +250,21 @@ var DiaryContent = React.createClass({
 			__onGridScrollEnd: 	self.__onGridScrollEnd
 		}), 
 		GridPanel({
-			refs: 				'grid',
-			viewport: 			this.state.viewport,
-			display: 			this.state.display,
-			filter: 			this.state.filter,
-			edit:               this.state.edit,
-			iscroll: 			this.state.iscroll,
-			meta:               this.state.meta,
-			data: 				this.state.data,
-			currentResizeItem: 	this.props.currentResizeItem,
-			currentResizeItemRow: this.props.currentResizeItemRow,
-			angular_evt: 		this.state.angular_evt,
-			__onGridScroll: 	self.__onGridScroll,
-			__onGridScrollEnd: 	self.__onGridScrollEnd,
-			__onDragStart: 		self.__onDragStart,
-			__onDragStop: 		self.__onDragStop	
+			refs: 					'grid',
+			viewport: 				state.viewport,
+			display: 				state.display,
+			filter: 				state.filter,
+			edit:               	state.edit,
+			iscroll: 				state.iscroll,
+			meta:               	state.meta,
+			data: 					state.data,
+			currentResizeItem: 		props.currentResizeItem,
+			currentResizeItemRow: 	props.currentResizeItemRow,
+			angular_evt: 			state.angular_evt,
+			__onGridScroll: 		self.__onGridScroll,
+			__onGridScrollEnd: 		self.__onGridScrollEnd,
+			__onDragStart: 			self.__onDragStart,
+			__onDragStop: 			self.__onDragStop	
 		})), this.props.children);
 	}
 });
