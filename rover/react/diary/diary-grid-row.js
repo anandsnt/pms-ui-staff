@@ -30,12 +30,12 @@ var GridRow = React.createClass({
 			display = props.display,
 			px_per_hr = display.px_per_hr + 'px',
 			hourly_divs = [],
+			room_meta = props.meta.room,
 			self = this;
 
 		/*Create hourly spans across each grid row*/
 		for(var i = 0, len = display.hours; i < len; i++) {
 			hourly_divs.push(React.DOM.span({ 
-				//key: 		'date-time-' + i,
 				className: 	'hour',
 				style: {
 					width: px_per_hr
@@ -45,7 +45,7 @@ var GridRow = React.createClass({
 		/*Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: 		this.props.key,
-			className: 	'grid-row' + (_.isEmpty(props.data.status) ? '' : ' ' + props.data.status)
+			className: 	'grid-row' + (_.isEmpty(props.data[room_meta.status]) ? '' : ' ' + props.data[room_meta.status])
 		}, 
 		_.map(this.props.data.reservations, function(reservation) {
 			return GridRowItem({
@@ -56,6 +56,7 @@ var GridRow = React.createClass({
 				edit:           props.edit,
 				iscroll:        props.iscroll,
 				angular_evt: 	props.angular_evt,
+				meta:           props.meta,
 				data: 			reservation,
 				row_data:       props.data, 
 				row_offset: 	props.row_number * (display.row_height + display.row_height_margin),

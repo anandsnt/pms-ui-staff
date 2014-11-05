@@ -11,15 +11,34 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             templateUrl: '/assets/partials/diary/rvDiary.html',
             controller: 'RVDiaryCtrl',
             resolve: {
-                loadInitialData: function(rvDiarySrv, $stateParams) {
-                    return rvDiarySrv.fetchInitialData(new Date('09/30/2014 12:00 AM'),
-                                                       { arrival_date: 'start_date',
-                                                         departure_date: 'end_date' });
+                payload: function(rvDiarySrv, rvDiaryFilterSrv, $stateParams) {
+                    var cur_time = Date.now(),
+                        x_0 = new Date(cur_time - 7200000),
+                        x_N = new Date(cur_time + 86400000);
+
+                    return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15) 
+                    .then(function(data) {
+                        console.log(data);
+                        return rvDiaryFilterSrv.fetchRates();
+                    })  
+                    .then(function(data) {
+                        console.log(data);
+                        return rvDiarySrv.init(x_0, x_N);
+                    })
+                    .then(function(data) {
+                        console.log(data);
+                        return { 
+                            start_date: rvDiarySrv.start_date,
+                            data: rvDiarySrv.rooms,
+                            arrival_times: rvDiaryFilterSrv.arrival_times,
+                            room_types: rvDiarySrv.room_types
+                        };
+                    });
                 }
             }
         });
 
-        /*$stateProvider.state('rover.diary.reservations.staycard', {
+        $stateProvider.state('rover.diary.reservations.staycard', {
             url: '/reservations/staycard',
             templateUrl: '/assets/partials/reservation/rvMain.html',
             controller: 'RVDiaryMainCardCtrl',
@@ -39,5 +58,5 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                     return {};
                 }
             }
-        });*/
+        });
 });

@@ -33,6 +33,7 @@ var RoomPanel = React.createClass({
 		},
 		Rooms({
 			display: this.props.display,
+			meta: this.props.meta,
 			data: this.props.data
 		}));
 	}

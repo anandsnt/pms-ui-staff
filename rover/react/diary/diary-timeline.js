@@ -9,13 +9,13 @@ var Timeline = React.createClass({
 			interval_spans,
 			px_per_int = display.px_per_int + 'px',
 			px_per_hr = display.px_per_hr + 'px',
-			start_time = props.display.x_origin_start_time,
+			start_time = display.x_origin_start_time,
 			self = this;
 
 		(function() {
 			var time = start_time.hours;
 
-			for(var i = 0, len = props.display.hours; i < len; i++) {
+			for(var i = 0, len = display.hours; i < len; i++) {
 				segment_hour_display.push(time++ + ':00');
 
 				time = (time > 23) ? 0 : time;
@@ -59,6 +59,7 @@ var Timeline = React.createClass({
 			display:               display,
 			edit:                  props.edit,
 			iscroll:               props.iscroll,
+			meta:                  props.meta,
 			__onResizeCommand:     props.__onResizeCommand,
 			__onResizeStart:       props.__onResizeStart,
 			__onResizeEnd:         props.__onResizeEnd,

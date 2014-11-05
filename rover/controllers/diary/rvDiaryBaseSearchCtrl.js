@@ -296,7 +296,7 @@ sntRover.controller('RVDiaryBaseSearchCtrl', ['$rootScope', '$scope', 'RVReserva
 // This code will be assimilated, resistance is futile
 // Code will be assimilated to become part of a better IMH234
 // auto complete feature
-sntRover.directive('autoComplete', ['highlightFilter',
+/*sntRover.directive('autoComplete', ['highlightFilter',
     function(highlightFilter) {
         return {
             restrict: 'A',
@@ -327,5 +327,5 @@ sntRover.directive('autoComplete', ['highlightFilter',
                 };
             }
         };
-    }
-]);
+    }*/
+//]);

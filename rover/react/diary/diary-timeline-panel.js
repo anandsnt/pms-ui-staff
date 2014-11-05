@@ -25,6 +25,7 @@ var TimelinePanel = React.createClass({
 	},
 	componentWillUnmount: function() {
 		this.props.iscroll.timeline.destroy();
+		this.props.iscroll.timeline = null;
 	},
 	shouldComponentUpdate: function(nextProps, nextState) {
 		if(this.props.viewport !== nextProps.viewport ||
@@ -48,23 +49,23 @@ var TimelinePanel = React.createClass({
 			id: 'timeline-outer-wrapper',
 			className: 'outer-wrapper',
 			style: {
-				width: this.props.display.width + 'px'
+				width: props.display.width + 'px'
 			}
 		},
 		Timeline({
-			display: props.display,
-			iscroll: props.iscroll,
-			edit:    props.edit,
-			__onResizeCommand:    props.__onResizeCommand,
-			__onResizeStart:  props.__onResizeStart,
-			__onResizeEnd:    props.__onResizeEnd,
-			currentResizeItem:    props.currentResizeItem,
-			currentResizeItemRow: props.currentResizeItemRow
+			display:                props.display,
+			iscroll:                props.iscroll,
+			edit:    			    props.edit,
+			meta:                   props.meta,
+			__onResizeCommand:      props.__onResizeCommand,
+			__onResizeStart:  		props.__onResizeStart,
+			__onResizeEnd:    		props.__onResizeEnd,
+			currentResizeItem:    	props.currentResizeItem,
+			currentResizeItemRow: 	props.currentResizeItemRow
 		}),
 		TimelineOccupancy({
 			display:     props.display,
-			data:        props.data,
-			angular_evt: props.angular_evt		
+			data:        props.stats	
 		})));			
 	}
 });
