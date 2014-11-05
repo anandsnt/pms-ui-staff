@@ -47,10 +47,10 @@
                  <li class="entity company" ng-show="attachedEntities.hasOwnProperty('company_card')" ng-click="selectAttachedEntity(-1,'COMPANY_CARD')">
                   <!-- image -->
                   		
-                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)!=null">
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)!=''">
 	                        <img ng-src="{{attachedEntities.company_card.logo}}" alt="">
 	                	</figure>
-                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==null">
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.company_card.logo)==''">
 		                    <div class="guest-image icons icon-company" ></div>
 		                    
 		                </figure>
@@ -67,10 +67,10 @@
                  <!-- Travel agent card -->
                  <li class="entity travel-agent" ng-show="attachedEntities.hasOwnProperty('travel_agent')" ng-click="selectAttachedEntity(-1,'TRAVEL_AGENT')">
                   <!-- image -->
-                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)!=null">
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)!=''">
 	                        <img ng-src="{{attachedEntities.travel_agent.logo}}" alt="">
 	                	</figure>
-                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)==null">		              
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)==''">		              
 		                    <div class="guest-image icons icon-travel-agent" ></div>
 		                </figure>
 

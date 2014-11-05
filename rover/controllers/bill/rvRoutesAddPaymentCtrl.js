@@ -97,11 +97,10 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 			
 			$scope.saveData.reservation_id = $scope.reservationData.reservation_id;
 			$scope.saveData.session_id = MLISessionId;
-			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);
-			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
-			var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
-			var data = dclone($scope.saveData, unwantedKeys);
-			$scope.paymentAdded(data);
+			$scope.saveData.mli_token = $scope.saveData.card_number.substr($scope.saveData.card_number.length - 4);			
+			$scope.saveData.card_expiry = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
+			
+			$scope.paymentAdded($scope.saveData);
 
 		};
 		/**
@@ -113,6 +112,7 @@ sntRover.controller('rvRoutesAddPaymentCtrl',['$scope','$rootScope','$filter', '
 					$scope.saveData.payment_type_description = $scope.availablePaymentTypes[i].description;
 				}
 			}
+			$scope.refreshScroller('newpaymentview');
 
 		}
 	

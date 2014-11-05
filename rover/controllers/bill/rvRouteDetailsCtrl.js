@@ -11,6 +11,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
     if($scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')){
         $scope.paymentDetails = $scope.selectedEntity.credit_card_details;
         $scope.paymentDetails.mli_token = $scope.selectedEntity.credit_card_details.card_number;
+        $scope.paymentDetails.credit_card = $scope.selectedEntity.credit_card_details.card_code;
         $scope.isAddPayment = true;
     }
     
@@ -278,7 +279,7 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                         }                        
                         $scope.$parent.bills = $scope.bills;
                     }
-                    $scope.selectedEntity.to_bill = $scope.bills[0].id;
+                    $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new? $scope.bills[0].id : $scope.selectedEntity.to_bill;
                     $scope.fetchAvailableChargeCodes();
                 }
             };
@@ -450,9 +451,17 @@ sntRover.controller('rvRouteDetailsCtrl',['$scope','$rootScope','$filter','RVBil
                 $scope.$parent.$emit('hideLoader');
                 $scope.$emit('displayErrorMessage',errorMessage);
             };
-            $scope.paymentDetails.bill_number = $scope.getSelectedBillNumber();
-
-            $scope.invokeApi(RVPaymentSrv.savePaymentDetails, $scope.paymentDetails, successCallback, errorCallback);
+            
+            if($scope.paymentDetails.hasOwnProperty('reservation_id')){
+                $scope.paymentDetails.bill_number = $scope.getSelectedBillNumber();
+                var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_number","cvv"];
+                var data = dclone($scope.paymentDetails, unwantedKeys);
+                data.card_expiry = $scope.paymentDetails.card_expiry_month && $scope.paymentDetails.card_expiry_year ? "20"+$scope.paymentDetails.card_expiry_year+"-"+$scope.paymentDetails.card_expiry_month+"-01" : "";
+                $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, successCallback, errorCallback);
+            }else{
+                $scope.invokeApi(RVBillinginfoSrv.saveRoute, $scope.selectedEntity, $scope.saveSuccessCallback, $scope.errorCallback);
+            }
+            
         };
 
          /**

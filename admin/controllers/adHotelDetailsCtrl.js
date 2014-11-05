@@ -139,11 +139,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		/*********** Commented out to fix CICO-8508 ****************************/	
 		//template logo was not updating when existing image was removed
 		/********************************************************************/		
-			// if($scope.data.hotel_template_logo.indexOf("data:")!= -1){
-				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats"];
-			// } else {
-			// 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages", "hotel_template_logo"];
-			// }
+			if($scope.data.payment_gateway === "MLI"){
+				
+				var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "six_merchant_id", "six_validation_code"];
+			 } else {
+			 	var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url", "languages","date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code"];
+			 }
 			
 			
 			var data = dclone($scope.data, unwantedKeys);
@@ -212,7 +213,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 
 		$scope.invokeApi(ADHotelDetailsSrv.testMLIPaymentGateway,{}, testMLIPaymentGatewaySuccess, testMLIPaymentGatewayError);
 		
-	}
+	};
 
 
 	/**
