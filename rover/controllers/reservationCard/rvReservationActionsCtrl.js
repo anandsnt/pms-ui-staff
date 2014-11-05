@@ -293,6 +293,7 @@ sntRover.controller('reservationActionsController', [
 				data: JSON.stringify({
 					state: 'CONFIRM',
 					cards: false,
+					penalty:penalty,
 					deposit:deposit,
 					depositText: (function() {
 						if (!isOutOfCancellationPeriod) {
@@ -346,7 +347,7 @@ sntRover.controller('reservationActionsController', [
 					}
 					else{
 						if(parseInt(depositAmount) > 0){
-							showDepositPopup(depositAmount,isOutOfCancellationPeriod);
+							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
 							promptCancel('', nights);

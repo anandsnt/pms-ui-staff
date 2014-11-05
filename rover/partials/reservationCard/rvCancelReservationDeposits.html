@@ -12,7 +12,7 @@
         <div class="actions" ng-show="ngDialogData.deposit > 0">
             <button type="button" class="button blue" ng-click="proceedWithOutDepositRefund()" translate>PROCEED_WITHOUT_DEPOSIT_REFUND</button>
             <button type="button" class="button green" ng-click="proceedWithDepositRefund()" >
-            {{'PROCEED_WITH_DEPOSIT_REFUND' | translate}} ({{currencySymbol}}{{ngDialogData.deposit | number:2}})</button>
+            {{'PROCEED_WITH_DEPOSIT_REFUND' | translate}} ({{currencySymbol}}{{ngDialogData.deposit - ngDialogData.penalty | number:2}})</button>
             <button type="button" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button> 
         </div>
     </fieldset>
