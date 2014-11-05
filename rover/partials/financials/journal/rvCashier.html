@@ -77,11 +77,11 @@
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.opening_balance_cash - details.cash_submitted |number:2}}</td>
+                        <td class="value">{{currencySymbol}}{{(details.opening_balance_cash + details.total_cash_received) - details.cash_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.opening_balance_check - details.check_submitted |number:2}}</td>
+                        <td class="value">{{currencySymbol}}{{(details.opening_balance_check + details.total_check_received) - details.check_submitted |number:2}}</td>
                     </tr>
                 </tbody>
             </table>
