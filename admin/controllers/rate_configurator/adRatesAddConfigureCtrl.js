@@ -116,6 +116,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     mm: "",
                     am: "AM"
                 };
+                newSet.showRoomRate = false;
             }
 
             newSet.room_rates = [];
@@ -276,6 +277,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         //Saves the individual set
         $scope.saveSet = function(dateRangeId, index, saveGrid) {
 
+            var selectedSet = $scope.data.sets[index];
+
+            if (!!saveGrid && saveGrid == 'saveGrid' && !selectedSet.showRoomRate) {
+                selectedSet.showRoomRate = true;
+            }
+
             var saveSetSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
@@ -287,7 +294,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                 $scope.data.sets[index].isEnabled = false;
                 $scope.otherData.setChanged = false;
-                //}
             };
 
             var saveSetFailureCallback = function(errorMessage) {
@@ -300,10 +306,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.otherData.setChanged = false;
                 $scope.closeDialog();
             }
-            // API request do not require all keys except room_types
-            var selectedSet = $scope.data.sets[index];
+
 
             if (!!saveGrid && saveGrid == 'saveGrid') {
+                selectedSet.showRoomRate = true;
                 angular.forEach(selectedSet.room_rates, function(room_rate, key) {
                     room_rate.hourly_room_rates = [];
                     angular.forEach(room_rate.hourly, function(amount, key) {
