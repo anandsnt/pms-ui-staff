@@ -1,5 +1,5 @@
 <div id="new-card" class="new-card">
-    <div class="holder">
+    <div class="holder" ng-show="false">
         <div class="entry margin">
             <label for="card-number" translate>CARD_NUMBER</label>
             <input ng-readonly="newPaymentInfo.isSwiped || !isManualCCEntryEnabled" placeholder="{{'CARD_NUMBER_PLACEHOLDER' | translate}}" value="" ng-model="newPaymentInfo.cardNumber" type="text" />
@@ -24,6 +24,10 @@
                 {{'ADD_TO_GUEST_CARD' | translate}}
             </label>
         </div>
+    </div>
+     <div class="holder" >
+                	
+    	<iframe src="http://stayntouch.perceptiveinteractive.com/standalone/app/iframe/payment.html" name="sixpaymentform" id="sixpaymentform" style="width:100%"></iframe>
     </div>
     <div class="actions">
         <button type="button" id="cancel-new-card" class="button blank" ng-click="showInitialScreen()" translate>CANCEL</button>

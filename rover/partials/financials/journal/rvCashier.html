@@ -77,16 +77,16 @@
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.opening_balance_cash - details.cash_submitted |number:2}}</td>
+                        <td class="value">{{currencySymbol}}{{(details.opening_balance_cash + details.total_cash_received) - details.cash_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.opening_balance_check - details.check_submitted |number:2}}</td>
+                        <td class="value">{{currencySymbol}}{{(details.opening_balance_check + details.total_check_received) - details.check_submitted |number:2}}</td>
                     </tr>
                 </tbody>
             </table>
             <button type="button" class="button green" translate ng-hide="details.status ==='CLOSED' || detailsList.length == 0" ng-click="closeShift()">CLOSE_SHIFT</button>
-            <button type="button" class="button green" translate ng-show="details.status ==='CLOSED' || detailsList.length>0" ng-click="reOpen()">RE_OPEN</button>
+            <button type="button" class="button green" translate ng-hide="details.status ==='OPEN' || detailsList.length === 0" ng-click="reOpen()">RE_OPEN</button>
             <!-- adding extra empty tag to solve scroll not showing bottom part -->
             <div style="height:20%;"></div>
         </div> 
