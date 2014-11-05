@@ -310,7 +310,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 selectedSet.showRoomRate = true;
                 angular.forEach(selectedSet.room_rates, function(room_rate, key) {
                     room_rate.hourly_room_rates = [];
-                    angular.forEach(room_rate.hourly, function(amount, key) {                        
+                    angular.forEach(room_rate.hourly, function(amount, key) {
                         room_rate.hourly_room_rates.push({
                             hour: key,
                             amount: amount
@@ -499,10 +499,29 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             return false;
         });
 
-        $scope.checkNightly = function(index, hour) {
-            var selectedSet = $scope.data.sets[index];
-            if (selectedSet.dawn.hh && selectedSet.dusk.hh) {
-                return true;
+        $scope.checkNightly = function(selectedSet, hour) {
+            if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
+                // TODO : check if the hour falls between dusk and dawn
+                var dawn = selectedSet.dawn.am == 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
+                var dusk = selectedSet.dusk.am == 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
+                var nightHours = [];
+                for (var i = 0; i < 24; i++) {
+                    if (dawn < dusk) {
+                        // the range crosses midnight, do the comparisons independently
+                        if ((dusk <= i) || (i <= dawn))
+                            nightHours.push(i);
+                    } else {
+                        // the range is on the same day, both comparisons must be true
+                        if (dusk <= i && i <= dusk);
+                        nightHours.push(i);
+                    }
+                }
+                angular.forEach(nightHours, function(hour) {
+                    angular.forEach(selectedSet.room_rates, function(room_rate) {
+                        room_rate.hourly[hour] = room_rate.nightly_rate;
+                    });
+                });
+                return (nightHours.indexOf(parseInt(hour)) > -1);
             } else {
                 return false;
             }
