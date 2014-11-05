@@ -6,7 +6,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * it contain only minimal function, please add functions & methods where
 		 * you wrapping this.
 		 */
-
 		var that = this;
 		BaseCtrl.call(this, $scope);
 		var searchFilteringCall = null;
@@ -140,9 +139,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 			$scope.totalSearchResults = RVSearchSrv.totalSearchResults
 			$scope.end = $scope.start + $scope.results.length - 1;
-
 			setTimeout(function() {
 				$scope.$apply();
+				$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
 				refreshScroller();
 			}, 100);
 		};
@@ -335,13 +334,19 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; //end of displayFilteredResults
 
 		var fetchSearchResults = function(){
-			
 			var dataDict = {};
 			var query = $scope.textInQueryBox.trim();
 			if(query != ''){
 				dataDict.query = query;
 			}
-			if($stateParams.type != undefined && query == ''){
+			
+			if($stateParams.type == "LATE_CHECKOUT"){
+				dataDict.is_late_checkout_only = true;
+			}else if($stateParams.type == "QUEUED_ROOMS"){
+				dataDict.is_queued_rooms_only = true;
+			} else if($stateParams.type == "VIP"){
+				dataDict.vip = true;
+			} else if($stateParams.type != undefined && query == ''){
 				dataDict.status = $stateParams.type;
 			}
 			$scope.firstSearch = false;
