@@ -138,14 +138,14 @@
                         <div class="select select-col col1-3">
 
                             <select ng-model="set.checkout.hh" class="styled">
-                                <option value="00" data-text="Not set" class="placeholder">HH</option>
-                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.checkout.hh">{{i}}</option>
+                                <option value="" data-text="Not set" class="placeholder">HH</option>
+                                <option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.checkout.hh">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
 
                             <select ng-model="set.checkout.mm">
-                                <option value="00" data-text="Not set" class="placeholder">MM</option>
+                                <option value="" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.checkout.mm">{{i}}</option>
                             </select>
                         </div>
@@ -176,7 +176,7 @@
             <tr>
                 <td align="left">
                     <div class ="rate_entry">
-                        <input ng-model="set.nightly_hourly_increment_amount" type="text">
+                        <input ng-model="set.night_hourly_increment_amount" type="text">
                     </div>
                 </td>
                 <td align="center">&nbsp;</td>
@@ -185,14 +185,14 @@
                         <div class="select select-col col1-3">
 
                             <select ng-model="set.dusk.hh" class="styled">
-                                <option value="00" data-text="Not set" class="placeholder">HH</option>
-                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.dusk.hh">{{i}}</option>
+                                <option value="" data-text="Not set" class="placeholder">HH</option>
+                                <option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.dusk.hh">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
 
                             <select ng-model="set.dusk.mm">
-                                <option value="00" data-text="Not set" class="placeholder">MM</option>
+                                <option value="" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.dusk.mm">{{i}}</option>
                             </select>
                         </div>
@@ -211,14 +211,14 @@
                         <div class="select select-col col1-3">
 
                             <select ng-model="set.dawn.hh" class="styled">
-                                <option value="00" data-text="Not set" class="placeholder">HH</option>
-                                <option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.dawn.hh">{{i}}</option>
+                                <option value="" data-text="Not set" class="placeholder">HH</option>
+                                <option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.dawn.hh">{{i}}</option>
                             </select>
                         </div>
                         <div class="select select-col col1-3">
 
                             <select ng-model="set.dawn.mm">
-                                <option value="00" data-text="Not set" class="placeholder">MM</option>
+                                <option value="" data-text="Not set" class="placeholder">MM</option>
                                 <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.dawn.mm">{{i}}</option>
                             </select>
                         </div>
@@ -232,9 +232,10 @@
                 </td>
                 <td align="center">&nbsp;</td>
                 <td align="left">
-                    <div class ="rate_entry"><button class="green button" type="button">Create</button></div>
-                </td>
-                
+                    <div class ="rate_entry">
+                        <button ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Create</button>
+                    </div>
+                </td>                
             </tr>
            
            
@@ -250,8 +251,8 @@
                     <td width="10%" align="center">Nightly Rates</td>
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
-                <tr ng-repeat="room_type in room_type_array">
-                    <td align="right" class="room-type">{{room_type}}</td>
+                <tr ng-repeat="room_rate in set.room_rates">
+                    <td align="right" class="room-type">{{room_rate.name}}</td>
                     <td align="center">&nbsp;</td>
                     <td align="left">
                         <div class ="night_rate_entry">
@@ -264,21 +265,19 @@
         </div>
 
         <div class="hourly_rate_state">
-            <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0">
+            <table  border="0" align="center" cellspacing="0" cellpadding="0">
                 
                 <tr>
-                <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" in <td> -->
-                <!-- The Day Check Out time should be indicated in colour.Add class "day_checkout_time"-->
-                    <td width="10%" align="center" ng-repeat="time in rate_set_time" class="day_checkout_time"> {{time}}</td>
+                    <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" in <td> -->
+                    <!-- The Day Check Out time should be indicated in colour.Add class "day_checkout_time"-->
+                    <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}" class="day_checkout_time"> {{i}}:00</td>
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
-     
-                <tr ng-repeat="room_type in room_type_array">
-                   
-                    <td width="10%" align="center" ng-repeat="time in rate_set_time">
-                    <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" along with "night_rate_entry"-->
+                <tr ng-repeat="room_rate in set.room_rates">
+                    <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}">
+                        <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" along with "night_rate_entry"-->
                         <div class ="night_rate_entry">
-                            <input type="text">
+                            <input ng-model="room_rate.hourly[i]" type="text">
                         </div>
                     </td>
                     
