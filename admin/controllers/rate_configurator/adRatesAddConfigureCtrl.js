@@ -100,19 +100,36 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 }
             }
 
+            if ($scope.rateData.is_hourly_rate) {
+                newSet.checkout = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+                newSet.dusk = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+                newSet.dawn = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+            }
+
             newSet.room_rates = [];
 
             //Crate the room rates array based on the available room_types 
             for (var i in $scope.rateData.room_types) {
                 var roomType = {};
-
                 roomType.id = $scope.rateData.room_types[i].id;
                 roomType.name = $scope.rateData.room_types[i].name;
                 roomType.child = '';
                 roomType.double = '';
                 roomType.extra_adult = '';
                 roomType.single = '';
-
+                roomType.hourly = {};
                 newSet.room_rates.push(roomType);
             }
 
@@ -189,6 +206,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     } else {
                         angular.forEach(value.room_rates, function(room_type, key) {
                             room_type.hourly = {};
+                            angular.forEach(room_type.hourly_rates, function(rate) {
+                                room_type.hourly[rate.hour] = rate.amount;
+                            });
                         });
                     }
                 });
