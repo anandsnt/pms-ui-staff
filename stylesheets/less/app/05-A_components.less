@@ -9932,8 +9932,8 @@
                 .float;
 
                 .entry {
-                    padding: 10px 0 0 20px;
-                    width: 280px;
+                    padding-top: 10px;
+                    margin-right: 20px;
                     .pull-left;
 
                     label {
@@ -10026,10 +10026,17 @@
 
                         &:hover { background-position: 92% -34px; }
                     } 
+
+                    &.filter { 
+                        margin-left: 20px;
+                        width: 220px; 
+                    }
+
+                    &.date { width: 180px; }
                 }
 
                 .display {
-                    width: 360px;
+                    width: 330px;
                     .pull-right;
 
                     li {
@@ -10041,7 +10048,7 @@
                         color: @white;
                         background: rgba(0,0,0,.1);
                         .box-shadow(1px 0 0 rgba(0,0,0,.2));
-                        .size(90px, 120px);
+                        .size(90px, 110px);
                         .show;
                         .pull-left;
 
@@ -10227,77 +10234,134 @@
 
                 /* Revenue / Payment tables ***/
                 .journal-grid {
-                    width: 100%;
                     font-size: 14px;
-                    line-height: 21px;
                     text-transform: uppercase;
-                    border-collapse: separate;
-                    border-spacing: 0 10px;
-                    margin: 0;
+                    padding-top: 20px;
 
-                    tr {
+                    .grid-header {
+                        width: 100%;
+                        padding: 0 40px 0 10px;
+                        .float;
+
+                        li {
+                            font-size: 14px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            line-height: 40px;
+                            margin: 0 20px 0 0;
+                            .pull-left;
+
+                            &.value { 
+                                width: 80px;
+                                margin: 0;
+                            }
+                        }
+                        
+                        &.payment {
+                            li {
+                                &.name { .calc-width(40, 20); }
+                                &.code { .calc-width(30, 20); }
+                                &.number { .calc-width(20, 20); }
+                            }
+                        }
+                    }
+
+                    .grid-footer {
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        line-height: 40px;
+                        margin: 0;
+                        
+                        &.payment {
+                            padding-left: -webkit-calc(~"90% - 95px");
+                            padding-left: -moz-calc(~"90% - 95px");
+                            padding-left: calc(~"90% - 95px");
+
+                            span { margin-left: 20px; }
+                        }
+                    }
+
+                    .toggle {
+                        color: @textColor;
+                        line-height: 40px;
+                        margin-bottom: 10px;
+                        padding: 0 40px 0 10px;
+                        .show;
+                        .float;
+
+                        strong,
+                        span { .pull-left; }
+
+                        .code,
+                        .name,
+                        .number { margin-right: 20px; }
+
+                        .name { font-weight: 600; }
+                        .value { width: 80px; }
+                        
+                        &.has-arrow {
+                            background-position: -webkit-calc(~"100% - 10px") 50%;
+                            background-position: -moz-calc(~"100% - 10px") 50%;
+                            background-position: calc(~"100% - 10px") 50%;
+                        }
+                    }
+
+                    /* 1st level ***/
+                    .grid-group {
+                        > .toggle {
+                            background-color: @white;
+                            .box-shadow();
+
+                            &.revenue-title {
+                                .name { .calc-width(100, 110); }
+                            }
+
+                            &.payment-title {
+                                .name { .calc-width(40, 20); }
+                                .code { .calc-width(30, 20); }
+                                .number { .calc-width(20, 20); }
+                            }                      
+                        }
+                    }
+
+                    /* 2nd level ***/
+                    .grid-charge {
+                        > .toggle {
+                            margin: 0 10px 10px 10px;
+                            background-color: rgba(0,0,0,.1);
+
+                            .code { width: 80px; }
+                            .name { .calc-width(100, 200); }
+                        }
+                    }
+
+                    /* 3rd level **/
+                    .grid-items {
+                        table-layout: auto;
+                        border-collapse: separate;
+                        border-spacing: 0 10px;
+                        margin: 0 20px 10px 20px;
+                        .calc-width(100, 40);
+
                         th,
                         td {
                             line-height: 1em;
                             padding: 0 10px;
                             white-space: normal;
                             overflow: visible;
-
-                            &.align-right { text-align: right; }
                         }
 
-                        th { font-weight: 600; }
-                    }
-
-                    thead {
-                        th { padding: 0 12px 0 9px; }
-                    }
-                    
-                    tbody {
-                        tr {
-                            th,
-                            td {
-                                -webkit-border-image: @textureImage 10 repeat stretch;
-                                -moz-border-image: @textureImage 10 repeat stretch;
-                                border-image: @textureImage 10 repeat stretch;
+                        thead {
+                            th { 
+                                color: @grey3;
+                                font-weight: 600;
+                                padding: 0 12px 10px 9px; 
                             }
+                        }
 
-                            &.grid-group { 
-                                th,
-                                td {
-                                    line-height: 40px;
-                                    background-color: @white;
-                                    border: 0;
-                                    .box-shadow();
-                                }
-                            }
-
-                            &.grid-charge {
-                                th,
-                                td {
-                                    line-height: 40px;
-                                    background-color: rgba(0,0,0,.1);
-                                    
-                                    &:first-child { border-left: 10px solid transparent; }
-                                    &:last-child { border-right: 10px solid transparent; }
-                                }
-                            }
-
-                            &.grid-item-heading {
-                                th {
-                                    color: @grey3;
-
-                                    &:first-child { border-left: 20px solid transparent; }
-                                    &:last-child { border-right: 20px solid transparent; }
-                                }
-                            }
-
-                            &.grid-item {
-                                td {
-                                    &:first-child { border-left: 20px solid transparent; }
-                                    &:last-child { border-right: 20px solid transparent; }
-                                }
-
+                        tbody {
+                            tr {
                                 &:nth-child(even) {
                                     td { 
                                         padding: 10px;
@@ -10305,35 +10369,12 @@
                                     }
                                 }
                             }
-
-                            &.rows-toggle { 
-                                cursor: pointer;
-
-                                th,
-                                td {
-                                    &:last-child {
-                                        background-image: @arrowDown;
-                                        background-position: -webkit-calc(~"100% - 10px") 50%;
-                                        background-position: -moz-calc(~"100% - 10px") 50%;
-                                        background-position: calc(~"100% - 10px") 50%;
-                                        background-repeat: no-repeat;
-                                         
-                                    }
-                                }
-
-                                &.active { 
-                                    th,
-                                    td {
-                                        &:last-child { background-image: @arrowUp; }
-                                    }
-                                }
-                            }
                         }
-                    }
 
-                    tfoot {
-                        td { font-weight: 600; } 
-                    }
+                        tfoot {
+                            td { font-weight: 600; } 
+                        }
+                    }         
                 }
                 
                 /* Cashier shifts ***/
