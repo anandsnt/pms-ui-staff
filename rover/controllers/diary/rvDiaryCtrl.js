@@ -193,7 +193,7 @@ sntRover.controller('RVDiaryCtrl',
 	    	$scope.gridProps.filter.show_all_rooms = state; //(state === 'on');
 
 	    	if($scope.gridProps.filter.show_all_rooms === 'on') {
-	    		clearRowClasses();
+	    		rvDiaryUtilSrv.clearRowClasses();
 	    	} else {
 	    		updateRowClasses(current_scroll_pos);
 			}
@@ -579,7 +579,7 @@ sntRover.controller('RVDiaryCtrl',
 						   0, 0),
 			rt_keys = [filter.room_type.id];
 
-		rvDiarySrv.fetchAvailability(start_date, end, 1, rt_keys)
+		rvDiarySrv.fetchAvailability(start, end, 375, rt_keys)
 		.then(function(data) {
 			console.log(data);
 

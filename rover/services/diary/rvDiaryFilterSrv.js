@@ -31,6 +31,20 @@ sntRover
 			return deferred.promise;
 	   	};
 
+	   	this.fetchRates = function() {
+	   		var q = $q.defer(),
+	   			url = '/api/rates';
+
+	   		RVBaseWebSrv.getJSON(url)
+	   		.then(function(data) {
+	   			q.resolve(data);
+	   		}, function(data) {
+	   			q.reject(data);
+	   		})
+
+	   		return q.promise;
+	   	};
+
 		this.fetchCompanyCard = function(data){
 	        var deferred = $q.defer(),
 	        	url =  '/api/accounts';

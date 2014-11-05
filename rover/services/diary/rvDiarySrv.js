@@ -22,7 +22,7 @@ sntRover
 		maintenance: 'maintenance'
 	}
 })
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata',
+.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
     function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
 
     	this.start_date = undefined;
@@ -76,6 +76,114 @@ sntRover
     	this.rooms = [];
     	this.room_types = [];
 
+    	/*function Model(params) {
+    		if(!(this instanceof Model)) {
+    			return new Model(params);
+    		}
+
+    		_.extend(this, params);
+    	}
+
+    	Model.prototype = {
+    		constructor: Model,
+    		normalize: function() {
+    			return;
+    		},
+    		copy: function() {
+    			return _.extend({}, this);
+    		}
+    	};
+
+    	function Collection() {
+    		if(!(this instanceof Collection)) {
+    			return new Collection(arguments);
+    		}
+
+    		Array.call(this, Array.prototype.slice.call(arguments));
+    	}
+    	Collection.prototype = Object.create(Array.prototype);
+    	Collection.prototype.constructor = Collection;
+
+    	function Rooms(arr) {
+    		Collection.call(this, arr);
+    	}
+
+    	Rooms.prototype = Object.create(Collection.prototype);
+    	Rooms.prototype.constructor = Rooms;
+
+    	function Room(params) {
+    		Model.call(this, params);
+    	}
+
+    	Room.prototype = Object.create(Model.prototype);
+    	Room.prototype.constructor = Room;
+    	Room.prototype.meta = rvDiaryMetadata.room;
+    	Room.prototype.normalize = function(index) {
+    		room.room_type = index.room_types[room.room_type_id].name;
+		    			
+			if(!room[this.meta.row_children]) {
+				room[this.meta.row_children] = [];
+			}	
+    	};
+    	Room.prototype.copy = function() {
+			var rc_meta = this.meta.row_children,
+				newRoom = {}, 
+				resLen = (_.isArray(this[rc_meta]) ? this[rc_meta].length : 0);
+
+			_.extend(newRoom, this);
+
+			newRoom[rc_meta] = [];
+
+			for(var i = 0; i < resLen; i++) {
+				newRoom[rc_meta].push(copyReservation(room[rc_meta][i]));
+			}
+
+			return newRoom;
+    	};
+    	Room.prototype.insertOccupancy = function(occupancy) {
+    		var new_children = [], cur_children = this[this.meta.row_children];
+
+    		for(var i = 0, len = cur_children.length; i < len; i++) {
+    			if(cur_children[i][this.meta.start_date] > occupancy[this.meta.start_date]) {
+    				new_children.push(occupancy);
+    			}
+
+    			new_children.push(cur_children[i]);
+    		}
+
+    		this[this.meta.row_children] = new_children;
+    	};
+
+    	function Occupancy(params) {
+    		Model.call(this, params);
+    	}
+    	Occupancy.prototype = Object.create(Model);
+    	Occupancy.prototype.constructor = Occupancy;
+    	Occupancy.prototype.meta = rvDiaryMetadata.occupancy;
+    	Occupancy.prototype.normalize = function() {
+			var meta = this.meta;
+
+			this[meta.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+			this[meta.start_date] 	= this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+			this[meta.maintenance] 	= this.normalizeMaintenanceInterval(room.departure_cleaning_time);
+    	};
+    	Occupancy.prototype.copy = function() {
+    		
+    	};
+    	Occupancy.prototype.normalizeTime = function(time, date) {
+    		var t_a = time.slice(0, -1),
+    			t_b = time.slice(-1);
+
+    		return Date.parse(date + ' ' + t_a + ' ' + t_b);
+    	};
+    	Occupancy.prototype.normalizeMaintenanceInterval = function(time, base_interval) {
+    		var t_a = time.slice(0, -2),
+    			t_b = time.slice(-3),
+    			intervals = 60 / base_interval;
+
+    		return intervals * t_a + parseInt(60 / base_interval);
+    	};*/
+
     	this.createIndex = function(payload, prop_name, index_prop_name) {
     		var collection = payload[prop_name],
     			i = 0,
@@ -87,40 +195,39 @@ sntRover
     		}
     	};
 
-    	this.normalize = function(time_slots, extra_params) {
+    	this.normalizeTimeSlots = function(time_slots, extra_params, index) {
     		var rooms = this.rooms,
     			room_types = this.room_types,
-    			occupancy = time_slots,
     			children = rvDiaryMetadata.room.row_children,
     			slot_id = rvDiaryMetadata.occupancy.id,
     			room,
     			slot,
-    			index = this.store,
-    			normalizeRooms = !Object.prototype.hasOwnProperty.call(rooms, '__ready');
+    			findParams = {};
 
-    		if(occupancy.length > 0) {
-	    		for(var i = 0, len = occupancy.length; i < len; i++) {
-	    			slot = occupancy[i];
+    		findParams[slot_id] = undefined;
+
+    		if(time_slots.length > 0) {
+	    		for(var i = 0, len = time_slots.length; i < len; i++) {
+	    			slot = time_slots[i];
 	    			room = index.rooms[slot[room_id]];
-    			
-		    		if(normalizeRooms) { 
-		    			this.normalizeRoom(room, index);
-		    		}
+	    			findParams[slot_id] =slot[slot_id];
 
-    				if(!_.findWhere(room[children], { reservation_id: slot[slot_id] })) {
+    				if(!_.findWhere(room[children], findParams)) {
 	    				this.normalizeOccupancy(room, slot);
 
 	    				room[children].push(slot);
 	    			}		
 	    		}
-	    	} else {
-	    		if(!Object.prototype.hasOwnProperty.call(rooms, '__ready')) {
-	    			for(var i = 0, len = rooms.length; i < len; i++) {			
-	    				this.normalizeRoom(rooms[i], index);
-	    			}
+			}
+    	};
 
-	    			Object.defineProperty(rooms, '__ready', { value: true });
-	    		} 
+    	this.normalizeRooms = function(rooms, index) {
+    		if(!Object.prototype.hasOwnProperty.call('__ready')) {
+	    		for(var i = 0, len = rooms.length; i < len; i++) {
+	    			this.normalizeRoom(rooms[i], index);
+	    		}
+
+	    		Object.defineProperty(rooms, '__ready', { value: true });
 	    	}
     	};
 
@@ -133,9 +240,13 @@ sntRover
     	};
 
     	this.normalizeOccupancy = function(room, occupancy) {
-			occupancy[rvDiaryMetadata.occupancy.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-		    occupancy[rvDiaryMetadata.occupancy.start_date] 	= this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-		    occupancy[rvDiaryMetadata.occupancy.maintenance] 	= this.normalizeMaintenanceInterval(room.departure_cleaning_time);
+    		if(!Object.prototype.hasOwnProperty.call(occupancy, '__ready')) {
+				occupancy[rvDiaryMetadata.occupancy.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+			    occupancy[rvDiaryMetadata.occupancy.end_date] 	    = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+			    occupancy[rvDiaryMetadata.occupancy.maintenance] 	= this.normalizeMaintenanceInterval(room.departure_cleaning_time);
+
+			    Object.defineProperty(occupancy, '__ready', { value: true });
+			}
     	};
 
     	this.normalizeMaintenanceInterval = function(time, base_interval) {
@@ -153,12 +264,16 @@ sntRover
     		return Date.parse(date + ' ' + t_a + ' ' + t_b);
     	};
 
-    	this.merge = function(currentData, incomingData) {
-    		return _.union(currentData, incomingData);
+    	this.merge = function(room, incomingData) {
+    		var r = this.store.rooms[room[rvDiaryMetadata.room.id]];
+
+    		r = rvDiaryUtilSrv.copyRoom(room);
+
+    		r[rvDiaryMetadata.room.row_children] = _.union(r[rvDiaryMetadata.room.row_children], incomingData);
     	};
     	
-    	this.fetchOccupancy = function(start_date, end_date) {
-    		var self = this, q=  $q.defer();
+    	this.init = function(start_date, end_date) {
+			var self = this, q=  $q.defer();
 
     		this.start_date = start_date;
 
@@ -173,14 +288,37 @@ sntRover
 				if(self.rooms.length === 0) {
 					self.rooms = data.rooms;
 					self.createIndex(data, 'rooms', 'rooms');
+					self.normalizeRooms(self.rooms, self.store, self.store);
 				}
 
-				self.occupancy = self.merge(self.occupancy, data.occupancy);
+				self.occupancy = _.union(self.occupancy, data.occupancy);
 				self.createIndex(data, 'occupancy', 'occupancy');
 
-				self.normalize(self.occupancy);
+				self.normalizeTimeSlots(self.occupancy, self.store);
 
-				q.resolve(data);
+				q.resolve({
+					data: self.rooms
+				});
+			}, function(err) {
+				q.reject(err);
+			});
+
+    		return q.promise;
+    	};
+
+    	this.fetchOccupancy = function(start_date, end_date) {
+    		var self = this, q=  $q.defer();
+
+			this.fetchData(start_date, end_date, self.api_types.occupancy)
+			.then(function(data) {
+				self.occupancy = _.union(self.occupancy, data.occupancy);
+				self.createIndex(data, 'occupancy', 'occupancy');
+
+				self.normalizeTimeSlots(self.occupancy, self.store);
+
+				q.resolve({
+					data: self.rooms
+				});
 			}, function(err) {
 				q.reject(err);
 			});
@@ -206,7 +344,7 @@ sntRover
 			   	}
 
 			   	q.resolve({
-		   			data: rooms  			
+		   			data: self.rooms  			
 		   		});
 		   }, function(err) {
 		   		q.reject(err);
@@ -234,11 +372,13 @@ sntRover
             var deferred = $q.defer (),
             	start_time = start_date.toComponents().time,
             	end_time = end_date.toComponents().time,
+            	begin = start_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
+            	end = end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
             	dto = { 
             		begin_time: start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
 					end_time: end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
-					begin_date: start_date.toLocaleDateString().replace('/', '-'),
-					end_date: end_date.toLocaleDateString().replace('/', '-'),
+					begin_date: begin.shift() + '-' + begin.reverse().join('-'),
+					end_date: end.shift() + '-' + end.reverse().join('-'),
 					type: type_config.type		
             	};
 
@@ -259,655 +399,4 @@ sntRover
 
             return deferred.promise;
         };
-    /*this.normalizeData = function(data, meta) {
-    		var room, 
-    			reservations, 
-    			reservation,
-    			arrival_date_meta = meta.arrival_date,
-    			departure_date_meta = meta.departure_date;
-
-    		if(!_.isArray(data)) {
-    			throw new Error("Unexpected parameter");
-    		}
-
-    		for(var i = 0, len = data.length; i < len; i++) {
-    			room = data[i];
-    			reservations = room.reservations;
-
-    			if(_.isArray(reservations)) {
-    				for(var j = 0, rlen = reservations.length; j < rlen; j++) {
-    					reservation = reservations[j];
-
-    					reservation[arrival_date_meta] = reservation[arrival_date_meta].getTime();
-    					reservation[departure_date_meta] = reservation[departure_date_meta].getTime();
-    				}
-	    		}
-    		}
-
-    		return data;
-    	};*/
-
-    	/*rooms = [
-				{
-					id: 0,
-					key: 'room-0',
-					number: '0',
-					type: 'Single',
-					occupancy: [
-						{
-							id: 1000,
-							key: 'guest-status-0000',
-							guest_name: 'Guest 0000',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 0:00:00 AM'),
-							end_date: new Date('09/30/2014 2:30:00 AM')
-						},
-						{
-							id: 1001,
-							key: 'guest-status-0001',
-							guest_name: 'Guest 0001',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 3:00:00 AM'),
-							end_date: new Date('09/30/2014 5:15:00 AM')
-						},
-												{
-							id: 1002,
-							key: 'guest-status-0002',
-							guest_name: 'Guest 0002',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 5:45:00 AM'),
-							end_date: new Date('09/30/2014 7:30:00 AM')
-						},
-												{
-							id: 1003,
-							key: 'guest-status-0003',
-							guest_name: 'Guest 0003',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 9:30:00 AM'),
-							end_date: new Date('09/30/2014 11:30:00 AM')
-						},
-												{
-							id: 1004,
-							key: 'guest-status-0004',
-							guest_name: 'Guest 0004',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 12:00:00 PM'),
-							end_date: new Date('09/30/2014 2:45:00 PM')
-						},
-												{
-							id: 1005,
-							key: 'guest-status-0005',
-							guest_name: 'Guest 0005',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 3:45:00 PM'),
-							end_date: new Date('09/30/2014 6:00:00 PM')
-						},
-												{
-							id: 1006,
-							key: 'guest-status-0006',
-							guest_name: 'Guest 0006',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 7:45:00 PM'),
-							end_date: new Date('09/30/2014 8:30:00 PM')
-						},
-												{
-							id: 1007,
-							key: 'guest-status-0007',
-							guest_name: 'Guest 0007',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 10:00:00 PM'),
-							end_date: new Date('09/31/2014 12:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 1,
-					key: 'room-1',
-					number: '1',
-					type: 'Double',
-					reservations: [
-						{
-							id: 10010,
-							key: 'guest-status-10010',
-							guest_name: 'Guest 10010',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:15:00 AM'),
-							end_date: new Date('09/30/2014 6:45 AM')
-						},
-						{
-							id: 10011,
-							key: 'guest-status-10011',
-							guest_name: 'Guest 10011',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 8:15:00 AM'),
-							end_date: new Date('09/30/2014 11:45 AM')
-						},
-						{
-							id: 10012,
-							key: 'guest-status-10012',
-							guest_name: 'Guest 10013',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 12:15:00 PM'),
-							end_date: new Date('09/30/2014 7:45 PM')
-						},
-						{
-							id: 10013,
-							key: 'guest-status-10013',
-							guest_name: 'Guest 10013',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 9:15:00 PM'),
-							end_date: new Date('09/30/2014 10:45 PM')
-						},
-						{
-							id: 10014,
-							key: 'guest-status-10014',
-							guest_name: 'Guest 10014',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 11:30:00 PM'),
-							end_date: new Date('09/31/2014 1:45 AM')
-						},
-						{
-							id: 10015,
-							key: 'guest-status-10015',
-							guest_name: 'Guest 10015',
-							status: 'check-in',
-							start_date: new Date('09/31/2014 3:15:00 AM'),
-							end_date: new Date('09/31/2014 6:45 AM')
-						},
-						{
-							id: 10016,
-							key: 'guest-status-10016',
-							guest_name: 'Guest 10016',
-							status: 'check-in',
-							start_date: new Date('09/31/2014 7:15:00 AM'),
-							end_date: new Date('09/31/2014 7:45 AM')
-						},
-						{
-							id: 10017,
-							key: 'guest-status-10017',
-							guest_name: 'Guest 10017',
-							status: 'check-in',
-							start_date: new Date('09/31/2014 8:15:00 AM'),
-							end_date: new Date('09/31/2014 10:45 AM')
-						},
-						{
-							id: 10018,
-							key: 'guest-status-10018',
-							guest_name: 'Guest 10018',
-							status: 'check-in',
-							start_date: new Date('09/31/2014 11:15:00 AM'),
-							end_date: new Date('09/31/2014 11:30 AM')
-						}
-					]
-				},
-				{
-					id: 2,
-					key: 'room-2',
-					number: '2',
-					type: 'Queen',
-					reservations: [
-						{
-							id: 2000,
-							key: 'guest-status-2000',
-							guest_name: 'Guest 2',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 1:00:00 PM'),
-							end_date: new Date('09/30/2014 2:00:00 PM')
-						}
-					]
-				},
-				{
-					id: 3,
-					key: 'room-3',
-					number: '3',
-					type: 'King',
-					reservations: [
-						{
-							id: 3000,
-							key: 'guest-status-3000',
-							guest_name: 'Guest 3',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 2:30:00 PM'),
-							end_date: new Date('09/30/2014 2:45:00 PM')
-						}
-					]
-				},
-				{
-					id: 4,
-					key: 'room-4',
-					number: '4',
-					type: 'Child',
-					reservations: [
-						{
-							id: 4000,
-							key: 'guest-status-4000',
-							guest_name: 'Guest 4',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 5:15:00 PM'),
-							end_date: new Date('09/30/2014 7:00:00 PM')
-						}
-					]
-				},
-				{
-					id: 5,
-					key: 'room-5',
-					number: '5',
-					type: 'Single',
-					reservations: [
-						{
-							id: 5000,
-							key: 'guest-status-5000',
-							guest_name: 'Guest 0',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 2:30:00 PM'),
-							end_date: new Date('09/30/2014 10:30:00 PM')
-						}
-					]
-				},
-				{
-					id: 6,
-					key: 'room-6',
-					number: '6',
-					type: 'Double',
-					reservations: [
-						{
-							id: 6000,
-							key: 'guest-status-6000',
-							guest_name: 'Guest 6',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:15:00 PM'),
-							end_date: new Date('09/30/2014 5:45 PM')
-						}
-					]
-				},
-				{
-					id: 7,
-					key: 'room-7',
-					number: '7',
-					type: 'Queen',
-					reservations: [
-						{
-							id: 7000,
-							key: 'guest-status-7000',
-							guest_name: 'Guest 7',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:00:00 AM'),
-							end_date: new Date('09/30/2014 2:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 8,
-					key: 'room-8',
-					number: '8',
-					type: 'King',
-					reservations: [
-						{
-							id: 8000,
-							key: 'guest-status-8000',
-							guest_name: 'Guest 8',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 2:30:00 AM'),
-							end_date: new Date('09/30/2014 7:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 9,
-					key: 'room-9',
-					number: '9',
-					type: 'Child',
-					reservations: [
-						{
-							id: 9000,
-							key: 'guest-status-9000',
-							guest_name: 'Guest 9',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 12:15:00 PM'),
-							end_date: new Date('09/30/2014 3:00:00 PM')
-						}
-					]
-				},
-						{
-					id: 10,
-					key: 'room-10',
-					number: '10',
-					type: 'Single',
-					reservations: [
-						{
-							id: 10000,
-							key: 'guest-status-10000',
-							guest_name: 'Guest 10',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 2:30:00 PM'),
-							end_date: new Date('09/30/2014 10:30:00 PM')
-						}
-					]
-				},
-				{
-					id: 11,
-					key: 'room-11',
-					number: '11',
-					type: 'Double',
-					reservations: [
-						{
-							id: 11000,
-							key: 'guest-status-11000',
-							guest_name: 'Guest 11',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:15:00 PM'),
-							end_date: new Date('09/30/2014 5:45 PM')
-						}
-					]
-				},
-				{
-					id: 12,
-					key: 'room-12',
-					number: '12',
-					type: 'Queen',
-					reservations: [
-						{
-							id: 12000,
-							key: 'guest-status-12000',
-							guest_name: 'Guest 12',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:00:00 AM'),
-							end_date: new Date('09/30/2014 2:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 13,
-					key: 'room-13',
-					number: '13',
-					type: 'King',
-					reservations: [
-						{
-							id: 13000,
-							key: 'guest-status-13000',
-							guest_name: 'Guest 13',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 2:30:00 AM'),
-							end_date: new Date('09/30/2014 7:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 14,
-					key: 'room-14',
-					number: '14',
-					type: 'Child',
-					reservations: [
-						{
-							id: 14000,
-							key: 'guest-status-14000',
-							guest_name: 'Guest 14000',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 12:15:00 PM'),
-							end_date: new Date('09/30/2014 3:00:00 PM')
-						}
-					]
-				},
-				{
-					id: 20,
-					key: 'room-20',
-					number: '20',
-					type: 'Single',
-					reservations: [
-						{
-							id: 20000,
-							key: 'guest-status-0000',
-							guest_name: 'Guest 20',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 0:30:00 AM'),
-							end_date: new Date('09/30/2014 1:30:00 AM')
-						}
-					]
-				},
-				{
-					id: 21,
-					key: 'room-21',
-					number: '21',
-					type: 'Double',
-					reservations: [
-						{
-							id: 21001,
-							key: 'guest-status-1000',
-							guest_name: 'Guest 21',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:15:00 AM'),
-							end_date: new Date('09/30/2014 4:45 AM')
-						}
-					]
-				},
-				{
-					id: 22,
-					key: 'room-22',
-					number: '22',
-					type: 'Queen',
-					reservations: [
-						{
-							id: 22000,
-							key: 'guest-status-22000',
-							guest_name: 'Guest 22',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 1:00:00 AM'),
-							end_date: new Date('09/30/2014 2:30:00 AM')
-						}
-					]
-				},
-				{
-					id: 23,
-					key: 'room-23',
-					number: '23',
-					type: 'King',
-					reservations: [
-						{
-							id: 23000,
-							key: 'guest-status-23000',
-							guest_name: 'Guest 23',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 2:30:00 AM'),
-							end_date: new Date('09/30/2014 3:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 24,
-					key: 'room-24',
-					number: '24',
-					type: 'Child',
-					reservations: [
-						{
-							id: 24000,
-							key: 'guest-status-24000',
-							guest_name: 'Guest 24',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 5:15:00 PM'),
-							end_date: new Date('09/30/2014 7:00:00 PM')
-						}
-					]
-				},
-				{
-					id: 25,
-					key: 'room-25',
-					number: '25',
-					type: 'Single',
-					reservations: [
-						{
-							id: 25000,
-							key: 'guest-status-25000',
-							guest_name: 'Guest 25',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 2:30:00 PM'),
-							end_date: new Date('09/30/2014 8:15:00 PM')
-						}
-					]
-				},
-				{
-					id: 26,
-					key: 'room-26',
-					number: '26',
-					type: 'Double',
-					reservations: [
-						{
-							id: 26000,
-							key: 'guest-status-26000',
-							guest_name: 'Guest 26',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:15:00 PM'),
-							end_date: new Date('09/30/2014 2:45 PM')
-						}
-					]
-				},
-				{
-					id:27,
-					key: 'room-27',
-					number: '27',
-					type: 'Queen',
-					reservations: [
-						{
-							id: 27000,
-							key: 'guest-status-27000',
-							guest_name: 'Guest 27',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:30:00 AM'),
-							end_date: new Date('09/30/2014 2:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 28,
-					key: 'room-28',
-					number: '28',
-					type: 'King',
-					reservations: [
-						{
-							id: 28000,
-							key: 'guest-status-28000',
-							guest_name: 'Guest 28',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 5:30:00 AM'),
-							end_date: new Date('09/30/2014 7:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 29,
-					key: 'room-29',
-					number: '29',
-					type: 'Child',
-					reservations: [
-						{
-							id: 29000,
-							key: 'guest-status-29000',
-							guest_name: 'Guest 29',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 2:15:00 PM'),
-							end_date: new Date('09/30/2014 3:00:00 PM')
-						}
-					]
-				},
-						{
-					id: 30,
-					key: 'room-30',
-					number: '30',
-					type: 'Single',
-					reservations: [
-						{
-							id: 30000,
-							key: 'guest-status-30000',
-							guest_name: 'Guest 30',
-							status: 'inhouse',
-							start_date: new Date('09/30/2014 2:30:00 PM'),
-							end_date: new Date('09/30/2014 4:30:00 PM')
-						}
-					]
-				},
-				{
-					id: 31,
-					key: 'room-31',
-					number: '31',
-					type: 'Double',
-					reservations: [
-						{
-							id: 31000,
-							key: 'guest-status-31000',
-							guest_name: 'Guest 31',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 4:15:00 PM'),
-							end_date: new Date('09/30/2014 5:45 PM')
-						}
-					]
-				},
-				{
-					id: 32,
-					key: 'room-32',
-					number: '32',
-					type: 'Queen',
-					reservations: [
-						{
-							id: 32000,
-							key: 'guest-status-32000',
-							guest_name: 'Guest 32',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 1:45:00 AM'),
-							end_date: new Date('09/30/2014 2:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 33,
-					key: 'room-33',
-					number: '33',
-					type: 'King',
-					reservations: [
-						{
-							id: 33000,
-							key: 'guest-status-33000',
-							guest_name: 'Guest 33',
-							status: 'check-in',
-							start_date: new Date('09/30/2014 2:30:00 AM'),
-							end_date: new Date('09/30/2014 7:45:00 AM')
-						}
-					]
-				},
-				{
-					id: 34,
-					key: 'room-34',
-					number: '34',
-					type: 'Child',
-					reservations: [
-						{
-							id: 14000,
-							key: 'guest-status-14000',
-							guest_name: 'Guest 14000',
-							status: 'check-out',
-							start_date: new Date('09/30/2014 12:15:00 PM'),
-							end_date: new Date('09/30/2014 3:00:00 PM')
-						}
-					]
-				}
-			];*/
-
-			/*this.createIndicies = function(payload, prop_name) {
-    		var rooms = payload.rooms,
-    			roomTypes = payload.room_types,
-    			occupancies = payload.results.occupancy,
-    			roomIndex = this.index.rooms,
-    			roomTypeIndex = this.index.roomTypes,
-    			occIndex = this.index.occupancies;
-
-    		for(var i = 0, len = rooms.length; i < len; i++) {
-    			roomIndex[rooms[i].id] = rooms[i];
-    		}
-
-    		for(var i = 0, len = roomTypes.length; i < len; i++) {
-    			roomTypeIndex[roomTypes[i].id] = roomTypes[i];
-    		}
-
-    		for(var i = 0, len = occupancies.length; i < len; i++) {
-    			occIndex[occupancies[i].reservation_id] = occupancies[i];
-    		}
-    	};*/
 }]);

@@ -16,11 +16,17 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                         x_0 = new Date(cur_time - 7200000),
                         x_N = new Date(cur_time + 86400000);
 
-                    return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15)   
-                    .then(function() {
-                        return rvDiarySrv.fetchOccupancy(x_0, x_N);
+                    return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15) 
+                    .then(function(data) {
+                        console.log(data);
+                        return rvDiaryFilterSrv.fetchRates();
+                    })  
+                    .then(function(data) {
+                        console.log(data);
+                        return rvDiarySrv.init(x_0, x_N);
                     })
                     .then(function(data) {
+                        console.log(data);
                         return { 
                             start_date: rvDiarySrv.start_date,
                             data: rvDiarySrv.rooms,
