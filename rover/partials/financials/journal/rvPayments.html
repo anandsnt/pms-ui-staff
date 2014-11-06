@@ -25,8 +25,8 @@
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
                     <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level1.active && level2.show" class="payment-title  toggle">
-                        <span class="code" ng-show="level2.show">{{level2.credit_card}}</span>
-                        <strong class="name" ng-show="level2.show">{{level2.charge_code}}</strong>
+                        <span class="code" ng-show="level2.show">{{level2.charge_code}}</span>
+                        <strong class="name" ng-show="level2.show">{{level2.credit_card}}</strong>
                         <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.amount}}</span>
                     </a>
 
@@ -48,10 +48,10 @@
                                 <td>{{level3.room}}</td>
                                 <td>{{level3.name}}</td>
                                 <td>{{level3.reservation_number}}</td>
-                                <td>{{level3.type}}</td>
                                 <td>{{level3.details}}</td>
                                 <td>{{level3.time}}</td>
-                                <td>{{level3.debit}}</td>                                            
+                                <td>{{level3.debit}}</td>
+                                <td>{{level3.credit}}</td>                                           
                             </tr>
                         </tbody>
                     </table>

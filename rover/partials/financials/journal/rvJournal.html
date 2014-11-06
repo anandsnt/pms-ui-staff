@@ -4,7 +4,7 @@
     
     <!-- Header -->
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
-        <div class="entry" ng-hide="data.activeTab==2">
+        <div class="entry filter" ng-hide="data.activeTab==2">
             <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
             <div class="faux-select" ng-class="{'active':data.isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();">
                 {{data.filterTitle}}
@@ -39,32 +39,34 @@
                 </div>
             </div>
         </div>
-        <div class="entry" ng-show="data.activeTab==2">
+        <div class="entry filter" ng-show="data.activeTab==2">
             <label for="select-cashier" translate>CASHIER</label>
             <div class="select">
                 <select ng-model="data.filterData.selectedCashier" ng-options="cashier.id as cashier.name for cashier in data.filterData.cashiers" ng-change="cashierFilterChanged()"></select>
             </div>
         </div>
-        
-        <div class="entry" ng-click="clickedFromDate()" ng-show="data.activeTab==0">
-            <label id="revenue-date-label" for="revenue-date" translate>FROM_DATE</label>
+        <!-- Datepicker for revenue tab (from date)-->
+        <div class="entry date" ng-click="clickedFromDate()" ng-show="data.activeTab==0">
+            <label for="revenue-from-date" translate>DATE_FROM</label>
             <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.fromDate | date:dateFormat }}" readonly />
-                <strong id="revenue-date-day" class="day">{{data.fromDate | date:'d'}}</strong>
-                <span id="revenue-date-month" class="month">{{data.fromDate | date:'MMMM'}}</span>
-                <span id="revenue-date-year" class="year">{{data.fromDate | date:'y'}}</span>
+                <input name="revenue-from-date" id="revenue-from-date" type="text" class="datepicker" value="{{data.fromDate | date:dateFormat }}" readonly />
+                <strong id="revenue-from-date-day" class="day">{{data.fromDate | date:'d'}}</strong>
+                <span id="revenue-from-date-month" class="month">{{data.fromDate | date:'MMMM'}}</span>
+                <span id="revenue-from-date-year" class="year">{{data.fromDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedToDate()" ng-show="data.activeTab==0">
-            <label id="revenue-date-label" for="revenue-date" translate>TO_DATE</label>
+        <!-- Datepicker for revenue tab (to date)-->
+        <div class="entry date" ng-click="clickedToDate()" ng-show="data.activeTab==0">
+            <label for="revenue-to-date" translate>DATE_TO</label>
             <div class="entry-data">
-                <input name="revenue-date" id="revenue-date" type="text" class="datepicker" value="{{data.toDate | date:dateFormat}}" readonly />
-                <strong id="revenue-date-day" class="day">{{data.toDate | date:'d'}}</strong>
-                <span id="revenue-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
-                <span id="revenue-date-year" class="year">{{data.toDate | date:'y'}}</span>
+                <input name="revenue-to-date" id="revenue-to-date" type="text" class="datepicker"  value="{{data.toDate | date:dateFormat}}" readonly />
+                <strong id="revenue-to-date-day" class="day">{{data.toDate | date:'d'}}</strong>
+                <span id="revenue-to-date-month" class="month">{{data.toDate | date:'MMMM'}}</span>
+                <span id="revenue-to-date-year" class="year">{{data.toDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedPaymentDate()" ng-show="data.activeTab==1">
+        <!-- Datepicker for payment tab-->
+        <div class="entry date" ng-click="clickedPaymentDate()" ng-show="data.activeTab==1">
             <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
@@ -73,7 +75,8 @@
                 <span id="revenue-date-year" class="year">{{data.paymentDate | date:'y'}}</span>
             </div>
         </div>
-        <div class="entry" ng-click="clickedCashierDate()" ng-show="data.activeTab==2">
+        <!-- Datepicker for cashier tab-->
+        <div class="entry date" ng-click="clickedCashierDate()" ng-show="data.activeTab==2">
             <label id="revenue-date-label" for="revenue-date" translate>DATE</label>
             <div class="entry-data">
                 <input name="revenue-date" id="revenue-date" type="text" class="datepicker" readonly />
@@ -82,6 +85,7 @@
                 <span id="revenue-date-year" class="year">{{data.cashierDate | date:'y'}}</span>
             </div>
         </div>
+        <!--Tabs -->
         <ul id="journal-options" class="display">
             <li id="show-revenue" ng-class="{'active':data.activeTab==0}" ng-click="activatedTab(0)">
                 <span class="icons icon-navbar icon-revenue" translate>REVENUE</span>{{currencySymbol}}{{data.revenueData.total_revenue}}</li>
