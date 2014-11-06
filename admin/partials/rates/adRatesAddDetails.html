@@ -14,8 +14,8 @@
 		</div>
 		<fieldset class="holder left">
 			<div></div>
-			<ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
-			<div class="entry">
+			<ad-textbox styleclass="full-width" inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
+			<div class="entry margin">
 				<label>Type <strong>*</strong> </label>
 				<div class="select">
 					<select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
@@ -23,7 +23,14 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry">
+			<div class="entry" ng-if="isHourlyRatesEnabled">
+				<label>Periodicity </label>
+				<div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
+					<span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
+					<span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>
+				</div>
+			</div>
+			<div class="entry margin">
 				<label>Charge code <strong>*</strong> </label>
 				<div class="select">
 
@@ -33,7 +40,7 @@
 				</div>
 			</div>
 
-			<div class="entry">
+			<div class="entry ">
 
 				<div class=" select-col col1-2 disabled-bg" >
 
@@ -48,7 +55,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry">
+			<div class="entry margin" >
 				<label ng-hide="isPromotional() || hideBasedOn()">Based On</label>
 				<label ng-show="isPromotional()">Copy From</label>
 				<div class="select" ng-hide= "!isPromotional() && hideBasedOn()">

@@ -14,7 +14,8 @@ admin.directive('adDropdown', function($timeout) {
             labelInDropDown: '@labelInDropDown',
             list:'=list',
             name:'@name',
-            selectedId:'=selectedId'
+            selectedId:'=selectedId',
+            labelClass:'@labelClass'
 	    },
     	templateUrl: '../../assets/directives/selectBox/adDropdownbox.html' 
     };
