@@ -285,7 +285,7 @@ sntRover.controller('reservationActionsController', [
 		};
 
 
-		var showDepositPopup = function(deposit) {
+		var showDepositPopup = function(deposit,isOutOfCancellationPeriod,penalty) {
 			ngDialog.open({
 				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
 				controller: 'RVCancelReservationDepositController',
@@ -293,24 +293,17 @@ sntRover.controller('reservationActionsController', [
 				data: JSON.stringify({
 					state: 'CONFIRM',
 					cards: false,
-					deposit:deposit
+					penalty:penalty,
+					deposit:deposit,
+					depositText: (function() {
+						if (!isOutOfCancellationPeriod) {
+							return "Within Cancellation Period. Deposit of Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
+						} else {
+							return "Reservation outside of cancellation period. Deposit of "+$rootScope.currencySymbol+penalty+" is not refundable";
+						}
+					})()
 				})
 			 });
-		};
-
-		var showPenaltyWarningPopup = function(deposit) {
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvPenaltyWarningPopup.html',
-				scope: $scope,
-				data: JSON.stringify({
-					deposit:deposit
-				})
-			 });
-		};
-
-		$scope.showPenaltyPopup = function(){
-			ngDialog.close();
-			showDepositPopup(depositAmount);
 		};
 
 		/**
@@ -334,7 +327,8 @@ sntRover.controller('reservationActionsController', [
 					// penalty_value: 20
 				
 					depositAmount = data.results.deposit_amount;
-					if (typeof data.results.cancellation_policy_id != 'undefined') {
+					var isOutOfCancellationPeriod = (typeof data.results.cancellation_policy_id != 'undefined');
+					if (isOutOfCancellationPeriod) {
 						if (data.results.penalty_type == 'day') {
 							// To get the duration of stay
 							var stayDuration = $scope.reservationParentData.numNights > 0 ? $scope.reservationParentData.numNights : 1;
@@ -345,7 +339,7 @@ sntRover.controller('reservationActionsController', [
 							cancellationCharge = parseFloat(data.results.calculated_penalty_amount);
 						}
 						if(parseInt(depositAmount) > 0){
-							showPenaltyWarningPopup(cancellationCharge);
+							showDepositPopup(depositAmount,isOutOfCancellationPeriod,cancellationCharge);
 						}
 						else{
 							promptCancel(cancellationCharge, nights);
@@ -353,7 +347,7 @@ sntRover.controller('reservationActionsController', [
 					}
 					else{
 						if(parseInt(depositAmount) > 0){
-							showDepositPopup(depositAmount);
+							showDepositPopup(depositAmount,isOutOfCancellationPeriod,'');
 						}
 						else{
 							promptCancel('', nights);
