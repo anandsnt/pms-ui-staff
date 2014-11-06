@@ -591,6 +591,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+
+    $scope.closeBussinnesDatePopup = function(){
+      ngDialog.close("eodPopup","");
+    }
     /**
      * Handles the bussiness date change in progress
      */
@@ -606,7 +610,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           className: 'ngdialog-theme-default1 modal-theme1',
           controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
-          scope: $scope
+          scope: $scope,
+          id:"eodPopup"
         });
       }
     };

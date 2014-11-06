@@ -94,5 +94,43 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController',                       
-        });           
+        });        
+
+// adding extra states to be iniated when user is in admin screens
+        $stateProvider.state('rover.changeBussinesDate', {
+            url: '/changeBussinesDate',  //TODO: check can we reduced it to hk?  
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            controller: 'RVdashboardController',
+            resolve: {
+                dashBoarddata: function(RVDashboardSrv) {
+                    return RVDashboardSrv.fetchDashboardDetails();
+                }
+            } ,
+             onEnter: function ($stateParams, $rootScope, $state, ngDialog) {
+                ngDialog.open({
+                  template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+                  controller: 'RVEndOfDayModalController',
+                  className: 'end-of-day-popup ngdialog-theme-plain'
+                });
+            }                                   
+        });    
+
+        $stateProvider.state('rover.postCharge', {
+            url: '/postCharge',  //TODO: check can we reduced it to hk?  
+            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
+            controller: 'RVdashboardController',
+            resolve: {
+                dashBoarddata: function(RVDashboardSrv) {
+                    return RVDashboardSrv.fetchDashboardDetails();
+                }
+            } ,
+             onEnter: function ($stateParams, $rootScope, $state, ngDialog) {
+                    ngDialog.open({
+                    template: '/assets/partials/postCharge/outsidePostCharge.html',
+                    controller: 'RVOutsidePostChargeController',
+                    });
+                }
+
+                                                  
+        });    
 });

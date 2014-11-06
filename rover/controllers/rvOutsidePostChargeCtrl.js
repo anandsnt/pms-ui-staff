@@ -35,8 +35,17 @@ sntRover.controller('RVOutsidePostChargeController',
 			
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';
-			
-			$scope.init();
+			var fetchAllItemsSuccessCallback = function(data){
+				$scope.$emit('hideLoader');
+				$scope.fetchedData = data;
+				$scope.init();
+			}
+			if($scope.fetchedData){
+				$scope.init();
+			}
+			else{
+				 $scope.invokeApi(RVChargeItems.fetchAllItems, '', fetchAllItemsSuccessCallback);
+			}
 			$scope.setScroller('result_showing_area_post_charg');
 			$scope.roomSearchStatus = false;
 			$scope.guestCompanySearchStatus = false;
