@@ -1,13 +1,15 @@
 sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault', function($q, RVBaseWebSrv, rvBaseWebSrvV2, $vault){
 	
 	var self = this;
+	self.searchPerPage = 50;
+	self.page = 1;
 	
 	this.fetch = function(dataToSend, useCache){
 		var deferred = $q.defer();
 	
 		
 		dataToSend.fakeDataToAvoidCache = new Date();
-		var url =  'search.json';
+		var url =  'search.json?per_page=' + self.searchPerPage + '&page=' + self.page;
 
 		if ( useCache && !!self.data ) {
 			deferred.resolve( self.data );
@@ -23,8 +25,9 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 					self.lastSearchedType = "others";
 				}
 				
-				self.data = data;
-				deferred.resolve(data);
+				self.data = data.results;
+				self.totalSearchResults = data.total_count;
+				deferred.resolve(self.data);
 			},function(data){
 				deferred.reject(data);
 			});

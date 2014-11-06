@@ -258,6 +258,11 @@
 			&:hover,
 			&:active { .gradient (@grey2, #d1d1d1); }
 		}
+
+		&.dark-grey {
+			.gradient (@grey3, @grey4);
+			&:active { .gradient (@grey4, @grey3); }
+		}
 		
 		&.yellow-btn {
 			background-color: #F8E26E;
