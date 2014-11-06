@@ -59,7 +59,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_defaultEmp,
 			$_hasActiveWorkSheet,
 			$_page = 1,
-			$_perPage = 25;
+			$_perPage = 50;
 
 		// inital page related properties
 		$scope.resultFrom = 1,
@@ -81,7 +81,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
 				businessDate: $rootScope.businessDate,
 				page: $_page,
-				perPage: $_page === 1 ? 50: 25
+				perPage: $_perPage
 			}, $_fetchRoomListCallback);
 		};
 
@@ -115,14 +115,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// page 1 will show 50 results
 			if ( $_page === 1 ) {
 				$scope.resultFrom = 1;
-				$scope.resultUpto = $scope.totalCount < 50 ? $scope.totalCount : 50;
+				$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
 				$scope.disablePrevBtn = true;
-				$scope.disableNextBtn = $scope.totalCount > 50 ? false : true;
+				$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
 			}
 			// other pages will show 25 results
 			else {
 				var upto = $scope.resultUpto * 1;
-				$scope.resultFrom = 25 + ($_perPage * ($_page - 1) + 1);
+				$scope.resultFrom = $_perPage * ($_page - 1) + 1;
 				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
 				$scope.disablePrevBtn = false;
 				$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
@@ -850,7 +850,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			var callLoad = function() {
 				$scope.loadNextPage();
-				console.log('callLoad called');
 			};
 
 			// set of excutions to be executed when
@@ -860,7 +859,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var touch = e.touches ? e.touches[0] : e;
 
 				// if not touching or we are not on top or bottom of scroll area
-				if (!touching || this.scrollTop > scrollBarOnTop || this.scrollTop < scrollBarOnBot) {
+				if (!touching) {
 					return;
 				};
 
@@ -910,46 +909,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			// set of excutions to be executed when
-			// the user touch the screen
-			var touchStartHandler = function(e) {
-				var touch = e.touches ? e.touches[0] : e;
-
-				// a minor hack since we have a rooms injection throtel
-				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
-
-				console.log( this.scrollTop +' '+ scrollBarOnTop +' '+ scrollBarOnBot );
-
-				// if we are not on top or bottom of scroll area
-				if (this.scrollTop > scrollBarOnTop || this.scrollTop < scrollBarOnBot) {
-					return;
-				};
-
-				touching = true;
-				pulling = false;
-				startY = touch.y || touch.pageY;
-
-				$rooms.style.WebkitTransition = '';
-
-				if ( this.scrollTop === scrollBarOnTop ) {
-					$refresh.style.WebkitTransition = '';
-					$refresh.classList.add('show');
-				} else if ( this.scrollTop === scrollBarOnBot ) {
-					$load.style.WebkitTransition = '';
-					$load.classList.add('show');
-				};
-
-				// only bind 'touchmove' when required
-				$rooms.addEventListener('touchmove', touchMoveHandler, false);
-			};
-
-			// set of excutions to be executed when
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
 				var touch = e.touches ? e.touches[0] : e;
 
 				// if not touching or we are not on top/bottom of scroll area
-				if (!touching || this.scrollTop > scrollBarOnTop || this.scrollTop < scrollBarOnBot) {
+				if (!touching) {
 					return;
 				};
 
@@ -977,7 +943,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
 				$rooms.style.webkitTransform = 'translateY(0)';
 
-				if ( allowPullDown ) {
+				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '-webkit-transform 0.3s';
 					$refresh.style.webkitTransform = 'translateY(0)';
 
@@ -986,7 +952,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$timeout(function() {
 						$refresh.classList.remove('show');
 					}, 320);
-				} else if ( allowPullup ) {
+				} else if ( this.scrollTop === scrollBarOnBot ) {
 					$load.style.WebkitTransition = '-webkit-transform 0.3s';
 					$load.style.webkitTransform = 'translateY(0)';
 
@@ -999,16 +965,50 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener(touchMoveHandler);
+				$rooms.removeEventListener(touchEndHandler);
+			};
+
+			// set of excutions to be executed when
+			// the user touch the screen
+			var touchStartHandler = function(e) {
+				var touch = e.touches ? e.touches[0] : e;
+
+				// a minor hack since we have a rooms injection throtel
+				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
+
+				// if we are not on top or bottom of scroll area
+				if (this.scrollTop > scrollBarOnTop && this.scrollTop < scrollBarOnBot) {
+					return;
+				};
+
+				touching = true;
+				pulling = false;
+				startY = touch.y || touch.pageY;
+
+				$rooms.style.WebkitTransition = '';
+
+				if ( this.scrollTop === scrollBarOnTop ) {
+					$refresh.style.WebkitTransition = '';
+					$refresh.classList.add('show');
+				} else if ( this.scrollTop === scrollBarOnBot ) {
+					$load.style.WebkitTransition = '';
+					$load.classList.add('show');
+				};
+
+				// only bind 'touchmove' when required
+				$rooms.addEventListener('touchmove', touchMoveHandler, false);
+				$rooms.addEventListener('touchend', touchEndHandler, false);
+				$rooms.addEventListener('touchcancel', touchEndHandler, false);
 			};
 
 			// bind the 'touchstart' handler
 			$rooms.addEventListener('touchstart', touchStartHandler, false);
 
 			// bind the 'touchend' handler
-			$rooms.addEventListener('touchend', touchEndHandler, false);
+			// $rooms.addEventListener('touchend', touchEndHandler, false);
 
 			// bind the 'touchcancel' handler
-			$rooms.addEventListener('touchcancel', touchEndHandler, false);
+			// $rooms.addEventListener('touchcancel', touchEndHandler, false);
 
 			// remove the DOM binds when this scope is distroyed
 			$scope.$on('$destroy', function() {
