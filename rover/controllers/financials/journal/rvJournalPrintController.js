@@ -1,9 +1,6 @@
 sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout','$window',function($scope,$rootScope,$timeout,$window) {
 	BaseCtrl.call(this, $scope);
 
-	$scope.data.isRevenueToggleSummaryActive = true;
-	$scope.data.isPaymentToggleSummaryActive = true;
-
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/
 	var resizableMinHeight = 0;
 	var resizableMaxHeight = 90;

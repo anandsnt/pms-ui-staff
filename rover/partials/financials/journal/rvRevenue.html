@@ -1,9 +1,9 @@
 <!-- Content REVENUE-->
-<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='1000' style="height:90%;">
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='100' style="height:90%;">
     <div class="wrapper">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-        <div id="journal-grid" class="journal-grid">
+        <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isRevenueToggleSummaryActive}">
 
                 <!-- First level - charge groups -->
                 <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups"  ng-show="level1.show && level1.filterFlag">
@@ -22,7 +22,7 @@
                             <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total}}</span>
                         </a>
 
-                        <!-- Third level - -->
+                        <!-- Third level - transactions  -->
                         <table ng-show="level2.active && level2.show" class="grid-items">
                             <thead ng-show="isShowTableHeading(index1 ,index2)">
                                 <tr>
@@ -55,11 +55,6 @@
                 </div>
                 
             </div>
-
-
-        
-
-
 
     </div>
 </div>

@@ -3,7 +3,7 @@
     <div class="wrapper">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-        <div id="journal-grid" class="journal-grid">
+        <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isPaymentToggleSummaryActive}">
 
             <ul class="grid-header payment">
                 <li class="name" translate>PAYMENT_TYPE</li>
@@ -12,7 +12,7 @@
                 <li class="value" translate>AMOUNT</li>
             </ul>
 
-            <!-- First level - charge groups -->
+            <!-- First level - payment types -->
             <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" ng-show="level1.show" class="grid-group">
 
                 <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="payment-title toggle">
@@ -22,6 +22,7 @@
                     <span class="value" ng-show="level1.show">{{currencySymbol}}{{level1.amount}}</span>
                 </a>
 
+                <!-- Second level - credit cards - if Payment type is Credit Card -->
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
                     <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level1.active && level2.show" class="payment-title  toggle">
@@ -30,7 +31,7 @@
                         <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.amount}}</span>
                     </a>
 
-                    <!-- Third level - postings, hidden by default. To show, remove class "hidden" when 2nd level anchor is clicked -->
+                    <!-- Third level - transactions -->
                     <table ng-show="level2.active && level2.show" class="grid-items">
                         <thead>
                             <tr ng-show="isShowTableHeadingLevel2(index1 ,index2)">
@@ -57,12 +58,10 @@
                     </table>
                 </div>
 
-
+                <!-- Second level -transactions - if Payment type is not Credit Card -->
                 <div ng-if="level1.payment_type !== 'Credit Card'" >
-                   
-
-                    <!-- Third level - postings, hidden by default. To show, remove class "hidden" when 2nd level anchor is clicked -->
-                    <table ng-show="level1.active" class="grid-items hidden1">
+                    
+                    <table ng-show="level1.active" class="grid-items">
                         <thead>
                             <tr ng-show="isShowTableHeadingLevel1(index1)">
                                 <th scope="col" translate>ROOM_LABEL</th>
@@ -75,14 +74,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="(index2 ,level2) in level1.transactions" ng-show="level2.show" class="grid-item hidden1">
+                            <tr ng-repeat="(index2 ,level2) in level1.transactions" ng-show="level2.show" class="grid-item">
                                 <td>{{level2.room}}</td>
                                 <td>{{level2.name}}</td>
                                 <td>{{level2.reservation_number}}</td>
-                                <td>{{level2.type}}</td>
                                 <td>{{level2.details}}</td>
                                 <td>{{level2.time}}</td>
-                                <td>{{level2.debit}}</td>                                       
+                                <td>{{level2.debit}}</td>   
+                                <td>{{level2.credit}}</td>                                   
                             </tr>
                         </tbody>
                     </table>
@@ -95,124 +94,6 @@
                 <li class="value">{{currencySymbol}}{{data.paymentData.total_payment}}</li>
             </ul>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div ng-if="false">
-            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" ng-show="level1.show">
-
-                <span ng-click="clickedFirstLevel(index1)" style="background-color:#FFB2B2; display: block; width: 100%;">
-                    <span ng-show="level1.show">{{level1.payment_type}}</span>
-                    <span ng-show="level1.show">{{level1.charge_code}}</span>
-                    <span ng-show="level1.show">{{level1.number}}</span>
-                    <span ng-show="level1.show">{{currencySymbol}}{{level1.amount}}</span>
-                </span>
-            
-
-                <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active">
-
-                    <span ng-click="clickedSecondLevel(index1 ,index2)" ng-show="level1.active && level2.show" style="background-color:#CCFF99; display: block; width: 80%;">
-                        <span ng-show="level2.show">{{level2.credit_card}}</span>
-                        <span ng-show="level2.show">{{level2.charge_code}}</span>
-                        <span ng-show="level2.show">{{level2.number}}</span>
-                        <span ng-show="level2.show">{{currencySymbol}}{{level2.amount}}</span>
-                    </span>
-                    
-                    <table ng-show="level2.active && level2.show">
-
-                        <tr class="grid-item-heading" ng-show="isShowTableHeadingLevel2(index1 ,index2)">
-                            <th scope="col">Room</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Reservation Number</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Details</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Debit</th>
-                            <th scope="col">Credit</th>
-                        </tr>
-
-                        <tr style="background-color:#99CCFF; display: block; width: 250%;" ng-repeat="(index3 ,level3) in level2.transactions" ng-show="level3.show">
-
-                            <td>{{level3.room}}</td>
-                            <td>{{level3.name}}</td>
-                            <td>{{level3.reservation_number}}</td>
-                            <td>{{level3.type}}</td>
-                            <td>{{level3.details}}</td>
-                            <td>{{level3.time}}</td>
-                            <td>{{level3.debit}}</td> 
-                        </tr>
-                        
-                    </table>
-                  
-                </div>
-
-                <div ng-if="level1.payment_type !== 'Credit Card'" >
-
-                    <table ng-show="level1.active">
-
-                        <tr class="grid-item-heading" ng-show="isShowTableHeadingLevel1(index1)">
-                            <th scope="col">Room</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Reservation Number</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Details</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Debit</th>
-                            <th scope="col">Credit</th>
-                        </tr>
-
-                        <tr style="background-color:#99CCFF; display: block; width: 250%;" ng-repeat="(index2 ,level2) in level1.transactions" ng-show="level2.show">
-                            <td>{{level2.room}}</td>
-                            <td>{{level2.name}}</td>
-                            <td>{{level2.reservation_number}}</td>
-                            <td>{{level2.type}}</td>
-                            <td>{{level2.details}}</td>
-                            <td>{{level2.time}}</td>
-                            <td>{{level2.debit}}</td> 
-                        </tr>
-                        
-                    </table>
-
-                </div>
-            </div>
-        </div>
-
-
-
-
-
 
     </div>
 </div>
