@@ -249,25 +249,52 @@
             <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="10%" align="right">&nbsp;</td>
-                    <td width="2%">&nbsp;</td>
-                    <td width="10%" align="center">Nightly Rates</td>                    
-                    <td width="2%" align="center">&nbsp;</td>
+                    <td width="2%">&nbsp;</td>                    
                 </tr>
                 <tr ng-repeat="room_rate in set.room_rates">
                     <td align="right" class="room-type">{{room_rate.name}}</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="left">
-                        <div class ="night_rate_entry">
-                            <input ng-model="room_rate.nightly_rate" type="text">
-                        </div>                        
-                    </td>
+                    <td align="center">&nbsp;</td>                    
                 </tr>
             </table>
         </div>
-
+        <div id="hourlyRateDraw" ng-init="hourlyDraw = false">            
+            <div class="draw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">
+                <span ng-click="hourlyDraw = !hourlyDraw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">Increments & Nightly Rates</span>
+                <img src="/assets/arrow-right.png">
+                <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="30%" align="right">ADD PER HOUR ON DAY RATE</td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="30%" align="center">NIGHLTY RATE</td>                    
+                        <td width="2%" align="center">&nbsp;</td>
+                        <td width="30%" align="center">ADD HOURLY IN DAY ON RATE</td>                    
+                        <td width="2%" align="center">&nbsp;</td>
+                    </tr>
+                    <tr ng-repeat="room_rate in set.room_rates">
+                        <td align="left">
+                            <div class ="night_rate_entry">
+                                <input ng-model="room_rate.day_per_hour" type="text">
+                            </div>                        
+                        </td>
+                        <td align="center">&nbsp;</td>
+                        <td align="left">
+                            <div class ="night_rate_entry">
+                                <input ng-model="room_rate.nightly_rate" type="text">
+                            </div>                        
+                        </td>
+                        <td align="center">&nbsp;</td>
+                        <td align="left">
+                            <div class ="night_rate_entry">
+                                <input ng-model="room_rate.night_per_hour" type="text">
+                            </div>                        
+                        </td>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="hourly_rate_state">
-            <table  border="0" align="center" cellspacing="0" cellpadding="0">
-                
+            <table  border="0" align="center" cellspacing="0" cellpadding="0">                
                 <tr>
                     <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" in <td> -->
                     <!-- The Day Check Out time should be indicated in colour.Add class "day_checkout_time"-->

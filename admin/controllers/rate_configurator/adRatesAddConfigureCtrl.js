@@ -204,9 +204,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     } else {
                         angular.forEach(value.room_rates, function(room_type, key) {
                             room_type.hourly = {};
-                            room_type.nightly_rate = parseFloat(room_type.nightly_rate).toFixed(2);
+                            room_type.nightly_rate = !!room_type.nightly_rate ?   parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
                             angular.forEach(room_type.hourly_rates, function(rate) {
-                                room_type.hourly[rate.hour] = parseFloat(rate.amount).toFixed(2);
+                                room_type.hourly[rate.hour] = !!rate.amount ? parseFloat(rate.amount).toFixed(2) : rate.amount;
                             });
                         });
                     }

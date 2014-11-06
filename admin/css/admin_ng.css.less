@@ -872,7 +872,9 @@ td{
 	width:100%;
 	.night_rates{
 		float: left; 
-		width: 25%;
+		width: 15%;
+    padding-top: 20px;
+    z-index: 999;
 		.night_rate_entry{
 			margin-right: 10px;
 			width: 80px;
@@ -882,11 +884,12 @@ td{
 		}
 	}
 	.hourly_rate_state{
-		width:60%;
+		width:70%;
 		float:left;
-		box-shadow: inset 8px 0px 3px -3px #e2e2e2,inset -8px 0px 3px -3px #e2e2e2;
+		// box-shadow: inset 8px 0px 3px -3px #e2e2e2,inset -8px 0px 3px -3px #e2e2e2;
 		padding-left: 20px;
 		padding-right: 20px;
+    padding-top: 20px;
 		overflow-x:scroll;
 		.default_night_price{
 			color:#b2b1c3;
@@ -916,8 +919,34 @@ td{
 		}
 	}
 	.movers{
-		width: 10% !important;
+		width: 15% !important;    
 		float: right;
 		margin-top: 50px;
 	}
+  #hourlyRateDraw{
+    position: relative;
+    span{      
+      position: relative;
+      left: 385px;
+      width: 96px;
+      display: inline-block;
+      &.closed{
+        left:0px;
+      }
+    }
+    .draw{
+      top: 100px;
+      height: 200px;      
+      position: absolute;            
+      z-index: 101;
+      left: 15%;
+
+      &.closed{        
+        width: 0px;        
+      }
+      &.open{
+        width: 400px;        
+      }
+    }
+  }
 }
