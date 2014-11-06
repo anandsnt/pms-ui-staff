@@ -26,14 +26,14 @@
                         <table ng-show="level2.active && level2.show" class="grid-items">
                             <thead ng-show="isShowTableHeading(index1 ,index2)">
                                 <tr>
-                                    <th scope="col">Room</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Reservation Number</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Details</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col">Debit</th>
-                                    <th scope="col">Credit</th>
+                                    <th scope="col" translate>ROOM_LABEL</th>
+                                    <th scope="col" translate>NAME</th>
+                                    <th scope="col" translate>RESERVATION_NUMBER</th>
+                                    <th scope="col" translate>TYPE</th>
+                                    <th scope="col" translate>DETAILS</th>
+                                    <th scope="col" translate>TIME</th>
+                                    <th scope="col" translate>DEBIT</th>
+                                    <th scope="col" translate>CREDIT</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,7 +44,8 @@
                                     <td>{{level3.type}}</td>
                                     <td>{{level3.details}}</td>
                                     <td>{{level3.time}}</td>
-                                    <td>{{level3.debit}}</td> 
+                                    <td>{{level3.debit}}</td>
+                                    <td>{{level3.credit}}</td> 
                                 </tr>
                                 
                             </tbody>
