@@ -28,8 +28,8 @@ sntRover
 		rate_type_id: 'rate_type_id'
 	}
 })
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtilSrv', 'rvDiaryConstants', 'rvDiaryMetadata', 
-    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryUtilSrv, rvDiaryConstants, rvDiaryMetadata) {
+.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
+    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
     	var meta = rvDiaryMetadata,
     		index;
 
@@ -71,6 +71,38 @@ sntRover
 	    	});
     	}).call(this);
 
+	 	function deepCopy(obj) {
+			var hops = Object.prototype.hasOwnProperty,
+				slice = Array.prototype.slice,
+				newRes = {};
+
+				for(var k in  obj) {
+					if(hops.call(obj, k)) {
+						if(obj[k] instanceof Date) {
+							newRes[k] = new Date(obj[k].getTime());
+						} else if(_.isArray(obj[k])) {
+							newRes[k] = slice.call(obj[k]);
+						} else if(_.isObject(obj[k])) {
+							newRes[k] = deepCopy(obj[k]);
+						} else {
+							newRes[k] = obj[k];
+						}
+					}
+				}
+
+			return newRes;
+		}
+
+		function copyArray(src, dest){
+    		dest = [];
+
+    		for(var i = 0, len = src.length; i < len; i++) {
+    			dest.push(_.extend({}, src[i]));
+    		}
+
+    		return dest;
+    	};
+
     	this.createIndex = function(index, payload) {
     		var collection = payload,
     			len = collection.length;
@@ -78,7 +110,7 @@ sntRover
     			index = index || Object.create(null);
 
     		for(i = 0; i < len; ++i) {
-    			index[collection[i].id] = rvDiaryUtilSrv.deepCopy(collection[i]);
+    			index[collection[i].id] = deepCopy(collection[i]);
     		}
     	};
 
@@ -96,14 +128,15 @@ sntRover
 	    		for(var i = 0, len = time_slots.length; i < len; i++) {
 	    			slot = time_slots[i];
 
-	    			room = index.rooms[slot.room_id];
+	    			room = _.findWhere(rooms, { id: slot.room_id });//index.rooms[slot.room_id];
 
 	    			findParams[slot_id] =slot[slot_id];
 
-    				if(!_.findWhere(room[children], findParams)) {
+    				if(!_.findWhere(room.occupancy, findParams)) {
 	    				this.normalizeOccupancy(room, slot);
 
-	    				room[children].push(slot);
+	    				room.occupancy.push(slot);
+	    				//copyArray(index.rooms[slot.room_id].occupancy, room.occupancy);
 	    			}		
 	    		}
 			}
@@ -123,8 +156,9 @@ sntRover
     		room.key 	   = _.uniqueId('rm-' + room[meta.room.id] + '-');	
 			room.room_type = index.room_types[room.room_type_id].name;
 		    			
-			if(!room[meta.room.row_children]) {
-				room[meta.room.row_children] = [];
+			if(!Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
+				room.occupancy = [];
+				
 			}			
     	};
 
@@ -193,16 +227,16 @@ sntRover
 			
 				rooms = copyArray(data.rooms, rooms);
 
-				self.createIndex(index.rooms, rooms);
-
-				self.normalizeRooms(rooms);		
+				self.normalizeRooms(rooms);	
+				
+				self.createIndex(index.rooms, rooms);			
 
 				occupancy = copyArray(data.occupancy);
 
-				self.createIndex(index.occupancy, occupancy);
-
 				self.normalizeTimeSlots(rooms, room_types, occupancy);
-
+				
+				self.createIndex(index.occupancy, occupancy);
+				
 				delete data.rooms;
 				delete data.room_types;
 				delete data.occupancy;
@@ -227,7 +261,7 @@ sntRover
 
 			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
-				occupancy = copyArray(data.occupancy);
+				occupancy = deepCopy(data.occupancy);
 
 				self.createIndex(index.occupancy, occupancy);
 

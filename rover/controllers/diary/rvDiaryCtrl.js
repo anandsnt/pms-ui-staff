@@ -398,17 +398,24 @@ sntRover.controller('RVDiaryCtrl',
 	    $scope.displayFilter = function(filter, room, reservation) {
 			var meta = $scope.gridProps.meta;
 
-	    	if($scope.isAvailable(room, reservation)) {
-	    		if(angular.lowercase(filter.room_type) === 'all' || 
-	    		   filter.room_type === reservation[meta.occupancy.room_type]) {
-	    			return true;
-	    		} else {
-	    			return false;
-	    		}
-	    	} else {
-	    		return true;
-	    	}
+			try{
+		    	if($scope.isAvailable(room, reservation)) {
+		    		if(angular.lowercase(filter.room_type) === 'all' || 
+		    		   filter.room_type.name === reservation[meta.occupancy.room_type]) {
+		    			return true;
+		    		} else {
+		    			return false;
+		    		}
+		    	} else {
+		    		return true;
+		    	}
+		    }catch(e) {
+
+		    }finally {
+
+		    }														
 	    };
+
 	})();
 
 	/*WATCHERS*/

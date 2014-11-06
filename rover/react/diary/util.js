@@ -177,7 +177,7 @@ if(typeof Date.prototype.toComponents === 'undefined') {
 				monthName: __MONTHS[this.getMonth()],
 				year: this.getFullYear(),
 				toDateString: function() {
-					return this.year + '-' + this.month + '-' + (this.day.length < 2 ? '0' : '') + this.day;
+					return this.year + '-' + (this.month+1) + '-' + (this.day.length < 2 ? '0' : '') + this.day;
 				},
 				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();

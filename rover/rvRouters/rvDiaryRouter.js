@@ -36,6 +36,7 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                         rvDiarySrv.set('occupancy',  data.occupancy);
                         rvDiarySrv.set('start_date', data.start_date);
                         rvDiarySrv.set('arrival_times', data.arrival_times);
+                        rvDiarySrv.set('availability', data.availability);
 
                         return data;
                     });
