@@ -8,12 +8,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isSubmitButtonEnabled = true;
 		}
 		$scope.isSixPaymentGatewayVisible = false;
+		$scope.isIframeVisible = false;
 		$scope.isCallInOnsiteButtonVisible = false;
 		$scope.isMLICreditCardVisible = false;
 		$scope.isOnsiteActive = false;
 		if($rootScope.paymentGateway === "sixpayments"){
 			$scope.isCallInOnsiteButtonVisible = true;
 			$scope.isOnsiteActive = true;
+			$scope.isIframeVisible = false;
 		}
 		
 		var absoluteUrl = $location.$$absUrl;
@@ -433,11 +435,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			console.log($scope.reservationData.paymentType.type.value);
 			if($scope.reservationData.paymentType.type.value === 'CC'){
 				if($rootScope.paymentGateway === "sixpayments"){
+					$scope.isSixPaymentGatewayVisible = true;
 					if($scope.isOnsiteActive){
-						$scope.isSixPaymentGatewayVisible = false;
 						$scope.isMLICreditCardVisible = false;
 					} else {
-						$scope.isSixPaymentGatewayVisible = true;
 						$scope.isMLICreditCardVisible = false;
 					}
 					
@@ -486,15 +487,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.clickedOnsite = function(){
 			
 			$scope.isOnsiteActive = true;
-			$scope.isSixPaymentGatewayVisible = false;
-			$scope.reservationData.paymentType.type.value = '';
+			$scope.isSixPaymentGatewayVisible = true;
+			$scope.isIframeVisible = false;
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+				$scope.isSixPaymentGatewayVisible = true;
+			} else {
+				$scope.isSixPaymentGatewayVisible = false;
+			}
+			
 			$scope.refreshPaymentScroller();
 		};
 		$scope.clickedCallIn = function(){
 			var typeIndex = '';
 			$scope.isOnsiteActive = false;
+			$scope.isIframeVisible = true;
 			$scope.isSixPaymentGatewayVisible = true;
 			$scope.reservationData.paymentType.type.value = 'CC';
+			$scope.refreshPaymentScroller();
 		};
 
 		$scope.init();
