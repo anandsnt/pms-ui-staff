@@ -1,10 +1,12 @@
 sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', 
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location) {
 
-		
-		
 		BaseCtrl.call(this, $scope);
-		$scope.isSubmitButtonDisabled = false;
+		$scope.isSubmitButtonEnabled = false;
+
+		if($scope.reservationData.reservationId != ''){
+			$scope.isSubmitButtonEnabled = true;
+		}
 		$scope.isSixPaymentGatewayVisible = false;
 		$scope.isCallInOnsiteButtonVisible = false;
 		$scope.isMLICreditCardVisible = false;
@@ -44,9 +46,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		    
 		}, false);   
 		
-		$scope.submitReservationButtonClass = function(isSubmitButtonDisabled){
+		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled){
 			var buttonClass = "grey";
-			if(isSubmitButtonDisabled){
+			if(isSubmitButtonEnabled){
 				buttonClass = "green";
 			}
 			return buttonClass;
@@ -54,7 +56,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.successPayment = function(data){
 			console.log(data);
 			$scope.$emit('hideLoader');
-			$scope.isSubmitButtonDisabled = true;
+			$scope.isSubmitButtonEnabled = true;
 			$scope.creditCardTransactionId = data.credit_card_transaction_id;
 		};
 		
@@ -448,7 +450,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			} else {
 				$scope.isSixPaymentGatewayVisible = false;
 				$scope.isMLICreditCardVisible = false;
-				$scope.isSubmitButtonDisabled = true;
+				$scope.isSubmitButtonEnabled = true;
 			}
 			
 			$scope.refreshPaymentScroller();
