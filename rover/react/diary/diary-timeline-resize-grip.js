@@ -122,6 +122,7 @@ var TimelineResizeGrip = React.createClass({
 	getInitialState: function() {
 		return {
 			resizing: false,
+			mode: undefined,
 			mouse_down: false,
 			currentResizeItem: this.props.currentResizeItem,
 			currentResizeItemRow: this.props.currentResizeItemRow
@@ -148,17 +149,28 @@ var TimelineResizeGrip = React.createClass({
 					model.right = (model[res_meta.end_date] - x_origin) * px_per_ms;
 				}
 
-				this.setState({
-					currentResizeItem: model,
-					currentResizeItemRow: nextProps.currentResizeItemRow
-				});
+				if(nextProps.edit.passive) {
+					this.setState({
+						mode: model[props.meta.occupancy.id],
+						currentResizeItem: model,
+						currentResizeItemRow: model[props.meta.occupancy.id]
+					});
+				} else {
+					this.setState({
+						mode: undefined,
+						currentResizeItem: model,
+						currentResizeItemRow: nextProps.currentResizeItemRow
+					});
+				}
 			} else if(this.props.currentResizeItem && !nextProps.currentResizeItem) {
 				this.setState({
+					mode: undefined,
 					currentResizeItem: undefined,
 					currentResizeItemRow: undefined
 				});
 			}
-		} /*else {
+		} 
+		/*else {
 			if(this.state.resizing) {
 				if(nextProps.currentResizeItem[this.props.itemProp] !== this.state.currentResizeItem[this.props.itemProp]) {
 					this.setState({

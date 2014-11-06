@@ -80,13 +80,13 @@ var DiaryContent = React.createClass({
 	  by the grid row item.
 	*/
 	__onResizeCommand: function(row_item_data) {
-		if(_.isObject(row_item_data)) {
+		//if(_.isObject(row_item_data)) {
 			this.setProps({
 				currentResizeItem: row_item_data
 			});
-		} else if( _.isArray(row_item_data)) {
+		//} else if( _.isArray(row_item_data)) {
 
-		}
+		//}
 	},
 	__onResizeStart: function(row_data, row_item_data) {
 		this.state.angular_evt.onResizeStart.apply(this, Array.prototype.slice.call(arguments));

@@ -10,12 +10,16 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', '$state
 
 		(function() {
 			var resSample = $scope.reservations[0],
-				arrivalDateComp = new Date(resSample.start_date).toComponents().date,
-				departureDateComp = new Date(resSample.end_date).toComponents().date;
+				arrival = new Date(resSample.arrival),
+				departure = new Date(resSampe.departure),
+				arrivalDateComp = arrival.toComponents().date,
+				departureDateComp = departure.toComponents().date,
+				arrivalTimeComp = arrival.toComponents().time,
+				departureTimeComp = departure.toComponents().time;
 
-			$scope.arrival_time = resSample.start_date.toLocaleTimeString();
+			$scope.arrival_time = arrivalTimeComp.toStrint(true); //resSample.start_date.toLocaleTimeString();
 			$scope.arrival_date = arrivalDateComp.day + ' ' + arrivalDateComp.monthName + ' ' + arrivalDateComp.year;
-			$scope.departure_time = resSample.end_date.toLocaleTimeString();
+			$scope.departure_time = departureTimeComp.toString(true);
 			$scope.departure_date = departureDateComp.day + ' ' + departureDateComp.monthName + ' ' + departureDateComp.year;
 
 		})();

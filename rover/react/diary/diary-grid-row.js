@@ -26,13 +26,13 @@ var GridRow = React.createClass({
 		return render;
 	},
 	render: function() {
-		var props = this.props,
-			display = props.display,
-			px_per_hr = display.px_per_hr + 'px',
-			hourly_divs = [],
-			room_meta = props.meta.room,
-			room_meta_children = room_meta.row_children,
-			self = this;
+		var props 				= this.props,
+			display 			= props.display,
+			px_per_hr 			= display.px_per_hr + 'px',
+			hourly_divs 		= [],
+			room_meta 			= props.meta.room,
+			room_meta_children 	= room_meta.row_children,
+			self 				= this;
 
 		/*Create hourly spans across each grid row*/
 		for(var i = 0, len = display.hours; i < len; i++) {

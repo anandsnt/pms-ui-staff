@@ -30,17 +30,9 @@ sntRover
 })
 .service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
     function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
-    	var meta = rvDiaryMetadata,
-    		index;
+    	var meta = rvDiaryMetadata;
 
-    	//this.start_date = undefined;
-
-    	index = {
-    		rooms: 			{},
-    		room_types: 	{},
-    		occupancies: 	{}
-    	};
-
+    	/*INITIALIZE CONFIGURATION FOR API CALLS*/
     	(function() { 
     		var defaults = function(url, type) {
     			var define = function(val) {
@@ -70,6 +62,7 @@ sntRover
 	    		occupancy: 			defaults('api/hourly_occupancy', 'data')
 	    	});
     	}).call(this);
+    	/*INITIALIZE CONFIGURATION FOR API CALLS*/
 
 	 	function deepCopy(obj) {
 			var hops = Object.prototype.hasOwnProperty,
@@ -81,7 +74,16 @@ sntRover
 						if(obj[k] instanceof Date) {
 							newRes[k] = new Date(obj[k].getTime());
 						} else if(_.isArray(obj[k])) {
-							newRes[k] = slice.call(obj[k]);
+							newRes[k] = copyArray(obj[k]);
+							/*(function() { 
+								var arr = [];
+
+								newRes[k].forEach(function(item, idx) {
+									arr.push(deepCopy(item));
+								});
+
+								newRes[k] = slice.call(arr);
+							})();*/
 						} else if(_.isObject(obj[k])) {
 							newRes[k] = deepCopy(obj[k]);
 						} else {
@@ -310,7 +312,7 @@ sntRover
 			   		//console.log(self.linkRooms(self.rooms, Array.prototype.slice.call(availability)));
 			   	}
 
-			   	q.resolve(self.rooms);
+			   	q.resolve({ row_data: self.rooms[0], row_item_data: self.rooms[0].occupancy[0] });
 		   }, function(err) {
 		   		q.reject(err);
 		   });

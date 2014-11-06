@@ -50,7 +50,7 @@ var Grid = React.createClass({
 						key: 				row.key,
 						data: 				row,
 						row_number: 		idx,
-						display: 			props.display,
+						display: 			display,
 						viewport: 			props.viewport,
 						filter: 			props.filter,
 						meta:               props.meta,
