@@ -17,7 +17,7 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                         x_N = new Date(cur_time + 86400000),
                         at;
 
-                    return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15) 
+                    return rvDiaryFilterSrv.fetchArrivalTimes(15) //x_0.toComponents().time, 15) 
                     .then(function(data) {
                         at = data;
 

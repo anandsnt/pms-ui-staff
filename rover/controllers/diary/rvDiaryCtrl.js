@@ -391,7 +391,7 @@ sntRover.controller('RVDiaryCtrl',
 	    			}
 	    		}
 	    	}
-
+k
 	    	//console.log('Room status refresh time', Date.now() - time_start);
 	    }
 
@@ -400,8 +400,8 @@ sntRover.controller('RVDiaryCtrl',
 
 			try{
 		    	if($scope.isAvailable(room, reservation)) {
-		    		if(angular.lowercase(filter.room_type) === 'all' || 
-		    		   filter.room_type.name === reservation[meta.occupancy.room_type]) {
+		    		if(angular.lowercase(filter.room_type.name) === 'all' || 
+		    		   angular.lowercase(filter.room_type.name) ===angular.lowercase(reservation[meta.occupancy.room_type])) {
 		    			return true;
 		    		} else {
 		    			return false;
@@ -464,7 +464,8 @@ sntRover.controller('RVDiaryCtrl',
 	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
-				retrieveAvailableSlots($scope.gridProps.display, $scope.gridProps.filter, $scope.data);
+				//retrieveAvailableSlots($scope.gridProps.display, $scope.gridProps.filter, $scope.data);
+				$scope.renderGrid();
 			}
 		}
 	});
@@ -510,7 +511,7 @@ sntRover.controller('RVDiaryCtrl',
 			rt_filter = filter.room_type,
 			rt_keys = (_.isObject(rt_filter) ? (rt_filter.id !== 'All' ? [rt_filter.id] : Object.keys($scope.room_types)) : '');
 
-		rvDiarySrv.fetchAvailability(start, end, 377, rt_keys)
+		rvDiarySrv.fetchAvailability(start, end, 389, Object.keys(rvDiarySrv.room_types))
 		.then(function(data) {
 			console.log(data);
 
