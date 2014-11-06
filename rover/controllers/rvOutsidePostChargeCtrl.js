@@ -4,8 +4,8 @@ sntRover.controller('RVOutsidePostChargeController',
 		'$scope',
 		'RVChargeItems',
 		'RVSearchSrv',
-		'$timeout',
-		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout) {
+		'$timeout','ngDialog',
+		function($rootScope, $scope, RVChargeItems, RVSearchSrv, $timeout,ngDialog) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
@@ -32,6 +32,10 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.chargePosted = false;
 				$scope.cardAttached = {};
 			};
+
+			$scope.closeDialog = function(){
+  				ngDialog.close();
+  			};
 			
 			var oldSearchGuestText = '';
 			var oldSearchRoomValue = '';

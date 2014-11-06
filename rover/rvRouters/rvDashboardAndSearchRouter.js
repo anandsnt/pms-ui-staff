@@ -70,8 +70,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 }
             }                      
         });
-        //IMPORTANT: rover.changeBussinesDate  and rover.postCharge both points to dashboard screen
+        //IMPORTANT: 'rover.changeBussinesDate'  and 'rover.postCharge' both points to dashboard screen
         //They are added for extra popup actions(EOD and postcharge) on navigating from admin to rover.
+        //All changes made here are required for those states too
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',   
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
