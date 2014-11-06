@@ -894,10 +894,17 @@ td{
 				background-color: #e5e6eb !important;
 			}
 		}
-		.day_checkout_time{
-			color:#f6991b;
-		}
-
+    
+    .hourly_grid_time{
+      color:#f6991b;
+      &.night_time{
+        color:#c5c5c5;
+      }  
+      &.day_checkout_time{
+        color:#f6991b;
+      }
+    }
+    
 		.night_rate_entry{
 			margin-right: 10px;
 			width: 80px;
