@@ -507,25 +507,25 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		/*
 		 * 
 		 */
-		// $scope.startPaymentProcess = function(){
-			// ngDialog.open({
-				// template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
-				// className: 'ngdialog-theme-default',
-				// scope: $scope
-			// });
-			// var data = {
-				// "work_station_id":1,
-				// "amount":"10.00",
-				// "currency_code":""
-			// };
-			// RVReservationSummarySrv.startPayment(data).then(function(response) {
-				// console.log(response);
-			// },function(){
-				// $rootScope.netWorkError = true;
-				// $scope.isPosting = false;
-			// });
-// 			
-		// };
+		$scope.startPaymentProcess = function(){
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvWaitingDialog.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+			var data = {
+				"work_station_id":1,
+				"amount":"10.00",
+				"currency_code":""
+			};
+			RVReservationSummarySrv.startPayment(data).then(function(response) {
+				console.log(response);
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isPosting = false;
+			});
+			
+		};
 
 		$scope.init();
 
