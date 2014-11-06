@@ -22,6 +22,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.selectedChargeCode  = 'ALL';
     $scope.data.selectedPaymentType = 'ALL';
     $scope.data.reportType = "";
+    $scope.data.filterTitle = "All Departments";
 	/*
 	 *	Setting Revenue & Payment date pickers.
 	 *	All date fields should default to yesterday's date.
@@ -68,7 +69,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     /** Employee/Departments Filter starts here ..**/
 
-    // To toggle revenue filter.
+    // To toggle revenue filter box.
 	$scope.clickedRevenueFilter = function(){
 		$scope.data.isActiveRevenueFilter = !$scope.data.isActiveRevenueFilter;
         setTimeout(function(){
@@ -84,11 +85,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
+            $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
         }
         else if ($scope.data.activeTab == '1' ){
            $scope.resetPaymentFilters();
+           $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
         }
-        $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
+        $scope.data.filterTitle = "All Departments";
     };
 
     // Clicking each checkbox on Departments
@@ -96,7 +99,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
     	
-    	if($scope.isAllDepartmentsUnchecked()) $scope.data.filterData.checkedAllDepartments = true;
+    	if($scope.isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
     	else $scope.data.filterData.checkedAllDepartments = false;
     };
 
@@ -141,12 +144,22 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // To setup Lists of selected ids of employees and departments.
     $scope.setupDeptAndEmpList = function(){
-
+        var filterTitle = "";
         // To get the list of departments id selected.
         $scope.data.selectedDepartmentList = [];
         angular.forEach($scope.data.filterData.departments,function(item, index) {
-            if(item.checked) $scope.data.selectedDepartmentList.push(item.id);
+            if(item.checked){
+                $scope.data.selectedDepartmentList.push(item.id);
+                filterTitle = item.name;
+            }
         });
+
+        if($scope.data.selectedDepartmentList.length>1){
+            $scope.data.filterTitle = "Multiple";
+        }
+        else{
+            $scope.data.filterTitle = filterTitle;
+        }
 
         // To get the list of employee id selected.
         $scope.data.selectedEmployeeList = [];
@@ -186,8 +199,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
                     if( $scope.searchDeptOrEmpId(transactions) ){
                         transactions.show  = true;
-                        //charge_codes.active = true;
-                        //charge_groups.active = true;
                         isResultsFoundInTransactions = true;
                     }
                     else{
@@ -245,15 +256,21 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
                      */
                     if(isResultsFoundInTransactions) {
                         credit_cards.show = true;
+                        credit_cards.active = true;
                         isResultsFoundInCards = true;
+                    }
+                    else{
+                        credit_cards.show = false;
+                        credit_cards.active = false;
                     }
 
                 });
 
                 if(isResultsFoundInCards) {
                     payment_types.show = true;
+                    payment_types.active = true;
                 }
-                else payment_types.show = false;
+                else {payment_types.show = false;payment_types.active = false;}
                 
             }
             else{
@@ -271,8 +288,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
                 if(isResultsFoundInTransactions) {
                     payment_types.show = true;
+                    payment_types.active = true;
                 }
-                else payment_types.show = false;
+                else{ payment_types.show = false;payment_types.active = false;}
 
             }
         });
@@ -297,12 +315,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // Showing only payment types.
     $scope.resetPaymentFilters = function(){
         angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-            payment_types.show = true ;
+            payment_types.show   = true ;
+            payment_types.active = false ;
             if(payment_types.payment_type == "Credit Card"){
                 angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-                    credit_cards.show = false ;
+                    credit_cards.show   = true ;
+                    credit_cards.active = false ;
                     angular.forEach(credit_cards.transactions,function(transactions, index3) {
-                        transactions.show = false;
+                        transactions.show = true;
                     });
                 });
             }
@@ -335,7 +355,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	$scope.data.activeTab = index;
     	if(index == 0) $rootScope.$broadcast('REFRESHREVENUECONTENT');
     	else if(index == 2) $scope.$broadcast('cashierTabActive');
-    	else $scope.$broadcast('paymentTabActive');
+    	else $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
     	$scope.$broadcast("CLOSEPRINTBOX");
     };
 

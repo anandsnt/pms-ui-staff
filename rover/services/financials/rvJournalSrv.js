@@ -20,7 +20,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
                 deferred.reject(data);
             });
         };
-         /*
+        /*
          * Service function to fetch departments
          * @return {object} departments
          */
@@ -33,9 +33,7 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 		       		item.id = item.value;
 		       		delete item.value;
 		       	});
-              //  deferred.resolve(that.filterData);
                 that.fetchCashiers();
-                console.log(that.filterData);
             }, function (data) {
                 deferred.reject(data);
             });
@@ -92,28 +90,28 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			// Adding Show status flag to each item.
 			angular.forEach(this.paymentData.payment_types,function(payment_types, index1) {
 				payment_types.show = true ;
+				payment_types.active = false ;
 				if(payment_types.payment_type == "Credit Card"){
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
-		            	credit_cards.show = false ;
+		            	credit_cards.show = true ;
+		            	credit_cards.active = false ;
 		                angular.forEach(credit_cards.transactions,function(transactions, index3) {
-		                	transactions.show = false;
+		                	transactions.show = true;
 		                });
 		            });
 	        	}
 	        	else{
 	        		angular.forEach(payment_types.transactions,function(transactions, index3) {
-	                	transactions.show = false;
+	                	transactions.show = true;
 	                });
 	        	}
 	        });
-	        console.log(this.paymentData);
 		   	deferred.resolve(this.paymentData);
 		},function(data){
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
 	};
-
 
 	this.fetchCashierDetails = function(data){
 		var deferred = $q.defer();	

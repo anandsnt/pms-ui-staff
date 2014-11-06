@@ -6,8 +6,8 @@
     <form method="post" action="" id="journal-header" name="journal-header" class="journal-header">
         <div class="entry" ng-hide="data.activeTab==2">
             <label for="revenue-departments" translate>EMPLOYEE / DEPARTMENT / HOUSE</label>
-            <div class="faux-select" ng-class="{'active':data.isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();" translate>
-                ALL_DEPARTMENTS
+            <div class="faux-select" ng-class="{'active':data.isActiveRevenueFilter}" data-select="revenue-filters" ng-click="clickedRevenueFilter();">
+                {{data.filterTitle}}
             </div>
         </div>
         <div id="revenue-filters" class="faux-select-options" ng-show="data.isActiveRevenueFilter">
@@ -97,7 +97,7 @@
     </form> 
 
     <!-- Content REVENUE-->
-    <div ng-show="data.activeTab==0" ng-include="'/assets/partials/financials/journal/rvRevenue1.html'"></div>
+    <div ng-show="data.activeTab==0" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></div>
 
     <!-- Content PAYMENTS-->
     <div ng-show="data.activeTab==1" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></div>

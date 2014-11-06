@@ -116,7 +116,8 @@ $scope.saveCheckin = function(){
   angular.forEach($scope.excludedBlockCodes,function(excludedrate, index) {
       excluded_block_codes.push(excludedrate.id);
   });
-
+  //to reset time incase of an invalid time selection
+  var checkinAlertTime = ($scope.checkinData.checkin_alert_time_hour !== "" && $scope.checkinData.checkin_alert_time_minute !== "" && $scope.checkinData.checkin_alert_time_hour && $scope.checkinData.checkin_alert_time_minute) ? $scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute :":";
   var uploadData = {
     'checkin_alert_message': $scope.checkinData.checkin_alert_message,
     'checkin_staff_alert_option':$scope.checkinData.checkin_staff_alert_option,
@@ -125,7 +126,7 @@ $scope.saveCheckin = function(){
     'is_send_alert':$scope.checkinData.is_send_alert,
     'is_send_checkin_staff_alert':$scope.checkinData.is_send_checkin_staff_alert,
     'prime_time':$scope.checkinData.checkin_alert_primetime,
-    'checkin_alert_time':$scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute,
+    'checkin_alert_time':checkinAlertTime,
     'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email,
 
     'is_precheckin_only':$scope.checkinData.is_precheckin_only? 'true':'false',

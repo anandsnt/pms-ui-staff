@@ -1,48 +1,58 @@
 <!-- Content REVENUE-->
 <div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='1000' style="height:90%;">
     <div class="wrapper">
-        <table id="journal-grid" class="journal-grid">
-            <tbody>
-                <!-- First level row (with white background) -->
-                <tr ng-repeat="level1 in data.revenueData.charge_groups" class="grid-group rows-toggle"> 
-                    <th scope="row" colspan="7">{{level1.name}}</th>
-                    <td>{{currencySymbol}}{{level1.total}}</td>
-                    <td>
-                        <table>
-                            <!-- Second level row (with grey background) -->
-                            <tr class="grid-charge rows-toggle hidden1 active" ng-repeat="level2 in level1.charge_codes">
-                                <td>{{level2.id}}</td>
-                                <th scope="row" colspan="6">{{level2.name}}</th>
-                                <td>{{currencySymbol}}{{level2.total}}</td>
-                                <td>
-                                    <table>
-                                        <!-- Third level row (sometime with headings above columns), no background color -->
-                                        <tr class="grid-item-heading hidden1" >
-                                            <th scope="col" translate>ROOM_LABEL</th>
-                                            <th scope="col" translate>NAME</th>
-                                            <th scope="col" translate>RESERVATION_NUMBER</th>
-                                            <th scope="col" translate>TYPE</th>
-                                            <th scope="col" translate>DETAILS</th>
-                                            <th scope="col" translate>TIME</th>
-                                            <th scope="col" translate>DEBIT</th>
-                                            <th scope="col" translate>CREDIT</th>
-                                        </tr>
-                                        <tr class="grid-item hidden1" ng-repeat="level3 in level2.transactions">
-                                            <td>{{level3.room}}</td>
-                                            <td>{{level3.name}}</td>
-                                            <td>{{level3.reservation_number}}</td>
-                                            <td>{{level3.type}}</td>
-                                            <td>{{level3.details}}</td>
-                                            <td>{{level3.time}}</td>
-                                            <td>{{level3.debit}}</td> 
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div id="journal-grid" class="journal-grid">
+                <!-- First level - charge groups -->
+                <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups"  ng-show="level1.show">
+                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active}" class="revenue-title has-arrow toggle">
+                        <strong ng-show="level1.show" class="name">{{level1.name}}</strong>
+                        <span ng-show="level1.show" class="value">{{currencySymbol}}{{level1.total}}</span>
+                    </a>
+                    <!-- Second level - charge codes, hidden by default. To show, remove class "hidden" when 1st level anchor is clicked -->
+                    <div ng-repeat="(index2 ,level2) in level1.charge_codes" ng-show="level1.active" class="grid-charge hidden1">
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active}" ng-show="level1.active && level2.show" class="revenue-title has-arrow toggle">
+                            <span class="code" ng-show="level2.show">{{level2.id}}</span>
+                            <strong class="name" ng-show="level2.show">{{level2.name}}</strong>
+                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total}}</span>
+                        </a>
+                        <!-- Third level - postings, hidden by default. To show, remove class "hidden" when 2nd level anchor is clicked -->
+                        <table ng-show="level2.active && level2.show" class="grid-items hidden1">
+                            <thead ng-show="isShowTableHeading(index1 ,index2)">
+                                <tr>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Reservation Number</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Details</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Debit</th>
+                                    <th scope="col">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(index3 ,level3) in level2.transactions" ng-show="level3.show">
+                                    <td>{{level3.room}}</td>
+                                    <td>{{level3.name}}</td>
+                                    <td>{{level3.reservation_number}}</td>
+                                    <td>{{level3.type}}</td>
+                                    <td>{{level3.details}}</td>
+                                    <td>{{level3.time}}</td>
+                                    <td>{{level3.debit}}</td> 
+                                </tr>
+                                
+                            </tbody>
                         </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        
+                    </div>
+                </div>
+                
+            </div>
+
+
+        
+
+
+
     </div>
 </div>
