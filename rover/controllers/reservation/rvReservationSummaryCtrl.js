@@ -35,13 +35,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		eventer(messageEvent, function (e) {
 			   var responseData = e.data;
 		       if(responseData.response_message == "token_created"){
-		       	
-		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-       				responseData = dclone(responseData, unwantedKeys);
-		       		console.log(JSON.stringify(responseData));
 		       		
-		       		$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-		       	    e.preventDefault();
+		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
+       				//responseData = dclone(responseData, unwantedKeys);
+		       		//console.log(JSON.stringify(responseData));
+		       		$scope.six_token = responseData.token;
+		       		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		       }
 		    
 		}, false);   
@@ -212,7 +211,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// MLI Integration.
 			if($rootScope.paymentGateway === "sixpayments"){
-				data.payment_type.credit_card_transaction_id = $scope.creditCardTransactionId;
+				data.payment_type.token = $scope.$scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
 				data.payment_type.isSixPayment = false;
@@ -505,6 +504,28 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.paymentType.type.value = 'CC';
 			$scope.refreshPaymentScroller();
 		};
+		/*
+		 * 
+		 */
+		// $scope.startPaymentProcess = function(){
+			// ngDialog.open({
+				// template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
+				// className: 'ngdialog-theme-default',
+				// scope: $scope
+			// });
+			// var data = {
+				// "work_station_id":1,
+				// "amount":"10.00",
+				// "currency_code":""
+			// };
+			// RVReservationSummarySrv.startPayment(data).then(function(response) {
+				// console.log(response);
+			// },function(){
+				// $rootScope.netWorkError = true;
+				// $scope.isPosting = false;
+			// });
+// 			
+		// };
 
 		$scope.init();
 

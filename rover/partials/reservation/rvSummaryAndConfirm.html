@@ -229,7 +229,7 @@
                 	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" ></iframe>
                 </div>
                  <div class="actions" ng-show="isSixPaymentGatewayVisible && !isIframeVisible">
-                    <button class="button green" type="button" translate >START_PAYMENT_PROCESS</button>
+                    <button class="button green" type="button" translate ng-click="startPaymentProcess()">START_PAYMENT_PROCESS</button>
                 </div>
                 <div class="actions">
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonEnabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonEnabled">SUBMIT_RESERVATION</button>
