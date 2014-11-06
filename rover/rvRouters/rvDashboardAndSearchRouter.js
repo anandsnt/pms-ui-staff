@@ -70,6 +70,8 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 }
             }                      
         });
+        //IMPORTANT: rover.changeBussinesDate  and rover.postCharge both points to dashboard screen
+        //They are added for extra popup actions(EOD and postcharge) on navigating from admin to rover.
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',   
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
@@ -96,9 +98,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             controller: 'RVhouseKeepingDashboardController',                       
         });        
 
-// adding extra states to be iniated when user is in admin screens
+        // adding extra states to be iniated when user is in admin screens
         $stateProvider.state('rover.changeBussinesDate', {
-            url: '/changeBussinesDate',  //TODO: check can we reduced it to hk?  
+            url: '/changeBussinesDate',    
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
             controller: 'RVdashboardController',
             resolve: {
@@ -106,17 +108,16 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     return RVDashboardSrv.fetchDashboardDetails();
                 }
             } ,
-             onEnter: function ($stateParams, $rootScope, $state, ngDialog) {
+             onEnter: function (ngDialog) {
                 ngDialog.open({
                   template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-                  controller: 'RVEndOfDayModalController',
-                  className: 'end-of-day-popup ngdialog-theme-plain'
+                  controller: 'RVEndOfDayModalController'
                 });
             }                                   
         });    
 
         $stateProvider.state('rover.postCharge', {
-            url: '/postCharge',  //TODO: check can we reduced it to hk?  
+            url: '/postCharge',
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
             controller: 'RVdashboardController',
             resolve: {
@@ -124,7 +125,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     return RVDashboardSrv.fetchDashboardDetails();
                 }
             } ,
-             onEnter: function ($stateParams, $rootScope, $state, ngDialog) {
+             onEnter: function (ngDialog) {
                     ngDialog.open({
                     template: '/assets/partials/postCharge/outsidePostCharge.html',
                     controller: 'RVOutsidePostChargeController',
