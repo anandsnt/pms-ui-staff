@@ -22,11 +22,11 @@ sntRover.controller('RVDiaryCtrl',
 	//'use strict';
 	BaseCtrl.call(this, $scope);
 
-	$scope.data 			= payload.data;
+	$scope.data 			= payload.rooms;
 	$scope.stats 			= payload.stats;
 	
 	$scope.start_date 		= payload.start_date;
-	$scope.start_time 		= $scope.start_date.toComponents().time;
+	$scope.start_time 		= payload.start_date.toComponents().time;
 	$scope.arrival_times 	= payload.arrival_times;
 	$scope.room_types 		= payload.room_types;
 
@@ -269,7 +269,7 @@ sntRover.controller('RVDiaryCtrl',
 
 	    	$scope.renderGrid();
 	    };
-	    	    
+
         $scope.companySearchTextEntered = function() {
             if($scope.companySearchText.length === 1) {
                 $scope.companySearchText = $scope.companySearchText.charAt(0).toUpperCase() + $scope.companySearchText.substr(1);
@@ -448,53 +448,40 @@ sntRover.controller('RVDiaryCtrl',
 
 	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			switch($scope.gridProps.edit.active) {
-				case true:
-
-				break;
-				case false:
-					updateFilter();
-					$scope.renderGrid();
-				break;
+			if(!$scope.gridProps.edit.active) {
+				updateFilter();
 			}
-			
 		}
 	});
 
 	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			switch($scope.gridProps.edit.active) {
-				case true:
-
-				break;
-				case false: 
-					updateFilter();
-					$scope.renderGrid();
-
-				break;
+			if (!$scope.gridProps.edit.active) {
+				updateFilter();
 			}
 		}
 	});
 
 	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
-			
+			if (!$scope.gridProps.edit.active) {
+				updateFilter();
+			}			
 		}
 	});
 	/*--------------------------------------------------*/
 	/*END INITIALIZATION METHOD IN PROTECTED SCOPE*/
 	/*--------------------------------------------------*/
 
-	function updateFilter() {
-		var props = $scope.gridProps;
+	function updateFilter(display, filter, data) {	
+		filter = _.extend({}, filter);
 
-		props.filter = _.extend({}, props.filter);
+		rvDiaryUtilSrv.clearRoomQuery(data);
 
-		rvDiaryUtilSrv.clearRoomQuery(props.data);
-
-		injectAvailableTimeSlots(Time({ hours: props.display.new_reservation_time_span }),
-							     props.filter,
-							     props.data);
+		injectAvailableTimeSlots(Time({ 
+									hours: display.new_reservation_time_span }),
+							     filter,
+							     data);
 	}
 
 	function injectAvailableTimeSlots(time_span, filter, data) {
@@ -518,6 +505,8 @@ sntRover.controller('RVDiaryCtrl',
 		rvDiarySrv.fetchAvailability(start, end, 377, rt_keys)
 		.then(function(data) {
 			console.log(data);
+
+
 
 			$scope.renderGrid();
 		});

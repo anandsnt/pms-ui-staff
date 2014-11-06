@@ -39,7 +39,6 @@ Model.prototype = {
 	}
 };
 
-//if(typeof Time === 'undefined') {
 	function Time(obj) {
 		if(!(this instanceof Time)) {
 			return new Time(obj);
@@ -79,68 +78,74 @@ Model.prototype = {
 	}
 
 	Time.prototype.getOffsetFromReference = function(reference_time) {
-			var sec_delta;
+		var sec_delta;
 
-			if(reference_time instanceof Time) {
-				sec_delta = this.getTotalMilliseconds() - reference_time.getTotalMilliseconds();
-			} else {
-				throw new Error('invalid parameter');
-			}
+		if(reference_time instanceof Time) {
+			sec_delta = this.getTotalMilliseconds() - reference_time.getTotalMilliseconds();
+		} else {
+			throw new Error('invalid parameter');
+		}
 
-			return sec_delta;
-		};
-		Time.prototype.getTotalMilliseconds = function() {
-			return (this.hours * 360 + this.minutes * 6 + this.seconds) * 10000 + this.milliseconds;
-		};
-		Time.prototype.convertMillisecondsToTime = function(ms) {
-			return new Time(ms);
-		};
-		Time.prototype.isAM = function() {
-			return (parseInt(this.hours / 12) === 0);
-		};
-		Time.prototype.AMPM = function() {
-			return this.isAM() ? 'AM' : 'PM';
-		};
-		Time.prototype.toString = function() {
-			var hours = (this.hours < 10) ? '0' + this.hours : this.hours, 
-				min = (this.minutes < 10) ? '0' + this.minutes : this.minutes, 
-				ampm = ' ' + (this.hours > 11) ? 'PM' : 'AM';
+		return sec_delta;
+	};
+	Time.prototype.getTotalMilliseconds = function() {
+		return (this.hours * 360 + this.minutes * 6 + this.seconds) * 10000 + this.milliseconds;
+	};
+	Time.prototype.convertMillisecondsToTime = function(ms) {
+		return new Time(ms);
+	};
+	Time.prototype.isAM = function() {
+		return (this.hours < 12);
+	};
+	Time.prototype.AMPM = function() {
+		return this.isAM() ? 'AM' : 'PM';
+	};
+	Time.prototype.toString = function(asAMPM) {
+		var hours = (this.hours < 10) ? '0' + this.hours : this.hours, 
+			min = (this.minutes < 10) ? '0' + this.minutes : this.minutes, 
+			ampm; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
 
-			return this.hours + ':' + this.minutes ;
-		};
-	//};
+		if(asAMPM) {
+			hours = hours % 12;
+			ampm = this.AMPM();
+		}
+		return this.hours + ':' + this.minutes + ampm;
+	};
 
 	Time.prototype.constructor = Time;
-//}
 
-function Observer() {
-	this.events = Object.create(null);
-};
 
-Observer.prototype = {
-	observe: function observe(event, action, context) {
-		if(!ns.has(this.events, event)) {
-			this.events[event] = [];			
-		}	
-		
-		this.events[event].push({ action: action, context: context || this});
-	},
-	trigger: function trigger(event, data) {
-		var e;
-		if(ns.has(this.events, event)) {
-			for(var i = 0, len = this.events[event].length; i < len; i += 1) {
-				e = this.events[event][i];					
-				e.action.call(e.context, data);
+	function Observer() {
+		this.events = Object.create(null);
+	}
+
+	Observer.prototype = {
+		observe: function observe(event, action, context) {
+			if(!_.has(this.events, event)) {
+				this.events[event] = [];			
+			}	
+			
+			this.events[event].push({ 
+				action: action, 
+				context: context || this
+			});
+		},
+		notify: function trigger(event, data) {
+			var e;
+			if(_.has(this.events, event)) {
+				for(var i = 0, len = this.events[event].length; i < len; i += 1) {
+					e = this.events[event][i];					
+					e.action.call(e.context, data);
+				}
 			}
-		}
-	},
-	clear: function clear(event) {
-		if(ns.has(this.events, event)) {
-			this.events[event] = [];
-		}
-	},
-	constructor: Observer
-};
+		},
+		clear: function clear(event) {
+			if(_.has(this.events, event)) {
+				this.events[event] = [];
+			}
+		},
+		constructor: Observer
+	};
 
 if(typeof Date.prototype.toComponents === 'undefined') {
 	Date.prototype.toComponents = function() {
@@ -170,7 +175,12 @@ if(typeof Date.prototype.toComponents === 'undefined') {
 				weekday: __DAYS[this.getDay()],
 				month: this.getMonth(),
 				monthName: __MONTHS[this.getMonth()],
-				year: this.getFullYear()
+				year: this.getFullYear(),
+				toDateString: function() {
+					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();
+
+					return tmp.shift() + '-' + temp.reverse().join('-');
+				}
 			},
 			time: new Time({
 				milliseconds: this.getMilliseconds(),

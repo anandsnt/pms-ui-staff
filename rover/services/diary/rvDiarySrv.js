@@ -31,43 +31,31 @@ sntRover
 .service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
     function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
     	var meta = rvDiaryMetadata,
-    		store,
-    		data,
-    		DS = Object.create(null, { attr: { enumerable: true, value: function(val) { return { enumerable: true, writable: true, value: val }; }}});
+    		index;
 
-    	this.start_date = undefined;
+    	//this.start_date = undefined;
 
-    	(function(index_prop_name) { 
-    		var define = function(val) {
-    				return {
-    					enumerable: true,
-    					writable: true,
-    					value: val
-    				};
-    			};
+    	index = {
+    		rooms: 			{},
+    		room_types: 	{},
+    		occupancies: 	{}
+    	};
 
-	    	this[index_prop_name] = Object.create(null, {
-	    		rooms: 			define(Object.create(null)),
-	    		room_types: 	define(Object.create(null)),
-	    		occupancies: 	define(Object.create(null))
-	    	});
-    	}).call(this, 'store');
-
-    	this.api_types 			= undefined;
-		this.availability_count = [];
-    	this.availability 		= [];
-    	this.occupancy 			= [];
-    	this.rooms 				= [];
-    	this.room_types 		= [];
+		//this.availability_count = [];
+    	//this.availability 		= [];
+    	//this.occupancy 			= [];
+    	//this.rooms 				= [];
+    	//this.room_types 		= [];
 
     	(function() { 
-    		function defaults(url, type) {
-    			function define(val) {
+    		var defaults = function(url, type) {
+    			var define = function(val) {
 	    			return {
 	    				enumerable: true,
 	    				value: val
 	    			};
-	    		}
+	    		};
+
     			return { 
     				value: Object.create(null, {
 		    			url: {
@@ -80,7 +68,7 @@ sntRover
 		    			} 
 		    		})
     			};
-    		}
+    		};
 
 	    	this.api_types = Object.create(null, {
 	    		availability: 		defaults('api/hourly_availability', 'data'),
@@ -89,27 +77,24 @@ sntRover
 	    	});
     	}).call(this);
 
-    	this.createIndex = function(payload, prop_name, index_prop_name) {
-    		var collection = payload[prop_name],
-    			i = 0,
-    			len = collection.length,
-    			idx = this.store[index_prop_name] = Object.create(null);
+    	this.createIndex = function(index, payload) {
+    		var collection = payload,
+    			len = collection.length;
 
-    		for(; i < len; ++i) {
-    			idx[collection[i].id] = collection[i];
+    			index = index || Object.create(null);
+
+    		for(i = 0; i < len; ++i) {
+    			index[collection[i].id] = collection[i];
     		}
     	};
 
-    	this.normalizeTimeSlots = function(time_slots, extra_params) {
-    		var rooms 			= this.rooms,
-    			room_types 		= this.room_types,
-    			isAvailability 	= (_.isArray(time_slots) && time_slots.length > 0 ? time_slots[0].temporary : false),
+    	this.normalizeTimeSlots = function(rooms, room_types, time_slots, extra_params) {
+    		var isAvailability 	= (_.isArray(time_slots) && time_slots.length > 0 ? time_slots[0].temporary : false),
     			children 		= meta.room.row_children,
     			slot_id 		= meta.occupancy.id,
     			room,
     			slot,
-    			findParams = {},
-    			index = this.store;
+    			findParams = {};
 
     		findParams[slot_id] = undefined;
 
@@ -130,33 +115,39 @@ sntRover
 			}
     	};
 
-    	this.normalizeRooms = _.once(function(rooms) {
-    		var index = this.store;
-
+    	this.normalizeRooms = function(rooms) {
     		if(!Object.prototype.hasOwnProperty.call('__ready')) {
 	    		for(var i = 0, len = rooms.length; i < len; i++) {
-	    			this.normalizeRoom(rooms[i], index);
+	    			this.normalizeRoom(rooms[i]);
 	    		}
 
 	    		Object.defineProperty(rooms, '__ready', { value: true });
 	    	}
-    	});
+    	};
 
-    	this.normalizeRoom = function(room) {		
-			room.room_type = this.store.room_types[room.room_type_id].name;
+    	this.normalizeRoom = function(room) {	
+    		room.key 	   = _.uniqueId('rm-' + room[meta.room.id] + '-');	
+			room.room_type = index.room_types[room.room_type_id].name;
 		    			
 			if(!room[meta.room.row_children]) {
 				room[meta.room.row_children] = [];
 			}			
     	};
 
-    	this.normalizeOccupancy = function(room, occupancy) {
-    		var meta = rvDiaryMetadata.occupancy, room_type = this.store.room_types[room.room_type_id];
+    	this.normalizeOccupancy = function(room, occupancy, extra_params) {
+    		var m = meta.occupancy, 
+    			room_type = index.room_types[room.room_type_id];
 
     		if(!Object.prototype.hasOwnProperty.call(occupancy, '__ready')) {
-				occupancy[meta.start_date] 		= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-			    occupancy[meta.end_date] 	    = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-			    occupancy[meta.maintenance] 	= this.normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
+    			occupancy.key 					= _.uniqueId('oc-' + occupancy[meta.occupancy.id] + '-');
+				occupancy[m.start_date] 		= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+			    occupancy[m.end_date] 	    = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+			    occupancy[m.maintenance] 	= this.normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
+			    occupancy[m.room_type] 		= room_type.name;
+
+			    if(extra_params) {
+			    	_.extend(occupancy, extra_params);
+			    }
 
 			    Object.defineProperty(occupancy, '__ready', { value: true });
 			}
@@ -165,73 +156,78 @@ sntRover
     	this.normalizeMaintenanceInterval = function(time, base_interval) {
     		var t_a = time.slice(0, -3),
     			t_b = time.slice(-2),
-    			intervals = 60 / base_interval;
+    			intervals = parseInt(t_b, 10) / base_interval,
+    			intervals_per_hr = 60 / base_interval;
 
-    		return intervals * t_a + parseInt(intervals);
+    		return intervals_per_hr * t_a + parseInt(intervals);
     	};
 
     	this.normalizeTime = function(date, time) {
     		var std = (time.indexOf('am') > -1 || time.indexOf('pm') > -1),
-    			t_a = time.slice(0, -1),
-    			t_b = time.slice(-1);
+    			t_a = time.slice(0, -3),
+    			t_b = time.slice(-2);
 
     		return Date.parse(date + ' ' + (std ? t_a + ' ' + t_b : time));
     	};
 
-    	this.chompPast = function(cutoff_date) {
-    		var to_splice = [],
-    			cur_room,
-    			cur_occupancy;
-
-    		for(var i = 0, len = this.rooms.length; i < len; i++) {
-    			cur_room = this.rooms[i];
-    			cur_occupancy = cur_room[meta.room.row_children];
-
-    			for(var j = 0, jlen = cur_occupancy.length; j < jlen; j++) {
-    				if(cur_occupancy[j].arrival < start_date) {
-    					to_splice.push(j);
-    				}
-    			}
-    			while(to_splice.length > 0) {
-    				cur_occupancy[j].splice(to_splice.pop());
-    			}
-    		}
-    	};
-
     	this.merge = function(room, incomingData) {
-    		var r = this.store.rooms[room[meta.room.id]];
+    		var r = index.rooms[room[meta.room.id]];
 
     		r = rvDiaryUtilSrv.copyRoom(room);
 
     		r[meta.room.row_children] = _.union(r[meta.room.row_children], incomingData);
     	};
     	
+    	function copyArray(src, dest){
+    		dest = [];
+
+    		for(var i = 0, len = src.length; i < len; i++) {
+    			dest.push(_.extend({}, src[i]));
+    		}
+
+    		return dest;
+    	}
+
     	this.init = function(start_date, end_date) {
-			var self = this, q=  $q.defer();
+			var self = this, 
+				q=  $q.defer(), 
+				slice = Array.prototype.slice,
+				room_types,
+				rooms,
+				occupancy;
 
-    		this.start_date = start_date;
+    		//this.start_date = start_date;
 
-			this.fetchData(start_date, end_date, self.api_types.occupancy)
+			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
-				if(self.room_types.length === 0) {
-					self.room_types = data.room_types;
-					self.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-					self.createIndex(data, 'room_types', 'room_types');
-				}
+				
+				room_types = copyArray(data.room_types, room_types);
 
-				if(self.rooms.length === 0) {
-					self.rooms = data.rooms;
-					self.createIndex(data, 'rooms', 'rooms');
-					self.normalizeRooms(self.rooms, self.store, self.store);
-				}
+				room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 
-				self.occupancy = _.union(self.occupancy, data.occupancy);
-				self.createIndex(data, 'occupancy', 'occupancy');
+				self.createIndex(index.room_types, room_types);
+			
+				rooms = copyArray(data.rooms, rooms);
 
-				self.normalizeTimeSlots(self.occupancy);
+				self.createIndex(index.rooms, rooms);
+
+				self.normalizeRooms(rooms);		
+
+				occupancy = copyArray(data.occupancy);
+
+				self.createIndex(index.occupancy, occupancy);
+
+				self.normalizeTimeSlots(rooms, room_types, occupancy);
+
+				delete data.rooms;
+				delete data.room_types;
+				delete data.occupancy;
 
 				q.resolve({
-					data: self.rooms
+					start_date: start_date,
+					rooms: slice.call(rooms),
+					occupancy: slice.call(occupancy),
+					room_types: slice.call(room_types)
 				});
 			}, function(err) {
 				q.reject(err);
@@ -241,19 +237,19 @@ sntRover
     	};
 
     	this.fetchOccupancy = function(start_date, end_date) {
-    		var self = this, q=  $q.defer();
+    		var self = this, 
+    			q=  $q.defer(),
+    			occupancy;
 
-			this.fetchData(start_date, end_date, self.api_types.occupancy)
+			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
-				self.occupancy = _.union(self.occupancy, data.occupancy);
+				occupancy = copyArray(data.occupancy);
 
-				self.createIndex(data, 'occupancy', 'occupancy');
+				self.createIndex(index.occupancy, occupancy);
 
-				self.normalizeTimeSlots(data.occupancy);
+				self.normalizeTimeSlots(self.rooms, self.room_types, occupancy);
 
-				q.resolve({
-					data: self.rooms
-				});
+				q.resolve(occupancy);
 			}, function(err) {
 				q.reject(err);
 			});
@@ -261,20 +257,29 @@ sntRover
     		return q.promise;
     	};
 
+    	this.injectAvailability = function(start_date, end_date, rate_id, room_type_id) {
+    		var q = $q.defer();
+
+    		this.fetchAvailability.apply(this, Array.prototype.slice.call(arguments))
+    		.then(function(data) {
+    			console.log('AVAILABILITY CONTENTS', data);
+    		});
+    	};
+
     	this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {
     		var self = this, q = $q.defer(), gen_uid = _.uniqueId('available-');
 
 			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
 			.then(function(payload) {
-		   		var data 	= payload.results[0].availability,
+		   		var data 	= copyArray(payload.results[0].availability),
 		   			start 	= start_date.toComponents().time,
 		   			end 	= end_date.toComponents().time,
-		   			available_slots = [],
+		   			availability = [],
 		   			slot;
 
 		   		if(_.isArray(data)) {
 			   		for(var i = 0, len = data.length; i < len; i++) {
-			   			slot = _.extend({}, data[i]);
+			   			slot = data[i];
 
 			   			slot.temporary 				= true;
 			   			slot.room_id 				= slot.id;
@@ -287,20 +292,13 @@ sntRover
 			   			slot.reservation_id 		= gen_uid;
 			   			slot.key 					= _.uniqueId('post_') + '-' + slot.id + '-' + data[i].id;
 
-			   			delete slot.id;
-
-			   			available_slots.push(slot);
+			   			availability.push(slot);
 			   		}
 
-			   		self.availability = Array.prototype.slice.call(available_slots);
-
-			   		self.normalizeTimeSlots(self.availability);
+			   		self.normalizeTimeSlots(self.rooms, self.room_types, availability);
 			   	}
 
-			   	q.resolve({
-		   			data: self.rooms,
-		   			availability: self.availability		
-		   		});
+			   	q.resolve(availability);
 		   }, function(err) {
 		   		q.reject(err);
 		   });
@@ -311,11 +309,11 @@ sntRover
     	this.fetchAvailabilityCount = function(start_date, end_date) {
     		var self = this, q = $q.defer();
 
-			this.fetchData(start_date, end_date, self.api_types.availability_count)
+			this.fetchData(start_date, end_date, this.api_types.availability_count)
 		   	.then(function(data) {
-		   		self.availability_count = data;
+		   		availability_count = copyArray(availability_count, data);
 		   		
-		   		q.resolve(self.availability_count);	   	
+		   		q.resolve(availability_count);	   	
 		   	}, function(err) {
 		   		q.reject(err);
 		   	});
@@ -331,10 +329,10 @@ sntRover
             	end = end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
             	dto = { 
             		begin_time: start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
-					end_time: end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
+					end_time: 	end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
 					begin_date: begin.shift() + '-' + begin.reverse().join('-'),
-					end_date: end.shift() + '-' + end.reverse().join('-'),
-					type: type_config.type		
+					end_date: 	end.shift() + '-' + end.reverse().join('-'),
+					type: 		type_config.type		
             	};
 
             if(rate_id) {
@@ -354,4 +352,10 @@ sntRover
 
             return deferred.promise;
         };
+
+        this.set = function (field, value) {
+    		if(!Object.prototype.hasOwnProperty.call(this, field)) {
+    			this[field] = value;
+    		}
+    	};
 }]);

@@ -40,7 +40,7 @@ sntRover
 	   			q.resolve(data);
 	   		}, function(data) {
 	   			q.reject(data);
-	   		})
+	   		});
 
 	   		return q.promise;
 	   	};

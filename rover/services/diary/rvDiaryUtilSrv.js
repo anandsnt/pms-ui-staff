@@ -98,17 +98,26 @@ sntRover
 
 		clearRoomQuery = function(rooms) {
 			var room, 
-				children = meta.room.row_children, 
-				rejectionFn = function(slot) {
-					return slot.temporary === true;
-				};
+				children = meta.room.row_children,
+				cur,
+				occupancy = [];
 
+			if(!_.isArray(rooms)) {
+				throw Error('rooms is not an array.');
+			}
+			
 			for(var i = 0, len = rooms.length; i < len; i++) {
 				room = rooms[i];
 
-				room[children] = _.reject(room[children], rejectionFn);
+				for(var j = 0, jlen = room[children].length; j < jlen; j++) {
+					if(!room[children][j].temporary) {
+						occupancy.push(room[children][i]);
+					}
+				}
 
-				rooms[i] = copyRoom(room);
+				room[children] = occupancy;
+
+				room = copyRoom(room);
 			}			
 		};  
 
