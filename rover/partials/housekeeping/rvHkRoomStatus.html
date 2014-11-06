@@ -102,7 +102,7 @@
     </li>
 
     <li class="mobile-pagination">
-        <p class="page-count">Showing {{ resultFrom }} to {{ resultUpto }} of {{ totalResults }} results</p>
+        <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
         <p class="pull-msg">Pull up to load next page</p>
     </li>
   </ul>
@@ -118,6 +118,12 @@
     </li>
   </ul> 
 </section>
+
+<div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="disableNextBtn">Next</button>
+    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="disablePrevBtn">Previous</button>
+    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ totalCount }}</strong> items</p>
+</div>
 
 <!-- Rooms filters -->
 <section id="filter-rooms" class="content" ng-class="{ 'hidden' : !filterOpen, 'showing-filters': filterOpen }">

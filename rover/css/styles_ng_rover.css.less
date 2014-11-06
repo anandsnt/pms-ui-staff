@@ -670,11 +670,13 @@ Padding for the ows error popup
 }
 
 .content#filter-options {
-
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
 }
+
+
+
 
 #pull-refresh-page {
   padding: 10px;
@@ -763,11 +765,27 @@ Padding for the ows error popup
   }
 }
 
+.hk-pagination {
+  display: none;
+}
+
 @media only screen and (min-width: 600px) {
   #pull-refresh-notify.has-options {
     top: 60px;
   }
+
+  .mobile-pagination {
+    display: none;
+  }
+
+  .hk-pagination {
+    display: block;
+  }
 }
+
+
+
+
 
 .end-of-day-modal{
   width:30%;

@@ -61,9 +61,29 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_page = 1,
 			$_perPage = 25;
 
+		// inital page related properties
 		$scope.resultFrom = 1,
 		$scope.resultUpto = 50,
-		$scope.totalResults = 200;
+		$scope.totalCount = 0;
+		$scope.disablePrevBtn = true;
+		$scope.disableNextBtn = true;
+
+		$scope.loadNextPage = function() {
+			$_page++;
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+				businessDate: $rootScope.businessDate,
+				page: $_page,
+			}, $_fetchRoomListCallback);
+		};
+
+		$scope.loadPrevPage = function() {
+			$_page--;
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+				businessDate: $rootScope.businessDate,
+				page: $_page,
+				perPage: $_page === 1 ? 50: 25
+			}, $_fetchRoomListCallback);
+		};
 
 		// filter open or close
 		$scope.filterOpen = false;
@@ -89,6 +109,24 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			if (typeof data === 'object' && data.hasOwnProperty('rooms')) {
 				$_roomList = data;
 			};
+
+			$scope.totalCount = $_roomList.total_count || 200;	// 200 for testing, remove after API completes
+
+			// page 1 will show 50 results
+			if ( $_page === 1 ) {
+				$scope.resultFrom = 1;
+				$scope.resultUpto = $scope.totalCount < 50 ? $scope.totalCount : 50;
+				$scope.disablePrevBtn = true;
+				$scope.disableNextBtn = $scope.totalCount > 50 ? false : true;
+			}
+			// other pages will show 25 results
+			else {
+				var upto = $scope.resultUpto * 1;
+				$scope.resultFrom = 25 + ($_perPage * ($_page - 1) + 1);
+				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
+				$scope.disablePrevBtn = false;
+				$scope.disableNextBtn = $scope.resultUpto === $scope.totalCount ? true : false;
+			}
 
 			// filter stuff
 			$scope.showPickup = $_roomList.use_pickup || false;
@@ -247,25 +285,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			}
 		};
 
-
-
-		$scope.nextPage = function() {
-			var _params = {
-					businessDate: $rootScope.businessDate,
-					page: 1,
-				};
-
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, _params, $_fetchRoomListCallback);
-		};
-
-		$scope.prevPage = function() {
-			var _params = {
-					businessDate: $rootScope.businessDate,
-					page: 1,
-				};
-
-			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, _params, $_fetchRoomListCallback);
-		};
 
 
 
@@ -778,8 +797,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				startY = 0,
 				nowY = 0,
 				trigger = 110,
-				allowPullDown = false,
-				allowPullUp = false,
 				scrollBarOnTop = 0,
 				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
 
@@ -839,7 +856,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			};
 
 			var callLoad = function() {
-				$scope.nextPage();
+				$scope.loadNextPage();
+				console.log('callLoad called');
 			};
 
 			// set of excutions to be executed when
@@ -848,8 +866,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				e.stopPropagation();
 				var touch = e.touches ? e.touches[0] : e;
 
-				// if not touching or we are not on top/bottom of scroll area
-				if (!touching || (!allowPullDown && !allowPullup)) {
+				// if not touching or we are not on top or bottom of scroll area
+				if (!touching || this.scrollTop > scrollBarOnTop || this.scrollTop < scrollBarOnBot) {
 					return;
 				};
 
@@ -869,7 +887,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				*	only once we are throughly statisfied 
 				*	we call preventDefault to stop default scroll effect
 				*/
-				if (startY > nowY && !allowPullup) {
+				if (startY > nowY && this.scrollTop < scrollBarOnBot) {
 					pulling = false;
 					return;
 				} else {
@@ -879,9 +897,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// don't remove, you will learn soon why not
 				$rooms.style.WebkitTransition = '';
-				if (allowPullDown) {
+				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '';
-				} else if (allowPullUp) {
+				} else if ( this.scrollTop === scrollBarOnBot ) {
 					$load.style.WebkitTransition = '';
 				}
 
@@ -906,16 +924,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// a minor hack since we have a rooms injection throtel
 				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
 
-				// if we are on top or bottom of scroll area
-				if (this.scrollTop == scrollBarOnTop) {
-					allowPullDown = true;
-					allowPullup = false;
-				} else if (this.scrollTop == scrollBarOnBot) {
-					allowPullDown = false;
-					allowPullup = true;
-				} else {
+				console.log( this.scrollTop +' '+ scrollBarOnTop +' '+ scrollBarOnBot );
+
+				// if we are not on top or bottom of scroll area
+				if (this.scrollTop > scrollBarOnTop || this.scrollTop < scrollBarOnBot) {
 					return;
-				}
+				};
 
 				touching = true;
 				pulling = false;
@@ -923,10 +937,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				$rooms.style.WebkitTransition = '';
 
-				if ( allowPullDown ) {
+				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.add('show');
-				} else if ( allowPullup ) {
+				} else if ( this.scrollTop === scrollBarOnBot ) {
 					$load.style.WebkitTransition = '';
 					$load.classList.add('show');
 				};
@@ -942,7 +956,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var touch = e.touches ? e.touches[0] : e;
 
 				// if not touching or we are not on top/bottom of scroll area
-				if (!touching || (!allowPullDown && !allowPullup)) {
+				if (!touching || this.scrollTop > scrollBarOnTop || this.scrollTop < scrollBarOnBot) {
 					return;
 				};
 
