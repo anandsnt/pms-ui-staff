@@ -13,7 +13,7 @@
             </ul>
 
             <!-- First level - payment types -->
-            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" ng-show="level1.show" class="grid-group">
+            <div ng-repeat="(index1 ,level1) in data.paymentData.payment_types" ng-show="level1.show && level1.filterFlag" class="grid-group">
 
                 <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="payment-title toggle">
                     <strong class="name" ng-show="level1.show">{{level1.payment_type}}</strong>
@@ -25,7 +25,7 @@
                 <!-- Second level - credit cards - if Payment type is Credit Card -->
                 <div ng-if="level1.payment_type == 'Credit Card'" ng-repeat="(index2 ,level2) in level1.credit_cards" ng-show="level1.active" class="grid-charge">
 
-                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level1.active && level2.show" class="payment-title  toggle">
+                    <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowLevel2(index1,index2)}" ng-show="level2.show && level2.filterFlag" class="payment-title  toggle">
                         <span class="code" ng-show="level2.show">{{level2.charge_code}}</span>
                         <strong class="name" ng-show="level2.show">{{level2.credit_card}}</strong>
                         <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.amount}}</span>
