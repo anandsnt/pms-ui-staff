@@ -555,7 +555,11 @@
     "PROCEED" : "Proceed",
     "CANCELLATION_REASON" : "Cancellation Reason",
     "OPTIONAL" : "Optional",
-    "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",	
+    "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",
+    "PROCEED_WITH_DEPOSIT_REFUND":"PROCEED WITH REFUND",
+    "PROCEED_WITHOUT_DEPOSIT_REFUND":"PROCEED WITHOUT REFUND",
+    "PENALTY_WARNING_MSG1":"Deposit of",
+    "PENALTY_WARNING_MSG2":"will not be refunded",	
 
 	"BACK_BUTTON_LABEL":"BACK",
     "DETAILS_LABEL":"DETAILS",
@@ -693,6 +697,7 @@
     "ADD_ROUTES_LABEL" : "ADD ROUTES",
     "ALL_ROUTES_LABEL" : "ALL ROUTES",
     "NO_BILLS_TO_ROUTE" : "No Bills To Route",
+    "ERROR_CHARGES_EMPTY": "Unable to create empty route",
 
     "ADVANCE_BILL_CONFIRM_TEXT" : "Create Advanced Bill?",
     "CANCEL_HEADER" : "Cancellation falls <br/> outside of the cancellation period",

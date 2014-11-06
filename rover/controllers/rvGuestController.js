@@ -579,45 +579,47 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 				$scope.searchedCompanies = [];
 				if (data.accounts.length > 0) {
 					angular.forEach(data.accounts, function(item) {
-						var companyData = {};
-						companyData.id = item.id;
-						companyData.account_name = item.account_name;
-						// companyData.lastName = item.account_last_name;
-						companyData.logo = item.company_logo;
-						if (item.address != null) {
-							companyData.address = {};
-							companyData.address.postalCode = item.address.postal_code;
-							companyData.address.city = item.address.city;
-							companyData.address.state = item.address.state;
-						}
-						if (item.current_contract != null) {
-							companyData.rate = item.current_contract;
-							companyData.rate.difference = (function() {
-								if (parseInt(companyData.rate.based_on.value) < 0) {
-									if (companyData.rate.based_on.type == "amount") {
-										return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
-									} else {
-										return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
-									}
+						if (item.account_type === 'COMPANY') {
+							var companyData = {};
+							companyData.id = item.id;
+							companyData.account_name = item.account_name;
+							// companyData.lastName = item.account_last_name;
+							companyData.logo = item.company_logo;
+							if (item.address != null) {
+								companyData.address = {};
+								companyData.address.postalCode = item.address.postal_code;
+								companyData.address.city = item.address.city;
+								companyData.address.state = item.address.state;
+							}
+							if (item.current_contract != null) {
+								companyData.rate = item.current_contract;
+								companyData.rate.difference = (function() {
+									if (parseInt(companyData.rate.based_on.value) < 0) {
+										if (companyData.rate.based_on.type == "amount") {
+											return $scope.currencySymbol + (parseFloat(companyData.rate.based_on.value) * -1).toFixed(2) + " off ";
+										} else {
+											return (parseFloat(companyData.rate.based_on.value) * -1) + "%" + " off ";
+										}
 
-								}
-								return "";
-							})();
-
-							companyData.rate.surplus = (function() {
-								if (parseInt(companyData.rate.based_on.value) > 0) {
-									if (companyData.rate.based_on.type == "amount") {
-										return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
-									} else {
-										return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
 									}
-								}
-								return "";
-							})();
-						}
-						companyData.email = item.email;
-						companyData.phone = item.phone;
-						$scope.searchedCompanies.push(companyData);
+									return "";
+								})();
+
+								companyData.rate.surplus = (function() {
+									if (parseInt(companyData.rate.based_on.value) > 0) {
+										if (companyData.rate.based_on.type == "amount") {
+											return " plus " + $scope.currencySymbol + parseFloat(companyData.rate.based_on.value).toFixed(2);
+										} else {
+											return " plus " + parseFloat(companyData.rate.based_on.value) + "%";
+										}
+									}
+									return "";
+								})();
+							}
+							companyData.email = item.email;
+							companyData.phone = item.phone;
+							$scope.searchedCompanies.push(companyData);
+						}						
 					});
 				}
 				$scope.$broadcast('companySearchInitiated');
