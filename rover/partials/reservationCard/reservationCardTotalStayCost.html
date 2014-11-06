@@ -7,7 +7,7 @@
 		<span class="number" ng-hide="reservationData.reservation_card.is_rates_suppressed">
 			<strong>{{currencySymbol}}{{reservationData.reservation_card.avg_daily_rate}}</strong>	
 		</span> 
-	{{reservationData.reservation_card.rate_name}} 
+	{{reservationData.reservation_card.is_multiple_rates == true ? 'Multiple' :reservationData.reservation_card.rate_name}} 
 	</a>
 	<!-- If reservation is not editable 
     <div class="no-view">

@@ -6,6 +6,7 @@
         <a class="action remove" ng-hide="!data.id " ng-click="deleteItem(data.id)" translate>DELETE_SECTION_LABEL</a>
     </header>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <form method="post" action=""  class="form float">
             <fieldset class="holder left">
                 <div class="form-title">
