@@ -91,10 +91,12 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 			this.paymentData = data;
 			// Adding Show status flag to each item.
 			angular.forEach(this.paymentData.payment_types,function(payment_types, index1) {
+				payment_types.filterFlag = true ;
 				payment_types.show = true ;
 				payment_types.active = false ;
 				if(payment_types.payment_type == "Credit Card"){
 		            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
+		            	credit_cards.filterFlag = true;
 		            	credit_cards.show = true ;
 		            	credit_cards.active = false ;
 		                angular.forEach(credit_cards.transactions,function(transactions, index3) {

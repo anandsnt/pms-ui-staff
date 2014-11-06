@@ -88,15 +88,17 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
-            $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
+            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            $scope.data.selectedChargeGroup = 'ALL';
+            $scope.data.selectedChargeCode  = 'ALL';
         }
         else if ($scope.data.activeTab == '1' ){
            $scope.resetPaymentFilters();
            $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+           $scope.data.selectedPaymentType = 'ALL';
         }
         $scope.data.filterTitle = "All Departments";
-        $scope.data.selectedChargeGroup = 'ALL';
-        $scope.data.selectedChargeCode  = 'ALL';
+        
     };
 
     // Clicking each checkbox on Departments

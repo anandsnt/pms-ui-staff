@@ -168,6 +168,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             	
             	if(level3 && charge_codes.filterFlag){
             		charge_codes.active = true;
+            		charge_groups.active = true;
             	}
             	else{
             	 	charge_codes.active = false;
