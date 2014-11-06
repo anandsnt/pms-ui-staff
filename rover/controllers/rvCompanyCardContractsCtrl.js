@@ -114,13 +114,28 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		}
 
 		var fetchContractsDetailsSuccessCallback = function(data) {
-			$scope.contractList.isAddMode = false;
+			
 			$scope.contractData = data;
 			$scope.contractData.rates = [];
 			$scope.contractData.rates = ratesList;
 			$scope.errorMessage = "";
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
+			/*
+			 *Nights pop up should be triggered only after contract details are saved 
+			 *and refetched in the case of add mode	
+			*/
+			if($scope.contractList.isAddMode){
+				ngDialog.open({
+							template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
+							controller: 'contractedNightsCtrl',
+							className: 'ngdialog-theme-default1 calendar-single1',
+							scope: $scope
+						});
+				$scope.contractList.isAddMode = false;
+			}
+			
+
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
 				$scope.contractData.account_type = $stateParams.type;
 			}
@@ -301,7 +316,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			$scope.contractList.contractSelected = data.id;
 			$scope.addData.contract_name = "";
-			$scope.contractList.isAddMode = false;
+			
 		};
 
 		// To handle click on nights button
@@ -316,16 +331,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					$scope.errorMessage = "";
 					$scope.$emit('hideLoader');
 					updateContractList(data);
-
-					setTimeout(function() {
-						ngDialog.open({
-							template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
-							controller: 'contractedNightsCtrl',
-							className: 'ngdialog-theme-default1 calendar-single1',
-							scope: $scope
-						});
-					}, 500);
-
 				};
 				var saveContractFailureCallback = function(data) {
 					$scope.$emit('hideLoader');
@@ -397,6 +402,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var saveContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
+				$scope.contractList.isAddMode = false;
 				updateContractList(data);
 			};
 			var saveContractFailureCallback = function(data) {
