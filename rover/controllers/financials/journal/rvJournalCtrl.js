@@ -88,15 +88,17 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
-            $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
+            $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            $scope.data.selectedChargeGroup = 'ALL';
+            $scope.data.selectedChargeCode  = 'ALL';
         }
         else if ($scope.data.activeTab == '1' ){
            $scope.resetPaymentFilters();
            $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+           $scope.data.selectedPaymentType = 'ALL';
         }
         $scope.data.filterTitle = "All Departments";
-        $scope.data.selectedChargeGroup = 'ALL';
-        $scope.data.selectedChargeCode  = 'ALL';
+        
     };
 
     // Clicking each checkbox on Departments
@@ -246,7 +248,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
                     angular.forEach(credit_cards.transactions,function(transactions, index3) {
 
                         if( $scope.searchDeptOrEmpId(transactions) ){
-                            transactions.show  = true;
                             isResultsFoundInTransactions = true;
                         }
                         else{
@@ -258,22 +259,20 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
                      *  So we have to hide its parent tabs - charge_groups & charge_codes
                      */
                     if(isResultsFoundInTransactions) {
-                        credit_cards.show = true;
-                        credit_cards.active = true;
                         isResultsFoundInCards = true;
                     }
                     else{
                         credit_cards.show = false;
-                        credit_cards.active = false;
                     }
 
                 });
 
                 if(isResultsFoundInCards) {
-                    payment_types.show = true;
                     payment_types.active = true;
                 }
-                else {payment_types.show = false;payment_types.active = false;}
+                else {
+                    payment_types.show = false;
+                }
                 
             }
             else{
@@ -289,12 +288,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
                     }
                 });
 
-                if(isResultsFoundInTransactions) {
-                    payment_types.show = true;
-                    payment_types.active = true;
+                if(!isResultsFoundInTransactions) {
+                    payment_types.show = false;
                 }
-                else{ payment_types.show = false;payment_types.active = false;}
-
             }
         });
     };
@@ -302,14 +298,19 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // Reset the filters in revenue tab as in the initial case.
     // Showing only groups.
     $scope.resetRevenueFilters = function(){
+        
         angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+            
             charge_groups.filterFlag = true;
             charge_groups.show = true;
             charge_groups.active = false;
+            
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+                
                 charge_codes.filterFlag = true;
                 charge_codes.show = true;
                 charge_codes.active = false;
+                
                 angular.forEach(charge_codes.transactions,function(transactions, index3) {
                     transactions.show = true;
                 });
@@ -319,14 +320,20 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     // Reset the filters in payment tab as in the initial case.
     // Showing only payment types.
     $scope.resetPaymentFilters = function(){
+        
         angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-            //payment_types.filterFlag = true;
+            
+            payment_types.filterFlag = true;
             payment_types.show   = true ;
             payment_types.active = false ;
+            
             if(payment_types.payment_type == "Credit Card"){
                 angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
+                    
+                    credit_cards.filterFlag = true;
                     credit_cards.show   = true ;
                     credit_cards.active = false ;
+                    
                     angular.forEach(credit_cards.transactions,function(transactions, index3) {
                         transactions.show = true;
                     });
@@ -363,7 +370,6 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	else if(index == 2) $scope.$broadcast('cashierTabActive');
     	else $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
     	$scope.$broadcast("CLOSEPRINTBOX");
-
         $scope.data.isActiveRevenueFilter = false;
     };
 

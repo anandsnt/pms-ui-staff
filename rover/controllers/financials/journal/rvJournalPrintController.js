@@ -168,6 +168,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             	
             	if(level3 && charge_codes.filterFlag){
             		charge_codes.active = true;
+            		charge_groups.active = true;
             	}
             	else{
             	 	charge_codes.active = false;
@@ -183,13 +184,29 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
 
-			if(($scope.data.selectedPaymentType == 'ALL') || (payment_types.id == $scope.data.selectedPaymentType)) {
-				payment_types.show 	 = true ;
-				payment_types.active = true ;
+			if((payment_types.id == $scope.data.selectedPaymentType) && (payment_types.payment_type == "Credit Card")) {
+				
+				if(payment_types.show){
+					payment_types.filterFlag = true;
+					
+					angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
+						if(credit_cards.show){
+							credit_cards.filterFlag = true;
+						}
+						$scope.togglePaymentTransactions();
+					});
+				}
+				else{
+					payment_types.filterFlag = false;
+				}
+	        }
+	        else if((payment_types.id == $scope.data.selectedPaymentType) || ($scope.data.selectedPaymentType == 'ALL')){
+	        	
+	        	payment_types.filterFlag = true;
+	        	$scope.togglePaymentTransactions();
 	        }
 	        else{
-	        	payment_types.show 	 = false ;
-	        	payment_types.active = false ;
+	        	payment_types.filterFlag = false;
 	        }
         });
 	};
@@ -200,34 +217,26 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	$scope.showPaymentByLevels = function(level1,level2,level3){
 		// Adding Show status flag to each item.
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-			
-			if((level1 && $scope.data.selectedPaymentType == 'ALL') || (level1 && $scope.data.selectedPaymentType == payment_types.id)){
-				payment_types.show = true; 
-				payment_types.active = true ;
-			}
-			else{
-				payment_types.show = false;
-				payment_types.active = false ;
-			}
 
 			if(payment_types.payment_type == "Credit Card"){
 	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 	            	
-	            	if(level2){
-	            		credit_cards.show = true;
+	            	if(level3 && credit_cards.filterFlag){
+	            		payment_types.active = true;
 	            		credit_cards.active = true;
 	            	}
 	            	else{
-	            		credit_cards.show = false;
 	            		credit_cards.active = false;
 	            	}
-
-	                angular.forEach(credit_cards.transactions,function(transactions, index3) {
-	                	
-	                	if(level3) credit_cards.active = true;
-	                	else credit_cards.active = false;
-	                });
 	            });
+        	}
+        	else{
+        		if(level3){
+        			payment_types.active = true;
+        		}
+        		else{
+        			payment_types.active = false;
+        		}
         	}
         });
 	};

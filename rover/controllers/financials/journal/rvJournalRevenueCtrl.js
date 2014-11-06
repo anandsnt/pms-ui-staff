@@ -57,4 +57,19 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         return isShowTableHeading;
     };
 
+    $scope.checkHasArrowLevel1 = function(index){
+        var hasArrow = false;
+        if($scope.data.revenueData.charge_groups[index].charge_codes){
+            if($scope.data.revenueData.charge_groups[index].charge_codes.length >0)
+                hasArrow = true;
+        }
+        return hasArrow;
+    };
+
+    $scope.checkHasArrowLevel2 = function(index1, index2){
+        var hasArrow = false;
+        if($scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions.length >0) hasArrow = true;
+        return hasArrow;
+    };
+
 }]);
