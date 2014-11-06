@@ -54,17 +54,19 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		// internal variables
-		var $_defaultWorkType,
+		var $_roomList = roomList,
+			$_defaultWorkType,
 			$_defaultEmp,
-			$_hasActiveWorkSheet;
+			$_hasActiveWorkSheet,
+			$_page = 1,
+			$_perPage = 25;
+
+		$scope.resultFrom = 1,
+		$scope.resultUpto = 50,
+		$scope.totalResults = 200;
 
 		// filter open or close
 		$scope.filterOpen = false;
-
-		// filter stuff
-		$scope.showPickup = roomList.use_pickup || false;
-		$scope.showInspected = roomList.use_inspected || false;
-		$scope.showQueued = roomList.is_queue_rooms_on || false;
 
 		// empty the search query
 		$scope.query = '';
@@ -73,66 +75,67 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.noResultsFound = 0;
 
 
-		// default no top filters
-		// $scope.topFilter = {};
-
-
 		// ALL PMS: assign the resolved data to scope
 		// common to all typr of PMS 
 		$scope.roomTypes = roomTypes;
 		$scope.floors = floors;
 
-		// STANALONE PMS: assign the resolved data to scope
-		if ($rootScope.isStandAlone) {
-			var _fetchAgainCallback = function() {
-				$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-				/**
-				 * CICO-8620
-				 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
-				 * Rest of the times maintain state in the dropdown!
-				 * 
-				 */
-				$_defaultEmp = ($scope.topFilter.byEmployee !== -1)? $scope.topFilter.byEmployee : $rootScope.userId;
+		$_fetchRoomListCallback();
 
-				// when a employee logges in mobile view
-				// we introduce another level of tabs to seperate
-				// his/her work count status and rooms
-				// defaults to rooms tab, but if has active worksheet
-				// show summary by default
+
+
+
+		function $_fetchRoomListCallback(data) {
+			if (typeof data === 'object' && data.hasOwnProperty('rooms')) {
+				$_roomList = data;
+			};
+
+			// filter stuff
+			$scope.showPickup = $_roomList.use_pickup || false;
+			$scope.showInspected = $_roomList.use_inspected || false;
+			$scope.showQueued = $_roomList.is_queue_rooms_on || false;
+
+			var _additionalApiFetchCallback = function() {
+				$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
+				$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+
+				// time to decide if this is an employee
+				// who has an active work sheets
+				$_checkHasActiveWorkSheet();
+			}
+
+			// need to work extra for standalone PMS
+			if ($rootScope.isStandAlone) {
+				// for mobile view spilt
 				$scope.currentView = 'rooms';
 				$scope.changeView = function(view) {
 					$scope.currentView = view;
 				};
 
-				// time to decide if this is an employee
-				// who has an active work sheets
-				$_checkHasActiveWorkSheet();
-			};
-
-			$scope.workTypes = workTypes;
-			$scope.employees = employees;
-
-			if ( workTypes.length && employees.length ) {
-				_fetchAgainCallback();
-			} else {
-				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
-					$scope.workTypes = data;
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
-						$scope.employees = data;
-						_fetchAgainCallback();
+				if ( workTypes.length && employees.length ) {
+					_additionalApiFetchCallback();
+				} else {
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
+						$scope.workTypes = data;
+						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
+							$scope.employees = data;
+							_additionalApiFetchCallback();
+						});
 					});
-				});
+				};
+			}
+			// connected PMS, just process the roomList
+			else {
+				$timeout(function() {
+					$_postProcessRooms();
+				}, 10);
 			};
-			
-		} else {
-			// need delay, just need it
-			$timeout(function() {
-				$_postProcessRooms(roomList);
-			}, 10);
-		}
+		};
 
 
-		function $_checkHasActiveWorkSheet(argument) {
+
+
+		function $_checkHasActiveWorkSheet() {
 			var _params = {
 					'date': $rootScope.businessDate,
 					'employee_ids': [$_defaultEmp || $rootScope.userId], // Chances are that the $_defaultEmp may read as null while coming back to page from other pages
@@ -156,14 +159,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// need delay, just need it
 					$timeout(function() {
-						$_postProcessRooms(roomList);
+						$_postProcessRooms();
 					}, 10);
 				},
 				// it will fail if returning from admin to room status
 				// directly, since the flags in $rootScope may not be ready
 				_failed = function() {
 					$timeout(function() {
-						$_postProcessRooms(roomList);
+						$_postProcessRooms();
 					}, 10);
 				};
 
@@ -204,16 +207,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		function $_postProcessRooms(data) {
-			// apply the filter first
-			if (data && data.rooms && data.rooms.length) {
-				$_calculateFilters(data.rooms);
+
+		function $_postProcessRooms() {
+			if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
+				$_calculateFilters($_roomList.rooms);
 
 				// making unique copies of array
 				// slicing same array not good.
 				// say thanks to underscore.js
-				var smallPart = _.compact(data.rooms);
-				var restPart = _.compact(data.rooms);
+				var smallPart = _.compact($_roomList.rooms);
+				var restPart = _.compact($_roomList.rooms);
 
 				// smaller part consisit of enogh rooms
 				// that will fill in the screen
@@ -242,7 +245,26 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			} else {
 				$scope.$emit('hideLoader');
 			}
+		};
 
+
+
+		$scope.nextPage = function() {
+			var _params = {
+					businessDate: $rootScope.businessDate,
+					page: 1,
+				};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, _params, $_fetchRoomListCallback);
+		};
+
+		$scope.prevPage = function() {
+			var _params = {
+					businessDate: $rootScope.businessDate,
+					page: 1,
+				};
+
+			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, _params, $_fetchRoomListCallback);
 		};
 
 
@@ -736,81 +758,144 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// and power it gives here
 		var pullRefresh = function() {
 
+			document.addEventListener('touchmove', function(e) {
+				e.stopPropagation();
+			});
+
 			// caching DOM nodes invloved 
 			var $rooms = document.getElementById('rooms'),
-				$notify = document.getElementById('pull-refresh-notify'),
-				$arrow = document.getElementById('icon'),
-				$notifyTxt = document.getElementById('ref-text');
+				$roomsList = $rooms.children[0];
+				$refresh = document.getElementById('pull-refresh-page'),
+				$refreshArrow = document.getElementById('refresh-icon'),
+				$refreshTxt = document.getElementById('refresh-text'),
+				$load = document.getElementById('pull-load-next'),
+				$loadArrow = document.getElementById('load-icon'),
+				$loadTxt = document.getElementById('load-text');
 
 			// flags and variables necessary
 			var touching = false,
 				pulling = false,
 				startY = 0,
 				nowY = 0,
-				initTop = $rooms.scrollTop,
-				trigger = 110;
+				trigger = 110,
+				allowPullDown = false,
+				allowPullUp = false,
+				scrollBarOnTop = 0,
+				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
 
 			// translate cache
 			var PULL_REFRESH = $filter('translate')('PULL_REFRESH'),
-				RELEASE_REFRESH = $filter('translate')('RELEASE_REFRESH');
+				RELEASE_REFRESH = $filter('translate')('RELEASE_REFRESH'),
+				PULL_LOAD = $filter('translate')('PULL_LOAD'),
+				RELEASE_LOAD = $filter('translate')('RELEASE_LOAD');
 
-			// methods to modify the $notifyText and rotate $arrow
-			var loadNotify = function(diff) {
+			// methods to modify the $refreshText and rotate $refreshArrow
+			var notifyRefresh = function(diff) {
 				if (!diff) {
-					$arrow.className = '';
-					$notifyTxt.innerHTML = PULL_REFRESH;
+					$refreshArrow.className = '';
+					$refreshTxt.innerHTML = PULL_REFRESH;
 					return;
 				};
 
 				if (diff > trigger - 40) {
-					$arrow.className = 'rotate';
+					$refreshArrow.className = 'rotate';
 				} else {
-					$arrow.className = '';
+					$refreshArrow.className = '';
 				}
 
 				if (diff > trigger - 30) {
-					$notifyTxt.innerHTML = RELEASE_REFRESH;
+					$refreshTxt.innerHTML = RELEASE_REFRESH;
 				} else {
-					$notifyTxt.innerHTML = PULL_REFRESH;
+					$refreshTxt.innerHTML = PULL_REFRESH;
 				}
+			};
+
+			var notifyLoad = function(diff) {
+				if (!diff) {
+					$loadArrow.className = '';
+					$loadTxt.innerHTML = PULL_LOAD;
+					return;
+				};
+
+				if (Math.abs(diff) > trigger - 40) {
+					$loadArrow.className = 'rotate';
+				} else {
+					$loadArrow.className = '';
+				}
+
+				if (Math.abs(diff) > trigger - 30) {
+					$loadTxt.innerHTML = RELEASE_LOAD;
+				} else {
+					$loadTxt.innerHTML = PULL_LOAD;
+				}
+			};
+
+			var callRefresh = function() {
+				$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+					businessDate: $rootScope.businessDate,
+					page: $_page,
+					perPage: $_page == 1 ? 50 : $_perPage
+				}, $_fetchRoomListCallback);
+			};
+
+			var callLoad = function() {
+				$scope.nextPage();
 			};
 
 			// set of excutions to be executed when
 			// the user is swiping across the screen
 			var touchMoveHandler = function(e) {
+				e.stopPropagation();
 				var touch = e.touches ? e.touches[0] : e;
 
-				// if not touching or we are not on top of scroll area
-				if (!touching || this.scrollTop > initTop) {
+				// if not touching or we are not on top/bottom of scroll area
+				if (!touching || (!allowPullDown && !allowPullup)) {
 					return;
 				};
 
 				nowY = touch.y || touch.pageY;
 
-				// again a precaution
-				// that the user has started pull down
-				if (startY > nowY) {
-					pulling: false;
+				/**
+				*	what we are checking here is that 
+				*	if user has already scrolled down (startY > nowY)
+				*	we should terminate any efforts to 
+				*	show the pull down action
+
+				*	now what we additionally want here is that
+				*	when the user is the bottom of the screen 
+				*	the same action (starY > nowY) must not stop
+				*	efforts to show the pull up to load next page
+				*
+				*	only once we are throughly statisfied 
+				*	we call preventDefault to stop default scroll effect
+				*/
+				if (startY > nowY && !allowPullup) {
+					pulling = false;
 					return;
 				} else {
-					pulling: true;
+					pulling = true;
+					e.preventDefault();
 				}
-
-				// only when everything checks out
-				// prevent default to block the scrolling
-				e.preventDefault();
 
 				// don't remove, you will learn soon why not
 				$rooms.style.WebkitTransition = '';
-				$notify.style.WebkitTransition = '';
+				if (allowPullDown) {
+					$refresh.style.WebkitTransition = '';
+				} else if (allowPullUp) {
+					$load.style.WebkitTransition = '';
+				}
 
 				var diff = (nowY - startY);
 
 				// we move with the swipe
 				$rooms.style.webkitTransform = 'translateY(' + diff + 'px)';
-				$notify.style.webkitTransform = 'translateY(' + diff + 'px)';
-
-				loadNotify(diff);
+				if (diff > 0) {
+					$refresh.style.webkitTransform = 'translateY(' + diff + 'px)';
+					notifyRefresh(diff);
+				} else {
+					$load.style.webkitTransform = 'translateY(' + diff + 'px)';
+					notifyLoad(diff);
+				}
 			};
 
 			// set of excutions to be executed when
@@ -818,19 +903,33 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var touchStartHandler = function(e) {
 				var touch = e.touches ? e.touches[0] : e;
 
-				// if we are not on top of scroll area
-				if (this.scrollTop > initTop) {
+				// a minor hack since we have a rooms injection throtel
+				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
+
+				// if we are on top or bottom of scroll area
+				if (this.scrollTop == scrollBarOnTop) {
+					allowPullDown = true;
+					allowPullup = false;
+				} else if (this.scrollTop == scrollBarOnBot) {
+					allowPullDown = false;
+					allowPullup = true;
+				} else {
 					return;
-				};
+				}
 
 				touching = true;
 				pulling = false;
 				startY = touch.y || touch.pageY;
 
 				$rooms.style.WebkitTransition = '';
-				$notify.style.WebkitTransition = '';
 
-				$notify.classList.add('show');
+				if ( allowPullDown ) {
+					$refresh.style.WebkitTransition = '';
+					$refresh.classList.add('show');
+				} else if ( allowPullup ) {
+					$load.style.WebkitTransition = '';
+					$load.classList.add('show');
+				};
 
 				// only bind 'touchmove' when required
 				$rooms.addEventListener('touchmove', touchMoveHandler, false);
@@ -842,13 +941,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			var touchEndHandler = function(e) {
 				var touch = e.touches ? e.touches[0] : e;
 
-				// if we are not on top of scroll area
-				if (this.scrollTop > initTop) {
+				// if not touching or we are not on top/bottom of scroll area
+				if (!touching || (!allowPullDown && !allowPullup)) {
 					return;
 				};
 
 				// gotta prevent only when
-				// user has already pulled down
+				// user has already pulled down/up
 				if (pulling) {
 					e.preventDefault();
 				};
@@ -860,40 +959,39 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var diff = (nowY - startY);
 
 				// if we have hit the trigger refresh room list
-				if (diff > trigger) {
-					// fetchRooms
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-						businessDate: $rootScope.businessDate,
-						refresh: true
-					}, function(data) {
-						roomList = data;
-						if ($rootScope.isStandAlone) {
-							// time to decide if this is an employee
-							// who has an active work sheets
-							$_checkHasActiveWorkSheet();
-						} else {
-							$timeout(function() {
-								$_postProcessRooms(roomList);
-							}, 10);
-						};
-					});
+				if (Math.abs(diff) > trigger) {
+					if ( diff > 0 ) {
+						callRefresh();
+					} else {
+						callLoad();
+					};
 				}
 
-				// for the smooth transition back
 				$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
-				$notify.style.WebkitTransition = '-webkit-transform 0.3s';
-
 				$rooms.style.webkitTransform = 'translateY(0)';
-				$notify.style.webkitTransform = 'translateY(0)';
+
+				if ( allowPullDown ) {
+					$refresh.style.WebkitTransition = '-webkit-transform 0.3s';
+					$refresh.style.webkitTransform = 'translateY(0)';
+
+					notifyRefresh();
+
+					$timeout(function() {
+						$refresh.classList.remove('show');
+					}, 320);
+				} else if ( allowPullup ) {
+					$load.style.WebkitTransition = '-webkit-transform 0.3s';
+					$load.style.webkitTransform = 'translateY(0)';
+
+					notifyLoad();
+
+					$timeout(function() {
+						$load.classList.remove('show');
+					}, 320);
+				};
 
 				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener(touchMoveHandler);
-
-				$timeout(function() {
-					$notify.classList.remove('show');
-				}, 320);
-
-				loadNotify();
 			};
 
 			// bind the 'touchstart' handler
