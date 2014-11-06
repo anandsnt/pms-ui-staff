@@ -144,6 +144,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			// need to work extra for standalone PMS
 			if ($rootScope.isStandAlone) {
+				$scope.workTypes = workTypes;
+				$scope.employees = employees;
+
 				// for mobile view spilt
 				$scope.currentView = 'rooms';
 				$scope.changeView = function(view) {
@@ -346,11 +349,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		 *  Emits a call to dismiss the filter screen
 		 */
 		$scope.filterDoneButtonPressed = function() {
-			$_calculateFilters();
-
-			$scope.refreshScroll();
-
 			$scope.filterOpen = false;
+			$scope.$emit('showLoader');
+			$timeout(function() {
+				$scope.rooms = [];
+				$_postProcessRooms();
+			}, 10);
 
 			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
@@ -370,25 +374,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// call caluculate filter in else since
 				// resetting filterByEmployee will call applyEmpfilter 
 				// which in turn will call calculateFilters
-				$_calculateFilters();
-				$scope.refreshScroll();
+				$scope.filterDoneButtonPressed();
 			}
-
-			// save the current edited filter to RVHkRoomStatusSrv
-			// so that they can exist even after HKSearchCtrl init
-			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-			$_calculateFilters();
-
-			$scope.refreshScroll();
-
-			// save the current edited filter to RVHkRoomStatusSrv
-			// so that they can exist even after HKSearchCtrl init
-			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+			$scope.filterDoneButtonPressed();
 		};
 
 		// CICO-10101 #5 requirement: when chosing 'vacant' also show 'queued' since its also vacant
