@@ -4,9 +4,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
 	$scope.setScroller('revenue-content');
     var refreshRevenueScroller = function(){
+        console.log("refreshRevenueScroller");
         setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
     };
-    
+
 	$scope.initRevenueData = function(){
 		var successCallBackFetchRevenueData = function(data){
 			console.log(data);

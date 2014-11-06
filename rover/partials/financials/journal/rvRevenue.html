@@ -1,25 +1,24 @@
 <!-- Content REVENUE-->
 <div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='1000' style="height:90%;">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div class="wrapper">
-
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div id="journal-grid" class="journal-grid">
                 <!-- First level - charge groups -->
-                <div class="grid-group">
-                    <a href="#{charge-group-id}" class="revenue-title has-arrow toggle">
-                        <strong class="name">{Charge Group}</strong>
-                        <span class="value">${amount}</span>
+                <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups"  ng-show="level1.show">
+                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active}" class="revenue-title has-arrow toggle">
+                        <strong ng-show="level1.show" class="name">{{level1.name}}</strong>
+                        <span ng-show="level1.show" class="value">{{currencySymbol}}{{level1.total}}</span>
                     </a>
                     <!-- Second level - charge codes, hidden by default. To show, remove class "hidden" when 1st level anchor is clicked -->
-                    <div id="{charge-group-id}" class="grid-charge hidden1">
-                        <a href="#{charge-code-id}" class="revenue-title has-arrow toggle">
-                            <span class="code">1001</span>
-                            <strong class="name">Accommodation</strong>
-                            <span class="value">$9816.40</span>
+                    <div ng-repeat="(index2 ,level2) in level1.charge_codes" ng-show="level1.active" class="grid-charge hidden1">
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active}" ng-show="level1.active && level2.show" class="revenue-title has-arrow toggle">
+                            <span class="code" ng-show="level2.show">{{level2.id}}</span>
+                            <strong class="name" ng-show="level2.show">{{level2.name}}</strong>
+                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total}}</span>
                         </a>
                         <!-- Third level - postings, hidden by default. To show, remove class "hidden" when 2nd level anchor is clicked -->
-                        <table id="{charge-code-id}" class="grid-items hidden1">
-                            <thead>
+                        <table ng-show="level2.active && level2.show" class="grid-items hidden1">
+                            <thead ng-show="isShowTableHeading(index1 ,index2)">
                                 <tr>
                                     <th scope="col">Room</th>
                                     <th scope="col">Name</th>
@@ -32,23 +31,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>{room #</td>
-                                    <td>{guest name}</td>
-                                    <td>{res. number}</td>
-                                    <td>{type}</td>
-                                    <td>{details}</td>
-                                    <td>{time}</td>
-                                    <td>{debit}</td> 
-                                    <td>{credit</td> 
+                                <tr ng-repeat="(index3 ,level3) in level2.transactions" ng-show="level3.show">
+                                    <td>{{level3.room}}</td>
+                                    <td>{{level3.name}}</td>
+                                    <td>{{level3.reservation_number}}</td>
+                                    <td>{{level3.type}}</td>
+                                    <td>{{level3.details}}</td>
+                                    <td>{{level3.time}}</td>
+                                    <td>{{level3.debit}}</td> 
                                 </tr>
-                                .. repeat for each posting
+                                
                             </tbody>
                         </table>
-                        ... repeat for each charge code
+                        
                     </div>
                 </div>
-                ... repeat for each charge group
+                
             </div>
 
 
