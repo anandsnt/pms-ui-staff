@@ -15,7 +15,8 @@ sntRover.controller('rvDashboardGuestWidgetController',['$scope', 'RVSearchSrv',
     $scope.clickedOnGuestsToday = function(event, type, numberOfReservation) {
         //disable reservation search for house keeping 
         if(!$scope.disableReservations){ 
-            $state.go('rover.search', {'type': type});
+            var stateParams = {'type': type, 'from_page': 'DASHBOARD'};
+            $state.go('rover.search', stateParams);
         }
         else
             return;

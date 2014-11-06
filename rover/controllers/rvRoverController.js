@@ -647,7 +647,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
-          'type': type
+          'type': type,
+          'from_page': 'DASHBOARD'
         });
       }
     };
@@ -659,7 +660,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       } else {
         $state.go('rover.search', {
-          'type': 'QUEUED_ROOMS'
+          'type': 'QUEUED_ROOMS',
+          'from_page': 'DASHBOARD'
         });
       }
     };
