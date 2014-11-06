@@ -103,7 +103,7 @@ Model.prototype = {
 	Time.prototype.toString = function(asAMPM) {
 		var hours = (this.hours < 10) ? '0' + this.hours : this.hours, 
 			min = (this.minutes < 10) ? '0' + this.minutes : this.minutes, 
-			ampm; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
+			ampm = ''; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
 
 		if(asAMPM) {
 			hours = hours % 12;
@@ -177,6 +177,9 @@ if(typeof Date.prototype.toComponents === 'undefined') {
 				monthName: __MONTHS[this.getMonth()],
 				year: this.getFullYear(),
 				toDateString: function() {
+					return this.year + '-' + this.month + '-' + (this.day.length < 2 ? '0' : '') + this.day;
+				},
+				fromDate: function() {
 					var tmp = this.toLocaleDateString().replace(/\//g, '-').split('-').reverse();
 
 					return tmp.shift() + '-' + temp.reverse().join('-');

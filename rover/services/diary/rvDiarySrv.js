@@ -28,8 +28,8 @@ sntRover
 		rate_type_id: 'rate_type_id'
 	}
 })
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
-    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
+.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryUtilSrv', 'rvDiaryConstants', 'rvDiaryMetadata', 
+    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryUtilSrv, rvDiaryConstants, rvDiaryMetadata) {
     	var meta = rvDiaryMetadata,
     		index;
 
@@ -40,12 +40,6 @@ sntRover
     		room_types: 	{},
     		occupancies: 	{}
     	};
-
-		//this.availability_count = [];
-    	//this.availability 		= [];
-    	//this.occupancy 			= [];
-    	//this.rooms 				= [];
-    	//this.room_types 		= [];
 
     	(function() { 
     		var defaults = function(url, type) {
@@ -84,7 +78,7 @@ sntRover
     			index = index || Object.create(null);
 
     		for(i = 0; i < len; ++i) {
-    			index[collection[i].id] = collection[i];
+    			index[collection[i].id] = rvDiaryUtilSrv.deepCopy(collection[i]);
     		}
     	};
 
@@ -139,8 +133,8 @@ sntRover
     			room_type = index.room_types[room.room_type_id];
 
     		if(!Object.prototype.hasOwnProperty.call(occupancy, '__ready')) {
-    			occupancy.key 					= _.uniqueId('oc-' + occupancy[meta.occupancy.id] + '-');
-				occupancy[m.start_date] 		= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
+    			occupancy.key 				= _.uniqueId('oc-' + occupancy[meta.occupancy.id] + '-');
+				occupancy[m.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
 			    occupancy[m.end_date] 	    = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
 			    occupancy[m.maintenance] 	= this.normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
 			    occupancy[m.room_type] 		= room_type.name;
@@ -177,16 +171,6 @@ sntRover
 
     		r[meta.room.row_children] = _.union(r[meta.room.row_children], incomingData);
     	};
-    	
-    	function copyArray(src, dest){
-    		dest = [];
-
-    		for(var i = 0, len = src.length; i < len; i++) {
-    			dest.push(_.extend({}, src[i]));
-    		}
-
-    		return dest;
-    	}
 
     	this.init = function(start_date, end_date) {
 			var self = this, 
@@ -271,9 +255,11 @@ sntRover
 
 			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
 			.then(function(payload) {
-		   		var data 	= copyArray(payload.results[0].availability),
-		   			start 	= start_date.toComponents().time,
-		   			end 	= end_date.toComponents().time,
+		   		var data 	= payload.results[0].availability,
+		   			st  	= start_date.toComponents().time,
+		   			et  	= end_date.toComponents().time,
+		   			sd      = start_date.toComponents().date,
+		   			ed 		= end_date.toComponents().date,
 		   			availability = [],
 		   			slot;
 
@@ -283,10 +269,10 @@ sntRover
 
 			   			slot.temporary 				= true;
 			   			slot.room_id 				= slot.id;
-			   			slot.arrival_date 			= start_date.toLocaleDateString();
-			   			slot.arrival_time 			= start.hours + ':' + (start.minutes < 10 ? '0' : '') + start.minutes;
-			   			slot.departure_date 		= end_date.toLocaleDateString();
-			   			slot.departure_time 		= end.hours + ':' + (end.minutes < 10 ? '0' : '') + end.minutes;
+			   			slot.arrival_date 			= sd.toDateString();
+			   			slot.arrival_time 			= st.toString();
+			   			slot.departure_date 		= ed.toDateString();
+			   			slot.departure_time 		= et.toString();
 			   			slot.reservatopm_status 	= 'available';
 			   			slot.room_service_status 	= '';
 			   			slot.reservation_id 		= gen_uid;

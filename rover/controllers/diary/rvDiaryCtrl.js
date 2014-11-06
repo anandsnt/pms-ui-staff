@@ -440,7 +440,7 @@ sntRover.controller('RVDiaryCtrl',
 				return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15);
 			})
 			.then(function(data) {
-				 $scope.arrival_times = data;
+				$scope.arrival_times = data;
 				$scope.renderGrid();		
 			});	
 		}
@@ -449,7 +449,7 @@ sntRover.controller('RVDiaryCtrl',
 	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if(!$scope.gridProps.edit.active) {
-				updateFilter();
+				retrieveAvailableSlots($scope.gridProps.display, $scope.gridProps.filter, $scope.data);
 			}
 		}
 	});
@@ -457,7 +457,7 @@ sntRover.controller('RVDiaryCtrl',
 	$scope.$watch('gridProps.filter.room_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
-				updateFilter();
+				retrieveAvailableSlots($scope.gridProps.display, $scope.gridProps.filter, $scope.data);
 			}
 		}
 	});
@@ -465,7 +465,7 @@ sntRover.controller('RVDiaryCtrl',
 	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
-				updateFilter();
+				retrieveAvailableSlots($scope.gridProps.display, $scope.gridProps.filter, $scope.data);
 			}			
 		}
 	});
@@ -473,15 +473,16 @@ sntRover.controller('RVDiaryCtrl',
 	/*END INITIALIZATION METHOD IN PROTECTED SCOPE*/
 	/*--------------------------------------------------*/
 
-	function updateFilter(display, filter, data) {	
+	function retrieveAvailableSlots(display, filter, data) {	
 		filter = _.extend({}, filter);
 
 		rvDiaryUtilSrv.clearRoomQuery(data);
 
 		injectAvailableTimeSlots(Time({ 
-									hours: display.new_reservation_time_span }),
-							     filter,
-							     data);
+									hours: display.new_reservation_time_span 
+								}),
+							    filter,
+							    data);
 	}
 
 	function injectAvailableTimeSlots(time_span, filter, data) {
@@ -505,8 +506,6 @@ sntRover.controller('RVDiaryCtrl',
 		rvDiarySrv.fetchAvailability(start, end, 377, rt_keys)
 		.then(function(data) {
 			console.log(data);
-
-
 
 			$scope.renderGrid();
 		});

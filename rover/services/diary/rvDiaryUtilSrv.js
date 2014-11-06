@@ -13,7 +13,9 @@ sntRover
     		removeReservation,
     		clearRoomQuery,
     		reservationRoomTransfer,
-    		clearRowClasses;
+    		clearRowClasses,
+    		deepCopy,
+    		copyArray;
 
 	 	findRoom = function(room) {
 			return index.rooms[room[meta.room.id]];
@@ -50,25 +52,52 @@ sntRover
 		};
 
 		copyReservation = function(reservation) {
-			//var newReservation = _.extend({}, reservation);
-
-			//newReservation.start_date = new Date(newReservation.start_date);
-			//newReservation.end_date = new Date(newReservation.end_date);
-
 			return _.extend({}, reservation);
 		};
+
+		deepCopy = function(obj) {
+			var hops = Object.prototype.hasOwnProperty,
+				slice = Array.prototype.slice,
+				newRes = {};
+
+			for(var k in  obj) {
+				if(hops.call(obj, k)) {
+					if(obj[k] instanceof Date) {
+						newRes[k] = new Date(obj[k].getTime());
+					} else if(_.isArray(obj[k])) {
+						newRes[k] = deepCopy(slice.call(obj[k]));
+					} else if(_.isObject(obj[k])) {
+						newRes[k] = deepCopy(obj[k]);
+					} else {
+						newRes[k] = obj[k];
+					}
+				}
+			}
+
+			return newRes;
+		};
+
+		copyArray = function(src, dest){
+    		dest = [];
+
+    		for(var i = 0, len = src.length; i < len; i++) {
+    			dest.push(_.extend({}, src[i]));
+    		}
+
+    		return dest;
+    	};
 
 		copyRoom = function(room) {
 			var rc_meta = meta.room.row_children,
 				newRoom = {}, 
-				resLen = (_.isArray(room[rc_meta]) ? room[rc_meta].length : 0);
+				resLen = (_.isArray(room.occupancy) ? room.occupancy.length : 0);
 
 			_.extend(newRoom, room);
 
-			newRoom[rc_meta] = [];
+			newRoom.occupancy = [];
 
 			for(var i = 0; i < resLen; i++) {
-				newRoom[rc_meta].push(copyReservation(room[rc_meta][i]));
+				newRoom.occupancy.push(copyReservation(room.occupancy[i]));
 			}
 
 			return newRoom;
@@ -103,9 +132,9 @@ sntRover
 				occupancy = [];
 
 			if(!_.isArray(rooms)) {
-				throw Error('rooms is not an array.');
+				return;
 			}
-			
+
 			for(var i = 0, len = rooms.length; i < len; i++) {
 				room = rooms[i];
 
