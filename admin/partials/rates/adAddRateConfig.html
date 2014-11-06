@@ -103,23 +103,14 @@
     <div class="full-width">
         <label class="day_rates">Day Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable">
-            <tr class="day_night_rates">
-                <td width="9%" align="right">Add per hour</td>
-                <td width="1%">&nbsp;</td>
+            <tr class="day_night_rates">                
                 <td width="9%" align="left">Min. Hours</td>
                 <td width="1%" align="center">&nbsp;</td>
                 <td width="9%" align="left">Max. hours</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="13%" align="left">Check out cut-off</td>
-                
+                <td width="13%" align="left">Check out cut-off</td>                
             </tr>
-            <tr>
-                <td align="left">
-                    <div class ="rate_entry">
-                        <input ng-model="set.day_hourly_increment_amount" type="text">
-                    </div>
-                </td>
-                <td align="center">&nbsp;</td>
+            <tr>               
                 <td align="left">
                     <div class ="rate_entry">
                         <input ng-model="set.day_min_hours" type="text" >
@@ -258,16 +249,15 @@
             </table>
         </div>
         <div id="hourlyRateDraw" ng-init="hourlyDraw = false">            
-            <div class="draw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">
-                <span ng-click="hourlyDraw = !hourlyDraw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">Increments & Nightly Rates</span>
-                <img src="/assets/arrow-right.png">
+            <div class="draw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">                
+                <span ng-click="hourlyDraw = !hourlyDraw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">Increments & Nightly Rates</span>                
                 <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="30%" align="right">ADD PER HOUR ON DAY RATE</td>
                         <td width="2%">&nbsp;</td>
-                        <td width="30%" align="center">NIGHLTY RATE</td>                    
+                        <td class="nightly" width="30%" align="center">NIGHLTY RATE</td>                    
                         <td width="2%" align="center">&nbsp;</td>
-                        <td width="30%" align="center">ADD HOURLY IN DAY ON RATE</td>                    
+                        <td class="nightly" width="30%" align="center">ADD HOURLY IN DAY ON RATE</td>                    
                         <td width="2%" align="center">&nbsp;</td>
                     </tr>
                     <tr ng-repeat="room_rate in set.room_rates">

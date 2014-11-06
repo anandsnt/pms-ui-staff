@@ -116,7 +116,7 @@
 }
 
 .night_rates{
-  color:#A8A9C9
+  color:#7D80CB
 }
 
 .basedon_option_hidden{
@@ -923,30 +923,71 @@ td{
 		float: right;
 		margin-top: 50px;
 	}
+
+
+
   #hourlyRateDraw{
     position: relative;
-    span{      
-      position: relative;
-      left: 385px;
-      width: 96px;
+    .nightly{
+      color:#7D80CB
+    }
+    .night_rate_entry{
+      input{
+        background-color: #eee;
+      }
+    }
+    span{
+      cursor: pointer;
+      background: #fcfcfc;
+      -webkit-border-top-right-radius: 5px;
+      -webkit-border-bottom-right-radius: 5px;
+      -moz-border-radius-topright: 5px;
+      -moz-border-radius-bottomright: 5px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;    
+      position: relative;      
+      width: 135px;
       display: inline-block;
+      left: 0px;
+      padding: 12px 30px 0 20px;
+      -webkit-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
+      -moz-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
+      box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
+      line-height: 12px;
+      height: 45px;      
       &.closed{
         left:0px;
+        background: #ffffff url(/assets/arrow-right.png) 95% 50% no-repeat;
+      }
+      &.open{
+        left: 285px;
+        background: #ffffff url(/assets/arrow-left.png) 95% 50% no-repeat;
       }
     }
     .draw{
-      top: 100px;
-      height: 200px;      
+      top: 90px;
+      background: #fcfcfc;
+      padding-bottom: 25px;
+      padding-right: 15px;
       position: absolute;            
       z-index: 101;
       left: 15%;
-
+      -webkit-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
+      -moz-box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
+      box-shadow: 7px 1px 7px -4px rgba(0,0,0,0.75);
       &.closed{        
-        width: 0px;        
+        width: 10px;
+        padding-right: 10px;        
       }
       &.open{
-        width: 400px;        
+        width: 300px;        
       }
     }
   }
+}
+
+.config-wrapper{
+  margin-top: 50px;
+  border-top: 1px solid rgb(229, 229, 229);
+  padding-top: 10px;
 }
