@@ -10,7 +10,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 	'workTypes',
 	'roomTypes',
 	'floors',
-	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, roomList, employees, workTypes, roomTypes, floors) {
+	'$window',
+	function($scope, $rootScope, $timeout, $state, $filter, RVHkRoomStatusSrv, roomList, employees, workTypes, roomTypes, floors, $window) {
 
 		// hook it up with base ctrl
 		BaseCtrl.call(this, $scope);
@@ -59,24 +60,33 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$_defaultEmp,
 			$_hasActiveWorkSheet,
 			$_page = 1,
-			$_perPage = 50;
+			$_perPage = $window.innerWidth < 599 ? 25 : 50;
 
 		// inital page related properties
-		$scope.resultFrom = 1,
-		$scope.resultUpto = 50,
+		$scope.resultFrom = $_page,
+		$scope.resultUpto = $_perPage,
 		$scope.totalCount = 0;
 		$scope.disablePrevBtn = true;
 		$scope.disableNextBtn = true;
 
 		$scope.loadNextPage = function() {
+			if ($scope.disableNextBtn) {
+				return;
+			};
+
 			$_page++;
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
 				businessDate: $rootScope.businessDate,
 				page: $_page,
+				perPage: $_perPage
 			}, $_fetchRoomListCallback);
 		};
 
 		$scope.loadPrevPage = function() {
+			if ($scope.disablePrevBtn) {
+				return;
+			};
+
 			$_page--;
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
 				businessDate: $rootScope.businessDate,
@@ -106,22 +116,18 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		function $_fetchRoomListCallback(data) {
-			if (typeof data === 'object' && data.hasOwnProperty('rooms')) {
+			if ( !!data ) {
 				$_roomList = data;
 			};
 
-			$scope.totalCount = $_roomList.total_count || 200;	// 200 for testing, remove after API completes
+			$scope.totalCount = $_roomList.total_count;
 
-			// page 1 will show 50 results
 			if ( $_page === 1 ) {
 				$scope.resultFrom = 1;
 				$scope.resultUpto = $scope.totalCount < $_perPage ? $scope.totalCount : $_perPage;
 				$scope.disablePrevBtn = true;
 				$scope.disableNextBtn = $scope.totalCount > $_perPage ? false : true;
-			}
-			// other pages will show 25 results
-			else {
-				var upto = $scope.resultUpto * 1;
+			} else {
 				$scope.resultFrom = $_perPage * ($_page - 1) + 1;
 				$scope.resultUpto = ($scope.resultFrom + $_perPage - 1) < $scope.totalCount ? ($scope.resultFrom + $_perPage - 1) : $scope.totalCount;
 				$scope.disablePrevBtn = false;
@@ -132,15 +138,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.showPickup = $_roomList.use_pickup || false;
 			$scope.showInspected = $_roomList.use_inspected || false;
 			$scope.showQueued = $_roomList.is_queue_rooms_on || false;
-
-			var _additionalApiFetchCallback = function() {
-				$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-				$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
-
-				// time to decide if this is an employee
-				// who has an active work sheets
-				$_checkHasActiveWorkSheet();
-			}
 
 			// need to work extra for standalone PMS
 			if ($rootScope.isStandAlone) {
@@ -153,14 +150,23 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.currentView = view;
 				};
 
+				var _preHasActiveWorkSheet = function() {
+					$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
+					$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+
+					// time to decide if this is an employee
+					// who has an active work sheets
+					$_checkHasActiveWorkSheet();
+				}
+
 				if ( workTypes.length && employees.length ) {
-					_additionalApiFetchCallback();
+					_preHasActiveWorkSheet();
 				} else {
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
 						$scope.workTypes = data;
 						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
 							$scope.employees = data;
-							_additionalApiFetchCallback();
+							_preHasActiveWorkSheet();
 						});
 					});
 				};
@@ -423,7 +429,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		 *  A method which checks the filter option status and see if the room should be displayed
 		 */
 		function $_calculateFilters(source) {
-			var source = source || $scope.rooms;
+			var source = source || $_roomList.rooms;
 			if ( Object.prototype.toString.apply(source) !== '[object Array]' ) {
 				return;
 			};
@@ -768,8 +774,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// could be moved to a directive,
 		// but addicted by the amount of control
 		// and power it gives here
-		var pullRefresh = function() {
+		// UPDATE: using $scope prop/methods here, almost impossible to move to a directive
+		var $_pullUpDownModule = function() {
 
+			// YOU SHALL NOT BOUNCE!
 			document.addEventListener('touchmove', function(e) {
 				e.stopPropagation();
 			});
@@ -796,14 +804,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// translate cache
 			var PULL_REFRESH = $filter('translate')('PULL_REFRESH'),
 				RELEASE_REFRESH = $filter('translate')('RELEASE_REFRESH'),
-				PULL_LOAD = $filter('translate')('PULL_LOAD'),
-				RELEASE_LOAD = $filter('translate')('RELEASE_LOAD');
+				PULL_LOAD_NEXT = $filter('translate')('PULL_LOAD_NEXT'),
+				RELEASE_LOAD_NEXT = $filter('translate')('RELEASE_LOAD_NEXT'),
+				PULL_LOAD_PREV = $filter('translate')('PULL_LOAD_PREV'),
+				RELEASE_LOAD_PREV = $filter('translate')('RELEASE_LOAD_PREV');
 
 			// methods to modify the $refreshText and rotate $refreshArrow
-			var notifyRefresh = function(diff) {
+			var notifyPullDownAction = function(diff) {
 				if (!diff) {
 					$refreshArrow.className = '';
-					$refreshTxt.innerHTML = PULL_REFRESH;
+					$refreshTxt.innerHTML = $scope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 					return;
 				};
 
@@ -814,16 +824,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				}
 
 				if (diff > trigger - 30) {
-					$refreshTxt.innerHTML = RELEASE_REFRESH;
+					$refreshTxt.innerHTML = $scope.disablePrevBtn ? RELEASE_REFRESH : RELEASE_LOAD_PREV;
 				} else {
-					$refreshTxt.innerHTML = PULL_REFRESH;
+					$refreshTxt.innerHTML = $scope.disablePrevBtn ? PULL_REFRESH : PULL_LOAD_PREV;
 				}
 			};
 
-			var notifyLoad = function(diff) {
+			var notifyPullUpAction = function(diff) {
 				if (!diff) {
 					$loadArrow.className = '';
-					$loadTxt.innerHTML = PULL_LOAD;
+					$loadTxt.innerHTML = PULL_LOAD_NEXT;
 					return;
 				};
 
@@ -834,21 +844,25 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				}
 
 				if (Math.abs(diff) > trigger - 30) {
-					$loadTxt.innerHTML = RELEASE_LOAD;
+					$loadTxt.innerHTML = RELEASE_LOAD_NEXT;
 				} else {
-					$loadTxt.innerHTML = PULL_LOAD;
+					$loadTxt.innerHTML = PULL_LOAD_NEXT;
 				}
 			};
 
-			var callRefresh = function() {
-				$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
-					businessDate: $rootScope.businessDate,
-					page: $_page,
-					perPage: $_page == 1 ? 50 : $_perPage
-				}, $_fetchRoomListCallback);
+			var callPulldownAction = function() {
+				if ( !$scope.disablePrevBtn ) {
+					$scope.loadPrevPage();
+				} else {
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+						businessDate: $rootScope.businessDate,
+						page: $_page,
+						perPage: $_perPage
+					}, $_fetchRoomListCallback);
+				};
 			};
 
-			var callLoad = function() {
+			var callPullUpAction = function() {
 				$scope.loadNextPage();
 			};
 
@@ -856,116 +870,100 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// the user is swiping across the screen
 			var touchMoveHandler = function(e) {
 				e.stopPropagation();
-				var touch = e.touches ? e.touches[0] : e;
+				var touch = e.touches ? e.touches[0] : e,
+					diff = 0,
+					translateDiff = '',
+					commonEx = function() {
+						pulling = true;
+						e.preventDefault();
+						diff = (nowY - startY);
+						translateDiff = 'translate3d(0, ' + diff + 'px, 0)';
+						$rooms.style.WebkitTransition = '';
+						$rooms.style.webkitTransform = translateDiff;
+					};
 
 				// if not touching or we are not on top or bottom of scroll area
-				if (!touching) {
+				if (!touching && this.scrollTop !== scrollBarOnTop && this.scrollTop !== scrollBarOnBot) {
 					return;
 				};
 
 				nowY = touch.y || touch.pageY;
 
-				/**
-				*	what we are checking here is that 
-				*	if user has already scrolled down (startY > nowY)
-				*	we should terminate any efforts to 
-				*	show the pull down action
-
-				*	now what we additionally want here is that
-				*	when the user is the bottom of the screen 
-				*	the same action (starY > nowY) must not stop
-				*	efforts to show the pull up to load next page
-				*
-				*	only once we are throughly statisfied 
-				*	we call preventDefault to stop default scroll effect
-				*/
-				if (startY > nowY && this.scrollTop < scrollBarOnBot) {
+				// if: pull down on page start, else: pull up on page end
+				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
+					commonEx();
+					$refresh.classList.add('show');
+					$refresh.style.WebkitTransition = '';
+					$refresh.style.webkitTransform = translateDiff;
+					notifyPullDownAction(diff);
+				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+					commonEx();
+					$load.classList.add('show');
+					$load.style.WebkitTransition = '';
+					$load.style.webkitTransform = translateDiff;
+					notifyPullUpAction(diff);
+				} else {
 					pulling = false;
 					return;
-				} else {
-					pulling = true;
-					e.preventDefault();
-				}
-
-				// don't remove, you will learn soon why not
-				$rooms.style.WebkitTransition = '';
-				if ( this.scrollTop === scrollBarOnTop ) {
-					$refresh.style.WebkitTransition = '';
-				} else if ( this.scrollTop === scrollBarOnBot ) {
-					$load.style.WebkitTransition = '';
-				}
-
-				var diff = (nowY - startY);
-
-				// we move with the swipe
-				$rooms.style.webkitTransform = 'translateY(' + diff + 'px)';
-				if (diff > 0) {
-					$refresh.style.webkitTransform = 'translateY(' + diff + 'px)';
-					notifyRefresh(diff);
-				} else {
-					$load.style.webkitTransform = 'translateY(' + diff + 'px)';
-					notifyLoad(diff);
-				}
+				};
 			};
 
 			// set of excutions to be executed when
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
-				var touch = e.touches ? e.touches[0] : e;
+				var touch = e.touches ? e.touches[0] : e,
+					diff = 0,
+					addTransition = '-webkit-transform 0.3s',
+					translateZero = 'translate3d(0, 0, 0)',
+					commonEx = function() {
+						if (pulling) {
+							e.preventDefault();
+						};
+						diff = (nowY - startY);
+						$rooms.style.WebkitTransition = addTransition;
+						$rooms.style.webkitTransform = translateZero;
+						$rooms.removeEventListener(touchMoveHandler);
 
-				// if not touching or we are not on top/bottom of scroll area
-				if (!touching) {
-					return;
-				};
+						touching = false;
+						pulling = false;
+					};
 
-				// gotta prevent only when
-				// user has already pulled down/up
-				if (pulling) {
-					e.preventDefault();
-				};
-
-				touching = false;
-				pulling = false;
 				nowY = touch ? (touch.y || touch.pageY) : nowY;
 
-				var diff = (nowY - startY);
-
-				// if we have hit the trigger refresh room list
-				if (Math.abs(diff) > trigger) {
-					if ( diff > 0 ) {
-						callRefresh();
-					} else {
-						callLoad();
-					};
-				}
-
-				$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
-				$rooms.style.webkitTransform = 'translateY(0)';
-
-				if ( this.scrollTop === scrollBarOnTop ) {
-					$refresh.style.WebkitTransition = '-webkit-transform 0.3s';
-					$refresh.style.webkitTransform = 'translateY(0)';
-
-					notifyRefresh();
-
+				// if: pull down on page start, else: pull up on page end
+				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
+					commonEx();
+					if ( Math.abs(diff) > trigger ) {
+						callPulldownAction();
+					}
+					$refresh.style.WebkitTransition = addTransition;
+					$refresh.style.webkitTransform = translateZero;
+					notifyPullDownAction();
 					$timeout(function() {
 						$refresh.classList.remove('show');
+						if ( Math.abs(diff) > trigger ) {
+							$scope.refreshScroll();
+						}
 					}, 320);
-				} else if ( this.scrollTop === scrollBarOnBot ) {
-					$load.style.WebkitTransition = '-webkit-transform 0.3s';
-					$load.style.webkitTransform = 'translateY(0)';
-
-					notifyLoad();
-
+				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+					commonEx();
+					if ( Math.abs(diff) > trigger ) {
+						callPullUpAction();
+					}
+					$load.style.WebkitTransition = addTransition;
+					$load.style.webkitTransform = translateZero;
+					notifyPullUpAction();
 					$timeout(function() {
 						$load.classList.remove('show');
+						if ( Math.abs(diff) > trigger ) {
+							$scope.refreshScroll();
+						}
 					}, 320);
+				} else {
+					$rooms.removeEventListener(touchMoveHandler);
+					return;
 				};
-
-				// 'touchmove' handler is not necessary
-				$rooms.removeEventListener(touchMoveHandler);
-				$rooms.removeEventListener(touchEndHandler);
 			};
 
 			// set of excutions to be executed when
@@ -976,17 +974,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// a minor hack since we have a rooms injection throtel
 				scrollBarOnBot = $roomsList.clientHeight - $rooms.clientHeight;
 
-				// if we are not on top or bottom of scroll area
-				if (this.scrollTop > scrollBarOnTop && this.scrollTop < scrollBarOnBot) {
-					return;
-				};
-
 				touching = true;
 				pulling = false;
 				startY = touch.y || touch.pageY;
 
 				$rooms.style.WebkitTransition = '';
 
+				// if: pull down on page start, else: pull up on page end
 				if ( this.scrollTop === scrollBarOnTop ) {
 					$refresh.style.WebkitTransition = '';
 					$refresh.classList.add('show');
@@ -997,18 +991,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				// only bind 'touchmove' when required
 				$rooms.addEventListener('touchmove', touchMoveHandler, false);
-				$rooms.addEventListener('touchend', touchEndHandler, false);
-				$rooms.addEventListener('touchcancel', touchEndHandler, false);
 			};
 
 			// bind the 'touchstart' handler
 			$rooms.addEventListener('touchstart', touchStartHandler, false);
 
-			// bind the 'touchend' handler
-			// $rooms.addEventListener('touchend', touchEndHandler, false);
+			// bind the 'touchstart' handler
+			$rooms.addEventListener('touchend', touchEndHandler, false);
 
-			// bind the 'touchcancel' handler
-			// $rooms.addEventListener('touchcancel', touchEndHandler, false);
+			// bind the 'touchstart' handler
+			$rooms.addEventListener('touchcancel', touchEndHandler, false);
 
 			// remove the DOM binds when this scope is distroyed
 			$scope.$on('$destroy', function() {
@@ -1018,10 +1010,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			});
 		};
 
-		// initiate pullRefresh
+		// initiate $_pullUpDownModule
 		// dont move these codes outside this controller
 		// DOM node will be reported missing
-		pullRefresh();
+		$_pullUpDownModule();
 
 
 		// There are a lot of bindings that need to cleared

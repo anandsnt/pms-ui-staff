@@ -63,6 +63,12 @@
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': currentView == 'summary'}" div-touch-move-stop-propogate>
   <ul class="wrapper search-results" ng-hide="rooms.length === 0 && !!(rooms | filter:{display_room:true})">
+    <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+        <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
+        <p class="pull-msg" ng-show="!disablePrevBtn">Pull down to load previous page</p>
+        <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
+    </li>
+
     <li class="room" bindonce ng-repeat="room in rooms" ng-if="room.display_room">
         <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
           <div class="data">
@@ -101,9 +107,9 @@
         </a>
     </li>
 
-    <li class="mobile-pagination">
+    <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
         <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
-        <p class="pull-msg">Pull up to load next page</p>
+        <p class="pull-msg" ng-show="!disableNextBtn">Pull up to load next page</p>
     </li>
   </ul>
   

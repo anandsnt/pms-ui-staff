@@ -93,7 +93,7 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.fetchRoomList = function(params) {
 			var deferred = $q.defer(),
 				page = params.page || 1,
-				perPage = params.perPage || 25,
+				perPage = params.perPage || 50,
 				url = '/house/search.json?date=' + params.businessDate + '&page=' + page + '&per_page=' + perPage;
 
 			$http.get(url)
