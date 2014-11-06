@@ -2,6 +2,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 		
 	BaseCtrl.call(this, $scope);	
 	// Setting up the screen heading and browser title.
+    
+    if($stateParams.id == 0){
+        $scope.$emit("updateRoverLeftMenu", "journals");
+    }
+    else{
+        $scope.$emit("updateRoverLeftMenu", "cashier"); 
+    }
 	$scope.$emit('HeaderChanged', $filter('translate')('MENU_JOURNAL'));
 	$scope.setTitle($filter('translate')('MENU_JOURNAL'));
 	$scope.data = {};
