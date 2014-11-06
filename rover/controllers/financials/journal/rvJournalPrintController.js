@@ -80,19 +80,27 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			
 			if(charge_groups.id == $scope.data.selectedChargeGroup){
 				
-				charge_groups.show = true;
-
-				angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
-					
-					var obj = { "id": charge_codes.id , "name": charge_codes.name };
-       				$scope.data.activeChargeCodes.push(obj);
-				});
+				if(charge_groups.show){
+					charge_groups.show = true;
+					charge_groups.filterFlag = true;
+					angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
+						if(charge_codes.show){
+							charge_codes.filterFlag = true;
+							var obj = { "id": charge_codes.id , "name": charge_codes.name };
+		       				$scope.data.activeChargeCodes.push(obj);
+	       				}
+					});
+				}
+				else{
+					charge_groups.filterFlag = false;
+					console.log("not found");
+				}
 			}
 			else if($scope.data.selectedChargeGroup == 'ALL'){
-				charge_groups.show = true;
+				charge_groups.filterFlag = true;
 			}
 			else{
-				charge_groups.show = false;
+				charge_groups.filterFlag = false;
 			}
        	});
        	$scope.data.selectedChargeCode = 'ALL';
@@ -106,12 +114,19 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
 
 				if((charge_codes.id == $scope.data.selectedChargeCode) || ($scope.data.selectedChargeCode == 'ALL')){
-					charge_codes.show = true;
-					charge_groups.active = true;
+
+					if(charge_codes.show) {
+						charge_codes.filterFlag = true;
+						charge_groups.active = true;
+					}
+					else{
+						charge_codes.filterFlag = false;
+					}
+
 					$scope.toggleRevenueTransactions();
 				}
 				else{
-					charge_codes.show = false;
+					charge_codes.filterFlag = false;
 				}
 			});
        	});
@@ -152,35 +167,14 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 		// Adding Show status flag to each item.
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
-			if((level1 && $scope.data.selectedChargeGroup == 'ALL') || (level1 && $scope.data.selectedChargeGroup == charge_groups.id)){
-				charge_groups.show 	 = true;
-				charge_groups.active = true ;
-			}
-			else{
-				charge_groups.show 	 = false;
-				charge_groups.active = false;
-			}
-
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
-            	if((level2 && $scope.data.selectedChargeCode == 'ALL') || (level2 && $scope.data.selectedChargeCode == charge_codes.id)){
-            		charge_codes.show 	= true;
+            	if(level3 && charge_codes.filterFlag){
             		charge_codes.active = true;
             	}
             	else{
-            		charge_codes.show 	= false;
-            		charge_codes.active = false;
+            	 	charge_codes.active = false;
             	}
-
-                angular.forEach(charge_codes.transactions,function(transactions, index3) {
-                	
-                	if(level3){
-                		charge_codes.active = true;
-                	}
-                	else{
-                	 	charge_codes.active = false;
-                	}
-                });
             });
         });
 	};
