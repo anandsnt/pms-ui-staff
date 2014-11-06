@@ -226,7 +226,10 @@
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
                 <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">                	
-                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="http://localhost:3000/"></iframe>
+                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" ></iframe>
+                </div>
+                 <div class="actions" >
+                    <button class="button" type="button" translate >START_PAYMENT_PROCESS</button>
                 </div>
                 <div class="actions">
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonDisabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonDisabled">SUBMIT_RESERVATION</button>
