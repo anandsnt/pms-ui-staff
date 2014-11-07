@@ -66,8 +66,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
 
+	
 
     //set flag if standalone PMS
     if (hotelDetails.pms_type === null) {
@@ -317,7 +319,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $scope.activeSubMenu = [];
         $scope.toggleDrawerMenu();
       }
-    }
+    };
 
     $scope.$on("updateSubMenu", function(idx, item) {
       $rootScope.updateSubMenu(idx, item);
@@ -649,7 +651,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       if ($rootScope.default_dashboard != 'HOUSEKEEPING') {
         var type = "LATE_CHECKOUT";
         $state.go('rover.search', {
-          'type': type
+          'type': type,
+          'from_page': 'DASHBOARD'
         });
       }
     };
@@ -661,7 +664,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       } else {
         $state.go('rover.search', {
-          'type': 'QUEUED_ROOMS'
+          'type': 'QUEUED_ROOMS',
+          'from_page': 'DASHBOARD'
         });
       }
     };

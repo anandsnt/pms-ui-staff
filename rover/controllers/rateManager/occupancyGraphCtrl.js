@@ -20,6 +20,13 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 			title: {
 				text: '',
 				enabled: false
+			},
+			options: {
+				chart: { },
+				xAxis: { },
+				yAxis: { },
+				legend: { },
+				plotOptions: { }
 			}
 		};
 		$scope.seriesActualVisible = true;
@@ -307,6 +314,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 					maxTarget = findMax('target', true);
 
 					max = ((maxActual > maxTarget) ? maxActual : maxTarget);
+
+					if(max <= 0) {
+						max = 100;
+					}
 					
 					if(container.length > 0) {
 						viewport = container[0].getBoundingClientRect();
@@ -413,10 +424,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 
 				$scope.targetData = manipulateTargetData(data);
 
-				$scope.$emit('computeColumWidth');	
-
-				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
-				$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
+				$scope.$emit('computeColumWidth');
 			});
 		};
 
@@ -432,12 +440,24 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
 				$scope.highchartsNG.options.chart.height = $scope.graphDimensions.height;		
 			}
 
+			if(!$scope.myScroll || !$scope.myScroll.RateMgrOccupancyGraphCtrl) {
+				$scope.$parent.myScroll = {};
+				$scope.myScroll = {};
+				$scope.setScroller('RateMgrOccupancyGraphCtrl', { scrollX: true, scrollY: false, scrollbars: true, interactiveScrollbars: false, momentum: false });
+				
+				try {
+					$scope.myScroll.RateMgrOccupancyGraphCtrl = new IScroll('#occ-graph', $scope.$parent.myScrollOptions.RateMgrOccupancyGraphCtrl);
+				}catch(e) {
+
+				}
+			}
+
 			setTimeout(function() {
-				$scope.refreshScroller('RateMgrOccupancyGraphCtrl');
+				$scope.myScroll.RateMgrOccupancyGraphCtrl.refresh();
 			}, 1000);
 		}
 
-		$scope.$watch('uiOptions', _.throttle(resize, 200, { leading: true, trailing: false }), true);
+		$scope.$watch('uiOptions', _.throttle(resize, 200, { leading: true, trailing: true }), true);
 
 		$scope.$on("updateOccupancyGraph", function() {
 			$scope.fetchGraphData();

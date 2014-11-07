@@ -692,7 +692,7 @@ section.content-scroll {
 }
 /* style to fix style issues in addons header */
 .addon-header{
-  margin-left: 80px;
+  margin-left: 50px;
 }
 
 /* style to fix sorting icons in edit mode */
@@ -866,7 +866,58 @@ td{
   margin-bottom:26px;
 }
 
-
-.rates_state{
+/* Hourly rates grid view */
+.hourly_rates_grid{
+	font-size:13px;
 	width:100%;
+	.night_rates{
+		float: left; 
+		width: 25%;
+		.night_rate_entry{
+			margin-right: 10px;
+			width: 80px;
+			input{
+				width: 100%;
+			}
+		}
+	}
+	.hourly_rate_state{
+		width:60%;
+		float:left;
+		box-shadow: inset 8px 0px 3px -3px #e2e2e2,inset -8px 0px 3px -3px #e2e2e2;
+		padding-left: 20px;
+		padding-right: 20px;
+		overflow-x:scroll;
+		.default_night_price{
+			color:#b2b1c3;
+			input{
+				background-color: #e5e6eb !important;
+			}
+		}
+    
+    .hourly_grid_time{
+      color:#f6991b;
+      &.night_time{
+        color:#c5c5c5;
+      }  
+      &.day_checkout_time{
+        color:#f6991b;
+      }
+    }
+    
+		.night_rate_entry{
+			margin-right: 10px;
+			width: 80px;
+			input{
+				opacity:0.5 !important;
+				width: 100%;
+				background: none repeat scroll 0 0 #F5F5F5;
+			}
+		}
+	}
+	.movers{
+		width: 10% !important;
+		float: right;
+		margin-top: 50px;
+	}
 }
