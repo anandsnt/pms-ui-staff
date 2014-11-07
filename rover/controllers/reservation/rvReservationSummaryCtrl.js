@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', 
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', 'ngDialog', 
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.isSubmitButtonEnabled = false;
@@ -512,7 +512,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		$scope.startPaymentProcess = function(){
 			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvWaitingDialog.html',
+				template: '/assets/partials/reservation/rvWaitingDialog.html',
 				className: 'ngdialog-theme-default',
 				scope: $scope
 			});
