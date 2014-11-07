@@ -62,11 +62,23 @@ sntRover
 		};
 
 		Model.prototype.copy = function() {
+			var k, base = Object.create(Model.prototype);
 
+    		for(k in this) {
+    			if(hops.call(this, k)) {
+    				if(_.isArray(this[k])) {
+    					dest[k] = slice.call(this[k]);
+    				} else {
+    					dest[k] = this[k];
+    				}
+    			}
+    		}
+
+    		return dest;			
 		};
 
 		Model.prototype.deepCopy = function() {
-			newRes = {};
+			newRes = Object.create(Model.prototype);
 
 			for(var k in obj) {
 				if(hops.call(obj, k)) {
@@ -84,6 +96,7 @@ sntRover
 
 			return newRes;
 		};
+
 		Model.prototype.copyArray = function(arr) {
 			var cur;
 
@@ -97,8 +110,22 @@ sntRover
     		return dest;
 		};
 
-		Model.prototype.mixin = function(obj) {
+		Model.prototype.mixin = function() {
+			var objects = slice.call(arguments),
+				i = 0,
+				k,
+				len = objects.length,
+				base = Object.create(null);
 
+			for(; i < len; i++) {
+				for(k in objects[i]) {
+					if(hops.call(objects[i], k)) {
+						base[k] = objects[i][k];
+					}
+				}
+			}
+				
+			return base;
 		};	
 	}
 ]);

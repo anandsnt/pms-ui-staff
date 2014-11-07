@@ -1,36 +1,19 @@
 sntRover
-.constant('rvDiaryConstants', { 
-	TIME_SPAN_SEEK: 48 * 86400000, 
-	SEEK_OFFSET: -7200,
-	RESERVATION_API: 'api/hourly_availability' })
-.constant('rvDiaryMetadata', {
-	room: {
-		id: 'id',
-		number: 'room_no',
-		type: 'room_type',
-		type_id: 'room_type_id',
-		row_children: 'occupancy'
-	},
-	occupancy: {
-		id: 'reservation_id',
-		room_id: 'room_id',
-		room_type: 'room_type',
-		status: 'reservatopm_status',
-		guest: 'reservation_primary_guest_full_name',
-		start_date: 'arrival',
-		end_date: 'departure',
-		maintenance: 'maintenance',
-		rate: 'amount'
-	},
-	availability: {
-		room_id: 'id',
-		price: 'amount',
-		rate_type_id: 'rate_type_id'
-	}
-})
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
-    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
-    	var meta = rvDiaryMetadata;
+.service('rvDiarySrv', ['$q', 
+						'RVBaseWebSrv', 
+						'rvBaseWebSrvV2',  
+						'rvDiaryMetadata', 
+						'rvDiaryUtilSrv',
+    function ($q, 
+    		  RVBaseWebSrv, 
+    		  rvBaseWebSrvV2,  
+    		  rvDiaryMetadata, 
+    		  rvDiaryUtilSrv) {
+    	var meta 	= rvDiaryMetadata,
+    		hops 	= Object.prototype.hasOwnProperty,
+    		slice 	= Array.prototype.slice,
+    		define 	= Object.defineProperty,
+    		util 	= rvDiaryUtilSrv;
 
     	/*INITIALIZE CONFIGURATION FOR API CALLS*/
     	(function() { 
@@ -64,69 +47,18 @@ sntRover
     	}).call(this);
     	/*INITIALIZE CONFIGURATION FOR API CALLS*/
 
-	 	function deepCopy(obj) {
-			var hops = Object.prototype.hasOwnProperty,
-				slice = Array.prototype.slice,
-				newRes = {};
-
-				for(var k in  obj) {
-					if(hops.call(obj, k)) {
-						if(obj[k] instanceof Date) {
-							newRes[k] = new Date(obj[k].getTime());
-						} else if(_.isArray(obj[k])) {
-							newRes[k] = copyArray(obj[k]);
-							/*(function() { 
-								var arr = [];
-
-								newRes[k].forEach(function(item, idx) {
-									arr.push(deepCopy(item));
-								});
-
-								newRes[k] = slice.call(arr);
-							})();*/
-						} else if(_.isObject(obj[k])) {
-							newRes[k] = deepCopy(obj[k]);
-						} else {
-							newRes[k] = obj[k];
-						}
-					}
-				}
-
-			return newRes;
-		}
-
-		function copyArray(src, dest){
-    		var cur;
-
-    		dest = [];
-
-    		for(var i = 0, len = src.length; i < len; i++) {
-    			cur = src[i];
-    			dest.push(deepCopy(cur));
-    		}
-
-    		return dest;
-    	};
-
-    	this.createIndex = function(index, payload) {
-    		var collection = payload,
-    			len = collection.length;
-
-    			index = index || Object.create(null);
-
-    		for(i = 0; i < len; ++i) {
-    			index[collection[i].id] = deepCopy(collection[i]);
-    		}
-    	};
-
 		this.normalizeOccupancy = function(room_types, occupancy) {
     		var m = meta.occupancy, 
-				room_type = _.findWhere(room_types, { id: occupancy.room_type_id }) 
+				room_type = _.findWhere(room_types, { id: occupancy.room_type_id }); 
 
 			occupancy.key 				= _.uniqueId('oc-' + occupancy[meta.occupancy.id] + '-');
-			occupancy[m.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-		    occupancy[m.end_date] 	    = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
+
+			occupancy[m.start_date] 	= this.normalizeTime(occupancy.arrival_date, 
+															 occupancy.arrival_time);
+		    occupancy[m.end_date] 	    = this.normalizeTime(occupancy.departure_date, 
+		    											     occupancy.departure_time);
 		    occupancy[m.maintenance] 	= this.normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
+
 		    occupancy[m.room_type] 		= room_type.name;
     	};
 
@@ -148,8 +80,8 @@ sntRover
     		room.key 	   = _.uniqueId('rm-' + room[meta.room.id] + '-');	
 			room.room_type = (rt ? rt.name : '');
  			
-			if(!Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
-				Object.defineProperty(room, 'occupancy', {
+			if(!hops.call(room, 'occupancy')) {
+				define(room, 'occupancy', {
 					enumerable: true,
 					configurable: true,
 					writable: true,
@@ -161,9 +93,9 @@ sntRover
     	};
 
     	this.normalizeMaintenanceInterval = function(time, base_interval) {
-    		var t_a = time.slice(0, -3),
-    			t_b = time.slice(-2),
-    			intervals = parseInt(t_b, 10) / base_interval,
+    		var t_a = +time.slice(0, -3),
+    			t_b = +time.slice(-2),
+    			intervals = t_b / base_interval,
     			intervals_per_hr = 60 / base_interval;
 
     		return intervals_per_hr * t_a + parseInt(intervals);
@@ -205,15 +137,15 @@ sntRover
 			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
 				
-				room_types = copyArray(data.room_types, room_types);
+				room_types = util.copyArray(data.room_types, room_types);
 
 				room_types.unshift({ id: 'All', name: 'All', description: 'All' });
 			
-				rooms = copyArray(data.rooms, rooms);
+				rooms = util.copyArray(data.rooms, rooms);
 
 				self.normalizeRooms(rooms, room_types);		
 
-				occupancy = copyArray(data.occupancy);
+				occupancy = util.copyArray(data.occupancy);
 
 				self.normalizeOccupanices(room_types, occupancy);
 		
@@ -234,18 +166,11 @@ sntRover
 
     	this.fetchOccupancy = function(start_date, end_date) {
     		var self = this, 
-    			q=  $q.defer(),
-    			occupancy;
+    			q=  $q.defer();
 
 			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
-				occupancy = deepCopy(data.occupancy);
-
-				//self.createIndex(index.occupancy, occupancy);
-
-				//self.normalizeTimeSlots(self.rooms, self.room_types, occupancy);
-
-				q.resolve(occupancy);
+				q.resolve(util.deepCopy(data.occupancy));
 			}, function(err) {
 				q.reject(err);
 			});
@@ -271,25 +196,27 @@ sntRover
 			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
 			.then(function(payload) {
 		   		var data 	= payload.results[0].availability,
-		   			st  	= start_date.toComponents().time,
-		   			et  	= end_date.toComponents().time,
-		   			sd      = start_date.toComponents().date,
-		   			ed 		= end_date.toComponents().date,
+		   			s_comp  = start_date.toComponents(),
+		   			e_comp  = end_date.toComponents(),
+		   			s_time  = s_comp.time,
+		   			et  	= e_comp.time,
+		   			sd      = s_comp.date,
+		   			ed 		= e_comp.date,
 		   			availability = [],
 		   			slot, room;
 
 		   		if(_.isArray(data)) {
 			   		for(var i = 0, len = data.length; i < len; i++) {
-						slot = deepCopy(data[i]);
+						slot = util.deepCopy(data[i]);
 			   			room = _.findWhere(self.rooms, { id: slot.room_id });
 			   			
 			   			if(room) {
 				   			slot.temporary 				= true;
 				   			slot.room_id 				= slot.room_id;
-				   			slot.arrival_date 			= sd.toDateString();
-				   			slot.arrival_time 			= st.toString();
-				   			slot.departure_date 		= ed.toDateString();
-				   			slot.departure_time 		= et.toString();
+				   			slot.arrival_date 			= s_comp.date.toDateString();
+				   			slot.arrival_time 			= s_comp.time.toString();
+				   			slot.departure_date 		= e_comp.date.toDateString();
+				   			slot.departure_time 		= e_comp.time.toString();
 				   			slot.reservatopm_status 	= 'available';
 				   			slot.room_service_status 	= '';
 				   			slot.reservation_id 		= gen_uid;
@@ -305,26 +232,23 @@ sntRover
 				   			self.normalizeOccupanices(self.room_types, room.occupancy);
 				   		}
 			   		}		   		
-			   		//self.normalizeTimeSlots(self.rooms, self.room_types, availability);
-			   		//console.log(self.linkRooms(self.rooms, Array.prototype.slice.call(availability)));
 			   	}
 
 			   	q.resolve({ row_data: self.rooms[0], row_item_data: self.rooms[0].occupancy[0] });
 		   }, function(err) {
 		   		q.reject(err);
 		   });
-			//});
+
 			return q.promise;
     	};
 
     	this.fetchAvailabilityCount = function(start_date, end_date) {
-    		var self = this, q = $q.defer();
+    		var self = this, 
+    			q = $q.defer();
 
 			this.fetchData(start_date, end_date, this.api_types.availability_count)
-		   	.then(function(data) {
-		   		availability_count = copyArray(availability_count, data);
-		   		
-		   		q.resolve(availability_count);	   	
+		   	.then(function(data) {		   		
+		   		q.resolve(copyArray(availability_count, data));	   	
 		   	}, function(err) {
 		   		q.reject(err);
 		   	});
@@ -333,16 +257,16 @@ sntRover
     	};
 
         this.fetchData = function (start_date, end_date, type_config, rate_id, room_type_id) {
-            var deferred = $q.defer (),
-            	start_time = start_date.toComponents().time,
-            	end_time = end_date.toComponents().time,
-            	begin = start_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
-            	end = end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
+            var deferred 	= $q.defer (),
+            	s_comp  	= start_date.toComponents(),
+            	e_comp 	    = end_date.toComponents(),
+            	//begin 		= s_comp.date.toDateString(), //start_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
+            	//end 		= e_comp.date.toDateString(), //end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
             	dto = { 
-            		begin_time: start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
-					end_time: 	end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
-					begin_date: begin.shift() + '-' + begin.reverse().join('-'),
-					end_date: 	end.shift() + '-' + end.reverse().join('-'),
+            		begin_time: s_comp.time.toString(), //start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
+					end_time: 	e_comp.time.toString(), //end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
+					begin_date: s_comp.date.toDateString(), //begin.shift() + '-' + begin.reverse().join('-'),
+					end_date: 	e_comp.date.toDateString(), //end.shift() + '-' + end.reverse().join('-'),
 					type: 		type_config.type		
             	};
 

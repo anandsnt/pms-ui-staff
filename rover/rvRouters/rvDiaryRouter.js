@@ -46,13 +46,7 @@ config(
             }
         });
 
-        $stateProvider.state('rover.diary.reservations.companycardsearch', {
-            url: '/reservations/cardsearch/:textInQueryBox',
-            templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
-            controller: 'searchCompanyCardController'
-        });
-
-        $stateProvider.state('rover.diary.reservations.staycard.summary', {
+        /*$stateProvider.state('rover.diary.reservations.staycard.summary', {
             url: 'reservations/summary',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVDiarySummaryCtrl',
@@ -61,5 +55,5 @@ config(
                     return {};
                 }
             }
-        });
+        });*/
 });

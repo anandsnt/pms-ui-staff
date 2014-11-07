@@ -1,19 +1,5 @@
 var TimelineResizeGrip = React.createClass({
 	__dbMouseMove: undefined,
-	_update: function(row_item_data) {
-		/*var copy = {};
-
-		if(_.isObject(row_item_data)) {
-			copy = _.extend(copy, row_item_data);
-
-			copy.start_date = new Date(copy.start_date.getTime());
-			copy.end_date = new Date(copy.end_date.getTime());
-
-			return copy;
-		}*/
-
-		return _.extend({}, row_item_data);
-	},
 	__onMouseDown: function(e) {
 		var page_offset, model, props = this.props;
 
@@ -170,15 +156,6 @@ var TimelineResizeGrip = React.createClass({
 				});
 			}
 		} 
-		/*else {
-			if(this.state.resizing) {
-				if(nextProps.currentResizeItem[this.props.itemProp] !== this.state.currentResizeItem[this.props.itemProp]) {
-					this.setState({
-						left: nextProps.currentResizeItem[this.props.itemProp]
-					});
-				}
-			}
-		}*/
 	},
 	shouldComponentUpdate: function(nextProps, nextState) {
 		//if(nextState.resizing && nextState.mouse_down) {

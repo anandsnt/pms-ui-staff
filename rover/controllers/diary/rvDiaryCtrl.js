@@ -1,4 +1,5 @@
-sntRover.controller('RVDiaryCtrl', 
+sntRover
+.controller('RVDiaryCtrl', 
 	[ 	'$scope', 
 		'$rootScope',
 		'$stateParams', 
@@ -10,22 +11,12 @@ sntRover.controller('RVDiaryCtrl',
 		'rvDiaryMetadata', 
 		'rvDiaryUtilSrv',
 		'payload',
-	function($scope, 
-			$rootScope, 
-			$stateParams,
-			$filter, 
-			$window, 
-			ngDialog, 
-			rvDiarySrv, 
-			rvDiaryFilterSrv,
-			rvDiaryMetadata,
-			rvDiaryUtilSrv,
-			payload) {
+	function($scope, $rootScope, $stateParams, $filter, $window, ngDialog, rvDiarySrv, rvDiaryFilterSrv, rvDiaryMetadata, rvDiaryUtilSrv, payload) {
 	//'use strict';
 	BaseCtrl.call(this, $scope);
 
-	$scope.data 			= payload.rooms;
-	$scope.stats 			= payload.stats;
+	$scope.data 			= payload.rooms; //PRIMARY DATA SOURCE FOR GRID COMPONENET
+	$scope.stats 			= payload.stats; //SECONDARY DATA SOURCE FOR OCCUPANCY STATES ON GRID TIMELINE
 	
 	$scope.start_date 		= payload.start_date;
 	$scope.start_time 		= payload.start_date.toComponents().time;
@@ -242,6 +233,31 @@ sntRover.controller('RVDiaryCtrl',
 		    	}
 		    }
 	    };
+
+		$scope.initActiveEditMode = (function(meta, util, data) {
+			if(this.edit.passive) {
+				throw Error('Active/Passive edit mode mutually exclusive.');
+			}
+			this.edit 					= util.deepCopy(this.edit);
+			this.edit.active 			= true;
+			this.edit.passive  			= false;
+			this.edit.originalItem 		= util.copyReservation(data.row_item_data);
+			this.edit.originalRowItem 	= util.copyRoom(data.row_data);
+			this.currentResizeItem 		= util.copyReservation(data.row_item_data);
+			this.currentResizeItemRow 	= util.copyRoom(data.row_data);
+		}).bind($scope.gridProps, rvDiaryMetadata, rvDiaryUtilSrv);
+
+		$scope.initPassiveEditMode = (function (meta, util, data) {
+			if(this.edit.active) { 
+				throw Error('Active/Passive edit mode mutually exclusive.');
+			}
+			this.edit 					= util.deepCopy(this.edit);
+			this.edit.active 			= false;
+			this.edit.passive 			= true;
+			this.edit.group_id 			= data.row_item_data[meta.occupancy.id];
+			this.currentResizeItem 		= util.copyReservation(data.row_item_data);
+			this.currentResizeItemRow 	= util.copyRoom(data.row_data);		
+		}).bind($scope.gridProps, rvDiaryMetadata, rvDiaryUtilSrv);
 
 	    $scope.editSave = function() {
 	    	var props 			= $scope.gridProps,
@@ -539,17 +555,6 @@ sntRover.controller('RVDiaryCtrl',
 			$scope.renderGrid();
 		});
 	}
-
-	$scope.initPassiveEditMode = (function (meta, util, data) {
-		if(this.edit.active) { 
-			throw Error('Active/Passive edit mode mutually exclusive.');
-		}
-
-		this.edit.passive 			= true;
-		this.edit.group_id 			= data.row_item_data[meta.occupancy.id];
-		this.currentResizeItem 		= util.copyReservation(data.row_item_data);
-		this.currentResizeItemRow 	= util.copyRoom(data.row_data);		
-	}).bind($scope.gridProps, rvDiaryMetadata, rvDiaryUtilSrv);
 
 	function parseArrivalTime(arrival_time) {
 		var pos = arrival_time.indexOf(':'),

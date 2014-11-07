@@ -3,41 +3,41 @@ var DiaryLib = window.DiaryLib || Object.create(null);
 DiaryLib.Models = DiaryLib.Models || Object.create(null);
 DiaryLib.Util = DiaryLib.Util || Object.create(null);
 
-function Model(params) {
-	var defDec = function(val) {
-		return {
-			enumerable: true,
-			writable: true,
-			value: val
-		};
-	},
-	hop = Object.prototype.hasOwnProperty;
+	function Model(params) {
+		var defDec = function(val) {
+			return {
+				enumerable: true,
+				writable: true,
+				value: val
+			};
+		},
+		hop = Object.prototype.hasOwnProperty;
 
-	if(!(this instanceof Model)) {
-		return new Model(params);
-	}
+		if(!(this instanceof Model)) {
+			return new Model(params);
+		}
 
-	Object.defineProperties(this, {
-		isUpdating: defDec(false),
-		isResolved: defDec(false),
-		isDirty: defDec(false)		
-	});
+		Object.defineProperties(this, {
+			isUpdating: defDec(false),
+			isResolved: defDec(false),
+			isDirty: defDec(false)		
+		});
 
-	for(var k in params) {
-		if(hop.call(params, k)) {
-			this[k] = params[k];
+		for(var k in params) {
+			if(hop.call(params, k)) {
+				this[k] = params[k];
+			}
 		}
 	}
-}
 
-Model.prototype = {
-	constructor: Model,
-	reset: function() {
-		this.isUpdating = false;
-		this.isResolved = false;
-		this.isDirty = false;
-	}
-};
+	Model.prototype = {
+		constructor: Model,
+		reset: function() {
+			this.isUpdating = false;
+			this.isResolved = false;
+			this.isDirty = false;
+		}
+	};
 
 	function Time(obj) {
 		if(!(this instanceof Time)) {
