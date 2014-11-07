@@ -31,13 +31,13 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-		var scrollOptions = {
-			preventDefaultException: {
-				tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
-			},
-			preventDefault: false
-		};
-		$scope.setScroller('filtersection', scrollOptions);
+		// var scrollOptions = {
+		// 	preventDefaultException: {
+		// 		tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
+		// 	},
+		// 	preventDefault: false
+		// };
+		// $scope.setScroller('filtersection', scrollOptions);
 
 		// reset all the filters
 		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
@@ -298,17 +298,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		var roomsEl = document.getElementById('rooms');
-		var filterOptionsEl = document.getElementById('filter-options');
+		var filterRoomsEl = document.getElementById('filter-rooms');
 
 		// stop browser bounce while swiping on rooms element
 		angular.element(roomsEl)
-			.on('ontouchmove', function(e) {
+			.on('touchmove', function(e) {
 				e.stopPropagation();
 			});
 
 		// stop browser bounce while swiping on filter-options element
-		angular.element(filterOptionsEl)
-			.on('ontouchmove', function(e) {
+		angular.element(filterRoomsEl)
+			.on('touchmove', function(e) {
 				e.stopPropagation();
 			});
 
@@ -360,7 +360,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$timeout(function() {
 				$scope.rooms = [];
 				$_postProcessRooms();
-			}, 10);
+			}, 100);
 
 			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
@@ -778,9 +778,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		var $_pullUpDownModule = function() {
 
 			// YOU SHALL NOT BOUNCE!
-			document.addEventListener('touchmove', function(e) {
-				e.stopPropagation();
-			});
+			// document.addEventListener('touchmove', function(e) {
+			// 	console.log('gotcah');
+			// 	e.stopPropagation();
+			// });
 
 			// caching DOM nodes invloved 
 			var $rooms = document.getElementById('rooms'),
@@ -889,22 +890,25 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				nowY = touch.y || touch.pageY;
 
-				// if: pull down on page start, else: pull up on page end
-				if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
-					commonEx();
-					$refresh.classList.add('show');
-					$refresh.style.WebkitTransition = '';
-					$refresh.style.webkitTransform = translateDiff;
-					notifyPullDownAction(diff);
-				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
-					commonEx();
-					$load.classList.add('show');
-					$load.style.WebkitTransition = '';
-					$load.style.webkitTransform = translateDiff;
-					notifyPullUpAction(diff);
-				} else {
-					pulling = false;
-					return;
+				// if: user swiped more than 20 pixels
+				if ( Math.abs(nowY - startY) > 20 ) {
+					// if: pull down on page start, else: pull up on page end
+					if ( nowY > startY && this.scrollTop === scrollBarOnTop ) {
+						commonEx();
+						$refresh.classList.add('show');
+						$refresh.style.WebkitTransition = '';
+						$refresh.style.webkitTransform = translateDiff;
+						notifyPullDownAction(diff);
+					} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+						commonEx();
+						$load.classList.add('show');
+						$load.style.WebkitTransition = '';
+						$load.style.webkitTransform = translateDiff;
+						notifyPullUpAction(diff);
+					} else {
+						pulling = false;
+						return;
+					};
 				};
 			};
 
@@ -912,7 +916,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// the user stops touching the screen
 			// TODO: need to bind very similar for 'touchcancel' event
 			var touchEndHandler = function(e) {
-				var touch = e.touches ? e.touches[0] : e,
+				var touch = e.touches ? e.touches[0] : e, 
 					diff = 0,
 					addTransition = '-webkit-transform 0.3s',
 					translateZero = 'translate3d(0, 0, 0)',
