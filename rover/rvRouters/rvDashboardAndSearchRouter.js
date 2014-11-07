@@ -72,7 +72,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         });
         /**
         * IMPORTANT: 'rover.dashboardFromAdmin' state points to dashboard screen
-        * It is needed for open sub-menu popup actions('EOD' and 'postcharge') on navigating from admin to rover.
+        * It is needed for opening sub-menu popup actions('EOD' and 'postcharge') on navigating from admin to rover.
         * All future changes made in 'rover.dashboard' state are required for that state too
         **/
         $stateProvider.state('rover.dashboard', {
