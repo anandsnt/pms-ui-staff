@@ -69,8 +69,8 @@
         <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
     </li>
 
-    <li class="room" bindonce ng-repeat="room in rooms" ng-if="room.display_room">
-        <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
+    <li class="room" bindonce ng-repeat="room in rooms">
+        <a ng-if="room.display_room" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
           <div class="data">
             <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
             <span bo-if="!room.hk_status.oo_status" class="room-status {{ room.roomStatusClass }}" bo-text="room.description"></span>
@@ -118,8 +118,9 @@
     <li class="no-content">
       <div class="info">
         <span class="icon-no-content icon-room"></span>
-        <strong class="h1">Find Rooms</strong>
-        <span class="h2">Search by <strong>Room Number</strong></span>
+        <strong class="h1">No Matching Rooms</strong>
+        <span ng-show="(rooms | filter:{display_room:true}).length) == 0" class="h2">Modify the <strong>Filters</strong> or change <strong>Page</strong></span>
+        <span ng-show="rooms.length == 0" class="h2">Search by <strong>Room Number</strong></span>
       </div>
     </li>
   </ul>
