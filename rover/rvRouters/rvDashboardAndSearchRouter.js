@@ -102,7 +102,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
         });  
 
         /**
-        * adding extra state to be iniated when user is in admin screens
+        * adding extra state to be initiated when user is in admin screens
         **/
         $stateProvider.state('rover.dashboardFromAdmin', {
             url: '/dashboard/:type',    
