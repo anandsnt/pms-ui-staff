@@ -1,4 +1,6 @@
-angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+angular.module('diaryModule', []).
+config(
+    function($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider.state('rover.diary', {
             abstract: true,
             url: '/diary',
@@ -44,15 +46,10 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
             }
         });
 
-        $stateProvider.state('rover.diary.reservations.staycard', {
-            url: '/reservations/staycard',
-            templateUrl: '/assets/partials/reservation/rvMain.html',
-            controller: 'RVDiaryMainCardCtrl',
-            resolve: {
-                loadInitialData: function(rvDiarySrv, $stateParams) {
-                    return {};
-                }
-            }
+        $stateProvider.state('rover.diary.reservations.companycardsearch', {
+            url: '/reservations/cardsearch/:textInQueryBox',
+            templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
+            controller: 'searchCompanyCardController'
         });
 
         $stateProvider.state('rover.diary.reservations.staycard.summary', {

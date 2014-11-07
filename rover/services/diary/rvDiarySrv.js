@@ -131,11 +131,8 @@ sntRover
     	};
 
     	this.normalizeOccupanices = function(room_types, occupancies) {
-    		var occupancy;
-
     		for(var i = 0, len = occupancies.length; i < len; i++) {
-    			occupancy = occupancies[i];
-    			this.normalizeOccupancy(room_types, occupancy);
+    			this.normalizeOccupancy(room_types, occupancies[i]);
     		}
     	};
 
@@ -296,7 +293,7 @@ sntRover
 				   			slot.reservatopm_status 	= 'available';
 				   			slot.room_service_status 	= '';
 				   			slot.reservation_id 		= gen_uid;
-				   			slot.key 					= _.uniqueId('post_') + '-' + slot.id + '-' + data[i].id;
+				   			//slot.key 					= _.uniqueId('post_') + '-' + slot.id + '-' + data[i].id;
 
 				   			if(Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
 				   				room.occupancy = Array.prototype.slice.call(room.occupancy).concat([slot]);

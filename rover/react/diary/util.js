@@ -114,39 +114,6 @@ Model.prototype = {
 
 	Time.prototype.constructor = Time;
 
-
-	function Observer() {
-		this.events = Object.create(null);
-	}
-
-	Observer.prototype = {
-		observe: function observe(event, action, context) {
-			if(!_.has(this.events, event)) {
-				this.events[event] = [];			
-			}	
-			
-			this.events[event].push({ 
-				action: action, 
-				context: context || this
-			});
-		},
-		notify: function trigger(event, data) {
-			var e;
-			if(_.has(this.events, event)) {
-				for(var i = 0, len = this.events[event].length; i < len; i += 1) {
-					e = this.events[event][i];					
-					e.action.call(e.context, data);
-				}
-			}
-		},
-		clear: function clear(event) {
-			if(_.has(this.events, event)) {
-				this.events[event] = [];
-			}
-		},
-		constructor: Observer
-	};
-
 if(typeof Date.prototype.toComponents === 'undefined') {
 	Date.prototype.toComponents = function() {
 		var __DAYS = ['Monday', 

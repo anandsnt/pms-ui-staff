@@ -2,8 +2,9 @@ sntRover
 .factory('rvDiaryUtilSrv', ['rvDiarySrv', 'rvDiaryMetadata',
     function (rvDiarySrv, rvDiaryMetadata) {
     	var meta = rvDiaryMetadata,
-    		index = rvDiarySrv.store,
-    		findRoom,
+    		occ_meta = meta.occupancy,
+    		rom_meta = meta.room,
+    		avl_meta = meta.availability,
     		roomIndex,
     		reservationIndex,
     		copyReservation,
@@ -14,35 +15,83 @@ sntRover
     		clearRoomQuery,
     		reservationRoomTransfer,
     		clearRowClasses,
+    		shallowCopy,
     		deepCopy,
     		copyArray;
 
-	 	findRoom = function(room) {
-			return index.rooms[room[meta.room.id]];
-		};
+		copyArray = function(src, dest){
+    		var cur;
 
-		roomIndex = function(room) {
-			var idx = -1, meta_id = meta.room.id, data = rvDiarySrv.rooms;
+    		dest = [];
 
-			if(room) {
-				for(var i = 0, len = data.length; i < len; i++){
-					if(data[i][meta_id] === room[meta_id]) {
-						idx = i;
-						return idx;
+    		for(var i = 0, len = src.length; i < len; i++) {
+    			cur = src[i];
+    			dest.push(deepCopy(cur));
+    		}
+
+    		return dest;
+    	};
+
+    	shallowCopy = function(dest, src) {
+    		var hops = Object.prototype.hasOwnProperty,
+    			k;
+
+    		for(k in src) {
+    			if(hops.call(src, k) && 
+    			   typeof src[k] !== 'function') {
+    				dest[k] = src[k];
+    			}
+    		}
+
+    		return dest;
+    	};
+
+		deepCopy = function(obj) {
+			var hops = Object.prototype.hasOwnProperty,
+				slice = Array.prototype.slice,
+				newRes = {};
+
+				for(var k in  obj) {
+					if(hops.call(obj, k)) {
+						if(obj[k] instanceof Date) {
+							newRes[k] = new Date(obj[k].getTime());
+						} else if(_.isArray(obj[k])) {
+							newRes[k] = copyArray(obj[k]);
+						} else if(_.isObject(obj[k])) {
+							newRes[k] = deepCopy(obj[k]);
+						} else {
+							newRes[k] = obj[k];
+						}
 					}
 				}
-			}
 
+			return newRes;
+		};
+
+		roomIndex = function(rooms, room) {
+			var idx = -1, 
+				meta_id = rom_meta.id, 
+				data = rooms,
+				cur;
+
+			for(var i = 0, len = data.length; i < len; i++){
+				cur = data[i];
+
+				if(cur[meta_id] === room[meta_id]) {
+					idx = i;
+					return idx;
+				}
+			}
+		
 			return idx;
 		};
 
 		reservationIndex = function(room, reservation) {
 			var idx = -1, 
-				rc_meta = meta.room.row_children, 
-				oc_meta = meta.occupancy;
+				children = room[rom_meta.row_children];
 
-			for(var i = 0, len = room[rc_meta].length; i < len; i++) {
-				if(room[rc_meta][i].id === reservation[oc_meta.id]) {
+			for(var i = 0, len = children.length; i < len; i++) {
+				if(children[i][occ_meta.id] === reservation[occ_meta.id]) {
 					idx = i;
 					return idx;
 				}
@@ -52,52 +101,26 @@ sntRover
 		};
 
 		copyReservation = function(reservation) {
-			return _.extend({}, reservation);
+			return shallowCopy({}, reservation);
 		};
-
-		deepCopy = function(obj) {
-			var hops = Object.prototype.hasOwnProperty,
-				slice = Array.prototype.slice,
-				newRes = {};
-
-			for(var k in  obj) {
-				if(hops.call(obj, k)) {
-					if(obj[k] instanceof Date) {
-						newRes[k] = new Date(obj[k].getTime());
-					} else if(_.isArray(obj[k])) {
-						newRes[k] = deepCopy(slice.call(obj[k]));
-					} else if(_.isObject(obj[k])) {
-						newRes[k] = deepCopy(obj[k]);
-					} else {
-						newRes[k] = obj[k];
-					}
-				}
-			}
-
-			return newRes;
-		};
-
-		copyArray = function(src, dest){
-    		dest = [];
-
-    		for(var i = 0, len = src.length; i < len; i++) {
-    			dest.push(_.extend({}, src[i]));
-    		}
-
-    		return dest;
-    	};
 
 		copyRoom = function(room) {
-			var rc_meta = meta.room.row_children,
+			var rc_meta = rom_meta.row_children,
 				newRoom = {}, 
-				resLen = (_.isArray(room.occupancy) ? room.occupancy.length : 0);
+				children,
+				len = (_.isArray(room.occupancy) ? room.occupancy.length : 0);
 
-			_.extend(newRoom, room);
+			shallowCopy(newRoom, room);
 
-			newRoom.occupancy = [];
+			Object.defineProperty(newRoom, rc_meta, {
+				configurable: true,
+				value: []
+			});
 
-			for(var i = 0; i < resLen; i++) {
-				newRoom.occupancy.push(copyReservation(room.occupancy[i]));
+			children = newRoom[rc_meta];
+
+			for(var i = 0; i < len; i++) {
+				children.push(copyReservation(room[rc_meta][i]));
 			}
 
 			return newRoom;
@@ -127,6 +150,17 @@ sntRover
 
 		clearRoomQuery = function(rooms) {
 			var room, 
+				children;
+
+			for(var i = 0, len = rooms.length; i < len; i++) {
+				room = rooms[i];	
+				room[rom_meta.row_children] = copyArray(_.reject(room[rom_meta.row_children], function(child) { return child.temporary === true; }), children);
+				room = copyRoom(room);
+			}
+		};
+		
+		/*clearRoomQuery = function(rooms) {
+			var room, 
 				children = meta.room.row_children,
 				cur,
 				occupancy = [];
@@ -148,7 +182,7 @@ sntRover
 
 				room = copyRoom(room);
 			}			
-		};  
+		}; */ 
 
 	 	reservationRoomTransfer = function(nextRoom, room, reservation) { //, commit) {
 			var data = rvDiarySrv.rooms,
@@ -201,9 +235,11 @@ sntRover
 			copyReservation: copyReservation,
 			reservationIndex: reservationIndex,
 			roomIndex: roomIndex,
-			findRoom: findRoom,
 			reservationRoomTransfer: reservationRoomTransfer,
-			clearRowClasses: clearRowClasses
+			clearRowClasses: clearRowClasses,
+			shallowCopy: shallowCopy,
+			copyArray: copyArray,
+			deepCopy: deepCopy
 		}; 	
 	}
 ]);

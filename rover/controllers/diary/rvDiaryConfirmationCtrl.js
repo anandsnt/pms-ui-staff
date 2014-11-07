@@ -3,24 +3,26 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', '$state
 		//'use strict';
 		BaseCtrl.call(this, $scope);
 
-		$scope.rooms = _.pluck($scope.selectedReservations, 'room');
-		$scope.reservations = _.pluck($scope.selectedReservations, 'reservation');
+		$scope.rooms 		= _.pluck($scope.selectedReservations, 'room');
+		$scope.reservations = _.pluck($scope.selectedReservations, 'occupancy');
 
 		$scope.title = ($scope.rooms.length > 1 ? 'these cabins' : 'this cabin');
 
 		(function() {
-			var resSample = $scope.reservations[0],
-				arrival = new Date(resSample.arrival),
-				departure = new Date(resSampe.departure),
-				arrivalDateComp = arrival.toComponents().date,
-				departureDateComp = departure.toComponents().date,
-				arrivalTimeComp = arrival.toComponents().time,
-				departureTimeComp = departure.toComponents().time;
+			var resSample 			= $scope.reservations[0],
+				arrival 			= new Date(resSample.arrival),
+				departure 			= new Date(resSample.departure),
+				compA 				= arrival.toComponents(),
+				compB 				= departure.toComponents(),
+				arrivalDateComp 	= compA.date,
+				departureDateComp 	= compB.date,
+				arrivalTimeComp 	= compA.time,
+				departureTimeComp 	= compB.time;
 
-			$scope.arrival_time = arrivalTimeComp.toStrint(true); //resSample.start_date.toLocaleTimeString();
-			$scope.arrival_date = arrivalDateComp.day + ' ' + arrivalDateComp.monthName + ' ' + arrivalDateComp.year;
-			$scope.departure_time = departureTimeComp.toString(true);
-			$scope.departure_date = departureDateComp.day + ' ' + departureDateComp.monthName + ' ' + departureDateComp.year;
+			$scope.arrival_time 	= compA.time.toString(true); 
+			$scope.arrival_date 	= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year;
+			$scope.departure_time 	= compB.time.toString(true);
+			$scope.departure_date 	= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
 
 		})();
 
@@ -29,7 +31,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', '$state
 		};
 
 		$scope.reserveRooms = function() {
-
+			$state.transitionTo();
 		};
 
 		$scope.closeDialog = function() {
