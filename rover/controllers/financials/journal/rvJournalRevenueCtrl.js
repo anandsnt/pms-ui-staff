@@ -45,7 +45,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     $scope.isShowTableHeading = function(index1, index2){
         var isShowTableHeading = false;
         var data = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
-        if(data.length>0){
+        if(typeof data !== 'undefined' && data.length>0){
             angular.forEach(data,function(transactions, index) {
                 if(transactions.show) isShowTableHeading=true;
             });
@@ -55,7 +55,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
     $scope.checkHasArrowLevel1 = function(index){
         var hasArrow = false;
-        if($scope.data.revenueData.charge_groups[index].charge_codes){
+        if(typeof $scope.data.revenueData.charge_groups[index].charge_codes !== 'undefined'){
             if($scope.data.revenueData.charge_groups[index].charge_codes.length >0)
                 hasArrow = true;
         }
@@ -64,7 +64,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
     $scope.checkHasArrowLevel2 = function(index1, index2){
         var hasArrow = false;
-        if($scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions.length >0) hasArrow = true;
+        if(typeof $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions !== 'undefined'){
+            if($scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions.length >0)
+                hasArrow = true;
+        }
         return hasArrow;
     };
 
