@@ -261,6 +261,11 @@
 "FIXED_BAND_PMS_ALERT_CODE": "PMS ALERT CODE",
 "ENTER_FIXED_BAND_PMS_ALERT_CODE": "Enter PMS Aert Code"
 
+,	
+	"WORKSTATION": "Work Station",
+	"DEVICE_ID": "Device Id",
+	"STATION_ID": "Station Id",
+	"WORKSTATIONS":"Work Stations"
 ,
 	"PAYMENT_METHODS": "Payment Methods",
 	"SYSTEM_DEFINED": "(System defined)"

@@ -33,13 +33,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		// Listen to message from child IFrame window
 		eventer(messageEvent, function (e) {
+			
 			   var responseData = e.data;
 		       if(responseData.response_message == "token_created"){
-		       		
+		       	console.log("event listener==============");
+		       		$scope.isSubmitButtonEnabled = true;
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
        				//responseData = dclone(responseData, unwantedKeys);
 		       		//console.log(JSON.stringify(responseData));
 		       		$scope.six_token = responseData.token;
+		       		
 		       		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		       }
 		    
@@ -52,12 +55,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 			return buttonClass;
 		};
-		$scope.successPayment = function(data){
-			console.log(data);
-			$scope.$emit('hideLoader');
-			$scope.isSubmitButtonEnabled = true;
-			$scope.creditCardTransactionId = data.credit_card_transaction_id;
-		};
+		// $scope.successPayment = function(data){
+			// console.log(data);
+			// $scope.$emit('hideLoader');
+			// $scope.isSubmitButtonEnabled = true;
+			// $scope.creditCardTransactionId = data.credit_card_transaction_id;
+		// };
 		
 		
 		
@@ -211,7 +214,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// MLI Integration.
 			if($rootScope.paymentGateway === "sixpayments"){
-				data.payment_type.token = $scope.$scope.six_token;
+				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
 				data.payment_type.isSixPayment = false;

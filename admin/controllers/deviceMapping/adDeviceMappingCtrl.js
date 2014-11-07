@@ -28,6 +28,7 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
 		$scope.mapping = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
+		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){	
 	 		$scope.mapping = data;
 	 		$scope.$emit('hideLoader');
