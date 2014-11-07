@@ -8,11 +8,11 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.guestPaymentList = {};
 	$scope.newPaymentInfo = {};
 	$scope.newPaymentInfo.addToGuestCard = false;
-	$scope.billNumberSelected = '';
+	$scope.renderData.billNumberSelected = '';
 	$scope.renderData.defaultPaymentAmount = '';
 	//We are passing $scope from bill to this modal
 	$scope.currentActiveBillNumber = parseInt($scope.currentActiveBill) + parseInt(1);
-	$scope.billNumberSelected = $scope.currentActiveBillNumber;
+	$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 	$scope.billsArray = $scope.reservationBillData.bills;
 	//Parameter used to show credit card info - first modal
 	$scope.showCreditCardInfo = false;
@@ -56,6 +56,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 	$scope.getPaymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.renderData = data;
+		$scope.renderData.billNumberSelected = $scope.currentActiveBillNumber;
 		$scope.renderDefaultValues();
 	};
 	/*
@@ -118,6 +119,15 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		
 	};
 	$scope.init();
+
+	/*
+	 * Action - On bill selection 
+	 */
+	$scope.billNumberChanged = function(){
+		$scope.currentActiveBill = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
+		$scope.renderDefaultValues();
+	}
+
 	/*
 	 * Action - On click submit payment button
 	 */
@@ -131,7 +141,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			$scope.errorMessage = "";
 			var dataToSrv = {
 				"postData": {
-					"bill_number": $scope.billNumberSelected,
+					"bill_number": $scope.renderData.billNumberSelected,
 				    "payment_type": $scope.saveData.paymentType,
 				    "amount": $scope.renderData.defaultPaymentAmount,
 				    "payment_type_id":$scope.saveData.payment_type_id
@@ -316,7 +326,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		     	"payment_type": "CC",
 		     	"credit_card": swipedCardData.RVCardReadCardType,
 		     	"payment_credit_type": swipedCardData.RVCardReadCardType,
-		     	"bill_number": $scope.billNumberSelected,
+		     	"bill_number": $scope.renderData.billNumberSelected,
 		     	"add_to_guest_card": $scope.newPaymentInfo.addToGuestCard,
 		     	"card_expiry": expiryDate
 		     };
@@ -324,7 +334,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 			
 		    var dataToSave = {
 		     	"add_to_guest_card": $scope.newPaymentInfo.addToGuestCard,
-		     	"bill_number": $scope.billNumberSelected,
+		     	"bill_number": $scope.renderData.billNumberSelected,
 		     	"card_expiry": expiryDate,
 		     	//"credit_card": "DS", // dONT HAVE THE TYPE OF CARD IN THIS SCREEN
 		     	"name_on_card": $scope.newPaymentInfo.cardHolderName,
@@ -346,7 +356,7 @@ sntRover.controller('RVBillPayCtrl',['$scope', 'RVBillPaymentSrv','RVPaymentSrv'
 		$scope.defaultPaymentTypeCard = data.credit_card_type.toLowerCase();
 		$scope.defaultPaymentTypeCardNumberEndingWith = $scope.newPaymentInfo.cardNumber.slice(-4);
 		$scope.defaultPaymentTypeCardExpiry = $scope.newPaymentInfo.cardExpiryMonth+"/"+$scope.newPaymentInfo.cardExpiryYear;
-		var selectedBillIndex = parseInt($scope.billNumberSelected) - parseInt(1);
+		var selectedBillIndex = parseInt($scope.renderData.billNumberSelected) - parseInt(1);
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_code = data.credit_card_type.toLowerCase();
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_expiry = $scope.newPaymentInfo.cardExpiryMonth+"/"+$scope.newPaymentInfo.cardExpiryYear;
 		$scope.billsArray[selectedBillIndex].credit_card_details.card_number = $scope.newPaymentInfo.cardNumber.slice(-4);
