@@ -5,7 +5,7 @@
     
       <fieldset id="cancel-options" ng-if="ngDialogData.state == 'CONFIRM'">
        <div class="entry full-width">
-            <label for="cancel-reason">{{'CANCELLATION_REASON'| translate}}(<span translate>OPTIONAL</span>)</label>
+            <label for="cancel-reason">{{'CANCELLATION_REASON'| translate}}&nbsp;(<span translate>OPTIONAL</span>)</label>
             <textarea id="cancel-reason" name="cancel-reason" placeholder="{{'CANCELLATION_REASON_PLACEHOLDER' | translate}}" rows="2" ng-model="cancellationData.reason"/>
         </div> 
         {{ ngDialogData.depositText }}

@@ -297,7 +297,7 @@ sntRover.controller('reservationActionsController', [
 					deposit:deposit,
 					depositText: (function() {
 						if (!isOutOfCancellationPeriod) {
-							return "Within Cancellation Period. Deposit of Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
+							return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
 						} else {
 							return "Reservation outside of cancellation period. Deposit of "+$rootScope.currencySymbol+penalty+" is not refundable";
 						}
