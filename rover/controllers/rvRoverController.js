@@ -169,7 +169,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "postcharges"
           }, {
             title: "MENU_CASHIER",
-            action: ""
+            action: "rover.financials.journal({ id: 2 })",
+            menuIndex:"cashier"
           }, {
             title: "MENU_END_OF_DAY",
             action: "",
@@ -228,10 +229,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           title: "MENU_FINANCIALS",
           //hidden: true,
           action: "",
-          iconClass: "icon-finance",
+          iconClass: "icon-financials",
           submenu: [{
-            title: "MENU_REVENUE",
-            action: ""
+            title: "MENU_JOURNAL",
+            action: "rover.financials.journal({ id : 0})",
+            menuIndex:"journals"
           }, {
             title: "MENU_ACCOUNTING",
             action: ""
