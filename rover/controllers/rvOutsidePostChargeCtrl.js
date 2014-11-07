@@ -44,7 +44,10 @@ sntRover.controller('RVOutsidePostChargeController',
 				$scope.fetchedData = data;
 				$scope.init();
 			}
-			// $scope.fetchedData will be undefined incase the controlled is initiated from admin side.So call service and assign response data.
+			/**
+			* $scope.fetchedData will be undefined incase the controller is initiated 
+			* from admin side.So call service and assign response data.
+			*/
 			if($scope.fetchedData){
 				$scope.init();
 			}

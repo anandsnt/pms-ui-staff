@@ -93,13 +93,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: ""
 					}, {
 						title: "MENU_POST_CHARGES",
-						action: "staff#/staff/postCharge"
+						action: "staff#/staff/dashboard/postCharge"
 					}, {
 						title: "MENU_CASHIER",
 						action: ""
 					}, {
 						title: "MENU_END_OF_DAY",
-						action: "staff#/staff/changeBussinesDate"
+						action: "staff#/staff/dashboard/changeBussinessDate"
 					}]
 				}, {
 					title: "MENU_CONVERSATIONS",

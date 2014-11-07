@@ -70,9 +70,11 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 }
             }                      
         });
-        //IMPORTANT: 'rover.changeBussinesDate'  and 'rover.postCharge' both points to dashboard screen
-        //They are added for extra popup actions(EOD and postcharge) on navigating from admin to rover.
-        //All changes made here are required for those states too
+        /**
+        * IMPORTANT: 'rover.dashboardFromAdmin' state points to dashboard screen
+        * It is needed for open sub-menu popup actions('EOD' and 'postcharge') on navigating from admin to rover.
+        * All future changes made in 'rover.dashboard' state are required for that state too
+        **/
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',   
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
@@ -97,11 +99,13 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             url: '/housekeeping',  //TODO: check can we reduced it to hk?
             templateUrl: '/assets/partials/dashboard/rvHouseKeepingDashboard.html',
             controller: 'RVhouseKeepingDashboardController',                       
-        });        
+        });  
 
-        // adding extra states to be iniated when user is in admin screens
-        $stateProvider.state('rover.changeBussinesDate', {
-            url: '/changeBussinesDate',    
+        /**
+        * adding extra state to be iniated when user is in admin screens
+        **/
+        $stateProvider.state('rover.dashboardFromAdmin', {
+            url: '/dashboard/:type',    
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
             controller: 'RVdashboardController',
             resolve: {
@@ -109,30 +113,21 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                     return RVDashboardSrv.fetchDashboardDetails();
                 }
             } ,
-             onEnter: function (ngDialog) {
-                ngDialog.open({
-                  template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
-                  controller: 'RVEndOfDayModalController'
-                });
-            }                                   
-        });    
+             onEnter: function (ngDialog,$stateParams) {
 
-        $stateProvider.state('rover.postCharge', {
-            url: '/postCharge',
-            templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',         
-            controller: 'RVdashboardController',
-            resolve: {
-                dashBoarddata: function(RVDashboardSrv) {
-                    return RVDashboardSrv.fetchDashboardDetails();
-                }
-            } ,
-             onEnter: function (ngDialog) {
+               if($stateParams.type === 'changeBussinessDate'){
                     ngDialog.open({
-                    template: '/assets/partials/postCharge/outsidePostCharge.html',
-                    controller: 'RVOutsidePostChargeController',
+                        template: '/assets/partials/endOfDay/rvEndOfDayModal.html',
+                        controller: 'RVEndOfDayModalController'
                     });
-                }
+               }
+               else if($stateParams.type === 'postCharge'){
+                     ngDialog.open({
+                        template: '/assets/partials/postCharge/outsidePostCharge.html',
+                        controller: 'RVOutsidePostChargeController',
+                    });
+               }    
 
-                                                  
+            }                                   
         });    
 });
