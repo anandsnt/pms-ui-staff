@@ -350,10 +350,15 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 } else {
                     setData.night_start_time = null;
                 }
-                if (!!selectedSet.dusk && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
+                if (!!selectedSet.dawn && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
                     setData.night_end_time = getTimeFormated(selectedSet.dawn.hh, selectedSet.dawn.mm, selectedSet.dawn.am);
                 } else {
                     setData.night_end_time = null;
+                }
+                if (!!selectedSet.night_checkout && !!selectedSet.night_checkout.hh && !!selectedSet.night_checkout.mm && !!selectedSet.night_checkout.am) {
+                    setData.night_checkout_cutoff_time = getTimeFormated(selectedSet.night_checkout.hh, selectedSet.night_checkout.mm, selectedSet.night_checkout.am);
+                } else {
+                    setData.night_checkout_cutoff_time = null;
                 }
             }
 
