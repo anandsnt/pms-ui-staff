@@ -503,7 +503,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var typeIndex = '';
 			$scope.isOnsiteActive = false;
 			$scope.isIframeVisible = true;
-			$scope.isSixPaymentGatewayVisible = true;
+			//Hiding in develop brach
+			//ONCE 9424 done value will be changed to true
+			$scope.isSixPaymentGatewayVisible = false;
 			$scope.reservationData.paymentType.type.value = 'CC';
 			$scope.refreshPaymentScroller();
 		};
