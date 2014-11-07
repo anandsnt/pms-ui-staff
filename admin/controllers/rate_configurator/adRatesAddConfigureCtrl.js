@@ -190,8 +190,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                             value.dawn = angular.copy(dummy);
                         }
 
-                        if (!!value.night_checkout_cutoff_time) {
-                            var nightCheckoutTime = value.night_checkout_cutoff_time.split(":");
+                        if (!!value.night_checkout_cut_off_time) {
+                            var nightCheckoutTime = value.night_checkout_cut_off_time.split(":");
                             value.night_checkout = {
                                 hh: parseInt(dawnTime[0]) < 12 ? dawnTime[0] : parseInt(dawnTime[0]) % 12,
                                 mm: dawnTime[1],
@@ -221,6 +221,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         angular.forEach(value.room_rates, function(room_type, key) {
                             room_type.hourly = {};
                             room_type.nightly_rate = !!room_type.nightly_rate ? parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
+                            room_type.day_per_hour = !!room_type.day_per_hour ? parseFloat(room_type.day_per_hour).toFixed(2) : room_type.day_per_hour;
+                            room_type.night_per_hour = !!room_type.night_per_hour ? parseFloat(room_type.night_per_hour).toFixed(2) : room_type.night_per_hour;
+
                             angular.forEach(room_type.hourly_rates, function(rate) {
                                 room_type.hourly[rate.hour] = !!rate.amount ? parseFloat(rate.amount).toFixed(2) : rate.amount;
                             });
