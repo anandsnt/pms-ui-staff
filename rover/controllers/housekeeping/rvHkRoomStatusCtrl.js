@@ -997,7 +997,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// There are a lot of bindings that need to cleared
 		$scope.$on('$destroy', function() {
 			angular.element(roomsEl).off('ontouchmove');
-			angular.element(filterRooms).off('ontouchmove');
+			angular.element(filterRoomsEl).off('ontouchmove');
 		});
 
 	}
