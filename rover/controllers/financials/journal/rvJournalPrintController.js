@@ -95,7 +95,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 				}
 				else{
 					charge_groups.filterFlag = false;
-					console.log("not found");
 				}
 			}
 			else{
@@ -249,17 +248,14 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	/** PRINT Functionality **/
 
 	$scope.printRevenue = function(){
-		console.log("printRevenue");
 		printJournal();
 	};
 
 	$scope.printPayment = function(){
-		console.log("printPayment");
 		printJournal();
 	};
 
 	$scope.printCashier = function(){
-		console.log("printCashier");
 		printJournal();
 	};
 

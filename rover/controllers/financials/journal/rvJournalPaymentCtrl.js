@@ -24,7 +24,6 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	$scope.initPaymentData();
 
     $rootScope.$on('paymentDateChanged',function(){
-    	console.log("paymentDateChanged"+$scope.data.paymentDate);
     	$scope.initPaymentData();
     });
 
