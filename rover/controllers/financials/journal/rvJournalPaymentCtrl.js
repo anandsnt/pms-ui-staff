@@ -24,7 +24,6 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	$scope.initPaymentData();
 
     $rootScope.$on('paymentDateChanged',function(){
-    	console.log("paymentDateChanged"+$scope.data.paymentDate);
     	$scope.initPaymentData();
     });
 
@@ -66,10 +65,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     
     $scope.checkHasArrowLevel1 = function(index){
         var hasArrow = false;
-        if($scope.data.paymentData.payment_types[index].credit_cards){
+        if(typeof $scope.data.paymentData.payment_types[index].credit_cards !== 'undefined'){
             if($scope.data.paymentData.payment_types[index].credit_cards.length >0) hasArrow = true;
         }
-        else if($scope.data.paymentData.payment_types[index].transactions){
+        else if(typeof $scope.data.paymentData.payment_types[index].transactions !== 'undefined'){
             if($scope.data.paymentData.payment_types[index].transactions.length >0) hasArrow = true;
         }
         return hasArrow;

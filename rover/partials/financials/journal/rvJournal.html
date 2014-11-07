@@ -11,7 +11,7 @@
             </div>
         </div>
         <div id="revenue-filters" class="faux-select-options" ng-show="data.isActiveRevenueFilter">
-            <button id="select-filters" type="button" ng-click="clickedSelectButton()" ng-class="{ 'green': !data.filterData.checkedAllDepartments, 'grey': data.filterData.checkedAllDepartments }" class="button" translate>SELECT</button>
+            <button id="select-filters" type="button" ng-click="clickedSelectButton()" ng-class="{ 'green': data.filterData.isSelectButtonActive, 'grey': !data.filterData.isSelectButtonActive }" class="button" translate>SELECT</button>
             <div class="header">
                 <label class="radio inline" ng-click="selectAllDepartment()">
                     <span class="icon-form icon-radio" ng-class="{'checked':data.filterData.checkedAllDepartments}"></span>

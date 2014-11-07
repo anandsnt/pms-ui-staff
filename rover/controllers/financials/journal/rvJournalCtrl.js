@@ -18,6 +18,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.data.paymentData = {};
 	$scope.data.filterData = journalResponse;
 	$scope.data.filterData.checkedAllDepartments = true;
+    $scope.data.filterData.isSelectButtonActive = false;
     $scope.data.selectedChargeGroup = 'ALL';
     $scope.data.selectedChargeCode  = 'ALL';
     $scope.data.selectedPaymentType = 'ALL';
@@ -85,6 +86,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.selectAllDepartment = function(){
     	$scope.data.filterData.checkedAllDepartments = true;
     	$scope.clearAllDeptSelection();
+        $scope.getSelectButtonStatus();
 
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
@@ -105,7 +107,8 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     $scope.clickedDepartment = function(index){
 
     	$scope.data.filterData.departments[index].checked = !$scope.data.filterData.departments[index].checked;
-    	
+    	$scope.getSelectButtonStatus();
+
     	if($scope.isAllDepartmentsUnchecked()) $scope.selectAllDepartment();
     	else $scope.data.filterData.checkedAllDepartments = false;
     };
@@ -126,27 +129,48 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
        	return isAllDepartmentsUnchecked;
     };
 
+    // Checking whether all employees checkboxes are unchecked or not
+    $scope.isAllEmployeesUnchecked = function(){
+        var isAllEmployeesUnchecked = true;
+        angular.forEach($scope.data.filterData.employees,function(item, index) {
+            if(item.checked) isAllEmployeesUnchecked = false;
+        });
+        return isAllEmployeesUnchecked;
+    };
+
     // Clicking on each Employees check boxes.
     $scope.clickedEmployees = function(selectedIndex){
         $scope.data.filterData.employees[selectedIndex].checked = !$scope.data.filterData.employees[selectedIndex].checked;
+        $scope.getSelectButtonStatus();
+    };
+
+    $scope.getSelectButtonStatus = function(){
+        if($scope.isAllEmployeesUnchecked() && $scope.isAllDepartmentsUnchecked()){
+            $scope.data.filterData.isSelectButtonActive = false;
+        }
+        else{
+            $scope.data.filterData.isSelectButtonActive = true;
+        }
     };
 
     // On selecting select button.
     $scope.clickedSelectButton = function(){
     	
-    	if(!$scope.data.filterData.checkedAllDepartments){
+    	if($scope.data.filterData.isSelectButtonActive){
 
             $scope.setupDeptAndEmpList();
             $scope.data.isActiveRevenueFilter = false; // Close the entire filter box
 
             if($scope.data.activeTab == '0' ){
                 $scope.filterRevenueByDepartmentsOrEmployees();
+                $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
             }
             else if ($scope.data.activeTab == '1' ){
                 $scope.filterPaymentByDepartmentsOrEmployees();
+                $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
             }
         } 
-        $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
+        
     };
 
     // To setup Lists of selected ids of employees and departments.
@@ -163,6 +187,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.selectedDepartmentList.length>1){
             $scope.data.filterTitle = "Multiple";
+        }
+        else if($scope.data.selectedDepartmentList.length == 0){
+            $scope.data.filterTitle = "All Departments";
         }
         else{
             $scope.data.filterTitle = filterTitle;
