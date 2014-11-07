@@ -500,7 +500,8 @@
     "SHOW_STAY_DATES": "Show Stay Dates",
     "VAR_OCCUPANCY": "Varying Occupancy per Stay Date",
     "INVALID_EMAIL_MESSAGE": "Please enter a valid email address",
-    "INVALID_CREDIT_CARD": "There is a problem with your credit card"
+    "INVALID_CREDIT_CARD": "There is a problem with your credit card",
+    "START_PAYMENT_PROCESS": "Start Payment Process"
 ,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
@@ -556,7 +557,7 @@
     "CANCELLATION_REASON" : "Cancellation Reason",
     "OPTIONAL" : "Optional",
     "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",
-    "PROCEED_WITH_DEPOSIT_REFUND":"PROCEED WITH REFUND",
+    "PROCEED_WITH_DEPOSIT_REFUND":"PROCEED WITH DEPOSIT REFUND",
     "PROCEED_WITHOUT_DEPOSIT_REFUND":"PROCEED WITHOUT REFUND",
     "PENALTY_WARNING_MSG1":"Deposit of",
     "PENALTY_WARNING_MSG2":"will not be refunded",	
