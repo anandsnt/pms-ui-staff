@@ -100,13 +100,13 @@
 
 
 <div class="rate-config" ng-if="rateData.is_hourly_rate" ng-show="currentClickedSet == $index">
-    <div class="full-width">
+    <div class="hourly-config day">
         <label class="day_rates">Day Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable">
             <tr class="day_night_rates">                
-                <td width="9%" align="left">Min. Hours</td>
+                <td width="5%" align="left">Min. Hours</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="9%" align="left">Max. hours</td>
+                <td width="5%" align="left">Max. hours</td>
                 <td width="1%" align="center">&nbsp;</td>
                 <td width="13%" align="left">Check out cut-off</td>                
             </tr>
@@ -156,13 +156,15 @@
         <label class="night_rates">Night Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable" >
             <tr class="day_night_rates">
-                <td width="9%" align="left">Hourly in day</td>
+                <td width="5%" align="left">HOURLY IN DAY</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="11%" align="left">Night starts</td>
+                <td width="11%" align="left">NIGHT STARTS</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="11%" align="left">Night ends</td>
+                <td width="11%" align="left">NIGHT ENDS</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="10%" align="left">&nbsp;</td>
+                <td width="11%" align="left">CHECK OUT CUT-OFF</td>
+                <td width="1%" align="center">&nbsp;</td>
+                <td width="6%" align="left">&nbsp;</td>
             </tr>
             <tr>
                 <td align="left">
@@ -222,6 +224,31 @@
                     </div>
                 </td>
                 <td align="center">&nbsp;</td>
+
+                <td align="left">
+                    <div class="entry full-width float">
+                        <div class="select select-col col1-3">
+                            <select ng-model="set.night_checkout.hh" class="styled">
+                                <option value="" data-text="Not set" class="placeholder">HH</option>
+                                <option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.night_checkout.hh">{{i}}</option>
+                            </select>
+                        </div>
+                        <div class="select select-col col1-3">
+                            <select ng-model="set.night_checkout.mm">
+                                <option value="" data-text="Not set" class="placeholder">MM</option>
+                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.night_checkout.mm">{{i}}</option>
+                            </select>
+                        </div>
+                        <div class="select select-col col1-3">
+                            <select ng-model="set.night_checkout.am" name="hotel-checkout-primetime" class="styled">
+                                <option value="AM" selected="" translate>AM</option>
+                                <option value="PM" translate>PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td align="center">&nbsp;</td>
+
                 <td align="left">
                     <div class ="rate_entry">
                         <button ng-if="!set.isSaved" ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Create</button>

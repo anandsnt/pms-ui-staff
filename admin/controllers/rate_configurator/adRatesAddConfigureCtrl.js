@@ -113,6 +113,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     mm: "",
                     am: "AM"
                 };
+                newSet.night_checkout = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };                
                 newSet.showRoomRate = false;
             }
 
@@ -183,6 +188,17 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                             }
                         } else {
                             value.dawn = angular.copy(dummy);
+                        }
+
+                        if (!!value.night_checkout_cutoff_time) {
+                            var nightCheckoutTime = value.night_checkout_cutoff_time.split(":");
+                            value.night_checkout = {
+                                hh: parseInt(dawnTime[0]) < 12 ? dawnTime[0] : parseInt(dawnTime[0]) % 12,
+                                mm: dawnTime[1],
+                                am: parseInt(dawnTime[0]) > 12 ? "PM" : "AM"
+                            }
+                        } else {
+                            value.night_checkout = angular.copy(dummy);
                         }
                     }
 
@@ -508,11 +524,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 for (var i = 0; i < 24; i++) {
                     if (dawn < dusk) {
                         // the range crosses midnight, do the comparisons independently
-                        if ((dusk <= i) || (i <= dawn))
+                        if ((dusk <= i) || (i < dawn))
                             nightHours.push(i);
                     } else {
                         // the range is on the same day, both comparisons must be true
-                        if (dusk <= i && i <= dusk);
+                        if (dusk < i && i < dusk);
                         nightHours.push(i);
                     }
                 }

@@ -507,14 +507,20 @@ height: 410px;
 
 
 .rate-config{
-    text-transform:uppercase;
-    margin: 20px 0 0 20px;
-    #ratetable td input{
-        width: 100%;
+  text-transform:uppercase;
+  margin: 20px 0 0 20px;
+  #ratetable td input{
+      width: 100%;
+  }
+  #ratetable td.room-type{
+      text-align:right !important;
+  } 
+
+  .hourly-config{
+    &.day{
+      width: 50%; 
     }
-    #ratetable td.room-type{
-        text-align:right !important;
-    } 
+  }  
 
 }
 
@@ -887,8 +893,7 @@ td{
 		width:70%;
 		float:left;
 		// box-shadow: inset 8px 0px 3px -3px #e2e2e2,inset -8px 0px 3px -3px #e2e2e2;
-		padding-left: 20px;
-		padding-right: 20px;
+		padding-left: 20px;		
     padding-top: 20px;
 		overflow-x:scroll;
 		.default_night_price{
