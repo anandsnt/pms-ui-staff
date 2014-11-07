@@ -4,13 +4,11 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
 
 	$scope.setScroller('revenue-content');
     var refreshRevenueScroller = function(){
-        console.log("refreshRevenueScroller");
         setTimeout(function(){$scope.refreshScroller('revenue-content');}, 200);
     };
 
 	$scope.initRevenueData = function(){
 		var successCallBackFetchRevenueData = function(data){
-			console.log(data);
 			$scope.data.revenueData = {};
 			$scope.data.revenueData = data;
 			$scope.$emit('hideLoader');
@@ -26,12 +24,10 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
     });
 
     $rootScope.$on('fromDateChanged',function(){
-        console.log("fromDateChanged"+$scope.data.fromDate);
         $scope.initRevenueData();
     });
 
     $rootScope.$on('toDateChanged',function(){
-        console.log("toDateChanged"+$scope.data.toDate);
         $scope.initRevenueData();
     });
 
