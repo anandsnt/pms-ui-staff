@@ -16,8 +16,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// hook it up with base ctrl
 		BaseCtrl.call(this, $scope);
 
-		var lastSearchQuery = "";
-
 		// set the previous state
 		$rootScope.setPrevState = {
 			title: $filter('translate')('DASHBOARD'),
@@ -607,7 +605,31 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.filterByQuery = function() {
 			var unMatched = 0,
 				len = 0,
-				i = 0;
+				i = 0,
+				timer = null,
+				delayedRequest = function() {
+					if ( !!timer ) {
+						$timeout.cancel(timer);
+						timer = null;
+					}
+
+					if ( $scope.query !== $_lastQuery ) {
+						$_lastQuery = $scope.query;
+
+						$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+							key: $scope.query,
+							businessDate: $rootScope.businessDate,
+							page: $_page,
+							perPage: $_perPage
+						}, function(data) {
+							RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+							$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+							localStorage.removeItem('roomListScrollTopPos');
+
+							$_fetchRoomListCallback(data);
+						});
+					};
+				};
 
 			$_refreshScroll();
 			for (len = $scope.rooms.length; i < len; i++) {
@@ -635,22 +657,17 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 						$_page = 1;
 
 						// search in server
-						$scope.invokeApi(RVHkRoomStatusSrv.searchRooms, {
-							key: $scope.query,
-							date: $rootScope.businessDate,
-							page: $_page,
-							perPage: $_perPage
-						}, function(data) {
-							RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
-							$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
-							localStorage.removeItem('roomListScrollTopPos');
-
-							$_fetchRoomListCallback(data);
-						});
+						if ( !!timer ) {
+							$timeout.cancel(timer);
+							timer = null;
+							timer = $timeout(delayedRequest, 1000);
+						} else {
+							timer = $timeout(delayedRequest, 1000);
+						};
 					};
-				}
-			}
-		}
+				};
+			};
+		};
 
 		/**
 		 *  A method to clear the search term

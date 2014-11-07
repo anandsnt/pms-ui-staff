@@ -62,7 +62,7 @@
 
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" bindonce bo-class="{'has-summary': isStandAlone && isMaintenanceStaff, 'no-options': !isStandAlone}" ng-class="{'no-scroll': localLoader, 'hidden': (currentView == 'summary' && isMaintenanceStaff)}" div-touch-move-stop-propogate>
-  <ul class="wrapper search-results" ng-hide="rooms.length === 0 && !!(rooms | filter:{display_room:true})">
+  <ul class="wrapper search-results" ng-hide="rooms.length === 0 && (rooms | filter:{display_room:true}).length === 0">
     <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
         <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ totalCount }}</strong> items</p>
         <p class="pull-msg" ng-show="!disablePrevBtn">Pull down to load previous page</p>
@@ -114,7 +114,7 @@
   </ul>
   
   <!-- Empty -->
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="!isStandAlone && (rooms.length == 0 || (rooms | filter:{display_room:true}).length == 0)">
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="!isStandAlone && (rooms.length === 0 || (rooms | filter:{display_room:true}).length === 0)">
     <li class="no-content">
       <div class="info">
         <span class="icon-no-content icon-room"></span>
@@ -125,7 +125,7 @@
     </li>
   </ul>
 
-  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="isStandAlone && (rooms.length == 0 || (rooms | filter:{display_room:true}).length == 0)">
+  <ul id="dashboard-search-results" class="search-results wrapper" ng-show="isStandAlone && (rooms.length === 0 || (rooms | filter:{display_room:true}).length === 0)">
       <li class="no-content">
           <div class="info">
               <span class="icon-no-content icon-room"></span>
