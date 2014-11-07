@@ -30,7 +30,7 @@
             <span class="icons icon-clear-search" ng-click="$emit('clearSearch()')" translate>CLEAR_QUERY</span>
         </a>
         <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
-        <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" rv-delay-textbox  delay="1000" function-to-fire="filterByQuery">
+        <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
     </div>
     
     <div class="entry options" ng-if="isStandAlone" ng-cloak>
@@ -69,8 +69,8 @@
         <p class="pull-msg" ng-show="disablePrevBtn">Pull down to refresh page</p>
     </li>
 
-    <li class="room" bindonce ng-repeat="room in rooms">
-        <a ng-if="room.display_room" ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
+    <li class="room" bindonce ng-repeat="room in rooms" ng-show="room.display_room">
+        <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })" bo-class="{ 'with-image': room.is_occupied }"> <!-- Add  class="with-image" if room is occupied -->
           <div class="data">
             <h2 class="{{ room.roomStatusClass }}" bo-text="room.room_no"></h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
             <span bo-if="!room.hk_status.oo_status" class="room-status {{ room.roomStatusClass }}" bo-text="room.description"></span>

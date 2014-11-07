@@ -68,6 +68,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			$_page++;
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+				key: !!$scope.query ? $scope.query : '',
 				businessDate: $rootScope.businessDate,
 				page: $_page,
 				perPage: $_perPage
@@ -81,6 +82,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 			$_page--;
 			$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
+				key: !!$scope.query ? $scope.query : '',
 				businessDate: $rootScope.businessDate,
 				page: $_page,
 				perPage: $_perPage
@@ -273,7 +275,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// scroll to the previous room list scroll position
 					var toPos = localStorage.getItem('roomListScrollTopPos');
-					$scope.refreshScroll(toPos);
+					$_refreshScroll(toPos);
 
 					$scope.$emit('hideLoader');
 
@@ -302,7 +304,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				e.stopPropagation();
 			});
 
-		$scope.refreshScroll = function(toPos) {
+		function $_refreshScroll(toPos) {
 			if (roomsEl.scrollTop === toPos) {
 				return;
 			};
@@ -336,7 +338,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			$scope.refreshScroller('filtersection');
 		};
 
 		/**
@@ -604,51 +605,98 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		 *  Filter Function for filtering our the room list
 		 */
 		$scope.filterByQuery = function() {
-			if (!RVHkRoomStatusSrv.searchOnSubset) {
-				if ($scope.query && !!$scope.query.length && $scope.query != lastSearchQuery) {
-					lastSearchQuery = $scope.query;
-					var onRoomSearchSuccess = function(roomsList) {
-						$scope.rooms = roomsList.rooms;
-						$scope.$emit('hideLoader');
-					}
-					$scope.invokeApi(RVHkRoomStatusSrv.searchRooms, {
-						key: $scope.query,
-						date: $rootScope.businessDate
-					}, onRoomSearchSuccess);
-					console.log($scope.query);
-				}
-			} else {
-				// since no filer we will have to
-				// loop through all rooms
-				for (var i = 0, j = $scope.rooms.length; i < j; i++) {
-					var room = $scope.rooms[i]
-					var roomNo = room.room_no.toUpperCase();
+			var unMatched = 0,
+				len = 0,
+				i = 0;
 
-					// if the query is empty
-					// apply any filter options
-					// and return
-					if (!$scope.query) {
-						$_calculateFilters();
-						break;
-						return;
-					};
+			$_refreshScroll();
+			for (len = $scope.rooms.length; i < len; i++) {
+				var room = $scope.rooms[i]
+				var roomNo = room.room_no.toUpperCase();
 
-					// let remove any changed applied by filter
-					// show all rooms
+				// user cleared search
+				if (!$scope.query) {
+					$_postProcessRooms();
+					break;
+					return;
+				};
+
+				// show all rooms
+				room.display_room = true;
+
+				if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
 					room.display_room = true;
+					unMatched--;
+				} else {
+					room.display_room = false;
+					unMatched++;
 
-					// now match the room no and
-					// and show hide as required
-					// must match first occurance of the search query
-					if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
-						room.display_room = true;
-					} else {
-						room.display_room = false;
-					}
+					if ( unMatched === len ) {
+						$_page = 1;
+
+						// search in server
+						$scope.invokeApi(RVHkRoomStatusSrv.searchRooms, {
+							key: $scope.query,
+							date: $rootScope.businessDate,
+							page: $_page,
+							perPage: $_perPage
+						}, function(data) {
+							RVHkRoomStatusSrv.currentFilters = RVHkRoomStatusSrv.initFilters();
+							$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
+							localStorage.removeItem('roomListScrollTopPos');
+
+							$_fetchRoomListCallback(data);
+						});
+					};
 				}
 			}
-			// refresh scroll when all ok
-			$scope.refreshScroll();
+
+
+			// if (!RVHkRoomStatusSrv.searchOnSubset) {
+			// 	if ($scope.query && !!$scope.query.length && $scope.query != lastSearchQuery) {
+			// 		lastSearchQuery = $scope.query;
+			// 		var onRoomSearchSuccess = function(roomsList) {
+			// 			$scope.rooms = roomsList.rooms;
+			// 			$scope.$emit('hideLoader');
+			// 		}
+			// 		$scope.invokeApi(RVHkRoomStatusSrv.searchRooms, {
+			// 			key: $scope.query,
+			// 			date: $rootScope.businessDate
+			// 		}, onRoomSearchSuccess);
+			// 		console.log($scope.query);
+			// 	}
+			// } else {
+			// 	// since no filer we will have to
+			// 	// loop through all rooms
+			// 	for (var i = 0, j = $scope.rooms.length; i < j; i++) {
+			// 		var room = $scope.rooms[i]
+			// 		var roomNo = room.room_no.toUpperCase();
+
+			// 		// if the query is empty
+			// 		// apply any filter options
+			// 		// and return
+			// 		if (!$scope.query) {
+			// 			$_calculateFilters();
+			// 			break;
+			// 			return;
+			// 		};
+
+			// 		// let remove any changed applied by filter
+			// 		// show all rooms
+			// 		room.display_room = true;
+
+			// 		// now match the room no and
+			// 		// and show hide as required
+			// 		// must match first occurance of the search query
+			// 		if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
+			// 			room.display_room = true;
+			// 		} else {
+			// 			room.display_room = false;
+			// 		}
+			// 	}
+			// }
+			// // refresh scroll when all ok
+			// $_refreshScroll();
 		}
 
 		/**
@@ -712,7 +760,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// this is the default state
 			$scope.currentFilters['showAllFloors'] = true;
 
-			$scope.refreshScroll();
+			$_refreshScroll();
 		}
 
 		/**
@@ -740,7 +788,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentFilters.floorFilterStart = '';
 			$scope.currentFilters.floorFilterEnd = '';
 			$scope.currentFilters.floorFilterSingle = '';
-			$scope.refreshScroller('filtersection');
 		};
 
 
@@ -921,7 +968,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$timeout(function() {
 						$refresh.classList.remove('show');
 						if ( Math.abs(diff) > trigger ) {
-							$scope.refreshScroll();
+							$_refreshScroll();
 						}
 					}, 320);
 				} else if ( !$scope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
@@ -935,7 +982,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$timeout(function() {
 						$load.classList.remove('show');
 						if ( Math.abs(diff) > trigger ) {
-							$scope.refreshScroll();
+							$_refreshScroll();
 						}
 					}, 320);
 				} else {
