@@ -650,53 +650,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					};
 				}
 			}
-
-
-			// if (!RVHkRoomStatusSrv.searchOnSubset) {
-			// 	if ($scope.query && !!$scope.query.length && $scope.query != lastSearchQuery) {
-			// 		lastSearchQuery = $scope.query;
-			// 		var onRoomSearchSuccess = function(roomsList) {
-			// 			$scope.rooms = roomsList.rooms;
-			// 			$scope.$emit('hideLoader');
-			// 		}
-			// 		$scope.invokeApi(RVHkRoomStatusSrv.searchRooms, {
-			// 			key: $scope.query,
-			// 			date: $rootScope.businessDate
-			// 		}, onRoomSearchSuccess);
-			// 		console.log($scope.query);
-			// 	}
-			// } else {
-			// 	// since no filer we will have to
-			// 	// loop through all rooms
-			// 	for (var i = 0, j = $scope.rooms.length; i < j; i++) {
-			// 		var room = $scope.rooms[i]
-			// 		var roomNo = room.room_no.toUpperCase();
-
-			// 		// if the query is empty
-			// 		// apply any filter options
-			// 		// and return
-			// 		if (!$scope.query) {
-			// 			$_calculateFilters();
-			// 			break;
-			// 			return;
-			// 		};
-
-			// 		// let remove any changed applied by filter
-			// 		// show all rooms
-			// 		room.display_room = true;
-
-			// 		// now match the room no and
-			// 		// and show hide as required
-			// 		// must match first occurance of the search query
-			// 		if ((roomNo).indexOf($scope.query.toUpperCase()) === 0) {
-			// 			room.display_room = true;
-			// 		} else {
-			// 			room.display_room = false;
-			// 		}
-			// 	}
-			// }
-			// // refresh scroll when all ok
-			// $_refreshScroll();
 		}
 
 		/**

@@ -26,8 +26,8 @@
     </div>
     
     <div class="entry search">
-        <a href="#" id="rooms-clear-query" class="clear-query">
-            <span class="icons icon-clear-search" ng-click="$emit('clearSearch()')" translate>CLEAR_QUERY</span>
+        <a class="clear-query" ng-show="query != ''" ng-click="clearSearch()" ng-class="{'visible': query != ''}">
+            <span class="icons icon-clear-search ng-scope" translate>CLEAR_QUERY</span>
         </a>
         <button type="submit" name="submit" class="icons icon-search" translate>MENU_SEARCH</button>
         <input name="rooms-query" id="rooms-query" class="query" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}" type="search" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
