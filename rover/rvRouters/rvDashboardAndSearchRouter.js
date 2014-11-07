@@ -1,45 +1,7 @@
 angular.module('dashboardModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider){
-  //define module-specific routes here
-     /*$stateProvider.state('rover.dashboard', {
-            url: '/dashboard',
-            templateUrl: '/assets/partials/dashboard/rvDashboard.html',
-            controller: 'RVdashboardController',
-            resolve: {
-                dashBoarddata: function(RVDashboardSrv) {
-                    return RVDashboardSrv.fetchDashboardDetails();
-                }
-            }
-        });  
-        
+
         $stateProvider.state('rover.search', {
-            url: '/search/:type',
-            templateUrl: '/assets/partials/search/search.html',
-            controller: 'searchController',
-            resolve: {
-                searchResultdata: function(RVSearchSrv, $stateParams) {
-                	var oldType = "";
-                	var dataDict = {};
-                	oldType = $stateParams.type;
-                	if( oldType != null && oldType!= '' ) {
-	                	if(oldType == "LATE_CHECKOUT"){
-				        	dataDict.is_late_checkout_only = true;
-				        }
-				        else{
-				      		dataDict.status = oldType;
-				        }
-	         			//calling the webservice
-	                    return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
-	                } else if ( !!$stateParams.useCache ) {
-                		return RVSearchSrv.fetch({}, $stateParams.useCache);
-	                } else {
-                        var results = [];
-                        return results;
-                    }
-                }
-            }
-        }); */
-        $stateProvider.state('rover.search', {
-            url: '/search/:type',
+            url: '/search/:type/:from_page',
             templateUrl: '/assets/partials/search/rvSearchReservation.html', 
             controller: 'rvReservationSearchController',
             resolve: {
@@ -58,6 +20,10 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         }
                         else{
                             dataDict.status = oldType;
+                        }
+                        //The pagination should be set to page=1. for navigations from dashboard buttons.
+                        if($stateParams.from_page == "DASHBOARD"){
+                            RVSearchSrv.page = 1;
                         }
                         //calling the webservice
                         return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
