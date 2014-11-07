@@ -87,7 +87,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	$scope.data.filterData.checkedAllDepartments = true;
     	$scope.clearAllDeptSelection();
         $scope.getSelectButtonStatus();
-        
+
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
@@ -187,6 +187,9 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
         if($scope.data.selectedDepartmentList.length>1){
             $scope.data.filterTitle = "Multiple";
+        }
+        else if($scope.data.selectedDepartmentList.length == 0){
+            $scope.data.filterTitle = "All Departments";
         }
         else{
             $scope.data.filterTitle = filterTitle;

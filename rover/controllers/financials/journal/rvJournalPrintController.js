@@ -166,7 +166,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
-            	if(level3){
+            	if(level3 && charge_codes.filterFlag){
             		charge_codes.active = true;
             		charge_groups.active = true;
             	}
