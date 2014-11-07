@@ -117,7 +117,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     hh: "",
                     mm: "",
                     am: "AM"
-                };                
+                };
                 newSet.showRoomRate = false;
             }
 
@@ -220,7 +220,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     } else {
                         angular.forEach(value.room_rates, function(room_type, key) {
                             room_type.hourly = {};
-                            room_type.nightly_rate = !!room_type.nightly_rate ?   parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
+                            room_type.nightly_rate = !!room_type.nightly_rate ? parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
                             angular.forEach(room_type.hourly_rates, function(rate) {
                                 room_type.hourly[rate.hour] = !!rate.amount ? parseFloat(rate.amount).toFixed(2) : rate.amount;
                             });
@@ -528,8 +528,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                             nightHours.push(i);
                     } else {
                         // the range is on the same day, both comparisons must be true
-                        if (dusk < i && i < dusk);
-                        nightHours.push(i);
+                        if (dusk <= i && i < dawn)
+                            nightHours.push(i);
                     }
                 }
                 angular.forEach(nightHours, function(hour) {
