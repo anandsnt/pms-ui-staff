@@ -58,8 +58,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchRevenueData = function(params){
 		var deferred = $q.defer();
-		//var url = '/api/financial_transactions/revenue?from_date='+params.from+'&to_date='+params.to;
-		var url = '/sample_json/journal/journal_revenue.json';
+		var url = '/api/financial_transactions/revenue?from_date='+params.from+'&to_date='+params.to;
+		//var url = '/sample_json/journal/journal_revenue.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			this.revenueData = data;
 			// Adding Show status flag to each item.
@@ -85,8 +85,8 @@ sntRover.service('RVJournalSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv','$
 
 	this.fetchPaymentData = function(params){
 		var deferred = $q.defer();
-		//var url = '/api/financial_transactions/payments?date='+params.date;
-		var url = '/sample_json/journal/journal_payments.json';
+		var url = '/api/financial_transactions/payments?date='+params.date;
+		//var url = '/sample_json/journal/journal_payments.json';
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			this.paymentData = data;
 			// Adding Show status flag to each item.

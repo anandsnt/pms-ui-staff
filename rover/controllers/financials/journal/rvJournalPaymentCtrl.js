@@ -45,7 +45,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.isShowTableHeadingLevel2 = function(index1, index2){
         var isShowTableHeading = false;
         var data = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
-        if(data.length>0){
+        if(typeof data !== 'undefined' && data.length>0){
             angular.forEach(data,function(transactions, index) {
                 if(transactions.show) isShowTableHeading=true;
             });
@@ -56,7 +56,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
     $scope.isShowTableHeadingLevel1 = function(index1){
         var isShowTableHeading = false;
         var data = $scope.data.paymentData.payment_types[index1].transactions;
-        if(data.length>0){
+        if(typeof data !== 'undefined' && data.length>0){
             angular.forEach(data,function(transactions, index) {
                 if(transactions.show) isShowTableHeading=true;
             });
@@ -77,7 +77,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 
     $scope.checkHasArrowLevel2 = function(index1, index2){
         var hasArrow = false;
-        if($scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions.length >0) hasArrow = true;
+        if(typeof $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions == 'undefined') hasArrow = false;
+        else if($scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions.length >0) hasArrow = true;
         return hasArrow;
     };
 	
