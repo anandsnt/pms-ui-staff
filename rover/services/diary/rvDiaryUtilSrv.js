@@ -22,10 +22,20 @@ sntRover
     		copyArray;
 
 		copyArray = function(src, dest){
+    		var val; 
+
     		dest = [];
 
     		for(var i = 0, len = src.length; i < len; i++) {
-    			dest.push(deepCopy(src[i]));
+    			if(_.isObject(src[i])) {
+    				val = deepCopy(src[i]);
+    			} else if (_.isArray(src[i])) {
+    				val = copyArray(src[i]);
+    			} else {
+    				val = src[i];
+    			}
+    			
+    			dest.push(val);
     		}
 
     		return dest;

@@ -101,8 +101,8 @@ DiaryLib.Util = DiaryLib.Util || Object.create(null);
 		return this.isAM() ? 'AM' : 'PM';
 	};
 	Time.prototype.toString = function(asAMPM) {
-		var hours = (this.hours < 10) ? '0' + this.hours : this.hours, 
-			min = (this.minutes < 10) ? '0' + this.minutes : this.minutes, 
+		var hours = (this.hours < 10 ? '0' + this.hours : this.hours), 
+			min = (this.minutes < 10 ? '0' + this.minutes : this.minutes), 
 			ampm = ''; // = ' ' + (this.hours > 11) ? 'PM' : 'AM';
 
 		if(asAMPM) {

@@ -195,43 +195,13 @@ sntRover
 
 			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
 			.then(function(payload) {
-		   		var data 	= payload.results[0].availability,
-		   			s_comp  = start_date.toComponents(),
-		   			e_comp  = end_date.toComponents(),
-		   			s_time  = s_comp.time,
-		   			et  	= e_comp.time,
-		   			sd      = s_comp.date,
-		   			ed 		= e_comp.date,
-		   			availability = [],
-		   			slot, room;
+		   		var data 	= payload.results[0].availability;
+		   			
 
 		   		if(_.isArray(data)) {
 			   		for(var i = 0, len = data.length; i < len; i++) {
-						slot = util.deepCopy(data[i]);
-			   			room = _.findWhere(self.rooms, { id: slot.room_id });
-			   			
-			   			if(room) {
-				   			slot.temporary 				= true;
-				   			slot.room_id 				= slot.room_id;
-				   			slot.arrival_date 			= s_comp.date.toDateString();
-				   			slot.arrival_time 			= s_comp.time.toString();
-				   			slot.departure_date 		= e_comp.date.toDateString();
-				   			slot.departure_time 		= e_comp.time.toString();
-				   			slot.reservatopm_status 	= 'available';
-				   			slot.room_service_status 	= '';
-				   			slot.reservation_id 		= gen_uid;
-				   			//slot.key 					= _.uniqueId('post_') + '-' + slot.id + '-' + data[i].id;
-
-				   			if(Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
-				   				room.occupancy = Array.prototype.slice.call(room.occupancy).concat([slot]);
-				   			} else {
-				   				room.occupancy = [];
-				   				room.occupancy.concat([slot]);
-				   			}
-
-				   			self.normalizeOccupanices(self.room_types, room.occupancy);
-				   		}
-			   		}		   		
+						self.normalizeAvailableOccupancy(gen_uid, self.rooms, self.room_types, util.deepCopy(data[i]), start_date, end_date, rate_id);
+			   		}		
 			   	}
 
 			   	q.resolve({ row_data: self.rooms[0], row_item_data: self.rooms[0].occupancy[0] });
@@ -240,6 +210,39 @@ sntRover
 		   });
 
 			return q.promise;
+    	};
+
+    	this.formatIncomingTimeData = function(obj, date, prefix) {
+    		var comp    = date.toComponents(),
+    			s_date  = comp.date,
+		   		s_time  = comp.time;
+
+		   	obj[prefix + '_date'] = s_date.toDateString();
+		   	obj[prefix + '_time'] = s_time.toString();
+    	};
+
+    	this.normalizeAvailableOccupancy = function(gen_uid, rooms, room_types, slot, start_date, end_date, rate_id) {
+   			room = _.findWhere(rooms, { id: slot.id });
+   			
+   			if(room) {
+	   			slot.temporary 				= true;
+	   			slot.room_id 				= slot.id;
+	   			slot.reservatopm_status 	= 'available';
+	   			slot.room_service_status 	= '';
+	   			slot.reservation_id 		= gen_uid;
+	   			this.formatIncomingTimeData(slot, start_date, 'arrival');
+	   			this.formatIncomingTimeData(slot, end_date, 'departure');
+	   			slot.rate_id = rate_id;
+	   			
+	   			if(Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
+	   				room.occupancy = Array.prototype.slice.call(room.occupancy).concat([slot]);
+	   			} else {
+	   				room.occupancy = [];
+	   				room.occupancy.concat([slot]);
+	   			}
+
+	   			this.normalizeOccupanices(room_types, room.occupancy);
+	   		}
     	};
 
     	this.fetchAvailabilityCount = function(start_date, end_date) {
