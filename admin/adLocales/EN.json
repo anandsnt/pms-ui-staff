@@ -263,8 +263,8 @@
 
 ,	
 	"WORKSTATION": "Work Station",
-	"DEVICE_ID": "Device Id",
-	"STATION_ID": "Station Id",
+	"STATION_NAME": "Work Station Name",
+	"STATION_ID": "Work Station Id",
 	"WORKSTATIONS":"Work Stations"
 ,
 	"PAYMENT_METHODS": "Payment Methods",
