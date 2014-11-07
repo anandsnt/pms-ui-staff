@@ -31,7 +31,9 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', '$state
 		};
 
 		$scope.reserveRooms = function() {
-			$state.transitionTo();
+			$state.go('rover.diary.reservations.companycardsearch', {
+				data: 'shitbox'
+			});
 		};
 
 		$scope.closeDialog = function() {

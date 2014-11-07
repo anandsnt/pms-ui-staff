@@ -216,7 +216,7 @@ var DiaryContent = React.createClass({
 			state = this.state;
 
 		return this.transferPropsTo(React.DOM.div({
-			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + (props.currentResizeItem ? ' editing' : '')
+			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /*(props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
 		TogglePanel({
 			__toggleRows:  		self.__toggleRows

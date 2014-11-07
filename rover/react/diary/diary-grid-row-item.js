@@ -12,7 +12,7 @@ var GridRowItem = React.createClass({
 			meta_id = this.props.meta.occupancy.id,
 			edit = nextProps.edit,
 			editing = edit.active,
-			creating
+			creating;
 
 		if(editing && (edit.originalItem[meta_id] === nextProps.data[meta_id])) {
 			this.setState({
