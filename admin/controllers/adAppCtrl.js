@@ -46,13 +46,13 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 	    $rootScope.businessDate = businessDate;
 	
-	    // var routeChange = function(event, newURL) {
-	    //   event.preventDefault();
-	    //   return;
-	    // };
+	    var routeChange = function(event, newURL) {
+	      event.preventDefault();
+	      return;
+	    };
 	
-	    // $rootScope.$on('$locationChangeStart', routeChange);
-	    // window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
+	    $rootScope.$on('$locationChangeStart', routeChange);
+	    window.history.pushState("initial", "Showing Admin Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile
 
 
 		var setupLeftMenu = function(){
