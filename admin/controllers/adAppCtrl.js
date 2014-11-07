@@ -98,7 +98,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						action: ""
 					}, {
 						title: "MENU_CASHIER",
-						action: ""
+						action: "staff#/staff/financials/journal/2"
 					}, {
 						title: "MENU_END_OF_DAY",
 						action: ""
@@ -153,10 +153,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_FINANCIALS",
 					action: "#",
-					iconClass: "icon-finance",
+					iconClass: "icon-financials",
 					submenu: [{
-						title: "MENU_REVENUE",
-						action: ""
+						title: "MENU_JOURNAL",
+						action: "staff#/staff/financials/journal/0"
 					}, {
 						title: "MENU_ACCOUNTING",
 						action: ""

@@ -1,0 +1,60 @@
+<!-- Content REVENUE-->
+<div id="journal-content" class="journal-content scrollable" ng-controller="RVJournalRevenueController" ng-iscroll='revenue-content' ng-iscroll-delay='100' style="height:90%;">
+    <div class="wrapper">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+        <div id="journal-grid" class="journal-grid" ng-class="{'print-details': !data.isRevenueToggleSummaryActive}">
+
+                <!-- First level - charge groups -->
+                <div class="grid-group" ng-repeat="(index1 ,level1) in data.revenueData.charge_groups"  ng-show="level1.show && level1.filterFlag">
+
+                    <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowLevel1(index1)}" class="revenue-title toggle">
+                        <strong ng-show="level1.show" class="name">{{level1.name}}</strong>
+                        <span ng-show="level1.show" class="value">{{currencySymbol}}{{level1.total}}</span>
+                    </a>
+
+                    <!-- Second level - charge codes -->
+                    <div ng-repeat="(index2 ,level2) in level1.charge_codes" ng-show="level1.active" class="grid-charge">
+
+                        <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowLevel2(index1, index2)}" ng-show="level2.show && level2.filterFlag" class="revenue-title toggle">
+                            <span class="code" ng-show="level2.show">{{level2.id}}</span>
+                            <strong class="name" ng-show="level2.show">{{level2.name}}</strong>
+                            <span class="value" ng-show="level2.show">{{currencySymbol}}{{level2.total}}</span>
+                        </a>
+
+                        <!-- Third level - transactions  -->
+                        <table ng-show="level2.active && level2.show" class="grid-items">
+                            <thead ng-show="isShowTableHeading(index1 ,index2)">
+                                <tr>
+                                    <th scope="col" translate>ROOM_LABEL</th>
+                                    <th scope="col" translate>NAME</th>
+                                    <th scope="col" translate>RESERVATION_NUMBER</th>
+                                    <th scope="col" translate>TYPE</th>
+                                    <th scope="col" translate>DETAILS</th>
+                                    <th scope="col" translate>TIME</th>
+                                    <th scope="col" translate>DEBIT</th>
+                                    <th scope="col" translate>CREDIT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(index3 ,level3) in level2.transactions" ng-show="level3.show">
+                                    <td>{{level3.room}}</td>
+                                    <td>{{level3.name}}</td>
+                                    <td>{{level3.reservation_number}}</td>
+                                    <td>{{level3.type}}</td>
+                                    <td>{{level3.details}}</td>
+                                    <td>{{level3.time}}</td>
+                                    <td>{{level3.debit}}</td>
+                                    <td>{{level3.credit}}</td> 
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+                
+            </div>
+
+    </div>
+</div>
