@@ -1,4 +1,6 @@
-angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+angular.module('diaryModule', []).
+config(
+    function($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider.state('rover.diary', {
             abstract: true,
             url: '/diary',
@@ -14,42 +16,37 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                 payload: function(rvDiarySrv, rvDiaryFilterSrv, $stateParams) {
                     var cur_time = Date.now(),
                         x_0 = new Date(cur_time - 7200000),
-                        x_N = new Date(cur_time + 86400000);
+                        x_N = new Date(cur_time + 86400000),
+                        at;
 
-                    return rvDiaryFilterSrv.fetchArrivalTimes(x_0.toComponents().time, 15) 
+                    return rvDiaryFilterSrv.fetchArrivalTimes(15) //x_0.toComponents().time, 15) 
                     .then(function(data) {
-                        console.log(data);
+                        at = data;
+
                         return rvDiaryFilterSrv.fetchRates();
                     })  
                     .then(function(data) {
-                        console.log(data);
                         return rvDiarySrv.init(x_0, x_N);
                     })
                     .then(function(data) {
                         console.log(data);
-                        return { 
-                            start_date: rvDiarySrv.start_date,
-                            data: rvDiarySrv.rooms,
-                            arrival_times: rvDiaryFilterSrv.arrival_times,
-                            room_types: rvDiarySrv.room_types
-                        };
+
+                        data.arrival_times = at;
+
+                        rvDiarySrv.set('rooms',      data.rooms);         
+                        rvDiarySrv.set('room_types', data.room_types);
+                        rvDiarySrv.set('occupancy',  data.occupancy);
+                        rvDiarySrv.set('start_date', data.start_date);
+                        rvDiarySrv.set('arrival_times', data.arrival_times);
+                        rvDiarySrv.set('availability', data.availability);
+
+                        return data;
                     });
                 }
             }
         });
 
-        $stateProvider.state('rover.diary.reservations.staycard', {
-            url: '/reservations/staycard',
-            templateUrl: '/assets/partials/reservation/rvMain.html',
-            controller: 'RVDiaryMainCardCtrl',
-            resolve: {
-                loadInitialData: function(rvDiarySrv, $stateParams) {
-                    return {};
-                }
-            }
-        });
-
-        $stateProvider.state('rover.diary.reservations.staycard.summary', {
+        /*$stateProvider.state('rover.diary.reservations.staycard.summary', {
             url: 'reservations/summary',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVDiarySummaryCtrl',
@@ -58,5 +55,5 @@ angular.module('diaryModule', []).config(function($stateProvider, $urlRouterProv
                     return {};
                 }
             }
-        });
+        });*/
 });

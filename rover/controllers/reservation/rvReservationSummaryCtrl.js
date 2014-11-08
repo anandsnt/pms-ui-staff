@@ -288,6 +288,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
+				/*
+				* TO DO: to handle in future when more than one confirmations are returned.
+				* For now we will be using first item
+				* Response will have an array 'reservations' in that case.
+				* Normally the data will be a plain dictionary as before.
+				*/
+				if (typeof data.reservations !== 'undefined' &&  data.reservations instanceof Array) {
+					data = data.reservations[0];//select first element
+				} 
+				
 				$scope.reservationData.reservationId = data.id;
 				$scope.reservationData.confirmNum = data.confirm_no;
 				$scope.reservationData.status = data.status;

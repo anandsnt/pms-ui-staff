@@ -7,7 +7,7 @@ var Resizable = React.createClass({
 		return React.DOM.div({
 			className: 'stay-range',
 			style: {
-				display: (props.edit.active) ? 'block' : 'none'
+				display: (props.edit.active || props.edit.passive) ? 'block' : 'none'
 			}
 		},
 		TimelineResizeGrip({
@@ -15,6 +15,7 @@ var Resizable = React.createClass({
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
 			itemProp: 			 'left',
+			edit:                 props.edit,
 			meta:                 props.meta,
 			__onResizeCommand:    props.__onResizeCommand,
 			__onResizeStart:      props.__onResizeStart,
@@ -27,6 +28,7 @@ var Resizable = React.createClass({
 			display: 			  props.display,
 			iscroll: 			  props.iscroll,
 			itemProp: 			  'right',
+			edit:                 props.edit,
 			meta:                 props.meta,
 			__onResizeCommand:    props.__onResizeCommand,
 			__onResizeStart:      props.__onResizeStart,

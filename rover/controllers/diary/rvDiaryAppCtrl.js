@@ -1,5 +1,14 @@
-sntRover.controller('RVDiaryAppCtrl', ['$scope', '$rootScope', '$state', 'rvDiarySrv', 'ngDialog',
-	function($scope, $rootScope, $state, rvDiarySrv, ngDialog) {
+sntRover.controller('RVDiaryAppCtrl', 
+	['$scope', 
+	 '$rootScope', 
+	 '$state', 
+	 '$stateParams', 
+	 'rvDiarySrv', 
+	 'rvDiaryFilterSrv',
+	 'rvDiaryModelSrv',
+	 'rvDiaryUtilSrv',
+	 'ngDialog',
+	function($scope, $rootScope, $state, $stateParams, rvDiarySrv, rvDiaryFilterSrv, rvDiaryModelFactory, rvDiaryUtilSrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setTitle('Reservations');

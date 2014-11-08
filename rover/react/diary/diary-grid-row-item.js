@@ -8,21 +8,27 @@ var GridRowItem = React.createClass({
 		};
 	},
 	componentWillReceiveProps: function(nextProps) {
-		var copy = {};
+		var copy = {},
+			meta_id = this.props.meta.occupancy.id,
+			edit = nextProps.edit,
+			editing = edit.active,
+			creating;
 
-		if(nextProps.currentResizeItem &&
-		   nextProps.currentResizeItem.id === nextProps.data.id ||
-		   nextProps.edit.active &&
-		   nextProps.edit.originalItem.id === nextProps.data.id) {
-
+		if(editing && (edit.originalItem[meta_id] === nextProps.data[meta_id])) {
+			this.setState({
+				editing: true,
+				resizing: true,
+				currentResizeItem: nextProps.currentResizeItem,
+				currentResizeItemRow: nextProps.currentResizeItemRow
+			});
+		} else if(!editing && nextProps.currentResizeItem && (nextProps.currentResizeItem[meta_id] === nextProps.data[meta_id])) {
 			this.setState({
 				editing: nextProps.edit.active,
 				resizing: true,
 				currentResizeItem: nextProps.currentResizeItem,
 				currentResizeItemRow: nextProps.currentResizeItemRow
 			});
-		} else if(!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem ||
-				  this.props.edit.active && !nextProps.edit.active) {
+		} else if((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem) || (this.props.edit.active && !editing)) {
 			this.setState({
 				editing: false,
 				resizing: false,
@@ -36,16 +42,19 @@ var GridRowItem = React.createClass({
 			state 					= this.state,
 			display 				= props.display,
 			px_per_ms               = display.px_per_ms,
+			px_per_int 				= display.px_per_int,
+			x_origin   				= display.x_origin,
 			data 					= props.data,
+			row_data 				= props.row_data,
 			res_meta                = props.meta.occupancy,
 			start_time_ms 			= !state.resizing ? data[res_meta.start_date] : state.currentResizeItem.left,
 			end_time_ms 			= !state.resizing ? data[res_meta.end_date] : state.currentResizeItem.right,
 			time_span_ms 			= end_time_ms - start_time_ms,
-			maintenance_time_span 	= display.maintenance_span_int * display.px_per_int,
+			maintenance_time_span 	= data[res_meta.maintenance] * px_per_int, //display.maintenance_span_int * display.px_per_int,
 			reservation_time_span 	= ((!state.resizing) ? time_span_ms * px_per_ms : time_span_ms),
-			is_temp_reservation 	= props.angular_evt.isAvailable(props.row_data, data),
+			is_temp_reservation 	= props.angular_evt.isAvailable(row_data, data),
 			style 					= {},
-			display_filter 			= props.angular_evt.displayFilter(props.filter, props.row_data, data),
+			display_filter 			= props.angular_evt.displayFilter(props.filter, row_data, data),
 			self = this;
 
 		if(!display_filter) {
@@ -55,7 +64,7 @@ var GridRowItem = React.createClass({
 		return GridRowItemDrag({
 			key: 				data.key,
 			className: 		    'occupancy-block' + (state.editing ? ' editing' : ''),
-			row_data: 			props.row_data,
+			row_data: 			row_data,
 			meta:               props.meta,
 			data:  				data,
 			display: 			display,

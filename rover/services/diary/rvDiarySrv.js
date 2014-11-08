@@ -1,54 +1,30 @@
 sntRover
-.constant('rvDiaryConstants', { 
-	TIME_SPAN_SEEK: 48 * 86400000, 
-	SEEK_OFFSET: -7200,
-	RESERVATION_API: 'api/hourly_availability' })
-.constant('rvDiaryMetadata', {
-	room: {
-		id: 'id',
-		number: 'room_no',
-		type: 'room_type',
-		type_id: 'room_type_id',
-		row_children: 'occupancy'
-	},
-	occupancy: {
-		id: 'reservation_id',
-		room_id: 'room_id',
-		room_type: 'room_type',
-		status: 'reservatopm_status',
-		guest: 'reservation_primary_guest_full_name',
-		start_date: 'arrival',
-		end_date: 'departure',
-		maintenance: 'maintenance'
-	}
-})
-.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiaryConstants', 'rvDiaryMetadata', 
-    function ($q, RVBaseWebSrv, rvBaseWebSrvV2, rvDiaryConstants, rvDiaryMetadata) {
+.service('rvDiarySrv', ['$q', 
+						'RVBaseWebSrv', 
+						'rvBaseWebSrvV2',  
+						'rvDiaryMetadata', 
+						'rvDiaryUtilSrv',
+    function ($q, 
+    		  RVBaseWebSrv, 
+    		  rvBaseWebSrvV2,  
+    		  rvDiaryMetadata, 
+    		  rvDiaryUtilSrv) {
+    	var meta 	= rvDiaryMetadata,
+    		hops 	= Object.prototype.hasOwnProperty,
+    		slice 	= Array.prototype.slice,
+    		define 	= Object.defineProperty,
+    		util 	= rvDiaryUtilSrv;
 
-    	this.start_date = undefined;
-
-    	this.meta = rvDiaryMetadata;
-
-    	this.store = Object.create(null, {
-    		rooms: {
-    			enumerable: true,
-    			writable:true,
-    			value: Object.create(null)
-    		},
-    		room_types: {
-    			enumerable: true,
-    			writable: true,
-    			value: Object.create(null)
-    		},
-    		occupancies: {
-    			enumerable: true,
-    			writable: true,
-    			value: Object.create(null)
-    		}
-    	});
-
+    	/*INITIALIZE CONFIGURATION FOR API CALLS*/
     	(function() { 
-    		function defaults(url, type) {
+    		var defaults = function(url, type) {
+    			var define = function(val) {
+	    			return {
+	    				enumerable: true,
+	    				value: val
+	    			};
+	    		};
+
     			return { 
     				value: Object.create(null, {
 		    			url: {
@@ -61,258 +37,125 @@ sntRover
 		    			} 
 		    		})
     			};
-    		}
+    		};
 
 	    	this.api_types = Object.create(null, {
-	    		availability: defaults('api/hourly_availability', 'data'),
+	    		availability: 		defaults('api/hourly_availability', 'data'),
 	    		availability_count: defaults('api/hourly_availability', 'count'),
-	    		occupancy: defaults('api/hourly_occupancy', 'data')
+	    		occupancy: 			defaults('api/hourly_occupancy', 'data')
 	    	});
     	}).call(this);
+    	/*INITIALIZE CONFIGURATION FOR API CALLS*/
 
-    	this.availability_count = [];
-    	this.availability = [];
-    	this.occupancy = [];
-    	this.rooms = [];
-    	this.room_types = [];
+		this.normalizeOccupancy = function(room_types, occupancy) {
+    		var m = meta.occupancy, 
+				room_type = _.findWhere(room_types, { id: occupancy.room_type_id }); 
 
-    	/*function Model(params) {
-    		if(!(this instanceof Model)) {
-    			return new Model(params);
-    		}
+			occupancy.key 				= _.uniqueId('oc-' + occupancy[meta.occupancy.id] + '-');
 
-    		_.extend(this, params);
-    	}
+			occupancy[m.start_date] 	= this.normalizeTime(occupancy.arrival_date, 
+															 occupancy.arrival_time);
+		    occupancy[m.end_date] 	    = this.normalizeTime(occupancy.departure_date, 
+		    											     occupancy.departure_time);
+		    occupancy[m.maintenance] 	= this.normalizeMaintenanceInterval(room_type.departure_cleanning_time, 15);
 
-    	Model.prototype = {
-    		constructor: Model,
-    		normalize: function() {
-    			return;
-    		},
-    		copy: function() {
-    			return _.extend({}, this);
+		    occupancy[m.room_type] 		= room_type.name;
+    	};
+
+    	this.normalizeOccupanices = function(room_types, occupancies) {
+    		for(var i = 0, len = occupancies.length; i < len; i++) {
+    			this.normalizeOccupancy(room_types, occupancies[i]);
     		}
     	};
 
-    	function Collection() {
-    		if(!(this instanceof Collection)) {
-    			return new Collection(arguments);
+    	this.normalizeRooms = function(rooms, room_types) {
+    		for(var i = 0, len = rooms.length; i < len; i++) {
+    			rooms[i] = this.normalizeRoom(rooms[i], room_types);
     		}
+    	};
 
-    		Array.call(this, Array.prototype.slice.call(arguments));
-    	}
-    	Collection.prototype = Object.create(Array.prototype);
-    	Collection.prototype.constructor = Collection;
+    	this.normalizeRoom = function(room, room_types) {
+    		var rt = _.findWhere(room_types, { id: room.room_type_id }); 
 
-    	function Rooms(arr) {
-    		Collection.call(this, arr);
-    	}
-
-    	Rooms.prototype = Object.create(Collection.prototype);
-    	Rooms.prototype.constructor = Rooms;
-
-    	function Room(params) {
-    		Model.call(this, params);
-    	}
-
-    	Room.prototype = Object.create(Model.prototype);
-    	Room.prototype.constructor = Room;
-    	Room.prototype.meta = rvDiaryMetadata.room;
-    	Room.prototype.normalize = function(index) {
-    		room.room_type = index.room_types[room.room_type_id].name;
-		    			
-			if(!room[this.meta.row_children]) {
-				room[this.meta.row_children] = [];
+    		room.key 	   = _.uniqueId('rm-' + room[meta.room.id] + '-');	
+			room.room_type = (rt ? rt.name : '');
+ 			
+			if(!hops.call(room, 'occupancy')) {
+				define(room, 'occupancy', {
+					enumerable: true,
+					configurable: true,
+					writable: true,
+					value: []
+				});
 			}	
-    	};
-    	Room.prototype.copy = function() {
-			var rc_meta = this.meta.row_children,
-				newRoom = {}, 
-				resLen = (_.isArray(this[rc_meta]) ? this[rc_meta].length : 0);
 
-			_.extend(newRoom, this);
-
-			newRoom[rc_meta] = [];
-
-			for(var i = 0; i < resLen; i++) {
-				newRoom[rc_meta].push(copyReservation(room[rc_meta][i]));
-			}
-
-			return newRoom;
-    	};
-    	Room.prototype.insertOccupancy = function(occupancy) {
-    		var new_children = [], cur_children = this[this.meta.row_children];
-
-    		for(var i = 0, len = cur_children.length; i < len; i++) {
-    			if(cur_children[i][this.meta.start_date] > occupancy[this.meta.start_date]) {
-    				new_children.push(occupancy);
-    			}
-
-    			new_children.push(cur_children[i]);
-    		}
-
-    		this[this.meta.row_children] = new_children;
-    	};
-
-    	function Occupancy(params) {
-    		Model.call(this, params);
-    	}
-    	Occupancy.prototype = Object.create(Model);
-    	Occupancy.prototype.constructor = Occupancy;
-    	Occupancy.prototype.meta = rvDiaryMetadata.occupancy;
-    	Occupancy.prototype.normalize = function() {
-			var meta = this.meta;
-
-			this[meta.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-			this[meta.start_date] 	= this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-			this[meta.maintenance] 	= this.normalizeMaintenanceInterval(room.departure_cleaning_time);
-    	};
-    	Occupancy.prototype.copy = function() {
-    		
-    	};
-    	Occupancy.prototype.normalizeTime = function(time, date) {
-    		var t_a = time.slice(0, -1),
-    			t_b = time.slice(-1);
-
-    		return Date.parse(date + ' ' + t_a + ' ' + t_b);
-    	};
-    	Occupancy.prototype.normalizeMaintenanceInterval = function(time, base_interval) {
-    		var t_a = time.slice(0, -2),
-    			t_b = time.slice(-3),
-    			intervals = 60 / base_interval;
-
-    		return intervals * t_a + parseInt(60 / base_interval);
-    	};*/
-
-    	this.createIndex = function(payload, prop_name, index_prop_name) {
-    		var collection = payload[prop_name],
-    			i = 0,
-    			len = collection.length,
-    			idx = this.store[index_prop_name] = Object.create(null);
-
-    		for(; i < len; ++i) {
-    			idx[collection[i].id] = collection[i];
-    		}
-    	};
-
-    	this.normalizeTimeSlots = function(time_slots, extra_params, index) {
-    		var rooms = this.rooms,
-    			room_types = this.room_types,
-    			children = rvDiaryMetadata.room.row_children,
-    			slot_id = rvDiaryMetadata.occupancy.id,
-    			room,
-    			slot,
-    			findParams = {};
-
-    		findParams[slot_id] = undefined;
-
-    		if(time_slots.length > 0) {
-	    		for(var i = 0, len = time_slots.length; i < len; i++) {
-	    			slot = time_slots[i];
-	    			room = index.rooms[slot[room_id]];
-	    			findParams[slot_id] =slot[slot_id];
-
-    				if(!_.findWhere(room[children], findParams)) {
-	    				this.normalizeOccupancy(room, slot);
-
-	    				room[children].push(slot);
-	    			}		
-	    		}
-			}
-    	};
-
-    	this.normalizeRooms = function(rooms, index) {
-    		if(!Object.prototype.hasOwnProperty.call('__ready')) {
-	    		for(var i = 0, len = rooms.length; i < len; i++) {
-	    			this.normalizeRoom(rooms[i], index);
-	    		}
-
-	    		Object.defineProperty(rooms, '__ready', { value: true });
-	    	}
-    	};
-
-    	this.normalizeRoom = function(room, index) {		
-			room.room_type = index.room_types[room.room_type_id].name;
-		    			
-			if(!room[rvDiaryMetadata.room.row_children]) {
-				room[rvDiaryMetadata.room.row_children] = [];
-			}			
-    	};
-
-    	this.normalizeOccupancy = function(room, occupancy) {
-    		if(!Object.prototype.hasOwnProperty.call(occupancy, '__ready')) {
-				occupancy[rvDiaryMetadata.occupancy.start_date] 	= this.normalizeTime(occupancy.arrival_date, occupancy.arrival_time);
-			    occupancy[rvDiaryMetadata.occupancy.end_date] 	    = this.normalizeTime(occupancy.departure_date, occupancy.departure_time);
-			    occupancy[rvDiaryMetadata.occupancy.maintenance] 	= this.normalizeMaintenanceInterval(room.departure_cleaning_time);
-
-			    Object.defineProperty(occupancy, '__ready', { value: true });
-			}
+			return room;		
     	};
 
     	this.normalizeMaintenanceInterval = function(time, base_interval) {
-    		var t_a = time.slice(0, -2),
-    			t_b = time.slice(-3),
-    			intervals = 60 / base_interval;
+    		var t_a = +time.slice(0, -3),
+    			t_b = +time.slice(-2),
+    			intervals = t_b / base_interval,
+    			intervals_per_hr = 60 / base_interval;
 
-    		return intervals * t_a + parseInt(60 / base_interval);
+    		return intervals_per_hr * t_a + parseInt(intervals);
     	};
 
     	this.normalizeTime = function(date, time) {
-    		var t_a = time.slice(0, -1),
-    			t_b = time.slice(-1);
+    		var std = (time.indexOf('am') > -1 || time.indexOf('pm') > -1),
+    			t_a = time.slice(0, -3),
+    			t_b = time.slice(-2);
 
-    		return Date.parse(date + ' ' + t_a + ' ' + t_b);
+    		return Date.parse(date + ' ' + (std ? t_a + ' ' + t_b : time));
     	};
 
-    	this.chompPast = function(cutoff_date) {
-    		var to_splice = [];
+    	this.linkRooms = function(rooms, occupancies) {
+    		occupancies.forEach(function(occupancy, idx) {
+    			var room = _.findWhere(rooms, { id: occupancy.room_id });
 
-    		for(var i = 0, len = this.rooms.length; i < len; i++) {
-    			for(var j = 0, jlen = this.rooms[i].occupancy.length; j < jlen; j++) {
-    				if(this.rooms[i].occupancy[j].arrival < start_date) {
-    					to_splice.push(j);
+    			if(room){
+    				if(!_.findWhere(room.occupancy, { reservation_id: occupancy.reservation_id })) {
+    					room.occupancy.push(occupancy);
+    					console.log(room.id + ' ' + occupancy);
     				}
     			}
-    			while(to_splice.length > 0) {
-    				this.rooms[i].occupancy.splice(to_splice.pop());
-    			}
-    		}
+    		});
+
+    		return rooms;
     	};
 
-    	this.merge = function(room, incomingData) {
-    		var r = this.store.rooms[room[rvDiaryMetadata.room.id]];
-
-    		r = rvDiaryUtilSrv.copyRoom(room);
-
-    		r[rvDiaryMetadata.room.row_children] = _.union(r[rvDiaryMetadata.room.row_children], incomingData);
-    	};
-    	
     	this.init = function(start_date, end_date) {
-			var self = this, q=  $q.defer();
+			var self = this, 
+				q=  $q.defer(), 
+				slice = Array.prototype.slice,
+				room_types,
+				rooms,
+				occupancy;
 
-    		this.start_date = start_date;
+			start_date.setHours(0,0,0,0);
 
-			this.fetchData(start_date, end_date, self.api_types.occupancy)
+			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
-				if(self.room_types.length === 0) {
-					self.room_types = data.room_types;
-					self.room_types.unshift({ id: 'All', name: 'All', description: 'All' });
-					self.createIndex(data, 'room_types', 'room_types');
-				}
+				
+				room_types = util.copyArray(data.room_types, room_types);
 
-				if(self.rooms.length === 0) {
-					self.rooms = data.rooms;
-					self.createIndex(data, 'rooms', 'rooms');
-					self.normalizeRooms(self.rooms, self.store, self.store);
-				}
+				room_types.unshift({ id: 'All', name: 'All', description: 'All' });
+			
+				rooms = util.copyArray(data.rooms, rooms);
 
-				self.occupancy = _.union(self.occupancy, data.occupancy);
-				self.createIndex(data, 'occupancy', 'occupancy');
+				self.normalizeRooms(rooms, room_types);		
 
-				self.normalizeTimeSlots(self.occupancy, self.store);
+				occupancy = util.copyArray(data.occupancy);
+
+				self.normalizeOccupanices(room_types, occupancy);
+		
+				console.log(self.linkRooms(rooms, occupancy));
 
 				q.resolve({
-					data: self.rooms
+					start_date: start_date,
+					rooms: 		rooms,
+					occupancy: 	occupancy,
+					room_types: room_types
 				});
 			}, function(err) {
 				q.reject(err);
@@ -322,19 +165,12 @@ sntRover
     	};
 
     	this.fetchOccupancy = function(start_date, end_date) {
-    		var self = this, q=  $q.defer();
+    		var self = this, 
+    			q=  $q.defer();
 
-			this.fetchData(start_date, end_date, self.api_types.occupancy)
+			this.fetchData(start_date, end_date, this.api_types.occupancy)
 			.then(function(data) {
-				self.occupancy = _.union(self.occupancy, data.occupancy);
-
-				self.createIndex(data, 'occupancy', 'occupancy');
-
-				self.normalizeTimeSlots(data.occupancy, self.store);
-
-				q.resolve({
-					data: self.rooms
-				});
+				q.resolve(util.deepCopy(data.occupancy));
 			}, function(err) {
 				q.reject(err);
 			});
@@ -342,41 +178,80 @@ sntRover
     		return q.promise;
     	};
 
+    	this.injectAvailability = function(start_date, end_date, rate_id, room_type_id) {
+    		var q = $q.defer();
+
+    		this.fetchAvailability.apply(this, Array.prototype.slice.call(arguments))
+    		.then(function(data) {
+    			console.log('AVAILABILITY CONTENTS', data);
+    		});
+    	};
+
     	this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {
-    		var self = this, q = $q.defer();
+    		var self = this, 
+    			q = $q.defer(), 
+    			availability = [],
+    			gen_uid = _.uniqueId('available-');
 
 			this.fetchData(start_date, end_date, self.api_types.availability, rate_id, room_type_id)
 			.then(function(payload) {
-		   		var data = payload.results;
+		   		var data 	= payload.results[0].availability;
+		   			
 
 		   		if(_.isArray(data)) {
 			   		for(var i = 0, len = data.length; i < len; i++) {
-			   			data[i].temporary = true;
-			   		}
-
-			   		self.availability = data;
-
-			   		self.normalize(self.availability);
+						self.normalizeAvailableOccupancy(gen_uid, self.rooms, self.room_types, util.deepCopy(data[i]), start_date, end_date, rate_id);
+			   		}		
 			   	}
 
-			   	q.resolve({
-		   			data: self.rooms  			
-		   		});
+			   	q.resolve({ row_data: self.rooms[0], row_item_data: self.rooms[0].occupancy[0] });
 		   }, function(err) {
 		   		q.reject(err);
 		   });
-			//});
+
 			return q.promise;
     	};
 
-    	this.fetchAvailabilityCount = function(start_date, end_date) {
-    		var self = this, q = $q.defer();
+    	this.formatIncomingTimeData = function(obj, date, prefix) {
+    		var comp    = date.toComponents(),
+    			s_date  = comp.date,
+		   		s_time  = comp.time;
 
-			this.fetchData(start_date, end_date, self.api_types.availability_count)
-		   	.then(function(data) {
-		   		self.availability_count = data;
-		   		
-		   		q.resolve(self.availability_count);	   	
+		   	obj[prefix + '_date'] = s_date.toDateString();
+		   	obj[prefix + '_time'] = s_time.toString();
+    	};
+
+    	this.normalizeAvailableOccupancy = function(gen_uid, rooms, room_types, slot, start_date, end_date, rate_id) {
+   			room = _.findWhere(rooms, { id: slot.id });
+   			
+   			if(room) {
+	   			slot.temporary 				= true;
+	   			slot.room_id 				= slot.id;
+	   			slot.reservatopm_status 	= 'available';
+	   			slot.room_service_status 	= '';
+	   			slot.reservation_id 		= gen_uid;
+	   			this.formatIncomingTimeData(slot, start_date, 'arrival');
+	   			this.formatIncomingTimeData(slot, end_date, 'departure');
+	   			slot.rate_id = rate_id;
+	   			
+	   			if(Object.prototype.hasOwnProperty.call(room, 'occupancy')) {
+	   				room.occupancy = Array.prototype.slice.call(room.occupancy).concat([slot]);
+	   			} else {
+	   				room.occupancy = [];
+	   				room.occupancy.concat([slot]);
+	   			}
+
+	   			this.normalizeOccupanices(room_types, room.occupancy);
+	   		}
+    	};
+
+    	this.fetchAvailabilityCount = function(start_date, end_date) {
+    		var self = this, 
+    			q = $q.defer();
+
+			this.fetchData(start_date, end_date, this.api_types.availability_count)
+		   	.then(function(data) {		   		
+		   		q.resolve(copyArray(availability_count, data));	   	
 		   	}, function(err) {
 		   		q.reject(err);
 		   	});
@@ -385,17 +260,17 @@ sntRover
     	};
 
         this.fetchData = function (start_date, end_date, type_config, rate_id, room_type_id) {
-            var deferred = $q.defer (),
-            	start_time = start_date.toComponents().time,
-            	end_time = end_date.toComponents().time,
-            	begin = start_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
-            	end = end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
+            var deferred 	= $q.defer (),
+            	s_comp  	= start_date.toComponents(),
+            	e_comp 	    = end_date.toComponents(),
+            	//begin 		= s_comp.date.toDateString(), //start_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
+            	//end 		= e_comp.date.toDateString(), //end_date.toLocaleDateString().replace(/\//g, '-').split('-').reverse(),
             	dto = { 
-            		begin_time: start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
-					end_time: end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
-					begin_date: begin.shift() + '-' + begin.reverse().join('-'),
-					end_date: end.shift() + '-' + end.reverse().join('-'),
-					type: type_config.type		
+            		begin_time: s_comp.time.toString(), //start_time.hours + ':' + (start_time.minutes < 10 ? '0' + start_time.minutes : start_time.minutes),
+					end_time: 	e_comp.time.toString(), //end_time.hours + ':' + (end_time.minutes < 10 ? '0' + end_time.minutes : end_time.minutes),
+					begin_date: s_comp.date.toDateString(), //begin.shift() + '-' + begin.reverse().join('-'),
+					end_date: 	e_comp.date.toDateString(), //end.shift() + '-' + end.reverse().join('-'),
+					type: 		type_config.type		
             	};
 
             if(rate_id) {
@@ -415,4 +290,10 @@ sntRover
 
             return deferred.promise;
         };
+
+        this.set = function (field, value) {
+    		if(!Object.prototype.hasOwnProperty.call(this, field)) {
+    			this[field] = value;
+    		}
+    	};
 }]);

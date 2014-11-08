@@ -19,7 +19,7 @@ var Grid = React.createClass({
 
 		iscroll.grid.on('scroll', iscroll.grid._scrollFn);
 		iscroll.grid.on('scrollEnd', this.props.__onGridScrollEnd);
-
+																																																																			
 		setTimeout(function () {
 	        iscroll.grid.refresh();
 	    }.bind(this), 0);
@@ -29,10 +29,10 @@ var Grid = React.createClass({
 		this.props.iscroll.grid = null;
 	},
 	render: function() {
-		var props = this.props,
-			display = props.display,
-			grid_width = display.width + 'px',
-			self = this;
+		var props 		= this.props,
+			display 	= props.display,
+			grid_width 	= display.width + 'px',
+			self 		= this;
 
 		/*OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
@@ -50,7 +50,7 @@ var Grid = React.createClass({
 						key: 				row.key,
 						data: 				row,
 						row_number: 		idx,
-						display: 			props.display,
+						display: 			display,
 						viewport: 			props.viewport,
 						filter: 			props.filter,
 						meta:               props.meta,
