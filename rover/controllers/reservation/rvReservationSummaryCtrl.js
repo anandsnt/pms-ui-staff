@@ -276,6 +276,32 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.market_segment_id = parseInt($scope.reservationData.demographics.market);
 			data.booking_origin_id = parseInt($scope.reservationData.demographics.origin);
 			data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
+			
+			//to delete starts here
+			// var room = {
+   //                  numAdults: 1,
+   //                  numChildren: 0,
+   //                  numInfants: 0,
+   //                  roomTypeId: '',
+   //                  roomTypeName: 'Deluxe',
+   //                  rateId: '',
+   //                  rateName: 'Special',
+   //                  rateAvg: 0,
+   //                  rateTotal: 0,
+   //                  addons: [],
+   //                  varyingOccupancy: false,
+   //                  stayDates: {},
+   //                  room_id:320,
+   //                  isOccupancyCheckAlerted: false
+   //              }
+   //          $scope.reservationData.rooms[0].room_id = 324;
+			// $scope.reservationData.rooms.push(room);
+			// data.room_id = [];
+			// angular.forEach($scope.reservationData.rooms, function(room, key) {
+			//   data.room_id.push(room.room_id);
+			// });
+			//to delete ends here
+			
 
 			return data;
 
@@ -288,20 +314,38 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.$emit('hideLoader');
 				/*
 				* TO DO: to handle in future when more than one confirmations are returned.
-				* For now we will be using first item
+				* For now we will be using first item for navigating to staycard
 				* Response will have an array 'reservations' in that case.
 				* Normally the data will be a plain dictionary as before.
 				*/
 				if (typeof data.reservations !== 'undefined' &&  data.reservations instanceof Array) {
-					data = data.reservations[0];//select first element
+					
+					angular.forEach(data.reservations, function(reservation, key) {
+						angular.forEach($scope.reservationData.rooms, function(room, key) {
+						if(reservation.room_id === room.room_id){
+							room.confirm_no = reservation.confirm_no;
+						}
+						});
+					});
+					$scope.reservationData.reservations = data.reservations;
+					$scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
+					$scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
+					$scope.reservationData.status = $scope.reservationData.reservations[0].status;
+					$scope.viewState.reservationStatus.number = $scope.reservationData.reservations[0].id;
 				} 
+				else{
+					$scope.reservationData.reservationId = data.id;
+					$scope.reservationData.confirmNum = data.confirm_no;
+					$scope.reservationData.status = data.status;
+					$scope.viewState.reservationStatus.number = data.id;
+				}
+				/*
+				* TO DO:ends here
+				*/
 				
-				$scope.reservationData.reservationId = data.id;
-				$scope.reservationData.confirmNum = data.confirm_no;
-				$scope.reservationData.status = data.status;
+				
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.reservationData.is_routing_available = false;
-				$scope.viewState.reservationStatus.number = data.id;
 				// Change mode to stay card as the reservation has been made!
 				$scope.viewState.identifier = "CONFIRM";
 
