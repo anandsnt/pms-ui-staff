@@ -59,6 +59,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		var reservationMainData = $scope.$parent.reservationData;
 		$scope.reservationParentData = $scope.$parent.reservationData;
 		$scope.reservationData = reservationDetails;
+		
+
 
 		// update the room details to RVSearchSrv via RVSearchSrv.updateRoomDetails - params: confirmation, data
 		$scope.updateSearchCache = function() {
@@ -378,7 +380,9 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 		};
 
 		$scope.goToRoomAndRates = function(state) {
-			if($rootScope.isStandAlone){
+			if($scope.reservationData.reservation_card.is_hourly_reservation){
+				return false;
+			} else if($rootScope.isStandAlone){
 				$state.go('rover.reservation.staycard.mainCard.roomType', {
 					from_date: reservationMainData.arrivalDate,
 					to_date: reservationMainData.departureDate,
@@ -421,6 +425,11 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 				var postData = $scope.computeReservationDataforUpdate();
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
 			}
+		};
+		
+		
+		$scope.showDiaryScreen = function(){
+			$state.go('rover.diary.reservations');
 		};
 	}
 
