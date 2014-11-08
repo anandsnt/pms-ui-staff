@@ -511,6 +511,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * 
 		 */
 		$scope.startPaymentProcess = function(){
+			$scope.shouldShowWaiting = true;
 			ngDialog.open({
 				template: '/assets/partials/reservation/rvWaitingDialog.html',
 				className: 'ngdialog-theme-default',
@@ -523,6 +524,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 			RVReservationSummarySrv.startPayment(data).then(function(response) {
 				console.log(response);
+				$scope.shouldShowWaiting = false;
 			},function(){
 				$rootScope.netWorkError = true;
 				$scope.isPosting = false;
