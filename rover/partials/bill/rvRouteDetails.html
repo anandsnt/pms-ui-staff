@@ -50,7 +50,7 @@
 							<!-- add class active when selected -->
 							<span ng-show = "paymentDetails.payment_type == 'CC'">
 								<figure class="card-logo">
-									<img src="/assets/{{paymentDetails.credit_card}}.png" alt="" />
+									<img src="/assets/{{paymentDetails.credit_card.toLowerCase()}}.png" alt="" />
 								</figure>
 								<span class="number">{{'NUMBER' | translate}} <span class="value number">{{paymentDetails.mli_token}}</span></span>
 								<span class="date">{{'DATE' | translate}} <span class="value date">{{paymentDetails.card_expiry}}</span></span>							

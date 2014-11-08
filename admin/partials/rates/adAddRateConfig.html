@@ -100,26 +100,17 @@
 
 
 <div class="rate-config" ng-if="rateData.is_hourly_rate" ng-show="currentClickedSet == $index">
-    <div class="full-width">
+    <div class="hourly-config day">
         <label class="day_rates">Day Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable">
-            <tr class="day_night_rates">
-                <td width="9%" align="right">Add per hour</td>
-                <td width="1%">&nbsp;</td>
-                <td width="9%" align="left">Min. Hours</td>
+            <tr class="day_night_rates">                
+                <td width="5%" align="left">Min. Hours</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="9%" align="left">Max. hours</td>
+                <td width="5%" align="left">Max. hours</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="13%" align="left">Check out cut-off</td>
-                
+                <td width="13%" align="left">Check out cut-off</td>                
             </tr>
-            <tr>
-                <td align="left">
-                    <div class ="rate_entry">
-                        <input ng-model="set.day_hourly_increment_amount" type="text">
-                    </div>
-                </td>
-                <td align="center">&nbsp;</td>
+            <tr>               
                 <td align="left">
                     <div class ="rate_entry">
                         <input ng-model="set.day_min_hours" type="text" >
@@ -165,21 +156,15 @@
         <label class="night_rates">Night Rates</label>
         <table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable" >
             <tr class="day_night_rates">
-                <td width="9%" align="left">Hourly in day</td>
+                <td width="11%" align="left">NIGHT STARTS</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="11%" align="left">Night starts</td>
+                <td width="11%" align="left">NIGHT ENDS</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="11%" align="left">Night ends</td>
+                <td width="11%" align="left">CHECK OUT CUT-OFF</td>
                 <td width="1%" align="center">&nbsp;</td>
-                <td width="10%" align="left">&nbsp;</td>
+                <td width="6%" align="left">&nbsp;</td>
             </tr>
             <tr>
-                <td align="left">
-                    <div class ="rate_entry">
-                        <input ng-model="set.nightly_hourly_increment_amount" type="text">
-                    </div>
-                </td>
-                <td align="center">&nbsp;</td>
                 <td align="left">
                    <div class="entry full-width float">
                         <div class="select select-col col1-3">
@@ -231,64 +216,116 @@
                     </div>
                 </td>
                 <td align="center">&nbsp;</td>
+
                 <td align="left">
-                    <div class ="rate_entry"><button class="green button" type="button">Create</button></div>
+                    <div class="entry full-width float">
+                        <div class="select select-col col1-3">
+                            <select ng-model="set.night_checkout.hh" class="styled">
+                                <option value="" data-text="Not set" class="placeholder">HH</option>
+                                <option ng-repeat="i in [0, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==set.night_checkout.hh">{{i}}</option>
+                            </select>
+                        </div>
+                        <div class="select select-col col1-3">
+                            <select ng-model="set.night_checkout.mm">
+                                <option value="" data-text="Not set" class="placeholder">MM</option>
+                                <option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==set.night_checkout.mm">{{i}}</option>
+                            </select>
+                        </div>
+                        <div class="select select-col col1-3">
+                            <select ng-model="set.night_checkout.am" name="hotel-checkout-primetime" class="styled">
+                                <option value="AM" selected="" translate>AM</option>
+                                <option value="PM" translate>PM</option>
+                            </select>
+                        </div>
+                    </div>
                 </td>
-                
+                <td align="center">&nbsp;</td>
+
+                <td align="left">
+                    <div class ="rate_entry">
+                        <button ng-if="!set.isSaved" ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Create</button>
+                        <button ng-if="set.isSaved" ng-click="saveSet(dateRange.id, $index, 'saveGrid')" class="green button" type="button">Update</button>
+                    </div>
+                </td>                
             </tr>
            
            
         </table>
     </div>
 
-    <div class="rates_state" ng-show="true">
-        <div style="float:left;width:30%;">
+
+    <div class="hourly_rates_grid" ng-show="set.showRoomRate || set.isSaved">
+        <div class="night_rates">
             <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="10%" align="right">&nbsp;</td>
-                    <td width="2%">&nbsp;</td>
-                    <td width="10%" align="center">Nightly Rates</td>
-                    <td width="2%" align="center">&nbsp;</td>
+                    <td width="2%">&nbsp;</td>                    
                 </tr>
                 <tr ng-repeat="room_rate in set.room_rates">
                     <td align="right" class="room-type">{{room_rate.name}}</td>
-                    <td align="center">&nbsp;</td>
-                    <td align="left">
-                        <div class ="rate_entry">
-                            <input type="text">
-                        </div>
-                    </td>
-                    <td align="center" >
-                        <span>&nbsp;</span>
-                    </td>
+                    <td align="center">&nbsp;</td>                    
                 </tr>
             </table>
         </div>
-
-        <div style="width:60%;float:left;">
-            <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0">
-                
+        <div id="hourlyRateDraw" ng-init="hourlyDraw = false">            
+            <div class="draw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">                
+                <span ng-click="hourlyDraw = !hourlyDraw" ng-class="{'closed':!hourlyDraw , 'open':hourlyDraw}">Increments & Nightly Rates</span>                
+                <table width="100%" border="0" align="left" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="30%" align="right">ADD PER HOUR ON DAY RATE</td>
+                        <td width="2%">&nbsp;</td>
+                        <td class="nightly" width="30%" align="center">NIGHLTY RATE</td>                    
+                        <td width="2%" align="center">&nbsp;</td>
+                        <td class="nightly" width="30%" align="center">ADD HOURLY IN DAY ON RATE</td>                    
+                        <td width="2%" align="center">&nbsp;</td>
+                    </tr>
+                    <tr ng-repeat="room_rate in set.room_rates">
+                        <td align="left">
+                            <div class ="night_rate_entry">
+                                <input ng-model="room_rate.day_per_hour" type="text">
+                            </div>                        
+                        </td>
+                        <td align="center">&nbsp;</td>
+                        <td align="left">
+                            <div class ="night_rate_entry">
+                                <input ng-model="room_rate.nightly_rate" type="text">
+                            </div>                        
+                        </td>
+                        <td align="center">&nbsp;</td>
+                        <td align="left">
+                            <div class ="night_rate_entry">
+                                <input ng-model="room_rate.night_per_hour" type="text">
+                            </div>                        
+                        </td>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="hourly_rate_state">
+            <table  border="0" align="center" cellspacing="0" cellpadding="0">                
                 <tr>
-                    <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}"> {{i}}:00</td>
+                    <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" in <td> -->
+                    <!-- The Day Check Out time should be indicated in colour.Add class "day_checkout_time"-->
+                    <td width="10%" class="hourly_grid_time" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}" ng-class="{'day_checkout_time' : $index == (set.checkout.am == 'AM' ? set.checkout.hh : 12 + set.checkout.hh), 'night_time' : checkNightly(set, $index) }"> {{i}}:00</td>
                     <td width="2%" align="center">&nbsp;</td>
                 </tr>
                 <tr ng-repeat="room_rate in set.room_rates">
                     <td width="10%" align="center" ng-repeat="i in [0, 23, 1, 2] | makeRange" value="{{i}}">
-                        <div class ="rate_entry">
-                            <input type="text">
+
+                        <!-- The nightly time span will be greyed out as the default nightly price applies. Add class "default_night_price" along with "night_rate_entry"-->
+                        <div class ="night_rate_entry" ng-class="{'default_night_price' : checkNightly(set, $index)}">
+                            <input ng-disabled="checkNightly(set, $index)" ng-model="room_rate.hourly[$index]" type="text">
                         </div>
                     </td>
-                    <td align="center" width="2%" >
-                        <span>&nbsp;</span>
-                    </td>
+                    
                 </tr>
               
             </table>
            
         </div>
 
-
-        <div class="entry movers" style="width:10%;float:right;">
+        <div class="entry movers" ng-hide="true">
             <span  class="icons icon-mover-right to-target" data-type="target">Move right</span>
             <span class="icons icon-mover-left to-source" data-type="source">Move left</span>
         </div>

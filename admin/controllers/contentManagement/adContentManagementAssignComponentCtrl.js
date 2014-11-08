@@ -85,8 +85,10 @@ admin.controller('ADContentManagementAssignComponentCtrl',['$scope', 'ngDialog',
     *of the component, on clicking the confirm button.
     */
    $scope.confirmClicked = function(){
-   		$scope.data.parent_category = $scope.data.parent_category.concat($scope.selectedCategories);
-   		$scope.data.parent_section = $scope.data.parent_section.concat($scope.selectedSections);
+      if($scope.selectedCategories.length > 0)
+   		 $scope.data.parent_category = $scope.data.parent_category.concat($scope.selectedCategories);
+   		if($scope.selectedSections.length > 0)
+        $scope.data.parent_section = $scope.data.parent_section.concat($scope.selectedSections);
    		ngDialog.close();
    }
    /*Function to cancel the actions and dismiss the dialog

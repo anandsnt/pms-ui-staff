@@ -126,18 +126,12 @@
                     text-align: center;
                     text-transform: uppercase;
                     font-weight: 600;
-                    color: @grey4;
-                    background: @rcardTexture2;
-                    
-                    &:before {
-                        content: "Print";
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        z-index: 99;
-                        .size(20px, 100%);
-                        .show;
-                    }
+                    background-image: @icons, @rcardTexture2;
+
+                	@media @highdpi {
+						background-image: @icons2x, @rcardTexture2;
+						background-size: 120px, 40px;
+					}
                 }
             }
         }

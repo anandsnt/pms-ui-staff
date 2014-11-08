@@ -10,9 +10,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             }
         };
 
-        $scope.rate_set_time=["3.00","4.00","5.00","6.00", "7.00", "8.00"];
-        $scope.room_type_array=["Standard1", "Standard2", "Standard3"];
-
         $scope.$on("needToShowDateRange", function(e, id) {
             // webservice call to fetch each date range details
             fetchData(id);
@@ -100,19 +97,42 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 }
             }
 
+            if ($scope.rateData.is_hourly_rate) {
+                newSet.checkout = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+                newSet.dusk = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+                newSet.dawn = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+                newSet.night_checkout = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
+                newSet.showRoomRate = false;
+            }
+
             newSet.room_rates = [];
 
             //Crate the room rates array based on the available room_types 
             for (var i in $scope.rateData.room_types) {
                 var roomType = {};
-
                 roomType.id = $scope.rateData.room_types[i].id;
                 roomType.name = $scope.rateData.room_types[i].name;
                 roomType.child = '';
                 roomType.double = '';
                 roomType.extra_adult = '';
                 roomType.single = '';
-
+                roomType.hourly = {};
                 newSet.room_rates.push(roomType);
             }
 
@@ -129,6 +149,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function(value, key) {
                     if ($scope.rateData.is_hourly_rate) {
+
                         var dummy = {
                             hh: "",
                             mm: "",
@@ -168,6 +189,17 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         } else {
                             value.dawn = angular.copy(dummy);
                         }
+
+                        if (!!value.night_checkout_cut_off_time) {
+                            var nightCheckoutTime = value.night_checkout_cut_off_time.split(":");
+                            value.night_checkout = {
+                                hh: parseInt(dawnTime[0]) < 12 ? dawnTime[0] : parseInt(dawnTime[0]) % 12,
+                                mm: dawnTime[1],
+                                am: parseInt(dawnTime[0]) > 12 ? "PM" : "AM"
+                            }
+                        } else {
+                            value.night_checkout = angular.copy(dummy);
+                        }
                     }
 
                     room_rates = [];
@@ -179,12 +211,23 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                                 "single": "",
                                 "double": "",
                                 "extra_adult": "",
-                                "child": ""
+                                "child": "",
+                                "hourly": {}
                             };
-
                             room_rates.push(data);
                         });
                         value.room_rates = room_rates;
+                    } else {
+                        angular.forEach(value.room_rates, function(room_type, key) {
+                            room_type.hourly = {};
+                            room_type.nightly_rate = !!room_type.nightly_rate ? parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
+                            room_type.day_per_hour = !!room_type.day_per_hour ? parseFloat(room_type.day_per_hour).toFixed(2) : room_type.day_per_hour;
+                            room_type.night_per_hour = !!room_type.night_per_hour ? parseFloat(room_type.night_per_hour).toFixed(2) : room_type.night_per_hour;
+
+                            angular.forEach(room_type.hourly_rates, function(rate) {
+                                room_type.hourly[rate.hour] = !!rate.amount ? parseFloat(rate.amount).toFixed(2) : rate.amount;
+                            });
+                        });
                     }
                 });
                 //Expand top set in the current date range
@@ -249,7 +292,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
         };
 
         //Saves the individual set
-        $scope.saveSet = function(dateRangeId, index) {
+        $scope.saveSet = function(dateRangeId, index, saveGrid) {
+
+            var selectedSet = $scope.data.sets[index];
+
+            if (!!saveGrid && saveGrid == 'saveGrid' && !selectedSet.showRoomRate) {
+                selectedSet.showRoomRate = true;
+            }
 
             var saveSetSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
@@ -262,7 +311,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
 
                 $scope.data.sets[index].isEnabled = false;
                 $scope.otherData.setChanged = false;
-                //}
             };
 
             var saveSetFailureCallback = function(errorMessage) {
@@ -275,27 +323,45 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 $scope.otherData.setChanged = false;
                 $scope.closeDialog();
             }
-            // API request do not require all keys except room_types
-            var selectedSet = $scope.data.sets[index];
+
+
+            if (!!saveGrid && saveGrid == 'saveGrid') {
+                selectedSet.showRoomRate = true;
+                angular.forEach(selectedSet.room_rates, function(room_rate, key) {
+                    room_rate.hourly_room_rates = [];
+                    angular.forEach(room_rate.hourly, function(amount, key) {
+                        room_rate.hourly_room_rates.push({
+                            hour: key,
+                            amount: amount
+                        });
+                    });
+                });
+            }
 
             var unwantedKeys = ["room_types", "checkout", "dawn", "dusk"],
                 setData = dclone($scope.data.sets[index], unwantedKeys);
 
             if ($scope.rateData.is_hourly_rate) {
+
                 if (!!selectedSet.checkout && !!selectedSet.checkout.hh && !!selectedSet.checkout.mm && !!selectedSet.checkout.am) {
                     setData.day_checkout_cutoff_time = getTimeFormated(selectedSet.checkout.hh, selectedSet.checkout.mm, selectedSet.checkout.am);
                 } else {
                     setData.day_checkout_cutoff_time = null;
                 }
                 if (!!selectedSet.dusk && !!selectedSet.dusk.hh && !!selectedSet.dusk.mm && !!selectedSet.dusk.am) {
-                    setData.nightly_start_time = getTimeFormated(selectedSet.dusk.hh, selectedSet.dusk.mm, selectedSet.dusk.am);
+                    setData.night_start_time = getTimeFormated(selectedSet.dusk.hh, selectedSet.dusk.mm, selectedSet.dusk.am);
                 } else {
-                    setData.nightly_start_time = null;
+                    setData.night_start_time = null;
                 }
-                if (!!selectedSet.dusk && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
-                    setData.nightly_end_time = getTimeFormated(selectedSet.dawn.hh, selectedSet.dawn.mm, selectedSet.dawn.am);
+                if (!!selectedSet.dawn && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
+                    setData.night_end_time = getTimeFormated(selectedSet.dawn.hh, selectedSet.dawn.mm, selectedSet.dawn.am);
                 } else {
-                    setData.nightly_end_time = null;
+                    setData.night_end_time = null;
+                }
+                if (!!selectedSet.night_checkout && !!selectedSet.night_checkout.hh && !!selectedSet.night_checkout.mm && !!selectedSet.night_checkout.am) {
+                    setData.night_checkout_cutoff_time = getTimeFormated(selectedSet.night_checkout.hh, selectedSet.night_checkout.mm, selectedSet.night_checkout.am);
+                } else {
+                    setData.night_checkout_cutoff_time = null;
                 }
             }
 
@@ -456,6 +522,35 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
             showRateSetChangeSaveDialog();
             return false;
         });
+
+        $scope.checkNightly = function(selectedSet, hour) {
+            if (!!selectedSet.dawn.hh && !!selectedSet.dawn.hh && !!selectedSet.dusk.hh && !!selectedSet.dusk.hh) {
+                // TODO : check if the hour falls between dusk and dawn
+                var dawn = selectedSet.dawn.am == 'AM' ? parseInt(selectedSet.dawn.hh) : (parseInt(selectedSet.dawn.hh) + 12) % 24;
+                var dusk = selectedSet.dusk.am == 'AM' ? parseInt(selectedSet.dusk.hh) : (parseInt(selectedSet.dusk.hh) + 12) % 24;
+                var nightHours = [];
+                for (var i = 0; i < 24; i++) {
+                    if (dawn < dusk) {
+                        // the range crosses midnight, do the comparisons independently
+                        if ((dusk <= i) || (i < dawn))
+                            nightHours.push(i);
+                    } else {
+                        // the range is on the same day, both comparisons must be true
+                        if (dusk <= i && i < dawn)
+                            nightHours.push(i);
+                    }
+                }
+                angular.forEach(nightHours, function(hour) {
+                    angular.forEach(selectedSet.room_rates, function(room_rate) {
+                        room_rate.hourly[hour] = room_rate.nightly_rate;
+                    });
+                });
+                return (nightHours.indexOf(parseInt(hour)) > -1);
+            } else {
+                return false;
+            }
+
+        }
 
         $scope.collapse = function(index) {
             var setLength = $scope.data.sets.length;
