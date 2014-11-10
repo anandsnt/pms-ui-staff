@@ -1,4 +1,4 @@
-sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$state',  function($scope, $rootScope, $state){
+sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$state','$vault',  function($scope, $rootScope, $state, $vault){
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -98,7 +98,9 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$sta
    
    //Function to be deleted - CICO-9433 - Sample button in dashboard screen
 		$scope.setReservationDataFromDiaryScreen = function(){
-			$rootScope.temporaryReservationDataFromDiaryScreen = {
+			
+			//$rootScope.temporaryReservationDataFromDiaryScreen = {
+			var temporaryReservationDataFromDiaryScreen = {
 			    "is_from_diary_screen": true,
 			    "arrival_date": "2014-07-15",
 			    "departure_date": "2014-07-16",
@@ -128,7 +130,7 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$sta
 			        }
 			    ]
 			};
-	
+			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(temporaryReservationDataFromDiaryScreen));
 			$state.go("rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide");
 		};
 

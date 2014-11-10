@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -89,42 +89,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
 		$scope.init = function() {
-			console.log("88888888888888888");
-			console.log($rootScope.temporaryReservationDataFromDiaryScreen);
-
+			
 			$scope.data = {};
-			// console.log("reservation summary");
-			// $stateParams.is_from_diary = false;
-			// if($stateParams.is_from_diary){
-			// var result = {};
-			// result.room_id = $stateParams.room_id.split(",");
-			// $scope.reservationData.rooms = [];
-			// angular.forEach(result.room_id, function(id, key) {
-			// 			         	
-			// var roomData = {
-			// numAdults: 1,
-			// numChildren: 0,
-			// numInfants: 0,
-			// roomTypeId: '',
-			// roomTypeName: '',
-			// rateId: '',
-			// rateName: '',
-			// rateAvg: 0,
-			// rateTotal: 0,
-			// addons: [],
-			// varyingOccupancy: false,
-			// stayDates: {},
-			// isOccupancyCheckAlerted: false
-			// };
-			// roomData.room_id = id;
-			// $scope.reservationData.rooms.push(roomData);
-			// });
-			// console.log(result);
-			// }
-			// 			
-
-			if ($rootScope.temporaryReservationDataFromDiaryScreen && $rootScope.temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
-
+			//if ($rootScope.temporaryReservationDataFromDiaryScreen && $rootScope.temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
+			var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
+			temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
+			if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
 				var getRoomsSuccess = function(data) {
 					console.log(data.rooms.length);
 
@@ -134,7 +104,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 						roomsArray[roomKey] = value;
 					});
 
-					$scope.createReservationDataFromDiary(roomsArray);
+					$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
 				};
 				$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
 
@@ -156,17 +126,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			fetchPaymentMethods();
 
 		};
-		$scope.createReservationDataFromDiary = function(roomsArray) {
+		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
-			angular.forEach($rootScope.temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
+			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 			});
 			$scope.reservationData.rooms = [];
-			console.log(JSON.stringify($rootScope.temporaryReservationDataFromDiaryScreen.rooms));
-			$scope.reservationData.rooms = $rootScope.temporaryReservationDataFromDiaryScreen.rooms;
-			$scope.reservationData.arrivalDate = $rootScope.temporaryReservationDataFromDiaryScreen.arrival_date;
-			$scope.reservationData.departureDate = $rootScope.temporaryReservationDataFromDiaryScreen.departure_date;
+			console.log(JSON.stringify(temporaryReservationDataFromDiaryScreen.rooms));
+			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
+			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
+			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
