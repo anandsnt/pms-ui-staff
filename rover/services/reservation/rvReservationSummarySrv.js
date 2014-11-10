@@ -148,7 +148,16 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-
+        this.fetchRooms  = function() {
+            var deferred = $q.defer();
+            var url = '/api/rooms';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
 
     }

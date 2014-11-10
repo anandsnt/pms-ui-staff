@@ -124,12 +124,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 // 			
 			
 			if($rootScope.temporaryReservationDataFromDiaryScreen.is_from_diary_screen){
-				console.log("reached here")
 				
-				$scope.reservationData.rooms = [];
-				$scope.reservationData.rooms = $rootScope.temporaryReservationDataFromDiaryScreen.rooms;
-				$scope.reservationData.arrivalDate = $rootScope.temporaryReservationDataFromDiaryScreen.arrival_date;
-				$scope.reservationData.departureDate = $rootScope.temporaryReservationDataFromDiaryScreen.departure_date;
+				var getRoomsSuccess = function(data){
+					 console.log(data.rooms.length);
+
+					 var roomsArray = {};
+					 angular.forEach(data.rooms, function(value, key) {
+						var roomKey = value.id;
+						roomsArray[roomKey] = value;
+					 });
+
+					  $scope.createReservationDataFromDiary(roomsArray);
+				};
+				$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
+				
 			}
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.otherData.isGuestAdditionalEmailChecked = false;
@@ -143,6 +151,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.setScroller('paymentInfo', {'click': true});
 			fetchPaymentMethods();
 
+		};
+		$scope.createReservationDataFromDiary = function(roomsArray){
+			
+			angular.forEach($rootScope.temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
+				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
+				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
+			 });
+			$scope.reservationData.rooms = [];
+			console.log(JSON.stringify($rootScope.temporaryReservationDataFromDiaryScreen.rooms));
+			$scope.reservationData.rooms = $rootScope.temporaryReservationDataFromDiaryScreen.rooms;
+			$scope.reservationData.arrivalDate = $rootScope.temporaryReservationDataFromDiaryScreen.arrival_date;
+			$scope.reservationData.departureDate = $rootScope.temporaryReservationDataFromDiaryScreen.departure_date;
 		};
 
 		/**
