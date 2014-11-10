@@ -57,7 +57,7 @@
 
 			<span class="h2 message">
 				<span translate>POST_CHARGE_TO_BILL</span> #<span ng-show="passActiveBillNo">{{ passActiveBillNo }}</span>
-				<div id="select-bill-number" class="select" ng-hide="passActiveBillNo || !isStandAlone">
+				<div id="select-bill-number" class="select select-stand-alone" ng-hide="passActiveBillNo || !isStandAlone">
 					<select ng-model="billNumber">
 					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 					        {{ no }}
