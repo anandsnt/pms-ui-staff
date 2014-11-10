@@ -39,6 +39,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 		$rootScope.longDateFormat = "MMM dd, yyyy";//Wednesday, 06-04-2014
 		$rootScope.currencySymbol = "";
+		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
+		$rootScope.isHourlyRatesEnabled = false;
 		//in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
@@ -90,13 +92,14 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 						standAlone : true
 					}, {
 						title: "MENU_ROOM_ASSIGNMENT",
-						action: ""
+						action: "staff#/staff/diary/reservations",
+						standAlone: true
 					}, {
 						title: "MENU_POST_CHARGES",
 						action: ""
 					}, {
 						title: "MENU_CASHIER",
-						action: ""
+						action: "staff#/staff/financials/journal/2"
 					}, {
 						title: "MENU_END_OF_DAY",
 						action: ""
@@ -151,10 +154,10 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				}, {
 					title: "MENU_FINANCIALS",
 					action: "#",
-					iconClass: "icon-finance",
+					iconClass: "icon-financials",
 					submenu: [{
-						title: "MENU_REVENUE",
-						action: ""
+						title: "MENU_JOURNAL",
+						action: "staff#/staff/financials/journal/0"
 					}, {
 						title: "MENU_ACCOUNTING",
 						action: ""
@@ -430,6 +433,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$scope.$emit('hideLoader');
+			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 
 		};
 		/*
