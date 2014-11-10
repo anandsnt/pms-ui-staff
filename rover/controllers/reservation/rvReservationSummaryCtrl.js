@@ -1,7 +1,11 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', 
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location','$stateParams', 
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams) {
 
 		BaseCtrl.call(this, $scope);
+		
+		///
+		
+		///
 		$scope.isSubmitButtonEnabled = false;
 
 		if($scope.reservationData.reservationId != ''){
@@ -85,7 +89,48 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
 		$scope.init = function() {
+			console.log("88888888888888888");
+			console.log($rootScope.temporaryReservationDataFromDiaryScreen);
+			
 			$scope.data = {};
+			// console.log("reservation summary");
+			// $stateParams.is_from_diary = false;
+			// if($stateParams.is_from_diary){
+				// var result = {};
+					// result.room_id = $stateParams.room_id.split(",");
+					 // $scope.reservationData.rooms = [];
+			         // angular.forEach(result.room_id, function(id, key) {
+// 			         	
+			         		// var roomData = {
+			                    // numAdults: 1,
+			                    // numChildren: 0,
+			                    // numInfants: 0,
+			                    // roomTypeId: '',
+			                    // roomTypeName: '',
+			                    // rateId: '',
+			                    // rateName: '',
+			                    // rateAvg: 0,
+			                    // rateTotal: 0,
+			                    // addons: [],
+			                    // varyingOccupancy: false,
+			                    // stayDates: {},
+			                    // isOccupancyCheckAlerted: false
+			               // };
+			                // roomData.room_id = id;
+						// $scope.reservationData.rooms.push(roomData);
+					// });
+					// console.log(result);
+			// }
+// 			
+			
+			if($rootScope.temporaryReservationDataFromDiaryScreen.is_from_diary_screen){
+				console.log("reached here")
+				
+				$scope.reservationData.rooms = [];
+				$scope.reservationData.rooms = $rootScope.temporaryReservationDataFromDiaryScreen.rooms;
+				$scope.reservationData.arrivalDate = $rootScope.temporaryReservationDataFromDiaryScreen.arrival_date;
+				$scope.reservationData.departureDate = $rootScope.temporaryReservationDataFromDiaryScreen.departure_date;
+			}
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.otherData.isGuestAdditionalEmailChecked = false;
 			$scope.data.paymentMethods = [];
@@ -311,7 +356,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.proceedCreatingReservation = function() {
 			var postData = computeReservationDataToSave();
-
+			console.log("----------------POST DATA-----------------------");
+console.log(JSON.stringify(postData));
+return false;
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				/*
@@ -587,6 +634,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		};
 
 		$scope.init();
+		
 
 	}
 ]);

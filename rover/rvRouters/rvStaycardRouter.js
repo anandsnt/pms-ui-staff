@@ -195,4 +195,10 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         templateUrl: "/assets/partials/bill_details.html",
         controller: 'billDetailsController'
     });
+    
+     $stateProvider.state('rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide', {
+        url: '/summaryAndConfirm/:room_id/:date',
+        templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
+        controller: 'RVReservationSummaryCtrl'
+    });
 });
