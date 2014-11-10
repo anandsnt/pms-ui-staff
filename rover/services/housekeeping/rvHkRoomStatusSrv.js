@@ -428,9 +428,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 				return false;
 			};
 
-			if (room.assignee_maid) {
+			if ( !!room.assignee_maid.id ) {
 				return {
-					'name': angular.copy(room.assignee_maid),
+					'name': angular.copy(room.assignee_maid.name),
 					'class': 'assigned'
 				}
 			} else {
