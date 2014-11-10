@@ -59,7 +59,9 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
         };
         var updateData = {};
         updateData.id = $scope.selectedHistoryId;
-        updateData.data ={"cash_submitted":$scope.details.cash_submitted,"check_submitted":$scope.details.check_submitted}
+        var closing_balance_cash  = ($scope.details.opening_balance_cash + $scope.details.total_cash_received) - $scope.details.cash_submitted;
+        var closing_balance_check = ($scope.details.opening_balance_check + $scope.details.total_check_received) - $scope.details.check_submitted;
+        updateData.data ={"cash_submitted":$scope.details.cash_submitted,"check_submitted":$scope.details.check_submitted,"closing_balance_cash":closing_balance_cash,"closing_balance_check":closing_balance_check};
         $scope.invokeApi(RVJournalSrv.closeCashier, updateData, closeShiftSuccesCallback); 
      
     };
