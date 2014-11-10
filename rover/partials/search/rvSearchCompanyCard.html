@@ -17,7 +17,7 @@
             <ul id="search-cards-results" class="search-results" >
                  <li class="card" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
-                    <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type})">
+                    <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type, query :textInQueryBox})">
 
                         <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
                             <img ng-src="{{row.company_logo}}" alt="">
