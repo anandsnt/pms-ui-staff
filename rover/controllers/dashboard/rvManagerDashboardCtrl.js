@@ -1,4 +1,4 @@
-sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$state',  function($scope, $rootScope, $state){
+sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$state','$vault',  function($scope, $rootScope, $state, $vault){
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
     var that = this;
@@ -98,7 +98,9 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$sta
    
    //Function to be deleted - CICO-9433 - Sample button in dashboard screen
 		$scope.setReservationDataFromDiaryScreen = function(){
-			$rootScope.temporaryReservationDataFromDiaryScreen = {
+			
+			//$rootScope.temporaryReservationDataFromDiaryScreen = {
+			var temporaryReservationDataFromDiaryScreen = {
 			    "is_from_diary_screen": true,
 			    "arrival_date": "2014-07-15",
 			    "departure_date": "2014-07-16",
@@ -106,21 +108,21 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$sta
 			    "departure_time": "09:15",
 			    "rooms": [
 			        {
-			            "room_id": "101",
+			            "room_id": "268",
 			            "rateId": "12",
 			            "numAdults": "2",
 			            "numChildren": "2",
 			            "numInfants": "4"
 			        },
 			        {
-			            "room_id": "102",
+			            "room_id": "269",
 			            "rateId": "13",
 			            "numAdults": "2",
 			            "numChildren": "2",
 			            "numInfants": "4"
 			        },
 			        {
-			            "room_id": "103",
+			            "room_id": "270",
 			            "rateId": "14",
 			            "numAdults": "2",
 			            "numChildren": "2",
@@ -128,7 +130,7 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$sta
 			        }
 			    ]
 			};
-	
+			$vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(temporaryReservationDataFromDiaryScreen));
 			$state.go("rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide");
 		};
 
