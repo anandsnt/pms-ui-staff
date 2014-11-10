@@ -215,12 +215,24 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		 So we are adding the required params to the existing $scope.reservationData, so that no other functionalities in reservation confirmation breaks.
 		 */
 
-		$scope.openBillingInformation = function() {
+		$scope.openBillingInformation = function(confirm_no) {
+			//incase of multiple reservations we need to check the confirm_no to access billing 
+			//information
+			if(confirm_no){
+				angular.forEach($scope.reservationData.reservations, function(reservation, key) {
+					if(reservation.confirm_no === confirm_no){
+						$scope.reservationData.confirm_no = reservation.confirm_no;
+						$scope.reservationData.reservation_id = reservation.id;
+						$scope.reservationData.reservation_status = reservation.status;
+					}
+				});
+			}
+			else{
+				$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
+				$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
+				$scope.reservationData.reservation_status = $scope.reservationData.status;
+			}
 
-
-			$scope.reservationData.confirm_no = $scope.reservationData.confirmNum;
-			$scope.reservationData.reservation_id = $scope.reservationData.reservationId;
-			$scope.reservationData.reservation_status = $scope.reservationData.status;
 			if ($scope.reservationData.guest.id != null) {
 				$scope.reservationData.user_id = $scope.reservationData.guest.id;
 			} else {
