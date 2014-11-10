@@ -400,5 +400,17 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         $scope.data.isActiveRevenueFilter = false;
     };
 
+    /* get the time string from the date-time string */
+
+    $scope.getTimeString = function(dateTime){
+        var time = new Date(dateTime);        
+        if(!isNaN( time.getTime())){
+            var date = $filter('date')(time, $rootScope.dateFormat);
+            return date + ', ' + time.getHours() + ':' + time.getMinutes();
+        }
+        else
+            return dateTime;
+    };
+
     
 }]);
