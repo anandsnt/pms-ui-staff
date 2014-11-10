@@ -99,7 +99,7 @@
     "MENU_HOUSE_STATUS":"House Status",
     "MENU_FRONT_DESK" : "Front Desk",
     "MENU_CREATE_RESERVATION" : "Create Reservation",
-    "MENU_ROOM_ASSIGNMENT":"Room Assignment",
+    "MENU_ROOM_ASSIGNMENT": "Room Diary",
     "MENU_POST_CHARGES":"Post Charges",
     "MENU_CASHIER":"Cashier",
     "MENU_END_OF_DAY":"End of Day",
@@ -431,7 +431,9 @@
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
     "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
-    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card",
+    "SELECT_CREDIT_CARD":"Select Credit Card",
+    "CREDIT_CARD_LIST_EMPTY_ERROR":"Deposit refund can not be processed to this payment type. Manual processing required"
 ,	
 	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     
@@ -593,7 +595,7 @@
     "CANCELLATION_REASON" : "Cancellation Reason",
     "OPTIONAL" : "Optional",
     "CANCELLATION_REASON_PLACEHOLDER" : "Cancelling because...",
-    "PROCEED_WITH_DEPOSIT_REFUND":"PROCEED WITH DEPOSIT REFUND",
+    "PROCEED_WITH_DEPOSIT_REFUND":"REFUND DEPOSIT",
     "PROCEED_WITHOUT_DEPOSIT_REFUND":"PROCEED WITHOUT REFUND",
     "PENALTY_WARNING_MSG1":"Deposit of",
     "PENALTY_WARNING_MSG2":"will not be refunded",	

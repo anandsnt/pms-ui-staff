@@ -70,7 +70,7 @@
 	<fieldset class="content-right" ng-show = "bills.length != 0">
 		<span class="h2 message" ng-hide = "(reservationData.reservation_id != selectedEntity.id && selectedEntity.entity_type == 'RESERVATION')">
 		  {{'ROUTE_TO_BILL' | translate}}
-			<div class="select">
+			<div class="select select-stand-alone">
 				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
 					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
