@@ -28,6 +28,7 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
 		$scope.mapping = {};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
+		$scope.addEditTitle = "EDIT";
 	 	var successCallbackRender = function(data){	
 	 		$scope.mapping = data;
 	 		$scope.$emit('hideLoader');
@@ -73,14 +74,14 @@ admin.controller('ADDeviceMappingsCtrl',['$scope', '$state', 'ADDeviceSrv', '$ti
     * @param {int} index of the selected department
     * @param {string} id of the selected department
     */		
-	// $scope.deleteDepartment = function(index, id){
-		// var successCallbackDelete = function(data){	
-	 		// $scope.$emit('hideLoader');
-	 		// $scope.data.departments.splice(index, 1);
-	 		// $scope.currentClickedElement = -1;
-	 	// };
-		// $scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
-	// };
+	$scope.deleteDeviceMapping = function(index, id){
+		var successCallbackDelete = function(data){	
+	 		$scope.$emit('hideLoader');
+	 		$scope.data.work_stations.splice(index, 1);
+	 		$scope.currentClickedElement = -1;
+	 	};
+		$scope.invokeApi(ADDeviceSrv.deleteDeviceMapping, id , successCallbackDelete);
+	};
 	/*
 	 * To save mapping
 	 */
