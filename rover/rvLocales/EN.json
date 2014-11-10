@@ -431,7 +431,9 @@
     "EXISTING_CARDS":"Existing Cards",
     "ADD_CREDIT_CARD": "Add Credit Card",
     "PAYMENT_NOT_ADDED" : "Payment Method Not Defined",
-    "DO_NOT_AUTHORIZE": "Do Not Authorize Card"
+    "DO_NOT_AUTHORIZE": "Do Not Authorize Card",
+    "SELECT_CREDIT_CARD":"Select Credit Card",
+    "CREDIT_CARD_LIST_EMPTY_ERROR":"Deposit refund can not be processed to this payment type. Manual processing required"
 ,	
 	"STATS_&_REPORTS_TITLE": "Stats & Reports",    
     

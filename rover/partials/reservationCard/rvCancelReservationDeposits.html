@@ -19,13 +19,7 @@
 
     <!-- 2. Apply penalty screen-->
     <fieldset id="apply-penalty" class="credit-card" ng-if="ngDialogData.state == 'REFUND'">
-        <strong class="h2 message" ng-show="ngDialogData.cards" translate>SELECT_OR_ADD_CREDIT_CARD</strong>
-        <strong class="h2 message" ng-hide="ngDialogData.cards" translate>ADD_NEW_CARD</strong>
-            <ul id="card-options" class="modal-options" ng-show="ngDialogData.cards">
-            <li ng-class="{active:cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = true" translate>EXISTING_CARDS</li>
-            <li ng-class="{active:!cancellationData.viewCardsList}" ng-click="cancellationData.viewCardsList = false" translate>ADD_NEW_CARD</li>
-        </ul>
-
+        <strong class="h2 message" ng-show="ngDialogData.cards" translate>SELECT_CREDIT_CARD</strong>
         <div class="select-card" ng-show="ngDialogData.cards && cancellationData.viewCardsList">
             <div id="available-cards" class="cards-list scrollable" ng-iscroll="cardsList"  ng-iscroll-delay="500">
                 <div class="cards-list-container">
@@ -47,39 +41,6 @@
             <div class="actions">
                 <button type="button" class="button blank" ng-click="ngDialogData.state = 'CONFIRM'" translate>CANCEL</button> <!-- Shows Cancel Options screen -->
                 <button type="button" class="button green" ng-hide="cancellationData.selectedCard == -1" ng-click="applyRefund()" translate>PROCEED_WITH_DEPOSIT_REFUND</button> <!-- Remove class "hidden" when card is selected; Charges penalty to the card and cancels the reservation -->
-            </div>
-        </div>
-
-        <div id="new-card" class="new-card" ng-hide="ngDialogData.cards && cancellationData.viewCardsList"> <!-- Remove class hidden when New card selected in #card-options -->
-            <div class="holder">
-                <div class="entry margin">
-                    <label for="card-number" translate>CARD_NUMBER</label>
-                    <input name="card-number" id="card-number" placeholder="{{'CARD_NUMBER_PLACEHOLDER' | translate}}" value="" maxlength="20" type="text" ng-model="cancellationData.newCard.cardNumber"/>
-                </div>
-                <div class="entry">
-                    <label for="expiry-month">{{'EXPIRATION_DATE'| translate}} (<span>MM/YY</span>)</label>
-                    <input name="expiry-month" id="expiry-month" placeholder="{{'MM'| translate}}" value="" maxlength="2" size="3" type="text" ng-model="cancellationData.newCard.expiryDate.mm" />
-                    <input name="expiry-year" id="expiry-year" placeholder="{{'YY'| translate}}"  value="" maxlength="2" size="3" type="text" ng-model="cancellationData.newCard.expiryDate.yy"/>
-                </div>
-                <div class="entry margin">
-                    <label for="name-on-card" translate>NAME_ON_CARD</label>
-                    <input name="name-on-card" id="name-on-card" placeholder="{{'NAME_ON_CARD_PLACEHOLDER'| translate}}" value="" type="text" ng-model="cancellationData.newCard.nameOnCard"/>
-                </div>  
-                <div class="entry">
-                    <label for="ccv" translate>CCV</label>
-                    <input name="ccv" id="ccv" placeholder="{{'CCV' | translate}}" value="" maxlength="3" size="4" type="text" ng-model="cancellationData.newCard.ccv"/>
-                </div>
-                <div class="entry full-width">
-                    <label class="checkbox inline" for="add-in-guest-card">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':cancellationData.newCard.addToGuest}"></span>
-                        <input name="checkin" id="add-in-guest-card" value="1" type="checkbox" ng-model = "cancellationData.newCard.addToGuest"/>
-                        {{'ADD_TO_GUEST_CARD' | translate}}
-                    </label>
-                </div>
-            </div>
-            <div class="actions">
-                <button type="button" class="button blank" ng-click="ngDialogData.state = 'CONFIRM'" translate>CANCEL</button> <!-- Shows Cancel Options screen -->
-                <button type="button" class="button green" ng-click="applyRefund()" translate>PROCEED_WITH_DEPOSIT_REFUND</button> <!-- Charges penalty to the card and cancels the reservation -->
             </div>
         </div>
     </fieldset>

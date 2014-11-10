@@ -299,7 +299,7 @@ sntRover.controller('reservationActionsController', [
 						if (!isOutOfCancellationPeriod) {
 							return "Within Cancellation Period. Deposit of "+$rootScope.currencySymbol+deposit+" is refundable.";
 						} else {
-							return "Reservation outside of cancellation period. Deposit of "+$rootScope.currencySymbol+penalty+" is not refundable";
+							return "Reservation outside of cancellation period. A cancellation fee of "+$rootScope.currencySymbol+penalty+" will be charged, deposit not refundable";
 						}
 					})()
 				})
