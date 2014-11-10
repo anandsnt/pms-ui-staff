@@ -112,21 +112,24 @@ sntRover.controller('RVmanagerDashboardController',['$scope', '$rootScope','$sta
 			            "rateId": "12",
 			            "numAdults": "2",
 			            "numChildren": "2",
-			            "numInfants": "4"
+			            "numInfants": "4",
+			            "amount": "100"
 			        },
 			        {
 			            "room_id": "269",
 			            "rateId": "13",
 			            "numAdults": "2",
 			            "numChildren": "2",
-			            "numInfants": "4"
+			            "numInfants": "4",
+			            "amount": "120"
 			        },
 			        {
 			            "room_id": "270",
 			            "rateId": "14",
 			            "numAdults": "2",
 			            "numChildren": "2",
-			            "numInfants": "4"
+			            "numInfants": "4",
+			            "amount": "110"
 			        }
 			    ]
 			};
