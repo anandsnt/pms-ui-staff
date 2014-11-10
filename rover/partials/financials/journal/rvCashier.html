@@ -4,7 +4,7 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="wrapper">
             <h2 ng-show="detailsList.length>0" translate>HISTORY</h2>
-            <h2 ng-hide="detailsList.length>0" translate>NO_HISTORY</h2>
+            <h2 ng-hide="detailsList.length>0 || isLoading" translate>NO_HISTORY</h2>
             <ul class="shift-history">
                 <!-- Closed -->
                 <li ng-repeat="history in detailsList" ng-class="{'active':selectedHistory ===$index}" ng-click="historyClicked($index)">
