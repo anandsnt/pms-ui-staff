@@ -13,6 +13,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
             $scope.details = ($scope.detailsList.length>0) ?  $scope.detailsList[0] : {};//set first one as selected
             $scope.selectedHistoryId = ($scope.detailsList.length>0) ? $scope.detailsList[0].id :"";            
             setTimeout(function(){$scope.refreshScroller('cashier_shift');}, 500);
+            $scope.isLoading = false;
         };
         
         var data =  {"user_id":$scope.data.filterData.selectedCashier,"date":$scope.data.cashierDate,"report_type_id":$scope.data.reportType};
@@ -28,6 +29,7 @@ sntRover.controller('RVJournalCashierController', ['$scope','RVJournalSrv','$roo
         $scope.setScroller('cashier_history', {});
         $scope.setScroller('cashier_shift', {});
         setTimeout(function(){$scope.refreshScroller('cashier_history');}, 500);
+        $scope.isLoading = true;
         fetchHistoryDetails();
     };
 
