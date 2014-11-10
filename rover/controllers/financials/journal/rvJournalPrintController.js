@@ -75,26 +75,27 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
-			if(charge_groups.id == $scope.data.selectedChargeGroup){
+			if((charge_groups.id == $scope.data.selectedChargeGroup) || ($scope.data.selectedChargeGroup == 'ALL')){
 				
 				if(charge_groups.show){
+
 					charge_groups.show = true;
 					charge_groups.filterFlag = true;
+					
 					angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
 						if(charge_codes.show){
 							charge_codes.filterFlag = true;
-							var obj = { "id": charge_codes.id , "name": charge_codes.name };
-		       				$scope.data.activeChargeCodes.push(obj);
+
+							if($scope.data.selectedChargeGroup !== 'ALL'){
+								var obj = { "id": charge_codes.id , "name": charge_codes.name };
+			       				$scope.data.activeChargeCodes.push(obj);
+			       			}
 	       				}
 					});
 				}
 				else{
 					charge_groups.filterFlag = false;
-					console.log("not found");
 				}
-			}
-			else if($scope.data.selectedChargeGroup == 'ALL'){
-				charge_groups.filterFlag = true;
 			}
 			else{
 				charge_groups.filterFlag = false;
@@ -120,7 +121,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 						charge_codes.filterFlag = false;
 					}
 
-					$scope.toggleRevenueTransactions();
+					//$scope.toggleRevenueTransactions();
 				}
 				else{
 					charge_codes.filterFlag = false;
@@ -166,7 +167,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
-            	if(level3){
+            	if(level3 && charge_codes.filterFlag){
             		charge_codes.active = true;
             		charge_groups.active = true;
             	}
@@ -247,17 +248,14 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	/** PRINT Functionality **/
 
 	$scope.printRevenue = function(){
-		console.log("printRevenue");
 		printJournal();
 	};
 
 	$scope.printPayment = function(){
-		console.log("printPayment");
 		printJournal();
 	};
 
 	$scope.printCashier = function(){
-		console.log("printCashier");
 		printJournal();
 	};
 
