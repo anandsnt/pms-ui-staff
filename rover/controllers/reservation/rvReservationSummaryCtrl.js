@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -89,25 +89,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 
 		$scope.init = function() {
-			
+
 			$scope.data = {};
-			//if ($rootScope.temporaryReservationDataFromDiaryScreen && $rootScope.temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
-			var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
-			temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
-			if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
-				var getRoomsSuccess = function(data) {
-					console.log(data.rooms.length);
+			if ($stateParams.reservation == "HOURLY") {
+				$scope.reservationData.isHourly = true;
+				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
+				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
+				if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
+					var getRoomsSuccess = function(data) {
+						console.log(data.rooms.length);
 
-					var roomsArray = {};
-					angular.forEach(data.rooms, function(value, key) {
-						var roomKey = value.id;
-						roomsArray[roomKey] = value;
-					});
+						var roomsArray = {};
+						angular.forEach(data.rooms, function(value, key) {
+							var roomKey = value.id;
+							roomsArray[roomKey] = value;
+						});
 
-					$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
-				};
-				$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
+						$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
+					};
+					$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
 
+				}
 			}
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.otherData.isGuestAdditionalEmailChecked = false;
@@ -124,8 +126,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				'click': true
 			});
 			fetchPaymentMethods();
+			refreshScrolls();
 
 		};
+
+		var refreshScrolls = function() {
+			$timeout(function() {
+				$scope.refreshScroller('reservationSummary');
+				$scope.refreshScroller('paymentInfo');
+			}, 1500)
+		}
+
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
 			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
@@ -133,13 +144,13 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 			});
 			$scope.reservationData.rooms = [];
-			console.log(JSON.stringify(temporaryReservationDataFromDiaryScreen.rooms));
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
 			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
 			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
-				room.rateTotal = 500;
+				room.rateTotal = room.amount;
+				room.rateName = 'Rate Name PlaceHolder';
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
@@ -196,6 +207,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		var computeReservationDataToSave = function() {
 			var data = {};
+			data.is_hourly = $scope.reservationData.isHourly;
 			data.arrival_date = $scope.reservationData.arrivalDate;
 			data.arrival_time = '';
 			//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
@@ -284,8 +296,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			//	CICO-8320
 			// 	The API request payload changes
 			var stay = [];
+			data.room_id = [];
 			_.each($scope.reservationData.rooms, function(room) {
 				var reservationStayDetails = [];
+				data.room_id.push(room.room_id);
 				_.each(room.stayDates, function(staydata, date) {
 					reservationStayDetails.push({
 						date: date,

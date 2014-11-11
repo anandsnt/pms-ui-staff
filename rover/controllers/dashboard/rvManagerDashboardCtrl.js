@@ -111,22 +111,25 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       "departure_time": "09:15",
       "rooms": [{
         "room_id": "268",
-        "rateId": "12",
+        "rateId": "226",
         "numAdults": "2",
         "numChildren": "2",
-        "numInfants": "4"
+        "numInfants": "4",
+        "amount": 300
       }, {
         "room_id": "269",
-        "rateId": "13",
+        "rateId": "227",
         "numAdults": "2",
         "numChildren": "2",
-        "numInfants": "4"
+        "numInfants": "4",
+        "amount": 250
       }, {
         "room_id": "270",
-        "rateId": "14",
+        "rateId": "228",
         "numAdults": "2",
         "numChildren": "2",
-        "numInfants": "4"
+        "numInfants": "4",
+        "amount": 450
       }]
     };
     $vault.set('temporaryReservationDataFromDiaryScreen', JSON.stringify(temporaryReservationDataFromDiaryScreen));

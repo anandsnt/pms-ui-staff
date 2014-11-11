@@ -120,9 +120,9 @@
                         <li>
                             <em>{{room.rateName}}</em>
                             <span class="price">
-                                <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
-                                <label ng-if="room.isSuppressed">SR</label>
-                                <span translate>AVG_NIGHT</span>
+                                <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
+                                <span translate ng-if="!reservationData.isHourly">AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
                                 <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                             </span>
