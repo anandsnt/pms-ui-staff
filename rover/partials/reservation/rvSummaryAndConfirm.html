@@ -112,9 +112,9 @@
                         <li>
                             <em>{{room.rateName}}</em>
                             <span class="price">
-                                <label ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
-                                <label ng-if="room.isSuppressed">SR</label>
-                                <span translate>AVG_NIGHT</span>
+                                <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
+                                <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
                                 <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
                             </span>
@@ -225,8 +225,11 @@
                     <label for="name-on-card" translate>NAME_ON_CARD</label>
                     <input name="name-on-card" id="name-on-card" value="" type="text" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
-                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible">                	
-                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" data-domain="http://localhost:3000/"></iframe>
+                <div class="entry full-width" ng-show="isSixPaymentGatewayVisible && isIframeVisible">                	
+                	<iframe src="{{iFrameUrl}}" name="sixpaymentform" id="sixpaymentform" style="width:100%" ></iframe>
+                </div>
+                 <div class="actions" ng-show="isSixPaymentGatewayVisible && !isIframeVisible">
+                    <button class="button green" type="button" translate ng-click="startPaymentProcess()">START_PAYMENT_PROCESS</button>
                 </div>
                 <div class="actions">
                     <button class="button" ng-class="submitReservationButtonClass(isSubmitButtonEnabled)" type="button" translate ng-click ="submitReservation()" ng-disabled="!isSubmitButtonEnabled">SUBMIT_RESERVATION</button>

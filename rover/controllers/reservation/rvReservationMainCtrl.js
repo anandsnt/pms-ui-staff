@@ -48,12 +48,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 ampm: 'AM'
             };
 
-        }
+        };
 
         $scope.initReservationData = function() {
             $scope.hideSidebar = false;
             // intialize reservation object
             $scope.reservationData = {
+                isHourly: false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
@@ -209,8 +210,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     futureReservations: 0
                 }
             };
-        }
-
+        };
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -219,7 +219,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationDetails.companyCard.futureReservations = 0;
             $scope.reservationDetails.travelAgent.id = "";
             $scope.reservationDetails.travelAgent.futureReservations = 0;
-        }
+        };
 
 
         $scope.getEmptyAccountData = function() {
@@ -250,8 +250,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     "contact_email": null
                 },
                 "future_reservation_count": 0
-            }
-        }
+            };
+        };
 
 
 
@@ -284,7 +284,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 });
             }
             return rateConfigured;
-        }
+        };
 
         $scope.checkOccupancyLimit = function(date) {
             var roomIndex = 0;
@@ -355,7 +355,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         $scope.resetRoomSelection = function(roomIndex) {
             $scope.editRoomRates(roomIndex);
             $scope.closeDialog();
-        }
+        };
 
         /*
          * This method will return the tax details for the amount and the tax provided
@@ -480,7 +480,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 stayExclusive: taxExclusiveStayTotal,
                 taxDescription: taxDescription
             };
-        }
+        };
 
 
         $scope.computeTotalStayCost = function() {
@@ -575,13 +575,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             });
             _.each(exclusiveStayTaxes, function(description, index) {
                 totalTaxes = parseFloat(totalTaxes) + parseFloat(description.amount);
-            })
+            });
 
             _.each($scope.reservationData.taxDetails, function(description, index) {
                 if (description.postType == 'STAY') {
                     taxesInclusiveExclusive = parseFloat(taxesInclusiveExclusive) + parseFloat(description.amount);
                 }
-            })
+            });
 
 
 
@@ -620,7 +620,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                         return baseRate * parseInt(numAdults);
                     }
                     return baseRate;
-                }
+                };
 
                 if (addon.postType.value == "NIGHT" && parseInt($scope.reservationData.numNights) > 1) {
                     var cumulativeRate = 0
@@ -729,7 +729,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.reservationData.totalStayCost = parseFloat(currentRoom.rateTotal) + parseFloat(addOnCumulative) + parseFloat(totalTaxes);
             $scope.reservationData.totalTax = taxesInclusiveExclusive; // CICO-10161
 
-        }
+        };
 
 
         $scope.editRoomRates = function(roomIdx) {
@@ -745,8 +745,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
                 $scope.reservationData.rooms[roomIdx].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')].rate = {
                     id: ''
-                }
-            }
+                };
+            };
 
             $state.go('rover.reservation.staycard.mainCard.roomType', {
                 from_date: $scope.reservationData.arrivalDate,
@@ -755,7 +755,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 company_id: $scope.reservationData.company.id,
                 travel_agent_id: $scope.reservationData.travelAgent.id
             });
-        }
+        };
 
         $scope.updateOccupancy = function(roomIdx) {
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
@@ -764,8 +764,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     children: parseInt($scope.reservationData.rooms[roomIdx].numChildren),
                     infants: parseInt($scope.reservationData.rooms[roomIdx].numInfants)
                 }
-            }
-        }
+            };
+        };
 
         /*
             This function is called once the stay card loads and 
@@ -868,16 +868,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     day: dateFilter(new tzIndependentDate(item.date), 'dd')
                 });
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: item.adults,
-                        children: item.children,
-                        infants: item.infants
-                    },
-                    rate: {
-                        id: item.rate_id
+                        guests: {
+                            adults: item.adults,
+                            children: item.children,
+                            infants: item.infants
+                        },
+                        rate: {
+                            id: item.rate_id
+                        }
                     }
-                }
-                // TODO : Extend for each stay dates
+                    // TODO : Extend for each stay dates
                 $scope.reservationData.rooms[0].rateId.push(item.rate_id);
                 if (index == 0) {
                     $scope.reservationData.rooms[0].roomTypeId = item.room_type_id;

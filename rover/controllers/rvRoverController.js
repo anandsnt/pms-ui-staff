@@ -68,6 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
 	$rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
 	$rootScope.paymentGateway    = hotelDetails.payment_gateway;
+	$rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
 
 	
 
@@ -171,7 +172,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "postcharges"
           }, {
             title: "MENU_CASHIER",
-            action: ""
+            action: "rover.financials.journal({ id: 2 })",
+            menuIndex:"cashier"
           }, {
             title: "MENU_END_OF_DAY",
             action: "",
@@ -230,10 +232,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
           title: "MENU_FINANCIALS",
           //hidden: true,
           action: "",
-          iconClass: "icon-finance",
+          iconClass: "icon-financials",
           submenu: [{
-            title: "MENU_REVENUE",
-            action: ""
+            title: "MENU_JOURNAL",
+            action: "rover.financials.journal({ id : 0})",
+            menuIndex:"journals"
           }, {
             title: "MENU_ACCOUNTING",
             action: ""
@@ -402,10 +405,10 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     //in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
-    var routeChange = function(event, newURL) {
-      event.preventDefault();
-      return;
-    };
+     var routeChange = function(event, newURL) {
+       event.preventDefault();
+       return;
+     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
     window.history.pushState("initial", "Showing Dashboard", "#/"); //we are forcefully setting top url, please refer routerFile

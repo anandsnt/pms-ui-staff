@@ -17,7 +17,8 @@ sntRover
                             url: 'api/hourly_occupancy', 
                             type: 'data'
                         }
-                    });
+                    }),
+                    payload = store.payload();
 
                 this.fetchArrivalTimes = function(base_interval) {
                     var times = [],
@@ -82,14 +83,9 @@ sntRover
                     var q = $q.defer();
 
                     this.fetchData(start_date, end_date, api_types.occupancy)
-                        .then(function(data) {
-                            //var payload = (!inc_room_data_flag ?
-                              ///  util.deepCopy(_.omit(data, 'rooms', 'room_types')) : util.deepCopy(data));
-
-                            q.resolve(util.deepCopy(data));
-                        }, function(err) {
+                        .then(q.resolve(util.deepCopy(data), function(err) {
                             q.reject(err);
-                        });
+                        }));
 
                     return q.promise;
                 };
@@ -104,15 +100,13 @@ sntRover
                             var ref_data = store.payload(),
                                 data = payload.results[0].availability,
                                 deferredArray = [],
-                                normalize = _.bind(store.normalizeAvailableOccupancy(store,
-                                    gen_uid,
-                                    start_date,
-                                    end_date,
-                                    ref_data.rooms,
-                                    ref_data.room_types,
-                                    rate_id));
+                                normalize = store.mergeAvailableSlots.bind(null,start_date,
+                                                                                end_date,
+                                                                                gen_uid,
+                                                                                rate_id);
 
-                            _.each(data, deferredArray.push);
+                            
+                            _.map(normalize, deferredArray.concat(data));
 
                             $q.all(deferredArray)
                                 .then(function(data) {
@@ -120,8 +114,8 @@ sntRover
                                         start_date: start_date,
                                         end_date: end_date,
                                         stay_dates: _.flatten(payload.results),
-                                        row_data: store.rooms[0],
-                                        row_item_data: store.rooms[0].occupancy[0]
+                                        row_data: ref_data.rooms[0],
+                                        row_item_data: ref_data.rooms[0].occupancy[0]
                                     });
                                 }, function(err) {
                                     q.reject(err);
@@ -146,8 +140,6 @@ sntRover
 
                 this.fetchData = function(start_date, end_date, type_config, rate_id, room_type_id) {
                     var q = $q.defer(),
-                        start_date = start_date,
-                        end_date = end_date,
                         s_comp = start_date.toComponents(),
                         e_comp = end_date.toComponents(),
 

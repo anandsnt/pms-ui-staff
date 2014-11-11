@@ -66,7 +66,7 @@ sntRover
 	/*Initial Values and Default Settings for React Grid*/
 	/*Initialization of React/Angular hooks and callbacks*/
 	/*Mock data currently in use*/
-	(function() {	
+
 		$scope.gridProps = {
 			viewport: {
 				hours: 						12,
@@ -324,7 +324,15 @@ sntRover
 	    	$scope.renderGrid();
 	    };
 
-		$scope.mergeAvailableTimeSlots = function(time_span, filter, data) {
+	    $scope.fetchAvailability = function(display, filter, data) {
+				var time = Time({ hours: display.new_reservation_time_span });
+
+				util.clearRoomQuery(data);
+
+				mergeAvailableTimeSlots(time, filter, data);
+		};
+
+		function mergeAvailableTimeSlots(time_span, filter, data) {
 			var start_date = filter.arrival_date,
 				start_time = parseArrivalTime(filter.arrival_time),
 				start = new Date(start_date.getFullYear(),
@@ -339,7 +347,7 @@ sntRover
 							   start.getHours()  + time_span.hours,
 							   start.getMinutes() + time_span.minutes,
 							   0, 0),
-				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = [Object.keys($scope.room_types)]) : filter.room_type;
+				rt_filter = _.isEmpty(filter.room_type) ? (filter.room_type = _.range($scope.room_types.length)) : filter.room_type.id;
 
 			rvDiarySrv.fetchAvailability(start, end, 389, rt_filter)
 			.then($scope.initPassiveEditMode, responseError)
@@ -479,7 +487,7 @@ sntRover
 
 	    	//console.log('Room status refresh time', Date.now() - time_start);
 	    }
-	})();
+	
 	
 	/*WATCHERS*/
 	$scope.$watch('selectedReservations.length', function(newValue, oldValue) {
@@ -515,7 +523,9 @@ sntRover
 	$scope.$watch('gridProps.filter.arrival_time', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if(!$scope.gridProps.edit.active) {
-				$scope.fetchAvailableSlots($scope.gridProps.display, $scope.gridProps.filter, $scope.data);
+				$scope.fetchAvailability($scope.gridProps.display,  
+				                         _.extend({}, $scope.gridProps.filter), 
+				                         $scope.data);
 			}
 		}
 	});
@@ -531,15 +541,9 @@ sntRover
 	$scope.$watch('gridProps.filter.rate_type', function(newValue, oldValue) {
 		if(newValue !== oldValue) {
 			if (!$scope.gridProps.edit.active) {
-				var filter,
-					time = Time({ hours: display.new_reservation_time_span }),
-					data = $scope.data;
-
-				filter = _.extend({}, $scope.gridProps.filter);
-
-				util.clearRoomQuery(data);
-
-				$scope.mergeAvailableTimeSlots(time, filter, data);
+				$scope.fetchAvailability($scope.gridProps.display,  
+				                         _.extend({}, $scope.gridProps.filter), 
+				                         $scope.data);
 			}		
 		}	
 	});

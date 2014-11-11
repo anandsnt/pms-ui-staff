@@ -78,23 +78,49 @@ sntRover
 				occupancy[m.room_type] = util.mixin(occupancy[m.room_type], room_type); //room_type.name;
 			};
 
-			normalizeAvailableOccupancy = function(gen_uid, start_date, end_date, rooms, room_types, rate_id, slot) {
+			/*function Occupancy(params) {
+				if(!(this instanceof Occupancy)) {
+					return new Occupancy(params);
+				}
+
+				this.reservation_id;
+				this.reservation_status
+				this.room_id;
+				this.room_type_id;
+				this.room_service_status;
+				this.rate_id;
+				this.rate_total;
+				this.arrival_date;
+				this.departure_date;
+
+				this.setArrival(start_date) {
+					formatIncomingTimeData(slot, start_date, 'arrival');
+				};
+
+				this.setDeparture(end_Date) {
+					formatIncomingTimeData(slot, end_date, 'departure');
+				}
+			}*/
+
+			normalizeAvailableOccupancy = function(start_date, end_date, rate_id, gen_uid, slot) {
+				var rooms = store.rooms;
+
 				room = _.findWhere(rooms, {
 					id: slot.id
 				});
 
 				if (room) {
 					slot.temporary = true;
-					slot.room_id = room.id;
-					slot.room_type_id = room.room_type_id;
+					slot.room_id 			= room.id;
+					slot.room_type_id 		= room.room_type_id;
 					slot.reservation_status = 'available';
 					slot.room_service_status = '';
-					slot.reservation_id = gen_uid;
-					slot.rate_id = rate_id;
-					slot.rate_total = slot.amount;
+					slot.reservation_id 	= gen_uid;
+					slot.rate_id 			= rate_id;
+					slot.rate_total 		= slot.amount;
 
-					this.formatIncomingTimeData(slot, start_date, 'arrival');
-					this.formatIncomingTimeData(slot, end_date, 'departure');
+					formatIncomingTimeData(slot, start_date, 'arrival');
+					formatIncomingTimeData(slot, end_date, 'departure');
 
 					if (has.call(room, 'occupancy')) {
 						room.occupancy = slice.call(room.occupancy).concat([slot]);
@@ -153,6 +179,10 @@ sntRover
 				linkRooms(data.rooms, data.occupancy);
 			};
 
+			var GUID = function(pre, ids) {
+					return _.constant([_.uniqueId(pre + '_') , '-', ids.join('-')]);
+				};
+
 			return {
 				set: function(field, value) {
 					store[field] = value;
@@ -168,11 +198,11 @@ sntRover
 				payload: function() {
 					return store;
 				},
-				guid: function(pre, ids) {
-					return _.constant([_.uniqueId(pre + '_') , '-', ids.join('-')]);
-				},
 				transform: function(payload, filterData) {
 					compile(_.extend(store, util.mixin.apply(null, slice.call(arguments))));
+				},
+				mergeAvailableSlots: function(start_date, end_date, guid, rate_id) {
+					normalizeAvailableOccupancy(start_date, end_date, guid, rate_id);
 				}
 			};
 		}

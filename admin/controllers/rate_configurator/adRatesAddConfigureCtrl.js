@@ -113,6 +113,11 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     mm: "",
                     am: "AM"
                 };
+                newSet.night_checkout = {
+                    hh: "",
+                    mm: "",
+                    am: "AM"
+                };
                 newSet.showRoomRate = false;
             }
 
@@ -184,6 +189,17 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         } else {
                             value.dawn = angular.copy(dummy);
                         }
+
+                        if (!!value.night_checkout_cut_off_time) {
+                            var nightCheckoutTime = value.night_checkout_cut_off_time.split(":");
+                            value.night_checkout = {
+                                hh: parseInt(dawnTime[0]) < 12 ? dawnTime[0] : parseInt(dawnTime[0]) % 12,
+                                mm: dawnTime[1],
+                                am: parseInt(dawnTime[0]) > 12 ? "PM" : "AM"
+                            }
+                        } else {
+                            value.night_checkout = angular.copy(dummy);
+                        }
                     }
 
                     room_rates = [];
@@ -204,7 +220,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                     } else {
                         angular.forEach(value.room_rates, function(room_type, key) {
                             room_type.hourly = {};
-                            room_type.nightly_rate = !!room_type.nightly_rate ?   parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
+                            room_type.nightly_rate = !!room_type.nightly_rate ? parseFloat(room_type.nightly_rate).toFixed(2) : room_type.nightly_rate;
+                            room_type.day_per_hour = !!room_type.day_per_hour ? parseFloat(room_type.day_per_hour).toFixed(2) : room_type.day_per_hour;
+                            room_type.night_per_hour = !!room_type.night_per_hour ? parseFloat(room_type.night_per_hour).toFixed(2) : room_type.night_per_hour;
+
                             angular.forEach(room_type.hourly_rates, function(rate) {
                                 room_type.hourly[rate.hour] = !!rate.amount ? parseFloat(rate.amount).toFixed(2) : rate.amount;
                             });
@@ -334,10 +353,15 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 } else {
                     setData.night_start_time = null;
                 }
-                if (!!selectedSet.dusk && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
+                if (!!selectedSet.dawn && !!selectedSet.dawn.hh && !!selectedSet.dawn.mm && !!selectedSet.dawn.am) {
                     setData.night_end_time = getTimeFormated(selectedSet.dawn.hh, selectedSet.dawn.mm, selectedSet.dawn.am);
                 } else {
                     setData.night_end_time = null;
+                }
+                if (!!selectedSet.night_checkout && !!selectedSet.night_checkout.hh && !!selectedSet.night_checkout.mm && !!selectedSet.night_checkout.am) {
+                    setData.night_checkout_cutoff_time = getTimeFormated(selectedSet.night_checkout.hh, selectedSet.night_checkout.mm, selectedSet.night_checkout.am);
+                } else {
+                    setData.night_checkout_cutoff_time = null;
                 }
             }
 
@@ -508,12 +532,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                 for (var i = 0; i < 24; i++) {
                     if (dawn < dusk) {
                         // the range crosses midnight, do the comparisons independently
-                        if ((dusk <= i) || (i <= dawn))
+                        if ((dusk <= i) || (i < dawn))
                             nightHours.push(i);
                     } else {
                         // the range is on the same day, both comparisons must be true
-                        if (dusk <= i && i <= dusk);
-                        nightHours.push(i);
+                        if (dusk <= i && i < dawn)
+                            nightHours.push(i);
                     }
                 }
                 angular.forEach(nightHours, function(hour) {
