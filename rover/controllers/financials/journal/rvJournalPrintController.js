@@ -169,8 +169,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             	
             	if(isDetailView && charge_codes.filterFlag){
             		//Expanding Level1 and Level2 to show detailed view.
-            		charge_codes.active = true;
             		charge_groups.active = true;
+            		// If charge code is having items inside, expand it.
+            		if(charge_codes.length > 0) charge_codes.active = true;
             	}
             	else{
             	 	charge_codes.active = false;
@@ -226,9 +227,10 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 	            	
 	            	if(isDetailView && credit_cards.filterFlag){
-	            		//Expanding Level1 and Level2 to show detailed view for Credit Cards.
+	            		// Expanding Level1 and Level2 to show detailed view for Credit Cards.
 	            		payment_types.active = true;
-	            		credit_cards.active = true;
+	            		// If cards having data inside , expand it.
+	            		if(credit_cards.length >0) credit_cards.active = true;
 	            	}
 	            	else{
 	            		credit_cards.active = false;
@@ -236,7 +238,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            });
         	}
         	else{
-        		if(isDetailView){
+        		if(isDetailView && payment_types.length > 0){
         			payment_types.active = true;
         		}
         		else{
