@@ -313,29 +313,34 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
         */
        
         $scope.setHours = function(){
+            var checkinHour   = parseInt($scope.reservationData.checkinTime.hh);
+            var checkoutHour  = parseInt($scope.reservationData.checkoutTime.hh);
+            var checkinAmPm   = $scope.reservationData.checkinTime.ampm;
+            var checkoutAmPm  = $scope.reservationData.checkoutTime.ampm;
+            var selectedHours = parseInt($scope.reservationData.hours);
             //if selected hours is greater than a day
-            if((parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )>24){
-                var extraHours = (parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )%24;
+            if((checkinHour + selectedHours)>24){
+                var extraHours = (checkinHour +selectedHours)%24;
                 //if extra hours is greater than half a day
                 if(extraHours >=12){
                     $scope.reservationData.checkoutTime.hh = (extraHours ===12 || extraHours === 0)?12:extraHours-12;
-                    $scope.reservationData.checkoutTime.ampm = ($scope.reservationData.checkinTime.ampm === "AM") ? "PM":"AM";
+                    $scope.reservationData.checkoutTime.ampm = (checkinAmPm === "AM") ? "PM":"AM";
                 }
                 else{
                     $scope.reservationData.checkoutTime.hh = extraHours;
-                    $scope.reservationData.checkoutTime.ampm = $scope.reservationData.checkinTime.ampm;
+                    $scope.reservationData.checkoutTime.ampm = checkinAmPm;
                     $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkoutTime.hh):$scope.reservationData.checkoutTime.hh;
                 }
             }
             //if selected hours is greater than half a day
-            else if((parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )>=12){
-                var extraHours = (parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )%12;
+            else if((checkinHour + selectedHours)>=12){
+                var extraHours = (checkinHour +selectedHours)%12;
                 $scope.reservationData.checkoutTime.hh = (extraHours ===0)?12:extraHours;
                 $scope.reservationData.checkoutTime.ampm = ($scope.reservationData.checkinTime.ampm === "AM") ? "PM":"AM";
             }
             else{
-                $scope.reservationData.checkoutTime.hh = parseInt($scope.reservationData.hours)  + parseInt($scope.reservationData.checkinTime.hh);
-                $scope.reservationData.checkoutTime.ampm = $scope.reservationData.checkinTime.ampm;
+                $scope.reservationData.checkoutTime.hh = checkinHour +selectedHours;
+                $scope.reservationData.checkoutTime.ampm = checkinAmPm;
             }
             $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkoutTime.hh):$scope.reservationData.checkoutTime.hh;         
             $scope.reservationData.checkoutTime.mm = $scope.reservationData.checkinTime.mm;            
