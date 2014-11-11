@@ -93,20 +93,25 @@ sntRover
                 this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {
                     var self = this,
                         q = $q.defer(),
-                        gen_uid = _.uniqueId('available-');
+                        gen_uid = _.uniqueId('available-'); //USED TO RESIZE ALL INSERTED ELEMENTS SIMULTANEOUSLY
 
                     this.fetchData(start_date, end_date, api_types.availability, rate_id, room_type_id)
                         .then(function(payload) {
                             var ref_data = store.payload(),
-                                data = payload.results[0].availability,
-                                deferredArray = [],
-                                normalize = store.mergeAvailableSlots.bind(null,start_date,
-                                                                                end_date,
-                                                                                gen_uid,
-                                                                                rate_id);
+                                data = payload.results[0].availability;
+                                
+                                
 
+
+                            data.forEach(function(ava) {
+                                store.mergeAvailableSlots(start_date,
+                                                            end_date,
+                                                            gen_uid,
+                                                            rate_id,
+                                                            ava);
+                            });
                             
-                            _.map(normalize, deferredArray.concat(data));
+                            
 
                             $q.all(deferredArray)
                                 .then(function(data) {
