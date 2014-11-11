@@ -141,8 +141,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$timeout(function() {
 				$scope.refreshScroller('reservationSummary');
 				$scope.refreshScroller('paymentInfo');
-			}, 1500)
-		}
+			}, 1500);
+		};
 
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
@@ -154,12 +154,20 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
 			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
 			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
+			var arrivalTimeSplit = temporaryReservationDataFromDiaryScreen.arrival_time.split(":");
+			$scope.reservationData.checkinTime.hh = arrivalTimeSplit[0];
+			$scope.reservationData.checkinTime.mm = arrivalTimeSplit[1].split(" ")[0];
+			$scope.reservationData.checkinTime.ampm = arrivalTimeSplit[1].split(" ")[1];
+			var departureTimeSplit = temporaryReservationDataFromDiaryScreen.departure_time.split(":");
+			$scope.reservationData.checkoutTime.hh = departureTimeSplit[0];
+			$scope.reservationData.checkoutTime.mm = departureTimeSplit[1].split(" ")[0];
+			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
 				room.rateTotal = room.amount;								
 				var success = function(data) {
 					room.rateName = data;
-				}
+				};
 				$scope.invokeApi(RVReservationSummarySrv.getRateName, {
 					id: room.rateId
 				}, success);
