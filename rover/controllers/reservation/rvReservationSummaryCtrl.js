@@ -1,6 +1,7 @@
 sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault',
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault) {
 
+
 		BaseCtrl.call(this, $scope);
 
 		///
@@ -36,6 +37,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 		// Listen to message from child IFrame window
+
 		eventer(messageEvent, function(e) {
 
 			var responseData = e.data;
@@ -51,8 +53,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 		}, false);
+	
+		
+		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled){
 
-		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
 			var buttonClass = "grey";
 			if (isSubmitButtonEnabled) {
 				buttonClass = "green";
@@ -265,12 +269,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
-
 			// MLI Integration.
 			if ($rootScope.paymentGateway === "sixpayments") {
 				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
+				
 				data.payment_type.isSixPayment = false;
 				if ($scope.reservationData.paymentType.type !== null) {
 					if ($scope.reservationData.paymentType.type.value === "CC") {
