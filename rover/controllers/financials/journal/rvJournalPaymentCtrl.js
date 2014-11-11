@@ -80,5 +80,5 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         else if($scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions.length >0) hasArrow = true;
         return hasArrow;
     };
-	
+
 }]);
