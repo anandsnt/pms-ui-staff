@@ -1,10 +1,10 @@
 <!-- Content -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<section id="reservations" class="content create-reservation scrollable" role="main">
-    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+<section id="reservations" class="content create-reservation scrollable" role="main" ng-iscroll="search_reservation" ng-iscroll-delay="1000">
+    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search" iscroll-stop-propagation>
 
         <div id="dates" class="row">
-            <div id="arriving" class="entry">
+            <div id="arriving" class="entry" ng-class="{'res_arrival': shouldShowToggle}">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
                 <!-- Styled check in date -->
 
@@ -16,16 +16,22 @@
                     <span id="check-in-year" class="year">{{reservationData.arrivalDate | date:'yyyy'}}</span>
                 </div>
             </div>
-            <div id="nights" class="entry">
+            <div id="nights" class="entry" ng-class="{'res_nights': shouldShowToggle}">
                 <label for="nights-number">Staying <span>for</span></label>
                 <div class="entry-data">
-                    <span class="label">Nights</span>
-                    <input name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
+                	<div class="nights_hours" ng-show="shouldShowToggle">
+	                    <span class="label res_nights_label" ng-class="{'nights_active': isNightsActive}"  ng-click="clickedNights()">Nights</span>
+	                    <span class="label res_hours_label" ng-class="{'hours_active': !isNightsActive}"  ng-click="clickedHours()">Hours</span>
+                    </div>
+                    <span class="label" ng-hide="shouldShowToggle">Nights</span>
+                    <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
+                    <input ng-show="shouldShowHours" name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()" />
+                   
                 </div>
             </div>
 
 
-            <div id="departing" class="entry"  >
+            <div id="departing" class="entry"  ng-class="{'res_departure': shouldShowToggle}" >
                 <label id="check-out-day-label" for="check-out-date">Departing <span> {{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
                 <!-- Styled check out date -->
                 <div class="entry-data datepicker-date">
@@ -39,15 +45,8 @@
         </div>
         <!-- To be replaced when original design comes -->
         <div class="row">
-            hh
-              <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="hotelTime.hh"  />
-              mm
-                <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="hotelTime.mm">
-                <input type="button" ng-click="roundOfArrivalTime()">save</input>
-                Rounded value = {{reservationData.checkinTime.hh}}:{{reservationData.checkinTime.mm}} {{reservationData.checkinTime.ampm}}
-            <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="reservationData.hours" ng-change="setHours()" />
                 arrival time
-                <select ng-model="reservationData.checkinTime.hh"  ng-change="setHours()">
+                <select ng-model="reservationData.checkinTime.hh"  ng-change="setDepartureHours()">
                         <option value="">HH</option> <!-- Selected if time not set -->
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -62,14 +61,14 @@
                         <option value="11">11</option>
                         <option value="12">12</option>
                 </select>
-                 <select ng-model="reservationData.checkinTime.mm"  ng-change="setHours()">
+                 <select ng-model="reservationData.checkinTime.mm"  ng-change="setDepartureHours()">
                         <option value="">MM</option> <!-- Selected if time not set -->
                         <option value="00">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
                 </select>
-                 <select ng-model="reservationData.checkinTime.ampm"  ng-change="setHours()">
+                 <select ng-model="reservationData.checkinTime.ampm"  ng-change="setDepartureHours()">
                         <option value="AM" selected>AM</option>
                         <option value="PM">PM</option>
                 </select>
