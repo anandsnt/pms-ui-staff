@@ -296,22 +296,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
         *
         */
         $scope.roundOfArrivalTime = function(){
-            if(parseInt($scope.hotelTime.mm)> 0){
-                $scope.hotelTime.hh = parseInt($scope.hotelTime.hh)+1;
-            }
-            else{
-                 $scope.hotelTime.hh = parseInt($scope.hotelTime.hh);
-            }
-            if($scope.hotelTime.hh >= 12){
-                $scope.reservationData.checkinTime.ampm = ($scope.hotelTime.hh == 24)?"AM":"PM";
-                $scope.reservationData.checkinTime.hh = ($scope.hotelTime.hh === 12 || $scope.hotelTime.hh == 24)? 12: $scope.hotelTime.hh-12;
-            }
-            else{
-                $scope.reservationData.checkinTime.hh = $scope.hotelTime.hh;
-                $scope.reservationData.checkinTime.ampm = "AM";
-            }
-            $scope.reservationData.checkinTime.mm = "00";
+            //To convert 24 hour format and round off to next hour 
+            //incase it past the existing hour even by one second.
+            $scope.hotelTime.hh = (parseInt($scope.hotelTime.mm)> 0)?parseInt($scope.hotelTime.hh)+1: parseInt($scope.hotelTime.hh);
+            $scope.reservationData.checkinTime.ampm = ($scope.hotelTime.hh >= 12) ? (($scope.hotelTime.hh == 24)?"AM":"PM"):"AM";
+            //convert 24 hour format to 12 hours
+            $scope.reservationData.checkinTime.hh = ($scope.hotelTime.hh >= 12) ? (($scope.hotelTime.hh === 12 || $scope.hotelTime.hh == 24)? 12: $scope.hotelTime.hh-12):$scope.hotelTime.hh;
+            // add '0' if hour < 12 
             $scope.reservationData.checkinTime.hh = ($scope.reservationData.checkinTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkinTime.hh):$scope.reservationData.checkinTime.hh;     
+            //rounding off minutes to '00'
+            $scope.reservationData.checkinTime.mm = "00";
         }
        /*
         * To setup departure time based on arrival time and hours selected
@@ -319,8 +313,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
         */
        
         $scope.setHours = function(){
+            //if selected hours is greater than a day
             if((parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )>24){
                 var extraHours = (parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )%24;
+                //if extra hours is greater than half a day
                 if(extraHours >=12){
                     $scope.reservationData.checkoutTime.hh = (extraHours ===12 || extraHours === 0)?12:extraHours-12;
                     $scope.reservationData.checkoutTime.ampm = ($scope.reservationData.checkinTime.ampm === "AM") ? "PM":"AM";
@@ -331,6 +327,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                     $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkoutTime.hh):$scope.reservationData.checkoutTime.hh;
                 }
             }
+            //if selected hours is greater than half a day
             else if((parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )>=12){
                 var extraHours = (parseInt($scope.reservationData.checkinTime.hh) + parseInt($scope.reservationData.hours) )%12;
                 $scope.reservationData.checkoutTime.hh = (extraHours ===0)?12:extraHours;
