@@ -1,7 +1,7 @@
 <!-- Content -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<section id="reservations" class="content create-reservation scrollable" role="main">
-    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+<section id="reservations" class="content create-reservation scrollable" role="main" ng-iscroll="search_reservation" ng-iscroll-delay="1000">
+    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search" iscroll-stop-propagation>
 
         <div id="dates" class="row">
             <div id="arriving" class="entry" ng-class="{'res_arrival': shouldShowToggle}">
@@ -25,21 +25,8 @@
                     </div>
                     <span class="label" ng-hide="shouldShowToggle">Nights</span>
                     <input ng-show="shouldShowNights" name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()" />
-                    <select ng-show="shouldShowHours" iscroll-stop-propagation name="check-in" class="placeholder" >
-                        <option value="" selected>HH</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
+                    <input ng-show="shouldShowHours" name="nights-number" id="nights-number" type="text" maxlength="2" ng-model="reservationData.resHours" ng-change="setDepartureHours()" />
+                   
                 </div>
             </div>
 
