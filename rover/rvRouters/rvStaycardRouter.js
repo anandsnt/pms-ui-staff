@@ -30,6 +30,37 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         }
     });
 
+    $stateProvider.state('rover.reservation.diary', {
+            url: '/diary',
+            templateUrl: '/assets/partials/diary/rvDiary.html',
+            controller: 'rvDiaryCtrl',
+            resolve: {
+                payload: function(rvDiarySrv) {
+                    this.params.arrival_time = Date.now();
+                    this.params.offset = -7200000;
+                    this.params.range = 86400000;
+
+                    return rvDiarySrv.init(new Date(this.params.arrival_time + this.params.offset), 
+                                           new Date(this.params.arrival_time + this.params.range));
+                }
+            }
+        });
+    /*$stateProvider.state('rover.reservation.diary', {
+        url: '/diary',
+        templateUrl: '/assets/partials/diary/rvDiary.html',
+        controller: 'RVDiaryCtrl',
+        resolve: {
+            payload: function($q, rvDiarySrv, rvDiaryFilterSrv, $stateParams) {
+                var cur_time = Date.now();
+
+                $stateParams.from_date =  new Date(cur_time - 7200000);
+                $stateParams.to_date   =  new Date(cur_time + 86400000);
+                $stateParams.is_hourly = true;
+                
+                return $q.all([rvDiarySrv.init(x_0, x_N), rvDiaryFilterSrv.fetchArrivalTimes(15)]);         
+            }
+        }
+    });   */ 
 
     $stateProvider.state('rover.reservation.search', {
         url: '/search',
@@ -43,8 +74,6 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         templateUrl: '/assets/partials/reservation/rvMain.html',
         controller: 'staycardController'
     });
-
-
 
     $stateProvider.state('rover.reservation.staycard.mainCard', {
         abstract: true,
@@ -126,7 +155,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'reservationDetailsController',
         resolve: {
             reservationListData: function(RVReservationCardSrv, $stateParams) {
-                var data = {
+            	 var data = {
                     "reservationId": $stateParams.id,
                     "isRefresh": $stateParams.isrefresh
                 };

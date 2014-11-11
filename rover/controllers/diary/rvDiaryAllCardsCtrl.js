@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', 'RVReservationCardSrv', '$timeout', 'RVCompanyCardSrv', 'RVGuestCardSrv', 'ngDialog',
+sntRover.controller('RVDiaryAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', 'RVReservationCardSrv', '$timeout', 'RVCompanyCardSrv', 'RVGuestCardSrv', 'ngDialog',
     function($scope, RVReservationAllCardsSrv, RVReservationCardSrv, $timeout, RVCompanyCardSrv, RVGuestCardSrv, ngDialog) {
 
         BaseCtrl.call(this, $scope);

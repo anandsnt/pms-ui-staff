@@ -1,3 +1,7 @@
+/*FOR POTENTIAL FUTURE USE
+	Switching to this form may reduce rendering time,
+	but has the trade off of janky scrolling
+*/
 var GridRowBackground = React.createClass({
 	shouldComponentUpdate: function(nextProps, nextState) {
 		if(this.props.display !== nextProps.display) {
