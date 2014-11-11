@@ -426,11 +426,14 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
     // Utility method use to check data being blank or undefined.
     $scope.escapeNullData = function(data){
-        if(data == 0) return data;
-        else if((data === '') || (typeof data === 'undefined') || (data === null))
-            return '-';
-        else
-            return data;
+
+        var returnData = data;
+
+        if((data == "") || (typeof data == 'undefined') || (data == null)){
+            returnData = '-';
+        }
+        
+        return returnData;
     };
 
     /* get the time string from the date-time string */
