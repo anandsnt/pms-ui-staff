@@ -1,3 +1,4 @@
+
 sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', 
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location) {
 
@@ -41,7 +42,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
        				//responseData = dclone(responseData, unwantedKeys);
 		       		//console.log(JSON.stringify(responseData));
-		       		$scope.six_token = responseData.token;
+		       		$scope.six_token = responseData.token_no;
 		       		
 		       		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		       }
@@ -211,12 +212,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
-
 			// MLI Integration.
 			if($rootScope.paymentGateway === "sixpayments"){
 				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
+				
 				data.payment_type.isSixPayment = false;
 				if ($scope.reservationData.paymentType.type !== null) {
 					if ($scope.reservationData.paymentType.type.value === "CC") {
