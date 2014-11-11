@@ -1,60 +1,17 @@
-sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope','ngDialog','$stateParams','$state','RVReservationCardSrv','RVPaymentSrv','$timeout',
-	function($rootScope, $scope,ngDialog,$stateParams,$state,RVReservationCardSrv,RVPaymentSrv,$timeout) {
+sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope','ngDialog','$stateParams','$state','RVReservationCardSrv','RVPaymentSrv','$timeout','$filter',
+	function($rootScope, $scope,ngDialog,$stateParams,$state,RVReservationCardSrv,RVPaymentSrv,$timeout,$filter) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = "";	
-		var MLISessionId = "";
-
-		// try {
-		HostedForm.setMerchant($rootScope.MLImerchantId);
-		// } catch (err) {};
-
+	
 		$scope.cancellationData = {
 			selectedCard: -1,
 			reason: "",
 			viewCardsList: false,
 			existingCard: false,
-			cardId: "",
-			newCard: {
-				cardNumber: "",
-				addToGuest: false,
-				nameOnCard: "",
-				expiryDate: {
-					mm: "",
-					yy: ""
-				},
-				ccv: ""
-			}
+			cardId: ""
 		}
 
-
-		// $scope.setScroller('cardsList');
-
-		// var refreshCardsList = function() {
-		// 	$timeout(function() {
-		// 		$scope.refreshScroller('cardsList');
-		// 	}, 300)
-		// }
-
-
-		// var onFetchPaymentsSuccess = function(data) {
-		// 	$scope.$emit('hideLoader');
-		// 	$scope.cardsInPaymentMethods = _.where(data.existing_payments, {
-		// 		is_credit_card: true
-		// 	});
-		// 	if ($scope.cardsInPaymentMethods.length > 0) {
-		// 		$scope.ngDialogData.cards = true;
-		// 		$scope.cancellationData.viewCardsList = true;
-		// 		refreshCardsList();
-		// 		$scope.ngDialogData.state = 'REFUND';
-		// 	}
-		// 	else{
-		// 		is_credit_card: false;
-		// 		$scope.ngDialogData.state = 'CONFIRM';
-		// 		$scope.errorMessage = ['Deposit refund can not be processed to this payment type. Manual processing required'];
-		// 	}
-			
-		// };
 
 		var cancelReservation = function(cancellationParameters) {
 			var onCancelSuccess = function(data) {
@@ -68,6 +25,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			}
 			$scope.invokeApi(RVReservationCardSrv.cancelReservation, cancellationParameters, onCancelSuccess);
 		}
+
+		//scroller options
 		$scope.setScroller('cardsList');
 
 		var refreshCardsList = function() {
@@ -75,61 +34,6 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				$scope.refreshScroller('cardsList');
 			}, 300)
 		}
-
-		var savePayment = function() {
-			var onSaveSuccess = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.cancellationData.selectedCard = data.id;
-				var cancellationParameters = {
-					reason: $scope.cancellationData.reason,
-					id: $scope.reservationData.reservation_card.reservation_id,
-					payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
-					with_deposit_refund:true
-				};
-				cancelReservation(cancellationParameters);
-			}
-			var onSaveFailure = function(data) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = data;
-			}
-			var paymentData = {
-				add_to_guest_card: $scope.cancellationData.newCard.addToGuest,
-				card_expiry: $scope.cancellationData.newCard.expiryDate.mm && $scope.cancellationData.newCard.expiryDate.yy ? "20" + $scope.cancellationData.newCard.expiryDate.yy + "-" + $scope.cancellationData.newCard.expiryDate.mm + "-01" : "",
-				credit_card: "",
-				name_on_card: $scope.cancellationData.newCard.nameOnCard,
-				payment_type: "CC",
-				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				session_id: MLISessionId
-			}
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, paymentData, onSaveSuccess, onSaveFailure);
-		}
-
-		var fetchMLISessionId = function() {
-			var sessionDetails = {};
-			sessionDetails.cardNumber = $scope.cancellationData.newCard.cardNumber;
-			sessionDetails.cardSecurityCode = $scope.cancellationData.newCard.ccv;
-			sessionDetails.cardExpiryMonth = $scope.cancellationData.newCard.expiryDate.mm;
-			sessionDetails.cardExpiryYear = $scope.cancellationData.newCard.expiryDate.yy;
-
-			var callback = function(response) {
-				$scope.$emit("hideLoader");
-				if (response.status === "ok") {
-					MLISessionId = response.session;
-					savePayment(); // call save payment details WS		 		
-				} else {
-					$scope.errorMessage = ["There is a problem with your credit card"];
-				}
-				$scope.$apply();
-			};
-
-			try {
-				HostedForm.updateSession(sessionDetails, callback);
-				$scope.$emit("showLoader");
-			} catch (err) {
-				$scope.errorMessage = ["There was a problem connecting to the payment gateway."];
-			};
-
-		};
 
 		var onFetchPaymentsSuccess = function(data) {
 			$scope.$emit('hideLoader');
@@ -140,8 +44,13 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				$scope.ngDialogData.cards = true;
 				$scope.cancellationData.viewCardsList = true;
 				refreshCardsList();
+				$scope.ngDialogData.state = 'REFUND';
 			}
-			$scope.ngDialogData.state = 'REFUND';
+			else{
+				is_credit_card: false;
+				$scope.ngDialogData.state = 'CONFIRM';
+				$scope.errorMessage = [$filter('translate')('CREDIT_CARD_LIST_EMPTY_ERROR')];
+			}
 		}
 
 		$scope.applyRefund = function(){
@@ -152,18 +61,10 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				payment_method_id: parseInt($scope.cancellationData.selectedCard) == -1 ? null : parseInt($scope.cancellationData.selectedCard),
 				with_deposit_refund:true
 			};
-			//cancelReservation(cancellationParameters);
 
 			$scope.errorMessage = [];
 			if ($scope.cancellationData.viewCardsList) {
 				cancelReservation(cancellationParameters);
-			}
-			//If the user is on add card screen && if there is a card Number entered then make call to MLI to check validity of the card			 
-			else if (!$scope.cancellationData.viewCardsList && $scope.cancellationData.newCard.cardNumber.toString().length > 0) {
-				fetchMLISessionId();
-			} else {
-				// Client side validation added to eliminate a false session being retrieved in case of empty card number
-				$scope.errorMessage = [$filter('translate')('CARD_ERROR')];
 			}
 		};
 

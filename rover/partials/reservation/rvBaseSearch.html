@@ -56,6 +56,71 @@
                 </div>
             </div>
         </div>
+        <!-- To be replaced when original design comes -->
+        <div class="row">
+            hh
+              <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="hotelTime.hh"  />
+              mm
+                <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="hotelTime.mm">
+                <input type="button" ng-click="roundOfArrivalTime()">save</input>
+                Rounded value = {{reservationData.checkinTime.hh}}:{{reservationData.checkinTime.mm}} {{reservationData.checkinTime.ampm}}
+            <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="reservationData.hours" ng-change="setHours()" />
+                arrival time
+                <select ng-model="reservationData.checkinTime.hh"  ng-change="setHours()">
+                        <option value="">HH</option> <!-- Selected if time not set -->
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                </select>
+                 <select ng-model="reservationData.checkinTime.mm"  ng-change="setHours()">
+                        <option value="">MM</option> <!-- Selected if time not set -->
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                </select>
+                 <select ng-model="reservationData.checkinTime.ampm"  ng-change="setHours()">
+                        <option value="AM" selected>AM</option>
+                        <option value="PM">PM</option>
+                </select>
+                departure time
+                <select ng-model="reservationData.checkoutTime.hh">
+                        <option value="">HH</option> <!-- Selected if time not set -->
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                </select>
+                 <select ng-model="reservationData.checkoutTime.mm">
+                        <option value="">MM</option> <!-- Selected if time not set -->
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                </select>
+                 <select ng-model="reservationData.checkoutTime.ampm">
+                        <option value="AM" selected>AM</option>
+                        <option value="PM">PM</option>
+                </select>       
+        </div>
+            <!-- To be replaced when original design comes till here-->
         <div id="rooms" class="row">
             <div id="room-1" class="entry" ng-repeat="room in reservationData.rooms">
                 <label for="room-1-adults">Room <span>(s)</span></label>

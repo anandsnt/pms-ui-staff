@@ -17,7 +17,14 @@ sntRover.controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
-
+		// Handle back button Click on card details page.
+		$scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
+		$scope.headerBackButtonClicked = function(){
+	        $state.go(
+	        	"rover.companycardsearch",
+	        	{ "textInQueryBox": $stateParams.query }
+	        );
+	   	};
 		$scope.isContactInformationSaved = false;
 		//inheriting some useful things
 		BaseCtrl.call(this, $scope);
