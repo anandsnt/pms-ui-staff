@@ -37,9 +37,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 		// Listen to message from child IFrame window
-
 		eventer(messageEvent, function(e) {
-
 			var responseData = e.data;
 			if (responseData.response_message == "token_created") {
 				console.log("event listener==============");
@@ -48,12 +46,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//responseData = dclone(responseData, unwantedKeys);
 				//console.log(JSON.stringify(responseData));
 				$scope.six_token = responseData.token;
-
 				//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 			}
-
 		}, false);
-
 
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
 
@@ -93,31 +88,27 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 		}
 
-
-
 		$scope.init = function() {
-
 			$scope.data = {};
 			if ($stateParams.reservation == "HOURLY") {
+
 				$scope.reservationData.isHourly = true;
 				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
+
 				if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
 					var getRoomsSuccess = function(data) {
-						console.log(data.rooms.length);
-
 						var roomsArray = {};
 						angular.forEach(data.rooms, function(value, key) {
 							var roomKey = value.id;
 							roomsArray[roomKey] = value;
 						});
-
 						$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
 					};
 					$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
-
 				}
 			}
+
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.otherData.isGuestAdditionalEmailChecked = false;
 			$scope.data.paymentMethods = [];
@@ -134,7 +125,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			});
 			fetchPaymentMethods();
 			refreshScrolls();
-
 		};
 
 		var refreshScrolls = function() {
@@ -145,7 +135,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		}
 
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
-
 			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
@@ -153,12 +142,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.rooms = [];
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
 			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
-			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
+			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;			
+			$scope.reservationData.totalStayCost = 0;
+
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
-				room.rateTotal = room.amount;								
+				room.rateTotal = room.amount;
+				$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.amount);
 				var success = function(data) {
 					room.rateName = data;
+					refreshScrolls();
 				}
 				$scope.invokeApi(RVReservationSummarySrv.getRateName, {
 					id: room.rateId
@@ -196,9 +189,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.errorMessage = data;
 				$scope.$emit('hideLoader');
 			};
-
 			$scope.invokeApi(RVReservationSummarySrv.fetchPaymentMethods, {}, paymentFetchSuccess, paymentFetchError);
-
 		};
 
 		/**
@@ -206,7 +197,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * If checked, copies the guest email to the confirm email
 		 */
 		$scope.confirmEmailCheckboxClicked = function() {
-
 			$scope.reservationData.guest.sendConfirmMailTo = '';
 			if ($scope.data.isConfirmationEmailSameAsGuestEmail) {
 				$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
@@ -267,7 +257,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
 					$scope.reservationData.paymentType.ccDetails.expMonth + "-01";
 				data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-
 			}
 
 			/**			
@@ -281,7 +270,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			data.tax_total = $scope.reservationData.totalTaxAmount;
 
-
 			// guest emails to which confirmation emails should send
 			data.confirmation_emails = [];
 			if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email != "") {
@@ -290,12 +278,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
+
 			// MLI Integration.
 			if ($rootScope.paymentGateway === "sixpayments") {
 				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
-
 				data.payment_type.isSixPayment = false;
 				if ($scope.reservationData.paymentType.type !== null) {
 					if ($scope.reservationData.paymentType.type.value === "CC") {
@@ -304,13 +292,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				}
 			}
 
-
 			//	CICO-8320
 			// 	The API request payload changes
 			var stay = [];
 			data.room_id = [];
 			_.each($scope.reservationData.rooms, function(room) {
-				var reservationStayDetails = [];				
+				var reservationStayDetails = [];
 				_.each(room.stayDates, function(staydata, date) {
 					reservationStayDetails.push({
 						date: date,
@@ -326,23 +313,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			});
 
 			//	end of payload changes
-
 			data.stay_dates = stay;
 
 			//addons
-
-
 			data.addons = [];
-
 			_.each($scope.reservationData.rooms[0].addons, function(addon) {
 				data.addons.push({
 					id: addon.id,
 					quantity: addon.quantity
-
 				});
-
 			});
-
 
 			data.company_id = $scope.reservationData.company.id;
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;
@@ -376,8 +356,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			//   data.room_id.push(room.room_id);
 			// });
 			//to delete ends here
-
-
 			return data;
 
 		};
@@ -419,7 +397,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				 * TO DO:ends here
 				 */
 
-
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.reservationData.is_routing_available = false;
 				// Change mode to stay card as the reservation has been made!
@@ -437,13 +414,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					"confirmationId": data.confirm_no
 				});
 				// $scope.data.MLIData = {};
-
 			};
+
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data;
 				// $scope.data.MLIData= {};
-
 			};
 
 			var updateSuccess = function(data) {
@@ -463,7 +439,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				//updating reservation
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
-
 		};
 
 		/**
@@ -471,7 +446,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 *
 		 */
 		var fetchMLISession = function() {
-
 			var sessionDetails = {};
 			sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
 			sessionDetails.cardSecurityCode = $scope.reservationData.paymentType.ccDetails.cvv;
@@ -479,7 +453,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			sessionDetails.cardExpiryYear = $scope.reservationData.paymentType.ccDetails.expYear;
 
 			var callback = function(response) {
-
 				$scope.$emit("hideLoader");
 				$scope.$apply();
 				if (response.status === "ok") {
@@ -516,8 +489,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		}();
 
-
-
 		/**
 		 * Click handler for confirm button -
 		 * Creates the reservation and on success, goes to the confirmation screen
@@ -541,7 +512,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 			$scope.proceedCreatingReservation();
-
 		};
 
 		/**
@@ -561,8 +531,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$state.go('rover.reservation.search');
 			}
 		};
+
 		$scope.changePaymentType = function() {
-			console.log($scope.reservationData.paymentType.type.value);
 			if ($scope.reservationData.paymentType.type.value === 'CC') {
 				if ($rootScope.paymentGateway === "sixpayments") {
 					$scope.isSixPaymentGatewayVisible = true;
@@ -584,6 +554,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			$scope.refreshPaymentScroller();
 		};
+
 		$scope.refreshPaymentScroller = function() {
 			$scope.refreshScroller('paymentInfo');
 		};
@@ -614,6 +585,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			$scope.invokeApi(RVContactInfoSrv.updateGuest, data, updateGuestEmailSuccessCallback, updateGuestEmailFailureCallback);
 		};
+
 		$scope.clickedOnsite = function() {
 
 			$scope.isOnsiteActive = true;
@@ -631,6 +603,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isSixPaymentGatewayVisible = false;
 			$scope.refreshPaymentScroller();
 		};
+
 		$scope.clickedCallIn = function() {
 			var typeIndex = '';
 			$scope.isOnsiteActive = false;
@@ -639,6 +612,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.paymentType.type.value = 'CC';
 			$scope.refreshPaymentScroller();
 		};
+
 		/*
 		 *
 		 */
@@ -661,9 +635,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			});
 
 		};
-
 		$scope.init();
-
-
 	}
 ]);
