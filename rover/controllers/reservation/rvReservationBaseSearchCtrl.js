@@ -1,8 +1,18 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout', '$stateParams',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
+sntRover.controller('RVReservationBaseSearchCtrl', [
+    '$rootScope', 
+    '$scope', 
+    'RVReservationBaseSearchSrv', 
+    'dateFilter', 
+    'ngDialog', 
+    '$state', 
+    '$timeout', 
+    '$stateParams',
+    '$vault',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
+        $scope.setScroller('search_reservation');
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
@@ -45,7 +55,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
             }
-
+			if($rootScope.isHourlyRateOn){
+				$scope.shouldShowToggle = true;
+				$scope.isNightsActive = false;
+				$scope.shouldShowNights = false;
+        		$scope.shouldShowHours = true;
+			} else {
+				$scope.shouldShowNights = true;
+				$scope.shouldShowHours = false;
+				$scope.shouldShowToggle = false;
+				$scope.shouldShowHours = false;
+			}
             $scope.otherData.fromSearch = true;
             $scope.$emit('hideLoader');
         };
@@ -60,7 +80,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
-        }
+        };
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -82,7 +102,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             } else {
                 $scope.reservationData.numNights = dayDiff;
             }
-        }
+        };
 
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
@@ -141,15 +161,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                 reservationDataToKeepinVault.guestFirstName = $scope.searchData.guestCard.guestFirstName;
                 reservationDataToKeepinVault.guestLastName  = $scope.searchData.guestCard.guestLastName;
                 reservationDataToKeepinVault.companyID      = $scope.reservationData.company.id;
-                reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;
+                reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;                
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
+                console.log($vault.get('searchReservationData'));
                 $state.go('rover.reservation.diary', {
                     isfromcreatereservation: true
                 });
             }
             //if selected thing is 'nights'
             else{            
-            
                 /*  For every room initate the stayDates object 
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
@@ -235,7 +255,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                     }, processDisplay);
                     lastSearchText = request.term;
                 }
-            }
+            };
 
             // quite simple to understand
             if (request.term.length === 0) {
@@ -244,7 +264,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             } else if (request.term.length > 2) {
                 fetchData();
             }
-        }
+        };
 
         var autoCompleteSelectHandler = function(event, ui) {
             if (ui.item.type === 'COMPANY') {
@@ -313,6 +333,73 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
         $scope.reservationGuestSearchChanged = function(){
             // check whether guest card attached and remove if attached.
             $scope.reservationDetails.guestCard.id = '';
+        };
+        $scope.clickedNights = function(){
+        	$scope.isNightsActive = true;
+        	$scope.shouldShowNights = true;
+        	$scope.shouldShowHours = false;
+        };
+        $scope.clickedHours = function(){
+        	$scope.isNightsActive = false;
+        	$scope.shouldShowNights = false;
+        	$scope.shouldShowHours = true;
+        };
+
+
+
+        /*
+        * To setup arrival time based on hotel time 
+        *
+        */
+        $scope.roundOfArrivalTime = function(){
+            //To convert 24 hour format and round off to next hour 
+            //incase it past the existing hour even by one second.
+            $scope.hotelTime.hh = (parseInt($scope.hotelTime.mm)> 0)?parseInt($scope.hotelTime.hh)+1: parseInt($scope.hotelTime.hh);
+            $scope.reservationData.checkinTime.ampm = ($scope.hotelTime.hh >= 12) ? (($scope.hotelTime.hh == 24)?"AM":"PM"):"AM";
+            //convert 24 hour format to 12 hours
+            $scope.reservationData.checkinTime.hh = ($scope.hotelTime.hh >= 12) ? (($scope.hotelTime.hh === 12 || $scope.hotelTime.hh == 24)? 12: $scope.hotelTime.hh-12):$scope.hotelTime.hh;
+            // add '0' if hour < 12 
+            $scope.reservationData.checkinTime.hh = ($scope.reservationData.checkinTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkinTime.hh):$scope.reservationData.checkinTime.hh;     
+            //rounding off minutes to '00'
+            $scope.reservationData.checkinTime.mm = "00";
+        }
+       /*
+        * To setup departure time based on arrival time and hours selected
+        *
+        */
+       
+        $scope.setHours = function(){
+            var checkinHour   = parseInt($scope.reservationData.checkinTime.hh);
+            var checkoutHour  = parseInt($scope.reservationData.checkoutTime.hh);
+            var checkinAmPm   = $scope.reservationData.checkinTime.ampm;
+            var checkoutAmPm  = $scope.reservationData.checkoutTime.ampm;
+            var selectedHours = parseInt($scope.reservationData.hours);
+            //if selected hours is greater than a day
+            if((checkinHour + selectedHours)>24){
+                var extraHours = (checkinHour +selectedHours)%24;
+                //if extra hours is greater than half a day
+                if(extraHours >=12){
+                    $scope.reservationData.checkoutTime.hh = (extraHours ===12 || extraHours === 0)?12:extraHours-12;
+                    $scope.reservationData.checkoutTime.ampm = (checkinAmPm === "AM") ? "PM":"AM";
+                }
+                else{
+                    $scope.reservationData.checkoutTime.hh = extraHours;
+                    $scope.reservationData.checkoutTime.ampm = checkinAmPm;
+                    $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkoutTime.hh):$scope.reservationData.checkoutTime.hh;
+                }
+            }
+            //if selected hours is greater than half a day
+            else if((checkinHour + selectedHours)>=12){
+                var extraHours = (checkinHour +selectedHours)%12;
+                $scope.reservationData.checkoutTime.hh = (extraHours ===0)?12:extraHours;
+                $scope.reservationData.checkoutTime.ampm = ($scope.reservationData.checkinTime.ampm === "AM") ? "PM":"AM";
+            }
+            else{
+                $scope.reservationData.checkoutTime.hh = checkinHour +selectedHours;
+                $scope.reservationData.checkoutTime.ampm = checkinAmPm;
+            }
+            $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkoutTime.hh):$scope.reservationData.checkoutTime.hh;         
+            $scope.reservationData.checkoutTime.mm = $scope.reservationData.checkinTime.mm;            
         }
 
     }

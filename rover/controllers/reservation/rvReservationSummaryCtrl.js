@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout) {
+
 
 		BaseCtrl.call(this, $scope);
 
@@ -36,6 +37,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 		// Listen to message from child IFrame window
+
 		eventer(messageEvent, function(e) {
 
 			var responseData = e.data;
@@ -52,7 +54,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		}, false);
 
+
 		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
+
 			var buttonClass = "grey";
 			if (isSubmitButtonEnabled) {
 				buttonClass = "green";
@@ -76,38 +80,43 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		}, 1000);
 
-		// set the previous state
-		$rootScope.setPrevState = {
-			title: $filter('translate')('ENHANCE_STAY'),
-			name: 'rover.reservation.staycard.mainCard.addons',
-			param: {
-				from_date: $scope.reservationData.arrivalDate,
-				to_date: $scope.reservationData.departureDate
-			}
-		};
+		// set the previous state -- 
+
+		if ($stateParams.reservation != "HOURLY") {
+			$rootScope.setPrevState = {
+				title: $filter('translate')('ENHANCE_STAY'),
+				name: 'rover.reservation.staycard.mainCard.addons',
+				param: {
+					from_date: $scope.reservationData.arrivalDate,
+					to_date: $scope.reservationData.departureDate
+				}
+			};
+		}
 
 
 
 		$scope.init = function() {
-			
+
 			$scope.data = {};
-			//if ($rootScope.temporaryReservationDataFromDiaryScreen && $rootScope.temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
-			var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
-			temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
-			if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
-				var getRoomsSuccess = function(data) {
-					console.log(data.rooms.length);
+			if ($stateParams.reservation == "HOURLY") {
+				$scope.reservationData.isHourly = true;
+				var temporaryReservationDataFromDiaryScreen = $vault.get('temporaryReservationDataFromDiaryScreen');
+				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
+				if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
+					var getRoomsSuccess = function(data) {
+						console.log(data.rooms.length);
 
-					var roomsArray = {};
-					angular.forEach(data.rooms, function(value, key) {
-						var roomKey = value.id;
-						roomsArray[roomKey] = value;
-					});
+						var roomsArray = {};
+						angular.forEach(data.rooms, function(value, key) {
+							var roomKey = value.id;
+							roomsArray[roomKey] = value;
+						});
 
-					$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
-				};
-				$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
+						$scope.createReservationDataFromDiary(roomsArray, temporaryReservationDataFromDiaryScreen);
+					};
+					$scope.invokeApi(RVReservationSummarySrv.fetchRooms, {}, getRoomsSuccess);
 
+				}
 			}
 			$scope.otherData.isGuestPrimaryEmailChecked = ($scope.reservationData.guest.email != null && $scope.reservationData.guest.email != "") ? true : false;
 			$scope.otherData.isGuestAdditionalEmailChecked = false;
@@ -124,8 +133,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				'click': true
 			});
 			fetchPaymentMethods();
+			refreshScrolls();
 
 		};
+
+		var refreshScrolls = function() {
+			$timeout(function() {
+				$scope.refreshScroller('reservationSummary');
+				$scope.refreshScroller('paymentInfo');
+			}, 1500)
+		}
+
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
 
 			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
@@ -133,13 +151,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
 			});
 			$scope.reservationData.rooms = [];
-			console.log(JSON.stringify(temporaryReservationDataFromDiaryScreen.rooms));
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
 			$scope.reservationData.arrivalDate = temporaryReservationDataFromDiaryScreen.arrival_date;
 			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
-				room.rateTotal = 500;
+				room.rateTotal = room.amount;								
+				var success = function(data) {
+					room.rateName = data;
+				}
+				$scope.invokeApi(RVReservationSummarySrv.getRateName, {
+					id: room.rateId
+				}, success);
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
@@ -196,6 +219,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 */
 		var computeReservationDataToSave = function() {
 			var data = {};
+			data.is_hourly = $scope.reservationData.isHourly;
 			data.arrival_date = $scope.reservationData.arrivalDate;
 			data.arrival_time = '';
 			//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
@@ -266,12 +290,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
-
 			// MLI Integration.
 			if ($rootScope.paymentGateway === "sixpayments") {
 				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
+
 				data.payment_type.isSixPayment = false;
 				if ($scope.reservationData.paymentType.type !== null) {
 					if ($scope.reservationData.paymentType.type.value === "CC") {
@@ -284,8 +308,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			//	CICO-8320
 			// 	The API request payload changes
 			var stay = [];
+			data.room_id = [];
 			_.each($scope.reservationData.rooms, function(room) {
-				var reservationStayDetails = [];
+				var reservationStayDetails = [];				
 				_.each(room.stayDates, function(staydata, date) {
 					reservationStayDetails.push({
 						date: date,
@@ -374,7 +399,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 					angular.forEach(data.reservations, function(reservation, key) {
 						angular.forEach($scope.reservationData.rooms, function(room, key) {
-							if (reservation.room_id === room.room_id) {
+							if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
 								room.confirm_no = reservation.confirm_no;
 							}
 						});
@@ -592,7 +617,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.clickedOnsite = function() {
 
 			$scope.isOnsiteActive = true;
-			$scope.isSixPaymentGatewayVisible = true;
+			// $scope.isSixPaymentGatewayVisible = true;
+
 			$scope.isIframeVisible = false;
 			if ($scope.reservationData.paymentType.type.value == 'CC') {
 				$scope.isSixPaymentGatewayVisible = true;
@@ -600,15 +626,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.isSixPaymentGatewayVisible = false;
 			}
 
+			//Hiding in develop brach
+			//ONCE 9424 done value Remove below line
+			$scope.isSixPaymentGatewayVisible = false;
 			$scope.refreshPaymentScroller();
 		};
 		$scope.clickedCallIn = function() {
 			var typeIndex = '';
 			$scope.isOnsiteActive = false;
 			$scope.isIframeVisible = true;
-			//Hiding in develop brach
-			//ONCE 9424 done value will be changed to true
-			$scope.isSixPaymentGatewayVisible = false;
+			$scope.isSixPaymentGatewayVisible = true;
 			$scope.reservationData.paymentType.type.value = 'CC';
 			$scope.refreshPaymentScroller();
 		};
