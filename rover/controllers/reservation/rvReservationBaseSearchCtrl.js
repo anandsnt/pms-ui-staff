@@ -127,13 +127,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
         }
         $scope.navigate = function() {
             //if selected thing is 'hours'
-            if(!$scope.isNights){
+            if(!$scope.isNightsActive){
                 var reservationDataToKeepinVault = {};
                 var roomData = $scope.reservationData.rooms[0];
                 reservationDataToKeepinVault.fromDate       = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
                 reservationDataToKeepinVault.toDate         = new tzIndependentDate($scope.reservationData.departureDate).getTime();
-                reservationDataToKeepinVault.arrivalTime    =  
-                reservationDataToKeepinVault.departureTime  = 
+                reservationDataToKeepinVault.arrivalTime    = $scope.reservationData.checkinTime;
+                reservationDataToKeepinVault.departureTime  = $scope.reservationData.checkoutTime;
                 reservationDataToKeepinVault.adults         = roomData.numAdults;
                 reservationDataToKeepinVault.children       = roomData.numChildren;
                 reservationDataToKeepinVault.infants        = roomData.numInfants;
@@ -147,6 +147,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                     isfromcreatereservation: true
                 });
             }
+            //if selected thing is 'nights'
             else{            
             
                 /*  For every room initate the stayDates object 
