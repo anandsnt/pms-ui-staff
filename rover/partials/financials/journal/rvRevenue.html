@@ -43,7 +43,7 @@
                                     <td>{{level3.reservation_number}}</td>
                                     <td>{{level3.type}}</td>
                                     <td>{{level3.details}}</td>
-                                    <td>{{getTimeString(level3.time)}}</td>
+                                    <td>{{getTimeString(level3.date, level3.time)}}</td>
                                     <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
                                     <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td> 
                                 </tr>
