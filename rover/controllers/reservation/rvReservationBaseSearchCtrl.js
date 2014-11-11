@@ -32,7 +32,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             //rounding off minutes to '00'
             $scope.reservationData.checkinTime.mm = "00";
 
-        }
+        };
         var init = function() {
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
@@ -370,12 +370,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         *
         */
        
-        $scope.setHours = function(){
+        $scope.setDepartureHours = function(){
             var checkinHour   = parseInt($scope.reservationData.checkinTime.hh);
             var checkoutHour  = parseInt($scope.reservationData.checkoutTime.hh);
             var checkinAmPm   = $scope.reservationData.checkinTime.ampm;
             var checkoutAmPm  = $scope.reservationData.checkoutTime.ampm;
-            var selectedHours = parseInt($scope.reservationData.hours);
+            var selectedHours = parseInt($scope.reservationData.resHours);
             //if selected hours is greater than a day
             if((checkinHour + selectedHours)>24){
                 var extraHours = (checkinHour +selectedHours)%24;
@@ -402,7 +402,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
             $scope.reservationData.checkoutTime.hh = ($scope.reservationData.checkoutTime.hh.toString().length ===1)? ("0"+$scope.reservationData.checkoutTime.hh):$scope.reservationData.checkoutTime.hh;         
             $scope.reservationData.checkoutTime.mm = $scope.reservationData.checkinTime.mm;            
-        }
+        };
 
     }
 ]);
