@@ -19,7 +19,26 @@ sntRover
     		clearRowClasses,
     		shallowCopy,
     		deepCopy,
-    		copyArray;
+    		copyArray,
+    		mixin;
+
+		mixin = function() {
+			var objects = slice.call(arguments),
+				i = 0,
+				k,
+				len = objects.length,
+				base = Object.create(null);
+
+			for(; i < len; i++) {
+				for(k in objects[i]) {
+					if(hops.call(objects[i], k)) {
+						base[k] = objects[i][k];
+					}
+				}
+			}
+				
+			return base;
+		};	
 
 		copyArray = function(src, dest){
     		var val; 
@@ -104,28 +123,6 @@ sntRover
 			return shallowCopy({}, reservation);
 		};
 
-		/*copyRoom = function(room) {
-			var rc_meta = rom_meta.row_children,
-				newRoom = {}, 
-				children,
-				len = (_.isArray(room.occupancy) ? room.occupancy.length : 0);
-
-			shallowCopy(newRoom, room);
-
-			Object.defineProperty(newRoom, rc_meta, {
-				configurable: true,
-				value: []
-			});
-
-			children = newRoom[rc_meta];
-
-			for(var i = 0; i < len; i++) {
-				children.push(copyReservation(room[rc_meta][i]));
-			}
-
-			return newRoom;
-		};*/
-
 		copyRoom = function(room) {
 			return deepCopy(room);
 		};
@@ -164,31 +161,6 @@ sntRover
 				room = deepCopy(room);							 
 			}
 		};
-		
-		/*clearRoomQuery = function(rooms) {
-			var room, 
-				children = meta.room.row_children,
-				cur,
-				occupancy = [];
-
-			if(!_.isArray(rooms)) {
-				return;
-			}
-
-			for(var i = 0, len = rooms.length; i < len; i++) {
-				room = rooms[i];
-
-				for(var j = 0, jlen = room[children].length; j < jlen; j++) {
-					if(!room[children][j].temporary) {
-						occupancy.push(room[children][i]);
-					}
-				}
-
-				room[children] = occupancy;
-
-				room = copyRoom(room);
-			}			
-		}; */ 
 
 	 	reservationRoomTransfer = function(rooms, nextRoom, room, reservation) { //, commit) {
 			var data = rooms,
@@ -231,6 +203,20 @@ sntRover
 	    	}
 	    };
 
+	    registerNotifictions = function(obj) {
+	    	if(_.isObject(obj)) {
+	    		for(var k in obj) {
+	    			if(hops.call(obj, k)) {
+	    				switch(typeof obj[k]) {
+	    					case 'function':
+	    						
+	    					break;
+	    				}
+	    			}
+	    		}
+	    	}
+	    };
+
 		return {
 			clearRoomQuery: clearRoomQuery,
 			removeReservation: removeReservation,
@@ -244,7 +230,8 @@ sntRover
 			clearRowClasses: clearRowClasses,
 			shallowCopy: shallowCopy,
 			copyArray: copyArray,
-			deepCopy: deepCopy
+			deepCopy: deepCopy,
+			mixin: mixin
 		}; 	
 	}
 ]);

@@ -161,9 +161,9 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
             menuIndex: "createReservation"
           }, {
             title: "MENU_ROOM_ASSIGNMENT",
-            action: "rover.diary.reservations",
+            action: 'rover.reservation.diary',
             standAlone: true,
-            menuIndex: 'diary'
+            menuIndex: 'diaryReservation'
           }, {
             title: "MENU_POST_CHARGES",
             action: "",

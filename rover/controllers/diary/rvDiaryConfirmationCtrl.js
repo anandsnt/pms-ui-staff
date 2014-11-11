@@ -1,10 +1,15 @@
-sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', '$state', 'rvDiarySrv', 'ngDialog',
-	function($scope, $rootScope, $state, rvDiarySrv, ngDialog) {
-		//'use strict';
+sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', 
+												 '$rootScope', 
+												 '$state', 
+												 '$stateParams', 
+												 'rvDiaryStoreSrv', 
+												 'ngDialog',
+	function($scope, $rootScope, $state, $stateParams, rvDiaryStoreSrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.rooms 		= _.pluck($scope.selectedReservations, 'room');
-		$scope.reservations = _.pluck($scope.selectedReservations, 'occupancy');
+		$scope.rooms.forEach(function(room, idx) {
+
+		});
 
 		$scope.title = ($scope.rooms.length > 1 ? 'these cabins' : 'this cabin');
 
@@ -30,8 +35,18 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', '$rootScope', '$state
 			ngDialog.close();
 		};
 
+		$scope.removeSelectedOccupancy = function(idx) {
+			$scope.selectedReservations.splice(idx, 1);
+		};
+
 		$scope.reserveRooms = function() {
-			$state.go('rover.reservation.staycard.mainCard.summary');
+			/*$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
+				reservation: $scope.selectedReservations
+			});*/
+			$state.go('rover.diary.reservations.staycard.summary', {
+				rooms: $scope.rooms,
+				reservations: $scope.reservations
+			});
 		};
 
 		$scope.closeDialog = function() {

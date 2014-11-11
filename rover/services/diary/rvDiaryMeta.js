@@ -1,6 +1,6 @@
 sntRover
 .factory('rvDiaryMetadata', function() {
-	return {
+	return Object.freeze(Object.seal({
 		room: {
 			id: 'id',
 			number: 'room_no',
@@ -25,5 +25,5 @@ sntRover
 			price: 'amount',
 			rate_type_id: 'rate_type_id'
 		}
-	}
+	}));
 });
