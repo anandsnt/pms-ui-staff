@@ -6,11 +6,11 @@
         <div class="reservation-summary scrollable" id="reservation-summary" ng-iscroll='reservationSummary'>
             <div class="wrapper">
                 <h2>Reservation Confirmation</h2>
-                <ul class="data">
+                <ul class="data" ng-if="!reservationData.isHourly">
                     <li><span class="guest-status room" translate>ROOMS</span>
-                        <span>{{reservationData.roomCount}}</span>
-                        <span ng-if="reservationData.roomCount === 1" translate>ROOM</span>
-                        <span ng-if="reservationData.roomCount !== 1" translate>ROOMS</span>
+                        <span>{{reservationData.rooms.length}}</span>
+                        <span ng-if="reservationData.rooms.length === 1" translate>ROOM</span>
+                        <span ng-if="reservationData.rooms.length !== 1" translate>ROOMS</span>
                     </li>
                     <li>
                         <span class="guest-status nights" translate>NIGHTS</span>
@@ -42,7 +42,7 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select iscroll-stop-propagation name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()">
+                                <select iscroll-stop-propagation name="check-in" class="placeholder" ng-model="reservationData.checkinTime.mm" ng-change="modifyCheckinCheckoutTime()">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>

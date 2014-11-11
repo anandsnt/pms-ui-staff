@@ -107,8 +107,8 @@ sntRover.controller('RVmanagerDashboardController', ['$scope', '$rootScope', '$s
       "is_from_diary_screen": true,
       "arrival_date": "2014-07-15",
       "departure_date": "2014-07-16",
-      "arrival_time": "04:30",
-      "departure_time": "09:15",
+      "arrival_time": "04:30 AM",
+      "departure_time": "09:15 PM",
       "rooms": [{
         "room_id": "268",
         "rateId": "226",
