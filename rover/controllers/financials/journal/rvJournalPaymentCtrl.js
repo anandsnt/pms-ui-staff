@@ -81,15 +81,4 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         return hasArrow;
     };
 
-    $scope.getTotalCreditcardPayment = function(card){
-        if(typeof card.credit_cards !== 'undefined'){
-            var sum = 0;
-            angular.forEach(card.credit_cards,function(creditcard, index) {
-                sum += creditcard.amount;
-            });
-            return sum;
-        }
-        return card.amount;
-    };
-	
 }]);

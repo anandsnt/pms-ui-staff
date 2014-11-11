@@ -163,11 +163,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
 
             if($scope.data.activeTab == '0' ){
                 $scope.filterRevenueByDepartmentsOrEmployees();
-                $rootScope.$broadcast('REFRESHREVENUECONTENT'); 
+                $rootScope.$broadcast('REFRESHREVENUECONTENT');
+                $scope.$broadcast('UPDATEREVENUETOTAL');
             }
             else if ($scope.data.activeTab == '1' ){
                 $scope.filterPaymentByDepartmentsOrEmployees();
                 $rootScope.$broadcast('REFRESHPAYMENTCONTENT');
+                $scope.$broadcast('UPDATEPAYMENTTOTAL');
             }
         } 
         
@@ -217,7 +219,28 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         return itemFoundInDeptOrEmpLists;
     };
 
-    // To Filter by Departments or Employees
+
+
+    /*********************************************************************************************
+
+        Flags used for REVENUE DATA and PAYMENTS DATA filters.
+
+        # All flags are of type boolean true/false.
+
+    'show'  :   Used to show / hide each items on Level1 , Level2 and Level 3.
+                We will set this flag as true initially.
+                While apply Department/Employee filter we will set this flag as false
+                for the items we dont want to show.
+
+    'filterFlag': Used to show / hide Level1 and Level2 based on filter flag applied on print box.
+                Initially it will be true for all items.
+
+    'active':   Used for Expand / Collapse status of each tabs on Level1 and Level2.
+                Initially everything will be collapsed , so setting as false.
+
+    ***********************************************************************************************/
+
+    // To Filter by Departments or Employees for REVENUE data.
     $scope.filterRevenueByDepartmentsOrEmployees = function(){
 
         $scope.resetRevenueFilters();
@@ -259,6 +282,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         });
     };
 
+    // To Filter by Departments or Employees for PAYMENT data.
     $scope.filterPaymentByDepartmentsOrEmployees = function(){
 
         $scope.resetPaymentFilters();
@@ -399,17 +423,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
     };
-
-    /* get the time string from the date-time string */
-
-    $scope.getTimeString = function(dateTime){
-        var time = new Date(dateTime);        
-        if(!isNaN( time.getTime())){
-            var date = $filter('date')(time, $rootScope.dateFormat);
-            return date + ', ' + time.getHours() + ':' + time.getMinutes();
-        }
+    // Utility method use to check data being blank or undefined.
+    $scope.escapeNullData = function(data){
+        if(data == 0) return data;
+        else if((data === '') || (typeof data === 'undefined') || (data === null))
+            return '-';
         else
-            return dateTime;
+            return data;
     };
 
     

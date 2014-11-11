@@ -102,6 +102,8 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			}
        	});
        	$scope.data.selectedChargeCode = 'ALL';
+
+       	$scope.calcRevenueTotal();
 	};
 
 	// On changing charge code on PRINT filter
@@ -120,8 +122,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 					else{
 						charge_codes.filterFlag = false;
 					}
-
-					//$scope.toggleRevenueTransactions();
 				}
 				else{
 					charge_codes.filterFlag = false;
@@ -132,9 +132,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	$scope.toggleRevenueTransactions = function(){
 		if($scope.data.isRevenueToggleSummaryActive)
-			$scope.showRevenueByLevels(true,true,false);
+			$scope.showRevenueDetailView(false);
 		else
-			$scope.showRevenueByLevels(true,true,true);
+			$scope.showRevenueDetailView(true);
 	};
 
 	// To handle Summary/Details toggle button click - REVENUE
@@ -146,9 +146,9 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 
 	$scope.togglePaymentTransactions = function(){
 		if($scope.data.isPaymentToggleSummaryActive)
-			$scope.showPaymentByLevels(true,true,false);
+			$scope.showPaymentDetailView(false);
 		else
-			$scope.showPaymentByLevels(true,true,true);
+			$scope.showPaymentDetailView(true);
 	};
 
 	// To handle Summary/Details toggle button click - PAYMENT
@@ -159,15 +159,16 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	};
 
 	/*
-     *	To hanlde show/hide each Levels on Revenue list.
+     *	To handle Summary/Details view for Revenue filter.
 	 */
-	$scope.showRevenueByLevels = function(level1,level2,level3){
-		// Adding Show status flag to each item.
+	$scope.showRevenueDetailView = function(isDetailView){
+		
 		angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
 			
             angular.forEach(charge_groups.charge_codes,function(charge_codes, index2) {
             	
-            	if(level3 && charge_codes.filterFlag){
+            	if(isDetailView && charge_codes.filterFlag){
+            		//Expanding Level1 and Level2 to show detailed view.
             		charge_codes.active = true;
             		charge_groups.active = true;
             	}
@@ -210,19 +211,22 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	        	payment_types.filterFlag = false;
 	        }
         });
+
+        $scope.calcPaymentTotal();
 	};
 
 	/*
-     *	To hanlde show/hide each Levels on payments list.
+     *	To handle Summary/Details view for Payments filter.
 	 */
-	$scope.showPaymentByLevels = function(level1,level2,level3){
-		// Adding Show status flag to each item.
+	$scope.showPaymentDetailView = function(isDetailView){
+		
 		angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
 
 			if(payment_types.payment_type == "Credit Card"){
 	            angular.forEach(payment_types.credit_cards,function(credit_cards, index2) {
 	            	
-	            	if(level3 && credit_cards.filterFlag){
+	            	if(isDetailView && credit_cards.filterFlag){
+	            		//Expanding Level1 and Level2 to show detailed view for Credit Cards.
 	            		payment_types.active = true;
 	            		credit_cards.active = true;
 	            	}
@@ -232,7 +236,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            });
         	}
         	else{
-        		if(level3){
+        		if(isDetailView){
         			payment_types.active = true;
         		}
         		else{
@@ -282,6 +286,36 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 	     */
 	};
+
+	// To calculate Total revenue amount.
+	$scope.calcRevenueTotal = function(){
+        var total = 0;
+        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
+            if(charge_groups.filterFlag && charge_groups.show){
+                total+= charge_groups.total;
+            }
+        });
+        $scope.data.revenueData.calculatedTotalAmount = total;
+    };
+
+    // To calculate Total payment amount.
+    $scope.calcPaymentTotal = function(){
+        var total = 0;
+        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
+            if( payment_types.show && payment_types.filterFlag ){
+                total+= payment_types.amount;
+            }
+        });
+        $scope.data.paymentData.calculatedTotalAmount = total;
+    };
+
+    $scope.$on('UPDATEREVENUETOTAL',function(){
+    	$scope.calcRevenueTotal();
+    });
+
+    $scope.$on('UPDATEPAYMENTTOTAL',function(){
+    	$scope.calcPaymentTotal();
+    });
 
 
 }]);
