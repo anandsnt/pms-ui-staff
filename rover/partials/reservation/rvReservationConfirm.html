@@ -109,8 +109,11 @@
                     </div>
                     <div class="room-type">
                         <h4>{{room.roomTypeName}}<span></span></h4>
-                        <div class="confirmation"> <!-- Show confirmation number -->
+                        <div class="confirmation" ng-hide="room.confirm_no"> <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
+                        </div>
+                        <div class="confirmation" ng-show="room.confirm_no"> <!-- Show confirmation number -->
+                            <span class="label">Confirmation #</span>{{room.confirm_no}}
                         </div>
                     </div>
                     <ul class="rate-and-enhancements">
@@ -141,7 +144,7 @@
                         </ul> -->
                     </div>
                     
-                    <a href="" class="button blue" ng-click = "openBillingInformation()" >{{getBillingInfoTitle()}}</a>
+                    <a href="" class="button blue" ng-click = "openBillingInformation(room.confirm_no)" >{{getBillingInfoTitle()}}</a>
                 </div>
                 <ul class="total-stay-cost">
                 	<li ng-repeat="row in reservationData.taxDetails">

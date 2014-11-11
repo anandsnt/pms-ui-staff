@@ -423,6 +423,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
     	$scope.$broadcast("CLOSEPRINTBOX");
         $scope.data.isActiveRevenueFilter = false;
     };
+
     // Utility method use to check data being blank or undefined.
     $scope.escapeNullData = function(data){
         if(data == 0) return data;
@@ -430,6 +431,13 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             return '-';
         else
             return data;
+    };
+
+    /* get the time string from the date-time string */
+
+    $scope.getTimeString = function(date, time){
+        var date = $filter('date')(date, $rootScope.dateFormat);
+        return date + ', ' + time;
     };
 
     

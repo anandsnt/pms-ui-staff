@@ -8,20 +8,21 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.isSubmitButtonEnabled = true;
 		}
 		$scope.isSixPaymentGatewayVisible = false;
+		$scope.isIframeVisible = false;
 		$scope.isCallInOnsiteButtonVisible = false;
 		$scope.isMLICreditCardVisible = false;
 		$scope.isOnsiteActive = false;
 		if($rootScope.paymentGateway === "sixpayments"){
 			$scope.isCallInOnsiteButtonVisible = true;
 			$scope.isOnsiteActive = true;
+			$scope.isIframeVisible = false;
 		}
 		
 		var absoluteUrl = $location.$$absUrl;
 		domainUrl = absoluteUrl.split("/staff#/")[0];
-	    $scope.iFrameUrl = domainUrl+"/api/ipage/index.html?amount="+$filter('number')($scope.reservationData.totalStayCost,2)+'&card_holder_first_name='+$scope.guestCardData.contactInfo.first_name+'&card_holder_last_name='+$scope.guestCardData.contactInfo.last_name+'&service_action=pay';
+	    $scope.iFrameUrl = domainUrl+"/api/ipage/index.html?amount="+$filter('number')($scope.reservationData.totalStayCost,2)+'&card_holder_first_name='+$scope.guestCardData.contactInfo.first_name+'&card_holder_last_name='+$scope.guestCardData.contactInfo.last_name+'&service_action=createtoken';
 		var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 		var eventer = window[eventMethod];
-		
 		// Now...
 		// if 
 		//    "attachEvent", then we need to select "onmessage" as the event. 
@@ -32,16 +33,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		
 		// Listen to message from child IFrame window
 		eventer(messageEvent, function (e) {
+			
 			   var responseData = e.data;
-		       if(responseData.response_message == "payment_success"){
-		       	
+		       if(responseData.response_message == "token_created"){
+		       	console.log("event listener==============");
+		       		$scope.isSubmitButtonEnabled = true;
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
-       				responseData = dclone(responseData, unwantedKeys);
-       				responseData.credit_card_payment_method = "SALE";
-		       		console.log(JSON.stringify(responseData));
+       				//responseData = dclone(responseData, unwantedKeys);
+		       		//console.log(JSON.stringify(responseData));
+		       		$scope.six_token = responseData.token;
 		       		
-		       		$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
-		       	    e.preventDefault();
+		       		//$scope.invokeApi(RVReservationSummarySrv.paymentAction, responseData, $scope.successPayment);
 		       }
 		    
 		}, false);   
@@ -53,12 +55,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 			return buttonClass;
 		};
-		$scope.successPayment = function(data){
-			console.log(data);
-			$scope.$emit('hideLoader');
-			$scope.isSubmitButtonEnabled = true;
-			$scope.creditCardTransactionId = data.credit_card_transaction_id;
-		};
+		// $scope.successPayment = function(data){
+			// console.log(data);
+			// $scope.$emit('hideLoader');
+			// $scope.isSubmitButtonEnabled = true;
+			// $scope.creditCardTransactionId = data.credit_card_transaction_id;
+		// };
 		
 		
 		
@@ -212,7 +214,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			// MLI Integration.
 			if($rootScope.paymentGateway === "sixpayments"){
-				data.payment_type.credit_card_transaction_id = $scope.creditCardTransactionId;
+				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
 				data.payment_type.isSixPayment = false;
@@ -276,6 +278,32 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			data.market_segment_id = parseInt($scope.reservationData.demographics.market);
 			data.booking_origin_id = parseInt($scope.reservationData.demographics.origin);
 			data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
+			
+			//to delete starts here
+			// var room = {
+   //                  numAdults: 1,
+   //                  numChildren: 0,
+   //                  numInfants: 0,
+   //                  roomTypeId: '',
+   //                  roomTypeName: 'Deluxe',
+   //                  rateId: '',
+   //                  rateName: 'Special',
+   //                  rateAvg: 0,
+   //                  rateTotal: 0,
+   //                  addons: [],
+   //                  varyingOccupancy: false,
+   //                  stayDates: {},
+   //                  room_id:320,
+   //                  isOccupancyCheckAlerted: false
+   //              }
+   //          $scope.reservationData.rooms[0].room_id = 324;
+			// $scope.reservationData.rooms.push(room);
+			// data.room_id = [];
+			// angular.forEach($scope.reservationData.rooms, function(room, key) {
+			//   data.room_id.push(room.room_id);
+			// });
+			//to delete ends here
+			
 
 			return data;
 
@@ -286,12 +314,40 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.reservationData.reservationId = data.id;
-				$scope.reservationData.confirmNum = data.confirm_no;
-				$scope.reservationData.status = data.status;
+				/*
+				* TO DO: to handle in future when more than one confirmations are returned.
+				* For now we will be using first item for navigating to staycard
+				* Response will have an array 'reservations' in that case.
+				* Normally the data will be a plain dictionary as before.
+				*/
+				if (typeof data.reservations !== 'undefined' &&  data.reservations instanceof Array) {
+					
+					angular.forEach(data.reservations, function(reservation, key) {
+						angular.forEach($scope.reservationData.rooms, function(room, key) {
+						if(reservation.room_id === room.room_id){
+							room.confirm_no = reservation.confirm_no;
+						}
+						});
+					});
+					$scope.reservationData.reservations = data.reservations;
+					$scope.reservationData.reservationId = $scope.reservationData.reservations[0].id;
+					$scope.reservationData.confirmNum = $scope.reservationData.reservations[0].confirm_no;
+					$scope.reservationData.status = $scope.reservationData.reservations[0].status;
+					$scope.viewState.reservationStatus.number = $scope.reservationData.reservations[0].id;
+				} 
+				else{
+					$scope.reservationData.reservationId = data.id;
+					$scope.reservationData.confirmNum = data.confirm_no;
+					$scope.reservationData.status = data.status;
+					$scope.viewState.reservationStatus.number = data.id;
+				}
+				/*
+				* TO DO:ends here
+				*/
+				
+				
 				$scope.viewState.reservationStatus.confirm = true;
 				$scope.reservationData.is_routing_available = false;
-				$scope.viewState.reservationStatus.number = data.id;
 				// Change mode to stay card as the reservation has been made!
 				$scope.viewState.identifier = "CONFIRM";
 
@@ -435,11 +491,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			console.log($scope.reservationData.paymentType.type.value);
 			if($scope.reservationData.paymentType.type.value === 'CC'){
 				if($rootScope.paymentGateway === "sixpayments"){
+					$scope.isSixPaymentGatewayVisible = true;
 					if($scope.isOnsiteActive){
-						$scope.isSixPaymentGatewayVisible = false;
 						$scope.isMLICreditCardVisible = false;
 					} else {
-						$scope.isSixPaymentGatewayVisible = true;
 						$scope.isMLICreditCardVisible = false;
 					}
 					
@@ -488,15 +543,47 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.clickedOnsite = function(){
 			
 			$scope.isOnsiteActive = true;
-			$scope.isSixPaymentGatewayVisible = false;
-			$scope.reservationData.paymentType.type.value = '';
+			$scope.isSixPaymentGatewayVisible = true;
+			$scope.isIframeVisible = false;
+			if($scope.reservationData.paymentType.type.value == 'CC'){
+				$scope.isSixPaymentGatewayVisible = true;
+			} else {
+				$scope.isSixPaymentGatewayVisible = false;
+			}
+			
 			$scope.refreshPaymentScroller();
 		};
 		$scope.clickedCallIn = function(){
 			var typeIndex = '';
 			$scope.isOnsiteActive = false;
-			$scope.isSixPaymentGatewayVisible = true;
+			$scope.isIframeVisible = true;
+			//Hiding in develop brach
+			//ONCE 9424 done value will be changed to true
+			$scope.isSixPaymentGatewayVisible = false;
 			$scope.reservationData.paymentType.type.value = 'CC';
+			$scope.refreshPaymentScroller();
+		};
+		/*
+		 * 
+		 */
+		$scope.startPaymentProcess = function(){
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvWaitingDialog.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope
+			});
+			var data = {
+				"work_station_id":1,
+				"amount":"10.00",
+				"currency_code":""
+			};
+			RVReservationSummarySrv.startPayment(data).then(function(response) {
+				console.log(response);
+			},function(){
+				$rootScope.netWorkError = true;
+				$scope.isPosting = false;
+			});
+			
 		};
 
 		$scope.init();
