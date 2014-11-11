@@ -9,7 +9,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
 
         //company card details
         $stateProvider.state('rover.companycarddetails', {
-            url: '/companycard/:type/:id/:firstname',
+            url: '/companycard/:type/:id/:query',
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController'
         }); 

@@ -248,7 +248,7 @@
 				<p id="total-charge" class="offset-2">
 					{{'RESV_TOTAL' | translate}} <span class="price">{{ currencySymbol }} <span class="value">{{ net_total_price | number : 2 }}</span></span>
 				</p>
-				<div id="numpad" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
+				<div id="numpad" class = "numpad-with-bottom-space" ng-show="selectedChargeItem.item_name || selectedChargeItem.charge_code">
 					<div id="numpad-numbers">
 						<button value="1" type="button" class="button white" ng-click="calNumAction(1)">
 							1
