@@ -40,9 +40,9 @@ sntRover.service('RVHkRoomStatusSrv', [
 		this.cacheDirty = true;
 
 		var roomList = {};
-		this.fetchRoomList = function(businessDate) {
+		this.fetchRoomList = function(params) {
 			var deferred = $q.defer();
-			var url = '/house/search.json?date=' + businessDate;
+			var url = '/house/search.json?date=' + params.businessDate;
 
 
 			/**
