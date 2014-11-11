@@ -15,8 +15,8 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv','rvBaseWebSrvV2', '$vault',
 			deferred.resolve( self.data );
 		} else {
 			RVBaseWebSrv.getJSON(url, dataToSend).then(function(data) {
-				for(var i = 0; i < data.length; i++){
-					data[i].is_row_visible = true;
+				for(var i = 0; i < data.results.length; i++){
+					data.results[i].is_row_visible = true;
 				}
 
 				if(dataToSend.is_queued_rooms_only == true){

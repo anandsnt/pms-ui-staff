@@ -1,6 +1,7 @@
 sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout',
 	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout) {
 
+
 		BaseCtrl.call(this, $scope);
 
 		///
@@ -36,6 +37,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
 		// Listen to message from child IFrame window
+
 		eventer(messageEvent, function(e) {
 
 			var responseData = e.data;
@@ -51,8 +53,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 
 		}, false);
+	
+		
+		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled){
 
-		$scope.submitReservationButtonClass = function(isSubmitButtonEnabled) {
 			var buttonClass = "grey";
 			if (isSubmitButtonEnabled) {
 				buttonClass = "green";
@@ -278,12 +282,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail != "") {
 				data.confirmation_emails.push($scope.otherData.additionalEmail);
 			}
-
 			// MLI Integration.
 			if ($rootScope.paymentGateway === "sixpayments") {
 				data.payment_type.token = $scope.six_token;
 				data.payment_type.isSixPayment = true;
 			} else {
+				
 				data.payment_type.isSixPayment = false;
 				if ($scope.reservationData.paymentType.type !== null) {
 					if ($scope.reservationData.paymentType.type.value === "CC") {
@@ -606,7 +610,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		$scope.clickedOnsite = function() {
 
 			$scope.isOnsiteActive = true;
-			$scope.isSixPaymentGatewayVisible = true;
+			// $scope.isSixPaymentGatewayVisible = true;
+			
 			$scope.isIframeVisible = false;
 			if ($scope.reservationData.paymentType.type.value == 'CC') {
 				$scope.isSixPaymentGatewayVisible = true;
@@ -614,15 +619,16 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.isSixPaymentGatewayVisible = false;
 			}
 
+			//Hiding in develop brach
+			//ONCE 9424 done value Remove below line
+			$scope.isSixPaymentGatewayVisible = false;
 			$scope.refreshPaymentScroller();
 		};
 		$scope.clickedCallIn = function() {
 			var typeIndex = '';
 			$scope.isOnsiteActive = false;
 			$scope.isIframeVisible = true;
-			//Hiding in develop brach
-			//ONCE 9424 done value will be changed to true
-			$scope.isSixPaymentGatewayVisible = false;
+			$scope.isSixPaymentGatewayVisible = true;
 			$scope.reservationData.paymentType.type.value = 'CC';
 			$scope.refreshPaymentScroller();
 		};
