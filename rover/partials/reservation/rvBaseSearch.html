@@ -1,7 +1,7 @@
 <!-- Content -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
-<section id="reservations" class="content create-reservation scrollable" role="main">
-    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+<section id="reservations" class="content create-reservation scrollable" role="main" ng-iscroll="search_reservation" ng-iscroll-delay="1000">
+    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search" iscroll-stop-propagation>
 
         <div id="dates" class="row">
             <div id="arriving" class="entry" ng-class="{'res_arrival': shouldShowToggle}">
