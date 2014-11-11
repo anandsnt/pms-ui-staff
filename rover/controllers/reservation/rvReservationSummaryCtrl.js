@@ -392,7 +392,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 					angular.forEach(data.reservations, function(reservation, key) {
 						angular.forEach($scope.reservationData.rooms, function(room, key) {
-							if (reservation.room_id === room.room_id) {
+							if (parseInt(reservation.room_id) === parseInt(room.room_id)) {
 								room.confirm_no = reservation.confirm_no;
 							}
 						});
