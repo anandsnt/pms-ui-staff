@@ -95,54 +95,78 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
         };
-
-        $scope.navigate = function() {
-            /*  The following method helps to initiate the staydates object across the period of 
-             *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
-             *  stay at this state.
-             *  The rates for these days have to be popuplated in the subsequent states appropriately
-             */
-            var initStayDates = function(roomNumber) {
-                    if (roomNumber == 0) {
-                        $scope.reservationData.stayDays = [];
-                    }
-                    for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                        if (roomNumber == 0) {
-                            $scope.reservationData.stayDays.push({
-                                date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
-                                dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
-                                day: dateFilter(new tzIndependentDate(ms), 'dd')
-                            });
-                        }
-                        $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
-                            guests: {
-                                adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
-                                children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
-                                infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
-                            },
-                            rate: {
-                                id: "",
-                                name: ""
-                            }
-                        }
+        /*  The following method helps to initiate the staydates object across the period of 
+         *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
+         *  stay at this state.
+         *  The rates for these days have to be popuplated in the subsequent states appropriately
+         */
+        var initStayDates = function(roomNumber) {
+            if (roomNumber == 0) {
+                $scope.reservationData.stayDays = [];
+            }
+            for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                if (roomNumber == 0) {
+                    $scope.reservationData.stayDays.push({
+                        date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+                        dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+                        day: dateFilter(new tzIndependentDate(ms), 'dd')
+                    });
+                }
+                $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+                    guests: {
+                        adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
+                        children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
+                        infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
+                    },
+                    rate: {
+                        id: "",
+                        name: ""
                     }
                 }
+            }
+        }
+        $scope.navigate = function() {
+            //if selected thing is 'hours'
+            if(!$scope.isNights){
+                var reservationDataToKeepinVault = {};
+                var roomData = $scope.reservationData.rooms[0];
+                reservationDataToKeepinVault.fromDate       = new tzIndependentDate($scope.reservationData.arrivalDate).getTime();
+                reservationDataToKeepinVault.toDate         = new tzIndependentDate($scope.reservationData.departureDate).getTime();
+                reservationDataToKeepinVault.arrivalTime    =  
+                reservationDataToKeepinVault.departureTime  = 
+                reservationDataToKeepinVault.adults         = roomData.numAdults;
+                reservationDataToKeepinVault.children       = roomData.numChildren;
+                reservationDataToKeepinVault.infants        = roomData.numInfants;
+                reservationDataToKeepinVault.roomTypeID     = roomData.roomTypeId;
+                reservationDataToKeepinVault.guestFirstName = $scope.searchData.guestCard.guestFirstName;
+                reservationDataToKeepinVault.guestLastName  = $scope.searchData.guestCard.guestLastName;
+                reservationDataToKeepinVault.companyID      = $scope.reservationData.company.id;
+                reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;
+                $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
+                $state.go('rover.reservation.diary', {
+                    isfromcreatereservation: true
+                });
+            }
+            else{            
+            
                 /*  For every room initate the stayDates object 
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
-            for (var roomNumber = 0; roomNumber < $scope.reservationData.roomCount; roomNumber++) {
-                initStayDates(roomNumber);
+                for (var roomNumber = 0; roomNumber < $scope.reservationData.roomCount; roomNumber++) {
+                    initStayDates(roomNumber);
+                }
+                
+                if ($scope.checkOccupancyLimit()) {
+                    $state.go('rover.reservation.staycard.mainCard.roomType', {
+                        from_date: $scope.reservationData.arrivalDate,
+                        to_date: $scope.reservationData.departureDate,
+                        fromState: $state.current.name,
+                        company_id: $scope.reservationData.company.id,
+                        travel_agent_id: $scope.reservationData.travelAgent.id
+                    });
+                }
             }
 
-            if ($scope.checkOccupancyLimit()) {
-                $state.go('rover.reservation.staycard.mainCard.roomType', {
-                    from_date: $scope.reservationData.arrivalDate,
-                    to_date: $scope.reservationData.departureDate,
-                    fromState: $state.current.name,
-                    company_id: $scope.reservationData.company.id,
-                    travel_agent_id: $scope.reservationData.travelAgent.id
-                });
-            }
         };
 
 
