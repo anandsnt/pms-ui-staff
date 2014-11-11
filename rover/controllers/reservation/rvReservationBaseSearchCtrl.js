@@ -45,7 +45,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             if ($scope.reservationData.departureDate == '') {
                 $scope.setDepartureDate();
             }
-
+			if($rootScope.isHourlyRateOn){
+				$scope.shouldShowToggle = true;
+				$scope.isNightsActive = false;
+				$scope.shouldShowNights = false;
+        		$scope.shouldShowHours = true;
+			} else {
+				$scope.shouldShowNights = true;
+				$scope.shouldShowHours = false;
+				$scope.shouldShowToggle = false;
+				$scope.shouldShowHours = false;
+			}
             $scope.otherData.fromSearch = true;
             $scope.$emit('hideLoader');
         };
@@ -60,7 +70,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
-        }
+        };
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -82,7 +92,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             } else {
                 $scope.reservationData.numNights = dayDiff;
             }
-        }
+        };
 
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
@@ -124,9 +134,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                                 id: "",
                                 name: ""
                             }
-                        }
+                        };
                     }
-                }
+               };
                 /*  For every room initate the stayDates object 
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
@@ -210,7 +220,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
                     }, processDisplay);
                     lastSearchText = request.term;
                 }
-            }
+            };
 
             // quite simple to understand
             if (request.term.length === 0) {
@@ -219,7 +229,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
             } else if (request.term.length > 2) {
                 fetchData();
             }
-        }
+        };
 
         var autoCompleteSelectHandler = function(event, ui) {
             if (ui.item.type === 'COMPANY') {
@@ -288,7 +298,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'RVR
         $scope.reservationGuestSearchChanged = function(){
             // check whether guest card attached and remove if attached.
             $scope.reservationDetails.guestCard.id = '';
-        }
+        };
+        $scope.clickedNights = function(){
+        	$scope.isNightsActive = true;
+        	$scope.shouldShowNights = true;
+        	$scope.shouldShowHours = false;
+        };
+        $scope.clickedHours = function(){
+        	$scope.isNightsActive = false;
+        	$scope.shouldShowNights = false;
+        	$scope.shouldShowHours = true;
+        };
+
 
     }
 ]);
