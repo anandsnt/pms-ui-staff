@@ -45,12 +45,6 @@
         </div>
         <!-- To be replaced when original design comes -->
         <div class="row">
-            hh
-              <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="hotelTime.hh"  />
-              mm
-                <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="hotelTime.mm">
-                <input type="button" ng-click="roundOfArrivalTime()">save</input>
-                Rounded value = {{reservationData.checkinTime.hh}}:{{reservationData.checkinTime.mm}} {{reservationData.checkinTime.ampm}}
             <input name="nights-number" id="nights-number" type="text" maxlength="25" ng-model="reservationData.hours" ng-change="setHours()" />
                 arrival time
                 <select ng-model="reservationData.checkinTime.hh"  ng-change="setHours()">
