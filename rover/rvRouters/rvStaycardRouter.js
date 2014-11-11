@@ -60,9 +60,11 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         onEnter: function($stateParams) {
             if (typeof $stateParams.view == "undefined" || $stateParams.view == null) {
                 $stateParams.view = "DEFAULT";
-            }if (typeof $stateParams.company_id == "undefined" || $stateParams.company_id == null) {
+            }
+            if (typeof $stateParams.company_id == "undefined" || $stateParams.company_id == null) {
                 $stateParams.company_id = null;
-            }if (typeof $stateParams.travel_agent_id == "undefined" || $stateParams.travel_agent_id == null) {
+            }
+            if (typeof $stateParams.travel_agent_id == "undefined" || $stateParams.travel_agent_id == null) {
                 $stateParams.travel_agent_id = null;
             }
         },
@@ -95,9 +97,14 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
     });
 
     $stateProvider.state('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-        url: '/summaryAndConfirm',
+        url: '/summaryAndConfirm/:reservation',
         templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
-        controller: 'RVReservationSummaryCtrl'
+        controller: 'RVReservationSummaryCtrl',
+        onEnter: function($stateParams) {
+            if (typeof $stateParams.reservation == "undefined" || $stateParams.reservation == null) {
+                $stateParams.reservation = "DAILY";
+            }            
+        }
     });
 
     $stateProvider.state('rover.reservation.staycard.mainCard.reservationConfirm', {
@@ -119,7 +126,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'reservationDetailsController',
         resolve: {
             reservationListData: function(RVReservationCardSrv, $stateParams) {
-            	 var data = {
+                var data = {
                     "reservationId": $stateParams.id,
                     "isRefresh": $stateParams.isrefresh
                 };
@@ -143,7 +150,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
             reservationBillData: function(RVBillCardSrv, $stateParams) {
                 return RVBillCardSrv.fetch($stateParams.reservationId);
             },
-            chargeCodeData: function(RVBillCardSrv){
+            chargeCodeData: function(RVBillCardSrv) {
                 return RVBillCardSrv.fetchChargeCodes();
             }
         }
@@ -196,9 +203,4 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
         controller: 'billDetailsController'
     });
     
-     $stateProvider.state('rover.reservation.staycard.mainCard.summaryAndConfirmFromOutide', {
-        url: '/summaryAndConfirm/:room_id/:date',
-        templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
-        controller: 'RVReservationSummaryCtrl'
-    });
 });
