@@ -139,6 +139,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.departureDate = temporaryReservationDataFromDiaryScreen.departure_date;
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
+				room.rateTotal = 500;
 				for (var ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
 					room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
 						guests: {
@@ -360,7 +361,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			var postData = computeReservationDataToSave();
 			console.log("----------------POST DATA-----------------------");
 			console.log(postData);
-			return false;
+			// return false;
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
 				/*

@@ -54,6 +54,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             $scope.hideSidebar = false;
             // intialize reservation object
             $scope.reservationData = {
+                isHourly: false,
                 arrivalDate: '',
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
@@ -209,8 +210,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     futureReservations: 0
                 }
             };
-        }
-;
+        };
         $scope.initReservationDetails = function() {
             // Initiate All Cards 
             $scope.reservationDetails.guestCard.id = "";
@@ -868,16 +868,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     day: dateFilter(new tzIndependentDate(item.date), 'dd')
                 });
                 $scope.reservationData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: item.adults,
-                        children: item.children,
-                        infants: item.infants
-                    },
-                    rate: {
-                        id: item.rate_id
+                        guests: {
+                            adults: item.adults,
+                            children: item.children,
+                            infants: item.infants
+                        },
+                        rate: {
+                            id: item.rate_id
+                        }
                     }
-                }
-                // TODO : Extend for each stay dates
+                    // TODO : Extend for each stay dates
                 $scope.reservationData.rooms[0].rateId.push(item.rate_id);
                 if (index == 0) {
                     $scope.reservationData.rooms[0].roomTypeId = item.room_type_id;
