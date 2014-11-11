@@ -1,6 +1,6 @@
 sntRover
-	.factory('rvDiaryStoreSrv', ['rvDiaryUtilSrv',
-		function(util) {
+	.factory('rvDiaryStoreSrv', ['rvDiaryUtilSrv', 'rvDiaryMetadata',
+		function(util, meta) {
 			var store = {
 					start_date: undefined,
 					end_date: undefined,
@@ -18,12 +18,13 @@ sntRover
 				normalizeRooms,
 				normalizeRoom,
 				normalizeOccupancies,
-				normalizeOuccpancy,
+				normalizeOuccupancy,
 				normalizeAvailableOccupancy,
 				normalizeTime,
 				normalizeMaintenanceInterval,
 				linkRooms,
-				formatIncomingTimeData;
+				formatIncomingTimeData,
+				mergeOccupanciesInASCTime;
 
 			normalizeRooms = function(room_types, rooms) {
 				var normalize = _.partial(normalizeRoom, room_types);
@@ -78,32 +79,35 @@ sntRover
 				occupancy[m.room_type] = util.mixin(occupancy[m.room_type], room_type); //room_type.name;
 			};
 
-			/*function Occupancy(params) {
-				if(!(this instanceof Occupancy)) {
-					return new Occupancy(params);
-				}
+			mergeOccupanciesInASCTime = function(occupancies) {
+				var rooms = store.rooms,
+					room,
+					m_arrival = meta.occupancy.arrival;
+					
 
-				this.reservation_id;
-				this.reservation_status
-				this.room_id;
-				this.room_type_id;
-				this.room_service_status;
-				this.rate_id;
-				this.rate_total;
-				this.arrival_date;
-				this.departure_date;
+				occupancies.forEach(function(occupancy, idx) {
+					var compare = occupancy[m_arrival], pos = -1;
 
-				this.setArrival(start_date) {
-					formatIncomingTimeData(slot, start_date, 'arrival');
-				};
+					room = _.findWhere(rooms, { id: occupancy.room_id });
 
-				this.setDeparture(end_Date) {
-					formatIncomingTimeData(slot, end_date, 'departure');
-				}
-			}*/
+					if(room) {
+						room.occupancy.forEach(function(o, idx2) {
+							if(o[m_arrival] > compare) {
+								pos = idx2;
+								return pos;
+							}
+						});
+
+						if(pos > -1) {
+							room.occupancy.splice(idx, 0, occupancy);
+							pos = -1;
+						}
+					}
+				});
+			}
 
 			normalizeAvailableOccupancy = function(start_date, end_date, rate_id, gen_uid, slot) {
-				var rooms = store.rooms;
+				var rooms = store.rooms, room, room_types = store.room_types, pos = -1;
 
 				room = _.findWhere(rooms, {
 					id: slot.id
@@ -111,24 +115,34 @@ sntRover
 
 				if (room) {
 					slot.temporary = true;
-					slot.room_id 			= room.id;
-					slot.room_type_id 		= room.room_type_id;
-					slot.reservation_status = 'available';
-					slot.room_service_status = '';
-					slot.reservation_id 	= gen_uid;
-					slot.rate_id 			= rate_id;
-					slot.rate_total 		= slot.amount;
+					slot.room_id 				= room.id;
+					slot.room_type_id 			= room.room_type_id;
+					slot.reservation_status 	= 'available';
+					slot.room_service_status 	= '';
+					slot.reservation_id 		= gen_uid;
+					slot.rate_id 				= rate_id;
+					slot.rate_total 			= slot.amount;
 
 					formatIncomingTimeData(slot, start_date, 'arrival');
 					formatIncomingTimeData(slot, end_date, 'departure');
 
-					if (has.call(room, 'occupancy')) {
-						room.occupancy = slice.call(room.occupancy).concat([slot]);
+					if (_.isArray(room.occupancy) && room.occupancy.length > 0) {
+						room.occupancy.forEach(function(o, idx) {
+							if(o.arrival > slot.arrival) {
+								pos = idx;
+								return pos;
+							}
+						});
+
+						room.occupancy.splice(1, 0, slot);
+
+						pos = -1;
 					} else {
 						room.occupancy = [slot];
 					}
 
-					normalizeOccupanices(room_types, room.occupancy);
+					//SETUP MAINTENANCE SPAN AND ARRIVAL?DEPT IN MS
+					normalizeOccupancy(room_types, slot);
 				}
 			};
 
@@ -201,8 +215,11 @@ sntRover
 				transform: function(payload, filterData) {
 					compile(_.extend(store, util.mixin.apply(null, slice.call(arguments))));
 				},
-				mergeAvailableSlots: function(start_date, end_date, guid, rate_id) {
-					normalizeAvailableOccupancy(start_date, end_date, guid, rate_id);
+				mergeAvailableSlots: function(start_date, end_date, guid, rate_id, slot) {
+					normalizeAvailableOccupancy(start_date, end_date, rate_id, guid, slot);
+				},
+				mergeOccupancis: function(occupancies) {
+					mergeOccupanciesInASCTime(occupancies);
 				}
 			};
 		}
