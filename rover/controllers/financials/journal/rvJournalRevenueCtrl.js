@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
+sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
 
@@ -102,5 +102,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope','$rootScope', 'RVJou
         });
         return revenueTotal;
     };
+
+    // Update amount on Tab header.
+    $rootScope.$on('UPDATEHEADERAMOUNT',function(){
+        $timeout(function() {
+            var total = $scope.getTotalOfAllChargeGroups();
+            $scope.data.revenueData.total_revenue = total;
+        }, 100);
+    });
 
 }]);

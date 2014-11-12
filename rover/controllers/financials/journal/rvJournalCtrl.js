@@ -91,6 +91,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
         if($scope.data.activeTab == '0' ){
             $scope.resetRevenueFilters();
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
+            $rootScope.$broadcast('UPDATEHEADERAMOUNT');
             $scope.data.selectedChargeGroup = 'ALL';
             $scope.data.selectedChargeCode  = 'ALL';
         }
@@ -164,6 +165,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             if($scope.data.activeTab == '0' ){
                 $scope.filterRevenueByDepartmentsOrEmployees();
                 $rootScope.$broadcast('REFRESHREVENUECONTENT');
+                $rootScope.$broadcast('UPDATEHEADERAMOUNT');
                 $scope.$broadcast('UPDATEREVENUETOTAL');
             }
             else if ($scope.data.activeTab == '1' ){
