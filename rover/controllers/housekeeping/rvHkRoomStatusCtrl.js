@@ -75,6 +75,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomTypes = roomTypes;
 		$scope.floors = floors;
 
+		// keeping these withing the scope
+		$scope.isStandAlone = $rootScope.isStandAlone;
+		$scope.isMaintenanceStaff = $rootScope.isMaintenanceStaff;
+		$scope.hasActiveWorkSheet = false;
+
+
+
+
 		// first process rooms
 		$_fetchRoomListCallback(roomList);
 
@@ -109,8 +117,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				};
 
 				var _preHasActiveWorkSheet = function() {
-					$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-					$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+					if ( $rootScope.isMaintenanceStaff ) {
+						$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
+						$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
+					};
 
 					// time to decide if this is an employee
 					// who has an active work sheets
@@ -150,7 +160,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.topFilter.byWorkType = $_defaultWorkType;
 					$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
 
-					// $scope.$emit('hideLoader');
 					$scope.hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
 
 					// set an active user in filterByEmployee, set the mobile tab to to summary
