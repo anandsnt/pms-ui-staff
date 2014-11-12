@@ -37,7 +37,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			
 			   var responseData = e.data;
 		       if(responseData.response_message == "token_created"){
-		       	console.log("event listener==============");
 		       		$scope.isSubmitButtonEnabled = true;
 		       		var unwantedKeys = ["response_message"]; // remove unwanted keys for API
        				//responseData = dclone(responseData, unwantedKeys);
@@ -398,7 +397,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 *
 		 */
 		var fetchMLISession = function() {
-
 			var sessionDetails = {};
 			sessionDetails.cardNumber = $scope.reservationData.paymentType.ccDetails.number;
 			sessionDetails.cardSecurityCode = $scope.reservationData.paymentType.ccDetails.cvv;
@@ -406,11 +404,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			sessionDetails.cardExpiryYear = $scope.reservationData.paymentType.ccDetails.expYear;
 
 			var callback = function(response) {
-
 				$scope.$emit("hideLoader");
 				$scope.$apply();
 				if (response.status === "ok") {
 					$scope.data.MLIData = response;
+					$scope.isSubmitButtonEnabled = true;
 				} else {
 					$scope.errorMessage = ["There is a problem with your credit card"];
 					$scope.data.MLIData = {};
@@ -462,7 +460,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					}
 				}
 			}
-
 			if ($scope.errorMessage.length > 0) {
 				return false;
 			}
@@ -489,7 +486,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}
 		};
 		$scope.changePaymentType = function(){
-			console.log($scope.reservationData.paymentType.type.value);
 			if($scope.reservationData.paymentType.type.value === 'CC'){
 				if($rootScope.paymentGateway === "sixpayments"){
 					$scope.isSixPaymentGatewayVisible = true;
@@ -581,7 +577,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				"currency_code":""
 			};
 			RVReservationSummarySrv.startPayment(data).then(function(response) {
-				console.log(response);
 			},function(){
 				$rootScope.netWorkError = true;
 				$scope.isPosting = false;
