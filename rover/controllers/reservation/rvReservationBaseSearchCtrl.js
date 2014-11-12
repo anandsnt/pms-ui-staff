@@ -13,6 +13,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.$parent.hideSidebar = false;
 
         $scope.setScroller('search_reservation');
+        
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
@@ -36,7 +37,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var init = function() {
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
-
+			
             $scope.heading = 'Reservations';
             $scope.setHeadingTitle($scope.heading);
 
@@ -120,6 +121,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             } else {
                 $scope.reservationData.numNights = dayDiff;
             }
+          
         };
 
         $scope.arrivalDateChanged = function() {
@@ -160,9 +162,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         id: "",
                         name: ""
                     }
-                }
-            }
-        }
+                };
+            };
+        };
         $scope.navigate = function() {
             //if selected thing is 'hours'
             if(!$scope.isNightsActive){

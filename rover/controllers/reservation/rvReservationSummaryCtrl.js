@@ -463,7 +463,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.showRoomNotAvailableDialog();
+				$scope.showRoomNotAvailableDialog(data);
 				//$scope.errorMessage = data;
 
 			};

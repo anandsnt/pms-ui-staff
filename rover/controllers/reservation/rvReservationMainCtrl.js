@@ -59,6 +59,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 departureDate: '',
                 midStay: false, // Flag to check in edit mode if in the middle of stay
                 stayDays: [],
+                resHours: 0,
                 checkinTime: {
                     hh: '',
                     mm: '00',
