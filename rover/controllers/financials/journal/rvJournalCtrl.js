@@ -399,7 +399,7 @@ sntRover.controller('RVJournalController', ['$scope','$filter','$stateParams', '
             }
             else{
                 angular.forEach(payment_types.transactions,function(transactions, index3) {
-                    transactions.show = false;
+                    transactions.show = true;
                 });
             }
         });
