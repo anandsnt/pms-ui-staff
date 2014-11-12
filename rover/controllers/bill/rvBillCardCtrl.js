@@ -193,7 +193,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 
 	$scope.getNoPostButtonTiltle = function(){
 		return $scope.roomChargeEnabled? $filter('translate')('NO_POST_ENABLED'): $filter('translate')('NO_POST_DISABLED');
-	}
+	};
 	var buttonClicked = false;
 	$scope.noPostButtonClicked = function(){
 		if(buttonClicked)
@@ -203,7 +203,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	     		buttonClicked = false;
 	        }, 200);
 		$scope.roomChargeEnabled = !$scope.roomChargeEnabled;
-	}
+	};
 
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function(){
@@ -793,7 +793,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					 className: '',
 					 scope: $scope
 				});	
-			}
+			};
 
 			$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback);  
 		}

@@ -99,7 +99,7 @@
                 <div class="rooms" ng-repeat="room in reservationData.rooms">
                     <div class="title">
                         <span translate>ROOM</span>
-                        {{$index + 1}}
+                        {{room.roomNumber}}
                         <div class="count">
                             <span><span class="label" translate>ADULTS</span>{{room.numAdults}}</span>
                             <span><span class="label" translate>CHILDREN</span>{{room.numChildren}}</span>
