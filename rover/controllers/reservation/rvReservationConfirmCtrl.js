@@ -6,7 +6,8 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'RVContactInfoSrv', 
 	'$filter',
 	'RVBillCardSrv',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv) {
+	'$q',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 
@@ -210,6 +211,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 
 		var failureOfCheckin = function(errorMessage){
 			$scope.$emit("hideLoader");
+			$scope.errorMessage = errorMessage;
 		};
 		var successOfEachCheckin = function(data){
 
@@ -224,9 +226,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var promises = [];
 			var data = null;
 			for(var i = 0; i < $scope.reservationData.rooms.length; i++){
-				confirmationIDs = $scope.reservationData.rooms[i].confirm_no;
+				confirmationIDs.push($scope.reservationData.rooms[i].confirm_no);
 				data = {
-					'reservation_id' : confirmationID
+					'reservation_id' : $scope.reservationData.rooms[i].confirm_no
 				};
 				promises.push($scope.invokeApi(RVBillCardSrv.completeCheckin, data, successOfEachCheckin));
 			}
