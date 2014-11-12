@@ -1,4 +1,4 @@
-sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv',function($scope, $rootScope, RVJournalSrv) {
+sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJournalSrv','$timeout',function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
     $scope.errorMessage = "";
     
@@ -14,6 +14,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
 	$scope.initPaymentData = function(){
 		var successCallBackFetchPaymentData = function(data){
 			$scope.data.paymentData = {};
+            $scope.data.selectedPaymentType = 'ALL';
 			$scope.data.paymentData = data;
 			$scope.$emit('hideLoader');
             $scope.errorMessage = "";
@@ -84,5 +85,24 @@ sntRover.controller('RVJournalPaymentController', ['$scope','$rootScope','RVJour
         if((typeof item !== 'undefined') && (item.length >0)) hasArrow = true;
         return hasArrow;
     };
+
+    // To get total payements amount by adding up payment type amounts.
+    $scope.getTotalOfAllPayments = function(){
+        var paymentTotal = 0;
+        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
+            if( payment_types.show && payment_types.filterFlag ){
+                paymentTotal += payment_types.amount;
+            }
+        });
+        return paymentTotal;
+    };  
+
+    // Update amount on Payment Tab header.
+    $rootScope.$on('UpdatePaymentTabTotal',function(){
+        $timeout(function() {
+            var total = $scope.getTotalOfAllPayments();
+            $scope.data.paymentData.total_payment = total;
+        }, 100);
+    });
 
 }]);

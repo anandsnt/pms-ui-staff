@@ -102,8 +102,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 			}
        	});
        	$scope.data.selectedChargeCode = 'ALL';
-
-       	$scope.calcRevenueTotal();
 	};
 
 	// On changing charge code on PRINT filter
@@ -212,8 +210,6 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	        	payment_types.filterFlag = false;
 	        }
         });
-
-        $scope.calcPaymentTotal();
 	};
 
 	/*
@@ -288,36 +284,5 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	     *	=====[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]=====
 	     */
 	};
-
-	// To calculate Total revenue amount.
-	$scope.calcRevenueTotal = function(){
-        var total = 0;
-        angular.forEach($scope.data.revenueData.charge_groups,function(charge_groups, index1) {
-            if(charge_groups.filterFlag && charge_groups.show){
-                total+= charge_groups.total;
-            }
-        });
-        $scope.data.revenueData.calculatedTotalAmount = total;
-    };
-
-    // To calculate Total payment amount.
-    $scope.calcPaymentTotal = function(){
-        var total = 0;
-        angular.forEach($scope.data.paymentData.payment_types,function(payment_types, index1) {
-            if( payment_types.show && payment_types.filterFlag ){
-                total+= payment_types.amount;
-            }
-        });
-        $scope.data.paymentData.calculatedTotalAmount = total;
-    };
-
-    $scope.$on('UPDATEREVENUETOTAL',function(){
-    	$scope.calcRevenueTotal();
-    });
-
-    $scope.$on('UPDATEPAYMENTTOTAL',function(){
-    	$scope.calcPaymentTotal();
-    });
-
 
 }]);
