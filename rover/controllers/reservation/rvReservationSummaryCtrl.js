@@ -131,7 +131,23 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			}, 1500);
 		};
 
+		var ratesFetched = function(data) {
+			$scope.otherData.taxesMeta = data.tax_codes;
+			$scope.reservationData.totalTax = 0;
+			_.each($scope.reservationData.rooms, function(room, roomNumber) {
+				var taxes = _.where(data.tax_information, {
+					rate_id: parseInt(room.rateId)
+				});
+				if (taxes.length > 0) {
+					var taxApplied = $scope.calculateTax($scope.reservationData.arrivalDate, room.amount, taxes[0].tax, roomNumber);
+					$scope.reservationData.totalTax = parseFloat($scope.reservationData.totalTax) + parseFloat(taxApplied.inclusive) + parseFloat(taxApplied.exclusive);
+					$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(taxApplied.exclusive);
+				}
+			});
+		};
+
 		$scope.createReservationDataFromDiary = function(roomsArray, temporaryReservationDataFromDiaryScreen) {
+
 			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
@@ -150,9 +166,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			$scope.reservationData.checkoutTime.ampm = departureTimeSplit[1].split(" ")[1];
 
 			$scope.reservationData.totalStayCost = 0;
-
+			var rateIdSet = [];
 			_.each($scope.reservationData.rooms, function(room) {
 				room.stayDates = {};
+				rateIdSet.push(room.rateId);
 				room.rateTotal = room.amount;
 				$scope.reservationData.totalStayCost = parseFloat($scope.reservationData.totalStayCost) + parseFloat(room.amount);
 				var success = function(data) {
@@ -175,6 +192,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 					};
 				}
 			});
+
+			$scope.invokeApi(RVReservationSummarySrv.getTaxDetails, {
+				rate_ids: rateIdSet
+			}, ratesFetched);
 		};
 
 		/**
