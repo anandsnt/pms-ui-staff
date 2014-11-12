@@ -98,33 +98,33 @@ sntRover
                     this.fetchData(start_date, end_date, api_types.availability, rate_id, room_type_id)
                         .then(function(payload) {
                             var ref_data = store.payload(),
-                                data = payload.results[0].availability;
+                                data = payload.results[0].availability,
+                                reference_slot, row_item_data, row_data;
                                 
                                 
 
 
                             data.forEach(function(ava) {
-                                store.mergeAvailableSlots(start_date,
-                                                            end_date,
-                                                            gen_uid,
-                                                            rate_id,
-                                                            ava);
+                                reference_slot = store.mergeAvailableSlots(start_date,
+                                                                            end_date,
+                                                                            gen_uid,
+                                                                            rate_id,
+                                                                            ava);
+                                if(!row_item_data && reference_slot) {
+                                    row_item_data = util.deepCopy(reference_slot);
+                                    row_data = _.findWhere(ref_data.rooms, { id: row_item_data.room_id });
+                                }
                             });
                             
                             
-
-                            $q.all(deferredArray)
-                                .then(function(data) {
-                                    q.resolve({
-                                        start_date: start_date,
-                                        end_date: end_date,
-                                        stay_dates: _.flatten(payload.results),
-                                        row_data: ref_data.rooms[0],
-                                        row_item_data: ref_data.rooms[0].occupancy[0]
-                                    });
-                                }, function(err) {
-                                    q.reject(err);
-                                });
+                            q.resolve({
+                                 start_date: start_date,
+                                 end_date: end_date,
+                                 stay_dates: _.flatten(payload.results),
+                                 row_data: row_data,
+                                 row_item_data: row_item_data
+                             });
+                          
                         });
 
                     return q.promise;
@@ -147,7 +147,6 @@ sntRover
                     var q = $q.defer(),
                         s_comp = start_date.toComponents(),
                         e_comp = end_date.toComponents(),
-
                         dto = {
                             begin_time:     s_comp.time.toString(),
                             end_time:       e_comp.time.toString(),
@@ -162,13 +161,14 @@ sntRover
                         .getJSON(type_config.url, dto)
                         .then(function(data) {
                             q.resolve(util.mixin(data, {
-                                start_date: start_date,
-                                end_date: end_date
-                            }));
+                                                 start_date: start_date,
+                                                 end_date: end_date
+                                            }));
                         }, function(data) {
                             q.reject(data);
-                        });
+                        }); 
 
                     return q.promise;
                 };
-            }]);
+            }
+        ]);

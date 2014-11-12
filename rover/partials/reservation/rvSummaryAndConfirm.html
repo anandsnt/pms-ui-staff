@@ -5,11 +5,12 @@
         <div id="reservation-summary" class="reservation-summary scrollable" ng-iscroll='reservationSummary'>
             <div class="wrapper"> 
                 <h2 translate>RESERVATION_SUMMARY</h2>
-                <ul class="data">
-                    <li><span class="guest-status room" translate>ROOMS</span>
-                        <span>{{reservationData.roomCount}}</span>
-                        <span ng-if="reservationData.roomCount === 1" translate>ROOM</span>
-                        <span ng-if="reservationData.roomCount !== 1" translate>ROOMS</span>
+                <ul class="data" ng-if="!reservationData.isHourly">
+                    <li>
+                        <span class="guest-status room" translate>ROOMS</span>
+                        <span>{{reservationData.rooms.length}}</span>
+                        <span ng-if="reservationData.rooms.length === 1" translate>ROOM</span>
+                        <span ng-if="reservationData.rooms.length !== 1" translate>ROOMS</span>
                     </li>
                     <li>
                         <span class="guest-status nights" translate>NIGHTS</span>
@@ -98,7 +99,7 @@
                 <div class="rooms" ng-repeat="room in reservationData.rooms">
                     <div class="title">
                         <span translate>ROOM</span>
-                        {{$index + 1}}
+                        {{room.roomNumber}}
                         <div class="count">
                             <span><span class="label" translate>ADULTS</span>{{room.numAdults}}</span>
                             <span><span class="label" translate>CHILDREN</span>{{room.numChildren}}</span>
