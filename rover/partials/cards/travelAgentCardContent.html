@@ -40,7 +40,7 @@
         <!-- Travel Agent Card Results listing -->
         <div ng-controller="travelAgentResults" class="wrapper" ng-show="travelAgentSearchIntiated && travelAgents.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
             <ul id="search-travel-agent-results" class="search-results">
-                <li ng-repeat="travelAgent in travelAgents">
+                <li ng-repeat="travelAgent in travelAgents" class="reservation">
                     <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
                         <div ng-show="travelAgent.logo == ''" class="guest-image icons icon-travel-agent"></div>
                         <figure ng-hide="travelAgent.logo == ''" class="guest-image">

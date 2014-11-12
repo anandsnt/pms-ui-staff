@@ -31,7 +31,7 @@
             <!-- Company Card Results listing -->
             <div ng-controller="companyResults" class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll" ng-iscroll-delay='500'>
                 <ul id="search-company-results" class="search-results">
-                    <li ng-repeat="company in companies">
+                    <li ng-repeat="company in companies" class="reservation">
                         <a ng-click="selectCompany(company, $event)" class="card-result">
                             <div ng-show="company.logo == ''" class="guest-image icons icon-company"></div>
                             <figure ng-hide="company.logo == ''" class="guest-image">
