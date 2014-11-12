@@ -17,7 +17,7 @@
                     <div class="sort">
                         <span class="reorder" ng-click= "toggleExpansion($index)"></span>
                         <a ng-click = "componentSelected(section.component_type, section.id)" class="cms-name">{{section.name}}</a>
-                        <span class="cms-type">{{section.component_type}}</span>
+                        <span class="cms-type cms-content-type">{{section.component_type == 'PAGE'? 'ITEM_LABEL' : section.component_type | translate}}</span>
                         <em class="cms-date">{{getFormattedTime(section.updated_at)}}</em>
                         <div class="cms-activate">
                             <div class="switch-button" ng-class="{'on':section.status}">
