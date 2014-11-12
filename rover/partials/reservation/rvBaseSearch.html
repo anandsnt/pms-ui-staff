@@ -46,7 +46,7 @@
         <!-- To be replaced when original design comes -->
         <div class="row">
                 arrival time
-                <select ng-model="reservationData.checkinTime.hh"  ng-change="setDepartureHours()">
+                <select ng-model="reservationData.checkinTime.hh"  ng-change="setDepartureHours()" style="width:100px;float:left;">
                         <option value="">HH</option> <!-- Selected if time not set -->
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -61,19 +61,21 @@
                         <option value="11">11</option>
                         <option value="12">12</option>
                 </select>
-                 <select ng-model="reservationData.checkinTime.mm"  ng-change="setDepartureHours()">
+                 <select ng-model="reservationData.checkinTime.mm"  ng-change="setDepartureHours()"style="width:100px;float:left;">
                         <option value="">MM</option> <!-- Selected if time not set -->
                         <option value="00">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
                 </select>
-                 <select ng-model="reservationData.checkinTime.ampm"  ng-change="setDepartureHours()">
+                 <select ng-model="reservationData.checkinTime.ampm"  ng-change="setDepartureHours()"style="width:100px;float:left;">
                         <option value="AM" selected>AM</option>
                         <option value="PM">PM</option>
                 </select>
+            </div>
+            <div class="row">
                 departure time
-                <select ng-model="reservationData.checkoutTime.hh">
+                <select ng-model="reservationData.checkoutTime.hh"style="width:100px;float:left;">
                         <option value="">HH</option> <!-- Selected if time not set -->
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -88,14 +90,14 @@
                         <option value="11">11</option>
                         <option value="12">12</option>
                 </select>
-                 <select ng-model="reservationData.checkoutTime.mm">
+                 <select ng-model="reservationData.checkoutTime.mm" style="width:100px;float:left;">
                         <option value="">MM</option> <!-- Selected if time not set -->
                         <option value="00">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
                 </select>
-                 <select ng-model="reservationData.checkoutTime.ampm">
+                 <select ng-model="reservationData.checkoutTime.ampm" style="width:100px;float:left;">
                         <option value="AM" selected>AM</option>
                         <option value="PM">PM</option>
                 </select>       

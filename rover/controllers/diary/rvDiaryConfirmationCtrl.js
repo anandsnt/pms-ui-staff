@@ -43,7 +43,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 			/*$state.go('rover.reservation.staycard.mainCard.summaryAndConfirm', {
 				reservation: $scope.selectedReservations
 			});*/
-			$state.go('rover.diary.reservations.staycard.summary', {
+			$state.go('reservations/hourly', {
 				rooms: $scope.rooms,
 				reservations: $scope.reservations
 			});
