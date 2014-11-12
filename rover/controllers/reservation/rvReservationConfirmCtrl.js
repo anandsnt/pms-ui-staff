@@ -1,5 +1,12 @@
-sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 'ngDialog', 'RVContactInfoSrv', '$filter',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter) {
+sntRover.controller('RVReservationConfirmCtrl', [
+	'$scope', 
+	'$state', 
+	'RVReservationSummarySrv', 
+	'ngDialog', 
+	'RVContactInfoSrv', 
+	'$filter',
+	'RVBillCardSrv',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
 
@@ -186,6 +193,45 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 			$state.go('rover.reservation.search');
 		};
 
+		$scope.gotoDiaryScreen = function(){
+			$state.go('rover.reservation.diary', {
+				isfromcreatereservation: false
+			});
+		};
+
+		$scope.enableCheckInButton = function(){
+			return false;
+		};
+
+		var successOfAllCheckin = function(data) {
+			$scope.$emit("hideLoader");
+			$scope.successMessage = 'Successful checking in.';
+		};
+
+		var failureOfCheckin = function(errorMessage){
+			$scope.$emit("hideLoader");
+		};
+		var successOfEachCheckin = function(data){
+
+		};
+		$scope.checkin = function(){
+			/*
+				Please one min..
+				We create a list of promises against each API call
+				if it all resolved successfully then only we will proceed 
+			*/
+			var confirmationIDs = [];
+			var promises = [];
+			var data = null;
+			for(var i = 0; i < $scope.reservationData.rooms.length; i++){
+				confirmationIDs = $scope.reservationData.rooms[i].confirm_no;
+				data = {
+					'reservation_id' : confirmationID
+				};
+				promises.push($scope.invokeApi(RVBillCardSrv.completeCheckin, data, successOfEachCheckin));
+			}
+			$q.all(promises).then(successOfAllCheckin, failureOfCheckin);					
+		};
 		/**
 		 * Reset all reservation data and go to search
 		 */

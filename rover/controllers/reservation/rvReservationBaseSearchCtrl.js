@@ -163,7 +163,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 reservationDataToKeepinVault.companyID      = $scope.reservationData.company.id;
                 reservationDataToKeepinVault.travelAgentID  = $scope.reservationData.travelAgent.id;                
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
-                console.log($vault.get('searchReservationData'));
                 $state.go('rover.reservation.diary', {
                     isfromcreatereservation: true
                 });

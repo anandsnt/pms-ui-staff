@@ -412,6 +412,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				} else {
 					$scope.reservationData.reservationId = data.id;
 					$scope.reservationData.confirmNum = data.confirm_no;
+					$scope.reservationData.rooms[0].confirm_no = data.confirm_no;
 					$scope.reservationData.status = data.status;
 					$scope.viewState.reservationStatus.number = data.id;
 				}
