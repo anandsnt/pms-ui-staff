@@ -595,9 +595,21 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         });
       }
     };
+
     /**
      * Handles the bussiness date change in progress
      */
+
+    var LastngDialogId = "";
+    
+    $scope.closeBussinnesDatePopup = function(){
+      ngDialog.close(LastngDialogId,"");
+    }
+
+    $rootScope.$on('ngDialog.opened', function (e, $dialog) {
+      LastngDialogId = $dialog.attr('id');
+    });
+
     $rootScope.showBussinessDateChangingPopup = function() {
 
       // Hide loading message
@@ -605,13 +617,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       //if already shown no need to show again and again
       if (!$rootScope.isBussinessDateChanging && $rootScope.isStandAlone && !$rootScope.isCurrentUserChangingBussinessDate) {
         $rootScope.isBussinessDateChanging = true;
-        ngDialog.open({
+        var $dialog =  ngDialog.open({
           template: '/assets/partials/common/bussinessDateChangingPopup.html',
           className: 'ngdialog-theme-default1 modal-theme1',
           controller: 'bussinessDateChangingCtrl',
           closeByDocument: false,
           scope: $scope
-        });
+        });       
       }
     };
 
