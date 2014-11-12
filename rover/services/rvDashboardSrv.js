@@ -1,14 +1,22 @@
 sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, rvBaseWebSrvV2){
 
- /*
-  * To fetch user details
-  * @return {object} user details
-  */	
+ 	
+	var that = this;
+    var userDetails = {}; //varibale to keep header_info.json's output
+    this.dashBoardDetails = {};
+    this.getUserDetails = function(){
+        return userDetails;
+    }
+ 	/*
+  	* To fetch user details
+  	* @return {object} user details
+  	*/	
 	this.fetchUserInfo = function(){
 		var deferred = $q.defer();
 		var url =  '/api/rover_header_info.json';	
 		
 		RVBaseWebSrv.getJSON(url).then(function(data) {
+			userDetails = data;
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -16,17 +24,12 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
 		return deferred.promise;
 	};
 
-
-
-	this.dashBoardDetails = {};
-	var that = this;
-
-	this.fetchDashboardStatisticData = function(deferred){
+ 	this.fetchDashboardStatisticData = function(){
+	    var deferred = $q.defer();
 		//var url = '/ui/show?format=json&json_input=dashboard/dashboard.json';
 		var url = '/api/dashboards';
-		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			that.dashBoardDetails.dashboardStatistics = data;
-			deferred.resolve(that.dashBoardDetails);
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {			
+			deferred.resolve(data);
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
@@ -37,33 +40,14 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', funct
     * @return {object} dashboard details
     */	
    	this.fetchDashboardDetails = function(){
-		var deferred = $q.defer();
-		var self = this;
-
-   /*
-    * To fetch user details
-    * @return {object} user details
-    */	
-		 self.fetchUserDetails = function(){
-			var url = '/api/rover_header_info.json';
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.dashBoardDetails.userDetails = data;
-				that.fetchDashboardStatisticData(deferred);
-			},function(errorMessage){
-				deferred.reject(errorMessage);
-			});
-			return deferred.promise;
-		};		
-
-		var url = '/api/hotel_statistics.json';
-			
-		
-		RVBaseWebSrv.getJSON(url).then(function(data) {
-			that.dashBoardDetails.dashboardData = data;
-			self.fetchUserDetails();
-		},function(errorMessage){
+		var deferred = $q.defer();	
+		that.fetchDashboardStatisticData()
+	    .then(function(data){
+	        that.dashBoardDetails.dashboardStatistics = data;
+	        deferred.resolve(that.dashBoardDetails);
+	    }, function(errorMessage){
 			deferred.reject(errorMessage);
-		});
+		});	
 		return deferred.promise;
 	};
 
