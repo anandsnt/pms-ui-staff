@@ -172,6 +172,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
             		if(charge_codes.transactions.length > 0) charge_codes.active = true;
             	}
             	else{
+            		charge_groups.active =  false;
             	 	charge_codes.active = false;
             	}
             });
@@ -229,6 +230,7 @@ sntRover.controller('RVJournalPrintController', ['$scope','$rootScope','$timeout
 	            		if(credit_cards.transactions.length >0) credit_cards.active = true;
 	            	}
 	            	else{
+	            		payment_types.active = false;
 	            		credit_cards.active = false;
 	            	}
 	            });
