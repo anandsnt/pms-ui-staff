@@ -464,8 +464,22 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.showRoomNotAvailableDialog(data);
-				//$scope.errorMessage = data;
+				var showRoomNotAvailableDialog = false;
+				var error = '';
+				angular.forEach(data, function(value, key){
+					if(value == "Room not available for the selected number of hours. Please choose another room"){
+						showRoomNotAvailableDialog = true;
+						error = value;
+					}
+					
+				});
+				if(showRoomNotAvailableDialog){
+					$scope.showRoomNotAvailableDialog(error);
+				} else {
+					$scope.errorMessage = data;
+				}
+				
+				
 
 			};
 

@@ -4,9 +4,8 @@
 			<span class="icons icon-close invert"></span>
 		</button>
 		
-		<div class="h3 message" ng-repeat="message in popupMessage" >
-			<span ng-if=!$last>{{message}}, </span>
-			<span ng-if=$last> {{message}} </span>
+		<div class="h3 message"  >
+			{{popupMessage}}
 		</div>
 		
 		<button id="ok" class="button modal-close red" ng-click="okButtonClicked()">
