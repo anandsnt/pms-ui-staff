@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout',
-	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout) {
+sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state', 'RVReservationSummarySrv', 'RVContactInfoSrv', '$filter', '$location', '$stateParams', 'dateFilter', '$vault', '$timeout', 'ngDialog',
+	function($rootScope, $scope, $state, RVReservationSummarySrv, RVContactInfoSrv, $filter, $location, $stateParams, dateFilter, $vault, $timeout, ngDialog) {
 
 
 		BaseCtrl.call(this, $scope);
@@ -104,7 +104,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				temporaryReservationDataFromDiaryScreen = JSON.parse(temporaryReservationDataFromDiaryScreen);
 				if (temporaryReservationDataFromDiaryScreen && temporaryReservationDataFromDiaryScreen.is_from_diary_screen) {
 					var getRoomsSuccess = function(data) {
-						console.log(data.rooms.length);
 
 						var roomsArray = {};
 						angular.forEach(data.rooms, function(value, key) {
@@ -149,6 +148,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			angular.forEach(temporaryReservationDataFromDiaryScreen.rooms, function(value, key) {
 				value['roomTypeId'] = roomsArray[value.room_id].room_type_id;
 				value['roomTypeName'] = roomsArray[value.room_id].room_type_name;
+				value['roomNumber'] = roomsArray[value.room_id].room_no;
 			});
 			$scope.reservationData.rooms = [];
 			$scope.reservationData.rooms = temporaryReservationDataFromDiaryScreen.rooms;
@@ -392,8 +392,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 
 		$scope.proceedCreatingReservation = function() {
 			var postData = computeReservationDataToSave();
-			console.log("----------------POST DATA-----------------------");
-			console.log(postData);
 			// return false;
 			var saveSuccess = function(data) {
 				$scope.$emit('hideLoader');
@@ -449,9 +447,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			};
 			var saveFailure = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.errorMessage = data;
-				// $scope.data.MLIData= {};
-
+				$scope.showRoomNotAvailableDialog();
+				//$scope.errorMessage = data;
 			};
 
 			var updateSuccess = function(data) {
@@ -472,6 +469,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 				$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
 			}
 
+		};
+		$scope.showRoomNotAvailableDialog = function(errorMessage){
+			
+				$scope.status = "error";
+				$scope.popupMessage = errorMessage;
+				ngDialog.open({
+		    		template: '/assets/partials/reservation/rvShowRoomNotAvailableMessage.html',
+		    		controller: 'RVShowRoomNotAvailableCtrl',
+		    		className: '',
+		    		scope: $scope
+		    	});
+			
 		};
 
 		/**
@@ -531,6 +540,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 		 * Creates the reservation and on success, goes to the confirmation screen
 		 */
 		$scope.submitReservation = function() {
+			
 			$scope.errorMessage = [];
 			// CICO-9794
 			if (($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email == "") || ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail == "")) {
