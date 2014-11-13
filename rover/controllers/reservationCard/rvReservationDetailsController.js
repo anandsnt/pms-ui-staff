@@ -47,7 +47,8 @@ sntRover.controller('reservationDetailsController', ['$scope', '$rootScope', 'RV
 			$state.go('rover.search', backParam);
 		};
 
-
+		//CICO-10568
+		$scope.reservationData.isSameCard = false;
 
 		BaseCtrl.call(this, $scope);
 
