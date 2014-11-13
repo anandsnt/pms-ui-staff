@@ -13,6 +13,7 @@ sntRover
 		'rvDiaryMetadata',
 		'rvDiaryUtilSrv',
 		'payload',
+		'$vault',
 	function($scope, 
 			 $rootScope, 
 			 $state,
@@ -25,7 +26,8 @@ sntRover
 			 rvDiarySrv, 
 			 meta, 
 			 util, 
-			 payload) {
+			 payload,
+			 $vault) {
 
 	$scope.$emit('hideLoader');
 
@@ -438,6 +440,35 @@ sntRover
 		    	return true;
 		    }catch(e) { }													
 	    };
+
+
+	    // save data to $vault
+	    // @param {String} - 'key', the name
+	    // @param {Object} - 'value', to be saved
+	    // @return {String} - saved value in $vault
+	    $scope.saveToVault = function(key, value) {
+	    	// $vault.set will only accept numbers & strings
+	    	$vault.set( key, JSON.stringify(value) );
+
+	    	// return the same value string back
+	    	return $vault.get( key ) || false;
+	    };
+
+	    // read data from $vault
+	    // @param {String} - 'key', the name
+	    // @return {Object} - parsed, saved value from $value
+	    $scope.ReadFromVault = function(key) {
+	    	return !!$vault.get( key ) ? JSON.parse( $vault.get(key) ) : false; 
+	    };
+
+	    // may be moved to utils or to a deeper scope into react
+	    $scope.dateToMs = function(date) {
+	    	return	Object.prototype.toString.apply( date ) == '[object Date]' ? date.getTime() : false;
+	    };
+	    $scope.msToDate = function(ms) {
+	    	return Object.prototype.toString.apply( new Date(ms) ) == '[object Date]' ? new Date(ms) : false;
+	    };
+
 
 	    function updateRowClasses(current_scroll_pos) {
 	    	var reservations,
