@@ -398,10 +398,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', '$scope', '$state
 			//              }
 			//          $scope.reservationData.rooms[0].room_id = 324;
 			// $scope.reservationData.rooms.push(room);
-			// data.room_id = [];
-			// angular.forEach($scope.reservationData.rooms, function(room, key) {
-			//   data.room_id.push(room.room_id);
-			// });
+			data.room_id = [];
+			angular.forEach($scope.reservationData.rooms, function(room, key) {
+			  data.room_id.push(room.room_id);
+			});
 			//to delete ends here
 			return data;
 
