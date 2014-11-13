@@ -47,10 +47,9 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		// internal variables
-		var $_roomList,
-			$_defaultWorkType,
-			$_defaultEmp,
-			$_hasActiveWorkSheet;
+		var $_roomList = {},
+			$_defaultWorkType == '',
+			$_defaultEmp = '';
 
 		// filter open or close
 		$scope.filterOpen = false;
@@ -833,18 +832,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.invokeApi(RVHkRoomStatusSrv.fetchRoomList, {
 						businessDate: $rootScope.businessDate,
 						refresh: true
-					}, function(data) {
-						roomList = data;
-						if ($rootScope.isStandAlone) {
-							// time to decide if this is an employee
-							// who has an active work sheets
-							$_checkHasActiveWorkSheet();
-						} else {
-							$timeout(function() {
-								$_postProcessRooms(roomList);
-							}, 10);
-						};
-					});
+					}, $_fetchRoomListCallback);
 				}
 
 				// for the smooth transition back
