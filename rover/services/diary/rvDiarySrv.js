@@ -169,14 +169,21 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                 //_.extend(api_config.Occupancy.params, configOccParams());
 
-                this.fetchArrivalTimes = function(base_interval) {
+                this.fetchArrivalTimes = function(base_interval, offset) {
                     var times = [],
                         day_min = 24 * 60,
                         min, cur_time;
 
+                    if(!offset) {
+                        offset = {
+                            hours: 0,
+                            min: 0
+                        };
+                    }
+
                     for (var i = 0; i < day_min; i += base_interval) {
-                        min = i % 60;
-                        cur_time = parseInt(i / 60, 10) + ':' + (min === 0 ? '00' : min);
+                        min = offset.min + (i % 60);
+                        cur_time = offset.hours + parseInt(i / 60, 10) + ':' + (min === 0 ? '00' : min);
 
                         times.push(cur_time);
                     }
@@ -240,45 +247,5 @@ sntRover.service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'rvDiary
 
                     return q.promise;
                 };
-
-                this.fetchAvailability = function(start_date, end_date, rate_id, room_type_id) {
-                    var self = this,
-                        q = $q.defer(),
-                        gen_uid = _.uniqueId('available-'); //USED TO RESIZE ALL INSERTED ELEMENTS SIMULTANEOUSLY
-
-                    this.fetchData(start_date, end_date, api.availability, rate_id, room_type_id)
-                        .then(function(payload) {
-                            var ref_data = store.payload(),
-                                data = payload.results[0].availability,
-                                reference_slot, row_item_data, row_data;
-
-                            data.forEach(function(ava) {
-                                reference_slot = store.mergeAvailableSlots(start_date,
-                                    end_date,
-                                    gen_uid,
-                                    rate_id,
-                                    ava);
-                                if (!row_item_data && reference_slot) {
-                                    row_item_data = util.deepCopy(reference_slot);
-                                    row_data = _.findWhere(ref_data.rooms, {
-                                        id: row_item_data.room_id
-                                    });
-                                }
-                            });
-
-
-                            q.resolve({
-                                start_date: start_date,
-                                end_date: end_date,
-                                stay_dates: _.flatten(payload.results),
-                                row_data: row_data,
-                                row_item_data: row_item_data
-                            });
-
-                        });
-
-                    return q.promise;
-                };
-
             }]);
                 //------------------------------------------------------------------

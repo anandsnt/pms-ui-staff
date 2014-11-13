@@ -216,7 +216,6 @@ sntRover
 	    $scope.onSelect = function(row_data, row_item_data, selected, command_message) {
 	    	var copy,
 	    		selection,
-	    		util = util,
 	    		props = $scope.gridProps,
 	    		edit  = props.edit;
 
@@ -336,6 +335,15 @@ sntRover
 				var time = Time({ hours: display.new_reservation_time_span });
 
 				util.clearRoomQuery(data);
+
+				$scope.gridProps.edit = util.deepCopy($scope.gridProps.edit);
+
+				$scope.gridProps.edit.passive = false;
+				$scope.gridProps.group_id = undefined
+				$scope.gridProps.edit.currentResizeItem = undefined;
+				$scope.gridProps.edit.currentResizeItemRow = undefined;
+
+				$scope.renderGrid();
 
 				mergeAvailableTimeSlots(time, filter, data);
 		};

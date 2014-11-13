@@ -1,15 +1,26 @@
 sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', 
 												 '$rootScope', 
 												 '$state', 
-												 '$stateParams', 
-												 'rvDiaryStoreSrv', 
+												 '$valut', 
 												 'ngDialog',
-	function($scope, $rootScope, $state, $stateParams, rvDiaryStoreSrv, ngDialog) {
+	function($scope, $rootScope, $state, $valut, ngDialog) {
 		BaseCtrl.call(this, $scope);
+
+		$scope.rooms 			= _.pluck($scope.selectedReservations, 'room');
+		$scope.occupancy 	    = _.pluck($scope.selectedReservations, 'occupancy');
+		
+		var vaultSelections = {
+			arrival_date: undefined,
+			arrival_time: undefined,
+			departure_date: undefined,
+			departure_time: undefined,
+			rooms: []
+		};
+
 		$scope.title = ($scope.rooms.length > 1 ? 'these cabins' : 'this cabin');
 
 		(function() {
-			var resSample 			= $scope.reservations[0],
+			var resSample 			= $scope.occupancy[0],
 				arrival 			= new Date(resSample.arrival),
 				departure 			= new Date(resSample.departure),
 				compA 				= arrival.toComponents(),
@@ -19,18 +30,18 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 				arrivalTimeComp 	= compA.time,
 				departureTimeComp 	= compB.time;
 
-			$scope.arrival_time 	= compA.time.toString(true); 
-			$scope.arrival_date 	= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year;
-			$scope.departure_time 	= compB.time.toString(true);
-			$scope.departure_date 	= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year;
+			$scope.arrival_time 		= compA.time.toString(true),
+			$scope.arrival_date 		= compA.date.day + ' ' + compA.date.monthName + ' ' + compA.date.year,
+			$scope.departure_time 		= compB.time.toString(true),
+			$scope.departure_date 		= compB.date.day + ' ' + compB.date.monthName + ' ' + compB.date.year
 
-			$scope.selectionsForVault.arrival_date 		=compA.date.year + ' ' + compA.date.monthName + ' ' + compA.date.day;
-	      	$scope.selectionsForVault.departure_date 	=compB.date.year + ' ' + compB.date.monthName + ' ' + compB.date.day;
-	      	$scope.selectionsForVault.arrival_time 		= $scope.arrival_time
-	      	$scope.selectionsForVault.departure_time 	= $scope.departure_time			
+			vaultSelections.arrival_date 	= compA.date.year + ' ' + compA.date.monthName + ' ' + compA.date.day;
+	      	vaultSelections.departure_date 	= compB.date.year + ' ' + compB.date.monthName + ' ' + compB.date.day;
+	      	vaultSelections.arrival_time 	= $scope.arrival_time;
+	      	vaultSelections.departure_time 	= $scope.departure_time;			
 
 			$scope.selectedReservations.forEach(function(slot, idx) {
-				$scope.selectionsForVault.push({       
+				vaultSelections.rooms.push({       
 					room_id: 		slot.room.id,
 			        rateId: 		slot.occupancy.rate_id,
 			        numAdults: 		1,
@@ -50,7 +61,8 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 		};
 
 		$scope.reserveRooms = function() {
-			$scope.saveToValut('rooms', $scope.selectionsForVault)
+			$scope.saveToVault('temporaryReservationDataFromDiaryScreen', vaultSelections);
+
 			$state.go('rover.reservations.mainCard.stayCard.summaryAndConfirm', {
 				reservation: 'HOURLY'
 			});
@@ -86,6 +98,4 @@ sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope',
 		$scope.closeDialog = function() {
 			ngDialog.close();
 		};
-
-		$scope.selectionsForVault = [];
 }]);
