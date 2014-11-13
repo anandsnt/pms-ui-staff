@@ -48,7 +48,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		// internal variables
 		var $_roomList = {},
-			$_defaultWorkType == '',
+			$_defaultWorkType = '',
 			$_defaultEmp = '';
 
 		// filter open or close
