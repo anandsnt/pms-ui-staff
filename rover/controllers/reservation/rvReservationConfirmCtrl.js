@@ -7,20 +7,23 @@ sntRover.controller('RVReservationConfirmCtrl', [
 	'$filter',
 	'RVBillCardSrv',
 	'$q',
-	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q) {
+	'RVHkRoomDetailsSrv',
+	function($scope, $state, RVReservationSummarySrv, ngDialog, RVContactInfoSrv, $filter, RVBillCardSrv, $q, RVHkRoomDetailsSrv) {
 		$scope.errorMessage = '';
 		BaseCtrl.call(this, $scope);
-
+		var totalRoomsAvailable = 0;
 
 		$scope.init = function() {
 			$scope.heading = 'Reservations';
 			$scope.setHeadingTitle($scope.heading);
 			
 			$scope.$parent.hideSidebar = true;
+			$scope.disableCheckin = true;
+			totalRoomsAvailable = 0;
 			$scope.isConfirmationEmailSent = ($scope.otherData.isGuestPrimaryEmailChecked || $scope.otherData.isGuestAdditionalEmailChecked) ? true : false;
 			$scope.setScroller('reservationSummary');
 			$scope.setScroller('paymentInfo');
-
+			checkAllRoomsAreReady();
 		};
 
 		/*
@@ -199,9 +202,36 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				isfromcreatereservation: false
 			});
 		};
-
+		var allRoomDetailsFetched = function(data){
+			$scope.$emit("hideLoader");
+		}
+		var failedInRoomDetailsFetch = function(data){
+			$scope.$emit("hideLoader");
+		}		
+		var successOfRoomDetailsFetch = function(data){
+			if(data.room_details.current_hk_status == 'READY'){
+				totalRoomsAvailable++;
+			}
+		};
+		
 		$scope.enableCheckInButton = function(){
-			return false;
+			return $scope.reservationData.rooms.length == totalRoomsAvailable;
+		};
+
+		var checkAllRoomsAreReady = function(){
+			var promises = [];
+			var data = null;
+			//we are following this structure bacuse of the hideloader pblm. 
+			// we are going to call mutilple API's paralelly. So sometimes last API may complete first
+			// we need to keep loader until all api gets completed 
+			$scope.$emit("showLoader");
+			for(var i = 0; i < $scope.reservationData.rooms.length; i++){
+				id = $scope.reservationData.rooms[i].room_id;
+				//directly calling without base ctrl
+				promises.push(RVHkRoomDetailsSrv.fetch(id).then(successOfRoomDetailsFetch));
+			}
+			$q.all(promises).then(allRoomDetailsFetched, failedInRoomDetailsFetch);				
+			
 		};
 
 		var successOfAllCheckin = function(data) {		
