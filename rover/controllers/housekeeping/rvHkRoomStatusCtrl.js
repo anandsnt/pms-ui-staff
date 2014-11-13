@@ -30,13 +30,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.heading = $filter('translate')('ROOM_STATUS');
 		$scope.$emit("updateRoverLeftMenu", "roomStatus");
 
-		var scrollOptions = {
-			preventDefaultException: {
-				tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/
-			},
-			preventDefault: false
-		};
-		$scope.setScroller('filtersection', scrollOptions);
 
 		// reset all the filters
 		$scope.currentFilters = RVHkRoomStatusSrv.currentFilters;
@@ -54,7 +47,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 		// internal variables
-		var $_defaultWorkType,
+		var $_roomList,
+			$_defaultWorkType,
 			$_defaultEmp,
 			$_hasActiveWorkSheet;
 
@@ -72,9 +66,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// default no results found
 		$scope.noResultsFound = 0;
 
-
-		// default no top filters
-		// $scope.topFilter = {};
+		// has active work sheets?
+		$scope.hasActiveWorkSheet = false;
 
 
 		// ALL PMS: assign the resolved data to scope
@@ -82,54 +75,69 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		$scope.roomTypes = roomTypes;
 		$scope.floors = floors;
 
-		// STANALONE PMS: assign the resolved data to scope
-		if ($rootScope.isStandAlone) {
-			var _fetchAgainCallback = function() {
-				$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
-				/**
-				 * CICO-8620
-				 * First time  ($scope.topFilter.byEmployee !== -1) default to the logged in user's ID
-				 * Rest of the times maintain state in the dropdown!
-				 * 
-				 */
-				$_defaultEmp = ($scope.topFilter.byEmployee !== -1)? $scope.topFilter.byEmployee : $rootScope.userId;
+		// first process rooms
+		$_fetchRoomListCallback(roomList);
 
-				// when a employee logges in mobile view
-				// we introduce another level of tabs to seperate
-				// his/her work count status and rooms
-				// defaults to rooms tab, but if has active worksheet
-				// show summary by default
+
+
+
+
+		function $_fetchRoomListCallback(data) {
+			if ( !!data ) {
+				$_roomList = data;
+			};
+
+			$scope.totalCount = $_roomList.total_count;
+
+			// filter stuff
+			$scope.showPickup = $_roomList.use_pickup || false;
+			$scope.showInspected = $_roomList.use_inspected || false;
+			$scope.showQueued = $_roomList.is_queue_rooms_on || false;
+
+			// if not showing loading
+			$scope.$emit('showLoader');
+
+			// need to work extra for standalone PMS
+			if ($rootScope.isStandAlone) {
+				$scope.workTypes = workTypes;
+				$scope.employees = employees;
+
+				// for mobile view spilt
 				$scope.currentView = 'rooms';
 				$scope.changeView = function(view) {
 					$scope.currentView = view;
 				};
 
-				// time to decide if this is an employee
-				// who has an active work sheets
-				$_checkHasActiveWorkSheet();
-			};
+				var _preHasActiveWorkSheet = function() {
+					$_defaultWorkType = $scope.workTypes.length ? $scope.workTypes[0].id : {};
+					$_defaultEmp = ($scope.topFilter.byEmployee !== -1) ? $scope.topFilter.byEmployee : $rootScope.userId;
 
-			$scope.workTypes = workTypes;
-			$scope.employees = employees;
+					// time to decide if this is an employee
+					// who has an active work sheets
+					$_checkHasActiveWorkSheet();
+				}
 
-			if ( workTypes.length && employees.length ) {
-				_fetchAgainCallback();
-			} else {
-				$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
-					$scope.workTypes = data;
-					$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
-						$scope.employees = data;
-						_fetchAgainCallback();
+				if ( workTypes.length && employees.length ) {
+					_preHasActiveWorkSheet();
+				} else {
+					$scope.invokeApi(RVHkRoomStatusSrv.fetchWorkTypes, {}, function(data) {
+						$scope.workTypes = data;
+						$scope.invokeApi(RVHkRoomStatusSrv.fetchHKEmps, {}, function(data) {
+							$scope.employees = data;
+							_preHasActiveWorkSheet();
+						});
 					});
-				});
+				};
+			}
+			// connected PMS, just process the roomList
+			else {
+				$timeout(function() {
+					$_postProcessRooms();
+				}, 10);
 			};
-			
-		} else {
-			// need delay, just need it
-			$timeout(function() {
-				$_postProcessRooms(roomList);
-			}, 10);
-		}
+		};
+
+
 
 
 		function $_checkHasActiveWorkSheet(argument) {
@@ -143,10 +151,10 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 					$scope.currentFilters.filterByWorkType = $scope.topFilter.byWorkType;
 
 					// $scope.$emit('hideLoader');
-					$_hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
+					$scope.hasActiveWorkSheet = !!data.work_sheets.length && !!data.work_sheets[0].work_assignments && !!data.work_sheets[0].work_assignments.length;
 
 					// set an active user in filterByEmployee, set the mobile tab to to summary
-					if ($_hasActiveWorkSheet) {
+					if ( $scope.hasActiveWorkSheet ) {
 						$scope.topFilter.byEmployee = $_defaultEmp;
 						$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
 
@@ -156,14 +164,14 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 					// need delay, just need it
 					$timeout(function() {
-						$_postProcessRooms(roomList);
+						$_postProcessRooms();
 					}, 10);
 				},
 				// it will fail if returning from admin to room status
 				// directly, since the flags in $rootScope may not be ready
 				_failed = function() {
 					$timeout(function() {
-						$_postProcessRooms(roomList);
+						$_postProcessRooms();
 					}, 10);
 				};
 
@@ -204,60 +212,67 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 
 
-		function $_postProcessRooms(data) {
-			// apply the filter first
-			$_calculateFilters(data.rooms);
 
-			// making unique copies of array
-			// slicing same array not good.
-			// say thanks to underscore.js
-			var smallPart = _.compact(data.rooms);
-			var restPart = _.compact(data.rooms);
 
-			// smaller part consisit of enogh rooms
-			// that will fill in the screen
-			smallPart = smallPart.slice(0, 13);
-			restPart = restPart.slice(13);
+		function $_postProcessRooms() {
+			var _roomCopy;
 
-			// first load the small part
-			$scope.rooms = smallPart;
+			if (!!$_roomList && !!$_roomList.rooms && $_roomList.rooms.length) {
+				
+				// load first 13 a small delay (necessary) - for filters to work properly
+				$timeout(function() {
+					$_calculateFilters();
 
-			// load the rest after a small delay
-			$timeout(function() {
+					// empty all
+					$scope.rooms = [];
 
-				// push the rest of the rooms into $scope.rooms
-				// remember slicing is only happening on the Ctrl and not on Srv
-				$scope.rooms.push.apply($scope.rooms, restPart);
+					// load first 13;
+					for (var i = 0; i < 13; i++) {
+						_roomCopy = angular.copy( $_roomList.rooms[i] );
+						$scope.rooms.push( _roomCopy );
+					};
+				}, 100);
 
-				// scroll to the previous room list scroll position
-				var toPos = localStorage.getItem('roomListScrollTopPos');
-				$scope.refreshScroll(toPos);
+				// load the rest after a small delay - DOM can process it all
+				$timeout(function() {
 
+					// load the rest
+					for (var i = 13, j = $_roomList.rooms.length; i < j; i++) {
+						_roomCopy = angular.copy( $_roomList.rooms[i] );
+						$scope.rooms.push( _roomCopy );
+					};
+
+					// scroll to the previous room list scroll position
+					var toPos = localStorage.getItem('roomListScrollTopPos');
+					$_refreshScroll(toPos);
+
+					$scope.$emit('hideLoader');
+
+					// execute this after this much time
+				}, 300);
+			} else {
 				$scope.$emit('hideLoader');
-
-				// execute this after this much time
-				// as the animation is in progress
-			}, 700);
+			}
 		};
 
 
 
 		var roomsEl = document.getElementById('rooms');
-		var filterOptionsEl = document.getElementById('filter-options');
+		var filterRoomsEl = document.getElementById('filter-rooms');
 
 		// stop browser bounce while swiping on rooms element
 		angular.element(roomsEl)
-			.on('ontouchmove', function(e) {
+			.on('touchmove', function(e) {
 				e.stopPropagation();
 			});
 
 		// stop browser bounce while swiping on filter-options element
-		angular.element(filterOptionsEl)
-			.on('ontouchmove', function(e) {
+		angular.element(filterRoomsEl)
+			.on('touchmove', function(e) {
 				e.stopPropagation();
 			});
 
-		$scope.refreshScroll = function(toPos) {
+		function $_refreshScroll(toPos) {
 			if (roomsEl.scrollTop === toPos) {
 				return;
 			};
@@ -291,7 +306,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			$scope.refreshScroller('filtersection');
 		};
 
 		/**
@@ -300,11 +314,11 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		 *  Emits a call to dismiss the filter screen
 		 */
 		$scope.filterDoneButtonPressed = function() {
-			$_calculateFilters();
-
-			$scope.refreshScroll();
-
 			$scope.filterOpen = false;
+			$scope.$emit('showLoader');
+			$timeout(function() {
+				$_postProcessRooms();
+			}, 100);
 
 			// save the current edited filter to RVHkRoomStatusSrv
 			// so that they can exist even after HKSearchCtrl init
@@ -324,68 +338,27 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// call caluculate filter in else since
 				// resetting filterByEmployee will call applyEmpfilter 
 				// which in turn will call calculateFilters
-				$_calculateFilters();
-				$scope.refreshScroll();
+				$scope.filterDoneButtonPressed();
 			}
-
-			// save the current edited filter to RVHkRoomStatusSrv
-			// so that they can exist even after HKSearchCtrl init
-			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
 		};
 
 		// when user changes the employee filter
 		$scope.applyEmpfilter = function() {
 			$scope.currentFilters.filterByEmployee = $scope.topFilter.byEmployee;
-			$_calculateFilters();
-
-			$scope.refreshScroll();
-
-			// save the current edited filter to RVHkRoomStatusSrv
-			// so that they can exist even after HKSearchCtrl init
-			RVHkRoomStatusSrv.currentFilters = $scope.currentFilters;
+			$scope.filterDoneButtonPressed();
 		};
 
-		// CICO-10101 #5 requirement: when chosing 'vacant' also show 'queued' since its also vacant
-		$scope.checkQueuedAlso = function() {
-			if (!!$scope.currentFilters.vacant) {
-				$scope.currentFilters.queued = true;
-			};
-		};
-		$scope.keepCheckedIfVacant = function() {
-			if (!$scope.currentFilters.queued && !!$scope.currentFilters.vacant) {
-				$timeout(function() {
-					$scope.currentFilters.queued = true;
-				}, 10);
-			};
-		};
-
-
-		// CICO-10101 #5 requirement: when chosing 'vacant' also show 'queued' since its also vacant
-		/**
-		 * CICO-10255
-		 * Jos had reported an issue (Housekeeping - Filter screen when you click "show vacant" the "show queued" is also automatically marked)
-		 * Have removed invocation of these two functions
-		 */
-		$scope.checkQueuedAlso = function() {
-			if (!!$scope.currentFilters.vacant) {
-				$scope.currentFilters.queued = true;
-			};
-		};
-		$scope.keepCheckedIfVacant = function() {
-			if (!$scope.currentFilters.queued && !!$scope.currentFilters.vacant) {
-				$timeout(function() {
-					$scope.currentFilters.queued = true;
-				}, 10);
-			};
-		};
 
 
 		/**
 		 *  A method which checks the filter option status and see if the room should be displayed
 		 */
-		function $_calculateFilters(source) {
+		function $_calculateFilters() {
+			var source = $_roomList.rooms;
+			if ( Object.prototype.toString.apply(source) !== '[object Array]' ) {
+				return;
+			};
 
-			var source = source || $scope.rooms;
 			$scope.noResultsFound = 0;
 			var roomTypesUnSelected = true;
 
@@ -396,6 +369,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				}
 				return false;
 			});
+
 
 			for (var i = 0, j = source.length; i < j; i++) {
 				var room = source[i];
@@ -593,7 +567,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				// apply any filter options
 				// and return
 				if (!$scope.query) {
-					$_calculateFilters();
+					$_postProcessRooms();
 					break;
 					return;
 				};
@@ -613,7 +587,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			}
 
 			// refresh scroll when all ok
-			$scope.refreshScroll();
+			$_refreshScroll();
 		}
 
 		/**
@@ -677,7 +651,7 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			// this is the default state
 			$scope.currentFilters['showAllFloors'] = true;
 
-			$scope.refreshScroll();
+			$_refreshScroll();
 		}
 
 		/**
@@ -705,7 +679,6 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			$scope.currentFilters.floorFilterStart = '';
 			$scope.currentFilters.floorFilterEnd = '';
 			$scope.currentFilters.floorFilterSingle = '';
-			$scope.refreshScroller('filtersection');
 		};
 
 
@@ -713,7 +686,12 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 		// could be moved to a directive,
 		// but addicted by the amount of control
 		// and power it gives here
-		var pullRefresh = function() {
+		var $_pullUpDownModule = function() {
+
+			// YOU SHALL NOT BOUNCE!
+			document.addEventListener('touchmove', function(e) {
+				e.stopPropagation();
+			});
 
 			// caching DOM nodes invloved 
 			var $rooms = document.getElementById('rooms'),
@@ -786,8 +764,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				var diff = (nowY - startY);
 
 				// we move with the swipe
-				$rooms.style.webkitTransform = 'translateY(' + diff + 'px)';
-				$notify.style.webkitTransform = 'translateY(' + diff + 'px)';
+				$rooms.style.webkitTransform = 'translate3d(0, ' + diff + 'px, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, ' + diff + 'px, 0)';
 
 				loadNotify(diff);
 			};
@@ -808,6 +786,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 
 				$rooms.style.WebkitTransition = '';
 				$notify.style.WebkitTransition = '';
+				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
 
 				$notify.classList.add('show');
 
@@ -862,8 +842,8 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 				$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
 				$notify.style.WebkitTransition = '-webkit-transform 0.3s';
 
-				$rooms.style.webkitTransform = 'translateY(0)';
-				$notify.style.webkitTransform = 'translateY(0)';
+				$rooms.style.webkitTransform = 'translate3d(0, 0, 0)';
+				$notify.style.webkitTransform = 'translate3d(0, 0, 0)';
 
 				// 'touchmove' handler is not necessary
 				$rooms.removeEventListener(touchMoveHandler);
@@ -892,16 +872,16 @@ sntRover.controller('RVHkRoomStatusCtrl', [
 			});
 		};
 
-		// initiate pullRefresh
+		// initiate $_pullUpDownModule
 		// dont move these codes outside this controller
 		// DOM node will be reported missing
-		pullRefresh();
+		$_pullUpDownModule();
 
 
 		// There are a lot of bindings that need to cleared
 		$scope.$on('$destroy', function() {
 			angular.element(roomsEl).off('ontouchmove');
-			angular.element(filterOptionsEl).off('ontouchmove');
+			angular.element(filterRoomsEl).off('ontouchmove');
 		});
 
 	}
