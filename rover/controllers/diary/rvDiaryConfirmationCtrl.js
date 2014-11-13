@@ -1,7 +1,7 @@
 sntRover.controller('RVDiaryConfirmationCtrl', [ '$scope', 
 												 '$rootScope', 
 												 '$state', 
-												 '$valut', 
+												 '$vault', 
 												 'ngDialog',
 	function($scope, $rootScope, $state, $valut, ngDialog) {
 		BaseCtrl.call(this, $scope);
